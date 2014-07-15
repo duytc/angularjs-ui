@@ -1,0 +1,7 @@
+module.exports = {
+    hostname: '127.0.0.1',
+    port: 9000,
+    appUrl: 'http://localhost:9000',
+    // application to open your app
+    browser: 'chromium-browser'
+};
