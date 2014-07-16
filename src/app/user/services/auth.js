@@ -76,8 +76,6 @@ angular.module('tagcadeApp.user')
 
             console.log('token', token);
 
-            var dfd = $q.defer();
-
             if (!token) {
                 dfd.reject('no token');
                 return dfd.promise;

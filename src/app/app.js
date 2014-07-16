@@ -10,50 +10,7 @@ angular.module('tagcadeApp', [
     'tagcadeApp.admin'
 ])
 
-    .constant('ENTRY_STATE', 'login')
-
-    .config(function ($stateProvider, $urlRouterProvider) {
-        $stateProvider
-            // all states should inherit from root
-            // we can ensure that the current user has a valid session status
-            .state('app', {
-                abstract: true,
-                template: '<div ui-view></div>',
-                controller: 'AppController',
-                resolve: {
-                    userSession: function(Auth, Session) {
-                        console.log('resolving user session');
-
-                        return Auth.check()
-                            .catch(function() {
-                                // create blank session
-                                return Session.createNew();
-                            })
-                        ;
-                    }
-                }
-            })
-            // default state, used to invoke the initial redirect
-            // i.e to a dashboard or login page
-            .state('app.home', {
-                url: '/',
-                controller: 'HomeController'
-            })
-            .state('404', {
-                url: '/404',
-                templateUrl: '404.tpl.html'
-            })
-            .state('403', {
-                url: '/403',
-                templateUrl: '403.tpl.html'
-            })
-        ;
-
-        $urlRouterProvider.when('', '/');
-        $urlRouterProvider.otherwise('/');
-    })
-
-    .run(function ($rootScope, $state, Auth, HomeRedirector, ENTRY_STATE, AUTH_EVENTS) {
+    .run(function ($rootScope, $location, $state, $q, Auth, HomeRedirector, ENTRY_STATE, AUTH_EVENTS) {
         $rootScope.$on(AUTH_EVENTS.loginSuccess, function(event) {
             console.log('login success');
             HomeRedirector.redirect();
@@ -70,6 +27,52 @@ angular.module('tagcadeApp', [
 
         $rootScope.$on(AUTH_EVENTS.notAuthorized, function(event) {
             console.log('not authorized');
+        });
+
+        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+            console.log('state change start', toState.name);
+
+            console.log(fromState);
+
+            var stateData = toState.data || {};
+
+            if (stateData.allowAnonymous) {
+                return;
+            }
+
+            event.preventDefault();
+
+            // checks the server if the user has a saved json web token
+            // returns a promise, cached after first check
+            Auth.check()
+                .catch(function() {
+                    $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+                    return $q.reject('not authenticated');
+                })
+                .then(
+                    function() {
+                        // user authenticated, check authorization
+
+                        var requiredRole = stateData.role;
+
+                        if (requiredRole && !Auth.isAuthorized(requiredRole)) {
+                            $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
+                            return $q.reject('not authorized');
+                        }
+                    }
+                )
+                .then(
+                    function() {
+                        // user authenticated and authorized, activate the state
+
+                        $state.go(toState.name, toParams, {notify: false}).then(function() {
+                            // https://github.com/angular-ui/ui-router/issues/178
+                            // line 907 state.js
+                            $rootScope.$broadcast('$stateChangeSuccess', toState, toParams, fromState, fromParams);
+                        });
+                    }
+                )
+            ;
         });
 
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
