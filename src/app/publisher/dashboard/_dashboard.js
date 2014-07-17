@@ -1,4 +1,4 @@
-angular.module('tagcadeApp.publisher.dashboard', [
+angular.module('tagcade.publisher.dashboard', [
     'ui.router'
 ])
 
@@ -6,7 +6,11 @@ angular.module('tagcadeApp.publisher.dashboard', [
         $stateProvider
             .state('app.publisher.dashboard', {
                 url: '/dashboard',
-                template: 'Welcome to the publisher dashboard. <a ui-sref="app.publisher.sites">Sites</a>'
+                views: {
+                    'content@app': {
+                        templateUrl: 'publisher/dashboard/views/dashboard.tpl.html'
+                    }
+                }
             })
         ;
     })

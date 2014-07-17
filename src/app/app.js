@@ -1,13 +1,11 @@
-angular.module('tagcadeApp', [
+angular.module('tagcade', [
     'ui.router',
-
     'templates-app',
     'templates-common',
 
-    'tagcadeApp.core',
-    'tagcadeApp.user',
-    'tagcadeApp.publisher',
-    'tagcadeApp.admin'
+    'tagcade.core',
+    'tagcade.publisher',
+    'tagcade.admin'
 ])
 
     .run(function ($rootScope, $location, $state, $q, Auth, HomeRedirector, ENTRY_STATE, AUTH_EVENTS) {
@@ -18,6 +16,11 @@ angular.module('tagcadeApp', [
 
         $rootScope.$on(AUTH_EVENTS.loginFailed, function(event) {
             console.log('login failed');
+        });
+
+        $rootScope.$on(AUTH_EVENTS.logoutSuccess, function(event) {
+            console.log('logout success');
+            $state.go(ENTRY_STATE);
         });
 
         $rootScope.$on(AUTH_EVENTS.notAuthenticated, function(event) {
@@ -36,6 +39,7 @@ angular.module('tagcadeApp', [
 
             var stateData = toState.data || {};
 
+            // my login state will early return here
             if (stateData.allowAnonymous) {
                 return;
             }
@@ -65,9 +69,10 @@ angular.module('tagcadeApp', [
                     function() {
                         // user authenticated and authorized, activate the state
 
+                        // pending my patch to ui-router
+                        //$state.go(toState.name, toParams, {resume: true});
+
                         $state.go(toState.name, toParams, {notify: false}).then(function() {
-                            // https://github.com/angular-ui/ui-router/issues/178
-                            // line 907 state.js
                             $rootScope.$broadcast('$stateChangeSuccess', toState, toParams, fromState, fromParams);
                         });
                     }

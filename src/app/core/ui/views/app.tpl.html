@@ -1,0 +1,25 @@
+<div class="app">
+
+    <section data-ng-include=" 'core/ui/views/header.tpl.html' "
+             id="header"
+             class="header-container "
+             data-ng-class=" {'header-fixed': admin.fixedHeader} "
+             data-ng-controller="HeaderController"
+             data-ng-intro-options="introOptions"
+             data-ng-intro-method="startIntro"
+             data-ng-intro-autostart="false"></section>
+
+
+    <div class="main-container">
+        <aside ui-view="nav"
+               id="nav-container"
+               class="nav-container"
+               data-ng-class=" {'nav-fixed': admin.fixedSidebar, 'nav-horizontal': admin.menu === 'horizontal', 'nav-vertical': admin.menu === 'vertical'}">
+        </aside>
+
+        <section ui-view="content"
+                 id="content"
+                 class="content-container">
+         </section>
+    </div>
+</div>

@@ -1,0 +1,53 @@
+
+<div class="nav-wrapper">
+    <ul id="nav"
+        class="nav"
+        data-ng-controller="NavController"
+        data-slim-scroll
+        data-collapse-nav
+        data-highlight-active>
+
+        <li><a ui-sref=".dashboard"> <i class="fa fa-home"></i>Dashboard</a></li>
+
+        <li>
+            <a href="#/tagManagement"> <i class="fa fa-location-arrow"></i>Tag Management</a>
+            <ul>
+                <li><a ui-sref=".tagManagement.sites.list"><i class="fa fa-caret-right"></i>My Sites</a></li>
+                <li><a ui-sref=".tagManagement.adNetwork.list"><i class="fa fa-caret-right"></i>My Ad Networks</a></li>
+                <li><a ui-sref=".tagManagement.adNetwork.new"><i class="fa fa-caret-right"></i>New Ad Network</a></li>
+                <li><a ui-sref=".tagManagement.sites.new"><i class="fa fa-caret-right"></i>New Site</a></li>
+                <li><a ui-sref=".tagManagement.adSlot.new"><i class="fa fa-caret-right"></i>New Ad Slot</a></li>
+                <li><a ui-sref=".tagManagement.adTag.new"><i class="fa fa-caret-right"></i>New Ad Tag</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#/reports"> <i class="fa fa-tachometer"></i>Reports</a>
+            <ul>
+                <li><a  ui-sref=".reports.performanceReports"><i class="fa fa-caret-right"></i>Performance Reports</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#/analytics"> <i class="fa fa-bar-chart-o"></i>Analytics</a>
+            <ul>
+                <li><a ui-sref=".analytics.sourceReports"><i class="fa fa-caret-right"></i>Source Reports</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#/tools"> <i class="fa fa-wrench"></i>Tools</a>
+            <ul>
+                <li><a ui-sref=".tools.cascadeManager"><i class="fa fa-caret-right"></i>Cascade Manager</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#/billing"> <i class="fa fa-book"></i>Billing</a>
+            <ul>
+                <li><a ui-sref=".billing.viewMyUsage" href="#/billing/my-usage"><i class="fa fa-caret-right"></i>View My Usage</a></li>
+                <li><a ui-sref=".billing.invoices"><i class="fa fa-caret-right"></i>Invoices</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>

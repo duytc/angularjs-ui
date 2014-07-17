@@ -1,4 +1,4 @@
-angular.module('tagcadeApp.admin.dashboard', [
+angular.module('tagcade.admin.dashboard', [
     'ui.router'
 ])
 
@@ -7,7 +7,11 @@ angular.module('tagcadeApp.admin.dashboard', [
             .state('app.admin.dashboard', {
                 url: '/dashboard',
                 controller: 'AdminDashboardController',
-                template: 'Welcome to the admin dashboard'
+                views: {
+                    'content@app': {
+                        templateUrl: 'admin/dashboard/views/dashboard.tpl.html'
+                    }
+                }
             })
         ;
     })

@@ -1,4 +1,4 @@
-angular.module('tagcadeApp.admin.dashboard')
+angular.module('tagcade.admin.dashboard')
 
     .controller('AdminDashboardController', function() {
     })

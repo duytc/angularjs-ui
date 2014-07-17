@@ -1,16 +1,24 @@
-angular.module('tagcadeApp.publisher', [
+angular.module('tagcade.publisher', [
     'ui.router',
 
-    'tagcadeApp.user',
-    'tagcadeApp.publisher.dashboard',
-    'tagcadeApp.publisher.site'
+    'tagcade.core',
+    'tagcade.publisher.dashboard',
+    'tagcade.publisher.tagManagement',
+    'tagcade.publisher.reports',
+    'tagcade.publisher.analytics',
+    'tagcade.publisher.tools',
+    'tagcade.publisher.billing'
 ])
 
     .config(function ($stateProvider, USER_ROLES) {
         $stateProvider
             .state('app.publisher', {
                 abstract: true,
-                template: '<div ui-view></div>',
+                views: {
+                    'nav@app': {
+                        templateUrl: 'publisher/ui/views/nav.tpl.html'
+                    }
+                },
                 url: '/pub',
                 data: {
                     role: USER_ROLES.publisher

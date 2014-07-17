@@ -1,16 +1,19 @@
-angular.module('tagcadeApp.admin', [
+angular.module('tagcade.admin', [
     'ui.router',
 
-    'tagcadeApp.user',
-    'tagcadeApp.admin.dashboard'
+    'tagcade.core',
+    'tagcade.admin.dashboard'
 ])
 
     .config(function ($stateProvider, USER_ROLES) {
         $stateProvider
             .state('app.admin', {
-                //parent: 'root',
                 abstract: true,
-                template: '<div ui-view></div>',
+                views: {
+                    'nav@app': {
+                        templateUrl: 'admin/ui/views/nav.tpl.html'
+                    }
+                },
                 url: '/adm',
                 data: {
                     role: USER_ROLES.admin
