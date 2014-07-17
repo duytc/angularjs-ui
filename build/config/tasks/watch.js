@@ -7,7 +7,7 @@ module.exports = {
         tasks: ['build']
     },
     buildConfig: {
-        files: 'build.config.js',
+        files: 'build/config/**/*.js',
         options: {
             reload: true
         },
@@ -16,12 +16,13 @@ module.exports = {
     appSources: {
         files: [
             '<%= appConfig.appFiles.html %>',
-            '<%= appConfig.appFiles.js %>'
+            '<%= appConfig.appFiles.js %>',
+            '<%= appConfig.appFiles.appTemplates %>'
         ],
         tasks: ['build']
     },
     compass: {
         files: ['<%= appConfig.appFiles.scss %>'],
-        tasks: ['compass:dev']
+        tasks: ['compass:server']
     }
 };

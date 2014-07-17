@@ -11,13 +11,16 @@ module.exports = {
         tests: ['src/**/*.spec.js'],
         appTemplates: ['src/app/**/*.tpl.html'],
         commonTemplates: ['src/common/**/*.tpl.html'],
-        scss: ['src/styles/main.scss'],
+        scss: ['src/styles/**/*.scss'],
         html: ['src/index.html']
     },
     vendorFiles: {
         js: [
+            'vendor/jquery/dist/jquery.js',
             'vendor/angular/angular.js',
-            'vendor/angular-ui-router/release/angular-ui-router.js'
+            'vendor/angular-ui-router/release/angular-ui-router.js',
+            'vendor/angular-bootstrap/ui-bootstrap-tpls.js',
+            'vendor/jquery.slimscroll/jquery.slimscroll.js'
         ],
         css: []
     }
