@@ -15,9 +15,17 @@ module.exports = {
                 cwd: 'src',
                 src: [
                     'assets/**/*',
-                    'favicon.ico'
+                    'favicon.ico',
                 ],
                 dest: '<%= appConfig.dirs.build.dev %>'
+            },
+            {
+                expand: true,
+                cwd: 'src/styles',
+                src: [
+                    'img/**/*'
+                ],
+                dest: '<%= appConfig.dirs.build.dev %>/assets/css'
             },
             {
                 expand: true,

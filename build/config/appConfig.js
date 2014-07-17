@@ -19,8 +19,7 @@ module.exports = {
             'vendor/jquery/dist/jquery.js',
             'vendor/angular/angular.js',
             'vendor/angular-ui-router/release/angular-ui-router.js',
-            'vendor/angular-bootstrap/ui-bootstrap-tpls.js',
-            'vendor/jquery.slimscroll/jquery.slimscroll.js'
+            'vendor/angular-bootstrap/ui-bootstrap-tpls.js'
         ],
         css: []
     }
