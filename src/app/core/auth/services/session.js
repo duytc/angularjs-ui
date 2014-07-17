@@ -1,4 +1,4 @@
-angular.module('tagcade.core.user')
+angular.module('tagcade.core.auth')
 
     .factory('Session', function () {
         function Session(token, username, roles) {

@@ -1,4 +1,4 @@
-angular.module('tagcade.core.user', [
+angular.module('tagcade.core.auth', [
     'ui.router'
 ])
 
@@ -8,7 +8,7 @@ angular.module('tagcade.core.user', [
                 parent: 'anon',
                 url: '/login',
                 controller: 'LoginController',
-                templateUrl: 'core/user/views/login.tpl.html',
+                templateUrl: 'core/auth/views/login.tpl.html',
                 data: {
                     allowAnonymous: true
                 }

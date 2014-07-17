@@ -1,12 +1,17 @@
-
 <div class="nav-wrapper">
     <ul id="nav"
         class="nav"
-        data-ng-controller="NavController"
-        data-slim-scroll
-        data-collapse-nav
-        data-highlight-active>
+        collapse-nav
+        highlight-active>
 
-        <li><a ui-sref=".dashboard"> <i class="fa fa-home"></i>Dashboard</a></li>
+        <li><a ui-sref=".dashboard"> <i class="fa fa-home"></i><span>Dashboard</span></a></li>
+
+        <li>
+            <a href="#/admin/userManagement"> <i class="fa fa-user"></i><span>User Management</span></a>
+            <ul>
+                <li><a ui-sref=".userManagement.list"><i class="fa fa-caret-right"></i>User List</a></li>
+                <li><a ui-sref=".userManagement.new"><i class="fa fa-caret-right"></i>Add New User</a></li>
+            </ul>
+        </li>
     </ul>
 </div>

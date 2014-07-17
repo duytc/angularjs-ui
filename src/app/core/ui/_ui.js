@@ -23,7 +23,7 @@ angular.module('tagcade.core.ui', [
             })
             // default state, used to invoke the initial redirect
             // i.e to a dashboard or login page
-            .state('app.home', {
+            .state('home', {
                 url: '/',
                 controller: 'HomeController'
             })

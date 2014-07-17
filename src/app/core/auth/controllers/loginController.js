@@ -1,4 +1,4 @@
-angular.module('tagcade.core.user')
+angular.module('tagcade.core.auth')
 
     .controller('LoginController', function ($scope, $rootScope, AUTH_EVENTS, Auth) {
         $scope.credentials = {

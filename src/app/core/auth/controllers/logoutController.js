@@ -1,4 +1,4 @@
-angular.module('tagcade.core.user')
+angular.module('tagcade.core.auth')
 
     .controller('LogoutController', function ($rootScope, Auth, AUTH_EVENTS) {
         Auth.logout();

@@ -1,0 +1,68 @@
+<header class="top-header clearfix">
+
+<!-- Logo -->
+<div class="logo">
+    <a ui-sref="home">
+        <img src="assets/images/weblogo.png" alt="Tagcade">
+    </a>
+</div>
+
+<!-- needs to be put after logo to make it work-->
+<div class="menu-button" toggle-off-canvas>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+</div>
+
+<div class="top-nav">
+<ul class="nav-left list-unstyled">
+    <li>
+        <a href="#/" toggle-nav-collapsed-min class="toggle-min"><i class="fa fa-bars"></i></a>
+    </li>
+    <li class="dropdown hidden-xs">
+        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cogs"></i></a>
+        <div class="dropdown-menu with-arrow panel panel-default admin-options" ui-not-close-on-click>
+            <div class="panel-heading"> Admin Options </div>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <p>Layouts Style</p>
+                    <label class="ui-radio"><input name="layout" type="radio" value="boxed" ng-model="admin.layout"><span>Boxed</span></label>
+                    <label class="ui-radio"><input name="layout" type="radio" value="wide" ng-model="admin.layout"><span>Wide</span></label>
+                </li>
+                <li class="list-group-item">
+                    <p>Menu Style</p>
+                    <label class="ui-radio"><input name="menu" type="radio" value="vertical" ng-model="admin.menu"><span>Vertical</span></label>
+                    <label class="ui-radio"><input name="menu" type="radio" value="horizontal" ng-model="admin.menu"><span>Horizontal</span></label>
+                </li>
+                <li class="list-group-item">
+                    <p>Additional</p>
+                    <label class="ui-checkbox"><input name="checkbox1" type="checkbox" value="option1" ng-model="admin.fixedHeader"><span>Fixed Top Header</span></label>
+                    <br>
+                    <label class="ui-checkbox"><input name="checkbox1" type="checkbox" value="option1" ng-model="admin.fixedSidebar"><span>Fixed Sidebar Menu</span></label>
+                </li>
+            </ul>
+        </div>
+    </li>
+    <li class="dropdown text-normal nav-profile">
+        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+            <span>{{ userSession.username }}</span>
+        </a>
+        <ul class="dropdown-menu with-arrow">
+            <li>
+                <a ui-sref="app.publisher.myAccount">
+                    <i class="fa fa-user"></i>
+                    My Account
+                </a>
+            </li>
+            <li>
+                <a ui-sref="logout">
+                    <i class="fa fa-sign-out"></i>
+                    Log Out
+                </a>
+            </li>
+        </ul>
+    </li>
+</ul>
+</div>
+
+</header>

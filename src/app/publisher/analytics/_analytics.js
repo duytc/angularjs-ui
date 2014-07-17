@@ -6,7 +6,7 @@ angular.module('tagcade.publisher.analytics', [
         $stateProvider
             .state('app.publisher.analytics', {
                 abstract: true,
-                url: '/reports'
+                url: '/analytics'
             })
             .state('app.publisher.analytics.sourceReports', {
                 url: '/sourceReports',

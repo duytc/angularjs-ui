@@ -9,6 +9,10 @@ angular.module('tagcade', [
 ])
 
     .run(function ($rootScope, $location, $state, $q, Auth, HomeRedirector, ENTRY_STATE, AUTH_EVENTS) {
+        $rootScope.$on('nav:reset', function() {
+           console.log('nav:reset fired')
+        });
+
         $rootScope.$on(AUTH_EVENTS.loginSuccess, function(event) {
             console.log('login success');
             HomeRedirector.redirect();

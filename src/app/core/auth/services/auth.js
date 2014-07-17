@@ -1,4 +1,4 @@
-angular.module('tagcade.core.user')
+angular.module('tagcade.core.auth')
 
     .constant('AUTH_TOKEN_NAME', 'tagcadeToken')
 

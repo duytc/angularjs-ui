@@ -1,3 +1,3 @@
-angular.module('tagcade.publisher.ui', [
+angular.module('tagcade.admin.ui', [
     'ui.bootstrap'
 ]);
