@@ -9,10 +9,6 @@ angular.module('tagcade', [
 ])
 
     .run(function ($rootScope, $location, $state, $q, Auth, HomeRedirector, ENTRY_STATE, AUTH_EVENTS) {
-        $rootScope.$on('nav:reset', function() {
-           console.log('nav:reset fired')
-        });
-
         $rootScope.$on(AUTH_EVENTS.loginSuccess, function(event) {
             console.log('login success');
             HomeRedirector.redirect();
@@ -24,7 +20,7 @@ angular.module('tagcade', [
 
         $rootScope.$on(AUTH_EVENTS.logoutSuccess, function(event) {
             console.log('logout success');
-            $state.go(ENTRY_STATE);
+            $state.transitionTo(ENTRY_STATE);
         });
 
         $rootScope.$on(AUTH_EVENTS.notAuthenticated, function(event) {
@@ -59,6 +55,8 @@ angular.module('tagcade', [
                 })
                 .then(
                     function() {
+                        return;
+
                         // user authenticated, check authorization
 
                         var requiredRole = stateData.role;

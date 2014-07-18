@@ -13,13 +13,6 @@ angular.module('tagcade.core.auth', [
                     allowAnonymous: true
                 }
             })
-            .state('logout', {
-                url: '/logout',
-                controller: 'LogoutController',
-                data: {
-                    allowAnonymous: true
-                }
-            })
         ;
     })
 

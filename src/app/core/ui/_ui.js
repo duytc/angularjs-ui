@@ -1,4 +1,5 @@
 angular.module('tagcade.core.ui', [
+    'ngAnimate',
     'ui.router',
     'ui.bootstrap'
 ])

@@ -6,7 +6,11 @@ angular.module('tagcade.core.auth')
             password: ''
         };
 
+        $scope.loginProcessing = false;
+
         $scope.login = function (credentials) {
+            $scope.loginProcessing = true;
+
             Auth.login(credentials, true).then(function () {
                 $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
             }, function () {
