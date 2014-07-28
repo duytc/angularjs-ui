@@ -15,6 +15,14 @@ angular.module('tagcade.publisher.tools', [
                     }
                 }
             })
+            .state('app.publisher.tools.cpmEditor', {
+                url: '/cpmEditor',
+                views: {
+                    'content@app': {
+                        templateUrl: 'publisher/tools/views/cpmEditor.tpl.html'
+                    }
+                }
+            })
         ;
     })
 

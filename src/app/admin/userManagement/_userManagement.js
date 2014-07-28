@@ -12,6 +12,7 @@ angular.module('tagcade.admin.userManagement', [
                 url: '/list',
                 views: {
                     'content@app': {
+                        controller: 'AdminUserController',
                         templateUrl: 'admin/userManagement/views/list.tpl.html'
                     }
                 }

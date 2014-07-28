@@ -74,20 +74,16 @@ angular.module('tagcade.core.auth')
 
             var token = $window.localStorage[AUTH_TOKEN_NAME];
 
-            console.log('token', token);
-
             if (!token) {
                 dfd.reject('no token');
                 return dfd.promise;
             }
 
-            console.log('using saved token');
-
             $http({
                 method: 'POST',
                 url: API_BASE_URL + '/checkToken',
                 headers: {
-                    Authorization: 'Bearer ' + token
+                    Authorization: getAuthorizationHeaderValue(token)
                 }
             })
                 .then(
@@ -116,7 +112,7 @@ angular.module('tagcade.core.auth')
         }
 
         function getSession() {
-            if (Session.isSession(_session)) {
+            if (isAuthenticated()) {
                 return angular.copy(_session);
             }
 
@@ -131,6 +127,15 @@ angular.module('tagcade.core.auth')
             return isAuthenticated() && _session.hasRole(role);
         }
 
+        function getAuthorizationHeaderValue(token)
+        {
+            if (angular.isString(token)) {
+                return 'Bearer ' + token;
+            }
+
+            return null;
+        }
+
         // public api
         return {
             login: login,
@@ -138,7 +143,8 @@ angular.module('tagcade.core.auth')
             check: check,
             getSession: getSession,
             isAuthenticated: isAuthenticated,
-            isAuthorized: isAuthorized
+            isAuthorized: isAuthorized,
+            getAuthorizationHeaderValue: getAuthorizationHeaderValue
         };
     })
 

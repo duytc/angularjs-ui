@@ -1,5 +1,4 @@
 <div id="app" class="app" ng-class="{'layout-boxed': admin.layout === 'boxed' }">
-
     <section ui-view="header"
          id="header"
          class="header-container "
@@ -13,9 +12,19 @@
            ng-class="{'nav-fixed': admin.fixedSidebar, 'nav-horizontal': admin.menu === 'horizontal', 'nav-vertical': admin.menu === 'vertical'}">
         </aside>
 
-        <section ui-view="content"
+        <section
              id="content"
              class="content-container animate-fade-up">
+
+            <div class="page">
+                <div ng-controller="AlertController">
+                    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+                </div>
+
+                <div ui-view="content"></div>
+
+            </div>
+
          </section>
     </div>
 </div>

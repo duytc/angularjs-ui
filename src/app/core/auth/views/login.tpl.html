@@ -8,7 +8,12 @@
 
     <div class="signin-body">
         <div class="container">
+
             <div class="form-container">
+
+                <div ng-controller="AlertController">
+                    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+                </div>
 
                 <form class="form-horizontal" novalidate>
                     <fieldset>

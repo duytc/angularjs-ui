@@ -1,16 +1,15 @@
 <div class="nav-wrapper">
     <ul id="nav"
         class="nav"
-        collapse-nav
-        highlight-active>
+        collapse-nav>
 
-        <li ui-sref-active="active"><a ui-sref=".dashboard"> <i class="fa fa-home"></i><span>Dashboard</span></a></li>
+        <li ui-sref-active="active"><a ui-sref=".dashboard"><i class="fa fa-home"></i><span>Dashboard</span></a></li>
 
         <li ui-sref-active="active">
-            <a href="#" ui-sref=".userManagement"> <i class="fa fa-user"></i><span>User Management</span></a>
+            <a href="#" ui-sref=".userManagement"><i class="fa fa-user"></i><span>User Management</span></a>
             <ul>
-                <li ui-sref-active="active"><a ui-sref=".userManagement.list"><i class="fa fa-caret-right"></i>User List</a></li>
-                <li ui-sref-active="active"><a ui-sref=".userManagement.new"><i class="fa fa-caret-right"></i>Add New User</a></li>
+                <li ui-sref-active="active"><a ui-sref="app.admin.userManagement.list"><i class="fa fa-caret-right"></i>User List</a></li>
+                <li ui-sref-active="active"><a ui-sref="app.admin.userManagement.new"><i class="fa fa-caret-right"></i>Add New User</a></li>
             </ul>
         </li>
     </ul>
