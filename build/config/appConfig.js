@@ -16,11 +16,13 @@ module.exports = {
     },
     vendorFiles: {
         js: [
-            'vendor/jquery/dist/jquery.js',
+            'vendor/jquery/dist/jquery.min.js',
             'vendor/angular/angular.js',
-            'vendor/angular-animate/angular-animate.js',
+            'vendor/angular-animate/angular-animate.min.js',
             'vendor/angular-ui-router/release/angular-ui-router.js',
-            'vendor/angular-bootstrap/ui-bootstrap-tpls.js'
+            'vendor/angular-bootstrap/ui-bootstrap-tpls.min.js',
+            'vendor/lodash/dist/lodash.min.js',
+            'vendor/restangular/dist/restangular.min.js'
         ],
         css: []
     }

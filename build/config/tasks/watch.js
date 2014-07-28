@@ -23,6 +23,6 @@ module.exports = {
     },
     compass: {
         files: ['<%= appConfig.appFiles.scss %>'],
-        tasks: ['compass:server']
+        tasks: ['build']
     }
 };
