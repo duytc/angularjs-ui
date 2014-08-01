@@ -1,5 +1,6 @@
 angular.module('tagcade.admin.userManagement', [
-    'ui.router'
+    'ui.router',
+    'ngTable'
 ])
 
     .config(function ($stateProvider) {
@@ -12,8 +13,13 @@ angular.module('tagcade.admin.userManagement', [
                 url: '/list',
                 views: {
                     'content@app': {
-                        controller: 'AdminUserController',
+                        controller: 'AdminUserListController',
                         templateUrl: 'admin/userManagement/views/list.tpl.html'
+                    }
+                },
+                resolve: {
+                    users: function(AdminUserManager) {
+                        return AdminUserManager.getList();
                     }
                 }
             })
@@ -21,7 +27,27 @@ angular.module('tagcade.admin.userManagement', [
                 url: '/new',
                 views: {
                     'content@app': {
-                        templateUrl: 'admin/userManagement/views/new.tpl.html'
+                        controller: 'AdminUserFormController',
+                        templateUrl: 'admin/userManagement/views/form.tpl.html'
+                    }
+                },
+                resolve: {
+                    user: function() {
+                        return null;
+                    }
+                }
+            })
+            .state('app.admin.userManagement.edit', {
+                url: '/edit/{id:[0-9]+}',
+                views: {
+                    'content@app': {
+                        controller: 'AdminUserFormController',
+                        templateUrl: 'admin/userManagement/views/form.tpl.html'
+                    }
+                },
+                resolve: {
+                    user: function($stateParams, AdminUserManager) {
+                        return AdminUserManager.one($stateParams.id).get();
                     }
                 }
             })

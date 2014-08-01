@@ -35,3 +35,13 @@
         list-style: none;
     }
 }
+
+// custom
+
+.panel-alerts {
+    .alert {
+        &:last-child {
+            margin-bottom: 0 !important;
+        }
+    }
+}

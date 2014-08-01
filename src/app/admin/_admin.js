@@ -4,7 +4,8 @@ angular.module('tagcade.admin', [
     'tagcade.core',
     'tagcade.admin.ui',
     'tagcade.admin.dashboard',
-    'tagcade.admin.userManagement'
+    'tagcade.admin.userManagement',
+    'tagcade.admin.analytics'
 ])
 
     .constant('API_ADMIN_BASE_URL', 'http://api.tagcade.dev/app_dev.php/api/admin/v1')
@@ -31,6 +32,9 @@ angular.module('tagcade.admin', [
                 data: {
                     role: USER_ROLES.admin
                 }
+            })
+            .state('app.admin.404', {
+                url: '/404'
             })
             .state('app.admin.myAccount', {
                 url: '/myAccount',
