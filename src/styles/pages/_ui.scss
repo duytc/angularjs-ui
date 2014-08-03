@@ -38,6 +38,10 @@
 
 // custom
 
+tr[ui-sref] {
+    cursor: pointer;
+}
+
 .panel-alerts {
     .alert {
         &:last-child {

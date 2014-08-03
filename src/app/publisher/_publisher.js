@@ -28,6 +28,43 @@ angular.module('tagcade.publisher', [
                     role: USER_ROLES.publisher
                 }
             })
+            .state('app.publisher.error', {
+                abstract: true,
+                url: '/error'
+            })
+            .state('app.publisher.error.404', {
+                url: '/404',
+                views: {
+                    'content@app': {
+                        controller: '404ErrorController'
+                    }
+                },
+                breadcrumb: {
+                    title: '404'
+                }
+            })
+            .state('app.publisher.error.403', {
+                url: '/403',
+                views: {
+                    'content@app': {
+                        controller: '403ErrorController'
+                    }
+                },
+                breadcrumb: {
+                    title: '403'
+                }
+            })
+            .state('app.publisher.error.500', {
+                url: '/500',
+                views: {
+                    'content@app': {
+                        controller: '500ErrorController'
+                    }
+                },
+                breadcrumb: {
+                    title: '500'
+                }
+            })
             .state('app.publisher.myAccount', {
                 url: '/myAccount',
                 views: {

@@ -22,20 +22,6 @@ angular.module('tagcade.core.ui', [
                 abstract: true,
                 templateUrl: 'core/ui/views/anon.tpl.html'
             })
-            // default state, used to invoke the initial redirect
-            // i.e to a dashboard or login page
-            .state('homeRedirect', {
-                url: '/',
-                controller: 'HomeController'
-            })
-            .state('404', {
-                url: '/404',
-                templateUrl: 'core/ui/views/404.tpl.html'
-            })
-            .state('403', {
-                url: '/403',
-                templateUrl: 'core/ui/views/403.tpl.html'
-            })
         ;
 
         $urlRouterProvider.otherwise('/');

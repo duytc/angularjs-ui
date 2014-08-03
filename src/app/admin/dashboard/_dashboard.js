@@ -11,6 +11,9 @@ angular.module('tagcade.admin.dashboard', [
                     'content@app': {
                         templateUrl: 'admin/dashboard/views/dashboard.tpl.html'
                     }
+                },
+                breadcrumb: {
+                    title: 'Dashboard'
                 }
             })
         ;

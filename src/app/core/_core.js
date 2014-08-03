@@ -8,6 +8,7 @@ angular.module('tagcade.core', [
     'tagcade.core.myAccount'
 ])
 
+    .constant('APP_NAME', 'Tagcade Platform')
     .constant('API_END_POINT', 'http://api.tagcade.dev/app_dev.php/api')
     .constant('API_BASE_URL', 'http://api.tagcade.dev/app_dev.php/api/v1')
     .constant('ENTRY_STATE', 'login')
@@ -55,25 +56,32 @@ angular.module('tagcade.core', [
                 return false;
             }
 
-            if(response.status === 400) {
-                console.dir(response.data);
-                // do something
-                return false;
-            }
-
-            if(response.status === 404) {
-                $rootScope.$broadcast(CORE_EVENTS.resourceNotFound);
-                return true;
-            }
-
             return true; // error not handled
         });
     })
 
     // authentication and authorization checks performed before every URL change
-    .run(function ($rootScope, $state, $q, Auth, HomeRedirector, ENTRY_STATE, AUTH_EVENTS) {
+    .run(function ($rootScope, $location, $state, $q, UserStateHelper, Auth, ENTRY_STATE, AUTH_EVENTS) {
+        if (!$location.path() || $location.path() == '/') {
+            // if the user visits the root url directly
+            Auth.check()
+                .catch(
+                    function () {
+                        $state.go(ENTRY_STATE);
+                        return $q.reject('not authenticated');
+                    }
+                )
+                .then(
+                    function () {
+                        return UserStateHelper.transitionRelativeToBaseState('dashboard');
+                    }
+                )
+        }
+
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             var stateData = toState.data || {};
+
+            DEBUG && console.log(toState.name, toState.url);
 
             // my login state will early return here
             if (stateData.allowAnonymous) {
@@ -85,10 +93,12 @@ angular.module('tagcade.core', [
             // checks the server if the user has a saved json web token
             // returns a promise, cached after first check
             Auth.check()
-                .catch(function() {
-                    $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
-                    return $q.reject('not authenticated');
-                })
+                .catch(
+                    function() {
+                        $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+                        return $q.reject('not authenticated');
+                    }
+                )
                 .then(
                     function() {
                         // user authenticated, check authorization
@@ -118,28 +128,34 @@ angular.module('tagcade.core', [
     })
 
     // event listeners
-    .run(function ($rootScope, $state, Auth, HomeRedirector, AlertService, ENTRY_STATE, CORE_EVENTS, AUTH_EVENTS) {
+    .run(function ($rootScope, $state, Auth, UserStateHelper, AlertService, ENTRY_STATE, CORE_EVENTS, AUTH_EVENTS) {
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-            if (toState.name === 'homeRedirect') {
+            // todo move this to a directive
+            /*if (toState.name === 'homeRedirect') {
                 // This state just redirects to another state, so we skip clearing messages here, it will be done on the final state
                 return;
-            }
+            }*/
 
             // Every time the URL changes, clear all messages
             AlertService.rotateAlerts();
         });
 
-        /*$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error){
-            console.log('statechangerror', arguments);
+        $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+            DEBUG && console.log('$stateChangeError', arguments);
+
+            // show generic error page unless we get more specific
+            var errorCode = 500;
+
+            if (404 === error.status) {
+                errorCode = 404;
+            }
+
+            // todo what happens in this fails for some reason?
+            UserStateHelper.transitionRelativeToBaseState('error.' + errorCode);
         });
 
-        $rootScope.$on(CORE_EVENTS.resourceNotFound, function() {
-            $state.transitionTo('app.admin.404');
-            AlertService.replaceAlerts('danger', 'The requested resource could not be found');
-        });*/
-
         $rootScope.$on(AUTH_EVENTS.loginSuccess, function(event) {
-            HomeRedirector.redirect();
+            UserStateHelper.transitionRelativeToBaseState('dashboard');
         });
 
         $rootScope.$on(AUTH_EVENTS.loginFailed, function(event) {
@@ -161,7 +177,7 @@ angular.module('tagcade.core', [
         });
 
         $rootScope.$on(AUTH_EVENTS.notAuthorized, function(event) {
-            AlertService.addAlert('danger', 'You do not have the required permissions to access this');
+            UserStateHelper.transitionRelativeToBaseState('error.403');
         });
     })
 ;

@@ -1,7 +1,7 @@
 angular.module('tagcade.admin.userManagement')
 
-    .controller('AdminUserFormController', function ($scope, $state, AdminUserManager, AlertService, user) {
-        var isNew = user === null;
+    .controller('AdminUserFormController', function ($scope, $state, $q, AdminUserManager, AlertService, user) {
+        $scope.isNew = user === null;
 
         $scope.user = user || {
             username: null,
@@ -65,10 +65,31 @@ angular.module('tagcade.admin.userManagement')
             }
         };
 
+        $scope.isFormValid = function() {
+            return $scope.user.userRoles.length > 0 && $scope.userForm.$valid;
+        };
+
         $scope.submit = function() {
-            var saveUser = isNew ? AdminUserManager.post($scope.user) : $scope.user.patch();
+            var saveUser = $scope.isNew ? AdminUserManager.post($scope.user) : $scope.user.patch();
 
             saveUser
+                .catch(function (response) {
+                    if (response.status == 400 && angular.isObject(response.data) && response.data.hasOwnProperty('errors')) {
+                        angular.forEach(response.data.errors.children, function (fieldErrors, fieldName) {
+                            if (!fieldErrors.hasOwnProperty('errors')) {
+                                return;
+                            }
+
+                            angular.forEach(fieldErrors.errors, function (error) {
+                               console.log(fieldName, error);
+                            });
+                        });
+
+                        return $q.reject('invalid form');
+                    }
+
+                    return $q.reject('invalid request');
+                })
                 .then(
                     function () {
                         AlertService.addFlash('success', 'The user has been updated');

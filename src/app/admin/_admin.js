@@ -33,8 +33,42 @@ angular.module('tagcade.admin', [
                     role: USER_ROLES.admin
                 }
             })
-            .state('app.admin.404', {
-                url: '/404'
+            .state('app.admin.error', {
+                abstract: true,
+                url: '/error'
+            })
+            .state('app.admin.error.404', {
+                url: '/404',
+                views: {
+                    'content@app': {
+                        controller: '404ErrorController'
+                    }
+                },
+                breadcrumb: {
+                    title: '404'
+                }
+            })
+            .state('app.admin.error.403', {
+                url: '/403',
+                views: {
+                    'content@app': {
+                        controller: '403ErrorController'
+                    }
+                },
+                breadcrumb: {
+                    title: '403'
+                }
+            })
+            .state('app.admin.error.500', {
+                url: '/500',
+                views: {
+                    'content@app': {
+                        controller: '500ErrorController'
+                    }
+                },
+                breadcrumb: {
+                    title: '500'
+                }
             })
             .state('app.admin.myAccount', {
                 url: '/myAccount',

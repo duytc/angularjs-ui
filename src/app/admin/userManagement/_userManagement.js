@@ -7,7 +7,10 @@ angular.module('tagcade.admin.userManagement', [
         $stateProvider
             .state('app.admin.userManagement', {
                 abstract: true,
-                url: '/userManagement'
+                url: '/userManagement',
+                breadcrumb: {
+                    title: 'User Management'
+                }
             })
             .state('app.admin.userManagement.list', {
                 url: '/list',
@@ -21,6 +24,9 @@ angular.module('tagcade.admin.userManagement', [
                     users: function(AdminUserManager) {
                         return AdminUserManager.getList();
                     }
+                },
+                breadcrumb: {
+                    title: 'User List'
                 }
             })
             .state('app.admin.userManagement.new', {
@@ -35,6 +41,9 @@ angular.module('tagcade.admin.userManagement', [
                     user: function() {
                         return null;
                     }
+                },
+                breadcrumb: {
+                    title: 'Add New User'
                 }
             })
             .state('app.admin.userManagement.edit', {
@@ -49,6 +58,9 @@ angular.module('tagcade.admin.userManagement', [
                     user: function($stateParams, AdminUserManager) {
                         return AdminUserManager.one($stateParams.id).get();
                     }
+                },
+                breadcrumb: {
+                    title: 'Edit User'
                 }
             })
         ;
