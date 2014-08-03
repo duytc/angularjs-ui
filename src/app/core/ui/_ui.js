@@ -26,7 +26,23 @@ angular.module('tagcade.core.ui', [
             })
         ;
 
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise(function($injector) {
+            $injector.invoke(function ($state, $q, Auth, UserStateHelper, ENTRY_STATE) {
+                Auth.check()
+                    .catch(
+                        function () {
+                            $state.go(ENTRY_STATE);
+                            return $q.reject('not authenticated');
+                        }
+                    )
+                    .then(
+                        function () {
+                            return UserStateHelper.transitionRelativeToBaseState('dashboard');
+                        }
+                    )
+                ;
+            });
+        });
     })
 
 ;

@@ -66,23 +66,6 @@ angular.module('tagcade.core', [
     .run(function ($rootScope, $location, $state, $q, UserStateHelper, Auth, ENTRY_STATE, AUTH_EVENTS) {
         'use strict';
 
-        if (!$location.path() || $location.path() === '/') {
-            // if the user visits the root url directly
-            Auth.check()
-                .catch(
-                    function () {
-                        $state.go(ENTRY_STATE);
-                        return $q.reject('not authenticated');
-                    }
-                )
-                .then(
-                    function () {
-                        return UserStateHelper.transitionRelativeToBaseState('dashboard');
-                    }
-                )
-            ;
-        }
-
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             var stateData = toState.data || {};
 
