@@ -11,11 +11,9 @@ angular.module('tagcade.core.ui')
             restrict: 'AE',
             templateUrl: 'core/ui/directives/alertBox.tpl.html',
             scope: {
-                hasAlerts: "=?"
+                hasAlerts: '=?'
             },
             controller: function ($scope) {
-                'use strict';
-
                 $scope.alerts = [];
                 $scope.hasAlerts = false;
 
@@ -34,7 +32,7 @@ angular.module('tagcade.core.ui')
                     AlertService.removeAlert(index);
                 };
             }
-        }
+        };
     })
 
 ;
