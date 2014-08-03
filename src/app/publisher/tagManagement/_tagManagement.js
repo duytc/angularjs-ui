@@ -8,6 +8,8 @@ angular.module('tagcade.publisher.tagManagement', [
 ])
 
     .config(function ($stateProvider) {
+        'use strict';
+
         $stateProvider
             .state('app.publisher.tagManagement', {
                 abstract: true,

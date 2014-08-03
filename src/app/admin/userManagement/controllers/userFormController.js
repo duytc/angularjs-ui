@@ -1,6 +1,8 @@
 angular.module('tagcade.admin.userManagement')
 
     .controller('AdminUserFormController', function ($scope, $state, $q, AdminUserManager, AlertService, user) {
+        'use strict';
+
         $scope.isNew = user === null;
 
         $scope.user = user || {
@@ -74,7 +76,7 @@ angular.module('tagcade.admin.userManagement')
 
             saveUser
                 .catch(function (response) {
-                    if (response.status == 400 && angular.isObject(response.data) && response.data.hasOwnProperty('errors')) {
+                    if (response.status === 400 && angular.isObject(response.data) && response.data.hasOwnProperty('errors')) {
                         angular.forEach(response.data.errors.children, function (fieldErrors, fieldName) {
                             if (!fieldErrors.hasOwnProperty('errors')) {
                                 return;
@@ -97,7 +99,7 @@ angular.module('tagcade.admin.userManagement')
                 )
                 .then(
                     function () {
-                        return $state.go('^.list')
+                        return $state.go('^.list');
                     }
                 )
             ;

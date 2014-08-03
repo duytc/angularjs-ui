@@ -5,6 +5,8 @@ angular.module('tagcade.core.ui', [
 ])
 
     .config(function ($stateProvider, $urlRouterProvider) {
+        'use strict';
+
         $stateProvider
             // all states should inherit from root
             // we can ensure that the current user has a valid session status

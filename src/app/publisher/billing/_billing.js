@@ -3,6 +3,8 @@ angular.module('tagcade.publisher.billing', [
 ])
 
     .config(function ($stateProvider) {
+        'use strict';
+
         $stateProvider
             .state('app.publisher.billing', {
                 abstract: true,

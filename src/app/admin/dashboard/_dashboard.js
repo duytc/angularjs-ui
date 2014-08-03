@@ -3,6 +3,8 @@ angular.module('tagcade.admin.dashboard', [
 ])
 
     .config(function ($stateProvider) {
+        'use strict';
+
         $stateProvider
             .state('app.admin.dashboard', {
                 url: '/dashboard',

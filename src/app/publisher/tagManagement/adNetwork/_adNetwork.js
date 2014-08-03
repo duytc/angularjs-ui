@@ -3,6 +3,8 @@ angular.module('tagcade.publisher.tagManagement.adNetwork', [
 ])
 
     .config(function ($stateProvider) {
+        'use strict';
+
         $stateProvider
             .state('app.publisher.tagManagement.adNetwork', {
                 abstract: true,

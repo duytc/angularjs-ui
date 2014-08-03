@@ -19,25 +19,27 @@ angular.module('tagcade.core', [
 
     // restangular setup
     .run(function ($rootScope, Restangular, API_BASE_URL, CORE_EVENTS, AUTH_EVENTS, Auth) {
+        'use strict';
+
         Restangular.setBaseUrl(API_BASE_URL);
 
         // for debugging
         //Restangular.setDefaultRequestParams('patch', {XDEBUG_SESSION_START: 1});
         //Restangular.setDefaultRequestParams('post', {XDEBUG_SESSION_START: 1});
 
-        Restangular.addRequestInterceptor(function(element, operation, what, url) {
+        Restangular.addRequestInterceptor(function(element, operation) {
             if (['put', 'patch', 'post'].indexOf(operation) > -1) {
                 // the id is specified in the url
-                delete element['id'];
+                delete element.id;
             }
 
             return element;
         });
 
-        Restangular.addFullRequestInterceptor(function(element, operation, route, url, headers, params, httpConfig) {
+        Restangular.addFullRequestInterceptor(function(element, operation, route, url, headers) {
             if (Auth.isAuthenticated()) {
                 var currentSession = Auth.getSession();
-                headers['Authorization'] = Auth.getAuthorizationHeaderValue(currentSession.token);
+                headers.Authorization = Auth.getAuthorizationHeaderValue(currentSession.token);
             }
 
             return {
@@ -45,7 +47,7 @@ angular.module('tagcade.core', [
             };
         });
 
-        Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
+        Restangular.setErrorInterceptor(function(response) {
             if(response.status === 403) {
                 $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
                 return false;
@@ -62,7 +64,9 @@ angular.module('tagcade.core', [
 
     // authentication and authorization checks performed before every URL change
     .run(function ($rootScope, $location, $state, $q, UserStateHelper, Auth, ENTRY_STATE, AUTH_EVENTS) {
-        if (!$location.path() || $location.path() == '/') {
+        'use strict';
+
+        if (!$location.path() || $location.path() === '/') {
             // if the user visits the root url directly
             Auth.check()
                 .catch(
@@ -76,6 +80,7 @@ angular.module('tagcade.core', [
                         return UserStateHelper.transitionRelativeToBaseState('dashboard');
                     }
                 )
+            ;
         }
 
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
@@ -129,7 +134,9 @@ angular.module('tagcade.core', [
 
     // event listeners
     .run(function ($rootScope, $state, Auth, UserStateHelper, AlertService, ENTRY_STATE, CORE_EVENTS, AUTH_EVENTS) {
-        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        'use strict';
+
+        $rootScope.$on('$stateChangeStart', function() {
             // todo move this to a directive
             /*if (toState.name === 'homeRedirect') {
                 // This state just redirects to another state, so we skip clearing messages here, it will be done on the final state
@@ -154,20 +161,20 @@ angular.module('tagcade.core', [
             UserStateHelper.transitionRelativeToBaseState('error.' + errorCode);
         });
 
-        $rootScope.$on(AUTH_EVENTS.loginSuccess, function(event) {
+        $rootScope.$on(AUTH_EVENTS.loginSuccess, function() {
             UserStateHelper.transitionRelativeToBaseState('dashboard');
         });
 
-        $rootScope.$on(AUTH_EVENTS.loginFailed, function(event) {
+        $rootScope.$on(AUTH_EVENTS.loginFailed, function() {
             AlertService.replaceAlerts('danger', 'Login failed, did you provide an invalid username and/or password?');
         });
 
-        $rootScope.$on(AUTH_EVENTS.logoutSuccess, function(event) {
+        $rootScope.$on(AUTH_EVENTS.logoutSuccess, function() {
             AlertService.addFlash('info', 'You are now logged out');
             $state.go(ENTRY_STATE);
         });
 
-        $rootScope.$on(AUTH_EVENTS.notAuthenticated, function(event) {
+        $rootScope.$on(AUTH_EVENTS.notAuthenticated, function() {
             $state.go(ENTRY_STATE);
         });
 
@@ -176,7 +183,7 @@ angular.module('tagcade.core', [
             $state.go(ENTRY_STATE);
         });
 
-        $rootScope.$on(AUTH_EVENTS.notAuthorized, function(event) {
+        $rootScope.$on(AUTH_EVENTS.notAuthorized, function() {
             UserStateHelper.transitionRelativeToBaseState('error.403');
         });
     })

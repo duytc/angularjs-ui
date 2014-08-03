@@ -3,6 +3,8 @@ angular.module('tagcade.core.auth')
     .constant('AUTH_TOKEN_NAME', 'tagcadeToken')
 
     .factory('Auth', function ($http, $q, $window, API_BASE_URL, AUTH_TOKEN_NAME, Session) {
+        'use strict';
+
         var _session = null;
         var _persistToken = false;
 
@@ -15,10 +17,10 @@ angular.module('tagcade.core.auth')
         }
 
         function _verifyTokenResponse(result) {
-            return angular.isObject(result)
-                && result.hasOwnProperty('token')
-                && result.hasOwnProperty('username')
-                && result.hasOwnProperty('roles')
+            return angular.isObject(result) &&
+                result.hasOwnProperty('token') &&
+                result.hasOwnProperty('username') &&
+                result.hasOwnProperty('roles')
             ;
         }
 

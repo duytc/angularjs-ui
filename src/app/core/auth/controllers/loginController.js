@@ -1,6 +1,8 @@
 angular.module('tagcade.core.auth')
 
     .controller('LoginController', function ($scope, $rootScope, AUTH_EVENTS, Auth) {
+        'use strict';
+
         $scope.credentials = {
             username: '',
             password: ''

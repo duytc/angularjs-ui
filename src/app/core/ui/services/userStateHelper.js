@@ -1,6 +1,8 @@
 angular.module('tagcade.core.ui')
 
     .factory('UserStateHelper', function($state, $q, Auth, USER_ROLES) {
+        'use strict';
+
         return {
             /**
              * Gets the base state for the currently logged in user

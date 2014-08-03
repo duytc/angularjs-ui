@@ -1,6 +1,8 @@
 angular.module('tagcade.core.ui')
 
     .controller('AppController', function($rootScope, $scope, userSession) {
+        'use strict';
+
         $scope.userSession = userSession || {
             username: null,
             roles: null,

@@ -11,12 +11,16 @@ angular.module('tagcade.admin', [
     .constant('API_ADMIN_BASE_URL', 'http://api.tagcade.dev/app_dev.php/api/admin/v1')
 
     .factory('AdminRestangular', function (Restangular, API_ADMIN_BASE_URL) {
+        'use strict';
+
         return Restangular.withConfig(function (RestangularConfigurer) {
             RestangularConfigurer.setBaseUrl(API_ADMIN_BASE_URL);
-        })
+        });
     })
 
     .config(function ($stateProvider, USER_ROLES) {
+        'use strict';
+
         $stateProvider
             .state('app.admin', {
                 abstract: true,

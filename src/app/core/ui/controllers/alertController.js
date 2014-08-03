@@ -1,6 +1,8 @@
 angular.module('tagcade.core.ui')
 
     .controller('AlertController', function($scope, AlertService) {
+        'use strict';
+
         $scope.closeable = true;
 
         $scope.$watch(

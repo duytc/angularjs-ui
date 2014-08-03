@@ -1,6 +1,8 @@
 angular.module('tagcade.core.auth')
 
     .factory('Session', function () {
+        'use strict';
+
         function Session(token, username, roles) {
             this.token = token;
             this.username = username;
@@ -31,7 +33,7 @@ angular.module('tagcade.core.auth')
                 username = username || null;
                 roles = roles || [];
 
-                return new Session(token, username, roles)
+                return new Session(token, username, roles);
             },
 
             isSession: function(session) {

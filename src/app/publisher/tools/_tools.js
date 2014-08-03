@@ -3,6 +3,8 @@ angular.module('tagcade.publisher.tools', [
 ])
 
     .config(function ($stateProvider) {
+        'use strict';
+
         $stateProvider
             .state('app.publisher.tools', {
                 url: '/tools'

@@ -1,9 +1,11 @@
 angular.module('tagcade.admin.userManagement')
 
     .controller('AdminUserListController', function ($scope, $filter, ngTableParams, users) {
+        'use strict';
+
         var data = users;
 
-        $scope.tableParams = new ngTableParams(
+        $scope.tableParams = new ngTableParams( // jshint ignore:line
             {
                 page: 1,
                 count: 25,

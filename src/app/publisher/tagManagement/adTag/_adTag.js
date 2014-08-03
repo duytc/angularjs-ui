@@ -3,6 +3,8 @@ angular.module('tagcade.publisher.tagManagement.adTag', [
 ])
 
     .config(function ($stateProvider) {
+        'use strict';
+
         $stateProvider
             .state('app.publisher.tagManagement.adTag', {
                 abstract: true,

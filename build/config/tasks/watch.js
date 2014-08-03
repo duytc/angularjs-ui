@@ -21,8 +21,11 @@ module.exports = {
         ],
         tasks: ['build']
     },
-    compass: {
-        files: ['<%= appConfig.appFiles.scss %>'],
+    styles: {
+        files: [
+            '<%= appConfig.appFiles.scss %>',
+            '<%= appConfig.appFiles.css %>'
+        ],
         tasks: ['build']
     }
 };

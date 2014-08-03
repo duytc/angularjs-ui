@@ -4,6 +4,8 @@ angular.module('tagcade.admin.userManagement', [
 ])
 
     .config(function ($stateProvider) {
+        'use strict';
+
         $stateProvider
             .state('app.admin.userManagement', {
                 abstract: true,

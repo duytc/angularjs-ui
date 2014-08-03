@@ -5,6 +5,7 @@ module.exports = {
                 expand: true,
                 src: [
                     '<%= appConfig.appFiles.js %>',
+                    '<%= appConfig.appFiles.css %>',
                     '<%= appConfig.vendorFiles.js %>',
                     '<%= appConfig.vendorFiles.css %>'
                 ],

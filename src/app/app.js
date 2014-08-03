@@ -1,5 +1,3 @@
-DEBUG = true;
-
 angular.module('tagcade', [
     'ui.router',
     'templates-app',

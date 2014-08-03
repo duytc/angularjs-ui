@@ -1,5 +1,7 @@
 angular.module('tagcade.core.ui')
     .directive('updateTitle', function($rootScope, $state, APP_NAME) {
+        'use strict';
+
         return {
             link: function(scope, element) {
                 var listener = function() {
@@ -33,6 +35,6 @@ angular.module('tagcade.core.ui')
 
                 $rootScope.$on('$stateChangeSuccess', listener);
             }
-        }
+        };
     })
 ;

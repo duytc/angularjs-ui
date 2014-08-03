@@ -3,6 +3,8 @@ angular.module('tagcade.core.auth', [
 ])
 
     .config(function ($stateProvider) {
+        'use strict';
+
         $stateProvider
             .state('login', {
                 parent: 'anon',

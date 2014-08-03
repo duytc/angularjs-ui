@@ -5,6 +5,8 @@ angular.module('tagcade.admin.analytics', [
 ])
 
     .config(function ($stateProvider) {
+        'use strict';
+
         $stateProvider
             .state('app.admin.analytics', {
                 abstract: true,

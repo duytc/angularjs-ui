@@ -1,14 +1,14 @@
 angular.module('tagcade.core.ui')
-    .directive('uiNotCloseOnClick', [
-        function () {
-            return {
-                restrict: 'A',
-                compile: function (ele, attrs) {
-                    return ele.on('click', function (event) {
-                        return event.stopPropagation();
-                    });
-                }
-            };
-        }
-    ])
+    .directive('uiNotCloseOnClick', function () {
+        'use strict';
+
+        return {
+            restrict: 'A',
+            compile: function (ele) {
+                return ele.on('click', function (event) {
+                    return event.stopPropagation();
+                });
+            }
+        };
+    })
 ;

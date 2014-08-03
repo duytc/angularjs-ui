@@ -12,6 +12,8 @@ angular.module('tagcade.publisher', [
 ])
 
     .config(function ($stateProvider, USER_ROLES) {
+        'use strict';
+
         $stateProvider
             .state('app.publisher', {
                 abstract: true,

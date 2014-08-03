@@ -1,8 +1,12 @@
 angular.module('tagcade.publisher.analytics', [
-    'ui.router'
+    'ui.router',
+
+    'tagcade.reporting.sourceReports'
 ])
 
     .config(function ($stateProvider) {
+        'use strict';
+
         $stateProvider
             .state('app.publisher.analytics', {
                 abstract: true,
@@ -12,7 +16,8 @@ angular.module('tagcade.publisher.analytics', [
                 url: '/sourceReports',
                 views: {
                     'content@app': {
-                        templateUrl: 'publisher/analytics/views/sourceReports.tpl.html'
+                        controller: 'SourceReportController',
+                        templateUrl: 'reporting/sourceReports/views/sourceReports.tpl.html'
                     }
                 }
             })

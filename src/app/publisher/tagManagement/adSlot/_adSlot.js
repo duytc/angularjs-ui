@@ -3,6 +3,8 @@ angular.module('tagcade.publisher.tagManagement.adSlot', [
 ])
 
     .config(function ($stateProvider) {
+        'use strict';
+
         $stateProvider
             .state('app.publisher.tagManagement.adSlot', {
                 abstract: true,

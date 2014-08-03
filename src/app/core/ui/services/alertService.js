@@ -1,6 +1,8 @@
 angular.module('tagcade.core.ui')
 
     .factory('AlertService', function () {
+        'use strict';
+
         var _alerts = [];
         var _queuedAlerts = [];
 
