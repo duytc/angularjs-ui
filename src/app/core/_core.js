@@ -119,17 +119,6 @@ angular.module('tagcade.core', [
     .run(function ($rootScope, $state, Auth, UserStateHelper, AlertService, ENTRY_STATE, CORE_EVENTS, AUTH_EVENTS) {
         'use strict';
 
-        $rootScope.$on('$stateChangeStart', function() {
-            // todo move this to a directive
-            /*if (toState.name === 'homeRedirect') {
-                // This state just redirects to another state, so we skip clearing messages here, it will be done on the final state
-                return;
-            }*/
-
-            // Every time the URL changes, clear all messages
-            AlertService.rotateAlerts();
-        });
-
         $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
             DEBUG && console.log('$stateChangeError', arguments);
 

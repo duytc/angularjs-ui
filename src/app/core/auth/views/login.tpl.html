@@ -11,9 +11,7 @@
 
             <div class="form-container">
 
-                <div ng-controller="AlertController">
-                    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
-                </div>
+                <alert-box></alert-box>
 
                 <form class="form-horizontal" novalidate>
                     <fieldset>
