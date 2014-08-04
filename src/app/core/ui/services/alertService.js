@@ -12,12 +12,13 @@ angular.module('tagcade.core.ui')
             }
 
             alert = getValidAlert(alert);
+
             bucket.push(alert);
         }
 
         function getValidAlert(alert) {
             alert = alert || {};
-            angular.extend({
+            alert = angular.extend({
                 type: 'info',
                 title: null,
                 message: null

@@ -30,7 +30,7 @@ angular.module('tagcade.core.ui')
              *
              * @param {string} to i.e .error.404
              * @param {object} [toParams]
-             * @returns {promise}
+             * @returns {Promise}
              */
             transitionRelativeToBaseState: function(to, toParams) {
                 var baseStateName = this.getBaseState();

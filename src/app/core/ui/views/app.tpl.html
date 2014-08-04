@@ -12,20 +12,25 @@
            ng-class="{'nav-fixed': admin.fixedSidebar, 'nav-horizontal': admin.menu === 'horizontal', 'nav-vertical': admin.menu === 'vertical'}">
         </aside>
 
-        <div
-             id="content"
-             class="content-container animate-fade-up">
+        <div id="content" class="content-container animate-fade-up">
 
             <div class="page">
-                <section ng-show="hasAlerts" class="panel panel-default panel-alerts">
-                    <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Alerts</div>
-                    <div class="panel-body">
-                        <alert-box has-alerts="hasAlerts"></alert-box>
+                <div class="row">
+                    <div ng-class="{true: 'col-lg-12', false: 'col-lg-6'}[admin.wideContent]">
+                        <section ng-show="hasAlerts" class="panel panel-default panel-alerts">
+                            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Alerts</div>
+                            <div class="panel-body">
+                                <alert-box has-alerts="hasAlerts"></alert-box>
+                            </div>
+                        </section>
                     </div>
-                </section>
+                </div>
 
-                <section ui-view="content"></section>
-
+                <div class="row">
+                    <div ng-class="{true: 'col-lg-12', false: 'col-lg-6'}[admin.wideContent]">
+                        <section ui-view="content"></section>
+                    </div>
+                </div>
             </div>
 
          </div>

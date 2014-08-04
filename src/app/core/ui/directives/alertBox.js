@@ -3,7 +3,7 @@ angular.module('tagcade.core.ui')
     .directive('alertBox', function($rootScope, AlertService) {
         'use strict';
 
-        $rootScope.$on('$stateChangeStart', function() {
+        $rootScope.$on('$stateChangeSuccess', function() {
             AlertService.rotateAlerts();
         });
 

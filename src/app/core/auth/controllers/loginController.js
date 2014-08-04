@@ -8,10 +8,18 @@ angular.module('tagcade.core.auth')
             password: ''
         };
 
-        $scope.loginProcessing = false;
+        $scope.isFormValid = function() {
+            return $scope.loginForm.$valid;
+        };
+
+        $scope.formProcessing = false;
 
         $scope.login = function (credentials) {
-            $scope.loginProcessing = true;
+            if ($scope.formProcessing) {
+                return;
+            }
+
+            $scope.formProcessing = true;
 
             Auth.login(credentials, true)
                 .then(function () {
@@ -20,7 +28,7 @@ angular.module('tagcade.core.auth')
                     $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
                 })
                 .finally(function() {
-                    $scope.loginProcessing = false;
+                    $scope.formProcessing = false;
                 })
             ;
         };

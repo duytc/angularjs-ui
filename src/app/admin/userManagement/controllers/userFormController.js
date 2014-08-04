@@ -13,6 +13,7 @@ angular.module('tagcade.admin.userManagement')
         };
 
         $scope.isNew = user === null;
+        $scope.formProcessing = false;
 
         $scope.user = user || {
             username: null,
@@ -81,12 +82,22 @@ angular.module('tagcade.admin.userManagement')
         };
 
         $scope.submit = function() {
+            if ($scope.formProcessing) {
+                // already running, prevent duplicates
+                return;
+            }
+
+            $scope.formProcessing = true;
+
             var saveUser = $scope.isNew ? AdminUserManager.post($scope.user) : $scope.user.patch();
 
             saveUser
                 .catch(
                     function (response) {
-                        return ServerErrorProcessor.setFormValidationErrors(response, $scope.userForm, $scope.fieldNameTranslations)
+                        var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.userForm, $scope.fieldNameTranslations);
+                        $scope.formProcessing = false;
+
+                        return errorCheck;
                     }
                 )
                 .then(

@@ -5,6 +5,8 @@ angular.module('tagcade.admin.userManagement')
 
         var data = users;
 
+        $scope.setWideContent();
+
         $scope.tableParams = new ngTableParams( // jshint ignore:line
             {
                 page: 1,

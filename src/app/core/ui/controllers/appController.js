@@ -13,7 +13,12 @@ angular.module('tagcade.core.ui')
             layout: 'wide',
             menu: 'vertical',
             fixedHeader: true,
-            fixedSidebar: false
+            fixedSidebar: false,
+            wideContent: false
+        };
+
+        $scope.setWideContent = function() {
+            $scope.admin.wideContent = true;
         };
 
         $scope.$watch('admin', function (newVal, oldVal) {
@@ -39,6 +44,10 @@ angular.module('tagcade.core.ui')
                 $scope.admin.fixedSidebar = false;
             }
         }, true);
+
+        $rootScope.$on('$stateChangeSuccess', function () {
+            $scope.admin.wideContent = false;
+        })
     })
 
 ;
