@@ -1,4 +1,5 @@
 angular.module('tagcade.core.ui')
+
     .directive('updateTitle', function($rootScope, $state, APP_NAME) {
         'use strict';
 
@@ -37,4 +38,5 @@ angular.module('tagcade.core.ui')
             }
         };
     })
+
 ;

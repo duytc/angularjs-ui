@@ -58,6 +58,26 @@ angular.module('tagcade.core', [
                 return false;
             }
 
+            // reformat error property if it exists
+            // the default format returned by the symfony2 API is simplified here
+            if (response.status === 400 && angular.isObject(response.data) && response.data.hasOwnProperty('errors')) {
+                var errors = {};
+
+                angular.forEach(response.data.errors.children, function (fieldErrors, fieldName) {
+                    if (!fieldErrors.hasOwnProperty('errors')) {
+                        return;
+                    }
+
+                    errors[fieldName] = [];
+
+                    angular.forEach(fieldErrors.errors, function (error) {
+                        errors[fieldName].push(error);
+                    });
+                });
+
+                response.data.errors = errors;
+            }
+
             return true; // error not handled
         });
     })
@@ -138,11 +158,16 @@ angular.module('tagcade.core', [
         });
 
         $rootScope.$on(AUTH_EVENTS.loginFailed, function() {
-            AlertService.replaceAlerts('danger', 'Login failed, did you provide an invalid username and/or password?');
+            AlertService.replaceAlerts({
+                type: 'error',
+                message: 'Login failed, did you provide an invalid username and/or password?'
+            });
         });
 
         $rootScope.$on(AUTH_EVENTS.logoutSuccess, function() {
-            AlertService.addFlash('info', 'You are now logged out');
+            AlertService.addFlash({
+                message: 'You are now logged out'
+            });
             $state.go(ENTRY_STATE);
         });
 
@@ -151,7 +176,10 @@ angular.module('tagcade.core', [
         });
 
         $rootScope.$on(AUTH_EVENTS.sessionTimeout, function() {
-            AlertService.addFlash('danger', 'You are not authenticated. This could mean your session expired, please log in again');
+            AlertService.addFlash({
+                type: 'error',
+                message: 'You are not authenticated. This could mean your session expired, please log in again'
+            });
             $state.go(ENTRY_STATE);
         });
 

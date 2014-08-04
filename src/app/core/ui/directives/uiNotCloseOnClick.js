@@ -1,4 +1,5 @@
 angular.module('tagcade.core.ui')
+
     .directive('uiNotCloseOnClick', function () {
         'use strict';
 
@@ -11,4 +12,5 @@ angular.module('tagcade.core.ui')
             }
         };
     })
+
 ;

@@ -1,4 +1,5 @@
 angular.module('tagcade.core.ui')
+
     .directive('toggleNavCollapsedMin', function ($rootScope) {
         'use strict';
 
@@ -19,4 +20,5 @@ angular.module('tagcade.core.ui')
             }
         };
     })
+
 ;

@@ -6,17 +6,39 @@ angular.module('tagcade.core.ui')
         var _alerts = [];
         var _queuedAlerts = [];
 
-        function addAlert(bucket, type, msg) {
-            type = type || 'info';
-
+        function addAlert(bucket, alert) {
             if (!angular.isArray(bucket)) {
                 throw new Error('alert bucket is not an array');
             }
 
-            bucket.push({
-                type: type,
-                msg: msg
-            });
+            alert = getValidAlert(alert);
+            bucket.push(alert);
+        }
+
+        function getValidAlert(alert) {
+            alert = alert || {};
+            angular.extend({
+                type: 'info',
+                title: null,
+                message: null
+            }, alert);
+
+            if (alert.type === 'error') {
+                alert.type = 'danger';
+            }
+
+            if (!angular.isString(alert.message) && !angular.isArray(alert.message)) {
+                throw new Error('message body should be a string or an array of strings');
+            }
+
+            if (angular.isString(alert.message)) {
+                var tmp = [];
+                tmp.push(alert.message);
+
+                alert.message = tmp;
+            }
+
+            return alert;
         }
 
         return {
@@ -27,22 +49,20 @@ angular.module('tagcade.core.ui')
             /**
              * Show an alert immediately
              *
-             * @param type
-             * @param msg
+             * @param {object} message
              */
-            addAlert: function (type, msg) {
-                addAlert(_alerts, type, msg);
+            addAlert: function (message) {
+                addAlert(_alerts, message);
             },
 
             /**
              * Queue an alert, until rotateAlerts is called
              * This could be done in a listener when the url changes
              *
-             * @param type
-             * @param msg
+             * @param {object} alert
              */
-            addFlash: function (type, msg) {
-                addAlert(_queuedAlerts, type, msg);
+            addFlash: function (alert) {
+                addAlert(_queuedAlerts, alert);
             },
 
             rotateAlerts: function () {
@@ -58,12 +78,14 @@ angular.module('tagcade.core.ui')
             /**
              * Replace all current alerts with a new one
              *
-             * @param type
-             * @param message
+             * @param {object} alert
              */
-            replaceAlerts: function (type, message) {
+            replaceAlerts: function (alert) {
+                // running this check first to ensure it's valid before we clear all current messages
+                alert = getValidAlert(alert);
+
                 this.clearAll();
-                this.addAlert(type, message);
+                this.addAlert(alert);
             },
 
             removeAlert: function (index) {

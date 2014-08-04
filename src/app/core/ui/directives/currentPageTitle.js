@@ -1,4 +1,5 @@
 angular.module('tagcade.core.ui')
+
     .directive('currentPageTitle', function($state) {
         'use strict';
 
@@ -16,4 +17,5 @@ angular.module('tagcade.core.ui')
             }
         };
     })
+
 ;

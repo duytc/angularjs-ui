@@ -1,7 +1,16 @@
 angular.module('tagcade.admin.userManagement')
 
-    .controller('AdminUserFormController', function ($scope, $state, $q, AdminUserManager, AlertService, user) {
+    .controller('AdminUserFormController', function ($scope, $state, $q, AdminUserManager, AlertService, ServerErrorProcessor, user) {
         'use strict';
+
+        $scope.fieldNameTranslations = {
+            username: 'Username',
+            email: 'Email',
+            plainPassword: 'Password',
+            userRoles: 'Role',
+            enabledModules: 'Modules',
+            enabled: 'Enabled'
+        };
 
         $scope.isNew = user === null;
 
@@ -75,26 +84,17 @@ angular.module('tagcade.admin.userManagement')
             var saveUser = $scope.isNew ? AdminUserManager.post($scope.user) : $scope.user.patch();
 
             saveUser
-                .catch(function (response) {
-                    if (response.status === 400 && angular.isObject(response.data) && response.data.hasOwnProperty('errors')) {
-                        angular.forEach(response.data.errors.children, function (fieldErrors, fieldName) {
-                            if (!fieldErrors.hasOwnProperty('errors')) {
-                                return;
-                            }
-
-                            angular.forEach(fieldErrors.errors, function (error) {
-                               console.log(fieldName, error);
-                            });
-                        });
-
-                        return $q.reject('invalid form');
+                .catch(
+                    function (response) {
+                        return ServerErrorProcessor.process(response, $scope.userForm, $scope.fieldNameTranslations)
                     }
-
-                    return $q.reject('invalid request');
-                })
+                )
                 .then(
                     function () {
-                        AlertService.addFlash('success', 'The user has been updated');
+                        AlertService.addFlash({
+                            type: 'success',
+                            message: 'The user has been updated'
+                        });
                     }
                 )
                 .then(

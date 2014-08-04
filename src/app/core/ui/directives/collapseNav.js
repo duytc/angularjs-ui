@@ -1,4 +1,5 @@
 angular.module('tagcade.core.ui')
+
     .directive('collapseNav', function () {
         'use strict';
 
@@ -71,4 +72,5 @@ angular.module('tagcade.core.ui')
             }
         };
     })
+
 ;
