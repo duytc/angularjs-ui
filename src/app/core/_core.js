@@ -58,26 +58,6 @@ angular.module('tagcade.core', [
                 return false;
             }
 
-            // reformat error property if it exists
-            // the default format returned by the symfony2 API is simplified here
-            if (response.status === 400 && angular.isObject(response.data) && response.data.hasOwnProperty('errors')) {
-                var errors = {};
-
-                angular.forEach(response.data.errors.children, function (fieldErrors, fieldName) {
-                    if (!fieldErrors.hasOwnProperty('errors')) {
-                        return;
-                    }
-
-                    errors[fieldName] = [];
-
-                    angular.forEach(fieldErrors.errors, function (error) {
-                        errors[fieldName].push(error);
-                    });
-                });
-
-                response.data.errors = errors;
-            }
-
             return true; // error not handled
         });
     })

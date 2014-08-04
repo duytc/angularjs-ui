@@ -86,7 +86,7 @@ angular.module('tagcade.admin.userManagement')
             saveUser
                 .catch(
                     function (response) {
-                        return ServerErrorProcessor.process(response, $scope.userForm, $scope.fieldNameTranslations)
+                        return ServerErrorProcessor.setFormValidationErrors(response, $scope.userForm, $scope.fieldNameTranslations)
                     }
                 )
                 .then(

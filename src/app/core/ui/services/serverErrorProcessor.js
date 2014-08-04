@@ -3,6 +3,30 @@ angular.module('tagcade.core.ui')
     .factory('ServerErrorProcessor', function ($q, AlertService) {
         'use strict';
 
+        // reformat error property if it exists
+        // the default format returned by the symfony2 API is simplified here
+        function formatServerErrors(serverErrors) {
+            var errors = {};
+
+            if (!serverErrors.hasOwnProperty('children')) {
+                return errors;
+            }
+
+            angular.forEach(serverErrors.children, function (fieldErrors, fieldName) {
+                if (!fieldErrors.hasOwnProperty('errors')) {
+                    return;
+                }
+
+                errors[fieldName] = [];
+
+                angular.forEach(fieldErrors.errors, function (error) {
+                    errors[fieldName].push(error);
+                });
+            });
+
+            return errors;
+        }
+
         return {
             /**
              *
@@ -11,7 +35,7 @@ angular.module('tagcade.core.ui')
              * @param {object} fieldNameTranslations
              * @returns {Promise}
              */
-            process:  function (response, form, fieldNameTranslations) {
+            setFormValidationErrors:  function (response, form, fieldNameTranslations) {
                 var errors;
 
                 try {
@@ -20,6 +44,17 @@ angular.module('tagcade.core.ui')
 
                 if (response.status !== 400 || !angular.isObject(errors)) {
                     return $q.reject('invalid request');
+                }
+
+                errors = formatServerErrors(errors);
+
+                if (Object.keys(errors).length === 0) {
+                    AlertService.addAlert({
+                        type: 'error',
+                        message: 'An unknown server error occurred'
+                    });
+
+                    return $q.reject('invalid form but no errors returned from server');
                 }
 
                 if (angular.isDefined(fieldNameTranslations) && !angular.isObject(fieldNameTranslations)) {
@@ -35,6 +70,7 @@ angular.module('tagcade.core.ui')
                         return;
                     }
 
+                    // todo check if form is actually a FormController
                     form[fieldName].$setValidity('server', false);
 
                     var humanFieldName = fieldName;
