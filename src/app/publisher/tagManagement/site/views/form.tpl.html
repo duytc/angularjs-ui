@@ -1,0 +1,45 @@
+<section class="panel panel-default">
+    <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> <span current-page-title></span></strong></div>
+    <div class="panel-body">
+        <form name="siteForm" class="form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
+            <div class="form-group">
+                <label for="inputName" class="col-sm-2 control-label">Name</label>
+                <div class="col-sm-10">
+                    <input
+                            name="name"
+                            ng-model="site.name"
+                            server-error
+                            ng-required="true"
+                            ng-minlength="2"
+                            type="text"
+                            class="form-control"
+                            id="inputName"
+                            placeholder="Site Name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputDomain" class="col-sm-2 control-label">Domain</label>
+                <div class="col-sm-10">
+                    <input
+                            name="domain"
+                            ng-model="site.domain"
+                            server-error
+                            ng-required="true"
+                            ng-minlength="2"
+                            type="text"
+                            class="form-control"
+                            id="inputDomain"
+                            placeholder="Domain Name">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">Submit</button>
+                    <div class="callout callout-info">
+                        <p>Submit button will be active only when all fields are valid.</p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

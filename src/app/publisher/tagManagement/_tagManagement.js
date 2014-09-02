@@ -13,7 +13,10 @@ angular.module('tagcade.publisher.tagManagement', [
         $stateProvider
             .state('app.publisher.tagManagement', {
                 abstract: true,
-                url: '/tagManagement'
+                url: '/tagManagement',
+                breadcrumb: {
+                    title: 'Tag Management'
+                }
             })
         ;
     })

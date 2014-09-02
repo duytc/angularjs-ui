@@ -14,16 +14,51 @@ angular.module('tagcade.publisher.tagManagement.site', [
                 url: '/list',
                 views: {
                     'content@app': {
+                        controller: 'PublisherSiteListController',
                         templateUrl: 'publisher/tagManagement/site/views/list.tpl.html'
                     }
+                },
+                resolve: {
+                    sites: function(SiteManager) {
+                        return SiteManager.getList();
+                    }
+                },
+                breadcrumb: {
+                    title: 'Site List'
                 }
             })
             .state('app.publisher.tagManagement.sites.new', {
                 url: '/new',
                 views: {
                     'content@app': {
-                        templateUrl: 'publisher/tagManagement/site/views/new.tpl.html'
+                        controller: 'PublisherSiteFormController',
+                        templateUrl: 'publisher/tagManagement/site/views/form.tpl.html'
                     }
+                },
+                resolve: {
+                    site: function() {
+                        return null;
+                    }
+                },
+                breadcrumb: {
+                    title: 'New Site'
+                }
+            })
+            .state('app.publisher.tagManagement.sites.edit', {
+                url: '/edit/{id:[0-9]+}',
+                views: {
+                    'content@app': {
+                        controller: 'PublisherSiteFormController',
+                        templateUrl: 'publisher/tagManagement/site/views/form.tpl.html'
+                    }
+                },
+                resolve: {
+                    site: function($stateParams, SiteManager) {
+                        return SiteManager.one($stateParams.id).get();
+                    }
+                },
+                breadcrumb: {
+                    title: 'Edit Site'
                 }
             })
         ;

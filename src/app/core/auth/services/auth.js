@@ -129,13 +129,16 @@ angular.module('tagcade.core.auth')
             return isAuthenticated() && _session.hasRole(role);
         }
 
-        function getAuthorizationHeaderValue(token)
-        {
+        function getAuthorizationHeaderValue(token) {
             if (angular.isString(token)) {
                 return 'Bearer ' + token;
             }
 
             return null;
+        }
+
+        function isAdmin() {
+            return isAuthorized('ROLE_ADMIN');
         }
 
         // public api
@@ -146,7 +149,8 @@ angular.module('tagcade.core.auth')
             getSession: getSession,
             isAuthenticated: isAuthenticated,
             isAuthorized: isAuthorized,
-            getAuthorizationHeaderValue: getAuthorizationHeaderValue
+            getAuthorizationHeaderValue: getAuthorizationHeaderValue,
+            isAdmin: isAdmin
         };
     })
 
