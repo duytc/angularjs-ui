@@ -130,7 +130,7 @@ angular.module('tagcade.core', [
             }
 
             // todo what happens in this fails for some reason?
-            UserStateHelper.transitionRelativeToBaseState('error.' + errorCode);
+            UserStateHelper.transitionRelativeToBaseState('error.' + errorCode, {}, { location: 'replace' });
         });
 
         $rootScope.$on(AUTH_EVENTS.loginSuccess, function() {
