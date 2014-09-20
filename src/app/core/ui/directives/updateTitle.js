@@ -1,6 +1,6 @@
 angular.module('tagcade.core.ui')
 
-    .directive('updateTitle', function($rootScope, $state, APP_NAME) {
+    .directive('updateTitle', function($rootScope, $state, $interpolate, APP_NAME) {
         'use strict';
 
         return {
@@ -15,7 +15,11 @@ angular.module('tagcade.core.ui')
 
                         if(angular.isDefined(state.breadcrumb)) {
                             if(angular.isDefined(state.breadcrumb.title)) {
-                                crumbs.push(state.breadcrumb.title);
+                                var title = state.breadcrumb.title;
+
+                                title = $interpolate(title)(state.locals.globals);
+
+                                crumbs.push(title);
                             }
                         }
                     };
