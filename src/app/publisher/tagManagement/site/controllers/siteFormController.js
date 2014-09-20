@@ -43,7 +43,7 @@ angular.module('tagcade.publisher.tagManagement.site')
                     function () {
                         AlertService.addFlash({
                             type: 'success',
-                            message: 'The site has been updated'
+                            message: 'The site has been ' + ($scope.isNew ? 'created' : 'updated')
                         });
                     }
                 )

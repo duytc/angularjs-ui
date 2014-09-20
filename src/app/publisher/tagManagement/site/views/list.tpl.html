@@ -11,9 +11,9 @@
             </td>
             <td data-title="'Actions'">
                 <div class="btn-group" dropdown>
-                    <button type="button" class="btn btn-primary dropdown-toggle"> Actions <span class="caret"></span> </button>
+                    <button type="button" class="btn dropdown-toggle"> Actions <span class="caret"></span> </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a ui-sref="app.publisher.tagManagement.adSlot.list({ id: site.id })">Manage Ad Slots</a></li>
+                        <li><a ui-sref="app.publisher.tagManagement.adSlot.list({ siteId: site.id })">Manage Ad Slots</a></li>
                         <li><a href="javascript:;">Generate a Passback Tag</a></li>
                         <li class="divider"></li>
                         <li><a ui-sref="^.edit({ id: site.id })">Edit Site</a></li>

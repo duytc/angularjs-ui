@@ -24,7 +24,7 @@ angular.module('tagcade.publisher.tagManagement.site', [
                     }
                 },
                 breadcrumb: {
-                    title: 'Site List'
+                    title: 'Sites'
                 }
             })
             .state('app.publisher.tagManagement.sites.new', {
@@ -58,7 +58,7 @@ angular.module('tagcade.publisher.tagManagement.site', [
                     }
                 },
                 breadcrumb: {
-                    title: 'Edit Site'
+                    title: 'Edit Site - {{ site.name }} '
                 }
             })
         ;
