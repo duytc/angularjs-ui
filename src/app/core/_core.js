@@ -27,10 +27,23 @@ angular.module('tagcade.core', [
         //Restangular.setDefaultRequestParams('patch', {XDEBUG_SESSION_START: 1});
         //Restangular.setDefaultRequestParams('post', {XDEBUG_SESSION_START: 1});
 
-        Restangular.addRequestInterceptor(function(element, operation) {
-            if (['put', 'patch', 'post'].indexOf(operation) > -1) {
-                // the id is specified in the url
-                delete element.id;
+        Restangular.addRequestInterceptor(function(element, operation, what) {
+            if (['put', 'patch', 'post'].indexOf(operation) === -1) {
+                // skip if operation does not match
+                return;
+            }
+
+            if (!angular.isObject(element)) {
+                return;
+            }
+
+            // the entity id is provided in the url
+            delete element.id;
+
+            if (!Auth.isAdmin() && ['sites', 'adnetworks'].indexOf(what) > -1) {
+                // the publisher field is determined server side based on the JWT
+                // trying to send it manually for non-admin users will result in an error
+                delete element.publisher;
             }
 
             return element;
