@@ -14,7 +14,7 @@ angular.module('tagcade.publisher.tagManagement.adTag')
                     return adTag.id;
                 });
 
-                adSlot.reorderAdTags({ adTags: tagIds })
+                adSlot.all('adtags').customPOST({ tagIds: tagIds }, 'reorder')
                     .catch(function () {
                         AlertService.replaceAlerts({
                             type: 'error',
@@ -32,10 +32,6 @@ angular.module('tagcade.publisher.tagManagement.adTag')
                         });
                     })
                 ;
-
-//                adSlot.all('adtags').customPOST({ adTags: ids }, 'reorder').then(function (adTags) {
-//                    $scope.adTags = adTags.plain();
-//                });
             },
             helper: function(e, ui) {
                 ui.children().each(function() {
@@ -97,7 +93,7 @@ angular.module('tagcade.publisher.tagManagement.adTag')
                     )
                 ;
             });
-        }
+        };
     })
 
 ;

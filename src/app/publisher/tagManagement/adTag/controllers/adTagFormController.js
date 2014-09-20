@@ -78,7 +78,7 @@ angular.module('tagcade.publisher.tagManagement.adTag')
                     function () {
                         AlertService.addFlash({
                             type: 'success',
-                            message: 'The ad tag has been ' + $scope.isNew ? 'created' : 'updated'
+                            message: 'The ad tag has been ' + ($scope.isNew ? 'created' : 'updated')
                         });
                     }
                 )
