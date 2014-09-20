@@ -38,6 +38,20 @@
 
 // custom
 
+[ng-click],
+[data-ng-click],
+[x-ng-click] {
+    cursor: pointer;
+}
+
+.sortable-placeholder {
+    background: $table-bg-accent;
+}
+
+tr.moveable {
+    cursor: move;
+}
+
 tr[ui-sref] {
     cursor: pointer;
 }
@@ -54,4 +68,10 @@ tr[ui-sref] {
     .alert-title {
         font-weight: bold;
     }
+}
+
+.modal-dialog-footer {
+    @extend .modal-footer;
+    margin-top: 0;
+    border-top: 0;
 }

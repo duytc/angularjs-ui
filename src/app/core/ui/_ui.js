@@ -1,8 +1,13 @@
 angular.module('tagcade.core.ui', [
     'ngAnimate',
     'ui.router',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ui.select'
 ])
+
+    .config(function(uiSelectConfig) {
+        uiSelectConfig.theme = 'bootstrap';
+    })
 
     .config(function ($stateProvider, $urlRouterProvider) {
         'use strict';

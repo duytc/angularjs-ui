@@ -11,6 +11,8 @@
     "restangular": "~1.4.0",
     "moment": "~2.7.0",
     "ng-table": "~0.3.3",
-    "angular-moment": "~0.8.0"
+    "angular-moment": "~0.8.0",
+    "angular-ui-select": "~0.6.0",
+    "angular-ui-sortable": "~0.12.10"
   }
 }
