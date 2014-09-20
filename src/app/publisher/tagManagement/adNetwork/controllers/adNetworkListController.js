@@ -1,6 +1,6 @@
 angular.module('tagcade.publisher.tagManagement.adNetwork')
 
-    .controller('PublisherAdNetworkListController', function ($scope, $filter, ngTableParams, adNetworks) {
+    .controller('PublisherAdNetworkListController', function ($scope, $filter, $modal, $q, ngTableParams, AlertService, AdNetworkManager, adNetworks) {
         'use strict';
 
         var data = adNetworks;
@@ -27,6 +27,58 @@ angular.module('tagcade.publisher.tagManagement.adNetwork')
                 }
             }
         );
+
+        $scope.toggleAdNetworkStatus = function (adNetwork) {
+            var newStatus = !adNetwork.active;
+
+            var isPause = !newStatus;
+
+            var dfd = $q.defer();
+
+            dfd.promise.then(function () {
+                AdNetworkManager.one(adNetwork.id).patch({
+                    'active': newStatus
+                })
+                    .catch(function () {
+                        AlertService.replaceAlerts({
+                            type: 'error',
+                            message: 'Could not change ad network status'
+                        });
+
+                        return $q.reject('could not update ad network status');
+                    })
+                    .then(function () {
+                        adNetwork.active = newStatus;
+
+                        var successMessage;
+
+                        if (isPause) {
+                            successMessage = 'The ad network has been paused. There may be a short delay before the associated ad tags are paused.';
+                        } else {
+                            successMessage = 'The ad network has been activated';
+                        }
+
+                        AlertService.replaceAlerts({
+                            type: 'success',
+                            message: successMessage
+                        });
+                    })
+                ;
+            });
+
+            if (isPause) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'publisher/tagManagement/adNetwork/views/confirmPause.tpl.html'
+                });
+
+                modalInstance.result.then(function () {
+                    dfd.resolve();
+                });
+            } else {
+                // if it is not a pause, proceed without a modal
+                dfd.resolve();
+            }
+        };
     })
 
 ;

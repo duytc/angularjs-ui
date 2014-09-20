@@ -5,7 +5,8 @@ angular.module('tagcade.publisher.tagManagement.adNetwork')
 
         $scope.fieldNameTranslations = {
             name: 'Name',
-            url: 'Url'
+            url: 'Url',
+            active: 'Active'
         };
 
         $scope.isNew = adNetwork === null;
@@ -13,7 +14,8 @@ angular.module('tagcade.publisher.tagManagement.adNetwork')
 
         $scope.adNetwork = adNetwork || {
             name: null,
-            url: null
+            url: null,
+            active: true
         };
 
         $scope.isFormValid = function() {
