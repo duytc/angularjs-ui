@@ -1,0 +1,10 @@
+<div class="modal-header">
+    <h4 class="modal-title">Tag for {{ adSlotName }}</h4>
+</div>
+<div class="modal-body">
+    <label for="adTag">Copy and paste the following tag in the &lt;body&gt; section of your page.</label>
+    <textarea id="adTag" class="form-control" rows="8" readonly="readonly" select-on-click>{{ javascriptTag }}</textarea>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="$dismiss()">Close</button>
+</div>
