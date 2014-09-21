@@ -8,7 +8,7 @@ angular.module('tagcade.publisher.tagManagement.adSlot', [
         $stateProvider
             .state('app.publisher.tagManagement.adSlot', {
                 abstract: true,
-                url: '/adslots',
+                url: '/adSlots',
                 resolve: {
                     sites: function(SiteManager) {
                         return SiteManager.getList().then(function (sites) {

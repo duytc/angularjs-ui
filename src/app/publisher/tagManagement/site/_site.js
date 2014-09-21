@@ -20,7 +20,9 @@ angular.module('tagcade.publisher.tagManagement.site', [
                 },
                 resolve: {
                     sites: function(SiteManager) {
-                        return SiteManager.getList();
+                        return SiteManager.getList().then(function (sites) {
+                            return sites.plain();
+                        });
                     }
                 },
                 breadcrumb: {

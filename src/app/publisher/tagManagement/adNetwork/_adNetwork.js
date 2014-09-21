@@ -8,7 +8,7 @@ angular.module('tagcade.publisher.tagManagement.adNetwork', [
         $stateProvider
             .state('app.publisher.tagManagement.adNetwork', {
                 abstract: true,
-                url: '/adnetwork'
+                url: '/adNetwork'
             })
             .state('app.publisher.tagManagement.adNetwork.list', {
                 url: '/list',

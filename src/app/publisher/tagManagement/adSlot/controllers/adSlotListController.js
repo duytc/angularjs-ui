@@ -1,6 +1,6 @@
 angular.module('tagcade.publisher.tagManagement.adSlot')
 
-    .controller('PublisherAdSlotListController', function ($scope, $filter, $stateParams, $modal, ngTableParams, AlertService, AdSlotManager, adSlots) {
+    .controller('PublisherAdSlotListController', function ($scope, $filter, $stateParams, $modal, $q, ngTableParams, AlertService, AdSlotManager, adSlots) {
         'use strict';
 
         var data = adSlots;
@@ -12,7 +12,7 @@ angular.module('tagcade.publisher.tagManagement.adSlot')
         $scope.tableParams = new ngTableParams( // jshint ignore:line
             {
                 page: 1,
-                count: 25,
+                count: 10,
                 sorting: {
                     id: 'asc'
                 }
@@ -54,8 +54,12 @@ angular.module('tagcade.publisher.tagManagement.adSlot')
                 AdSlotManager.one(adSlot.id).remove()
                     .then(
                         function () {
-                            data.splice(index, 1); // remove this ad slot from the data
-                            $scope.tableParams.reload(); // refresh ng-table
+                            var index = data.indexOf(adSlot);
+
+                            if (index > -1) {
+                                data.splice(index, 1);
+                                $scope.tableParams.reload(); // refresh ng-table
+                            }
 
                             AlertService.replaceAlerts({
                                 type: 'success',

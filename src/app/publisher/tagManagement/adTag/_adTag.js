@@ -10,7 +10,7 @@ angular.module('tagcade.publisher.tagManagement.adTag', [
         $stateProvider
             .state('app.publisher.tagManagement.adTag', {
                 abstract: true,
-                url: '/adtags'
+                url: '/adTags'
             })
             .state('app.publisher.tagManagement.adTag.list', {
                 url: '/list/adslot/{adSlotId:[0-9]+}',
