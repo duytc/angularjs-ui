@@ -1,6 +1,7 @@
 angular.module('tagcade.publisher.tagManagement', [
     'ui.router',
 
+    'tagcade.publisher.tagManagement.tagGenerator',
     'tagcade.publisher.tagManagement.adNetwork',
     'tagcade.publisher.tagManagement.site',
     'tagcade.publisher.tagManagement.adSlot',
@@ -13,7 +14,7 @@ angular.module('tagcade.publisher.tagManagement', [
         $stateProvider
             .state('app.publisher.tagManagement', {
                 abstract: true,
-                url: '/tagmanagement',
+                url: '/tagManagement',
                 breadcrumb: {
                     title: 'Tag Management'
                 }
