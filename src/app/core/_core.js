@@ -29,7 +29,7 @@ angular.module('tagcade.core', [
 
         Restangular.addRequestInterceptor(function(element, operation, what) {
             if (['put', 'patch', 'post'].indexOf(operation) === -1) {
-                // skip if operation does not match
+                // skip if operation does not match put, patch or post
                 return;
             }
 
@@ -45,6 +45,18 @@ angular.module('tagcade.core', [
                 // trying to send it manually for non-admin users will result in an error
                 delete element.publisher;
             }
+
+            angular.forEach(element, function (value, key) {
+                if (!angular.isObject(value)) {
+                    return;
+                }
+
+                // if data being sent to the server is an object and has an id key
+                // replace the value with just the id
+                if (value.id) {
+                    element[key] = value.id;
+                }
+            });
 
             return element;
         });
@@ -76,7 +88,7 @@ angular.module('tagcade.core', [
     })
 
     // authentication and authorization checks performed before every URL change
-    .run(function ($rootScope, $location, $state, $q, UserStateHelper, Auth, ENTRY_STATE, AUTH_EVENTS) {
+    .run(function ($rootScope, $location, $state, $q, userStateHelper, Auth, ENTRY_STATE, AUTH_EVENTS) {
         'use strict';
 
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
@@ -129,7 +141,7 @@ angular.module('tagcade.core', [
     })
 
     // event listeners
-    .run(function ($rootScope, $state, Auth, UserStateHelper, AlertService, ENTRY_STATE, CORE_EVENTS, AUTH_EVENTS) {
+    .run(function ($rootScope, $state, Auth, userStateHelper, AlertService, ENTRY_STATE, CORE_EVENTS, AUTH_EVENTS) {
         'use strict';
 
         $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
@@ -143,11 +155,11 @@ angular.module('tagcade.core', [
             }
 
             // todo what happens in this fails for some reason?
-            UserStateHelper.transitionRelativeToBaseState('error.' + errorCode, {}, { location: 'replace' });
+            userStateHelper.transitionRelativeToBaseState('error.' + errorCode, {}, { location: 'replace' });
         });
 
         $rootScope.$on(AUTH_EVENTS.loginSuccess, function() {
-            UserStateHelper.transitionRelativeToBaseState('dashboard');
+            userStateHelper.transitionRelativeToBaseState('dashboard');
         });
 
         $rootScope.$on(AUTH_EVENTS.loginFailed, function() {
@@ -177,7 +189,7 @@ angular.module('tagcade.core', [
         });
 
         $rootScope.$on(AUTH_EVENTS.notAuthorized, function() {
-            UserStateHelper.transitionRelativeToBaseState('error.403');
+            userStateHelper.transitionRelativeToBaseState('error.403');
         });
     })
 ;
