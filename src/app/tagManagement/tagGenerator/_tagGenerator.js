@@ -40,6 +40,15 @@ angular.module('tagcade.tagManagement.tagGenerator', [
                         return site.customGET('jstags');
                     }
                 },
+                customResolve: {
+                    admin: {
+                        publishers: function(AdminUserManager) {
+                            return AdminUserManager.getList({ filter: 'publisher' }).then(function (users) {
+                                return users.plain();
+                            });
+                        }
+                    }
+                },
                 breadcrumb: {
                     title: 'Generate Tags'
                 },

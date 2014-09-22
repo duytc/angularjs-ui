@@ -1,7 +1,7 @@
 angular.module('tagcade.tagManagement.adTag')
 
     .controller('AdTagFormController', function (
-        $scope, $state, $stateParams, $q, SiteManager, AdTagManager, AlertService, ServerErrorProcessor, adTag, adSlot, site, siteList, adNetworkList
+        $scope, $state, $stateParams, $q, SiteManager, AdTagManager, AlertService, ServerErrorProcessor, adTag, publisherList, siteList, adNetworkList
     ) {
         'use strict';
 
@@ -19,20 +19,20 @@ angular.module('tagcade.tagManagement.adTag')
 
         // !! converts a variable to a boolean
         // we are saying, if we don't have a predefined ad slot but we have a list of all ad slots, allow the user to choose
-        $scope.allowAdSlotSelection = $scope.isNew && (!site && !!siteList);
+        $scope.allowAdSlotSelection = $scope.isNew && !!siteList;
 
         // required by ui select
         $scope.selected = {
-            siteId: null
+            publisher: null,
+            site: null
         };
 
+        $scope.publisherFilterCriteria = null;
+
+        $scope.publisherList = publisherList;
         $scope.siteList = siteList;
         $scope.adSlotList = [];
-
-        $scope.site = site;
-        $scope.adSlot = adSlot;
-
-        $scope.adNetworks = adNetworkList;
+        $scope.adNetworkList = adNetworkList;
 
         $scope.adTag = adTag || {
             adSlot: null,
@@ -42,9 +42,24 @@ angular.module('tagcade.tagManagement.adTag')
             active: true
         };
 
-        $scope.selectSite = function (site, siteId) {
+        $scope.resetSelection = function () {
             $scope.adTag.adSlot = null;
             $scope.adSlotList = [];
+        };
+
+        $scope.selectPublisher = function (publisher, publisherId) {
+            $scope.selected.site = null;
+            $scope.resetSelection();
+
+            $scope.publisherFilterCriteria = {
+                publisher: {
+                    id: publisherId
+                }
+            };
+        };
+
+        $scope.selectSite = function (site, siteId) {
+            $scope.resetSelection();
 
             SiteManager.one(siteId).getList('adslots').then(function (adSlots) {
                 $scope.adSlotList = adSlots.plain();

@@ -25,12 +25,6 @@ angular.module('tagcade.tagManagement.adTag', [
                         return AdSlotManager.one($stateParams.adSlotId).get();
                     },
 
-                    site: function (SiteManager, adSlot) {
-                        return SiteManager.one(adSlot.site).get().then(function (site) {
-                            return site.plain();
-                        });
-                    },
-
                     adTags: function($stateParams, AdSlotManager) {
                         return AdSlotManager.one($stateParams.adSlotId).getList('adtags').then(function (adTags) {
                             return adTags.plain();
@@ -38,7 +32,7 @@ angular.module('tagcade.tagManagement.adTag', [
                     }
                 },
                 breadcrumb: {
-                    title: 'Ad Tag List - {{ adSlot.name }} - {{ site.name }}'
+                    title: 'Ad Tag List - {{ adSlot.name }} - {{ adSlot.site.name }}'
                 }
             })
             .state('tagManagement.adTag.new', {
@@ -57,27 +51,6 @@ angular.module('tagcade.tagManagement.adTag', [
                         return null;
                     },
 
-                    adSlot: function($stateParams, AdSlotManager) {
-                        if ($stateParams.adSlotId) {
-                            return AdSlotManager.one($stateParams.adSlotId).get().then(function (adSlot) {
-                                return adSlot.plain();
-                            });
-                        }
-
-                        return null;
-                    },
-
-
-                    site: function(SiteManager, adSlot) {
-                        if (adSlot) {
-                            return SiteManager.one(adSlot.site).get().then(function (site) {
-                                return site.plain();
-                            });
-                        }
-
-                        return null;
-                    },
-
                     siteList: function (SiteManager) {
                         return SiteManager.getList().then(function (sites) {
                             return sites.plain();
@@ -88,6 +61,15 @@ angular.module('tagcade.tagManagement.adTag', [
                         return AdNetworkManager.getList().then(function (adNetworks) {
                             return adNetworks.plain();
                         });
+                    }
+                },
+                customResolve: {
+                    admin: {
+                        publisherList: function(AdminUserManager) {
+                            return AdminUserManager.getList({ filter: 'publisher' }).then(function (users) {
+                                return users.plain();
+                            });
+                        }
                     }
                 },
                 breadcrumb: {
@@ -107,16 +89,8 @@ angular.module('tagcade.tagManagement.adTag', [
                         return AdTagManager.one($stateParams.id).get();
                     },
 
-                    adSlot: function (AdSlotManager, adTag) {
-                        return AdSlotManager.one(adTag.adSlot).get().then(function (adSlot) {
-                            return adSlot.plain();
-                        });
-                    },
-
-                    site: function (SiteManager, adSlot) {
-                        return SiteManager.one(adSlot.site).get().then(function (site) {
-                            return site.plain();
-                        });
+                    publisherList: function () {
+                        return null;
                     },
 
                     siteList: function () {

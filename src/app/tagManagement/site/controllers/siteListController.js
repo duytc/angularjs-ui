@@ -1,6 +1,6 @@
 angular.module('tagcade.tagManagement.site')
 
-    .controller('SiteListController', function ($scope, $filter, $modal, AlertService, SiteManager, ngTableParams, sites) {
+    .controller('SiteListController', function ($scope, $filter, $modal, AlertService, SiteManager, ngTableParams, TableParamsHelper, sites) {
         'use strict';
 
         var data = sites;
@@ -18,7 +18,9 @@ angular.module('tagcade.tagManagement.site')
             {
                 total: data.length,
                 getData: function($defer, params) {
-                    var filteredData = params.filter() ? $filter('filter')(data, params.filter()) : data;
+                    var filters = TableParamsHelper.getFilters(params.filter());
+
+                    var filteredData = params.filter() ? $filter('filter')(data, filters) : data;
                     var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
                     var paginatedData = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
 

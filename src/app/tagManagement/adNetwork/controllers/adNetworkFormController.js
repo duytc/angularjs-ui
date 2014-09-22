@@ -12,7 +12,7 @@ angular.module('tagcade.tagManagement.adNetwork')
         $scope.isNew = adNetwork === null;
         $scope.formProcessing = false;
 
-        $scope.allowPublisherSelection = $scope.userSession.isAdmin() && !!publishers;
+        $scope.allowPublisherSelection = $scope.currentUser.isAdmin() && !!publishers;
         $scope.publishers = publishers;
 
         $scope.adNetwork = adNetwork || {

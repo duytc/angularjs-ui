@@ -1,6 +1,6 @@
 angular.module('tagcade.tagManagement.adNetwork')
 
-    .controller('AdNetworkListController', function ($scope, $filter, $modal, $q, ngTableParams, AlertService, AdNetworkManager, adNetworks) {
+    .controller('AdNetworkListController', function ($scope, $filter, $modal, $q, ngTableParams, TableParamsHelper, AlertService, AdNetworkManager, adNetworks) {
         'use strict';
 
         var data = adNetworks;
@@ -18,7 +18,9 @@ angular.module('tagcade.tagManagement.adNetwork')
             {
                 total: data.length,
                 getData: function($defer, params) {
-                    var filteredData = params.filter() ? $filter('filter')(data, params.filter()) : data;
+                    var filters = TableParamsHelper.getFilters(params.filter());
+
+                    var filteredData = params.filter() ? $filter('filter')(data, filters) : data;
                     var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
                     var paginatedData = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
 

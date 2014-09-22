@@ -20,7 +20,7 @@
                     </ul>
                 </div>
             </td>
-            <td ng-show="userSession.isAdmin()" data-title="'Publisher'" sortable="'publisher'" filter="{ 'publisher': 'text' }">
+            <td ng-show="currentUser.isAdmin()" data-title="'Publisher'" sortable="'publisher.username'" filter="{ 'publisher.username': 'text' }">
                 {{ adNetwork.publisher.username }}
             </td>
             <td data-title="'Name'" sortable="'name'" filter="{ 'name': 'text' }">

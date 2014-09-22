@@ -1,16 +1,36 @@
 <section class="panel panel-default">
     <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> <span current-page-title></span></strong></div>
     <div class="panel-body">
-        <ui-select name="site" ng-model="site" on-select="selectSite($item, $model)">>
-            <ui-select-match placeholder="Select a site to generate tags for...">{{ $select.selected.name }}</ui-select-match>
-            <ui-select-choices repeat="site.id as site in siteList | filter:{name: $select.search}">
-                {{ site.name }}
-            </ui-select-choices>
-        </ui-select>
+        <form class="form-horizontal">
+
+            <div class="form-group" ng-if="allowPublisherSelection">
+                <div class="col-sm-12">
+                    <ui-select ng-model="selected.publisher" on-select="selectPublisher($item, $model)">
+                        <ui-select-match placeholder="Select a publisher">{{ $select.selected.username }}</ui-select-match>
+                        <ui-select-choices repeat="publisher.id as publisher in publishers | filter: { username: $select.search }">
+                            {{ publisher.username }}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <ui-select name="site" ng-model="selected.site" on-select="selectSite($item, $model)" ng-disabled="!selected.publisher">
+                        <ui-select-match placeholder="Select a site to generate tags for...">{{ $select.selected.name }}</ui-select-match>
+                        <ui-select-choices repeat="site.id as site in siteList | filter: { name: $select.search } | filter: publisherFilterCriteria">
+                            {{ site.name }}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+
+        </form>
     </div>
 </section>
 
 <section ng-if="jstags" class="panel panel-default">
+    <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> Tags for {{ selected.site.name }}</strong></div>
     <div class="panel-body">
         <div ng-if="jstags.header">
             <h4>Header Include</h4>

@@ -1,6 +1,6 @@
 angular.module('tagcade.tagManagement.adSlot')
 
-    .controller('AdSlotFormController', function ($scope, $state, $stateParams, $q, AdSlotManager, AlertService, ServerErrorProcessor, sites, adSlot) {
+    .controller('AdSlotFormController', function ($scope, $state, $stateParams, $q, AdSlotManager, AlertService, ServerErrorProcessor, site, publisherList, siteList, adSlot) {
         'use strict';
 
         $scope.fieldNameTranslations = {
@@ -13,13 +13,33 @@ angular.module('tagcade.tagManagement.adSlot')
         $scope.isNew = adSlot === null;
         $scope.formProcessing = false;
 
-        $scope.sites = sites;
+        $scope.allowSiteSelection = $scope.isNew && !!siteList;
+
+        // required by ui select
+        $scope.selected = {
+            publisher: site && site.publisher
+        };
+
+        $scope.publisherFilterCriteria = null;
+
+        $scope.publisherList = publisherList;
+        $scope.siteList = siteList;
 
         $scope.adSlot = adSlot || {
             site: $scope.isNew && $stateParams.hasOwnProperty('siteId') ? parseInt($stateParams.siteId, 10) : null,
             name: null,
             width: null,
             height: null
+        };
+
+        $scope.selectPublisher = function (publisher, publisherId) {
+            $scope.adSlot.site = null;
+
+            $scope.publisherFilterCriteria = {
+                publisher: {
+                    id: publisherId
+                }
+            };
         };
 
         $scope.isFormValid = function() {

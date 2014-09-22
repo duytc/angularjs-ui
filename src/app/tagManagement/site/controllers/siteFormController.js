@@ -11,7 +11,7 @@ angular.module('tagcade.tagManagement.site')
         $scope.isNew = site === null;
         $scope.formProcessing = false;
 
-        $scope.allowPublisherSelection = $scope.userSession.isAdmin() && !!publishers;
+        $scope.allowPublisherSelection = $scope.currentUser.isAdmin() && !!publishers;
         $scope.publishers = publishers;
 
         $scope.site = site || {

@@ -8,14 +8,7 @@ angular.module('tagcade.tagManagement.adSlot', [
         userStateHelperProvider
             .state('tagManagement.adSlot', {
                 abstract: true,
-                url: '/adSlots',
-                resolve: {
-                    sites: function(SiteManager) {
-                        return SiteManager.getList().then(function (sites) {
-                            return sites.plain();
-                        });
-                    }
-                }
+                url: '/adSlots'
             })
             .state('tagManagement.adSlot.list', {
                 url: '/list/site/{siteId:[0-9]+}',
@@ -55,6 +48,31 @@ angular.module('tagcade.tagManagement.adSlot', [
                 resolve: {
                     adSlot: function() {
                         return null;
+                    },
+
+                    site: function ($stateParams, SiteManager) {
+                        if (!$stateParams.siteId) {
+                            return null;
+                        }
+
+                        return SiteManager.one($stateParams.siteId).get().then(function (site) {
+                            return site.plain();
+                        });
+                    },
+
+                    siteList: function(SiteManager) {
+                        return SiteManager.getList().then(function (sites) {
+                            return sites.plain();
+                        });
+                    }
+                },
+                customResolve: {
+                    admin: {
+                        publisherList: function(AdminUserManager) {
+                            return AdminUserManager.getList({ filter: 'publisher' }).then(function (users) {
+                                return users.plain();
+                            });
+                        }
                     }
                 },
                 breadcrumb: {
@@ -72,6 +90,18 @@ angular.module('tagcade.tagManagement.adSlot', [
                 resolve: {
                     adSlot: function($stateParams, AdSlotManager) {
                         return AdSlotManager.one($stateParams.id).get();
+                    },
+
+                    site: function (adSlot) {
+                        return adSlot.site;
+                    },
+
+                    publisherList: function () {
+                        return null;
+                    },
+
+                    siteList: function() {
+                        return null;
                     }
                 },
                 breadcrumb: {
