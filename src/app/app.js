@@ -5,5 +5,7 @@ angular.module('tagcade', [
 
     'tagcade.core',
     'tagcade.publisher',
-    'tagcade.admin'
+    'tagcade.admin',
+
+    'tagcade.tagManagement'
 ]);
