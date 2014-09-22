@@ -1,6 +1,6 @@
 angular.module('tagcade.core.auth')
 
-    .factory('Session', function () {
+    .factory('Session', function (USER_ROLES) {
         'use strict';
 
         function Session(token, username, roles) {
@@ -17,6 +17,10 @@ angular.module('tagcade.core.auth')
 
         Session.prototype.hasRole = function(role) {
             return this.roles.indexOf(role) !== -1;
+        };
+
+        Session.prototype.isAdmin = function() {
+            return this.roles.indexOf(USER_ROLES.admin) !== -1;
         };
 
         Session.prototype.allowsFeature = function(feature) {
