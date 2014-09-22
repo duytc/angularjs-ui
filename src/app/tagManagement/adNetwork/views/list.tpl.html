@@ -1,0 +1,34 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> <span current-page-title></span></strong></div>
+    <div class="panel-body">
+        <button ui-sref="^.new" class="btn btn-w-md btn-gap-v btn-primary" type="button">Add Ad Network</button>
+    </div>
+
+    <table class="table table-hover" ng-table="tableParams" show-filter="true">
+        <tr ng-repeat="adNetwork in $data">
+            <td data-title="'#'" sortable="'id'">
+                {{ adNetwork.id }}
+            </td>
+            <td data-title="'Actions'">
+                <div class="btn-group" dropdown>
+                    <button type="button" class="btn dropdown-toggle"> Actions <span class="caret"></span> </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a dropdown-toggle ng-click="toggleAdNetworkStatus(adNetwork)">{{ adNetwork.active ? 'Pause' : 'Activate' }} Ad Network</a></li>
+                        <li><a ui-sref="^.edit({ id: adNetwork.id })">Edit Ad Network</a></li>
+                        <li ng-if="adNetwork.url" class="divider"></li>
+                        <li ng-if="adNetwork.url"><a ng-href="{{ adNetwork.url }}" target="_blank">Visit Ad Network</a></li>
+                    </ul>
+                </div>
+            </td>
+            <td ng-show="userSession.isAdmin()" data-title="'Publisher'" sortable="'publisher'" filter="{ 'publisher': 'text' }">
+                {{ adNetwork.publisher.username }}
+            </td>
+            <td data-title="'Name'" sortable="'name'" filter="{ 'name': 'text' }">
+                {{ adNetwork.name }}
+            </td>
+            <td data-title="'Status'">
+                <span class="label" ng-class="adNetwork.active ? 'label-success' : 'label-danger'">{{ adNetwork.active ? 'Active' : 'Paused' }}</span>
+            </td>
+        </tr>
+    </table>
+</div>

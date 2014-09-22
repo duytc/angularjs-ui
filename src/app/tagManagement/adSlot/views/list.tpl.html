@@ -1,0 +1,33 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> <span current-page-title></span></strong></div>
+    <div class="panel-body">
+        <button ui-sref="^.new({ siteId: currentSiteId })" class="btn btn-w-md btn-gap-v btn-primary" type="button">New Ad Slot</button>
+        <button ui-sref="^.^.sites.list" class="btn btn-w-md btn-gap-v btn-primary" type="button">Back to Site List</button>
+    </div>
+
+    <table class="table table-hover" ng-table="tableParams" show-filter="true">
+        <tr ng-repeat="adSlot in $data">
+            <td data-title="'#'" sortable="'id'">
+                {{ adSlot.id }}
+            </td>
+            <td data-title="'Actions'">
+                <div class="btn-group" dropdown>
+                    <button type="button" class="btn dropdown-toggle"> Actions <span class="caret"></span> </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a ui-sref="^.^.adTag.list({ adSlotId: adSlot.id })">Manage Ad Tags</a></li>
+                        <li><a dropdown-toggle ng-click="generateAdTag(adSlot)">Generate a Tag</a></li>
+                        <li class="divider"></li>
+                        <li><a ui-sref="^.edit({ id: adSlot.id })">Edit Ad Slot</a></li>
+                        <li><a dropdown-toggle ng-click="confirmDeletion(adSlot)">Delete Ad Slot</a></li>
+                    </ul>
+                </div>
+            </td>
+            <td data-title="'Name'" sortable="'name'" filter="{ 'name': 'text' }">
+                {{ adSlot.name }}
+            </td>
+            <td data-title="'Size'" sortable="'width'">
+                {{ adSlot.getSize() }}
+            </td>
+        </tr>
+    </table>
+</div>
