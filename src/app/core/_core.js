@@ -88,7 +88,7 @@ angular.module('tagcade.core', [
     })
 
     // authentication and authorization checks performed before every URL change
-    .run(function ($rootScope, $location, $state, $q, userStateHelper, Auth, ENTRY_STATE, AUTH_EVENTS) {
+    .run(function ($rootScope, $location, $state, $q, UserStateHelper, Auth, ENTRY_STATE, AUTH_EVENTS) {
         'use strict';
 
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
@@ -141,7 +141,7 @@ angular.module('tagcade.core', [
     })
 
     // event listeners
-    .run(function ($rootScope, $state, Auth, userStateHelper, AlertService, ENTRY_STATE, CORE_EVENTS, AUTH_EVENTS) {
+    .run(function ($rootScope, $state, Auth, UserStateHelper, AlertService, ENTRY_STATE, CORE_EVENTS, AUTH_EVENTS) {
         'use strict';
 
         $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
@@ -155,11 +155,11 @@ angular.module('tagcade.core', [
             }
 
             // todo what happens in this fails for some reason?
-            userStateHelper.transitionRelativeToBaseState('error.' + errorCode, {}, { location: 'replace' });
+            UserStateHelper.transitionRelativeToBaseState('error.' + errorCode, {}, { location: 'replace' });
         });
 
         $rootScope.$on(AUTH_EVENTS.loginSuccess, function() {
-            userStateHelper.transitionRelativeToBaseState('dashboard');
+            UserStateHelper.transitionRelativeToBaseState('dashboard');
         });
 
         $rootScope.$on(AUTH_EVENTS.loginFailed, function() {
@@ -189,7 +189,7 @@ angular.module('tagcade.core', [
         });
 
         $rootScope.$on(AUTH_EVENTS.notAuthorized, function() {
-            userStateHelper.transitionRelativeToBaseState('error.403');
+            UserStateHelper.transitionRelativeToBaseState('error.403');
         });
     })
 ;

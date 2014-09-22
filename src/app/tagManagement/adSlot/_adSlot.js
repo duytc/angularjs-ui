@@ -2,10 +2,10 @@ angular.module('tagcade.tagManagement.adSlot', [
     'ui.router'
 ])
 
-    .config(function (userStateHelperProvider) {
+    .config(function (UserStateHelperProvider) {
         'use strict';
 
-        userStateHelperProvider
+        UserStateHelperProvider
             .state('tagManagement.adSlot', {
                 abstract: true,
                 url: '/adSlots'

@@ -2,10 +2,10 @@ angular.module('tagcade.tagManagement.site', [
     'ui.router'
 ])
 
-    .config(function (userStateHelperProvider) {
+    .config(function (UserStateHelperProvider) {
         'use strict';
 
-        userStateHelperProvider
+        UserStateHelperProvider
             .state('tagManagement.sites', {
                 abstract: true,
                 url: '/sites'

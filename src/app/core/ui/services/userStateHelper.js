@@ -5,7 +5,7 @@ angular.module('tagcade.core.ui')
         publisher: 'app.publisher'
     })
 
-    .provider('userStateHelper', function($stateProvider, BASE_USER_STATES) {
+    .provider('UserStateHelper', function($stateProvider, BASE_USER_STATES) {
         'use strict';
 
         function getCustomResolve(customResolves, baseName, resolveKey) {

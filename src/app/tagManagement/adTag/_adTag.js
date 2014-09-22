@@ -4,10 +4,10 @@ angular.module('tagcade.tagManagement.adTag', [
     'ui.sortable'
 ])
 
-    .config(function (userStateHelperProvider) {
+    .config(function (UserStateHelperProvider) {
         'use strict';
 
-        userStateHelperProvider
+        UserStateHelperProvider
             .state('tagManagement.adTag', {
                 abstract: true,
                 url: '/adTags'

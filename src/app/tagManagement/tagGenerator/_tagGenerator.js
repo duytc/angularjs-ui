@@ -2,10 +2,10 @@ angular.module('tagcade.tagManagement.tagGenerator', [
     'ui.router'
 ])
 
-    .config(function (userStateHelperProvider) {
+    .config(function (UserStateHelperProvider) {
         'use strict';
 
-        userStateHelperProvider
+        UserStateHelperProvider
             .state('tagManagement.tagGenerator', {
                 url: '/generateTags?siteId',
                 params: {

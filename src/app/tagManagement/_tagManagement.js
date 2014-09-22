@@ -11,10 +11,10 @@ angular.module('tagcade.tagManagement', [
     'tagcade.tagManagement.adTag'
 ])
 
-    .config(function (userStateHelperProvider) {
+    .config(function (UserStateHelperProvider) {
         'use strict';
 
-        userStateHelperProvider
+        UserStateHelperProvider
             .state('tagManagement', {
                 abstract: true,
                 url: '/tagManagement',
