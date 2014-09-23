@@ -28,7 +28,7 @@ angular.module('tagcade.admin.userManagement', [
                     }
                 },
                 breadcrumb: {
-                    title: 'User List'
+                    title: 'Users'
                 }
             })
             .state('app.admin.userManagement.new', {
@@ -45,7 +45,7 @@ angular.module('tagcade.admin.userManagement', [
                     }
                 },
                 breadcrumb: {
-                    title: 'Add New User'
+                    title: 'New User'
                 }
             })
             .state('app.admin.userManagement.edit', {

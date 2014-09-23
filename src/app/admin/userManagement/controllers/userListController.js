@@ -10,7 +10,7 @@ angular.module('tagcade.admin.userManagement')
         $scope.tableParams = new ngTableParams( // jshint ignore:line
             {
                 page: 1,
-                count: 25,
+                count: 10,
                 sorting: {
                     id: 'asc'
                 }

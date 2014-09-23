@@ -5,9 +5,17 @@
     </div>
 
     <table class="table table-hover" ng-table="tableParams" show-filter="true">
-        <tr ng-repeat="user in $data" ui-sref="^.edit({ id: user.id })">
+        <tr ng-repeat="user in $data">
             <td data-title="'#'" sortable="'id'">
                 {{ user.id }}
+            </td>
+            <td data-title="'Actions'">
+                <div class="btn-group" dropdown>
+                    <button type="button" class="btn dropdown-toggle"> Actions <span class="caret"></span> </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a ui-sref="^.edit({ id: user.id })">Edit User</a></li>
+                    </ul>
+                </div>
             </td>
             <td data-title="'Username'" sortable="'username'" filter="{ 'username': 'text' }">
                 {{ user.username }}
