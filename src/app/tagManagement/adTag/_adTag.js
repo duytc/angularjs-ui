@@ -51,9 +51,45 @@ angular.module('tagcade.tagManagement.adTag', [
                         return null;
                     },
 
+                    adSlot: function ($stateParams, AdSlotManager) {
+                        if (!$stateParams.adSlotId) {
+                            return null;
+                        }
+
+                        return AdSlotManager.one($stateParams.adSlotId).get().then(function (adSlot) {
+                            return adSlot.plain();
+                        });
+                    },
+
+                    site: function (adSlot) {
+                        if (!adSlot) {
+                            return null;
+                        }
+
+                        return adSlot.site;
+                    },
+
+                    publisher: function (site) {
+                        if (!site) {
+                            return null;
+                        }
+
+                        return site.publisher;
+                    },
+
                     siteList: function (SiteManager) {
                         return SiteManager.getList().then(function (sites) {
                             return sites.plain();
+                        });
+                    },
+
+                    adSlotList: function (SiteManager, site) {
+                        if (!site) {
+                            return null;
+                        }
+
+                        return SiteManager.one(site.id).getList('adslots').then(function (adSlots) {
+                            return adSlots.plain();
                         });
                     },
 
@@ -89,11 +125,27 @@ angular.module('tagcade.tagManagement.adTag', [
                         return AdTagManager.one($stateParams.id).get();
                     },
 
+                    adSlot: function (adTag) {
+                        return adTag.adSlot;
+                    },
+
+                    site: function (adSlot) {
+                        return adSlot.site;
+                    },
+
+                    publisher: function (site) {
+                        return site.publisher;
+                    },
+
                     publisherList: function () {
                         return null;
                     },
 
                     siteList: function () {
+                        return null;
+                    },
+
+                    adSlotList: function () {
                         return null;
                     },
 

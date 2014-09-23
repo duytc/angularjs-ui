@@ -1,7 +1,7 @@
 angular.module('tagcade.tagManagement.adTag')
 
     .controller('AdTagFormController', function (
-        $scope, $state, $stateParams, $q, SiteManager, AdTagManager, AlertService, ServerErrorProcessor, adTag, publisherList, siteList, adNetworkList
+        $scope, $state, $stateParams, $q, SiteManager, AdTagManager, AlertService, ServerErrorProcessor, adTag, adSlot, site, publisher, publisherList, siteList, adSlotList, adNetworkList
     ) {
         'use strict';
 
@@ -23,19 +23,31 @@ angular.module('tagcade.tagManagement.adTag')
 
         // required by ui select
         $scope.selected = {
-            publisher: null,
-            site: null
+            publisher: publisher,
+            site: site
         };
 
         $scope.publisherFilterCriteria = null;
 
+        $scope.setPublisherFilterCriteria = function (publisherId) {
+            $scope.publisherFilterCriteria = {
+                publisher: {
+                    id: publisherId
+                }
+            };
+        };
+
+        if (publisher) {
+            $scope.setPublisherFilterCriteria(publisher.id);
+        }
+
         $scope.publisherList = publisherList;
         $scope.siteList = siteList;
-        $scope.adSlotList = [];
+        $scope.adSlotList = adSlotList;
         $scope.adNetworkList = adNetworkList;
 
         $scope.adTag = adTag || {
-            adSlot: null,
+            adSlot: adSlot,
             adNetwork: null,
             html: null,
             position: null,
@@ -51,11 +63,7 @@ angular.module('tagcade.tagManagement.adTag')
             $scope.selected.site = null;
             $scope.resetSelection();
 
-            $scope.publisherFilterCriteria = {
-                publisher: {
-                    id: publisherId
-                }
-            };
+            $scope.setPublisherFilterCriteria(publisherId);
         };
 
         $scope.selectSite = function (site, siteId) {
