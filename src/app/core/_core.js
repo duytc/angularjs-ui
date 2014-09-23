@@ -4,8 +4,7 @@ angular.module('tagcade.core', [
 
     'tagcade.core.ui',
     'tagcade.core.data',
-    'tagcade.core.auth',
-    'tagcade.core.myAccount'
+    'tagcade.core.auth'
 ])
 
     .constant('APP_NAME', 'Tagcade Platform')

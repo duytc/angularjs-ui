@@ -74,15 +74,6 @@ angular.module('tagcade.admin', [
                     title: '500'
                 }
             })
-            .state('app.admin.myAccount', {
-                url: '/myAccount',
-                views: {
-                    'content@app': {
-                        controller: 'MyAccountController',
-                        templateUrl: 'core/myAccount/views/myAccount.tpl.html'
-                    }
-                }
-            })
         ;
     })
 

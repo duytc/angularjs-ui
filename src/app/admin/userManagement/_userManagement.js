@@ -62,7 +62,7 @@ angular.module('tagcade.admin.userManagement', [
                     }
                 },
                 breadcrumb: {
-                    title: 'Edit User'
+                    title: 'Edit User - {{ user.username }}'
                 }
             })
         ;

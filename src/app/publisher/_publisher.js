@@ -66,15 +66,6 @@ angular.module('tagcade.publisher', [
                     title: '500'
                 }
             })
-            .state('app.publisher.myAccount', {
-                url: '/myAccount',
-                views: {
-                    'content@app': {
-                        controller: 'MyAccountController',
-                        templateUrl: 'core/myAccount/views/myAccount.tpl.html'
-                    }
-                }
-            })
         ;
     })
 

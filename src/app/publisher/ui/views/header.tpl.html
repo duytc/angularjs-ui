@@ -48,12 +48,6 @@
             <span>{{ currentUser.username }}</span>
         </a>
         <ul class="dropdown-menu with-arrow">
-            <li>
-                <a ui-sref="app.publisher.myAccount">
-                    <i class="fa fa-user"></i>
-                    My Account
-                </a>
-            </li>
             <li ng-controller="LogoutController">
                 <a href="#" ng-click="logout()">
                     <i class="fa fa-sign-out"></i>
