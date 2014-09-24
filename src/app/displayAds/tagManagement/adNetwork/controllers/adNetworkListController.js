@@ -12,7 +12,7 @@ angular.module('tagcade.displayAds.tagManagement.adNetwork')
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'You do not currently have any ad networks'
+                message: 'There is currently no ad networks'
             });
         }
 

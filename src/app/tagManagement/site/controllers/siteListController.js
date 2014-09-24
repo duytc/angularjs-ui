@@ -12,7 +12,7 @@ angular.module('tagcade.tagManagement.site')
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'You do not currently have any sites'
+                message: 'There is currently no sites'
             });
         }
 

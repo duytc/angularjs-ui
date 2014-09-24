@@ -12,7 +12,7 @@ angular.module('tagcade.displayAds.tagManagement.adSlot')
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'You do not currently have any ad slots in this site'
+                message: 'There is currently no ad slots in this site'
             });
         }
 

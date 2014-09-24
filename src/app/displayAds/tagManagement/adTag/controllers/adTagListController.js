@@ -10,7 +10,7 @@ angular.module('tagcade.displayAds.tagManagement.adTag')
         if (!$scope.hasAdTags()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'You do not currently have any ad tags in this ad slot'
+                message: 'There is currently no ad tags in this ad slot'
             });
         }
 
