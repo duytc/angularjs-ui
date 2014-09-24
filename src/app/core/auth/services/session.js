@@ -34,7 +34,7 @@ angular.module('tagcade.core.auth')
                 return true;
             }
 
-            return this.modules.indexOf(module) !== -1;
+            return this.enabledModules.indexOf(module) !== -1;
         };
 
         return {
