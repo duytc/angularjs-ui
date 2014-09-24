@@ -115,9 +115,19 @@ angular.module('tagcade.core', [
                     function() {
                         // user authenticated, check authorization
 
-                        var requiredRole = stateData.role;
+                        var requiredRole = stateData.requiredUserRole;
 
                         if (requiredRole && !Auth.isAuthorized(requiredRole)) {
+                            $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
+                            return $q.reject('not authorized');
+                        }
+
+                        var currentUser = Auth.getSession();
+                        var requiredModule = stateData.requiredModule;
+
+                        // check if this state requires a specific user role
+
+                        if (requiredModule && !currentUser.hasModuleEnabled(requiredModule)) {
                             $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
                             return $q.reject('not authorized');
                         }

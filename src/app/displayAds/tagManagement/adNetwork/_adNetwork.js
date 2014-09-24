@@ -2,13 +2,16 @@ angular.module('tagcade.displayAds.tagManagement.adNetwork', [
     'ui.router'
 ])
 
-    .config(function (UserStateHelperProvider) {
+    .config(function (UserStateHelperProvider, USER_MODULES) {
         'use strict';
 
         UserStateHelperProvider
             .state('tagManagement.adNetwork', {
                 abstract: true,
-                url: '/adNetworks'
+                url: '/adNetworks',
+                data: {
+                    requiredModule: USER_MODULES.displayAds
+                }
             })
             .state('tagManagement.adNetwork.list', {
                 url: '/list',

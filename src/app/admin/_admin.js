@@ -34,7 +34,7 @@ angular.module('tagcade.admin', [
                 },
                 url: '/adm',
                 data: {
-                    role: USER_ROLES.admin
+                    requiredUserRole: USER_ROLES.admin
                 }
             })
             .state('app.admin.error', {

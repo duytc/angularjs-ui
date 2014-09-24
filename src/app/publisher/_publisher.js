@@ -25,7 +25,7 @@ angular.module('tagcade.publisher', [
                 },
                 url: '/pub',
                 data: {
-                    role: USER_ROLES.publisher
+                    requiredUserRole: USER_ROLES.publisher
                 }
             })
             .state('app.publisher.error', {

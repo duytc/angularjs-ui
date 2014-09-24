@@ -2,13 +2,16 @@ angular.module('tagcade.displayAds.tagManagement.adSlot', [
     'ui.router'
 ])
 
-    .config(function (UserStateHelperProvider) {
+    .config(function (UserStateHelperProvider, USER_MODULES) {
         'use strict';
 
         UserStateHelperProvider
             .state('tagManagement.adSlot', {
                 abstract: true,
-                url: '/adSlots'
+                url: '/adSlots',
+                data: {
+                    requiredModule: USER_MODULES.displayAds
+                }
             })
             .state('tagManagement.adSlot.list', {
                 url: '/list/site/{siteId:[0-9]+}',

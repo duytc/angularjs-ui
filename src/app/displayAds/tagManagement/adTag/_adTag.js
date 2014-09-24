@@ -4,13 +4,16 @@ angular.module('tagcade.displayAds.tagManagement.adTag', [
     'ui.sortable'
 ])
 
-    .config(function (UserStateHelperProvider) {
+    .config(function (UserStateHelperProvider, USER_MODULES) {
         'use strict';
 
         UserStateHelperProvider
             .state('tagManagement.adTag', {
                 abstract: true,
-                url: '/adTags'
+                url: '/adTags',
+                data: {
+                    requiredModule: USER_MODULES.displayAds
+                }
             })
             .state('tagManagement.adTag.list', {
                 url: '/list/adslot/{adSlotId:[0-9]+}',

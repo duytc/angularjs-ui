@@ -4,7 +4,7 @@ angular.module('tagcade.analytics', [
     'tagcade.analytics.sourceReport'
 ])
 
-    .config(function (UserStateHelperProvider) {
+    .config(function (UserStateHelperProvider, USER_MODULES) {
         'use strict';
 
         UserStateHelperProvider
@@ -13,6 +13,9 @@ angular.module('tagcade.analytics', [
                 url: '/analytics',
                 breadcrumb: {
                     title: 'Analytics'
+                },
+                data: {
+                    requiredModule: USER_MODULES.analytics
                 }
             })
         ;
