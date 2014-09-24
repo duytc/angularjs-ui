@@ -3,6 +3,17 @@ angular.module('tagcade.displayAds.tagManagement.adTag')
     .controller('AdTagListController', function ($scope, $filter, $stateParams, $q, $modal, adTags, adSlot, AdTagManager, AlertService) {
         'use strict';
 
+        $scope.hasAdTags = function () {
+            return !!adTags.length;
+        };
+
+        if (!$scope.hasAdTags()) {
+            AlertService.replaceAlerts({
+                type: 'warning',
+                message: 'You do not currently have any ad tags in this ad slot'
+            });
+        }
+
         $scope.adSlot = adSlot;
         $scope.adTags = adTags;
 

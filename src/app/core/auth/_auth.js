@@ -23,10 +23,10 @@ angular.module('tagcade.core.auth', [
         publisher: 'ROLE_PUBLISHER'
     })
 
-    .constant('USER_FEATURES', {
-        featureDisplay: 'FEATURE_DISPLAY',
-        featureVideo: 'FEATURE_VIDEO',
-        featureAnalytics: 'FEATURE_ANALYTICS'
+    .constant('USER_MODULES', {
+        displayAds: 'MODULE_DISPLAY',
+        video: 'MODULE_VIDEO',
+        analytics: 'MODULE_ANALYTICS'
     })
 
     .constant('AUTH_EVENTS', {

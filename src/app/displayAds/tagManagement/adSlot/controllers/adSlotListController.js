@@ -5,6 +5,17 @@ angular.module('tagcade.displayAds.tagManagement.adSlot')
 
         var data = adSlots;
 
+        $scope.hasData = function () {
+            return !!data.length;
+        };
+
+        if (!$scope.hasData()) {
+            AlertService.replaceAlerts({
+                type: 'warning',
+                message: 'You do not currently have any ad slots in this site'
+            });
+        }
+
         $scope.setWideContent();
 
         $scope.currentSiteId = $stateParams.siteId || null;

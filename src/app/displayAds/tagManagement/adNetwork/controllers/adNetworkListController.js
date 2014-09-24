@@ -5,6 +5,17 @@ angular.module('tagcade.displayAds.tagManagement.adNetwork')
 
         var data = adNetworks;
 
+        $scope.hasData = function () {
+            return !!data.length;
+        };
+
+        if (!$scope.hasData()) {
+            AlertService.replaceAlerts({
+                type: 'warning',
+                message: 'You do not currently have any ad networks'
+            });
+        }
+
         $scope.setWideContent();
 
         $scope.tableParams = new ngTableParams( // jshint ignore:line

@@ -5,6 +5,17 @@ angular.module('tagcade.tagManagement.site')
 
         var data = sites;
 
+        $scope.hasData = function () {
+            return !!data.length;
+        };
+
+        if (!$scope.hasData()) {
+            AlertService.replaceAlerts({
+                type: 'warning',
+                message: 'You do not currently have any sites'
+            });
+        }
+
         $scope.setWideContent();
 
         $scope.tableParams = new ngTableParams( // jshint ignore:line

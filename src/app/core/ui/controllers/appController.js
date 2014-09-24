@@ -1,9 +1,12 @@
 angular.module('tagcade.core.ui')
 
-    .controller('AppController', function($rootScope, $scope, userSession) {
+    .controller('AppController', function($rootScope, $scope, userSession, USER_MODULES) {
         'use strict';
 
         $scope.currentUser = userSession;
+
+        $scope.hasDisplayAdsModule = userSession.hasModuleEnabled(USER_MODULES.displayAds);
+        $scope.hasAnalyticsModule = userSession.hasModuleEnabled(USER_MODULES.analytics);
 
         $scope.admin = {
             layout: 'wide',

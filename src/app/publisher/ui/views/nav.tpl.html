@@ -10,11 +10,11 @@
             <ul>
                 <li ui-sref-active="active"><a ui-sref=".tagManagement.tagGenerator"><i class="fa fa-caret-right"></i>Generate Tags</a></li>
                 <li ui-sref-active="active"><a ui-sref=".tagManagement.sites.list"><i class="fa fa-caret-right"></i>My Sites</a></li>
-                <li ui-sref-active="active"><a ui-sref=".tagManagement.adNetwork.list"><i class="fa fa-caret-right"></i>My Ad Networks</a></li>
+                <li ng-if="hasDisplayAdsModule" ui-sref-active="active"><a ui-sref=".tagManagement.adNetwork.list"><i class="fa fa-caret-right"></i>My Ad Networks</a></li>
                 <li ui-sref-active="active"><a ui-sref=".tagManagement.sites.new"><i class="fa fa-caret-right"></i>New Site</a></li>
-                <li ui-sref-active="active"><a ui-sref=".tagManagement.adNetwork.new"><i class="fa fa-caret-right"></i>New Ad Network</a></li>
-                <li ui-sref-active="active"><a ui-sref=".tagManagement.adSlot.new"><i class="fa fa-caret-right"></i>New Ad Slot</a></li>
-                <li ui-sref-active="active"><a ui-sref=".tagManagement.adTag.new"><i class="fa fa-caret-right"></i>New Ad Tag</a></li>
+                <li ng-if="hasDisplayAdsModule" ui-sref-active="active"><a ui-sref=".tagManagement.adNetwork.new"><i class="fa fa-caret-right"></i>New Ad Network</a></li>
+                <li ng-if="hasDisplayAdsModule" ui-sref-active="active"><a ui-sref=".tagManagement.adSlot.new"><i class="fa fa-caret-right"></i>New Ad Slot</a></li>
+                <li ng-if="hasDisplayAdsModule" ui-sref-active="active"><a ui-sref=".tagManagement.adTag.new"><i class="fa fa-caret-right"></i>New Ad Tag</a></li>
             </ul>
         </li>
 
@@ -25,7 +25,7 @@
             </ul>
         </li>
 
-        <li ui-sref-active="active">
+        <li  ng-if="hasAnalyticsModule" ui-sref-active="active">
             <a href="#" ui-sref=".analytics"><i class="fa fa-bar-chart-o"></i><span>Analytics</span></a>
             <ul>
                 <li ui-sref-active="active"><a ui-sref=".analytics.sourceReport"><i class="fa fa-caret-right"></i>Source Reports</a></li>
