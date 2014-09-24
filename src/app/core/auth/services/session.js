@@ -3,41 +3,57 @@ angular.module('tagcade.core.auth')
     .factory('Session', function (USER_ROLES) {
         'use strict';
 
-        function Session(token, username, roles) {
+        function Session(token, id, username, userRoles, enabledModules) {
             this.token = token;
+            this.id = parseInt(id, 10) || null;
             this.username = username;
-
-            if (!angular.isArray(roles)) {
-                roles = [roles];
+            
+            if (!angular.isArray(userRoles)) {
+                userRoles = [];
             }
+            
+            this.userRoles = userRoles;
 
-            this.roles = roles;
-            this.features = [];
+            if (!angular.isArray(enabledModules)) {
+                enabledModules = [];
+            }
+            
+            this.enabledModules = enabledModules;
         }
 
-        Session.prototype.hasRole = function(role) {
-            return this.roles.indexOf(role) !== -1;
+        Session.prototype.hasUserRole = function(role) {
+            return this.userRoles.indexOf(role) !== -1;
         };
 
         Session.prototype.isAdmin = function() {
-            return this.roles.indexOf(USER_ROLES.admin) !== -1;
+            return this.userRoles.indexOf(USER_ROLES.admin) !== -1;
         };
 
-        Session.prototype.allowsFeature = function(feature) {
-            if (this.hasRole('ROLE_ADMIN')) {
+        Session.prototype.hasModuleEnabled = function(module) {
+            if (this.isAdmin()) {
                 return true;
             }
 
-            return this.features.indexOf(feature) !== -1;
+            return this.modules.indexOf(module) !== -1;
         };
 
         return {
-            createNew: function(token, username, roles) {
-                token = token || null;
-                username = username || null;
-                roles = roles || [];
+            /**
+             * @param {String|Object} token
+             * @param {Number} id
+             * @param {String} username
+             * @param {Array} [userRoles]
+             * @param {Array} [enabledModules]
+             */
+            createNew: function(token, id, username, userRoles, enabledModules) {
+                return new Session(token, id, username, userRoles, enabledModules);
+            },
 
-                return new Session(token, username, roles);
+            /**
+             * @param {Object} data
+             */
+            createNewFrom: function (data) {
+                return this.createNew(data.token, data.id, data.username, data.userRoles, data.enabledModules);
             },
 
             isSession: function(session) {

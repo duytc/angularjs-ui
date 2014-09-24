@@ -3,12 +3,7 @@ angular.module('tagcade.core.ui')
     .controller('AppController', function($rootScope, $scope, userSession) {
         'use strict';
 
-        $scope.currentUser = userSession || {
-            id: null,
-            username: null,
-            roles: null,
-            features: null
-        };
+        $scope.currentUser = userSession;
 
         $scope.admin = {
             layout: 'wide',
