@@ -1,4 +1,4 @@
-angular.module('tagcade.tagManagement.adTag', [
+angular.module('tagcade.displayAds.tagManagement.adTag', [
     'ui.router',
 
     'ui.sortable'
@@ -8,16 +8,16 @@ angular.module('tagcade.tagManagement.adTag', [
         'use strict';
 
         UserStateHelperProvider
-            .state('tagManagement.adTag', {
+            .state('displayAds.tagManagement.adTag', {
                 abstract: true,
                 url: '/adTags'
             })
-            .state('tagManagement.adTag.list', {
+            .state('displayAds.tagManagement.adTag.list', {
                 url: '/list/adslot/{adSlotId:[0-9]+}',
                 views: {
                     'content@app': {
                         controller: 'AdTagListController',
-                        templateUrl: 'tagManagement/adTag/views/list.tpl.html'
+                        templateUrl: 'displayAds/tagManagement/adTag/views/list.tpl.html'
                     }
                 },
                 resolve: {
@@ -35,7 +35,7 @@ angular.module('tagcade.tagManagement.adTag', [
                     title: 'Ad Tag List - {{ adSlot.name }} - {{ adSlot.site.name }}'
                 }
             })
-            .state('tagManagement.adTag.new', {
+            .state('displayAds.tagManagement.adTag.new', {
                 url: '/new?adSlotId',
                 params: {
                     adSlotId: null
@@ -43,7 +43,7 @@ angular.module('tagcade.tagManagement.adTag', [
                 views: {
                     'content@app': {
                         controller: 'AdTagFormController',
-                        templateUrl: 'tagManagement/adTag/views/form.tpl.html'
+                        templateUrl: 'displayAds/tagManagement/adTag/views/form.tpl.html'
                     }
                 },
                 resolve: {
@@ -112,12 +112,12 @@ angular.module('tagcade.tagManagement.adTag', [
                     title: 'New Ad Tag'
                 }
             })
-            .state('tagManagement.adTag.edit', {
+            .state('displayAds.tagManagement.adTag.edit', {
                 url: '/edit/{id:[0-9]+}',
                 views: {
                     'content@app': {
                         controller: 'AdTagFormController',
-                        templateUrl: 'tagManagement/adTag/views/form.tpl.html'
+                        templateUrl: 'displayAds/tagManagement/adTag/views/form.tpl.html'
                     }
                 },
                 resolve: {

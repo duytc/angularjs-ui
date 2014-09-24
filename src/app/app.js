@@ -7,5 +7,7 @@ angular.module('tagcade', [
     'tagcade.publisher',
     'tagcade.admin',
 
-    'tagcade.tagManagement'
+    'tagcade.displayAds',
+    'tagcade.reports',
+    'tagcade.analytics'
 ]);

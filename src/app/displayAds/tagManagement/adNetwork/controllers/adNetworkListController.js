@@ -1,4 +1,4 @@
-angular.module('tagcade.tagManagement.adNetwork')
+angular.module('tagcade.displayAds.tagManagement.adNetwork')
 
     .controller('AdNetworkListController', function ($scope, $filter, $modal, $q, ngTableParams, TableParamsHelper, AlertService, AdNetworkManager, adNetworks) {
         'use strict';
@@ -70,7 +70,7 @@ angular.module('tagcade.tagManagement.adNetwork')
 
             if (isPause) {
                 var modalInstance = $modal.open({
-                    templateUrl: 'tagManagement/adNetwork/views/confirmPause.tpl.html'
+                    templateUrl: 'displayAds/tagManagement/adNetwork/views/confirmPause.tpl.html'
                 });
 
                 modalInstance.result.then(function () {

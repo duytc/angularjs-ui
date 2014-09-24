@@ -1,4 +1,4 @@
-angular.module('tagcade.tagManagement.adSlot')
+angular.module('tagcade.displayAds.tagManagement.adSlot')
 
     .controller('AdSlotListController', function ($scope, $filter, $stateParams, $modal, $q, ngTableParams, AlertService, AdSlotManager, adSlots) {
         'use strict';
@@ -32,7 +32,7 @@ angular.module('tagcade.tagManagement.adSlot')
 
         $scope.generateAdTag = function (adSlot) {
             var modalInstance = $modal.open({
-                templateUrl: 'tagManagement/adSlot/views/generateAdTag.tpl.html',
+                templateUrl: 'displayAds/tagManagement/adSlot/views/generateAdTag.tpl.html',
                 resolve: {
                     javascriptTag: function (AdSlotManager) {
                         return AdSlotManager.one(adSlot.id).customGET('jstag');
@@ -47,7 +47,7 @@ angular.module('tagcade.tagManagement.adSlot')
 
         $scope.confirmDeletion = function (adSlot, index) {
             var modalInstance = $modal.open({
-                templateUrl: 'tagManagement/adSlot/views/confirmDeletion.tpl.html'
+                templateUrl: 'displayAds/tagManagement/adSlot/views/confirmDeletion.tpl.html'
             });
 
             modalInstance.result.then(function () {

@@ -1,4 +1,4 @@
-angular.module('tagcade.tagManagement.adNetwork', [
+angular.module('tagcade.displayAds.tagManagement.adNetwork', [
     'ui.router',
 ])
 
@@ -6,16 +6,16 @@ angular.module('tagcade.tagManagement.adNetwork', [
         'use strict';
 
         UserStateHelperProvider
-            .state('tagManagement.adNetwork', {
+            .state('displayAds.tagManagement.adNetwork', {
                 abstract: true,
-                url: '/adNetwork'
+                url: '/adNetworks'
             })
-            .state('tagManagement.adNetwork.list', {
+            .state('displayAds.tagManagement.adNetwork.list', {
                 url: '/list',
                 views: {
                     'content@app': {
                         controller: 'AdNetworkListController',
-                        templateUrl: 'tagManagement/adNetwork/views/list.tpl.html'
+                        templateUrl: 'displayAds/tagManagement/adNetwork/views/list.tpl.html'
                     }
                 },
                 resolve: {
@@ -28,12 +28,12 @@ angular.module('tagcade.tagManagement.adNetwork', [
                 }
 
             })
-            .state('tagManagement.adNetwork.new', {
+            .state('displayAds.tagManagement.adNetwork.new', {
                 url: '/new',
                 views: {
                     'content@app': {
                         controller: 'AdNetworkFormController',
-                        templateUrl: 'tagManagement/adNetwork/views/form.tpl.html'
+                        templateUrl: 'displayAds/tagManagement/adNetwork/views/form.tpl.html'
                     }
                 },
                 resolve: {
@@ -54,12 +54,12 @@ angular.module('tagcade.tagManagement.adNetwork', [
                     title: 'New Ad Network'
                 }
             })
-            .state('tagManagement.adNetwork.edit', {
+            .state('displayAds.tagManagement.adNetwork.edit', {
                 url: '/edit/{id:[0-9]+}',
                 views: {
                     'content@app': {
                         controller: 'AdNetworkFormController',
-                        templateUrl: 'tagManagement/adNetwork/views/form.tpl.html'
+                        templateUrl: 'displayAds/tagManagement/adNetwork/views/form.tpl.html'
                     }
                 },
                 resolve: {

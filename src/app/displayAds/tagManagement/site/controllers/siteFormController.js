@@ -1,28 +1,26 @@
-angular.module('tagcade.tagManagement.adNetwork')
+angular.module('tagcade.displayAds.tagManagement.site')
 
-    .controller('AdNetworkFormController', function ($scope, $state, $q, AdNetworkManager, AlertService, ServerErrorProcessor, adNetwork, publishers) {
+    .controller('SiteFormController', function ($scope, $state, $q, SiteManager, AlertService, ServerErrorProcessor, site, publishers) {
         'use strict';
 
         $scope.fieldNameTranslations = {
             name: 'Name',
-            url: 'Url',
-            active: 'Active'
+            domain: 'Domain'
         };
 
-        $scope.isNew = adNetwork === null;
+        $scope.isNew = site === null;
         $scope.formProcessing = false;
 
         $scope.allowPublisherSelection = $scope.currentUser.isAdmin() && !!publishers;
         $scope.publishers = publishers;
 
-        $scope.adNetwork = adNetwork || {
+        $scope.site = site || {
             name: null,
-            url: null,
-            active: true
+            domain: null
         };
 
         $scope.isFormValid = function() {
-            return $scope.adNetworkForm.$valid;
+            return $scope.siteForm.$valid;
         };
 
         $scope.submit = function() {
@@ -33,12 +31,12 @@ angular.module('tagcade.tagManagement.adNetwork')
 
             $scope.formProcessing = true;
 
-            var saveAdNetwork = $scope.isNew ? AdNetworkManager.post($scope.adNetwork) : $scope.adNetwork.patch();
+            var saveSite = $scope.isNew ? SiteManager.post($scope.site) : $scope.site.patch();
 
-            saveAdNetwork
+            saveSite
                 .catch(
                     function (response) {
-                        var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.adNetworkForm, $scope.fieldNameTranslations);
+                        var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.siteForm, $scope.fieldNameTranslations);
                         $scope.formProcessing = false;
 
                         return errorCheck;
@@ -48,7 +46,7 @@ angular.module('tagcade.tagManagement.adNetwork')
                     function () {
                         AlertService.addFlash({
                             type: 'success',
-                            message: 'The ad network has been ' + ($scope.isNew ? 'created' : 'updated')
+                            message: 'The site has been ' + ($scope.isNew ? 'created' : 'updated')
                         });
                     }
                 )

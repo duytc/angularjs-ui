@@ -1,4 +1,4 @@
-angular.module('tagcade.tagManagement.adSlot', [
+angular.module('tagcade.displayAds.tagManagement.adSlot', [
     'ui.router'
 ])
 
@@ -6,16 +6,16 @@ angular.module('tagcade.tagManagement.adSlot', [
         'use strict';
 
         UserStateHelperProvider
-            .state('tagManagement.adSlot', {
+            .state('displayAds.tagManagement.adSlot', {
                 abstract: true,
                 url: '/adSlots'
             })
-            .state('tagManagement.adSlot.list', {
+            .state('displayAds.tagManagement.adSlot.list', {
                 url: '/list/site/{siteId:[0-9]+}',
                 views: {
                     'content@app': {
                         controller: 'AdSlotListController',
-                        templateUrl: 'tagManagement/adSlot/views/list.tpl.html'
+                        templateUrl: 'displayAds/tagManagement/adSlot/views/list.tpl.html'
                     }
                 },
                 resolve: {
@@ -37,12 +37,12 @@ angular.module('tagcade.tagManagement.adSlot', [
                     title: 'Ad Slot List - {{ site.name }}'
                 }
             })
-            .state('tagManagement.adSlot.new', {
+            .state('displayAds.tagManagement.adSlot.new', {
                 url: '/new?siteId',
                 views: {
                     'content@app': {
                         controller: 'AdSlotFormController',
-                        templateUrl: 'tagManagement/adSlot/views/form.tpl.html'
+                        templateUrl: 'displayAds/tagManagement/adSlot/views/form.tpl.html'
                     }
                 },
                 resolve: {
@@ -79,12 +79,12 @@ angular.module('tagcade.tagManagement.adSlot', [
                     title: 'New Ad Slot'
                 }
             })
-            .state('tagManagement.adSlot.edit', {
+            .state('displayAds.tagManagement.adSlot.edit', {
                 url: '/edit/{id:[0-9]+}',
                 views: {
                     'content@app': {
                         controller: 'AdSlotFormController',
-                        templateUrl: 'tagManagement/adSlot/views/form.tpl.html'
+                        templateUrl: 'displayAds/tagManagement/adSlot/views/form.tpl.html'
                     }
                 },
                 resolve: {

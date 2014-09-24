@@ -4,8 +4,8 @@ angular.module('tagcade.publisher', [
     'tagcade.core',
     'tagcade.publisher.ui',
     'tagcade.publisher.dashboard',
-    'tagcade.publisher.reports',
-    'tagcade.publisher.analytics',
+//    'tagcade.publisher.reports',
+//    'tagcade.publisher.analytics',
     'tagcade.publisher.tools',
     'tagcade.publisher.billing'
 ])

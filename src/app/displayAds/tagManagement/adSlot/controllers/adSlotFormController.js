@@ -1,4 +1,4 @@
-angular.module('tagcade.tagManagement.adSlot')
+angular.module('tagcade.displayAds.tagManagement.adSlot')
 
     .controller('AdSlotFormController', function ($scope, $state, $stateParams, $q, AdSlotManager, AlertService, ServerErrorProcessor, site, publisherList, siteList, adSlot) {
         'use strict';

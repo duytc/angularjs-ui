@@ -1,4 +1,4 @@
-angular.module('tagcade.tagManagement.site', [
+angular.module('tagcade.displayAds.tagManagement.site', [
     'ui.router'
 ])
 
@@ -6,16 +6,16 @@ angular.module('tagcade.tagManagement.site', [
         'use strict';
 
         UserStateHelperProvider
-            .state('tagManagement.sites', {
+            .state('displayAds.tagManagement.sites', {
                 abstract: true,
                 url: '/sites'
             })
-            .state('tagManagement.sites.list', {
+            .state('displayAds.tagManagement.sites.list', {
                 url: '/list',
                 views: {
                     'content@app': {
                         controller: 'SiteListController',
-                        templateUrl: 'tagManagement/site/views/list.tpl.html'
+                        templateUrl: 'displayAds/tagManagement/site/views/list.tpl.html'
                     }
                 },
                 resolve: {
@@ -29,12 +29,12 @@ angular.module('tagcade.tagManagement.site', [
                     title: 'Sites'
                 }
             })
-            .state('tagManagement.sites.new', {
+            .state('displayAds.tagManagement.sites.new', {
                 url: '/new',
                 views: {
                     'content@app': {
                         controller: 'SiteFormController',
-                        templateUrl: 'tagManagement/site/views/form.tpl.html'
+                        templateUrl: 'displayAds/tagManagement/site/views/form.tpl.html'
                     }
                 },
                 resolve: {
@@ -55,12 +55,12 @@ angular.module('tagcade.tagManagement.site', [
                     title: 'New Site'
                 }
             })
-            .state('tagManagement.sites.edit', {
+            .state('displayAds.tagManagement.sites.edit', {
                 url: '/edit/{id:[0-9]+}',
                 views: {
                     'content@app': {
                         controller: 'SiteFormController',
-                        templateUrl: 'tagManagement/site/views/form.tpl.html'
+                        templateUrl: 'displayAds/tagManagement/site/views/form.tpl.html'
                     }
                 },
                 resolve: {

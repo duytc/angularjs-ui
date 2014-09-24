@@ -1,4 +1,4 @@
-angular.module('tagcade.tagManagement.adTag')
+angular.module('tagcade.displayAds.tagManagement.adTag')
 
     .controller('AdTagListController', function ($scope, $filter, $stateParams, $q, $modal, adTags, adSlot, AdTagManager, AlertService) {
         'use strict';
@@ -70,7 +70,7 @@ angular.module('tagcade.tagManagement.adTag')
 
         $scope.confirmDeletion = function (adTag, index) {
             var modalInstance = $modal.open({
-                templateUrl: 'tagManagement/adTag/views/confirmDeletion.tpl.html'
+                templateUrl: 'displayAds/tagManagement/adTag/views/confirmDeletion.tpl.html'
             });
 
             modalInstance.result.then(function () {

@@ -1,4 +1,4 @@
-angular.module('tagcade.tagManagement.site')
+angular.module('tagcade.displayAds.tagManagement.site')
 
     .controller('SiteListController', function ($scope, $filter, $modal, AlertService, SiteManager, ngTableParams, TableParamsHelper, sites) {
         'use strict';
@@ -32,7 +32,7 @@ angular.module('tagcade.tagManagement.site')
 
         $scope.confirmDeletion = function (site, index) {
             var modalInstance = $modal.open({
-                templateUrl: 'tagManagement/site/views/confirmDeletion.tpl.html'
+                templateUrl: 'displayAds/tagManagement/site/views/confirmDeletion.tpl.html'
             });
 
             modalInstance.result.then(function () {

@@ -1,4 +1,4 @@
-angular.module('tagcade.tagManagement.adTag')
+angular.module('tagcade.displayAds.tagManagement.adTag')
 
     .controller('AdTagFormController', function (
         $scope, $state, $stateParams, $q, SiteManager, AdTagManager, AlertService, ServerErrorProcessor, adTag, adSlot, site, publisher, publisherList, siteList, adSlotList, adNetworkList
