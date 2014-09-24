@@ -2,10 +2,10 @@ angular.module('tagcade.admin', [
     'ui.router',
 
     'tagcade.core',
+
     'tagcade.admin.ui',
     'tagcade.admin.dashboard',
     'tagcade.admin.userManagement'
-//    'tagcade.admin.analytics'
 ])
 
     .constant('API_ADMIN_BASE_URL', 'http://api.tagcade.dev/app_dev.php/api/admin/v1')

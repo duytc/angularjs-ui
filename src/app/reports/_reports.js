@@ -1,12 +1,10 @@
 angular.module('tagcade.reports', [
     'ui.router',
 
-    'tagcade.reports.displayAds'
+    'tagcade.reports.performanceReport'
 ])
 
     .config(function (UserStateHelperProvider) {
-        'use strict';
-
         UserStateHelperProvider
             .state('reports', {
                 abstract: true,

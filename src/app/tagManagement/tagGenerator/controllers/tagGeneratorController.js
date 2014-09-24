@@ -1,4 +1,4 @@
-angular.module('tagcade.displayAds.tagManagement.tagGenerator')
+angular.module('tagcade.tagManagement.tagGenerator')
 
     .controller('TagGeneratorController', function ($scope, $location, SiteManager, siteList, site, jstags, publishers) {
         'use strict';

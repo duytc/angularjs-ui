@@ -31,9 +31,9 @@ angular.module('tagcade.admin.userManagement')
 
         $scope.modules = [
             { label: 'Display', role: 'MODULE_DISPLAY' },
-            { label: 'Video', role: 'MODULE_VIDEO' },
+//            { label: 'Video', role: 'MODULE_VIDEO' },
             { label: 'Analytics', role: 'MODULE_ANALYTICS' },
-            { label: 'Fraud Detection', role: 'MODULE_FRAUD_DETECTION' }
+//            { label: 'Fraud Detection', role: 'MODULE_FRAUD_DETECTION' }
         ];
 
         function isValidRole(role) {

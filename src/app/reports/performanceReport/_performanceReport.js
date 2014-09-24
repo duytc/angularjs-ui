@@ -1,11 +1,10 @@
-angular.module('tagcade.reports.displayAds.performanceReport', [])
+angular.module('tagcade.reports.performanceReport', [])
 
     .config(function (UserStateHelperProvider) {
         'use strict';
 
         UserStateHelperProvider
-            .state('reports.displayAds.performanceReport', {
-//                abstract: true,
+            .state('reports.performanceReport', {
                 url: '/performanceReports',
                 views: {
                     'content@app': {

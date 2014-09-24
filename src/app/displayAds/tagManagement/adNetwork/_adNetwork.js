@@ -1,16 +1,16 @@
 angular.module('tagcade.displayAds.tagManagement.adNetwork', [
-    'ui.router',
+    'ui.router'
 ])
 
     .config(function (UserStateHelperProvider) {
         'use strict';
 
         UserStateHelperProvider
-            .state('displayAds.tagManagement.adNetwork', {
+            .state('tagManagement.adNetwork', {
                 abstract: true,
                 url: '/adNetworks'
             })
-            .state('displayAds.tagManagement.adNetwork.list', {
+            .state('tagManagement.adNetwork.list', {
                 url: '/list',
                 views: {
                     'content@app': {
@@ -28,7 +28,7 @@ angular.module('tagcade.displayAds.tagManagement.adNetwork', [
                 }
 
             })
-            .state('displayAds.tagManagement.adNetwork.new', {
+            .state('tagManagement.adNetwork.new', {
                 url: '/new',
                 views: {
                     'content@app': {
@@ -54,7 +54,7 @@ angular.module('tagcade.displayAds.tagManagement.adNetwork', [
                     title: 'New Ad Network'
                 }
             })
-            .state('displayAds.tagManagement.adNetwork.edit', {
+            .state('tagManagement.adNetwork.edit', {
                 url: '/edit/{id:[0-9]+}',
                 views: {
                     'content@app': {

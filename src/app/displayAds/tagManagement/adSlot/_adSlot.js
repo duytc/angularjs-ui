@@ -6,11 +6,11 @@ angular.module('tagcade.displayAds.tagManagement.adSlot', [
         'use strict';
 
         UserStateHelperProvider
-            .state('displayAds.tagManagement.adSlot', {
+            .state('tagManagement.adSlot', {
                 abstract: true,
                 url: '/adSlots'
             })
-            .state('displayAds.tagManagement.adSlot.list', {
+            .state('tagManagement.adSlot.list', {
                 url: '/list/site/{siteId:[0-9]+}',
                 views: {
                     'content@app': {
@@ -37,7 +37,7 @@ angular.module('tagcade.displayAds.tagManagement.adSlot', [
                     title: 'Ad Slot List - {{ site.name }}'
                 }
             })
-            .state('displayAds.tagManagement.adSlot.new', {
+            .state('tagManagement.adSlot.new', {
                 url: '/new?siteId',
                 views: {
                     'content@app': {
@@ -79,7 +79,7 @@ angular.module('tagcade.displayAds.tagManagement.adSlot', [
                     title: 'New Ad Slot'
                 }
             })
-            .state('displayAds.tagManagement.adSlot.edit', {
+            .state('tagManagement.adSlot.edit', {
                 url: '/edit/{id:[0-9]+}',
                 views: {
                     'content@app': {

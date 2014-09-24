@@ -1,4 +1,4 @@
-angular.module('tagcade.displayAds.tagManagement.site')
+angular.module('tagcade.tagManagement.site')
 
     .controller('SiteFormController', function ($scope, $state, $q, SiteManager, AlertService, ServerErrorProcessor, site, publishers) {
         'use strict';

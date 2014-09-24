@@ -8,11 +8,11 @@ angular.module('tagcade.displayAds.tagManagement.adTag', [
         'use strict';
 
         UserStateHelperProvider
-            .state('displayAds.tagManagement.adTag', {
+            .state('tagManagement.adTag', {
                 abstract: true,
                 url: '/adTags'
             })
-            .state('displayAds.tagManagement.adTag.list', {
+            .state('tagManagement.adTag.list', {
                 url: '/list/adslot/{adSlotId:[0-9]+}',
                 views: {
                     'content@app': {
@@ -35,7 +35,7 @@ angular.module('tagcade.displayAds.tagManagement.adTag', [
                     title: 'Ad Tag List - {{ adSlot.name }} - {{ adSlot.site.name }}'
                 }
             })
-            .state('displayAds.tagManagement.adTag.new', {
+            .state('tagManagement.adTag.new', {
                 url: '/new?adSlotId',
                 params: {
                     adSlotId: null
@@ -112,7 +112,7 @@ angular.module('tagcade.displayAds.tagManagement.adTag', [
                     title: 'New Ad Tag'
                 }
             })
-            .state('displayAds.tagManagement.adTag.edit', {
+            .state('tagManagement.adTag.edit', {
                 url: '/edit/{id:[0-9]+}',
                 views: {
                     'content@app': {

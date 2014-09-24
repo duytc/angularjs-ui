@@ -1,4 +1,4 @@
-angular.module('tagcade.displayAds.tagManagement.tagGenerator', [
+angular.module('tagcade.tagManagement.tagGenerator', [
     'ui.router'
 ])
 
@@ -6,7 +6,7 @@ angular.module('tagcade.displayAds.tagManagement.tagGenerator', [
         'use strict';
 
         UserStateHelperProvider
-            .state('displayAds.tagManagement.tagGenerator', {
+            .state('tagManagement.tagGenerator', {
                 url: '/generateTags?siteId',
                 params: {
                     siteId: null
@@ -14,7 +14,7 @@ angular.module('tagcade.displayAds.tagManagement.tagGenerator', [
                 views: {
                     'content@app': {
                         controller: 'TagGeneratorController',
-                        templateUrl: 'displayAds/tagManagement/tagGenerator/views/tagGenerator.tpl.html'
+                        templateUrl: 'tagManagement/tagGenerator/views/tagGenerator.tpl.html'
                     }
                 },
                 resolve: {

@@ -2,12 +2,11 @@ angular.module('tagcade.publisher', [
     'ui.router',
 
     'tagcade.core',
+
     'tagcade.publisher.ui',
     'tagcade.publisher.dashboard',
-//    'tagcade.publisher.reports',
-//    'tagcade.publisher.analytics',
-    'tagcade.publisher.tools',
-    'tagcade.publisher.billing'
+//    'tagcade.publisher.tools',
+//    'tagcade.publisher.billing'
 ])
 
     .config(function ($stateProvider, USER_ROLES) {
