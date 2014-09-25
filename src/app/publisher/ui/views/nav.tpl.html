@@ -3,32 +3,32 @@
         class="nav"
         collapse-nav>
 
-        <li ui-sref-active="active"><a ui-sref=".dashboard"><i class="fa fa-home"></i><span>Dashboard</span></a></li>
+        <li ui-sref-active-eq="active"><a ui-sref=".dashboard"><i class="fa fa-home"></i><span>Dashboard</span></a></li>
 
         <li ui-sref-active="active">
             <a href="#" ui-sref=".tagManagement"><i class="fa fa-location-arrow"></i><span>Tag Management</span></a>
             <ul>
-                <li ui-sref-active="active"><a ui-sref=".tagManagement.tagGenerator"><i class="fa fa-caret-right"></i>Generate Tags</a></li>
-                <li ui-sref-active="active"><a ui-sref=".tagManagement.sites.list"><i class="fa fa-caret-right"></i>My Sites</a></li>
-                <li ng-if="hasDisplayAdsModule" ui-sref-active="active"><a ui-sref=".tagManagement.adNetwork.list"><i class="fa fa-caret-right"></i>My Ad Networks</a></li>
-                <li ui-sref-active="active"><a ui-sref=".tagManagement.sites.new"><i class="fa fa-caret-right"></i>New Site</a></li>
-                <li ng-if="hasDisplayAdsModule" ui-sref-active="active"><a ui-sref=".tagManagement.adNetwork.new"><i class="fa fa-caret-right"></i>New Ad Network</a></li>
-                <li ng-if="hasDisplayAdsModule" ui-sref-active="active"><a ui-sref=".tagManagement.adSlot.new"><i class="fa fa-caret-right"></i>New Ad Slot</a></li>
-                <li ng-if="hasDisplayAdsModule" ui-sref-active="active"><a ui-sref=".tagManagement.adTag.new"><i class="fa fa-caret-right"></i>New Ad Tag</a></li>
+                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.tagGenerator"><i class="fa fa-caret-right"></i>Generate Tags</a></li>
+                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.sites.list"><i class="fa fa-caret-right"></i>My Sites</a></li>
+                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adNetwork.list"><i class="fa fa-caret-right"></i>My Ad Networks</a></li>
+                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.sites.new"><i class="fa fa-caret-right"></i>New Site</a></li>
+                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adNetwork.new"><i class="fa fa-caret-right"></i>New Ad Network</a></li>
+                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adSlot.new"><i class="fa fa-caret-right"></i>New Ad Slot</a></li>
+                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adTag.new"><i class="fa fa-caret-right"></i>New Ad Tag</a></li>
             </ul>
         </li>
 
-        <li ui-sref-active="active">
+        <li ng-show="hasDisplayAdsModule" ui-sref-active="active">
             <a href="#" ui-sref=".reports"><i class="fa fa-tachometer"></i><span>Reports</span></a>
             <ul>
-                <li ui-sref-active="active"><a ui-sref=".reports.performanceReport"><i class="fa fa-caret-right"></i>Performance Reports</a></li>
+                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".reports.performanceReport"><i class="fa fa-caret-right"></i>Performance Reports</a></li>
             </ul>
         </li>
 
-        <li  ng-if="hasAnalyticsModule" ui-sref-active="active">
+        <li ng-show="hasAnalyticsModule" ui-sref-active="active">
             <a href="#" ui-sref=".analytics"><i class="fa fa-bar-chart-o"></i><span>Analytics</span></a>
             <ul>
-                <li ui-sref-active="active"><a ui-sref=".analytics.sourceReport"><i class="fa fa-caret-right"></i>Source Reports</a></li>
+                <li ng-if="hasAnalyticsModule" ui-sref-active-eq="active"><a ui-sref=".analytics.sourceReport"><i class="fa fa-caret-right"></i>Source Reports</a></li>
             </ul>
         </li>
 
