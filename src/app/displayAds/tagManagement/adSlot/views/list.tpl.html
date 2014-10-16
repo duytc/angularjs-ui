@@ -16,10 +16,10 @@
                         <button type="button" class="btn dropdown-toggle"> Actions <span class="caret"></span> </button>
                         <ul class="dropdown-menu" role="menu">
                             <li><a ui-sref="^.^.adTag.list({ adSlotId: adSlot.id })">Manage Ad Tags</a></li>
-                            <li><a dropdown-toggle ng-click="generateAdTag(adSlot)">Generate a Tag</a></li>
+                            <li><a ng-click="generateAdTag(adSlot)">Generate a Tag</a></li>
                             <li class="divider"></li>
                             <li><a ui-sref="^.edit({ id: adSlot.id })">Edit Ad Slot</a></li>
-                            <li><a dropdown-toggle ng-click="confirmDeletion(adSlot)">Delete Ad Slot</a></li>
+                            <li><a ng-click="confirmDeletion(adSlot)">Delete Ad Slot</a></li>
                         </ul>
                     </div>
                 </td>

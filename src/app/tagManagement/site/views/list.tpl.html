@@ -18,7 +18,7 @@
                             <li><a ui-sref="^.^.tagGenerator({ siteId: site.id })">Generate Tags</a></li>
                             <li class="divider"></li>
                             <li><a ui-sref="^.edit({ id: site.id })">Edit Site</a></li>
-                            <li><a dropdown-toggle ng-click="confirmDeletion(site, $index)">Delete Site</a></li>
+                            <li><a ng-click="confirmDeletion(site, $index)">Delete Site</a></li>
                         </ul>
                     </div>
                 </td>
