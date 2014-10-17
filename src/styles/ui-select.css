@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.5.4 - 2014-08-14T02:30:31.948Z
+ * Version: 0.8.3 - 2014-10-14T18:22:05.435Z
  * License: MIT
  */
 
@@ -62,15 +62,15 @@
 /* Bootstrap theme */
 
 /* Helper class to show styles when focus */
-.btn-default-focus {
-    /*color: #333;
-    background-color: #EBEBEB;
-    border-color: #ADADAD;
-    text-decoration: none;
-    outline: 5px auto -webkit-focus-ring-color;
-    outline-offset: -2px;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);*/
-}
+/*.btn-default-focus {*/
+/*color: #333;*/
+/*background-color: #EBEBEB;*/
+/*border-color: #ADADAD;*/
+/*text-decoration: none;*/
+/*outline: 5px auto -webkit-focus-ring-color;*/
+/*outline-offset: -2px;*/
+/*box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);*/
+/*}*/
 
 
 /* Fix Bootstrap dropdown position when inside a input-group */
@@ -96,15 +96,33 @@
     right: 15px;
 }
 
-.ui-select-bootstrap > .ui-select-choices {
-    width: 100%;
-}
-
 /* See Scrollable Menu with Bootstrap 3 http://stackoverflow.com/questions/19227496 */
 .ui-select-bootstrap > .ui-select-choices {
+    width: 100%;
     height: auto;
     max-height: 200px;
     overflow-x: hidden;
+}
+
+.ui-select-multiple.ui-select-bootstrap {
+    height: auto;
+    padding: .3em;
+}
+
+.ui-select-multiple.ui-select-bootstrap input.ui-select-search {
+    background-color: transparent !important; /* To prevent double background when disabled */
+    border: none;
+    outline: none;
+    height: 1.666666em;
+}
+
+.ui-select-multiple.ui-select-bootstrap .ui-select-match .close {
+    font-size: 1.6em;
+    line-height: 0.75;
+}
+
+.ui-select-multiple.ui-select-bootstrap .ui-select-match-item{
+    outline: 0;
 }
 
 .ui-select-bootstrap .ui-select-choices-row>a {
@@ -130,14 +148,17 @@
     background-color: #6b7074;
 }
 
+.ui-select-bootstrap .ui-select-choices-row.disabled>a,
+.ui-select-bootstrap .ui-select-choices-row.active.disabled>a {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #fff;
+}
+
 /* fix hide/show angular animation */
 .ui-select-match.ng-hide-add,
 .ui-select-search.ng-hide-add {
     display: none !important;
-}
-
-.ui-select-search.ng-valid.ng-dirty {
-    border-color: inherit !important;
 }
 
 /* Mark invalid Bootstrap */
