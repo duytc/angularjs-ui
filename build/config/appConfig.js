@@ -29,9 +29,12 @@ module.exports = {
             'vendor/moment/min/moment.min.js',
             'vendor/angular-moment/angular-moment.min.js',
             'vendor/ng-table/ng-table.min.js',
-            'vendor/angular-ui-select/dist/select.min.js'
+            'vendor/angular-ui-select/dist/select.min.js',
+            'vendor/bootstrap-daterangepicker/daterangepicker.js',
+            'vendor/angular-daterangepicker/js/angular-daterangepicker.js'
         ],
         css: [
+            'vendor/bootstrap-daterangepicker/daterangepicker-bs3.css'
         ]
     }
 };
