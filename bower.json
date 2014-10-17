@@ -3,16 +3,20 @@
   "private": true,
   "devDependencies": {},
   "dependencies": {
-    "jquery": "~2.1.0",
+    "jquery": "~1.11.x",
     "angular": "~1.2.19",
     "angular-animate": "~1.2.19",
     "angular-ui-router": "~0.2.10",
     "angular-bootstrap": "~0.11.0",
     "restangular": "~1.4.0",
-    "moment": "~2.7.0",
+    "moment": "~2.8.0",
     "ng-table": "~0.3.3",
     "angular-moment": "~0.8.0",
-    "angular-ui-select": "~0.6.0",
-    "angular-ui-sortable": "~0.12.10"
+    "angular-ui-select": "~0.8.0",
+    "angular-ui-sortable": "~0.12.10",
+    "angular-daterangepicker": "~0.1.9"
+  },
+  "resolutions": {
+    "angular": "~1.2.x"
   }
 }
