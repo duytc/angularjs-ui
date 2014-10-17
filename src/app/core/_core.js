@@ -12,12 +12,8 @@ angular.module('tagcade.core', [
     .constant('API_BASE_URL', 'http://api.tagcade.dev/app_dev.php/api/v1')
     .constant('ENTRY_STATE', 'login')
 
-    .constant('CORE_EVENTS', {
-        resourceNotFound: 'core-resource-not-found'
-    })
-
     // restangular setup
-    .run(function ($rootScope, Restangular, API_BASE_URL, CORE_EVENTS, AUTH_EVENTS, Auth) {
+    .run(function ($rootScope, Restangular, API_BASE_URL, AUTH_EVENTS, Auth) {
         'use strict';
 
         Restangular.setBaseUrl(API_BASE_URL);
@@ -100,6 +96,11 @@ angular.module('tagcade.core', [
                 return;
             }
 
+            // prevent the original transition
+            // warning, this means that the promise returned from $state.transitionTo will not work correctly
+            // we restart the transition once Authentication is checked which makes things work correctly later.
+            //
+            // This will not work: $state.transitionTo(...).then(...)
             event.preventDefault();
 
             // checks the server if the user has a saved json web token
@@ -150,7 +151,7 @@ angular.module('tagcade.core', [
     })
 
     // event listeners
-    .run(function ($rootScope, $state, Auth, UserStateHelper, AlertService, ENTRY_STATE, CORE_EVENTS, AUTH_EVENTS) {
+    .run(function ($rootScope, $state, Auth, UserStateHelper, AlertService, ENTRY_STATE, AUTH_EVENTS) {
         'use strict';
 
         $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {

@@ -30,12 +30,12 @@ angular.module('tagcade.core.auth', [
     })
 
     .constant('AUTH_EVENTS', {
-        loginSuccess: 'auth-login-success',
-        loginFailed: 'auth-login-failed',
-        logoutSuccess: 'auth-logout-success',
-        sessionTimeout: 'auth-session-timeout',
-        notAuthenticated: 'auth-not-authenticated',
-        notAuthorized: 'auth-not-authorized'
+        loginSuccess: 'tagcade.core.auth.login_success',
+        loginFailed: 'tagcade.core.auth.login_failed',
+        logoutSuccess: 'tagcade.core.auth.logout_success',
+        sessionTimeout: 'tagcade.core.auth.session_timeout',
+        notAuthenticated: 'tagcade.core.auth.not_authenticated',
+        notAuthorized: 'tagcade.core.auth.not_authorized'
     })
 
 ;
