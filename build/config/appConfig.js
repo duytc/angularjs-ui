@@ -34,8 +34,6 @@ module.exports = {
             'vendor/bootstrap-daterangepicker/daterangepicker.js',
             'vendor/angular-daterangepicker/js/angular-daterangepicker.js'
         ],
-        css: [
-            'vendor/bootstrap-daterangepicker/daterangepicker-bs3.css'
-        ]
+        css: []
     }
 };
