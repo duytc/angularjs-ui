@@ -1,6 +1,7 @@
 angular.module('tagcade.core', [
     'ui.router',
     'restangular',
+    'underscore',
 
     'tagcade.core.ui',
     'tagcade.core.data',
@@ -180,10 +181,11 @@ angular.module('tagcade.core', [
         });
 
         $rootScope.$on(AUTH_EVENTS.logoutSuccess, function() {
-            AlertService.addFlash({
-                message: 'You are now logged out'
+            $state.go(ENTRY_STATE).then(function () {
+                AlertService.replaceAlerts({
+                    message: 'You are now logged out'
+                });
             });
-            $state.go(ENTRY_STATE);
         });
 
         $rootScope.$on(AUTH_EVENTS.notAuthenticated, function() {
