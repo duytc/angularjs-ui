@@ -6,7 +6,7 @@
     </div>
 
     <div ng-if="hasData()">
-        <table class="table table-hover" ng-table="tableParams" show-filter="true">
+        <table class="table table-hover ng-table-responsive" ng-table="tableParams" show-filter="true">
             <tr ng-repeat="adSlot in $data">
                 <td data-title="'#'" sortable="'id'">
                     {{ adSlot.id }}
