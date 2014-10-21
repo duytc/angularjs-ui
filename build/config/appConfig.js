@@ -20,6 +20,7 @@ module.exports = {
             'vendor/jquery/dist/jquery.min.js',
             'vendor/jquery-ui/jquery-ui.min.js',
             'vendor/angular/angular.js',
+            'vendor/angular-underscore-module/angular-underscore-module.js',
             'vendor/angular-animate/angular-animate.min.js',
             'vendor/angular-ui-router/release/angular-ui-router.js',
             'vendor/angular-ui-sortable/sortable.min.js',
