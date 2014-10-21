@@ -18,14 +18,6 @@ angular.module('tagcade.reports.performanceReport', [
                         templateUrl: 'reports/performanceReport/views/performanceReport.tpl.html'
                     }
                 },
-                resolve: {
-                    reportSelectorCriteria: function () {
-                        return {
-                            startDate: null,
-                            endDate: null
-                        };
-                    }
-                },
                 data: {
                     wideContent: true
                 }
@@ -35,66 +27,138 @@ angular.module('tagcade.reports.performanceReport', [
         // admin only
         $stateProvider
             .state('app.admin.reports.performanceReport.platform', {
-                url: '/platform?from&to',
+                url: '/platform?startDate&endDate',
                 views: {
                     'report': {
-                        template: 'This is a platform report'
+                        controller: 'ReportViewController',
+                        templateUrl: 'reports/performanceReport/views/reportView.tpl.html'
                     }
                 },
                 resolve: {
+                    report: function ($q, $stateParams, ReportSelector) {
+                        var initSelectorDataPromise = ReportSelector.setInitialData('platform', $stateParams);
+
+                        return $q.all(initSelectorDataPromise).then(function () {
+                            return {};
+                        });
+                    }
+                }
+            })
+        ;
+
+        $stateProvider
+            .state('app.admin.reports.performanceReport.account', {
+                url: '/account/{publisherId:[0-9]+}?startDate&endDate',
+                views: {
+                    'report': {
+                        controller: 'ReportViewController',
+                        templateUrl: 'reports/performanceReport/views/reportView.tpl.html'
+                    }
+                },
+                resolve: {
+                    report: function ($q, $stateParams, ReportSelector) {
+                        var initSelectorDataPromise = ReportSelector.setInitialData('account', $stateParams);
+
+                        return $q.all(initSelectorDataPromise).then(function () {
+                            return {};
+                        });
+                    }
+                }
+            })
+        ;
+
+        $stateProvider
+            .state('app.publisher.reports.performanceReport.account', {
+                url: '/account?startDate&endDate',
+                views: {
+                    'report': {
+                        controller: 'ReportViewController',
+                        templateUrl: 'reports/performanceReport/views/reportView.tpl.html'
+                    }
+                },
+                resolve: {
+                    report: function ($q, $stateParams, ReportSelector) {
+                        var initSelectorDataPromise = ReportSelector.setInitialData('account', $stateParams);
+
+                        return $q.all(initSelectorDataPromise).then(function () {
+                            return {};
+                        });
+                    }
                 }
             })
         ;
 
         UserStateHelperProvider
-            .state('reports.performanceReport.account', {
-                url: '/account?from&to',
-                views: {
-                    'report': {
-                        template: 'This is an account report'
-                    }
-                },
-                resolve: {
-                }
-            })
             .state('reports.performanceReport.site', {
-                url: '/site?from&to',
+                url: '/site/{siteId:[0-9]+}?startDate&endDate',
                 views: {
                     'report': {
-                        template: 'This is a site report'
+                        controller: 'ReportViewController',
+                        templateUrl: 'reports/performanceReport/views/reportView.tpl.html'
                     }
                 },
                 resolve: {
+                    report: function ($q, $stateParams, ReportSelector) {
+                        var initSelectorDataPromise = ReportSelector.setInitialData('site', $stateParams);
+
+                        return $q.all(initSelectorDataPromise).then(function () {
+                            return {};
+                        });
+                    }
                 }
             })
             .state('reports.performanceReport.adSlot', {
-                url: '/adSlot?from&to',
+                url: '/adSlot/{adSlotId:[0-9]+}?startDate&endDate',
                 views: {
                     'report': {
-                        template: 'This is an ad slot report'
+                        controller: 'ReportViewController',
+                        templateUrl: 'reports/performanceReport/views/reportView.tpl.html'
                     }
                 },
                 resolve: {
+                    report: function ($q, $stateParams, ReportSelector) {
+                        var initSelectorDataPromise = ReportSelector.setInitialData('adSlot', $stateParams);
+
+                        return $q.all(initSelectorDataPromise).then(function () {
+                            return {};
+                        });
+                    }
                 }
             })
             .state('reports.performanceReport.adTag', {
-                url: '/adTag?from&to',
+                url: '/adTag/{adTagId:[0-9]+}?startDate&endDate',
                 views: {
                     'report': {
-                        template: 'This is an ad tag report'
+                        controller: 'ReportViewController',
+                        templateUrl: 'reports/performanceReport/views/reportView.tpl.html'
                     }
                 },
                 resolve: {
+                    report: function ($q, $stateParams, ReportSelector) {
+                        var initSelectorDataPromise = ReportSelector.setInitialData('adTag', $stateParams);
+
+                        return $q.all(initSelectorDataPromise).then(function () {
+                            return {};
+                        });
+                    }
                 }
             })
             .state('reports.performanceReport.adNetwork', {
-                url: '/adNetwork?from&to',
+                url: '/adNetwork/{adNetworkId:[0-9]+}?startDate&endDate',
                 views: {
                     'report': {
-                        template: 'This is an ad network report'
+                        controller: 'ReportViewController',
+                        templateUrl: 'reports/performanceReport/views/reportView.tpl.html'
                     }
                 },
                 resolve: {
+                    report: function ($q, $stateParams, ReportSelector) {
+                        var initSelectorDataPromise = ReportSelector.setInitialData('adNetwork', $stateParams);
+
+                        return $q.all(initSelectorDataPromise).then(function () {
+                            return {};
+                        });
+                    }
                 }
             })
         ;

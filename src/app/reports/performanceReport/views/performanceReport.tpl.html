@@ -1,11 +1,9 @@
-<performance-report-selector criteria="reportSelectorCriteria" is-admin="currentUser.isAdmin()"></performance-report-selector>
+<performance-report-selector></performance-report-selector>
 
 <div class="row">
     <div class="col-sm-12">
 
-        {{ reportSelectorCriteria }}
-
-        <div class="well" ui-view="report"></div>
+        <div ui-view="report"></div>
 
     </div>
 </div>

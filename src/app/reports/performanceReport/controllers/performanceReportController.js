@@ -1,33 +1,42 @@
 angular.module('tagcade.reports.performanceReport')
 
-    .controller('PerformanceReportController', function ($rootScope, $scope, PERFORMANCE_REPORT_EVENTS) {
+    .controller('PerformanceReportController', function ($scope, $state, _, PERFORMANCE_REPORT_EVENTS, UserStateHelper, AlertService, ReportSelector) {
         'use strict';
 
-        $scope.isAdmin = $scope.currentUser.isAdmin();
+        $scope.$on(
+            PERFORMANCE_REPORT_EVENTS.formSubmit,
+            /**
+             *
+             * @param {Object} event
+             * @param {Object} criteria
+             */
+            function (event, criteria) {
+                if (!criteria || !angular.isObject(criteria)) {
+                    event.preventDefault();
 
-        $scope.reportSelectorCriteria = {};
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'The requested report is missing parameters'
+                    });
 
-        $scope.$on(PERFORMANCE_REPORT_EVENTS.formSubmit, function (event, criteria) {
-            console.log(criteria, criteria === $scope.reportSelectorCriteria);
+                    return;
+                }
 
-            //event.preventDefault();
+                var toState = $state.get('.reports.performanceReport.' + criteria.reportType, $state.get(UserStateHelper.getBaseState()));
+
+                if (!toState) {
+                    event.preventDefault();
+
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'An error occurred trying to request the report'
+                    });
+
+                    return;
+                }
+
+                $state.transitionTo(toState, criteria);
         });
-
-//        var toState = $state.get('.reports.performanceReport.' + $scope.criteria.reportType, $state.get(UserStateHelper.getBaseState()));
-//
-//                    if (!toState) {
-//                        AlertService.replaceAlerts({
-//                            type: 'error',
-//                            message: 'The report could not be loaded'
-//                        });
-//
-//                        return;
-//                    }
-
-        //                    $state.transitionTo(toState, {
-//                        from: $scope.criteria.date.startDate.format('YYYY-MM-DD'),
-//                        to: $scope.criteria.date.endDate.format('YYYY-MM-DD')
-//                    });
 
     })
 
