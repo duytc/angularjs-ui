@@ -20,8 +20,6 @@ angular.module('tagcade.displayAds.tagManagement.adSlot')
             publisher: site && site.publisher
         };
 
-        $scope.publisherFilterCriteria = null;
-
         $scope.publisherList = publisherList;
         $scope.siteList = siteList;
 
@@ -34,12 +32,6 @@ angular.module('tagcade.displayAds.tagManagement.adSlot')
 
         $scope.selectPublisher = function (publisher, publisherId) {
             $scope.adSlot.site = null;
-
-            $scope.publisherFilterCriteria = {
-                publisher: {
-                    id: publisherId
-                }
-            };
         };
 
         $scope.isFormValid = function() {

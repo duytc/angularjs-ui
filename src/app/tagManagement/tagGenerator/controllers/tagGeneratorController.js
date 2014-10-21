@@ -3,8 +3,6 @@ angular.module('tagcade.tagManagement.tagGenerator')
     .controller('TagGeneratorController', function ($scope, $location, SiteManager, siteList, site, jstags, publishers) {
         'use strict';
 
-        $scope.publisherFilterCriteria = null;
-
         $scope.selected = {
             publisher: site && site.publisher,
             site: site
@@ -20,12 +18,6 @@ angular.module('tagcade.tagManagement.tagGenerator')
         $scope.selectPublisher = function (publisher, publisherId) {
             $scope.jstags = null;
             $scope.selected.site = null;
-
-            $scope.publisherFilterCriteria = {
-                publisher: {
-                    id: publisherId
-                }
-            };
         };
 
         $scope.selectSite = function (site, siteId) {

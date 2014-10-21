@@ -27,20 +27,6 @@ angular.module('tagcade.displayAds.tagManagement.adTag')
             site: site
         };
 
-        $scope.publisherFilterCriteria = null;
-
-        $scope.setPublisherFilterCriteria = function (publisherId) {
-            $scope.publisherFilterCriteria = {
-                publisher: {
-                    id: publisherId
-                }
-            };
-        };
-
-        if (publisher) {
-            $scope.setPublisherFilterCriteria(publisher.id);
-        }
-
         $scope.publisherList = publisherList;
         $scope.siteList = siteList;
         $scope.adSlotList = adSlotList;
@@ -62,8 +48,6 @@ angular.module('tagcade.displayAds.tagManagement.adTag')
         $scope.selectPublisher = function (publisher, publisherId) {
             $scope.selected.site = null;
             $scope.resetSelection();
-
-            $scope.setPublisherFilterCriteria(publisherId);
         };
 
         $scope.selectSite = function (site, siteId) {
