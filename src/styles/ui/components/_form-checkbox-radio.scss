@@ -112,7 +112,7 @@
         position: absolute;
         top: 7px;
         left: -15px;
-        background: url("img/checkmark.png") no-repeat center center;
+        background: url("../images/checkmark.png") no-repeat center center;
         background-size: 14px 14px;
         display: block;
     }
@@ -125,6 +125,6 @@
     input[type="checkbox"]:disabled:checked + span:after {
         opacity: .65;
         cursor: no-drop;
-        background: url("img/checkmark.png") no-repeat center center;
+        background: url("../images/checkmark.png") no-repeat center center;
     }
 }
