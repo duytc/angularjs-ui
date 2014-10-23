@@ -1,4 +1,21 @@
 module.exports = {
+    prod: {
+        files: [
+            {
+                expand: true,
+                cwd: '<%= appConfig.dirs.build.dev %>',
+                src: [
+                    [
+                        'index.html',
+                        'assets/images/**/*',
+                        'assets/font*/**/*',
+                        'favicon.ico'
+                    ],
+                ],
+                dest: '<%= appConfig.dirs.build.prod %>'
+            }
+        ]
+    },
     dev: {
         files: [
             {

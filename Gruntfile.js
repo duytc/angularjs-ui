@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 
     require('load-grunt-tasks')(grunt);
 
-    grunt.renameTask('delete_sync', 'deletesync');
+    grunt.renameTask('delete_sync', 'deleteSync');
 
     grunt.registerTask('default', [
         'build',
@@ -31,8 +31,21 @@ module.exports = function(grunt) {
         'html2js:common',
         'compass:server',
         'sync:dev',
-        'deletesync:dev',
+        'deleteSync:dev',
         'cleanempty:dev',
-        'injector:dev'
+        'injector:dev',
+        'ngAnnotate:dev'
+    ]);
+
+    grunt.registerTask('build-prod', [
+        'build',
+        'clean:prod',
+        'sync:prod',
+        'useminPrepare',
+        'concat:generated',
+        'cssmin:generated',
+        'uglify:generated',
+        'filerev:prod',
+        'usemin'
     ]);
 };

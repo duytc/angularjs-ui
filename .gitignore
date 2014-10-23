@@ -3,3 +3,4 @@ vendor
 build/targets
 build/temp
 build/config/userConfig.js
+.tmp
