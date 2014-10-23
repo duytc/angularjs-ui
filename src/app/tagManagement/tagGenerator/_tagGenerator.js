@@ -18,11 +18,11 @@ angular.module('tagcade.tagManagement.tagGenerator', [
                     }
                 },
                 resolve: {
-                    siteList: function (SiteManager) {
+                    siteList: /* @ngInject */ function (SiteManager) {
                         return SiteManager.getList();
                     },
 
-                    site: function ($stateParams, SiteManager) {
+                    site: /* @ngInject */ function ($stateParams, SiteManager) {
                         var siteId = $stateParams.siteId;
 
                         if (!siteId) {
@@ -32,7 +32,7 @@ angular.module('tagcade.tagManagement.tagGenerator', [
                         return SiteManager.one(siteId).get();
                     },
 
-                    jstags: function (site) {
+                    jstags: /* @ngInject */ function (site) {
                         if (!site) {
                             return null;
                         }
@@ -42,7 +42,7 @@ angular.module('tagcade.tagManagement.tagGenerator', [
                 },
                 customResolve: {
                     admin: {
-                        publishers: function(AdminUserManager) {
+                        publishers: /* @ngInject */ function(AdminUserManager) {
                             return AdminUserManager.getList({ filter: 'publisher' }).then(function (users) {
                                 return users.plain();
                             });

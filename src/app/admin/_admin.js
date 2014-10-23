@@ -8,7 +8,11 @@ angular.module('tagcade.admin', [
     'tagcade.admin.userManagement'
 ])
 
-    .constant('API_ADMIN_BASE_URL', 'http://api.tagcade.dev/app_dev.php/api/admin/v1')
+    .provider('API_ADMIN_BASE_URL', {
+        $get: function(API_END_POINT) {
+            return API_END_POINT + '/admin/v1';
+        }
+    })
 
     .factory('AdminRestangular', function (Restangular, API_ADMIN_BASE_URL) {
         'use strict';

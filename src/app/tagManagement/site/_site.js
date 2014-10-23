@@ -19,7 +19,7 @@ angular.module('tagcade.tagManagement.site', [
                     }
                 },
                 resolve: {
-                    sites: function(SiteManager) {
+                    sites: /* @ngInject */ function(SiteManager) {
                         return SiteManager.getList().then(function (sites) {
                             return sites.plain();
                         });
@@ -44,7 +44,7 @@ angular.module('tagcade.tagManagement.site', [
                 },
                 customResolve: {
                       admin: {
-                          publishers: function(AdminUserManager) {
+                          publishers: /* @ngInject */ function(AdminUserManager) {
                               return AdminUserManager.getList({ filter: 'publisher' }).then(function (users) {
                                   return users.plain();
                               });
@@ -64,13 +64,13 @@ angular.module('tagcade.tagManagement.site', [
                     }
                 },
                 resolve: {
-                    site: function($stateParams, SiteManager) {
+                    site: /* @ngInject */ function($stateParams, SiteManager) {
                         return SiteManager.one($stateParams.id).get();
                     }
                 },
                 customResolve: {
                     admin: {
-                        publishers: function(AdminUserManager) {
+                        publishers: /* @ngInject */ function(AdminUserManager) {
                             return AdminUserManager.getList({ filter: 'publisher' }).then(function (users) {
                                 return users.plain();
                             });

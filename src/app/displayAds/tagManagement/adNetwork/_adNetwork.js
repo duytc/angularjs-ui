@@ -22,7 +22,7 @@ angular.module('tagcade.displayAds.tagManagement.adNetwork', [
                     }
                 },
                 resolve: {
-                    adNetworks: function(AdNetworkManager) {
+                    adNetworks: /* @ngInject */ function(AdNetworkManager) {
                         return AdNetworkManager.getList();
                     }
                 },
@@ -46,7 +46,7 @@ angular.module('tagcade.displayAds.tagManagement.adNetwork', [
                 },
                 customResolve: {
                     admin: {
-                        publishers: function(AdminUserManager) {
+                        publishers: /* @ngInject */ function(AdminUserManager) {
                             return AdminUserManager.getList({ filter: 'publisher' }).then(function (users) {
                                 return users.plain();
                             });
@@ -66,13 +66,13 @@ angular.module('tagcade.displayAds.tagManagement.adNetwork', [
                     }
                 },
                 resolve: {
-                    adNetwork: function($stateParams, AdNetworkManager) {
+                    adNetwork: /* @ngInject */ function($stateParams, AdNetworkManager) {
                         return AdNetworkManager.one($stateParams.id).get();
                     }
                 },
                 customResolve: {
                     admin: {
-                        publishers: function(AdminUserManager) {
+                        publishers: /* @ngInject */ function(AdminUserManager) {
                             return AdminUserManager.getList({ filter: 'publisher' }).then(function (users) {
                                 return users.plain();
                             });

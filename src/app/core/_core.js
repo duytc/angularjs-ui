@@ -9,9 +9,14 @@ angular.module('tagcade.core', [
 ])
 
     .constant('APP_NAME', 'Tagcade Platform')
-    .constant('API_END_POINT', 'http://api.tagcade.dev/app_dev.php/api')
-    .constant('API_BASE_URL', 'http://api.tagcade.dev/app_dev.php/api/v1')
+    .constant('API_END_POINT', 'http://api.tagcade.dev/api')
     .constant('ENTRY_STATE', 'login')
+
+    .provider('API_BASE_URL', {
+        $get: function(API_END_POINT) {
+            return API_END_POINT + '/v1';
+        }
+    })
 
     // restangular setup
     .run(function ($rootScope, Restangular, API_BASE_URL, AUTH_EVENTS, Auth) {
@@ -90,7 +95,7 @@ angular.module('tagcade.core', [
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             var stateData = toState.data || {};
 
-            DEBUG && console.log(toState.name, toState.url);
+            console.log(toState.name, toState.url);
 
             // my login state will early return here
             if (stateData.allowAnonymous) {
@@ -156,7 +161,7 @@ angular.module('tagcade.core', [
         'use strict';
 
         $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
-            DEBUG && console.log('$stateChangeError', arguments);
+            console.log('$stateChangeError', arguments);
 
             // show generic error page unless we get more specific
             var errorCode = 500;

@@ -24,13 +24,13 @@ angular.module('tagcade.displayAds.tagManagement.adSlot', [
                 resolve: {
                     // AdSlotManager is provided as a parameter to make sure the service is invoked
                     // because during init it attaches additional behaviour to the adslots resource
-                    adSlots: function($stateParams, SiteManager, AdSlotManager) {
+                    adSlots: /* @ngInject */ function($stateParams, SiteManager, AdSlotManager) {
                         return SiteManager.one($stateParams.siteId).getList('adslots').then(function (adSlots) {
                             return adSlots.plain();
                         });
                     },
 
-                    site: function ($stateParams, SiteManager) {
+                    site: /* @ngInject */ function ($stateParams, SiteManager) {
                         return SiteManager.one($stateParams.siteId).get().then(function (site) {
                             return site.plain();
                         });
@@ -53,7 +53,7 @@ angular.module('tagcade.displayAds.tagManagement.adSlot', [
                         return null;
                     },
 
-                    site: function ($stateParams, SiteManager) {
+                    site: /* @ngInject */ function ($stateParams, SiteManager) {
                         if (!$stateParams.siteId) {
                             return null;
                         }
@@ -63,7 +63,7 @@ angular.module('tagcade.displayAds.tagManagement.adSlot', [
                         });
                     },
 
-                    siteList: function(SiteManager) {
+                    siteList: /* @ngInject */ function(SiteManager) {
                         return SiteManager.getList().then(function (sites) {
                             return sites.plain();
                         });
@@ -71,7 +71,7 @@ angular.module('tagcade.displayAds.tagManagement.adSlot', [
                 },
                 customResolve: {
                     admin: {
-                        publisherList: function(AdminUserManager) {
+                        publisherList: /* @ngInject */ function(AdminUserManager) {
                             return AdminUserManager.getList({ filter: 'publisher' }).then(function (users) {
                                 return users.plain();
                             });
@@ -91,11 +91,11 @@ angular.module('tagcade.displayAds.tagManagement.adSlot', [
                     }
                 },
                 resolve: {
-                    adSlot: function($stateParams, AdSlotManager) {
+                    adSlot: /* @ngInject */ function($stateParams, AdSlotManager) {
                         return AdSlotManager.one($stateParams.id).get();
                     },
 
-                    site: function (adSlot) {
+                    site: /* @ngInject */ function (adSlot) {
                         return adSlot.site;
                     },
 

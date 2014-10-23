@@ -32,7 +32,7 @@ angular.module('tagcade.core.ui', [
         ;
 
         $urlRouterProvider.otherwise(function($injector) {
-            $injector.invoke(function ($state, $q, Auth, UserStateHelper, ENTRY_STATE) {
+            $injector.invoke(/* @ngInject */ function ($state, $q, Auth, UserStateHelper, ENTRY_STATE) {
                 Auth.check()
                     .catch(
                         function () {

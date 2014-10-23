@@ -24,11 +24,11 @@ angular.module('tagcade.displayAds.tagManagement.adTag', [
                     }
                 },
                 resolve: {
-                    adSlot: function ($stateParams, AdSlotManager) {
+                    adSlot: /* @ngInject */ function ($stateParams, AdSlotManager) {
                         return AdSlotManager.one($stateParams.adSlotId).get();
                     },
 
-                    adTags: function($stateParams, AdSlotManager) {
+                    adTags: /* @ngInject */ function($stateParams, AdSlotManager) {
                         return AdSlotManager.one($stateParams.adSlotId).getList('adtags').then(function (adTags) {
                             return adTags.plain();
                         });
@@ -54,7 +54,7 @@ angular.module('tagcade.displayAds.tagManagement.adTag', [
                         return null;
                     },
 
-                    adSlot: function ($stateParams, AdSlotManager) {
+                    adSlot: /* @ngInject */ function ($stateParams, AdSlotManager) {
                         if (!$stateParams.adSlotId) {
                             return null;
                         }
@@ -64,7 +64,7 @@ angular.module('tagcade.displayAds.tagManagement.adTag', [
                         });
                     },
 
-                    site: function (adSlot) {
+                    site: /* @ngInject */ function (adSlot) {
                         if (!adSlot) {
                             return null;
                         }
@@ -72,7 +72,7 @@ angular.module('tagcade.displayAds.tagManagement.adTag', [
                         return adSlot.site;
                     },
 
-                    publisher: function (site) {
+                    publisher: /* @ngInject */ function (site) {
                         if (!site) {
                             return null;
                         }
@@ -80,13 +80,13 @@ angular.module('tagcade.displayAds.tagManagement.adTag', [
                         return site.publisher;
                     },
 
-                    siteList: function (SiteManager) {
+                    siteList: /* @ngInject */ function (SiteManager) {
                         return SiteManager.getList().then(function (sites) {
                             return sites.plain();
                         });
                     },
 
-                    adSlotList: function (SiteManager, site) {
+                    adSlotList: /* @ngInject */ function (SiteManager, site) {
                         if (!site) {
                             return null;
                         }
@@ -96,7 +96,7 @@ angular.module('tagcade.displayAds.tagManagement.adTag', [
                         });
                     },
 
-                    adNetworkList: function (AdNetworkManager) {
+                    adNetworkList: /* @ngInject */ function (AdNetworkManager) {
                         return AdNetworkManager.getList().then(function (adNetworks) {
                             return adNetworks.plain();
                         });
@@ -104,7 +104,7 @@ angular.module('tagcade.displayAds.tagManagement.adTag', [
                 },
                 customResolve: {
                     admin: {
-                        publisherList: function(AdminUserManager) {
+                        publisherList: /* @ngInject */ function(AdminUserManager) {
                             return AdminUserManager.getList({ filter: 'publisher' }).then(function (users) {
                                 return users.plain();
                             });
@@ -124,19 +124,19 @@ angular.module('tagcade.displayAds.tagManagement.adTag', [
                     }
                 },
                 resolve: {
-                    adTag: function($stateParams, AdTagManager) {
+                    adTag: /* @ngInject */ function($stateParams, AdTagManager) {
                         return AdTagManager.one($stateParams.id).get();
                     },
 
-                    adSlot: function (adTag) {
+                    adSlot: /* @ngInject */ function (adTag) {
                         return adTag.adSlot;
                     },
 
-                    site: function (adSlot) {
+                    site: /* @ngInject */ function (adSlot) {
                         return adSlot.site;
                     },
 
-                    publisher: function (site) {
+                    publisher: /* @ngInject */ function (site) {
                         return site.publisher;
                     },
 
@@ -152,7 +152,7 @@ angular.module('tagcade.displayAds.tagManagement.adTag', [
                         return null;
                     },
 
-                    adNetworkList: function (AdNetworkManager) {
+                    adNetworkList: /* @ngInject */ function (AdNetworkManager) {
                         return AdNetworkManager.getList().then(function (adNetworks) {
                             return adNetworks.plain();
                         });
