@@ -9,7 +9,7 @@ angular.module('tagcade.core', [
 ])
 
     .constant('APP_NAME', 'Tagcade Platform')
-    .constant('API_END_POINT', 'http://api.tagcade.dev/api')
+    .constant('API_END_POINT', '//api.tagcade.dev/app_dev.php/api')
     .constant('ENTRY_STATE', 'login')
 
     .provider('API_BASE_URL', {

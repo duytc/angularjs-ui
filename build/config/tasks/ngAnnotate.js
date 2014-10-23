@@ -3,11 +3,9 @@ module.exports = {
         files: [
             {
                 expand: true,
-                cwd: '<%= appConfig.dirs.build.dev %>',
                 src: [
-                    'src/**/*.js'
-                ],
-                dest: '<%= appConfig.dirs.build.dev %>'
+                    '<%= appConfig.dirs.build.dev %>/src/**/*.js'
+                ]
             }
         ]
     }

@@ -34,7 +34,8 @@ module.exports = function(grunt) {
         'deleteSync:dev',
         'cleanempty:dev',
         'injector:dev',
-        'ngAnnotate:dev'
+        'ngAnnotate:dev',
+        'replace:dev'
     ]);
 
     grunt.registerTask('build-prod', [
@@ -46,6 +47,7 @@ module.exports = function(grunt) {
         'cssmin:generated',
         'uglify:generated',
         'filerev:prod',
-        'usemin'
+        'usemin',
+        'replace:prod'
     ]);
 };

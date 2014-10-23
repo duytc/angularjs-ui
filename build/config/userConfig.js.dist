@@ -1,7 +1,9 @@
 module.exports = {
+    //apiEndPoint: '//api.tagcade.com/app_dev.php/api',
+
     hostname: '127.0.0.1',
     port: 9000,
     appUrl: 'http://localhost:9000',
     // application to open your app
-    browser: 'chromium-browser'
+    browser: 'firefox'
 };

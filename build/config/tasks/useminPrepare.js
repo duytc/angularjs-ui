@@ -14,7 +14,7 @@ module.exports = {
                             var generated = context.options.generated;
                             generated.options = {
 //                                beautify : true,
-                                mangle   : true,
+                                mangle   : false,
                                 compress: {
                                     drop_console: true
                                 }
