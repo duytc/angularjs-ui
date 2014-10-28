@@ -1,8 +1,10 @@
 angular.module('tagcade.core.ui', [
+    'angular-loading-bar',
     'ngAnimate',
     'ui.router',
     'ui.bootstrap',
-    'ui.select'
+    'ui.select',
+    'ngTable'
 ])
 
     .config(function(uiSelectConfig) {
