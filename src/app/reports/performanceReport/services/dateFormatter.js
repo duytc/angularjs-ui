@@ -17,6 +17,10 @@ angular.module('tagcade.reports.performanceReport')
                     }
                 }
 
+                if (date instanceof Date) {
+                    return moment(date);
+                }
+
                 return false;
             },
 
