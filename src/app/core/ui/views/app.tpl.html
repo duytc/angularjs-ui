@@ -12,7 +12,7 @@
            ng-class="{'nav-fixed': admin.fixedSidebar, 'nav-horizontal': admin.menu === 'horizontal', 'nav-vertical': admin.menu === 'vertical'}">
         </aside>
 
-        <div id="content" class="content-container animate-fade-up">
+        <div id="content" class="content-container">
 
             <div class="page">
                 <div class="row">
@@ -28,7 +28,7 @@
 
                 <div class="row">
                     <div ng-class="{true: 'col-lg-12', false: 'col-lg-6'}[admin.wideContent]">
-                        <section ui-view="content"></section>
+                        <section ui-view="content" class="animate-fade-up"></section>
                     </div>
                 </div>
             </div>
