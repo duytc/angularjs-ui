@@ -1,4 +1,10 @@
 module.exports = {
+    options: {
+        htmlmin: {
+            collapseWhitespace: true
+        }
+    },
+
     app: {
         options: {
             base: 'src/app'

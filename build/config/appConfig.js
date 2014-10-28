@@ -9,8 +9,8 @@ module.exports = {
     appFiles: {
         js: ['src/**/*.js', '!src/**/*.spec.js', '!src/assets/**/*.js'],
         tests: ['src/**/*.spec.js'],
-        appTemplates: ['src/app/**/*.tpl.html'],
-        commonTemplates: ['src/common/**/*.tpl.html'],
+        appTemplates: ['src/app/**/*/*.tpl.html'],
+        commonTemplates: ['src/common/**/*/*.tpl.html'],
         scss: ['src/styles/**/*.scss'],
         css: ['src/styles/*.css'],
         html: ['src/index.html']
@@ -22,7 +22,7 @@ module.exports = {
             'vendor/angular/angular.js',
             'vendor/angular-underscore-module/angular-underscore-module.js',
             'vendor/angular-animate/angular-animate.min.js',
-            'vendor/angular-ui-router/release/angular-ui-router.js',
+//            'vendor/angular-ui-router/release/angular-ui-router.js',
             'vendor/angular-ui-sortable/sortable.min.js',
             'vendor/angular-bootstrap/ui-bootstrap-tpls.min.js',
             'vendor/lodash/dist/lodash.min.js',
@@ -32,7 +32,8 @@ module.exports = {
             'vendor/ng-table/ng-table.min.js',
             'vendor/angular-ui-select/dist/select.min.js',
             'vendor/bootstrap-daterangepicker/daterangepicker.js',
-            'vendor/angular-daterangepicker/js/angular-daterangepicker.js'
+            'vendor/angular-daterangepicker/js/angular-daterangepicker.js',
+            'vendor/angular-loading-bar/build/loading-bar.min.js'
         ],
         css: []
     }
