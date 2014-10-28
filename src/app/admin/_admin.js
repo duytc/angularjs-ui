@@ -43,7 +43,10 @@ angular.module('tagcade.admin', [
             })
             .state('app.admin.error', {
                 abstract: true,
-                url: '/error'
+                url: '/error',
+                data: {
+                    wideContent: true
+                }
             })
             .state('app.admin.error.404', {
                 url: '/404',
@@ -65,6 +68,17 @@ angular.module('tagcade.admin', [
                 },
                 breadcrumb: {
                     title: '403'
+                }
+            })
+            .state('app.admin.error.400', {
+                url: '/400',
+                views: {
+                    'content@app': {
+                        controller: '400ErrorController'
+                    }
+                },
+                breadcrumb: {
+                    title: '400'
                 }
             })
             .state('app.admin.error.500', {

@@ -161,13 +161,17 @@ angular.module('tagcade.core', [
         'use strict';
 
         $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
-            console.log('$stateChangeError', arguments);
+            console.log('$stateChangeError', error.stack);
 
             // show generic error page unless we get more specific
             var errorCode = 500;
 
             if (404 === error.status) {
                 errorCode = 404;
+            }
+
+            if (400 === error.status) {
+                errorCode = 400;
             }
 
             // todo what happens in this fails for some reason?

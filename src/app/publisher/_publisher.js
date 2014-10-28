@@ -54,6 +54,17 @@ angular.module('tagcade.publisher', [
                     title: '403'
                 }
             })
+            .state('app.publisher.error.400', {
+                url: '/400',
+                views: {
+                    'content@app': {
+                        controller: '400ErrorController'
+                    }
+                },
+                breadcrumb: {
+                    title: '400'
+                }
+            })
             .state('app.publisher.error.500', {
                 url: '/500',
                 views: {
