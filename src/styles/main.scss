@@ -52,6 +52,12 @@
     cursor: pointer;
 }
 
+[ng-click].click-disabled,
+[data-ng-click].click-disabled,
+[x-ng-click].click-disabled {
+    cursor: default !important;
+}
+
 .sortable-placeholder {
     background: $table-bg-accent;
 }
