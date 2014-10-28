@@ -1,6 +1,5 @@
 angular.module('tagcade.admin.userManagement', [
-    'ui.router',
-    'ngTable'
+    'ui.router'
 ])
 
     .config(function ($stateProvider) {
