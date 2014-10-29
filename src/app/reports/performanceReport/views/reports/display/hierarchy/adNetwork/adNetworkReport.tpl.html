@@ -1,8 +1,11 @@
 <div class="panel panel-default">
     <table class="table table-hover ng-table-responsive" ng-table="tableParams">
-        <tr ng-repeat="report in $data" ng-click="test">
+        <tr ng-repeat="report in $data" ng-click="expandReport(report)">
             <td data-title="'Date'" sortable="'date'">
                 {{ report.date | date }}
+            </td>
+            <td data-title="'ID'" sortable="'adNetworkId'">
+                {{ report.adNetworkId }}
             </td>
             <td data-title="'Ad Network'" sortable="'name'">
                 {{ report.name }}

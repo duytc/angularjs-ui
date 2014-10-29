@@ -8,18 +8,74 @@ angular.module('tagcade.reports.performanceReport', [
     })
 
     .constant('PERFORMANCE_REPORT_TYPES', {
+        // site hierarchy
         platform: {
-            platform: 'platform.platform',
-            account: 'platform.account',
-            site: 'platform.site',
-            adSlot: 'platform.adSlot',
-            adTag: 'platform.adTag'
+            platform: {
+                type: 'platform.platform',
+                name: 'Platform Report',
+                routeParams: {
+                    platform: null
+                }
+            },
+
+            account: {
+                type: 'platform.account',
+                name: 'Account Report',
+                requiredParams: ['publisherId'],
+                routeParams: {
+                    account: 'publisherId'
+                }
+            },
+
+            site: {
+                type: 'platform.site',
+                name: 'Site Report',
+                requiredParams: ['siteId'],
+                routeParams: {
+                    site: 'siteId'
+                }
+            },
+
+            adSlot: {
+                type: 'platform.adSlot',
+                name: 'Ad Slot Report',
+                requiredParams: ['adSlotId'],
+                routeParams: {
+                    adslot: 'adSlotId'
+                }
+            },
+
+            adTag: {
+                type: 'platform.adTag',
+                name: 'Ad Tag Report',
+                requiredParams: ['adTagId'],
+                routeParams: {
+                    adtag: 'adTagId'
+                },
+                isExpandable: false
+            }
         },
 
+        // ad network hierarchy
         adNetwork: {
-            adNetwork: 'adNetwork.adNetwork',
-            site: 'adNetwork.site',
-            adTag: 'adNetwork.adTag'
+            adNetwork: {
+                type: 'adNetwork.adNetwork',
+                name: 'Ad Network',
+                requiredParams: ['adNetworkId'],
+                routeParams: {
+                    adnetwork: 'adNetworkId'
+                }
+            },
+
+            site: {
+                type: 'adNetwork.site',
+                name: 'Ad Network',
+                requiredParams: ['adNetworkId', 'siteId'],
+                routeParams: {
+                    adnetwork: 'adNetworkId',
+                    site: 'siteId'
+                }
+            }
         }
     })
 
@@ -31,14 +87,17 @@ angular.module('tagcade.reports.performanceReport', [
          * @param $stateParams
          * @param {String} reportType
          * @param {String} reportTypeIfExpanded
+         * @param {String} [hierarchy]
          * @returns {string}
          */
-        function getTemplateUrl ($stateParams, reportType, reportTypeIfExpanded) {
+        function getTemplateUrl ($stateParams, reportType, reportTypeIfExpanded, hierarchy) {
+            hierarchy = hierarchy || 'platform';
+
             if ($stateParams.expand == 'true' || $stateParams.expand === true) {
                 reportType = reportTypeIfExpanded;
             }
 
-            return 'reports/performanceReport/views/reports/display/hierarchy/platform/' + reportType + 'Report.tpl.html';
+            return 'reports/performanceReport/views/reports/display/hierarchy/' + hierarchy + '/' + reportType + 'Report.tpl.html';
         }
 
         UserStateHelperProvider
@@ -52,6 +111,9 @@ angular.module('tagcade.reports.performanceReport', [
                 },
                 data: {
                     wideContent: true
+                },
+                breadcrumb: {
+                    title: 'Performance Reports'
                 }
             })
         ;
@@ -94,13 +156,13 @@ angular.module('tagcade.reports.performanceReport', [
                 },
                 resolve: {
                     reportType: function () {
-                        return PERFORMANCE_REPORT_TYPES.platform.platform;
+                        return PERFORMANCE_REPORT_TYPES.platform.platform.type;
                     },
 
-                    reports: /* @ngInject */ function ($stateParams, ReportSelectorForm, ReportSelector, reportType) {
+                    reports: /* @ngInject */ function ($stateParams, ReportSelectorForm, ReportFetcher, reportType) {
                         ReportSelectorForm.setInitialData(reportType, $stateParams);
 
-                        return ReportSelector.getReports(reportType, $stateParams);
+                        return ReportFetcher.getReports(reportType, $stateParams);
                     }
                 }
             })
@@ -119,13 +181,13 @@ angular.module('tagcade.reports.performanceReport', [
                 },
                 resolve: {
                     reportType: function () {
-                        return PERFORMANCE_REPORT_TYPES.platform.account;
+                        return PERFORMANCE_REPORT_TYPES.platform.account.type;
                     },
 
-                    reports: /* @ngInject */ function ($stateParams, ReportSelectorForm, ReportSelector, reportType) {
+                    reports: /* @ngInject */ function ($stateParams, ReportSelectorForm, ReportFetcher, reportType) {
                         ReportSelectorForm.setInitialData(reportType, $stateParams);
 
-                        return ReportSelector.getReports(reportType, $stateParams);
+                        return ReportFetcher.getReports(reportType, $stateParams);
                     }
                 }
             })
@@ -144,13 +206,13 @@ angular.module('tagcade.reports.performanceReport', [
                 },
                 resolve: {
                     reportType: function () {
-                        return PERFORMANCE_REPORT_TYPES.platform.account;
+                        return PERFORMANCE_REPORT_TYPES.platform.account.type;
                     },
 
-                    reports: /* @ngInject */ function ($stateParams, ReportSelectorForm, ReportSelector, reportType) {
+                    reports: /* @ngInject */ function ($stateParams, ReportSelectorForm, ReportFetcher, reportType) {
                         ReportSelectorForm.setInitialData(reportType, $stateParams);
 
-                        return ReportSelector.getReports(reportType, $stateParams);
+                        return ReportFetcher.getReports(reportType, $stateParams);
                     }
                 }
             })
@@ -169,13 +231,13 @@ angular.module('tagcade.reports.performanceReport', [
                 },
                 resolve: {
                     reportType: function () {
-                        return PERFORMANCE_REPORT_TYPES.platform.site;
+                        return PERFORMANCE_REPORT_TYPES.platform.site.type;
                     },
 
-                    reports: /* @ngInject */ function ($stateParams, ReportSelectorForm, ReportSelector, reportType) {
+                    reports: /* @ngInject */ function ($stateParams, ReportSelectorForm, ReportFetcher, reportType) {
                         ReportSelectorForm.setInitialData(reportType, $stateParams);
 
-                        return ReportSelector.getReports(reportType, $stateParams);
+                        return ReportFetcher.getReports(reportType, $stateParams);
                     }
                 }
             })
@@ -191,13 +253,13 @@ angular.module('tagcade.reports.performanceReport', [
                 },
                 resolve: {
                     reportType: function () {
-                        return PERFORMANCE_REPORT_TYPES.platform.adSlot;
+                        return PERFORMANCE_REPORT_TYPES.platform.adSlot.type;
                     },
 
-                    reports: /* @ngInject */ function ($stateParams, ReportSelectorForm, ReportSelector, reportType) {
+                    reports: /* @ngInject */ function ($stateParams, ReportSelectorForm, ReportFetcher, reportType) {
                         ReportSelectorForm.setInitialData(reportType, $stateParams);
 
-                        return ReportSelector.getReports(reportType, $stateParams);
+                        return ReportFetcher.getReports(reportType, $stateParams);
                     }
                 }
             })
@@ -211,33 +273,57 @@ angular.module('tagcade.reports.performanceReport', [
                 },
                 resolve: {
                     reportType: function () {
-                        return PERFORMANCE_REPORT_TYPES.platform.adTag;
+                        return PERFORMANCE_REPORT_TYPES.platform.adTag.type;
                     },
 
-                    reports: /* @ngInject */ function ($stateParams, ReportSelectorForm, ReportSelector, reportType) {
+                    reports: /* @ngInject */ function ($stateParams, ReportSelectorForm, ReportFetcher, reportType) {
                         ReportSelectorForm.setInitialData(reportType, $stateParams);
 
-                        return ReportSelector.getReports(reportType, $stateParams);
+                        return ReportFetcher.getReports(reportType, $stateParams);
                     }
                 }
             })
-            .state('reports.performanceReport.platform.adNetwork', {
-                url: '/adNetwork/{adNetworkId:[0-9]+}?startDate&endDate',
+            .state('reports.performanceReport.adNetwork.adNetwork', {
+                url: '/adNetwork/{adNetworkId:[0-9]+}?startDate&endDate&expand',
                 views: {
                     'report': {
                         controller: 'ReportViewController',
-                        templateUrl: 'reports/performanceReport/views/reportView.tpl.html'
+                        templateUrl: function ($stateParams) {
+                            return getTemplateUrl($stateParams, 'adNetwork', 'site', 'adNetwork');
+                        }
                     }
                 },
                 resolve: {
                     reportType: function () {
-                        return PERFORMANCE_REPORT_TYPES.adNetwork.adNetwork;
+                        return PERFORMANCE_REPORT_TYPES.adNetwork.adNetwork.type;
                     },
 
-                    reports: /* @ngInject */ function ($stateParams, ReportSelectorForm, ReportSelector, reportType) {
+                    reports: /* @ngInject */ function ($stateParams, ReportSelectorForm, ReportFetcher, reportType) {
                         ReportSelectorForm.setInitialData(reportType, $stateParams);
 
-                        return ReportSelector.getReports(reportType, $stateParams);
+                        return ReportFetcher.getReports(reportType, $stateParams);
+                    }
+                }
+            })
+            .state('reports.performanceReport.adNetwork.site', {
+                url: '/adNetwork/{adNetworkId:[0-9]+}/site/{siteId:[0-9]+}?startDate&endDate&expand',
+                views: {
+                    'report': {
+                        controller: 'ReportViewController',
+                        templateUrl: function ($stateParams) {
+                            return getTemplateUrl($stateParams, 'site', 'adTag', 'adNetwork');
+                        }
+                    }
+                },
+                resolve: {
+                    reportType: function () {
+                        return PERFORMANCE_REPORT_TYPES.adNetwork.site.type;
+                    },
+
+                    reports: /* @ngInject */ function ($stateParams, ReportSelectorForm, ReportFetcher, reportType) {
+                        ReportSelectorForm.setInitialData(reportType, $stateParams);
+
+                        return ReportFetcher.getReports(reportType, $stateParams);
                     }
                 }
             })

@@ -3,7 +3,8 @@
 
         <section class="panel panel-default mail-categories">
             <div class="panel-heading" ng-click="openSelector()" ng-class="{ 'click-disabled': isLoading }">
-                Report Selector {{ isLoading ? 'Loading...' : '' }}
+                <span><strong>Report Selector {{ isLoading ? 'Loading...' : '' }}</strong></span>
+
                 <span ng-show="!isLoading" class="pull-right glyphicon" ng-class="isCollapsed ? 'glyphicon-chevron-down' : 'glyphicon-chevron-up'"></span>
             </div>
             <div collapse="isCollapsed || isLoading">
@@ -93,19 +94,21 @@
                                 <div class="form-group" ng-if="fieldShouldBeVisible('adNetwork')">
                                     <label class="col-sm-2 control-label">Site</label>
                                     <div class="col-sm-10">
-                                        <div class="checkbox" style="margin-bottom: 15px">
+                                        <div class="checkbox">
                                             <label class="ui-checkbox">
                                                 <input name="allSites" type="checkbox" ng-model="criteria.allSites">
                                                 <span>All Sites</span>
                                             </label>
                                         </div>
 
-                                        <ui-select ng-hide="criteria.allSites" ng-model="criteria.siteId" ng-required="true" on-select="selectSite($item, $model)" ng-disabled="!criteria.adNetworkId || !entityFieldData.siteList.length">
-                                            <ui-select-match placeholder="Select a a site">{{ $select.selected.name }}</ui-select-match>
-                                            <ui-select-choices repeat="site.id as site in entityFieldData.siteList | filter: { name: $select.search } | selectedPublisher:criteria.publisherId">
-                                                {{ site.name }}
-                                            </ui-select-choices>
-                                        </ui-select>
+                                        <div ng-if="!criteria.allSites" style="margin-top: 15px">
+                                            <ui-select ng-model="criteria.siteId" ng-required="true" on-select="selectSite($item, $model)" ng-disabled="!criteria.adNetworkId || !entityFieldData.siteList.length">
+                                                <ui-select-match placeholder="Select a a site">{{ $select.selected.name }}</ui-select-match>
+                                                <ui-select-choices repeat="site.id as site in entityFieldData.siteList | filter: { name: $select.search } | selectedPublisher:criteria.publisherId">
+                                                    {{ site.name }}
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
                                     </div>
                                 </div>
 

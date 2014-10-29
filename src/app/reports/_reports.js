@@ -5,6 +5,7 @@ angular.module('tagcade.reports', [
 ])
 
     .constant('REPORT_DATE_FORMAT', 'YYYY-MM-DD')
+    .constant('REPORT_PRETTY_DATE_FORMAT', 'MMM Do YY')
 
     .provider('API_REPORTS_BASE_URL', {
         $get: function(API_END_POINT) {
@@ -24,10 +25,7 @@ angular.module('tagcade.reports', [
         UserStateHelperProvider
             .state('reports', {
                 abstract: true,
-                url: '/reports',
-                breadcrumb: {
-                    title: 'Reports'
-                }
+                url: '/reports'
             })
         ;
     })

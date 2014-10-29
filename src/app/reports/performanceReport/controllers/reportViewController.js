@@ -1,19 +1,27 @@
 angular.module('tagcade.reports.performanceReport')
 
     .controller('ReportViewController', function (
-        $rootScope, $scope, $filter, _,
+        $rootScope, $scope, $filter, $stateParams, _,
         PERFORMANCE_REPORT_EVENTS, PERFORMANCE_REPORT_TYPES,
-        ngTableParams, ReportSelector, DateFormatter, AlertService,
+        ngTableParams, ReportParams, DateFormatter, AlertService,
         reports
     ) {
         'use strict';
 
-        $scope.selectReport = function (report) {
+        $scope.expandReport = function (report) {
             if (!_.isString(report.reportType)) {
                 return;
             }
 
-            var requiredParams = ReportSelector.getOnlyRequiredParamsForReportType(report);
+            var unfilteredParams = {};
+
+            _.extend(
+                unfilteredParams,
+                $stateParams,
+                report
+            );
+
+            var requiredParams = ReportParams.getOnlyRequiredParamsForReportType(unfilteredParams, report.reportType);
 
             var params = {
                 startDate: DateFormatter.getFormattedDate(report.date),

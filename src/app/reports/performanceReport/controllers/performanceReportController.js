@@ -4,6 +4,8 @@ angular.module('tagcade.reports.performanceReport')
         'use strict';
 
         function openReport(event, reportTypeKey, params) {
+            console.log('open report', reportTypeKey, params);
+
             var toState = $state.get('.reports.performanceReport.' + reportTypeKey, $state.get(UserStateHelper.getBaseState()));
 
             if (!toState) {

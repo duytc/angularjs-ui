@@ -1,7 +1,7 @@
 angular.module('tagcade.reports.performanceReport')
 
     .directive('performanceReportSelectorForm', function(
-        $q, _, REPORT_DATE_FORMAT, PERFORMANCE_REPORT_TYPES, PERFORMANCE_REPORT_EVENTS, Auth, ReportSelector, ReportSelectorForm
+        $q, _, REPORT_DATE_FORMAT, REPORT_PRETTY_DATE_FORMAT, PERFORMANCE_REPORT_TYPES, PERFORMANCE_REPORT_EVENTS, Auth, ReportParams, ReportSelectorForm, DateFormatter
     ) {
         return {
             scope: {},
@@ -18,31 +18,31 @@ angular.module('tagcade.reports.performanceReport')
 
                 var reportTypes = [
                     {
-                        type: PERFORMANCE_REPORT_TYPES.platform.account,
+                        type: PERFORMANCE_REPORT_TYPES.platform.account.type,
                         name: 'Account',
                         fields: [],
                         criteria: []
                     },
                     {
-                        type: PERFORMANCE_REPORT_TYPES.platform.site,
+                        type: PERFORMANCE_REPORT_TYPES.platform.site.type,
                         name: 'Site',
                         fields: ['site'], // denotes the fields that should be visible when this is the selected report type
                         criteria: ['siteId'] // denotes the criteria that is required to fetch these reports from the server
                     },
                     {
-                        type: PERFORMANCE_REPORT_TYPES.platform.adSlot,
+                        type: PERFORMANCE_REPORT_TYPES.platform.adSlot.type,
                         name: 'Ad Slot',
                         fields: ['site', 'adSlot'],
                         criteria: ['adSlotId']
                     },
                     {
-                        type: PERFORMANCE_REPORT_TYPES.platform.adTag,
+                        type: PERFORMANCE_REPORT_TYPES.platform.adTag.type,
                         name: 'Ad Tag',
                         fields: ['site', 'adSlot', 'adTag'],
                         criteria: ['adTagId']
                     },
                     {
-                        type: PERFORMANCE_REPORT_TYPES.adNetwork.adNetwork,
+                        type: PERFORMANCE_REPORT_TYPES.adNetwork.adNetwork.type,
                         name: 'Ad Network',
                         fields: ['adNetwork'],
                         criteria: ['adNetworkId']
@@ -60,7 +60,7 @@ angular.module('tagcade.reports.performanceReport')
                     catch (e) {}
 
                     reportTypes.unshift({
-                        type: PERFORMANCE_REPORT_TYPES.platform.platform,
+                        type: PERFORMANCE_REPORT_TYPES.platform.platform.type,
                         name: 'Platform',
                         fields: [],
                         criteria: []
@@ -219,14 +219,14 @@ angular.module('tagcade.reports.performanceReport')
                         startDate: moment(),
                         endDate: moment()
                     },
-                    expand: false,
                     reportType: null,
                     publisherId: null,
                     siteId: null,
                     adSlotId: null,
                     adTagId: null,
                     adNetworkId: null,
-                    allSites: null
+                    allSites: false,
+                    expand: false
                 };
 
                 $scope.reportTypes = reportTypes;
@@ -360,14 +360,35 @@ angular.module('tagcade.reports.performanceReport')
 
                     $scope.formProcessing = true;
 
-                    var params = ReportSelector.getParamsForReportType($scope.criteria);
+                    var reportType = $scope.criteria.reportType;
 
-                    if (!$rootScope.$broadcast(PERFORMANCE_REPORT_EVENTS.formSubmit, $scope.criteria.reportType, params).defaultPrevented) {
+                    if (reportType == PERFORMANCE_REPORT_TYPES.adNetwork.adNetwork.type && !$scope.criteria.allSites) {
+                        // this is a special mapping for when the ad network report is selected and a single site is selected
+                        reportType = PERFORMANCE_REPORT_TYPES.adNetwork.site.type;
+                    }
+
+                    var params = ReportParams.getParamsForReportType($scope.criteria, reportType);
+
+                    if (!$rootScope.$broadcast(PERFORMANCE_REPORT_EVENTS.formSubmit, reportType, params).defaultPrevented) {
                         $scope.isCollapsed = true;
                     }
 
                     $scope.formProcessing = false;
                 };
+
+                function updateCriteria(unfilteredCriteria) {
+                    var knownKeys = _.intersection(_.keys(unfilteredCriteria), _.keys($scope.criteria));
+
+                    var filteredCriteria = _.pick(unfilteredCriteria, knownKeys);
+
+                    if (filteredCriteria.reportType == PERFORMANCE_REPORT_TYPES.adNetwork.site.type) {
+                        filteredCriteria.reportType = PERFORMANCE_REPORT_TYPES.adNetwork.adNetwork.type;
+                    }
+
+                    _.extend($scope.criteria, filteredCriteria);
+
+                    $scope.criteria.allSites = !$scope.criteria.siteId && ($scope.criteria.reportType == PERFORMANCE_REPORT_TYPES.adNetwork.adNetwork.type)
+                }
 
                 // form init
 
@@ -387,11 +408,11 @@ angular.module('tagcade.reports.performanceReport')
                     $scope.isCollapsed = true;
                     $scope.isLoading = true;
 
-                    _.extend($scope.criteria, criteria);
+                    updateCriteria(criteria);
 
                     return ReportSelectorForm.getCalculatedParams(criteria)
                         .then(function (params) {
-                            _.extend($scope.criteria, params);
+                            updateCriteria(params);
                         })
                         .then(function () {
                             return $scope.selectReportType();

@@ -1,5 +1,8 @@
 angular.module('tagcade.reports.performanceReport')
-
+    /**
+     * Provides data to the selector form directive, also allows communication to the directive,
+     * see the api.requiresReload property
+     */
     .factory('ReportSelectorForm', function(
         $rootScope, $q, _, Auth, DateFormatter, AdminUserManager, SiteManager, AdSlotManager, AdTagManager, AdNetworkManager
         ) {
@@ -276,7 +279,7 @@ angular.module('tagcade.reports.performanceReport')
 
             _.extend(params, getDateRangeFromQueryParams(__data.startDate, __data.endDate));
 
-            var ids = _.pick(__data, function(value, key) {
+            var entityFieldIds = _.pick(__data, function(value, key) {
                 if (!_.isString(key)) {
                     return false;
                 }
@@ -284,7 +287,11 @@ angular.module('tagcade.reports.performanceReport')
                 return /Id$/.test(key);
             });
 
-            _.extend(params, ids);
+            entityFieldIds = _.mapValues(entityFieldIds, function (value) {
+                return parseInt(value, 10);
+            });
+
+            _.extend(params, entityFieldIds);
 
             resetData();
 

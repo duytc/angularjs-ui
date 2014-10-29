@@ -24,14 +24,16 @@ angular.module('tagcade.reports.performanceReport')
                 return false;
             },
 
-            getFormattedDate: function (date) {
+            getFormattedDate: function (date, format) {
                 date = this.getDate(date);
 
                 if (date === false) {
                     return false;
                 }
 
-                return date.format(REPORT_DATE_FORMAT);
+                format = format || REPORT_DATE_FORMAT
+
+                return date.format(format);
             },
 
             isValidDate: function (date) {
