@@ -8,9 +8,6 @@ angular.module('tagcade.tagManagement.tagGenerator', [
         UserStateHelperProvider
             .state('tagManagement.tagGenerator', {
                 url: '/generateTags?siteId',
-                params: {
-                    siteId: null
-                },
                 views: {
                     'content@app': {
                         controller: 'TagGeneratorController',

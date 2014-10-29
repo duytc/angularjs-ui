@@ -40,9 +40,6 @@ angular.module('tagcade.displayAds.tagManagement.adTag', [
             })
             .state('tagManagement.adTag.new', {
                 url: '/new?adSlotId',
-                params: {
-                    adSlotId: null
-                },
                 views: {
                     'content@app': {
                         controller: 'AdTagFormController',
