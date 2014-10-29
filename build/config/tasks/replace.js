@@ -1,7 +1,5 @@
 module.exports = function(grunt, options) {
-    var config = {
-        dev: {}
-    };
+    var config = {};
 
     function getPattern(apiEndPoint) {
         if (typeof apiEndPoint !== 'string') {
@@ -22,23 +20,25 @@ module.exports = function(grunt, options) {
         devApiEndPoint = null;
     }
 
-    if (typeof devApiEndPoint === 'string') {
-        config.dev = {
-            options: {
-                patterns: [
-                    getPattern(devApiEndPoint)
-                ]
-            },
-            files: [
-                {
-                    expand: true,
-                    src: [
-                        '<%= appConfig.dirs.build.dev %>/src/app/core/_core.js'
-                    ]
-                }
-            ]
-        };
+    if (typeof devApiEndPoint !== 'string') {
+        devApiEndPoint = '//api.tagcade.dev/app_dev.php/api';
     }
+
+    config.dev = {
+        options: {
+            patterns: [
+                getPattern(devApiEndPoint)
+            ]
+        },
+        files: [
+            {
+                expand: true,
+                src: [
+                    '<%= appConfig.dirs.build.dev %>/src/app/core/_core.js'
+                ]
+            }
+        ]
+    };
 
     config.prod = {
         options: {
