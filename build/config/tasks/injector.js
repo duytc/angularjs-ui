@@ -18,7 +18,8 @@ module.exports = {
                     'templates-app.js',
                     'templates-common.js',
                     '<%= appConfig.appFiles.js %>'
-                ]
+                ],
+                nocase: true
             }
         ]
     }
