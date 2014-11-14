@@ -9,7 +9,6 @@ angular.module('tagcade', [
 
     'tagcade.tagManagement',
     'tagcade.reports',
-    'tagcade.analytics',
 
     'tagcade.displayAds'
 ]);
