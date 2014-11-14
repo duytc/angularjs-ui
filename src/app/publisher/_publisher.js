@@ -3,10 +3,7 @@ angular.module('tagcade.publisher', [
 
     'tagcade.core',
 
-    'tagcade.publisher.ui',
-    'tagcade.publisher.dashboard',
-//    'tagcade.publisher.tools',
-//    'tagcade.publisher.billing'
+    'tagcade.publisher.dashboard'
 ])
 
     .config(function ($stateProvider, USER_ROLES) {
@@ -17,15 +14,18 @@ angular.module('tagcade.publisher', [
                 abstract: true,
                 views: {
                     'header@app': {
-                        templateUrl: 'publisher/ui/views/header.tpl.html'
+                        templateUrl: 'publisher/layout/header.tpl.html'
                     },
                     'nav@app': {
-                        templateUrl: 'publisher/ui/views/nav.tpl.html'
+                        templateUrl: 'publisher/layout/nav.tpl.html'
                     }
                 },
                 url: '/pub',
                 data: {
                     requiredUserRole: USER_ROLES.publisher
+                },
+                ncyBreadcrumb: {
+                    skip: true
                 }
             })
             .state('app.publisher.error', {
@@ -39,8 +39,8 @@ angular.module('tagcade.publisher', [
                         controller: '404ErrorController'
                     }
                 },
-                breadcrumb: {
-                    title: '404'
+                ncyBreadcrumb: {
+                    label: '404'
                 }
             })
             .state('app.publisher.error.403', {
@@ -50,8 +50,8 @@ angular.module('tagcade.publisher', [
                         controller: '403ErrorController'
                     }
                 },
-                breadcrumb: {
-                    title: '403'
+                ncyBreadcrumb: {
+                    label: '403'
                 }
             })
             .state('app.publisher.error.400', {
@@ -61,8 +61,8 @@ angular.module('tagcade.publisher', [
                         controller: '400ErrorController'
                     }
                 },
-                breadcrumb: {
-                    title: '400'
+                ncyBreadcrumb: {
+                    label: '400'
                 }
             })
             .state('app.publisher.error.500', {
@@ -72,8 +72,8 @@ angular.module('tagcade.publisher', [
                         controller: '500ErrorController'
                     }
                 },
-                breadcrumb: {
-                    title: '500'
+                ncyBreadcrumb: {
+                    label: '500'
                 }
             })
         ;
