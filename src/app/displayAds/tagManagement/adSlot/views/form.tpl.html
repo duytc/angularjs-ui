@@ -1,9 +1,6 @@
 <section class="panel panel-default">
+    <div class="panel-heading"><strong ncy-breadcrumb-last></strong></div>
     <div class="panel-body">
-        <div ncy-breadcrumb></div>
-
-        <h1 class="text-thin" ncy-breadcrumb-last></h1>
-
         <div class="row">
             <form name="adSlotForm" class="col-lg-6 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
                 <div class="form-group" ng-if="currentUser.isAdmin() && !allowSiteSelection">

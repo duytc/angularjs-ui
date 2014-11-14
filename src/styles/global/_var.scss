@@ -707,7 +707,7 @@ $panel-border-radius:         $border-radius-base !default;
 $panel-inner-border:          $state-default-border !default;
 $panel-footer-bg:             #fafafa !default;
 
-$panel-default-text:          $text-color !default;
+$panel-default-text:          lighten($text-color, 10%) !default;
 $panel-default-border:        $state-default-border !default;
 $panel-default-heading-bg:    $state-default-bg !default;
 

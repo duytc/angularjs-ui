@@ -2,6 +2,13 @@
 .panel {
     .panel-heading {
         text-transform: uppercase;
+        position: relative;
+
+        .button-bar {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
     }
     .panel-title {
         font-size: $font-size-base;

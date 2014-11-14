@@ -1,16 +1,15 @@
 <div class="panel panel-default">
-    <div class="panel-body">
-        <div ncy-breadcrumb></div>
+    <div class="panel-heading">
+        <strong ncy-breadcrumb-last></strong>
 
-        <h1 class="text-thin" ncy-breadcrumb-last></h1>
-
-        <div>
-            <button ui-sref="^.new" class="btn btn-w-md btn-gap-v btn-primary" type="button">
+        <div class="button-bar hidden-xs">
+            <button ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon glyphicon-plus"></span>
                 Add User
             </button>
         </div>
-
+    </div>
+    <div class="panel-body">
         <table class="table table-hover ng-table-responsive" ng-table="tableParams" show-filter="true">
             <tr ng-repeat="user in $data">
                 <td data-title="'#'" sortable="'id'">
