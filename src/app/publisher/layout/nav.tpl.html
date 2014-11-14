@@ -18,11 +18,6 @@
             </ul>
         </li>
 
-        <li ng-show="hasDisplayAdsModule" ui-sref-active="active">
-            <a href="#" ui-sref=".reports"><i class="fa fa-tachometer"></i><span>Reports</span></a>
-            <ul>
-                <li ng-if="hasDisplayAdsModule" ui-sref-active="active"><a ui-sref=".reports.performanceReport"><i class="fa fa-caret-right"></i>Performance Reports</a></li>
-            </ul>
-        </li>
+        <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".reports.performanceReport"><i class="fa fa-tachometer"></i><span>Reports</span></a></li>
     </ul>
 </div>
