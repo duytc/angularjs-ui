@@ -1,11 +1,13 @@
-angular.module('tagcade.admin.userManagement')
+(function () {
+   'use strict';
 
-    .controller('AdminUserListController', function ($scope, $filter, ngTableParams, users) {
-        'use strict';
+    angular
+        .module('tagcade.admin.userManagement')
+        .controller('UserList', UserList)
+    ;
 
+    function UserList($scope, $filter, ngTableParams, users) {
         var data = users;
-
-        $scope.setWideContent();
 
         $scope.tableParams = new ngTableParams( // jshint ignore:line
             {
@@ -27,6 +29,5 @@ angular.module('tagcade.admin.userManagement')
                 }
             }
         );
-    })
-
-;
+    }
+})();

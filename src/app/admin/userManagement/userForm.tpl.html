@@ -1,0 +1,108 @@
+<section class="panel panel-default">
+    <div class="panel-body">
+        <div ncy-breadcrumb></div>
+
+        <h1 class="text-thin" ncy-breadcrumb-last></h1>
+
+        <div class="row">
+            <form name="userForm" class="col-lg-6 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
+                <div class="form-group">
+                    <label for="inputUsername" class="col-sm-2 control-label">Username</label>
+                    <div class="col-sm-10">
+                        <input
+                            name="username"
+                            ng-model="user.username"
+                            server-error
+                            ng-required="true"
+                            ng-minlength="2"
+                            type="text"
+                            class="form-control"
+                            id="inputUsername"
+                            placeholder="Username">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+                    <div class="col-sm-10">
+                        <input
+                            name="email"
+                            ng-model="user.email"
+                            server-error
+                            type="email"
+                            class="form-control"
+                            id="inputEmail"
+                            placeholder="Email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword" class="col-sm-2 control-label">Password</label>
+                    <div class="col-sm-10">
+                        <input
+                                name="plainPassword"
+                                ng-model="user.plainPassword"
+                                server-error
+                                ng-required="isNew"
+                                ng-minlength="2"
+                                type="password"
+                                class="form-control"
+                                id="inputPassword"
+                                placeholder="Password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Role</label>
+                    <div class="col-sm-10">
+                        <div ng-repeat="userRole in userRoles" class="radio">
+                            <label class="ui-radio">
+                                <input
+                                    name="userRole"
+                                    type="radio"
+                                    ng-click="setUserRole(userRole.role)"
+                                    ng-checked="hasUserRole(userRole.role)">
+                                <span>{{ userRole.label }}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-show="hasUserRole('ROLE_PUBLISHER')">
+                    <label class="col-sm-2 control-label">Modules</label>
+                    <div class="col-sm-10">
+                        <div ng-repeat="module in modules" class="checkbox">
+                            <label class="ui-checkbox">
+                                <input
+                                    name="enabledModules[]"
+                                    type="checkbox"
+                                    ng-click="toggleModuleRole(module.role)"
+                                    ng-checked="hasModuleEnabled(module.role)">
+                                <span>{{ module.label }}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEnabled" class="col-sm-2 control-label">Enabled</label>
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label class="ui-checkbox">
+                                <input
+                                    name="enabled"
+                                    type="checkbox"
+                                    ng-model="user.enabled"
+                                    server-error>
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">Submit</button>
+                        <div class="callout callout-info">
+                            <p>Submit button will be active only when all fields are valid.</p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

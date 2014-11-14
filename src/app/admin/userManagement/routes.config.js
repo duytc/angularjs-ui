@@ -1,24 +1,27 @@
-angular.module('tagcade.admin.userManagement', [
-    'ui.router'
-])
+(function () {
+    'use strict';
 
-    .config(function ($stateProvider) {
-        'use strict';
+    angular
+        .module('tagcade.admin.userManagement')
+        .config(addRoutes)
+    ;
 
+    function addRoutes($stateProvider) {
         $stateProvider
             .state('app.admin.userManagement', {
                 abstract: true,
                 url: '/userManagement',
-                breadcrumb: {
-                    title: 'User Management'
+                ncyBreadcrumb: {
+                    label: 'User Management'
                 }
             })
+
             .state('app.admin.userManagement.list', {
                 url: '/list',
                 views: {
                     'content@app': {
-                        controller: 'AdminUserListController',
-                        templateUrl: 'admin/userManagement/views/list.tpl.html'
+                        controller: 'UserList',
+                        templateUrl: 'admin/userManagement/userList.tpl.html'
                     }
                 },
                 resolve: {
@@ -26,16 +29,17 @@ angular.module('tagcade.admin.userManagement', [
                         return AdminUserManager.getList();
                     }
                 },
-                breadcrumb: {
-                    title: 'Users'
+                ncyBreadcrumb: {
+                    label: 'Users'
                 }
             })
+
             .state('app.admin.userManagement.new', {
                 url: '/new',
                 views: {
                     'content@app': {
-                        controller: 'AdminUserFormController',
-                        templateUrl: 'admin/userManagement/views/form.tpl.html'
+                        controller: 'UserForm',
+                        templateUrl: 'admin/userManagement/userForm.tpl.html'
                     }
                 },
                 resolve: {
@@ -43,16 +47,18 @@ angular.module('tagcade.admin.userManagement', [
                         return null;
                     }
                 },
-                breadcrumb: {
-                    title: 'New User'
+                ncyBreadcrumb: {
+                    label: 'New User'
                 }
             })
+
+
             .state('app.admin.userManagement.edit', {
                 url: '/edit/{id:[0-9]+}',
                 views: {
                     'content@app': {
-                        controller: 'AdminUserFormController',
-                        templateUrl: 'admin/userManagement/views/form.tpl.html'
+                        controller: 'UserForm',
+                        templateUrl: 'admin/userManagement/userForm.tpl.html'
                     }
                 },
                 resolve: {
@@ -60,11 +66,10 @@ angular.module('tagcade.admin.userManagement', [
                         return AdminUserManager.one($stateParams.id).get();
                     }
                 },
-                breadcrumb: {
-                    title: 'Edit User - {{ user.username }}'
+                ncyBreadcrumb: {
+                    label: 'Edit User - {{ user.username }}'
                 }
             })
         ;
-    })
-
-;
+    }
+})();

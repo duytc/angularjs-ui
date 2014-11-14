@@ -1,8 +1,12 @@
-angular.module('tagcade.admin.userManagement')
+(function () {
+    'use strict';
 
-    .controller('AdminUserFormController', function ($scope, $state, $q, AdminUserManager, AlertService, ServerErrorProcessor, user) {
-        'use strict';
+    angular
+        .module('tagcade.admin.userManagement')
+        .controller('UserForm', UserForm)
+    ;
 
+    function UserForm($scope, $state, $q, AdminUserManager, AlertService, ServerErrorProcessor, user) {
         $scope.fieldNameTranslations = {
             username: 'Username',
             email: 'Email',
@@ -115,6 +119,5 @@ angular.module('tagcade.admin.userManagement')
                 )
             ;
         };
-    })
-
-;
+    }
+})();

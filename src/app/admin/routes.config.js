@@ -1,53 +1,37 @@
-angular.module('tagcade.admin', [
-    'ui.router',
+(function () {
+    'use strict';
 
-    'tagcade.core',
+    angular
+        .module('tagcade.admin')
+        .config(addRoutes)
+    ;
 
-    'tagcade.admin.ui',
-    'tagcade.admin.dashboard',
-    'tagcade.admin.userManagement'
-])
-
-    .provider('API_ADMIN_BASE_URL', {
-        $get: function(API_END_POINT) {
-            return API_END_POINT + '/admin/v1';
-        }
-    })
-
-    .factory('AdminRestangular', function (Restangular, API_ADMIN_BASE_URL) {
-        'use strict';
-
-        return Restangular.withConfig(function (RestangularConfigurer) {
-            RestangularConfigurer.setBaseUrl(API_ADMIN_BASE_URL);
-        });
-    })
-
-    .config(function ($stateProvider, USER_ROLES) {
-        'use strict';
-
+    function addRoutes($stateProvider, USER_ROLES) {
         $stateProvider
             .state('app.admin', {
                 abstract: true,
                 views: {
                     'header@app': {
-                        templateUrl: 'admin/ui/views/header.tpl.html'
+                        templateUrl: 'admin/layout/header.tpl.html'
                     },
                     'nav@app': {
-                        templateUrl: 'admin/ui/views/nav.tpl.html'
+                        templateUrl: 'admin/layout/nav.tpl.html'
                     }
                 },
                 url: '/adm',
                 data: {
                     requiredUserRole: USER_ROLES.admin
+                },
+                ncyBreadcrumb: {
+                    skip: true
                 }
             })
+
             .state('app.admin.error', {
                 abstract: true,
-                url: '/error',
-                data: {
-                    wideContent: true
-                }
+                url: '/error'
             })
+
             .state('app.admin.error.404', {
                 url: '/404',
                 views: {
@@ -55,10 +39,11 @@ angular.module('tagcade.admin', [
                         controller: '404ErrorController'
                     }
                 },
-                breadcrumb: {
-                    title: '404'
+                ncyBreadcrumb: {
+                    label: '404'
                 }
             })
+
             .state('app.admin.error.403', {
                 url: '/403',
                 views: {
@@ -66,10 +51,11 @@ angular.module('tagcade.admin', [
                         controller: '403ErrorController'
                     }
                 },
-                breadcrumb: {
-                    title: '403'
+                ncyBreadcrumb: {
+                    label: '403'
                 }
             })
+
             .state('app.admin.error.400', {
                 url: '/400',
                 views: {
@@ -77,10 +63,11 @@ angular.module('tagcade.admin', [
                         controller: '400ErrorController'
                     }
                 },
-                breadcrumb: {
-                    title: '400'
+                ncyBreadcrumb: {
+                    label: '400'
                 }
             })
+
             .state('app.admin.error.500', {
                 url: '/500',
                 views: {
@@ -88,11 +75,10 @@ angular.module('tagcade.admin', [
                         controller: '500ErrorController'
                     }
                 },
-                breadcrumb: {
-                    title: '500'
+                ncyBreadcrumb: {
+                    label: '500'
                 }
             })
         ;
-    })
-
-;
+    }
+})();

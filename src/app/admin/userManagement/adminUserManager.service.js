@@ -1,8 +1,12 @@
-angular.module('tagcade.admin.userManagement')
+(function () {
+   'use strict';
 
-    .factory('AdminUserManager', function (AdminRestangular) {
-        'use strict';
+    angular
+        .module('tagcade.admin.userManagement')
+        .factory('AdminUserManager', AdminUserManager)
+    ;
 
+    function AdminUserManager(AdminRestangular) {
         var RESOURCE_NAME = 'users';
 
         AdminRestangular.addRequestInterceptor(function(element, operation, what) {
@@ -18,6 +22,5 @@ angular.module('tagcade.admin.userManagement')
         });
 
         return AdminRestangular.service(RESOURCE_NAME);
-    })
-
-;
+    }
+})();
