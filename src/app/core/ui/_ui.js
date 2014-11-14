@@ -4,11 +4,18 @@ angular.module('tagcade.core.ui', [
     'ui.router',
     'ui.bootstrap',
     'ui.select',
-    'ngTable'
+    'ngTable',
+    'ncy-angular-breadcrumb'
 ])
 
     .config(function(uiSelectConfig) {
         uiSelectConfig.theme = 'bootstrap';
+    })
+
+    .config(function($breadcrumbProvider) {
+        $breadcrumbProvider.setOptions({
+            includeAbstract: true
+        });
     })
 
     .config(function ($stateProvider, $urlRouterProvider) {
@@ -25,11 +32,17 @@ angular.module('tagcade.core.ui', [
                     userSession: function(Auth) {
                         return Auth.getSession();
                     }
+                },
+                ncyBreadcrumb: {
+                    skip: true
                 }
             })
             .state('anon', {
                 abstract: true,
-                templateUrl: 'core/ui/views/anon.tpl.html'
+                templateUrl: 'core/ui/views/anon.tpl.html',
+                ncyBreadcrumb: {
+                    skip: true
+                }
             })
         ;
 
