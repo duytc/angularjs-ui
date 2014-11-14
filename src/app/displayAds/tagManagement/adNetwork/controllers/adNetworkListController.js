@@ -16,14 +16,12 @@ angular.module('tagcade.displayAds.tagManagement.adNetwork')
             });
         }
 
-        $scope.setWideContent();
-
         $scope.tableParams = new ngTableParams( // jshint ignore:line
             {
                 page: 1,
                 count: 10,
                 sorting: {
-                    id: 'asc'
+                    name: 'asc'
                 }
             },
             {

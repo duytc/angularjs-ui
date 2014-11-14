@@ -46,8 +46,8 @@ angular.module('tagcade.tagManagement.tagGenerator', [
                         }
                     }
                 },
-                breadcrumb: {
-                    title: 'Generate Tags'
+                ncyBreadcrumb: {
+                    label: 'Generate Tags'
                 },
                 reloadOnSearch: false
             })

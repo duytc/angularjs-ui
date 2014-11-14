@@ -17,8 +17,8 @@ angular.module('tagcade.tagManagement', [
             .state('tagManagement', {
                 abstract: true,
                 url: '/tagManagement',
-                breadcrumb: {
-                    title: 'Tag Management'
+                ncyBreadcrumb: {
+                    label: 'Tag Management'
                 }
             })
         ;

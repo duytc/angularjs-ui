@@ -1,7 +1,9 @@
 angular.module('tagcade.tagManagement.tagGenerator')
 
-    .controller('TagGeneratorController', function ($scope, $location, SiteManager, siteList, site, jstags, publishers) {
+    .controller('TagGeneratorController', function ($scope, $location, $q, SiteManager, siteList, site, jstags, publishers) {
         'use strict';
+
+        $scope.formProcessing = false;
 
         $scope.selected = {
             publisher: site && site.publisher,
@@ -15,21 +17,49 @@ angular.module('tagcade.tagManagement.tagGenerator')
         $scope.publisher = null;
         $scope.publishers = publishers;
 
+        $scope.isFormValid = function() {
+            return $scope.tagGeneratorForm.$valid;
+        };
+
         $scope.selectPublisher = function (publisher, publisherId) {
-            $scope.jstags = null;
             $scope.selected.site = null;
         };
 
         $scope.selectSite = function (site, siteId) {
+        };
+
+        $scope.submit = function() {
+            if ($scope.formProcessing) {
+                // already running, prevent duplicates
+                return;
+            }
+
+            $scope.formProcessing = true;
+
             $scope.jstags = null;
 
-            site.customGET('jstags').then(function (javascriptTags) {
-                $scope.jstags = javascriptTags;
+            var site = $scope.selected.site;
 
-                // change siteId parameter on the current state without reloading
-                // reloadOnSearch: false set on the state
-                $location.search({ siteId: siteId });
-            });
+            var getJsTagsPromise;
+
+            try {
+                getJsTagsPromise = site.customGET('jstags');
+            } catch (e) {
+                getJsTagsPromise = false;
+            }
+
+            $q.when(getJsTagsPromise)
+                .then(function (javascriptTags) {
+                    $scope.jstags = javascriptTags;
+
+                    // change siteId parameter on the current state without reloading
+                    // reloadOnSearch: false set on the state
+                    $location.search({ siteId: site.id });
+                })
+                .finally(function () {
+                    $scope.formProcessing = false;
+                })
+            ;
         };
     })
 

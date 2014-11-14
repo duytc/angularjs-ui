@@ -1,37 +1,48 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><strong><span current-page-title></span></strong></div>
     <div class="panel-body">
-        <button ui-sref="^.new({ adSlotId: adSlot.id })" class="btn btn-w-md btn-gap-v btn-primary" type="button">New Ad Tag</button>
-        <button ui-sref="^.^.adSlot.list({ siteId: adSlot.site.id })" class="btn btn-w-md btn-gap-v btn-primary" type="button">Back to Ad Slot List</button>
-    </div>
+        <div ncy-breadcrumb></div>
 
-    <table ng-if="hasAdTags()" class="table">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Actions</th>
-            <th>Position</th>
-            <th>Name</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody ui-sortable="sortableOptions" ng-model="adTags">
-        <tr ng:repeat="adTag in adTags" class="item" ng-class="{'moveable': !sortableOptions['disabled']}">
-            <td>{{ adTag.id }}</td>
-            <td>
-                <div class="btn-group" dropdown on-toggle="actionDropdownToggled(open)">
-                    <button type="button" class="btn dropdown-toggle"> Actions <span class="caret"></span> </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a ui-sref="^.edit({ id: adTag.id })">Edit Ad Tag</a></li>
-                        <li><a ng-click="toggleAdTagStatus(adTag)">{{ adTag.active ? 'Pause' : 'Activate' }} Ad Tag</a></li>
-                        <li><a ng-click="confirmDeletion(adTag, $index)">Delete Ad Tag</a></li>
-                    </ul>
-                </div>
-            </td>
-            <td><span class="label label-default">{{ adTag.position }}</span></td>
-            <td>{{ adTag.name }}</td>
-            <td><span class="label" ng-class="adTag.active ? 'label-success' : 'label-danger'">{{ adTag.active ? 'Active' : 'Paused' }}</span></td>
-        </tr>
-    </tbody>
-    </table>
+        <h1 class="text-thin" ncy-breadcrumb-last></h1>
+
+        <div>
+            <button ui-sref="^.new({ adSlotId: adSlot.id })" class="btn btn-w-md btn-gap-v btn-primary" type="button">
+                <span class="glyphicon glyphicon glyphicon-plus"></span>
+                New Ad Tag
+            </button>
+            <button ui-sref="^.^.adSlot.list({ siteId: adSlot.site.id })" class="btn btn-w-md btn-gap-v btn-primary" type="button">
+                <span class="glyphicon glyphicon glyphicon-arrow-left"></span>
+                Back to List of Ad Slots
+            </button>
+        </div>
+
+        <table ng-if="hasAdTags()" class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Actions</th>
+                <th>Position</th>
+                <th>Name</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody ui-sortable="sortableOptions" ng-model="adTags">
+            <tr ng:repeat="adTag in adTags" class="item" ng-class="{'moveable': !sortableOptions['disabled']}">
+                <td>{{ adTag.id }}</td>
+                <td>
+                    <div class="btn-group" dropdown on-toggle="actionDropdownToggled(open)">
+                        <button type="button" class="btn dropdown-toggle"> Actions <span class="caret"></span> </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a ui-sref="^.edit({ id: adTag.id })">Edit Ad Tag</a></li>
+                            <li><a ng-click="toggleAdTagStatus(adTag)">{{ adTag.active ? 'Pause' : 'Activate' }} Ad Tag</a></li>
+                            <li><a ng-click="confirmDeletion(adTag, $index)">Delete Ad Tag</a></li>
+                        </ul>
+                    </div>
+                </td>
+                <td><span class="label label-default">{{ adTag.position }}</span></td>
+                <td>{{ adTag.name }}</td>
+                <td><span class="label" ng-class="adTag.active ? 'label-success' : 'label-danger'">{{ adTag.active ? 'Active' : 'Paused' }}</span></td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
 </div>

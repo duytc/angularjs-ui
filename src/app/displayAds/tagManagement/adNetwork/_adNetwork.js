@@ -11,6 +11,9 @@ angular.module('tagcade.displayAds.tagManagement.adNetwork', [
                 url: '/adNetworks',
                 data: {
                     requiredModule: USER_MODULES.displayAds
+                },
+                ncyBreadcrumb: {
+                    skip: true
                 }
             })
             .state('tagManagement.adNetwork.list', {
@@ -26,8 +29,8 @@ angular.module('tagcade.displayAds.tagManagement.adNetwork', [
                         return AdNetworkManager.getList();
                     }
                 },
-                breadcrumb: {
-                    title: 'Ad Networks'
+                ncyBreadcrumb: {
+                    label: 'Ad Networks'
                 }
 
             })
@@ -53,8 +56,8 @@ angular.module('tagcade.displayAds.tagManagement.adNetwork', [
                         }
                     }
                 },
-                breadcrumb: {
-                    title: 'New Ad Network'
+                ncyBreadcrumb: {
+                    label: 'New Ad Network'
                 }
             })
             .state('tagManagement.adNetwork.edit', {
@@ -79,8 +82,8 @@ angular.module('tagcade.displayAds.tagManagement.adNetwork', [
                         }
                     }
                 },
-                breadcrumb: {
-                    title: 'Edit Ad Network - {{ adNetwork.name }} '
+                ncyBreadcrumb: {
+                    label: 'Edit Ad Network - {{ adNetwork.name }}'
                 }
             })
         ;

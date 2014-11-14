@@ -91,8 +91,14 @@ angular.module('tagcade.displayAds.tagManagement.adTag')
                 )
                 .then(
                     function () {
+                        var adSlotId = $scope.adTag.adSlot;
+
+                        if (angular.isObject(adSlotId)) {
+                            adSlotId = adSlotId.id;
+                        }
+
                         return $state.go('^.list', {
-                            adSlotId: $scope.adTag.adSlot
+                            adSlotId: adSlotId
                         });
                     }
                 )

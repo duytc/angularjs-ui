@@ -1,37 +1,45 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><strong><span current-page-title></span></strong></div>
     <div class="panel-body">
-        <button ui-sref="^.new" class="btn btn-w-md btn-gap-v btn-primary" type="button">Add Site</button>
-    </div>
+        <div ncy-breadcrumb></div>
 
-    <div ng-if="hasData()">
-        <table class="table table-hover ng-table-responsive" ng-table="tableParams" show-filter="true">
-            <tr ng-repeat="site in $data">
-                <td data-title="'#'" sortable="'id'">
-                    {{ site.id }}
-                </td>
-                <td data-title="'Actions'">
-                    <div class="btn-group" dropdown>
-                        <button type="button" class="btn dropdown-toggle"> Actions <span class="caret"></span> </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li ng-if="hasDisplayAdsModule"><a ui-sref="^.^.adSlot.list({ siteId: site.id })">Manage Ad Slots</a></li>
-                            <li><a ui-sref="^.^.tagGenerator({ siteId: site.id })">Generate Tags</a></li>
-                            <li class="divider"></li>
-                            <li><a ui-sref="^.edit({ id: site.id })">Edit Site</a></li>
-                            <li><a ng-click="confirmDeletion(site, $index)">Delete Site</a></li>
-                        </ul>
-                    </div>
-                </td>
-                <td ng-show="currentUser.isAdmin()" data-title="'Publisher'" sortable="'publisher.username'" filter="{ 'publisher.username': 'text' }">
-                    {{ site.publisher.username }}
-                </td>
-                <td data-title="'Name'" sortable="'name'" filter="{ 'name': 'text' }">
-                    {{ site.name }}
-                </td>
-                <td data-title="'Domain'">
-                    {{ site.domain }}
-                </td>
-            </tr>
-        </table>
+        <h1 class="text-thin" ncy-breadcrumb-last></h1>
+
+        <div>
+            <button ui-sref="^.new" class="btn btn-primary btn-w-md btn-gap-v" type="button">
+                <span class="glyphicon glyphicon glyphicon-plus"></span>
+                Add Site
+            </button>
+        </div>
+
+        <div ng-if="hasData()">
+            <table class="table table-hover ng-table-responsive" ng-table="tableParams" show-filter="true">
+                <tr ng-repeat="site in $data">
+                    <td data-title="'#'" sortable="'id'">
+                        {{ site.id }}
+                    </td>
+                    <td data-title="'Actions'">
+                        <div class="btn-group" dropdown>
+                            <button type="button" class="btn dropdown-toggle"> Actions <span class="caret"></span> </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li ng-if="hasDisplayAdsModule"><a ui-sref="^.^.adSlot.list({ siteId: site.id })">Manage Ad Slots</a></li>
+                                <li><a ui-sref="^.^.tagGenerator({ siteId: site.id })">Generate Tags</a></li>
+                                <li class="divider"></li>
+                                <li><a ui-sref="^.edit({ id: site.id })">Edit Site</a></li>
+                                <li><a ng-click="confirmDeletion(site, $index)">Delete Site</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td ng-show="currentUser.isAdmin()" data-title="'Publisher'" sortable="'publisher.username'" filter="{ 'publisher.username': 'text' }">
+                        {{ site.publisher.username }}
+                    </td>
+                    <td data-title="'Name'" sortable="'name'" filter="{ 'name': 'text' }">
+                        {{ site.name }}
+                    </td>
+                    <td data-title="'Domain'">
+                        {{ site.domain }}
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>

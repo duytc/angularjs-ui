@@ -13,6 +13,9 @@ angular.module('tagcade.displayAds.tagManagement.adTag', [
                 url: '/adTags',
                 data: {
                     requiredModule: USER_MODULES.displayAds
+                },
+                ncyBreadcrumb: {
+                    skip: true
                 }
             })
             .state('tagManagement.adTag.list', {
@@ -34,8 +37,8 @@ angular.module('tagcade.displayAds.tagManagement.adTag', [
                         });
                     }
                 },
-                breadcrumb: {
-                    title: 'Ad Tag List - {{ adSlot.name }} - {{ adSlot.site.name }}'
+                ncyBreadcrumb: {
+                    label: 'Ad Tags - {{ adSlot.name }}'
                 }
             })
             .state('tagManagement.adTag.new', {
@@ -108,8 +111,8 @@ angular.module('tagcade.displayAds.tagManagement.adTag', [
                         }
                     }
                 },
-                breadcrumb: {
-                    title: 'New Ad Tag'
+                ncyBreadcrumb: {
+                    label: 'New Ad Tag'
                 }
             })
             .state('tagManagement.adTag.edit', {
@@ -155,8 +158,8 @@ angular.module('tagcade.displayAds.tagManagement.adTag', [
                         });
                     }
                 },
-                breadcrumb: {
-                    title: 'Edit Ad Tag - {{ adTag.name }}'
+                ncyBreadcrumb: {
+                    label: 'Edit Ad Tag - {{ adTag.name }}'
                 }
             })
         ;

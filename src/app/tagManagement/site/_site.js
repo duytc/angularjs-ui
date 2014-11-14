@@ -8,7 +8,10 @@ angular.module('tagcade.tagManagement.site', [
         UserStateHelperProvider
             .state('tagManagement.sites', {
                 abstract: true,
-                url: '/sites'
+                url: '/sites',
+                ncyBreadcrumb: {
+                    skip: true
+                }
             })
             .state('tagManagement.sites.list', {
                 url: '/list',
@@ -25,8 +28,8 @@ angular.module('tagcade.tagManagement.site', [
                         });
                     }
                 },
-                breadcrumb: {
-                    title: 'Sites'
+                ncyBreadcrumb: {
+                    label: 'Sites'
                 }
             })
             .state('tagManagement.sites.new', {
@@ -51,8 +54,8 @@ angular.module('tagcade.tagManagement.site', [
                           }
                       }
                 },
-                breadcrumb: {
-                    title: 'New Site'
+                ncyBreadcrumb: {
+                    label: 'New Site'
                 }
             })
             .state('tagManagement.sites.edit', {
@@ -77,8 +80,8 @@ angular.module('tagcade.tagManagement.site', [
                         }
                     }
                 },
-                breadcrumb: {
-                    title: 'Edit Site - {{ site.name }} '
+                ncyBreadcrumb: {
+                    label: 'Edit Site - {{ site.name }}'
                 }
             })
         ;

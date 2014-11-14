@@ -1,7 +1,9 @@
 angular.module('tagcade.displayAds.tagManagement.adSlot')
 
-    .controller('AdSlotListController', function ($scope, $filter, $stateParams, $modal, $q, ngTableParams, AlertService, AdSlotManager, adSlots) {
+    .controller('AdSlotListController', function ($scope, $filter, $stateParams, $modal, $q, ngTableParams, AlertService, AdSlotManager, adSlots, site) {
         'use strict';
+
+        $scope.site = site;
 
         var data = adSlots;
 
@@ -16,8 +18,6 @@ angular.module('tagcade.displayAds.tagManagement.adSlot')
             });
         }
 
-        $scope.setWideContent();
-
         $scope.currentSiteId = $stateParams.siteId || null;
 
         $scope.tableParams = new ngTableParams( // jshint ignore:line
@@ -25,7 +25,7 @@ angular.module('tagcade.displayAds.tagManagement.adSlot')
                 page: 1,
                 count: 10,
                 sorting: {
-                    id: 'asc'
+                    name: 'asc'
                 }
             },
             {

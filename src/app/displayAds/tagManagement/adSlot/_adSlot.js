@@ -11,6 +11,9 @@ angular.module('tagcade.displayAds.tagManagement.adSlot', [
                 url: '/adSlots',
                 data: {
                     requiredModule: USER_MODULES.displayAds
+                },
+                ncyBreadcrumb: {
+                    skip: true
                 }
             })
             .state('tagManagement.adSlot.list', {
@@ -36,8 +39,8 @@ angular.module('tagcade.displayAds.tagManagement.adSlot', [
                         });
                     }
                 },
-                breadcrumb: {
-                    title: 'Ad Slot List - {{ site.name }}'
+                ncyBreadcrumb: {
+                    label: 'Ad Slots - {{ site.name }}' // TODO cannot show site variable here, why?
                 }
             })
             .state('tagManagement.adSlot.new', {
@@ -78,8 +81,8 @@ angular.module('tagcade.displayAds.tagManagement.adSlot', [
                         }
                     }
                 },
-                breadcrumb: {
-                    title: 'New Ad Slot'
+                ncyBreadcrumb: {
+                    label: 'New Ad Slot'
                 }
             })
             .state('tagManagement.adSlot.edit', {
@@ -107,8 +110,8 @@ angular.module('tagcade.displayAds.tagManagement.adSlot', [
                         return null;
                     }
                 },
-                breadcrumb: {
-                    title: 'Edit Ad Slot - {{ adSlot.name }}'
+                ncyBreadcrumb: {
+                    label: 'Edit Ad Slot - {{ adSlot.name }}'
                 }
             })
         ;
