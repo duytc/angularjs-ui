@@ -33,7 +33,8 @@ module.exports = {
             'vendor/angular-ui-select/dist/select.min.js',
             'vendor/bootstrap-daterangepicker/daterangepicker.js',
             'vendor/angular-daterangepicker/js/angular-daterangepicker.js',
-            'vendor/angular-loading-bar/build/loading-bar.min.js'
+            'vendor/angular-loading-bar/build/loading-bar.min.js',
+            'vendor/angular-breadcrumb/dist/angular-breadcrumb.js'
         ],
         css: []
     }

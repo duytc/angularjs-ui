@@ -3,19 +3,6 @@ angular.module('tagcade.core.ui')
     .controller('AppController', function($rootScope, $scope, $state, userSession, USER_MODULES) {
         'use strict';
 
-        function getWideContent(state)
-        {
-            var wideContent;
-
-            try {
-                wideContent = !!state.data.wideContent;
-            } catch (e) {
-                wideContent = false;
-            }
-
-            return wideContent;
-        }
-
         $scope.currentUser = userSession;
 
         $scope.hasDisplayAdsModule = userSession.hasModuleEnabled(USER_MODULES.displayAds);
@@ -25,12 +12,7 @@ angular.module('tagcade.core.ui')
             layout: 'wide',
             menu: 'vertical',
             fixedHeader: true,
-            fixedSidebar: false,
-            wideContent: getWideContent($state.$current)
-        };
-
-        $scope.setWideContent = function() {
-            $scope.admin.wideContent = true;
+            fixedSidebar: false
         };
 
         $scope.$watch('admin', function (newVal, oldVal) {
@@ -56,10 +38,6 @@ angular.module('tagcade.core.ui')
                 $scope.admin.fixedSidebar = false;
             }
         }, true);
-
-        $rootScope.$on('$stateChangeSuccess', function (event, toState) {
-            $scope.admin.wideContent = getWideContent(toState);
-        });
     })
 
 ;

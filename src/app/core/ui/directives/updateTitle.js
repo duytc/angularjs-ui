@@ -1,44 +1,29 @@
 angular.module('tagcade.core.ui')
 
-    .directive('updateTitle', function($rootScope, $state, $interpolate, APP_NAME) {
+    .directive('updateTitle', function($rootScope, $state, $interpolate, _, APP_NAME) {
         'use strict';
 
         return {
             link: function(scope, element) {
-                var listener = function() {
-                    var crumbs = [];
+                var updateTitle = function() {
+                    var pageTitle = '';
+                    var state = $state.$current;
 
-                    var generateBreadcrumbs = function(state) {
-                        if(angular.isDefined(state.parent)) {
-                            generateBreadcrumbs(state.parent);
+                    if(_.isObject(state.ncyBreadcrumb) && state.ncyBreadcrumb.label) {
+                        var title = state.ncyBreadcrumb.label;
+                        title = $interpolate(title)(state.locals.globals);
+
+                        if (title) {
+                            pageTitle = title + ' | ';
                         }
-
-                        if(angular.isDefined(state.breadcrumb)) {
-                            if(angular.isDefined(state.breadcrumb.title)) {
-                                var title = state.breadcrumb.title;
-
-                                title = $interpolate(title)(state.locals.globals);
-
-                                crumbs.push(title);
-                            }
-                        }
-                    };
-
-                    generateBreadcrumbs($state.$current);
-
-                    var title = '';
-
-                    if (crumbs.length > 0) {
-                        title = crumbs.reverse().join(' - ');
-                        title += ' | ';
                     }
 
-                    title += APP_NAME;
+                    pageTitle += APP_NAME;
 
-                    element.text(title);
+                    element.text(pageTitle);
                 };
 
-                $rootScope.$on('$stateChangeSuccess', listener);
+                $rootScope.$on('$stateChangeSuccess', updateTitle);
             }
         };
     })
