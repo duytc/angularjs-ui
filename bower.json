@@ -17,6 +17,7 @@
     "angular-daterangepicker": "~0.1.9",
     "angular-underscore-module": "~1.0.1",
     "angular-loading-bar": "~0.6.0",
-    "angular-breadcrumb": "~0.3.0"
+    "angular-breadcrumb": "~0.3.0",
+    "angular-deferred-bootstrap": "~0.1.5"
   }
 }
