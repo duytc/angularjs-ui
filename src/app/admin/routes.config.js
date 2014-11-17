@@ -3,10 +3,10 @@
 
     angular
         .module('tagcade.admin')
-        .config(addRoutes)
+        .config(addStates)
     ;
 
-    function addRoutes($stateProvider, USER_ROLES) {
+    function addStates($stateProvider, USER_ROLES) {
         $stateProvider
             .state('app.admin', {
                 abstract: true,

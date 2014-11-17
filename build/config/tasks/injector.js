@@ -17,7 +17,8 @@ module.exports = {
                     '<%= appConfig.vendorFiles.js %>',
                     'templates-app.js',
                     'templates-common.js',
-                    '<%= appConfig.appFiles.js %>'
+                    '<%= appConfig.appFiles.js %>',
+                    '<%= appConfig.appFiles.coreJs %>'
                 ],
                 nocase: true
             }

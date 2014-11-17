@@ -3,12 +3,13 @@
 
     angular
         .module('tagcade.admin.userManagement')
-        .config(addRoutes)
+        .config(addStates)
     ;
 
-    function addRoutes($stateProvider) {
+    function addStates($stateProvider) {
         $stateProvider
-            .state('app.admin.userManagement', {
+            .state({
+                name: 'app.admin.userManagement',
                 abstract: true,
                 url: '/userManagement',
                 ncyBreadcrumb: {
@@ -16,7 +17,8 @@
                 }
             })
 
-            .state('app.admin.userManagement.list', {
+            .state({
+                name: 'app.admin.userManagement.list',
                 url: '/list',
                 views: {
                     'content@app': {
@@ -25,8 +27,8 @@
                     }
                 },
                 resolve: {
-                    users: function(AdminUserManager) {
-                        return AdminUserManager.getList();
+                    users: function(adminUserManager) {
+                        return adminUserManager.getList();
                     }
                 },
                 ncyBreadcrumb: {
@@ -34,7 +36,8 @@
                 }
             })
 
-            .state('app.admin.userManagement.new', {
+            .state({
+                name: 'app.admin.userManagement.new',
                 url: '/new',
                 views: {
                     'content@app': {
@@ -52,8 +55,8 @@
                 }
             })
 
-
-            .state('app.admin.userManagement.edit', {
+            .state({
+                name: 'app.admin.userManagement.edit',
                 url: '/edit/{id:[0-9]+}',
                 views: {
                     'content@app': {
@@ -62,8 +65,8 @@
                     }
                 },
                 resolve: {
-                    user: function($stateParams, AdminUserManager) {
-                        return AdminUserManager.one($stateParams.id).get();
+                    user: function($stateParams, adminUserManager) {
+                        return adminUserManager.one($stateParams.id).get();
                     }
                 },
                 ncyBreadcrumb: {

@@ -6,7 +6,7 @@
         .controller('UserForm', UserForm)
     ;
 
-    function UserForm($scope, $state, $q, AdminUserManager, AlertService, ServerErrorProcessor, user) {
+    function UserForm($scope, $state, $q, adminUserManager, AlertService, ServerErrorProcessor, user) {
         $scope.fieldNameTranslations = {
             username: 'Username',
             email: 'Email',
@@ -93,7 +93,7 @@
 
             $scope.formProcessing = true;
 
-            var saveUser = $scope.isNew ? AdminUserManager.post($scope.user) : $scope.user.patch();
+            var saveUser = $scope.isNew ? adminUserManager.post($scope.user) : $scope.user.patch();
 
             saveUser
                 .catch(

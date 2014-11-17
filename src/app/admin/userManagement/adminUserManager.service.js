@@ -3,13 +3,13 @@
 
     angular
         .module('tagcade.admin.userManagement')
-        .factory('AdminUserManager', AdminUserManager)
+        .factory('adminUserManager', adminUserManager)
     ;
 
-    function AdminUserManager(AdminRestangular) {
+    function adminUserManager(adminRestangular) {
         var RESOURCE_NAME = 'users';
 
-        AdminRestangular.addRequestInterceptor(function(element, operation, what) {
+        adminRestangular.addRequestInterceptor(function(element, operation, what) {
             if (what !== RESOURCE_NAME) {
                 return element;
             }
@@ -21,6 +21,6 @@
             return element;
         });
 
-        return AdminRestangular.service(RESOURCE_NAME);
+        return adminRestangular.service(RESOURCE_NAME);
     }
 })();

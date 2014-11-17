@@ -3,10 +3,10 @@
 
     angular
         .module('tagcade.admin')
-        .factory('AdminRestangular', AdminRestangular)
+        .factory('adminRestangular', adminRestangular)
     ;
 
-    function AdminRestangular(Restangular, API_ADMIN_BASE_URL) {
+    function adminRestangular(Restangular, API_ADMIN_BASE_URL) {
         'use strict';
 
         return Restangular.withConfig(function (RestangularConfigurer) {

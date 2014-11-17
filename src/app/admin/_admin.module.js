@@ -2,10 +2,7 @@
     'use strict';
 
     angular.module('tagcade.admin', [
-        'ui.router',
-
-        'tagcade.core',
-
+        'tagcade.admin.layout',
         'tagcade.admin.dashboard',
         'tagcade.admin.userManagement'
     ]);
