@@ -1,0 +1,4 @@
+<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
+    <div class="alert-title" ng-if="alert.title">{{ alert.title }}</div>
+    <div ng-repeat="message in alert.message track by $index">{{ message }}</div>
+</alert>
