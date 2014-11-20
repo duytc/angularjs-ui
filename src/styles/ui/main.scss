@@ -43,48 +43,4 @@
 , "sections/body"
 ;
 
-// custom
-
-[ng-click],
-[data-ng-click],
-[x-ng-click] {
-    cursor: pointer;
-}
-
-[ng-click].click-disabled,
-[data-ng-click].click-disabled,
-[x-ng-click].click-disabled {
-    cursor: default !important;
-}
-
-.sortable-placeholder {
-    background: $table-bg-accent;
-}
-
-tr.moveable {
-    cursor: move;
-}
-
-tr[ui-sref] {
-    cursor: pointer;
-}
-
-.panel-alerts {
-    .alert {
-        &:last-child {
-            margin-bottom: 0 !important;
-        }
-    }
-}
-
-.alert {
-    .alert-title {
-        font-weight: bold;
-    }
-}
-
-.modal-dialog-footer {
-    @extend .modal-footer;
-    margin-top: 0;
-    border-top: 0;
-}
+@import "custom";
