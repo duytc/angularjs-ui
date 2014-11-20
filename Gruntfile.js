@@ -29,7 +29,7 @@ module.exports = function(grunt) {
     grunt.registerTask('build', [
         'html2js:app',
         'html2js:common',
-        'compass:server',
+        'sass:dev',
         'sync:dev',
         'deleteSync:dev',
         'cleanempty:dev',
