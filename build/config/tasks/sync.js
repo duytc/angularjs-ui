@@ -22,6 +22,7 @@ module.exports = {
                 expand: true,
                 src: [
                     '<%= appConfig.appFiles.js %>',
+                    '<%= appConfig.appFiles.coreJs %>',
                     '<%= appConfig.appFiles.css %>',
                     '<%= appConfig.vendorFiles.js %>',
                     '<%= appConfig.vendorFiles.css %>'
@@ -67,7 +68,7 @@ module.exports = {
                 flatten: true,
                 cwd: '<%= appConfig.dirs.temp %>/generated-css',
                 src: [
-                    '*.css'
+                    '**/*.css'
                 ],
                 dest: '<%= appConfig.dirs.build.dev %>/assets/css'
             }

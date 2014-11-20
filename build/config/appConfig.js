@@ -12,8 +12,8 @@ module.exports = {
         tests: ['src/**/*.spec.js'],
         appTemplates: ['src/app/**/*/*.tpl.html'],
         commonTemplates: ['src/common/**/*/*.tpl.html'],
-        scss: ['src/styles/**/*.scss'],
-        css: ['src/styles/*.css'],
+        scss: ['src/styles/ui/**/*.scss'],
+        css: [],
         html: ['src/index.html']
     },
     vendorFiles: {
@@ -38,6 +38,8 @@ module.exports = {
             'vendor/angular-loading-bar/build/loading-bar.min.js',
             'vendor/angular-breadcrumb/dist/angular-breadcrumb.js'
         ],
-        css: []
+        css: [
+            'src/styles/customvendor/**/*.css'
+        ]
     }
 };

@@ -17,6 +17,7 @@ module.exports = {
         files: [
             '<%= appConfig.appFiles.html %>',
             '<%= appConfig.appFiles.js %>',
+            '<%= appConfig.appFiles.coreJs %>',
             '<%= appConfig.appFiles.appTemplates %>'
         ],
         tasks: ['build']

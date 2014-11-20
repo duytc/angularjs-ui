@@ -1,3 +1,3 @@
 module.exports = {
-    html: '<%= appConfig.dirs.build.prod %>/index.html',
+    html: '<%= appConfig.dirs.build.prod %>/index.html'
 };

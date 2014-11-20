@@ -10,7 +10,7 @@ module.exports = {
                 cwd: '<%= appConfig.dirs.build.dev %>',
                 expand: true,
                 src: [
-                    'assets/**/*.css',
+                    'assets/css/**/*.css',
                     '<%= appConfig.vendorFiles.css %>',
                     '<%= appConfig.appFiles.css %>',
 
