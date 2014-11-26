@@ -1,5 +1,5 @@
 module.exports = {
-    server: {
+    dev: {
         options: {
             sassDir: 'src/styles',
             cssDir: '<%= appConfig.dirs.temp %>/generated-css',

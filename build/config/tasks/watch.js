@@ -28,5 +28,12 @@ module.exports = {
             '<%= appConfig.appFiles.css %>'
         ],
         tasks: ['build']
+    },
+    vendorFiles: {
+        files: [
+            '<%= appConfig.vendorFiles.js %>',
+            '<%= appConfig.vendorFiles.css %>'
+        ],
+        tasks: ['build']
     }
 };
