@@ -1,0 +1,37 @@
+#performance-report-selector {
+    label {
+        font-size: 12px;
+        text-transform: uppercase;
+    }
+
+    form.form-inline {
+        .date-picker {
+            min-width: 200px;
+            cursor: pointer;
+        }
+
+        > .form-group {
+            @media (min-width: $screen-sm) {
+                margin-right: 8px;
+            }
+        }
+
+        .report-type.form-group {
+            @include ui-select-width(180px);
+        }
+
+        .ad-network.form-group {
+            @include ui-select-width(200px);
+        }
+
+        .site.form-group {
+            @include ui-select-width(200px);
+        }
+
+        .btn-primary {
+            @media (min-width: $screen-sm) {
+                margin-top: 22px;
+            }
+        }
+    }
+}

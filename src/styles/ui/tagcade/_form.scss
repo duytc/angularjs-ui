@@ -1,0 +1,7 @@
+@mixin ui-select-width($minWidth) {
+    .ui-select-bootstrap,
+    .ui-select-bootstrap > .ui-select-match,
+    .ui-select-bootstrap > .ui-select-search {
+        min-width: $minWidth;
+    }
+}
