@@ -16,6 +16,7 @@
                         templateUrl: 'publisher/dashboard/dashboard.tpl.html'
                     }
                 },
+                resolve: {},
                 ncyBreadcrumb: {
                     label: 'Dashboard'
                 }

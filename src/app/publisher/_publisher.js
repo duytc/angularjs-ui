@@ -3,6 +3,7 @@ angular.module('tagcade.publisher', [
 
     'tagcade.core',
 
+    'tagcade.publisher.layout',
     'tagcade.publisher.dashboard'
 ])
 
