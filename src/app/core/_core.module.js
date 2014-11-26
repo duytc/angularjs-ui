@@ -7,6 +7,7 @@
         // angular modules
 
         'ngAnimate',
+        'ngSanitize',
 
         // cached templates
 

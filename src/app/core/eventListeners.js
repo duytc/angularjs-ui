@@ -30,11 +30,12 @@
         });
 
         $rootScope.$on(AUTH_EVENTS.sessionTimeout, function() {
-            AlertService.addFlash({
-                type: 'error',
-                message: 'You are not authenticated. This could mean your session expired, please log in again'
+            $state.go(ENTRY_STATE).then(function() {
+                AlertService.replaceAlerts({
+                    type: 'error',
+                    message: 'You are not authenticated. This could mean your session expired, please log in again'
+                });
             });
-            $state.go(ENTRY_STATE);
         });
 
         $rootScope.$on(AUTH_EVENTS.notAuthorized, function() {
