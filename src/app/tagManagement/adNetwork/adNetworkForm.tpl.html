@@ -1,5 +1,5 @@
 <section class="panel panel-default">
-    <div class="panel-heading"><strong ncy-breadcrumb-last></strong></div>
+    <div class="panel-heading"><strong current-page-title></strong></div>
     <div class="panel-body">
         <div class="row">
             <form name="adNetworkForm" class="col-lg-6 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
@@ -9,7 +9,6 @@
                         {{ adNetwork.publisher.username }}
                     </div>
                 </div>
-
 
                 <div class="form-group" ng-if="isNew && allowPublisherSelection">
                     <label for="inputPublisher" class="col-sm-2 control-label">Publisher</label>
@@ -26,51 +25,33 @@
                 <div class="form-group">
                     <label for="inputName" class="col-sm-2 control-label">Name</label>
                     <div class="col-sm-10">
-                        <input
-                                name="name"
-                                ng-model="adNetwork.name"
-                                server-error
-                                ng-required="true"
-                                ng-minlength="2"
-                                type="text"
-                                class="form-control"
-                                id="inputName"
-                                placeholder="Ad network name">
+                        <input server-error name="name" ng-model="adNetwork.name" ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="Ad network name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputDefaultCpmRate" class="col-sm-2 control-label">Default CPM</label>
+                    <div class="col-sm-10">
+                        <input server-error name="name" ng-model="adNetwork.defaultCpmRate" ng-required="false" min="0" type="number" class="form-control" id="inputDefaultCpmRate" placeholder="Default cpm rate">
+                        <span class="help-block">The default CPM rate is used to make estimated revenue calculations. You can modify this value for specific date ranges later.</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputUrl" class="col-sm-2 control-label">Url</label>
                     <div class="col-sm-10">
-                        <input
-                                name="url"
-                                ng-model="adNetwork.url"
-                                server-error
-                                type="text"
-                                class="form-control"
-                                id="inputUrl"
-                                placeholder="An optional url to this ad network">
+                        <input server-error name="url" ng-model="adNetwork.url" type="text" class="form-control" id="inputUrl" placeholder="An optional url to this ad network">
+                        <span class="help-block">You can use this field to add the login url for your ad network.</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputActive" class="col-sm-2 control-label">Active</label>
                     <div class="col-sm-10">
-                        <div class="checkbox">
-                            <label class="ui-checkbox">
-                                <input
-                                    name="active"
-                                    type="checkbox"
-                                    ng-model="adNetwork.active"
-                                    server-error
-                                    id="inputActive">
-                                <span></span>
-                            </label>
-                        </div>
+                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="adNetwork.active" id="inputActive"><span></span></label>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">Submit</button>
-                        <div class="callout callout-info">
+                        <div ng-show="!isFormValid()" class="callout callout-info">
                             <p>Submit button will be active only when all fields are valid.</p>
                         </div>
                     </div>

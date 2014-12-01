@@ -28,7 +28,7 @@
                     return adTag.id;
                 });
 
-                adSlot.all('adtags').customPOST({ tagIds: tagIds }, 'reorder')
+                adSlot.all('adtags').customPOST({ ids: tagIds }, 'positions')
                     .catch(function () {
                         AlertService.replaceAlerts({
                             type: 'error',

@@ -8,6 +8,7 @@
     function AdNetworkForm($scope, $state, $q, AdNetworkManager, AlertService, ServerErrorProcessor, adNetwork, publishers) {
         $scope.fieldNameTranslations = {
             name: 'Name',
+            defaultCpmRate: 'Default CPM Rate',
             url: 'Url',
             active: 'Active'
         };
@@ -20,6 +21,7 @@
 
         $scope.adNetwork = adNetwork || {
             name: null,
+            defaultCpmRate: null,
             url: null,
             active: true
         };

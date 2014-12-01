@@ -13,7 +13,7 @@
                 var currentState = $state.$current;
 
                 try {
-                    title = currentState.breadcrumb.title;
+                    title = currentState.ncyBreadcrumb.label;
                 } catch(e) {}
 
                 if (angular.isDefined(title) && angular.isString(title)) {

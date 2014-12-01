@@ -1,6 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong ncy-breadcrumb-last></strong>
+        <strong current-page-title></strong>
 
         <div class="button-bar hidden-xs">
             <button ui-sref="^.new({ siteId: currentSiteId })" class="btn btn-sm btn-primary" type="button">
@@ -22,7 +22,7 @@
                     </td>
                     <td data-title="'Actions'">
                         <div class="btn-group" dropdown>
-                            <button type="button" class="btn dropdown-toggle"> Actions <span class="caret"></span> </button>
+                            <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a ui-sref="^.^.adTag.list({ adSlotId: adSlot.id })">Manage Ad Tags</a></li>
                                 <li><a ng-click="generateAdTag(adSlot)">Generate a Tag</a></li>

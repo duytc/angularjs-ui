@@ -1,5 +1,5 @@
 <section class="panel panel-default">
-    <div class="panel-heading"><strong ncy-breadcrumb-last></strong></div>
+    <div class="panel-heading"><strong current-page-title></strong></div>
     <div class="panel-body">
         <div class="row">
             <form name="adTagForm" class="col-lg-6 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
@@ -70,58 +70,27 @@
                 <div class="form-group">
                     <label for="inputName" class="col-sm-2 control-label">Name</label>
                     <div class="col-sm-10">
-                        <input
-                                name="name"
-                                ng-model="adTag.name"
-                                server-error
-                                ng-required="true"
-                                ng-minlength="2"
-                                type="text"
-                                class="form-control"
-                                id="inputName"
-                                placeholder="Ad tag name">
+                        <input name="name" ng-model="adTag.name" server-error ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="Ad tag name">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputHtml" class="col-sm-2 control-label">Html</label>
                     <div class="col-sm-10">
-                        <textarea
-                                name="html"
-                                ng-model="adTag.html"
-                                server-error
-                                ng-required="true"
-                                class="form-control"
-                                id="inputHtml"
-                                rows="12"
-                                placeholder="Place your ad tag here">
-                        </textarea>
+                        <textarea name="html" ng-model="adTag.html" server-error ng-required="true" class="form-control" id="inputHtml" rows="12" placeholder="Place your ad tag here"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputPosition" class="col-sm-2 control-label">Position</label>
                     <div class="col-sm-10">
-                        <input
-                                name="height"
-                                ng-model="adTag.position"
-                                server-error
-                                min="1"
-                                type="number"
-                                class="form-control"
-                                id="inputPosition"
-                                placeholder="Position (leave blank for last position)">
+                        <input name="height" ng-model="adTag.position" server-error min="1" type="number" class="form-control" id="inputPosition" placeholder="Position (leave blank for last position)">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputActive" class="col-sm-2 control-label">Active</label>
                     <div class="col-sm-10">
-                        <div class="checkbox">
+                        <div>
                             <label class="ui-checkbox">
-                                <input
-                                    name="active"
-                                    type="checkbox"
-                                    ng-model="adTag.active"
-                                    server-error
-                                    id="inputActive">
+                                <input name="active" type="checkbox" ng-model="adTag.active" server-error id="inputActive">
                                 <span></span>
                             </label>
                         </div>
@@ -130,7 +99,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">Submit</button>
-                        <div class="callout callout-info">
+                        <div ng-show="!isFormValid()" class="callout callout-info">
                             <p>Submit button will be active only when all fields are valid.</p>
                         </div>
                     </div>

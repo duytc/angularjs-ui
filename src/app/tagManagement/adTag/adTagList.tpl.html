@@ -1,6 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong ncy-breadcrumb-last></strong>
+        <strong current-page-title></strong>
 
         <div class="button-bar hidden-xs">
             <button ui-sref="^.new({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
@@ -29,7 +29,7 @@
                 <td>{{ adTag.id }}</td>
                 <td>
                     <div class="btn-group" dropdown on-toggle="actionDropdownToggled(open)">
-                        <button type="button" class="btn dropdown-toggle"> Actions <span class="caret"></span> </button>
+                        <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                         <ul class="dropdown-menu" role="menu">
                             <li><a ui-sref="^.edit({ id: adTag.id })">Edit Ad Tag</a></li>
                             <li><a ng-click="toggleAdTagStatus(adTag)">{{ adTag.active ? 'Pause' : 'Activate' }} Ad Tag</a></li>

@@ -1,6 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong ncy-breadcrumb-last></strong>
+        <strong current-page-title></strong>
 
         <div class="button-bar hidden-xs">
             <button ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
@@ -18,7 +18,7 @@
                     </td>
                     <td data-title="'Actions'">
                         <div class="btn-group" dropdown>
-                            <button type="button" class="btn dropdown-toggle"> Actions <span class="caret"></span> </button>
+                            <button type="button" class="btn" dropdown-toggle> Actions <span class="caret"></span> </button>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a ng-click="toggleAdNetworkStatus(adNetwork)">{{ adNetwork.active ? 'Pause' : 'Activate' }} Ad Network</a></li>
                                 <li><a ui-sref="^.edit({ id: adNetwork.id })">Edit Ad Network</a></li>

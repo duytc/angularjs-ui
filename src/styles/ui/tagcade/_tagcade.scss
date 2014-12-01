@@ -6,6 +6,15 @@
 
 // custom
 
+.form-horizontal .form-group {
+    @media (min-width: $screen-sm) {
+        .ui-checkbox,
+        .ui-radio {
+            margin-top: 7px;
+        }
+    }
+}
+
 [ng-click],
 [data-ng-click],
 [x-ng-click] {
