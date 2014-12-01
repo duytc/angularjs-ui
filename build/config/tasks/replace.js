@@ -34,7 +34,7 @@ module.exports = function(grunt, options) {
             {
                 expand: true,
                 src: [
-                    '<%= appConfig.dirs.build.dev %>/src/app/core/_core.js'
+                    '<%= appConfig.dirs.build.dev %>/src/app/core/bootstrap/config.js'
                 ]
             }
         ]
