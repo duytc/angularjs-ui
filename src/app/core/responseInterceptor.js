@@ -7,23 +7,24 @@
 
     function responseInterceptor($rootScope, $q, AUTH_EVENTS) {
         return {
-            responseError: responseError
+            response: response
         };
 
         /////
 
-        function responseError(response) {
-            if(response.status === 403) {
+        // ui-router will catch the error in $stateChangeError if the request was a resolve
+        function response(response) {
+            if(response.status == 403) {
                 $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
                 return $q.reject(response);
             }
 
-            if(response.status === 401) {
+            if(response.status == 401) {
                 $rootScope.$broadcast(AUTH_EVENTS.sessionTimeout);
                 return $q.reject(response);
             }
 
-            return true; // error not handled
+            return response;
         }
     }
 })();
