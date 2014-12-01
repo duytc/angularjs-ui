@@ -24,4 +24,5 @@
             notAuthorized: 'tagcade.core.auth.not_authorized'
         })
     ;
+
 })();

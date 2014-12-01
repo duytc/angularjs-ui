@@ -6,7 +6,7 @@
         .controller('AdminDashboard', AdminDashboard)
     ;
 
-    function AdminDashboard() {
-
+    function AdminDashboard($scope, dashboard) {
+        $scope.dashboard = dashboard;
     }
 })();

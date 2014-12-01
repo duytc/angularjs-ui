@@ -6,7 +6,7 @@
         .controller('PublisherDashboard', PublisherDashboard)
     ;
 
-    function PublisherDashboard($scope) {
-
+    function PublisherDashboard($scope, dashboard) {
+        $scope.dashboard = dashboard;
     }
 })();

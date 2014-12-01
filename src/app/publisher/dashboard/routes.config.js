@@ -16,7 +16,11 @@
                         templateUrl: 'publisher/dashboard/dashboard.tpl.html'
                     }
                 },
-                resolve: {},
+                resolve: {
+                    dashboard: function(dashboard, userSession) {
+                        return dashboard.getPublisherDashboard(userSession.id);
+                    }
+                },
                 ncyBreadcrumb: {
                     label: 'Dashboard'
                 }

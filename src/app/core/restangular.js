@@ -44,31 +44,6 @@
 
                 return element;
             });
-
-            Restangular.addFullRequestInterceptor(function(element, operation, route, url, headers) {
-                if (Auth.isAuthenticated()) {
-                    var currentSession = Auth.getSession();
-                    headers.Authorization = Auth.getAuthorizationHeaderValue(currentSession.token);
-                }
-
-                return {
-                    headers: headers
-                };
-            });
-
-            Restangular.setErrorInterceptor(function(response) {
-                if(response.status === 403) {
-                    $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
-                    return false;
-                }
-
-                if(response.status === 401) {
-                    $rootScope.$broadcast(AUTH_EVENTS.sessionTimeout);
-                    return false;
-                }
-
-                return true; // error not handled
-            });
         })
     ;
 })();
