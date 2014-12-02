@@ -3,17 +3,10 @@
 
     angular.module('tagcade.core.layout', [
         'ui.bootstrap',
-        'ui.select',
-        'ncy-angular-breadcrumb'
+        'ui.select'
     ])
         .config(function(uiSelectConfig) {
             uiSelectConfig.theme = 'bootstrap';
-        })
-
-        .config(function($breadcrumbProvider) {
-            $breadcrumbProvider.setOptions({
-                includeAbstract: true
-            });
         })
     ;
 })();

@@ -5,18 +5,23 @@
         .factory('dashboard', dashboard)
     ;
 
-    function dashboard($http, $q, API_STATS_BASE_URL) {
-        var service = {
+    function dashboard($q, API_STATS_BASE_URL, dataService) {
+        var api = {
             getPlatformDashboard: getPlatformDashboard,
             getPublisherDashboard: getPublisherDashboard
         };
 
-        return service;
+        return api;
 
         /////
 
+        function makeHttpGetRequest(url, params)
+        {
+            return dataService.makeHttpGetRequest(url, params, API_STATS_BASE_URL);
+        }
+
         function getPlatformDashboard() {
-            return $http.get(API_STATS_BASE_URL + '/platform');
+            return makeHttpGetRequest('/platform');
         }
 
         function getPublisherDashboard(accountId) {
@@ -24,7 +29,9 @@
                 return $q.reject(new Error('account id should be a number'));
             }
 
-            return $http.get(API_STATS_BASE_URL + '/accounts/' + accountId);
+            return makeHttpGetRequest('/accounts/:id', {
+                id: accountId
+            });
         }
     }
 })(angular);

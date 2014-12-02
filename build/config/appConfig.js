@@ -37,7 +37,7 @@ module.exports = {
             'vendor/bootstrap-daterangepicker/daterangepicker.js',
             'vendor/angular-daterangepicker/js/angular-daterangepicker.js',
             'vendor/angular-loading-bar/build/loading-bar.min.js',
-            'vendor/angular-breadcrumb/dist/angular-breadcrumb.js'
+            'vendor/angular-httpi/lib/httpi.js'
         ],
         css: [
             'src/styles/customvendor/**/*.css'

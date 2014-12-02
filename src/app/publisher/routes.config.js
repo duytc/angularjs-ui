@@ -1,15 +1,12 @@
-angular.module('tagcade.publisher', [
-    'ui.router',
+(function () {
+    'use strict';
 
-    'tagcade.core',
+    angular
+        .module('tagcade.publisher')
+        .config(addStates)
+    ;
 
-    'tagcade.publisher.layout',
-    'tagcade.publisher.dashboard'
-])
-
-    .config(function ($stateProvider, USER_ROLES) {
-        'use strict';
-
+    function addStates($stateProvider, USER_ROLES) {
         $stateProvider
             .state('app.publisher', {
                 abstract: true,
@@ -78,6 +75,5 @@ angular.module('tagcade.publisher', [
                 }
             })
         ;
-    })
-
-;
+    }
+})();

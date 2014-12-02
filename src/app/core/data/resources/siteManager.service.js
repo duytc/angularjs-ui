@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('tagcade.core.data')
+    angular.module('tagcade.core.data.resources')
         .factory('SiteManager', SiteManager)
     ;
 

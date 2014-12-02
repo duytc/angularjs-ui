@@ -31,13 +31,13 @@
 
         // 3rd party modules
 
+        'httpi',
         'underscore',
         'restangular',
         'angular-loading-bar',
         'ui.bootstrap',
         'ui.select',
-        'ngTable',
-        'ncy-angular-breadcrumb'
+        'ngTable'
     ]);
 
     core.run(appRun);

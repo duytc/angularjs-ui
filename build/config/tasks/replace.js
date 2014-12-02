@@ -21,7 +21,7 @@ module.exports = function(grunt, options) {
     }
 
     if (typeof devApiEndPoint !== 'string') {
-        devApiEndPoint = '//api.tagcade.dev/app_dev.php/api';
+        devApiEndPoint = 'http://api.tagcade.dev/app_dev.php/api';
     }
 
     config.dev = {
@@ -43,7 +43,7 @@ module.exports = function(grunt, options) {
     config.prod = {
         options: {
             patterns: [
-                getPattern('//api.tagcade.com/api')
+                getPattern('https://api.tagcade.com/api')
             ]
         },
         files: [
