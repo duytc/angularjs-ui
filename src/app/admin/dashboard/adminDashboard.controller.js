@@ -135,7 +135,7 @@
                 },
                 yAxis: {
                     title: {
-                        text: 'Number'
+                        text: null
                     }
                 },
                 plotOptions: {

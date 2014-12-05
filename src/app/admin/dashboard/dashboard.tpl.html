@@ -3,26 +3,30 @@
     <div class="col-lg-4 col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading"><span class="glyphicon glyphicon-stats"></span> Platform Statistics ({{ dashboard.platformStatistics.startDate | date}} - {{ dashboard.platformStatistics.endDate | date }})</div>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <span class="badge">{{dashboard.platformStatistics.slotOpportunities | number}}</span>
-                    Slot Opportunities
+            <ul class="list-unstyled report list-info">
+                <li>
+                    <label>Billed Amount</label>
+                    <span class="pull-right">{{ dashboard.platformStatistics.estRevenue | currency }}</span>
                 </li>
-                <li class="list-group-item">
-                    <span class="badge">{{dashboard.platformStatistics.totalOpportunities | number}}</span>
-                    Total Opportunities
+                <li>
+                    <label>Total Opportunities</label>
+                    <span class="pull-right">{{ dashboard.platformStatistics.totalOpportunities | number }}</span>
                 </li>
-                <li class="list-group-item">
-                    <span class="badge">{{dashboard.platformStatistics.impressions | number}}</span>
-                    Impressions
+                <li>
+                    <label>Slot Opportunities</label>
+                    <span class="pull-right">{{ dashboard.platformStatistics.slotOpportunities | number }}</span>
                 </li>
-                <li class="list-group-item">
-                    <span class="badge">{{dashboard.platformStatistics.fillRate | percentage}}</span>
-                    FillRate
+                <li>
+                    <label>Impressions</label>
+                    <span class="pull-right">{{ dashboard.platformStatistics.impressions | number }}</span>
                 </li>
-                <li class="list-group-item">
-                    <span class="badge">{{dashboard.platformStatistics.passbacks | number}}</span>
-                    Passbacks
+                <li>
+                    <label>Passbacks</label>
+                    <span class="pull-right">{{ dashboard.platformStatistics.passbacks | number }}</span>
+                </li>
+                <li>
+                    <label>Fill Rate</label>
+                    <span class="pull-right">{{ dashboard.platformStatistics.fillRate | percentage }}</span>
                 </li>
             </ul>
             <div>
@@ -34,26 +38,30 @@
     <div class="col-lg-4 col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading"><span class="glyphicon glyphicon-stats"></span> Statistics For Today ({{ dashboard.todaySummary.date | date }})</div>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <span class="badge">{{dashboard.todaySummary.slotOpportunities | number}}</span>
-                    Slot Opportunities
+            <ul class="list-unstyled report list-info">
+                <li>
+                    <label>Billed Amount</label>
+                    <span class="pull-right">{{ dashboard.todaySummary.estRevenue | currency }}</span>
                 </li>
-                <li class="list-group-item">
-                    <span class="badge">{{dashboard.todaySummary.totalOpportunities | number}}</span>
-                    Total Opportunities
+                <li>
+                    <label>Total Opportunities</label>
+                    <span class="pull-right">{{ dashboard.todaySummary.totalOpportunities | number }}</span>
                 </li>
-                <li class="list-group-item">
-                    <span class="badge">{{dashboard.todaySummary.impressions | number}}</span>
-                    Impressions
+                <li>
+                    <label>Slot Opportunities</label>
+                    <span class="pull-right">{{ dashboard.todaySummary.slotOpportunities | number }}</span>
                 </li>
-                <li class="list-group-item">
-                    <span class="badge">{{dashboard.todaySummary.fillRate | percentage}}</span>
-                    FillRate
+                <li>
+                    <label>Impressions</label>
+                    <span class="pull-right">{{ dashboard.todaySummary.impressions | number }}</span>
                 </li>
-                <li class="list-group-item">
-                    <span class="badge">{{dashboard.todaySummary.passbacks | number}}</span>
-                    Passbacks
+                <li>
+                    <label>Passbacks</label>
+                    <span class="pull-right">{{ dashboard.todaySummary.passbacks | number }}</span>
+                </li>
+                <li>
+                    <label>Fill Rate</label>
+                    <span class="pull-right">{{ dashboard.todaySummary.fillRate | percentage }}</span>
                 </li>
             </ul>
             <div>
@@ -65,26 +73,30 @@
     <div class="col-lg-4 col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading"><span class="glyphicon glyphicon-stats"></span> Statistics For Yesterday ({{ dashboard.yesterdaySummary.date | date }})</div>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <span class="badge">{{dashboard.yesterdaySummary.slotOpportunities | number}}</span>
-                    Slot Opportunities
+            <ul class="list-unstyled report list-info">
+                <li>
+                    <label>Billed Amount</label>
+                    <span class="pull-right">{{ dashboard.yesterdaySummary.estRevenue | currency }}</span>
                 </li>
-                <li class="list-group-item">
-                    <span class="badge">{{dashboard.yesterdaySummary.totalOpportunities | number}}</span>
-                    Total Opportunities
+                <li>
+                    <label>Total Opportunities</label>
+                    <span class="pull-right">{{ dashboard.yesterdaySummary.totalOpportunities | number }}</span>
                 </li>
-                <li class="list-group-item">
-                    <span class="badge">{{dashboard.yesterdaySummary.impressions | number}}</span>
-                    Impressions
+                <li>
+                    <label>Slot Opportunities</label>
+                    <span class="pull-right">{{ dashboard.yesterdaySummary.slotOpportunities | number }}</span>
                 </li>
-                <li class="list-group-item">
-                    <span class="badge">{{dashboard.yesterdaySummary.fillRate | percentage}}</span>
-                    FillRate
+                <li>
+                    <label>Impressions</label>
+                    <span class="pull-right">{{ dashboard.yesterdaySummary.impressions | number }}</span>
                 </li>
-                <li class="list-group-item">
-                    <span class="badge">{{dashboard.yesterdaySummary.passbacks | number}}</span>
-                    Passbacks
+                <li>
+                    <label>Passbacks</label>
+                    <span class="pull-right">{{ dashboard.yesterdaySummary.passbacks | number }}</span>
+                </li>
+                <li>
+                    <label>Fill Rate</label>
+                    <span class="pull-right">{{ dashboard.yesterdaySummary.fillRate | percentage }}</span>
                 </li>
             </ul>
             <div>

@@ -42,7 +42,7 @@
             }
 
             var chartSeriesAccount = [
-                {"name": "Estimate Revenue", "data": chartSeriesEstRevenue, connectNulls: true, color: {
+                {"name": "Estimated Revenue", "data": chartSeriesEstRevenue, connectNulls: true, color: {
                     linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
                     stops: [
                         [0, '#FF0000']
@@ -136,7 +136,7 @@
                 },
                 yAxis: {
                     title: {
-                        text: 'Number'
+                        text: null
                     }
                 },
                 plotOptions: {
