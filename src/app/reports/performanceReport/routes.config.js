@@ -34,7 +34,7 @@
                     }
                 },
                 resolve: {
-                    report: /* @ngInject */ function ($stateParams, PerformanceReport) {
+                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
                         return PerformanceReport.getAdNetworkReport($stateParams);
                     }
                 }
@@ -54,7 +54,7 @@
                     }
                 },
                 resolve: {
-                    report: /* @ngInject */ function ($stateParams, PerformanceReport) {
+                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
                         return PerformanceReport.getAdNetworkAdTagsReport($stateParams);
                     }
                 }
@@ -74,7 +74,7 @@
                     }
                 },
                 resolve: {
-                    report: /* @ngInject */ function ($stateParams, PerformanceReport) {
+                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
                         return PerformanceReport.getAdNetworkSitesReport($stateParams);
                     }
                 }
@@ -94,7 +94,7 @@
                     }
                 },
                 resolve: {
-                    report: /* @ngInject */ function ($stateParams, PerformanceReport) {
+                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
                         return PerformanceReport.getAdNetworkSiteReport($stateParams);
                     }
                 }
@@ -114,7 +114,7 @@
                     }
                 },
                 resolve: {
-                    report: /* @ngInject */ function ($stateParams, PerformanceReport) {
+                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
                         return PerformanceReport.getAdNetworkSiteAdTagsReport($stateParams);
                     }
                 }
@@ -134,7 +134,7 @@
                     }
                 },
                 resolve: {
-                    report: /* @ngInject */ function ($stateParams, PerformanceReport) {
+                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
                         return PerformanceReport.getSiteReport($stateParams);
                     }
                 }
@@ -154,7 +154,7 @@
                     }
                 },
                 resolve: {
-                    report: /* @ngInject */ function ($stateParams, PerformanceReport) {
+                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
                         return PerformanceReport.getSiteAdSlotsReport($stateParams);
                     }
                 }
@@ -174,7 +174,7 @@
                     }
                 },
                 resolve: {
-                    report: /* @ngInject */ function ($stateParams, PerformanceReport) {
+                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
                         return PerformanceReport.getSiteAdTagsReport($stateParams);
                     }
                 }
@@ -194,7 +194,7 @@
                     }
                 },
                 resolve: {
-                    report: /* @ngInject */ function ($stateParams, PerformanceReport) {
+                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
                         return PerformanceReport.getAdSlotAdTagsReport($stateParams);
                     }
                 }

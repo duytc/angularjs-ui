@@ -2,7 +2,7 @@
     <div class="col-md-3" ng-if="!hasSlotOpportunities()">
         <section class="panel panel-box info-box">
             <div class="panel-item bg-reverse">
-                <p class="size-h1 no-margin">{{ report.totalOpportunities | number }}</p>
+                <p class="size-h1 no-margin">{{ reportGroup.totalOpportunities | number }}</p>
                 <p class="text-muted no-margin">Total Opportunities</p>
             </div>
         </section>
@@ -11,7 +11,7 @@
     <div class="col-md-3" ng-if="hasSlotOpportunities()">
         <section class="panel panel-box info-box">
             <div class="panel-item bg-reverse">
-                <p class="size-h1 no-margin">{{ report.slotOpportunities | number }}</p>
+                <p class="size-h1 no-margin">{{ reportGroup.slotOpportunities | number }}</p>
                 <p class="text-muted no-margin">Slot Opportunities</p>
             </div>
         </section>
@@ -20,7 +20,7 @@
     <div class="col-md-3">
         <section class="panel panel-box info-box">
             <div class="panel-item bg-reverse">
-                <p class="size-h1 no-margin">{{ report.impressions | number }}</p>
+                <p class="size-h1 no-margin">{{ reportGroup.impressions | number }}</p>
                 <p class="text-muted no-margin">Impressions</p>
             </div>
         </section>
@@ -29,7 +29,7 @@
     <div class="col-md-3">
         <section class="panel panel-box info-box">
             <div class="panel-item bg-reverse">
-                <p class="size-h1 no-margin">{{ report.fillRate | percentage }}</p>
+                <p class="size-h1 no-margin">{{ reportGroup.fillRate | percentage }}</p>
                 <p class="text-muted no-margin">Fill Rate</p>
             </div>
         </section>
@@ -38,7 +38,7 @@
     <div class="col-md-3">
         <section class="panel panel-box info-box">
             <div class="panel-item bg-reverse">
-                <p class="size-h1 no-margin">{{ report.estRevenue | currency }}</p>
+                <p class="size-h1 no-margin">{{ reportGroup.estRevenue | currency }}</p>
                 <p class="text-muted no-margin">Estimated Revenue</p>
             </div>
         </section>

@@ -19,7 +19,7 @@
                     }
                 },
                 resolve: {
-                    report: /* @ngInject */ function ($stateParams, PerformanceReport, userSession) {
+                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport, userSession) {
                         return PerformanceReport.getAccountReport($stateParams, { publisherId: userSession.id });
                     }
                 }
@@ -39,7 +39,7 @@
                     }
                 },
                 resolve: {
-                    report: /* @ngInject */ function ($stateParams, PerformanceReport, userSession) {
+                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport, userSession) {
                         return PerformanceReport.getPublisherAdNetworksReport($stateParams, { publisherId: userSession.id });
                     }
                 }
@@ -59,7 +59,7 @@
                     }
                 },
                 resolve: {
-                    report: /* @ngInject */ function ($stateParams, PerformanceReport, userSession) {
+                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport, userSession) {
                         return PerformanceReport.getPublisherSitesReport($stateParams, { publisherId: userSession.id });
                     }
                 }

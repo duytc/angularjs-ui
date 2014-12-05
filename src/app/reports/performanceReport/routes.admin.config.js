@@ -19,7 +19,7 @@
                     }
                 },
                 resolve: {
-                    report: /* @ngInject */ function ($stateParams, PerformanceReport) {
+                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
                         return PerformanceReport.getPlatformReport($stateParams);
                     }
                 }
@@ -39,7 +39,7 @@
                     }
                 },
                 resolve: {
-                    report: /* @ngInject */ function ($stateParams, PerformanceReport) {
+                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
                         return PerformanceReport.getPlatformAccountsReport($stateParams);
                     }
                 }
@@ -59,7 +59,7 @@
                     }
                 },
                 resolve: {
-                    report: /* @ngInject */ function ($stateParams, PerformanceReport) {
+                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
                         return PerformanceReport.getPlatformSitesReport($stateParams);
                     }
                 }
@@ -79,7 +79,7 @@
                     }
                 },
                 resolve: {
-                    report: /* @ngInject */ function ($stateParams, PerformanceReport) {
+                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
                         return PerformanceReport.getAccountReport($stateParams);
                     }
                 }
@@ -99,7 +99,7 @@
                     }
                 },
                 resolve: {
-                    report: /* @ngInject */ function ($stateParams, PerformanceReport) {
+                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
                         return PerformanceReport.getPublisherAdNetworksReport($stateParams);
                     }
                 }
@@ -119,7 +119,7 @@
                     }
                 },
                 resolve: {
-                    report: /* @ngInject */ function ($stateParams, PerformanceReport) {
+                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
                         return PerformanceReport.getPublisherSitesReport($stateParams);
                     }
                 }

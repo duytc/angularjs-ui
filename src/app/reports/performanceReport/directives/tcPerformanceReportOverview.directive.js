@@ -8,7 +8,7 @@
     function performanceReportOverview() {
         return {
             scope: {
-                report: '='
+                reportGroup: '='
             },
             restrict: 'AE',
             replace: 'true',

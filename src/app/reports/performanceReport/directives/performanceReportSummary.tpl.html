@@ -6,31 +6,31 @@
                 <ul class="list-unstyled report list-info">
                     <li>
                         <label>Estimated Revenue</label>
-                        {{ report.estRevenue | currency }}
+                        <span class="pull-right">{{ reportGroup.estRevenue | currency }}</span>
                     </li>
                     <li>
                         <label>Estimated CPM</label>
-                        {{ report.estCpm | currency }}
+                        <span class="pull-right">{{ reportGroup.estCpm | currency }}</span>
                     </li>
                     <li>
                         <label>Total Opportunities</label>
-                        {{ report.totalOpportunities | number }}
+                        <span class="pull-right">{{ reportGroup.totalOpportunities | number }}</span>
                     </li>
                     <li ng-if="hasSlotOpportunities()">
                         <label>Slot Opportunities</label>
-                        {{ report.slotOpportunities | number }}
+                        <span class="pull-right">{{ reportGroup.slotOpportunities | number }}</span>
                     </li>
                     <li>
                         <label>Impressions</label>
-                        {{ report.impressions | number }}
+                        <span class="pull-right">{{ reportGroup.impressions | number }}</span>
                     </li>
                     <li>
                         <label>Passbacks</label>
-                        {{ report.passbacks | number }}
+                        <span class="pull-right">{{ reportGroup.passbacks | number }}</span>
                     </li>
                     <li>
                         <label>Fill Rate</label>
-                        {{ report.fillRate | percentage }}
+                        <span class="pull-right">{{ reportGroup.fillRate | percentage }}</span>
                     </li>
                 </ul>
             </div>
@@ -43,31 +43,31 @@
                 <ul class="list-unstyled report list-info">
                     <li>
                         <label>Estimated Revenue</label>
-                        {{ report.averageEstRevenue | currency }}
+                        <span class="pull-right">{{ reportGroup.averageEstRevenue | currency }}</span>
                     </li>
                     <li>
                         <label>Estimated CPM</label>
-                        {{ report.averageEstCpm | currency }}
+                        <span class="pull-right">{{ reportGroup.averageEstCpm | currency }}</span>
                     </li>
                     <li>
                         <label>Total Opportunities</label>
-                        {{ report.averageTotalOpportunities | number }}
+                        <span class="pull-right">{{ reportGroup.averageTotalOpportunities | number }}</span>
                     </li>
                     <li ng-if="hasSlotOpportunities()">
                         <label>Slot Opportunities</label>
-                        {{ report.averageSlotOpportunities | number }}
+                        <span class="pull-right">{{ reportGroup.averageSlotOpportunities | number }}</span>
                     </li>
                     <li>
                         <label>Impressions</label>
-                        {{ report.averageImpressions | number }}
+                        <span class="pull-right">{{ reportGroup.averageImpressions | number }}</span>
                     </li>
                     <li>
                         <label>Passbacks</label>
-                        {{ report.averagePassbacks | number }}
+                        <span class="pull-right">{{ reportGroup.averagePassbacks | number }}</span>
                     </li>
                     <li>
                         <label>Fill Rate</label>
-                        {{ report.averageFillRate | percentage }}
+                        <span class="pull-right">{{ reportGroup.averageFillRate | percentage }}</span>
                     </li>
                 </ul>
             </div>

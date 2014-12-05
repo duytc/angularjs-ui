@@ -89,7 +89,14 @@
                 return $q.reject(new Error('Invalid initial params supplied'));
             }
 
-            return $q.when(fetcher(params));
+            return $q.when(fetcher(params)).catch(function(response) {
+                if (response.status == 404) {
+                    // if the response is 404, simply return a value, don't reject
+                    return false;
+                }
+
+                return $q.reject(response);
+            });
         }
 
         function getPlatformReport(params) {

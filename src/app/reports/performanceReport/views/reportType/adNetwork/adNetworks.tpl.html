@@ -1,45 +1,47 @@
-<tc-performance-report-overview report="report"></tc-performance-report-overview>
+<div ng-if="hasResult">
+    <tc-performance-report-overview report-group="reportGroup"></tc-performance-report-overview>
 
-<div class="panel panel-default daily-reports">
-    <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Breakdown By Ad Network</div>
-    <div class="table-responsive">
-        <table class="table" at-table at-paginated at-list="dailyReports" at-config="tableConfig">
-            <thead></thead>
-            <tbody>
-            <tr>
-                <td at-title="Start Date" at-attribute="startDate">
-                    {{ item.startDate | date }}
-                </td>
-                <td at-title="End Date" at-attribute="endDate">
-                    {{ item.endDate | date }}
-                </td>
-                <td at-title="Ad Network" at-attribute="name" at-sortable>
-                    {{ item.name }}
-                </td>
-                <td at-title="Total Opportunities" at-attribute="totalOpportunities" at-sortable at-initial-sorting="desc">
-                    {{ item.totalOpportunities | number }}
-                </td>
-                <td at-title="Impressions" at-attribute="impressions" at-sortable>
-                    {{ item.impressions | number }}
-                </td>
-                <td at-title="Passbacks" at-attribute="passbacks" at-sortable>
-                    {{ item.passbacks | number }}
-                </td>
-                <td at-title="Fill Rate" at-attribute="fillRate" at-sortable>
-                    {{ item.fillRate | percentage }}
-                </td>
-                <td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>
-                    {{ item.estRevenue | currency }}
-                </td>
-                <td at-title="Est. CPM" at-attribute="estCpm" at-sortable>
-                    {{ item.estCpm | currency }}
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="panel panel-default daily-reports">
+        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Breakdown By Ad Network</div>
+        <div class="table-responsive">
+            <table class="table" at-table at-paginated at-list="reports" at-config="tableConfig">
+                <thead></thead>
+                <tbody>
+                <tr>
+                    <td at-title="Start Date" at-attribute="startDate">
+                        {{ item.startDate | date }}
+                    </td>
+                    <td at-title="End Date" at-attribute="endDate">
+                        {{ item.endDate | date }}
+                    </td>
+                    <td at-title="Ad Network" at-attribute="name" at-sortable>
+                        {{ item.name }}
+                    </td>
+                    <td at-title="Total Opportunities" at-attribute="totalOpportunities" at-sortable at-initial-sorting="desc">
+                        {{ item.totalOpportunities | number }}
+                    </td>
+                    <td at-title="Impressions" at-attribute="impressions" at-sortable>
+                        {{ item.impressions | number }}
+                    </td>
+                    <td at-title="Passbacks" at-attribute="passbacks" at-sortable>
+                        {{ item.passbacks | number }}
+                    </td>
+                    <td at-title="Fill Rate" at-attribute="fillRate" at-sortable>
+                        {{ item.fillRate | percentage }}
+                    </td>
+                    <td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>
+                        {{ item.estRevenue | currency }}
+                    </td>
+                    <td at-title="Est. CPM" at-attribute="estCpm" at-sortable>
+                        {{ item.estCpm | currency }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <at-pagination ng-if="showPagination()" class="table-footer" at-list="reports" at-config="tableConfig"></at-pagination>
     </div>
 
-    <at-pagination ng-if="showPagination()" class="table-footer" at-list="dailyReports" at-config="tableConfig"></at-pagination>
+    <tc-performance-report-summary report-group="reportGroup"></tc-performance-report-summary>
 </div>
-
-<tc-performance-report-summary report="report"></tc-performance-report-summary>
