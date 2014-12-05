@@ -3,7 +3,7 @@
         class="nav"
         collapse-nav>
 
-        <li ui-sref-active-eq="active"><a ui-sref=".dashboard"><i class="fa fa-home"></i><span>Dashboard</span></a></li>
+        <li ui-sref-active-eq="active"><a ui-sref=".dashboard" ui-sref-opts="{reload: true}"><i class="fa fa-home"></i><span>Dashboard</span></a></li>
 
         <li ui-sref-active="active">
             <a ui-sref=".tagManagement"><i class="fa fa-location-arrow"></i><span>Tag Management</span></a>
@@ -21,7 +21,7 @@
         <li ui-sref-active="active">
             <a ui-sref=".reports"><i class="fa fa-tachometer"></i><span>Reports</span></a>
             <ul>
-                <li ng-if="hasDisplayAdsModule" ui-sref-active="active"><a ui-sref=".reports.performanceReport"><i class="fa fa-caret-right"></i>Performance Reports</a></li>
+                <li ng-if="hasDisplayAdsModule" ui-sref-active="active"><a ui-sref=".reports.performanceReport" ui-sref-opts="{reload: true}"><i class="fa fa-caret-right"></i>Performance Reports</a></li>
                 <li ui-sref-active="active"><a ui-sref=".reports.billing"><i class="fa fa-caret-right"></i>Billing Reports</a></li>
             </ul>
         </li>
