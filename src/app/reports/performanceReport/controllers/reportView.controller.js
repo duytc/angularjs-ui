@@ -22,7 +22,7 @@
         $scope.showPagination = showPagination;
 
         function showPagination() {
-            return $scope.dailyReports.length > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.dailyReports) && $scope.dailyReports.length > $scope.tableConfig.itemsPerPage;
         }
     }
 })();

@@ -89,7 +89,7 @@
                 return $q.reject(new Error('Invalid initial params supplied'));
             }
 
-            return fetcher(params);
+            return $q.when(fetcher(params));
         }
 
         function getPlatformReport(params) {
