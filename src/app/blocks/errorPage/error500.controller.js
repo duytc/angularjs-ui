@@ -5,7 +5,7 @@
         .controller('500ErrorController', function(AlertService) {
             AlertService.replaceAlerts({
                 type: 'error',
-                message: 'A server error occurred'
+                message: 'An error occurred'
             });
         })
     ;
