@@ -20,6 +20,8 @@
     "angular-loading-bar": "~0.6.0",
     "angular-deferred-bootstrap": "~0.1.5",
     "angular-httpi": "*",
+    "highcharts-ng": "~0.0.7",
+    "highcharts-release": "~4.0.4",
     "at-table": "~1.0.4"
   }
 }

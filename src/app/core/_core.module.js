@@ -38,6 +38,7 @@
         'ui.bootstrap',
         'ui.select',
         'ngTable',
+        'highcharts-ng',
         'angular-table'
     ]);
 

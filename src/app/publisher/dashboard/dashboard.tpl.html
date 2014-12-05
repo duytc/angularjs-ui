@@ -1,7 +1,202 @@
-<section class="panel panel-default">
-    <div class="panel-heading"><strong current-page-title></strong></div>
-    <div class="panel-body">
-        <p>Welcome to the publisher dashboard</p>
-        <p>{{ dashboard }}</p>
+<!--statistics-->
+<div class="row">
+    <div class="col-lg-4 col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-stats"></span> Account Statistics ({{ dashboard.accountStatistics.startDate | date}} - {{ dashboard.accountStatistics.endDate | date }})</div>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <span class="badge">{{dashboard.accountStatistics.estRevenue | currency }}</span>
+                    Estimate Revenue
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{dashboard.accountStatistics.slotOpportunities | number}}</span>
+                    Slot Opportunities
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{dashboard.accountStatistics.totalOpportunities | number}}</span>
+                    Total Opportunities
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{dashboard.accountStatistics.impressions | number}}</span>
+                    Impressions
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{dashboard.accountStatistics.fillRate | percentage}}</span>
+                    FillRate
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{dashboard.accountStatistics.passbacks | number}}</span>
+                    Passbacks
+                </li>
+            </ul>
+            <div>
+                <div class="total-opportunities"></div>
+            </div>
+        </div>
     </div>
-</section>
+
+    <div class="col-lg-4 col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-stats"></span> Statistics For Today ({{ dashboard.todaySummary.date | date }})</div>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <span class="badge">{{dashboard.todaySummary.estRevenue | currency }}</span>
+                    Estimate Revenue
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{dashboard.todaySummary.slotOpportunities | number}}</span>
+                    Slot Opportunities
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{dashboard.todaySummary.totalOpportunities | number}}</span>
+                    Total Opportunities
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{dashboard.todaySummary.impressions | number}}</span>
+                    Impressions
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{dashboard.todaySummary.fillRate | percentage}}</span>
+                    FillRate
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{dashboard.todaySummary.passbacks | number}}</span>
+                    Passbacks
+                </li>
+            </ul>
+            <div>
+                <div class="total-opportunities"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-stats"></span> Statistics For Yesterday ({{ dashboard.yesterdaySummary.date | date }})</div>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <span class="badge">{{dashboard.yesterdaySummary.estRevenue | currency }}</span>
+                    Estimate Revenue
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{dashboard.yesterdaySummary.slotOpportunities | number}}</span>
+                    Slot Opportunities
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{dashboard.yesterdaySummary.totalOpportunities | number}}</span>
+                    Total Opportunities
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{dashboard.yesterdaySummary.impressions | number}}</span>
+                    Impressions
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{dashboard.yesterdaySummary.fillRate | percentage}}</span>
+                    FillRate
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{dashboard.yesterdaySummary.passbacks | number}}</span>
+                    Passbacks
+                </li>
+            </ul>
+            <div>
+                <div class="total-opportunities"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--statistics ./end-->
+
+<!--chart-->
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Revenue</div>
+            <highchart config="chartConfigAccount"></highchart>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Account Overview</div>
+            <highchart config="chartConfigOpportunities"></highchart>
+        </div>
+    </div>
+</div>
+<!--chart ./ end-->
+
+<!--table top publisher-->
+<div class="panel panel-default">
+    <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Top Sites ({{ dashboard.accountStatistics.startDate | date}} - {{ dashboard.accountStatistics.endDate | date }})</div>
+
+    <table class="table table-bordered table-striped cf" at-table at-paginated at-list="topSites" at-config="configPaginationTopSites">
+        <thead></thead>
+        <tbody>
+        <tr>
+            <td at-title="Site" at-implicit at-sortable at-attribute="name"></td>
+            <td at-title="Total Opportunities" at-attribute="totalOpportunities" at-sortable at-initial-sorting="desc">
+                {{ item.totalOpportunities | number }}
+            </td>
+            <td at-title="Slot Opportunities" at-attribute="slotOpportunities" at-sortable>
+                {{ item.slotOpportunities | number }}
+            </td>
+            <td at-title="Fill Rate" at-attribute="fillRate" at-sortable>
+                {{ item.fillRate | percentage }}
+            </td>
+            <td at-title="Impressions" at-attribute="impressions" at-sortable>
+                {{ item.impressions | number }}
+            </td>
+            <td at-title="Passbacks" at-attribute="passbacks" at-sortable>
+                {{ item.passbacks | number }}
+            </td>
+            <td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>
+                {{ item.estRevenue | currency }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!--pagination-->
+    <at-pagination
+        ng-if="configPaginationTopSites.itemsPerPage < configPaginationTopSites.itemsTotal"
+        at-list="topSites"
+        at-config="configPaginationTopSites">
+    </at-pagination>
+</div>
+<!--table top publisher./ end-->
+
+<!--table top site-->
+<div class="panel panel-default">
+    <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Top AdNetworks ({{ dashboard.accountStatistics.startDate | date}} - {{ dashboard.accountStatistics.endDate | date }})</div>
+
+    <table class="table table-bordered table-striped cf" at-table at-paginated at-list="topAdNetworks" at-config="configPaginationTopAdnetworks">
+        <thead></thead>
+        <tbody>
+        <tr>
+            <td at-title="Ad Network" at-implicit at-sortable at-attribute="name"></td>
+            <td at-title="Total Opportunities" at-attribute="totalOpportunities" at-sortable at-initial-sorting="desc">
+                {{ item.totalOpportunities | number }}
+            </td>
+            <td at-title="Fill Rate" at-attribute="fillRate" at-sortable>
+                {{ item.fillRate | percentage }}
+            </td>
+            <td at-title="Impressions" at-attribute="impressions" at-sortable>
+                {{ item.impressions | number }}
+            </td>
+            <td at-title="Passbacks" at-attribute="passbacks" at-sortable>
+                {{ item.passbacks | number }}
+            </td>
+            <td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>
+                {{ item.estRevenue | currency }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <!--pagination-->
+    <at-pagination
+        ng-if="configPaginationTopAdnetworks.itemsPerPage < configPaginationTopAdnetworks.itemsTotal"
+        at-list="topAdNetworks"
+        at-config="configPaginationTopAdnetworks">
+    </at-pagination>
+</div>
+<!--table topsite .end-->

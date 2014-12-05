@@ -38,6 +38,8 @@ module.exports = {
             'vendor/angular-daterangepicker/js/angular-daterangepicker.js',
             'vendor/angular-loading-bar/build/loading-bar.min.js',
             'vendor/angular-httpi/lib/httpi.js',
+            'vendor/highcharts-release/highcharts.js',
+            'vendor/highcharts-ng/dist/highcharts-ng.min.js',
             'vendor/at-table/dist/angular-table.min.js'
         ],
         css: [
