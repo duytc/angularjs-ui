@@ -26,7 +26,8 @@
                 }
 
                 try {
-                    if (publisherId === item.publisher.id) {
+                    // we use item.id == null for the option to indicate 'All" at the moment
+                    if (item.id == null || publisherId === item.publisher.id) {
                         filtered.push(item);
                     }
                 } catch (e) {}

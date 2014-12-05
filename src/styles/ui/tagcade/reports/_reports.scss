@@ -1,0 +1,15 @@
+@import "performance-report/selector";
+
+.report.list-info {
+    li {
+        label {
+            width: 150px;
+        }
+    }
+}
+
+.panel.daily-reports {
+    .table-footer {
+        padding: 0 20px;
+    }
+}

@@ -1,0 +1,76 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Totals</div>
+            <div class="panel-body">
+                <ul class="list-unstyled report list-info">
+                    <li>
+                        <label>Estimated Revenue</label>
+                        {{ report.estRevenue | currency }}
+                    </li>
+                    <li>
+                        <label>Estimated CPM</label>
+                        {{ report.estCpm | currency }}
+                    </li>
+                    <li>
+                        <label>Total Opportunities</label>
+                        {{ report.totalOpportunities | number }}
+                    </li>
+                    <li ng-if="hasSlotOpportunities()">
+                        <label>Slot Opportunities</label>
+                        {{ report.slotOpportunities | number }}
+                    </li>
+                    <li>
+                        <label>Impressions</label>
+                        {{ report.impressions | number }}
+                    </li>
+                    <li>
+                        <label>Passbacks</label>
+                        {{ report.passbacks | number }}
+                    </li>
+                    <li>
+                        <label>Fill Rate</label>
+                        {{ report.fillRate | percentage }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Daily Averages</div>
+            <div class="panel-body">
+                <ul class="list-unstyled report list-info">
+                    <li>
+                        <label>Estimated Revenue</label>
+                        {{ report.averageEstRevenue | currency }}
+                    </li>
+                    <li>
+                        <label>Estimated CPM</label>
+                        {{ report.averageEstCpm | currency }}
+                    </li>
+                    <li>
+                        <label>Total Opportunities</label>
+                        {{ report.averageTotalOpportunities | number }}
+                    </li>
+                    <li ng-if="hasSlotOpportunities()">
+                        <label>Slot Opportunities</label>
+                        {{ report.averageSlotOpportunities | number }}
+                    </li>
+                    <li>
+                        <label>Impressions</label>
+                        {{ report.averageImpressions | number }}
+                    </li>
+                    <li>
+                        <label>Passbacks</label>
+                        {{ report.averagePassbacks | number }}
+                    </li>
+                    <li>
+                        <label>Fill Rate</label>
+                        {{ report.averageFillRate | percentage }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

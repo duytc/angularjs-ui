@@ -3,17 +3,34 @@
 
     angular.module('tagcade.core.router')
         .config(appConfig)
+
+        .constant('BASE_USER_URLS', {
+            admin: '/adm',
+            publisher: '/pub'
+        })
+
+        .constant('BASE_USER_STATES', {
+            admin: 'app.admin',
+            publisher: 'app.publisher'
+        })
     ;
 
     function appConfig($urlRouterProvider) {
-        $urlRouterProvider.otherwise(function($injector) {
-            $injector.invoke(/* @ngInject */ function ($state, Auth, UserStateHelper, ENTRY_STATE) {
+        $urlRouterProvider.when('', '/');
+
+        $urlRouterProvider.otherwise(function($injector, $location) {
+            var path = $location.path();
+
+            return $injector.invoke(/* @ngInject */ function (Auth, urlPrefixService) {
                 if (!Auth.isAuthenticated()) {
-                    $state.go(ENTRY_STATE);
-                    return;
+                    return '/login';
                 }
 
-                UserStateHelper.transitionRelativeToBaseState('dashboard');
+                if (path === '/') {
+                    return urlPrefixService.getPrefixedUrl('/dashboard');
+                }
+
+                return urlPrefixService.getPrefixedUrl('/error/404');
             });
         });
     }

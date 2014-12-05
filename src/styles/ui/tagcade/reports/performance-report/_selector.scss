@@ -20,6 +20,10 @@
             @include ui-select-width(180px);
         }
 
+        .publisher.form-group {
+            @include ui-select-width(200px);
+        }
+
         .ad-network.form-group {
             @include ui-select-width(200px);
         }

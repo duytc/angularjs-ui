@@ -37,7 +37,8 @@
         'angular-loading-bar',
         'ui.bootstrap',
         'ui.select',
-        'ngTable'
+        'ngTable',
+        'angular-table'
     ]);
 
     core.run(appRun);

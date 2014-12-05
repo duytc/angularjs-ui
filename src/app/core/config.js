@@ -9,6 +9,6 @@
 
     function config($httpProvider) {
         $httpProvider.interceptors.push('authTokenInterceptor');
-        $httpProvider.interceptors.push('responseInterceptor');
+        $httpProvider.interceptors.push('responseErrorInterceptor');
     }
 })();

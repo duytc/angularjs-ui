@@ -2,10 +2,6 @@
     'use strict';
 
     angular.module('tagcade.core.router')
-        .constant('BASE_USER_STATES', {
-            admin: 'app.admin',
-            publisher: 'app.publisher'
-        })
         .provider('UserStateHelper', userStateHelper)
     ;
 
@@ -39,7 +35,7 @@
          *
          * @param name
          * @param definition
-         * @return this
+         * @return userStateHelper
          */
         this.state = function (name, definition) {
             if (angular.isObject(name)) {

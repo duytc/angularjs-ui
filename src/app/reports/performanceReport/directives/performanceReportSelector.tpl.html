@@ -1,0 +1,77 @@
+<section id="performance-report-selector" class="panel panel-default">
+    <div class="panel-body">
+        <form name="reportSelectorForm" class="form-inline" role="form" ng-submit="getReports()" novalidate>
+            <div class="form-group">
+                <label for="inputDateRange">Date Range</label>
+                <div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input date-range-picker options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="selectedData.date" ng-required="true">
+                    </div>
+                </div>
+            </div>
+
+            <div class="publisher form-group" ng-if="showPublisherSelect()">
+                <label>Publisher</label>
+                <ui-select name="publisher" ng-model="selectedData.publisherId" ng-required="true" ng-disabled="!optionData.publishers.length" on-select="selectPublisher()">
+                    <ui-select-match placeholder="Select a publisher">{{ $select.selected.username }}</ui-select-match>
+                    <ui-select-choices group-by="groupEntities" repeat="publisher.id as publisher in optionData.publishers | filter: $select.search">
+                        <div ng-bind-html="publisher.username | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="report-type form-group" ng-if="showReportTypeSelect()">
+                <label>Report Type</label>
+                <ui-select name="reportType" ng-model="selectedData.reportType" ng-required="true" on-select="selectReportType($item)">
+                    <ui-select-match placeholder="Select a report type">{{ $select.selected.label }}</ui-select-match>
+                    <ui-select-choices repeat="type in reportTypeOptions | filter: $select.search">
+                        <div ng-bind-html="type.label | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="ad-network form-group" ng-if="fieldShouldBeVisible(reportFields.adNetwork)">
+                <label>Ad Network</label>
+                <ui-select name="adNetwork" ng-model="selectedData.adNetworkId" ng-disabled="!optionData.adNetworks.length" on-select="selectEntity($model)">
+                    <ui-select-match placeholder="Select an ad network">{{ $select.selected.name }}</ui-select-match>
+                    <ui-select-choices group-by="groupEntities" repeat="adNetwork.id as adNetwork in optionData.adNetworks | filter: $select.search | filter:filterNonEntityValues($select.search) | selectedPublisher:selectedData.publisherId">
+                        <div ng-bind-html="adNetwork.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="ad-network form-group" ng-if="fieldShouldBeVisible(reportFields.adNetwork) && selectedData.adNetworkId">
+                <label>Breakdown</label>
+                <ui-select ng-model="selectedData.adNetworkBreakdown" ng-required="true" on-select="selectBreakdownOption($item)">
+                    <ui-select-match placeholder="Select an option">{{ $select.selected.label }}</ui-select-match>
+                    <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
+                        <div ng-bind-html="option.label"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="site form-group" ng-if="fieldShouldBeVisible(reportFields.site) && optionData.sites.length">
+                <label>Site</label>
+                <ui-select name="site" ng-model="selectedData.siteId" on-select="selectEntity($model)">
+                    <ui-select-match placeholder="Select a site">{{ $select.selected.name }}</ui-select-match>
+                    <ui-select-choices group-by="groupEntities" repeat="site.id as site in optionData.sites | filter: $select.search | filter:filterNonEntityValues($select.search) | selectedPublisher:selectedData.publisherId">
+                        <div ng-bind-html="site.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="site form-group" ng-if="fieldShouldBeVisible(reportFields.site) && selectedData.siteId">
+                <label>Breakdown</label>
+                <ui-select ng-model="selectedData.siteBreakdown" ng-required="true" on-select="selectBreakdownOption($item)">
+                    <ui-select-match placeholder="Select an option">{{ $select.selected.label }}</ui-select-match>
+                    <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
+                        <div ng-bind-html="option.label"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <button  ng-disabled="!isFormValid()" type="submit" class="btn btn-primary">Get Reports</button>
+        </form>
+    </div>
+</section>

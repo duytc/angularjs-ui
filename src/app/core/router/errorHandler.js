@@ -11,16 +11,6 @@
 
             var responseCode = error.status;
 
-            if (responseCode == 403) {
-                $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
-                return;
-            }
-
-            if (responseCode == 401) {
-                $rootScope.$broadcast(AUTH_EVENTS.sessionTimeout);
-                return;
-            }
-
             // show generic error page unless we get more specific
             var errorCode = 500;
 
