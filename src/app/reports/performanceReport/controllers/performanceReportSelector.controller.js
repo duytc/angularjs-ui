@@ -285,8 +285,6 @@
                         type: 'error',
                         message: 'An error occurred trying to request the report'
                     });
-
-                    return false;
                 })
             ;
         }
