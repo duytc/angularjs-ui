@@ -1,0 +1,36 @@
+<tc-billing-report-selector initial-data="initialSelectorData"></tc-billing-report-selector>
+<div ng-if="hasResult">
+    <tc-billing-report-overview report-group="reportGroup"></tc-billing-report-overview>
+
+    <div class="panel panel-default daily-reports">
+        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Daily Account Breakdown</div>
+        <div class="table-responsive">
+            <table class="table table" at-table at-paginated at-list="reports" at-config="tableConfig">
+                <thead></thead>
+                <tbody>
+                <tr>
+                    <td at-title="Date" at-attribute="date" at-sortable at-initial-sorting="desc">
+                        {{ item.date | date }}
+                    </td>
+                    <td at-title="Total Opportunities" at-attribute="totalOpportunities" at-sortable>
+                        {{ item.totalOpportunities | number }}
+                    </td>
+                    <td at-title="Slot Opportunities" at-attribute="slotOpportunities" at-sortable>
+                        {{ item.slotOpportunities | number }}
+                    </td>
+                    <td at-title="Billed Amount" at-attribute="billedAmount" at-sortable>
+                        {{ item.billedAmount | currency }}
+                    </td>
+                    <td at-title="Billed CPM Rate">
+                        {{ item.billedRate | currency }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <at-pagination ng-if="showPagination()" class="table-footer" at-list="reports" at-config="tableConfig"></at-pagination>
+    </div>
+
+    <tc-billing-report-summary report-group="reportGroup"></tc-billing-report-summary>
+</div>

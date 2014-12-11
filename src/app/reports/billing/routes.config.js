@@ -5,17 +5,67 @@
         .config(addStates)
     ;
 
-    function addStates(UserStateHelperProvider) {
+    function addStates($stateProvider, UserStateHelperProvider) {
         UserStateHelperProvider
             .state('reports.billing', {
                 url: '/billing',
                 views: {
                     'content@app': {
-                        template: 'Billing reports coming soon.'
+                        templateUrl: 'reports/billing/billing.tpl.html'
                     }
                 },
-                breadcrumb: {
-                    title: 'Billing Reports'
+                ncyBreadcrumb: {
+                    label: 'Billing Reports'
+                }
+            })
+        ;
+
+        $stateProvider
+            .state('app.publisher.reports.billing.accountReport', {
+                url: '/account?{startDate:date}&{endDate:date}',
+                params: {
+                    startDate: null,
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    'content@app': {
+                        controller: 'BillingReport',
+                        templateUrl: 'reports/billing/accountReport.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, billingService, userSession) {
+                        return billingService.getAccountReport($stateParams, { publisherId: userSession.id });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Billing Reports'
+                }
+            })
+        ;
+
+        $stateProvider
+            .state('app.admin.reports.billing.accountReport', {
+                url: '/accounts/{publisherId:int}?{startDate:date}&{endDate:date}',
+                params: {
+                    startDate: null,
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    'content@app': {
+                        controller: 'BillingReport',
+                        templateUrl: 'reports/billing/accountReport.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, billingService) {
+                        return billingService.getAccountReport($stateParams);
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Billing Reports'
                 }
             })
         ;

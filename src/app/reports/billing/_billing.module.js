@@ -1,5 +1,7 @@
 (function() {
     'use strict';
 
-    angular.module('tagcade.reports.billing', []);
+    angular.module('tagcade.reports.billing', [
+        'daterangepicker'
+    ]);
 })();
