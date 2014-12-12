@@ -1,7 +1,7 @@
 (function(angular) {
     'use strict';
 
-    angular.module('tagcade.reports.performanceReport')
+    angular.module('tagcade.reports.performance')
         .factory('ReportFetcher', ReportFetcher)
     ;
 

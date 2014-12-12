@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    angular.module('tagcade.reports.performanceReport')
+    angular.module('tagcade.reports.performance')
         .controller('ReportView', ReportView)
     ;
 

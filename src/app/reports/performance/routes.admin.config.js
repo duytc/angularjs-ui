@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    angular.module('tagcade.reports.performanceReport')
+    angular.module('tagcade.reports.performance')
         .config(addStates)
     ;
 
@@ -10,18 +10,19 @@
             .state('app.admin.reports.performance.platform', {
                 url: '/platform?{startDate:date}&{endDate:date}',
                 params: {
+                    startDate: null,
                     endDate: null,
                     uniqueRequestCacheBuster: null
                 },
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performanceReport/views/reportType/platform.tpl.html'
+                        templateUrl: 'reports/performance/views/reportType/platform.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
-                        return PerformanceReport.getPlatformReport($stateParams, {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getPlatformReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.platform
                         });
                     }
@@ -39,12 +40,12 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performanceReport/views/reportType/accounts.tpl.html'
+                        templateUrl: 'reports/performance/views/reportType/accounts.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
-                        return PerformanceReport.getPlatformAccountsReport($stateParams, {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getPlatformAccountsReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.platform
                         });
                     }
@@ -62,12 +63,12 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performanceReport/views/reportType/site/sites.tpl.html'
+                        templateUrl: 'reports/performance/views/reportType/site/sites.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
-                        return PerformanceReport.getPlatformSitesReport($stateParams, {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getPlatformSitesReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.platform
                         });
                     }
@@ -85,12 +86,12 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performanceReport/views/reportType/account.tpl.html'
+                        templateUrl: 'reports/performance/views/reportType/account.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
-                        return PerformanceReport.getAccountReport($stateParams, {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getAccountReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.account
                         });
                     }
@@ -108,12 +109,12 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performanceReport/views/reportType/adNetwork/adNetworks.tpl.html'
+                        templateUrl: 'reports/performance/views/reportType/adNetwork/adNetworks.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
-                        return PerformanceReport.getPublisherAdNetworksReport($stateParams, {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getPublisherAdNetworksReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.adNetwork
                         });
                     }
@@ -131,12 +132,12 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performanceReport/views/reportType/site/sites.tpl.html'
+                        templateUrl: 'reports/performance/views/reportType/site/sites.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
-                        return PerformanceReport.getPublisherSitesReport($stateParams, {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getPublisherSitesReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.site
                         });
                     }

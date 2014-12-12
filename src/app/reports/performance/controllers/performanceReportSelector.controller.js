@@ -1,11 +1,11 @@
 (function() {
     'use strict';
 
-    angular.module('tagcade.reports.performanceReport')
+    angular.module('tagcade.reports.performance')
         .controller('PerformanceReportSelector', PerformanceReportSelector)
     ;
 
-    function PerformanceReportSelector($scope, $q, $state, $stateParams, _, PERFORMANCE_REPORT_TYPES, Auth, UserStateHelper, AlertService, PerformanceReport, ReportSelectorForm, ReportParams) {
+    function PerformanceReportSelector($scope, $q, $state, _, PERFORMANCE_REPORT_TYPES, Auth, UserStateHelper, AlertService, performanceReport, reportSelectorForm, ReportParams) {
         // important init code at the bottom
 
         var toState = null;
@@ -45,6 +45,7 @@
         $scope.showPublisherSelect = showPublisherSelect;
         $scope.showReportTypeSelect = showReportTypeSelect;
         $scope.fieldShouldBeVisible = fieldShouldBeVisible;
+        $scope.selectedReportTypeis = selectedReportTypeis;
         $scope.groupEntities = groupEntities;
         $scope.filterNonEntityValues = filterNonEntityValues;
         $scope.selectPublisher = selectPublisher;
@@ -126,6 +127,29 @@
                         toState: 'reports.performance.siteAdTags'
                     }
                 ]
+            },
+            {
+                key: PERFORMANCE_REPORT_TYPES.adSlot,
+                label: 'Ad Slot',
+                toState: 'reports.performance.sites',
+                visibleFields: [reportFields.site],
+                breakdownOptions: [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.performance.site'
+                    },
+                    {
+                        key: 'adslot',
+                        label: 'By Ad Slot',
+                        toState: 'reports.performance.siteAdSlots'
+                    },
+                    {
+                        key: 'adtag',
+                        label: 'By Ad Tag',
+                        toState: 'reports.performance.siteAdTags'
+                    }
+                ]
             }
         ];
 
@@ -174,6 +198,16 @@
             });
 
             return data;
+        }
+
+        function selectedReportTypeis(reportTypeKey) {
+            var reportType = $scope.selectedData.reportType;
+
+            if (!angular.isObject(reportType)) {
+                return false;
+            }
+
+            return reportType.key == reportTypeKey;
         }
 
         function fieldShouldBeVisible(field) {
@@ -265,8 +299,12 @@
                 );
             }
 
+            console.log(toState);
+
             $q.when(transition)
                 .catch(function(error) {
+                    console.log(params);
+
                     AlertService.replaceAlerts({
                         type: 'error',
                         message: 'An error occurred trying to request the report'
@@ -279,14 +317,14 @@
 
         function init() {
             if (isAdmin) {
-                ReportSelectorForm.getPublishers()
+                reportSelectorForm.getPublishers()
                     .then(function (data) {
                         $scope.optionData.publishers = data;
                     })
                 ;
             }
 
-            ReportSelectorForm.getAdNetworks()
+            reportSelectorForm.getAdNetworks()
                 .then(function (data) {
                     addAllOption(data, 'All Ad Networks');
 
@@ -294,7 +332,7 @@
                 })
             ;
 
-            ReportSelectorForm.getSites()
+            reportSelectorForm.getSites()
                 .then(function (data) {
                     addAllOption(data, 'All Sites');
 
@@ -303,33 +341,33 @@
             ;
 
             update();
+
+            if (!$scope.selectedData.date.startDate) {
+                $scope.selectedData.date.startDate = moment().startOf('day');
+            }
+
+            if (!$scope.selectedData.date.endDate) {
+                $scope.selectedData.date.endDate = $scope.selectedData.date.startDate
+            }
         }
 
         function update() {
-            var params = ReportParams.getFormParams(PerformanceReport.getInitialParams());
+            var params = ReportParams.getFormParams(performanceReport.getInitialParams());
+
+            params = params || {};
+
+            console.log(params);
 
             if (!_.isObject(params)) {
                 return;
             }
 
-            console.log(params);
-
-            var reportType = findReportType(params.reportType);
-
-            if (!reportType) {
-                console.log('missing valid report type');
-                return;
-            }
+            var reportType = findReportType(params.reportType) || null;
+            $scope.selectedData.reportType = reportType;
 
             resetForm();
 
-            $scope.selectedData.reportType = reportType;
-
             angular.extend($scope.selectedData, _.omit(params, ['reportType']));
-
-            if (!$scope.selectedData.date.startDate) {
-                $scope.selectedData.date.startDate = moment().startOf('day');
-            }
 
             if (!$scope.selectedData.date.endDate) {
                 $scope.selectedData.date.endDate = $scope.selectedData.date.startDate

@@ -61,12 +61,22 @@
                 </ui-select>
             </div>
 
-            <div class="site form-group" ng-if="fieldShouldBeVisible(reportFields.site) && selectedData.siteId">
+            <div class="site form-group" ng-if="selectedReportTypeis(reportTypes.site) && selectedData.siteId">
                 <label>Breakdown</label>
                 <ui-select ng-model="selectedData.siteBreakdown" ng-required="true" on-select="selectBreakdownOption($item)">
                     <ui-select-match placeholder="Select an option">{{ $select.selected.label }}</ui-select-match>
                     <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
                         <div ng-bind-html="option.label"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="ad-slot form-group" ng-if="selectedReportTypeis(reportTypes.adSlot) && selectedData.siteId">
+                <label>Ad Slot</label>
+                <ui-select name="adSlot" ng-model="selectedData.adSlotId" on-select="selectEntity($model)">
+                    <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }}</ui-select-match>
+                    <ui-select-choices group-by="groupEntities" repeat="adSlot.id as adSlot in optionData.adSlots | filter: $select.search">
+                        <div ng-bind-html="adSlot.name | highlight: $select.search"></div>
                     </ui-select-choices>
                 </ui-select>
             </div>

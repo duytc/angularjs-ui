@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    angular.module('tagcade.reports.performanceReport')
+    angular.module('tagcade.reports.performance')
         .config(addStates)
     ;
 
@@ -12,14 +12,12 @@
 
         UserStateHelperProvider
             .state('reports.performance', {
+                abstract: true,
                 url: '/performance',
                 views: {
                     'content@app': {
-                        templateUrl: 'reports/performanceReport/views/performanceReport.tpl.html'
+                        templateUrl: 'reports/performance/views/performanceReport.tpl.html'
                     }
-                },
-                ncyBreadcrumb: {
-                    label: 'Performance Reports'
                 }
             })
         ;
@@ -34,12 +32,12 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performanceReport/views/reportType/adNetwork/adNetwork.tpl.html'
+                        templateUrl: 'reports/performance/views/reportType/adNetwork/adNetwork.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
-                        return PerformanceReport.getAdNetworkReport($stateParams, {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getAdNetworkReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
                             adNetworkBreakdown: 'day'
                         });
@@ -58,12 +56,12 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performanceReport/views/reportType/adNetwork/adTags.tpl.html'
+                        templateUrl: 'reports/performance/views/reportType/adNetwork/adTags.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
-                        return PerformanceReport.getAdNetworkAdTagsReport($stateParams, {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getAdNetworkAdTagsReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
                             adNetworkBreakdown: 'adtag'
                         });
@@ -82,12 +80,12 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performanceReport/views/reportType/adNetwork/sites.tpl.html'
+                        templateUrl: 'reports/performance/views/reportType/adNetwork/sites.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
-                        return PerformanceReport.getAdNetworkSitesReport($stateParams, {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getAdNetworkSitesReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
                             adNetworkBreakdown: 'site'
                         });
@@ -106,12 +104,12 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performanceReport/views/reportType/adNetwork/site.tpl.html'
+                        templateUrl: 'reports/performance/views/reportType/adNetwork/site.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
-                        return PerformanceReport.getAdNetworkSiteReport($stateParams, {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getAdNetworkSiteReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.adNetwork
                         });
                     }
@@ -129,12 +127,12 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performanceReport/views/reportType/adNetwork/adTags.tpl.html'
+                        templateUrl: 'reports/performance/views/reportType/adNetwork/adTags.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
-                        return PerformanceReport.getAdNetworkSiteAdTagsReport($stateParams, {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getAdNetworkSiteAdTagsReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.adNetwork
                         });
                     }
@@ -152,12 +150,12 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performanceReport/views/reportType/site/site.tpl.html'
+                        templateUrl: 'reports/performance/views/reportType/site/site.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
-                        return PerformanceReport.getSiteReport($stateParams, {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getSiteReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.site,
                             siteBreakdown: 'day'
                         });
@@ -176,12 +174,12 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performanceReport/views/reportType/site/adSlots.tpl.html'
+                        templateUrl: 'reports/performance/views/reportType/site/adSlots.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
-                        return PerformanceReport.getSiteAdSlotsReport($stateParams, {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getSiteAdSlotsReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.site,
                             siteBreakdown: 'adslot'
                         });
@@ -200,12 +198,12 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performanceReport/views/reportType/site/adTags.tpl.html'
+                        templateUrl: 'reports/performance/views/reportType/site/adTags.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
-                        return PerformanceReport.getSiteAdTagsReport($stateParams, {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getSiteAdTagsReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.site,
                             siteBreakdown: 'adtag'
                         });
@@ -224,12 +222,12 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performanceReport/views/reportType/site/adTags.tpl.html'
+                        templateUrl: 'reports/performance/views/reportType/site/adTags.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
-                        return PerformanceReport.getAdSlotAdTagsReport($stateParams);
+                    reportGroup: /* @ngInject */ function ($stateParams, performanceReport) {
+                        return performanceReport.getAdSlotAdTagsReport($stateParams);
                     }
                 }
             })

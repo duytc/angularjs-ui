@@ -1,12 +1,13 @@
 (function() {
     'use strict';
 
-    angular.module('tagcade.reports.performanceReport')
+    angular.module('tagcade.reports.performance')
         .constant('PERFORMANCE_REPORT_TYPES', {
             platform: 'platform',
             account: 'account',
             adNetwork: 'adNetwork',
-            site: 'site'
+            site: 'site',
+            adSlot: 'adslot'
         })
 
         .provider('API_PERFORMANCE_REPORTS_BASE_URL', {

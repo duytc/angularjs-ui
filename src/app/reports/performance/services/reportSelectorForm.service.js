@@ -1,11 +1,11 @@
 (function() {
     'use strict';
 
-    angular.module('tagcade.reports.performanceReport')
-        .factory('ReportSelectorForm', ReportSelectorForm)
+    angular.module('tagcade.reports.performance')
+        .factory('reportSelectorForm', reportSelectorForm)
     ;
 
-    function ReportSelectorForm(adminUserManager, AdNetworkManager, SiteManager) {
+    function reportSelectorForm(adminUserManager, AdNetworkManager, SiteManager) {
         var api = {
             getPublishers: getPublishers,
             getAdNetworks: getAdNetworks,

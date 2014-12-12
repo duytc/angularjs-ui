@@ -1,11 +1,11 @@
 (function() {
     'use strict';
     
-    angular.module('tagcade.reports.performanceReport')
-        .factory('PerformanceReport', PerformanceReport)
+    angular.module('tagcade.reports.performance')
+        .factory('performanceReport', performanceReport)
     ;
     
-    function PerformanceReport($q, _, ReportFetcher, ReportParams) {
+    function performanceReport($q, _, ReportFetcher, ReportParams) {
         var api = {
             getInitialParams: getInitialParams,
             resetParams: resetParams,
@@ -105,6 +105,11 @@
         }
 
         function getPlatformReport(params, additionalParams) {
+            if (params.startDate == null) {
+                params.startDate = moment().subtract(7, 'days').startOf('day').toDate();
+                params.endDate = moment().subtract(1, 'days').startOf('day').toDate();
+            }
+
             return getReport(ReportFetcher.getPlatformReport, params, additionalParams);
         }
 
@@ -117,6 +122,11 @@
         }
 
         function getAccountReport(params, additionalParams) {
+            if (params.startDate == null) {
+                params.startDate = moment().subtract(7, 'days').startOf('day').toDate();
+                params.endDate = moment().subtract(1, 'days').startOf('day').toDate();
+            }
+
             return getReport(ReportFetcher.getAccountReport, params, additionalParams);
         }
 

@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    angular.module('tagcade.reports.performanceReport')
+    angular.module('tagcade.reports.performance')
         .config(addStates)
     ;
 
@@ -10,18 +10,19 @@
             .state('app.publisher.reports.performance.account', {
                 url: '/account?{startDate:date}&{endDate:date}',
                 params: {
+                    startDate: null,
                     endDate: null,
                     uniqueRequestCacheBuster: null
                 },
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performanceReport/views/reportType/account.tpl.html'
+                        templateUrl: 'reports/performance/views/reportType/account.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport, userSession) {
-                        return PerformanceReport.getAccountReport($stateParams, {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport, userSession) {
+                        return performanceReport.getAccountReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.account,
                             publisherId: userSession.id
                         });
@@ -40,12 +41,12 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performanceReport/views/reportType/adNetwork/adNetworks.tpl.html'
+                        templateUrl: 'reports/performance/views/reportType/adNetwork/adNetworks.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport, userSession) {
-                        return PerformanceReport.getPublisherAdNetworksReport($stateParams, {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport, userSession) {
+                        return performanceReport.getPublisherAdNetworksReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
                             publisherId: userSession.id
                         });
@@ -64,12 +65,12 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performanceReport/views/reportType/site/sites.tpl.html'
+                        templateUrl: 'reports/performance/views/reportType/site/sites.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport, userSession) {
-                        return PerformanceReport.getPublisherSitesReport($stateParams, {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport, userSession) {
+                        return performanceReport.getPublisherSitesReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.site,
                             publisherId: userSession.id
                         });

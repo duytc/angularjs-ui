@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('tagcade.reports', [
-        'tagcade.reports.performanceReport',
+        'tagcade.reports.performance',
         'tagcade.reports.billing'
     ]);
 
