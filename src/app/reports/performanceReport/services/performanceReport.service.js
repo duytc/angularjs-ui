@@ -8,6 +8,7 @@
     function PerformanceReport($q, _, ReportFetcher, ReportParams) {
         var api = {
             getInitialParams: getInitialParams,
+            resetParams: resetParams,
 
             getPlatformReport: getPlatformReport,
             getPlatformAccountsReport: getPlatformAccountsReport,
@@ -71,6 +72,10 @@
             return angular.copy(_$initialParams);
         }
 
+        function resetParams() {
+            _$initialParams = null;
+        }
+
         /**
          *
          * @param {function} fetcher
@@ -99,16 +104,16 @@
             });
         }
 
-        function getPlatformReport(params) {
-            return getReport(ReportFetcher.getPlatformReport, params);
+        function getPlatformReport(params, additionalParams) {
+            return getReport(ReportFetcher.getPlatformReport, params, additionalParams);
         }
 
-        function getPlatformAccountsReport(params) {
-            return getReport(ReportFetcher.getPlatformAccountsReport, params);
+        function getPlatformAccountsReport(params, additionalParams) {
+            return getReport(ReportFetcher.getPlatformAccountsReport, params, additionalParams);
         }
 
-        function getPlatformSitesReport(params) {
-            return getReport(ReportFetcher.getPlatformSitesReport, params);
+        function getPlatformSitesReport(params, additionalParams) {
+            return getReport(ReportFetcher.getPlatformSitesReport, params, additionalParams);
         }
 
         function getAccountReport(params, additionalParams) {
@@ -119,44 +124,44 @@
             return getReport(ReportFetcher.getPublisherAdNetworksReport, params, additionalParams);
         }
 
-        function getAdNetworkReport(params) {
-            return getReport(ReportFetcher.getAdNetworkReport, params);
+        function getAdNetworkReport(params, additionalParams) {
+            return getReport(ReportFetcher.getAdNetworkReport, params, additionalParams);
         }
 
-        function getAdNetworkAdTagsReport(params) {
-            return getReport(ReportFetcher.getAdNetworkAdTagsReport, params);
+        function getAdNetworkAdTagsReport(params, additionalParams) {
+            return getReport(ReportFetcher.getAdNetworkAdTagsReport, params, additionalParams);
         }
 
-        function getAdNetworkSitesReport(params) {
-            return getReport(ReportFetcher.getAdNetworkSitesReport, params);
+        function getAdNetworkSitesReport(params, additionalParams) {
+            return getReport(ReportFetcher.getAdNetworkSitesReport, params, additionalParams);
         }
 
-        function getAdNetworkSiteReport(params) {
-            return getReport(ReportFetcher.getAdNetworkSiteReport, params);
+        function getAdNetworkSiteReport(params, additionalParams) {
+            return getReport(ReportFetcher.getAdNetworkSiteReport, params, additionalParams);
         }
 
-        function getAdNetworkSiteAdTagsReport(params) {
-            return getReport(ReportFetcher.getAdNetworkSiteAdTagsReport, params);
+        function getAdNetworkSiteAdTagsReport(params, additionalParams) {
+            return getReport(ReportFetcher.getAdNetworkSiteAdTagsReport, params, additionalParams);
         }
 
         function getPublisherSitesReport(params, additionalParams) {
             return getReport(ReportFetcher.getPublisherSitesReport, params, additionalParams);
         }
 
-        function getSiteReport(params) {
-            return getReport(ReportFetcher.getSiteReport, params);
+        function getSiteReport(params, additionalParams) {
+            return getReport(ReportFetcher.getSiteReport, params, additionalParams);
         }
 
-        function getSiteAdSlotsReport(params) {
-            return getReport(ReportFetcher.getSiteAdSlotsReport, params);
+        function getSiteAdSlotsReport(params, additionalParams) {
+            return getReport(ReportFetcher.getSiteAdSlotsReport, params, additionalParams);
         }
 
-        function getSiteAdTagsReport(params) {
-            return getReport(ReportFetcher.getSiteAdTagsReport, params);
+        function getSiteAdTagsReport(params, additionalParams) {
+            return getReport(ReportFetcher.getSiteAdTagsReport, params, additionalParams);
         }
 
-        function getAdSlotAdTagsReport(params) {
-            return getReport(ReportFetcher.getAdSlotAdTagsReport, params);
+        function getAdSlotAdTagsReport(params, additionalParams) {
+            return getReport(ReportFetcher.getAdSlotAdTagsReport, params, additionalParams);
         }
     }
 })(angular);

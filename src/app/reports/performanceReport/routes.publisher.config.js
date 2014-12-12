@@ -7,10 +7,11 @@
 
     function addStates($stateProvider) {
         $stateProvider
-            .state('app.publisher.reports.performanceReport.account', {
+            .state('app.publisher.reports.performance.account', {
                 url: '/account?{startDate:date}&{endDate:date}',
                 params: {
-                    endDate: null
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
                 },
                 views: {
                     report: {
@@ -19,18 +20,22 @@
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport, userSession) {
-                        return PerformanceReport.getAccountReport($stateParams, { publisherId: userSession.id });
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport, userSession) {
+                        return PerformanceReport.getAccountReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.account,
+                            publisherId: userSession.id
+                        });
                     }
                 }
             })
         ;
 
         $stateProvider
-            .state('app.publisher.reports.performanceReport.adNetworks', {
+            .state('app.publisher.reports.performance.adNetworks', {
                 url: '/adNetworks?{startDate:date}&{endDate:date}',
                 params: {
-                    endDate: null
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
                 },
                 views: {
                     report: {
@@ -39,18 +44,22 @@
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport, userSession) {
-                        return PerformanceReport.getPublisherAdNetworksReport($stateParams, { publisherId: userSession.id });
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport, userSession) {
+                        return PerformanceReport.getPublisherAdNetworksReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
+                            publisherId: userSession.id
+                        });
                     }
                 }
             })
         ;
 
         $stateProvider
-            .state('app.publisher.reports.performanceReport.sites', {
+            .state('app.publisher.reports.performance.sites', {
                 url: '/sites?{startDate:date}&{endDate:date}',
                 params: {
-                    endDate: null
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
                 },
                 views: {
                     report: {
@@ -59,8 +68,11 @@
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport, userSession) {
-                        return PerformanceReport.getPublisherSitesReport($stateParams, { publisherId: userSession.id });
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport, userSession) {
+                        return PerformanceReport.getPublisherSitesReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.site,
+                            publisherId: userSession.id
+                        });
                     }
                 }
             })

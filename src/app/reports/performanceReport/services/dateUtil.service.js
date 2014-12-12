@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('tagcade.reports.performanceReport')
-        .factory('DateFormatter', DateFormatter)
+        .factory('dateUtil', dateUtil)
     ;
 
-    function DateFormatter(REPORT_DATE_FORMAT) {
+    function dateUtil(REPORT_DATE_FORMAT) {
         return {
             getDate: function(date) {
                 if (moment.isMoment(date)) {
@@ -17,7 +17,7 @@
                 }
 
                 if (angular.isString(date)) {
-                    date = moment(date, REPORT_DATE_FORMAT, true);
+                    date = moment(date, REPORT_DATE_FORMAT);
 
                     if (date.isValid()) {
                         return date;

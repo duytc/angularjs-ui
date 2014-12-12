@@ -7,10 +7,11 @@
 
     function addStates($stateProvider) {
         $stateProvider
-            .state('app.admin.reports.performanceReport.platform', {
+            .state('app.admin.reports.performance.platform', {
                 url: '/platform?{startDate:date}&{endDate:date}',
                 params: {
-                    endDate: null
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
                 },
                 views: {
                     report: {
@@ -19,18 +20,21 @@
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
-                        return PerformanceReport.getPlatformReport($stateParams);
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
+                        return PerformanceReport.getPlatformReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.platform
+                        });
                     }
                 }
             })
         ;
 
         $stateProvider
-            .state('app.admin.reports.performanceReport.platformAccounts', {
+            .state('app.admin.reports.performance.platformAccounts', {
                 url: '/platform/accounts?{startDate:date}&{endDate:date}',
                 params: {
-                    endDate: null
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
                 },
                 views: {
                     report: {
@@ -39,18 +43,21 @@
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
-                        return PerformanceReport.getPlatformAccountsReport($stateParams);
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
+                        return PerformanceReport.getPlatformAccountsReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.platform
+                        });
                     }
                 }
             })
         ;
 
         $stateProvider
-            .state('app.admin.reports.performanceReport.platformSites', {
+            .state('app.admin.reports.performance.platformSites', {
                 url: '/platform/sites?{startDate:date}&{endDate:date}',
                 params: {
-                    endDate: null
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
                 },
                 views: {
                     report: {
@@ -59,18 +66,21 @@
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
-                        return PerformanceReport.getPlatformSitesReport($stateParams);
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
+                        return PerformanceReport.getPlatformSitesReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.platform
+                        });
                     }
                 }
             })
         ;
 
         $stateProvider
-            .state('app.admin.reports.performanceReport.account', {
+            .state('app.admin.reports.performance.account', {
                 url: '/accounts/{publisherId:int}?{startDate:date}&{endDate:date}',
                 params: {
-                    endDate: null
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
                 },
                 views: {
                     report: {
@@ -79,18 +89,21 @@
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
-                        return PerformanceReport.getAccountReport($stateParams);
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
+                        return PerformanceReport.getAccountReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.account
+                        });
                     }
                 }
             })
         ;
 
         $stateProvider
-            .state('app.admin.reports.performanceReport.adNetworks', {
+            .state('app.admin.reports.performance.adNetworks', {
                 url: '/accounts/{publisherId:int}/adNetworks?{startDate:date}&{endDate:date}',
                 params: {
-                    endDate: null
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
                 },
                 views: {
                     report: {
@@ -99,18 +112,21 @@
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
-                        return PerformanceReport.getPublisherAdNetworksReport($stateParams);
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
+                        return PerformanceReport.getPublisherAdNetworksReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.adNetwork
+                        });
                     }
                 }
             })
         ;
 
         $stateProvider
-            .state('app.admin.reports.performanceReport.sites', {
+            .state('app.admin.reports.performance.sites', {
                 url: '/accounts/{publisherId:int}/sites?{startDate:date}&{endDate:date}',
                 params: {
-                    endDate: null
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
                 },
                 views: {
                     report: {
@@ -119,8 +135,10 @@
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PerformanceReport) {
-                        return PerformanceReport.getPublisherSitesReport($stateParams);
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, PerformanceReport) {
+                        return PerformanceReport.getPublisherSitesReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.site
+                        });
                     }
                 }
             })

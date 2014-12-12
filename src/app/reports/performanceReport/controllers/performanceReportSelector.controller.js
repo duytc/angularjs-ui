@@ -1,11 +1,13 @@
-(function(moment) {
+(function() {
     'use strict';
 
     angular.module('tagcade.reports.performanceReport')
         .controller('PerformanceReportSelector', PerformanceReportSelector)
     ;
 
-    function PerformanceReportSelector($scope, _, PERFORMANCE_REPORT_TYPES, Auth, UserStateHelper, AlertService, PerformanceReport, ReportSelectorForm, ReportParams) {
+    function PerformanceReportSelector($scope, $q, $state, $stateParams, _, PERFORMANCE_REPORT_TYPES, Auth, UserStateHelper, AlertService, PerformanceReport, ReportSelectorForm, ReportParams) {
+        // important init code at the bottom
+
         var toState = null;
 
         var isAdmin = Auth.isAdmin();
@@ -39,12 +41,9 @@
             sites: []
         };
 
-        update();
-
         $scope.isFormValid = isFormValid;
         $scope.showPublisherSelect = showPublisherSelect;
         $scope.showReportTypeSelect = showReportTypeSelect;
-        $scope.selectedReportTypeIs = selectedReportTypeIs;
         $scope.fieldShouldBeVisible = fieldShouldBeVisible;
         $scope.groupEntities = groupEntities;
         $scope.filterNonEntityValues = filterNonEntityValues;
@@ -53,37 +52,6 @@
         $scope.selectEntity = selectEntity;
         $scope.selectBreakdownOption = selectBreakdownOption;
         $scope.getReports = getReports;
-
-        function update() {
-            $scope.selectedData.date = {
-                startDate: moment().startOf('day'),
-                endDate: moment().startOf('day')
-            };
-
-            if (isAdmin) {
-                ReportSelectorForm.getPublishers()
-                    .then(function (data) {
-                        $scope.optionData.publishers = data;
-                    })
-                ;
-            }
-
-            ReportSelectorForm.getAdNetworks()
-                .then(function (data) {
-                    addAllOption(data, 'All Ad Networks');
-
-                    $scope.optionData.adNetworks = data;
-                })
-            ;
-
-            ReportSelectorForm.getSites()
-                .then(function (data) {
-                    addAllOption(data, 'All Sites');
-
-                    $scope.optionData.sites = data;
-                })
-            ;
-        }
 
         $scope.datePickerOpts = {
             maxDate:  moment().endOf('day'),
@@ -111,51 +79,51 @@
             {
                 key: PERFORMANCE_REPORT_TYPES.account,
                 label: 'Account',
-                toState: 'reports.performanceReport.account'
+                toState: 'reports.performance.account'
             },
             {
                 key: PERFORMANCE_REPORT_TYPES.adNetwork,
                 label: 'Ad Network',
-                toState: 'reports.performanceReport.adNetworks',
+                toState: 'reports.performance.adNetworks',
                 visibleFields: [reportFields.adNetwork],
                 breakdownOptions: [
                     {
                         key: 'day',
                         label: 'By Day',
-                        toState: 'reports.performanceReport.adNetwork'
+                        toState: 'reports.performance.adNetwork'
                     },
                     {
-                        key: '',
+                        key: 'site',
                         label: 'By Site',
-                        toState: 'reports.performanceReport.adNetworkSites'
+                        toState: 'reports.performance.adNetworkSites'
                     },
                     {
                         key: 'adtag',
                         label: 'By Ad Tag',
-                        toState: 'reports.performanceReport.adNetworkAdTags'
+                        toState: 'reports.performance.adNetworkAdTags'
                     }
                 ]
             },
             {
                 key: PERFORMANCE_REPORT_TYPES.site,
                 label: 'Site',
-                toState: 'reports.performanceReport.sites',
+                toState: 'reports.performance.sites',
                 visibleFields: [reportFields.site],
                 breakdownOptions: [
                     {
                         key: 'day',
                         label: 'By Day',
-                        toState: 'reports.performanceReport.site'
+                        toState: 'reports.performance.site'
                     },
                     {
                         key: 'adslot',
                         label: 'By Ad Slot',
-                        toState: 'reports.performanceReport.siteAdSlots'
+                        toState: 'reports.performance.siteAdSlots'
                     },
                     {
                         key: 'adtag',
                         label: 'By Ad Tag',
-                        toState: 'reports.performanceReport.siteAdTags'
+                        toState: 'reports.performance.siteAdTags'
                     }
                 ]
             }
@@ -164,7 +132,7 @@
         $scope.reportTypeOptions = reportTypeOptions;
 
         function isFormValid() {
-            return angular.isString(toState) && $scope.reportSelectorForm.$valid;
+            return $scope.reportSelectorForm.$valid;
         }
 
         function showPublisherSelect() {
@@ -177,6 +145,15 @@
             }
 
             return $scope.reportSelectorForm.publisher.$valid;
+        }
+
+        /**
+         *
+         * @param {String} reportTypeKey
+         * @return {Object|Boolean}
+         */
+        function findReportType(reportTypeKey) {
+            return _.findWhere(reportTypeOptions, { key: reportTypeKey });
         }
 
         /**
@@ -197,12 +174,6 @@
             });
 
             return data;
-        }
-
-        function selectedReportTypeIs(reportType) {
-            var selectedReportType = $scope.selectedData.reportType;
-
-            return angular.isObject(selectedReportType) && selectedReportType.key === reportType;
         }
 
         function fieldShouldBeVisible(field) {
@@ -252,6 +223,10 @@
             resetForm();
         }
 
+        /**
+         *
+         * @param {Object} reportType
+         */
         function selectReportType(reportType) {
             if (!angular.isObject(reportType) || !reportType.toState) {
                 throw new Error('report type is missing a target state');
@@ -261,8 +236,6 @@
         }
 
         function selectEntity(entityId) {
-            console.log(entityId);
-
             if (entityId === null) {
                 resetToStateForCurrentReportType();
             }
@@ -277,9 +250,22 @@
         }
 
         function getReports() {
+            var transition;
             var params = ReportParams.getStateParams($scope.selectedData);
 
-            UserStateHelper.transitionRelativeToBaseState(toState, params)
+            if (toState == null) {
+                transition = $state.transitionTo(
+                    $state.$current,
+                    params
+                );
+            } else {
+                transition = UserStateHelper.transitionRelativeToBaseState(
+                    toState,
+                    params
+                );
+            }
+
+            $q.when(transition)
                 .catch(function(error) {
                     AlertService.replaceAlerts({
                         type: 'error',
@@ -288,5 +274,69 @@
                 })
             ;
         }
+
+        /////
+
+        function init() {
+            if (isAdmin) {
+                ReportSelectorForm.getPublishers()
+                    .then(function (data) {
+                        $scope.optionData.publishers = data;
+                    })
+                ;
+            }
+
+            ReportSelectorForm.getAdNetworks()
+                .then(function (data) {
+                    addAllOption(data, 'All Ad Networks');
+
+                    $scope.optionData.adNetworks = data;
+                })
+            ;
+
+            ReportSelectorForm.getSites()
+                .then(function (data) {
+                    addAllOption(data, 'All Sites');
+
+                    $scope.optionData.sites = data;
+                })
+            ;
+
+            update();
+        }
+
+        function update() {
+            var params = ReportParams.getFormParams(PerformanceReport.getInitialParams());
+
+            if (!_.isObject(params)) {
+                return;
+            }
+
+            console.log(params);
+
+            var reportType = findReportType(params.reportType);
+
+            if (!reportType) {
+                console.log('missing valid report type');
+                return;
+            }
+
+            resetForm();
+
+            $scope.selectedData.reportType = reportType;
+
+            angular.extend($scope.selectedData, _.omit(params, ['reportType']));
+
+            if (!$scope.selectedData.date.startDate) {
+                $scope.selectedData.date.startDate = moment().startOf('day');
+            }
+
+            if (!$scope.selectedData.date.endDate) {
+                $scope.selectedData.date.endDate = $scope.selectedData.date.startDate
+            }
+        }
+
+        init();
+        $scope.$on('$stateChangeSuccess', update);
     }
-})(window.moment);
+})();

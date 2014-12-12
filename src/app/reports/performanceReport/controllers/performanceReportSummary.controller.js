@@ -9,7 +9,7 @@
         $scope.hasSlotOpportunities = hasSlotOpportunities;
 
         function hasSlotOpportunities() {
-            return angular.isObject($scope.report) && angular.isNumber($scope.report.slotOpportunities);
+            return angular.isObject($scope.reportGroup) && angular.isNumber($scope.reportGroup.slotOpportunities);
         }
     }
 })();

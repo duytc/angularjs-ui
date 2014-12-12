@@ -31,7 +31,7 @@
                 </ui-select>
             </div>
 
-            <div class="ad-network form-group" ng-if="fieldShouldBeVisible(reportFields.adNetwork)">
+            <div class="ad-network form-group" ng-if="fieldShouldBeVisible(reportFields.adNetwork) && optionData.adNetworks.length">
                 <label>Ad Network</label>
                 <ui-select name="adNetwork" ng-model="selectedData.adNetworkId" ng-disabled="!optionData.adNetworks.length" on-select="selectEntity($model)">
                     <ui-select-match placeholder="Select an ad network">{{ $select.selected.name }}</ui-select-match>

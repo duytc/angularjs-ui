@@ -5,7 +5,7 @@
         .factory('ReportFetcher', ReportFetcher)
     ;
 
-    function ReportFetcher($q, API_PERFORMANCE_REPORTS_BASE_URL, dataService, DateFormatter) {
+    function ReportFetcher($q, API_PERFORMANCE_REPORTS_BASE_URL, dataService, dateUtil) {
         var api = {
             getPlatformReport: getPlatformReport,
             getPlatformAccountsReport: getPlatformAccountsReport,
@@ -40,13 +40,13 @@
                 params = {};
             }
 
-            params.startDate = DateFormatter.getFormattedDate(params.startDate);
+            params.startDate = dateUtil.getFormattedDate(params.startDate);
 
             if (!params.startDate) {
                 return $q.reject(new Error('cannot get report, missing start date'));
             }
 
-            params.endDate = DateFormatter.getFormattedDate(params.endDate);
+            params.endDate = dateUtil.getFormattedDate(params.endDate);
             params.group = true;
 
             return dataService.makeHttpGetRequest(url, params, API_PERFORMANCE_REPORTS_BASE_URL);

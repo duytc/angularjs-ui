@@ -13,7 +13,7 @@
     "moment": "~2.8.0",
     "ng-table": "~0.3.3",
     "angular-moment": "~0.8.0",
-    "angular-ui-select": "~0.9.0",
+    "angular-ui-select": "0.9.1",
     "angular-ui-sortable": "~0.12.10",
     "angular-daterangepicker": "~0.1.10",
     "angular-underscore-module": "~1.0.1",
