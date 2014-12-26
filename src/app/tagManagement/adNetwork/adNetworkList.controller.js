@@ -93,5 +93,21 @@
                 dfd.resolve();
             }
         };
+
+        $scope.openListSitesForAdNetwork = function (adNetwork) {
+            $modal.open({
+                templateUrl: 'tagManagement/adNetwork/sitesForAdNetwork.tpl.html',
+                size: 'lg',
+                controller: 'SitesForAdNetwork',
+                resolve: {
+                    sites: function () {
+                        return AdNetworkManager.one(adNetwork.id).one('sites').getList();
+                    },
+                    adNetwork: function(){
+                        return adNetwork;
+                    }
+                }
+            });
+        };
     }
 })();

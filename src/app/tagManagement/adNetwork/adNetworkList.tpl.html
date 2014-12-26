@@ -21,6 +21,7 @@
                             <button type="button" class="btn" dropdown-toggle> Actions <span class="caret"></span> </button>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a ng-click="toggleAdNetworkStatus(adNetwork)">{{ adNetwork.active ? 'Pause' : 'Activate' }} Ad Network</a></li>
+                                <li><a ng-click="openListSitesForAdNetwork(adNetwork)">Pause Ad Network by Sites</a></li>
                                 <li><a ui-sref="^.edit({ id: adNetwork.id })">Edit Ad Network</a></li>
                                 <li ng-if="adNetwork.url" class="divider"></li>
                                 <li ng-if="adNetwork.url"><a ng-href="{{ adNetwork.url }}" target="_blank">Visit Ad Network</a></li>

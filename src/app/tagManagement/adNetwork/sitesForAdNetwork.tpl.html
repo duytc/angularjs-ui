@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <h3 class="modal-title">Sites for ad network : <strong>{{ adNetwork.name }}</strong></h3>
+</div>
+<div class="modal-body">
+
+    <table ng-if="hasSites()" class="table" at-table at-paginated at-list="sites" at-config="configPagination">
+        <thead></thead>
+        <tbody>
+        <tr>
+            <td at-title="#" at-implicit at-attribute="site.id" at-initial-sorting="asc"></td>
+            <td at-title="Site Name" at-implicit at-attribute="site.name"></td>
+            <td at-title="Domain" at-implicit at-attribute="site.domain"></td>
+            <td at-title="Active" at-attribute="active">
+                <button ng-click="onClick(item)" class="btn" ng-class="item.active ? 'btn-success' : 'btn-danger'">{{ item.active ? 'Active' : 'Pause' }}</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <at-pagination ng-if="sites.length > configPagination.itemsPerPage" at-list="sites" at-config="configPagination"></at-pagination>
+
+    <div ng-if="!hasSites()" class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        Ad network <strong>{{ adNetwork.name }}</strong> does not have sites
+    </div>
+
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="$close()">Close</button>
+</div>
