@@ -28,6 +28,7 @@
         'tagcade.core.widgets',
         'tagcade.core.data',
         'tagcade.core.login',
+        'tagcade.core.util',
 
         // 3rd party modules
 

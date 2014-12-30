@@ -1,0 +1,25 @@
+<div ng-if="hasAdNetworks()" class="panel panel-default">
+    <div class="panel-heading">
+        <strong current-page-title></strong>
+    </div>
+    <div class="panel-body">
+        <div>
+            <table class="table table-hover ng-table-responsive" ng-table="tableParams" show-filter="true">
+                <tr ng-repeat="adNetwork in $data">
+                    <td data-title="'#'" sortable="'id'">
+                        {{ adNetwork.id }}
+                    </td>
+                    <td data-title="'Ad Network Name'" sortable="'name'" filter="{ 'name': 'text' }">
+                        {{ adNetwork.name }}
+                    </td>
+                    <td ng-show="isAdmin()" data-title="'Publisher'" sortable="'adNetwork.publisher.username'" filter="{ 'publisher.username': 'text' }">
+                        {{ adNetwork.publisher.username }}
+                    </td>
+                    <td>
+                        <button ng-click="openBoxUpdateCpm(adNetwork)" type="button" class="btn btn-success">Update CPM</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
