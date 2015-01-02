@@ -6,40 +6,48 @@
         .controller('PublisherDashboard', PublisherDashboard)
     ;
 
-    function PublisherDashboard($scope, dashboard, $filter) {
+    function PublisherDashboard($scope, dataDashboard, DateFormatter, $filter, $stateParams, UserStateHelper, AlertService, userSession) {
+        $scope.dataDashboard = dataDashboard;
+        var reportDetails = (dataDashboard.accountStatistics.reports).reverse();
+
+        $scope.generateDashboard = generateDashboard;
+        $scope.chartConfigRevenue = chartConfigRevenue(reportDetails);
+        $scope.chartConfigOpportunities = chartConfigOpportunities(reportDetails);
+
+        $scope.date = {
+            startDate :$stateParams.startDate,
+            endDate : $stateParams.endDate
+        };
+
+        $scope.datePickerOpts = {
+            maxDate:  moment().endOf('day'),
+            ranges: {
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        };
+
         var rowCount = 10;
-
-        $scope.dashboard = dashboard;
-
-        $scope.chartConfigAccount = chartBilledAmount();
-
-        $scope.chartConfigOpportunities = chartOpportunities();
-
-        $scope.topSites = $scope.dashboard.topSites;
-        $scope.configPaginationTopSites = {
+        $scope.configTopSites = {
             itemsPerPage: rowCount,
-            fillLastPage: true,
-            itemsTotal : $scope.topSites.length
+            fillLastPage: 'no'
         };
 
-        $scope.topAdNetworks = $scope.dashboard.topAdNetworks;
-        $scope.configPaginationTopAdnetworks = {
+        $scope.configTopAdNetworks = {
             itemsPerPage: rowCount,
-            fillLastPage: true,
-            itemsTotal : $scope.topAdNetworks.length
+            fillLastPage: 'no',
+            noSlotOpp : true
         };
 
-        function chartBilledAmount(){
-            var reportDetails = (dashboard.accountStatistics.reports).reverse();
-
+        function chartConfigRevenue(reportDetails){
             var categoriesAccount = [];
             var chartSeriesEstRevenue = [];
-            for(var index in reportDetails)
-            {
-                categoriesAccount[index] = $filter('date')(reportDetails[index].date);
 
-                chartSeriesEstRevenue[index] = reportDetails[index].estRevenue;
-            }
+            angular.forEach(reportDetails, function(report) {
+                chartSeriesEstRevenue.push(report.estRevenue);
+                categoriesAccount.push($filter('date')(report.date));
+            });
 
             var chartSeriesAccount = [
                 {"name": "Estimated Revenue", "data": chartSeriesEstRevenue, connectNulls: true, color: {
@@ -80,26 +88,19 @@
 
             return chartConfigAccount;
         }
-        //    end function
 
-        function chartOpportunities(){
-            var reportDetails = dashboard.accountStatistics.reports;
-
+        function chartConfigOpportunities(reportDetails){
             var categoriesOpportunities = [];
             var chartSeriesSlotOpportunities = [];
             var chartSeriesTotalOpportunities = [];
             var chartSeriesTotalImpressions = [];
 
-            for(var index in reportDetails)
-            {
-                categoriesOpportunities[index] = $filter('date')(reportDetails[index].date);
-
-                chartSeriesSlotOpportunities[index] = reportDetails[index].slotOpportunities;
-
-                chartSeriesTotalOpportunities[index] = reportDetails[index].totalOpportunities;
-
-                chartSeriesTotalImpressions[index] = reportDetails[index].impressions;
-            }
+            angular.forEach(reportDetails, function(report) {
+                categoriesOpportunities.push($filter('date')(report.date));
+                chartSeriesSlotOpportunities.push(report.slotOpportunities);
+                chartSeriesTotalOpportunities.push(report.totalOpportunities);
+                chartSeriesTotalImpressions.push(report.impressions);
+            });
 
             var chartSeriesOpportunities = [
                 {"name": "Slot Opportunities", "data": chartSeriesSlotOpportunities, connectNulls: true, color: {
@@ -152,6 +153,22 @@
 
             return chartConfigOpportunities;
         }
-        //    end function
+
+        function generateDashboard(date) {
+            var params = {
+                startDate : DateFormatter.getFormattedDate(date.startDate),
+                endDate : DateFormatter.getFormattedDate(date.endDate),
+                id : userSession.id
+            };
+
+            UserStateHelper.transitionRelativeToBaseState('dashboard', params)
+                .catch(function(error) {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'An error occurred while trying to request dashboard'
+                    });
+                })
+            ;
+        }
     }
 })();

@@ -1,193 +1,59 @@
+<div id="performance-report-selector" class="panel panel-default">
+    <div class="panel-body">
+        <form name="reportSelectorForm" class="form-inline" role="form" ng-submit="generateDashboard(date)" novalidate>
+            <div class="form-group">
+                <label for="inputDateRange">Date Range</label>
+                <div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input date-range-picker options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="date" ng-required="true">
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Dashboard</button>
+        </form>
+    </div>
+</div>
+
 <!--statistics-->
 <div class="row">
-    <div class="col-lg-4 col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-heading"><span class="glyphicon glyphicon-stats"></span> Account Statistics ({{ dashboard.accountStatistics.startDate | date}} - {{ dashboard.accountStatistics.endDate | date }})</div>
-            <ul class="list-unstyled report list-info">
-                <li>
-                    <label>Estimated Revenue</label>
-                    <span class="pull-right">{{ dashboard.accountStatistics.estRevenue | currency }}</span>
-                </li>
-                <li>
-                    <label>Total Opportunities</label>
-                    <span class="pull-right">{{ dashboard.accountStatistics.totalOpportunities | number }}</span>
-                </li>
-                <li>
-                    <label>Slot Opportunities</label>
-                    <span class="pull-right">{{ dashboard.accountStatistics.slotOpportunities | number }}</span>
-                </li>
-                <li>
-                    <label>Impressions</label>
-                    <span class="pull-right">{{ dashboard.accountStatistics.impressions | number }}</span>
-                </li>
-                <li>
-                    <label>Passbacks</label>
-                    <span class="pull-right">{{ dashboard.accountStatistics.passbacks | number }}</span>
-                </li>
-                <li>
-                    <label>Fill Rate</label>
-                    <span class="pull-right">{{ dashboard.accountStatistics.fillRate | percentage }}</span>
-                </li>
-            </ul>
-        </div>
+    <div class="col-lg-6">
+        <report-statistics-publisher info="dataDashboard.accountStatistics"></report-statistics-publisher>
     </div>
-
-    <div class="col-lg-4 col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-heading"><span class="glyphicon glyphicon-stats"></span> Statistics For Today ({{ dashboard.todaySummary.date | date }})</div>
-            <ul class="list-unstyled report list-info">
-                <li>
-                    <label>Estimated Revenue</label>
-                    <span class="pull-right">{{ dashboard.todaySummary.estRevenue | currency }}</span>
-                </li>
-                <li>
-                    <label>Total Opportunities</label>
-                    <span class="pull-right">{{ dashboard.todaySummary.totalOpportunities | number }}</span>
-                </li>
-                <li>
-                    <label>Slot Opportunities</label>
-                    <span class="pull-right">{{ dashboard.todaySummary.slotOpportunities | number }}</span>
-                </li>
-                <li>
-                    <label>Impressions</label>
-                    <span class="pull-right">{{ dashboard.todaySummary.impressions | number }}</span>
-                </li>
-                <li>
-                    <label>Passbacks</label>
-                    <span class="pull-right">{{ dashboard.todaySummary.passbacks | number }}</span>
-                </li>
-                <li>
-                    <label>Fill Rate</label>
-                    <span class="pull-right">{{ dashboard.todaySummary.fillRate | percentage }}</span>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="col-lg-4 col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-heading"><span class="glyphicon glyphicon-stats"></span> Statistics For Yesterday ({{ dashboard.yesterdaySummary.date | date }})</div>
-            <ul class="list-unstyled report list-info">
-                <li>
-                    <label>Estimated Revenue</label>
-                    <span class="pull-right">{{ dashboard.yesterdaySummary.estRevenue | currency }}</span>
-                </li>
-                <li>
-                    <label>Total Opportunities</label>
-                    <span class="pull-right">{{ dashboard.yesterdaySummary.totalOpportunities | number }}</span>
-                </li>
-                <li>
-                    <label>Slot Opportunities</label>
-                    <span class="pull-right">{{ dashboard.yesterdaySummary.slotOpportunities | number }}</span>
-                </li>
-                <li>
-                    <label>Impressions</label>
-                    <span class="pull-right">{{ dashboard.yesterdaySummary.impressions | number }}</span>
-                </li>
-                <li>
-                    <label>Passbacks</label>
-                    <span class="pull-right">{{ dashboard.yesterdaySummary.passbacks | number }}</span>
-                </li>
-                <li>
-                    <label>Fill Rate</label>
-                    <span class="pull-right">{{ dashboard.yesterdaySummary.fillRate | percentage }}</span>
-                </li>
-            </ul>
-        </div>
+    <div class="col-lg-6">
+        <average-statistics-publisher info="dataDashboard.accountStatistics"></average-statistics-publisher>
     </div>
 </div>
 <!--statistics ./end-->
 
 <!--chart-->
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="panel panel-default">
-            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Revenue</div>
-            <highchart config="chartConfigAccount"></highchart>
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Account Overview</div>
-            <highchart config="chartConfigOpportunities"></highchart>
+            <ul class="nav nav-tabs">
+                <li role="presentation" ng-click="showChart = 0" ng-class="showChart ?'':'active' "><a>Account Overview</a></li>
+                <li role="presentation" ng-click="showChart = 1" ng-class="showChart ?'active':'' "><a>Revenue</a></li>
+            </ul>
+            <div ng-if="!showChart"><highchart config="chartConfigOpportunities"></highchart></div>
+            <div ng-if="showChart"><highchart config="chartConfigRevenue"></highchart></div>
         </div>
     </div>
 </div>
 <!--chart ./ end-->
 
-<!--table top publisher-->
-<div class="panel panel-default">
-    <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Top Sites ({{ dashboard.accountStatistics.startDate | date}} - {{ dashboard.accountStatistics.endDate | date }})</div>
-
-    <table class="table table-bordered table-striped cf" at-table at-paginated at-list="topSites" at-config="configPaginationTopSites">
-        <thead></thead>
-        <tbody>
-        <tr>
-            <td at-title="Site" at-implicit at-sortable at-attribute="name"></td>
-            <td at-title="Total Opportunities" at-attribute="totalOpportunities" at-sortable at-initial-sorting="desc">
-                {{ item.totalOpportunities | number }}
-            </td>
-            <td at-title="Slot Opportunities" at-attribute="slotOpportunities" at-sortable>
-                {{ item.slotOpportunities | number }}
-            </td>
-            <td at-title="Fill Rate" at-attribute="fillRate" at-sortable>
-                {{ item.fillRate | percentage }}
-            </td>
-            <td at-title="Impressions" at-attribute="impressions" at-sortable>
-                {{ item.impressions | number }}
-            </td>
-            <td at-title="Passbacks" at-attribute="passbacks" at-sortable>
-                {{ item.passbacks | number }}
-            </td>
-            <td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>
-                {{ item.estRevenue | currency }}
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <!--pagination-->
-    <at-pagination
-        ng-if="configPaginationTopSites.itemsPerPage < configPaginationTopSites.itemsTotal"
-        at-list="topSites"
-        at-config="configPaginationTopSites">
-    </at-pagination>
+<!--table top-->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <tabset>
+                <tab heading="Top Sites">
+                    <top-site-publisher config='configTopSites' info="dataDashboard.topSites"></top-site-publisher>
+                </tab>
+                <tab heading="Top AdNetworks">
+                    <top-ad-network-publisher config='configTopAdNetworks' info="dataDashboard.topAdNetworks"></top-ad-network-publisher>
+                </tab>
+            </tabset>
+        </div>
+    </div>
 </div>
-<!--table top publisher./ end-->
-
-<!--table top site-->
-<div class="panel panel-default">
-    <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Top AdNetworks ({{ dashboard.accountStatistics.startDate | date}} - {{ dashboard.accountStatistics.endDate | date }})</div>
-
-    <table class="table table-bordered table-striped cf" at-table at-paginated at-list="topAdNetworks" at-config="configPaginationTopAdnetworks">
-        <thead></thead>
-        <tbody>
-        <tr>
-            <td at-title="Ad Network" at-implicit at-sortable at-attribute="name"></td>
-            <td at-title="Total Opportunities" at-attribute="totalOpportunities" at-sortable at-initial-sorting="desc">
-                {{ item.totalOpportunities | number }}
-            </td>
-            <td at-title="Fill Rate" at-attribute="fillRate" at-sortable>
-                {{ item.fillRate | percentage }}
-            </td>
-            <td at-title="Impressions" at-attribute="impressions" at-sortable>
-                {{ item.impressions | number }}
-            </td>
-            <td at-title="Passbacks" at-attribute="passbacks" at-sortable>
-                {{ item.passbacks | number }}
-            </td>
-            <td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>
-                {{ item.estRevenue | currency }}
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <!--pagination-->
-    <at-pagination
-        ng-if="configPaginationTopAdnetworks.itemsPerPage < configPaginationTopAdnetworks.itemsTotal"
-        at-list="topAdNetworks"
-        at-config="configPaginationTopAdnetworks">
-    </at-pagination>
-</div>
-<!--table topsite .end-->
+<!--table top .end-->

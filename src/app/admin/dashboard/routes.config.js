@@ -8,7 +8,7 @@
 
     function addStates($stateProvider) {
         $stateProvider.state('app.admin.dashboard', {
-            url: '/dashboard',
+            url: '/dashboard?{startDate}&{endDate}',
             controller: 'AdminDashboard',
             views: {
                 'content@app': {
@@ -17,8 +17,8 @@
                 }
             },
             resolve: {
-                dashboard: function(dashboard) {
-                    return dashboard.getPlatformDashboard();
+                dataDashboard: function($stateParams, dashboard) {
+                    return dashboard.getPlatformDashboard($stateParams);
                 }
             },
             ncyBreadcrumb: {

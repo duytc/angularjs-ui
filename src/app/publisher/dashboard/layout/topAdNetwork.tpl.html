@@ -1,0 +1,26 @@
+<table class="table" at-table at-paginated at-list="dataTopStatistics" at-config="configTopStatistics">
+    <thead></thead>
+    <tbody>
+    <tr>
+        <td at-implicit at-sortable at-attribute="name" at-title="Name"></td>
+        <td at-sortable at-attribute="estRevenue" at-title="Est. Revenue" at-initial-sorting="desc">
+            {{ item.estRevenue | currency }}
+        </td>
+        <td at-sortable at-attribute="totalOpportunities" at-title="Total Opportunities">
+            {{ item.totalOpportunities | number }}
+        </td>
+        <td at-attribute="fillRate" at-sortable at-title="Fill Rate">
+            {{ item.fillRate | percentage }}
+        </td>
+        <td at-attribute="impressions" at-sortable at-title="Impressions">
+            {{ item.impressions | number }}
+        </td>
+        <td at-attribute="passbacks" at-sortable at-title="Passbacks">
+            {{ item.passbacks | number }}
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!--pagination-->
+<at-pagination ng-if="configTopStatistics.itemsPerPage < dataTopStatistics.length" at-list="dataTopStatistics" at-config="configTopStatistics"></at-pagination>

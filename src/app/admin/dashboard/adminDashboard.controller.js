@@ -6,40 +6,46 @@
         .controller('AdminDashboard', AdminDashboard)
     ;
 
-    function AdminDashboard($scope, dashboard, $filter) {
-        var rowCount = 10;
+    function AdminDashboard($scope, dataDashboard, DateFormatter, $filter, $stateParams, UserStateHelper, AlertService) {
+        $scope.dataDashboard = dataDashboard;
+        var reportDetails = (dataDashboard.platformStatistics.reports).reverse();
 
-        $scope.dashboard = dashboard;
+        $scope.generateDashboard = generateDashboard;
+        $scope.chartConfigPlatform = chartConfigPlatform(reportDetails);
+        $scope.chartConfigOpportunities = chartConfigOpportunities(reportDetails);
 
-        $scope.chartConfigPlatform = chartBilledAmount();
-
-        $scope.chartConfigOpportunities = chartOpportunities();
-
-        $scope.topPublishers = $scope.dashboard.topPublishers;
-        $scope.configPaginationTopPublishers = {
-            itemsPerPage: rowCount,
-            fillLastPage: true,
-            itemsTotal : $scope.topPublishers.length
+        $scope.date = {
+            startDate :$stateParams.startDate,
+            endDate : $stateParams.endDate
         };
 
-        $scope.topSites = $scope.dashboard.topSites;
-        $scope.configPaginationTopSites = {
-            itemsPerPage: rowCount,
-            fillLastPage: true,
-            itemsTotal : $scope.topSites.length
-        };
-
-        function chartBilledAmount(){
-            var reportDetails = (dashboard.platformStatistics.reports).reverse();
-
-            var categoriesPlatform = [];
-            var chartSeriesBilledAmount = [];
-            for(var index in reportDetails)
-            {
-                categoriesPlatform[index] = $filter('date')(reportDetails[index].date);
-
-                chartSeriesBilledAmount[index] = reportDetails[index].billedAmount;
+        $scope.datePickerOpts = {
+            maxDate:  moment().endOf('day'),
+            ranges: {
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
+        };
+
+        var rowCount = 10;
+        $scope.configPublishers = {
+            itemsPerPage: rowCount,
+            fillLastPage: 'no'
+        };
+        $scope.configTopSites = {
+            itemsPerPage: rowCount,
+            fillLastPage: 'no'
+        };
+
+        function chartConfigPlatform(reportDetails) {
+            var chartSeriesBilledAmount = [];
+            var categoriesPlatform = [];
+
+            angular.forEach(reportDetails, function(report) {
+                chartSeriesBilledAmount.push(report.billedAmount);
+                categoriesPlatform.push($filter('date')(report.date));
+            });
 
             var chartSeriesPlatform = [
                 {"name": "Billed Amount", "data": chartSeriesBilledAmount, connectNulls: true, color: {
@@ -80,25 +86,19 @@
 
             return chartConfigPlatform;
         }
-        //    end function
 
-        function chartOpportunities(){
-            var reportDetails = dashboard.platformStatistics.reports;
-
+        function chartConfigOpportunities(reportDetails) {
             var categoriesOpportunities = [];
             var chartSeriesSlotOpportunities = [];
             var chartSeriesTotalOpportunities = [];
             var chartSeriesTotalImpressions = [];
-            for(var index in reportDetails)
-            {
-                categoriesOpportunities[index] = $filter('date')(reportDetails[index].date);
 
-                chartSeriesSlotOpportunities[index] = reportDetails[index].slotOpportunities;
-
-                chartSeriesTotalOpportunities[index] = reportDetails[index].totalOpportunities;
-
-                chartSeriesTotalImpressions[index] = reportDetails[index].impressions;
-            }
+            angular.forEach(reportDetails, function(report) {
+                categoriesOpportunities.push($filter('date')(report.date));
+                chartSeriesSlotOpportunities.push(report.slotOpportunities);
+                chartSeriesTotalOpportunities.push(report.totalOpportunities);
+                chartSeriesTotalImpressions.push(report.impressions);
+            });
 
             var chartSeriesAccount = [
                 {"name": "Slot Opportunities", "data": chartSeriesSlotOpportunities, connectNulls: true, color: {
@@ -151,6 +151,21 @@
 
             return chartConfigOpportunities;
         }
-        //    end function
+
+        function generateDashboard(date) {
+            var params = {
+                startDate : DateFormatter.getFormattedDate(date.startDate),
+                endDate : DateFormatter.getFormattedDate(date.endDate)
+            };
+
+            UserStateHelper.transitionRelativeToBaseState('dashboard', params)
+                .catch(function(error) {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'An error occurred while trying to request dashboard'
+                    });
+                })
+            ;
+        }
     }
 })();

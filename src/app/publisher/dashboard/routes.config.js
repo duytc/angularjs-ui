@@ -9,7 +9,7 @@
     function addRoutes($stateProvider) {
         $stateProvider
             .state('app.publisher.dashboard', {
-                url: '/dashboard',
+                url: '/dashboard?{startDate}&{endDate}',
                 views: {
                     'content@app': {
                         controller: 'PublisherDashboard',
@@ -17,8 +17,9 @@
                     }
                 },
                 resolve: {
-                    dashboard: function(dashboard, userSession) {
-                        return dashboard.getPublisherDashboard(userSession.id);
+                    dataDashboard: function(dashboard, userSession, $stateParams) {
+                        var params = $.extend($stateParams, {id : userSession.id});
+                        return dashboard.getPublisherDashboard(params);
                     }
                 },
                 ncyBreadcrumb: {

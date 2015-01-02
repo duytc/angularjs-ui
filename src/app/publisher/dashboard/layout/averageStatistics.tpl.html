@@ -1,0 +1,33 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><span class="glyphicon glyphicon-stats"></span> Daily Average</div>
+    <ul class="list-unstyled report list-info">
+        <li>
+            <label>Estimated Revenue</label>
+            <span class="pull-right">{{ dataAverage.averageEstRevenue | currency }}</span>
+        </li>
+        <li>
+            <label>Estimated CPM</label>
+            <span class="pull-right">{{ dataAverage.averageEstCpm | currency }}</span>
+        </li>
+        <li>
+            <label>Total Opportunities</label>
+            <span class="pull-right">{{ dataAverage.averageTotalOpportunities | number }}</span>
+        </li>
+        <li>
+            <label>Slot Opportunities</label>
+            <span class="pull-right">{{ dataAverage.averageSlotOpportunities | number }}</span>
+        </li>
+        <li>
+            <label>Impressions</label>
+            <span class="pull-right">{{ dataAverage.averageImpressions | number }}</span>
+        </li>
+        <li>
+            <label>Passbacks</label>
+            <span class="pull-right">{{ dataAverage.averagePassbacks | number }}</span>
+        </li>
+        <li>
+            <label>Fill Rate</label>
+            <span class="pull-right">{{ dataAverage.averageFillRate | currency }}</span>
+        </li>
+    </ul>
+</div>
