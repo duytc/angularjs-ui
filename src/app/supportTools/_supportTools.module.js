@@ -3,6 +3,7 @@
 
     angular.module('tagcade.supportTools', [
         'tagcade.supportTools.updateCpmForAdTags',
-        'tagcade.supportTools.updateCpmForAdNetworks'
+        'tagcade.supportTools.updateCpmForAdNetworks',
+        'tagcade.supportTools.activityLog'
     ]);
 })();
