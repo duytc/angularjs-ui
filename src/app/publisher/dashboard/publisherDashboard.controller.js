@@ -8,7 +8,7 @@
 
     function PublisherDashboard($scope, dataDashboard, DateFormatter, $filter, $stateParams, UserStateHelper, AlertService, userSession) {
         $scope.dataDashboard = dataDashboard;
-        var reportDetails = (dataDashboard.accountStatistics.reports).reverse();
+        var reportDetails = dataDashboard.accountStatistics == null ? [] : (dataDashboard.accountStatistics.reports).reverse();
 
         $scope.generateDashboard = generateDashboard;
         $scope.chartConfigRevenue = chartConfigRevenue(reportDetails);

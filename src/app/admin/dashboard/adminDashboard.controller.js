@@ -8,7 +8,8 @@
 
     function AdminDashboard($scope, dataDashboard, DateFormatter, $filter, $stateParams, UserStateHelper, AlertService) {
         $scope.dataDashboard = dataDashboard;
-        var reportDetails = (dataDashboard.platformStatistics.reports).reverse();
+
+        var reportDetails = dataDashboard.platformStatistics == null ? [] : (dataDashboard.platformStatistics.reports).reverse();
 
         $scope.generateDashboard = generateDashboard;
         $scope.chartConfigPlatform = chartConfigPlatform(reportDetails);
