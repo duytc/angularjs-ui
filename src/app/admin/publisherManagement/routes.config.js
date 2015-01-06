@@ -2,75 +2,75 @@
     'use strict';
 
     angular
-        .module('tagcade.admin.userManagement')
+        .module('tagcade.admin.publisherManagement')
         .config(addStates)
     ;
 
     function addStates($stateProvider) {
         $stateProvider
             .state({
-                name: 'app.admin.userManagement',
+                name: 'app.admin.publisherManagement',
                 abstract: true,
                 url: '/userManagement',
                 ncyBreadcrumb: {
-                    label: 'User Management'
+                    label: 'Publisher Management'
                 }
             })
 
             .state({
-                name: 'app.admin.userManagement.list',
+                name: 'app.admin.publisherManagement.list',
                 url: '/list',
                 views: {
                     'content@app': {
-                        controller: 'UserList',
-                        templateUrl: 'admin/userManagement/userList.tpl.html'
+                        controller: 'PublisherList',
+                        templateUrl: 'admin/publisherManagement/publisherList.tpl.html'
                     }
                 },
                 resolve: {
-                    users: function(adminUserManager) {
+                    publishers: function(adminUserManager) {
                         return adminUserManager.getList();
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Users'
+                    label: 'Publishers'
                 }
             })
 
             .state({
-                name: 'app.admin.userManagement.new',
+                name: 'app.admin.publisherManagement.new',
                 url: '/new',
                 views: {
                     'content@app': {
-                        controller: 'UserForm',
-                        templateUrl: 'admin/userManagement/userForm.tpl.html'
+                        controller: 'PublisherForm',
+                        templateUrl: 'admin/publisherManagement/publisherForm.tpl.html'
                     }
                 },
                 resolve: {
-                    user: function() {
+                    publisher: function() {
                         return null;
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'New User'
+                    label: 'New Publisher'
                 }
             })
 
             .state({
-                name: 'app.admin.userManagement.edit',
+                name: 'app.admin.publisherManagement.edit',
                 url: '/edit/{id:[0-9]+}',
                 views: {
                     'content@app': {
-                        controller: 'UserForm',
-                        templateUrl: 'admin/userManagement/userForm.tpl.html'
+                        controller: 'PublisherForm',
+                        templateUrl: 'admin/publisherManagement/publisherForm.tpl.html'
                     }
                 },
                 resolve: {
-                    user: function($stateParams, adminUserManager) {
+                    publisher: function($stateParams, adminUserManager) {
                         return adminUserManager.one($stateParams.id).get();
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Edit User - {{ user.username }}'
+                    label: 'Edit Publisher - {{ publisher.username }}'
                 }
             })
         ;

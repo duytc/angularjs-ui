@@ -2,12 +2,12 @@
    'use strict';
 
     angular
-        .module('tagcade.admin.userManagement')
-        .controller('UserList', UserList)
+        .module('tagcade.admin.publisherManagement')
+        .controller('PublisherList', PublisherList)
     ;
 
-    function UserList($scope, $filter, ngTableParams, users) {
-        var data = users;
+    function PublisherList($scope, $filter, ngTableParams, publishers) {
+        var data = publishers;
 
         $scope.tableParams = new ngTableParams( // jshint ignore:line
             {

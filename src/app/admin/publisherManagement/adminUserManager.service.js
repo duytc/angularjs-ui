@@ -2,7 +2,7 @@
    'use strict';
 
     angular
-        .module('tagcade.admin.userManagement')
+        .module('tagcade.admin.publisherManagement')
         .factory('adminUserManager', adminUserManager)
     ;
 

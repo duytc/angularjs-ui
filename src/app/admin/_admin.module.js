@@ -4,6 +4,6 @@
     angular.module('tagcade.admin', [
         'tagcade.admin.layout',
         'tagcade.admin.dashboard',
-        'tagcade.admin.userManagement'
+        'tagcade.admin.publisherManagement'
     ]);
 })();
