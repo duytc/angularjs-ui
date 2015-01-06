@@ -4,7 +4,9 @@
     <div class="panel panel-default daily-reports">
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
             Site Breakdown
-            <button class="btn export_excel_button" type="button" ng-csv="exportExcel" csv-header="['Site', 'Start Date', 'End Date', 'Fill Rate', 'Total Opportunities', 'Impressions', 'Passbacks', 'Est. CPM ($)', 'Est. Revenue ($)']" filename="exportExcel.csv">Export Excel</button>
+            <div class="button-bar hidden-xs">
+                <button class="btn btn-sm" type="button" ng-csv="exportExcel" csv-header="['Site', 'Start Date', 'End Date', 'Fill Rate', 'Total Opportunities', 'Impressions', 'Passbacks', 'Est. CPM ($)', 'Est. Revenue ($)']" filename="exportExcel.csv">Export Excel</button>
+            </div>
         </div>
         <div class="table-responsive">
             <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
