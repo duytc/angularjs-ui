@@ -40,7 +40,8 @@
         'ui.select',
         'ngTable',
         'highcharts-ng',
-        'angular-table'
+        'angular-table',
+        'ngCsv'
     ]);
 
     core.run(appRun);

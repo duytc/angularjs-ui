@@ -2,7 +2,10 @@
     <tc-performance-report-overview report-group="reportGroup"></tc-performance-report-overview>
 
     <div class="panel panel-default daily-reports">
-        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Ad Tag Breakdown</div>
+        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
+            Ad Tag Breakdown
+            <button class="btn export_excel_button" type="button" ng-csv="exportExcel" csv-header="['Ad Tag', 'Start Date', 'End Date', 'Fill Rate', 'Total Opportunities', 'Impressions', 'Passbacks', 'Est. CPM ($)', 'Est. Revenue ($)']" filename="exportExcel.csv">Export Excel</button>
+        </div>
         <div class="table-responsive">
             <table class="table" at-table at-paginated at-list="reports" at-config="tableConfig">
                 <thead></thead>

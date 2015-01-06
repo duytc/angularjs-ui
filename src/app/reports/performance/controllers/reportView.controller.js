@@ -8,13 +8,15 @@
     /**
      * @param {Array} reportGroup.reports
      */
-    function ReportView($scope, $state, _, AlertService, ReportParams, reportGroup) {
+    function ReportView($scope, $state, _, AlertService, ReportParams, reportGroup, $filter) {
         $scope.hasResult = reportGroup !== false;
 
         reportGroup = reportGroup || {};
 
         $scope.reportGroup = reportGroup;
         $scope.reports = $scope.reportGroup.reports || [];
+
+        $scope.exportExcel = exportExcel;
 
         $scope.tableConfig = {
             itemsPerPage: 10
@@ -66,6 +68,34 @@
                     });
                 })
             ;
+        }
+
+        function exportExcel() {
+            var exportExcel = $scope.reports;
+            angular.forEach(exportExcel, function(value) {
+                delete value.averageTotalOpportunities;
+                delete value.averagePassbacks;
+                delete value.averageImpressions;
+                delete value.averageFillRate;
+                delete value.averageEstRevenue;
+                delete value.averageEstCpm;
+                delete value.averageSlotOpportunities;
+                delete value.averageBilledAmount;
+                delete value.reports;
+                delete value.reportType;
+                delete value.$$hashKey;
+                delete value.adNetworkId;
+                delete value.billedAmount;
+                delete value.billedRate;
+                delete value.publisherId;
+                delete value.siteId;
+
+                value.date = $filter('date')(value.date, 'longDate');
+                value.endDate = $filter('date')(value.endDate, 'longDate');
+                value.startDate = $filter('date')(value.startDate, 'longDate');
+            });
+
+            return exportExcel;
         }
     }
 })();
