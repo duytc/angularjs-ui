@@ -9,6 +9,14 @@
                     <td data-title="'#'" sortable="'id'">
                         {{ adTag.id }}
                     </td>
+                    <td data-title="'Actions'">
+                        <div class="btn-group" dropdown>
+                            <button type="button" class="btn" dropdown-toggle> Actions <span class="caret"></span> </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a ng-click="openBoxUpdateCpm(adTag)">Update CPM</a></li>
+                            </ul>
+                        </div>
+                    </td>
                     <td data-title="'Ad Tag Name'" sortable="'name'" filter="{ 'name': 'text' }">
                         {{ adTag.name }}
                     </td>
@@ -20,9 +28,6 @@
                     </td>
                     <td data-title="'Site Name'" sortable="'adSlot.site.name'" filter="{ 'adSlot.site.name': 'text' }">
                         {{ adTag.adSlot.site.name }}
-                    </td>
-                    <td>
-                        <button ng-click="openBoxUpdateRevenue(adTag)" type="button" class="btn btn-success">Update CPM</button>
                     </td>
                 </tr>
             </table>

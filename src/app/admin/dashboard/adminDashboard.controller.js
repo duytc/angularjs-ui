@@ -64,6 +64,14 @@
                     },
                     title: {
                         text: null
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: false
+                            },
+                            enableMouseTracking: true
+                        }
                     }
                 },
                 xAxis: {
@@ -72,14 +80,6 @@
                 yAxis: {
                     title: {
                         text: 'Dollar (USD)'
-                    }
-                },
-                plotOptions: {
-                    line: {
-                        dataLabels: {
-                            enabled: true
-                        },
-                        enableMouseTracking: false
                     }
                 },
                 series: chartSeriesPlatform
@@ -129,6 +129,14 @@
                     },
                     title: {
                         text: null
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: false
+                            },
+                            enableMouseTracking: true
+                        }
                     }
                 },
                 xAxis: {
@@ -137,14 +145,6 @@
                 yAxis: {
                     title: {
                         text: null
-                    }
-                },
-                plotOptions: {
-                    line: {
-                        dataLabels: {
-                            enabled: true
-                        },
-                        enableMouseTracking: false
                     }
                 },
                 series: chartSeriesAccount

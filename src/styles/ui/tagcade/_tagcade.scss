@@ -58,3 +58,17 @@ tr[ui-sref] {
     margin-top: 0;
     border-top: 0;
 }
+
+#form-date-range-selector {
+    form
+    > .form-group {
+        @media (min-width: $screen-sm) {
+            margin-right: 8px;
+        }
+    }
+    .btn-primary {
+            @media (min-width: $screen-sm) {
+                margin-top: 22px;
+            }
+    }
+}

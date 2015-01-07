@@ -8,7 +8,7 @@
     function AdTagListUpdateCpm($scope, adTags, $modal, ngTableParams, $filter, TableParamsHelper, AlertService) {
         var data = adTags;
 
-        $scope.openBoxUpdateRevenue = openBoxUpdateRevenue;
+        $scope.openBoxUpdateCpm = openBoxUpdateCpm;
 
         $scope.hasAdTags = function () {
             return data.length > 0;
@@ -44,7 +44,7 @@
             }
         );
 
-        function openBoxUpdateRevenue(adTag) {
+        function openBoxUpdateCpm(adTag) {
             $modal.open({
                 templateUrl: 'supportTools/updateCpmForAdTags/formUpdateCpmForAdTags.tpl.html',
                 size : 'lg',

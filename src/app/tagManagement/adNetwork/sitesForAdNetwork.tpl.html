@@ -8,10 +8,18 @@
         <tbody>
         <tr>
             <td at-title="#" at-implicit at-attribute="site.id" at-initial-sorting="asc"></td>
+            <td at-title="Actions">
+                <div class="btn-group" dropdown>
+                    <button type="button" class="btn" dropdown-toggle> Actions <span class="caret"></span> </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a ng-click="onClick(item)">{{ item.active ? 'Pause' : 'Active' }}</a></li>
+                    </ul>
+                </div>
+            </td>
             <td at-title="Site Name" at-implicit at-attribute="site.name"></td>
             <td at-title="Domain" at-implicit at-attribute="site.domain"></td>
             <td at-title="Active" at-attribute="active">
-                <button ng-click="onClick(item)" class="btn" ng-class="item.active ? 'btn-success' : 'btn-danger'">{{ item.active ? 'Active' : 'Pause' }}</button>
+                <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Pause' }}</span>
             </td>
         </tr>
         </tbody>
