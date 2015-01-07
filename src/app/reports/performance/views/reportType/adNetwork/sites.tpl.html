@@ -5,7 +5,7 @@
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
             Site Breakdown
             <div class="button-bar hidden-xs">
-                <button class="btn btn-sm" type="button" ng-csv="exportExcel" csv-header="['Site', 'Start Date', 'End Date', 'Fill Rate', 'Total Opportunities', 'Impressions', 'Passbacks', 'Est. CPM ($)', 'Est. Revenue ($)']" filename="exportExcel.csv">Export Excel</button>
+                <button class="btn btn-sm" type="button" ng-csv="exportExcel" csv-header="['Site', 'Start Date', 'End Date', 'Fill Rate', 'Total Opportunities', 'Impressions', 'Passbacks', 'Est. CPM ($)', 'Est. Revenue ($)']" filename="{{ getExportExcelFileName }}">Export Excel</button>
             </div>
         </div>
         <div class="table-responsive">

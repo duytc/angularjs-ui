@@ -8,7 +8,7 @@
     /**
      * @param {Array} reportGroup.reports
      */
-    function ReportView($scope, $state, _, AlertService, ReportParams, reportGroup, $filter) {
+    function ReportView($scope, $state, _, AlertService, ReportParams, reportGroup, $filter, DateFormatter) {
         $scope.hasResult = reportGroup !== false;
 
         reportGroup = reportGroup || {};
@@ -17,6 +17,7 @@
         $scope.reports = $scope.reportGroup.reports || [];
 
         $scope.exportExcel = exportExcel;
+        $scope.getExportExcelFileName = getExportExcelFileName();
 
         $scope.tableConfig = {
             itemsPerPage: 10
@@ -96,6 +97,10 @@
             });
 
             return exportExcel;
+        }
+
+        function getExportExcelFileName() {
+            return 'tagcade-report-' + DateFormatter.getFormattedDate(new Date(reportGroup.startDate)) + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.endDate)) + '.csv';
         }
     }
 })();
