@@ -21,6 +21,29 @@
         ;
 
         $stateProvider
+            .state('app.publisher.reports.billing.projectedBill', {
+                url: '/projectedBill',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    'content@app': {
+                        controller: 'BillingReport',
+                        templateUrl: 'reports/billing/accountReport.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function (billingService, userSession) {
+                        return billingService.getProjectedBillReport(userSession.id);
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Projected Bill'
+                }
+            })
+        ;
+
+        $stateProvider
             .state('app.publisher.reports.billing.accountReport', {
                 url: '/account?{startDate:date}&{endDate:date}',
                 params: {

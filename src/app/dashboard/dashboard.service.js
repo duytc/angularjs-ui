@@ -8,7 +8,8 @@
     function dashboard($q, API_STATS_BASE_URL, dataService, DateFormatter) {
         var api = {
             getPlatformDashboard: getPlatformDashboard,
-            getPublisherDashboard: getPublisherDashboard
+            getPublisherDashboard: getPublisherDashboard,
+            getPublisherProjectedBill: getPublisherProjectedBill
         };
 
         return api;
@@ -38,6 +39,16 @@
             }
 
             return makeHttpGetRequest('/accounts/:id', params);
+        }
+
+        function getPublisherProjectedBill(accountId) {
+            if (!angular.isNumber(accountId)) {
+                return $q.reject(new Error('account id should be a number'));
+            }
+
+            return makeHttpGetRequest('/accounts/:id/projectedbill', {
+                id: accountId
+            });
         }
     }
 })(angular);

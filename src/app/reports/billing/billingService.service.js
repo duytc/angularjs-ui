@@ -5,9 +5,10 @@
         .factory('billingService', billingService)
     ;
 
-    function billingService($q, _, ReportParams, ReportFetcher, adminUserManager) {
+    function billingService($q, _, ReportParams, ReportFetcher, adminUserManager, dashboard) {
         var api = {
             getInitialParams: getInitialParams,
+            getProjectedBillReport: getProjectedBillReport,
             getAccountReport: getAccountReport,
             getPublishers: getPublishers
         };
@@ -20,6 +21,10 @@
 
         function getInitialParams() {
             return _$initialParams;
+        }
+
+        function getProjectedBillReport(publisherId) {
+            return dashboard.getPublisherProjectedBill(publisherId);
         }
 
         /**
