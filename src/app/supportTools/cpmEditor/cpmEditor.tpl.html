@@ -16,16 +16,16 @@
                                     </ul>
                                 </div>
                             </td>
-                            <td data-title="'Ad Tag Name'" sortable="'name'" filter="{ 'name': 'text' }">
+                            <td data-title="'Ad Tag'" sortable="'name'" filter="{ 'name': 'text' }">
                                 {{ adTag.name }}
                             </td>
                             <td ng-show="isAdmin()" data-title="'Publisher'" sortable="'adSlot.site.publisher.username'" filter="{ 'adSlot.site.publisher.username': 'text' }">
                                 {{ adTag.adSlot.site.publisher.username }}
                             </td>
-                            <td data-title="'Ad Network Name'" sortable="'adNetwork.name'" filter="{ 'adNetwork.name': 'text' }">
+                            <td data-title="'Ad Network'" sortable="'adNetwork.name'" filter="{ 'adNetwork.name': 'text' }">
                                 {{ adTag.adNetwork.name }}
                             </td>
-                            <td data-title="'Site Name'" sortable="'adSlot.site.name'" filter="{ 'adSlot.site.name': 'text' }">
+                            <td data-title="'Site'" sortable="'adSlot.site.name'" filter="{ 'adSlot.site.name': 'text' }">
                                 {{ adTag.adSlot.site.name }}
                             </td>
                         </tr>
@@ -45,7 +45,7 @@
                                     </ul>
                                 </div>
                             </td>
-                            <td data-title="'Ad Network Name'" sortable="'name'" filter="{ 'name': 'text' }">
+                            <td data-title="'Ad Network'" sortable="'name'" filter="{ 'name': 'text' }">
                                 {{ adNetwork.name }}
                             </td>
                             <td ng-show="isAdmin()" data-title="'Publisher'" sortable="'adNetwork.publisher.username'" filter="{ 'publisher.username': 'text' }">
