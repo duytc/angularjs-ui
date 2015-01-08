@@ -71,7 +71,8 @@
         var reportFields = {
             publisher: 'publisher',
             adNetwork: 'adnetwork',
-            site: 'site'
+            site: 'site',
+            adSlot: 'adSlot'
         };
 
         $scope.reportFields = reportFields;
@@ -299,8 +300,6 @@
                 );
             }
 
-            console.log(toState);
-
             $q.when(transition)
                 .catch(function(error) {
                     console.log(params);
@@ -355,8 +354,6 @@
             var params = ReportParams.getFormParams(performanceReport.getInitialParams());
 
             params = params || {};
-
-            console.log(params);
 
             if (!_.isObject(params)) {
                 return;

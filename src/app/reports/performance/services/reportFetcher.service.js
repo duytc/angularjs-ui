@@ -22,6 +22,7 @@
             getSiteReport: getSiteReport,
             getSiteAdSlotsReport: getSiteAdSlotsReport,
             getSiteAdTagsReport: getSiteAdTagsReport,
+            getAdSlotReport: getAdSlotReport,
             getAdSlotAdTagsReport: getAdSlotAdTagsReport
         };
 
@@ -180,7 +181,16 @@
         /**
          *
          * @param {object} params
-         * @param {int} params.siteId
+         * @param {int} params.adSlotId
+         */
+        function getAdSlotReport(params) {
+            return getReports('/adslots/:adSlotId', params);
+        }
+
+        /**
+         *
+         * @param {object} params
+         * @param {int} params.adSlotId
          */
         function getAdSlotAdTagsReport(params) {
             return getReports('/adslots/:adSlotId/adtags', params);

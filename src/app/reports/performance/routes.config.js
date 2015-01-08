@@ -80,7 +80,13 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performance/views/reportType/adNetwork/sites.tpl.html'
+                        templateUrl: function($stateParams) {
+                            if (!$stateParams.endDate) {
+                                return 'reports/performance/views/reportType/adNetwork/sites.tpl.html'
+                            }
+
+                            return 'reports/performance/views/reportType/adNetwork/sitesDateRange.tpl.html'
+                        }
                     }
                 },
                 resolve: {
@@ -174,7 +180,13 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performance/views/reportType/site/adSlots.tpl.html'
+                        templateUrl: function($stateParams) {
+                            if (!$stateParams.endDate) {
+                                return 'reports/performance/views/reportType/site/adSlots.tpl.html';
+                            }
+
+                            return 'reports/performance/views/reportType/site/adSlotsDateRange.tpl.html';
+                        }
                     }
                 },
                 resolve: {
@@ -198,7 +210,13 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performance/views/reportType/site/adTags.tpl.html'
+                        templateUrl: function($stateParams) {
+                            if (!$stateParams.endDate) {
+                                return 'reports/performance/views/reportType/site/adTags.tpl.html';
+                            }
+
+                            return 'reports/performance/views/reportType/site/adTagsDateRange.tpl.html';
+                        }
                     }
                 },
                 resolve: {
@@ -206,6 +224,29 @@
                         return performanceReport.getSiteAdTagsReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.site,
                             siteBreakdown: 'adtag'
+                        });
+                    }
+                }
+            })
+        ;
+
+        UserStateHelperProvider
+            .state('reports.performance.adSlot', {
+                url: '/adSlots/{adSlotId:int}?{startDate:date}&{endDate:date}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    report: {
+                        controller: 'ReportView',
+                        templateUrl: 'reports/performance/views/reportType/adSlot/adSlot.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getAdSlotReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.adSlot
                         });
                     }
                 }
@@ -222,7 +263,13 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performance/views/reportType/site/adTags.tpl.html'
+                        templateUrl: function($stateParams) {
+                            if (!$stateParams.endDate) {
+                                return 'reports/performance/views/reportType/site/adTags.tpl.html';
+                            }
+
+                            return 'reports/performance/views/reportType/site/adTagsDateRange.tpl.html';
+                        }
                     }
                 },
                 resolve: {

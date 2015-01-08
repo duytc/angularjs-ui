@@ -25,6 +25,7 @@
             getSiteReport: getSiteReport,
             getSiteAdSlotsReport: getSiteAdSlotsReport,
             getSiteAdTagsReport: getSiteAdTagsReport,
+            getAdSlotReport: getAdSlotReport,
             getAdSlotAdTagsReport: getAdSlotAdTagsReport
         };
 
@@ -106,7 +107,8 @@
 
         function getPlatformReport(params, additionalParams) {
             if (params.startDate == null) {
-                params.startDate = moment().subtract(7, 'days').startOf('day').toDate();
+                params.startDate = moment().subtract(6, 'days').startOf('day').toDate();
+                //params.endDate = moment().startOf('day').toDate();
                 params.endDate = moment().subtract(1, 'days').startOf('day').toDate();
             }
 
@@ -123,7 +125,8 @@
 
         function getAccountReport(params, additionalParams) {
             if (params.startDate == null) {
-                params.startDate = moment().subtract(7, 'days').startOf('day').toDate();
+                params.startDate = moment().subtract(6, 'days').startOf('day').toDate();
+                //params.endDate = moment().startOf('day').toDate();
                 params.endDate = moment().subtract(1, 'days').startOf('day').toDate();
             }
 
@@ -168,6 +171,10 @@
 
         function getSiteAdTagsReport(params, additionalParams) {
             return getReport(ReportFetcher.getSiteAdTagsReport, params, additionalParams);
+        }
+
+        function getAdSlotReport(params, additionalParams) {
+            return getReport(ReportFetcher.getAdSlotReport, params, additionalParams);
         }
 
         function getAdSlotAdTagsReport(params, additionalParams) {

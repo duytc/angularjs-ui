@@ -37,6 +37,28 @@
             return date.toDate(); // convert moment to js date
         }
 
+        function cloneDate(date) {
+            if (!date instanceof Date) {
+                return false;
+            }
+
+            date = new Date(date.getTime());
+            date.setHours(0, 0, 0, 0);
+
+            return date;
+        }
+
+        function _datesAreEqual(startDate, endDate) {
+            startDate = cloneDate(startDate);
+            endDate = cloneDate(endDate);
+
+            if (startDate && endDate) {
+                return startDate.getTime() == endDate.getTime();
+            }
+
+            return false;
+        }
+
         /**
          *
          * @param {Object} unfilteredParams
@@ -83,6 +105,8 @@
             );
 
             params.startDate = dateUtil.getDate(params.startDate) || null;
+
+
             params.endDate = dateUtil.getDate(params.endDate) || null;
 
             return _filterBlankParamValues(params);
@@ -119,6 +143,11 @@
 
             params.startDate = _convertToDateTime(params.startDate);
             params.endDate = _convertToDateTime(params.endDate) || null;
+
+            if (params.startDate && params.endDate && _datesAreEqual(params.startDate, params.endDate)) {
+                params.endDate = null;
+            }
+
             params.uniqueRequestCacheBuster = Math.random();
 
             return params;

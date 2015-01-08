@@ -13,11 +13,8 @@
                 <thead></thead>
                 <tbody>
                 <tr ng-click="drillDownReport('^.adSlotAdTags', item)">
-                    <td at-title="Start Date" at-attribute="startDate">
+                    <td at-title="Date" at-attribute="startDate">
                         {{ item.startDate | date }}
-                    </td>
-                    <td at-title="End Date" at-attribute="endDate">
-                        {{ item.endDate | date }}
                     </td>
                     <td at-title="Ad Slot" at-attribute="name" at-sortable>
                         {{ item.name }}

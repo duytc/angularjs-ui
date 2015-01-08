@@ -41,7 +41,13 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performance/views/reportType/adNetwork/adNetworks.tpl.html'
+                        templateUrl: function($stateParams) {
+                            if (!$stateParams.endDate) {
+                                return 'reports/performance/views/reportType/adNetwork/adNetworks.tpl.html';
+                            }
+
+                            return 'reports/performance/views/reportType/adNetwork/adNetworksDateRange.tpl.html';
+                        }
                     }
                 },
                 resolve: {
@@ -65,7 +71,13 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performance/views/reportType/site/sites.tpl.html'
+                        templateUrl: function($stateParams) {
+                            if (!$stateParams.endDate) {
+                                return 'reports/performance/views/reportType/site/sites.tpl.html';
+                            }
+
+                            return 'reports/performance/views/reportType/site/sitesDateRange.tpl.html';
+                        }
                     }
                 },
                 resolve: {
