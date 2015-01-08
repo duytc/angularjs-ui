@@ -22,6 +22,7 @@
             <a ui-sref=".reports"><i class="fa fa-tachometer"></i><span>Reports</span></a>
             <ul>
                 <li ng-if="hasDisplayAdsModule" ui-sref-active="active"><a ui-sref=".reports.performance.account"><i class="fa fa-caret-right"></i>Performance Reports</a></li>
+                <li ng-if="hasAnalyticsModule" ui-sref-active="active"><a ui-sref=".reports.source"><i class="fa fa-caret-right"></i>Source Reports</a></li>
                 <li ui-sref-active="active"><a ui-sref=".reports.billing.accountReport"><i class="fa fa-caret-right"></i>Billing Reports</a></li>
                 <li ui-sref-active="active"><a ui-sref=".reports.billing.projectedBill"><i class="fa fa-caret-right"></i>Projected Bill</a></li>
             </ul>
