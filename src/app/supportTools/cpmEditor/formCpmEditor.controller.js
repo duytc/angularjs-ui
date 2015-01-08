@@ -1,12 +1,12 @@
 (function() {
     'use strict';
 
-    angular.module('tagcade.supportTools.updateCpmForAdTags')
-        .controller('FormUpdateCpmForAdTags', FormUpdateCpmForAdTags)
+    angular.module('tagcade.supportTools.cpmEditor')
+        .controller('FormCpmEditor', FormCpmEditor)
     ;
 
-    function FormUpdateCpmForAdTags($scope, adTag, AdTagManager, $modalInstance, $modal, DateFormatter) {
-        $scope.adTag = adTag;
+    function FormCpmEditor($scope, data, tplConfirm, Manager, $modalInstance, $modal, DateFormatter) {
+        $scope.data = data;
 
         $scope.isFormValid = isFormValid;
         $scope.submit = submit;
@@ -19,11 +19,9 @@
         };
 
         $scope.datePickerOpts = {
-            maxDate:  moment().subtract(1, 'days').endOf('day'),
+            maxDate: moment().subtract(1, 'days').endOf('day'),
             ranges: {
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                 'This Month': [moment().startOf('month'), moment().endOf('month')],
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
@@ -40,13 +38,13 @@
 
         function submit(date, CPM) {
             var confirmUpdate = $modal.open({
-                templateUrl: 'supportTools/updateCpmForAdTags/confirmUpdate.tpl.html'
+                templateUrl: tplConfirm
             });
 
             confirmUpdate.result.then(function () {
                 var start = DateFormatter.getFormattedDate(date.startDate);
                 var end = DateFormatter.getFormattedDate(date.endDate);
-                var request = AdTagManager.one(adTag.id).customPUT('', 'estcpm', { startDate : start, endDate : end, estCpm : CPM });
+                var request = Manager.one(data.id).customPUT('', 'estcpm', { startDate : start, endDate : end, estCpm : CPM });
                 request
                     .then(
                     function () {

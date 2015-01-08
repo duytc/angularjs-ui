@@ -1,30 +1,33 @@
 (function() {
     'use strict';
 
-    angular.module('tagcade.supportTools.updateCpmForAdTags')
+    angular.module('tagcade.supportTools.cpmEditor')
         .config(addStates)
     ;
 
     function addStates(UserStateHelperProvider) {
         UserStateHelperProvider
-            .state('supportTools.updateCpmForAdTags', {
+            .state('supportTools.cpmEditor', {
                 abstract: true,
-                url: '/CpmAdTags',
+                url: '/CpmEditor',
                 ncyBreadcrumb: {
                     skip: true
                 }
             })
-            .state('supportTools.updateCpmForAdTags.list', {
+            .state('supportTools.cpmEditor.list', {
             url: '/list',
             views: {
                 'content@app': {
-                    controller: 'AdTagListUpdateCpm',
-                    templateUrl: 'supportTools/updateCpmForAdTags/adTagListUpdateCpm.tpl.html'
+                    controller: 'CpmEditor',
+                    templateUrl: 'supportTools/cpmEditor/cpmEditor.tpl.html'
                 }
             },
             resolve: {
                 adTags: function(AdTagManager) {
                     return AdTagManager.getList();
+                },
+                adNetworks: function(AdNetworkManager) {
+                    return AdNetworkManager.getList();
                 }
             },
             ncyBreadcrumb: {

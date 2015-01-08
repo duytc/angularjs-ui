@@ -2,8 +2,7 @@
     'use strict';
 
     angular.module('tagcade.supportTools', [
-        'tagcade.supportTools.updateCpmForAdTags',
-        'tagcade.supportTools.updateCpmForAdNetworks',
+        'tagcade.supportTools.cpmEditor',
         'tagcade.supportTools.activityLog'
     ]);
 })();
