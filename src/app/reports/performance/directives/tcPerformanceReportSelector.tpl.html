@@ -42,32 +42,16 @@
                             </ui-select-choices>
                         </ui-select>
                     </div>
-                    <div class="form-group">
-                        <label>Ad Network</label>
-                        <ui-select name="adNetwork" ng-model="selectedData.adNetworkId" ng-disabled="!optionData.adNetworks.length" on-select="selectEntity($model)">
-                            <ui-select-match placeholder="Select an ad network">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices group-by="groupEntities" repeat="adNetwork.id as adNetwork in optionData.adNetworks | filter: $select.search | filter:filterNonEntityValues($select.search) | selectedPublisher:selectedData.publisherId">
-                                <div ng-bind-html="adNetwork.name | highlight: $select.search"></div>
+                    <div class="form-group" ng-if="selectedData.adNetworkId">
+                        <label>Breakdown</label>
+                        <ui-select ng-model="selectedData.adNetworkBreakdown" ng-required="true" on-select="selectBreakdownOption($item)">
+                            <ui-select-match placeholder="Select an option">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
+                                <div ng-bind-html="option.label"></div>
                             </ui-select-choices>
                         </ui-select>
                     </div>
-                    <div class="form-group">
-                        <label>Test</label>
-                        <div>
-                            <input type="text" class="form-control" placeholder="day"/>
-                        </div>
-                    </div>
                 </div>
-            </div>
-
-            <div class="ad-network form-group" ng-if="fieldShouldBeVisible(reportFields.adNetwork) && selectedData.adNetworkId">
-                <label>Breakdown</label>
-                <ui-select ng-model="selectedData.adNetworkBreakdown" ng-required="true" on-select="selectBreakdownOption($item)">
-                    <ui-select-match placeholder="Select an option">{{ $select.selected.label }}</ui-select-match>
-                    <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
-                        <div ng-bind-html="option.label"></div>
-                    </ui-select-choices>
-                </ui-select>
             </div>
 
             <div class="site form-group" ng-if="fieldShouldBeVisible(reportFields.site) && optionData.sites.length">
