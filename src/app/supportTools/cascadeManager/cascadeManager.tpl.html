@@ -6,10 +6,10 @@
                 <div class="form-group">
                     <label for="inputAdNetwork" class="col-sm-2 control-label">Ad Network</label>
                     <div class="col-sm-10">
-                        <ui-select id="inputAdNetwork" ng-model="selected.adNetwork" ng-required="true" server-error on-select="selectAdNetwork($item, $model)">
+                        <ui-select id="inputAdNetwork" ng-model="selected.adNetwork" ng-required="true" server-error on-select="selectAdNetwork($model)">
                             <ui-select-match placeholder="Select adNetworks...">{{$select.selected.name}}</ui-select-match>
                             <ui-select-choices repeat="adNetwork.id as adNetwork in adNetworks | orderBy: 'name' | filter:{ name: $select.search }">
-                                {{ adNetwork.name }}
+                                {{ adNetwork.name | highlight: $select.search }}
                             </ui-select-choices>
                         </ui-select>
                     </div>
@@ -19,8 +19,8 @@
                     <div class="col-sm-10">
                         <ui-select id="inputSites" ng-model="selected.site" ng-required="true" server-error ng-disabled="!sites.length">
                             <ui-select-match placeholder="Select sites...">{{$select.selected.name}}</ui-select-match>
-                            <ui-select-choices repeat="site.id as site in sites | orderBy: 'name'| filter:{ name: $select.search }">
-                                {{ site.name }}
+                            <ui-select-choices group-by="groupEntities" repeat="site.id as site in sites | orderBy: 'name' | filter:{ name: $select.search }">
+                                <div ng-bind-html="site.name | highlight: $select.search"></div>
                             </ui-select-choices>
                         </ui-select>
                     </div>
