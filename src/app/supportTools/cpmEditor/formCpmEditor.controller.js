@@ -5,13 +5,12 @@
         .controller('FormCpmEditor', FormCpmEditor)
     ;
 
-    function FormCpmEditor($scope, data, tplConfirm, Manager, $modalInstance, $modal, DateFormatter) {
+    function FormCpmEditor($scope, data, tplConfirm, Manager, $modalInstance, $modal, DateFormatter, AlertService) {
         $scope.data = data;
 
         $scope.isFormValid = isFormValid;
         $scope.submit = submit;
 
-        $scope.error = false;
         $scope.CPM = null;
         $scope.date = {
             startDate: null,
@@ -48,11 +47,19 @@
                 request
                     .then(
                     function () {
-                        return $modalInstance.close();
+                        $modalInstance.close();
+                        AlertService.addAlert({
+                            type: 'success',
+                            message: 'CPM is updated successfully.'
+                        });
                     })
                     .catch(
                     function () {
-                        return $scope.error = true;
+                        $modalInstance.close();
+                        AlertService.addAlert({
+                            type: 'error',
+                            message: 'some error occurs. CPM is not updated.'
+                        });
                     });
             });
         }
