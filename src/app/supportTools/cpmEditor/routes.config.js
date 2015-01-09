@@ -14,8 +14,8 @@
                     skip: true
                 }
             })
-            .state('supportTools.cpmEditor.list', {
-            url: '/list',
+            .state('supportTools.cpmEditor.platform', {
+            url: '/platform',
             views: {
                 'content@app': {
                     controller: 'CpmEditor',
@@ -23,8 +23,8 @@
                 }
             },
             resolve: {
-                adTags: function(AdTagManager) {
-                    return AdTagManager.getList();
+                publishers: function(adminUserManager) {
+                    return adminUserManager.getList();
                 },
                 adNetworks: function(AdNetworkManager) {
                     return AdNetworkManager.getList();
@@ -33,7 +33,27 @@
             ncyBreadcrumb: {
                 label: 'AdTags'
             }
-        })
+            })
+            .state('supportTools.cpmEditor.account', {
+                url: '/account',
+                views: {
+                    'content@app': {
+                        controller: 'CpmEditor',
+                        templateUrl: 'supportTools/cpmEditor/cpmEditor.tpl.html'
+                    }
+                },
+                resolve: {
+                    publishers: function() {
+                        return null;
+                    },
+                    adNetworks: function(AdNetworkManager) {
+                        return AdNetworkManager.getList();
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'AdTags'
+                }
+            })
         ;
     }
 })();
