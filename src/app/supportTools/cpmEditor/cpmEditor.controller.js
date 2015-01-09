@@ -5,7 +5,7 @@
         .controller('CpmEditor', CpmEditor)
     ;
 
-    function CpmEditor($scope, $modal, publishers, adNetworks, ngTableParams, $filter, TableParamsHelper, AdTagManager, userSession, AdNetworkManager, AccountManager, Auth) {
+    function CpmEditor($scope, $modal, publishers, adNetworks, ngTableParams, $filter, TableParamsHelper, AdTagManager, userSession, AdNetworkManager, Auth) {
         $scope.publishers = publishers;
         $scope.adNetworks = null;
         $scope.sites = null;
@@ -87,7 +87,7 @@
             }
 
             if(!$scope.selected.site) {
-                AccountManager.one($scope.selected.publisher).one('adnetworks', $scope.selected.adNetwork).one('adtags').one('active').getList()
+                AdNetworkManager.one($scope.selected.adNetwork).one('adtags').one('active').getList()
                     .then(function (data) {
                         var adTags = data.plain();
                         $scope.tableParamsForAdTags = tableParamsForAdTags(adTags);
@@ -95,7 +95,7 @@
                 ;
             }
             else {
-                AccountManager.one($scope.selected.publisher).one('adnetworks', $scope.selected.adNetwork).one('sites', $scope.selected.site).one('adtags').one('active').getList()
+                AdNetworkManager.one($scope.selected.adNetwork).one('sites', $scope.selected.site).one('adtags').one('active').getList()
                     .then(function (data) {
                         var adTags = data.plain();
                         $scope.tableParamsForAdTags = tableParamsForAdTags(adTags);
