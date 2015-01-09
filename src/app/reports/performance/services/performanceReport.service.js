@@ -38,17 +38,14 @@
         /**
          *
          * @param {object} params
-         * @param {object} [additionalParams]
          * @returns {object|bool}
          */
-        function processInitialParams(params, additionalParams) {
+        function processInitialParams(params) {
             params = angular.copy(params);
 
             if (!_.isObject(params)) {
                 return false;
             }
-
-            angular.extend(params, additionalParams);
 
             if (!params.startDate) {
                 return false;
@@ -56,9 +53,19 @@
 
             params = ReportParams.transformData(params);
 
-            _$initialParams = angular.copy(params);
-
             return params;
+        }
+
+        function setInitialParams(params, additionalParams) {
+            if (!_.isObject(params)) {
+                return false;
+            }
+
+            params = angular.copy(params);
+
+            angular.extend(params, additionalParams);
+
+            _$initialParams = params;
         }
 
         /**
@@ -89,11 +96,13 @@
                 return $q.reject(new Error('Expected a fetcher function'));
             }
 
-            params = processInitialParams(params, additionalParams);
+            params = processInitialParams(params);
 
             if (!params) {
                 return $q.reject(new Error('Invalid initial params supplied'));
             }
+
+            setInitialParams(params, additionalParams);
 
             return $q.when(fetcher(params)).catch(function(response) {
                 if (response.status == 404) {

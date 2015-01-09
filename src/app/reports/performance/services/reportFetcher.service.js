@@ -41,6 +41,8 @@
                 params = {};
             }
 
+            params = angular.copy(params);
+
             params.startDate = dateUtil.getFormattedDate(params.startDate);
 
             if (!params.startDate) {
