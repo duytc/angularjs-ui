@@ -14,7 +14,7 @@
             <div class="report-type form-group">
                 <label>Ad Network</label>
                 <ui-select name="reportType" ng-model="selected.adNetwork" ng-required="true" on-select="selectAdNetwork($item)" server-error ng-disabled="!adNetworks.length && !selected.publisher">
-                    <ui-select-match placeholder="Select a Ad Networks">{{ $select.selected.name }}</ui-select-match>
+                    <ui-select-match placeholder="Select a Ad Network">{{ $select.selected.name }}</ui-select-match>
                     <ui-select-choices repeat="adNetwork.id as adNetwork in adNetworks | orderBy: 'name' | filter: $select.search | selectedPublisher:selected.publisher">
                         <div ng-bind-html="adNetwork.name | highlight: $select.search"></div>
                     </ui-select-choices>
@@ -24,7 +24,7 @@
             <div class="ad-network form-group" ng-if="sites.length && selected.adNetwork">
                 <label>Site</label>
                 <ui-select ng-model="selected.site" ng-required="true" server-error ng-disabled="!sites.length" on-select="selectSite($item, selected.publisher)">
-                    <ui-select-match placeholder="Select a Sites">{{ $select.selected.name }}</ui-select-match>
+                    <ui-select-match placeholder="Select a Site">{{ $select.selected.name }}</ui-select-match>
                     <ui-select-choices group-by="groupEntities" repeat="site.id as site in sites | orderBy: 'name' | filter: $select.search">
                         <div ng-bind-html="site.name | highlight: $select.search"></div>
                     </ui-select-choices>

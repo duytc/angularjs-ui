@@ -5,7 +5,7 @@
         .config(addStates)
     ;
 
-    function addStates(UserStateHelperProvider) {
+    function addStates(UserStateHelperProvider, $stateProvider) {
         UserStateHelperProvider
             .state('supportTools.cpmEditor', {
                 abstract: true,
@@ -14,7 +14,10 @@
                     skip: true
                 }
             })
-            .state('supportTools.cpmEditor.platform', {
+        ;
+
+        $stateProvider
+            .state('app.admin.supportTools.cpmEditor.platform', {
             url: '/platform',
             views: {
                 'content@app': {
@@ -34,7 +37,10 @@
                 label: 'AdTags'
             }
             })
-            .state('supportTools.cpmEditor.account', {
+        ;
+
+        $stateProvider
+            .state('app.publisher.supportTools.cpmEditor.account', {
                 url: '/account',
                 views: {
                     'content@app': {

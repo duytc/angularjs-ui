@@ -5,8 +5,8 @@
         .controller('FormCpmEditor', FormCpmEditor)
     ;
 
-    function FormCpmEditor($scope, data, tplConfirm, Manager, $modalInstance, $modal, DateFormatter, AlertService) {
-        $scope.data = data;
+    function FormCpmEditor($scope, adTag, AdTagManager, $modalInstance, $modal, DateFormatter, AlertService) {
+        $scope.adTag = adTag;
 
         $scope.isFormValid = isFormValid;
         $scope.submit = submit;
@@ -37,13 +37,13 @@
 
         function submit(date, CPM) {
             var confirmUpdate = $modal.open({
-                templateUrl: tplConfirm
+                templateUrl: 'supportTools/cpmEditor/confirmUpdateForAdTag.tpl.html'
             });
 
             confirmUpdate.result.then(function () {
                 var start = DateFormatter.getFormattedDate(date.startDate);
                 var end = DateFormatter.getFormattedDate(date.endDate);
-                var request = Manager.one(data.id).customPUT('', 'estcpm', { startDate : start, endDate : end, estCpm : CPM });
+                var request = AdTagManager.one(adTag.id).customPUT('', 'estcpm', { startDate : start, endDate : end, estCpm : CPM });
                 request
                     .then(
                     function () {
