@@ -6,16 +6,37 @@
         .controller('CascadeManager', CascadeManager)
     ;
 
-    function CascadeManager($scope, adNetworks, AdNetworkManager, AlertService, UISelectMethod) {
-        $scope.adNetworks = adNetworks;
+    function CascadeManager($scope, adNetworks, AdNetworkManager, AlertService, UISelectMethod, adminUserManager, Auth) {
+        $scope.adNetworks = null;
         $scope.sites = null;
 
         $scope.selected = {
+            publisher : null,
             adNetwork : null,
             position: null
         };
 
+        var isAdmin = Auth.isAdmin();
+        $scope.isAdmin = isAdmin;
+
+        if(isAdmin) {
+            adminUserManager.getList({ filter: 'publisher' })
+                .then(function (users) {
+                    $scope.publishers = users.plain();
+                })
+            ;
+        }
+
+        if(!isAdmin) {
+            $scope.adNetworks = adNetworks;
+        }
+
         $scope.groupEntities = UISelectMethod.groupEntities;
+
+        $scope.selectPublisher = function() {
+            $scope.selected.adNetwork = null;
+            $scope.adNetworks = adNetworks;
+        };
 
         $scope.selectAdNetwork = function (adNetworkId) {
             return AdNetworkManager.one(adNetworkId).one('sites').one('active').getList()
