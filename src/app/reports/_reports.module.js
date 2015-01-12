@@ -4,7 +4,8 @@
     angular.module('tagcade.reports', [
         'tagcade.reports.performance',
         'tagcade.reports.source',
-        'tagcade.reports.billing'
+        'tagcade.reports.billing',
+        'tagcade.reports.projectedBill'
     ]);
 
 })();

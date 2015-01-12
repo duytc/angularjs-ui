@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-md-3">
+        <section class="panel panel-box info-box">
+            <div class="panel-item bg-reverse">
+                <p class="size-h1 no-margin">{{ reportGroup.totalOpportunities | number }}</p>
+                <p class="text-muted no-margin">Total Opportunities</p>
+            </div>
+        </section>
+    </div>
+
+    <div class="col-md-3">
+        <section class="panel panel-box info-box">
+            <div class="panel-item bg-reverse">
+                <p class="size-h1 no-margin">{{ reportGroup.slotOpportunities | number }}</p>
+                <p class="text-muted no-margin">Slot Opportunities</p>
+            </div>
+        </section>
+    </div>
+
+    <div class="col-md-3">
+        <section class="panel panel-box info-box">
+            <div class="panel-item bg-reverse">
+                <p class="size-h1 no-margin">{{ reportGroup.billedAmount | currency }}</p>
+                <p class="text-muted no-margin">Billed Amount</p>
+            </div>
+        </section>
+    </div>
+
+    <div class="col-md-3">
+        <section class="panel panel-box info-box">
+            <div class="panel-item bg-reverse">
+                <p class="size-h1 no-margin">{{ reportGroup.projectedBilledAmount | currency }}</p>
+                <p class="text-muted no-margin">Projected Bill</p>
+            </div>
+        </section>
+    </div>
+</div>

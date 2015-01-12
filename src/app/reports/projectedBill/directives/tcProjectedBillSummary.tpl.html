@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Totals</div>
+            <div class="panel-body">
+                <ul class="list-unstyled report list-info">
+                    <li>
+                        <label>Total Opportunities</label>
+                        <span class="pull-right">{{ reportGroup.totalOpportunities | number }}</span>
+                    </li>
+                    <li>
+                        <label>Slot Opportunities</label>
+                        <span class="pull-right">{{ reportGroup.slotOpportunities | number }}</span>
+                    </li>
+                    <li>
+                        <label>Billed Amount</label>
+                        <span class="pull-right">{{ reportGroup.billedAmount | currency }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Daily Averages</div>
+            <div class="panel-body">
+                <ul class="list-unstyled report list-info">
+                    <li>
+                        <label>Total Opportunities</label>
+                        <span class="pull-right">{{ reportGroup.averageTotalOpportunities | number }}</span>
+                    </li>
+                    <li>
+                        <label>Slot Opportunities</label>
+                        <span class="pull-right">{{ reportGroup.averageSlotOpportunities | number }}</span>
+                    </li>
+                    <li>
+                        <label>Billed Amount</label>
+                        <span class="pull-right">{{ reportGroup.averageBilledAmount | currency }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,7 +9,8 @@
         var api = {
             getPlatformDashboard: getPlatformDashboard,
             getPublisherDashboard: getPublisherDashboard,
-            getPublisherProjectedBill: getPublisherProjectedBill
+            getPublisherProjectedBill: getPublisherProjectedBill,
+            getAdminProjectedBill: getAdminProjectedBill
         };
 
         return api;
@@ -18,13 +19,18 @@
 
         function makeHttpGetRequest(url, params)
         {
-            if (!params.startDate) {
-                params.startDate = moment().subtract(7, 'days').startOf('day');
-                params.endDate = moment().subtract(1, 'days').endOf('day');
+            if(!params) {
+                params = null;
             }
+            else {
+                if (!params.startDate) {
+                    params.startDate = moment().subtract(7, 'days').startOf('day');
+                    params.endDate = moment().subtract(1, 'days').endOf('day');
+                }
 
-            params.startDate = DateFormatter.getFormattedDate(params.startDate);
-            params.endDate = DateFormatter.getFormattedDate(params.endDate);
+                params.startDate = DateFormatter.getFormattedDate(params.startDate);
+                params.endDate = DateFormatter.getFormattedDate(params.endDate);
+            }
 
             return dataService.makeHttpGetRequest(url, params, API_STATS_BASE_URL);
         }
@@ -49,6 +55,10 @@
             return makeHttpGetRequest('/accounts/:id/projectedbill', {
                 id: accountId
             });
+        }
+
+        function getAdminProjectedBill() {
+            return makeHttpGetRequest('/platform/projectedbill');
         }
     }
 })(angular);
