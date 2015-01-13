@@ -72,3 +72,11 @@ tr[ui-sref] {
             }
     }
 }
+
+.nav-tab-margin {
+    margin-top: 5px;
+
+    li:first-child {
+        margin-left: 5px;
+    }
+}
