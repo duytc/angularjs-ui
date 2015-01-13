@@ -11,7 +11,7 @@
                 </div>
             </div>
 
-            <div class="publisher form-group" ng-if="isAdmin && optionData.publishers.length">
+            <div class="publisher form-group" ng-if="isAdmin">
                 <label>Publisher</label>
                 <ui-select name="publisher" ng-model="selectedData.publisherId" ng-required="true" ng-disabled="!optionData.publishers.length" on-select="selectPublisher()">
                     <ui-select-match placeholder="Select a publisher">{{ $select.selected.username }}</ui-select-match>
@@ -21,7 +21,7 @@
                 </ui-select>
             </div>
 
-            <div class="site form-group" ng-if="(selectedData.publisherId || !isAdmin) && optionData.sites.length">
+            <div class="site form-group" ng-if="selectedData.publisherId || !isAdmin">
                 <label>Site</label>
                 <ui-select name="publisher" ng-model="selectedData.siteId" ng-required="true">
                     <ui-select-match placeholder="Select a site">{{ $select.selected.name }}</ui-select-match>
