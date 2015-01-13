@@ -24,24 +24,24 @@
                     </div>
                 </td>
 
-                <td data-title="'Publisher Name'">
-                    {{ publisher.name }}
+                <td data-title="'Name'">
+                    {{ publisher.firstName + " " + publisher.lastName}}
                 </td>
 
-                <td data-title="'Login Name'" sortable="'username'" filter="{ 'username': 'text' }">
+                <td data-title="'Username'" sortable="'username'" filter="{ 'username': 'text' }">
                     {{ publisher.username }}
+                </td>
+
+                <td data-title="'Company'">
+                    {{ publisher.company }}
                 </td>
 
                 <td data-title="'Email'">
                     {{ publisher.email }}
                 </td>
 
-                <td data-title="'Company Name'">
-                    {{ publisher.company }}
-                </td>
-
-                <td data-title="'Billing Rate'">
-                    {{ publisher.billingRate == null ? "Not set" : publisher.billingRate}}
+                <td data-title="'Phone'">
+                    {{ publisher.phone }}
                 </td>
 
                 <td data-title="'Last Login'">
