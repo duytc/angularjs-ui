@@ -23,7 +23,8 @@
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getPlatformReport($stateParams, {
-                            reportType: PERFORMANCE_REPORT_TYPES.platform
+                            reportType: PERFORMANCE_REPORT_TYPES.platform,
+                            platformBreakdown: 'day'
                         });
                     }
                 }

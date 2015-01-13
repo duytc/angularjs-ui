@@ -154,22 +154,52 @@
             }
         ];
 
+        if (isAdmin) {
+            reportTypeOptions.unshift({
+                key: PERFORMANCE_REPORT_TYPES.platform,
+                label: 'Platform',
+                toState: 'reports.performance.platform',
+                breakdownOptions: [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.performance.platform'
+                    },
+                    {
+                        key: 'account',
+                        label: 'By Account',
+                        toState: 'reports.performance.platformAccounts'
+                    },
+                    {
+                        key: 'site',
+                        label: 'By Site',
+                        toState: 'reports.performance.platformSites'
+                    }
+                ]
+            });
+        }
+
         $scope.reportTypeOptions = reportTypeOptions;
 
         function isFormValid() {
             return $scope.reportSelectorForm.$valid;
         }
 
-        function showPublisherSelect() {
-            return isAdmin;
-        }
-
         function showReportTypeSelect() {
             if (!isAdmin) {
-                return true;
+                //$scope.reportTypeOptions.splice(0, 1);
             }
 
-            return $scope.reportSelectorForm.publisher.$valid;
+            return true;
+//            if (!isAdmin) {
+//                return true;
+//            }
+//
+//            return $scope.reportSelectorForm.publisher.$valid;
+        }
+
+        function showPublisherSelect() {
+            return isAdmin && $scope.reportSelectorForm.reportType.$valid;
         }
 
         /**

@@ -26,7 +26,7 @@
         $scope.showPagination = showPagination;
         $scope.drillDownReport = drillDownReport;
 
-        if (!reportGroup) {
+        if (!$scope.hasResult) {
             AlertService.replaceAlerts({
                 type: 'warning',
                 message: 'There are no reports for that selection'
