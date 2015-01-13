@@ -63,20 +63,20 @@
 
             savePosition
                 .then(
-                function () {
-                    AlertService.addAlert({
-                        type: 'success',
-                        message: 'new position is updated.'
-                    });
-                }
+                    function () {
+                        AlertService.addAlert({
+                            type: 'success',
+                            message: 'The new ad network position has been updated'
+                        });
+                    }
                 )
                 .catch(
-                function () {
-                    AlertService.addAlert({
-                        type: 'error',
-                        message: 'Some error occurs. The position is not updated.'
-                    });
-                }
+                    function () {
+                        AlertService.addAlert({
+                            type: 'error',
+                            message: 'An error occurred. The position could not be updated'
+                        });
+                    }
                 );
         }
     }
