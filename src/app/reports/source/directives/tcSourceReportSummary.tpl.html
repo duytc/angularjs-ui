@@ -1,0 +1,92 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Totals</div>
+            <div class="panel-body">
+                <ul class="list-unstyled report list-info">
+                    <li>
+                        <label>Visits</label>
+                        <span class="pull-right">{{ reportGroup.visits | number }}</span>
+                    </li>
+                    <li>
+                        <label>Page Views</label>
+                        <span class="pull-right">{{ reportGroup.pageViews | number }}</span>
+                    </li>
+                    <li>
+                        <label>QTOS</label>
+                        <span class="pull-right">{{ reportGroup.qtos | number }}</span>
+                    </li>
+                    <li>
+                        <label>QTOS %</label>
+                        <span class="pull-right">{{ reportGroup.qtosPercentage | percentage }}</span>
+                    </li>
+                    <li>
+                        <label>Display Opportunities</label>
+                        <span class="pull-right">{{ reportGroup.displayOpportunities | number }}</span>
+                    </li>
+                    <li>
+                        <label>Display Impressions</label>
+                        <span class="pull-right">{{ reportGroup.displayImpressions | number }}</span>
+                    </li>
+                    <li>
+                        <label>Display Fill Rate</label>
+                        <span class="pull-right">{{ reportGroup.displayFillRate | percentage }}</span>
+                    </li>
+                    <li>
+                        <label>Display Clicks</label>
+                        <span class="pull-right">{{ reportGroup.displayClicks | number }}</span>
+                    </li>
+                    <li>
+                        <label>Display CTR</label>
+                        <span class="pull-right">{{ reportGroup.displayCTR | percentage }}</span>
+                    </li>
+                    <li>
+                        <label>Display IPV</label>
+                        <span class="pull-right">{{ reportGroup.displayIPV | number }}</span>
+                    </li>
+                    <li>
+                        <label>Video Ad Plays</label>
+                        <span class="pull-right">{{ reportGroup.videoAdPlays | number }}</span>
+                    </li>
+                    <li>
+                        <label>Video Ad Impressions</label>
+                        <span class="pull-right">{{ reportGroup.videoAdImpressions | number }}</span>
+                    </li>
+                    <li>
+                        <label>Video Ad Completions</label>
+                        <span class="pull-right">{{ reportGroup.videoAdCompletions | number }}</span>
+                    </li>
+                    <li>
+                        <label>Video Ad Completion Rate</label>
+                        <span class="pull-right">{{ reportGroup.videoAdCompletionRate | number }}</span>
+                    </li>
+                    <li>
+                        <label>Video IPV</label>
+                        <span class="pull-right">{{ reportGroup.videoIPV | number }}</span>
+                    </li>
+                    <li>
+                        <label>Video Ad Clicks</label>
+                        <span class="pull-right">{{ reportGroup.videoAdClicks | number }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Daily Averages</div>
+            <div class="panel-body">
+                <ul class="list-unstyled report list-info">
+                    <li>
+                        <label>Visits</label>
+                        <span class="pull-right">{{ reportGroup.averageVisits | number }}</span>
+                    </li>
+                    <li>
+                        <label>Page Views</label>
+                        <span class="pull-right">{{ reportGroup.averagePageViews | number }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,103 @@
+<tc-source-report-selector initial-data="initialSelectorData"></tc-source-report-selector>
+<div ng-if="hasResult">
+    <tc-source-report-overview report-group="reportGroup"></tc-source-report-overview>
+
+    <div class="panel panel-default daily-reports">
+        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Breakdown by Traffic Source</div>
+
+        <ul class="nav nav-tabs source-reports">
+            <li role="presentation" ng-class="reportViews.user ? 'active' : ''"><a ng-click="showView('user')">User</a></li>
+            <li role="presentation" ng-class="reportViews.display ? 'active' : ''"><a ng-click="showView('display')">Display</a></li>
+            <li role="presentation" ng-class="reportViews.video ? 'active' : ''"><a ng-click="showView('video')">Video</a></li>
+        </ul>
+
+        <div class="table-responsive" ng-cloak>
+            <table class="table source-reports" at-table at-paginated at-list="report.records" at-config="tableConfig">
+                <thead>
+                    <tr>
+                        <th at-attribute="embeddedTrackingKeys">Tracking Keys</th>
+                        <th ng-show="reportViews.user" at-attribute="visits">Visits</th>
+                        <th ng-show="reportViews.user" at-attribute="pageViews">Page Views</th>
+                        <th ng-show="reportViews.user" at-attribute="qtos">QTOS</th>
+                        <th ng-show="reportViews.user" at-attribute="qtosPercentage">QTOS %</th>
+                        <th ng-show="reportViews.display" at-attribute="displayOpportunities">Total Opportunities</th>
+                        <th ng-show="reportViews.display" at-attribute="displayImpressions">Impressions</th>
+                        <th ng-show="reportViews.display" at-attribute="displayFillRate">Fill Rate</th>
+                        <th ng-show="reportViews.display" at-attribute="displayClicks">Clicks</th>
+                        <th ng-show="reportViews.display" at-attribute="displayCTR">CTR</th>
+                        <th ng-show="reportViews.display" at-attribute="displayIPV">IPV</th>
+                        <th ng-show="reportViews.video" at-attribute="videoPlayerReady">Player Ready</th>
+                        <th ng-show="reportViews.video" at-attribute="videoAdPlays">Ad Plays</th>
+                        <th ng-show="reportViews.video" at-attribute="videoAdImpressions">Ad Impressions</th>
+                        <th ng-show="reportViews.video" at-attribute="videoAdCompletions">Ad Completions</th>
+                        <th ng-show="reportViews.video" at-attribute="videoAdCompletionRate">Ad Completion Rate</th>
+                        <th ng-show="reportViews.video" at-attribute="videoIPV">IPV</th>
+                        <th ng-show="reportViews.video" at-attribute="videoAdClicks">Ad Clicks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td at-attribute="embeddedTrackingKeys">
+                        <span class="tracking-key" ng-repeat="(term, value) in item.embeddedTrackingKeys">
+                            <span class="term">{{ term }}</span>: {{ value }}{{ $last ? '' : ', ' }}
+                        </span>
+                    </td>
+                    <td ng-show="reportViews.user" at-attribute="visits" at-sortable at-initial-sorting="desc">
+                        {{ item.visits | number }}
+                    </td>
+                    <td ng-show="reportViews.user" at-attribute="pageViews" at-sortable>
+                        {{ item.pageViews | number }}
+                    </td>
+                    <td ng-show="reportViews.user" at-attribute="qtos" at-sortable>
+                        {{ item.qtos | number }}
+                    </td>
+                    <td ng-show="reportViews.user" at-attribute="qtosPercentage" at-sortable>
+                        {{ item.qtosPercentage | percentage }}
+                    </td>
+                    <td ng-show="reportViews.display" at-attribute="displayOpportunities" at-sortable>
+                        {{ item.displayOpportunities | number }}
+                    </td>
+                    <td ng-show="reportViews.display" at-attribute="displayImpressions" at-sortable>
+                        {{ item.displayImpressions | number }}
+                    </td>
+                    <td ng-show="reportViews.display" at-attribute="displayFillRate" at-sortable>
+                        {{ item.displayFillRate | percentage }}
+                    </td>
+                    <td ng-show="reportViews.display" at-attribute="displayClicks" at-sortable>
+                        {{ item.displayClicks | number }}
+                    </td>
+                    <td ng-show="reportViews.display" at-attribute="displayCTR" at-sortable>
+                        {{ item.displayCTR | percentage }}
+                    </td>
+                    <td ng-show="reportViews.display" at-attribute="displayIPV" at-sortable>
+                        {{ item.displayIPV | number }}
+                    </td>
+                    <td ng-show="reportViews.video" at-attribute="videoPlayerReady" at-sortable>
+                        {{ item.videoPlayerReady | number }}
+                    </td>
+                    <td ng-show="reportViews.video" at-attribute="videoAdPlays" at-sortable>
+                        {{ item.videoAdPlays | number }}
+                    </td>
+                    <td ng-show="reportViews.video" at-attribute="videoAdImpressions" at-sortable>
+                        {{ item.videoAdImpressions | number }}
+                    </td>
+                    <td ng-show="reportViews.video" at-attribute="videoAdCompletions" at-sortable>
+                        {{ item.videoAdCompletions | number }}
+                    </td>
+                    <td ng-show="reportViews.video" at-attribute="videoAdCompletionRate" at-sortable>
+                        {{ item.videoAdCompletionRate | percentage }}
+                    </td>
+                    <td ng-show="reportViews.video" at-attribute="videoIPV" at-sortable>
+                        {{ item.videoIPV | number }}
+                    </td>
+                    <td ng-show="reportViews.video" at-attribute="videoAdClicks" at-sortable>
+                        {{ item.videoAdClicks | number }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <at-pagination ng-if="showPagination()" class="table-footer" at-list="report.records" at-config="tableConfig"></at-pagination>
+    </div>
+</div>
