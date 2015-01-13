@@ -90,6 +90,8 @@
                 delete value.billedRate;
                 delete value.publisherId;
                 delete value.siteId;
+                delete value.adSlotId;
+                delete value.customRate;
 
                 value.date = $filter('date')(value.date, 'longDate');
                 value.endDate = $filter('date')(value.endDate, 'longDate');
