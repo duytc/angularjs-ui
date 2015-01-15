@@ -32,6 +32,10 @@
             @include ui-select-width(200px);
         }
 
+        .ad-slot.form-group {
+          @include ui-select-width(200px);
+        }
+
         .btn-primary {
             @media (min-width: $screen-sm) {
                 margin-top: 22px;

@@ -23,7 +23,9 @@
             adNetworkId: null,
             adNetworkBreakdown: null,
             siteId: null,
-            siteBreakdown: null
+            siteBreakdown: null,
+            adSlotId: null,
+            adSlotBreakdown: null
         };
 
         $scope.selectedData = selectedData;
@@ -38,7 +40,8 @@
 
         $scope.optionData = {
             adNetworks: [],
-            sites: []
+            sites: [],
+            adSlots: []
         };
 
         $scope.isFormValid = isFormValid;
@@ -51,6 +54,7 @@
         $scope.selectPublisher = selectPublisher;
         $scope.selectReportType = selectReportType;
         $scope.selectEntity = selectEntity;
+        $scope.selectSite = selectSite;
         $scope.selectBreakdownOption = selectBreakdownOption;
         $scope.getReports = getReports;
 
@@ -132,23 +136,18 @@
             {
                 key: PERFORMANCE_REPORT_TYPES.adSlot,
                 label: 'Ad Slot',
-                toState: 'reports.performance.sites',
-                visibleFields: [reportFields.site],
+                toState: 'reports.performance.adSlots',
+                visibleFields: [reportFields.site, reportFields.adslot],
                 breakdownOptions: [
                     {
                         key: 'day',
                         label: 'By Day',
-                        toState: 'reports.performance.site'
-                    },
-                    {
-                        key: 'adslot',
-                        label: 'By Ad Slot',
-                        toState: 'reports.performance.siteAdSlots'
+                        toState: 'reports.performance.adSlot'
                     },
                     {
                         key: 'adtag',
                         label: 'By Ad Tag',
-                        toState: 'reports.performance.siteAdTags'
+                        toState: 'reports.performance.adSlotAdTags'
                     }
                 ]
             }
@@ -186,16 +185,7 @@
         }
 
         function showReportTypeSelect() {
-            if (!isAdmin) {
-                //$scope.reportTypeOptions.splice(0, 1);
-            }
-
             return true;
-//            if (!isAdmin) {
-//                return true;
-//            }
-//
-//            return $scope.reportSelectorForm.publisher.$valid;
         }
 
         function showPublisherSelect() {
@@ -306,6 +296,28 @@
             }
         }
 
+        function selectSite(siteId) {
+            if (siteId === null) {
+                resetToStateForCurrentReportType();
+            }
+            else {
+                reportSelectorForm.getAdSlotsForSite(siteId)
+                    .then(function(adSlots) {
+//                        addAllOption(adSlots, 'All AdSlots');
+                        $scope.optionData.adSlots = adSlots;
+                    });
+            }
+        }
+
+        function selectAdSlot(adSlotId) {
+            if (adSlotId === null) {
+                resetToStateForCurrentReportType();
+            }
+            else{
+
+            }
+        }
+
         function selectBreakdownOption(breakdownOption) {
             if (!angular.isObject(breakdownOption) || !breakdownOption.toState) {
                 throw new Error('breakdown option is missing a target state');
@@ -389,16 +401,24 @@
                 return;
             }
 
-            var reportType = findReportType(params.reportType) || null;
-            $scope.selectedData.reportType = reportType;
+            reportSelectorForm.getCalculatedParams(params).then(
+                function (calculatedParams) {
+                    var reportType = findReportType(calculatedParams.reportType) || null;
+                    $scope.selectedData.reportType = reportType;
 
-            resetForm();
+                    resetForm();
 
-            angular.extend($scope.selectedData, _.omit(params, ['reportType']));
+                    if (calculatedParams.siteId != null) {
+                        selectSite(calculatedParams.siteId);
+                    }
 
-            if (!$scope.selectedData.date.endDate) {
-                $scope.selectedData.date.endDate = $scope.selectedData.date.startDate
-            }
+                    angular.extend($scope.selectedData, _.omit(calculatedParams, ['reportType']));
+
+                    if (!$scope.selectedData.date.endDate) {
+                        $scope.selectedData.date.endDate = $scope.selectedData.date.startDate
+                    }
+                }
+            );
         }
 
         init();

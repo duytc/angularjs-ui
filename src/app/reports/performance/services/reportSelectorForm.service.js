@@ -5,11 +5,13 @@
         .factory('reportSelectorForm', reportSelectorForm)
     ;
 
-    function reportSelectorForm(adminUserManager, AdNetworkManager, SiteManager) {
+    function reportSelectorForm(adminUserManager, AdNetworkManager, SiteManager, selectorFormCalculator) {
         var api = {
             getPublishers: getPublishers,
             getAdNetworks: getAdNetworks,
-            getSites: getSites
+            getSites: getSites,
+            getAdSlotsForSite: getAdSlotsForSite,
+            getCalculatedParams: getCalculatedParams
         };
 
         return api;
@@ -39,5 +41,18 @@
                 })
             ;
         }
+
+        function getAdSlotsForSite(siteId) {
+            return SiteManager.one(siteId).one('adslots').get()
+                .then(function (adSlots) {
+                    return adSlots.plain();
+                }
+            );
+        }
+
+        function getCalculatedParams(initialParams) {
+            return selectorFormCalculator.getCalculatedParams(initialParams);
+        }
+
     }
 })();

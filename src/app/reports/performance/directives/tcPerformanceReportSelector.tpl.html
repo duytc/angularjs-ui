@@ -69,33 +69,50 @@
             </div>
 
             <div class="site form-group" ng-if="fieldShouldBeVisible(reportFields.site) && optionData.sites.length && selectedData.publisherId">
-                <label>Site</label>
-                <ui-select name="site" ng-model="selectedData.siteId" on-select="selectEntity($model)">
-                    <ui-select-match placeholder="Select a site">{{ $select.selected.name }}</ui-select-match>
-                    <ui-select-choices group-by="groupEntities" repeat="site.id as site in optionData.sites | filter: $select.search | filter:filterNonEntityValues($select.search) | selectedPublisher:selectedData.publisherId">
-                        <div ng-bind-html="site.name | highlight: $select.search"></div>
-                    </ui-select-choices>
-                </ui-select>
-            </div>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>Site</label>
+                        <ui-select name="site" ng-model="selectedData.siteId" on-select="selectSite($model)">
+                            <ui-select-match placeholder="Select a site">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="site.id as site in optionData.sites | filter: $select.search | filter:filterNonEntityValues($select.search) | selectedPublisher:selectedData.publisherId">
+                                <div ng-bind-html="site.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="site form-group" ng-if="selectedReportTypeis(reportTypes.site) && selectedData.siteId">
+                        <label>Breakdown</label>
+                        <ui-select ng-model="selectedData.siteBreakdown" ng-required="true" on-select="selectBreakdownOption($item)">
+                            <ui-select-match placeholder="Select an option">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
+                                <div ng-bind-html="option.label"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
 
-            <div class="site form-group" ng-if="selectedReportTypeis(reportTypes.site) && selectedData.siteId">
-                <label>Breakdown</label>
-                <ui-select ng-model="selectedData.siteBreakdown" ng-required="true" on-select="selectBreakdownOption($item)">
-                    <ui-select-match placeholder="Select an option">{{ $select.selected.label }}</ui-select-match>
-                    <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
-                        <div ng-bind-html="option.label"></div>
-                    </ui-select-choices>
-                </ui-select>
+                </div>
             </div>
 
             <div class="ad-slot form-group" ng-if="selectedReportTypeis(reportTypes.adSlot) && selectedData.siteId">
-                <label>Ad Slot</label>
-                <ui-select name="adSlot" ng-model="selectedData.adSlotId" on-select="selectEntity($model)">
-                    <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }}</ui-select-match>
-                    <ui-select-choices group-by="groupEntities" repeat="adSlot.id as adSlot in optionData.adSlots | filter: $select.search">
-                        <div ng-bind-html="adSlot.name | highlight: $select.search"></div>
-                    </ui-select-choices>
-                </ui-select>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>Ad Slot</label>
+                        <ui-select name="adSlot" ng-model="selectedData.adSlotId" on-select="selectEntity($model)">
+                            <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="adSlot.id as adSlot in optionData.adSlots | filter: $select.search">
+                                <div ng-bind-html="adSlot.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="ad-slot form-group" ng-if="selectedReportTypeis(reportTypes.adSlot) && selectedData.adSlotId">
+                        <label>Breakdown</label>
+                        <ui-select ng-model="selectedData.adSlotBreakdown" ng-required="true" on-select="selectBreakdownOption($item)">
+                            <ui-select-match placeholder="Select an option">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
+                                <div ng-bind-html="option.label"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
             </div>
 
             <button  ng-disabled="!isFormValid()" type="submit" class="btn btn-primary">Get Reports</button>

@@ -246,7 +246,8 @@
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getAdSlotReport($stateParams, {
-                            reportType: PERFORMANCE_REPORT_TYPES.adSlot
+                            reportType: PERFORMANCE_REPORT_TYPES.adSlot,
+                            adSlotBreakdown: 'day'
                         });
                     }
                 }
@@ -273,8 +274,11 @@
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, performanceReport) {
-                        return performanceReport.getAdSlotAdTagsReport($stateParams);
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getAdSlotAdTagsReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.adSlot,
+                            adSlotBreakdown: 'adtag'
+                        });
                     }
                 }
             })
