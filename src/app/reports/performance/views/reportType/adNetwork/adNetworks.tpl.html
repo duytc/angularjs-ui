@@ -32,10 +32,10 @@
                         {{ item.fillRate | percentage }}
                     </td>
                     <td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>
-                        {{ item.estRevenue | currency }}
+                        {{ item.estRevenue | currency:'$':4 }}
                     </td>
                     <td at-title="Est. CPM" at-attribute="estCpm" at-sortable>
-                        {{ item.estCpm | currency }}
+                        {{ item.estCpm | currency:'$':4 }}
                     </td>
                 </tr>
                 </tbody>

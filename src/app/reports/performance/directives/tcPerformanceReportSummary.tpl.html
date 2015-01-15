@@ -6,11 +6,11 @@
                 <ul class="list-unstyled report list-info">
                     <li>
                         <label>Estimated Revenue</label>
-                        <span class="pull-right">{{ reportGroup.estRevenue | currency }}</span>
+                        <span class="pull-right">{{ reportGroup.estRevenue | currency:'$':4 }}</span>
                     </li>
                     <li>
                         <label>Estimated CPM</label>
-                        <span class="pull-right">{{ reportGroup.estCpm | currency }}</span>
+                        <span class="pull-right">{{ reportGroup.estCpm | currency:'$':4 }}</span>
                     </li>
                     <li>
                         <label>Total Opportunities</label>
@@ -43,11 +43,11 @@
                 <ul class="list-unstyled report list-info">
                     <li>
                         <label>Estimated Revenue</label>
-                        <span class="pull-right">{{ reportGroup.averageEstRevenue | currency }}</span>
+                        <span class="pull-right">{{ reportGroup.averageEstRevenue | currency:'$':4 }}</span>
                     </li>
                     <li>
                         <label>Estimated CPM</label>
-                        <span class="pull-right">{{ reportGroup.averageEstCpm | currency }}</span>
+                        <span class="pull-right">{{ reportGroup.averageEstCpm | currency:'$':4 }}</span>
                     </li>
                     <li>
                         <label>Total Opportunities</label>

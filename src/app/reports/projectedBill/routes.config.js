@@ -8,10 +8,14 @@
     function addStates($stateProvider, UserStateHelperProvider) {
         UserStateHelperProvider
             .state('reports.projectedBill', {
-                abstract: true,
                 url: '/projectedBill',
+                views: {
+                    'content@app': {
+                        templateUrl: 'reports/projectedBill/views/projectedBill.tpl.html'
+                    }
+                },
                 ncyBreadcrumb: {
-                    skip: true
+                    label: 'Billing Reports'
                 }
             })
         ;
@@ -20,9 +24,9 @@
             .state('app.admin.reports.projectedBill.platform', {
                 url: '/platform',
                 views: {
-                    'content@app': {
+                    'projectedBill': {
                         controller: 'ProjectedBill',
-                        templateUrl: 'reports/projectedBill/projectedBill.tpl.html'
+                        templateUrl: 'reports/projectedBill/views/projectedBillDetail.tpl.html'
                     }
                 },
                 resolve: {
@@ -40,9 +44,9 @@
             .state('app.admin.reports.projectedBill.accounts', {
                 url: '/accounts/{publisherId:int}',
                 views: {
-                    'content@app': {
+                    'projectedBill': {
                         controller: 'ProjectedBill',
-                        templateUrl: 'reports/projectedBill/projectedBill.tpl.html'
+                        templateUrl: 'reports/projectedBill/views/projectedBillDetail.tpl.html'
                     }
                 },
                 resolve: {
@@ -60,9 +64,9 @@
             .state('app.publisher.reports.projectedBill.account', {
                 url: '/account',
                 views: {
-                    'content@app': {
+                    'projectedBill': {
                         controller: 'ProjectedBill',
-                        templateUrl: 'reports/projectedBill/projectedBill.tpl.html'
+                        templateUrl: 'reports/projectedBill/views/projectedBillDetail.tpl.html'
                     }
                 },
                 resolve: {

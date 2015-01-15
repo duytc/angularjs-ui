@@ -27,7 +27,7 @@
                     endDate: null
                 },
                 views: {
-                    'content@app': {
+                    'source': {
                         controller: 'SourceReportController',
                         templateUrl: 'reports/source/views/siteDateRange.tpl.html'
                     }
@@ -44,7 +44,7 @@
             .state('reports.source.siteDetail', {
                 url: '/site/{siteId:int}/detail?{date:date}',
                 views: {
-                    'content@app': {
+                    'source': {
                         controller: 'SourceReportDetailController',
                         templateUrl: 'reports/source/views/siteDetail.tpl.html'
                     }

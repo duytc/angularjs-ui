@@ -5,7 +5,7 @@
         .controller('BillingReport', BillingReport)
     ;
 
-    function BillingReport($scope, _, AlertService, billingService, reportGroup) {
+    function BillingReport($scope, _, $filter, AlertService, reportGroup, DateFormatter) {
         $scope.hasResult = reportGroup !== false;
 
         reportGroup = reportGroup || {};
@@ -13,21 +13,13 @@
         $scope.reportGroup = reportGroup;
         $scope.reports = $scope.reportGroup.reports || [];
 
-        var initialParams = billingService.getInitialParams();
-
-        $scope.initialSelectorData = {
-            date: {
-                startDate: initialParams.startDate,
-                endDate: initialParams.endDate
-            },
-            publisherId: initialParams.publisherId
-        };
-
         $scope.tableConfig = {
             itemsPerPage: 10
         };
 
         $scope.showPagination = showPagination;
+        $scope.exportExcel = exportExcel;
+        $scope.getExportExcelFileName = getExportExcelFileName();
 
         init();
 
@@ -42,6 +34,26 @@
 
         function showPagination() {
             return angular.isArray($scope.reports) && $scope.reports.length > $scope.tableConfig.itemsPerPage;
+        }
+
+        function exportExcel() {
+            var exportExcel = $scope.reports;
+            angular.forEach(exportExcel, function(value) {
+                delete value.estCpm;
+                delete value.estRevenue;
+                delete value.fillRate;
+                delete value.impressions;
+                delete value.passbacks;
+                delete value.publisherId;
+
+                value.date = $filter('date')(value.date, 'longDate');
+            });
+
+            return exportExcel;
+        }
+
+        function getExportExcelFileName() {
+            return 'tagcade-billing-report-' + DateFormatter.getFormattedDate(new Date(reportGroup.startDate)) + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.endDate)) + '.csv';
         }
     }
 })();

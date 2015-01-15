@@ -23,6 +23,7 @@
     "highcharts-ng": "~0.0.7",
     "highcharts-release": "~4.0.4",
     "at-table": "~1.0.4",
-    "ng-csv": "~0.3.1"
+    "ng-csv": "~0.3.1",
+    "angular-currency-filter": "~1.0.2"
   }
 }

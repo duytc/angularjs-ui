@@ -29,7 +29,7 @@
                     uniqueRequestCacheBuster: null
                 },
                 views: {
-                    'content@app': {
+                    'billing': {
                         controller: 'BillingReport',
                         templateUrl: 'reports/billing/accountReport.tpl.html'
                     }
@@ -54,7 +54,7 @@
                     uniqueRequestCacheBuster: null
                 },
                 views: {
-                    'content@app': {
+                    'billing': {
                         controller: 'BillingReport',
                         templateUrl: 'reports/billing/accountReport.tpl.html'
                     }

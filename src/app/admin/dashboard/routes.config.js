@@ -9,7 +9,6 @@
     function addStates($stateProvider) {
         $stateProvider.state('app.admin.dashboard', {
             url: '/dashboard?{startDate}&{endDate}',
-            controller: 'AdminDashboard',
             views: {
                 'content@app': {
                     controller: 'AdminDashboard',

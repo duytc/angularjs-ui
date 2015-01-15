@@ -52,11 +52,18 @@
                 date: {
                     startDate: null,
                     endDate: null
-                }
+                },
+                publisherId: null
             };
 
-            if (_.isObject($scope.initialData)) {
-                angular.extend(initialData, $scope.initialData);
+            var initialParams = billingService.getInitialParams();
+
+            if (_.isObject(initialParams)) {
+                angular.extend(initialData, initialParams);
+            }
+
+            if(!initialData.date.endDate) {
+                initialData.date.endDate = initialData.date.startDate;
             }
 
             if (!initialData.date.startDate) {

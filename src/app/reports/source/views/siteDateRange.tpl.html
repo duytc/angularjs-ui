@@ -1,9 +1,13 @@
-<tc-source-report-selector initial-data="initialSelectorData"></tc-source-report-selector>
 <div ng-if="hasResult">
     <tc-source-report-overview report-group="reportGroup"></tc-source-report-overview>
 
     <div class="panel panel-default daily-reports">
-        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Daily Breakdown</div>
+        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
+            Daily Breakdown
+            <div class="button-bar hidden-xs">
+                <button class="btn btn-sm btn-primary" type="button" ng-csv="exportExcel" csv-header="['Date', 'Total Opportunities', 'Impressions', 'FillRate', 'Clicks', 'CTR', 'Display IPV', 'Player Ready', 'Ad Plays', 'Ad Impressions', 'Ad Completions', 'Ad Completion Rate', 'Video IPV', 'Ad Clicks', 'Visits', 'Page Views', 'QTOS', 'QTOS (%)']" filename="{{ getExportExcelFileName }}">Export Excel</button>
+            </div>
+        </div>
 
         <ul class="nav nav-tabs source-reports">
             <li role="presentation" ng-class="reportViews.user ? 'active' : ''"><a ng-click="showView('user')">User</a></li>

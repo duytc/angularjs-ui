@@ -14,7 +14,7 @@
                     </li>
                     <li>
                         <label>Billed Amount</label>
-                        <span class="pull-right">{{ reportGroup.billedAmount | currency }}</span>
+                        <span class="pull-right">{{ reportGroup.billedAmount | currency:'$':4 }}</span>
                     </li>
                 </ul>
             </div>
@@ -35,7 +35,7 @@
                     </li>
                     <li>
                         <label>Billed Amount</label>
-                        <span class="pull-right">{{ reportGroup.averageBilledAmount | currency }}</span>
+                        <span class="pull-right">{{ reportGroup.averageBilledAmount | currency:'$':4 }}</span>
                     </li>
                 </ul>
             </div>

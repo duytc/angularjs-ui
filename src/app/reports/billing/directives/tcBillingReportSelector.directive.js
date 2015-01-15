@@ -7,9 +7,6 @@
 
     function tcBillingReportSelector() {
         return {
-            scope: {
-                initialData: '='
-            },
             restrict: 'AE',
             replace: 'true',
             templateUrl: 'reports/billing/directives/tcBillingReportSelector.tpl.html',

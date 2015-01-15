@@ -3,11 +3,11 @@
     <ul class="list-unstyled report list-info">
         <li>
             <label>Estimated Revenue</label>
-            <span class="pull-right">{{ dataStatistics.estRevenue | currency }}</span>
+            <span class="pull-right">{{ dataStatistics.estRevenue | currency:'$':4 }}</span>
         </li>
         <li>
             <label>Estimated CPM</label>
-            <span class="pull-right">{{ dataStatistics.estCpm | currency }}</span>
+            <span class="pull-right">{{ dataStatistics.estCpm | currency:'$':4 }}</span>
         </li>
         <li>
             <label>Total Opportunities</label>

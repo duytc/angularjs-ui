@@ -41,7 +41,8 @@
         'ngTable',
         'highcharts-ng',
         'angular-table',
-        'ngCsv'
+        'ngCsv',
+        'currencyFilter'
     ]);
 
     core.run(appRun);

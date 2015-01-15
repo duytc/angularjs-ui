@@ -3,7 +3,7 @@
     <ul class="list-unstyled report list-info">
         <li>
             <label>Billed Amount</label>
-            <span class="pull-right">{{ dataAverage.averageBilledAmount | currency }}</span>
+            <span class="pull-right">{{ dataAverage.averageBilledAmount | currency:'$':4 }}</span>
         </li>
         <li>
             <label>Total Opportunities</label>
@@ -23,7 +23,7 @@
         </li>
         <li>
             <label>Fill Rate</label>
-            <span class="pull-right">{{ dataAverage.averageFillRate | currency }}</span>
+            <span class="pull-right">{{ dataAverage.averageFillRate | percentage }}</span>
         </li>
     </ul>
 </div>

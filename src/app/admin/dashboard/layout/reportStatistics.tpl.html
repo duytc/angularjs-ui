@@ -3,7 +3,7 @@
     <ul class="list-unstyled report list-info">
         <li>
             <label>Billed Amount</label>
-            <span class="pull-right">{{ dataStatistics.billedAmount | currency }}</span>
+            <span class="pull-right">{{ dataStatistics.billedAmount | currency:'$':4 }}</span>
         </li>
         <li>
             <label>Total Opportunities</label>

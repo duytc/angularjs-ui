@@ -5,7 +5,7 @@
         .controller('SourceReportDetailController', SourceReportDetailController)
     ;
 
-    function SourceReportDetailController($scope, AlertService, reportGroup) {
+    function SourceReportDetailController($scope, AlertService, reportGroup, DateFormatter) {
         reportGroup = reportGroup || {};
 
         $scope.reportGroup = reportGroup;
@@ -24,6 +24,8 @@
         };
 
         $scope.showPagination = showPagination;
+        $scope.exportExcel = exportExcel;
+        $scope.getExportExcelFileName = getExportExcelFileName();
 
         var reportViews = {
             'user': false,
@@ -56,6 +58,28 @@
 
         function showPagination() {
             return angular.isArray(report.records) && report.records.length > $scope.tableConfig.itemsPerPage;
+        }
+
+        function exportExcel() {
+            var exportExcel = angular.copy($scope.report.records);
+            angular.forEach(exportExcel, function(value) {
+                delete value.siteId;
+                delete value.videoStarts;
+                delete value.videoEnds;
+
+                var embeddedTrackingKeys = '';
+                angular.forEach(value.embeddedTrackingKeys, function(val, term) {
+                    return embeddedTrackingKeys += term+ ':' + val + '  ';
+                });
+
+                value.embeddedTrackingKeys = embeddedTrackingKeys;
+            });
+
+            return exportExcel;
+        }
+
+        function getExportExcelFileName() {
+            return 'tagcade-source-report-' + DateFormatter.getFormattedDate(new Date(reportGroup.startDate)) + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.endDate)) + '.csv';
         }
     }
 })();

@@ -41,7 +41,8 @@ module.exports = {
             'vendor/highcharts-release/highcharts.js',
             'vendor/highcharts-ng/dist/highcharts-ng.min.js',
             'vendor/at-table/dist/angular-table.min.js',
-            'vendor/ng-csv/build/ng-csv.min.js'
+            'vendor/ng-csv/build/ng-csv.min.js',
+            'vendor/angular-currency-filter/dist/currency-filter.min.js'
         ],
         css: [
             'src/styles/customvendor/**/*.css'

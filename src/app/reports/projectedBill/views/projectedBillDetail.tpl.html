@@ -1,10 +1,13 @@
-<tc-projected-bill-selector></tc-projected-bill-selector>
-
 <div ng-if="hasResult">
     <tc-projected-bill-overview report-group="reportGroup"></tc-projected-bill-overview>
 
     <div class="panel panel-default daily-reports">
-        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Daily Account Breakdown</div>
+        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
+            Daily Account Breakdown
+            <div class="button-bar hidden-xs">
+                <button class="btn btn-sm btn-primary" type="button" ng-csv="exportExcel" csv-header="['Publisher', 'Date', 'Total Opportunities', 'Slot Opportunities', 'Billed Amount', 'Billed CPM Rate']" filename="{{ getExportExcelFileName }}">Export Excel</button>
+            </div>
+        </div>
         <div class="table-responsive">
             <table class="table table" at-table at-paginated at-list="reports" at-config="tableConfig">
                 <thead></thead>
@@ -20,10 +23,10 @@
                         {{ item.slotOpportunities | number }}
                     </td>
                     <td at-title="Billed Amount" at-attribute="billedAmount" at-sortable>
-                        {{ item.billedAmount | currency }}
+                        {{ item.billedAmount | currency:'$':4 }}
                     </td>
                     <td at-title="Billed CPM Rate">
-                        {{ item.billedRate | currency }}
+                        {{ item.billedRate | currency:'$':4 }}
                     </td>
                 </tr>
                 </tbody>

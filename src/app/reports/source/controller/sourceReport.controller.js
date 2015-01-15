@@ -5,7 +5,7 @@
         .controller('SourceReportController', SourceReportController)
     ;
 
-    function SourceReportController($state, $scope, AlertService, dateUtil, reportGroup, sourceReport) {
+    function SourceReportController($state, $filter, $scope, AlertService, dateUtil, reportGroup, DateFormatter) {
         $scope.hasResult = reportGroup !== false;
 
         reportGroup = reportGroup || {};
@@ -13,22 +13,13 @@
         $scope.reportGroup = reportGroup;
         $scope.reports = $scope.reportGroup.reports || [];
 
-        var initialParams = sourceReport.getInitialParams();
-
-        $scope.initialSelectorData = {
-            date: {
-                startDate: initialParams.startDate,
-                endDate: initialParams.endDate
-            },
-            publisherId: initialParams.publisherId,
-            siteId: initialParams.siteId
-        };
-
         $scope.tableConfig = {
             itemsPerPage: 10
         };
 
         $scope.showPagination = showPagination;
+        $scope.exportExcel = exportExcel;
+        $scope.getExportExcelFileName = getExportExcelFileName();
 
         var reportViews = {
             'user': false,
@@ -87,6 +78,24 @@
 
         function showPagination() {
             return angular.isArray($scope.reports) && $scope.reports.length > $scope.tableConfig.itemsPerPage;
+        }
+
+        function exportExcel() {
+            var exportExcel = $scope.reports;
+            angular.forEach(exportExcel, function(value) {
+                delete value.records;
+                delete value.siteId;
+                delete value.videoStarts;
+                delete value.videoEnds;
+
+                value.date = $filter('date')(value.date, 'longDate');
+            });
+
+            return exportExcel;
+        }
+
+        function getExportExcelFileName() {
+            return 'tagcade-source-report-' + DateFormatter.getFormattedDate(new Date(reportGroup.startDate)) + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.endDate)) + '.csv';
         }
     }
 })();

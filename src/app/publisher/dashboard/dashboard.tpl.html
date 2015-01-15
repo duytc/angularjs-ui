@@ -31,14 +31,12 @@
     <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Daily Overview</div>
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-default">
-                <ul class="nav nav-tabs nav-tab-margin">
-                    <li role="presentation" ng-click="showChart = 0" ng-class="showChart ?'':'active' "><a>Account Overview</a></li>
-                    <li role="presentation" ng-click="showChart = 1" ng-class="showChart ?'active':'' "><a>Revenue</a></li>
-                </ul>
-                <div ng-if="!showChart"><highchart config="chartConfigOpportunities"></highchart></div>
-                <div ng-if="showChart"><highchart config="chartConfigRevenue"></highchart></div>
-            </div>
+            <ul class="nav nav-tabs nav-tab-margin">
+                <li role="presentation" ng-click="showChart = 0" ng-class="showChart ?'':'active' "><a>Account Overview</a></li>
+                <li role="presentation" ng-click="showChart = 1" ng-class="showChart ?'active':'' "><a>Revenue</a></li>
+            </ul>
+            <div ng-if="!showChart"><highchart config="chartConfigOpportunities"></highchart></div>
+            <div ng-if="showChart"><highchart config="chartConfigRevenue"></highchart></div>
         </div>
     </div>
 </div>
@@ -49,16 +47,14 @@
     <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Top Performers</div>
     <div class="row">
         <div class="col-lg-12">
-            <div class="panel panel-default">
-                <tabset class="nav-tab-margin">
-                    <tab heading="Top Sites">
-                        <top-site-publisher config='configTopSites' info="dataDashboard.topSites"></top-site-publisher>
-                    </tab>
-                    <tab heading="Top AdNetworks">
-                        <top-ad-network-publisher config='configTopAdNetworks' info="dataDashboard.topAdNetworks"></top-ad-network-publisher>
-                    </tab>
-                </tabset>
-            </div>
+            <tabset class="nav-tab-margin">
+                <tab heading="Top Sites">
+                    <top-site-publisher config='configTopSites' info="dataDashboard.topSites"></top-site-publisher>
+                </tab>
+                <tab heading="Top AdNetworks">
+                    <top-ad-network-publisher config='configTopAdNetworks' info="dataDashboard.topAdNetworks"></top-ad-network-publisher>
+                </tab>
+            </tabset>
         </div>
     </div>
 </div>

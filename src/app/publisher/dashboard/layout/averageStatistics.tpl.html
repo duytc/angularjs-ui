@@ -3,11 +3,11 @@
     <ul class="list-unstyled report list-info">
         <li>
             <label>Estimated Revenue</label>
-            <span class="pull-right">{{ dataAverage.averageEstRevenue | currency }}</span>
+            <span class="pull-right">{{ dataAverage.averageEstRevenue | currency:'$':4 }}</span>
         </li>
         <li>
             <label>Estimated CPM</label>
-            <span class="pull-right">{{ dataAverage.averageEstCpm | currency }}</span>
+            <span class="pull-right">{{ dataAverage.averageEstCpm | currency:'$':4 }}</span>
         </li>
         <li>
             <label>Total Opportunities</label>
@@ -27,7 +27,7 @@
         </li>
         <li>
             <label>Fill Rate</label>
-            <span class="pull-right">{{ dataAverage.averageFillRate | currency }}</span>
+            <span class="pull-right">{{ dataAverage.averageFillRate | percentage }}</span>
         </li>
     </ul>
 </div>
