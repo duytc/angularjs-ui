@@ -309,15 +309,6 @@
             }
         }
 
-        function selectAdSlot(adSlotId) {
-            if (adSlotId === null) {
-                resetToStateForCurrentReportType();
-            }
-            else{
-
-            }
-        }
-
         function selectBreakdownOption(breakdownOption) {
             if (!angular.isObject(breakdownOption) || !breakdownOption.toState) {
                 throw new Error('breakdown option is missing a target state');
