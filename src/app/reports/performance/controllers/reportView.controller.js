@@ -79,7 +79,7 @@
 
         function getTemplateUrlPopup(relativeToState) {
             switch(relativeToState) {
-//                case '^.sites':
+                case '^.sites':
                 case '^.account':
                     return 'reports/performance/views/popup/popupForPublisher.tpl.html';
 
