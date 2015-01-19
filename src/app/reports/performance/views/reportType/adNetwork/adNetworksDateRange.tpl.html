@@ -12,7 +12,7 @@
             <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
                 <thead></thead>
                 <tbody>
-                <tr ng-click="drillDownReport('^.adNetwork', item)">
+                <tr ng-click="popupReport('^.adNetwork', item)">
                     <td at-title="Start Date" at-attribute="startDate">
                         {{ item.startDate | date }}
                     </td>

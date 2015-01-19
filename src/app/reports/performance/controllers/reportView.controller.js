@@ -8,7 +8,7 @@
     /**
      * @param {Array} reportGroup.reports
      */
-    function ReportView($scope, $state, _, AlertService, ReportParams, reportGroup, $filter, DateFormatter) {
+    function ReportView($scope, $state, $modal, _, Auth, AlertService, ReportParams, reportGroup, $filter, DateFormatter, SiteManager, AdSlotManager, AdTagManager, AdNetworkManager, adminUserManager) {
         $scope.hasResult = reportGroup !== false;
 
         reportGroup = reportGroup || {};
@@ -24,7 +24,7 @@
         };
 
         $scope.showPagination = showPagination;
-        $scope.drillDownReport = drillDownReport;
+        $scope.popupReport = popupReport;
 
         if (!$scope.hasResult) {
             AlertService.replaceAlerts({
@@ -35,6 +35,71 @@
 
         function showPagination() {
             return angular.isArray($scope.reports) && $scope.reports.length > $scope.tableConfig.itemsPerPage;
+        }
+
+        function popupReport(relativeToState, report) {
+            if(!Auth.isAdmin() && relativeToState == '^.sites') {
+                return drillDownReport(relativeToState, report);
+            }
+
+            var confirmPopUp = $modal.open({
+                templateUrl: getTemplateUrlPopup(relativeToState),
+                size : 'lg',
+                controller: 'popupReportController',
+                resolve: {
+                    data: function() {
+                        if(relativeToState == '^.sites' || relativeToState == '^.account') {
+                            var publisherId = (report.reportType == null) ? report.publisherId : report.reportType.publisherId;
+                            return adminUserManager.one(publisherId).get();
+                        }
+                        if(relativeToState == '^.siteAdSlots' || relativeToState == '^.site' || relativeToState == '^.adNetworkSite' || relativeToState == '^.adNetworkSiteAdTags') {
+                            var siteId = (report.reportType == null) ? report.siteId : report.reportType.siteId;
+                            return SiteManager.one(siteId).get();
+                        }
+                        if(relativeToState == '^.adSlot' || relativeToState == '^.adSlotAdTags') {
+                            var adSlotId = (report.reportType == null) ? report.adSlotId : report.reportType.adSlotId;
+                            return AdSlotManager.one(adSlotId).get();
+                        }
+                        if(relativeToState == 'adTags') {
+                            var adTagId = report.reportType.adTagId;
+                            return AdTagManager.one(adTagId).get();
+                        }
+                        if(relativeToState == '^.adNetworkSites' || relativeToState == '^.adNetwork') {
+                            var adNetworkId = (report.reportType == null) ? report.adNetworkId : report.reportType.adNetworkId;
+                            return AdNetworkManager.one(adNetworkId).get();
+                        }
+                    }
+                }
+            });
+
+            confirmPopUp.result.then(function () {
+                return drillDownReport(relativeToState, report);
+            });
+        }
+
+        function getTemplateUrlPopup(relativeToState) {
+            switch(relativeToState) {
+//                case '^.sites':
+                case '^.account':
+                    return 'reports/performance/views/popup/popupForPublisher.tpl.html';
+
+                case '^.siteAdSlots':
+                case '^.site':
+                case '^.adNetworkSite':
+                case '^.adNetworkSiteAdTags':
+                    return 'reports/performance/views/popup/popupForSites.tpl.html';
+
+                case '^.adNetworkSites':
+                case '^.adNetwork':
+                    return 'reports/performance/views/popup/popupForAdNetwork.tpl.html';
+
+                case '^.adSlot':
+                case '^.adSlotAdTags':
+                    return 'reports/performance/views/popup/popupForAdSlot.tpl.html';
+
+                case 'adTags':
+                    return 'reports/performance/views/popup/popupForAdTag.tpl.html';
+            }
         }
 
         function drillDownReport(relativeToState, report) {
