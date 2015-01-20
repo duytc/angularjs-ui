@@ -5,11 +5,14 @@
         .factory('billingService', billingService)
     ;
 
-    function billingService($q, _, ReportParams, ReportFetcher, adminUserManager) {
+    function billingService($q, _, ReportParams, ReportFetcher, adminUserManager, SiteManager) {
         var api = {
             getInitialParams: getInitialParams,
             getAccountReport: getAccountReport,
-            getPublishers: getPublishers
+            getPublishers: getPublishers,
+            getPlatformReport: getPlatformReport,
+            getSites: getSites,
+            getSiteReport: getSiteReport
         };
 
         var _$initialParams = null;
@@ -67,6 +70,31 @@
                     return users.plain();
                 })
             ;
+        }
+
+        /**
+         *
+         * @param {object} params
+         */
+        function getPlatformReport(params, additionalParams) {
+            return getReport(ReportFetcher.getPlatformReport, params, additionalParams);
+        }
+
+        function getSites() {
+            return SiteManager.getList()
+                .then(function (sites) {
+                    return sites.plain();
+                })
+                ;
+        }
+
+        /**
+         *
+         * @param {object} params
+         * @param {int} params.siteId
+         */
+        function getSiteReport(params, additionalParams) {
+            return getReport(ReportFetcher.getSiteReport, params, additionalParams);
         }
     }
 })();

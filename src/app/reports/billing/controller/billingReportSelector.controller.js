@@ -5,17 +5,22 @@
         .controller('BillingReportSelector', BillingReportSelector)
     ;
 
-    function BillingReportSelector($scope, _, Auth, UserStateHelper, AlertService, ReportParams, billingService) {
+    function BillingReportSelector($scope, $q, $state, _, Auth, UserStateHelper, AlertService, ReportParams, billingService, BILLING_REPORT_TYPES, selectorFormCalculator) {
+        var toState;
         var isAdmin = Auth.isAdmin();
         $scope.isAdmin = isAdmin;
 
-        $scope.selectedData = {
+        var selectedData = {
             date: {
                 startDate: null,
                 endDate: null
             },
-            publisherId: null
+            reportType: null,
+            publisherId: null,
+            siteId: null
         };
+
+        $scope.selectedData = selectedData;
 
         $scope.optionData = {
             publishers: []
@@ -34,10 +39,59 @@
         };
 
         $scope.showPublisherSelect = showPublisherSelect;
+        $scope.selectedReportTypeis = selectedReportTypeis;
+        $scope.selectPublisher = selectPublisher;
         $scope.isFormValid = isFormValid;
         $scope.getReports = getReports;
+        $scope.selectReportType = selectReportType;
+        $scope.reportTypes = BILLING_REPORT_TYPES;
+
+        var reportTypeOptions = [
+            {
+                key: BILLING_REPORT_TYPES.account,
+                label: 'Account',
+                toState: 'reports.billing.accountReport'
+            },
+            {
+                key: BILLING_REPORT_TYPES.site,
+                label: 'Site',
+                toState: 'reports.billing.site'
+            }
+        ];
+
+        if (isAdmin) {
+            reportTypeOptions.unshift({
+                key: BILLING_REPORT_TYPES.platform,
+                label: 'Platform',
+                toState: 'reports.billing.platform'
+            });
+        }
+
+        $scope.reportTypeOptions = reportTypeOptions;
 
         init();
+
+        /**
+         *
+         * @param {Object} reportType
+         */
+        function selectReportType(reportType) {
+            if (!angular.isObject(reportType) || !reportType.toState) {
+                throw new Error('report type is missing a target state');
+            }
+
+            toState = reportType.toState;
+        }
+
+        /**
+         *
+         * @param {String} reportTypeKey
+         * @return {Object|Boolean}
+         */
+        function findReportType(reportTypeKey) {
+            return _.findWhere(reportTypeOptions, { key: reportTypeKey });
+        }
+
 
         function init() {
             if (isAdmin) {
@@ -48,38 +102,69 @@
                 ;
             }
 
-            var initialData = {
-                date: {
-                    startDate: null,
-                    endDate: null
-                },
-                publisherId: null
-            };
+            billingService.getSites()
+                .then(function (data) {
+                    $scope.optionData.sites = data;
+                })
+            ;
 
             var initialParams = billingService.getInitialParams();
-
-            if (_.isObject(initialParams)) {
-                angular.extend(initialData, initialParams);
+            if (initialParams == null) {
+                return;
             }
 
-            if(!initialData.date.endDate) {
-                initialData.date.endDate = initialData.date.startDate;
-            }
+            selectorFormCalculator.getCalculatedParams(initialParams).then(
+              function(calculatedParams) {
 
-            if (!initialData.date.startDate) {
-                angular.extend(initialData, {
-                    date: {
-                        startDate: moment().subtract(7, 'days').startOf('day'),
-                        endDate: moment().subtract(1, 'days').startOf('day')
-                    }
-                })
-            }
+                  var reportType = findReportType(calculatedParams.reportType) || null;
+                  $scope.selectedData.reportType = reportType;
 
-            angular.extend($scope.selectedData, initialData);
+                  var initialData = {
+                      date: {
+                          startDate: null,
+                          endDate: null
+                      },
+                      publisherId: null,
+                      reportType: reportType
+                  };
+
+                  angular.extend(initialData, _.omit(calculatedParams, ['reportType']));
+
+
+                  if(!initialData.date.endDate) {
+                      initialData.date.endDate = initialData.date.startDate;
+                  }
+
+                  if (!initialData.date.startDate) {
+                      angular.extend(initialData, {
+                          date: {
+                              startDate: moment().subtract(7, 'days').startOf('day'),
+                              endDate: moment().subtract(1, 'days').startOf('day')
+                          }
+                      })
+                  }
+
+                  angular.extend($scope.selectedData, initialData);
+              }
+            );
+        }
+
+        function selectPublisher() {
+            return $scope.selectedData.siteId = null;
         }
 
         function showPublisherSelect() {
-            return isAdmin;
+            return isAdmin && $scope.reportSelectorForm.reportType.$valid;
+        }
+
+        function selectedReportTypeis(reportTypeKey) {
+            var reportType = $scope.selectedData.reportType;
+
+            if (!angular.isObject(reportType)) {
+                return false;
+            }
+
+            return reportType.key == reportTypeKey;
         }
 
         function isFormValid() {
@@ -87,10 +172,25 @@
         }
 
         function getReports() {
+            var transition;
             var params = ReportParams.getStateParams($scope.selectedData);
 
-            UserStateHelper.transitionRelativeToBaseState('reports.billing.accountReport', params)
+            if (toState == null) {
+                transition = $state.transitionTo(
+                    $state.$current,
+                    params
+                );
+            } else {
+                transition = UserStateHelper.transitionRelativeToBaseState(
+                    toState,
+                    params
+                );
+            }
+
+            $q.when(transition)
                 .catch(function(error) {
+                    console.log(params);
+
                     AlertService.replaceAlerts({
                         type: 'error',
                         message: 'An error occurred trying to request the report'
