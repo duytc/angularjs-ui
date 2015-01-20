@@ -12,13 +12,13 @@
                         <label>Estimated CPM</label>
                         <span class="pull-right">{{ reportGroup.estCpm | currency:'$':4 }}</span>
                     </li>
-                    <li>
-                        <label>Total Opportunities</label>
-                        <span class="pull-right">{{ reportGroup.totalOpportunities | number }}</span>
-                    </li>
                     <li ng-if="hasSlotOpportunities()">
                         <label>Slot Opportunities</label>
                         <span class="pull-right">{{ reportGroup.slotOpportunities | number }}</span>
+                    </li>
+                    <li>
+                        <label>Total Opportunities</label>
+                        <span class="pull-right">{{ reportGroup.totalOpportunities | number }}</span>
                     </li>
                     <li>
                         <label>Impressions</label>

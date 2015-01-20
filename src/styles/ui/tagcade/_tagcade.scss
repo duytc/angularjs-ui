@@ -60,16 +60,28 @@ tr[ui-sref] {
 }
 
 #form-date-range-selector {
-    form
-    > .form-group {
-        @media (min-width: $screen-sm) {
-            margin-right: 8px;
-        }
+    label {
+        font-size: 12px;
+        text-transform: uppercase;
     }
-    .btn-primary {
+
+    .form-inline {
+        .date-picker {
+            min-width: 200px;
+            cursor: pointer;
+        }
+
+        > .form-group {
+            @media (min-width: $screen-sm) {
+                margin-right: 8px;
+            }
+        }
+
+        .btn-primary {
             @media (min-width: $screen-sm) {
                 margin-top: 22px;
             }
+        }
     }
 }
 

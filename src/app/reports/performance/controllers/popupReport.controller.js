@@ -20,7 +20,7 @@
                 .catch(function(error) {
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'error request.'
+                        message: 'Edit page may not exist.'
                     });
                 })
             ;
