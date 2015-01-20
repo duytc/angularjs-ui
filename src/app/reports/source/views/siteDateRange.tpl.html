@@ -22,6 +22,7 @@
                     <th at-attribute="date">Date</th>
                     <th ng-show="reportViews.user" at-attribute="visits">Visits</th>
                     <th ng-show="reportViews.user" at-attribute="pageViews">Page Views</th>
+                    <th ng-show="reportViews.user" at-attribute="viewsPerVisit">Views Per Visit</th>
                     <th ng-show="reportViews.user" at-attribute="qtos">QTOS</th>
                     <th ng-show="reportViews.user" at-attribute="qtosPercentage">QTOS %</th>
                     <th ng-show="reportViews.display" at-attribute="displayOpportunities">Total Opportunities</th>
@@ -49,6 +50,9 @@
                     </td>
                     <td ng-show="reportViews.user" at-attribute="pageViews" at-sortable>
                         {{ item.pageViews | number }}
+                    </td>
+                    <td ng-show="reportViews.user" at-attribute="viewsPerVisit" at-sortable>
+                        {{ item.viewsPerVisit | number }}
                     </td>
                     <td ng-show="reportViews.user" at-attribute="qtos" at-sortable>
                         {{ item.qtos | number }}
