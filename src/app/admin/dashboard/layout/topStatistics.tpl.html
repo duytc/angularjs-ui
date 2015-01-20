@@ -4,7 +4,7 @@
     <tr>
         <td at-implicit at-sortable at-attribute="name" at-title="Name"></td>
         <td at-sortable at-attribute="billedAmount" at-title="Billed Amount" at-initial-sorting="desc">
-            {{ item.billedAmount | currency:'$':4 }}
+            {{ item.billedAmount | currency }}
         </td>
         <td at-sortable at-attribute="slotOpportunities" at-title="Slot Opportunities">
             {{ item.slotOpportunities | number }}
