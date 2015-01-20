@@ -12,7 +12,7 @@
                 url: '/billing',
                 views: {
                     'content@app': {
-                        templateUrl: 'reports/billing/billing.tpl.html'
+                        templateUrl: 'reports/billing/views/billing.tpl.html'
                     }
                 },
                 ncyBreadcrumb: {
@@ -32,13 +32,13 @@
                 views: {
                     'billing': {
                         controller: 'BillingReport',
-                        templateUrl: 'reports/billing/accountReport.tpl.html'
+                        templateUrl: 'reports/billing/views/accountReport.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, billingService, BILLING_REPORT_TYPES) {
+                    reportGroup: /* @ngInject */ function ($stateParams, billingService, REPORT_TYPES) {
                         return billingService.getPlatformReport($stateParams, {
-                            reportType: BILLING_REPORT_TYPES.platform
+                            reportType: REPORT_TYPES.platform
                         });
                     }
                 },
@@ -59,13 +59,13 @@
                 views: {
                     'billing': {
                         controller: 'BillingReport',
-                        templateUrl: 'reports/billing/accountReport.tpl.html'
+                        templateUrl: 'reports/billing/views/accountReport.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, billingService, BILLING_REPORT_TYPES) {
+                    reportGroup: /* @ngInject */ function ($stateParams, billingService, REPORT_TYPES) {
                         return billingService.getAccountReport($stateParams, {
-                            reportType: BILLING_REPORT_TYPES.account
+                            reportType: REPORT_TYPES.account
                         });
                     }
                 },
@@ -85,15 +85,18 @@
                 views: {
                     billing: {
                         controller: 'BillingReport',
-                        templateUrl: 'reports/billing/accountReport.tpl.html'
+                        templateUrl: 'reports/billing/views/accountReport.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, BILLING_REPORT_TYPES, billingService) {
+                    reportGroup: /* @ngInject */ function ($stateParams, REPORT_TYPES, billingService) {
                         return billingService.getSiteReport($stateParams, {
-                            reportType: BILLING_REPORT_TYPES.site
+                            reportType: REPORT_TYPES.site
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Billing Reports'
                 }
             })
         ;
@@ -109,16 +112,19 @@
                 views: {
                     billing: {
                         controller: 'BillingReport',
-                        templateUrl: 'reports/billing/accountReport.tpl.html'
+                        templateUrl: 'reports/billing/views/accountReport.tpl.html'
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, BILLING_REPORT_TYPES, billingService, userSession) {
+                    reportGroup: /* @ngInject */ function ($stateParams, REPORT_TYPES, billingService, userSession) {
                         return billingService.getAccountReport($stateParams, {
-                            reportType: BILLING_REPORT_TYPES.account,
+                            reportType: REPORT_TYPES.account,
                             publisherId: userSession.id
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Billing Reports'
                 }
             })
         ;

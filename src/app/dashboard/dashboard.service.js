@@ -10,7 +10,8 @@
             getPlatformDashboard: getPlatformDashboard,
             getPublisherDashboard: getPublisherDashboard,
             getPublisherProjectedBill: getPublisherProjectedBill,
-            getAdminProjectedBill: getAdminProjectedBill
+            getAdminProjectedBill: getAdminProjectedBill,
+            getSiteProjectedBill: getSiteProjectedBill
         };
 
         return api;
@@ -47,18 +48,24 @@
             return makeHttpGetRequest('/accounts/:id', params);
         }
 
-        function getPublisherProjectedBill(accountId) {
-            if (!angular.isNumber(accountId)) {
+        function getPublisherProjectedBill(params) {
+            if (!angular.isNumber(params.publisherId)) {
                 return $q.reject(new Error('account id should be a number'));
             }
 
-            return makeHttpGetRequest('/accounts/:id/projectedbill', {
-                id: accountId
-            });
+            return makeHttpGetRequest('/accounts/:publisherId/projectedbill', params);
         }
 
         function getAdminProjectedBill() {
             return makeHttpGetRequest('/platform/projectedbill');
+        }
+
+        function getSiteProjectedBill(params) {
+            if (!angular.isNumber(params.siteId)) {
+                return $q.reject(new Error('site id should be a number'));
+            }
+
+            return makeHttpGetRequest('/sites/:siteId//projectedbill', params);
         }
     }
 })(angular);

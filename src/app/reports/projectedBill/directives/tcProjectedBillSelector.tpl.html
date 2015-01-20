@@ -1,17 +1,40 @@
-<section id="performance-report-selector" class="panel panel-default" ng-if="isAdmin">
+<section id="performance-report-selector" class="panel panel-default">
     <div class="panel-body">
-        <form name="projectedBillSelectorForm" class="form-inline" role="form" ng-submit="getProjectedBill()" novalidate>
-            <div class="publisher form-group">
+        <form name="reportSelectorForm" class="form-inline" role="form" ng-submit="getReports()" novalidate>
+            <div class="report-type form-group">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>Report Type</label>
+                        <ui-select name="reportType" ng-model="selectedData.reportType" ng-required="true" on-select="selectReportType($item)">
+                            <ui-select-match placeholder="Select a report type">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices repeat="type in reportTypeOptions | filter: $select.search">
+                                <div ng-bind-html="type.label | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="publisher form-group" ng-if="!selectedReportTypeis(reportTypes.platform) && showPublisherSelect()">
                 <label>Publisher</label>
                 <ui-select name="publisher" ng-model="selectedData.publisherId" ng-required="true" ng-disabled="!optionData.publishers.length" on-select="selectPublisher()">
                     <ui-select-match placeholder="Select a publisher">{{ $select.selected.username }}</ui-select-match>
-                    <ui-select-choices group-by="groupEntities" repeat="publisher.id as publisher in optionData.publishers | filter: $select.search">
+                    <ui-select-choices repeat="publisher.id as publisher in optionData.publishers | filter: $select.search">
                         <div ng-bind-html="publisher.username | highlight: $select.search"></div>
                     </ui-select-choices>
                 </ui-select>
             </div>
 
-            <button type="submit" class="btn btn-primary">Get Projected Bill</button>
+            <div class="site form-group" ng-if="selectedReportTypeis(reportTypes.site) && optionData.sites.length && selectedData.publisherId">
+                <label>Sites</label>
+                <ui-select name="Sites" ng-model="selectedData.siteId" ng-required="true">
+                    <ui-select-match placeholder="Select a site">{{ $select.selected.name }}</ui-select-match>
+                    <ui-select-choices repeat="site.id as site in optionData.sites | filter: $select.search | selectedPublisher:selectedData.publisherId">
+                        <div ng-bind-html="site.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <button ng-disabled="!isFormValid()" type="submit" class="btn btn-primary">Get Reports</button>
         </form>
     </div>
 </section>

@@ -5,7 +5,7 @@
         .controller('BillingReportSelector', BillingReportSelector)
     ;
 
-    function BillingReportSelector($scope, $q, $state, _, Auth, UserStateHelper, AlertService, ReportParams, billingService, BILLING_REPORT_TYPES, selectorFormCalculator) {
+    function BillingReportSelector($scope, $q, $state, _, Auth, UserStateHelper, AlertService, ReportParams, billingService, REPORT_TYPES, selectorFormCalculator) {
         var toState;
         var isAdmin = Auth.isAdmin();
         $scope.isAdmin = isAdmin;
@@ -44,16 +44,16 @@
         $scope.isFormValid = isFormValid;
         $scope.getReports = getReports;
         $scope.selectReportType = selectReportType;
-        $scope.reportTypes = BILLING_REPORT_TYPES;
+        $scope.reportTypes = REPORT_TYPES;
 
         var reportTypeOptions = [
             {
-                key: BILLING_REPORT_TYPES.account,
+                key: REPORT_TYPES.account,
                 label: 'Account',
                 toState: 'reports.billing.accountReport'
             },
             {
-                key: BILLING_REPORT_TYPES.site,
+                key: REPORT_TYPES.site,
                 label: 'Site',
                 toState: 'reports.billing.site'
             }
@@ -61,7 +61,7 @@
 
         if (isAdmin) {
             reportTypeOptions.unshift({
-                key: BILLING_REPORT_TYPES.platform,
+                key: REPORT_TYPES.platform,
                 label: 'Platform',
                 toState: 'reports.billing.platform'
             });

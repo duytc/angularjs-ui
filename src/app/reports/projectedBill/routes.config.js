@@ -8,6 +8,7 @@
     function addStates($stateProvider, UserStateHelperProvider) {
         UserStateHelperProvider
             .state('reports.projectedBill', {
+                abstract: true,
                 url: '/projectedBill',
                 views: {
                     'content@app': {
@@ -15,7 +16,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Billing Reports'
+                    label: 'Projected Bill'
                 }
             })
         ;
@@ -30,8 +31,10 @@
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function (projectedBillService) {
-                        return projectedBillService.getPlatformProjectedBill();
+                    reportGroup: /* @ngInject */ function ($stateParams, projectedBillService, REPORT_TYPES) {
+                        return projectedBillService.getPlatformProjectedBill($stateParams, {
+                            reportType: REPORT_TYPES.platform
+                        });
                     }
                 },
                 ncyBreadcrumb: {
@@ -41,7 +44,7 @@
         ;
 
         $stateProvider
-            .state('app.admin.reports.projectedBill.accounts', {
+            .state('app.admin.reports.projectedBill.account', {
                 url: '/accounts/{publisherId:int}',
                 views: {
                     'projectedBill': {
@@ -50,8 +53,10 @@
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function (projectedBillService, $stateParams) {
-                        return projectedBillService.getAccountProjectedBill($stateParams.publisherId);
+                    reportGroup: /* @ngInject */ function (projectedBillService, $stateParams, REPORT_TYPES) {
+                        return projectedBillService.getAccountProjectedBill($stateParams, {
+                            reportType: REPORT_TYPES.account
+                        });
                     }
                 },
                 ncyBreadcrumb: {
@@ -70,8 +75,33 @@
                     }
                 },
                 resolve: {
-                    reportGroup: /* @ngInject */ function (projectedBillService, userSession) {
-                        return projectedBillService.getAccountProjectedBill(userSession.id);
+                    reportGroup: /* @ngInject */ function ($stateParams, projectedBillService, userSession, REPORT_TYPES) {
+                        return projectedBillService.getAccountProjectedBill($stateParams, {
+                            reportType: REPORT_TYPES.account,
+                            publisherId: userSession.id
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Projected Bill'
+                }
+            })
+        ;
+
+        UserStateHelperProvider
+            .state('reports.projectedBill.site', {
+                url: '/sites/{siteId:int}',
+                views: {
+                    projectedBill: {
+                        controller: 'ProjectedBill',
+                        templateUrl: 'reports/projectedBill/views/projectedBillDetail.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, REPORT_TYPES, projectedBillService) {
+                        return projectedBillService.getSiteProjectedBill($stateParams, {
+                            reportType: REPORT_TYPES.site
+                        });
                     }
                 },
                 ncyBreadcrumb: {
