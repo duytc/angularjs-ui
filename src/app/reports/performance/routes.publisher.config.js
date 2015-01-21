@@ -27,6 +27,9 @@
                             publisherId: userSession.id
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
                 }
             })
         ;
@@ -57,6 +60,9 @@
                             publisherId: userSession.id
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
                 }
             })
         ;
@@ -87,6 +93,9 @@
                             publisherId: userSession.id
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
                 }
             })
         ;

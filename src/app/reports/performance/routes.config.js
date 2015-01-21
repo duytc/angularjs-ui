@@ -42,6 +42,9 @@
                             adNetworkBreakdown: 'day'
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
                 }
             })
         ;
@@ -66,6 +69,9 @@
                             adNetworkBreakdown: 'adtag'
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
                 }
             })
         ;
@@ -96,6 +102,9 @@
                             adNetworkBreakdown: 'site'
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
                 }
             })
         ;
@@ -142,6 +151,9 @@
                             reportType: PERFORMANCE_REPORT_TYPES.adNetwork
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
                 }
             })
         ;
@@ -166,6 +178,9 @@
                             siteBreakdown: 'day'
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
                 }
             })
         ;
@@ -196,6 +211,9 @@
                             siteBreakdown: 'adslot'
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
                 }
             })
         ;
@@ -226,6 +244,9 @@
                             siteBreakdown: 'adtag'
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
                 }
             })
         ;
@@ -250,6 +271,9 @@
                             adSlotBreakdown: 'day'
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
                 }
             })
         ;
@@ -280,6 +304,9 @@
                             adSlotBreakdown: 'adtag'
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
                 }
             })
         ;

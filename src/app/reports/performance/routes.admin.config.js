@@ -27,6 +27,9 @@
                             platformBreakdown: 'day'
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
                 }
             })
         ;
@@ -47,9 +50,13 @@
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getPlatformAccountsReport($stateParams, {
-                            reportType: PERFORMANCE_REPORT_TYPES.platform
+                            reportType: PERFORMANCE_REPORT_TYPES.platform,
+                            platformBreakdown: 'account'
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
                 }
             })
         ;
@@ -70,9 +77,13 @@
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getPlatformSitesReport($stateParams, {
-                            reportType: PERFORMANCE_REPORT_TYPES.platform
+                            reportType: PERFORMANCE_REPORT_TYPES.platform,
+                            platformBreakdown: 'site'
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
                 }
             })
         ;
@@ -96,6 +107,9 @@
                             reportType: PERFORMANCE_REPORT_TYPES.account
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
                 }
             })
         ;
@@ -119,6 +133,9 @@
                             reportType: PERFORMANCE_REPORT_TYPES.adNetwork
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
                 }
             })
         ;
@@ -142,6 +159,9 @@
                             reportType: PERFORMANCE_REPORT_TYPES.site
                         });
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
                 }
             })
         ;
