@@ -32,7 +32,7 @@
                 views: {
                     'billing': {
                         controller: 'BillingReport',
-                        templateUrl: 'reports/billing/views/accountReport.tpl.html'
+                        templateUrl: 'reports/billing/views/billingDetails.tpl.html'
                     }
                 },
                 resolve: {
@@ -59,7 +59,7 @@
                 views: {
                     'billing': {
                         controller: 'BillingReport',
-                        templateUrl: 'reports/billing/views/accountReport.tpl.html'
+                        templateUrl: 'reports/billing/views/billingDetails.tpl.html'
                     }
                 },
                 resolve: {
@@ -85,7 +85,7 @@
                 views: {
                     billing: {
                         controller: 'BillingReport',
-                        templateUrl: 'reports/billing/views/accountReport.tpl.html'
+                        templateUrl: 'reports/billing/views/billingDetails.tpl.html'
                     }
                 },
                 resolve: {
@@ -112,7 +112,7 @@
                 views: {
                     billing: {
                         controller: 'BillingReport',
-                        templateUrl: 'reports/billing/views/accountReport.tpl.html'
+                        templateUrl: 'reports/billing/views/billingDetails.tpl.html'
                     }
                 },
                 resolve: {
