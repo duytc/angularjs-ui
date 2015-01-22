@@ -1,12 +1,12 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="$dismiss()">×</button>
-    <h4 class="modal-title">AdSlot Info</strong></h4>
+    <h4 class="modal-title">Ad Slot Info</strong></h4>
 </div>
 <div class="modal-body">
     <table class="table">
         <thead>
         <tr>
-            <th>AdSlot Name</th>
+            <th>Ad Slot</th>
             <th>Site</th>
             <th ng-show="isAdmin">Publisher</th>
             <th>Width</th>
@@ -26,5 +26,5 @@
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-click="$close()">Drill Down</button>
-    <button class="btn btn-primary" ng-click="edit('tagManagement.adSlot.edit')">Edit This AdSlot</button>
+    <button class="btn btn-primary" ng-click="goToEditPage('tagManagement.adSlot.edit', data.id)">Edit This AdSlot</button>
 </div>

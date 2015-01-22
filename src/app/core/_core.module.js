@@ -20,6 +20,7 @@
         'tagcade.blocks.serverError',
         'tagcade.blocks.errorPage',
         'tagcade.blocks.misc',
+        'tagcade.blocks.event',
 
         'tagcade.core.bootstrap',
         'tagcade.core.auth',

@@ -8,7 +8,7 @@
     /**
      * @param {Array} reportGroup.reports
      */
-    function ReportView($scope, $state, $modal, _, Auth, AlertService, ReportParams, reportGroup, $filter, DateFormatter, SiteManager, AdSlotManager, AdTagManager, AdNetworkManager, adminUserManager) {
+    function ReportView($scope, $state, $modal, $filter, _, Auth, AlertService, ReportParams, reportGroup, UserStateHelper, DateFormatter, SiteManager, AdSlotManager, AdTagManager, AdNetworkManager, adminUserManager) {
         $scope.hasResult = reportGroup !== false;
 
         reportGroup = reportGroup || {};
@@ -25,6 +25,9 @@
 
         $scope.showPagination = showPagination;
         $scope.popupReport = popupReport;
+        $scope.drillDownReport = drillDownReport;
+        $scope.goToEditPage = goToEditPage;
+        $scope.openUpdateCpm = openUpdateCpm;
 
         if (!$scope.hasResult) {
             AlertService.replaceAlerts({
@@ -134,6 +137,24 @@
                     });
                 })
             ;
+        }
+
+        function goToEditPage(baseState, id) {
+            var params = {id: id};
+            UserStateHelper.transitionRelativeToBaseState(baseState, params)
+        }
+
+        function openUpdateCpm(data) {
+            $modal.open({
+                templateUrl: 'supportTools/cpmEditor/formCpmEditorForAdTag.tpl.html',
+                size : 'lg',
+                controller: 'FormCpmEditor',
+                resolve: {
+                    adTag: function () {
+                        return AdTagManager.one(data.reportType.adTagId).get();
+                    }
+                }
+            })
         }
 
         function exportExcel() {

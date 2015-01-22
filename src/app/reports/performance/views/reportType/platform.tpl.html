@@ -10,10 +10,10 @@
             </div>
         </div>
         <div class="table-responsive">
-            <table class="table" at-table at-paginated at-list="reports" at-config="tableConfig">
+            <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
                 <thead></thead>
                 <tbody>
-                <tr>
+                <tr ng-click="drillDownReport('^.platformAccounts', item)">
                     <td at-title="Date" at-attribute="date" at-sortable at-initial-sorting="desc">
                         {{ item.date | date }}
                     </td>

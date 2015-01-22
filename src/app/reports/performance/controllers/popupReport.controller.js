@@ -5,28 +5,22 @@
         .controller('popupReportController', popupReportController)
     ;
 
-    function popupReportController($scope, $modal, $modalInstance, data, UserStateHelper, AlertService, Auth) {
+    function popupReportController($scope, $modal, $modalInstance, data, UserStateHelper, Auth) {
         $scope.isAdmin = Auth.isAdmin();
 
         $scope.data = data;
-        $scope.edit = edit;
-        $scope.updateCpm = updateCpm;
+        $scope.goToEditPage = goToEditPage;
+        $scope.openUpdateCpm = openUpdateCpm;
 
-        function edit(baseState) {
+        function goToEditPage(baseState) {
             UserStateHelper.transitionRelativeToBaseState(baseState, {id: data.id})
                 .then(function() {
                     $modalInstance.close();
                 })
-                .catch(function(error) {
-                    AlertService.replaceAlerts({
-                        type: 'error',
-                        message: 'Edit page may not exist.'
-                    });
-                })
             ;
         }
 
-        function updateCpm() {
+        function openUpdateCpm() {
             $modal.open({
                 templateUrl: 'supportTools/cpmEditor/formCpmEditorForAdTag.tpl.html',
                 size : 'lg',

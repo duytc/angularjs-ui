@@ -8,11 +8,21 @@
                 <button class="btn btn-sm btn-primary" type="button" ng-csv="exportExcel" csv-header="['Ad Tag', 'Start Date', 'End Date', 'Fill Rate', 'Total Opportunities', 'Impressions', 'Passbacks', 'Est. CPM ($)', 'Est. Revenue ($)']" filename="{{ getExportExcelFileName }}">Export Excel</button>
             </div>
         </div>
-        <div class="table-responsive">
-            <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
+        <div class="ng-table-responsive">
+            <table class="table" at-table at-paginated at-list="reports" at-config="tableConfig">
                 <thead></thead>
                 <tbody>
-                <tr ng-click="popupReport('adTags', item)">
+                <tr>
+                    <td at-title="Actions">
+                        <div class="btn-group" dropdown>
+                            <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a ng-click="popupReport('adTags', item)">Ad Tag Info</a></li>
+                                <li><a ng-click="goToEditPage('tagManagement.adTag.edit', item.reportType.adTagId)">Edit Ad Tag</a></li>
+                                <li><a ng-click="openUpdateCpm(item)">Update Cpm</a></li>
+                            </ul>
+                        </div>
+                    </td>
                     <td at-title="Date" at-attribute="startDate">
                         {{ item.startDate | date }}
                     </td>

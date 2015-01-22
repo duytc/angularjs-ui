@@ -148,7 +148,8 @@
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getAdNetworkSiteAdTagsReport($stateParams, {
-                            reportType: PERFORMANCE_REPORT_TYPES.adNetwork
+                            reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
+                            adNetworkBreakdown: 'adtag'
                         });
                     }
                 },

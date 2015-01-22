@@ -8,13 +8,25 @@
                 <button class="btn btn-sm btn-primary" type="button" ng-csv="exportExcel" csv-header="['Ad Network', 'Start Date', 'End Date', 'Fill Rate', 'Total Opportunities', 'Impressions', 'Passbacks', 'Est. CPM ($)', 'Est. Revenue ($)']" filename="{{ getExportExcelFileName }}">Export Excel</button>
             </div>
         </div>
-        <div class="table-responsive">
+        <div class="ng-table-responsive">
             <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
                 <thead></thead>
                 <tbody>
-                <tr ng-click="popupReport('^.adNetworkSites', item)">
-                    <td at-title="Date" at-attribute="startDate">
+                <tr ng-click="drillDownReport('^.adNetworkSites', item)">
+                    <td at-title="Actions">
+                        <div class="btn-group" dropdown stop-event>
+                            <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a ng-click="popupReport('^.adNetworkSites', item)">Ad Network Info</a></li>
+                                <li><a ng-click="goToEditPage('tagManagement.adNetwork.edit', item.reportType.adNetworkId)">Edit Ad Network</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td at-title="Start Date" at-attribute="startDate">
                         {{ item.startDate | date }}
+                    </td>
+                    <td at-title="End Date" at-attribute="startDate">
+                        {{ item.endDate | date }}
                     </td>
                     <td at-title="Ad Network" at-attribute="name" at-sortable>
                         {{ item.name }}
