@@ -5,7 +5,10 @@
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
             Breakdown by Traffic Source
             <div class="button-bar hidden-xs">
-                <button class="btn btn-sm btn-primary" type="button" ng-csv="exportExcel" csv-header="['Tracking Keys', 'Total Opportunities', 'Impressions', 'FillRate', 'Clicks', 'CTR', 'Display IPV', 'Player Ready', 'Ad Plays', 'Ad Impressions', 'Ad Completions', 'Ad Completion Rate', 'Video IPV', 'Ad Clicks', 'Visits', 'Page Views', 'QTOS', ' QTOS (%)']" filename="{{ getExportExcelFileName }}">Export Excel</button>
+                <export-excel
+                        data="report.records"
+                        fields="['embeddedTrackingKeys', 'visits', 'pageViews', 'viewsPerVisit', 'qtos', 'qtosPercentage', 'displayOpportunities', 'displayImpressions', 'displayFillRate', 'displayClicks', 'displayCTR', 'displayIPV', 'videoPlayerReady', 'videoAdPlays', 'videoAdImpressions', 'videoAdCompletions', 'videoAdCompletionRate', 'videoIPV', 'videoAdClicks']"
+                        header="['Tracking Keys', 'Visits', 'Page Views', 'Views Per Visit', 'QTOS', 'QTOS (%)', 'Total Opportunities', 'Impressions', 'Fill Rate', 'Clicks', 'CTR', 'Display IPV', 'Player Ready', 'Ad Plays', 'Ad Impressions', 'Ad Completions', 'Ad Completion Rate', 'Video IPV', 'Ad Clicks']" file-name="getExportExcelFileName"></export-excel>
             </div>
         </div>
 
@@ -54,7 +57,7 @@
                         {{ item.pageViews | number }}
                     </td>
                     <td ng-show="reportViews.user" at-attribute="viewsPerVisit" at-sortable>
-                        {{ item.visits != 0 ? item.pageViews / item.visits : '' | number }}
+                        {{ item.viewsPerVisit | number }}
                     </td>
                     <td ng-show="reportViews.user" at-attribute="qtos" at-sortable>
                         {{ item.qtos | number }}

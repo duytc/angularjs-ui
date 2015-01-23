@@ -5,7 +5,7 @@
         .controller('ProjectedBill', ProjectedBill)
     ;
 
-    function ProjectedBill($scope, _, $filter,  AlertService, reportGroup, DateFormatter) {
+    function ProjectedBill($scope, _,  AlertService, reportGroup, DateFormatter) {
         $scope.hasResult = reportGroup !== false;
 
         reportGroup = reportGroup || {};
@@ -18,7 +18,6 @@
         };
 
         $scope.showPagination = showPagination;
-        $scope.exportExcel = exportExcel;
         $scope.getExportExcelFileName = getExportExcelFileName();
 
         init();
@@ -36,28 +35,8 @@
             return angular.isArray($scope.reports) && $scope.reports.length > $scope.tableConfig.itemsPerPage;
         }
 
-        function exportExcel() {
-            var exportExcel = $scope.reports;
-            angular.forEach(exportExcel, function(value) {
-                delete value.estCpm;
-                delete value.estRevenue;
-                delete value.fillRate;
-                delete value.impressions;
-                delete value.passbacks;
-                delete value.publisherId;
-
-                if(!value.name) {
-                    value.name = 'All Publisher';
-                }
-
-                value.date = $filter('date')(value.date, 'longDate');
-            });
-
-            return exportExcel;
-        }
-
         function getExportExcelFileName() {
-            return 'tagcade-billing-report-' + DateFormatter.getFormattedDate(new Date(reportGroup.startDate)) + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.endDate)) + '.csv';
+            return 'tagcade-billing-report-' + DateFormatter.getFormattedDate(new Date(reportGroup.startDate)) + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.endDate));
         }
     }
 })();

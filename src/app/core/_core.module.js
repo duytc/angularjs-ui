@@ -21,6 +21,7 @@
         'tagcade.blocks.errorPage',
         'tagcade.blocks.misc',
         'tagcade.blocks.event',
+        'tagcade.blocks.export',
 
         'tagcade.core.bootstrap',
         'tagcade.core.auth',
