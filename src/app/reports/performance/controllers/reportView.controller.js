@@ -151,6 +151,12 @@
                 resolve: {
                     adTag: function () {
                         return AdTagManager.one(data.reportType.adTagId).get();
+                    },
+                    startDate : function() {
+                        return reportGroup.startDate;
+                    },
+                    endDate: function() {
+                        return reportGroup.endDate;
                     }
                 }
             })

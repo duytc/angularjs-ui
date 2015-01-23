@@ -5,7 +5,7 @@
         .controller('FormCpmEditor', FormCpmEditor)
     ;
 
-    function FormCpmEditor($scope, adTag, AdTagManager, $modalInstance, $modal, DateFormatter, AlertService) {
+    function FormCpmEditor($scope, adTag, AdTagManager, $modalInstance, $modal, DateFormatter, AlertService, startDate, endDate) {
         $scope.adTag = adTag;
 
         $scope.isFormValid = isFormValid;
@@ -13,8 +13,8 @@
 
         $scope.CPM = null;
         $scope.date = {
-            startDate: null,
-            endDate: null
+            startDate: startDate,
+            endDate: endDate
         };
 
         $scope.datePickerOpts = {

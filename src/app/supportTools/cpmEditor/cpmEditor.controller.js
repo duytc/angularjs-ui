@@ -109,6 +109,12 @@
                 resolve: {
                     adTag: function () {
                         return adTag;
+                    },
+                    startDate : function() {
+                        return null;
+                    },
+                    endDate: function() {
+                        return null;
                     }
                 }
             })
