@@ -13,8 +13,8 @@
 
         $scope.CPM = null;
         $scope.date = {
-            startDate: startDate,
-            endDate: endDate
+            startDate: (startDate != null) ? new Date(startDate) : null,
+            endDate: (endDate != null) ? new Date(endDate) : null
         };
 
         $scope.datePickerOpts = {
@@ -28,10 +28,10 @@
 
         function isFormValid() {
             return  $scope.CPM != null &&
-                    $scope.CPM >= 0 &&
-                    $scope.date.startDate <= $scope.date.endDate &&
                     $scope.date.startDate != null &&
                     $scope.date.endDate != null &&
+                    $scope.CPM >= 0 &&
+                    $scope.date.startDate <= $scope.date.endDate &&
                     $scope.date.endDate <= $scope.datePickerOpts.maxDate
         }
 

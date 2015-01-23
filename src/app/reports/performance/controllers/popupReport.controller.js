@@ -5,7 +5,7 @@
         .controller('popupReportController', popupReportController)
     ;
 
-    function popupReportController($scope, $modal, $modalInstance, data, UserStateHelper, Auth) {
+    function popupReportController($scope, $modal, $modalInstance, data, UserStateHelper, Auth, reportGroup) {
         $scope.isAdmin = Auth.isAdmin();
 
         $scope.data = data;
@@ -28,6 +28,12 @@
                 resolve: {
                     adTag: function () {
                         return data;
+                    },
+                    startDate : function() {
+                        return reportGroup.startDate;
+                    },
+                    endDate: function() {
+                        return reportGroup.endDate;
                     }
                 }
             })

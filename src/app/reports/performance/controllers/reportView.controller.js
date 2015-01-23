@@ -70,6 +70,9 @@
                             var adNetworkId = (report.reportType == null) ? report.adNetworkId : report.reportType.adNetworkId;
                             return AdNetworkManager.one(adNetworkId).get();
                         }
+                    },
+                    reportGroup: function() {
+                        return reportGroup;
                     }
                 }
             });
