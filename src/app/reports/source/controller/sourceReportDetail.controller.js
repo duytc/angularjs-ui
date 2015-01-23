@@ -19,6 +19,7 @@
         $scope.hasResult = angular.isObject(report);
         $scope.report = report;
 
+        $scope.query = {};
         $scope.tableConfig = {
             itemsPerPage: 10
         };

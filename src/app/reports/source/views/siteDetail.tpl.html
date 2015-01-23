@@ -18,8 +18,9 @@
             <li role="presentation" ng-class="reportViews.video ? 'active' : ''"><a ng-click="showView('video')">Video</a></li>
         </ul>
 
+        <div><input name="search" class="form-control" ng-model="query['$']" placeholder="Search..."></div>
         <div class="table-responsive" ng-cloak>
-            <table class="table source-reports" at-table at-paginated at-list="report.records" at-config="tableConfig">
+            <table class="table source-reports" at-table at-paginated at-list="report.records | filter:query" at-config="tableConfig">
                 <thead>
                     <tr>
                         <th at-attribute="embeddedTrackingKeys">Tracking Keys</th>
