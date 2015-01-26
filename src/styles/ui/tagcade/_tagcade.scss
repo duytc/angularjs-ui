@@ -6,6 +6,11 @@
 ;
 // custom
 
+.panel-heading .glyphicon-th {
+    font-size: 15px;
+    top: 2px;
+}
+
 .form-horizontal .form-group {
     @media (min-width: $screen-sm) {
         .ui-checkbox,
