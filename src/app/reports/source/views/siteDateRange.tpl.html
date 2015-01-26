@@ -8,7 +8,7 @@
                 <export-excel
                         data="reports"
                         sort-value="['date', 'visits', 'pageViews', 'viewsPerVisit', 'qtos', 'qtosPercentage', 'displayOpportunities', 'displayImpressions', 'displayFillRate', 'displayClicks', 'displayCTR', 'displayIPV', 'videoPlayerReady', 'videoAdPlays', 'videoAdImpressions', 'videoAdCompletions', 'videoAdCompletionRate', 'videoIPV', 'videoAdClicks']"
-                        header="['Date', 'Visits', 'Page Views', 'Views Per Visit', 'QTOS', 'QTOS (%)', 'Network Opportunities', 'Impressions', 'Fill Rate', 'Clicks', 'CTR', 'Display IPV', 'Player Ready', 'Ad Plays', 'Ad Impressions', 'Ad Completions', 'Ad Completion Rate', 'Video IPV', 'Ad Clicks']" file-name="getExportExcelFileName"></export-excel>
+                        header="['Date', 'Visits', 'Page Views', 'Views Per Visit', 'QTOS', 'QTOS (%)', 'Slot Opportunities', 'Impressions', 'Fill Rate', 'Clicks', 'CTR', 'Display IPV', 'Player Ready', 'Ad Plays', 'Ad Impressions', 'Ad Completions', 'Ad Completion Rate', 'Video IPV', 'Ad Clicks']" file-name="getExportExcelFileName"></export-excel>
             </div>
         </div>
 
@@ -28,7 +28,7 @@
                     <th ng-show="reportViews.user" at-attribute="viewsPerVisit">Views Per Visit</th>
                     <th ng-show="reportViews.user" at-attribute="qtos">QTOS</th>
                     <th ng-show="reportViews.user" at-attribute="qtosPercentage">QTOS %</th>
-                    <th ng-show="reportViews.display" at-attribute="displayOpportunities">Network Opportunities</th>
+                    <th ng-show="reportViews.display" at-attribute="displayOpportunities">Slot Opportunities</th>
                     <th ng-show="reportViews.display" at-attribute="displayImpressions">Impressions</th>
                     <th ng-show="reportViews.display" at-attribute="displayFillRate">Fill Rate</th>
                     <th ng-show="reportViews.display" at-attribute="displayClicks">Clicks</th>
