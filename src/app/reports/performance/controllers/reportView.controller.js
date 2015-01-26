@@ -187,7 +187,7 @@
             var reportType = reportGroup.reportType || {};
             var reportTypeString =  angular.isArray(reportType) ? (reportType.shift().reportType): reportType.reportType;
 
-            reportTypeString = reportTypeString.replace(/\./g, "-");
+            reportTypeString = (reportTypeString != null && reportTypeString != undefined) ? reportTypeString.replace(/\./g, "-") : '';
 
             return 'tagcade-report-' + reportTypeString + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.startDate)) + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.endDate));
         }
