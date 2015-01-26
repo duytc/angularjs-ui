@@ -22,6 +22,7 @@
         'tagcade.blocks.misc',
         'tagcade.blocks.event',
         'tagcade.blocks.export',
+        'tagcade.blocks.searchBox',
 
         'tagcade.core.bootstrap',
         'tagcade.core.auth',

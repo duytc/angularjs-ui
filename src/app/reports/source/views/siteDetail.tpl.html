@@ -12,13 +12,14 @@
             </div>
         </div>
 
+        <search-box sb-list="report.records"></search-box>
+
         <ul class="nav nav-tabs source-reports">
             <li role="presentation" ng-class="reportViews.user ? 'active' : ''"><a ng-click="showView('user')">User</a></li>
             <li role="presentation" ng-class="reportViews.display ? 'active' : ''"><a ng-click="showView('display')">Display</a></li>
             <li role="presentation" ng-class="reportViews.video ? 'active' : ''"><a ng-click="showView('video')">Video</a></li>
         </ul>
 
-        <div><input name="search" class="form-control" ng-model="query['$']" placeholder="Search..."></div>
         <div class="table-responsive" ng-cloak>
             <table class="table source-reports" at-table at-paginated at-list="report.records | filter:query" at-config="tableConfig">
                 <thead>
