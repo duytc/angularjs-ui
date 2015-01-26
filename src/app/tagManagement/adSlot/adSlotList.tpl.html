@@ -1,5 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span>
         <strong current-page-title></strong>
 
         <div class="button-bar hidden-xs">
@@ -23,7 +24,7 @@
                 <tbody>
                 <tr>
                     <td at-title="#" at-implicit at-sortable at-attribute="id" at-initial-sorting="asc"></td>
-                    <td at-title="Active">
+                    <td at-title="Actions">
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                             <ul class="dropdown-menu" role="menu">
@@ -36,7 +37,7 @@
                         </div>
                     </td>
 
-                    <td at-title="Name" at-implicit at-sortable at-attribute="name"></td>
+                    <td at-title="Ad Slot" at-implicit at-sortable at-attribute="name"></td>
                     <td at-title="Size" at-sortable at-attribute="width">
                         {{ item.getSize() }}
                     </td>

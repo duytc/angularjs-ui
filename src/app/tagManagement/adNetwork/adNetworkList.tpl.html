@@ -1,5 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span>
         <strong current-page-title></strong>
 
         <div class="button-bar hidden-xs">
@@ -19,7 +20,7 @@
                 <tbody>
                 <tr>
                     <td at-title="#" at-implicit at-sortable at-attribute="id" at-initial-sorting="asc"></td>
-                    <td at-title="Active">
+                    <td at-title="Actions">
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                             <ul class="dropdown-menu" role="menu">
@@ -31,9 +32,8 @@
                             </ul>
                         </div>
                     </td>
+                    <td at-title="Ad Network" at-implicit at-sortable at-attribute="name"></td>
                     <td ng-show="isAdmin()" at-title="Publisher" at-implicit at-sortable at-attribute="publisher.username"></td>
-                    <td at-title="Name" at-implicit at-sortable at-attribute="name"></td>
-                    <td at-title="Username" at-implicit at-sortable at-attribute="publisher.username"></td>
                     <td at-title="Status" at-sortable at-attribute="status">
                         <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
                     </td>
