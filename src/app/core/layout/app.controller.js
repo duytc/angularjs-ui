@@ -17,7 +17,7 @@
             layout: 'wide',
             menu: 'vertical',
             fixedHeader: true,
-            fixedSidebar: false
+            fixedSidebar: true
         };
     }
 })();
