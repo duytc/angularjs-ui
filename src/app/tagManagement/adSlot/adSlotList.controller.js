@@ -5,13 +5,13 @@
         .controller('AdSlotList', AdSlotList)
     ;
 
-    function AdSlotList($scope, $filter, $stateParams, $modal, $q, ngTableParams, AlertService, AdSlotManager, adSlots, site) {
+    function AdSlotList($scope, $stateParams, $modal, $q, AlertService, AdSlotManager, adSlots, site) {
         $scope.site = site;
 
-        var data = adSlots;
+        $scope.adSlots = adSlots;
 
         $scope.hasData = function () {
-            return !!data.length;
+            return !!adSlots.length;
         };
 
         if (!$scope.hasData()) {
@@ -23,26 +23,11 @@
 
         $scope.currentSiteId = $stateParams.siteId || null;
 
-        $scope.tableParams = new ngTableParams( // jshint ignore:line
-            {
-                page: 1,
-                count: 10,
-                sorting: {
-                    name: 'asc'
-                }
-            },
-            {
-                total: data.length,
-                getData: function($defer, params) {
-                    var filteredData = params.filter() ? $filter('filter')(data, params.filter()) : data;
-                    var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
-                    var paginatedData = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-
-                    params.total(orderedData.length);
-                    $defer.resolve(paginatedData);
-                }
-            }
-        );
+        $scope.showPagination = showPagination;
+        $scope.tableConfig = {
+            itemsPerPage: 10,
+            maxPages: 10
+        };
 
         $scope.generateAdTag = function (adSlot) {
             var modalInstance = $modal.open({
@@ -68,10 +53,10 @@
                 return AdSlotManager.one(adSlot.id).remove()
                     .then(
                         function () {
-                            var index = data.indexOf(adSlot);
+                            var index = adSlots.indexOf(adSlot);
 
                             if (index > -1) {
-                                data.splice(index, 1);
+                                adSlots.splice(index, 1);
                                 $scope.tableParams.reload(); // refresh ng-table
                             }
 
@@ -90,5 +75,9 @@
                 ;
             });
         };
+
+        function showPagination() {
+            return angular.isArray($scope.adSlots) && $scope.adSlots.length > $scope.tableConfig.itemsPerPage;
+        }
     }
 })();

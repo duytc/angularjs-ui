@@ -14,34 +14,32 @@
         </div>
     </div>
     <div class="panel-body" ng-if="hasAdTags()">
-        <table class="table">
-        <thead>
+        <table class="table table-hover ng-table-responsive" at-table at-paginated at-list="adTags" at-config="tableConfig">
+            <thead></thead>
+            <tbody>
             <tr>
-                <th>#</th>
-                <th>Actions</th>
-                <th>Position</th>
-                <th>Name</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody ui-sortable="sortableOptions" ng-model="adTags">
-            <tr ng:repeat="adTag in adTags" class="item" ng-class="{'moveable': !sortableOptions['disabled']}">
-                <td>{{ adTag.id }}</td>
-                <td>
-                    <div class="btn-group" dropdown on-toggle="actionDropdownToggled(open)">
+                <td at-title="#" at-implicit at-sortable at-attribute="id" at-initial-sorting="asc"></td>
+                <td at-title="Active">
+                    <div class="btn-group" dropdown>
                         <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a ui-sref="^.edit({ id: adTag.id })">Edit Ad Tag</a></li>
-                            <li><a ng-click="toggleAdTagStatus(adTag)">{{ adTag.active ? 'Pause' : 'Activate' }} Ad Tag</a></li>
-                            <li><a ng-click="confirmDeletion(adTag, $index)">Delete Ad Tag</a></li>
+                            <li><a ui-sref="^.edit({ id: item.id })">Edit Ad Tag</a></li>
+                            <li><a ng-click="toggleAdTagStatus(item)">{{ item.active ? 'Pause' : 'Activate' }} Ad Tag</a></li>
+                            <li><a ng-click="confirmDeletion(item, $index)">Delete Ad Tag</a></li>
                         </ul>
                     </div>
                 </td>
-                <td><span class="label label-default">{{ adTag.position }}</span></td>
-                <td>{{ adTag.name }}</td>
-                <td><span class="label" ng-class="adTag.active ? 'label-success' : 'label-danger'">{{ adTag.active ? 'Active' : 'Paused' }}</span></td>
+                <td at-title="Position" at-sortable at-attribute="position">
+                    <span class="label label-default">{{ item.position }}</span>
+                </td>
+                <td at-title="Name" at-implicit at-sortable at-attribute="name"></td>
+                <td at-title="Status" at-sortable at-attribute="active">
+                    <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
+                </td>
             </tr>
-        </tbody>
+            </tbody>
         </table>
+
+        <at-pagination ng-if="showPagination()" at-list="adTags" at-config="tableConfig"></at-pagination>
     </div>
 </div>

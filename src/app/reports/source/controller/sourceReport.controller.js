@@ -14,6 +14,7 @@
         $scope.reports = $scope.reportGroup.reports || [];
 
         $scope.tableConfig = {
+            maxPages: 10,
             itemsPerPage: 10
         };
 

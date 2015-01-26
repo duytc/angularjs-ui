@@ -31,12 +31,14 @@
         var rowCount = 10;
         $scope.configTopSites = {
             itemsPerPage: rowCount,
+            maxPages: 10,
             fillLastPage: 'no'
         };
 
         $scope.configTopAdNetworks = {
             itemsPerPage: rowCount,
             fillLastPage: 'no',
+            maxPages: 10,
             noSlotOpp : true
         };
 
@@ -109,7 +111,7 @@
                         [0, '#0066FF']
                     ]
                 }},
-                {"name": "Total Opportunities", "data": chartSeriesTotalOpportunities, connectNulls: true, color: {
+                {"name": "Network Opportunities", "data": chartSeriesTotalOpportunities, connectNulls: true, color: {
                     linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
                     stops: [
                         [0, '#66FF00']

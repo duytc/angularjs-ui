@@ -32,7 +32,6 @@ module.exports = {
             'vendor/restangular/dist/restangular.min.js',
             'vendor/moment/min/moment.min.js',
             'vendor/angular-moment/angular-moment.min.js',
-            'vendor/ng-table/ng-table.min.js',
             'vendor/angular-ui-select/dist/select.min.js',
             'vendor/bootstrap-daterangepicker/daterangepicker.js',
             'vendor/angular-daterangepicker/js/angular-daterangepicker.js',
@@ -41,7 +40,6 @@ module.exports = {
             'vendor/highcharts-release/highcharts.js',
             'vendor/highcharts-ng/dist/highcharts-ng.min.js',
             'vendor/at-table/dist/angular-table.min.js',
-            'vendor/ng-csv/build/ng-csv.min.js',
             'vendor/angular-currency-filter/dist/currency-filter.min.js',
             'vendor/file-saver/FileSaver.min.js'
         ],

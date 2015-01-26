@@ -5,11 +5,11 @@
         .controller('AdNetworkList', AdNetworkList)
     ;
 
-    function AdNetworkList($scope, $filter, $modal, $q, ngTableParams, TableParamsHelper, AlertService, AdNetworkManager, adNetworks) {
-        var data = adNetworks;
+    function AdNetworkList($scope, $modal, $q, AlertService, AdNetworkManager, adNetworks) {
+        $scope.adNetworks = adNetworks;
 
         $scope.hasData = function () {
-            return !!data.length;
+            return !!adNetworks.length;
         };
 
         if (!$scope.hasData()) {
@@ -19,28 +19,11 @@
             });
         }
 
-        $scope.tableParams = new ngTableParams( // jshint ignore:line
-            {
-                page: 1,
-                count: 10,
-                sorting: {
-                    name: 'asc'
-                }
-            },
-            {
-                total: data.length,
-                getData: function($defer, params) {
-                    var filters = TableParamsHelper.getFilters(params.filter());
-
-                    var filteredData = params.filter() ? $filter('filter')(data, filters) : data;
-                    var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
-                    var paginatedData = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-
-                    params.total(orderedData.length);
-                    $defer.resolve(paginatedData);
-                }
-            }
-        );
+        $scope.showPagination = showPagination;
+        $scope.tableConfig = {
+            itemsPerPage: 10,
+            maxPages: 10
+        };
 
         $scope.toggleAdNetworkStatus = function (adNetwork) {
             var newStatus = !adNetwork.active;
@@ -95,19 +78,38 @@
         };
 
         $scope.openListSitesForAdNetwork = function (adNetwork) {
-            $modal.open({
-                templateUrl: 'tagManagement/adNetwork/sitesForAdNetwork.tpl.html',
-                size: 'lg',
-                controller: 'SitesForAdNetwork',
-                resolve: {
-                    sites: function () {
-                        return AdNetworkManager.one(adNetwork.id).one('sites').getList();
-                    },
-                    adNetwork: function(){
-                        return adNetwork;
+            AdNetworkManager.one(adNetwork.id).one('sites').getList()
+                .then(function(data) {
+                    var sitesForAdNetwork = data.plain();
+
+                    if(!sitesForAdNetwork.length) {
+                        AlertService.addAlert({
+                            type: 'warning',
+                            message: 'Ad network : ' + adNetwork.name + ' does not have sites'
+                        });
+
+                        return;
                     }
-                }
-            });
+
+                    $modal.open({
+                        templateUrl: 'tagManagement/adNetwork/sitesForAdNetwork.tpl.html',
+                        size: 'lg',
+                        controller: 'SitesForAdNetwork',
+                        resolve: {
+                            sites: function () {
+                                return sitesForAdNetwork;
+                            },
+                            adNetwork: function(){
+                                return adNetwork;
+                            }
+                        }
+                    });
+
+                });
         };
+
+        function showPagination() {
+            return angular.isArray($scope.adNetworks) && $scope.adNetworks.length > $scope.tableConfig.itemsPerPage;
+        }
     }
 })();

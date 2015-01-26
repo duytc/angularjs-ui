@@ -12,16 +12,10 @@
 
         $scope.configPagination = {
             itemsPerPage: 10,
-            maxPages: 5,
-            fillLastPage: "no"
+            maxPages: 10
         };
 
-        $scope.hasSites = hasSites;
         $scope.onClick = onClick;
-
-        function hasSites() {
-            return sites.length > 0;
-        }
 
         function onClick(siteStatus) {
             var confirmBox = $modal.open({

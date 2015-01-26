@@ -5,7 +5,7 @@
         .controller('AdTagList', AdTagList)
     ;
 
-    function AdTagList($scope, $filter, $stateParams, $q, $modal, adTags, adSlot, AdTagManager, AlertService) {
+    function AdTagList($scope, $q, $modal, adTags, adSlot, AdTagManager, AlertService) {
         $scope.hasAdTags = function () {
             return !!adTags.length;
         };
@@ -19,6 +19,12 @@
 
         $scope.adSlot = adSlot;
         $scope.adTags = adTags;
+
+        $scope.showPagination = showPagination;
+        $scope.tableConfig = {
+            itemsPerPage: 10,
+            maxPages: 10
+        };
 
         $scope.sortableOptions = {
             forcePlaceholderSize: true,
@@ -108,5 +114,9 @@
                 ;
             });
         };
+
+        function showPagination() {
+            return angular.isArray($scope.adTags) && $scope.adTags.length > $scope.tableConfig.itemsPerPage;
+        }
     }
 })();

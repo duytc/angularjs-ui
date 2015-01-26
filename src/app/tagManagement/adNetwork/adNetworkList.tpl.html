@@ -11,34 +11,34 @@
     </div>
     <div class="panel-body" ng-if="hasData()">
         <div>
-            <table class="table table-hover ng-table-responsive" ng-table="tableParams" show-filter="true">
-                <tr ng-repeat="adNetwork in $data">
-                    <td data-title="'#'" sortable="'id'">
-                        {{ adNetwork.id }}
-                    </td>
-                    <td data-title="'Actions'">
+            <table class="table table-hover ng-table-responsive" at-table at-paginated at-list="adNetworks" at-config="tableConfig">
+                <thead></thead>
+                <tbody>
+                <tr>
+                    <td at-title="#" at-implicit at-sortable at-attribute="id" at-initial-sorting="asc"></td>
+                    <td at-title="Active">
                         <div class="btn-group" dropdown>
-                            <button type="button" class="btn" dropdown-toggle> Actions <span class="caret"></span> </button>
+                            <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a ng-click="toggleAdNetworkStatus(adNetwork)">{{ adNetwork.active ? 'Pause' : 'Activate' }} Ad Network</a></li>
-                                <li><a ng-click="openListSitesForAdNetwork(adNetwork)">Pause Ad Network by Sites</a></li>
-                                <li><a ui-sref="^.edit({ id: adNetwork.id })">Edit Ad Network</a></li>
-                                <li ng-if="adNetwork.url" class="divider"></li>
-                                <li ng-if="adNetwork.url"><a ng-href="{{ adNetwork.url }}" target="_blank">Visit Ad Network</a></li>
+                                <li><a ng-click="toggleAdNetworkStatus(item)">{{ item.active ? 'Pause' : 'Activate' }} Ad Network</a></li>
+                                <li><a ng-click="openListSitesForAdNetwork(item)">Pause Ad Network by Sites</a></li>
+                                <li><a ui-sref="^.edit({ id: item.id })">Edit Ad Network</a></li>
+                                <li ng-if="item.url" class="divider"></li>
+                                <li ng-if="item.url"><a ng-href="{{ item.url }}" target="_blank">Visit Ad Network</a></li>
                             </ul>
                         </div>
                     </td>
-                    <td ng-show="isAdmin()" data-title="'Publisher'" sortable="'publisher.username'" filter="{ 'publisher.username': 'text' }">
-                        {{ adNetwork.publisher.username }}
-                    </td>
-                    <td data-title="'Name'" sortable="'name'" filter="{ 'name': 'text' }">
-                        {{ adNetwork.name }}
-                    </td>
-                    <td data-title="'Status'">
-                        <span class="label" ng-class="adNetwork.active ? 'label-success' : 'label-danger'">{{ adNetwork.active ? 'Active' : 'Paused' }}</span>
+                    <td ng-show="isAdmin()" at-title="Publisher" at-implicit at-sortable at-attribute="publisher.username"></td>
+                    <td at-title="Name" at-implicit at-sortable at-attribute="name"></td>
+                    <td at-title="Username" at-implicit at-sortable at-attribute="publisher.username"></td>
+                    <td at-title="Status" at-sortable at-attribute="status">
+                        <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
                     </td>
                 </tr>
+                </tbody>
             </table>
+
+            <at-pagination ng-if="showPagination()" at-list="adNetworks" at-config="tableConfig"></at-pagination>
         </div>
     </div>
 </div>

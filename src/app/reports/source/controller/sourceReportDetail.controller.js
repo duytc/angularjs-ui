@@ -21,6 +21,7 @@
 
         $scope.query = {};
         $scope.tableConfig = {
+            maxPages: 10,
             itemsPerPage: 10
         };
 

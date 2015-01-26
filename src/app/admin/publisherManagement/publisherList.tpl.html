@@ -10,47 +10,37 @@
         </div>
     </div>
     <div class="panel-body">
-        <table class="table table-hover ng-table-responsive" ng-table="tableParams" show-filter="true">
-            <tr ng-repeat="publisher in $data">
-                <td data-title="'#'" sortable="'id'">
-                    {{ publisher.id }}
-                </td>
-                <td data-title="'Actions'">
+        <table class="table ng-table-responsive" at-table at-paginated at-list="publishers" at-config="tableConfig">
+            <thead></thead>
+            <tbody>
+            <tr>
+                <td at-title="#" at-implicit at-sortable at-attribute="id" at-initial-sorting="asc"></td>
+                <td at-title="Active">
                     <div class="btn-group" dropdown>
                         <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a ui-sref="^.edit({ id: publisher.id })">Edit Publisher</a></li>
+                            <li><a ui-sref="^.edit({ id: item.id })">Edit Publisher</a></li>
                         </ul>
                     </div>
                 </td>
-
-                <td data-title="'Name'">
-                    {{ publisher.firstName + " " + publisher.lastName}}
+                <td at-title="Name" at-sortable>
+                    {{ item.firstName + " " + item.lastName}}
                 </td>
-
-                <td data-title="'Username'" sortable="'username'" filter="{ 'username': 'text' }">
-                    {{ publisher.username }}
+                <td at-title="Username" at-implicit at-sortable at-attribute="username"></td>
+                <td at-title="Company" at-implicit at-sortable at-attribute="company"></td>
+                <td at-title="Email" at-implicit at-sortable at-attribute="email"></td>
+                <td at-title="Phone" at-implicit at-sortable at-attribute="phone"></td>
+                <td at-title="Last Login" at-sortable at-attribute="lastLogin">
+                    {{ item.lastLogin | date }}
                 </td>
-
-                <td data-title="'Company'">
-                    {{ publisher.company }}
-                </td>
-
-                <td data-title="'Email'">
-                    {{ publisher.email }}
-                </td>
-
-                <td data-title="'Phone'">
-                    {{ publisher.phone }}
-                </td>
-
-                <td data-title="'Last Login'">
-                    {{ publisher.lastLogin | date }}
-                </td>
-                <td data-title="'Enabled'">
-                    <i class="fa" ng-class="publisher.enabled ? 'fa-check-square' : 'fa-square'"></i>
+                <td at-title="Enabled" at-sortable at-attribute="enabled">
+                    <i class="fa" ng-class="item.enabled ? 'fa-check-square' : 'fa-square'"></i>
                 </td>
             </tr>
+            </tbody>
         </table>
+
+        <at-pagination ng-if="showPagination()" at-list="publishers" at-config="tableConfig"></at-pagination>
+    </div>
     </div>
 </div>

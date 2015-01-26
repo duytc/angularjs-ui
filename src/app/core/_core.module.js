@@ -40,10 +40,8 @@
         'angular-loading-bar',
         'ui.bootstrap',
         'ui.select',
-        'ngTable',
         'highcharts-ng',
         'angular-table',
-        'ngCsv',
         'currencyFilter'
     ]);
 

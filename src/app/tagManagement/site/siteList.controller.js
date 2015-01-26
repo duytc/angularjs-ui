@@ -5,11 +5,11 @@
         .controller('SiteList', SiteList)
     ;
 
-    function SiteList($scope, $filter, $modal, AlertService, SiteManager, ngTableParams, TableParamsHelper, sites) {
-        var data = sites;
+    function SiteList($scope, $modal, AlertService, SiteManager, sites) {
+        $scope.sites = sites;
 
         $scope.hasData = function () {
-            return !!data.length;
+            return !!sites.length;
         };
 
         if (!$scope.hasData()) {
@@ -19,28 +19,11 @@
             });
         }
 
-        $scope.tableParams = new ngTableParams( // jshint ignore:line
-            {
-                page: 1,
-                count: 10,
-                sorting: {
-                    name: 'asc'
-                }
-            },
-            {
-                total: data.length,
-                getData: function($defer, params) {
-                    var filters = TableParamsHelper.getFilters(params.filter());
-
-                    var filteredData = params.filter() ? $filter('filter')(data, filters) : data;
-                    var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
-                    var paginatedData = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-
-                    params.total(orderedData.length);
-                    $defer.resolve(paginatedData);
-                }
-            }
-        );
+        $scope.showPagination = showPagination;
+        $scope.tableConfig = {
+            itemsPerPage: 10,
+            maxPages: 10
+        };
 
         $scope.confirmDeletion = function (site, index) {
             var modalInstance = $modal.open({
@@ -51,10 +34,10 @@
                 return SiteManager.one(site.id).remove()
                     .then(
                         function () {
-                            var index = data.indexOf(site);
+                            var index = sites.indexOf(site);
 
                             if (index > -1) {
-                                data.splice(index, 1);
+                                sites.splice(index, 1);
                                 $scope.tableParams.reload(); // refresh ng-table
                             }
 
@@ -73,5 +56,9 @@
                 ;
             });
         };
+
+        function showPagination() {
+            return angular.isArray($scope.sites) && $scope.sites.length > $scope.tableConfig.itemsPerPage;
+        }
     }
 })();
