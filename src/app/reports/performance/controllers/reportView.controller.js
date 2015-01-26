@@ -166,19 +166,28 @@
             })
         }
 
+//        function getExportExcelFileName() {
+//            var reportType = reportGroup.reportType || {};
+//            var isArray = angular.isArray(reportType);
+//            var reportTypeString =  isArray ? (reportType.shift().reportType + 's'): reportType.reportType;
+//            if (isArray ) {
+//                var reportName = reportGroup.name || '';
+//                reportName = reportName.replace(/\./g, "-");
+//                reportTypeString = reportTypeString.replace(/\./g, "-" + reportName + '-');
+//            }
+//            else{
+//                var reportName = reportGroup.name || '';
+//                reportTypeString = reportTypeString.replace(/\./g, "-") + '-' + reportName;
+//            }
+//
+//            return 'tagcade-report-' + reportTypeString + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.startDate)) + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.endDate));
+//        }
+
         function getExportExcelFileName() {
             var reportType = reportGroup.reportType || {};
-            var isArray = angular.isArray(reportType);
-            var reportTypeString =  isArray ? (reportType.shift().reportType + 's'): reportType.reportType;
-            if (isArray ) {
-                var reportName = reportGroup.name || '';
-                reportName = reportName.replace(/\./g, "-");
-                reportTypeString = reportTypeString.replace(/\./g, "-" + reportName + '-');
-            }
-            else{
-                var reportName = reportGroup.name || '';
-                reportTypeString = reportTypeString.replace(/\./g, "-") + '-' + reportName;
-            }
+            var reportTypeString =  angular.isArray(reportType) ? (reportType.shift().reportType): reportType.reportType;
+
+            reportTypeString = reportTypeString.replace(/\./g, "-");
 
             return 'tagcade-report-' + reportTypeString + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.startDate)) + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.endDate));
         }
