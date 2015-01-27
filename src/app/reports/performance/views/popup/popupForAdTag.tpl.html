@@ -7,7 +7,7 @@
         <thead>
         <tr>
             <th>Ad Tag</th>
-            <th>Ad Slot(width x height)</th>
+            <th>Ad Slot</th>
             <th>Site</th>
             <th ng-show="isAdmin">Publisher</th>
             <th>Position</th>
@@ -17,7 +17,7 @@
         <tbody>
         <tr>
             <td>{{ data.name }}</td>
-            <td>{{ data.adSlot.name + '(' + data.adSlot.width + 'x' + data.adSlot.height + ')'}}</td>
+            <td>{{ data.adSlot.name }} ({{ data.adSlot.width }} x {{ data.adSlot.height }})</td>
             <td>{{ data.adSlot.site.name }}</td>
             <td ng-show="isAdmin">{{ data.adSlot.site.publisher.username }}</td>
             <td>{{ data.position }}</td>
