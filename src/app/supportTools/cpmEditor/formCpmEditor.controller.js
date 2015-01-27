@@ -50,7 +50,7 @@
                         $modalInstance.close();
                         AlertService.addAlert({
                             type: 'success',
-                            message: 'CPM is updated successfully.'
+                            message: 'The CPM has been updated'
                         });
                     })
                     .catch(
@@ -58,7 +58,7 @@
                         $modalInstance.close();
                         AlertService.addAlert({
                             type: 'error',
-                            message: 'some error occurs. CPM is not updated.'
+                            message: 'An error occurred. The CPM could not be updated'
                         });
                     });
             });

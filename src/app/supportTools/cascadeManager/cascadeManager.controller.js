@@ -66,7 +66,7 @@
                     function () {
                         AlertService.addAlert({
                             type: 'success',
-                            message: 'The new ad network position has been updated'
+                            message: 'The ad network position has been updated'
                         });
                     }
                 )

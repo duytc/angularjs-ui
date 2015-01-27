@@ -167,7 +167,7 @@
                 .catch(function(error) {
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'An error occurred while trying to request dashboard'
+                        message: 'An error occurred while trying to request the dashboard'
                     });
                 })
             ;

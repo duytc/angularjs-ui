@@ -52,7 +52,7 @@
                 .catch(function(error) {
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'An error occurred while doing request'
+                        message: 'An error occurred during the request'
                     });
                 })
             ;
