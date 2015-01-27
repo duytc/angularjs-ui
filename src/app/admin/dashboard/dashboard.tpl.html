@@ -16,7 +16,7 @@
 </div>
 
 <!--statistics-->
-<div class="row">
+<div class="row" ng-if="hasData()">
     <div class="col-lg-6">
         <report-statistics-admin info="dataDashboard.platformStatistics"></report-statistics-admin>
     </div>
@@ -27,7 +27,7 @@
 <!--statistics ./end-->
 
 <!--chart-->
-<div class="panel panel-default daily-reports">
+<div class="panel panel-default daily-reports" ng-if="hasData()">
     <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Daily Overview</div>
     <div class="row">
         <div class="col-md-12">
@@ -44,7 +44,7 @@
 
 <!--table top-->
 <!--chart-->
-<div class="panel panel-default daily-reports">
+<div class="panel panel-default daily-reports" ng-if="hasData()">
     <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Top Publishers</div>
     <div class="row">
         <div class="col-lg-12">

@@ -5,7 +5,7 @@
         .controller('popupReportController', popupReportController)
     ;
 
-    function popupReportController($scope, $modal, $modalInstance, data, UserStateHelper, Auth, reportGroup) {
+    function popupReportController($scope, $modal, $modalInstance, data, AdTagManager, AdNetworkManager, UserStateHelper, Auth, reportGroup) {
         $scope.isAdmin = Auth.isAdmin();
 
         $scope.data = data;
@@ -20,14 +20,27 @@
             ;
         }
 
-        function openUpdateCpm() {
+        function openUpdateCpm(type) {
             $modal.open({
-                templateUrl: 'supportTools/cpmEditor/formCpmEditorForAdTag.tpl.html',
+                templateUrl: function() {
+                    if(type == 'adTag') {
+                        return 'supportTools/cpmEditor/formCpmEditorForAdTag.tpl.html';
+                    }
+
+                    return 'supportTools/cpmEditor/formCpmEditorForAdNetwork.tpl.html';
+                },
                 size : 'lg',
                 controller: 'FormCpmEditor',
                 resolve: {
-                    adTag: function () {
+                    data: function () {
                         return data;
+                    },
+                    Manager: function() {
+                        if(type == 'adTag') {
+                            return AdTagManager;
+                        }
+
+                        return AdNetworkManager;
                     },
                     startDate : function() {
                         return reportGroup.startDate;

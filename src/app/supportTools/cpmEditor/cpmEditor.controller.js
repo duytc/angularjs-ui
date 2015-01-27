@@ -5,7 +5,7 @@
         .controller('CpmEditor', CpmEditor)
     ;
 
-    function CpmEditor($scope, $modal, $filter, publishers, adNetworks, AdNetworkManager, ngTableParams, TableParamsHelper, AdTagManager, userSession, Auth, UISelectMethod) {
+    function CpmEditor($scope, $modal, publishers, AdTagManager, adNetworks, AdNetworkManager, userSession, Auth, UISelectMethod) {
         $scope.publishers = publishers;
         $scope.adNetworks = null;
         $scope.sites = null;
@@ -22,7 +22,13 @@
             adNetwork : null
         };
 
-        $scope.openBoxCpmEditorForAdTag = openBoxCpmEditorForAdTag;
+        $scope.showPagination = showPagination;
+        $scope.tableConfig = {
+            itemsPerPage: 10,
+            maxPages: 10
+        };
+
+        $scope.openUpdateCpm = openUpdateCpm;
         $scope.selectPublisher = selectPublisher;
         $scope.selectAdNetwork = selectAdNetwork;
         $scope.groupEntities = UISelectMethod.groupEntities;
@@ -52,8 +58,6 @@
         }
 
         function getListAdTag() {
-            delete $scope.tableParamsForAdTags;
-
             if(!isAdmin) {
                 $scope.selected.publisher = userSession.id;
             }
@@ -61,54 +65,30 @@
             if(!$scope.selected.site) {
                 AdNetworkManager.one($scope.selected.adNetwork).one('adtags').one('active').getList()
                     .then(function (data) {
-                        var adTags = data.plain();
-                        $scope.tableParamsForAdTags = tableParamsForAdTags(adTags);
+                        $scope.adTags = data.plain();
                     })
                 ;
             }
             else {
                 AdNetworkManager.one($scope.selected.adNetwork).one('sites', $scope.selected.site).one('adtags').one('active').getList()
                     .then(function (data) {
-                        var adTags = data.plain();
-                        $scope.tableParamsForAdTags = tableParamsForAdTags(adTags);
+                        $scope.adTags = data.plain();
                     })
                 ;
             }
         }
 
-        function tableParamsForAdTags(adTags) {
-            return new ngTableParams(
-                {
-                    page: 1,
-                    count: 10,
-                    sorting: {
-                        name: 'asc'
-                    }
-                },
-                {
-                    total: adTags.length,
-                    getData: function($defer, params) {
-                        var filters = TableParamsHelper.getFilters(params.filter());
-
-                        var filteredData = params.filter() ? $filter('filter')(adTags, filters) : adTags;
-                        var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
-                        var paginatedData = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-
-                        params.total(orderedData.length);
-                        $defer.resolve(paginatedData);
-                    }
-                }
-            );
-        }
-
-        function openBoxCpmEditorForAdTag(adTag) {
+        function openUpdateCpm(data) {
             $modal.open({
                 templateUrl: 'supportTools/cpmEditor/formCpmEditorForAdTag.tpl.html',
                 size : 'lg',
                 controller: 'FormCpmEditor',
                 resolve: {
-                    adTag: function () {
-                        return adTag;
+                    data: function () {
+                        return data;
+                    },
+                    Manager: function() {
+                        return AdTagManager;
                     },
                     startDate : function() {
                         return null;
@@ -120,5 +100,8 @@
             })
         }
 
+        function showPagination() {
+            return angular.isArray($scope.adTags) && $scope.adTags.length > $scope.tableConfig.itemsPerPage;
+        }
     }
 })();

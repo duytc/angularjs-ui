@@ -147,14 +147,33 @@
             UserStateHelper.transitionRelativeToBaseState(baseState, params)
         }
 
-        function openUpdateCpm(data) {
+        function openUpdateCpm(data, type) {
             $modal.open({
-                templateUrl: 'supportTools/cpmEditor/formCpmEditorForAdTag.tpl.html',
+                templateUrl: function() {
+                    if(type == 'adTag') {
+                        return 'supportTools/cpmEditor/formCpmEditorForAdTag.tpl.html';
+                    }
+
+                    return 'supportTools/cpmEditor/formCpmEditorForAdNetwork.tpl.html';
+                },
                 size : 'lg',
                 controller: 'FormCpmEditor',
                 resolve: {
-                    adTag: function () {
-                        return AdTagManager.one(data.reportType.adTagId).get();
+                    data: function () {
+                        var dataReport = data.reportType == null ? data : data.reportType;
+
+                        if(type == 'adTag') {
+                            return AdTagManager.one(dataReport.adTagId).get();
+                        }
+
+                        return AdNetworkManager.one(dataReport.adNetworkId).get();
+                    },
+                    Manager: function() {
+                        if(type == 'adTag') {
+                            return AdTagManager;
+                        }
+
+                        return AdNetworkManager;
                     },
                     startDate : function() {
                         return reportGroup.startDate;
@@ -165,23 +184,6 @@
                 }
             })
         }
-
-//        function getExportExcelFileName() {
-//            var reportType = reportGroup.reportType || {};
-//            var isArray = angular.isArray(reportType);
-//            var reportTypeString =  isArray ? (reportType.shift().reportType + 's'): reportType.reportType;
-//            if (isArray ) {
-//                var reportName = reportGroup.name || '';
-//                reportName = reportName.replace(/\./g, "-");
-//                reportTypeString = reportTypeString.replace(/\./g, "-" + reportName + '-');
-//            }
-//            else{
-//                var reportName = reportGroup.name || '';
-//                reportTypeString = reportTypeString.replace(/\./g, "-") + '-' + reportName;
-//            }
-//
-//            return 'tagcade-report-' + reportTypeString + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.startDate)) + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.endDate));
-//        }
 
         function getExportExcelFileName() {
             var reportType = reportGroup.reportType || {};

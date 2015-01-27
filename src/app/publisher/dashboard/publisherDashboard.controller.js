@@ -8,6 +8,11 @@
 
     function PublisherDashboard($scope, dataDashboard, DateFormatter, $filter, $stateParams, UserStateHelper, AlertService, userSession) {
         $scope.dataDashboard = dataDashboard;
+
+        $scope.hasData = function () {
+            return dataDashboard.accountStatistics != null;
+        };
+
         var reportDetails = dataDashboard.accountStatistics == null ? [] : (dataDashboard.accountStatistics.reports).reverse();
 
         $scope.generateDashboard = generateDashboard;
@@ -22,6 +27,7 @@
         $scope.datePickerOpts = {
             maxDate:  moment().endOf('day'),
             ranges: {
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
                 'This Month': [moment().startOf('month'), moment().endOf('month')],
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
@@ -31,15 +37,12 @@
         var rowCount = 10;
         $scope.configTopSites = {
             itemsPerPage: rowCount,
-            maxPages: 10,
-            fillLastPage: 'no'
+            maxPages: 10
         };
 
         $scope.configTopAdNetworks = {
             itemsPerPage: rowCount,
-            fillLastPage: 'no',
-            maxPages: 10,
-            noSlotOpp : true
+            maxPages: 10
         };
 
         function chartConfigRevenue(reportDetails){

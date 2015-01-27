@@ -5,8 +5,8 @@
         .controller('FormCpmEditor', FormCpmEditor)
     ;
 
-    function FormCpmEditor($scope, adTag, AdTagManager, $modalInstance, $modal, DateFormatter, AlertService, startDate, endDate) {
-        $scope.adTag = adTag;
+    function FormCpmEditor($scope, $modalInstance, data, Manager, DateFormatter, AlertService, startDate, endDate) {
+        $scope.data = data;
 
         $scope.isFormValid = isFormValid;
         $scope.submit = submit;
@@ -36,32 +36,26 @@
         }
 
         function submit(date, CPM) {
-            var confirmUpdate = $modal.open({
-                templateUrl: 'supportTools/cpmEditor/confirmUpdateForAdTag.tpl.html'
-            });
-
-            confirmUpdate.result.then(function () {
-                var start = DateFormatter.getFormattedDate(date.startDate);
-                var end = DateFormatter.getFormattedDate(date.endDate);
-                var request = AdTagManager.one(adTag.id).customPUT('', 'estcpm', { startDate : start, endDate : end, estCpm : CPM });
-                request
-                    .then(
-                    function () {
-                        $modalInstance.close();
-                        AlertService.addAlert({
-                            type: 'success',
-                            message: 'The CPM has been updated'
-                        });
-                    })
-                    .catch(
-                    function () {
-                        $modalInstance.close();
-                        AlertService.addAlert({
-                            type: 'error',
-                            message: 'An error occurred. The CPM could not be updated'
-                        });
+            var start = DateFormatter.getFormattedDate(date.startDate);
+            var end = DateFormatter.getFormattedDate(date.endDate);
+            var request = Manager.one(data.id).customPUT('', 'estcpm', { startDate : start, endDate : end, estCpm : CPM });
+            request
+                .then(
+                function () {
+                    $modalInstance.close();
+                    AlertService.addAlert({
+                        type: 'success',
+                        message: 'The CPM has been updated'
                     });
-            });
+                })
+                .catch(
+                function () {
+                    $modalInstance.close();
+                    AlertService.addAlert({
+                        type: 'error',
+                        message: 'An error occurred. The CPM could not be updated'
+                    });
+                });
         }
     }
 })();
