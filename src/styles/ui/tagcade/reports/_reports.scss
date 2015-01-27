@@ -12,6 +12,14 @@
 }
 
 .panel.daily-reports {
+    .table-hover {
+        tr:hover {
+            td.name {
+                text-decoration: underline;
+            }
+        }
+    }
+
     .table-footer {
         padding: 0 20px;
     }
