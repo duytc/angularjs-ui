@@ -12,6 +12,10 @@
     top: 2px;
 }
 
+.panel-tag-generator .media-body {
+    display: block;
+}
+
 .form-horizontal .form-group {
     @media (min-width: $screen-sm) {
         .ui-checkbox,
