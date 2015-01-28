@@ -14,7 +14,7 @@
         reportGroup = reportGroup || {};
 
         $scope.reportGroup = reportGroup;
-        $scope.reports = $scope.reportGroup.reports || [];
+        $scope.reports = $state.current.params.expanded ? (reportGroup.expandedReports || []) : ($scope.reportGroup.reports || []);
 
         $scope.getExportExcelFileName = getExportExcelFileName();
 

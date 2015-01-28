@@ -224,6 +224,7 @@
                 url: '/sites/{siteId:int}/adTags?{startDate:date}&{endDate:date}',
                 params: {
                     endDate: null,
+                    expanded: true,
                     uniqueRequestCacheBuster: null
                 },
                 views: {
@@ -284,6 +285,7 @@
                 url: '/adSlots/{adSlotId:int}/adTags?{startDate:date}&{endDate:date}',
                 params: {
                     endDate: null,
+                    expanded: true,
                     uniqueRequestCacheBuster: null
                 },
                 views: {
