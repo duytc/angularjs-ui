@@ -95,7 +95,7 @@
                 return $q.reject(new Error('Invalid initial params supplied'));
             }
 
-            params = _.omit(params, ['reportType', 'uniqueRequestCacheBuster']);
+            params = _.omit(params, ['reportType', 'uniqueRequestCacheBuster', 'adSlotBreakdown', 'siteBreakdown', 'adNetworkBreakdown']);
 
             return $q.when(fetcher(params)).catch(function(response) {
                 if (response.status == 404) {
