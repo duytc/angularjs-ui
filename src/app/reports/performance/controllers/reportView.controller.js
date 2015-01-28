@@ -148,20 +148,22 @@
         }
 
         function openUpdateCpm(data, type) {
+            var dataReport = data.reportType == null ? data : data.reportType;
+
             $modal.open({
                 templateUrl: function() {
                     if(type == 'adTag') {
-                        return 'supportTools/cpmEditor/formCpmEditorForAdTag.tpl.html';
+                        return 'supportTools/cpmEditor/views/formCpmEditorForAdTag.tpl.html';
+                    }
+                    if(type == 'site') {
+                        return 'supportTools/cpmEditor/views/formCpmEditorForSite.tpl.html';
                     }
 
-                    return 'supportTools/cpmEditor/formCpmEditorForAdNetwork.tpl.html';
+                    return 'supportTools/cpmEditor/views/formCpmEditorForAdNetwork.tpl.html';
                 },
-                size : 'lg',
                 controller: 'FormCpmEditor',
                 resolve: {
-                    data: function () {
-                        var dataReport = data.reportType == null ? data : data.reportType;
-
+                    cpmData: function () {
                         if(type == 'adTag') {
                             return AdTagManager.one(dataReport.adTagId).get();
                         }
@@ -170,10 +172,13 @@
                     },
                     Manager: function() {
                         if(type == 'adTag') {
-                            return AdTagManager;
+                            return AdTagManager.one(dataReport.adTagId);
+                        }
+                        if(type == 'site') {
+                            return AdNetworkManager.one(dataReport.adNetworkId).one('sites', dataReport.siteId);
                         }
 
-                        return AdNetworkManager;
+                        return AdNetworkManager.one(dataReport.adNetworkId);
                     },
                     startDate : function() {
                         return reportGroup.startDate;

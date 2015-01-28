@@ -1,0 +1,51 @@
+<section id="performance-report-selector" class="panel panel-default">
+    <div class="panel-body">
+        <form name="cpmSelectorForm" class="form-inline" role="form" ng-submit="getList()" novalidate>
+            <div class="report-type form-group">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>Update For</label>
+                        <ui-select name="updateTypes" ng-model="selectedData.updateTypes" ng-required="true" on-select="selectUpdateTypes($item)">
+                            <ui-select-match placeholder="Select a update type">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices repeat="type in updateTypesOptions | filter: $select.search">
+                                <div ng-bind-html="type.label | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="publisher form-group" ng-if="showPublisherSelect()">
+                <label>Publisher</label>
+                <ui-select name="publisher" ng-model="selectedData.publisherId" ng-required="true" ng-disabled="!optionData.publishers.length" on-select="selectPublisher()">
+                    <ui-select-match placeholder="Select a publisher">{{ $select.selected.username }}</ui-select-match>
+                    <ui-select-choices group-by="groupEntities" repeat="publisher.id as publisher in optionData.publishers | filter: $select.search">
+                        <div ng-bind-html="publisher.username | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="site form-group" ng-if="optionData.sites.length && selectUpdateTypesis(updateTypes.adTag)">
+                <label>Site</label>
+                <ui-select name="site" ng-model="selectedData.siteId" ng-required="true" ng-disabled="!optionData.sites.length">
+                    <ui-select-match placeholder="Select a site">{{ $select.selected.name }}</ui-select-match>
+                    <ui-select-choices repeat="site.id as site in optionData.sites | filter: $select.search | selectedPublisher:selectedData.publisherId">
+                        <div ng-bind-html="site.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="site form-group" ng-if="optionData.adNetworks.length && selectUpdateTypesis(updateTypes.site)">
+                <label>Ad Network</label>
+                <ui-select name="adNetwork" ng-model="selectedData.adNetworkId" ng-required="true" ng-disabled="!optionData.adNetworks.length">
+                    <ui-select-match placeholder="Select a ad network">{{ $select.selected.name }}</ui-select-match>
+                    <ui-select-choices repeat="adNetwork.id as adNetwork in optionData.adNetworks | filter: $select.search | selectedPublisher:selectedData.publisherId">
+                        <div ng-bind-html="adNetwork.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <button ng-disabled="!isFormValid()" type="submit" class="btn btn-primary">Get List</button>
+        </form>
+    </div>
+</section>

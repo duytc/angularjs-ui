@@ -5,8 +5,8 @@
         .controller('FormCpmEditor', FormCpmEditor)
     ;
 
-    function FormCpmEditor($scope, $modalInstance, data, Manager, DateFormatter, AlertService, startDate, endDate) {
-        $scope.data = data;
+    function FormCpmEditor($scope, $modalInstance, cpmData, Manager, DateFormatter, AlertService, startDate, endDate) {
+        $scope.cpmData = cpmData;
 
         $scope.isFormValid = isFormValid;
         $scope.submit = submit;
@@ -38,14 +38,14 @@
         function submit(date, CPM) {
             var start = DateFormatter.getFormattedDate(date.startDate);
             var end = DateFormatter.getFormattedDate(date.endDate);
-            var request = Manager.one(data.id).customPUT('', 'estcpm', { startDate : start, endDate : end, estCpm : CPM });
+            var request = Manager.customPUT('', 'estcpm', { startDate : start, endDate : end, estCpm : CPM });
             request
                 .then(
                 function () {
                     $modalInstance.close();
                     AlertService.addAlert({
                         type: 'success',
-                        message: 'The CPM has been updated'
+                        message: 'Your command is processing. The CPM will be update shortly.'
                     });
                 })
                 .catch(

@@ -1,0 +1,29 @@
+<div class="row" ng-if="dataList.length">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+
+            <table class="table table-hover ng-table-responsive" at-table at-paginated at-list="dataList" at-config="tableConfig">
+                <thead></thead>
+                <tbody>
+                <tr>
+                    <td at-title="#" at-implicit at-sortable at-attribute="id" at-initial-sorting="asc"></td>
+                    <td at-title="Actions">
+                        <div class="btn-group" dropdown>
+                            <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a ng-click="openUpdateCpm(item, 'adTag')">Update Cpm</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td at-title="Ad Tag" at-implicit at-sortable at-attribute="name"></td>
+                    <td at-title="Ad Network" at-implicit at-sortable at-attribute="adNetwork.name"></td>
+                    <td at-title="Site" at-implicit at-sortable at-attribute="adSlot.site.name"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <at-pagination ng-if="showPagination()" at-list="data" at-config="tableConfig"></at-pagination>
+        </div>
+    </div>
+</div>
+</div>

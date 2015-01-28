@@ -24,23 +24,22 @@
             $modal.open({
                 templateUrl: function() {
                     if(type == 'adTag') {
-                        return 'supportTools/cpmEditor/formCpmEditorForAdTag.tpl.html';
+                        return 'supportTools/cpmEditor/views/formCpmEditorForAdTag.tpl.html';
                     }
 
-                    return 'supportTools/cpmEditor/formCpmEditorForAdNetwork.tpl.html';
+                    return 'supportTools/cpmEditor/views/formCpmEditorForAdNetwork.tpl.html';
                 },
-                size : 'lg',
                 controller: 'FormCpmEditor',
                 resolve: {
-                    data: function () {
+                    cpmData: function () {
                         return data;
                     },
                     Manager: function() {
                         if(type == 'adTag') {
-                            return AdTagManager;
+                            return AdTagManager.one(data.id);
                         }
 
-                        return AdNetworkManager;
+                        return AdNetworkManager.one(data.id);
                     },
                     startDate : function() {
                         return reportGroup.startDate;

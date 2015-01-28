@@ -8,56 +8,90 @@
     function addStates(UserStateHelperProvider, $stateProvider) {
         UserStateHelperProvider
             .state('supportTools.cpmEditor', {
-                abstract: true,
                 url: '/CpmEditor',
-                ncyBreadcrumb: {
-                    skip: true
-                }
-            })
-        ;
-
-        $stateProvider
-            .state('app.admin.supportTools.cpmEditor.platform', {
-            url: '/platform',
-            views: {
-                'content@app': {
-                    controller: 'CpmEditor',
-                    templateUrl: 'supportTools/cpmEditor/cpmEditor.tpl.html'
-                }
-            },
-            resolve: {
-                publishers: function(adminUserManager) {
-                    return adminUserManager.getList();
-                },
-                adNetworks: function(AdNetworkManager) {
-                    return AdNetworkManager.getList();
-                }
-            },
-            ncyBreadcrumb: {
-                label: 'AdTags'
-            }
-            })
-        ;
-
-        $stateProvider
-            .state('app.publisher.supportTools.cpmEditor.account', {
-                url: '/account',
                 views: {
                     'content@app': {
+                        templateUrl: 'supportTools/cpmEditor/views/cpmEditor.tpl.html'
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'CPM Editor'
+                }
+            })
+        ;
+
+        $stateProvider
+            .state('app.admin.supportTools.cpmEditor.adNetworks', {
+                url: '/adNetworks/{publisherId:int}',
+                views: {
+                    'cpmEditor': {
                         controller: 'CpmEditor',
-                        templateUrl: 'supportTools/cpmEditor/cpmEditor.tpl.html'
+                        templateUrl: 'supportTools/cpmEditor/views/adNetworkList.tpl.html'
                     }
                 },
                 resolve: {
-                    publishers: function() {
-                        return null;
-                    },
-                    adNetworks: function(AdNetworkManager) {
-                        return AdNetworkManager.getList();
+                    dataList: function(cpmEditorService, $stateParams, CPM_EDITOR_TYPES) {
+                        return cpmEditorService.getAdNetworkForAdmin($stateParams, {
+                            updateTypes: CPM_EDITOR_TYPES.adNetwork
+                        });
+                    }
+                }
+            })
+        ;
+
+        $stateProvider
+            .state('app.publisher.supportTools.cpmEditor.adNetworks', {
+                url: '/adNetworks',
+                views: {
+                    'cpmEditor': {
+                        controller: 'CpmEditor',
+                        templateUrl: 'supportTools/cpmEditor/views/adNetworkList.tpl.html'
                     }
                 },
-                ncyBreadcrumb: {
-                    label: 'AdTags'
+                resolve: {
+                    dataList: function(cpmEditorService, CPM_EDITOR_TYPES) {
+                        return cpmEditorService.getAdNetworkForPublisher({
+                            updateTypes: CPM_EDITOR_TYPES.adNetwork
+                        });
+                    }
+                }
+            })
+        ;
+
+        UserStateHelperProvider
+            .state('supportTools.cpmEditor.adTags', {
+                url: '/site/{siteId:int}/adtags',
+                views: {
+                    'cpmEditor': {
+                        controller: 'CpmEditor',
+                        templateUrl: 'supportTools/cpmEditor/views/adTagList.tpl.html'
+                    }
+                },
+                resolve: {
+                    dataList: function(cpmEditorService, $stateParams, CPM_EDITOR_TYPES) {
+                        return cpmEditorService.getAdTag($stateParams, {
+                            updateTypes: CPM_EDITOR_TYPES.adTag
+                        });
+                    }
+                }
+            })
+        ;
+
+        UserStateHelperProvider
+            .state('supportTools.cpmEditor.sites', {
+                url: '/adNetwork/{adNetworkId:int}/sites',
+                views: {
+                    cpmEditor: {
+                        controller: 'CpmEditor',
+                        templateUrl: 'supportTools/cpmEditor/views/siteList.tpl.html'
+                    }
+                },
+                resolve: {
+                    dataList: function(cpmEditorService, $stateParams, CPM_EDITOR_TYPES) {
+                        return cpmEditorService.getSite($stateParams, {
+                            updateTypes: CPM_EDITOR_TYPES.site
+                        });
+                    }
                 }
             })
         ;
