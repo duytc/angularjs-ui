@@ -168,6 +168,10 @@
                             return AdTagManager.one(dataReport.adTagId).get();
                         }
 
+                        if(type == 'site') {
+                            return SiteManager.one(dataReport.siteId).get();
+                        }
+
                         return AdNetworkManager.one(dataReport.adNetworkId).get();
                     },
                     Manager: function() {

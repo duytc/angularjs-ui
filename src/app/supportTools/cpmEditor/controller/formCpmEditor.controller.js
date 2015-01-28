@@ -45,7 +45,7 @@
                     $modalInstance.close();
                     AlertService.addAlert({
                         type: 'success',
-                        message: 'Your command is processing. The CPM will be update shortly.'
+                        message: 'The CPM value has been scheduled for updating'
                     });
                 })
                 .catch(
@@ -53,7 +53,7 @@
                     $modalInstance.close();
                     AlertService.addAlert({
                         type: 'error',
-                        message: 'An error occurred. The CPM could not be updated'
+                        message: 'An error occurred. The CPM value could not be updated'
                     });
                 });
         }
