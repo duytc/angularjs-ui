@@ -17,6 +17,10 @@
             adNetworkId: null
         };
 
+        if(!isAdmin) {
+            selectedData.publisherId = true;
+        }
+
         $scope.selectedData = selectedData;
 
         $scope.optionData = {

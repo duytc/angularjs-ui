@@ -5,8 +5,15 @@
         .controller('CpmEditor', CpmEditor)
     ;
 
-    function CpmEditor($scope, $modal, $stateParams, dataList, AdTagManager, AdNetworkManager) {
+    function CpmEditor($scope, $modal, $stateParams, dataList, AdTagManager, AdNetworkManager, AlertService) {
         $scope.dataList = dataList;
+
+        if(!$scope.dataList.length) {
+            AlertService.addAlert({
+                type: 'warning',
+                message: 'There are no items for that selection'
+            });
+        }
 
         $scope.showPagination = showPagination;
         $scope.tableConfig = {

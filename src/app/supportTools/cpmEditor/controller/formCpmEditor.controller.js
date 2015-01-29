@@ -36,8 +36,11 @@
         }
 
         function submit(date, CPM) {
+            AlertService.removeAlert();
+
             var start = DateFormatter.getFormattedDate(date.startDate);
             var end = DateFormatter.getFormattedDate(date.endDate);
+
             var request = Manager.customPUT('', 'estcpm', { startDate : start, endDate : end, estCpm : CPM });
             request
                 .then(
