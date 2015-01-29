@@ -7,7 +7,7 @@
                     <label class="col-sm-2 control-label">Update CPM For</label>
                     <div class="col-sm-10">
                         <ui-select name="updateTypes" ng-model="selectedData.updateTypes" ng-required="true">
-                            <ui-select-match placeholder="">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-match placeholder="Select an option">{{ $select.selected.label }}</ui-select-match>
                             <ui-select-choices repeat="type in updateTypesOptions | filter: $select.search">
                                 <div ng-bind-html="type.label | highlight: $select.search"></div>
                             </ui-select-choices>
