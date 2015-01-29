@@ -5,46 +5,18 @@
         .factory('cpmEditorService', cpmEditorService)
     ;
 
-    function cpmEditorService($q, _, ReportParams, adminUserManager, SiteManager, AdNetworkManager) {
+    function cpmEditorService($q, adminUserManager, SiteManager, AdNetworkManager) {
         var api = {
-            getInitialParams: getInitialParams,
             getPublishers: getPublishers,
             getSites: getSites,
             getAdNetworkForPublisher: getAdNetworkForPublisher,
             getAdNetworks: getAdNetworks,
             getAdNetworkForAdmin: getAdNetworkForAdmin,
             getAdTag: getAdTag,
-            getSite: getSite
+            getSitesByAdNetwork: getSitesByAdNetwork
         };
 
-        var _$initialParams = null;
-
         return api;
-
-        /////
-
-        function getInitialParams() {
-            return _$initialParams;
-        }
-
-        /**
-         * @param {Object} params
-         * @param {Object} [additionalParams]
-         * @returns {Promise}
-         */
-        function setInitialParams(params, additionalParams) {
-            params = angular.copy(params);
-
-            if (!_.isObject(params)) {
-                return $q.reject('missing parameters');
-            }
-
-            angular.extend(params, additionalParams);
-
-            params = ReportParams.transformData(params);
-
-            _$initialParams = angular.copy(params);
-        }
 
         function getPublishers() {
             return adminUserManager.getList({ filter: 'publisher' });
@@ -66,28 +38,32 @@
                 ;
         }
 
-        function getAdNetworkForPublisher(additionalParams) {
-            setInitialParams('', additionalParams);
-
+        function getAdNetworkForPublisher() {
             return AdNetworkManager.getList();
         }
 
-        function getAdNetworkForAdmin(params, additionalParams) {
-            setInitialParams(params, additionalParams);
+        function getAdNetworkForAdmin(params) {
+            if (!angular.isNumber(params.id)) {
+                return $q.reject(new Error('publisher id should be a number'));
+            }
 
-            return adminUserManager.one(params.publisherId).one('adnetworks').getList();
+            return adminUserManager.one(params.id).one('adnetworks').getList();
         }
 
-        function getAdTag(params, additionalParams) {
-            setInitialParams(params, additionalParams);
+        function getAdTag(params) {
+            if (!angular.isNumber(params.id)) {
+                return $q.reject(new Error('site id should be a number'));
+            }
 
-            return SiteManager.one(params.siteId).one('adtags/active').getList();
+            return SiteManager.one(params.id).one('adtags/active').getList();
         }
 
-        function getSite(params, additionalParams) {
-            setInitialParams(params, additionalParams);
+        function getSitesByAdNetwork(params) {
+            if (!angular.isNumber(params.id)) {
+                return $q.reject(new Error('adNetwork id should be a number'));
+            }
 
-            return AdNetworkManager.one(params.adNetworkId).one('sites/active').getList();
+            return AdNetworkManager.one(params.id).one('sites/active').getList();
         }
     }
 })();

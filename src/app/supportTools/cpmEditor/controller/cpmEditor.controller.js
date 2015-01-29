@@ -5,63 +5,169 @@
         .controller('CpmEditor', CpmEditor)
     ;
 
-    function CpmEditor($scope, $modal, $stateParams, dataList, AdTagManager, AdNetworkManager, AlertService) {
-        $scope.dataList = dataList;
+    function CpmEditor($scope, Auth, AlertService, cpmEditorService, CPM_EDITOR_TYPES, DateFormatter, AdTagManager, AdNetworkManager) {
+        var isAdmin = Auth.isAdmin();
+        $scope.isAdmin = isAdmin;
 
-        if(!$scope.dataList.length) {
-            AlertService.addAlert({
-                type: 'warning',
-                message: 'There are no items for that selection'
-            });
-        }
-
-        $scope.showPagination = showPagination;
-        $scope.tableConfig = {
-            itemsPerPage: 10,
-            maxPages: 10
+        $scope.datePickerOpts = {
+            maxDate: moment().subtract(1, 'days').endOf('day'),
+            ranges: {
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
         };
 
-        $scope.openUpdateCpm = openUpdateCpm;
+        var selectedData = {
+            date: {
+                startDate: null,
+                endDate: null
+            },
+            CPM : null,
+            updateTypes: null,
+            publisherId: null,
+            siteId: null,
+            adNetworkId: null,
+            adNetworkForSiteId: null,
+            adTagId: null
+        };
 
-        function openUpdateCpm(dataItem, type) {
-            $modal.open({
-                templateUrl: function() {
-                    if(type == 'adTag') {
-                        return 'supportTools/cpmEditor/views/formCpmEditorForAdTag.tpl.html';
-                    }
-                    if(type == 'site') {
-                        return 'supportTools/cpmEditor/views/formCpmEditorForSite.tpl.html';
-                    }
-
-                    return 'supportTools/cpmEditor/views/formCpmEditorForAdNetwork.tpl.html';
-                },
-                controller: 'FormCpmEditor',
-                resolve: {
-                    cpmData: function () {
-                        return dataItem;
-                    },
-                    Manager: function() {
-                        if(type == 'adTag') {
-                            return AdTagManager.one(dataItem.id);
-                        }
-                        if(type == 'site') {
-                            return AdNetworkManager.one($stateParams.adNetworkId).one('sites', dataItem.id);
-                        }
-
-                        return AdNetworkManager.one(dataItem.id);
-                    },
-                    startDate : function() {
-                        return null;
-                    },
-                    endDate: function() {
-                        return null;
-                    }
-                }
-            })
+        if(!isAdmin) {
+            selectedData.publisherId = true;
         }
 
-        function showPagination() {
-            return angular.isArray($scope.data) && $scope.data.length > $scope.tableConfig.itemsPerPage;
+        $scope.selectedData = selectedData;
+
+        $scope.optionData = {
+            publishers: [],
+            sites: [],
+            adNetworks: []
+        };
+
+        $scope.submit = submit;
+        $scope.isFormValid = isFormValid;
+        $scope.selectUpdateTypesis = selectUpdateTypesis;
+        $scope.selectPublisher = selectPublisher;
+        $scope.selectSite = selectSite;
+        $scope.selectAdNetworkForSiteId = selectAdNetworkForSiteId;
+        $scope.updateTypes = CPM_EDITOR_TYPES;
+
+        $scope.updateTypesOptions = [
+            {
+                key: CPM_EDITOR_TYPES.adTag,
+                label: 'Ad Tag'
+            },
+            {
+                key: CPM_EDITOR_TYPES.adNetwork,
+                label: 'Ad Network'
+            },
+            {
+                key: CPM_EDITOR_TYPES.site,
+                label: 'Site'
+            }
+        ];
+
+        init();
+
+        function init() {
+            if (isAdmin) {
+                cpmEditorService.getPublishers()
+                    .then(function (users) {
+                        $scope.optionData.publishers = users;
+                    })
+                ;
+            }
+
+            cpmEditorService.getSites()
+                .then(function (sites) {
+                    $scope.optionData.sites = sites;
+                })
+            ;
+
+            cpmEditorService.getAdNetworks()
+                .then(function (adNetworks) {
+                    $scope.optionData.adNetworks = adNetworks;
+                })
+            ;
+        }
+
+        function selectPublisher() {
+            $scope.selectedData.siteId = null;
+            $scope.selectedData.adNetworkId = null;
+            $scope.selectedData.adNetworkForSiteId = null;
+            $scope.selectedData.adTagId = null;
+        }
+
+        function selectSite(site) {
+            $scope.selectedData.adTagId = null;
+
+            cpmEditorService.getAdTag(site)
+                .then(function (adTags) {
+                    $scope.optionData.adTags = adTags;
+                })
+            ;
+        }
+
+        function selectAdNetworkForSiteId(adNetwork) {
+            $scope.selectedData.sitesByAdNetworkId = null;
+
+            cpmEditorService.getSitesByAdNetwork(adNetwork)
+                .then(function (sites) {
+                    $scope.optionData.sitesByAdNetwork = sites;
+                })
+            ;
+        }
+
+        function selectUpdateTypesis(reportTypeKey) {
+            var updateTypes = $scope.selectedData.updateTypes;
+
+            if (!angular.isObject(updateTypes)) {
+                return false;
+            }
+
+            return updateTypes.key == reportTypeKey;
+        }
+
+        function isFormValid() {
+            return $scope.cpmSelectorForm.$valid && $scope.selectedData.date.endDate <= $scope.datePickerOpts.maxDate && $scope.selectedData.CPM != null;
+        }
+
+        function submit() {
+            console.log($scope.selectedData);
+
+            var Manager = null;
+
+            if($scope.selectedData.adTagId) {
+                Manager = AdTagManager.one($scope.selectedData.adTagId);
+            }
+            else if($scope.selectedData.adNetworkId) {
+                Manager = AdNetworkManager.one($scope.selectedData.adNetworkId);
+            }
+            else if($scope.selectedData.adNetworkForSiteId) {
+                Manager = AdNetworkManager.one($scope.selectedData.adNetworkForSiteId).one('sites', $scope.selectedData.siteId);
+            }
+
+            AlertService.removeAlert();
+
+            var start = DateFormatter.getFormattedDate($scope.selectedData.date.startDate);
+            var end = DateFormatter.getFormattedDate($scope.selectedData.date.endDate);
+
+            var request = Manager.customPUT('', 'estcpm', { startDate : start, endDate : end, estCpm : $scope.selectedData.CPM });
+            request
+                .then(
+                function () {
+                    AlertService.addAlert({
+                        type: 'success',
+                        message: 'The CPM value has been scheduled for updating'
+                    });
+                })
+                .catch(
+                function () {
+                    AlertService.addAlert({
+                        type: 'error',
+                        message: 'An error occurred. The CPM value could not be updated'
+                    });
+                });
         }
     }
 })();
