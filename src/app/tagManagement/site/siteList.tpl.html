@@ -16,7 +16,15 @@
     <div class="panel-body" ng-if="hasData()">
         <div>
             <table class="table ng-table-responsive" at-table at-paginated at-list="sites" at-config="tableConfig">
-                <thead></thead>
+                <thead>
+                    <tr>
+                        <th at-attribute="id">#</th>
+                        <th>Actions</th>
+                        <th at-attribute="name">Site</th>
+                        <th ng-if="isAdmin()" at-attribute="publisher.username" >Publisher</th>
+                        <th at-attribute="domain" >Domain</th>
+                    </tr>
+                </thead>
                 <tbody>
                 <tr>
                     <td at-title="#" at-implicit at-sortable at-attribute="id" at-initial-sorting="asc"></td>
@@ -32,8 +40,8 @@
                             </ul>
                         </div>
                     </td>
-                    <td at-title="Site" at-implicit at-sortable at-attribute="name"></td>
-                    <td ng-show="isAdmin()" at-title="Publisher" at-implicit at-sortable at-attribute="publisher.username"></td>
+                    <td at-implicit at-sortable at-attribute="name"></td>
+                    <td ng-if="isAdmin()" at-implicit at-sortable at-attribute="publisher.username"></td>
                     <td at-title="Domain" at-implicit at-sortable at-attribute="domain"></td>
                 </tr>
                 </tbody>
