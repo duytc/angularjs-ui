@@ -16,7 +16,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Update CPM Rate'
+                    label: 'Cpm Editor'
                 }
             })
         ;
