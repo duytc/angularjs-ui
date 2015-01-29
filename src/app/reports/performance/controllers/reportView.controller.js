@@ -31,6 +31,7 @@
         $scope.drillDownReport = drillDownReport;
         $scope.goToEditPage = goToEditPage;
         $scope.openUpdateCpm = openUpdateCpm;
+        $scope.params = $state.current.params;
 
         if (!$scope.hasResult) {
             AlertService.replaceAlerts({

@@ -84,11 +84,13 @@
         var reportTypeOptions = [
             {
                 key: PERFORMANCE_REPORT_TYPES.account,
+                breakdownKey: 'accountBreakdown',
                 label: 'Account',
                 toState: 'reports.performance.account'
             },
             {
                 key: PERFORMANCE_REPORT_TYPES.adNetwork,
+                breakdownKey: 'adNetworkBreakdown',
                 label: 'Ad Network',
                 toState: 'reports.performance.adNetworks',
                 visibleFields: [reportFields.adNetwork],
@@ -112,6 +114,7 @@
             },
             {
                 key: PERFORMANCE_REPORT_TYPES.site,
+                breakdownKey: 'siteBreakdown',
                 label: 'Site',
                 toState: 'reports.performance.sites',
                 visibleFields: [reportFields.site],
@@ -135,6 +138,7 @@
             },
             {
                 key: PERFORMANCE_REPORT_TYPES.adSlot,
+                breakdownKey: 'adSlotBreakdown',
                 label: 'Ad Slot',
                 toState: 'reports.performance.adSlots',
                 visibleFields: [reportFields.site, reportFields.adslot],
@@ -156,6 +160,7 @@
         if (isAdmin) {
             reportTypeOptions.unshift({
                 key: PERFORMANCE_REPORT_TYPES.platform,
+                breakdownKey: 'platformBreakdown',
                 label: 'Platform',
                 toState: 'reports.performance.platform',
                 breakdownOptions: [
@@ -288,6 +293,7 @@
             }
 
             toState = reportType.toState;
+
         }
 
         function selectEntity(entityId) {
@@ -320,6 +326,17 @@
         function getReports() {
             var transition;
             var params = ReportParams.getStateParams($scope.selectedData);
+
+
+            var reportType = params.reportType;
+            var breakdownValue = params[params.breakdownKey];
+
+            if (breakdownValue != undefined && breakdownValue != null) {
+                var breakdownOption = _.findWhere(reportType.breakdownOptions, { key: breakdownValue });
+                selectBreakdownOption(breakdownOption);
+            }
+
+            var initialParams = ReportParams.getFormParams(performanceReport.getInitialParams());
 
             if (toState == null) {
                 transition = $state.transitionTo(
@@ -396,6 +413,15 @@
                 function (calculatedParams) {
                     var reportType = findReportType(calculatedParams.reportType) || null;
                     $scope.selectedData.reportType = reportType;
+
+                    var breakdownValue = calculatedParams[reportType.breakdownKey];
+                    if (breakdownValue != undefined && breakdownValue != null) {
+                        var breakdownOption = _.findWhere(reportType.breakdownOptions, { key: breakdownValue });
+                        selectBreakdownOption(breakdownOption);
+                    }
+                    else{
+                        toState = reportType.toState;
+                    }
 
                     resetForm();
 
