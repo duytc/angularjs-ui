@@ -20,9 +20,9 @@
     <div class="panel-body" ng-if="hasAdTags()">
         <table class="table ng-table-responsive" at-table at-paginated at-list="adTags" at-config="tableConfig">
             <thead></thead>
-            <tbody ui-sortable="sortableOptions" >
+            <tbody ui-sortable="sortableOptions" ng-model="adTags" >
             <tr class="item"  ng-class="{'moveable': !sortableOptions['disabled']}">
-                <td at-title="#" at-implicit at-attribute="id" at-initial-sorting="asc"></td>
+                <td at-title="#" at-implicit at-attribute="id"></td>
                 <td at-title="Actions">
                     <div class="btn-group" dropdown>
                         <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>

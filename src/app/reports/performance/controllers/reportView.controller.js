@@ -9,6 +9,9 @@
      * @param {Array} reportGroup.reports
      */
     function ReportView($scope, $state, $modal, _, Auth, AlertService, ReportParams, reportGroup, UserStateHelper, DateFormatter, SiteManager, AdSlotManager, AdTagManager, AdNetworkManager, adminUserManager) {
+        var isAdmin = Auth.isAdmin();
+        $scope.isAdmin = isAdmin;
+
         $scope.hasResult = reportGroup !== false;
 
         reportGroup = reportGroup || {};
@@ -41,10 +44,6 @@
         }
 
         function popupReport(relativeToState, report) {
-            if(!Auth.isAdmin() && relativeToState == '^.sites') {
-                return drillDownReport(relativeToState, report);
-            }
-
             var confirmPopUp = $modal.open({
                 templateUrl: getTemplateUrlPopup(relativeToState),
                 size : 'lg',

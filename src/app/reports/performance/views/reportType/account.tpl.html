@@ -10,10 +10,14 @@
         </div>
         <div class="ng-table-responsive">
             <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
-                <thead></thead>
+                <thead>
+                <tr>
+                    <th at-attribute="actions" ng-if="isAdmin">Nickname</th>
+                </tr>
+                </thead>
                 <tbody>
                 <tr ng-click="drillDownReport('^.sites', item)">
-                    <td at-title="Actions">
+                    <td at-attribute="actions" ng-if="isAdmin">
                         <div class="btn-group" dropdown stop-event>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                             <ul class="dropdown-menu" role="menu">
