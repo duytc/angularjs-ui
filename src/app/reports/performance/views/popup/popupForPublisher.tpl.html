@@ -15,16 +15,16 @@
         </thead>
         <tbody>
         <tr>
-            <td>{{ data.username }}</td>
-            <td>{{ data.firstName }}  {{ data.lastName }}</td>
-            <td>{{ data.company }}</td>
-            <td>{{ data.email }}</td>
-            <td>{{ data.phone }}</td>
+            <td>{{ relativeEntityData.username }}</td>
+            <td>{{ relativeEntityData.firstName }}  {{ data.lastName }}</td>
+            <td>{{ relativeEntityData.company }}</td>
+            <td>{{ relativeEntityData.email }}</td>
+            <td>{{ relativeEntityData.phone }}</td>
         </tr>
         </tbody>
     </table>
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-click="$close()">Drill Down</button>
-    <button class="btn btn-primary" ng-click="goToEditPage('publisherManagement.edit', data.publisherId)">Edit This Publisher</button>
+    <button class="btn btn-primary" ng-click="$dismiss(); goToEditPage('publisherManagement.edit', relativeEntityData.publisherId)">Edit This Publisher</button>
 </div>

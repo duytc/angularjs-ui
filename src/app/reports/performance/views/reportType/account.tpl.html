@@ -16,12 +16,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-click="drillDownReport('^.sites', item)">
+                <tr ng-click="drillDownReport(reportStates.sites, item)">
                     <td at-attribute="actions" ng-if="isAdmin">
                         <div class="btn-group" dropdown stop-event>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a ng-click="popupReport('^.sites', item)">Publisher Info</a></li>
+                                <li><a ng-click="popupReport(reportStates.sites, item)">Publisher Info</a></li>
                                 <li><a ng-click="goToEditPage('publisherManagement.edit', item.publisherId)">Edit Publisher</a></li>
                             </ul>
                         </div>

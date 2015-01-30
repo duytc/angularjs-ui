@@ -13,14 +13,14 @@
         </thead>
         <tbody>
         <tr>
-            <td>{{ data.name }}</td>
-            <td ng-show="isAdmin">{{ data.publisher.username }}</td>
-            <td>{{ data.domain }}</td>
+            <td>{{ relativeEntityData.name }}</td>
+            <td ng-show="isAdmin">{{ relativeEntityData.publisher.username }}</td>
+            <td>{{ relativeEntityData.domain }}</td>
         </tr>
         </tbody>
     </table>
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-click="$close()">Drill Down</button>
-    <button class="btn btn-primary" ng-click="goToEditPage('tagManagement.sites.edit', data.id)">Edit This Site</button>
+    <button class="btn btn-primary" ng-click="$dismiss(); goToEditPage('tagManagement.sites.edit', relativeEntityData.id)">Edit This Site</button>
 </div>

@@ -5,50 +5,22 @@
         .controller('popupReportController', popupReportController)
     ;
 
-    function popupReportController($scope, $modal, $modalInstance, data, AdTagManager, AdNetworkManager, UserStateHelper, Auth, reportGroup) {
+    function popupReportController($scope, reportGroup, relativeEntityData, Auth, performanceReportHelper, UPDATE_CPM_TYPES) {
         $scope.isAdmin = Auth.isAdmin();
 
-        $scope.data = data;
+        $scope.relativeEntityData = relativeEntityData;
+
+        $scope.updateCpmTypes = UPDATE_CPM_TYPES;
+
         $scope.goToEditPage = goToEditPage;
         $scope.openUpdateCpm = openUpdateCpm;
 
         function goToEditPage(baseState) {
-            UserStateHelper.transitionRelativeToBaseState(baseState, {id: data.id})
-                .then(function() {
-                    $modalInstance.close();
-                })
-            ;
+            performanceReportHelper.goToEditPage(baseState, relativeEntityData.id);
         }
 
         function openUpdateCpm(type) {
-            $modal.open({
-                templateUrl: function() {
-                    if(type == 'adTag') {
-                        return 'reports/performance/views/cpmForm/formCpmEditorForAdTag.tpl.html';
-                    }
-
-                    return 'reports/performance/views/cpmForm/formCpmEditorForAdNetwork.tpl.html';
-                },
-                controller: 'FormCpmEditor',
-                resolve: {
-                    cpmData: function () {
-                        return data;
-                    },
-                    Manager: function() {
-                        if(type == 'adTag') {
-                            return AdTagManager.one(data.id);
-                        }
-
-                        return AdNetworkManager.one(data.id);
-                    },
-                    startDate : function() {
-                        return reportGroup.startDate;
-                    },
-                    endDate: function() {
-                        return reportGroup.endDate;
-                    }
-                }
-            })
+            performanceReportHelper.openUpdateCpm(relativeEntityData, type, reportGroup);
         }
     }
 })();

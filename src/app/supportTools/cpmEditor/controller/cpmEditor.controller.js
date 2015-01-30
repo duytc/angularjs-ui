@@ -29,6 +29,7 @@
             siteId: null,
             adNetworkId: null,
             adNetworkForSiteId: null,
+            adSlotId: null,
             adTagId: null
         };
 
@@ -41,7 +42,9 @@
         $scope.optionData = {
             publishers: [],
             sites: [],
-            adNetworks: []
+            sitesByAdNetwork: [],
+            adNetworks: [],
+            adSlotId : []
         };
 
         $scope.submit = submit;
@@ -49,6 +52,7 @@
         $scope.selectUpdateTypesis = selectUpdateTypesis;
         $scope.selectPublisher = selectPublisher;
         $scope.selectSite = selectSite;
+        $scope.selectAdSlot = selectAdSlot;
         $scope.selectAdNetworkForSiteId = selectAdNetworkForSiteId;
         $scope.updateTypes = CPM_EDITOR_TYPES;
 
@@ -95,13 +99,25 @@
             $scope.selectedData.siteId = null;
             $scope.selectedData.adNetworkId = null;
             $scope.selectedData.adNetworkForSiteId = null;
+            $scope.selectedData.adSlotId = null;
             $scope.selectedData.adTagId = null;
         }
 
         function selectSite(site) {
+            $scope.selectedData.adSlotId = null;
             $scope.selectedData.adTagId = null;
 
-            cpmEditorService.getAdTag(site)
+            cpmEditorService.getAdSlotBySite(site)
+                .then(function (adSlots) {
+                    $scope.optionData.adSlots = adSlots;
+                })
+            ;
+        }
+
+        function selectAdSlot(adSlot) {
+            $scope.selectedData.adTagId = null;
+
+            cpmEditorService.getAdTagByAdSlot(adSlot)
                 .then(function (adTags) {
                     $scope.optionData.adTags = adTags;
                 })

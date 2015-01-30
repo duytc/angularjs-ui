@@ -5,15 +5,14 @@
         .factory('cpmEditorService', cpmEditorService)
     ;
 
-    function cpmEditorService($q, adminUserManager, SiteManager, AdNetworkManager) {
+    function cpmEditorService($q, adminUserManager, SiteManager, AdNetworkManager, AdSlotManager) {
         var api = {
             getPublishers: getPublishers,
             getSites: getSites,
-            getAdNetworkForPublisher: getAdNetworkForPublisher,
             getAdNetworks: getAdNetworks,
-            getAdNetworkForAdmin: getAdNetworkForAdmin,
-            getAdTag: getAdTag,
-            getSitesByAdNetwork: getSitesByAdNetwork
+            getSitesByAdNetwork: getSitesByAdNetwork,
+            getAdSlotBySite: getAdSlotBySite,
+            getAdTagByAdSlot: getAdTagByAdSlot
         };
 
         return api;
@@ -30,6 +29,14 @@
                 ;
         }
 
+        function getSitesByAdNetwork(params) {
+            if (!angular.isNumber(params.id)) {
+                return $q.reject(new Error('adNetwork id should be a number'));
+            }
+
+            return AdNetworkManager.one(params.id).one('sites/active').getList();
+        }
+
         function getSites() {
             return SiteManager.getList()
                 .then(function (sites) {
@@ -38,32 +45,20 @@
                 ;
         }
 
-        function getAdNetworkForPublisher() {
-            return AdNetworkManager.getList();
-        }
-
-        function getAdNetworkForAdmin(params) {
-            if (!angular.isNumber(params.id)) {
-                return $q.reject(new Error('publisher id should be a number'));
-            }
-
-            return adminUserManager.one(params.id).one('adnetworks').getList();
-        }
-
-        function getAdTag(params) {
+        function getAdSlotBySite(params) {
             if (!angular.isNumber(params.id)) {
                 return $q.reject(new Error('site id should be a number'));
             }
 
-            return SiteManager.one(params.id).one('adtags/active').getList();
+            return SiteManager.one(params.id).one('adslots').getList();
         }
 
-        function getSitesByAdNetwork(params) {
+        function getAdTagByAdSlot(params) {
             if (!angular.isNumber(params.id)) {
-                return $q.reject(new Error('adNetwork id should be a number'));
+                return $q.reject(new Error('ad slot id should be a number'));
             }
 
-            return AdNetworkManager.one(params.id).one('sites/active').getList();
+            return AdSlotManager.one(params.id).one('adtags').getList();
         }
     }
 })();
