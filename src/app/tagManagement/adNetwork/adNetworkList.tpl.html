@@ -11,15 +11,23 @@
         </div>
     </div>
 
-    <search-box sb-list="adNetworks"></search-box>
+    <search-box sb-list="adNetworks" search-fields="['name']"></search-box>
 
     <div class="panel-body" ng-if="hasData()">
         <div>
             <table class="table ng-table-responsive" at-table at-paginated at-list="adNetworks" at-config="tableConfig">
-                <thead></thead>
+                <thead>
+                    <tr>
+                        <th  at-attribute="id">#</th>
+                        <th>Actions</td>
+                        <th at-attribute="name">Ad Network</th>
+                        <th ng-if="isAdmin()" at-attribute="publisher.username">Publisher</th>
+                        <th at-attribute="status">Status</th>
+                    </tr>
+                </thead>
                 <tbody>
                 <tr>
-                    <td at-title="#" at-implicit at-sortable at-attribute="id" at-initial-sorting="asc"></td>
+                    <td at-implicit at-sortable at-attribute="id" at-initial-sorting="asc"></td>
                     <td at-title="Actions">
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
@@ -32,9 +40,9 @@
                             </ul>
                         </div>
                     </td>
-                    <td at-title="Ad Network" at-implicit at-sortable at-attribute="name"></td>
-                    <td ng-show="isAdmin()" at-title="Publisher" at-implicit at-sortable at-attribute="publisher.username"></td>
-                    <td at-title="Status" at-sortable at-attribute="status">
+                    <td at-implicit at-sortable at-attribute="name"></td>
+                    <td ng-if="isAdmin()" at-implicit at-sortable at-attribute="publisher.username"></td>
+                    <td at-sortable at-attribute="status">
                         <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
                     </td>
                 </tr>

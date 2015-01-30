@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    angular.module('tagcade.supportTools.cpmEditor')
+    angular.module('tagcade.reports.performance')
         .controller('FormCpmEditor', FormCpmEditor)
     ;
 

@@ -24,10 +24,10 @@
             $modal.open({
                 templateUrl: function() {
                     if(type == 'adTag') {
-                        return 'supportTools/cpmEditor/views/formCpmEditorForAdTag.tpl.html';
+                        return 'reports/performance/views/cpmForm/formCpmEditorForAdTag.tpl.html';
                     }
 
-                    return 'supportTools/cpmEditor/views/formCpmEditorForAdNetwork.tpl.html';
+                    return 'reports/performance/views/cpmForm/formCpmEditorForAdNetwork.tpl.html';
                 },
                 controller: 'FormCpmEditor',
                 resolve: {
