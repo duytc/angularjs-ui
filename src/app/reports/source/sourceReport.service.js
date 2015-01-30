@@ -51,7 +51,7 @@
                 siteId: unfilteredParams.siteId,
                 startDate: unfilteredParams.startDate,
                 endDate: unfilteredParams.endDate,
-                rowLimit: 100
+                rowLimit: 0
             };
 
             return getReport(unfilteredParams, serverParams);
