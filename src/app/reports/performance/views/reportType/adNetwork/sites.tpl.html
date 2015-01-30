@@ -12,14 +12,14 @@
             <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
                 <thead></thead>
                 <tbody>
-                <tr ng-click="drillDownReport('^.site', item)">
+                <tr ng-click="drillDownReport(reportStates.site, item)">
                     <td at-title="Actions">
                         <div class="btn-group" dropdown stop-event>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a ng-click="popupReport('^.adNetworkSiteAdTags', item)">Site Info</a></li>
+                                <li><a ng-click="popupReport(reportStates.adNetworkSiteAdTags, item)">Site Info</a></li>
                                 <li><a ng-click="goToEditPage('tagManagement.sites.edit', item.reportType.siteId)">Edit Site</a></li>
-                                <li><a ng-click="openUpdateCpm(item, 'site')">Update Cpm</a></li>
+                                <li><a ng-click="openUpdateCpm(item, updateCpmTypes.site)">Update Cpm</a></li>
                             </ul>
                         </div>
                     </td>

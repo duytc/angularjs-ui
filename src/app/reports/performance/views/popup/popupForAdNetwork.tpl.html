@@ -15,17 +15,17 @@
         </thead>
         <tbody>
         <tr>
-            <td>{{ data.name }}</td>
-            <td ng-show="isAdmin">{{ data.publisher.username }}</td>
-            <td>{{ data.url }}</td>
-            <td>{{ data.defaultCpmRate }}</td>
-            <td><span class="label" ng-class="data.active ? 'label-success' : 'label-danger'">{{ data.active ? 'Active' : 'Paused' }}</span></td>
+            <td>{{ relativeEntityData.name }}</td>
+            <td ng-show="isAdmin">{{ relativeEntityData.publisher.username }}</td>
+            <td>{{ relativeEntityData.url }}</td>
+            <td>{{ relativeEntityData.defaultCpmRate }}</td>
+            <td><span class="label" ng-class="relativeEntityData.active ? 'label-success' : 'label-danger'">{{ relativeEntityData.active ? 'Active' : 'Paused' }}</span></td>
         </tr>
         </tbody>
     </table>
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-click="$close()">Drill Down</button>
-    <button class="btn btn-primary" ng-click="goToEditPage('tagManagement.adNetwork.edit', data.id)">Edit This AdNetwork</button>
-    <button class="btn btn-primary" ng-click="openUpdateCpm('adNetwork')">Update CPM</button>
+    <button class="btn btn-primary" ng-click="$dismiss(); goToEditPage('tagManagement.adNetwork.edit', relativeEntityData.id)">Edit This AdNetwork</button>
+    <button class="btn btn-primary" ng-click="openUpdateCpm(updateCpmTypes.adNetwork)">Update CPM</button>
 </div>

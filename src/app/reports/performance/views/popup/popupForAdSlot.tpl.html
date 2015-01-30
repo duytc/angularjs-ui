@@ -15,16 +15,16 @@
         </thead>
         <tbody>
         <tr>
-            <td>{{ data.name }}</td>
-            <td>{{ data.site.name }}</td>
-            <td ng-show="isAdmin">{{ data.site.publisher.username }}</td>
-            <td>{{ data.width }}</td>
-            <td>{{ data.height }}</td>
+            <td>{{ relativeEntityData.name }}</td>
+            <td>{{ relativeEntityData.site.name }}</td>
+            <td ng-show="isAdmin">{{ relativeEntityData.site.publisher.username }}</td>
+            <td>{{ relativeEntityData.width }}</td>
+            <td>{{ relativeEntityData.height }}</td>
         </tr>
         </tbody>
     </table>
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-click="$close()">Drill Down</button>
-    <button class="btn btn-primary" ng-click="goToEditPage('tagManagement.adSlot.edit', data.id)">Edit This AdSlot</button>
+    <button class="btn btn-primary" ng-click="$dismiss(); goToEditPage('tagManagement.adSlot.edit', relativeEntityData.id)">Edit This AdSlot</button>
 </div>
