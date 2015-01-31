@@ -14,10 +14,13 @@
             templateUrl: 'blocks/searchBox/searchBox.tpl.html',
             scope: {
                 sbList: '=sbList',
-                searchFields: '=searchFields'
+                searchFields: '=searchFields',
+                placeHolder: '=placeHolder'
             },
             controller: function ($scope, $filter) {
                 var sbList = angular.copy($scope.sbList);
+                $scope.pHolder = ($scope.placeHolder == null || $scope.placeHolder == undefined) ? 'Search' :  $scope.placeHolder;
+
                 $scope.search = function() {
                     $scope.sbList = $filter('searchFilter')(sbList, $scope.query, $scope.searchFields);
                 }
@@ -33,12 +36,30 @@
                 var stringFields = '';
 
                 angular.forEach(searchFields, function(field) {
-                        if(angular.isObject(item[field])) {
-                            stringFields += _.values(item[field]).toString();
+                        if(angular.isObject(item[field]) && item[field] != undefined) {
+                            return stringFields += _.values(item[field]).toString();
                         }
-                        else {
-                            stringFields += item[field] != null ? item[field] : '';
+
+                        field = field.split(".");
+
+                        if( field.length > 1) {
+                            var curItem = item;
+                            var tmpItemVal = null;
+
+                            angular.forEach(field, function(prop){
+                                curItem = curItem[prop]
+                            });
+
+                            if(angular.isObject(curItem) && curItem != undefined) {
+                                return stringFields += _.values(curItem).toString();
+                            }
+
+                            return stringFields += curItem;
                         }
+
+                        field = field.shift();
+
+                        return stringFields += item[field] != null ? item[field] : '';
                     }
                 );
 
