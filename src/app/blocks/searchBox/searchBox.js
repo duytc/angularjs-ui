@@ -44,7 +44,6 @@
 
                         if( field.length > 1) {
                             var curItem = item;
-                            var tmpItemVal = null;
 
                             angular.forEach(field, function(prop){
                                 curItem = curItem[prop]
