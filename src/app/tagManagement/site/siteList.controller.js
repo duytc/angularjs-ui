@@ -38,7 +38,6 @@
 
                             if (index > -1) {
                                 sites.splice(index, 1);
-                                $scope.tableParams.reload(); // refresh ng-table
                             }
 
                             AlertService.replaceAlerts({

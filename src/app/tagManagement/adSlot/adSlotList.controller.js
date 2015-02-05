@@ -57,7 +57,6 @@
 
                             if (index > -1) {
                                 adSlots.splice(index, 1);
-                                $scope.tableParams.reload(); // refresh ng-table
                             }
 
                             AlertService.replaceAlerts({
