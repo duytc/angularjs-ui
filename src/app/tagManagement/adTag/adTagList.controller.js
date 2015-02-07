@@ -20,12 +20,6 @@
         $scope.adSlot = adSlot;
         $scope.adTags = adTags;
 
-        $scope.showPagination = showPagination;
-        $scope.tableConfig = {
-            itemsPerPage: 10,
-            maxPages: 10
-        };
-
         $scope.sortableOptions = {
             forcePlaceholderSize: true,
             placeholder: 'sortable-placeholder',
@@ -114,9 +108,5 @@
                 ;
             });
         };
-
-        function showPagination() {
-            return angular.isArray($scope.adTags) && $scope.adTags.length > $scope.tableConfig.itemsPerPage;
-        }
     }
 })();
