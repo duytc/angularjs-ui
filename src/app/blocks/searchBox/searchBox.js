@@ -45,8 +45,11 @@
                         if( field.length > 1) {
                             var curItem = item;
 
+                            // deep access to obect property
                             angular.forEach(field, function(prop){
-                                curItem = curItem[prop]
+                                if (curItem != null && curItem != undefined) {
+                                    curItem = curItem[prop]
+                                }
                             });
 
                             if(angular.isObject(curItem) && curItem != undefined) {
@@ -62,6 +65,7 @@
                     }
                 );
 
+                // found item is the one has its stringFields containing stringFields
                 if ((stringFields.toLowerCase()).indexOf(searchText.toLowerCase()) != -1) {
                     resultList.push(item);
                 }
