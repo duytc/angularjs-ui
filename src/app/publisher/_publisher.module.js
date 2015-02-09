@@ -7,6 +7,7 @@
         'tagcade.core',
 
         'tagcade.publisher.layout',
-        'tagcade.publisher.dashboard'
+        'tagcade.publisher.dashboard',
+        'tagcade.publisher.accountManagement'
     ]);
 })();
