@@ -23,6 +23,7 @@
             getAdNetworkSiteAdTagsReport: getAdNetworkSiteAdTagsReport,
             getPublisherSitesReport: getPublisherSitesReport,
             getSiteReport: getSiteReport,
+            getSiteAdNetworksReport: getSiteAdNetworksReport,
             getSiteAdSlotsReport: getSiteAdSlotsReport,
             getSiteAdTagsReport: getSiteAdTagsReport,
             getAdSlotReport: getAdSlotReport,
@@ -165,6 +166,10 @@
 
         function getSiteReport(params, additionalParams) {
             return getReport(ReportFetcher.getSiteReport, params, additionalParams);
+        }
+
+        function getSiteAdNetworksReport(params, additionalParams) {
+            return getReport(ReportFetcher.getSiteAdNetworksReport, params, additionalParams);
         }
 
         function getSiteAdSlotsReport(params, additionalParams) {

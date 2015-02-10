@@ -187,6 +187,39 @@
         ;
 
         UserStateHelperProvider
+            .state('reports.performance.siteAdNetworks', {
+                url: '/sites/{siteId:int}/adNetworks?{startDate:date}&{endDate:date}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    report: {
+                        controller: 'ReportView',
+                        templateUrl: function($stateParams) {
+                            if (!$stateParams.endDate) {
+                                return 'reports/performance/views/reportType/site/adNetworks.tpl.html';
+                            }
+
+                            return 'reports/performance/views/reportType/site/adNetworksDateRange.tpl.html';
+                        }
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getSiteAdNetworksReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.site,
+                            siteBreakdown: 'adnetwork'
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
+                }
+            })
+        ;
+
+        UserStateHelperProvider
             .state('reports.performance.siteAdSlots', {
                 url: '/sites/{siteId:int}/adSlots?{startDate:date}&{endDate:date}',
                 params: {

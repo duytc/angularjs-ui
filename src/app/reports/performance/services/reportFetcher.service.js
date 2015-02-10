@@ -20,6 +20,7 @@
             getAdNetworkSiteAdTagsReport: getAdNetworkSiteAdTagsReport,
             getPublisherSitesReport: getPublisherSitesReport,
             getSiteReport: getSiteReport,
+            getSiteAdNetworksReport: getSiteAdNetworksReport,
             getSiteAdSlotsReport: getSiteAdSlotsReport,
             getSiteAdTagsReport: getSiteAdTagsReport,
             getAdSlotReport: getAdSlotReport,
@@ -160,6 +161,10 @@
          */
         function getSiteReport(params) {
             return getReports('/sites/:siteId', params);
+        }
+
+        function getSiteAdNetworksReport(params) {
+            return getReports('/sites/:siteId/adnetworks', params);
         }
 
         /**

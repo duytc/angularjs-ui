@@ -133,6 +133,11 @@
                         key: 'adtag',
                         label: 'By Ad Tag',
                         toState: 'reports.performance.siteAdTags'
+                    },
+                    {
+                        key: 'adnetwork',
+                        label: 'By Ad Network',
+                        toState: 'reports.performance.siteAdNetworks'
                     }
                 ]
             },
