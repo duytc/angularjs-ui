@@ -6,34 +6,21 @@
         .controller('ActivityLog', ActivityLog)
     ;
 
-    function ActivityLog($scope, logs, $stateParams, UserStateHelper, AlertService, DateFormatter) {
-        var NUM_DISPLAY_PAGE = 7;
-        $scope.chooseShowNumberRecords = [30, 50, 100, 200, 500];
-
+    function ActivityLog($scope, logs, activityLogs, ROW_LIMIT) {
         $scope.dataLogs = logs.logsList;
 
-        $scope.getLogs = getLogs;
+        var initialData = activityLogs.getInitialParams();
 
-        $scope.itemsPerPage = $stateParams.rowLimit;
+        $scope.showTabMenu = initialData.loginLogs;
+        $scope.itemsPerPage = initialData.rowLimit;
         $scope.bigCurrentPage = setBigCurrentPage();
         $scope.bigTotalItems = logs.numRows;
-        $scope.numDisplayPage = NUM_DISPLAY_PAGE;
+        $scope.showPagination = showPagination();
 
-        $scope.date = {
-            startDate: $stateParams.startDate,
-            endDate: $stateParams.endDate
-        };
-        $scope.datePickerOpts = {
-            maxDate:  moment().endOf('day'),
-            ranges: {
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-            }
-        };
+        activityLogs.setInitialShowLoginLogs($scope.showTabMenu);
 
         function setBigCurrentPage() {
-            var rowOff = $stateParams.rowOffset;
+            var rowOff = initialData.rowOffset;
             if(!rowOff || rowOff < 1) {
                 return 1;
             }
@@ -41,21 +28,8 @@
             return Math.floor(rowOff/$scope.itemsPerPage)+1;
         }
 
-        function getLogs(date) {
-            var params = {
-                startDate: DateFormatter.getFormattedDate(date.startDate),
-                endDate: DateFormatter.getFormattedDate(date.endDate),
-                rowLimit: $scope.itemsPerPage
-            };
-
-            UserStateHelper.transitionRelativeToBaseState('supportTools.activityLog.list', params)
-                .catch(function(error) {
-                    AlertService.replaceAlerts({
-                        type: 'error',
-                        message: 'An error occurred during the request'
-                    });
-                })
-            ;
+        function showPagination() {
+            return angular.isArray($scope.dataLogs) && logs.numRows > ROW_LIMIT;
         }
     }
 })();

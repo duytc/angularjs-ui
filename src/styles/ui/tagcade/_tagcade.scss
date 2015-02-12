@@ -93,6 +93,11 @@ tr[ui-sref] {
                 margin-top: 22px;
             }
         }
+
+        .publisher.form-group {
+            @include ui-select-width(200px);
+        }
+
     }
 }
 

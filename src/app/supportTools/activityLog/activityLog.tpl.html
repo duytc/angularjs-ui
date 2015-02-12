@@ -1,49 +1,48 @@
-<div id="form-date-range-selector" class="panel panel-default">
-    <div class="panel-body">
-        <form name="reportSelectorForm" class="form-inline" role="form" ng-submit="getLogs(date)" novalidate>
-            <div class="form-group">
-                <label for="inputDateRange">Date Range</label>
-                <div>
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                        <input date-range-picker options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="date" ng-required="true">
-                    </div>
+<div class="panel panel-default daily-reports">
+    <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Activity Logs</div>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs nav-tab-margin">
+                <li role="presentation" ng-class="showTabMenu ? '' : 'active' "><a ui-sref="app.admin.supportTools.activityLog.list({ loginLogs: false , rowOffset: 0})">Action</a></li>
+                <li role="presentation" ng-class="showTabMenu ? 'active' : '' "><a ui-sref="app.admin.supportTools.activityLog.list({ loginLogs: true , rowOffset: 0})" >Login</a></li>
+            </ul>
+            <div>
+
+                <!--<search-box sb-list="dataLogs" search-fields="['action', 'user.username', 'ip']"></search-box>-->
+
+                <table class="table" at-table at-list="dataLogs">
+                    <thead>
+                        <tr>
+                            <th at-attribute="id">#</th>
+                            <th at-attribute="action">Action</th>
+                            <th at-attribute="user.username">User Name</th>
+                            <th at-attribute="createdAt">Time</th>
+                            <th ng-show="!showTabMenu" at-attribute="data">Description</th>
+                            <th at-attribute="ip">IP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td at-implicit at-sortable at-attribute="id" at-initial-sorting="desc"></td>
+                        <td at-implicit at-sortable at-attribute="action"></td>
+                        <td at-implicit at-sortable at-attribute="user.username"></td>
+                        <td at-sortable at-attribute="createdAt">
+                            {{ item.createdAt | date : 'medium' }}
+                        </td>
+                        <td ng-show="!showTabMenu" at-sortable at-attribute="data">
+                            {{ (item.data.entity == null ) ? '' : item.data }}
+                        </td>
+                        <td at-sortable at-implicit at-attribute="ip"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="col-md-12">
+                    <nav class="col-lg-12">
+                        <pagination ng-if="showPagination" class="pagination" items-per-page="itemsPerPage" total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="7" ui-sref="app.admin.supportTools.activityLog.list({ rowOffset: (bigCurrentPage-1)*itemsPerPage })"></pagination>
+                    </nav>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Get Logs</button>
-        </form>
-    </div>
-</div>
-
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <span class="glyphicon glyphicon-th"></span> Activity Logs
-    </div>
-    <table class="table" at-table at-list="dataLogs">
-        <thead></thead>
-        <tbody>
-        <tr>
-            <td at-implicit at-title="#" at-sortable at-attribute="id" at-initial-sorting="desc"></td>
-            <td at-implicit at-title="Action" at-sortable at-attribute="action"></td>
-            <td at-implicit at-title="User Name" at-sortable at-attribute="user.username"></td>
-            <td at-title="Time" at-sortable at-attribute="createdAt">
-                {{ item.createdAt | date : 'medium' }}
-            </td>
-            <td at-title="Description" at-sortable at-attribute="data">
-                {{ (item.data.entity == null ) ? '' : item.data }}
-            </td>
-            <td at-title="IP" at-sortable at-implicit at-attribute="ip"></td>
-        </tr>
-        </tbody>
-    </table>
-
-    <div class="col-md-12">
-        <nav class="col-lg-9">
-            <pagination ng-if="bigTotalItems > itemsPerPage" class="pagination" items-per-page="itemsPerPage" total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="numDisplayPage" ui-sref="app.admin.supportTools.activityLog.list({ rowOffset: (bigCurrentPage-1)*itemsPerPage })"></pagination>
-        </nav>
-
-        <div class="col-lg-3 list-button">
-            <button ng-repeat="number in chooseShowNumberRecords" ng-if="bigTotalItems >= number" ng-class="itemsPerPage == number ? 'active':'' " type="button" ui-sref="app.admin.supportTools.activityLog.list({ rowOffset: 0, rowLimit: number })" class="btn btn-default">{{ number }}</button>
         </div>
     </div>
 </div>
