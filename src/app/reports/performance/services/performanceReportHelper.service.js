@@ -14,6 +14,7 @@
         };
 
         return api;
+        //
 
         function popupReport(relativeToState, report, reportGroup) {
             var confirmPopUp = $modal.open({

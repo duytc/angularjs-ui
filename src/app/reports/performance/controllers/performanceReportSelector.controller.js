@@ -54,7 +54,6 @@
         $scope.selectPublisher = selectPublisher;
         $scope.selectReportType = selectReportType;
         $scope.selectEntity = selectEntity;
-        $scope.selectSite = selectSite;
         $scope.selectBreakdownOption = selectBreakdownOption;
         $scope.getReports = getReports;
 
@@ -303,16 +302,14 @@
 
         function selectEntity(entityId) {
             if (entityId === null) {
-                resetToStateForCurrentReportType();
-            }
-        }
-
-        function selectSite(siteId) {
-            if (siteId === null) {
+                $scope.selectedData.siteBreakdown = null;
+                $scope.selectedData.adSlotBreakdown = null;
+                $scope.selectedData.adNetworkBreakdown = null;
+                $scope.selectedData.accountBreakdown = null;
                 resetToStateForCurrentReportType();
             }
             else {
-                reportSelectorForm.getAdSlotsForSite(siteId)
+                reportSelectorForm.getAdSlotsForSite(entityId)
                     .then(function(adSlots) {
 //                        addAllOption(adSlots, 'All AdSlots');
                         $scope.optionData.adSlots = adSlots;
@@ -340,8 +337,6 @@
                 var breakdownOption = _.findWhere(reportType.breakdownOptions, { key: breakdownValue });
                 selectBreakdownOption(breakdownOption);
             }
-
-            var initialParams = ReportParams.getFormParams(performanceReport.getInitialParams());
 
             if (toState == null) {
                 transition = $state.transitionTo(
@@ -431,7 +426,7 @@
                     resetForm();
 
                     if (calculatedParams.siteId != null) {
-                        selectSite(calculatedParams.siteId);
+                        selectEntity(calculatedParams.siteId);
                     }
 
                     angular.extend($scope.selectedData, _.omit(calculatedParams, ['reportType']));

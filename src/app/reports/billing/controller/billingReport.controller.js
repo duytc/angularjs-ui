@@ -5,7 +5,7 @@
         .controller('BillingReport', BillingReport)
     ;
 
-    function BillingReport($scope, _, $filter, AlertService, reportGroup, DateFormatter) {
+    function BillingReport($scope, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES) {
         $scope.hasResult = reportGroup !== false;
 
         reportGroup = reportGroup || {};
@@ -17,6 +17,9 @@
             maxPages: 10,
             itemsPerPage: 10
         };
+
+        $scope.drillDownReport = drillDownReport;
+        $scope.reportStates = PERFORMANCE_REPORT_STATES;
 
         $scope.showPagination = showPagination;
         $scope.getExportExcelFileName = getExportExcelFileName();
@@ -30,6 +33,10 @@
                     message: 'There are no reports for that selection'
                 });
             }
+        }
+
+        function drillDownReport(relativeToState, report) {
+            performanceReportHelper.drillDownReport(relativeToState, report, reportGroup);
         }
 
         function showPagination() {

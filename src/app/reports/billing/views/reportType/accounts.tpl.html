@@ -1,0 +1,40 @@
+<div ng-if="hasResult">
+    <tc-billing-report-overview report-group="reportGroup"></tc-billing-report-overview>
+
+    <div class="panel panel-default daily-reports">
+        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
+            Daily Account Breakdown
+            <div class="button-bar hidden-xs">
+                <export-excel data="reports" fields="['startDate', 'endDate', 'name', 'slotOpportunities', 'billedAmount']" header="['Start Date', 'End Date', 'Publisher','Slot Opportunities', 'Billed Amount ($)']" file-name="getExportExcelFileName"></export-excel>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
+                <thead></thead>
+                <tbody>
+                <tr ng-click="drillDownReport(params.endDate ? reportStates.account : reportStates.sites, item)">
+                    <td at-title="Start Date" at-attribute="startDate">
+                        {{ item.startDate | date }}
+                    </td>
+                    <td at-title="End Date" at-attribute="endDate">
+                        {{ item.endDate | date }}
+                    </td>
+                    <td class="name" at-title="Publisher" at-attribute="name" at-sortable>
+                        {{ item.name }}
+                    </td>
+                    <td at-title="Slot Opportunities" at-attribute="slotOpportunities" at-sortable at-initial-sorting="desc">
+                        {{ item.slotOpportunities | number }}
+                    </td>
+                    <td at-title="Billed Amount" at-attribute="billedAmount" at-sortable>
+                        {{ item.billedAmount | currency }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <at-pagination ng-if="showPagination()" class="table-footer" at-list="reports" at-config="tableConfig"></at-pagination>
+    </div>
+
+    <tc-billing-report-summary report-group="reportGroup"></tc-billing-report-summary>
+</div>
