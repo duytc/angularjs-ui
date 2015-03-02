@@ -5,3 +5,5 @@ build/temp
 build/config/userConfig.js
 .tmp
 .idea
+test/protractor.admin.conf.js
+test/protractor.publisher.conf.js

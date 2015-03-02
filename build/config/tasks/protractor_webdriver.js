@@ -1,7 +1,7 @@
 module.exports = {
 
     options: {
-        path: '/usr/lib/node_modules/selenium-standalone/bin/',
+        path: '<%= userConfig.seleniumPath %>',
         command: 'selenium-standalone start'
     },
 

@@ -5,5 +5,6 @@ module.exports = {
     port: 9000,
     appUrl: 'http://localhost:9000',
     // application to open your app
-    browser: 'firefox'
+    browser: 'firefox',
+    seleniumPath: '/usr/lib/node_modules/selenium-standalone/bin/'
 };
