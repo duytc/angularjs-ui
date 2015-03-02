@@ -32,3 +32,16 @@ The gruntfile defines tasks, simply run the `grunt` command in the tagcade-ui di
 The styles for this project are built with compass/sass. The easiest way is with a ruby gem.
 
 If you're on OS X or Linux you probably already have Ruby installed; test with ruby -v in your terminal. When you've confirmed you have Ruby installed, run `sudo gem update --system && sudo gem install compass` and `sudo gem install sass` to install Compass and Sass.
+
+3) Installing Selenium for end to end test
+------------------------------
+
+```
+npm install selenium-standalone@latest -g
+selenium-standalone install
+```
+Then run end to end test
+
+```
+grunt e2e
+```

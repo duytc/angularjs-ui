@@ -18,12 +18,20 @@
     "grunt-html2js": "^0.2.8",
     "grunt-injector": "^0.5.2",
     "grunt-ng-annotate": "^0.4.0",
+    "grunt-protractor-runner": "^1.2.1",
+    "grunt-protractor-webdriver": "^0.2.0",
     "grunt-replace": "^0.8.0",
     "grunt-sync": "0.0.7",
     "grunt-usemin": "^2.4.0",
     "html-minifier": "^0.6.9",
+    "jasmine-core": "~2.2.0",
+    "karma": "~0.12.31",
+    "karma-chrome-launcher": "~0.1.7",
+    "karma-jasmine": "~0.3.5",
     "load-grunt-configs": "^0.4.0",
-    "load-grunt-tasks": "^0.6.0"
+    "load-grunt-tasks": "^0.6.0",
+    "protractor": "^1.7.0",
+    "selenium-standalone": "^4.1.0"
   },
   "dependencies": {}
 }

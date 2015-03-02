@@ -18,6 +18,8 @@ module.exports = function(grunt) {
 
     require('load-grunt-tasks')(grunt);
 
+    grunt.loadNpmTasks('grunt-protractor-webdriver');
+
     grunt.renameTask('delete_sync', 'deleteSync');
 
     grunt.registerTask('default', [
@@ -49,5 +51,21 @@ module.exports = function(grunt) {
         'filerev:prod',
         'usemin',
         'replace:prod'
+    ]);
+
+    grunt.registerTask('e2e-admin', [
+        'protractor_webdriver',
+        'protractor:e2eAdmin'
+    ]);
+
+    grunt.registerTask('e2e-pub', [
+        'protractor_webdriver',
+        'protractor:e2ePub'
+    ]);
+
+    grunt.registerTask('e2e', [
+        'protractor_webdriver:alive',
+        'protractor:e2ePub',
+        'protractor:e2eAdmin'
     ]);
 };
