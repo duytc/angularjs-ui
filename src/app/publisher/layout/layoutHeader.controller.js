@@ -11,7 +11,7 @@
         $scope.showButtonSwitchBack = showButtonSwitchBack;
 
         function switchBackMyAccount() {
-            autoLogin.switchBackMyAccount('app.admin.dashboard');
+            autoLogin.switchBackMyAccount('app.admin.publisherManagement.list');
         }
 
         function showButtonSwitchBack() {
