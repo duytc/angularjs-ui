@@ -7,14 +7,14 @@
     ;
 
     function LayoutHeader($scope, autoLogin) {
-        $scope.switchBackMyAccount = switchBackMyAccount;
-        $scope.showButtonSwitchBack = showButtonSwitchBack;
+        $scope.switchBackToAdminAccount = switchBackToAdminAccount;
+        $scope.showButtonSwitchBackToAdmin = showButtonSwitchBackToAdmin;
 
-        function switchBackMyAccount() {
+        function switchBackToAdminAccount() {
             autoLogin.switchBackMyAccount('app.admin.publisherManagement.list');
         }
 
-        function showButtonSwitchBack() {
+        function showButtonSwitchBackToAdmin() {
             return autoLogin.showButtonSwitchBack();
         }
     }
