@@ -160,7 +160,7 @@
                 Manager = AdNetworkManager.one($scope.selectedData.adNetworkId);
             }
             else if($scope.selectedData.adNetworkForSiteId) {
-                Manager = AdNetworkManager.one($scope.selectedData.adNetworkForSiteId).one('sites', $scope.selectedData.siteId);
+                Manager = AdNetworkManager.one($scope.selectedData.adNetworkForSiteId).one('sites', $scope.selectedData.adNetworkForSiteId);
             }
 
             AlertService.removeAlert();
