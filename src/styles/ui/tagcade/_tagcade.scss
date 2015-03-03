@@ -109,7 +109,6 @@ tr[ui-sref] {
     }
 }
 
-*:before{
-  display: table !important;
+table td:before {
   content: none !important;
 }
