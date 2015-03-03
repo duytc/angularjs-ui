@@ -23,6 +23,8 @@
             notAuthenticated: 'tagcade.core.auth.not_authenticated',
             notAuthorized: 'tagcade.core.auth.not_authorized'
         })
+
+        .constant('PREVIOUS_AUTH_TOKEN', 'previousAuthToken')
     ;
 
 })();
