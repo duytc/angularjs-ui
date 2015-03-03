@@ -7,6 +7,25 @@ describe("Publisher Management Test", function() {
             toEqual('Publishers | Tagcade Platform');
     });
 
+    it('Login as publisher', function() {
+
+        browser.get('#/adm/userManagement/list');
+
+        element.all(by.cssContainingText('button', 'Actions')).then(function(items) {
+            items[0].click()
+        });
+
+        element(by.cssContainingText('a', 'Login as this publisher')).click();
+
+        expect(browser.getTitle()).
+            toEqual('Dashboard | Tagcade Platform');
+
+        element(by.cssContainingText('span', 'Return to admin account')).click();
+
+        expect(browser.getTitle()).
+            toEqual('Publishers | Tagcade Platform');
+    });
+
     it('publisher update', function() {
 
         browser.get('#/adm/userManagement/edit/' + browser.params.edit.publisherId);
