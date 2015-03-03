@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('tagcade.core.auth')
-        .factory('storage', storage)
+        .factory('sessionStorage', sessionStorage)
     ;
 
-    function storage($window, AUTH_TOKEN_NAME, PREVIOUS_AUTH_TOKEN) {
+    function sessionStorage($window, AUTH_TOKEN_NAME, PREVIOUS_AUTH_TOKEN) {
         var api = {
             setCurrentToken: setCurrentToken,
             getCurrentToken: getCurrentToken,
