@@ -108,3 +108,8 @@ tr[ui-sref] {
         margin-left: 5px;
     }
 }
+
+*:before{
+  display: table !important;
+  content: none !important;
+}
