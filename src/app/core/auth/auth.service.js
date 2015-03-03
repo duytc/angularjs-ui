@@ -12,7 +12,7 @@
         .factory('Auth', auth)
     ;
 
-    function auth($http, $q, API_BASE_URL, USER_ROLES, authErrors, sessionFactory, storage) {
+    function auth($http, $q, API_BASE_URL, USER_ROLES, authErrors, sessionFactory, sessionStorage) {
         var api = {
             initSession: initSession,
             login: login,
@@ -105,7 +105,7 @@
                     _$persistToken = !!rememberMe;
 
                     if (_$persistToken) {
-                        storage.setCurrentToken(session.token);
+                        sessionStorage.setCurrentToken(session.token);
                     }
 
                     return session;
@@ -121,7 +121,7 @@
         function check() {
             var dfd = $q.defer();
 
-            var token =  storage.getCurrentToken();
+            var token =  sessionStorage.getCurrentToken();
 
             if (!token) {
                 dfd.reject(new Error(authErrors.noToken));
@@ -146,7 +146,7 @@
                         dfd.resolve(data);
                     },
                     function() {
-                        storage.clearStorage();
+                        sessionStorage.clearStorage();
                         dfd.reject(new Error(authErrors.invalidToken));
                     }
                 )
@@ -157,7 +157,7 @@
 
         function logout() {
             _$currentSession = null;
-            storage.clearStorage();
+            sessionStorage.clearStorage();
         }
 
         function getSession() {

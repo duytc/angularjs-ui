@@ -5,7 +5,7 @@
         .factory('autoLogin', autoLogin)
     ;
 
-    function autoLogin($state, Auth, storage) {
+    function autoLogin($state, Auth, sessionStorage) {
         var api = {
             switchToUser: switchToUser,
             switchBackMyAccount: switchBackMyAccount,
@@ -17,10 +17,10 @@
         return api;
 
         function switchToUser(userToken, homeState) {
-            storage.setPreviousToken(angular.toJson(Auth.getSession()) || {});
+            sessionStorage.setPreviousToken(angular.toJson(Auth.getSession()) || {});
 
             var newSession = Auth.initSession(userToken);
-            storage.setCurrentToken(newSession.token);
+            sessionStorage.setCurrentToken(newSession.token);
 
             $state.transitionTo(homeState, {}, {
                 reload: true,
@@ -30,13 +30,13 @@
         }
 
         function switchBackMyAccount(homeState) {
-            var previousAuthToken = angular.fromJson(storage.getPreviousToken());
+            var previousAuthToken = angular.fromJson(sessionStorage.getPreviousToken());
 
             switchToUser(previousAuthToken, homeState);
         }
 
         function showButtonSwitchBack() {
-            return storage.getPreviousToken() != {} && storage.getPreviousToken() != undefined;
+            return sessionStorage.getPreviousToken() != {} && sessionStorage.getPreviousToken() != undefined;
         }
     }
 })();
