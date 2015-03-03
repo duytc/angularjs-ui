@@ -2,7 +2,7 @@
     <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong></div>
     <div class="panel-body">
         <div class="row">
-            <form name="userForm" class="col-lg-6 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
+            <form name="userForm" class="col-lg-6 form-validation form-horizontal userForm" role="form" ng-submit="submit()" novalidate>
                 <div class="form-group">
                     <label for="inputUsername" class="col-sm-2 control-label">Username <strong class="text-danger">*</strong></label>
                     <div class="col-sm-10">
@@ -13,6 +13,12 @@
                     <label for="inputPassword" class="col-sm-2 control-label">Password <strong class="text-danger" ng-if="isNew">*</strong></label>
                     <div class="col-sm-10">
                         <input server-error name="plainPassword" ng-model="publisher.plainPassword" ng-required="isNew" ng-minlength="2" type="password" autocomplete="off" class="form-control" id="inputPassword" placeholder="Password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputRepeatPassword" class="col-sm-2 control-label">Repeat Password <strong class="text-danger" ng-if="isNew">*</strong></label>
+                    <div class="col-sm-10">
+                        <input server-error name="inputRepeatPassword" ng-model="repeatPassword" ng-required="isNew" ng-minlength="2" type="password" autocomplete="off" class="form-control" id="inputRepeatPassword" placeholder="Repeat Password">
                     </div>
                 </div>
                 <div class="form-group">

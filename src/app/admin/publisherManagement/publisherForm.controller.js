@@ -300,6 +300,10 @@
             }
         };
         $scope.isFormValid = function() {
+            if($scope.publisher.plainPassword != null || $scope.repeatPassword != null && $scope.publisher.plainPassword != '') {
+                return $scope.publisher.username !== null && $scope.repeatPassword === $scope.publisher.plainPassword;
+            }
+
             return $scope.publisher.username != null;
         };
 

@@ -263,6 +263,10 @@
         $scope.publisher = publisher;
 
         $scope.isFormValid = function() {
+            if($scope.publisher.plainPassword != null || $scope.repeatPassword != null && $scope.publisher.plainPassword != '') {
+                return $scope.publisher.username !== null && $scope.repeatPassword === $scope.publisher.plainPassword;
+            }
+
             return $scope.publisher.username != null;
         };
 
@@ -278,8 +282,6 @@
             delete $scope.publisher.enabled;
             delete $scope.publisher.enabledModules;
             delete $scope.publisher.billingRate;
-
-            console.log($scope.publisher.patch());
 
             var saveUser = $scope.publisher.patch();
             saveUser
