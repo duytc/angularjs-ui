@@ -135,8 +135,7 @@ describe("Performance Test", function() {
         performance.adSlot('Last Month', 1, 0, 0, result);
         performance.drillDown(result);
 
-        // ad slot by day
+        // ad slot by ad tag
         performance.adSlot('Last Month', 1, 0, 1, result);
-        performance.drillDown(result);
     });
 });
