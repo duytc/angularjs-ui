@@ -16,24 +16,33 @@
 
         return api;
 
+        /**
+         *
+         * @param userToken
+         * @param homeState
+         * @returns {promise}
+         */
         function switchToUser(userToken, homeState) {
             sessionStorage.setPreviousToken(angular.toJson(Auth.getSession()) || {});
 
             var newSession = Auth.initSession(userToken);
             sessionStorage.setCurrentToken(newSession.token);
 
-            $state.transitionTo(homeState, {}, {
+            var transition = $state.transitionTo(homeState, {}, {
                 reload: true,
                 inherit: false,
                 notify: true
             });
+
+            return transition;
         }
 
         function switchBackMyAccount(homeState) {
             var previousAuthToken = angular.fromJson(sessionStorage.getPreviousToken());
 
-            switchToUser(previousAuthToken, homeState);
-            sessionStorage.clearPreviousToken();
+            switchToUser(previousAuthToken, homeState).then(function() {
+                sessionStorage.clearPreviousToken();
+            });
         }
 
         function showButtonSwitchBack() {
