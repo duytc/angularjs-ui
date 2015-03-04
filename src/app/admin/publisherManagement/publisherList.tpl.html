@@ -18,7 +18,7 @@
             <thead></thead>
             <tbody>
             <tr>
-                <td at-title="#" at-implicit at-sortable at-attribute="id" at-initial-sorting="asc"></td>
+                <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
                 <td at-title="Actions">
                     <div class="btn-group" dropdown>
                         <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
@@ -35,7 +35,7 @@
                 <td at-title="Company" at-implicit at-sortable at-attribute="company"></td>
                 <td at-title="Email" at-implicit at-sortable at-attribute="email"></td>
                 <td at-title="Phone" at-implicit at-sortable at-attribute="phone"></td>
-                <td at-title="Last Login" at-sortable at-attribute="lastLogin">
+                <td at-title="Last Login" at-sortable at-attribute="lastLogin" at-initial-sorting="desc">
                     {{ item.lastLogin | date }}
                 </td>
                 <td at-title="Enabled" at-sortable at-attribute="enabled">
