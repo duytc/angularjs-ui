@@ -185,7 +185,9 @@
         }
 
         function isAdmin() {
-            return isAuthorized(USER_ROLES.admin);
+            // If the admin is currently logged in as a publisher
+            // they will have a previous token set
+            return isAuthorized(USER_ROLES.admin) && !sessionStorage.getPreviousToken();
         }
 
         return api;

@@ -33,6 +33,7 @@
             var previousAuthToken = angular.fromJson(sessionStorage.getPreviousToken());
 
             switchToUser(previousAuthToken, homeState);
+            sessionStorage.clearPreviousToken();
         }
 
         function showButtonSwitchBack() {

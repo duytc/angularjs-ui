@@ -13,7 +13,8 @@
             setPreviousToken: setPreviousToken,
             getPreviousToken: getPreviousToken,
 
-            clearStorage: clearStorage
+            clearStorage: clearStorage,
+            clearPreviousToken: clearPreviousToken
         };
 
         //
@@ -38,6 +39,10 @@
 
         function clearStorage() {
             $window.localStorage.clear();
+        }
+
+        function clearPreviousToken() {
+            $window.localStorage[PREVIOUS_AUTH_TOKEN] = null;
         }
     }
 })();

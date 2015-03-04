@@ -5,7 +5,7 @@
         .run(eventListeners)
     ;
 
-    function eventListeners($rootScope, $state, AUTH_EVENTS, ENTRY_STATE, AlertService, UserStateHelper, autoLogin) {
+    function eventListeners($rootScope, $state, AUTH_EVENTS, ENTRY_STATE, AlertService, UserStateHelper) {
         $rootScope.$on(AUTH_EVENTS.loginSuccess, function() {
             UserStateHelper.transitionRelativeToBaseState('dashboard');
         });
