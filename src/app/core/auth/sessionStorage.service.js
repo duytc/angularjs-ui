@@ -5,7 +5,7 @@
         .factory('sessionStorage', sessionStorage)
     ;
 
-    function sessionStorage($window, AUTH_TOKEN_NAME, PREVIOUS_AUTH_TOKEN) {
+    function sessionStorage($window, AUTH_TOKEN_NAME, PREVIOUS_AUTH_TOKEN_NAME) {
         var api = {
             setCurrentToken: setCurrentToken,
             getCurrentToken: getCurrentToken,
@@ -30,11 +30,11 @@
         }
 
         function setPreviousToken(previousAuthToken) {
-            $window.localStorage[PREVIOUS_AUTH_TOKEN] = previousAuthToken;
+            $window.localStorage[PREVIOUS_AUTH_TOKEN_NAME] = previousAuthToken;
         }
 
         function getPreviousToken() {
-            return $window.localStorage[PREVIOUS_AUTH_TOKEN];
+            return $window.localStorage[PREVIOUS_AUTH_TOKEN_NAME];
         }
 
         function clearStorage() {
@@ -42,7 +42,7 @@
         }
 
         function clearPreviousToken() {
-            $window.localStorage[PREVIOUS_AUTH_TOKEN] = null;
+            $window.localStorage.removeItem(PREVIOUS_AUTH_TOKEN_NAME);
         }
     }
 })();
