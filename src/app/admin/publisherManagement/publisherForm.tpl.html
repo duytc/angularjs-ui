@@ -19,6 +19,7 @@
                     <label for="inputRepeatPassword" class="col-sm-2 control-label">Repeat Password <strong class="text-danger" ng-if="isNew">*</strong></label>
                     <div class="col-sm-10">
                         <input server-error name="inputRepeatPassword" ng-model="repeatPassword" ng-required="isNew" ng-minlength="2" type="password" autocomplete="off" class="form-control" id="inputRepeatPassword" placeholder="Repeat Password">
+                        <span class="help-block">Leave it blank for no change</span>
                     </div>
                 </div>
                 <div class="form-group">
