@@ -18,12 +18,9 @@
             <div class="publisher form-group" ng-if="!selectedReportTypeis(reportTypes.platform) && showPublisherSelect()">
                 <label>Publisher</label>
                 <ui-select name="publisher" ng-model="selectedData.publisherId" ng-required="true" ng-disabled="!optionData.publishers.length" on-select="selectPublisher()">
-                    <ui-select-match placeholder="Select a publisher">{{ $select.selected.username }}</ui-select-match>
+                    <ui-select-match placeholder="Select a publisher">{{ $select.selected.company }}</ui-select-match>
                     <ui-select-choices repeat="publisher.id as publisher in optionData.publishers | filter: $select.search">
-                        <div ng-bind-html="publisher.username | highlight: $select.search"></div>
-                        <small ng-if="publisher.company">
-                            company: {{ publisher.company }}
-                        </small>
+                        <div ng-bind-html="publisher.company | highlight: $select.search"></div>
                     </ui-select-choices>
                 </ui-select>
             </div>

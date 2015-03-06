@@ -263,11 +263,11 @@
         $scope.publisher = publisher;
 
         $scope.isFormValid = function() {
-            if($scope.publisher.plainPassword != null || $scope.repeatPassword != null && $scope.publisher.plainPassword != '') {
-                return $scope.publisher.username !== null && $scope.repeatPassword === $scope.publisher.plainPassword;
+            if($scope.publisher.plainPassword != null || $scope.repeatPassword != null) {
+                return $scope.publisher.username != null && $scope.publisher.company != null && $scope.repeatPassword == $scope.publisher.plainPassword;
             }
 
-            return $scope.publisher.username != null;
+            return $scope.publisher.username != null && $scope.publisher.company != null;
         };
 
         $scope.submit = function() {
