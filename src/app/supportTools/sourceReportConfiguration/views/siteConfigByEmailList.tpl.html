@@ -1,0 +1,45 @@
+<section id="performance-report-selector" class="panel panel-default">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span>
+        <strong current-page-title></strong>
+
+        <div class="button-bar hidden-xs">
+            <button ui-sref="^.list" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon glyphicon-arrow-left"></span>
+                Back
+            </button>
+            <button ng-click="addSitesConfigForEmail()" class="btn btn-primary btn-sm" type="button">
+                <span class="glyphicon glyphicon glyphicon-plus"></span>
+                New Site Config
+            </button>
+        </div>
+    </div>
+
+    <search-box sb-list="sourceReportHasConfig.sourceReportSiteConfigs" search-fields="['site.name', 'site.publisher.username', 'site.domain']"></search-box>
+
+    <div class="panel-body">
+        <div>
+            <table class="table ng-table-responsive" at-table at-paginated at-list="sourceReportHasConfig.sourceReportSiteConfigs" at-config="tableConfig">
+                <thead></thead>
+                <tbody>
+                <tr>
+                    <td at-title="#" at-implicit at-sortable at-attribute="id" at-initial-sorting="asc"></td>
+                    <td at-title="Actions">
+                        <div class="btn-group" dropdown>
+                            <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a ng-click="confirmDeletion(item)">Delete This Config</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td at-title="Site" at-implicit at-sortable at-attribute="site.name"></td>
+                    <td at-title="Domain" at-implicit at-sortable at-attribute="site.domain"></td>
+                    <td at-title="Publisher" at-implicit at-sortable at-attribute="site.publisher.username"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <at-pagination ng-if="sourceReportHasConfig.sourceReportSiteConfigs.length > tableConfig.itemsPerPage" at-list="sourceReportHasConfig.sourceReportSiteConfigs" at-config="tableConfig"></at-pagination>
+        </div>
+    </div>
+</section>
