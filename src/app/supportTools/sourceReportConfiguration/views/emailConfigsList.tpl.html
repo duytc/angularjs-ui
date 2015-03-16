@@ -42,7 +42,7 @@
                     </td>
                     <td at-implicit at-sortable at-attribute="email"></td>
                     <td at-sortable at-attribute="includedAll">
-                        <span class="label" ng-class="item.includedAll ? 'label-success' : 'label-danger'">{{ item.includedAll ? 'Active' : 'Paused' }}</span>
+                        <span class="label" ng-class="item.includedAll ? 'label-success' : 'label-danger'">{{ item.includedAll ? 'Yes' : 'No' }}</span>
                     </td>
                     <td at-sortable at-attribute="sourceReportSiteConfigs">
                         <ul ng-show="!item.includedAll" ng-repeat="config in item.sourceReportSiteConfigs">
