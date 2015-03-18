@@ -5,7 +5,7 @@
         .controller('EmailConfigsList', EmailConfigsList)
     ;
 
-    function EmailConfigsList($scope, $modal, $state, sourceReportList, AlertService, sourceReportConfig) {
+    function EmailConfigsList($scope, $modal, $state, $stateParams, publishers, sourceReportList, AlertService, sourceReportConfig) {
         $scope.sourceReportList = sourceReportList;
 
         $scope.tableConfig = {
@@ -13,10 +13,54 @@
             itemsPerPage: 10
         };
 
+        $scope.selected = {
+            publisher: null || $stateParams.publisherId
+        };
+
+        $scope.publishers = addAllOption(angular.copy(publishers), 'All Publishers');
+
+        $scope.selectPublisher = selectPublisher;
         $scope.addNewEmailConfig = addNewEmailConfig;
         $scope.editSourceReportConfig = editSourceReportConfig;
         $scope.deleteEmailConfig = deleteEmailConfig;
         $scope.openPopupIncludedAll = openPopupIncludedAll;
+        $scope.groupEntities = groupEntities;
+
+        function groupEntities(item){
+            if (item.id === null) {
+                return undefined; // no group
+            }
+
+            return ''; // separate group with no name
+        }
+
+        /**
+         *
+         * @param {Array} data
+         * @param {String} [label]
+         * @returns {Array}
+         */
+        function addAllOption(data, label)
+        {
+            if (!angular.isArray(data)) {
+                throw new Error('Expected an array of data');
+            }
+
+            data.unshift({
+                id: null, // default value
+                company: label || 'All'
+            });
+
+            return data;
+        }
+
+        function selectPublisher(publisherId) {
+            if(publisherId != null) {
+                return $state.transitionTo($state.current, {publisherId: publisherId}, {reload: true});
+            }
+
+            return $state.transitionTo($state.current, {}, {reload: true});
+        }
 
         function addNewEmailConfig() {
            $modal.open({
@@ -25,7 +69,7 @@
                 controller: 'EmailConfigsForm',
                 resolve: {
                     publishers: function() {
-                        return sourceReportConfig.getPublishers();
+                        return publishers;
                     }
                 }
             });

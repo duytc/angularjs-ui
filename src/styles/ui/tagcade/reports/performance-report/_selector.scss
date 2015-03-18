@@ -24,6 +24,10 @@
             @include ui-select-width(200px);
         }
 
+        .publisher-source-report-config.form-group {
+          @include ui-select-width(350px);
+        }
+
         .ad-network.form-group {
             @include ui-select-width(200px);
         }

@@ -8,6 +8,13 @@
     function SiteConfigByEmailList($scope, $modal, $state, sourceReportHasConfig, AlertService, sourceReportConfig) {
         $scope.sourceReportHasConfig = sourceReportHasConfig;
 
+        if(!$scope.sourceReportHasConfig.length) {
+            AlertService.addFlash({
+                type: 'success',
+                message: 'The site config has been deleted'
+            });
+        }
+
         $scope.confirmDeletion = confirmDeletion;
         $scope.addSitesConfigForEmail = addSitesConfigForEmail;
 

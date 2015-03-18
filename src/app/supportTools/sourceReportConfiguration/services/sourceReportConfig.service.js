@@ -8,8 +8,10 @@
     function sourceReportConfig(adminRestangular, adminUserManager, USER_MODULES) {
         var api = {
             getPublishers: getPublishers,
+            getSourceReportConfigsByPublisher: getSourceReportConfigsByPublisher,
             getSiteByPublisher: getSiteByPublisher,
             getSourceReportHasConfig: getSourceReportHasConfig,
+            getSourceReportHasConfigByPublisher: getSourceReportHasConfigByPublisher,
             getSitesNoConfig: getSitesNoConfig,
             postSiteForEmail: postSiteForEmail,
             postEmailConfig: postEmailConfig,
@@ -17,7 +19,8 @@
             deleteSiteConfig: deleteSiteConfig,
             postEmailIncludedAllConfig: postEmailIncludedAllConfig,
             updateEmailConfig: updateEmailConfig,
-            getAllSourceConfig: getAllSourceConfig
+            getAllSourceConfig: getAllSourceConfig,
+            getSourceReportConfigById: getSourceReportConfigById
         };
 
         return api;
@@ -36,6 +39,13 @@
             });
         }
 
+        function getSourceReportConfigsByPublisher(publisherId) {
+            return adminRestangular.one('sourcereportemailconfigs').one('accounts', publisherId).get()
+                .then(function(sourceReportConfigsData) {
+                    return sourceReportConfigsData.plain();
+                });
+        }
+
         function getSiteByPublisher(publisherId) {
             return adminUserManager.one(publisherId).getList('sites', {enableSourceReport: true})
                 .then(function (sites) {
@@ -44,7 +54,14 @@
         }
 
         function getSourceReportHasConfig(emailId) {
-            return adminRestangular.one('sourcereportemailconfigs', emailId).get()
+            return adminRestangular.one('sourcereportsiteconfigs').one('emailConfigs', emailId).get()
+                .then(function(site) {
+                    return site.plain();
+                });
+        }
+
+        function getSourceReportHasConfigByPublisher(emailId, publisherId) {
+            return adminRestangular.one('sourcereportsiteconfigs').one('accounts', publisherId).one('emailConfigs', emailId).get()
                 .then(function(site) {
                     return site.plain();
                 });
@@ -103,6 +120,10 @@
 
         function getAllSourceConfig() {
             return adminRestangular.one('sourcereportemailconfigs').get();
+        }
+
+        function getSourceReportConfigById(emailId) {
+            return adminRestangular.one('sourcereportemailconfigs', emailId).get();
         }
     }
 })();

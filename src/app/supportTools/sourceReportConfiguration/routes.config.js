@@ -17,7 +17,7 @@
 
         $stateProvider
             .state('app.admin.supportTools.sourceReportConfiguration.list', {
-                url: '/list',
+                url: '/list?publisherId',
                 views: {
                     'content@app': {
                         controller: 'EmailConfigsList',
@@ -25,8 +25,18 @@
                     }
                 },
                 resolve: {
-                    sourceReportList: /* @ngInject */ function(sourceReportConfig) {
-                        return sourceReportConfig.getAllSourceConfig();
+                    publishers: /* @ngInject */ function(sourceReportConfig) {
+                        return sourceReportConfig.getPublishers();
+                    },
+
+                    sourceReportList: /* @ngInject */ function(sourceReportConfig, $stateParams) {
+                        var publisherId = $stateParams.publisherId;
+
+                        if (!publisherId) {
+                            return sourceReportConfig.getAllSourceConfig();
+                        }
+
+                        return sourceReportConfig.getSourceReportConfigsByPublisher(publisherId);
                     }
                 },
                 ncyBreadcrumb: {
@@ -37,7 +47,7 @@
 
         $stateProvider
             .state('app.admin.supportTools.sourceReportConfiguration.siteConfigByEmail', {
-                url: '/listSiteConfig/email/{emailId}',
+                url: '/listSiteConfig/email/{emailId}?publisherId',
                 views: {
                     'content@app': {
                         controller: 'SiteConfigByEmailList',
@@ -46,11 +56,19 @@
                 },
                 resolve: {
                     sourceReportHasConfig: /* @ngInject */ function(sourceReportConfig, $stateParams) {
+                        if($stateParams.publisherId) {
+                            return sourceReportConfig.getSourceReportHasConfigByPublisher($stateParams.emailId, $stateParams.publisherId);
+                        }
+
                         return sourceReportConfig.getSourceReportHasConfig($stateParams.emailId);
+                    },
+
+                    sourceReportConfigCurrent: /* @ngInject */ function(sourceReportConfig, $stateParams) {
+                        return sourceReportConfig.getSourceReportConfigById($stateParams.emailId);
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Site Config For Email - {{ sourceReportHasConfig.email }}'
+                    label: 'Site Config For Email - {{ sourceReportConfigCurrent.email }}'
                 }
             })
         ;
