@@ -5,7 +5,7 @@ exports.config = {
         'browserName': 'chrome'
     },
 
-    specs: ['e2e/login.js', 'e2e/admin/publisher.management.spec.js', 'e2e/admin/tagManagement/*spec.js', 'e2e/*spec.js', 'e2e/admin/reports/*.spec.js'],
+    specs: ['e2e/login.js', 'e2e/admin/publisher.management.spec.js', 'e2e/admin/tagManagement/*spec.js', 'e2e/*spec.js', 'e2e/admin/reports/*.spec.js', 'e2e/admin/supportTools/*.spec.js'],
     params: {
         login: {
             username: 'admin',
@@ -23,8 +23,8 @@ exports.config = {
 
     jasmineNodeOpts: {
         showColors: true,
-        defaultTimeoutInterval: 1000000
+        defaultTimeoutInterval: 100000000
     },
 
-    allScriptsTimeout:1000000
+    allScriptsTimeout:100000000
 };

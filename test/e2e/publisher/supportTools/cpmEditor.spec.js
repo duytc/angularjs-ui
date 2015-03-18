@@ -13,7 +13,9 @@ function selectorForCpmEditor() {
     };
 
     this.clickButton = function() {
-        return element(by.css('.btn.btn-success')).click();
+        return element.all(by.css('.btn.btn-success')).then(function(items) {
+            items[0].click()
+        });
     };
 }
 

@@ -12,7 +12,9 @@ function selectedForBilling() {
     };
 
     this.clickButton = function() {
-        return element(by.css('.btn.btn-primary')).click();
+        return element.all(by.css('.btn.btn-primary')).then(function(items) {
+            items[0].click()
+        });
     }
 }
 
@@ -27,7 +29,7 @@ describe("Billing Test", function() {
         billing.dateRange('Last Month');
         billing.clickButton();
 
-        expect(element(by.binding('reportGroup.slotOpportunities | number'))).
+        expect(element(by.binding('reportGroup.averageBilledAmount | currency'))).
             toBeDefined(true);
     });
 
@@ -37,7 +39,7 @@ describe("Billing Test", function() {
         billing.selected('selectedData.siteId', 0);
         billing.clickButton();
 
-        expect(element(by.binding('reportGroup.slotOpportunities | number'))).
+        expect(element(by.binding('reportGroup.averageBilledAmount | currency'))).
             toBeDefined(true);
     });
 });
