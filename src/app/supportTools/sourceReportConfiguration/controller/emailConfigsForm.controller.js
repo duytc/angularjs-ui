@@ -109,7 +109,7 @@
                 .then(function () {
                     AlertService.addFlash({
                         type: 'success',
-                        message: 'The email config is not updated'
+                        message: 'The email config has been updated'
                     });
                 })
 
