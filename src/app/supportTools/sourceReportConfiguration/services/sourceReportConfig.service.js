@@ -88,7 +88,7 @@
         }
 
         function postSiteForEmail(emailId, sites) {
-            return adminRestangular.one('sourcereportsiteconfigs').one('emails', emailId).customPOST({sites: sites});
+            return adminRestangular.one('sourcereportsiteconfigs').one('emailConfigs', emailId).customPOST({sites: sites});
         }
 
         function postEmailConfig(emails, sites) {
