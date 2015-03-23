@@ -5,7 +5,7 @@
         .controller('AddSitesConfigForEmail', AddSitesConfigForEmail)
     ;
 
-    function AddSitesConfigForEmail($scope, $state, publishers, sourceReportHasConfig, sourceReportConfig, AlertService) {
+    function AddSitesConfigForEmail($scope, $stateParams, $state, publishers, sourceReportHasConfig, sourceReportConfig, AlertService) {
         $scope.sourceReportHasConfig = sourceReportHasConfig;
         $scope.sitesConfigSucceed = $scope.sourceReportHasConfig;
         $scope.sitesNoConfig = [];
@@ -132,7 +132,7 @@
                 }
             });
 
-            return sourceReportConfig.postSiteForEmail($scope.sourceReportHasConfig.id, sites)
+            return sourceReportConfig.postSiteForEmail($stateParams.emailId, sites)
                 .then(function() {
                     AlertService.addFlash({
                         type: 'success',
