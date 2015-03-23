@@ -13,7 +13,9 @@ function selectedForSource() {
     };
 
     this.clickButton = function() {
-        return element(by.css('.btn.btn-primary')).click();
+        return element.all(by.css('.btn.btn-primary')).then(function(items) {
+            items[0].click()
+        });
     }
 }
 
@@ -30,7 +32,7 @@ describe("Source Test", function() {
         source.selected('selectedData.siteId', 0);
         source.clickButton();
 
-        expect(element(by.binding('reportGroup.visits | number'))).
+        expect(element(by.binding('reportGroup.averageVisits | number'))).
             toBeDefined(true);
 
         ///

@@ -9,7 +9,8 @@
     function PublisherForm($scope, $state, $q, adminUserManager, AlertService, ServerErrorProcessor, publisher) {
         $scope.fieldNameTranslations = {
             username: 'Username',
-            plainPassword: 'Password'
+            plainPassword: 'Password',
+            company: 'company'
         };
 
         $scope.isNew = publisher === null;
@@ -299,12 +300,13 @@
                 $scope.publisher.enabledModules.push(role);
             }
         };
+
         $scope.isFormValid = function() {
-            if($scope.publisher.plainPassword != null || $scope.repeatPassword != null && $scope.publisher.plainPassword != '') {
-                return $scope.publisher.username !== null && $scope.repeatPassword === $scope.publisher.plainPassword;
+            if($scope.publisher.plainPassword != null || $scope.repeatPassword != null) {
+                return $scope.publisher.username != null && $scope.publisher.company != null && $scope.repeatPassword == $scope.publisher.plainPassword;
             }
 
-            return $scope.publisher.username != null;
+            return $scope.publisher.username != null && $scope.publisher.company != null;
         };
 
         $scope.submit = function() {

@@ -15,7 +15,9 @@ describe("Publisher Management Test", function() {
             items[0].click()
         });
 
-        element(by.cssContainingText('a', 'Login as this publisher')).click();
+        element.all(by.cssContainingText('a', 'Login as this publisher')).then(function(items) {
+            items[0].click()
+        });
 
         expect(browser.getTitle()).
             toEqual('Dashboard | Tagcade Platform');
@@ -32,6 +34,7 @@ describe("Publisher Management Test", function() {
 
         var username = element(by.model('publisher.username'));
         var password = element(by.model('publisher.plainPassword'));
+        var repeatPassword = element(by.model('repeatPassword'));
         var firstName = element(by.model('publisher.firstName'));
         var lastName = element(by.model('publisher.lastName'));
         var company = element(by.model('publisher.company'));
@@ -45,6 +48,7 @@ describe("Publisher Management Test", function() {
 
         username.clear();
         password.clear();
+        repeatPassword.clear();
         firstName.clear();
         lastName.clear();
         company.clear();
@@ -57,6 +61,7 @@ describe("Publisher Management Test", function() {
 
         username.sendKeys('test2');
         password.sendKeys('test2');
+        repeatPassword.sendKeys('test2');
         firstName.sendKeys('unit');
         lastName.sendKeys('test');
         company.sendKeys('D-TAG Viet Nam');

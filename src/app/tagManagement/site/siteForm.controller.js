@@ -5,7 +5,7 @@
         .controller('SiteForm', SiteForm)
     ;
 
-    function SiteForm($scope, $state, $q, SiteManager, AlertService, ServerErrorProcessor, site, publishers) {
+    function SiteForm($scope, $state, $q, SiteManager, AlertService, ServerErrorProcessor, site, publishers, userSession) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             domain: 'Domain'
@@ -13,18 +13,39 @@
 
         $scope.isNew = site === null;
         $scope.formProcessing = false;
+        var enabledModules = null;
 
         $scope.allowPublisherSelection = $scope.isAdmin() && !!publishers;
         $scope.publishers = publishers;
+
+        $scope.selectPublisher = selectPublisher;
+        $scope.isEnabledAnalytics = isEnabledAnalytics;
+        $scope.isFormValid = isFormValid;
 
         $scope.site = site || {
             name: null,
             domain: null
         };
 
-        $scope.isFormValid = function() {
+        function isFormValid() {
             return $scope.siteForm.$valid;
-        };
+        }
+
+        function selectPublisher(publisher) {
+             enabledModules = publisher.enabledModules
+        }
+
+        function isEnabledAnalytics() {
+            if(!$scope.isAdmin()) {
+                enabledModules = userSession.enabledModules
+            }
+
+            if($scope.isNew) {
+                return enabledModules != null ? enabledModules.indexOf('MODULE_ANALYTICS') > -1 : false;
+            }
+
+            return $scope.site.publisher != null ? $scope.site.publisher.enabledModules : false;
+        }
 
         $scope.submit = function() {
             if ($scope.formProcessing) {

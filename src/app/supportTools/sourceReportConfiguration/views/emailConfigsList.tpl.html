@@ -1,0 +1,74 @@
+<section id="performance-report-selector" class="panel panel-default">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span>
+        <strong current-page-title></strong>
+
+        <div class="button-bar hidden-xs">
+            <button ng-click="addNewEmailConfig()" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon glyphicon-plus"></span>
+                New Configuration
+            </button>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <form name="sourceReportConfig" class="form-inline" role="form" novalidate>
+            <div class="publisher-source-report-config form-group">
+                <label>Publisher</label>
+                <ui-select id="inputPublisher" ng-model="selected.publisher" ng-required="true" server-error on-select="selectPublisher($model)">
+                    <ui-select-match placeholder="Select a publisher">{{ $select.selected.company }}</ui-select-match>
+                    <ui-select-choices group-by="groupEntities" repeat="publisher.id as publisher in publishers | orderBy: 'company' | filter:{ company: $select.search }">
+                        {{ publisher.company }}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </form>
+    </div>
+</section>
+
+
+<div class="panel panel-default daily-reports">
+    <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Configuration</div>
+
+    <search-box sb-list="sourceReportList" place-holder="'Search by email'" search-fields="['email']"></search-box>
+
+    <table class="table" at-table at-list="sourceReportList" at-paginated at-config="tableConfig">
+        <thead>
+        <tr>
+            <th at-attribute="email">Email</th>
+            <th at-attribute="includedAll">Include All</th>
+            <th at-attribute="sourceReportSiteConfigs">Sites Configs</th>
+            <th at-attribute="active">Enabled</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td at-attribute="actions">
+                <div class="btn-group" dropdown>
+                    <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li ng-show="!item.includedAll"><a ui-sref="^.siteConfigByEmail({emailId: item.id, publisherId: selected.publisher})">Manage Site Config</a></li>
+                        <li ng-show="item.includedAll"><a ng-click="openPopupIncludedAll()">Manage Site Config</a></li>
+                        <li class="divider"></li>
+                        <li><a ng-click="editSourceReportConfig(item)">Edit This Config</a></li>
+                        <li><a ng-click="deleteEmailConfig(item.id)">Delete This Config</a></li>
+                    </ul>
+                </div>
+            </td>
+            <td at-implicit at-sortable at-attribute="email" at-initial-sorting="desc"></td>
+            <td at-sortable at-attribute="includedAll">
+                <span class="label" ng-class="item.includedAll ? 'label-success' : 'label-danger'">{{ item.includedAll ? 'Yes' : 'No' }}</span>
+            </td>
+            <td at-sortable at-attribute="sourceReportSiteConfigs">
+                <ul ng-show="!item.includedAll" ng-repeat="config in item.sourceReportSiteConfigs">
+                    <li>{{ config.site.name }} - {{ config.site.domain }}</li>
+                </ul>
+            </td>
+            <td at-sortable at-attribute="active">
+                <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
+            </td>
+        </tbody>
+    </table>
+
+    <at-pagination ng-if="sourceReportList.length > tableConfig.itemsPerPage" class="table-footer" at-list="sourceReportList" at-config="tableConfig"></at-pagination>
+</div>

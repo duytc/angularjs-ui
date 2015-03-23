@@ -7,7 +7,9 @@ function selectedForProjectedBill() {
     };
 
     this.clickButton = function() {
-        return element(by.css('.btn.btn-primary')).click();
+        return element.all(by.css('.btn.btn-primary')).then(function(items) {
+            items[0].click()
+        });
     }
 }
 

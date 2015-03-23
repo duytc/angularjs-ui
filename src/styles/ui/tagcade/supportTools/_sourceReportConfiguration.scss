@@ -1,0 +1,29 @@
+.source-report-configuration {
+  .emailInput {
+    margin-bottom: 10px;
+  }
+
+  .help-block {
+    margin-bottom: 0 !important;
+  }
+
+  select {
+    height: 300px;
+    width: 100%;
+    border: none;
+    outline:none
+  }
+
+  select option {
+    padding: 10px;
+  }
+  
+  .center-col-source-report {
+    margin-top: 50px;
+    text-align: center;
+  }
+
+  .center-col-source-report button {
+    margin-bottom: 30px;
+  }
+}

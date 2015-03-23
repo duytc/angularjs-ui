@@ -8,9 +8,9 @@
                     <label class="col-sm-2 control-label">Publisher</label>
                     <div class="col-sm-10">
                         <ui-select ng-model="selected.publisher" ng-required="true" on-select="selectPublisher($item, $model)">
-                            <ui-select-match placeholder="Select a publisher">{{ $select.selected.username }}</ui-select-match>
-                            <ui-select-choices repeat="publisher in publishers | filter: { username: $select.search }">
-                                {{ publisher.username }}
+                            <ui-select-match placeholder="Select a publisher">{{ $select.selected.company }}</ui-select-match>
+                            <ui-select-choices repeat="publisher in publishers | filter: { company: $select.search }">
+                                {{ publisher.company }}
                             </ui-select-choices>
                         </ui-select>
                     </div>
