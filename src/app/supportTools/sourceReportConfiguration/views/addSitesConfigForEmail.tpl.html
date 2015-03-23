@@ -22,22 +22,34 @@
                 <div ng-if="!includedAll" class="col-lg-offset-2 col-sm-10">
                     <div class="col-sm-5">
                         <section class="panel panel-default row">
-                            <div class="panel-heading">Available Reports</div>
-                            <select multiple="multiple">
-                                <option ng-repeat="site in sitesNoConfig" ng-dblclick="sitesHasConfigPush(site)">{{ site.domain }}</option>
+                            <div class="panel-heading">Available Sites</div>
+                            <select multiple="multiple" ng-model="selected.listPush">
+                                <option ng-repeat="site in sitesNoConfig" ng-dblclick="sitesHasConfigPush(site)" value="{{site}}">{{ site.domain }}</option>
                             </select>
                         </section>
                     </div>
                     <div class="col-sm-2 center-col-source-report">
-                        <span class="fa fa-chevron-right fa-2x col-lg-12" ng-click="sitesHasConfigPushAll(sitesNoConfig)"><span class="fa fa-chevron-right"></span></span>
-                        <span class="fa fa-chevron-left fa-2x col-lg-12" ng-click="sitesHasConfigDropAll(sitesHasConfig)"><span class="fa fa-chevron-left"></span></span>
+                        <button type="button" class="btn btn-default col-lg-12" ng-click="sitesHasConfigPushItems(selected.listPush)">
+                            <span class="fa fa-chevron-right"></span>
+                        </button>
+
+                        <button type="button" class="btn btn-default col-lg-12" ng-click="sitesHasConfigPushAll(sitesNoConfig)">
+                            <span class="glyphicon glyphicon-arrow-right"></span>
+                        </button>
+                        <button type="button" class="btn btn-default col-lg-12" ng-click="sitesHasConfigDropAll(sitesHasConfig)">
+                            <span class="glyphicon glyphicon-arrow-left"></span>
+                        </button>
+
+                        <button type="button" class="btn btn-default col-lg-12" ng-click="sitesHasConfigDropItems(selected.listDrop)">
+                            <span class="fa fa-chevron-left"></span>
+                        </button>
                     </div>
                     <div class="col-sm-5">
                         <section class="panel panel-default row">
-                            <div class="panel-heading">Selected Reports</div>
-                            <select multiple="multiple">
+                            <div class="panel-heading">Selected Sites</div>
+                            <select multiple="multiple" ng-model="selected.listDrop">
                                 <option ng-repeat="siteConfig in sitesConfigSucceed" disabled>{{ siteConfig.site.domain }}</option>
-                                <option ng-repeat="site in sitesHasConfig" ng-dblclick="sitesHasConfigDrop(site)">{{ site.domain }}</option>
+                                <option ng-repeat="site in sitesHasConfig" ng-dblclick="sitesHasConfigDrop(site)" value="{{site}}">{{ site.domain }}</option>
                             </select>
                         </section>
                     </div>

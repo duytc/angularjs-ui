@@ -35,7 +35,6 @@
     <table class="table" at-table at-list="sourceReportList" at-paginated at-config="tableConfig">
         <thead>
         <tr>
-            <th at-attribute="id">#</th>
             <th at-attribute="email">Email</th>
             <th at-attribute="includedAll">Include All</th>
             <th at-attribute="sourceReportSiteConfigs">Sites Configs</th>
@@ -44,7 +43,6 @@
         </thead>
         <tbody>
         <tr>
-            <td at-implicit at-sortable at-attribute="id" at-initial-sorting="asc"></td>
             <td at-attribute="actions">
                 <div class="btn-group" dropdown>
                     <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
@@ -57,7 +55,7 @@
                     </ul>
                 </div>
             </td>
-            <td at-implicit at-sortable at-attribute="email"></td>
+            <td at-implicit at-sortable at-attribute="email" at-initial-sorting="desc"></td>
             <td at-sortable at-attribute="includedAll">
                 <span class="label" ng-class="item.includedAll ? 'label-success' : 'label-danger'">{{ item.includedAll ? 'Yes' : 'No' }}</span>
             </td>

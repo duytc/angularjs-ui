@@ -7,8 +7,13 @@
 
     function AddSitesConfigForEmail($scope, $state, publishers, sourceReportHasConfig, sourceReportConfig, AlertService) {
         $scope.sourceReportHasConfig = sourceReportHasConfig;
-        $scope.sitesConfigSucceed = $scope.sourceReportHasConfig.sourceReportSiteConfigs;
+        $scope.sitesConfigSucceed = $scope.sourceReportHasConfig;
         $scope.sitesNoConfig = [];
+
+        $scope.selected = {
+            listPush: [],
+            listDrop: []
+        };
 
         $scope.sitesHasConfig = [];
 
@@ -19,6 +24,8 @@
         $scope.sitesHasConfigPushAll = sitesHasConfigPushAll;
         $scope.sitesHasConfigDrop = sitesHasConfigDrop;
         $scope.sitesHasConfigDropAll = sitesHasConfigDropAll;
+        $scope.sitesHasConfigPushItems = sitesHasConfigPushItems;
+        $scope.sitesHasConfigDropItems = sitesHasConfigDropItems;
         $scope.isFormValid = isFormValid;
         $scope.submit = submit;
 
@@ -43,6 +50,7 @@
         function sitesHasConfigPush(site) {
             $scope.sitesHasConfig.push(site);
             $scope.sitesNoConfig.splice($scope.sitesNoConfig.indexOf(site), 1);
+            _clearSelectMultiple();
         }
 
         function sitesHasConfigPushAll(allSites) {
@@ -56,6 +64,7 @@
         function sitesHasConfigDrop(site) {
             $scope.sitesNoConfig.push(site);
             $scope.sitesHasConfig.splice($scope.sitesHasConfig.indexOf(site), 1);
+            _clearSelectMultiple();
         }
 
         function sitesHasConfigDropAll(allSites) {
@@ -64,6 +73,50 @@
             });
 
             $scope.sitesHasConfig = [];
+        }
+
+        function sitesHasConfigPushItems(items) {
+            var sitesConfigId = [];
+            var sitesNoConfig = [];
+
+            angular.forEach($scope.sitesNoConfig, function(site) {
+                angular.forEach(items, function(item) {
+                    var item = angular.fromJson(item);
+                    if(item.id == site.id) {
+                        $scope.sitesHasConfig.push(site);
+                        sitesConfigId.push(site.id);
+                    }
+                });
+
+                if(sitesConfigId.indexOf(site.id) == -1) {
+                    sitesNoConfig.push(site);
+                }
+            });
+
+            _clearSelectMultiple();
+            return $scope.sitesNoConfig = sitesNoConfig;
+        }
+
+        function sitesHasConfigDropItems(items) {
+            var sitesConfigId = [];
+            var sitesHasConfig = [];
+
+            angular.forEach($scope.sitesHasConfig, function(site) {
+                angular.forEach(items, function(item) {
+                    var item = angular.fromJson(item);
+                    if(item.id == site.id) {
+                        $scope.sitesNoConfig.push(site);
+                        sitesConfigId.push(site.id);
+                    }
+                });
+
+                if(sitesConfigId.indexOf(site.id) == -1) {
+                    sitesHasConfig.push(site);
+                }
+            });
+
+            _clearSelectMultiple();
+            return $scope.sitesHasConfig = sitesHasConfig;
         }
 
         function isFormValid() {
@@ -97,6 +150,11 @@
                         message: 'The email config is not updated'
                     });
                 });
+        }
+
+        function _clearSelectMultiple() {
+            $scope.selected.listPush = null;
+            $scope.selected.listDrop = null;
         }
     }
 })();
