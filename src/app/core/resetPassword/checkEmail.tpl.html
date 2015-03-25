@@ -1,0 +1,31 @@
+<div class="page-forgot">
+
+    <div class="signin-header">
+        <section class="logo text-center">
+            <img src="assets/images/logo.png" alt="Tagcade">
+        </section>
+    </div>
+
+    <div ng-show="showForm" class="info text-center">
+        <p class="text-small">Enter your username or email address that you used to register. We'll send you an email with your username and a link to reset your password.</p>
+    </div>
+
+    <div class="form-container text-center">
+
+        <alert-box></alert-box>
+
+        <form ng-show="showForm" class="form-horizontal" name="forgotPasswordForm" ng-submit="sendEmail()">
+            <div class="form-group">
+                <span class="glyphicon glyphicon-user"></span>
+                <input ng-model="username"
+                       type="text"
+                       class="form-control input-lg input-round text-center"
+                       placeholder="Username or email">
+            </div>
+            <div class="form-group">
+                <button ng-disabled="!isFormValid()" class="btn btn-lg btn-block btn-primary btn-round" type="submit">Reset</button>
+            </div>
+        </form>
+
+    </div>
+</div>
