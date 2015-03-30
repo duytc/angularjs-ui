@@ -7,7 +7,7 @@ module.exports = {
 
     alive: {
         options: {
-            keepAlive: true
+            keepAlive: false
         }
     },
 

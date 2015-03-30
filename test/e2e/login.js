@@ -1,4 +1,11 @@
 describe("Login Test", function() {
+
+    afterEach(function() {
+        if (this.results_.failedCount > 0) {
+            browser.close();
+        }
+    });
+
     it('should login', function() {
 
         browser.get('#/login');
