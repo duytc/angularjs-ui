@@ -30,7 +30,7 @@
                     if(response.status === 404) {
                         AlertService.addAlert({
                             type: 'error',
-                            message: 'The username or email address "'+ $scope.username +'" does not exist'
+                            message: 'Could not reset password for "'+ $scope.username +'"'
                         });
                     }
 
