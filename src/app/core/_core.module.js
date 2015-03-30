@@ -32,6 +32,7 @@
         'tagcade.core.data',
         'tagcade.core.login',
         'tagcade.core.util',
+        'tagcade.core.resetPassword',
 
         // 3rd party modules
 

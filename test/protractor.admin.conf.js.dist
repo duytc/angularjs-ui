@@ -17,9 +17,14 @@ exports.config = {
             adNetworkId : 1,
             siteId: 2,
             adSlotId: 1,
-            adTagId: 2
+            adTagId: 2,
+            emailConfig: 20
         }
     },
+
+    onPrepare: function() {
+         browser.driver.manage().window().setSize(1366, 768);
+      },
 
     jasmineNodeOpts: {
         showColors: true,

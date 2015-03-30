@@ -40,6 +40,11 @@ If you're on OS X or Linux you probably already have Ruby installed; test with r
 npm install selenium-standalone@latest -g
 selenium-standalone install
 ```
+
+* Configuration for Tests
+Create protractor config file for admin and publisher test similar to .dist files in the same directory tagcade-ui/test
+
+
 Then run end to end test
 
 ```
