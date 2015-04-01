@@ -32,6 +32,13 @@
                         });
                     }
 
+                    if(response.status = 408) {
+                        AlertService.addAlert({
+                            type: 'error',
+                            message: 'The token "' + token + '" is expired. Please try to reset password again'
+                        });
+                    }
+
                     else {
                         AlertService.addAlert({
                             type: 'error',
