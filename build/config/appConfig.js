@@ -14,7 +14,7 @@ module.exports = {
         commonTemplates: ['src/common/**/*/*.tpl.html'],
         scss: ['src/styles/ui/**/*.scss'],
         css: [],
-        html: ['src/index.html']
+        html: ['src/*.html']
     },
     vendorFiles: {
         js: [
@@ -41,7 +41,8 @@ module.exports = {
             'vendor/highcharts-ng/dist/highcharts-ng.min.js',
             'vendor/at-table/dist/angular-table.min.js',
             'vendor/angular-currency-filter/dist/currency-filter.min.js',
-            'vendor/file-saver/FileSaver.min.js'
+            'vendor/file-saver/FileSaver.min.js',
+
         ],
         css: [
             'src/styles/customvendor/**/*.css'
