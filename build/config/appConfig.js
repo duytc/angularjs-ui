@@ -6,6 +6,11 @@ module.exports = {
         },
         temp: 'build/temp'
     },
+    envFiles: {
+        js: [
+            'src/browserCheck.js'
+        ]
+    },
     appFiles: {
         js: ['src/**/*.js', '!src/**/*.spec.js', '!src/assets/**/*.js', '!src/app/app.js', '!src/app/bootstrap.js'],
         coreJs: ['src/app/app.js', 'src/app/bootstrap.js'],

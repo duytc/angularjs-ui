@@ -14,6 +14,7 @@ module.exports = {
                     '<%= appConfig.vendorFiles.css %>',
                     '<%= appConfig.appFiles.css %>',
 
+                    '<%= appConfig.envFiles.js %>',
                     '<%= appConfig.vendorFiles.js %>',
                     'templates-app.js',
                     'templates-common.js',
