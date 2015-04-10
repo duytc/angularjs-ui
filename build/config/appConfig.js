@@ -6,6 +6,17 @@ module.exports = {
         },
         temp: 'build/temp'
     },
+    deployment: {
+        origin: {
+            dev: {
+                match: /api\.tagcade\.dev/,
+                val: 'api.tagade.dev'
+            },
+            prod: {
+                val: 'api.tagcade.com'
+            }
+        }
+    },
     envFiles: {
         js: [
             'src/browserCheck.js'

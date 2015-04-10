@@ -45,8 +45,8 @@ module.exports = function(grunt, options) {
             patterns: [
                 getPattern('https://api.tagcade.com/api'),
                 {
-                    match: 'api.tagcade.dev',
-                    replacement: 'api.tagcade.com'
+                    match: '<%= appConfig.deployment.origin.dev.match %>',
+                    replacement:  '<%= appConfig.deployment.origin.prod.val %>'
                 }
             ]
         },
