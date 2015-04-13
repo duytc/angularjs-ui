@@ -43,7 +43,7 @@
 
             data.unshift({
                 id: null, // default value
-                username: label || 'All'
+                company: label || 'All'
             });
 
             return data;

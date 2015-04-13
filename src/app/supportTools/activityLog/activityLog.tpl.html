@@ -29,8 +29,7 @@
                         <td at-sortable at-attribute="createdAt">
                             {{ item.createdAt | date : 'medium' }}
                         </td>
-                        <td ng-show="!showTabMenu" at-sortable at-attribute="data">
-                            {{ (item.data.entity == null ) ? '' : item.data }}
+                        <td ng-show="!showTabMenu" at-sortable at-attribute="data" ng-bind-html="description(item)">
                         </td>
                         <td at-sortable at-implicit at-attribute="ip"></td>
                     </tr>
