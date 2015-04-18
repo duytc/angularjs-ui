@@ -1,0 +1,22 @@
+.sortableAdTags {
+  .moveable {
+    cursor: move;
+  }
+
+  .position {
+    background: #f6f6f6;
+    height: 25px;
+    clear: both;
+    width: 100%;
+  }
+
+  .itemAdTag {
+    clear: both;
+  }
+}
+
+.sortable-placeholder {
+  background: $table-bg-accent;
+  clear: both;
+  width: 100%;
+}

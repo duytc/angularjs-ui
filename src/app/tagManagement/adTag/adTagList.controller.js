@@ -18,42 +18,35 @@
         }
 
         $scope.adSlot = adSlot;
-        $scope.adTags = adTags;
+        $scope.actionDropdownToggled = actionDropdownToggled;
+        $scope.adTagsGroup = _sortGroup(adTags);
 
-        $scope.sortableOptions = {
+        $scope.sortableGroupOptions = {
             forcePlaceholderSize: true,
             placeholder: 'sortable-placeholder',
-            stop: function() {
-                var tagIds = $scope.adTags.map(function (adTag) {
-                    return adTag.id;
-                });
+            stop: _stop
+        };
 
-                adSlot.all('adtags').customPOST({ ids: tagIds }, 'positions')
-                    .catch(function () {
-                        AlertService.replaceAlerts({
-                            type: 'error',
-                            message: 'The ad tags could not be reordered'
-                        });
+        $scope.sortableItemOption = {
+            forcePlaceholderSize: true,
+            placeholder: "sortable-placeholder",
+            connectWith: ".itemAdTag",
 
-                        return $q.reject('could not reorder ad tags');
-                    })
-                    .then(function (adTags) {
-                        $scope.adTags = adTags.plain();
+            stop: _stop
+        };
 
-                        AlertService.replaceAlerts({
-                            type: 'success',
-                            message: 'The ad tags have been reordered'
-                        });
-                    })
-                ;
-            },
-            helper: function(e, ui) {
-                ui.children().each(function() {
-                    $(this).width($(this).width());
-                });
+        $scope.splitFromGroup = function(group, adTag) {
+            angular.forEach(group, function(item, index) {
+               if(item.id == adTag.id) {
+                   group.splice(index, 1);
+               }
+            });
 
-                return ui;
-            }
+            var length = $scope.adTagsGroup.length;
+            $scope.adTagsGroup[length] = [];
+            $scope.adTagsGroup[length].push(adTag);
+
+            return _stop();
         };
 
         $scope.toggleAdTagStatus = function (adTag) {
@@ -78,9 +71,10 @@
 
         // called when an action dropdown is opened/closed
         // we disable drag and drop sorting when it is open
-        $scope.actionDropdownToggled = function (isOpen) {
-            $scope.sortableOptions['disabled'] = isOpen;
-        };
+        function actionDropdownToggled(isOpen) {
+            $scope.sortableItemOption['disabled'] = isOpen;
+            $scope.sortableGroupOptions['disabled'] = isOpen;
+        }
 
         $scope.confirmDeletion = function (adTag, index) {
             var modalInstance = $modal.open({
@@ -108,5 +102,70 @@
                 ;
             });
         };
+
+        // handle event drag & drop
+        function _stop() {
+            var groupIds = [];
+
+            angular.forEach($scope.adTagsGroup, function(group) {
+                if(group.length > 0) {
+                    groupIds.push(group.map(function (adTag) {
+                            return adTag.id;
+                        })
+                    );
+                }
+            });
+
+            adSlot.all('adtags').customPOST({ ids: groupIds }, 'positions')
+                .catch(function () {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'The ad tags could not be reordered'
+                    });
+
+                    return $q.reject('could not reorder ad tags');
+                })
+                .then(function (adTags) {
+                    actionDropdownToggled(false);
+                    $scope.adTagsGroup = _sortGroup(adTags.plain());
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The ad tags have been reordered'
+                    });
+                })
+            ;
+        }
+
+        //sort groups overlap position
+        function _sortGroup(listAdTags) {
+            var adTagsGroup = [];
+
+            angular.forEach(listAdTags, function(item) {
+                var index = 0;
+
+                if(adTagsGroup.length == 0) {
+                    adTagsGroup[index] = [];
+                }
+                else {
+                    var found = false;
+                    angular.forEach(adTagsGroup, function(group, indexGroup) {
+                        if(group[0].position == item.position && !found) {
+                            found = true;
+                            index = indexGroup;
+                        }
+                    });
+
+                    if(found == false) {
+                        index = adTagsGroup.length;
+                        adTagsGroup[index] = [];
+                    }
+                }
+
+                adTagsGroup[index].push(item);
+            });
+
+            return adTagsGroup;
+        }
     }
 })();
