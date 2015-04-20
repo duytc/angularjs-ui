@@ -66,11 +66,11 @@
                     str += ' <ul><li><strong>from:</strong> ' + oldVal + '</li>';
 
                     if (newVal != null) {
-                        str += ' <li><strong>to:</strong> ' + newVal + '</li> </ul>';
+                        str += ' <li><strong>to&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</strong> ' + newVal + '</li> </ul>';
                     }
 
                     else {
-                        str += ' <li><strong>to:</strong> null</li> </ul>';
+                        str += ' <li><strong>to&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</strong> null</li> </ul>';
                     }
                 }
                 else if (newVal != null) {
