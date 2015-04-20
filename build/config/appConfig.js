@@ -9,7 +9,7 @@ module.exports = {
     deployment: {
         origin: {
             dev: {
-                match: /api\.tagcade\.dev/,
+                match: /api\.tagcade\.dev/g,
                 val: 'api.tagade.dev'
             },
             prod: {
@@ -19,6 +19,8 @@ module.exports = {
     },
     envFiles: {
         js: [
+            'vendor/xdomain/dist/xdomain.min.js',
+            'src/xdomain.config.js',
             'src/browserCheck.js'
         ]
     },
@@ -59,7 +61,6 @@ module.exports = {
             'vendor/angular-currency-filter/dist/currency-filter.min.js',
             'vendor/file-saver/FileSaver.min.js',
             'vendor/angular-xeditable/dist/js/xeditable.js'
-
         ],
         css: [
             'src/styles/customvendor/**/*.css'
