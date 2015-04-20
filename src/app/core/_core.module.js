@@ -44,7 +44,8 @@
         'ui.select',
         'highcharts-ng',
         'angular-table',
-        'currencyFilter'
+        'currencyFilter',
+        'xeditable'
     ]);
 
     core.run(appRun);

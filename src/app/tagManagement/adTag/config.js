@@ -6,5 +6,7 @@
             customAd: 0,
             imageAd: 1
         })
-    ;
+        .run(function(editableOptions) {
+            editableOptions.theme = 'bs3';
+        });
 })();

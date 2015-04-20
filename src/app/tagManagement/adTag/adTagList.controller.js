@@ -5,7 +5,7 @@
         .controller('AdTagList', AdTagList)
     ;
 
-    function AdTagList($scope, $q, $modal, adTags, adSlot, AdTagManager, AlertService) {
+    function AdTagList($scope, $state, $q, $modal, adTags, adSlot, AdTagManager, AlertService) {
         $scope.hasAdTags = function () {
             return !!adTags.length;
         };
@@ -20,6 +20,8 @@
         $scope.adSlot = adSlot;
         $scope.actionDropdownToggled = actionDropdownToggled;
         $scope.adTagsGroup = _sortGroup(adTags);
+        $scope.adTags = adTags;
+        $scope.updateAdTag = updateAdTag;
 
         $scope.sortableGroupOptions = {
             forcePlaceholderSize: true,
@@ -31,7 +33,6 @@
             forcePlaceholderSize: true,
             placeholder: "sortable-placeholder",
             connectWith: ".itemAdTag",
-
             stop: _stop
         };
 
@@ -166,6 +167,34 @@
             });
 
             return adTagsGroup;
+        }
+
+        function updateAdTag(data, field, adtag) {
+            if(adtag[field] == data) {
+                return;
+            }
+
+            var saveField = angular.copy(adtag[field]);
+            adtag[field] = data;
+            var item = angular.copy(adtag);
+
+            AdTagManager.one(item.id).customPUT(item)
+                .then(function() {
+                    $state.reload();
+
+                    AlertService.addFlash({
+                        type: 'success',
+                        message: 'The ad tag has been updated'
+                    });
+                })
+                .catch(function() {
+                    adtag[field] = saveField;
+
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'The ad tag has not been updated'
+                    });
+                });
         }
     }
 })();
