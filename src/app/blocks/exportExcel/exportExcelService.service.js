@@ -20,6 +20,7 @@
          * @returns {*}
          */
         function exportExcel(data, fields, header, fileName) {
+            var data = angular.copy(data);
             var bodyData = _bodyData(data, fields);
             var strData = _convertToExcel(header, bodyData);
 
@@ -42,7 +43,24 @@
                 var rowItems = [];
 
                 angular.forEach(fields, function(field) {
-                    var fieldValue = dataItem[field] != null ? dataItem[field] : ' ';
+                    if(field.indexOf('.')) {
+                        field = field.split(".");
+                        var curItem = dataItem;
+
+                        // deep access to obect property
+                        angular.forEach(field, function(prop){
+                            if (curItem != null && curItem != undefined) {
+                                curItem = curItem[prop]
+                            }
+                        });
+
+                        data = curItem;
+                    }
+                    else {
+                        data = dataItem[field];
+                    }
+
+                    var fieldValue = data != null ? data : ' ';
 
                     if (fieldValue != undefined && angular.isObject(fieldValue)) {
                         fieldValue = _objectToString(fieldValue);
