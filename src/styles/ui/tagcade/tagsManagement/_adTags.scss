@@ -13,6 +13,10 @@
   .itemAdTag {
     clear: both;
   }
+
+  tbody tr {
+    border-top: 1px solid #ddd !important;
+  }
 }
 
 .sortable-placeholder {
