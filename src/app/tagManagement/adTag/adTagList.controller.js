@@ -5,7 +5,9 @@
         .controller('AdTagList', AdTagList)
     ;
 
-    function AdTagList($scope, $state, $q, $modal, adTags, adSlot, AdTagManager, AlertService) {
+    function AdTagList($scope, $state, $q, $modal, _, adTags, adSlot, AdTagManager, AlertService) {
+
+
         $scope.hasAdTags = function () {
             return !!adTags.length;
         };
@@ -17,6 +19,8 @@
             });
         }
 
+        var originalGroups;
+
         $scope.adSlot = adSlot;
         $scope.actionDropdownToggled = actionDropdownToggled;
         $scope.adTagsGroup = _sortGroup(adTags);
@@ -26,14 +30,16 @@
         $scope.sortableGroupOptions = {
             forcePlaceholderSize: true,
             placeholder: 'sortable-placeholder',
-            stop: _stop
+            stop: _stop,
+            start: _start
         };
 
         $scope.sortableItemOption = {
             forcePlaceholderSize: true,
             placeholder: "sortable-placeholder",
             connectWith: ".itemAdTag",
-            stop: _stop
+            stop: _stop,
+            start: _start
         };
 
         $scope.splitFromGroup = function(group, adTag) {
@@ -104,11 +110,15 @@
             });
         };
 
-        // handle event drag & drop
-        function _stop() {
+        function _start() {
+            originalGroups = angular.copy($scope.adTagsGroup);
+
+        }
+
+        function getIdsWithRespectToGroup(adTagsGroup) {
             var groupIds = [];
 
-            angular.forEach($scope.adTagsGroup, function(group) {
+            angular.forEach(adTagsGroup, function(group) {
                 if(group.length > 0) {
                     groupIds.push(group.map(function (adTag) {
                             return adTag.id;
@@ -116,6 +126,27 @@
                     );
                 }
             });
+
+            return groupIds;
+        }
+
+        function arraysIdentical(a, b) {
+            var i = a.length;
+            if (i != b.length) return false;
+            while (i--) {
+                if (a[i] !== b[i]) return false;
+            }
+            return true;
+        };
+
+        // handle event drag & drop
+        function _stop() {
+            var groupIds = getIdsWithRespectToGroup($scope.adTagsGroup);
+            var originalGroupIds = getIdsWithRespectToGroup(originalGroups);
+
+            if (arraysIdentical(_.flatten(groupIds), _.flatten(originalGroupIds))) {
+                return;
+            }
 
             adSlot.all('adtags').customPOST({ ids: groupIds }, 'positions')
                 .catch(function () {

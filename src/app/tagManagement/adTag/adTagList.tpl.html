@@ -22,10 +22,10 @@
                 <tr>
                     <th class="col-lg-1">#</th>
                     <th class="col-lg-3">Actions</th>
-                    <th class="col-lg-4">Name</th>
+                    <th class="col-lg-3">Name</th>
                     <!--<th class="col-lg-1">Position</th>-->
-                    <th class="col-lg-1">Rotation Weight</th>
-                    <th class="col-lg-2">Frequency Cap</th>
+                    <th class="col-lg-2">Rotation Weight</th>
+                    <!--<th class="col-lg-2">Frequency Cap</th>-->
                     <th class="col-lg-1">Status</th>
                 </tr>
                 </thead>
@@ -33,7 +33,7 @@
 
             <div ui-sortable="sortableGroupOptions" ng-model="adTagsGroup">
                 <div ng-repeat="adTags in adTagsGroup" ng-class="{'moveable': !sortableGroupOptions['disabled']}">
-                    <div class="position" ng-if="adTags.length"><strong>Position = {{ adTags[0].position }}</strong></div>
+                    <div class="position" ng-if="adTags.length"><strong>Position : {{ adTags[0].position }}</strong></div>
 
                     <table ng-if="hasAdTags()" class="table">
                         <tbody class="itemAdTag" ui-sortable="sortableItemOption" ng-model="adTags">
@@ -51,10 +51,10 @@
                                     </ul>
                                 </div>
                             </td>
-                            <td class="col-lg-4" e-form="nameForm" ng-dblclick="nameForm.$show()" buttons="no" oncancel="updateAdTag($data, 'name', adTag)" editable-text="adTag.name">{{ adTag.name }}</td>
+                            <td class="col-lg-3" e-form="nameForm" ng-dblclick="nameForm.$show()" buttons="no" oncancel="updateAdTag($data, 'name', adTag)" editable-text="adTag.name">{{ adTag.name }}</td>
                             <!--<td class="col-lg-1" e-form="positionForm" ng-dblclick="positionForm.$show()" buttons="no" oncancel="updateAdTag($data, 'position', adTag)" editable-number="adTag.position"><span class="label label-default">{{ adTag.position }}</span></td>-->
-                            <td class="col-lg-1" e-form="rotationForm" ng-dblclick="rotationForm.$show()" buttons="no" oncancel="updateAdTag($data, 'rotation', adTag)" editable-number="adTag.rotation">{{ adTag.rotation }}</td>
-                            <td class="col-lg-2" e-form="frequencyCapForm" ng-dblclick="frequencyCapForm.$show()" buttons="no" oncancel="updateAdTag($data, 'frequencyCap', adTag)" editable-number="adTag.frequencyCap">{{ adTag.frequencyCap }}</td>
+                            <td class="col-lg-2" e-form="rotationForm" ng-dblclick="rotationForm.$show()" buttons="no" oncancel="updateAdTag($data, 'rotation', adTag)" editable-number="adTag.rotation">{{ adTag.rotation }}</td>
+                            <!--<td class="col-lg-2" e-form="frequencyCapForm" ng-dblclick="frequencyCapForm.$show()" buttons="no" oncancel="updateAdTag($data, 'frequencyCap', adTag)" editable-number="adTag.frequencyCap">{{ adTag.frequencyCap }}</td>-->
                             <td class="col-lg-1"><span class="label" ng-class="adTag.active ? 'label-success' : 'label-danger'">{{ adTag.active ? 'Active' : 'Paused' }}</span></td>
                         </tr>
                         </tbody>
