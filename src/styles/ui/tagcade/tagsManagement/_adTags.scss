@@ -8,6 +8,8 @@
     height: 25px;
     clear: both;
     width: 100%;
+    line-height: 25px;
+    padding-left: 10px;
   }
 
   .itemAdTag {
@@ -23,4 +25,8 @@
   background: $table-bg-accent;
   clear: both;
   width: 100%;
+}
+
+.ad-tag-drag-help {
+  margin:0 15px 15px 15px !important;
 }
