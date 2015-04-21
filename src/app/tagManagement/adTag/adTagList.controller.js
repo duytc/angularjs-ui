@@ -5,7 +5,7 @@
         .controller('AdTagList', AdTagList)
     ;
 
-    function AdTagList($scope, $state, $q, $modal, _, adTags, adSlot, AdTagManager, AlertService) {
+    function AdTagList($scope, $state, $q, $modal, adTags, adSlot, AdTagManager, AlertService) {
 
 
         $scope.hasAdTags = function () {
@@ -48,6 +48,8 @@
                    group.splice(index, 1);
                }
             });
+
+            originalGroups = angular.copy($scope.adTagsGroup);
 
             var length = $scope.adTagsGroup.length;
             $scope.adTagsGroup[length] = [];
@@ -130,6 +132,19 @@
             return groupIds;
         }
 
+        function groupIdentical(groupOld, groupNew) {
+            var i = groupOld.length;
+            if (i != groupNew.length) return false;
+            while (i--) {
+                adTagsOld = groupOld[i];
+                adTagsNew = groupNew[i];
+
+                if (!arraysIdentical(adTagsOld, adTagsNew)) return false;
+            }
+
+            return true;
+        };
+
         function arraysIdentical(a, b) {
             var i = a.length;
             if (i != b.length) return false;
@@ -144,7 +159,7 @@
             var groupIds = getIdsWithRespectToGroup($scope.adTagsGroup);
             var originalGroupIds = getIdsWithRespectToGroup(originalGroups);
 
-            if (arraysIdentical(_.flatten(groupIds), _.flatten(originalGroupIds))) {
+            if (groupIdentical(groupIds, originalGroupIds)) {
                 return;
             }
 
