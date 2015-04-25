@@ -19,10 +19,7 @@
         //    { name: 'startWith' },
         //    { name: 'endWith' }
         //])
-        .constant('OPERATORS', [
-            { name: 'AND' },
-            { name: 'OR' }
-        ])
+        .constant('OPERATORS', ['AND' , 'OR'])
         .constant('DATA_TYPE', ['STRING', 'NUMERIC', 'BOOLEAN'])
         .constant('GROUP_KEY', 'groupVal')
         .constant('GROUP_TYPE', 'groupType')

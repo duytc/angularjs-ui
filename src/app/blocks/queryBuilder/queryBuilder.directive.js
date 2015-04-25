@@ -68,7 +68,7 @@
                         expressionRoot.expression = {};
 
                         // set default group, including two conditions
-                        expressionRoot.expression[groupTYPE] = scope.operators[0].name;
+                        expressionRoot.expression[groupTYPE] = scope.operators[0];
                         expressionRoot.expression[groupKey] = [];
                         expressionRoot.expression[groupKey].unshift(
                             {

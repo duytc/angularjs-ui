@@ -1,6 +1,6 @@
 <div class="expressions-group">
     <div class="form-inline">
-        <select class="form-control operators" ng-model="group[groupType]" ng-options="operator.name as operator.name for operator in operators"></select>
+        <select class="form-control operators" ng-model="group[groupType]" ng-options="operator as operator for operator in operators"></select>
         <button class="btn btn-success" type="button" ng-click="addGroup()"><span class="glyphicon glyphicon-plus"></span> Group</button>
         <button class="btn btn-success" type="button" ng-click="addCondition()"><span class="glyphicon glyphicon-plus"></span> Condition</button>
         <button class="btn btn-danger" type="button" ng-click="removeGroup()"><span class="glyphicon glyphicon-minus"></span></button>
