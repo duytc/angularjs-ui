@@ -1,0 +1,22 @@
+<div class="expressions-group">
+    <div class="form-inline">
+        <select class="form-control operators" ng-model="group[groupType]" ng-options="operator.name as operator.name for operator in operators"></select>
+        <button class="btn btn-success" type="button" ng-click="addGroup()"><span class="glyphicon glyphicon-plus"></span> Group</button>
+        <button class="btn btn-success" type="button" ng-click="addCondition()"><span class="glyphicon glyphicon-plus"></span> Condition</button>
+        <button class="btn btn-danger" type="button" ng-click="removeGroup()"><span class="glyphicon glyphicon-minus"></span></button>
+    </div>
+
+    <div ng-repeat="itemGroup in group[groupKey]">
+        <div ng-if="isGroup(itemGroup)">
+            <query-builder-group group="itemGroup" index="$index" groups="group[groupKey]"></query-builder-group>
+        </div>
+
+        <div class="form-inline condition" ng-if="!isGroup(itemGroup)">
+            <input type="text" class="form-control" ng-minlength="1" required ng-pattern="/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/" id="var" ng-model="itemGroup.var" placeholder="Var Name">
+            <select class="form-control" ng-model="itemGroup.cmp" ng-options="condition as condition for condition in conditions"></select>
+            <input type="text" class="form-control" id="val" ng-model="itemGroup.val" placeholder="Value">
+            <select class="form-control" ng-model="itemGroup.type" ng-options="dataType as dataType for dataType in dataTypes"></select>
+            <button class="btn btn-danger" type="button" ng-minlength="1" required ng-disabled="isDisabledButtonRemoveCondition()" ng-click="removeCondition($index)"><span class="glyphicon glyphicon-minus"></span></button>
+        </div>
+    </div>
+</div>

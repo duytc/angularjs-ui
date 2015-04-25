@@ -1,0 +1,38 @@
+<button class="btn btn-success" type="button" ng-click="addExpression()">
+    <span class="glyphicon glyphicon-plus"></span>
+    Add Expression
+</button>
+
+<div class="expressions-group" ng-repeat="expressionRoot in expressions">
+    <div class="form-group">
+        <label>Expression</label>
+        <div class="callout-warning show-query-builder" ng-bind-html="builtVariable(expressionRoot.expression)"></div>
+    </div>
+
+    <div class="form-group">
+        <label>Expect Ad Slot</label>
+        <ui-select ng-model="expressionRoot.expectAdSlot" ng-required="true" server-error>
+            <ui-select-match placeholder="Select expect a ad slot">{{ $select.selected.name }}</ui-select-match>
+            <ui-select-choices repeat="adSlot.id as adSlot in adSlots | filter:{name: $select.search}">
+                {{ adSlot.name }}
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+    <div class="form-inline">
+        <button class="btn btn-success" ng-disabled="isGroup(expressionRoot)" type="button" ng-click="addGroupRoot(expressionRoot)"><span ng-if="isGroup(expressionRoot)" class="glyphicon glyphicon-ok"></span> Group</button>
+        <button class="btn btn-success" ng-disabled="!isGroup(expressionRoot)" type="button" ng-click="addConditionRoot(expressionRoot)"><span ng-if="!isGroup(expressionRoot)" class="glyphicon glyphicon-ok"></span> Condition</button>
+        <button class="btn btn-danger" type="button" ng-disabled="isDisabledButtonRemoveExpressions()" ng-click="removeExpressionRoot($index)"><span class="glyphicon glyphicon-minus"></span></button>
+    </div>
+
+    <div class="form-inline condition" ng-if="!isGroup(expressionRoot)">
+        <input type="text" class="form-control" ng-minlength="1" required ng-pattern="/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/" ng-model="expressionRoot.expression.var" placeholder="Var Name">
+        <select class="form-control" ng-model="expressionRoot.expression.cmp" ng-options="condition as condition for condition in conditions"></select>
+        <input type="text" class="form-control" ng-minlength="1" required ng-model="expressionRoot.expression.val" placeholder="Value">
+        <select class="form-control" ng-model="expressionRoot.expression.type" ng-options="dataType as dataType for dataType in dataTypes"></select>
+    </div>
+
+    <div ng-if="isGroup(expressionRoot)">
+        <query-builder-group group="expressionRoot.expression"></query-builder-group>
+    </div>
+</div>
