@@ -41,7 +41,7 @@
                         scope.expressions.push({
                             expression: {
                                 var : null,
-                                cmp : scope.conditions[0],
+                                cmp : scope.conditions[0].key,
                                 val : null,
                                 type : scope.dataTypes[0]
                             },
@@ -73,13 +73,13 @@
                         expressionRoot.expression[groupKey].unshift(
                             {
                             var : null,
-                            cmp : scope.conditions[0],
+                            cmp : scope.conditions[0].key,
                             val : null,
                             type : scope.dataTypes[0]
                             },
                             {
                             var : null,
-                            cmp : scope.conditions[0],
+                            cmp : scope.conditions[0].key,
                             val : null,
                             type : scope.dataTypes[0]
                             }
@@ -92,7 +92,7 @@
 
                         expressionRoot.expression = {
                             var : null,
-                            cmp : scope.conditions[0],
+                            cmp : scope.conditions[0].key,
                             val : null,
                             type : scope.dataTypes[0]
                         };

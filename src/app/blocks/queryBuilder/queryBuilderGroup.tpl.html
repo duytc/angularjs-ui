@@ -13,9 +13,16 @@
 
         <div class="form-inline condition" ng-if="!isGroup(itemGroup)">
             <input type="text" class="form-control" ng-minlength="1" required ng-pattern="/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/" id="var" ng-model="itemGroup.var" placeholder="Var Name">
-            <select class="form-control" ng-model="itemGroup.cmp" ng-options="condition as condition for condition in conditions"></select>
+            <select class="form-control" ng-model="itemGroup.cmp" ng-options="condition.key as condition.label for condition in conditions"></select>
             <input type="text" class="form-control" id="val" ng-model="itemGroup.val" placeholder="Value">
-            <select class="form-control" ng-model="itemGroup.type" ng-options="dataType as dataType for dataType in dataTypes"></select>
+            <div class="form-group select-data-type">
+                <ui-select ng-model="itemGroup.type" ng-required="true" server-error>
+                    <ui-select-match placeholder="Select data type">{{ $select.selected }}</ui-select-match>
+                    <ui-select-choices repeat="dataTypes as dataTypes in dataTypes">
+                        {{ dataTypes }}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
             <button class="btn btn-danger" type="button" ng-minlength="1" required ng-disabled="isDisabledButtonRemoveCondition()" ng-click="removeCondition($index)"><span class="glyphicon glyphicon-minus"></span></button>
         </div>
     </div>

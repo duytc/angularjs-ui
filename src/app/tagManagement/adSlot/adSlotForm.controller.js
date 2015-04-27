@@ -47,6 +47,9 @@
             if(!$scope.isNew) {
                 selectSite($scope.adSlot.site.id);
             }
+            if($scope.isNew && !!$stateParams.siteId) {
+                selectSite($stateParams.siteId);
+            }
         }
 
         function selectSite(siteId) {

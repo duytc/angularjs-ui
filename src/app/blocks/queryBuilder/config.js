@@ -2,7 +2,14 @@
     'use strict';
 
     angular.module('tagcade.blocks.queryBuilder')
-        .constant('CONDITIONS', ['==', '!=', '<', '<=', '>', '>='])
+        .constant('CONDITIONS', [
+            {key: '==', label: 'EQUAL TO'},
+            {key: '!=', label: 'DIFFERENT FROM' },
+            {key: '<', label: 'LESS THAN' },
+            {key: '<=', label: 'LESS THAN OR EQUAL TO'},
+            {key: '>', label: 'GREATER THAN'},
+            {key: '>=', label: 'GREATER THAN OR EQUAL TO'}
+        ])
         //.constant('CONDITIONS', [
         //    { name: '==' },
         //    { name: '!=' },

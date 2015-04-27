@@ -41,13 +41,13 @@
                         group[scope.groupKey].unshift(
                             {
                             var : null,
-                            cmp : scope.conditions[0],
+                            cmp : scope.conditions[0].key,
                             val : null,
                             type : scope.dataTypes[0]
                             },
                             {
                             var : null,
-                            cmp : scope.conditions[0],
+                            cmp : scope.conditions[0].key,
                             val : null,
                             type : scope.dataTypes[0]
                             }
@@ -68,7 +68,7 @@
                         scope.group = {};
                         scope.group = {
                             var : null,
-                            cmp : scope.conditions[0],
+                            cmp : scope.conditions[0].key,
                             val : null,
                             type : scope.dataTypes[0]
                         };
@@ -77,7 +77,7 @@
                     function addCondition() {
                         scope.group[scope.groupKey].unshift({
                             var : null,
-                            cmp: scope.conditions[0],
+                            cmp: scope.conditions[0].key,
                             val : null,
                             type: scope.dataTypes[0]
                         });

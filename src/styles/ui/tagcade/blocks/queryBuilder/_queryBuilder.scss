@@ -25,3 +25,9 @@
 .show-query-builder {
   padding: 10px 0 10px 10px;
 }
+
+.condition {
+  .select-data-type.form-group {
+    @include ui-select-width(180px);
+  }
+}

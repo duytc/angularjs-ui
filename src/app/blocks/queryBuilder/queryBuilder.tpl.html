@@ -28,12 +28,21 @@
     <span class="help-block">Select group if you have compound conditions with AND/OR. Select Condition otherwise</span>
     <div class="form-inline condition" ng-if="!isGroup(expressionRoot)">
         <input type="text" class="form-control" ng-minlength="1" required ng-pattern="/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/" ng-model="expressionRoot.expression.var" placeholder="Variable Name">
-        <select class="form-control" ng-model="expressionRoot.expression.cmp" ng-options="condition as condition for condition in conditions"></select>
+        <select class="form-control" ng-model="expressionRoot.expression.cmp" ng-options="condition.key as condition.label for condition in conditions"></select>
         <input type="text" class="form-control" ng-minlength="1" required ng-model="expressionRoot.expression.val" placeholder="Value">
-        <select class="form-control" ng-model="expressionRoot.expression.type" ng-options="dataType as dataType for dataType in dataTypes"></select>
+        <div class="form-group select-data-type">
+            <ui-select ng-model="expressionRoot.expression.type" ng-required="true" server-error>
+                <ui-select-match placeholder="Select data type">{{ $select.selected }}</ui-select-match>
+                <ui-select-choices repeat="dataTypes as dataTypes in dataTypes">
+                    {{ dataTypes }}
+                </ui-select-choices>
+            </ui-select>
+        </div>
     </div>
 
     <div ng-if="isGroup(expressionRoot)">
         <query-builder-group group="expressionRoot.expression"></query-builder-group>
     </div>
 </div>
+
+<p>This ad slot will be shown if non of the condition(s) satisfied.</p>
