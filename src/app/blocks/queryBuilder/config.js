@@ -4,7 +4,7 @@
     angular.module('tagcade.blocks.queryBuilder')
         .constant('CONDITIONS', [
             {key: '==', label: 'EQUAL TO'},
-            {key: '!=', label: 'DIFFERENT FROM' },
+            {key: '!=', label: 'NOT EQUAL TO' },
             {key: '<', label: 'LESS THAN' },
             {key: '<=', label: 'LESS THAN OR EQUAL TO'},
             {key: '>', label: 'GREATER THAN'},

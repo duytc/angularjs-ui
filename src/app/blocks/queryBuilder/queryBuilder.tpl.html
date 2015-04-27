@@ -6,14 +6,14 @@
 <div class="expressions-group" ng-repeat="expressionRoot in expressions">
     <div class="form-group">
         <label>Expression</label><br/>
-        <label class="ui-checkbox"><input server-error name="liveView" type="checkbox" ng-model="liveViewChecked"  value="checked" id="liveExpression"/><span>Live view expression</span></label>
+        <label class="ui-checkbox"><input server-error name="liveView" type="checkbox" ng-model="liveViewChecked"  value="checked" id="liveExpression"/><span>Show generated expression</span></label>
         <div ng-if="liveViewChecked == true" class="callout-warning show-query-builder" ng-bind-html="builtVariable(expressionRoot.expression)"></div>
     </div>
 
     <div class="form-group">
-        <label>Expect Ad Slot</label>
+        <label>Ad Slot</label>
         <ui-select ng-model="expressionRoot.expectAdSlot" ng-required="true" server-error>
-            <ui-select-match placeholder="Select expect a ad slot">{{ $select.selected.name }}</ui-select-match>
+            <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }}</ui-select-match>
             <ui-select-choices repeat="adSlot.id as adSlot in adSlots | filter:{name: $select.search}">
                 {{ adSlot.name }}
             </ui-select-choices>
@@ -25,7 +25,7 @@
         <button class="btn btn-success" ng-disabled="!isGroup(expressionRoot)" type="button" ng-click="addConditionRoot(expressionRoot)"><span ng-if="!isGroup(expressionRoot)" class="glyphicon glyphicon-ok"></span> Condition</button>
         <button class="btn btn-danger" type="button" ng-disabled="isDisabledButtonRemoveExpressions()" ng-click="removeExpressionRoot($index)"><span class="glyphicon glyphicon-minus"></span></button>
     </div>
-    <span class="help-block">Select group if you have compound conditions with AND/OR. Select Condition otherwise</span>
+    <span class="help-block">Select Group if you have compound conditions with AND/OR. Otherwise select Condition.</span>
     <div class="form-inline condition" ng-if="!isGroup(expressionRoot)">
         <input type="text" class="form-control" ng-minlength="1" required ng-pattern="/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/" ng-model="expressionRoot.expression.var" placeholder="Variable Name">
         <select class="form-control" ng-model="expressionRoot.expression.cmp" ng-options="condition.key as condition.label for condition in conditions"></select>
@@ -44,5 +44,3 @@
         <query-builder-group group="expressionRoot.expression"></query-builder-group>
     </div>
 </div>
-
-<p>This ad slot will be shown if non of the condition(s) satisfied.</p>
