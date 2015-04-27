@@ -51,10 +51,8 @@
                                         {{ val.name + ": " + val.newVal }}
                                     </div>
                                     <div ng-if="val.startDate != null">
-                                        <strong>from</strong> {{ val.startDate }}
-                                    </div>
-                                    <div ng-if="val.endDate != null">
-                                        <strong>to</strong> {{ val.endDate }}
+                                        <strong>from</strong> {{ dateFormatter(val.startDate.date) }}
+                                        <strong>to</strong> {{ dateFormatter(val.endDate.date) }}
                                     </div>
                                 </li>
                             </ul>
