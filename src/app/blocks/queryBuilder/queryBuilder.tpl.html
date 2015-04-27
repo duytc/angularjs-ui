@@ -24,9 +24,9 @@
         <button class="btn btn-success" ng-disabled="!isGroup(expressionRoot)" type="button" ng-click="addConditionRoot(expressionRoot)"><span ng-if="!isGroup(expressionRoot)" class="glyphicon glyphicon-ok"></span> Condition</button>
         <button class="btn btn-danger" type="button" ng-disabled="isDisabledButtonRemoveExpressions()" ng-click="removeExpressionRoot($index)"><span class="glyphicon glyphicon-minus"></span></button>
     </div>
-    <span class="help-block">Select group if you have multiple compound conditions with AND/OR. Select Condition otherwise</span>
+    <span class="help-block">Select group if you have compound conditions with AND/OR. Select Condition otherwise</span>
     <div class="form-inline condition" ng-if="!isGroup(expressionRoot)">
-        <input type="text" class="form-control" ng-minlength="1" required ng-pattern="/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/" ng-model="expressionRoot.expression.var" placeholder="Var Name">
+        <input type="text" class="form-control" ng-minlength="1" required ng-pattern="/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/" ng-model="expressionRoot.expression.var" placeholder="Variable Name">
         <select class="form-control" ng-model="expressionRoot.expression.cmp" ng-options="condition as condition for condition in conditions"></select>
         <input type="text" class="form-control" ng-minlength="1" required ng-model="expressionRoot.expression.val" placeholder="Value">
         <select class="form-control" ng-model="expressionRoot.expression.type" ng-options="dataType as dataType for dataType in dataTypes"></select>
