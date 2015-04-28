@@ -135,6 +135,8 @@
         function groupIdentical(groupOld, groupNew) {
             var i = groupOld.length;
             if (i != groupNew.length) return false;
+            var adTagsOld;
+            var adTagsNew;
             while (i--) {
                 adTagsOld = groupOld[i];
                 adTagsNew = groupNew[i];
