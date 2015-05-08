@@ -6,15 +6,15 @@
     ;
 
     function AdTagForm(
-        $scope, $state, $stateParams, $q, SiteManager, AdTagManager, AlertService, ServerErrorProcessor, adTag, adSlot, site, publisher, publisherList, siteList, adSlotList, adNetworkList
+        $scope, $state, $stateParams, $q, SiteManager, AdTagManager, AlertService, ServerErrorProcessor, adTag, adSlot, site, publisher, publisherList, siteList, adSlotList, adNetworkList, AD_TYPES
         ) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
             adNetwork: 'Ad Network',
             name: 'Name',
-            html: 'Html',
             position: 'Position',
-            active: 'Active'
+            active: 'Active',
+            adType: 'AdType'
         };
 
         $scope.isNew = adTag === null;
@@ -30,6 +30,8 @@
             site: site
         };
 
+        $scope.adTypes = AD_TYPES;
+
         $scope.publisherList = publisherList;
         $scope.siteList = siteList;
         $scope.adSlotList = adSlotList;
@@ -40,7 +42,9 @@
             adNetwork: null,
             html: null,
             position: null,
-            active: true
+            active: true,
+            adType: null,
+            descriptor: null
         };
 
         $scope.resetSelection = function () {
@@ -64,6 +68,10 @@
         $scope.isFormValid = function() {
             return $scope.adTagForm.$valid;
         };
+
+        if($scope.adTag.adType == null) {
+            $scope.adTag.adType = $scope.adTypes.customAd;
+        }
 
         $scope.submit = function() {
             if ($scope.formProcessing) {

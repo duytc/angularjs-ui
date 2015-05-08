@@ -29,8 +29,39 @@
                         <td at-sortable at-attribute="createdAt">
                             {{ item.createdAt | date : 'medium' }}
                         </td>
-                        <td ng-show="!showTabMenu" at-sortable at-attribute="data">
-                            {{ (item.data.entity == null ) ? '' : item.data }}
+                        <td ng-show="!showTabMenu" at-attribute="data">
+                            <div>
+                                <strong>{{ item.data.action }}</strong>
+                                {{ item.data.entity.className }}
+                                "{{ item.data.entity.name }}"
+                                <strong ng-if="item.data.changedFields.length > 0">on</strong>
+                            </div>
+                            <ul>
+                                <li ng-repeat="val in item.data.changedFields">
+                                    <div ng-if="val.oldVal != null">
+                                        {{ val.name + " :" }}
+                                        <ul>
+                                            <li><strong>from :</strong> {{ val.oldVal }}</li>
+                                            <li ng-if="val.newVal != null">
+                                                <strong>to&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</strong> {{ val.newVal }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div ng-if="val.newVal != null && val.oldVal == null">
+                                        {{ val.name + ": " + val.newVal }}
+                                    </div>
+                                    <div ng-if="val.startDate != null">
+                                        <strong>from</strong> {{ dateFormatter(val.startDate.date) }}
+                                        <strong>to</strong> {{ dateFormatter(val.endDate.date) }}
+                                    </div>
+                                </li>
+                            </ul>
+                            <strong ng-if="item.data.affectedEntities.length > 0">related to:</strong>
+                            <ul>
+                                <li ng-repeat="val in item.data.affectedEntities">
+                                    {{ val.className + ' "' + val.name + '"'}}
+                                </li>
+                            </ul>
                         </td>
                         <td at-sortable at-implicit at-attribute="ip"></td>
                     </tr>

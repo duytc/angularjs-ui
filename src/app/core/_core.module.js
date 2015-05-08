@@ -23,6 +23,7 @@
         'tagcade.blocks.event',
         'tagcade.blocks.export',
         'tagcade.blocks.searchBox',
+        'tagcade.blocks.queryBuilder',
 
         'tagcade.core.bootstrap',
         'tagcade.core.auth',
@@ -44,7 +45,8 @@
         'ui.select',
         'highcharts-ng',
         'angular-table',
-        'currencyFilter'
+        'currencyFilter',
+        'xeditable'
     ]);
 
     core.run(appRun);

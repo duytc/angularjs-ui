@@ -21,6 +21,7 @@ module.exports = {
             {
                 expand: true,
                 src: [
+                    '<%= appConfig.envFiles.js %>',
                     '<%= appConfig.appFiles.js %>',
                     '<%= appConfig.appFiles.coreJs %>',
                     '<%= appConfig.appFiles.css %>',

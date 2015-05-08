@@ -43,14 +43,19 @@ module.exports = function(grunt, options) {
     config.prod = {
         options: {
             patterns: [
-                getPattern('https://api.tagcade.com/api')
+                getPattern('https://api.tagcade.com/api'),
+                {
+                    match: '<%= appConfig.deployment.origin.dev.match %>',
+                    replacement:  '<%= appConfig.deployment.origin.prod.val %>'
+                }
             ]
         },
         files: [
             {
                 expand: true,
                 src: [
-                    '<%= appConfig.dirs.build.prod %>/app*.js'
+                    '<%= appConfig.dirs.build.prod %>/app*.js',
+                    '<%= appConfig.dirs.build.prod %>/index.html'
                 ]
             }
         ]

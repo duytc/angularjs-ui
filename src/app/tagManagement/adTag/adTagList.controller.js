@@ -5,7 +5,7 @@
         .controller('AdTagList', AdTagList)
     ;
 
-    function AdTagList($scope, $q, $modal, adTags, adSlot, AdTagManager, AlertService) {
+    function AdTagList($scope, $q, $state, $modal, adTags, adSlot, AdTagManager, AlertService) {
         $scope.hasAdTags = function () {
             return !!adTags.length;
         };
@@ -17,43 +17,45 @@
             });
         }
 
+        var originalGroups;
+
         $scope.adSlot = adSlot;
-        $scope.adTags = adTags;
+        $scope.actionDropdownToggled = actionDropdownToggled;
+        $scope.adTagsGroup = _sortGroup(adTags);
+        $scope.updateAdTag = updateAdTag;
+        $scope.enableDragDropAdTag = enableDragDropAdTag;
 
-        $scope.sortableOptions = {
+        $scope.sortableGroupOptions = {
+            disabled: true,
             forcePlaceholderSize: true,
-            placeholder: 'sortable-placeholder',
-            stop: function() {
-                var tagIds = $scope.adTags.map(function (adTag) {
-                    return adTag.id;
-                });
+            placeholder: 'sortable-placeholder-group',
+            stop: _stop,
+            start: _start
+        };
 
-                adSlot.all('adtags').customPOST({ ids: tagIds }, 'positions')
-                    .catch(function () {
-                        AlertService.replaceAlerts({
-                            type: 'error',
-                            message: 'The ad tags could not be reordered'
-                        });
+        $scope.sortableItemOption = {
+            disabled: true,
+            forcePlaceholderSize: true,
+            placeholder: "sortable-placeholder-item",
+            connectWith: ".itemAdTag",
+            stop: _stop,
+            start: _start
+        };
 
-                        return $q.reject('could not reorder ad tags');
-                    })
-                    .then(function (adTags) {
-                        $scope.adTags = adTags.plain();
+        $scope.splitFromGroup = function(group, adTag) {
+            angular.forEach(group, function(item, index) {
+               if(item.id == adTag.id) {
+                   group.splice(index, 1);
+               }
+            });
 
-                        AlertService.replaceAlerts({
-                            type: 'success',
-                            message: 'The ad tags have been reordered'
-                        });
-                    })
-                ;
-            },
-            helper: function(e, ui) {
-                ui.children().each(function() {
-                    $(this).width($(this).width());
-                });
+            originalGroups = angular.copy($scope.adTagsGroup);
 
-                return ui;
-            }
+            var length = $scope.adTagsGroup.length;
+            $scope.adTagsGroup[length] = [];
+            $scope.adTagsGroup[length].push(adTag);
+
+            return _stop();
         };
 
         $scope.toggleAdTagStatus = function (adTag) {
@@ -78,11 +80,14 @@
 
         // called when an action dropdown is opened/closed
         // we disable drag and drop sorting when it is open
-        $scope.actionDropdownToggled = function (isOpen) {
-            $scope.sortableOptions['disabled'] = isOpen;
-        };
+        function actionDropdownToggled(isOpen) {
+            if($scope.enableDragDrop) {
+                $scope.sortableItemOption['disabled'] = isOpen;
+                $scope.sortableGroupOptions['disabled'] = isOpen;
+            }
+        }
 
-        $scope.confirmDeletion = function (adTag, index) {
+        $scope.confirmDeletion = function (adTag) {
             var modalInstance = $modal.open({
                 templateUrl: 'tagManagement/adTag/confirmDeletion.tpl.html'
             });
@@ -91,9 +96,9 @@
                 return AdTagManager.one(adTag.id).remove()
                     .then(
                         function () {
-                            $scope.adTags.splice(index, 1);
+                            $state.reload();
 
-                            AlertService.replaceAlerts({
+                            AlertService.addFlash({
                                 type: 'success',
                                 message: 'The ad tag was deleted'
                             });
@@ -108,5 +113,141 @@
                 ;
             });
         };
+
+        function _start() {
+            originalGroups = angular.copy($scope.adTagsGroup);
+
+        }
+
+        function getIdsWithRespectToGroup(adTagsGroup) {
+            var groupIds = [];
+
+            angular.forEach(adTagsGroup, function(group) {
+                if(group.length > 0) {
+                    groupIds.push(group.map(function (adTag) {
+                            return adTag.id;
+                        })
+                    );
+                }
+            });
+
+            return groupIds;
+        }
+
+        function groupIdentical(groupOld, groupNew) {
+            var i = groupOld.length;
+            if (i != groupNew.length) return false;
+            var adTagsOld;
+            var adTagsNew;
+            while (i--) {
+                adTagsOld = groupOld[i];
+                adTagsNew = groupNew[i];
+
+                if (!arraysIdentical(adTagsOld, adTagsNew)) return false;
+            }
+
+            return true;
+        }
+
+        function arraysIdentical(a, b) {
+            var i = a.length;
+            if (i != b.length) return false;
+            while (i--) {
+                if (a[i] !== b[i]) return false;
+            }
+            return true;
+        }
+
+        // handle event drag & drop
+        function _stop() {
+            var groupIds = getIdsWithRespectToGroup($scope.adTagsGroup);
+            var originalGroupIds = getIdsWithRespectToGroup(originalGroups);
+
+            if (groupIdentical(groupIds, originalGroupIds)) {
+                return;
+            }
+
+            adSlot.all('adtags').customPOST({ ids: groupIds }, 'positions')
+                .catch(function () {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'The ad tags could not be reordered'
+                    });
+
+                    return $q.reject('could not reorder ad tags');
+                })
+                .then(function (adTags) {
+                    actionDropdownToggled(false);
+                    $scope.adTagsGroup = _sortGroup(adTags.plain());
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The ad tags have been reordered'
+                    });
+                })
+            ;
+        }
+
+        //sort groups overlap position
+        function _sortGroup(listAdTags) {
+            var adTagsGroup = [];
+
+            angular.forEach(listAdTags, function(item) {
+                var index = 0;
+
+                if(adTagsGroup.length == 0) {
+                    adTagsGroup[index] = [];
+                }
+                else {
+                    var found = false;
+                    angular.forEach(adTagsGroup, function(group, indexGroup) {
+                        if(group[0].position == item.position && !found) {
+                            found = true;
+                            index = indexGroup;
+                        }
+                    });
+
+                    if(found == false) {
+                        index = adTagsGroup.length;
+                        adTagsGroup[index] = [];
+                    }
+                }
+
+                adTagsGroup[index].push(item);
+            });
+
+            return adTagsGroup;
+        }
+
+        function updateAdTag(data, field, adtag) {
+            if(adtag[field] == data) {
+                return;
+            }
+
+            var saveField = angular.copy(adtag[field]);
+            adtag[field] = data;
+            var item = angular.copy(adtag);
+
+            AdTagManager.one(item.id).customPUT(item)
+                .then(function() {
+                    AlertService.addAlert({
+                        type: 'success',
+                        message: 'The ad tag has been updated'
+                    });
+                })
+                .catch(function() {
+                    adtag[field] = saveField;
+
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'The ad tag has not been updated'
+                    });
+                });
+        }
+
+        function enableDragDropAdTag(enable) {
+            $scope.sortableItemOption['disabled'] = enable;
+            $scope.sortableGroupOptions['disabled'] = enable;
+        }
     }
 })();

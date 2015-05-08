@@ -5,7 +5,9 @@
     "supportTools/activityLog",
     "supportTools/cpmEditor",
     "supportTools/sourceReportConfiguration",
-    "blocks/searchBox/searchBox"
+    "blocks/searchBox/searchBox",
+    "blocks/queryBuilder/queryBuilder",
+    "tagsManagement/adTags"
 ;
 // custom
 
@@ -37,18 +39,6 @@
 [data-ng-click].click-disabled,
 [x-ng-click].click-disabled {
     cursor: default !important;
-}
-
-.sortable-placeholder {
-    background: $table-bg-accent;
-}
-
-tr.moveable {
-    cursor: move;
-}
-
-tr[ui-sref] {
-    cursor: pointer;
 }
 
 .panel-alerts {

@@ -6,7 +6,7 @@
         .controller('ActivityLog', ActivityLog)
     ;
 
-    function ActivityLog($scope, logs, activityLogs, ROW_LIMIT) {
+    function ActivityLog($scope, logs, activityLogs, ROW_LIMIT, DateFormatter) {
         $scope.dataLogs = logs.logsList;
 
         var initialData = activityLogs.getInitialParams();
@@ -18,6 +18,10 @@
         $scope.showPagination = showPagination();
 
         activityLogs.setInitialShowLoginLogs($scope.showTabMenu);
+
+        $scope.dateFormatter = function(date) {
+            return DateFormatter.getFormattedDate(new Date(date));
+        };
 
         function setBigCurrentPage() {
             var rowOff = initialData.rowOffset;

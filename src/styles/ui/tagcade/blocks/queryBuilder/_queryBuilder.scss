@@ -1,0 +1,40 @@
+.expressions-group {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-top: 10px
+}
+
+.expressions-group {
+  .form-inline {
+    margin-top: 5px;
+  }
+
+  .form-group {
+    margin: 0;
+  }
+
+  .condition .form-control {
+    margin-right: 5px;
+  }
+
+  .operators {
+    margin-right: 5px;
+  }
+}
+.expression-show {
+  padding-top: 20px;
+}
+
+.show-query-builder {
+  padding: 10px 0 10px 10px;
+}
+
+.condition {
+  .select-data-type.form-group {
+    @include ui-select-width(180px);
+  }
+}
+
+.enable-drag-drop-query-builder {
+  margin-left: 30px;
+}

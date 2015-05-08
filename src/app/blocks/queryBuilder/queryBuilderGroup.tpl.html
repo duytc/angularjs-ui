@@ -1,0 +1,36 @@
+<div class="expressions-group">
+    <div class="form-inline">
+        <select class="form-control operators" ng-model="group[groupType]" ng-options="operator as operator for operator in operators"></select>
+        <button class="btn btn-success" type="button" ng-click="addGroup()"><span class="glyphicon glyphicon-plus"></span> Add Group</button>
+        <button class="btn btn-success" type="button" ng-click="addCondition()"><span class="glyphicon glyphicon-plus"></span> Add Condition</button>
+        <button class="btn btn-danger" type="button" ng-click="removeGroup()"><span class="glyphicon glyphicon-minus"></span></button>
+    </div>
+
+    <div ng-repeat="itemGroup in group[groupKey]">
+        <div ng-if="isGroup(itemGroup)">
+            <query-builder-group group="itemGroup" index="$index" groups="group[groupKey]"></query-builder-group>
+        </div>
+
+        <div class="form-inline condition" ng-if="!isGroup(itemGroup)">
+            <div class="form-group select-data-type">
+                <ui-select ng-model="itemGroup.type" ng-required="true" server-error on-select="selectType(itemGroup)">
+                    <ui-select-match placeholder="Select data type">{{ $select.selected.label }}</ui-select-match>
+                    <ui-select-choices repeat="dataType.key as dataType in dataTypes">
+                        {{ dataType.label }}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <input type="text" class="form-control" ng-minlength="1" required ng-pattern="/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/" id="var" ng-model="itemGroup.var" placeholder="Variable Name">
+            <select class="form-control" ng-model="itemGroup.cmp" ng-options="condition.key as condition.label for condition in changeCondition(itemGroup.type)"></select>
+
+            <div class="form-group" ng-if="itemGroup.type != dataTypes[2].key">
+                <input type="text" class="form-control" ng-minlength="1" pattern="{{ itemGroup.type == dataTypes[1].key ? '\\d*' : ''}}" required ng-model="itemGroup.val" placeholder="Value">
+            </div>
+            <div class="form-group" ng-if="itemGroup.type == dataTypes[2].key">
+                <select class="form-control" ng-options="value for value in values" ng-model="itemGroup.val" ng-init="values = ['true', 'false']; itemGroup.val == null ? itemGroup.val = 'true' : '' "></select>
+            </div>
+
+            <button class="btn btn-danger" type="button" ng-minlength="1" required ng-disabled="isDisabledButtonRemoveCondition()" ng-click="removeCondition($index)"><span class="glyphicon glyphicon-minus"></span></button>
+        </div>
+    </div>
+</div>
