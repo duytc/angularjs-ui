@@ -9,6 +9,10 @@
             top: 5px;
             right: 5px;
         }
+
+        .ui-checkbox {
+          text-transform: none !important;
+        }
     }
     .panel-title {
         font-size: $font-size-base;

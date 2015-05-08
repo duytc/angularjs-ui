@@ -12,16 +12,16 @@
 
         return api;
 
-        function builtVariable(expression) {
+        function builtVariable(expressionDescriptor) {
             var convertedExpressions = '';
 
-            if(expression[GROUP_TYPE] != null) {
-                convertedExpressions = '(' + _buildNested(expression[GROUP_KEY], expression[GROUP_TYPE]) + ')';
+            if(expressionDescriptor[GROUP_TYPE] != null) {
+                convertedExpressions = '(' + _buildNested(expressionDescriptor[GROUP_KEY], expressionDescriptor[GROUP_TYPE]) + ')';
             }
             else {
-                var showDefaultExpression = (!expression.var && !expression.val);
-                var value = (expression.type == DATA_TYPE[0] && !!expression.val) ? '"' +  expression.val + '"' : expression.val;
-                convertedExpressions += '(' + expression.var + ' ' + expression.cmp + ' ' + value + ') ';
+                var showDefaultExpression = (!expressionDescriptor.var && !expressionDescriptor.val);
+                var value = (expressionDescriptor.type == DATA_TYPE[0].key && !!expressionDescriptor.val) ? '"' +  expressionDescriptor.val + '"' : expressionDescriptor.val;
+                convertedExpressions += '(' + 'window.' + expressionDescriptor.var + ' ' + expressionDescriptor.cmp + ' ' + value + ') ';
             }
 
             return showDefaultExpression ? '()' : convertedExpressions;
@@ -36,8 +36,8 @@
                 }
                 else {
                     var type = (groups.length -1 != index) ? '<strong>' + groupType + '</strong>' : '';
-                    var value = (group.type == DATA_TYPE[0] && !!group.val) ? '"' +  group.val + '"' : group.val;
-                    var showDefaultGroup = (!group.var && !group.val) ? '()' : '(' + group.var + ' ' + group.cmp + ' ' + value + ') ' + type + ' ';
+                    var value = (group.type == DATA_TYPE[0].key && !!group.val) ? '"' + group.val + '"' : group.val;
+                    var showDefaultGroup = (!group.var && !group.val) ? '()' : '(' + 'window.' + group.var + ' ' + group.cmp + ' ' + value + ') ' + type + ' ';
 
                     groupBuild += showDefaultGroup;
                 }

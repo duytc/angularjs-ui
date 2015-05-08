@@ -1,4 +1,11 @@
 .sortableAdTags {
+  .header-list-ad-tag li {
+    list-style: none;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+  }
   .moveable {
     cursor: move;
   }
@@ -16,15 +23,56 @@
     clear: both;
   }
 
-  tbody tr {
+  .group-ad-tag {
+    list-style: none;
+  }
+
+  .item {
+    clear: both;
+    list-style-type: none;
+    min-height: 40px;
+  }
+
+  .item .col-md-1,
+  .item .col-md-2,
+  .item .col-md-3,
+  .item .col-md-4,
+  .item .col-md-5,
+  .item .col-md-6,
+  .item .col-md-7,
+  .item .col-md-8,
+  .item .col-md-9,
+  .item .col-md-10,
+  .item .col-md-11,
+  .item .col-md-12 {
+    padding: 10px;
     border-top: 1px solid #ddd !important;
   }
+}
+
+.sortableAdTags {
+  padding-top: 0 !important;
 }
 
 .sortable-placeholder {
   background: $table-bg-accent;
   clear: both;
   width: 100%;
+}
+
+.sortable-placeholder-item, .sortable-placeholder-group {
+  background: $table-bg-accent;
+  clear: both;
+  width: 100%;
+  list-style: none;
+}
+
+.sortable-placeholder-item {
+  min-height: 40px;
+}
+
+.sortable-placeholder-group {
+  min-height: 120px;
 }
 
 .ad-tag-drag-help {

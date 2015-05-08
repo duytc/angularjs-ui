@@ -5,9 +5,7 @@
         .controller('AdTagList', AdTagList)
     ;
 
-    function AdTagList($scope, $state, $q, $modal, adTags, adSlot, AdTagManager, AlertService) {
-
-
+    function AdTagList($scope, $q, $state, $modal, adTags, adSlot, AdTagManager, AlertService) {
         $scope.hasAdTags = function () {
             return !!adTags.length;
         };
@@ -24,19 +22,21 @@
         $scope.adSlot = adSlot;
         $scope.actionDropdownToggled = actionDropdownToggled;
         $scope.adTagsGroup = _sortGroup(adTags);
-        $scope.adTags = adTags;
         $scope.updateAdTag = updateAdTag;
+        $scope.enableDragDropAdTag = enableDragDropAdTag;
 
         $scope.sortableGroupOptions = {
+            disabled: true,
             forcePlaceholderSize: true,
-            placeholder: 'sortable-placeholder',
+            placeholder: 'sortable-placeholder-group',
             stop: _stop,
             start: _start
         };
 
         $scope.sortableItemOption = {
+            disabled: true,
             forcePlaceholderSize: true,
-            placeholder: "sortable-placeholder",
+            placeholder: "sortable-placeholder-item",
             connectWith: ".itemAdTag",
             stop: _stop,
             start: _start
@@ -81,11 +81,13 @@
         // called when an action dropdown is opened/closed
         // we disable drag and drop sorting when it is open
         function actionDropdownToggled(isOpen) {
-            $scope.sortableItemOption['disabled'] = isOpen;
-            $scope.sortableGroupOptions['disabled'] = isOpen;
+            if($scope.enableDragDrop) {
+                $scope.sortableItemOption['disabled'] = isOpen;
+                $scope.sortableGroupOptions['disabled'] = isOpen;
+            }
         }
 
-        $scope.confirmDeletion = function (adTag, index) {
+        $scope.confirmDeletion = function (adTag) {
             var modalInstance = $modal.open({
                 templateUrl: 'tagManagement/adTag/confirmDeletion.tpl.html'
             });
@@ -94,9 +96,9 @@
                 return AdTagManager.one(adTag.id).remove()
                     .then(
                         function () {
-                            $scope.adTags.splice(index, 1);
+                            $state.reload();
 
-                            AlertService.replaceAlerts({
+                            AlertService.addFlash({
                                 type: 'success',
                                 message: 'The ad tag was deleted'
                             });
@@ -145,7 +147,7 @@
             }
 
             return true;
-        };
+        }
 
         function arraysIdentical(a, b) {
             var i = a.length;
@@ -154,7 +156,7 @@
                 if (a[i] !== b[i]) return false;
             }
             return true;
-        };
+        }
 
         // handle event drag & drop
         function _stop() {
@@ -228,9 +230,7 @@
 
             AdTagManager.one(item.id).customPUT(item)
                 .then(function() {
-                    $state.reload();
-
-                    AlertService.addFlash({
+                    AlertService.addAlert({
                         type: 'success',
                         message: 'The ad tag has been updated'
                     });
@@ -243,6 +243,11 @@
                         message: 'The ad tag has not been updated'
                     });
                 });
+        }
+
+        function enableDragDropAdTag(enable) {
+            $scope.sortableItemOption['disabled'] = enable;
+            $scope.sortableGroupOptions['disabled'] = enable;
         }
     }
 })();

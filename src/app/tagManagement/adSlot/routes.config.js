@@ -33,7 +33,11 @@
                             return adSlots.plain();
                         });
                     },
-
+                    dynamicAdSlot: function(SiteManager, $stateParams) {
+                        return SiteManager.one($stateParams.siteId).getList('dynamicadslots').then(function (dynamicAdSlots) {
+                            return dynamicAdSlots.plain();
+                        });
+                    },
                     site: /* @ngInject */ function ($stateParams, SiteManager) {
                         return SiteManager.one($stateParams.siteId).get().then(function (site) {
                             return site.plain();
@@ -97,6 +101,36 @@
                 resolve: {
                     adSlot: /* @ngInject */ function($stateParams, AdSlotManager) {
                         return AdSlotManager.one($stateParams.id).get();
+                    },
+
+                    site: /* @ngInject */ function (adSlot) {
+                        return adSlot.site;
+                    },
+
+                    publisherList: function () {
+                        return null;
+                    },
+
+                    siteList: function() {
+                        return null;
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Edit Ad Slot - {{ adSlot.name }}'
+                }
+            })
+
+            .state('tagManagement.adSlot.editDynamic', {
+                url: '/editDynamic/{id:[0-9]+}',
+                views: {
+                    'content@app': {
+                        controller: 'AdSlotForm',
+                        templateUrl: 'tagManagement/adSlot/adSlotForm.tpl.html'
+                    }
+                },
+                resolve: {
+                    adSlot: /* @ngInject */ function($stateParams, DynamicAdSlotManager) {
+                        return DynamicAdSlotManager.one($stateParams.id).get();
                     },
 
                     site: /* @ngInject */ function (adSlot) {

@@ -31,10 +31,11 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a ui-sref="^.^.adTag.list({ adSlotId: item.id })">Manage Ad Tags</a></li>
+                                <li ng-if="!!item.width"><a ui-sref="^.^.adTag.list({ adSlotId: item.id })">Manage Ad Tags</a></li>
                                 <li><a ng-click="generateAdTag(item)">Generate a Tag</a></li>
                                 <li class="divider"></li>
-                                <li><a ui-sref="^.edit({ id: item.id })">Edit Ad Slot</a></li>
+                                <li ng-if="!!item.width"><a ui-sref="^.edit({ id: item.id })">Edit Ad Slot</a></li>
+                                <li ng-if="!item.width"><a ui-sref="^.editDynamic({ id: item.id })">Edit Ad Slot</a></li>
                                 <li><a ng-click="confirmDeletion(item)">Delete Ad Slot</a></li>
                             </ul>
                         </div>
@@ -42,7 +43,10 @@
 
                     <td at-title="Ad Slot" at-implicit at-sortable at-attribute="name"></td>
                     <td at-title="Size" at-sortable at-attribute="width">
-                        {{ item.getSize() }}
+                        {{ !!item.width ? item.width + 'x' + item.height : ''}}
+                    </td>
+                    <td at-title="Is Dynamic">
+                        <i class="fa" ng-class="!item.width ? 'fa-check-square' : 'fa-square'"></i>
                     </td>
                 </tr>
                 </tbody>

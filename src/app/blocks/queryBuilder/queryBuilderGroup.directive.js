@@ -5,7 +5,7 @@
         .directive('queryBuilderGroup', queryBuilderGroup)
     ;
 
-    function queryBuilderGroup($compile, CONDITIONS, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE) {
+    function queryBuilderGroup($compile, CONDITIONS_STRING, CONDITIONS_BOOLEAN, CONDITIONS_NUMERIC, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE) {
         'use strict';
 
         return {
@@ -21,7 +21,7 @@
                 content = element.contents().remove();
                 return function (scope, element, attrs) {
                     scope.operators = OPERATORS;
-                    scope.conditions = CONDITIONS;
+                    scope.conditions = CONDITIONS_STRING;
                     scope.groupKey = GROUP_KEY;
                     scope.groupType = GROUP_TYPE;
                     scope.dataTypes = DATA_TYPE;
@@ -32,6 +32,8 @@
                     scope.removeCondition = removeCondition;
                     scope.isGroup = isGroup;
                     scope.isDisabledButtonRemoveCondition = isDisabledButtonRemoveCondition;
+                    scope.changeCondition = changeCondition;
+                    scope.selectType = selectType;
 
                     function addGroup() {
                         // set default group, including two conditions
@@ -43,13 +45,13 @@
                             var : null,
                             cmp : scope.conditions[0].key,
                             val : null,
-                            type : scope.dataTypes[0]
+                            type : scope.dataTypes[0].key
                             },
                             {
                             var : null,
                             cmp : scope.conditions[0].key,
                             val : null,
-                            type : scope.dataTypes[0]
+                            type : scope.dataTypes[0].key
                             }
                         );
                         scope.group[scope.groupKey].push(group);
@@ -70,7 +72,7 @@
                             var : null,
                             cmp : scope.conditions[0].key,
                             val : null,
-                            type : scope.dataTypes[0]
+                            type : scope.dataTypes[0].key
                         };
                     }
 
@@ -79,7 +81,7 @@
                             var : null,
                             cmp: scope.conditions[0].key,
                             val : null,
-                            type: scope.dataTypes[0]
+                            type: scope.dataTypes[0].key
                         });
                     }
 
@@ -103,6 +105,22 @@
                         }
 
                         return true;
+                    }
+
+                    function changeCondition(item) {
+                        if(item == scope.dataTypes[1].key) {
+                            return CONDITIONS_NUMERIC;
+                        }
+                        if(item == scope.dataTypes[2].key) {
+                            return CONDITIONS_BOOLEAN;
+                        }
+
+                        return CONDITIONS_STRING;
+                    }
+
+                    function selectType(item) {
+                        item.val = null;
+                        item.cmp = scope.conditions[0].key;
                     }
 
                     directive || (directive = $compile(content));

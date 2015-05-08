@@ -5,7 +5,7 @@
         .directive('queryBuilder', queryBuilder)
     ;
 
-    function queryBuilder($compile, CONDITIONS, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, queryBuilderService) {
+    function queryBuilder($compile, CONDITIONS_STRING, CONDITIONS_BOOLEAN, CONDITIONS_NUMERIC, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, queryBuilderService) {
         'use strict';
 
         return {
@@ -20,10 +20,11 @@
                 content = element.contents().remove();
                 return function (scope, element, attrs) {
                     scope.operators = OPERATORS;
-                    scope.conditions = CONDITIONS;
+                    scope.conditions = CONDITIONS_STRING;
+                    scope.dataTypes = DATA_TYPE;
+
                     var groupKey = GROUP_KEY;
                     var groupTYPE = GROUP_TYPE;
-                    scope.dataTypes = DATA_TYPE;
 
                     scope.addExpression = addExpression;
                     scope.removeExpressionRoot = removeExpressionRoot;
@@ -31,19 +32,28 @@
                     scope.addConditionRoot = addConditionRoot;
                     scope.isGroup = isGroup;
                     scope.isDisabledButtonRemoveExpressions = isDisabledButtonRemoveExpressions;
+                    scope.changeCondition = changeCondition;
+                    scope.selectType = selectType;
+                    scope.enableDragDropQueryBuilder = enableDragDropQueryBuilder;
 
-                    scope.builtVariable = function(expression) {
-                        return queryBuilderService.builtVariable(expression)
+                    scope.sortableOptions = {
+                        disabled: true,
+                        forcePlaceholderSize: true,
+                        placeholder: 'sortable-placeholder'
+                    };
+
+                    scope.builtVariable = function(expressionDescriptor) {
+                        return queryBuilderService.builtVariable(expressionDescriptor)
                     };
 
                     function addExpression() {
                         // default condition
                         scope.expressions.push({
-                            expression: {
+                            expressionDescriptor: {
                                 var : null,
                                 cmp : scope.conditions[0].key,
                                 val : null,
-                                type : scope.dataTypes[0]
+                                type : scope.dataTypes[0].key
                             },
                             expectAdSlot : null
                         });
@@ -65,45 +75,65 @@
 
                     function addGroupRoot(expressionRoot) {
                         //reset expression group
-                        expressionRoot.expression = {};
+                        expressionRoot.expressionDescriptor = {};
 
                         // set default group, including two conditions
-                        expressionRoot.expression[groupTYPE] = scope.operators[0];
-                        expressionRoot.expression[groupKey] = [];
-                        expressionRoot.expression[groupKey].unshift(
+                        expressionRoot.expressionDescriptor[groupTYPE] = scope.operators[0];
+                        expressionRoot.expressionDescriptor[groupKey] = [];
+                        expressionRoot.expressionDescriptor[groupKey].unshift(
                             {
                             var : null,
                             cmp : scope.conditions[0].key,
                             val : null,
-                            type : scope.dataTypes[0]
+                            type : scope.dataTypes[0].key
                             },
                             {
                             var : null,
                             cmp : scope.conditions[0].key,
                             val : null,
-                            type : scope.dataTypes[0]
+                            type : scope.dataTypes[0].key
                             }
                         );
                     }
 
                     function addConditionRoot(expressionRoot) {
                         //reset expression group
-                        expressionRoot.expression = {};
+                        expressionRoot.expressionDescriptor = {};
 
-                        expressionRoot.expression = {
+                        expressionRoot.expressionDescriptor = {
                             var : null,
                             cmp : scope.conditions[0].key,
                             val : null,
-                            type : scope.dataTypes[0]
+                            type : scope.dataTypes[0].key
                         };
                     }
 
                     function isGroup(expressionRoot) {
-                        if(expressionRoot.expression[groupKey] === undefined) {
+                        if(expressionRoot.expressionDescriptor[groupKey] === undefined) {
                             return false;
                         }
 
                         return true;
+                    }
+
+                    function changeCondition(item) {
+                        if(item == scope.dataTypes[1].key) {
+                            return CONDITIONS_NUMERIC;
+                        }
+                        if(item == scope.dataTypes[2].key) {
+                            return CONDITIONS_BOOLEAN;
+                        }
+
+                        return CONDITIONS_STRING;
+                    }
+
+                    function selectType(item) {
+                        item.val = null;
+                        item.cmp = scope.conditions[0].key;
+                    }
+
+                    function enableDragDropQueryBuilder(enable) {
+                        scope.sortableOptions['disabled'] = enable;
                     }
 
                     directive || (directive = $compile(content));

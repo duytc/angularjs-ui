@@ -4,6 +4,10 @@
         <strong current-page-title></strong>
 
         <div class="button-bar hidden-xs">
+            <label class="ui-checkbox">
+                <input type="checkbox" ng-model="enableDragDrop" ng-click="enableDragDropAdTag(!enableDragDrop)">
+                <span>Enable Drag/Drop</span>
+            </label>
             <button ui-sref="^.new({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon glyphicon-plus"></span>
                 New Ad Tag
@@ -17,56 +21,54 @@
 
     <div class="panel-body sortableAdTags" ng-if="hasAdTags()">
         <div class="row">
-            <table ng-if="hasAdTags()" class="table">
-                <thead>
-                <tr>
-                    <th class="col-lg-1">#</th>
-                    <th class="col-lg-3">Actions</th>
-                    <th class="col-lg-3">Name</th>
-                    <!--<th class="col-lg-1">Position</th>-->
-                    <th class="col-lg-2">Rotation Weight</th>
-                    <!--<th class="col-lg-2">Frequency Cap</th>-->
-                    <th class="col-lg-1">Status</th>
-                </tr>
-                </thead>
-            </table>
-
-            <div ui-sortable="sortableGroupOptions" ng-model="adTagsGroup">
-                <div ng-repeat="adTags in adTagsGroup" ng-class="{'moveable': !sortableGroupOptions['disabled']}">
+            <ul class="header-list-ad-tag item">
+                <li class="col-md-1">#</li>
+                <li class="col-md-3">Actions</li>
+                <li class="col-md-4">Name</li>
+                <li class="col-md-2">Rotation Weight</li>
+                <!--<li class="col-md-2">Frequency Cap</li>-->
+                <li class="col-md-2">Status</li>
+            </ul>
+            <ul ui-sortable="sortableGroupOptions" ng-model="adTagsGroup">
+                <li class="group-ad-tag" ng-repeat="adTags in adTagsGroup" ng-class="{'moveable': !sortableGroupOptions['disabled']}">
                     <div class="position" ng-if="adTags.length"><strong>Position : {{ adTags[0].position }}</strong></div>
-
-                    <table ng-if="hasAdTags()" class="table">
-                        <tbody class="itemAdTag" ui-sortable="sortableItemOption" ng-model="adTags">
-                        <tr class="item" ng-repeat="adTag in adTags">
-                            <td class="col-lg-1">{{ adTag.id }}</td>
-                            <td class="col-lg-3">
+                    <ul class="itemAdTag" ui-sortable="sortableItemOption" ng-model="adTags">
+                        <li class="item" ng-repeat="adTag in adTags">
+                            <div class="col-md-1">{{ adTag.id }}</div>
+                            <div class="col-md-3">
                                 <div class="btn-group" dropdown on-toggle="actionDropdownToggled(open)">
                                     <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a ui-sref="^.edit({ id: adTag.id })">Edit Ad Tag</a></li>
                                         <li><a ng-click="toggleAdTagStatus(adTag)">{{ adTag.active ? 'Pause' : 'Activate' }} Ad Tag</a></li>
-                                        <li><a ng-click="confirmDeletion(adTag, $index)">Delete Ad Tag</a></li>
+                                        <li><a ng-click="confirmDeletion(adTag)">Delete Ad Tag</a></li>
                                         <li ng-if="adTags.length > 1" class="divider"></li>
                                         <li ng-if="adTags.length > 1"><a ng-click="splitFromGroup(adTags, adTag)">Split Group</a></li>
                                     </ul>
                                 </div>
-                            </td>
-                            <td class="col-lg-3" e-form="nameForm" ng-dblclick="nameForm.$show()" buttons="no" oncancel="updateAdTag($data, 'name', adTag)" editable-text="adTag.name">{{ adTag.name }}</td>
-                            <!--<td class="col-lg-1" e-form="positionForm" ng-dblclick="positionForm.$show()" buttons="no" oncancel="updateAdTag($data, 'position', adTag)" editable-number="adTag.position"><span class="label label-default">{{ adTag.position }}</span></td>-->
-                            <td class="col-lg-2" e-form="rotationForm" ng-dblclick="rotationForm.$show()" buttons="no" oncancel="updateAdTag($data, 'rotation', adTag)" editable-number="adTag.rotation">{{ adTag.rotation }}</td>
-                            <!--<td class="col-lg-2" e-form="frequencyCapForm" ng-dblclick="frequencyCapForm.$show()" buttons="no" oncancel="updateAdTag($data, 'frequencyCap', adTag)" editable-number="adTag.frequencyCap">{{ adTag.frequencyCap }}</td>-->
-                            <td class="col-lg-1"><span class="label" ng-class="adTag.active ? 'label-success' : 'label-danger'">{{ adTag.active ? 'Active' : 'Paused' }}</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                            </div>
+                            <div class="col-md-4" ng-dblclick="nameForm.$show()">
+                                <span class="fa fa-pencil" ng-hide="nameForm.$visible"></span>
+                                <div e-form="nameForm" buttons="no" oncancel="updateAdTag($data, 'name', adTag)" onbeforesave="updateAdTag($data, 'name', adTag)" editable-text="adTag.name">{{ adTag.name }}</div>
+                            </div>
+                            <div class="col-md-2" ng-dblclick="rotationForm.$show()">
+                                <span class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>
+                                <div e-form="rotationForm" buttons="no" oncancel="updateAdTag($data, 'rotation', adTag)" onbeforesave="updateAdTag($data, 'rotation', adTag)" editable-number="adTag.rotation">{{ adTag.rotation }}</div>
+                            </div>
+                            <!--<div class="col-md-2" ng-dblclick="frequencyCapForm.$show()">-->
+                            <!--<span class="fa fa-pencil" ng-hide="frequencyCapForm.$visible"></span>-->
+                            <!--<div e-form="frequencyCapForm" buttons="no" oncancel="updateAdTag($data, 'frequencyCap', adTag)" editable-number="adTag.frequencyCap">{{ adTag.frequencyCap }}</div>-->
+                            <!--</div>-->
+                            <div class="col-md-2"><span class="label" ng-class="adTag.active ? 'label-success' : 'label-danger'">{{ adTag.active ? 'Active' : 'Paused' }}</span></div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
 
-                </div>
-
-            </div>
         </div>
     </div>
 
-    <div class="callout callout-info ad-tag-drag-help">
+    <div class="callout callout-info ad-tag-drag-help" ng-if="hasAdTags()">
         <p>You can drag and drop to re-order your ad tags.</p>
         <p>To move all ad tags from one position group to another, click and drag the gray position header bar up and down.</p>
         <p>To move a single ad tag to another position, click and drag on that ad tag only.</p>

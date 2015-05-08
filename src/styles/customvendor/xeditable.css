@@ -17,7 +17,7 @@
 .editable-wrap .editable-controls > input,
 .editable-wrap .editable-controls > select,
 .editable-wrap .editable-controls > textarea {
-    margin-top: 10px;
+    margin-bottom: 0;
 }
 
 /* keep buttons on the same line */
@@ -34,9 +34,49 @@
     margin-left: 5px;
 }
 
-/* if width: 100% => buttons go outside the box */
+/* in bootstrap width: 100% => buttons go outside the box */
 .editable-input.editable-has-buttons {
     width: auto;
+}
+
+/* ==== editable-bstime ==== */
+
+/* workaround for bootstrap that sets width: 100% and inputs become too wide */
+.editable-bstime .editable-input input[type="text"] {
+    width: 46px;
+}
+
+/* less padding for .well */
+.editable-bstime .well-small {
+    margin-bottom: 0;
+    padding: 10px;
+}
+
+/* ==== editable-range ==== */
+
+.editable-range output {
+    display: inline-block;
+    min-width: 30px;
+    vertical-align: top;
+    text-align: center;
+}
+
+/* ==== editable-color ==== */
+
+.editable-color input[type="color"] {
+    width: 50px;
+}
+
+
+/* ==== editable-checkbox ==== */
+/* ==== editable-checklist ==== */
+/* ==== editable-radiolist ==== */
+
+.editable-checkbox label span,
+.editable-checklist label span,
+.editable-radiolist label span {
+    margin-left: 7px;
+    margin-right: 10px;
 }
 
 /* ==== element ==== */
@@ -49,11 +89,15 @@
 .editable-click,
 a.editable-click {
     text-decoration: none;
+    color: #428bca;
+    border-bottom: dashed 1px #428bca;
 }
 
 .editable-click:hover,
 a.editable-click:hover {
     text-decoration: none;
+    color: #2a6496;
+    border-bottom-color: #2a6496;
 }
 
 /* editable-empty */

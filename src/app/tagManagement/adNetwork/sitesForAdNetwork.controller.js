@@ -12,8 +12,7 @@
 
         $scope.configPagination = {
             itemsPerPage: 10,
-            maxPages: 5,
-            fillLastPage: "no"
+            maxPages: 5
         };
 
         $scope.hasSites = hasSites;

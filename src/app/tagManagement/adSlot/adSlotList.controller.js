@@ -5,10 +5,10 @@
         .controller('AdSlotList', AdSlotList)
     ;
 
-    function AdSlotList($scope, $stateParams, $modal, $q, AlertService, AdSlotManager, adSlots, site) {
+    function AdSlotList($scope, $state, $stateParams, $modal, $q, AlertService, AdSlotManager, DynamicAdSlotManager, adSlots, dynamicAdSlot, site) {
         $scope.site = site;
 
-        $scope.adSlots = adSlots;
+        $scope.adSlots = dynamicAdSlot.concat(adSlots);
 
         $scope.hasData = function () {
             return !!adSlots.length;
@@ -30,36 +30,35 @@
         };
 
         $scope.generateAdTag = function (adSlot) {
+            var Manager = !!adSlot.width ? AdSlotManager : DynamicAdSlotManager;
+
             var modalInstance = $modal.open({
                 templateUrl: 'tagManagement/adSlot/generateAdTag.tpl.html',
                 resolve: {
-                    javascriptTag: function (AdSlotManager) {
-                        return AdSlotManager.one(adSlot.id).customGET('jstag');
+                    javascriptTag: function () {
+                        return Manager.one(adSlot.id).customGET('jstag');
                     }
                 },
                 controller: function ($scope, javascriptTag) {
                     $scope.adSlotName = adSlot.name;
-                    $scope.javascriptTag = angular.fromJson(javascriptTag);
+                    $scope.javascriptTag = javascriptTag;
                 }
             });
         };
 
-        $scope.confirmDeletion = function (adSlot, index) {
+        $scope.confirmDeletion = function (adSlot) {
             var modalInstance = $modal.open({
                 templateUrl: 'tagManagement/adSlot/confirmDeletion.tpl.html'
             });
 
+            var Manager = !!adSlot.width ? AdSlotManager : DynamicAdSlotManager;
             modalInstance.result.then(function () {
-                return AdSlotManager.one(adSlot.id).remove()
+                return Manager.one(adSlot.id).remove()
                     .then(
                         function () {
-                            var index = adSlots.indexOf(adSlot);
+                            $state.reload();
 
-                            if (index > -1) {
-                                adSlots.splice(index, 1);
-                            }
-
-                            AlertService.replaceAlerts({
+                            AlertService.addFlash({
                                 type: 'success',
                                 message: 'The ad slot was deleted'
                             });
