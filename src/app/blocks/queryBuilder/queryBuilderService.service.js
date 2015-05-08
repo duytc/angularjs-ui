@@ -5,7 +5,7 @@
         .factory('queryBuilderService', queryBuilderService)
     ;
 
-    function queryBuilderService(GROUP_TYPE, GROUP_KEY, DATA_TYPE) {
+    function queryBuilderService(GROUP_TYPE, GROUP_KEY, DATA_TYPE, CONDITIONS_STRING) {
         var api = {
             builtVariable: builtVariable
         };
@@ -21,7 +21,19 @@
             else {
                 var showDefaultExpression = (!expressionDescriptor.var && !expressionDescriptor.val);
                 var value = (expressionDescriptor.type == DATA_TYPE[0].key && !!expressionDescriptor.val) ? '"' +  expressionDescriptor.val + '"' : expressionDescriptor.val;
-                convertedExpressions += '(' + 'window.' + expressionDescriptor.var + ' ' + expressionDescriptor.cmp + ' ' + value + ') ';
+
+                if(expressionDescriptor.cmp == CONDITIONS_STRING[2].key) {
+                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + '.indexOf(' + value + ') > -1' + ')';
+                }
+                else if(expressionDescriptor.cmp == CONDITIONS_STRING[3].key) {
+                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + '.indexOf(' + value + ') === 0' + ')';
+                }
+                else if(expressionDescriptor.cmp == CONDITIONS_STRING[4].key) {
+                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + '.lastIndexOf(' + value + ') === window.'+ expressionDescriptor.var +'.length - ' + value + '.length)';
+                }
+                else {
+                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + ' ' + expressionDescriptor.cmp + ' ' + value + ') ';
+                }
             }
 
             return showDefaultExpression ? '()' : convertedExpressions;
@@ -37,9 +49,22 @@
                 else {
                     var type = (groups.length -1 != index) ? '<strong>' + groupType + '</strong>' : '';
                     var value = (group.type == DATA_TYPE[0].key && !!group.val) ? '"' + group.val + '"' : group.val;
-                    var showDefaultGroup = (!group.var && !group.val) ? '()' : '(' + 'window.' + group.var + ' ' + group.cmp + ' ' + value + ') ' + type + ' ';
+                    var showDefaultGroup = null;
 
-                    groupBuild += showDefaultGroup;
+                    if(group.cmp == CONDITIONS_STRING[2].key) {
+                        showDefaultGroup = '(' + 'window.' + group.var + '.indexOf(' + value + ') > -1' + ') ' + type + ' ';
+                    }
+                    else if(group.cmp == CONDITIONS_STRING[3].key) {
+                        showDefaultGroup = '(' + 'window.' + group.var + '.indexOf(' + value + ') === 0' + ') ' + type + ' ';
+                    }
+                    else if(group.cmp == CONDITIONS_STRING[4].key) {
+                        showDefaultGroup = '(' + 'window.' + group.var + '.lastIndexOf(' + value + ') === window.'+ group.var +'.length - ' + value + '.length)' + type + ' ';
+                    }
+                    else {
+                        showDefaultGroup = '(' + 'window.' + group.var + ' ' + group.cmp + ' ' + value + ') ' + type + ' ';
+                    }
+
+                    groupBuild += (!group.var && !group.val) ? '()' : showDefaultGroup;
                 }
             });
 

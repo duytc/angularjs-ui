@@ -16,7 +16,10 @@
         ])
         .constant('CONDITIONS_STRING', [
             {key: '==', label: 'EQUAL TO'},
-            {key: '!=', label: 'NOT EQUAL TO' }
+            {key: '!=', label: 'NOT EQUAL TO' },
+            {key: 'contains', label:'CONTAINS'},
+            {key: 'startsWith', label:'STARTS WITH'},
+            {key: 'endsWith', label:'ENDS WITH'}
         ])
         .constant('OPERATORS', ['AND' , 'OR'])
         .constant('DATA_TYPE', [
