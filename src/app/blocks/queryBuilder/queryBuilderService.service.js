@@ -21,27 +21,28 @@
             else {
                 var showDefaultExpression = (!expressionDescriptor.var && !expressionDescriptor.val);
                 var value = (expressionDescriptor.type == DATA_TYPE[0].key && !!expressionDescriptor.val) ? '"' +  expressionDescriptor.val + '"' : expressionDescriptor.val;
+                var variable = expressionDescriptor.var == '${PAGEURL}' ? 'location.href' : expressionDescriptor.var;
 
                 if(expressionDescriptor.cmp == CONDITIONS_STRING[2].key) {
-                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + '.search(/' + expressionDescriptor.val + '/i) > -1' + ')';
+                    convertedExpressions += '(' + 'window.' + variable + '.search(/' + expressionDescriptor.val + '/i) > -1' + ')';
                 }
                 else if(expressionDescriptor.cmp == CONDITIONS_STRING[3].key) {
-                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + '.search(/' + expressionDescriptor.val + '/i) < 0' + ')';
+                    convertedExpressions += '(' + 'window.' + variable + '.search(/' + expressionDescriptor.val + '/i) < 0' + ')';
                 }
                 else if(expressionDescriptor.cmp == CONDITIONS_STRING[4].key) {
-                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + '.search(/' + expressionDescriptor.val + '/i) === 0' + ')';
+                    convertedExpressions += '(' + 'window.' + variable + '.search(/' + expressionDescriptor.val + '/i) === 0' + ')';
                 }
                 else if(expressionDescriptor.cmp == CONDITIONS_STRING[5].key) {
-                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + '.search(/' + expressionDescriptor.val + '/i) !== 0' + ')';
+                    convertedExpressions += '(' + 'window.' + variable + '.search(/' + expressionDescriptor.val + '/i) !== 0' + ')';
                 }
                 else if(expressionDescriptor.cmp == CONDITIONS_STRING[6].key) {
-                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + '.search(/' + expressionDescriptor.val + '$/i) === window.'+ expressionDescriptor.var +'.length - ' + value + '.length)';
+                    convertedExpressions += '(' + 'window.' + variable + '.search(/' + expressionDescriptor.val + '$/i) === window.'+ variable +'.length - ' + value + '.length)';
                 }
                 else if(expressionDescriptor.cmp == CONDITIONS_STRING[7].key) {
-                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + '.search(/' + expressionDescriptor.val + '$/i) 1== window.'+ expressionDescriptor.var +'.length - ' + value + '.length)';
+                    convertedExpressions += '(' + 'window.' + variable + '.search(/' + expressionDescriptor.val + '$/i) 1== window.'+ variable +'.length - ' + value + '.length)';
                 }
                 else {
-                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + ' ' + expressionDescriptor.cmp + ' ' + value + ') ';
+                    convertedExpressions += '(' + 'window.' + variable + ' ' + expressionDescriptor.cmp + ' ' + value + ') ';
                 }
             }
 
@@ -59,30 +60,31 @@
                     var type = (groups.length -1 != index) ? '<strong>' + groupType + '</strong>' : '';
                     var value = (group.type == DATA_TYPE[0].key && !!group.val) ? '"' + group.val + '"' : group.val;
                     var showDefaultGroup = null;
+                    var variable = group.var == '${PAGEURL}' ? 'location.href' : group.var;
 
                     if(group.cmp == CONDITIONS_STRING[2].key) {
-                        showDefaultGroup = '(' + 'window.' + group.var + '.search(/' + group.val + '/i) > -1' + ') ' + type + ' ';
+                        showDefaultGroup = '(' + 'window.' + variable + '.search(/' + group.val + '/i) > -1' + ') ' + type + ' ';
                     }
                     else if(group.cmp == CONDITIONS_STRING[3].key) {
-                        showDefaultGroup = '(' + 'window.' + group.var + '.search(/' + group.val + '/i) < 0' + ') ' + type + ' ';
+                        showDefaultGroup = '(' + 'window.' + variable + '.search(/' + group.val + '/i) < 0' + ') ' + type + ' ';
                     }
                     else if(group.cmp == CONDITIONS_STRING[4].key) {
-                        showDefaultGroup = '(' + 'window.' + group.var + '.search(/' + group.val + '/i) === 0' + ') ' + type + ' ';
+                        showDefaultGroup = '(' + 'window.' + variable + '.search(/' + group.val + '/i) === 0' + ') ' + type + ' ';
                     }
                     else if(group.cmp == CONDITIONS_STRING[5].key) {
-                        showDefaultGroup = '(' + 'window.' + group.var + '.search(/' + group.val + '/i) !== 0' + ') ' + type + ' ';
+                        showDefaultGroup = '(' + 'window.' + variable + '.search(/' + group.val + '/i) !== 0' + ') ' + type + ' ';
                     }
                     else if(group.cmp == CONDITIONS_STRING[6].key) {
-                        showDefaultGroup = '(' + 'window.' + group.var + '.search(/' + group.val + '$/i) === window.'+ group.var +'.length - ' + value + '.length)' + type + ' ';
+                        showDefaultGroup = '(' + 'window.' + variable + '.search(/' + group.val + '$/i) === window.'+ variable +'.length - ' + value + '.length)' + type + ' ';
                     }
                     else if(group.cmp == CONDITIONS_STRING[7].key) {
-                        showDefaultGroup = '(' + 'window.' + group.var + '.search(/' + group.val + '$/i) !== window.'+ group.var +'.length - ' + value + '.length)' + type + ' ';
+                        showDefaultGroup = '(' + 'window.' + variable + '.search(/' + group.val + '$/i) !== window.'+ variable +'.length - ' + value + '.length)' + type + ' ';
                     }
                     else {
-                        showDefaultGroup = '(' + 'window.' + group.var + ' ' + group.cmp + ' ' + value + ') ' + type + ' ';
+                        showDefaultGroup = '(' + 'window.' + variable + ' ' + group.cmp + ' ' + value + ') ' + type + ' ';
                     }
 
-                    groupBuild += (!group.var && !group.val) ? '()' : showDefaultGroup;
+                    groupBuild += (!variable && !group.val) ? '()' : showDefaultGroup;
                 }
             });
 
