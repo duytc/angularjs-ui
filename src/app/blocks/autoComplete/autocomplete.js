@@ -240,11 +240,12 @@ app.directive('autocomplete', function() {
 
             });
         },
+        
         template: '\
         <div class="autocomplete {{ attrs.class }}" id="{{ attrs.id }}">\
           <input\
             type="text"\
-            ng-pattern="/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/"\
+            ng-pattern="/\\${PAGEURL}|^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/i"\
             ng-model="searchParam"\
             placeholder="{{ attrs.placeholder }}"\
             class="{{ attrs.inputclass }}"\
