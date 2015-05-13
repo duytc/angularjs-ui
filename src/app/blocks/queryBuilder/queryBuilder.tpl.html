@@ -34,9 +34,10 @@
                     </ui-select-choices>
                 </ui-select>
             </div>
-            <input type="text" class="form-control" ng-minlength="1" required ng-pattern="/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/" ng-model="expressionRoot.expressionDescriptor.var" placeholder="Variable Name">
+            <div class="form-group">
+                <autocomplete ng-model="expressionRoot.expressionDescriptor.var" data="tags" attr-input-class="form-control" attr-placeholder="Variable Name"></autocomplete>
+            </div>
             <select class="form-control" ng-model="expressionRoot.expressionDescriptor.cmp" ng-options="condition.key as condition.label for condition in changeCondition(expressionRoot.expressionDescriptor.type)"></select>
-
             <div class="form-group" ng-if="expressionRoot.expressionDescriptor.type != dataTypes[2].key">
                 <input type="text" class="form-control" ng-minlength="1" pattern="{{ expressionRoot.expressionDescriptor.type == dataTypes[1].key ? '\\d*' : ''}}" required ng-model="expressionRoot.expressionDescriptor.val" placeholder="Value">
             </div>
@@ -46,7 +47,7 @@
         </div>
 
         <div ng-if="isGroup(expressionRoot)">
-            <query-builder-group group="expressionRoot.expressionDescriptor"></query-builder-group>
+            <query-builder-group group="expressionRoot.expressionDescriptor" tags="tags"></query-builder-group>
         </div>
 
         <div class="form-group expression-show">

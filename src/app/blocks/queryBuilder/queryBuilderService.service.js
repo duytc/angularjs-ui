@@ -23,13 +23,22 @@
                 var value = (expressionDescriptor.type == DATA_TYPE[0].key && !!expressionDescriptor.val) ? '"' +  expressionDescriptor.val + '"' : expressionDescriptor.val;
 
                 if(expressionDescriptor.cmp == CONDITIONS_STRING[2].key) {
-                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + '.indexOf(' + value + ') > -1' + ')';
+                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + '.search(/' + expressionDescriptor.val + '/i) > -1' + ')';
                 }
                 else if(expressionDescriptor.cmp == CONDITIONS_STRING[3].key) {
-                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + '.indexOf(' + value + ') === 0' + ')';
+                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + '.search(/' + expressionDescriptor.val + '/i) < 0' + ')';
                 }
                 else if(expressionDescriptor.cmp == CONDITIONS_STRING[4].key) {
-                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + '.lastIndexOf(' + value + ') === window.'+ expressionDescriptor.var +'.length - ' + value + '.length)';
+                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + '.search(/' + expressionDescriptor.val + '/i) === 0' + ')';
+                }
+                else if(expressionDescriptor.cmp == CONDITIONS_STRING[5].key) {
+                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + '.search(/' + expressionDescriptor.val + '/i) !== 0' + ')';
+                }
+                else if(expressionDescriptor.cmp == CONDITIONS_STRING[6].key) {
+                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + '.search(/' + expressionDescriptor.val + '$/i) === window.'+ expressionDescriptor.var +'.length - ' + value + '.length)';
+                }
+                else if(expressionDescriptor.cmp == CONDITIONS_STRING[7].key) {
+                    convertedExpressions += '(' + 'window.' + expressionDescriptor.var + '.search(/' + expressionDescriptor.val + '$/i) 1== window.'+ expressionDescriptor.var +'.length - ' + value + '.length)';
                 }
                 else {
                     convertedExpressions += '(' + 'window.' + expressionDescriptor.var + ' ' + expressionDescriptor.cmp + ' ' + value + ') ';
@@ -52,13 +61,22 @@
                     var showDefaultGroup = null;
 
                     if(group.cmp == CONDITIONS_STRING[2].key) {
-                        showDefaultGroup = '(' + 'window.' + group.var + '.indexOf(' + value + ') > -1' + ') ' + type + ' ';
+                        showDefaultGroup = '(' + 'window.' + group.var + '.search(/' + group.val + '/i) > -1' + ') ' + type + ' ';
                     }
                     else if(group.cmp == CONDITIONS_STRING[3].key) {
-                        showDefaultGroup = '(' + 'window.' + group.var + '.indexOf(' + value + ') === 0' + ') ' + type + ' ';
+                        showDefaultGroup = '(' + 'window.' + group.var + '.search(/' + group.val + '/i) < 0' + ') ' + type + ' ';
                     }
                     else if(group.cmp == CONDITIONS_STRING[4].key) {
-                        showDefaultGroup = '(' + 'window.' + group.var + '.lastIndexOf(' + value + ') === window.'+ group.var +'.length - ' + value + '.length)' + type + ' ';
+                        showDefaultGroup = '(' + 'window.' + group.var + '.search(/' + group.val + '/i) === 0' + ') ' + type + ' ';
+                    }
+                    else if(group.cmp == CONDITIONS_STRING[5].key) {
+                        showDefaultGroup = '(' + 'window.' + group.var + '.search(/' + group.val + '/i) !== 0' + ') ' + type + ' ';
+                    }
+                    else if(group.cmp == CONDITIONS_STRING[6].key) {
+                        showDefaultGroup = '(' + 'window.' + group.var + '.search(/' + group.val + '$/i) === window.'+ group.var +'.length - ' + value + '.length)' + type + ' ';
+                    }
+                    else if(group.cmp == CONDITIONS_STRING[7].key) {
+                        showDefaultGroup = '(' + 'window.' + group.var + '.search(/' + group.val + '$/i) !== window.'+ group.var +'.length - ' + value + '.length)' + type + ' ';
                     }
                     else {
                         showDefaultGroup = '(' + 'window.' + group.var + ' ' + group.cmp + ' ' + value + ') ' + type + ' ';

@@ -63,10 +63,13 @@
                     <div class="col-sm-7">
                         <ui-select id="inputDefaultAdSlot" ng-model="adSlot.defaultAdSlot" ng-required="true" server-error>
                             <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices repeat="adSlot.id as adSlot in adSlots | filter:{name: $select.search}">
+                            <ui-select-choices group-by="groupEntities" repeat="adSlot.id as adSlot in adSlotsDefault | filter:$select.search">
                                 {{ adSlot.name }}
                             </ui-select-choices>
                         </ui-select>
+
+                        <span class="help-block">If no default ad slot is selected and no expressions match, the ad slot will not be shown on the page.</span>
+
                     </div>
                 </div>
 
@@ -84,10 +87,10 @@
                 </div>
 
                 <div class="form-group" ng-if="selected.type != types[0]">
-                    <label class="col-sm-1 control-label">Expressions Builder</label>
+                    <label class="col-sm-1 control-label">Expression Builder</label>
                     <div class="col-sm-7">
                         <div class="expressions-group">
-                            <query-builder expressions="adSlot.expressions" ad-slots="adSlots"></query-builder>
+                            <query-builder expressions="adSlot.expressions" ad-slots="adSlots" tags="tags"></query-builder>
                         </div>
                     </div>
                 </div>

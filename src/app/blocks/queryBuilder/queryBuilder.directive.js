@@ -11,7 +11,8 @@
         return {
             scope: {
                 expressions: '=',
-                adSlots: '='
+                adSlots: '=',
+                tags: '='
             },
             restrict: 'AE',
             templateUrl: 'blocks/queryBuilder/queryBuilder.tpl.html',

@@ -8,7 +8,7 @@
 
     <div ng-repeat="itemGroup in group[groupKey]">
         <div ng-if="isGroup(itemGroup)">
-            <query-builder-group group="itemGroup" index="$index" groups="group[groupKey]"></query-builder-group>
+            <query-builder-group group="itemGroup" index="$index" groups="group[groupKey]" tags="tags"></query-builder-group>
         </div>
 
         <div class="form-inline condition" ng-if="!isGroup(itemGroup)">
@@ -20,7 +20,9 @@
                     </ui-select-choices>
                 </ui-select>
             </div>
-            <input type="text" class="form-control" ng-minlength="1" required ng-pattern="/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/" id="var" ng-model="itemGroup.var" placeholder="Variable Name">
+            <div class="form-group">
+                <autocomplete ng-model="itemGroup.var" data="tags" attr-input-class="form-control" attr-placeholder="Variable Name"></autocomplete>
+            </div>
             <select class="form-control" ng-model="itemGroup.cmp" ng-options="condition.key as condition.label for condition in changeCondition(itemGroup.type)"></select>
 
             <div class="form-group" ng-if="itemGroup.type != dataTypes[2].key">

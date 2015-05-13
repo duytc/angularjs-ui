@@ -12,7 +12,8 @@
             scope: {
                 group: '=',
                 groups: '=',
-                index: '='
+                index: '=',
+                tags: '='
             },
             restrict: 'AE',
             templateUrl: 'blocks/queryBuilder/queryBuilderGroup.tpl.html',
