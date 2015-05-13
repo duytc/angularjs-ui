@@ -74,7 +74,11 @@
         }
 
         function isFormValid() {
-            return $scope.adSlotForm.$valid;
+            if(!!$scope.adSlot.defaultAdSlot) {
+                return $scope.adSlotForm.$valid;
+            }
+
+            return $scope.adSlotForm.$valid && $scope.adSlot.expressions.length > 0;
         }
 
         function submit() {
