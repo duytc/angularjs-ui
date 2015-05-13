@@ -9,7 +9,7 @@
 
 <div ui-sortable="sortableOptions" ng-model="expressions">
     <div class="expressions-group moveable" ng-repeat="expressionRoot in expressions">
-        <div class="form-group">
+        <div class="form-group expect-adSlot">
             <label for="inputExpectAdSlot">Ad Slot</label>
             <ui-select id="inputExpectAdSlot" ng-model="expressionRoot.expectAdSlot" ng-init="!!expressionRoot.expectAdSlot.id ? expressionRoot.expectAdSlot = expressionRoot.expectAdSlot.id : expressionRoot.expectAdSlot" ng-required="true" server-error>
                 <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }}</ui-select-match>
