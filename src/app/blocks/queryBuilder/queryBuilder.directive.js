@@ -81,20 +81,6 @@
                         // set default group, including two conditions
                         expressionRoot.expressionDescriptor[groupTYPE] = scope.operators[0];
                         expressionRoot.expressionDescriptor[groupKey] = [];
-                        expressionRoot.expressionDescriptor[groupKey].unshift(
-                            {
-                            var : null,
-                            cmp : scope.conditions[0].key,
-                            val : null,
-                            type : scope.dataTypes[0].key
-                            },
-                            {
-                            var : null,
-                            cmp : scope.conditions[0].key,
-                            val : null,
-                            type : scope.dataTypes[0].key
-                            }
-                        );
                     }
 
                     function addConditionRoot(expressionRoot) {

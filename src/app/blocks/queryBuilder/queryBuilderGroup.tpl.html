@@ -32,7 +32,8 @@
                 <select class="form-control" ng-options="value for value in values" ng-model="itemGroup.val" ng-init="values = ['true', 'false']; itemGroup.val == null ? itemGroup.val = 'true' : '' "></select>
             </div>
 
-            <button class="btn btn-danger" type="button" ng-minlength="1" required ng-disabled="isDisabledButtonRemoveCondition()" ng-click="removeCondition($index)"><span class="glyphicon glyphicon-minus"></span></button>
+            <!--<button class="btn btn-danger" type="button" ng-minlength="1" required ng-disabled="isDisabledButtonRemoveCondition()" ng-click="removeCondition($index)"><span class="glyphicon glyphicon-minus"></span></button>-->
+            <button class="btn btn-danger" type="button" ng-minlength="1" required ng-click="removeCondition($index)"><span class="glyphicon glyphicon-minus"></span></button>
         </div>
     </div>
 </div>

@@ -5,7 +5,7 @@
             <form name="adSlotForm" class="col-lg-12 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
                 <div class="form-group" ng-if="isNew">
                     <label class="col-sm-1 control-label">Type</label>
-                    <div class="col-sm-7">
+                    <div class="col-sm-5">
                         <ui-select ng-model="selected.type" on-select="selectType($model)">
                             <ui-select-match placeholder="Select a type">{{ $select.selected }}</ui-select-match>
                             <ui-select-choices repeat="type as type in types">
@@ -17,20 +17,20 @@
 
                 <div class="form-group" ng-if="isAdmin() && !allowSiteSelection">
                     <label class="col-sm-1 control-label">Publisher</label>
-                    <div class="col-sm-7 form-control-static">
+                    <div class="col-sm-5 form-control-static">
                         {{ adSlot.site.publisher.company }}
                     </div>
                 </div>
                 <div class="form-group" ng-if="!allowSiteSelection">
                     <label class="col-sm-1 control-label">Site</label>
-                    <div class="col-sm-7 form-control-static">
+                    <div class="col-sm-5 form-control-static">
                         {{ adSlot.site.name }}
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="isAdmin() && allowSiteSelection">
                     <label for="inputPublisher" class="col-sm-1 control-label">Publisher</label>
-                    <div class="col-sm-7">
+                    <div class="col-sm-5">
                         <ui-select id="inputPublisher" ng-model="selected.publisher" on-select="selectPublisher($item, $model)">
                             <ui-select-match placeholder="Select a publisher">{{ $select.selected.company }}</ui-select-match>
                             <ui-select-choices repeat="publisher.id as publisher in publisherList | filter: { company: $select.search }">
@@ -41,7 +41,7 @@
                 </div>
                 <div class="form-group" ng-if="allowSiteSelection">
                     <label for="inputSite" class="col-sm-1 control-label">Site</label>
-                    <div class="col-sm-7">
+                    <div class="col-sm-5">
                         <ui-select name="site" id="inputSite" ng-model="adSlot.site" ng-disabled="isAdmin() && !selected.publisher" on-select="selectSite($model)">
                             <ui-select-match placeholder="Select a site...">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices repeat="site.id as site in siteList | filter:{name: $select.search} | filter: selectedPublisher:selected.publisher">
@@ -53,14 +53,14 @@
 
                 <div class="form-group">
                     <label for="inputName" class="col-sm-1 control-label">Name</label>
-                    <div class="col-sm-7">
+                    <div class="col-sm-5">
                         <input server-error name="name" ng-model="adSlot.name" ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="Ad slot name">
                     </div>
                 </div>
 
                 <div class="form-group"  ng-if="selected.type != types[0]">
                     <label for="inputDefaultAdSlot" class="col-sm-1 control-label">Default Ad Slot</label>
-                    <div class="col-sm-7">
+                    <div class="col-sm-5">
                         <ui-select id="inputDefaultAdSlot" ng-model="adSlot.defaultAdSlot" ng-required="true" server-error>
                             <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="adSlot.id as adSlot in adSlotsDefault | filter:$select.search">
@@ -75,20 +75,20 @@
 
                 <div class="form-group" ng-if="selected.type == types[0]">
                     <label for="inputWidth" class="col-sm-1 control-label">Width</label>
-                    <div class="col-sm-7">
+                    <div class="col-sm-5">
                         <input name="width" server-error ng-model="adSlot.width" ng-required="true" min="1" type="number" class="form-control" id="inputWidth" placeholder="Width">
                     </div>
                 </div>
                 <div class="form-group" ng-if="selected.type == types[0]">
                     <label for="inputWidth" class="col-sm-1 control-label">Height</label>
-                    <div class="col-sm-7">
+                    <div class="col-sm-5">
                         <input server-error name="height" ng-model="adSlot.height" ng-required="true" min="1" type="number" class="form-control" id="inputHeight" placeholder="Height">
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="selected.type != types[0]">
                     <label class="col-sm-1 control-label">Expression Builder</label>
-                    <div class="col-sm-7">
+                    <div class="col-sm-11">
                         <div class="expressions-group">
                             <query-builder expressions="adSlot.expressions" ad-slots="adSlots" tags="tags"></query-builder>
                         </div>
@@ -96,7 +96,7 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-offset-1 col-sm-7">
+                    <div class="col-sm-offset-1 col-sm-5">
                         <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">Submit</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">
                             <p>Submit button will be active only when all fields are valid.</p>
