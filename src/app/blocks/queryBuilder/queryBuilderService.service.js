@@ -15,38 +15,14 @@
         function builtVariable(expressionDescriptor) {
             var convertedExpressions = '';
 
-            if(expressionDescriptor[GROUP_TYPE] != null) {
-                convertedExpressions = '(' + _buildNested(expressionDescriptor[GROUP_KEY], expressionDescriptor[GROUP_TYPE]) + ')';
+            if(expressionDescriptor[GROUP_KEY].length < 2) {
+                convertedExpressions = _buildNested(expressionDescriptor[GROUP_KEY], expressionDescriptor[GROUP_TYPE]);
             }
             else {
-                var showDefaultExpression = (!expressionDescriptor.var && !expressionDescriptor.val);
-                var value = (expressionDescriptor.type == DATA_TYPE[0].key && !!expressionDescriptor.val) ? '"' +  expressionDescriptor.val + '"' : expressionDescriptor.val;
-                var variable = expressionDescriptor.var == '${PAGEURL}' ? 'location.href' : expressionDescriptor.var;
-
-                if(expressionDescriptor.cmp == CONDITIONS_STRING[2].key) {
-                    convertedExpressions += '(' + 'window.' + variable + '.search(/' + expressionDescriptor.val + '/i) > -1' + ')';
-                }
-                else if(expressionDescriptor.cmp == CONDITIONS_STRING[3].key) {
-                    convertedExpressions += '(' + 'window.' + variable + '.search(/' + expressionDescriptor.val + '/i) < 0' + ')';
-                }
-                else if(expressionDescriptor.cmp == CONDITIONS_STRING[4].key) {
-                    convertedExpressions += '(' + 'window.' + variable + '.search(/' + expressionDescriptor.val + '/i) === 0' + ')';
-                }
-                else if(expressionDescriptor.cmp == CONDITIONS_STRING[5].key) {
-                    convertedExpressions += '(' + 'window.' + variable + '.search(/' + expressionDescriptor.val + '/i) !== 0' + ')';
-                }
-                else if(expressionDescriptor.cmp == CONDITIONS_STRING[6].key) {
-                    convertedExpressions += '(' + 'window.' + variable + '.search(/' + expressionDescriptor.val + '$/i) === window.'+ variable +'.length - ' + value + '.length)';
-                }
-                else if(expressionDescriptor.cmp == CONDITIONS_STRING[7].key) {
-                    convertedExpressions += '(' + 'window.' + variable + '.search(/' + expressionDescriptor.val + '$/i) 1== window.'+ variable +'.length - ' + value + '.length)';
-                }
-                else {
-                    convertedExpressions += '(' + 'window.' + variable + ' ' + expressionDescriptor.cmp + ' ' + value + ') ';
-                }
+                convertedExpressions = '(' + _buildNested(expressionDescriptor[GROUP_KEY], expressionDescriptor[GROUP_TYPE]) + ')';
             }
 
-            return showDefaultExpression ? '()' : convertedExpressions;
+            return convertedExpressions;
         }
 
         function _buildNested(groups, groupType) {

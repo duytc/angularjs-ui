@@ -1,10 +1,13 @@
 .expressions-group {
   border: 1px solid #ddd;
   padding: 10px;
-  margin-top: 10px
-}
+ }
 
 .expressions-group {
+  .add-group-bar {
+    margin-bottom: 10px;
+  }
+
   .form-inline {
     margin-top: 5px;
   }
@@ -22,6 +25,7 @@
   }
 
   .expect-adSlot {
+    margin-bottom: 10px;
     width: 45.71%;
   }
 }
@@ -30,7 +34,9 @@
 }
 
 .show-query-builder {
-  padding: 10px 0 10px 10px;
+  height: 40px;
+  line-height: 40px;
+  padding-left: 10px;
 }
 
 .condition {

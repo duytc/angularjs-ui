@@ -74,11 +74,69 @@
         }
 
         function isFormValid() {
+            if($scope.selected.type == $scope.types[0]) { // validate static ad slot
+                return $scope.adSlotForm.$valid;
+            }
+
+            // validate dynamic ad slot
             if(!!$scope.adSlot.defaultAdSlot) {
                 return $scope.adSlotForm.$valid;
             }
 
-            return $scope.adSlotForm.$valid && $scope.adSlot.expressions.length > 0;
+            var validExpression = validateExpressions($scope.adSlot.expressions);
+
+            return validExpression && $scope.adSlotForm.$valid;
+        }
+
+        function validateExpressions(expressions) {
+
+            if (!expressions || expressions.length < 1) {
+                return false;
+            }
+
+            var expression;
+            for(var i in expressions) {
+                expression = expressions[i];
+                if (!validateSingleExpression(expression)) {
+
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        function validateSingleExpression(expression) {
+            if(!expression.expressionDescriptor.groupVal || expression.expressionDescriptor.groupVal.length < 1) {
+               return false;
+            }
+
+            var group;
+            for(var i in expression.expressionDescriptor.groupVal) {
+                group = expression.expressionDescriptor.groupVal[i];
+                if (!validateGroup(group)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        function validateGroup(group) {
+            if(!!group.groupVal && group.groupVal.length > 0) {
+
+                var tmpGroup;
+                for(var i in group.groupVal) {
+                    tmpGroup = group.groupVal[i];
+                    if (!validateGroup(tmpGroup)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            return !!group.cmp && !!group.var && !!group.type && !!group.val;
         }
 
         function submit() {
