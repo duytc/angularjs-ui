@@ -5,7 +5,7 @@
         .directive('queryBuilder', queryBuilder)
     ;
 
-    function queryBuilder($compile, CONDITIONS_STRING, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, queryBuilderService) {
+    function queryBuilder($compile, CONDITIONS_STRING, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, queryBuilderService, AdSlotManager) {
         'use strict';
 
         return {
@@ -29,6 +29,7 @@
 
                     scope.addExpression = addExpression;
                     scope.enableDragDropQueryBuilder = enableDragDropQueryBuilder;
+                    scope.selectExpectAdSlot = selectExpectAdSlot;
 
                     scope.sortableOptions = {
                         disabled: true,
@@ -39,6 +40,27 @@
                     scope.builtVariable = function(expressionDescriptor) {
                         return queryBuilderService.builtVariable(expressionDescriptor)
                     };
+
+
+                    function selectExpectAdSlot(adSlot) {
+                        if (!adSlot) {
+                            return;
+                        }
+
+                        var adSlotId = !!adSlot.id ? adSlot.id : adSlot;
+
+                        AdSlotManager.one(adSlotId).getList('adtags')
+                            .then(function(adTags) {
+                                var positions = [];
+
+                                var maxPos = Math.max.apply(Math,adTags.map(function(adTag){return adTag.position;}));
+                                for(var i = 1; i <= maxPos; i ++) {
+                                    positions.push(i);
+                                }
+
+                                scope.positions = positions
+                            });
+                    }
 
                     function addExpression() {
                         var expressionDescriptor = {};

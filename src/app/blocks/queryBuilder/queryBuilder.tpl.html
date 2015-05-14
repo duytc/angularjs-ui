@@ -11,13 +11,24 @@
     <div class="expressions-group moveable" ng-repeat="expressionRoot in expressions">
         <div class="form-group expect-adSlot">
             <label for="inputExpectAdSlot">Ad Slot</label>
-            <ui-select id="inputExpectAdSlot" ng-model="expressionRoot.expectAdSlot" ng-init="!!expressionRoot.expectAdSlot.id ? expressionRoot.expectAdSlot = expressionRoot.expectAdSlot.id : expressionRoot.expectAdSlot" ng-required="true" server-error>
+            <ui-select id="inputExpectAdSlot" ng-model="expressionRoot.expectAdSlot" ng-init="!!expressionRoot.expectAdSlot.id ? expressionRoot.expectAdSlot = expressionRoot.expectAdSlot.id : expressionRoot.expectAdSlot" on-select="selectExpectAdSlot($item)" ng-required="true" server-error>
                 <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }}</ui-select-match>
                 <ui-select-choices repeat="adSlot.id as adSlot in adSlots | filter:{name: $select.search}">
                     {{ adSlot.name }}
                 </ui-select-choices>
             </ui-select>
         </div>
+
+        <div class="form-group expect-adSlot">
+            <label for="inputStartingPosition">Starting Position</label>
+            <ui-select id="inputStartingPosition" ng-model="expressionRoot.startingPosition" ng-init="selectExpectAdSlot(expressionRoot.expectAdSlot)" ng-required="true" server-error>
+                <ui-select-match placeholder="Select a position">{{ $select.selected }}</ui-select-match>
+                <ui-select-choices repeat="position in positions">
+                    {{ position }}
+                </ui-select-choices>
+            </ui-select>
+        </div>
+
 
         <!--<span class="help-block">Select Group if you have compound conditions with AND/OR. Otherwise select Condition.</span>-->
         <label>Expression</label>
