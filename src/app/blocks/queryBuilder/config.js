@@ -18,8 +18,11 @@
             {key: '==', label: 'EQUAL TO'},
             {key: '!=', label: 'NOT EQUAL TO' },
             {key: 'contains', label:'CONTAINS'},
+            {key: 'notContains', label:'DOES NOT CONTAIN'},
             {key: 'startsWith', label:'STARTS WITH'},
-            {key: 'endsWith', label:'ENDS WITH'}
+            {key: 'notStartsWith', label:'DOES NOT START WITH'},
+            {key: 'endsWith', label:'ENDS WITH'},
+            {key: 'notEndsWith', label:'DOES NOT END WITH'}
         ])
         .constant('OPERATORS', ['AND' , 'OR'])
         .constant('DATA_TYPE', [

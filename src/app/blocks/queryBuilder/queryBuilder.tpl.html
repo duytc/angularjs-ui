@@ -9,7 +9,7 @@
 
 <div ui-sortable="sortableOptions" ng-model="expressions">
     <div class="expressions-group moveable" ng-repeat="expressionRoot in expressions">
-        <div class="form-group">
+        <div class="form-group expect-adSlot">
             <label for="inputExpectAdSlot">Ad Slot</label>
             <ui-select id="inputExpectAdSlot" ng-model="expressionRoot.expectAdSlot" ng-init="!!expressionRoot.expectAdSlot.id ? expressionRoot.expectAdSlot = expressionRoot.expectAdSlot.id : expressionRoot.expectAdSlot" ng-required="true" server-error>
                 <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }}</ui-select-match>
@@ -19,38 +19,11 @@
             </ui-select>
         </div>
 
-        <div class="form-inline">
-            <button class="btn btn-success" ng-disabled="isGroup(expressionRoot)" type="button" ng-click="addGroupRoot(expressionRoot)"><span ng-if="isGroup(expressionRoot)" class="glyphicon glyphicon-ok"></span> Group</button>
-            <button class="btn btn-success" ng-disabled="!isGroup(expressionRoot)" type="button" ng-click="addConditionRoot(expressionRoot)"><span ng-if="!isGroup(expressionRoot)" class="glyphicon glyphicon-ok"></span> Condition</button>
-            <button class="btn btn-danger" type="button" ng-disabled="isDisabledButtonRemoveExpressions()" ng-click="removeExpressionRoot($index)"><span class="glyphicon glyphicon-minus"></span></button>
-        </div>
-        <span class="help-block">Select Group if you have compound conditions with AND/OR. Otherwise select Condition.</span>
-        <div class="form-inline condition" ng-if="!isGroup(expressionRoot)">
-            <div class="form-group select-data-type">
-                <ui-select ng-model="expressionRoot.expressionDescriptor.type" ng-required="true" server-error on-select="selectType(expressionRoot.expressionDescriptor)">
-                    <ui-select-match placeholder="Select data type">{{ $select.selected.label }}</ui-select-match>
-                    <ui-select-choices repeat="dataType.key as dataType in dataTypes">
-                        {{ dataType.label }}
-                    </ui-select-choices>
-                </ui-select>
-            </div>
-            <input type="text" class="form-control" ng-minlength="1" required ng-pattern="/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/" ng-model="expressionRoot.expressionDescriptor.var" placeholder="Variable Name">
-            <select class="form-control" ng-model="expressionRoot.expressionDescriptor.cmp" ng-options="condition.key as condition.label for condition in changeCondition(expressionRoot.expressionDescriptor.type)"></select>
-
-            <div class="form-group" ng-if="expressionRoot.expressionDescriptor.type != dataTypes[2].key">
-                <input type="text" class="form-control" ng-minlength="1" pattern="{{ expressionRoot.expressionDescriptor.type == dataTypes[1].key ? '\\d*' : ''}}" required ng-model="expressionRoot.expressionDescriptor.val" placeholder="Value">
-            </div>
-            <div class="form-group" ng-if="expressionRoot.expressionDescriptor.type == dataTypes[2].key">
-                <select class="form-control" ng-options="value for value in values" ng-model="expressionRoot.expressionDescriptor.val" ng-init="values = ['true', 'false']; expressionRoot.expressionDescriptor.val == null ? expressionRoot.expressionDescriptor.val = 'true' : '' "></select>
-            </div>
-        </div>
-
-        <div ng-if="isGroup(expressionRoot)">
-            <query-builder-group group="expressionRoot.expressionDescriptor"></query-builder-group>
-        </div>
+        <!--<span class="help-block">Select Group if you have compound conditions with AND/OR. Otherwise select Condition.</span>-->
+        <label>Expression</label>
+        <query-builder-group group="expressionRoot.expressionDescriptor" groups="expressions" index="$index" tags="tags"></query-builder-group>
 
         <div class="form-group expression-show">
-            <label>Expression</label><br/>
             <label class="ui-checkbox"><input server-error name="liveView" type="checkbox" ng-model="liveViewChecked"  value="checked" id="liveExpression"/><span>Show generated expression</span></label>
             <div ng-if="liveViewChecked == true" class="callout-warning show-query-builder" ng-bind-html="builtVariable(expressionRoot.expressionDescriptor)"></div>
         </div>

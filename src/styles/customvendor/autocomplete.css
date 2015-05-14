@@ -1,0 +1,35 @@
+/* AUTOCOMPLETE */
+
+.autocomplete{
+    width: 100%;
+    position: relative;
+}
+
+.autocomplete ul{
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    border: 1px solid #888;
+    z-index: 999;
+}
+
+.autocomplete li{
+    list-style:none;
+    background-color: #fff;
+    padding: 5px;
+}
+
+.autocomplete li.active{
+    background-color: #000;
+    color: #fff;
+}
+
+.autocomplete .highlight {
+    background-color: #E2E2E2;
+}
+
+.autocomplete li.active .highlight {
+    color: #fff;
+}

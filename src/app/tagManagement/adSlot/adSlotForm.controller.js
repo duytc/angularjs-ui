@@ -5,17 +5,17 @@
         .controller('AdSlotForm', AdSlotForm)
     ;
 
-    function AdSlotForm($scope, $state, $stateParams, $q, SiteManager, AdSlotManager, DynamicAdSlotManager, AlertService, ServerErrorProcessor, site, publisherList, siteList, adSlot, TYPE_AD_SLOT) {
+    function AdSlotForm($scope, $state, $stateParams, $q, SiteManager, AdSlotManager, DynamicAdSlotManager, adSlotService, AlertService, ServerErrorProcessor, site, publisherList, siteList, adSlot, TYPE_AD_SLOT) {
         $scope.fieldNameTranslations = {
             site: 'Site',
             name: 'Name',
             width: 'Width',
-            height: 'Height',
-            defaultAdSlot: 'Default Ad Slot'
+            height: 'Height'
         };
 
         $scope.isNew = adSlot === null;
         $scope.types = TYPE_AD_SLOT;
+        $scope.tags = null;
 
         $scope.formProcessing = false;
 
@@ -35,14 +35,25 @@
 
         $scope.publisherList = publisherList;
         $scope.siteList = siteList;
-
+        $scope.groupEntities = groupEntities;
+        
         $scope.adSlot = adSlot || {
             site: $scope.isNew && $stateParams.hasOwnProperty('siteId') ? parseInt($stateParams.siteId, 10) : null,
             name: null,
             expressions: []
         };
 
+        $scope.adSlotsDefault = [{id: null, name: 'None'}];
+
         _update();
+
+        function groupEntities(item){
+            if (item.id === null) {
+                return undefined; // no group
+            }
+
+            return ''; // separate group with no name
+        }
 
         function selectSite(siteId) {
             if(!!$scope.adSlot.defaultAdSlot) {
@@ -63,7 +74,69 @@
         }
 
         function isFormValid() {
-            return $scope.adSlotForm.$valid;
+            if($scope.selected.type == $scope.types[0]) { // validate static ad slot
+                return $scope.adSlotForm.$valid;
+            }
+
+            // validate dynamic ad slot
+            if(!!$scope.adSlot.defaultAdSlot) {
+                return $scope.adSlotForm.$valid;
+            }
+
+            var validExpression = validateExpressions($scope.adSlot.expressions);
+
+            return validExpression && $scope.adSlotForm.$valid;
+        }
+
+        function validateExpressions(expressions) {
+
+            if (!expressions || expressions.length < 1) {
+                return false;
+            }
+
+            var expression;
+            for(var i in expressions) {
+                expression = expressions[i];
+                if (!validateSingleExpression(expression)) {
+
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        function validateSingleExpression(expression) {
+            if(!expression.expressionDescriptor.groupVal || expression.expressionDescriptor.groupVal.length < 1) {
+               return false;
+            }
+
+            var group;
+            for(var i in expression.expressionDescriptor.groupVal) {
+                group = expression.expressionDescriptor.groupVal[i];
+                if (!validateGroup(group)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        function validateGroup(group) {
+            if(!!group.groupVal && group.groupVal.length > 0) {
+
+                var tmpGroup;
+                for(var i in group.groupVal) {
+                    tmpGroup = group.groupVal[i];
+                    if (!validateGroup(tmpGroup)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            return !!group.cmp && !!group.var && !!group.type && !!group.val;
         }
 
         function submit() {
@@ -128,12 +201,35 @@
             ;
         }
 
+        /**
+         *
+         * @param {Array} data
+         * @param {String} [label]
+         * @returns {Array}
+         */
+        function _addNoneOption(data, label)
+        {
+            if (!angular.isArray(data)) {
+                throw new Error('Expected an array of data');
+            }
+
+            data.unshift({
+                id: null, // default value
+                name: label || 'None'
+            });
+
+            return data;
+        }
+
         function _getAdSlots(siteId, type) {
             type = !!type ? type : $scope.selected.type;
 
             if((!$scope.isNew && !$scope.adSlot.width) || ($scope.isNew && type != $scope.types[0])) {
-                return SiteManager.one(siteId).getList('adslots').then(function (adSlots) {
-                    $scope.adSlots = adSlots.plain();
+                SiteManager.one(siteId).getList('adslots').then(function (adSlots) {
+                    $scope.adSlotsDefault = adSlots.plain();
+                    $scope.adSlots = angular.copy($scope.adSlotsDefault);
+
+                    _addNoneOption($scope.adSlotsDefault, 'None');
 
                     if(!$scope.isNew) {
                         angular.forEach($scope.adSlots, function(adSlot, index) {
@@ -148,6 +244,10 @@
                             expressionDescriptor.expectAdSlot = null;
                         });
                     }
+                });
+
+                SiteManager.one(siteId).getList('dynamicadslots').then(function (dynamicadslots) {
+                    $scope.tags = adSlotService.getTagsAdSlotDynamic(dynamicadslots.plain());
                 });
             }
         }

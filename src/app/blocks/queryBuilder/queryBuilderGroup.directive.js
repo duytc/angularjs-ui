@@ -12,7 +12,8 @@
             scope: {
                 group: '=',
                 groups: '=',
-                index: '='
+                index: '=',
+                tags: '='
             },
             restrict: 'AE',
             templateUrl: 'blocks/queryBuilder/queryBuilderGroup.tpl.html',
@@ -40,28 +41,13 @@
                         var group = {};
                         group[scope.groupType] = scope.operators[0];
                         group[scope.groupKey] = [];
-                        group[scope.groupKey].unshift(
-                            {
-                            var : null,
-                            cmp : scope.conditions[0].key,
-                            val : null,
-                            type : scope.dataTypes[0].key
-                            },
-                            {
-                            var : null,
-                            cmp : scope.conditions[0].key,
-                            val : null,
-                            type : scope.dataTypes[0].key
-                            }
-                        );
+
                         scope.group[scope.groupKey].push(group);
                     }
 
                     function removeGroup() {
                         if(scope.index != undefined) {
-                            if(scope.groups.length > 2) {
-                                scope.groups.splice(scope.index, 1);
-                            }
+                            scope.groups.splice(scope.index, 1);
 
                             return;
                         }
@@ -77,7 +63,7 @@
                     }
 
                     function addCondition() {
-                        scope.group[scope.groupKey].unshift({
+                        scope.group[scope.groupKey].push({
                             var : null,
                             cmp: scope.conditions[0].key,
                             val : null,
