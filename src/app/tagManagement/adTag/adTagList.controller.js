@@ -51,9 +51,9 @@
 
             originalGroups = angular.copy($scope.adTagsGroup);
 
-            var length = $scope.adTagsGroup.length;
-            $scope.adTagsGroup[length] = [];
-            $scope.adTagsGroup[length].push(adTag);
+            var adTagGroup = [];
+            adTagGroup.push(adTag);
+            $scope.adTagsGroup.splice(adTag.position, 0 , adTagGroup);
 
             return _stop();
         };
