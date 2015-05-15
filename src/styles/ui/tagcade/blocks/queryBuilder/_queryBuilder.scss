@@ -1,9 +1,14 @@
 .expressions-group {
   border: 1px solid #ddd;
   padding: 10px;
+  margin-top: 10px;
  }
 
 .expressions-group {
+  .expression-label {
+    margin-bottom: 0;
+  }
+
   .add-group-bar {
     margin-bottom: 10px;
   }
@@ -47,4 +52,9 @@
 
 .enable-drag-drop-query-builder {
   margin-left: 30px;
+}
+
+.highlight {
+  color: black;
+  background-color: #FA7B58;
 }

@@ -47,7 +47,7 @@
         'angular-table',
         'currencyFilter',
         'xeditable',
-        'autocomplete'
+        'angucomplete'
     ]);
 
     core.run(appRun);
