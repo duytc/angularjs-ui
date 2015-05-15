@@ -29,11 +29,12 @@
             var groupBuild = '';
 
             angular.forEach(groups, function(group, index) {
+                var type = (groups.length -1 != index) ? '<strong>' + groupType + '</strong>' : '';
+
                 if(group[GROUP_TYPE] != null) {
-                    groupBuild += '(' + _buildNested(group[GROUP_KEY], group[GROUP_TYPE]) + ')';
+                    groupBuild += '(' + _buildNested(group[GROUP_KEY], group[GROUP_TYPE]) + ') ' + type + ' ';
                 }
                 else {
-                    var type = (groups.length -1 != index) ? '<strong>' + groupType + '</strong>' : '';
                     var value = (group.type == DATA_TYPE[0].key && !!group.val) ? '"' + group.val + '"' : group.val;
                     var showDefaultGroup = null;
                     var variable = group.var == '${PAGEURL}' ? 'location.href' : group.var;

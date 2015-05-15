@@ -94,7 +94,15 @@ app.directive('autocomplete', function() {
                 $scope.setIndex(-1);
             };
 
+            $scope.showTags = true;
+            $scope.addTags = function() {
+                if($scope.suggestions.indexOf($scope.searchParam) > -1) {
+                    return;
+                }
 
+                $scope.showTags = false;
+                return $scope.suggestions.push($scope.searchParam);
+            }
         }],
         link: function(scope, element, attrs){
 
@@ -250,10 +258,12 @@ app.directive('autocomplete', function() {
             placeholder="{{ attrs.placeholder }}"\
             class="{{ attrs.inputclass }}"\
             id="{{ attrs.inputid }}"\
-            ng-required="{{ autocompleteRequired }}" />\
-          <ul ng-show="completing && (suggestions | filter:searchFilter).length > 0">\
+            ng-required="{{ autocompleteRequired }}" \
+            ng-blur="addTags()"/>\
+          <ul ng-show="completing && (suggestions | filter:searchFilter).length > 0 && showTags">\
             <li\
               suggestion\
+              ng-init="showTags = true" \
               ng-repeat="suggestion in suggestions | filter:searchFilter | orderBy:\'toString()\' track by $index"\
               index="{{ $index }}"\
               val="{{ suggestion }}"\

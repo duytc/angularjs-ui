@@ -21,7 +21,7 @@
                         <th  at-attribute="id">#</th>
                         <th>Actions</td>
                         <th at-attribute="name">Ad Network</th>
-                        <th ng-if="isAdmin()" at-attribute="publisher.username">Publisher</th>
+                        <th ng-show="isAdmin()" at-attribute="publisher.username">Publisher</th>
                         <th at-attribute="status">Status</th>
                     </tr>
                 </thead>
@@ -41,7 +41,7 @@
                         </div>
                     </td>
                     <td at-implicit at-sortable at-attribute="name"></td>
-                    <td ng-if="isAdmin()" at-implicit at-sortable at-attribute="publisher.username"></td>
+                    <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.username"></td>
                     <td at-sortable at-attribute="status">
                         <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
                     </td>
