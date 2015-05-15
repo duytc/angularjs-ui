@@ -22,7 +22,7 @@
         }
 
         function getTagsAdSlotDynamic(dynamicAdSlot) {
-            var defaultTags = ["utm_term", "utm_source", "utm_campaign", "utm_medium", "${PAGEURL}"];
+            var defaultTags = [{name: "utm_term"}, {name: "utm_source"}, {name: "utm_campaign"}, {name: "${PAGEURL}"}];
             var currentTags = _buildTags(dynamicAdSlot);
 
             return _.uniq(defaultTags.concat(currentTags));
@@ -38,7 +38,7 @@
                     }
                     else {
                         angular.forEach(_buildTagsNested(expression.expressionDescriptor.groupVal), function(tag) {
-                            return  tags.push(tag);
+                            return  tags.push({name: tag});
                         })
                     }
                 })
@@ -56,7 +56,7 @@
                 }
                 else {
                     angular.forEach(_buildTagsNested(group.groupVal), function(tag) {
-                        return tags.push(tag);
+                        return tags.push({name: tag});
                     })
                 }
             });

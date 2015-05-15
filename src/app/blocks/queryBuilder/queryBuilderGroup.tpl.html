@@ -21,7 +21,7 @@
                 </ui-select>
             </div>
             <div class="form-group">
-                <autocomplete ng-model="itemGroup.var" data="tags" attr-input-class="form-control" attr-placeholder="Variable Name"></autocomplete>
+                <angucomplete  ng-model="itemGroup.var" selectedobject="selectedCountry" pause="100" localdata="tags" searchfields="name" titlefield="name" minlength="1" inputclass="form-control" placeholder="Variable Name"></angucomplete>
             </div>
             <select class="form-control" ng-model="itemGroup.cmp" ng-options="condition.key as condition.label for condition in changeCondition(itemGroup.type)"></select>
 
