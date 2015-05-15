@@ -84,7 +84,7 @@ angular.module('angucomplete', [] )
 
                             var text = titleCode.join(' ');
                             if ($scope.matchClass) {
-                                var re = new RegExp(str, 'i');
+                                var re = $scope.regexTranslator(str);
                                 var strPart = text.match(re)[0];
                                 text = $sce.trustAsHtml(text.replace(re, '<span class="'+ $scope.matchClass +'">'+ strPart +'</span>'));
                             }
@@ -103,6 +103,21 @@ angular.module('angucomplete', [] )
                     } else {
                         $scope.results = [];
                     }
+                };
+
+                $scope.regexTranslator = function(input) {
+                    var outputString = "";
+
+                    var specialCharacter = "$({[!=";
+
+                    for (i =0; i < input.length; i++)
+                    {
+                        if (specialCharacter.indexOf(input[i]) >=0) {
+                            outputString += '\\' + input[i];
+                        }
+                        else outputString += input[i];
+                    }
+                    return new RegExp(outputString, "i");
                 };
 
                 $scope.searchTimerComplete = function(str) {
