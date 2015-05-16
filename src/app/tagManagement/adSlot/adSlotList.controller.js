@@ -74,6 +74,19 @@
             });
         };
 
+        $scope.cloneAdSlot = function(adSlot) {
+            $modal.open({
+                templateUrl: 'tagManagement/adSlot/cloneAdSlot.tpl.html',
+                size: 'lg',
+                controller: 'CloneAdSlot',
+                resolve: {
+                    adSlot: function () {
+                        return adSlot;
+                    }
+                }
+            });
+        };
+
         function showPagination() {
             return angular.isArray($scope.adSlots) && $scope.adSlots.length > $scope.tableConfig.itemsPerPage;
         }
