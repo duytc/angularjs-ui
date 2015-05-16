@@ -1,0 +1,22 @@
+<form name="cloneAdSlotForm" role="form" ng-submit="submit()" novalidate>
+    <div class="modal-header">
+        <h4 class="modal-title">Clone Ad Slot : <strong>{{ adSlot.name }}</strong></h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-12 form-validation form-horizontal">
+                <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">Name</label>
+                    <div class="col-sm-10">
+                        <input server-error name="name" ng-model="cloneAdSlot.name" ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="Ad network name">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="$dismiss()" type="button">Cancel</button>
+        <button class="btn btn-danger" ng-disabled="!isFormValid()" type="submit">Submit</button>
+    </div>
+</form>
