@@ -36,6 +36,8 @@
                 }
                 else {
                     var value = (group.type == DATA_TYPE[0].key && !!group.val) ? '"' + group.val + '"' : group.val;
+                    !group.val ? value = '""' : value;
+
                     var showDefaultGroup = null;
                     var variable = group.var == '${PAGEURL}' ? 'location.href' : group.var;
 

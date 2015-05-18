@@ -136,7 +136,7 @@
                 return true;
             }
 
-            return !!group.cmp && !!group.var && !!group.type && !!group.val;
+            return !!group.var;
         }
 
         function submit() {
