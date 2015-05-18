@@ -35,6 +35,7 @@
                     scope.isDisabledButtonRemoveCondition = isDisabledButtonRemoveCondition;
                     scope.changeCondition = changeCondition;
                     scope.selectType = selectType;
+                    scope.valIsNull = valIsNull;
 
                     function addGroup() {
                         // set default group, including two conditions
@@ -107,6 +108,14 @@
                     function selectType(item) {
                         item.val = null;
                         item.cmp = scope.conditions[0].key;
+                    }
+
+                    function valIsNull(cmp) {
+                        if(cmp == scope.conditions[0].key || cmp == scope.conditions[1].key) {
+                            return false;
+                        }
+
+                        return true;
                     }
 
                     directive || (directive = $compile(content));

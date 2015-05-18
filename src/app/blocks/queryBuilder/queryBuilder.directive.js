@@ -30,6 +30,7 @@
                     scope.addExpression = addExpression;
                     scope.enableDragDropQueryBuilder = enableDragDropQueryBuilder;
                     scope.selectExpectAdSlot = selectExpectAdSlot;
+                    scope.getListNameAdTag = getListNameAdTag;
 
                     scope.sortableOptions = {
                         disabled: true,
@@ -42,7 +43,13 @@
                     };
 
 
-                    function selectExpectAdSlot(adSlot) {
+                    function selectExpectAdSlot(adSlot, expressionRoot) {
+                        if(!!expressionRoot) {
+                            if(!!expressionRoot.startingPosition) {
+                                expressionRoot.startingPosition = null;
+                            }
+                        }
+
                         if (!adSlot) {
                             return;
                         }
@@ -51,15 +58,38 @@
 
                         AdSlotManager.one(adSlotId).getList('adtags')
                             .then(function(adTags) {
-                                var positions = [];
-
-                                var maxPos = Math.max.apply(Math,adTags.map(function(adTag){return adTag.position;}));
-                                for(var i = 1; i <= maxPos; i ++) {
-                                    positions.push(i);
-                                }
-
-                                scope.positions = positions
+                                scope.adTagGroups = _setupGroup(adTags.plain());
                             });
+                    }
+
+                    function _setupGroup(listAdTags) {
+                        var adTagGroups = [];
+
+                        angular.forEach(listAdTags, function(item) {
+                            var index = 0;
+
+                            if(adTagGroups.length == 0) {
+                                adTagGroups[index] = [];
+                            }
+                            else {
+                                var found = false;
+                                angular.forEach(adTagGroups, function(group, indexGroup) {
+                                    if(group[0].position == item.position && !found) {
+                                        found = true;
+                                        index = indexGroup;
+                                    }
+                                });
+
+                                if(found == false) {
+                                    index = adTagGroups.length;
+                                    adTagGroups[index] = [];
+                                }
+                            }
+
+                            adTagGroups[index].push(item);
+                        });
+
+                        return adTagGroups;
                     }
 
                     function addExpression() {
@@ -78,6 +108,18 @@
 
                     function enableDragDropQueryBuilder(enable) {
                         scope.sortableOptions['disabled'] = enable;
+                    }
+
+                    function getListNameAdTag(group) {
+                        var listNameAdTag = [];
+
+                        angular.forEach(group, function(adTag) {
+                            listNameAdTag.push(adTag.name);
+                        });
+
+                        var showString = group[0].position + ': (' + listNameAdTag.toString().replace(',', ', ') + ')';
+
+                        return showString;
                     }
 
                     directive || (directive = $compile(content));

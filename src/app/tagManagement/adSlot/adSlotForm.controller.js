@@ -79,7 +79,7 @@
             }
 
             // validate dynamic ad slot
-            if(!!$scope.adSlot.defaultAdSlot) {
+            if(!!$scope.adSlot.defaultAdSlot && (!$scope.adSlot.expressions || $scope.adSlot.expressions.length < 1)) {
                 return $scope.adSlotForm.$valid;
             }
 
@@ -136,7 +136,7 @@
                 return true;
             }
 
-            return !!group.cmp && !!group.var && !!group.type && !!group.val;
+            return !!group.var;
         }
 
         function submit() {
