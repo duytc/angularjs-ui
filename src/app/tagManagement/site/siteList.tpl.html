@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <search-box sb-list="sites" search-fields="['name', 'publisher.username', 'domain']"></search-box>
+    <search-box sb-list="sites" search-fields="['id', 'name', 'publisher.username', 'domain']"></search-box>
 
     <div class="panel-body" ng-if="hasData()">
         <div>
@@ -47,7 +47,7 @@
                 </tbody>
             </table>
 
-            <at-pagination ng-if="showPagination()" at-list="sites" at-config="tableConfig"></at-pagination>
+            <at-pagination ng-if="showPagination()" ng-click="setCurrentPage(tableConfig.currentPage)" at-list="sites" at-config="tableConfig"></at-pagination>
         </div>
     </div>
 </div>

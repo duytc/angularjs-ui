@@ -5,8 +5,10 @@
         .controller('SiteList', SiteList)
     ;
 
-    function SiteList($scope, $modal, AlertService, SiteManager, sites) {
+    function SiteList($scope, $modal, AlertService, SiteManager, sites, statusManagementService) {
         $scope.sites = sites;
+
+        statusManagementService.setCurrentPageForAdSlot(0);
 
         $scope.hasData = function () {
             return !!sites.length;
@@ -20,9 +22,12 @@
         }
 
         $scope.showPagination = showPagination;
+        $scope.setCurrentPage = setCurrentPage;
+
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10
+            maxPages: 10,
+            currentPage: statusManagementService.getCurrentConfigForSite().currentPage
         };
 
         $scope.confirmDeletion = function (site, index) {
@@ -39,6 +44,8 @@
                             if (index > -1) {
                                 sites.splice(index, 1);
                             }
+
+                            statusManagementService.setCurrentPageForSite(0);
 
                             AlertService.replaceAlerts({
                                 type: 'success',
@@ -58,6 +65,10 @@
 
         function showPagination() {
             return angular.isArray($scope.sites) && $scope.sites.length > $scope.tableConfig.itemsPerPage;
+        }
+
+        function setCurrentPage(currentPage) {
+            statusManagementService.setCurrentPageForSite(currentPage);
         }
     }
 })();

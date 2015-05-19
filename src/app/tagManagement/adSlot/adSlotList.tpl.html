@@ -11,14 +11,14 @@
                 <span class="glyphicon glyphicon glyphicon-plus"></span>
                 New Ad Slot
             </button>
-            <button ui-sref="^.^.sites.list" class="btn btn-sm btn-primary" type="button">
+            <button ui-sref="^.^.sites.list({isCurrentPage: true})" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon glyphicon-arrow-left"></span>
                 Back to List of Sites
             </button>
         </div>
     </div>
 
-    <search-box sb-list="adSlots" search-fields="['name', 'width', 'height']"></search-box>
+    <search-box sb-list="adSlots" search-fields="['id', 'name', 'width', 'height']"></search-box>
 
     <div class="panel-body" ng-if="hasData()">
         <div>
@@ -53,7 +53,7 @@
                 </tbody>
             </table>
 
-            <at-pagination ng-if="showPagination()" at-list="adSlots" at-config="tableConfig"></at-pagination>
+            <at-pagination ng-if="showPagination()" ng-click="setCurrentPage(tableConfig.currentPage)" at-list="adSlots" at-config="tableConfig"></at-pagination>
         </div>
     </div>
 </div>
