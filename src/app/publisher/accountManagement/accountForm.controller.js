@@ -264,10 +264,10 @@
 
         $scope.isFormValid = function() {
             if($scope.publisher.plainPassword != null || $scope.repeatPassword != null) {
-                return $scope.publisher.username != null && $scope.publisher.company != null && $scope.repeatPassword == $scope.publisher.plainPassword;
+                return $scope.userForm.$valid && $scope.repeatPassword == $scope.publisher.plainPassword;
             }
 
-            return $scope.publisher.username != null && $scope.publisher.company != null;
+            return $scope.userForm.$valid;
         };
 
         $scope.submit = function() {
