@@ -41,8 +41,7 @@
         $scope.optionData = {
             adNetworks: [],
             sites: [],
-            adSlots: [],
-            sitesForAdSlot: []
+            adSlots: []
         };
 
         $scope.isFormValid = isFormValid;
