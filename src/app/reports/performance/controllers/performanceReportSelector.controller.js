@@ -41,7 +41,8 @@
         $scope.optionData = {
             adNetworks: [],
             sites: [],
-            adSlots: []
+            adSlots: [],
+            sitesForAdSlot: []
         };
 
         $scope.isFormValid = isFormValid;
@@ -56,6 +57,7 @@
         $scope.selectEntity = selectEntity;
         $scope.selectBreakdownOption = selectBreakdownOption;
         $scope.getReports = getReports;
+        $scope.selectSite = selectSite;
 
         $scope.datePickerOpts = {
             maxDate:  moment().endOf('day'),
@@ -292,6 +294,8 @@
          * @param {Object} reportType
          */
         function selectReportType(reportType) {
+            $scope.selectedData.siteId = null;
+
             if (!angular.isObject(reportType) || !reportType.toState) {
                 throw new Error('report type is missing a target state');
             }
@@ -301,15 +305,22 @@
         }
 
         function selectEntity(entityId) {
-            if (entityId === null) {
-                $scope.selectedData.siteBreakdown = null;
-                $scope.selectedData.adSlotBreakdown = null;
-                $scope.selectedData.adNetworkBreakdown = null;
-                $scope.selectedData.accountBreakdown = null;
-                resetToStateForCurrentReportType();
-            }
-            else {
-                reportSelectorForm.getAdSlotsForSite(entityId)
+            $scope.selectedData.siteBreakdown = null;
+            $scope.selectedData.adSlotBreakdown = null;
+            $scope.selectedData.adNetworkBreakdown = null;
+            $scope.selectedData.accountBreakdown = null;
+            resetToStateForCurrentReportType();
+        }
+
+        function selectSite (siteId) {
+
+            $scope.selectedData.siteBreakdown = null;
+            $scope.selectedData.adSlotBreakdown = null;
+            $scope.selectedData.adSlotId = null;
+            resetToStateForCurrentReportType();
+
+            if(toState == 'reports.performance.adSlots') {
+                reportSelectorForm.getAdSlotsForSite(siteId)
                     .then(function(adSlots) {
 //                        addAllOption(adSlots, 'All AdSlots');
                         $scope.optionData.adSlots = adSlots;
@@ -383,8 +394,9 @@
 
             reportSelectorForm.getSites()
                 .then(function (data) {
-                    addAllOption(data, 'All Sites');
+                    $scope.optionData.sitesForAdSlot = angular.copy(data);
 
+                    addAllOption(data, 'All Sites');
                     $scope.optionData.sites = data;
                 })
             ;
