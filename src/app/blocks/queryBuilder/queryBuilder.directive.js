@@ -30,7 +30,7 @@
                     scope.addExpression = addExpression;
                     scope.enableDragDropQueryBuilder = enableDragDropQueryBuilder;
                     scope.selectExpectAdSlot = selectExpectAdSlot;
-                    scope.getListNameAdTag = getListNameAdTag;
+                    scope.formatPositionLabel = formatPositionLabel;
 
                     scope.sortableOptions = {
                         disabled: true,
@@ -43,7 +43,11 @@
                     };
 
 
-                    function selectExpectAdSlot(adSlot, expressionRoot) {
+                    function selectExpectAdSlot(adSlot, expressionRoot, index) {
+                        if(!scope.groups) {
+                            scope.groups = [];
+                        }
+
                         if(!!expressionRoot) {
                             if(!!expressionRoot.startingPosition) {
                                 expressionRoot.startingPosition = null;
@@ -58,7 +62,7 @@
 
                         AdSlotManager.one(adSlotId).getList('adtags')
                             .then(function(adTags) {
-                                scope.adTagGroups = _setupGroup(adTags.plain());
+                                scope.groups[index] = _setupGroup(adTags.plain());
                             });
                     }
 
@@ -110,14 +114,14 @@
                         scope.sortableOptions['disabled'] = enable;
                     }
 
-                    function getListNameAdTag(group) {
+                    function formatPositionLabel(adTags) {
                         var listNameAdTag = [];
 
-                        angular.forEach(group, function(adTag) {
+                        angular.forEach(adTags, function(adTag) {
                             listNameAdTag.push(adTag.name);
                         });
 
-                        var showString = group[0].position + ': (' + listNameAdTag.toString().replace(',', ', ') + ')';
+                        var showString = adTags[0].position + ': (' + listNameAdTag.toString().replace(',', ', ') + ')';
 
                         return showString;
                     }

@@ -15,7 +15,7 @@
                 }
             })
             .state('tagManagement.sites.list', {
-                url: '/list?isCurrentPage',
+                url: '/list',
                 views: {
                     'content@app': {
                         controller: 'SiteList',
@@ -23,11 +23,7 @@
                     }
                 },
                 resolve: {
-                    sites: /* @ngInject */ function(SiteManager, statusManagementService, $stateParams) {
-                        if(!$stateParams.isCurrentPage) {
-                            statusManagementService.setCurrentPageForSite(0);
-                        }
-
+                    sites: /* @ngInject */ function(SiteManager) {
                         return SiteManager.getList().then(function (sites) {
                             return sites.plain();
                         });
