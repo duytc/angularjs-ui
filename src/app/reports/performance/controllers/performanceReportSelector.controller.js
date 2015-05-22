@@ -57,6 +57,7 @@
         $scope.selectBreakdownOption = selectBreakdownOption;
         $scope.getReports = getReports;
         $scope.selectSite = selectSite;
+        $scope.getAdSlot = getAdSlot;
 
         $scope.datePickerOpts = {
             maxDate:  moment().endOf('day'),
@@ -311,19 +312,24 @@
             resetToStateForCurrentReportType();
         }
 
-        function selectSite (siteId) {
+        function selectSite(siteId) {
 
             $scope.selectedData.siteBreakdown = null;
             $scope.selectedData.adSlotBreakdown = null;
             $scope.selectedData.adSlotId = null;
             resetToStateForCurrentReportType();
 
+            getAdSlot(siteId);
+        }
+
+        function getAdSlot(siteId) {
             if(toState == 'reports.performance.adSlots') {
                 reportSelectorForm.getAdSlotsForSite(siteId)
                     .then(function(adSlots) {
 //                        addAllOption(adSlots, 'All AdSlots');
                         $scope.optionData.adSlots = adSlots;
-                    });
+                    }
+                );
             }
         }
 
@@ -393,7 +399,6 @@
 
             reportSelectorForm.getSites()
                 .then(function (data) {
-                    $scope.optionData.sitesForAdSlot = angular.copy(data);
 
                     addAllOption(data, 'All Sites');
                     $scope.optionData.sites = data;
