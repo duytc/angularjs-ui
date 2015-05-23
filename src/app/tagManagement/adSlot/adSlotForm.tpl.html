@@ -61,7 +61,7 @@
                 <div class="form-group"  ng-if="selected.type != types[0]">
                     <label for="inputDefaultAdSlot" class="col-sm-1 control-label">Default Ad Slot</label>
                     <div class="col-sm-5">
-                        <ui-select id="inputDefaultAdSlot" ng-model="adSlot.defaultAdSlot" ng-required="true" server-error>
+                        <ui-select id="inputDefaultAdSlot" ng-model="adSlot.defaultAdSlot" ng-required="true" server-error reset-search-input="'false'">
                             <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="adSlot.id as adSlot in adSlotsDefault | filter:$select.search">
                                 {{ adSlot.name }}
