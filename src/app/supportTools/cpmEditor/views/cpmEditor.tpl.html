@@ -6,7 +6,7 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Update CPM For</label>
                     <div class="col-sm-9">
-                        <ui-select name="updateTypes" ng-model="selectedData.updateTypes" ng-required="true">
+                        <ui-select name="updateTypes" ng-model="selectedData.updateTypes" ng-required="true" reset-search-input="'false'">
                             <ui-select-match placeholder="Select an option">{{ $select.selected.label }}</ui-select-match>
                             <ui-select-choices repeat="type in updateTypesOptions | filter: $select.search">
                                 <div ng-bind-html="type.label | highlight: $select.search"></div>
@@ -27,7 +27,7 @@
                 <div class="form-group" ng-if="isAdmin">
                     <label class="col-sm-3 control-label">Publisher</label>
                     <div class="col-sm-9">
-                        <ui-select name="publisher" ng-model="selectedData.publisherId" ng-required="true" ng-disabled="!optionData.publishers.length" on-select="selectPublisher()">
+                        <ui-select name="publisher" ng-model="selectedData.publisherId" ng-required="true" ng-disabled="!optionData.publishers.length" on-select="selectPublisher()" reset-search-input="'false'">
                             <ui-select-match placeholder="Select a publisher">{{ $select.selected.company }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="publisher.id as publisher in optionData.publishers | filter: $select.search">
                                 <div ng-bind-html="publisher.company | highlight: $select.search"></div>
@@ -38,7 +38,7 @@
                 <div class="form-group" ng-if="selectUpdateTypesis(updateTypes.adTag)">
                     <label class="col-sm-3 control-label">Site</label>
                     <div class="col-sm-9">
-                        <ui-select name="site" ng-model="selectedData.siteId" ng-required="true" ng-disabled="!selectedData.publisherId" on-select="selectSite($item)">
+                        <ui-select name="site" ng-model="selectedData.siteId" ng-required="true" ng-disabled="!selectedData.publisherId" on-select="selectSite($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select a site">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices repeat="site.id as site in optionData.sites | filter: $select.search | selectedPublisher:selectedData.publisherId">
                                 <div ng-bind-html="site.name | highlight: $select.search"></div>
@@ -49,7 +49,7 @@
                 <div class="form-group" ng-if="selectUpdateTypesis(updateTypes.adNetwork)">
                     <label class="col-sm-3 control-label">Ad Network</label>
                     <div class="col-sm-9">
-                        <ui-select name="adNetwork" ng-model="selectedData.adNetworkId" ng-required="true" ng-disabled="!selectedData.publisherId">
+                        <ui-select name="adNetwork" ng-model="selectedData.adNetworkId" ng-required="true" ng-disabled="!selectedData.publisherId" reset-search-input="'false'">
                             <ui-select-match placeholder="Select a ad network">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices repeat="adNetwork.id as adNetwork in optionData.adNetworks | filter: $select.search | selectedPublisher:selectedData.publisherId">
                                 <div ng-bind-html="adNetwork.name | highlight: $select.search"></div>
@@ -60,7 +60,7 @@
                 <div class="form-group" ng-if="selectUpdateTypesis(updateTypes.site)">
                     <label class="col-sm-3 control-label">Ad Network</label>
                     <div class="col-sm-9">
-                        <ui-select name="adNetwork" ng-model="selectedData.adNetworkForSiteId" ng-required="true" ng-disabled="!selectedData.publisherId" on-select="selectAdNetworkForSiteId($item)">
+                        <ui-select name="adNetwork" ng-model="selectedData.adNetworkForSiteId" ng-required="true" ng-disabled="!selectedData.publisherId" on-select="selectAdNetworkForSiteId($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select a ad network">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices repeat="adNetwork.id as adNetwork in optionData.adNetworks | filter: $select.search | selectedPublisher:selectedData.publisherId">
                                 <div ng-bind-html="adNetwork.name | highlight: $select.search"></div>
@@ -71,7 +71,7 @@
                 <div class="form-group" ng-if="selectUpdateTypesis(updateTypes.site)">
                     <label class="col-sm-3 control-label">Site</label>
                     <div class="col-sm-9">
-                        <ui-select name="site" ng-model="selectedData.sitesByAdNetworkId" ng-required="true" ng-disabled="!selectedData.adNetworkForSiteId">
+                        <ui-select name="site" ng-model="selectedData.sitesByAdNetworkId" ng-required="true" ng-disabled="!selectedData.adNetworkForSiteId" reset-search-input="'false'">
                             <ui-select-match placeholder="Select a site">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices repeat="site.id as site in optionData.sitesByAdNetwork | filter: $select.search">
                                 <div ng-bind-html="site.name | highlight: $select.search"></div>
@@ -82,7 +82,7 @@
                 <div class="form-group" ng-if="selectUpdateTypesis(updateTypes.adTag)">
                     <label class="col-sm-3 control-label">Ad Slot</label>
                     <div class="col-sm-9">
-                        <ui-select name="adSlot" ng-model="selectedData.adSlotId" ng-required="true" ng-disabled="!selectedData.siteId" on-select="selectAdSlot($item)">
+                        <ui-select name="adSlot" ng-model="selectedData.adSlotId" ng-required="true" ng-disabled="!selectedData.siteId" on-select="selectAdSlot($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select a ad slot">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices repeat="adSlot.id as adSlot in optionData.adSlots | filter: $select.search">
                                 <div ng-bind-html="adSlot.name | highlight: $select.search"></div>
@@ -93,7 +93,7 @@
                 <div class="form-group" ng-if="selectUpdateTypesis(updateTypes.adTag)">
                     <label class="col-sm-3 control-label">Ad Tags</label>
                     <div class="col-sm-9">
-                        <ui-select name="adNetwork" ng-model="selectedData.adTagId" ng-required="true" ng-disabled="!selectedData.adSlotId">
+                        <ui-select name="adNetwork" ng-model="selectedData.adTagId" ng-required="true" ng-disabled="!selectedData.adSlotId" reset-search-input="'false'">
                             <ui-select-match placeholder="Select a ad tag">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices repeat="adTag.id as adTag in optionData.adTags | filter: $select.search">
                                 <div ng-bind-html="adTag.name | highlight: $select.search"></div>

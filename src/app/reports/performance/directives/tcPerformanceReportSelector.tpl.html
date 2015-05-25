@@ -15,7 +15,7 @@
                 <div class="form-inline">
                     <div class="form-group">
                         <label>Report Type</label>
-                        <ui-select name="reportType" ng-model="selectedData.reportType" ng-required="true" on-select="selectReportType($item)">
+                        <ui-select name="reportType" ng-model="selectedData.reportType" ng-required="true" on-select="selectReportType($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select a report type">{{ $select.selected.label }}</ui-select-match>
                             <ui-select-choices repeat="type in reportTypeOptions | filter: $select.search">
                                 <div ng-bind-html="type.label | highlight: $select.search"></div>
@@ -24,7 +24,7 @@
                     </div>
                     <div class="form-group" ng-if="selectedReportTypeis(reportTypes.platform)">
                         <label>Breakdown</label>
-                        <ui-select ng-model="selectedData.platformBreakdown" ng-required="true" on-select="selectBreakdownOption($item)">
+                        <ui-select ng-model="selectedData.platformBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select an option">{{ $select.selected.label }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
                                 <div ng-bind-html="option.label"></div>
@@ -36,7 +36,7 @@
 
             <div class="publisher form-group" ng-if="!selectedReportTypeis(reportTypes.platform) && showPublisherSelect()">
                 <label>Publisher</label>
-                <ui-select name="publisher" ng-model="selectedData.publisherId" ng-required="true" ng-disabled="!optionData.publishers.length" on-select="selectPublisher()">
+                <ui-select name="publisher" ng-model="selectedData.publisherId" ng-required="true" ng-disabled="!optionData.publishers.length" on-select="selectPublisher()" reset-search-input="'false'">
                     <ui-select-match placeholder="Select a publisher">{{ $select.selected.company }}</ui-select-match>
                     <ui-select-choices group-by="groupEntities" repeat="publisher.id as publisher in optionData.publishers | filter: $select.search">
                         <div ng-bind-html="publisher.company | highlight: $select.search"></div>
@@ -48,7 +48,7 @@
                 <div class="form-inline">
                     <div class="form-group">
                         <label>Ad Network</label>
-                        <ui-select name="adNetwork" ng-model="selectedData.adNetworkId" ng-disabled="!optionData.adNetworks.length" on-select="selectEntity($model)">
+                        <ui-select name="adNetwork" ng-model="selectedData.adNetworkId" ng-disabled="!optionData.adNetworks.length" on-select="selectEntity($model)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select an ad network">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="adNetwork.id as adNetwork in optionData.adNetworks | filter: $select.search | filter:filterNonEntityValues($select.search) | selectedPublisher:selectedData.publisherId">
                                 <div ng-bind-html="adNetwork.name | highlight: $select.search"></div>
@@ -57,7 +57,7 @@
                     </div>
                     <div class="form-group" ng-if="selectedData.adNetworkId">
                         <label>Breakdown</label>
-                        <ui-select ng-model="selectedData.adNetworkBreakdown" ng-required="true" on-select="selectBreakdownOption($item)">
+                        <ui-select ng-model="selectedData.adNetworkBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select an option">{{ $select.selected.label }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
                                 <div ng-bind-html="option.label"></div>
@@ -70,7 +70,7 @@
                 <div class="form-inline">
                     <div class="form-group" ng-if="selectedData.reportType.toState != 'reports.performance.adSlots'">
                         <label>Site</label>
-                        <ui-select name="site" ng-model="selectedData.siteId" on-select="selectSite($model)">
+                        <ui-select name="site" ng-model="selectedData.siteId" on-select="selectSite($model)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select a site">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="site.id as site in optionData.sites | filter: $select.search | filter:filterNonEntityValues($select.search) | selectedPublisher:selectedData.publisherId">
                                 <div ng-bind-html="site.name | highlight: $select.search"></div>
@@ -79,7 +79,7 @@
                     </div>
                     <div class="form-group" ng-if="selectedData.reportType.toState == 'reports.performance.adSlots'">
                         <label>Site</label>
-                        <ui-select name="site" ng-model="selectedData.siteId" on-select="selectSite($model)">
+                        <ui-select name="site" ng-model="selectedData.siteId" on-select="selectSite($model)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select a site">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="site.id as site in optionData.sites | filter: $select.search | filter:filterNonEntityValues($select.search) | selectedPublisher:selectedData.publisherId | filter: $select.search.id != null">
                                 <div ng-bind-html="site.name | highlight: $select.search"></div>
@@ -88,7 +88,7 @@
                     </div>
                     <div class="site form-group" ng-if="selectedReportTypeis(reportTypes.site) && selectedData.siteId">
                         <label>Breakdown</label>
-                        <ui-select ng-model="selectedData.siteBreakdown" ng-required="true" on-select="selectBreakdownOption($item)">
+                        <ui-select ng-model="selectedData.siteBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select an option">{{ $select.selected.label }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
                                 <div ng-bind-html="option.label"></div>
@@ -103,7 +103,7 @@
                 <div class="form-inline">
                     <div class="form-group">
                         <label>Ad Slot</label>
-                        <ui-select name="adSlot" ng-model="selectedData.adSlotId" on-select="selectEntity($model)" ng-init="getAdSlot(selectedData.siteId)">
+                        <ui-select name="adSlot" ng-model="selectedData.adSlotId" on-select="selectEntity($model)" ng-init="getAdSlot(selectedData.siteId)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="adSlot.id as adSlot in optionData.adSlots | filter: $select.search">
                                 <div ng-bind-html="adSlot.name | highlight: $select.search"></div>
@@ -112,7 +112,7 @@
                     </div>
                     <div class="ad-slot form-group" ng-if="selectedReportTypeis(reportTypes.adSlot) && selectedData.adSlotId">
                         <label>Breakdown</label>
-                        <ui-select ng-model="selectedData.adSlotBreakdown" ng-required="true" on-select="selectBreakdownOption($item)">
+                        <ui-select ng-model="selectedData.adSlotBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select an option">{{ $select.selected.label }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
                                 <div ng-bind-html="option.label"></div>
