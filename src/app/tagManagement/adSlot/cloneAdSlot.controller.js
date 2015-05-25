@@ -22,7 +22,9 @@
 
             AdSlotManager.one($scope.cloneAdSlot.id).customPOST({name: $scope.cloneAdSlot.name}, 'clone')
                 .then(function() {
+                    $state.current.reloadOnSearch = true;
                     $state.reload();
+                    $state.current.reloadOnSearch = false;
 
                     AlertService.addFlash({
                         type: 'success',

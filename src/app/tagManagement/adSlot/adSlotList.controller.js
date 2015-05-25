@@ -59,7 +59,9 @@
                 return Manager.one(adSlot.id).remove()
                     .then(
                         function () {
+                            $state.current.reloadOnSearch = true;
                             $state.reload();
+                            $state.current.reloadOnSearch = false;
 
                             AlertService.addFlash({
                                 type: 'success',
