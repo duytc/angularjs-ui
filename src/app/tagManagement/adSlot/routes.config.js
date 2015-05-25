@@ -18,7 +18,7 @@
                 }
             })
             .state('tagManagement.adSlot.list', {
-                url: '/list/site/{siteId:[0-9]+}',
+                url: '/list/site/{siteId:[0-9]+}?page',
                 views: {
                     'content@app': {
                         controller: 'AdSlotList',
@@ -46,7 +46,8 @@
                 },
                 ncyBreadcrumb: {
                     label: 'Ad Slots - {{ site.name }}' // TODO cannot show site variable here, why?
-                }
+                },
+                reloadOnSearch: false
             })
             .state('tagManagement.adSlot.new', {
                 url: '/new?siteId',

@@ -53,7 +53,7 @@
                 </tbody>
             </table>
 
-            <at-pagination ng-if="showPagination()" at-list="adSlots" at-config="tableConfig"></at-pagination>
+            <at-pagination ng-if="showPagination()" at-list="adSlots" ng-click="setCurrentPageForUrl()" at-config="tableConfig"></at-pagination>
         </div>
     </div>
 </div>

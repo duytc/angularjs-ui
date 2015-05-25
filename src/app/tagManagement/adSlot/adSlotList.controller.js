@@ -5,7 +5,7 @@
         .controller('AdSlotList', AdSlotList)
     ;
 
-    function AdSlotList($scope, $state, $stateParams, $modal, $q, AlertService, AdSlotManager, DynamicAdSlotManager, adSlots, dynamicAdSlot, site) {
+    function AdSlotList($scope, $state, $location, $stateParams, $modal, $q, AlertService, AdSlotManager, DynamicAdSlotManager, adSlots, dynamicAdSlot, site) {
         $scope.site = site;
 
         $scope.adSlots = dynamicAdSlot.concat(adSlots);
@@ -24,10 +24,12 @@
         $scope.currentSiteId = $stateParams.siteId || null;
 
         $scope.showPagination = showPagination;
+        $scope.setCurrentPageForUrl = setCurrentPageForUrl;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10
+            maxPages: 10,
+            currentPage: $location.search().page - 1 || 0
         };
 
         $scope.generateAdTag = function (adSlot) {
@@ -91,5 +93,14 @@
         function showPagination() {
             return angular.isArray($scope.adSlots) && $scope.adSlots.length > $scope.tableConfig.itemsPerPage;
         }
+
+        function setCurrentPageForUrl() {
+            $location.search({page: $scope.tableConfig.currentPage + 1});
+
+        }
+
+        $scope.$on('$locationChangeSuccess', function() {
+            $scope.tableConfig.currentPage = $location.search().page - 1;
+        });
     }
 })();

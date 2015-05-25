@@ -6,7 +6,12 @@
         > a,
         > span {
             margin-left: 1px;
+            &:focus {
+              outline-style:none;
+              background-color: $state-default-bg;
+              color: $btn-default-color;
+              border-color: transparent;
+            }
         }
-
     }   
 }

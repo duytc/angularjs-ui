@@ -5,7 +5,7 @@
         .controller('SiteList', SiteList)
     ;
 
-    function SiteList($scope, $modal, AlertService, SiteManager, sites) {
+    function SiteList($scope, $modal, $location, AlertService, SiteManager, sites) {
         $scope.sites = sites;
 
         $scope.hasData = function () {
@@ -20,10 +20,12 @@
         }
 
         $scope.showPagination = showPagination;
+        $scope.setCurrentPageForUrl = setCurrentPageForUrl;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10
+            maxPages: 10,
+            currentPage: $location.search().page - 1 || 0
         };
 
         $scope.confirmDeletion = function (site, index) {
@@ -60,5 +62,14 @@
         function showPagination() {
             return angular.isArray($scope.sites) && $scope.sites.length > $scope.tableConfig.itemsPerPage;
         }
+
+        function setCurrentPageForUrl() {
+            $location.search({page: $scope.tableConfig.currentPage + 1});
+
+        }
+
+        $scope.$on('$locationChangeSuccess', function() {
+            $scope.tableConfig.currentPage = $location.search().page - 1;
+        });
     }
 })();
