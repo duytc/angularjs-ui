@@ -11,7 +11,7 @@
     <div class="expressions-group moveable" ng-repeat="expressionRoot in expressions">
         <div class="form-group expect-adSlot">
             <label for="inputExpectAdSlot">Ad Slot</label>
-            <ui-select id="inputExpectAdSlot" ng-model="expressionRoot.expectAdSlot" ng-init="!!expressionRoot.expectAdSlot.id ? expressionRoot.expectAdSlot = expressionRoot.expectAdSlot.id : expressionRoot.expectAdSlot" on-select="selectExpectAdSlot($item, expressionRoot, $index)" ng-required="true" server-error>
+            <ui-select id="inputExpectAdSlot" ng-model="expressionRoot.expectAdSlot" ng-init="!!expressionRoot.expectAdSlot.id ? expressionRoot.expectAdSlot = expressionRoot.expectAdSlot.id : expressionRoot.expectAdSlot" on-select="selectExpectAdSlot($item, expressionRoot, $index)" ng-required="true" server-error reset-search-input="'false'">
                 <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }}</ui-select-match>
                 <ui-select-choices repeat="adSlot.id as adSlot in adSlots | filter:{name: $select.search}">
                     {{ adSlot.name }}
@@ -21,7 +21,7 @@
 
         <div class="form-group expect-adSlot">
             <label for="inputStartingPosition">Starting Position</label>
-            <ui-select id="inputStartingPosition" ng-model="expressionRoot.startingPosition" ng-init="selectExpectAdSlot(expressionRoot.expectAdSlot, null, $index)" ng-required="true" server-error>
+            <ui-select id="inputStartingPosition" ng-model="expressionRoot.startingPosition" ng-init="selectExpectAdSlot(expressionRoot.expectAdSlot, null, $index)" ng-required="true" server-error reset-search-input="'false'">
                 <ui-select-match placeholder="Select a position">{{ !!$select.selected[0].position ? formatPositionLabel($select.selected) : ''}}</ui-select-match>
                 <ui-select-choices repeat="adTags[0].position as adTags in groups[$index]">
                     {{ formatPositionLabel(adTags) }}

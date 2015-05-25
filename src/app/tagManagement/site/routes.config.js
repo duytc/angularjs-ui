@@ -15,7 +15,7 @@
                 }
             })
             .state('tagManagement.sites.list', {
-                url: '/list',
+                url: '/list?page',
                 views: {
                     'content@app': {
                         controller: 'SiteList',
@@ -31,7 +31,8 @@
                 },
                 ncyBreadcrumb: {
                     label: 'Sites'
-                }
+                },
+                reloadOnSearch: false
             })
             .state('tagManagement.sites.new', {
                 url: '/new',

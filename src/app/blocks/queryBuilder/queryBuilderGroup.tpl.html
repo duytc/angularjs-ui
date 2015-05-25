@@ -13,7 +13,7 @@
 
         <div class="form-inline condition" ng-if="!isGroup(itemGroup)">
             <div class="form-group select-data-type">
-                <ui-select ng-model="itemGroup.type" ng-required="true" server-error on-select="selectType(itemGroup)">
+                <ui-select ng-model="itemGroup.type" ng-required="true" server-error on-select="selectType(itemGroup)" reset-search-input="'false'">
                     <ui-select-match placeholder="Select data type">{{ $select.selected.label }}</ui-select-match>
                     <ui-select-choices repeat="dataType.key as dataType in dataTypes">
                         {{ dataType.label }}

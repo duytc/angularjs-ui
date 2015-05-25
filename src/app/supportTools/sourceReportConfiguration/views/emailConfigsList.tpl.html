@@ -15,7 +15,7 @@
         <form name="sourceReportConfig" class="form-inline" role="form" novalidate>
             <div class="publisher-source-report-config form-group">
                 <label>Publisher</label>
-                <ui-select id="inputPublisher" ng-model="selected.publisher" ng-required="true" server-error on-select="selectPublisher($model)">
+                <ui-select id="inputPublisher" ng-model="selected.publisher" ng-required="true" server-error on-select="selectPublisher($model)" reset-search-input="'false'">
                     <ui-select-match placeholder="Select a publisher">{{ $select.selected.company }}</ui-select-match>
                     <ui-select-choices group-by="groupEntities" repeat="publisher.id as publisher in publishers | orderBy: 'company' | filter:{ company: $select.search }">
                         {{ publisher.company }}
