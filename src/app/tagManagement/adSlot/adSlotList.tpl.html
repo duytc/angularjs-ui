@@ -18,11 +18,11 @@
         </div>
     </div>
 
-    <search-box sb-list="adSlots" search-fields="['id', 'name', 'width', 'height']"></search-box>
+    <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'name', 'width', 'height']"></search-box>
 
     <div class="panel-body" ng-if="hasData()">
         <div>
-            <table class="table ng-table-responsive" at-table at-paginated at-list="adSlots" at-config="tableConfig">
+            <table class="table ng-table-responsive" at-sortable-query at-table at-paginated at-list="adSlots" at-config="tableConfig">
                 <thead></thead>
                 <tbody>
                 <tr>

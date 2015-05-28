@@ -5,7 +5,7 @@
         .controller('AdSlotList', AdSlotList)
     ;
 
-    function AdSlotList($scope, $state, $location, $stateParams, $modal, $q, AlertService, AdSlotManager, DynamicAdSlotManager, adSlots, dynamicAdSlot, site) {
+    function AdSlotList($scope, $state, $location, $stateParams, $modal, $q, AlertService, AdSlotManager, DynamicAdSlotManager, adSlots, dynamicAdSlot, site, AtSortableService) {
         $scope.site = site;
 
         $scope.adSlots = dynamicAdSlot.concat(adSlots);
@@ -59,7 +59,9 @@
                 return Manager.one(adSlot.id).remove()
                     .then(
                         function () {
+                            $state.current.reloadOnSearch = true;
                             $state.reload();
+                            $state.current.reloadOnSearch = false;
 
                             AlertService.addFlash({
                                 type: 'success',
@@ -95,8 +97,7 @@
         }
 
         function setCurrentPageForUrl() {
-            $location.search({page: $scope.tableConfig.currentPage + 1});
-
+            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage + 1});
         }
 
         $scope.$on('$locationChangeSuccess', function() {

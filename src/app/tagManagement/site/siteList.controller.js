@@ -5,7 +5,7 @@
         .controller('SiteList', SiteList)
     ;
 
-    function SiteList($scope, $modal, $location, AlertService, SiteManager, sites) {
+    function SiteList($scope, $modal, $location, AlertService, SiteManager, sites, AtSortableService) {
         $scope.sites = sites;
 
         $scope.hasData = function () {
@@ -64,8 +64,7 @@
         }
 
         function setCurrentPageForUrl() {
-            $location.search({page: $scope.tableConfig.currentPage + 1});
-
+            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage + 1});
         }
 
         $scope.$on('$locationChangeSuccess', function() {

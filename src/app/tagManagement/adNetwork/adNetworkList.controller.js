@@ -5,7 +5,7 @@
         .controller('AdNetworkList', AdNetworkList)
     ;
 
-    function AdNetworkList($scope, $modal, $q, AlertService, AdNetworkManager, adNetworks) {
+    function AdNetworkList($scope, $location, $modal, $q, AlertService, AdNetworkManager, adNetworks, AtSortableService) {
         $scope.adNetworks = adNetworks;
 
         $scope.hasData = function () {
@@ -20,9 +20,11 @@
         }
 
         $scope.showPagination = showPagination;
+        $scope.setCurrentPageForUrl = setCurrentPageForUrl;
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10
+            maxPages: 10,
+            currentPage: $location.search().page - 1 || 0
         };
 
         $scope.toggleAdNetworkStatus = function (adNetwork) {
@@ -111,5 +113,13 @@
         function showPagination() {
             return angular.isArray($scope.adNetworks) && $scope.adNetworks.length > $scope.tableConfig.itemsPerPage;
         }
+
+        function setCurrentPageForUrl() {
+            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage + 1});
+        }
+
+        $scope.$on('$locationChangeSuccess', function() {
+            $scope.tableConfig.currentPage = $location.search().page - 1;
+        });
     }
 })();

@@ -14,7 +14,8 @@
             scope: {
                 sbList: '=sbList',
                 searchFields: '=searchFields',
-                placeHolder: '=placeHolder'
+                placeHolder: '=placeHolder',
+                showQuery: '=showQuery'
             },
             controller: 'SearchBox'
         };

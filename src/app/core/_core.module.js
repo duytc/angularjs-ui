@@ -24,6 +24,7 @@
         'tagcade.blocks.export',
         'tagcade.blocks.searchBox',
         'tagcade.blocks.queryBuilder',
+        'tagcade.blocks.atSortableQuery',
 
         'tagcade.core.bootstrap',
         'tagcade.core.auth',

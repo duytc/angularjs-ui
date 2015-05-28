@@ -11,10 +11,10 @@
         </div>
     </div>
 
-    <search-box sb-list="publishers" search-fields="['id', 'firstName', 'lastName', 'company', 'username', 'email', 'phone']"></search-box>
+    <search-box show-query="true" sb-list="publishers" search-fields="['id', 'firstName', 'lastName', 'company', 'username', 'email', 'phone']"></search-box>
 
     <div class="panel-body">
-        <table class="table ng-table-responsive" at-table at-paginated at-list="publishers" at-config="tableConfig">
+        <table class="table ng-table-responsive" at-sortable-query at-table at-paginated at-list="publishers" at-config="tableConfig">
             <thead></thead>
             <tbody>
             <tr>
@@ -28,7 +28,7 @@
                         </ul>
                     </div>
                 </td>
-                <td at-title="Name" at-sortable>
+                <td at-title="Name" at-sortable at-attribute="name">
                     {{ item.firstName }} {{ item.lastName }}
                 </td>
                 <td at-title="Username" at-implicit at-sortable at-attribute="username"></td>
@@ -45,7 +45,7 @@
             </tbody>
         </table>
 
-        <at-pagination ng-if="showPagination()" at-list="publishers" at-config="tableConfig"></at-pagination>
+        <at-pagination ng-if="showPagination()" ng-click="setCurrentPageForUrl()" at-list="publishers" at-config="tableConfig"></at-pagination>
     </div>
     </div>
 </div>
