@@ -5,13 +5,38 @@
         .controller('SearchBox', SearchBox)
     ;
 
-    function SearchBox($scope, $filter, _) {
+    function SearchBox($scope, $filter, _, $location, AtSortableService) {
         var sbList = $scope.sbList;
         $scope.pHolder = ($scope.placeHolder == null || $scope.placeHolder == undefined) ? 'Search' : $scope.placeHolder;
 
         $scope.search = function () {
             $scope.sbList = $filter('filter')(sbList, _searchFilter);
         };
+
+        $scope.updateQueryTerm = function() {
+            if(!!$scope.showQuery) {
+                var term = !!$scope.query ? {search: $scope.query} : {search: null};
+                AtSortableService.insertParamForUrl(term);
+            }
+        };
+
+        update();
+        $scope.$on('$locationChangeSuccess', function() {
+            update();
+        });
+
+        function update() {
+            if(!!$scope.showQuery) {
+                if(!!$location.search().search) {
+                    $scope.query = $location.search().search;
+                }
+                else {
+                    $scope.query = '';
+                }
+
+                $scope.sbList = $filter('filter')(sbList, _searchFilter);
+            }
+        }
 
         function _searchFilter(item) {
             var found = false;

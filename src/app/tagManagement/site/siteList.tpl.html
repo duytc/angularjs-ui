@@ -11,11 +11,11 @@
         </div>
     </div>
 
-    <search-box sb-list="sites" search-fields="['id', 'name', 'publisher.username', 'domain']"></search-box>
+    <search-box show-query="true" sb-list="sites" search-fields="['id', 'name', 'publisher.username', 'domain']"></search-box>
 
     <div class="panel-body" ng-if="hasData()">
         <div>
-            <table class="table ng-table-responsive" at-table at-paginated at-list="sites" at-config="tableConfig">
+            <table class="table ng-table-responsive" at-sortable-query at-table at-paginated at-list="sites" at-config="tableConfig">
                 <thead>
                     <tr>
                         <th at-attribute="id">#</th>

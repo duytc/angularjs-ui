@@ -326,7 +326,7 @@
                         controller: 'ReportView',
                         templateUrl: function($stateParams) {
                             if (!$stateParams.endDate) {
-                                return 'reports/performance/views/reportType/site/adTags.tpl.html';
+                                return 'reports/performance/views/reportType/adSlot/adTags.tpl.html';
                             }
 
                             return 'reports/performance/views/reportType/site/adTagsDateRange.tpl.html';
