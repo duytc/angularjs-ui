@@ -19,7 +19,7 @@
 
             .state({
                 name: 'app.admin.publisherManagement.list',
-                url: '/list',
+                url: '/list?page&sortField&orderBy&search',
                 views: {
                     'content@app': {
                         controller: 'PublisherList',
@@ -33,7 +33,8 @@
                 },
                 ncyBreadcrumb: {
                     label: 'Publishers'
-                }
+                },
+                reloadOnSearch: false
             })
 
             .state({

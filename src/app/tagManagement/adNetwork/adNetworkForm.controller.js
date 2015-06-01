@@ -5,7 +5,7 @@
         .controller('AdNetworkForm', AdNetworkForm)
     ;
 
-    function AdNetworkForm($scope, $state, $q, AdNetworkManager, AlertService, ServerErrorProcessor, adNetwork, publishers) {
+    function AdNetworkForm($scope, AdNetworkManager, AlertService, ServerErrorProcessor, adNetwork, publishers, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             defaultCpmRate: 'Default CPM Rate',
@@ -59,7 +59,7 @@
                 )
                 .then(
                     function () {
-                        return $state.go('^.list');
+                        return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adNetwork, '^.list');
                     }
                 )
             ;

@@ -5,7 +5,7 @@
         .controller('SiteForm', SiteForm)
     ;
 
-    function SiteForm($scope, $state, $q, SiteManager, AlertService, ServerErrorProcessor, site, publishers, userSession) {
+    function SiteForm($scope, SiteManager, AlertService, ServerErrorProcessor, site, publishers, userSession, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             domain: 'Domain'
@@ -76,7 +76,7 @@
                 )
                 .then(
                     function () {
-                        return $state.go('^.list');
+                        return historyStorage.getLocationPath(HISTORY_TYPE_PATH.site, '^.list');
                     }
                 )
             ;

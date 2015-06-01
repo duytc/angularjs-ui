@@ -4,14 +4,18 @@
         <strong current-page-title></strong>
 
         <div class="button-bar hidden-xs">
-            <button ui-sref="^.^.tagGenerator({ siteId: currentSiteId })" class="btn btn-sm btn-primary" type="button">
+            <button ng-if="!allAdSlot" ui-sref="^.^.tagGenerator({ siteId: currentSiteId })" class="btn btn-sm btn-primary" type="button">
                 Generate Ad Tags
             </button>
-            <button ui-sref="^.new({ siteId: currentSiteId })" class="btn btn-sm btn-primary" type="button">
+            <button ng-if="!allAdSlot" ui-sref="^.new({ siteId: currentSiteId })" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon glyphicon-plus"></span>
                 New Ad Slot
             </button>
-            <button ui-sref="^.^.sites.list" class="btn btn-sm btn-primary" type="button">
+            <button ng-if="allAdSlot" ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon glyphicon-plus"></span>
+                New Ad Slot
+            </button>
+            <button ng-click="backToListSite()" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon glyphicon-arrow-left"></span>
                 Back to List of Sites
             </button>
@@ -23,11 +27,21 @@
     <div class="panel-body" ng-if="hasData()">
         <div>
             <table class="table ng-table-responsive" at-sortable-query at-table at-paginated at-list="adSlots" at-config="tableConfig">
-                <thead></thead>
+                <thead>
+                    <tr>
+                        <th at-attribute="id">#</th>
+                        <th at-attribute="action">Actions</td>
+                        <th ng-show="allAdSlot" at-attribute="site.name">Site</th>
+                        <th at-attribute="name">Ad Slot</th>
+                        <th at-attribute="width">Size</th>
+                        <th at-attribute="dynamic">Dynamic</th>
+                        <th at-attribute="width">Size</th>
+                    </tr>
+                </thead>
                 <tbody>
                 <tr>
-                    <td at-title="#" at-implicit at-sortable at-attribute="id" at-initial-sorting="asc"></td>
-                    <td at-title="Actions">
+                    <td at-implicit at-sortable at-attribute="id" at-initial-sorting="asc"></td>
+                    <td at-attribute="action">
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                             <ul class="dropdown-menu" role="menu">
@@ -41,12 +55,12 @@
                             </ul>
                         </div>
                     </td>
-
-                    <td at-title="Ad Slot" at-implicit at-sortable at-attribute="name"></td>
-                    <td at-title="Size" at-sortable at-attribute="width">
+                    <td ng-show="allAdSlot" at-implicit at-sortable at-attribute="site.name"></td>
+                    <td at-implicit at-sortable at-attribute="name"></td>
+                    <td at-sortable at-attribute="width">
                         {{ !!item.width ? item.width + 'x' + item.height : ''}}
                     </td>
-                    <td at-title="Dynamic">
+                    <td at-attribute="dynamic">
                         <i class="fa" ng-class="!item.width ? 'fa-check-square' : 'fa-square'"></i>
                     </td>
                 </tr>

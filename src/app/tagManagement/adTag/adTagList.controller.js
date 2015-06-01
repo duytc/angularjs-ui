@@ -5,7 +5,7 @@
         .controller('AdTagList', AdTagList)
     ;
 
-    function AdTagList($scope, $q, $state, $modal, adTags, adSlot, AdTagManager, AlertService) {
+    function AdTagList($scope, $q, $state, $modal, adTags, adSlot, AdTagManager, AlertService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.hasAdTags = function () {
             return !!adTags.length;
         };
@@ -24,6 +24,7 @@
         $scope.adTagsGroup = _sortGroup(adTags);
         $scope.updateAdTag = updateAdTag;
         $scope.enableDragDropAdTag = enableDragDropAdTag;
+        $scope.backToListAdSlot = backToListAdSlot;
 
         $scope.sortableGroupOptions = {
             disabled: true,
@@ -248,6 +249,10 @@
         function enableDragDropAdTag(enable) {
             $scope.sortableItemOption['disabled'] = enable;
             $scope.sortableGroupOptions['disabled'] = enable;
+        }
+
+        function backToListAdSlot() {
+            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', { siteId: $scope.adSlot.site.id});
         }
     }
 })();

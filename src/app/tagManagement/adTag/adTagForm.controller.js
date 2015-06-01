@@ -6,7 +6,7 @@
     ;
 
     function AdTagForm(
-        $scope, $state, $stateParams, $q, SiteManager, AdTagManager, AlertService, ServerErrorProcessor, adTag, adSlot, site, publisher, publisherList, siteList, adSlotList, adNetworkList, AD_TYPES
+        $scope, $state, SiteManager, AdTagManager, AlertService, ServerErrorProcessor, adTag, adSlot, site, publisher, publisherList, siteList, adSlotList, adNetworkList, AD_TYPES, historyStorage, HISTORY_TYPE_PATH
         ) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
@@ -72,6 +72,10 @@
         if($scope.adTag.adType == null) {
             $scope.adTag.adType = $scope.adTypes.customAd;
         }
+
+        $scope.backToListAdSlot = function() {
+            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: $scope.adTag.adSlot.site.id});
+        };
 
         $scope.submit = function() {
             if ($scope.formProcessing) {

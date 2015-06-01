@@ -18,7 +18,7 @@
                 }
             })
             .state('tagManagement.adNetwork.list', {
-                url: '/list',
+                url: '/list?page&sortField&orderBy&search',
                 views: {
                     'content@app': {
                         controller: 'AdNetworkList',
@@ -32,7 +32,8 @@
                 },
                 ncyBreadcrumb: {
                     label: 'Ad Networks'
-                }
+                },
+                reloadOnSearch: false
 
             })
             .state('tagManagement.adNetwork.new', {

@@ -5,7 +5,7 @@
         .controller('AdNetworkList', AdNetworkList)
     ;
 
-    function AdNetworkList($scope, $location, $modal, $q, AlertService, AdNetworkManager, adNetworks, AtSortableService) {
+    function AdNetworkList($scope, $location, $modal, $q, AlertService, AdNetworkManager, adNetworks, AtSortableService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.adNetworks = adNetworks;
 
         $scope.hasData = function () {
@@ -120,6 +120,7 @@
 
         $scope.$on('$locationChangeSuccess', function() {
             $scope.tableConfig.currentPage = $location.search().page - 1;
+            historyStorage.setLocationPath(HISTORY_TYPE_PATH.adNetwork)
         });
     }
 })();

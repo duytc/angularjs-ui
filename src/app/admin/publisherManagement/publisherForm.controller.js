@@ -6,7 +6,7 @@
         .controller('PublisherForm', PublisherForm)
     ;
 
-    function PublisherForm($scope, $state, $q, adminUserManager, AlertService, ServerErrorProcessor, publisher) {
+    function PublisherForm($scope, adminUserManager, AlertService, ServerErrorProcessor, publisher, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             username: 'Username',
             plainPassword: 'Password',
@@ -338,7 +338,7 @@
                 )
                 .then(
                     function () {
-                        return $state.go('^.list');
+                        return historyStorage.getLocationPath(HISTORY_TYPE_PATH.publisher, '^.list');
                     }
                 )
             ;

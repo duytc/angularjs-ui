@@ -5,7 +5,7 @@
         .controller('AdSlotForm', AdSlotForm)
     ;
 
-    function AdSlotForm($scope, $state, $stateParams, $q, SiteManager, AdSlotManager, DynamicAdSlotManager, adSlotService, AlertService, ServerErrorProcessor, site, publisherList, siteList, adSlot, TYPE_AD_SLOT) {
+    function AdSlotForm($scope, historyStorage, $stateParams, $q, SiteManager, AdSlotManager, DynamicAdSlotManager, adSlotService, AlertService, ServerErrorProcessor, site, publisherList, siteList, adSlot, TYPE_AD_SLOT, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             site: 'Site',
             name: 'Name',
@@ -193,9 +193,7 @@
                             siteId = siteId.id;
                         }
 
-                        return $state.go('^.list', {
-                            siteId: siteId
-                        });
+                        return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.list', {siteId: siteId});
                     }
                 )
             ;

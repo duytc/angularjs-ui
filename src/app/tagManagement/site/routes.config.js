@@ -15,7 +15,7 @@
                 }
             })
             .state('tagManagement.sites.list', {
-                url: '/list?page&sortField&orderBy',
+                url: '/list?page&sortField&orderBy&search',
                 views: {
                     'content@app': {
                         controller: 'SiteList',

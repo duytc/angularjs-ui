@@ -35,6 +35,7 @@
         'tagcade.core.login',
         'tagcade.core.util',
         'tagcade.core.resetPassword',
+        'tagcade.core.historyStorage',
 
         // 3rd party modules
 
