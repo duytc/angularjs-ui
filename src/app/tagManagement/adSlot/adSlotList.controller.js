@@ -103,12 +103,12 @@
         }
 
         function backToListSite() {
-            return historyStorage.getLocationPath( HISTORY_TYPE_PATH.site, '^.^.sites.list');
+            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.site, '^.^.sites.list');
         }
 
         $scope.$on('$locationChangeSuccess', function() {
             $scope.tableConfig.currentPage = $location.search().page - 1;
-            historyStorage.setLocationPath(HISTORY_TYPE_PATH.adSlot)
+            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.adSlot)
         });
     }
 })();

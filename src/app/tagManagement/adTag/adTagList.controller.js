@@ -252,7 +252,11 @@
         }
 
         function backToListAdSlot() {
-            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', { siteId: $scope.adSlot.site.id});
+            if(!!historyStorage.getParamsHistoryCurrentAdSlot().siteId) {
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list');
+            }
+
+            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.listAll');
         }
     }
 })();

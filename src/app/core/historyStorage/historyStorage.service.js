@@ -5,83 +5,96 @@
         .factory('historyStorage', historyStorage)
     ;
 
-    function historyStorage($window, $state, HISTORY_STORAGE_AD_SLOT, HISTORY_STORAGE_SITE, HISTORY_STORAGE_PUBLISHER_MANAGEMENT, HISTORY_STORAGE_AD_NETWORK, HISTORY_TYPE_PATH) {
+    function historyStorage($window, $stateParams, $location, $state, HISTORY_TYPE_PATH, HISTORY) {
         var api = {
             getLocationPath: getLocationPath,
-            setLocationPath: setLocationPath
+            setParamsHistoryCurrent: setParamsHistoryCurrent,
+
+            getParamsHistoryCurrentAdSlot: getParamsHistoryCurrentAdSlot
         };
+
+        $window.localStorage[HISTORY] = $window.localStorage[HISTORY] || '{}';
 
         return api;
 
-        function getLocationPath(type, defaultState, param) {
-            if(type == HISTORY_TYPE_PATH.adSlot && !!_getHistoryCurrentAdSlot()) {
-                return $window.location.href = _getHistoryCurrentAdSlot();
+        function getLocationPath(type, state) {
+            if(type == HISTORY_TYPE_PATH.adSlot) {
+                return $state.go(state, angular.fromJson($window.localStorage[HISTORY]).adSlot);
             }
 
-            if(type == HISTORY_TYPE_PATH.site && !!_getHistoryCurrentSite()) {
-                return $window.location.href = _getHistoryCurrentSite();
+            if(type == HISTORY_TYPE_PATH.site) {
+                return $state.go(state, angular.fromJson($window.localStorage[HISTORY]).site);
             }
 
-            if(type == HISTORY_TYPE_PATH.adNetwork && !!_getHistoryCurrentAdNetwork()) {
-                return $window.location.href = _getHistoryCurrentAdNetwork();
+            if(type == HISTORY_TYPE_PATH.adNetwork) {
+                return $state.go(state, angular.fromJson($window.localStorage[HISTORY]).adNetwork);
             }
 
-            if(type == HISTORY_TYPE_PATH.publisher && !!_getHistoryCurrentPublisherManagement()) {
-                return $window.location.href = _getHistoryCurrentPublisherManagement();
+            if(type == HISTORY_TYPE_PATH.publisher) {
+                return $state.go(state, angular.fromJson($window.localStorage[HISTORY]).publisher);
             }
 
-            return $state.go(defaultState, param);
+            console.log('not support type ' + type);
         }
 
-        function setLocationPath(type) {
+        function setParamsHistoryCurrent(type) {
+            var stateParam = _getStateParams();
+
             switch(type) {
                 case HISTORY_TYPE_PATH.adSlot:
-                    _setHistoryCurrentAdSlot();
+                    _setParamsHistoryCurrentAdSlot(stateParam);
                     return;
                 case HISTORY_TYPE_PATH.site:
-                    _setHistoryCurrentSite();
+                    _setParamsHistoryCurrentSite(stateParam);
                     return;
                 case HISTORY_TYPE_PATH.adNetwork:
-                    _setHistoryCurrentAdNetwork();
+                    _setParamsHistoryCurrentAdNetwork(stateParam);
                     return;
                 case HISTORY_TYPE_PATH.publisher:
-                    _setHistoryCurrentPublisherManagement();
+                    _setParamsHistoryCurrentPublisherManagement(stateParam);
                     return;
             }
 
             console.log('not support type ' + type);
         }
 
-        function _setHistoryCurrentAdSlot() {
-            $window.localStorage[HISTORY_STORAGE_AD_SLOT] = $window.location.href;
+        function _setParamsHistoryCurrentAdSlot(stateParam) {
+            var tcHistory = angular.fromJson($window.localStorage[HISTORY]);
+            tcHistory.adSlot = stateParam;
+            $window.localStorage[HISTORY] = angular.toJson(tcHistory);
         }
 
-        function _getHistoryCurrentAdSlot() {
-            return $window.localStorage[HISTORY_STORAGE_AD_SLOT];
+        function _setParamsHistoryCurrentSite(stateParam) {
+            var tcHistory = angular.fromJson($window.localStorage[HISTORY]);
+            tcHistory.site = stateParam;
+            $window.localStorage[HISTORY] = angular.toJson(tcHistory);
         }
 
-        function _setHistoryCurrentSite() {
-            $window.localStorage[HISTORY_STORAGE_SITE] = $window.location.href;
+        function _setParamsHistoryCurrentAdNetwork(stateParam) {
+            var tcHistory = angular.fromJson($window.localStorage[HISTORY]);
+            tcHistory.adNetwork = stateParam;
+            $window.localStorage[HISTORY] = angular.toJson(tcHistory);
         }
 
-        function _getHistoryCurrentSite() {
-            return $window.localStorage[HISTORY_STORAGE_SITE];
+        function _setParamsHistoryCurrentPublisherManagement(stateParam) {
+            var tcHistory = angular.fromJson($window.localStorage[HISTORY]);
+            tcHistory.publisher = stateParam;
+            $window.localStorage[HISTORY] = angular.toJson(tcHistory);
         }
 
-        function _setHistoryCurrentAdNetwork() {
-            $window.localStorage[HISTORY_STORAGE_AD_NETWORK] = $window.location.href;
+        function getParamsHistoryCurrentAdSlot() {
+            return angular.fromJson($window.localStorage[HISTORY]).adSlot;
         }
 
-        function _getHistoryCurrentAdNetwork() {
-            return $window.localStorage[HISTORY_STORAGE_AD_NETWORK];
-        }
+        function _getStateParams() {
+            var params = angular.copy($stateParams);
+            var search = $location.search();
 
-        function _setHistoryCurrentPublisherManagement() {
-            $window.localStorage[HISTORY_STORAGE_PUBLISHER_MANAGEMENT] = $window.location.href;
-        }
+            angular.forEach(search, function(value, key) {
+                params[key] = value;
+            });
 
-        function _getHistoryCurrentPublisherManagement() {
-            return $window.localStorage[HISTORY_STORAGE_PUBLISHER_MANAGEMENT];
+            return params;
         }
     }
 })();

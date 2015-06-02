@@ -79,7 +79,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Ad Slots - {{ site.name }}' // TODO cannot show site variable here, why?
+                    label: 'Ad Slots'
                 },
                 reloadOnSearch: false
             })

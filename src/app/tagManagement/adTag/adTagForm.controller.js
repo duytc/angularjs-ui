@@ -73,10 +73,6 @@
             $scope.adTag.adType = $scope.adTypes.customAd;
         }
 
-        $scope.backToListAdSlot = function() {
-            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: $scope.adTag.adSlot.site.id});
-        };
-
         $scope.submit = function() {
             if ($scope.formProcessing) {
                 // already running, prevent duplicates

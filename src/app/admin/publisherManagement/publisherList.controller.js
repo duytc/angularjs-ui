@@ -36,7 +36,7 @@
 
         $scope.$on('$locationChangeSuccess', function() {
             $scope.tableConfig.currentPage = $location.search().page - 1;
-            historyStorage.setLocationPath(HISTORY_TYPE_PATH.publisher)
+            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.publisher)
         });
     }
 })();

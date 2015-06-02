@@ -3,9 +3,9 @@
         <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
 
         <div class="button-bar hidden-xs">
-            <button ng-if="!isNew" ng-click="backToListAdSlot()" class="btn btn-sm btn-primary" type="button">
+            <button ng-if="!isNew" ui-sref="^.list({adSlotId: adTag.adSlot.id})" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon glyphicon-arrow-left"></span>
-                Back to Ad Slot
+                Back to Ad Tag List
             </button>
         </div>
     </div>
