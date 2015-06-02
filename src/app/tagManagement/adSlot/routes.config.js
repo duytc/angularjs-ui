@@ -18,7 +18,7 @@
                 }
             })
             .state('tagManagement.adSlot.list', {
-                url: '/list/site/{siteId:[0-9]+}?page',
+                url: '/list/site/{siteId:[0-9]+}?page&sortField&orderBy&search',
                 views: {
                     'content@app': {
                         controller: 'AdSlotList',
@@ -46,6 +46,40 @@
                 },
                 ncyBreadcrumb: {
                     label: 'Ad Slots - {{ site.name }}' // TODO cannot show site variable here, why?
+                },
+                reloadOnSearch: false
+            })
+            .state('tagManagement.adSlot.listAll', {
+                url: '/list?page&sortField&orderBy',
+                views: {
+                    'content@app': {
+                        controller: 'AdSlotList',
+                        templateUrl: 'tagManagement/adSlot/adSlotList.tpl.html'
+                    }
+                },
+                resolve: {
+                    // AdSlotManager is provided as a parameter to make sure the service is invoked
+                    // because during init it attaches additional behaviour to the adslots resource
+                    adSlots: /* @ngInject */ function(AdSlotManager) {
+                        return AdSlotManager.getList()
+                            .then(function(adSlot) {
+                                return adSlot.plain();
+                            })
+                    },
+                    dynamicAdSlot: function(DynamicAdSlotManager) {
+                        return DynamicAdSlotManager.getList()
+                            .then(function(adSlotDynamic) {
+                                return adSlotDynamic.plain();
+                            })
+                    },
+                    site: /* @ngInject */ function ($stateParams, SiteManager) {
+                        return SiteManager.one($stateParams.siteId).get().then(function (site) {
+                            return site.plain();
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Ad Slots'
                 },
                 reloadOnSearch: false
             })

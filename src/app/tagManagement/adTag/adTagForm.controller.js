@@ -6,7 +6,7 @@
     ;
 
     function AdTagForm(
-        $scope, $state, $stateParams, $q, SiteManager, AdTagManager, AlertService, ServerErrorProcessor, adTag, adSlot, site, publisher, publisherList, siteList, adSlotList, adNetworkList, AD_TYPES
+        $scope, $state, SiteManager, AdTagManager, AlertService, ServerErrorProcessor, adTag, adSlot, site, publisher, publisherList, siteList, adSlotList, adNetworkList, AD_TYPES, historyStorage, HISTORY_TYPE_PATH
         ) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',

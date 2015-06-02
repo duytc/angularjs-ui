@@ -5,7 +5,7 @@
         .controller('SiteForm', SiteForm)
     ;
 
-    function SiteForm($scope, $state, $q, SiteManager, AlertService, ServerErrorProcessor, site, publishers, userSession) {
+    function SiteForm($scope, SiteManager, AlertService, ServerErrorProcessor, site, publishers, userSession, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             domain: 'Domain'
@@ -21,6 +21,7 @@
         $scope.selectPublisher = selectPublisher;
         $scope.isEnabledAnalytics = isEnabledAnalytics;
         $scope.isFormValid = isFormValid;
+        $scope.backToListSite = backToListSite;
 
         $scope.site = site || {
             name: null,
@@ -45,6 +46,10 @@
             }
 
             return $scope.site.publisher != null ? $scope.site.publisher.enabledModules : false;
+        }
+
+        function backToListSite() {
+            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.site, '^.list');
         }
 
         $scope.submit = function() {
@@ -76,7 +81,7 @@
                 )
                 .then(
                     function () {
-                        return $state.go('^.list');
+                        return historyStorage.getLocationPath(HISTORY_TYPE_PATH.site, '^.list');
                     }
                 )
             ;

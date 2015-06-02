@@ -6,7 +6,7 @@
         .controller('PublisherList', PublisherList)
     ;
 
-    function PublisherList($scope, publishers, $location, autoLogin, adminUserManager, AtSortableService) {
+    function PublisherList($scope, publishers, $location, autoLogin, adminUserManager, AtSortableService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.publishers = publishers;
 
         $scope.visitPublisher = visitPublisher;
@@ -36,6 +36,7 @@
 
         $scope.$on('$locationChangeSuccess', function() {
             $scope.tableConfig.currentPage = $location.search().page - 1;
+            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.publisher)
         });
     }
 })();

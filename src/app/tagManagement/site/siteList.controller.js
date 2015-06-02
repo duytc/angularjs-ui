@@ -5,7 +5,7 @@
         .controller('SiteList', SiteList)
     ;
 
-    function SiteList($scope, $modal, $location, AlertService, SiteManager, sites, AtSortableService) {
+    function SiteList($scope, $modal, $location, AlertService, SiteManager, sites, AtSortableService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.sites = sites;
 
         $scope.hasData = function () {
@@ -69,6 +69,7 @@
 
         $scope.$on('$locationChangeSuccess', function() {
             $scope.tableConfig.currentPage = $location.search().page - 1;
+            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.site)
         });
     }
 })();

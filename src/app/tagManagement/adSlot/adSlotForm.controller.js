@@ -5,7 +5,7 @@
         .controller('AdSlotForm', AdSlotForm)
     ;
 
-    function AdSlotForm($scope, $state, $stateParams, $q, SiteManager, AdSlotManager, DynamicAdSlotManager, adSlotService, AlertService, ServerErrorProcessor, site, publisherList, siteList, adSlot, TYPE_AD_SLOT) {
+    function AdSlotForm($scope, historyStorage, $stateParams, $q, SiteManager, AdSlotManager, DynamicAdSlotManager, adSlotService, AlertService, ServerErrorProcessor, site, publisherList, siteList, adSlot, TYPE_AD_SLOT, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             site: 'Site',
             name: 'Name',
@@ -26,6 +26,7 @@
         $scope.selectSite = selectSite;
         $scope.selectType = selectType;
         $scope.isFormValid = isFormValid;
+        $scope.backToListAdSlot = backToListAdSlot;
 
         // required by ui select
         $scope.selected = {
@@ -36,7 +37,7 @@
         $scope.publisherList = publisherList;
         $scope.siteList = siteList;
         $scope.groupEntities = groupEntities;
-        
+
         $scope.adSlot = adSlot || {
             site: $scope.isNew && $stateParams.hasOwnProperty('siteId') ? parseInt($stateParams.siteId, 10) : null,
             name: null,
@@ -139,6 +140,14 @@
             return !!group.var;
         }
 
+        function backToListAdSlot() {
+            if(!!historyStorage.getParamsHistoryCurrentAdSlot().siteId) {
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list');
+            }
+
+            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.listAll');
+        }
+
         function submit() {
             if ($scope.formProcessing) {
                 // already running, prevent duplicates
@@ -187,15 +196,11 @@
                 )
                 .then(
                     function () {
-                        var siteId = $scope.adSlot.site;
-
-                        if (angular.isObject(siteId)) {
-                            siteId = siteId.id;
+                        if(!!historyStorage.getParamsHistoryCurrentAdSlot() && !!historyStorage.getParamsHistoryCurrentAdSlot().siteId) {
+                            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list');
                         }
 
-                        return $state.go('^.list', {
-                            siteId: siteId
-                        });
+                        return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.listAll');
                     }
                 )
             ;

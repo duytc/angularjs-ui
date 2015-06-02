@@ -5,7 +5,7 @@
         .controller('AdNetworkForm', AdNetworkForm)
     ;
 
-    function AdNetworkForm($scope, $state, $q, AdNetworkManager, AlertService, ServerErrorProcessor, adNetwork, publishers) {
+    function AdNetworkForm($scope, AdNetworkManager, AlertService, ServerErrorProcessor, adNetwork, publishers, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             defaultCpmRate: 'Default CPM Rate',
@@ -18,6 +18,7 @@
 
         $scope.allowPublisherSelection = $scope.isAdmin() && !!publishers;
         $scope.publishers = publishers;
+        $scope.backToListAdNetwork = backToListAdNetwork;
 
         $scope.adNetwork = adNetwork || {
             name: null,
@@ -29,6 +30,10 @@
         $scope.isFormValid = function() {
             return $scope.adNetworkForm.$valid;
         };
+
+        function backToListAdNetwork() {
+            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adNetwork, '^.list');
+        }
 
         $scope.submit = function() {
             if ($scope.formProcessing) {
@@ -59,7 +64,7 @@
                 )
                 .then(
                     function () {
-                        return $state.go('^.list');
+                        return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adNetwork, '^.list');
                     }
                 )
             ;

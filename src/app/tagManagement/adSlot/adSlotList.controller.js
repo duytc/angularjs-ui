@@ -5,7 +5,7 @@
         .controller('AdSlotList', AdSlotList)
     ;
 
-    function AdSlotList($scope, $state, $location, $stateParams, $modal, $q, AlertService, AdSlotManager, DynamicAdSlotManager, adSlots, dynamicAdSlot, site, AtSortableService) {
+    function AdSlotList($scope, $state, $location, $stateParams, $modal, $q, AlertService, AdSlotManager, DynamicAdSlotManager, adSlots, dynamicAdSlot, site, AtSortableService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.site = site;
 
         $scope.adSlots = dynamicAdSlot.concat(adSlots);
@@ -21,10 +21,12 @@
             });
         }
 
+        $scope.allAdSlot = !$stateParams.siteId;
         $scope.currentSiteId = $stateParams.siteId || null;
 
         $scope.showPagination = showPagination;
         $scope.setCurrentPageForUrl = setCurrentPageForUrl;
+        $scope.backToListSite = backToListSite;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -100,8 +102,13 @@
             AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage + 1});
         }
 
+        function backToListSite() {
+            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.site, '^.^.sites.list');
+        }
+
         $scope.$on('$locationChangeSuccess', function() {
             $scope.tableConfig.currentPage = $location.search().page - 1;
+            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.adSlot)
         });
     }
 })();

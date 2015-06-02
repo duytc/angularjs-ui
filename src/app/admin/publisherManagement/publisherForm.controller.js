@@ -6,7 +6,7 @@
         .controller('PublisherForm', PublisherForm)
     ;
 
-    function PublisherForm($scope, $state, $q, adminUserManager, AlertService, ServerErrorProcessor, publisher) {
+    function PublisherForm($scope, adminUserManager, AlertService, ServerErrorProcessor, publisher, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             username: 'Username',
             plainPassword: 'Password',
@@ -309,6 +309,10 @@
             return $scope.userForm.$valid;
         };
 
+        $scope.backToListPublisher = function() {
+            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.publisher, '^.list');
+        };
+
         $scope.submit = function() {
             if ($scope.formProcessing) {
                 // already running, prevent duplicates
@@ -338,7 +342,7 @@
                 )
                 .then(
                     function () {
-                        return $state.go('^.list');
+                        return historyStorage.getLocationPath(HISTORY_TYPE_PATH.publisher, '^.list');
                     }
                 )
             ;
