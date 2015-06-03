@@ -32,8 +32,20 @@
                     <td at-title="Network Opportunities" at-attribute="totalOpportunities" at-sortable at-initial-sorting="desc">
                         {{ item.totalOpportunities | number }}
                     </td>
+                    <td at-title="Fist Opportunities" at-attribute="firstOpportunities" at-sortable>
+                        {{ item.reports[0].firstOpportunities | number }}
+                    </td>
                     <td at-title="Impressions" at-attribute="impressions" at-sortable>
                         {{ item.impressions | number }}
+                    </td>
+                    <td at-title="Verified Impressions" at-attribute="verifiedImpressions" at-sortable>
+                        {{ item.reports[0].verifiedImpressions | number }}
+                    </td>
+                    <td at-title="Unverified Impressions" at-attribute="unverifiedImpressions" at-sortable>
+                        {{ item.reports[0].unverifiedImpressions | number }}
+                    </td>
+                    <td at-title="Blank Impressions" at-attribute="blankImpressions" at-sortable>
+                        {{ item.reports[0].blankImpressions | number }}
                     </td>
                     <td at-title="Passbacks" at-attribute="passbacks" at-sortable>
                         {{ item.passbacks | number }}
