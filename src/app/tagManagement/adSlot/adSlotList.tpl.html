@@ -46,7 +46,7 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td at-implicit at-sortable at-attribute="id" at-initial-sorting="asc"></td>
+                    <td at-implicit at-sortable at-attribute="id"></td>
                     <td at-attribute="action">
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
@@ -62,7 +62,7 @@
                         </div>
                     </td>
                     <td ng-show="allAdSlot" at-implicit at-sortable at-attribute="site.name"></td>
-                    <td at-implicit at-sortable at-attribute="name"></td>
+                    <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc"></td>
                     <td at-sortable at-attribute="width">
                         {{ !!item.width ? item.width + 'x' + item.height : ''}}
                     </td>

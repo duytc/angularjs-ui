@@ -27,7 +27,7 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td at-implicit at-sortable at-attribute="id" at-initial-sorting="asc"></td>
+                    <td at-implicit at-sortable at-attribute="id"></td>
                     <td at-title="Actions">
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
@@ -40,7 +40,7 @@
                             </ul>
                         </div>
                     </td>
-                    <td at-implicit at-sortable at-attribute="name"></td>
+                    <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc"></td>
                     <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.username"></td>
                     <td at-sortable at-attribute="status">
                         <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
