@@ -19,7 +19,7 @@
 
         _update();
         function _update() {
-            if(!Auth.isAdmin) {
+            if(!Auth.isAdmin()) {
                 SiteManager.getList()
                     .then(function(sites) {
                         $scope.sites = sites.plain();
