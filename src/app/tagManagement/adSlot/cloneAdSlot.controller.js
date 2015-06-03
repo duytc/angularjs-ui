@@ -6,7 +6,7 @@
         .controller('CloneAdSlot', CloneAdSlot)
     ;
 
-    function CloneAdSlot($scope, $state, adSlot, $modalInstance, AdSlotManager, AlertService) {
+    function CloneAdSlot($scope, $state, adSlot, $modalInstance, AdSlotManager, AlertService, SiteManager, adminUserManager, Auth) {
         $scope.adSlot = adSlot;
         $scope.cloneAdSlot = angular.copy($scope.adSlot);
 
@@ -17,10 +17,26 @@
             return $scope.cloneAdSlotForm.$valid;
         }
 
+        _update();
+        function _update() {
+            if(!Auth.isAdmin()) {
+                SiteManager.getList()
+                    .then(function(sites) {
+                        $scope.sites = sites.plain();
+                    })
+            }
+            else {
+                adminUserManager.one(adSlot.site.publisher.id).getList('sites')
+                    .then(function(sites) {
+                        $scope.sites = sites.plain();
+                    })
+            }
+        }
+
         function submit() {
             $modalInstance.close();
 
-            AdSlotManager.one($scope.cloneAdSlot.id).customPOST({name: $scope.cloneAdSlot.name}, 'clone')
+            AdSlotManager.one($scope.cloneAdSlot.id).customPOST({name: $scope.cloneAdSlot.name, site: $scope.cloneAdSlot.site}, 'clone')
                 .then(function() {
                     $state.current.reloadOnSearch = true;
                     $state.reload();
