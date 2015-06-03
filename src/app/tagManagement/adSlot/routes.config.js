@@ -33,7 +33,7 @@
                             return adSlots.plain();
                         });
                     },
-                    dynamicAdSlot: function(SiteManager, $stateParams) {
+                    dynamicAdSlot: /* @ngInject */ function(SiteManager, $stateParams) {
                         return SiteManager.one($stateParams.siteId).getList('dynamicadslots').then(function (dynamicAdSlots) {
                             return dynamicAdSlots.plain();
                         });
@@ -66,16 +66,14 @@
                                 return adSlot.plain();
                             })
                     },
-                    dynamicAdSlot: function(DynamicAdSlotManager) {
+                    dynamicAdSlot: /* @ngInject */ function(DynamicAdSlotManager) {
                         return DynamicAdSlotManager.getList()
                             .then(function(adSlotDynamic) {
                                 return adSlotDynamic.plain();
                             })
                     },
-                    site: /* @ngInject */ function ($stateParams, SiteManager) {
-                        return SiteManager.one($stateParams.siteId).get().then(function (site) {
-                            return site.plain();
-                        });
+                    site: function () {
+                        return null;
                     }
                 },
                 ncyBreadcrumb: {

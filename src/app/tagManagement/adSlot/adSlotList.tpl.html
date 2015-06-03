@@ -22,7 +22,13 @@
         </div>
     </div>
 
-    <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'name', 'width', 'height']"></search-box>
+    <div ng-show="!site">
+        <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'site.name', 'name', 'width', 'height']"></search-box>
+    </div>
+    <div ng-show="!!site">
+        <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'name', 'width', 'height']"></search-box>
+    </div>
+
 
     <div class="panel-body" ng-if="hasData()">
         <div>
