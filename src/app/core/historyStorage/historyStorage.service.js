@@ -18,6 +18,8 @@
         return api;
 
         function getLocationPath(type, state, paramDefault) {
+            $window.localStorage[HISTORY] = $window.localStorage[HISTORY] || '{}';
+
             if(type == HISTORY_TYPE_PATH.adSlot) {
                 var params = !!getParamsHistoryForAdSlot() ? getParamsHistoryForAdSlot() : paramDefault;
                 return $state.go(state, params);
@@ -31,6 +33,8 @@
         }
 
         function setParamsHistoryCurrent(type) {
+            $window.localStorage[HISTORY] = $window.localStorage[HISTORY] || '{}';
+
             var stateParam = _getStateParams();
 
             switch(type) {
