@@ -252,8 +252,8 @@
         }
 
         function backToListAdSlot() {
-            if(!!historyStorage.getParamsHistoryCurrentAdSlot().siteId) {
-                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list');
+            if($scope.isAdmin() || (!!historyStorage.getParamsHistoryCurrentAdSlot() && !!historyStorage.getParamsHistoryCurrentAdSlot().siteId)) {
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: adSlot.site.id});
             }
 
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.listAll');

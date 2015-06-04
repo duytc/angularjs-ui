@@ -17,9 +17,10 @@
 
         return api;
 
-        function getLocationPath(type, state) {
+        function getLocationPath(type, state, paramDefault) {
             if(type == HISTORY_TYPE_PATH.adSlot) {
-                return $state.go(state, angular.fromJson($window.localStorage[HISTORY]).adSlot);
+                var params = !!getParamsHistoryCurrentAdSlot() ? getParamsHistoryCurrentAdSlot() : paramDefault;
+                return $state.go(state, params);
             }
 
             if(type == HISTORY_TYPE_PATH.site) {
@@ -83,6 +84,8 @@
         }
 
         function getParamsHistoryCurrentAdSlot() {
+            $window.localStorage[HISTORY] = $window.localStorage[HISTORY] || '{}';
+
             return angular.fromJson($window.localStorage[HISTORY]).adSlot;
         }
 
