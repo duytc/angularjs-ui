@@ -54,6 +54,8 @@
                                 <li ng-if="!!item.width"><a ui-sref="^.^.adTag.list({ adSlotId: item.id })">Manage Ad Tags</a></li>
                                 <li><a ng-click="generateAdTag(item)">Generate a Tag</a></li>
                                 <li class="divider"></li>
+                                <li><a ui-sref="^.^.^.reports.performance.adSlotAdTags({ adSlotId: item.id, startDate: today})">View Today's Report</a></li>
+                                <li class="divider"></li>
                                 <li ng-if="!!item.width"><a ui-sref="^.edit({ id: item.id })">Edit Ad Slot</a></li>
                                 <li ng-if="!!item.width"><a ng-click="cloneAdSlot(item)">Clone Ad Slot</a></li>
                                 <li ng-if="!item.width"><a ui-sref="^.editDynamic({ id: item.id })">Edit Ad Slot</a></li>
