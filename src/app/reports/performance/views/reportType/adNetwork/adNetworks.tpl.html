@@ -5,7 +5,8 @@
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
             Ad Network Breakdown
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" fields="['startDate', 'name', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate', 'estRevenue', 'estCpm']" header="['Date', 'Ad Network', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate', 'Est. Revenue ($)', 'Est. CPM ($)']" file-name="getExportExcelFileName"></export-excel>
+                <export-excel data="reports" fields="['startDate', 'name', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Date', 'Ad Network', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                <!--<export-excel data="reports" fields="['startDate', 'name', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate', 'estRevenue', 'estCpm']" header="['Date', 'Ad Network', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate', 'Est. Revenue ($)', 'Est. CPM ($)']" file-name="getExportExcelFileName"></export-excel>-->
             </div>
         </div>
         <div class="ng-table-responsive">
