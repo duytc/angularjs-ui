@@ -252,8 +252,13 @@
         }
 
         function backToListAdSlot() {
-            if($scope.isAdmin() || (!!historyStorage.getParamsHistoryCurrentAdSlot() && !!historyStorage.getParamsHistoryCurrentAdSlot().siteId)) {
+            if($scope.isAdmin()) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: adSlot.site.id});
+            }
+
+            var historyAdSlot = historyStorage.getParamsHistoryForAdSlot();
+            if(!!historyAdSlot && !!historyAdSlot.siteId) {
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list');
             }
 
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.listAll');

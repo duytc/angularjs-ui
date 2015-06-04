@@ -10,7 +10,7 @@
             getLocationPath: getLocationPath,
             setParamsHistoryCurrent: setParamsHistoryCurrent,
 
-            getParamsHistoryCurrentAdSlot: getParamsHistoryCurrentAdSlot
+            getParamsHistoryForAdSlot: getParamsHistoryForAdSlot
         };
 
         $window.localStorage[HISTORY] = $window.localStorage[HISTORY] || '{}';
@@ -19,20 +19,12 @@
 
         function getLocationPath(type, state, paramDefault) {
             if(type == HISTORY_TYPE_PATH.adSlot) {
-                var params = !!getParamsHistoryCurrentAdSlot() ? getParamsHistoryCurrentAdSlot() : paramDefault;
+                var params = !!getParamsHistoryForAdSlot() ? getParamsHistoryForAdSlot() : paramDefault;
                 return $state.go(state, params);
             }
 
-            if(type == HISTORY_TYPE_PATH.site) {
-                return $state.go(state, angular.fromJson($window.localStorage[HISTORY]).site);
-            }
-
-            if(type == HISTORY_TYPE_PATH.adNetwork) {
-                return $state.go(state, angular.fromJson($window.localStorage[HISTORY]).adNetwork);
-            }
-
-            if(type == HISTORY_TYPE_PATH.publisher) {
-                return $state.go(state, angular.fromJson($window.localStorage[HISTORY]).publisher);
+            if(!!HISTORY_TYPE_PATH[type]) {
+                return $state.go(state, _getHistoryParams(type));
             }
 
             console.log('not support type ' + type);
@@ -83,10 +75,10 @@
             $window.localStorage[HISTORY] = angular.toJson(tcHistory);
         }
 
-        function getParamsHistoryCurrentAdSlot() {
+        function getParamsHistoryForAdSlot() {
             $window.localStorage[HISTORY] = $window.localStorage[HISTORY] || '{}';
 
-            return angular.fromJson($window.localStorage[HISTORY]).adSlot;
+            return _getHistoryParams(HISTORY_TYPE_PATH.adSlot);
         }
 
         function _getStateParams() {
@@ -98,6 +90,14 @@
             });
 
             return params;
+        }
+
+        function _getHistoryParams(historyParams) {
+            if(!$window.localStorage[HISTORY]) {
+                return null;
+            }
+
+            return angular.fromJson($window.localStorage[HISTORY])[historyParams];
         }
     }
 })();
