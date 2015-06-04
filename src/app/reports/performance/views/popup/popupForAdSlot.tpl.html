@@ -6,6 +6,7 @@
     <table class="table">
         <thead>
         <tr>
+            <th>#</th>
             <th>Ad Slot</th>
             <th>Site</th>
             <th ng-show="isAdmin">Publisher</th>
@@ -15,6 +16,7 @@
         </thead>
         <tbody>
         <tr>
+            <td>{{ relativeEntityData.id }}</td>
             <td>{{ relativeEntityData.name }}</td>
             <td>{{ relativeEntityData.site.name }}</td>
             <td ng-show="isAdmin">{{ relativeEntityData.site.publisher.username }}</td>

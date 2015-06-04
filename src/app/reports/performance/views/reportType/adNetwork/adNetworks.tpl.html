@@ -19,7 +19,7 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a ng-click="popupReport(reportStates.adNetworkSites, item)">Ad Network Info</a></li>
                                 <li><a ng-click="goToEditPage('tagManagement.adNetwork.edit', item.reportType.adNetworkId)">Edit Ad Network</a></li>
-                                <li><a ng-click="openUpdateCpm(item, updateCpmTypes.adNetwork)">Update Cpm</a></li>
+                                <!--<li><a ng-click="openUpdateCpm(item, updateCpmTypes.adNetwork)">Update Cpm</a></li>-->
                             </ul>
                         </div>
                     </td>
@@ -44,12 +44,13 @@
                     <td at-title="Fill Rate" at-attribute="fillRate" at-sortable>
                         {{ item.fillRate | percentage }}
                     </td>
-                    <td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>
-                        {{ item.estRevenue | currency }}
-                    </td>
-                    <td at-title="Est. CPM" at-attribute="estCpm" at-sortable>
-                        {{ item.estCpm | currency:'$':4 }}
-                    </td>
+
+                    <!--<td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>-->
+                        <!--{{ item.estRevenue | currency }}-->
+                    <!--</td>-->
+                    <!--<td at-title="Est. CPM" at-attribute="estCpm" at-sortable>-->
+                        <!--{{ item.estCpm | currency:'$':4 }}-->
+                    <!--</td>-->
                 </tr>
                 </tbody>
             </table>
