@@ -35,7 +35,7 @@
                                 <li><a ng-click="toggleAdNetworkStatus(item)">{{ item.active ? 'Pause' : 'Activate' }} Ad Network</a></li>
                                 <li><a ng-click="openListSitesForAdNetwork(item)">Pause Ad Network by Sites</a></li>
                                 <li class="divider"></li>
-                                <li ><a ui-sref="^.^.^.reports.performance.adNetworkSites({ adNetworkId: item.id, startDate: today})">View Today's Report</a></li>
+                                <li ><a ui-sref="^.^.^.reports.performance.adNetworkSites({ adNetworkId: item.id, startDate: today, endDate: today})">View Today's Report</a></li>
                                 <li class="divider"></li>
                                 <li><a ui-sref="^.edit({ id: item.id })">Edit Ad Network</a></li>
                                 <li ng-if="item.url" class="divider"></li>
