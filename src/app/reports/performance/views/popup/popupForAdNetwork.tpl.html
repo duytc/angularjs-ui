@@ -6,6 +6,7 @@
     <table class="table">
         <thead>
         <tr>
+            <th>#</th>
             <th>Ad Network</th>
             <th ng-show="isAdmin">Publisher</th>
             <th>Domain</th>
@@ -15,6 +16,7 @@
         </thead>
         <tbody>
         <tr>
+            <td>{{ relativeEntityData.id }}</td>
             <td>{{ relativeEntityData.name }}</td>
             <td ng-show="isAdmin">{{ relativeEntityData.publisher.username }}</td>
             <td>{{ relativeEntityData.url }}</td>
@@ -27,5 +29,5 @@
 <div class="modal-footer">
     <button class="btn btn-primary" ng-click="$close()">Drill Down</button>
     <button class="btn btn-primary" ng-click="$dismiss(); goToEditPage('tagManagement.adNetwork.edit', relativeEntityData.id)">Edit This AdNetwork</button>
-    <button class="btn btn-primary" ng-click="openUpdateCpm(updateCpmTypes.adNetwork)">Update CPM</button>
+    <!--<button class="btn btn-primary" ng-click="openUpdateCpm(updateCpmTypes.adNetwork)">Update CPM</button>-->
 </div>

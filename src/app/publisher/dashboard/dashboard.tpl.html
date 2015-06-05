@@ -33,7 +33,7 @@
         <div class="col-md-12">
             <ul class="nav nav-tabs nav-tab-margin">
                 <li role="presentation" ng-click="showChart = 0" ng-class="showChart ?'':'active' "><a>Account Overview</a></li>
-                <li role="presentation" ng-click="showChart = 1" ng-class="showChart ?'active':'' "><a>Revenue</a></li>
+                <!--<li role="presentation" ng-click="showChart = 1" ng-class="showChart ?'active':'' "><a>Revenue</a></li>-->
             </ul>
             <div ng-if="!showChart"><highchart config="chartConfigOpportunities"></highchart></div>
             <div ng-if="showChart"><highchart config="chartConfigRevenue"></highchart></div>
