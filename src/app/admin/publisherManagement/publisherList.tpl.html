@@ -23,6 +23,8 @@
                     <div class="btn-group" dropdown>
                         <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                         <ul class="dropdown-menu" role="menu">
+                            <li ><a ui-sref="app.admin.reports.performance.account({publisherId: item.id, startDate: today})">View Today's Report</a></li>
+                            <li class="divider"></li>
                             <li><a ui-sref="^.edit({ id: item.id })">Edit Publisher</a></li>
                             <li><a ng-click="visitPublisher(item.id)">Login as this publisher</a></li>
                         </ul>
