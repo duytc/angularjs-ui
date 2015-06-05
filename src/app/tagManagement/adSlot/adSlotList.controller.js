@@ -5,7 +5,7 @@
         .controller('AdSlotList', AdSlotList)
     ;
 
-    function AdSlotList($scope, $state, $location, $stateParams, $modal, $q, AlertService, AdSlotManager, DynamicAdSlotManager, adSlots, dynamicAdSlot, site, AtSortableService, historyStorage, HISTORY_TYPE_PATH) {
+    function AdSlotList($scope, $state, $location, $stateParams, $modal, $q, AlertService, AdSlotManager, DynamicAdSlotManager, adSlots, dynamicAdSlot, site, AtSortableService, historyStorage, HISTORY_TYPE_PATH, DateFormatter) {
         $scope.site = site;
 
         $scope.adSlots = dynamicAdSlot.concat(adSlots);
@@ -21,6 +21,7 @@
             });
         }
 
+        $scope.today = DateFormatter.getFormattedDate(new Date());
         $scope.allAdSlot = !$stateParams.siteId;
         $scope.currentSiteId = $stateParams.siteId || null;
 

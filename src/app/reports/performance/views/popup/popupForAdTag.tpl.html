@@ -6,6 +6,7 @@
     <table class="table">
         <thead>
         <tr>
+            <th>#</th>
             <th>Ad Tag</th>
             <th>Ad Slot</th>
             <th>Site</th>
@@ -16,6 +17,7 @@
         </thead>
         <tbody>
         <tr>
+            <td>{{ relativeEntityData.id }}</td>
             <td>{{ relativeEntityData.name }}</td>
             <td>{{ relativeEntityData.adSlot.name }} ({{ relativeEntityData.adSlot.width }} x {{ relativeEntityData.adSlot.height }})</td>
             <td>{{ relativeEntityData.adSlot.site.name }}</td>
@@ -28,5 +30,5 @@
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-click="$dismiss(); goToEditPage('tagManagement.adTag.edit', relativeEntityData.id)">Edit This AdTag</button>
-    <button class="btn btn-primary" ng-click="openUpdateCpm(updateCpmTypes.adTag)">Update CPM</button>
+    <!--<button class="btn btn-primary" ng-click="openUpdateCpm(updateCpmTypes.adTag)">Update CPM</button>-->
 </div>

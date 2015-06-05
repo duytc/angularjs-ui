@@ -10,34 +10,31 @@
             getLocationPath: getLocationPath,
             setParamsHistoryCurrent: setParamsHistoryCurrent,
 
-            getParamsHistoryCurrentAdSlot: getParamsHistoryCurrentAdSlot
+            getParamsHistoryForAdSlot: getParamsHistoryForAdSlot
         };
 
         $window.localStorage[HISTORY] = $window.localStorage[HISTORY] || '{}';
 
         return api;
 
-        function getLocationPath(type, state) {
+        function getLocationPath(type, state, paramDefault) {
+            $window.localStorage[HISTORY] = $window.localStorage[HISTORY] || '{}';
+
             if(type == HISTORY_TYPE_PATH.adSlot) {
-                return $state.go(state, angular.fromJson($window.localStorage[HISTORY]).adSlot);
+                var params = !!getParamsHistoryForAdSlot() ? getParamsHistoryForAdSlot() : paramDefault;
+                return $state.go(state, params);
             }
 
-            if(type == HISTORY_TYPE_PATH.site) {
-                return $state.go(state, angular.fromJson($window.localStorage[HISTORY]).site);
-            }
-
-            if(type == HISTORY_TYPE_PATH.adNetwork) {
-                return $state.go(state, angular.fromJson($window.localStorage[HISTORY]).adNetwork);
-            }
-
-            if(type == HISTORY_TYPE_PATH.publisher) {
-                return $state.go(state, angular.fromJson($window.localStorage[HISTORY]).publisher);
+            if(!!HISTORY_TYPE_PATH[type]) {
+                return $state.go(state, _getHistoryParams(type));
             }
 
             console.log('not support type ' + type);
         }
 
         function setParamsHistoryCurrent(type) {
+            $window.localStorage[HISTORY] = $window.localStorage[HISTORY] || '{}';
+
             var stateParam = _getStateParams();
 
             switch(type) {
@@ -82,8 +79,10 @@
             $window.localStorage[HISTORY] = angular.toJson(tcHistory);
         }
 
-        function getParamsHistoryCurrentAdSlot() {
-            return angular.fromJson($window.localStorage[HISTORY]).adSlot;
+        function getParamsHistoryForAdSlot() {
+            $window.localStorage[HISTORY] = $window.localStorage[HISTORY] || '{}';
+
+            return _getHistoryParams(HISTORY_TYPE_PATH.adSlot);
         }
 
         function _getStateParams() {
@@ -95,6 +94,14 @@
             });
 
             return params;
+        }
+
+        function _getHistoryParams(historyParams) {
+            if(!$window.localStorage[HISTORY]) {
+                return null;
+            }
+
+            return angular.fromJson($window.localStorage[HISTORY])[historyParams];
         }
     }
 })();

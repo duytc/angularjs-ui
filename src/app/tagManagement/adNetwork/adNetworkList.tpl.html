@@ -34,6 +34,9 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a ng-click="toggleAdNetworkStatus(item)">{{ item.active ? 'Pause' : 'Activate' }} Ad Network</a></li>
                                 <li><a ng-click="openListSitesForAdNetwork(item)">Pause Ad Network by Sites</a></li>
+                                <li class="divider"></li>
+                                <li ><a ui-sref="^.^.^.reports.performance.adNetworkSites({ adNetworkId: item.id, startDate: today, endDate: today})">View Today's Report</a></li>
+                                <li class="divider"></li>
                                 <li><a ui-sref="^.edit({ id: item.id })">Edit Ad Network</a></li>
                                 <li ng-if="item.url" class="divider"></li>
                                 <li ng-if="item.url"><a ng-href="{{ item.url }}" target="_blank">Visit Ad Network</a></li>

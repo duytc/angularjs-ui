@@ -5,7 +5,8 @@
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
             Daily Site Breakdown
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" fields="['date', 'name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate', 'estRevenue', 'estCpm']" header="['Date', 'Site', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate', 'Est. Revenue ($)', 'Est. CPM ($)']" file-name="getExportExcelFileName"></export-excel>
+                <export-excel data="reports" fields="['date', 'name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Date', 'Site', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                <!--<export-excel data="reports" fields="['date', 'name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate', 'estRevenue', 'estCpm']" header="['Date', 'Site', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate', 'Est. Revenue ($)', 'Est. CPM ($)']" file-name="getExportExcelFileName"></export-excel>-->
             </div>
         </div>
         <div class="ng-table-responsive">
@@ -43,12 +44,13 @@
                     <td at-title="Fill Rate" at-attribute="fillRate" at-sortable>
                         {{ item.fillRate | percentage }}
                     </td>
-                    <td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>
-                        {{ item.estRevenue | currency:'$':4 }}
-                    </td>
-                    <td at-title="Est. CPM" at-attribute="estCpm" at-sortable>
-                        {{ item.estCpm | currency:'$':4 }}
-                    </td>
+
+                    <!--<td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>-->
+                        <!--{{ item.estRevenue | currency:'$':4 }}-->
+                    <!--</td>-->
+                    <!--<td at-title="Est. CPM" at-attribute="estCpm" at-sortable>-->
+                        <!--{{ item.estCpm | currency:'$':4 }}-->
+                    <!--</td>-->
                 </tr>
                 </tbody>
             </table>

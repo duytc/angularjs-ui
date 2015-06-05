@@ -141,7 +141,12 @@
         }
 
         function backToListAdSlot() {
-            if(!!historyStorage.getParamsHistoryCurrentAdSlot().siteId) {
+            if($scope.isAdmin()) {
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: adSlot.site.id});
+            }
+
+            var historyAdSlot = historyStorage.getParamsHistoryForAdSlot();
+            if(!!historyAdSlot && !!historyAdSlot.siteId) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list');
             }
 
@@ -196,7 +201,14 @@
                 )
                 .then(
                     function () {
-                        if(!!historyStorage.getParamsHistoryCurrentAdSlot() && !!historyStorage.getParamsHistoryCurrentAdSlot().siteId) {
+                        if($scope.isAdmin()) {
+                            var siteId = $scope.isNew ? $scope.adSlot.site : $scope.adSlot.site.id;
+
+                            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: siteId});
+                        }
+
+                        var historyAdSlot = historyStorage.getParamsHistoryForAdSlot();
+                        if(!!historyAdSlot && !!historyAdSlot.siteId) {
                             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list');
                         }
 
