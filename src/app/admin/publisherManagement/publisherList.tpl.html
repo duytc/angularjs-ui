@@ -25,7 +25,7 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a ng-click="visitPublisher(item.id)">Login as this publisher</a></li>
                             <li class="divider"></li>
-                            <li ><a ui-sref="app.admin.reports.performance.account({publisherId: item.id, startDate: today, endDate: today})">View Today's Report</a></li>
+                            <li ><a ui-sref="app.admin.reports.performance.account({publisherId: item.id, startDate: today})">View Today's Report</a></li>
                             <li class="divider"></li>
                             <li><a ui-sref="^.edit({ id: item.id })">Edit Publisher</a></li>
                         </ul>
