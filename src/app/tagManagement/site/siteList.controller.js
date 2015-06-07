@@ -5,7 +5,7 @@
         .controller('SiteList', SiteList)
     ;
 
-    function SiteList($scope, $modal, $location, AlertService, SiteManager, sites, AtSortableService, historyStorage, HISTORY_TYPE_PATH, DateFormatter) {
+    function SiteList($scope, $modal, $location, AlertService, SiteManager, sites, AtSortableService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.sites = sites;
 
         $scope.hasData = function () {
@@ -19,7 +19,7 @@
             });
         }
 
-        $scope.today = DateFormatter.getFormattedDate(new Date());
+        $scope.today = new Date();
         $scope.showPagination = showPagination;
         $scope.setCurrentPageForUrl = setCurrentPageForUrl;
 

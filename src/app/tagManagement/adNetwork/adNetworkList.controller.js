@@ -5,7 +5,7 @@
         .controller('AdNetworkList', AdNetworkList)
     ;
 
-    function AdNetworkList($scope, $location, $modal, $q, AlertService, AdNetworkManager, adNetworks, AtSortableService, historyStorage, HISTORY_TYPE_PATH, DateFormatter) {
+    function AdNetworkList($scope, $location, $modal, $q, AlertService, AdNetworkManager, adNetworks, AtSortableService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.adNetworks = adNetworks;
 
         $scope.hasData = function () {
@@ -19,7 +19,7 @@
             });
         }
 
-        $scope.today = DateFormatter.getFormattedDate(new Date());
+        $scope.today = new Date();
         $scope.showPagination = showPagination;
         $scope.setCurrentPageForUrl = setCurrentPageForUrl;
         $scope.tableConfig = {
