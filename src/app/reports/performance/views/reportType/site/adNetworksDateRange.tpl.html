@@ -11,7 +11,12 @@
         </div>
         <div class="ng-table-responsive">
             <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
-                <thead></thead>
+                <thead>
+                <tr>
+                    <th at-attribute="blankImpressions" ng-show="isAdmin">Blank Imp</th>
+                    <th at-attribute="voidImpressions" ng-show="isAdmin">Void Imp</th>
+                </tr>
+                </thead>
                 <tbody>
                 <tr ng-click="drillDownReport(reportStates.adNetwork, item)">
                     <td at-title="Actions">
@@ -48,10 +53,10 @@
                     <td at-title="Unverified Imp" at-attribute="unverifiedImpressions" at-sortable>
                         {{ item.unverifiedImpressions | number }}
                     </td>
-                    <td at-title="Blank Imp" at-attribute="blankImpressions" at-sortable>
+                    <td ng-show="isAdmin" at-attribute="blankImpressions" at-sortable>
                         {{ item.blankImpressions | number }}
                     </td>
-                    <td at-title="Void Imp" at-attribute="voidImpressions" at-sortable>
+                    <td ng-show="isAdmin" at-attribute="voidImpressions" at-sortable>
                         {{ item.voidImpressions | number }}
                     </td>
                     <td at-title="Clicks" at-attribute="clicks" at-sortable>

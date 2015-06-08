@@ -15,7 +15,12 @@
         </div>
         <div class="ng-table-responsive">
             <table class="table" at-table at-paginated at-list="reports" at-config="tableConfig">
-                <thead></thead>
+                <thead>
+                <tr>
+                    <th at-attribute="blankImpressions" ng-show="isAdmin">Blank Imp</th>
+                    <th at-attribute="voidImpressions" ng-show="isAdmin">Void Imp</th>
+                </tr>
+                </thead>
                 <tbody>
                 <tr>
                     <td at-title="Actions">
@@ -41,25 +46,25 @@
                         {{ item.totalOpportunities | number }}
                     </td>
                     <td at-title="First Opp" at-attribute="firstOpportunities" at-sortable>
-                        {{ item.reports[0].firstOpportunities | number }}
+                        {{ item.firstOpportunities | number }}
                     </td>
                     <td at-title="Impressions" at-attribute="impressions" at-sortable>
                         {{ item.impressions | number }}
                     </td>
                     <td at-title="Verified Imp" at-attribute="verifiedImpressions" at-sortable>
-                        {{ item.reports[0].verifiedImpressions | number }}
+                        {{ item.verifiedImpressions | number }}
                     </td>
                     <td at-title="Unverified Imp" at-attribute="unverifiedImpressions" at-sortable>
-                        {{ item.reports[0].unverifiedImpressions | number }}
+                        {{ item.unverifiedImpressions | number }}
                     </td>
-                    <td at-title="Blank Imp" at-attribute="blankImpressions" at-sortable>
-                        {{ item.reports[0].blankImpressions | number }}
+                    <td ng-show="isAdmin" at-attribute="blankImpressions" at-sortable>
+                        {{ item.blankImpressions | number }}
                     </td>
-                    <td at-title="Void Imp" at-attribute="voidImpressions" at-sortable>
-                        {{ item.reports[0].voidImpressions | number }}
+                    <td ng-show="isAdmin" at-attribute="voidImpressions" at-sortable>
+                        {{ item.voidImpressions | number }}
                     </td>
                     <td at-title="Clicks" at-attribute="clicks" at-sortable>
-                        {{ item.reports[0].clicks | number }}
+                        {{ item.clicks | number }}
                     </td>
                     <td at-title="Passbacks" at-attribute="passbacks" at-sortable>
                         {{ item.passbacks | number }}
