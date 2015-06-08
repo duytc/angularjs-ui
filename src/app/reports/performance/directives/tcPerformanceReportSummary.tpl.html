@@ -20,9 +20,33 @@
                         <label>Network Opportunities</label>
                         <span class="pull-right">{{ reportGroup.totalOpportunities | number }}</span>
                     </li>
+                    <li ng-if="showItem()">
+                        <label>First Opportunities</label>
+                        <span class="pull-right">{{ reportGroup.firstOpportunities | number }}</span>
+                    </li>
                     <li>
                         <label>Impressions</label>
                         <span class="pull-right">{{ reportGroup.impressions | number }}</span>
+                    </li>
+                    <li ng-if="showItem()">
+                        <label>Verified Impressions</label>
+                        <span class="pull-right">{{ reportGroup.verifiedImpressions | number }}</span>
+                    </li>
+                    <li ng-if="showItem()">
+                        <label>Unverified Impressions</label>
+                        <span class="pull-right">{{ reportGroup.unverifiedImpressions | number }}</span>
+                    </li>
+                    <li ng-if="isAdmin && showItem()">
+                        <label>Blank Impressions</label>
+                        <span class="pull-right">{{ reportGroup.blankImpressions | number }}</span>
+                    </li>
+                    <li ng-if="isAdmin && showItem()">
+                        <label>Void Impressions</label>
+                        <span class="pull-right">{{ reportGroup.voidImpressions | number }}</span>
+                    </li>
+                    <li ng-if="showItem()">
+                        <label>Clicks</label>
+                        <span class="pull-right">{{ reportGroup.clicks | number }}</span>
                     </li>
                     <li>
                         <label>Passbacks</label>
@@ -57,9 +81,33 @@
                         <label>Slot Opportunities</label>
                         <span class="pull-right">{{ reportGroup.averageSlotOpportunities | number }}</span>
                     </li>
+                    <li ng-if="showItem()">
+                        <label>First Opportunities</label>
+                        <span class="pull-right">{{ reportGroup.averageFirstOpportunities | number }}</span>
+                    </li>
                     <li>
                         <label>Impressions</label>
                         <span class="pull-right">{{ reportGroup.averageImpressions | number }}</span>
+                    </li>
+                    <li ng-if="showItem()">
+                        <label>Verified Impressions</label>
+                        <span class="pull-right">{{ reportGroup.averageVerifiedImpressions | number }}</span>
+                    </li>
+                    <li ng-if="showItem()">
+                        <label>Unverified Impressions</label>
+                        <span class="pull-right">{{ reportGroup.averageUnverifiedImpressions | number }}</span>
+                    </li>
+                    <li ng-if="isAdmin && showItem()">
+                        <label>Blank Impressions</label>
+                        <span class="pull-right">{{ reportGroup.averageBlankImpressions | number }}</span>
+                    </li>
+                    <li ng-if="isAdmin && showItem()">
+                        <label>Void Impressions</label>
+                        <span class="pull-right">{{ reportGroup.averageVoidImpressions | number }}</span>
+                    </li>
+                    <li ng-if="showItem()">
+                        <label>Clicks</label>
+                        <span class="pull-right">{{ reportGroup.averageClicks | number }}</span>
                     </li>
                     <li>
                         <label>Passbacks</label>
