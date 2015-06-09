@@ -20,7 +20,7 @@
                         <label>Network Opportunities</label>
                         <span class="pull-right">{{ reportGroup.totalOpportunities | number }}</span>
                     </li>
-                    <li ng-if="showItem()">
+                    <li ng-if="exist(reportGroup.firstOpportunities)">
                         <label>First Opportunities</label>
                         <span class="pull-right">{{ reportGroup.firstOpportunities | number }}</span>
                     </li>
@@ -28,23 +28,23 @@
                         <label>Impressions</label>
                         <span class="pull-right">{{ reportGroup.impressions | number }}</span>
                     </li>
-                    <li ng-if="showItem()">
+                    <li ng-if="exist(reportGroup.verifiedImpressions)">
                         <label>Verified Impressions</label>
                         <span class="pull-right">{{ reportGroup.verifiedImpressions | number }}</span>
                     </li>
-                    <li ng-if="showItem()">
+                    <li ng-if="exist(reportGroup.unverifiedImpressions)">
                         <label>Unverified Impressions</label>
                         <span class="pull-right">{{ reportGroup.unverifiedImpressions | number }}</span>
                     </li>
-                    <li ng-if="isAdmin && showItem()">
+                    <li ng-if="isAdmin && exist(reportGroup.blankImpressions)">
                         <label>Blank Impressions</label>
                         <span class="pull-right">{{ reportGroup.blankImpressions | number }}</span>
                     </li>
-                    <li ng-if="isAdmin && showItem()">
+                    <li ng-if="isAdmin && exist(reportGroup.voidImpressions)">
                         <label>Void Impressions</label>
                         <span class="pull-right">{{ reportGroup.voidImpressions | number }}</span>
                     </li>
-                    <li ng-if="showItem()">
+                    <li ng-if="exist(reportGroup.clicks)">
                         <label>Clicks</label>
                         <span class="pull-right">{{ reportGroup.clicks | number }}</span>
                     </li>
@@ -81,7 +81,7 @@
                         <label>Slot Opportunities</label>
                         <span class="pull-right">{{ reportGroup.averageSlotOpportunities | number }}</span>
                     </li>
-                    <li ng-if="showItem()">
+                    <li ng-if="exist(reportGroup.averageFirstOpportunities)">
                         <label>First Opportunities</label>
                         <span class="pull-right">{{ reportGroup.averageFirstOpportunities | number }}</span>
                     </li>
@@ -89,23 +89,23 @@
                         <label>Impressions</label>
                         <span class="pull-right">{{ reportGroup.averageImpressions | number }}</span>
                     </li>
-                    <li ng-if="showItem()">
+                    <li ng-if="exist(reportGroup.averageVerifiedImpressions)">
                         <label>Verified Impressions</label>
                         <span class="pull-right">{{ reportGroup.averageVerifiedImpressions | number }}</span>
                     </li>
-                    <li ng-if="showItem()">
+                    <li ng-if="exist(reportGroup.averageUnverifiedImpressions)">
                         <label>Unverified Impressions</label>
                         <span class="pull-right">{{ reportGroup.averageUnverifiedImpressions | number }}</span>
                     </li>
-                    <li ng-if="isAdmin && showItem()">
+                    <li ng-if="isAdmin && exist(reportGroup.averageBlankImpressions)">
                         <label>Blank Impressions</label>
                         <span class="pull-right">{{ reportGroup.averageBlankImpressions | number }}</span>
                     </li>
-                    <li ng-if="isAdmin && showItem()">
+                    <li ng-if="isAdmin && exist(reportGroup.averageVoidImpressions)">
                         <label>Void Impressions</label>
                         <span class="pull-right">{{ reportGroup.averageVoidImpressions | number }}</span>
                     </li>
-                    <li ng-if="showItem()">
+                    <li ng-if="exist(reportGroup.averageClicks)">
                         <label>Clicks</label>
                         <span class="pull-right">{{ reportGroup.averageClicks | number }}</span>
                     </li>

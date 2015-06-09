@@ -9,14 +9,18 @@
         $scope.isAdmin = Auth.isAdmin();
 
         $scope.hasSlotOpportunities = hasSlotOpportunities;
-        $scope.showItem = showItem;
+        $scope.exist = exist;
 
         function hasSlotOpportunities() {
             return angular.isObject($scope.reportGroup) && angular.isNumber($scope.reportGroup.slotOpportunities);
         }
 
-        function showItem() {
-            return angular.isNumber($scope.reportGroup.clicks);
+        function exist(item) {
+            if(item == undefined) {
+                return false;
+            }
+
+            return true;
         }
     }
 })();
