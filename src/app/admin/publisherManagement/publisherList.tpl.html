@@ -14,41 +14,42 @@
     <search-box show-query="true" sb-list="publishers" search-fields="['id', 'firstName', 'lastName', 'company', 'username', 'email', 'phone']"></search-box>
 
     <div class="panel-body">
-        <table class="table ng-table-responsive" at-sortable-query at-table at-paginated at-list="publishers" at-config="tableConfig">
-            <thead></thead>
-            <tbody>
-            <tr>
-                <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
-                <td at-title="Actions">
-                    <div class="btn-group" dropdown>
-                        <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a ng-click="visitPublisher(item.id)">Login as this publisher</a></li>
-                            <li class="divider"></li>
-                            <li ><a ui-sref="app.admin.reports.performance.account({publisherId: item.id, startDate: today})">View Today's Report</a></li>
-                            <li class="divider"></li>
-                            <li><a ui-sref="^.edit({ id: item.id })">Edit Publisher</a></li>
-                        </ul>
-                    </div>
-                </td>
-                <td at-title="Name" at-sortable at-attribute="name">
-                    {{ item.firstName }} {{ item.lastName }}
-                </td>
-                <td at-title="Username" at-implicit at-sortable at-attribute="username"></td>
-                <td at-title="Company" at-implicit at-sortable at-attribute="company"></td>
-                <td at-title="Email" at-implicit at-sortable at-attribute="email"></td>
-                <td at-title="Phone" at-implicit at-sortable at-attribute="phone"></td>
-                <td at-title="Last Login" at-sortable at-attribute="lastLogin" at-initial-sorting="desc">
-                    {{ item.lastLogin | date }}
-                </td>
-                <td at-title="Enabled" at-sortable at-attribute="enabled">
-                    <i class="fa" ng-class="item.enabled ? 'fa-check-square' : 'fa-square'"></i>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table" at-sortable-query at-table at-paginated at-list="publishers" at-config="tableConfig">
+                <thead></thead>
+                <tbody>
+                <tr>
+                    <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
+                    <td at-title="Actions">
+                        <div class="btn-group" dropdown>
+                            <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a ng-click="visitPublisher(item.id)">Login as this publisher</a></li>
+                                <li class="divider"></li>
+                                <li ><a ui-sref="app.admin.reports.performance.account({publisherId: item.id, startDate: today})">View Today's Report</a></li>
+                                <li class="divider"></li>
+                                <li><a ui-sref="^.edit({ id: item.id })">Edit Publisher</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td at-title="Name" at-sortable at-attribute="name">
+                        {{ item.firstName }} {{ item.lastName }}
+                    </td>
+                    <td at-title="Username" at-implicit at-sortable at-attribute="username"></td>
+                    <td at-title="Company" at-implicit at-sortable at-attribute="company"></td>
+                    <td at-title="Email" at-implicit at-sortable at-attribute="email"></td>
+                    <td at-title="Phone" at-implicit at-sortable at-attribute="phone"></td>
+                    <td at-title="Last Login" at-sortable at-attribute="lastLogin" at-initial-sorting="desc">
+                        {{ item.lastLogin | date }}
+                    </td>
+                    <td at-title="Enabled" at-sortable at-attribute="enabled">
+                        <i class="fa" ng-class="item.enabled ? 'fa-check-square' : 'fa-square'"></i>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
-        <at-pagination ng-if="showPagination()" ng-click="setCurrentPageForUrl()" at-list="publishers" at-config="tableConfig"></at-pagination>
-    </div>
+            <at-pagination ng-if="showPagination()" ng-click="setCurrentPageForUrl()" at-list="publishers" at-config="tableConfig"></at-pagination>
+        </div>
     </div>
 </div>

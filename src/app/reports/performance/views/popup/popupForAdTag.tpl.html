@@ -3,30 +3,32 @@
     <h4 class="modal-title">Ad Tag Info</h4>
 </div>
 <div class="modal-body">
-    <table class="table">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>Ad Tag</th>
-            <th>Ad Slot</th>
-            <th>Site</th>
-            <th ng-show="isAdmin">Publisher</th>
-            <th>Position</th>
-            <th>Status</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>{{ relativeEntityData.id }}</td>
-            <td>{{ relativeEntityData.name }}</td>
-            <td>{{ relativeEntityData.adSlot.name }} ({{ relativeEntityData.adSlot.width }} x {{ relativeEntityData.adSlot.height }})</td>
-            <td>{{ relativeEntityData.adSlot.site.name }}</td>
-            <td ng-show="isAdmin">{{ relativeEntityData.adSlot.site.publisher.username }}</td>
-            <td>{{ relativeEntityData.position }}</td>
-            <td><span class="label" ng-class="relativeEntityData.active ? 'label-success' : 'label-danger'">{{ relativeEntityData.active ? 'Active' : 'Paused' }}</span></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Ad Tag</th>
+                <th>Ad Slot</th>
+                <th>Site</th>
+                <th ng-show="isAdmin">Publisher</th>
+                <th>Position</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ relativeEntityData.id }}</td>
+                <td>{{ relativeEntityData.name }}</td>
+                <td>{{ relativeEntityData.adSlot.name }} ({{ relativeEntityData.adSlot.width }} x {{ relativeEntityData.adSlot.height }})</td>
+                <td>{{ relativeEntityData.adSlot.site.name }}</td>
+                <td ng-show="isAdmin">{{ relativeEntityData.adSlot.site.publisher.username }}</td>
+                <td>{{ relativeEntityData.position }}</td>
+                <td><span class="label" ng-class="relativeEntityData.active ? 'label-success' : 'label-danger'">{{ relativeEntityData.active ? 'Active' : 'Paused' }}</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-click="$dismiss(); goToEditPage('tagManagement.adTag.edit', relativeEntityData.id)">Edit This AdTag</button>

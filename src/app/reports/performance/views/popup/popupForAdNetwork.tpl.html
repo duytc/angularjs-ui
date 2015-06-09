@@ -3,28 +3,30 @@
     <h4 class="modal-title">Ad Network Info</h4>
 </div>
 <div class="modal-body">
-    <table class="table">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>Ad Network</th>
-            <th ng-show="isAdmin">Publisher</th>
-            <th>Domain</th>
-            <th>Default Cpm Rate</th>
-            <th>Status</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>{{ relativeEntityData.id }}</td>
-            <td>{{ relativeEntityData.name }}</td>
-            <td ng-show="isAdmin">{{ relativeEntityData.publisher.username }}</td>
-            <td>{{ relativeEntityData.url }}</td>
-            <td>{{ relativeEntityData.defaultCpmRate }}</td>
-            <td><span class="label" ng-class="relativeEntityData.active ? 'label-success' : 'label-danger'">{{ relativeEntityData.active ? 'Active' : 'Paused' }}</span></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Ad Network</th>
+                <th ng-show="isAdmin">Publisher</th>
+                <th>Domain</th>
+                <th>Default Cpm Rate</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ relativeEntityData.id }}</td>
+                <td>{{ relativeEntityData.name }}</td>
+                <td ng-show="isAdmin">{{ relativeEntityData.publisher.username }}</td>
+                <td>{{ relativeEntityData.url }}</td>
+                <td>{{ relativeEntityData.defaultCpmRate }}</td>
+                <td><span class="label" ng-class="relativeEntityData.active ? 'label-success' : 'label-danger'">{{ relativeEntityData.active ? 'Active' : 'Paused' }}</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-click="$close()">Drill Down</button>

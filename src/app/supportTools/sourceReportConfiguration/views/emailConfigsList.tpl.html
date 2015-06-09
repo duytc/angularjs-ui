@@ -32,43 +32,46 @@
 
     <search-box sb-list="sourceReportList" place-holder="'Search by email'" search-fields="['email']"></search-box>
 
-    <table class="table" at-table at-list="sourceReportList" at-paginated at-config="tableConfig">
-        <thead>
-        <tr>
-            <th at-attribute="email">Email</th>
-            <th at-attribute="includedAll">Include All</th>
-            <th at-attribute="sourceReportSiteConfigs">Sites Configs</th>
-            <th at-attribute="active">Enabled</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td at-attribute="actions">
-                <div class="btn-group" dropdown>
-                    <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li ng-show="!item.includedAll"><a ui-sref="^.siteConfigByEmail({emailId: item.id, publisherId: selected.publisher})">Manage Site Config</a></li>
-                        <li ng-show="item.includedAll"><a ng-click="openPopupIncludedAll()">Manage Site Config</a></li>
-                        <li class="divider"></li>
-                        <li><a ng-click="editSourceReportConfig(item)">Edit This Config</a></li>
-                        <li><a ng-click="deleteEmailConfig(item.id)">Delete This Config</a></li>
+    <div class="table-responsive">
+        <table class="table" at-table at-list="sourceReportList" at-paginated at-config="tableConfig">
+            <thead>
+            <tr>
+                <th at-attribute="email">Email</th>
+                <th at-attribute="includedAll">Include All</th>
+                <th at-attribute="sourceReportSiteConfigs">Sites Configs</th>
+                <th at-attribute="active">Enabled</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td at-attribute="actions">
+                    <div class="btn-group" dropdown>
+                        <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li ng-show="!item.includedAll"><a ui-sref="^.siteConfigByEmail({emailId: item.id, publisherId: selected.publisher})">Manage Site Config</a></li>
+                            <li ng-show="item.includedAll"><a ng-click="openPopupIncludedAll()">Manage Site Config</a></li>
+                            <li class="divider"></li>
+                            <li><a ng-click="editSourceReportConfig(item)">Edit This Config</a></li>
+                            <li><a ng-click="deleteEmailConfig(item.id)">Delete This Config</a></li>
+                        </ul>
+                    </div>
+                </td>
+                <td at-implicit at-sortable at-attribute="email" at-initial-sorting="desc"></td>
+                <td at-sortable at-attribute="includedAll">
+                    <span class="label" ng-class="item.includedAll ? 'label-success' : 'label-danger'">{{ item.includedAll ? 'Yes' : 'No' }}</span>
+                </td>
+                <td at-sortable at-attribute="sourceReportSiteConfigs">
+                    <ul ng-show="!item.includedAll" ng-repeat="config in item.sourceReportSiteConfigs">
+                        <li>{{ config.site.name }} - {{ config.site.domain }}</li>
                     </ul>
-                </div>
-            </td>
-            <td at-implicit at-sortable at-attribute="email" at-initial-sorting="desc"></td>
-            <td at-sortable at-attribute="includedAll">
-                <span class="label" ng-class="item.includedAll ? 'label-success' : 'label-danger'">{{ item.includedAll ? 'Yes' : 'No' }}</span>
-            </td>
-            <td at-sortable at-attribute="sourceReportSiteConfigs">
-                <ul ng-show="!item.includedAll" ng-repeat="config in item.sourceReportSiteConfigs">
-                    <li>{{ config.site.name }} - {{ config.site.domain }}</li>
-                </ul>
-            </td>
-            <td at-sortable at-attribute="active">
-                <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
-            </td>
-        </tbody>
-    </table>
+                </td>
+                <td at-sortable at-attribute="active">
+                    <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
+                </td>
+            </tbody>
+        </table>
 
-    <at-pagination ng-if="sourceReportList.length > tableConfig.itemsPerPage" class="table-footer" at-list="sourceReportList" at-config="tableConfig"></at-pagination>
+        <at-pagination ng-if="sourceReportList.length > tableConfig.itemsPerPage" class="table-footer" at-list="sourceReportList" at-config="tableConfig"></at-pagination>
+    </div>
+
 </div>

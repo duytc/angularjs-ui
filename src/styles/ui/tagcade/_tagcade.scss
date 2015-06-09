@@ -103,3 +103,7 @@
 table td:before {
   content: none !important;
 }
+
+table thead {
+  white-space: nowrap;
+}

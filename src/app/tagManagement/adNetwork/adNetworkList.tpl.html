@@ -14,8 +14,8 @@
     <search-box show-query="true" sb-list="adNetworks" search-fields="['id', 'name', 'publisher.username']"></search-box>
 
     <div class="panel-body" ng-if="hasData()">
-        <div>
-            <table class="table ng-table-responsive" at-sortable-query at-table at-paginated at-list="adNetworks" at-config="tableConfig">
+        <div class="table-responsive">
+            <table class="table" at-sortable-query at-table at-paginated at-list="adNetworks" at-config="tableConfig">
                 <thead>
                     <tr>
                         <th at-attribute="id">#</th>

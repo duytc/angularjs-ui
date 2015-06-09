@@ -3,28 +3,30 @@
     <h4 class="modal-title">Publisher Info</h4>
 </div>
 <div class="modal-body">
-    <table class="table">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>Publisher Name</th>
-            <th>Full Name</th>
-            <th>Company</th>
-            <th>Email</th>
-            <th>Phone</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>{{ relativeEntityData.id }}</td>
-            <td>{{ relativeEntityData.username }}</td>
-            <td>{{ relativeEntityData.firstName }}  {{ data.lastName }}</td>
-            <td>{{ relativeEntityData.company }}</td>
-            <td>{{ relativeEntityData.email }}</td>
-            <td>{{ relativeEntityData.phone }}</td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Publisher Name</th>
+                <th>Full Name</th>
+                <th>Company</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ relativeEntityData.id }}</td>
+                <td>{{ relativeEntityData.username }}</td>
+                <td>{{ relativeEntityData.firstName }}  {{ data.lastName }}</td>
+                <td>{{ relativeEntityData.company }}</td>
+                <td>{{ relativeEntityData.email }}</td>
+                <td>{{ relativeEntityData.phone }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-click="$close()">Drill Down</button>
