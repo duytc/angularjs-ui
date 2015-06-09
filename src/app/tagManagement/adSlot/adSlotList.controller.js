@@ -63,7 +63,7 @@
                     .then(
                         function () {
                             $state.current.reloadOnSearch = true;
-                            $state.reload();
+                            historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, $state.current);
                             $state.current.reloadOnSearch = false;
 
                             AlertService.addFlash({
