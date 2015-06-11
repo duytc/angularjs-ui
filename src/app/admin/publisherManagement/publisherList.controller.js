@@ -6,19 +6,51 @@
         .controller('PublisherList', PublisherList)
     ;
 
-    function PublisherList($scope, publishers, $location, autoLogin, adminUserManager, AtSortableService, historyStorage, HISTORY_TYPE_PATH) {
+    function PublisherList($scope, publishers, $location, autoLogin, adminUserManager, AtSortableService, AlertService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.publishers = publishers;
 
         $scope.today = new Date();
         $scope.visitPublisher = visitPublisher;
         $scope.showPagination = showPagination;
         $scope.setCurrentPageForUrl = setCurrentPageForUrl;
+        $scope.togglePublisherStatus = togglePublisherStatus;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
             maxPages: 10,
             currentPage: $location.search().page - 1 || 0
         };
+
+        function togglePublisherStatus(publisher) {
+            var newStatus = !publisher.enabled;
+            var isPause = !newStatus;
+
+            return adminUserManager.one(publisher.id).patch({ 'enabled': newStatus })
+                .then(function () {
+                    publisher.enabled = newStatus;
+
+                    var successMessage;
+
+                    if (isPause) {
+                        successMessage = 'The publisher has been deactivated';
+                    } else {
+                        successMessage = 'The publisher has been activated';
+                    }
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: successMessage
+                    });
+                })
+                .catch(function () {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'Could not change publisher status'
+                    });
+                })
+
+                ;
+        }
 
         function visitPublisher(publisherId) {
             adminUserManager.one(publisherId).one('token').get()
