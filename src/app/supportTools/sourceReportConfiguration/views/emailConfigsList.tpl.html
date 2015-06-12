@@ -3,7 +3,7 @@
         <span class="glyphicon glyphicon-th"></span>
         <strong current-page-title></strong>
 
-        <div class="button-bar hidden-xs">
+        <div class="button-bar">
             <button ng-click="addNewEmailConfig()" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon glyphicon-plus"></span>
                 New Configuration
@@ -44,7 +44,7 @@
             </thead>
             <tbody>
             <tr>
-                <td at-attribute="actions">
+                <td at-attribute="actions" at-title="Actions">
                     <div class="btn-group" dropdown>
                         <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                         <ul class="dropdown-menu" role="menu">
@@ -56,16 +56,16 @@
                         </ul>
                     </div>
                 </td>
-                <td at-implicit at-sortable at-attribute="email" at-initial-sorting="desc"></td>
-                <td at-sortable at-attribute="includedAll">
+                <td at-implicit at-sortable at-attribute="email" at-initial-sorting="desc" at-title="Email"></td>
+                <td at-sortable at-attribute="includedAll" at-title="Include All">
                     <span class="label" ng-class="item.includedAll ? 'label-success' : 'label-danger'">{{ item.includedAll ? 'Yes' : 'No' }}</span>
                 </td>
-                <td at-sortable at-attribute="sourceReportSiteConfigs">
+                <td at-sortable at-attribute="sourceReportSiteConfigs" at-title="Sites Configs">
                     <ul ng-show="!item.includedAll" ng-repeat="config in item.sourceReportSiteConfigs">
                         <li>{{ config.site.name }} - {{ config.site.domain }}</li>
                     </ul>
                 </td>
-                <td at-sortable at-attribute="active">
+                <td at-sortable at-attribute="active" at-title="Enabled">
                     <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
                 </td>
             </tbody>

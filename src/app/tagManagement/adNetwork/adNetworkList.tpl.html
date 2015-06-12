@@ -3,11 +3,17 @@
         <span class="glyphicon glyphicon-th"></span>
         <strong current-page-title></strong>
 
-        <div class="button-bar hidden-xs">
+        <div class="button-bar">
             <button ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon glyphicon-plus"></span>
                 New Ad Network
             </button>
+        </div>
+        <div class="btn-group btnGrouped" dropdown>
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ui-sref="^.new">New Ad Network</a></li>
+            </ul>
         </div>
     </div>
 
@@ -27,7 +33,7 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td at-implicit at-sortable at-attribute="id"></td>
+                    <td at-implicit at-sortable at-attribute="id" at-title="#"></td>
                     <td at-title="Actions">
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
@@ -43,9 +49,9 @@
                             </ul>
                         </div>
                     </td>
-                    <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc"></td>
-                    <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.username"></td>
-                    <td at-sortable at-attribute="status">
+                    <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="Ad Network"></td>
+                    <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.username" at-title="Publisher"></td>
+                    <td at-sortable at-attribute="status" at-title="Status">
                         <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
                     </td>
                 </tr>

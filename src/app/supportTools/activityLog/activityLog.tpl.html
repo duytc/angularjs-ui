@@ -24,13 +24,13 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td at-implicit at-sortable at-attribute="id" at-initial-sorting="desc"></td>
-                            <td at-implicit at-sortable at-attribute="action"></td>
-                            <td at-implicit at-sortable at-attribute="user.username"></td>
-                            <td at-sortable at-attribute="createdAt">
+                            <td at-implicit at-sortable at-attribute="id" at-initial-sorting="desc" at-title="#"></td>
+                            <td at-implicit at-sortable at-attribute="action" at-title="Actions"></td>
+                            <td at-implicit at-sortable at-attribute="user.username" at-title="Username"></td>
+                            <td at-sortable at-attribute="createdAt" at-title="Time">
                                 {{ item.createdAt | date : 'medium' }}
                             </td>
-                            <td ng-show="!showTabMenu" at-attribute="data">
+                            <td ng-show="!showTabMenu" at-attribute="data" at-title="Description">
                                 <div>
                                     <strong>{{ item.data.action }}</strong>
                                     {{ item.data.entity.className }}
@@ -64,7 +64,7 @@
                                 <!--</li>-->
                                 <!--</ul>-->
                             </td>
-                            <td at-sortable at-implicit at-attribute="ip"></td>
+                            <td at-sortable at-implicit at-attribute="ip" at-title="IP"></td>
                         </tr>
                         </tbody>
                     </table>

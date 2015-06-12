@@ -4,9 +4,17 @@
     <div class="panel panel-default daily-reports">
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
             Daily Account Breakdown
-            <div class="button-bar hidden-xs">
+            <div class="button-bar">
                 <export-excel data="reports" fields="['date', 'name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Date', 'Publisher' ,'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
                 <!--<export-excel data="reports" fields="['date', 'name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate', 'estRevenue', 'estCpm']" header="['Date', 'Publisher' ,'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate', 'Est. Revenue ($)', 'Est. CPM ($)']" file-name="getExportExcelFileName"></export-excel>-->
+            </div>
+            <div class="btn-group btnGrouped" dropdown>
+                <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li>
+                        <export-excel data="reports" fields="['date', 'name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Date', 'Publisher' ,'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="table-responsive">
@@ -18,7 +26,7 @@
                 </thead>
                 <tbody>
                 <tr ng-click="drillDownReport(reportStates.sites, item)">
-                    <td at-attribute="actions" ng-if="isAdmin">
+                    <td at-attribute="actions" ng-if="isAdmin" at-title="Actions">
                         <div class="btn-group" dropdown stop-event>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                             <ul class="dropdown-menu" role="menu">

@@ -2,11 +2,17 @@
     <div class="panel-heading">
         <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
 
-        <div class="button-bar hidden-xs">
+        <div class="button-bar">
             <button ng-if="!isNew" ng-click="backToListAdSlot()" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon glyphicon-arrow-left"></span>
                 Back to Ad Slot List
             </button>
+        </div>
+        <div class="btn-group btnGrouped" dropdown ng-if="!isNew">
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ng-click="backToListAdSlot()">Back to Ad Slot List</a></li>
+            </ul>
         </div>
     </div>
     <div class="panel-body">

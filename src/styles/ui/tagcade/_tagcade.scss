@@ -100,10 +100,59 @@
     }
 }
 
+/*
 table td:before {
   content: none !important;
 }
+*/
 
-table thead {
-  white-space: nowrap;
+/* multiple buttons will be grouped ad a single dropdown button */
+.btnGrouped {
+    display:none;
+    float:right;
+}
+
+@media screen and (max-width: 600px) {
+    /* rearrange table to fit width */
+    .table-responsive table thead {display:none;}
+
+    .table-responsive table tbody td {
+        display: block; padding: .6rem;
+    }
+
+    .table-responsive table tbody tr td:first-child {
+        background: #666; color: #fff;
+    }
+
+    .table-responsive table tbody td {
+        text-align:right;
+        float:right;
+        display:block;
+        width:100%;
+    }
+
+    .table-responsive table tbody td:before {
+        content: attr(at-title);
+        font-weight: bold;
+        font-size:16px;
+        display: inline-block;
+        float:left;
+        width:50%;
+        text-align:left;
+    }
+
+    /* hide the original buttons and show the grouped button */
+    .btnGrouped {
+        display:block;
+        float:right;
+        margin-top:-7px;
+    }
+
+    div.button-bar {
+        display:none;
+    }
+
+    .userForm .col-sm-10 {
+        padding-left: 15px !important;
+    }
 }

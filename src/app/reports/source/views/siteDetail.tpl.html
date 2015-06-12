@@ -4,11 +4,22 @@
     <div class="panel panel-default daily-reports">
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
             Breakdown by Traffic Source
-            <div class="button-bar hidden-xs">
+            <div class="button-bar">
                 <export-excel
                         data="report.records"
                         fields="['embeddedTrackingKeys', 'visits', 'pageViews', 'viewsPerVisit', 'qtos', 'qtosPercentage', 'displayOpportunities', 'displayImpressions', 'displayFillRate', 'displayClicks', 'displayCTR', 'displayIPV', 'videoPlayerReady', 'videoAdPlays', 'videoAdImpressions', 'videoAdCompletions', 'videoAdCompletionRate', 'videoIPV', 'videoAdClicks']"
                         header="['Tracking Keys', 'Visits', 'Page Views', 'Views Per Visit', 'QTOS', 'QTOS (%)', 'Slot Opportunities', 'Impressions', 'Fill Rate', 'Clicks', 'CTR', 'Display IPV', 'Player Ready', 'Ad Plays', 'Ad Impressions', 'Ad Completions', 'Ad Completion Rate', 'Video IPV', 'Ad Clicks']" file-name="getExportExcelFileName"></export-excel>
+            </div>
+            <div class="btn-group btnGrouped" dropdown>
+                <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li>
+                        <export-excel
+                                data="report.records"
+                                fields="['embeddedTrackingKeys', 'visits', 'pageViews', 'viewsPerVisit', 'qtos', 'qtosPercentage', 'displayOpportunities', 'displayImpressions', 'displayFillRate', 'displayClicks', 'displayCTR', 'displayIPV', 'videoPlayerReady', 'videoAdPlays', 'videoAdImpressions', 'videoAdCompletions', 'videoAdCompletionRate', 'videoIPV', 'videoAdClicks']"
+                                header="['Tracking Keys', 'Visits', 'Page Views', 'Views Per Visit', 'QTOS', 'QTOS (%)', 'Slot Opportunities', 'Impressions', 'Fill Rate', 'Clicks', 'CTR', 'Display IPV', 'Player Ready', 'Ad Plays', 'Ad Impressions', 'Ad Completions', 'Ad Completion Rate', 'Video IPV', 'Ad Clicks']" file-name="getExportExcelFileName"></export-excel>
+                    </li>
+                </ul>
             </div>
         </div>
 
