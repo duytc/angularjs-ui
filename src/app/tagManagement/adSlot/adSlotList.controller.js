@@ -5,10 +5,11 @@
         .controller('AdSlotList', AdSlotList)
     ;
 
-    function AdSlotList($scope, $state, $location, $stateParams, $modal, $q, AlertService, AdSlotManager, DynamicAdSlotManager, adSlots, dynamicAdSlot, site, AtSortableService, historyStorage, HISTORY_TYPE_PATH) {
+    function AdSlotList($scope, $state, $location, $stateParams, $modal, $q, AlertService, adSlotService, adSlots, site, AtSortableService, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT_FOR_LIST) {
         $scope.site = site;
 
-        $scope.adSlots = dynamicAdSlot.concat(adSlots);
+        $scope.adSlots = adSlots;
+        $scope.types = TYPE_AD_SLOT_FOR_LIST;
 
         $scope.hasData = function () {
             return !!adSlots.length;
@@ -28,6 +29,7 @@
         $scope.showPagination = showPagination;
         $scope.setCurrentPageForUrl = setCurrentPageForUrl;
         $scope.backToListSite = backToListSite;
+        $scope.exist = exist;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -36,9 +38,9 @@
         };
 
         $scope.generateAdTag = function (adSlot) {
-            var Manager = !!adSlot.width ? AdSlotManager : DynamicAdSlotManager;
+            var Manager = adSlotService.getManagerForAdSlot(adSlot);
 
-            var modalInstance = $modal.open({
+            $modal.open({
                 templateUrl: 'tagManagement/adSlot/generateAdTag.tpl.html',
                 resolve: {
                     javascriptTag: function () {
@@ -57,7 +59,8 @@
                 templateUrl: 'tagManagement/adSlot/confirmDeletion.tpl.html'
             });
 
-            var Manager = !!adSlot.width ? AdSlotManager : DynamicAdSlotManager;
+            var Manager = adSlotService.getManagerForAdSlot(adSlot);
+
             modalInstance.result.then(function () {
                 return Manager.one(adSlot.id).remove()
                     .then(
@@ -90,6 +93,9 @@
                 resolve: {
                     adSlot: function () {
                         return adSlot;
+                    },
+                    Manager: function() {
+                        return adSlotService.getManagerForAdSlot(adSlot);
                     }
                 }
             });
@@ -105,6 +111,14 @@
 
         function backToListSite() {
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.site, '^.^.sites.list');
+        }
+
+        function exist(type, typeCompare) {
+            if(type == typeCompare) {
+                return true;
+            }
+
+            return false;
         }
 
         $scope.$on('$locationChangeSuccess', function() {

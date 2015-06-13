@@ -38,10 +38,10 @@
                 return SiteManager.one(site.id).remove()
                     .then(
                         function () {
-                            var index = sites.indexOf(site);
+                            var index = $scope.sites.indexOf(site);
 
                             if (index > -1) {
-                                sites.splice(index, 1);
+                                $scope.sites.splice(index, 1);
                             }
 
                             AlertService.replaceAlerts({

@@ -5,14 +5,15 @@
         .directive('queryBuilder', queryBuilder)
     ;
 
-    function queryBuilder($compile, CONDITIONS_STRING, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, queryBuilderService, AdSlotManager) {
+    function queryBuilder($compile, CONDITIONS_STRING, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, TYPE_AD_SLOT_FOR_LIST, queryBuilderService, DisplayAdSlotManager) {
         'use strict';
 
         return {
             scope: {
                 expressions: '=',
                 adSlots: '=',
-                tags: '='
+                tags: '=',
+                native: '='
             },
             restrict: 'AE',
             templateUrl: 'blocks/queryBuilder/queryBuilder.tpl.html',
@@ -23,6 +24,8 @@
                     scope.operators = OPERATORS;
                     scope.conditions = CONDITIONS_STRING;
                     scope.dataTypes = DATA_TYPE;
+                    scope.typesList = TYPE_AD_SLOT_FOR_LIST;
+                    scope.hideStartingPositionAdTag = false;
 
                     var groupKey = GROUP_KEY;
                     var groupTYPE = GROUP_TYPE;
@@ -31,6 +34,7 @@
                     scope.enableDragDropQueryBuilder = enableDragDropQueryBuilder;
                     scope.selectExpectAdSlot = selectExpectAdSlot;
                     scope.formatPositionLabel = formatPositionLabel;
+                    scope.filterEntityType = filterEntityType;
 
                     scope.sortableOptions = {
                         disabled: true,
@@ -60,10 +64,17 @@
 
                         var adSlotId = !!adSlot.id ? adSlot.id : adSlot;
 
-                        AdSlotManager.one(adSlotId).getList('adtags')
-                            .then(function(adTags) {
-                                scope.groups[index] = _setupGroup(adTags.plain());
-                            });
+                        if(adSlot.type == scope.typesList.native) {
+                            scope.hideStartingPositionAdTag = true;
+                        }
+                        if(adSlot.type == scope.typesList.static) {
+                            scope.hideStartingPositionAdTag = false;
+                            DisplayAdSlotManager.one(adSlotId).getList('adtags')
+                                .then(function(adTags) {
+                                    scope.groups[index] = _setupGroup(adTags.plain());
+                                })
+                            ;
+                        }
                     }
 
                     function _setupGroup(listAdTags) {
@@ -110,6 +121,21 @@
                         });
                     }
 
+                    function filterEntityType(adSlot) {
+                        if(adSlot.id == null || scope.native) {
+                            return true;
+                        }
+                        else if(!scope.native) {
+                            if(adSlot.type == scope.typesList.static) {
+                                return true;
+                            }
+
+                            return false;
+                        }
+
+                        return false;
+                    }
+
                     function enableDragDropQueryBuilder(enable) {
                         scope.sortableOptions['disabled'] = enable;
                     }
@@ -125,6 +151,20 @@
 
                         return showString;
                     }
+
+                    scope.$watch(function() { return scope.adSlots }, function () {
+                        if(!scope.adSlots && !scope.groups) {
+                            return;
+                        }
+
+                        angular.forEach(scope.expressions, function(expressionRoot) {
+                            if(!expressionRoot.expectAdSlot) {
+                                return;
+                            }
+
+                            !!expressionRoot.expectAdSlot.id ? expressionRoot.expectAdSlot = expressionRoot.expectAdSlot.id : expressionRoot.expectAdSlot;
+                        })
+                    });
 
                     directive || (directive = $compile(content));
 

@@ -1,0 +1,53 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span>
+        <strong current-page-title></strong>
+
+        <div class="button-bar hidden-xs">
+            <button ui-sref="^.nativeNew({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon glyphicon-plus"></span>
+                New Ad Tag
+            </button>
+            <button ng-click="backToListAdSlot()" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon glyphicon-arrow-left"></span>
+                Back to Ad Slot List
+            </button>
+        </div>
+    </div>
+
+    <div class="panel-body" ng-if="hasAdTags()">
+        <div class="table-responsive">
+            <table class="table" at-sortable-query at-table at-paginated at-list="adTags" at-config="tableConfig">
+                <thead></thead>
+                <tbody>
+                <tr>
+                    <td at-title="#" at-implicit at-attribute="id" at-initial-sorting="desc"></td>
+                    <td at-title="Action" at-attribute="action">
+                        <div class="btn-group" dropdown>
+                            <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a ui-sref="^.edit({ id: item.id })">Edit Ad Tag</a></li>
+                                <li><a ng-click="toggleAdTagStatus(item)">{{ item.active ? 'Pause' : 'Activate' }} Ad Tag</a></li>
+                                <li><a ng-click="confirmDeletion(item)">Delete Ad Tag</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td ng-dblclick="nameForm.$show()" at-attribute="name">
+                        <span class="fa fa-pencil" ng-hide="nameForm.$visible"></span>
+                        <div e-form="nameForm" buttons="no" oncancel="updateAdTag($data, 'name', item)" onbeforesave="updateAdTag($data, 'name', item)" editable-text="item.name">{{ item.name }}</div>
+                    </td>
+                    <td ng-dblclick="rotationForm.$show()" at-attribute="rotation">
+                        <span class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>
+                        <div e-form="rotationForm" buttons="no" oncancel="updateAdTag($data, 'rotation', item)" onbeforesave="updateAdTag($data, 'rotation', item)" editable-number="item.rotation">{{ item.rotation }}</div>
+                    </td>
+                    <td at-attribute="active">
+                        <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <at-pagination ng-if="showPagination()" at-list="adTags" at-config="tableConfig"></at-pagination>
+        </div>
+    </div>
+</div>

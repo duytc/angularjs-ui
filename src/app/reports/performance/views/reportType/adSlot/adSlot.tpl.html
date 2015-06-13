@@ -11,7 +11,11 @@
         </div>
         <div class="table-responsive">
             <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
-                <thead></thead>
+                <thead>
+                <tr>
+                    <th at-attribute="passbacks" ng-show="isNativeAdSlot">Passbacks</th>
+                </tr>
+                </thead>
                 <tbody>
                 <tr ng-click="drillDownReport(reportStates.adSlotAdTags, item)">
                     <td at-title="Actions">
@@ -38,7 +42,7 @@
                     <td at-title="Impressions" at-attribute="impressions" at-sortable>
                         {{ item.impressions | number }}
                     </td>
-                    <td at-title="Passbacks" at-attribute="passbacks" at-sortable>
+                    <td ng-show="isNativeAdSlot" at-attribute="passbacks" at-sortable>
                         {{ item.passbacks | number }}
                     </td>
                     <td at-title="Fill Rate" at-attribute="fillRate" at-sortable>

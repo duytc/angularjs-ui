@@ -5,7 +5,7 @@
         .factory('reportSelectorForm', reportSelectorForm)
     ;
 
-    function reportSelectorForm(adminUserManager, AdNetworkManager, SiteManager, selectorFormCalculator) {
+    function reportSelectorForm($filter, adminUserManager, AdNetworkManager, SiteManager, selectorFormCalculator, TYPE_AD_SLOT_FOR_LIST) {
         var api = {
             getPublishers: getPublishers,
             getAdNetworks: getAdNetworks,
@@ -45,7 +45,8 @@
         function getAdSlotsForSite(siteId) {
             return SiteManager.one(siteId).one('adslots').get()
                 .then(function (adSlots) {
-                    return adSlots.plain();
+                    // remove dynamic ad slot
+                    return $filter('filter')(adSlots.plain(), {type: '!'+TYPE_AD_SLOT_FOR_LIST.dynamic});
                 }
             );
         }

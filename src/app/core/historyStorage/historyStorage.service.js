@@ -22,11 +22,19 @@
 
             if(type == HISTORY_TYPE_PATH.adSlot) {
                 var params = !!getParamsHistoryForAdSlot() ? getParamsHistoryForAdSlot() : paramDefault;
-                return $state.go(state, params);
+                return $state.go(state, params,  {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });
             }
 
             if(!!HISTORY_TYPE_PATH[type]) {
-                return $state.go(state, _getHistoryParams(type));
+                return $state.go(state, _getHistoryParams(type),  {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });
             }
 
             console.log('not support type ' + type);

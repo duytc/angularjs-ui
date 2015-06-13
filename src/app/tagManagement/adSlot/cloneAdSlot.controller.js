@@ -6,7 +6,7 @@
         .controller('CloneAdSlot', CloneAdSlot)
     ;
 
-    function CloneAdSlot($scope, $state, adSlot, $modalInstance, AdSlotManager, AlertService, SiteManager, adminUserManager, Auth) {
+    function CloneAdSlot($scope, $state, adSlot, $modalInstance, Manager, AlertService, SiteManager, adminUserManager, Auth, historyStorage, HISTORY_TYPE_PATH) {
         $scope.adSlot = adSlot;
         $scope.cloneAdSlot = angular.copy($scope.adSlot);
 
@@ -36,10 +36,10 @@
         function submit() {
             $modalInstance.close();
 
-            AdSlotManager.one($scope.cloneAdSlot.id).customPOST({name: $scope.cloneAdSlot.name, site: $scope.cloneAdSlot.site}, 'clone')
+            Manager.one($scope.cloneAdSlot.id).customPOST({name: $scope.cloneAdSlot.name, site: $scope.cloneAdSlot.site}, 'clone')
                 .then(function() {
                     $state.current.reloadOnSearch = true;
-                    $state.reload();
+                    historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, $state.current);
                     $state.current.reloadOnSearch = false;
 
                     AlertService.addFlash({

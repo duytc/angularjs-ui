@@ -5,13 +5,38 @@
         .factory('adSlotService', adSlotService)
     ;
 
-    function adSlotService(SiteManager, _) {
+    function adSlotService(SiteManager, DisplayAdSlotManager,  DynamicAdSlotManager, NativeAdSlotManager, TYPE_AD_SLOT_FOR_LIST, TYPE_AD_SLOT) {
         var api = {
+            getManagerForAdSlot: getManagerForAdSlot,
+
             getAdSlotDynamic: getAdSlotDynamic,
             getTagsAdSlotDynamic: getTagsAdSlotDynamic
         };
 
         return api;
+
+        function getManagerForAdSlot(adSlot) {
+            var Manager;
+            switch(adSlot.type) {
+                case TYPE_AD_SLOT_FOR_LIST.static:
+                case  TYPE_AD_SLOT.adSlot:
+                    Manager = DisplayAdSlotManager;
+                    break;
+                case TYPE_AD_SLOT_FOR_LIST.dynamic:
+                case  TYPE_AD_SLOT.dynamicAdSlot:
+                    Manager = DynamicAdSlotManager;
+                    break;
+                case TYPE_AD_SLOT_FOR_LIST.native:
+                case TYPE_AD_SLOT.nativeAdSlot:
+                    Manager = NativeAdSlotManager;
+                    break;
+                default:
+                    console.log('not found manager for ad slot');
+                    return;
+            }
+
+            return Manager;
+        }
 
         function getAdSlotDynamic(siteId) {
             return SiteManager.one(siteId).getList('dynamicadslots')

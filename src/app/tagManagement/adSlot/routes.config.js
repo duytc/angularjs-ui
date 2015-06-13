@@ -28,14 +28,9 @@
                 resolve: {
                     // AdSlotManager is provided as a parameter to make sure the service is invoked
                     // because during init it attaches additional behaviour to the adslots resource
-                    adSlots: /* @ngInject */ function($stateParams, SiteManager, AdSlotManager) {
+                    adSlots: /* @ngInject */ function($stateParams, SiteManager) {
                         return SiteManager.one($stateParams.siteId).getList('adslots').then(function (adSlots) {
                             return adSlots.plain();
-                        });
-                    },
-                    dynamicAdSlot: /* @ngInject */ function(SiteManager, $stateParams) {
-                        return SiteManager.one($stateParams.siteId).getList('dynamicadslots').then(function (dynamicAdSlots) {
-                            return dynamicAdSlots.plain();
                         });
                     },
                     site: /* @ngInject */ function ($stateParams, SiteManager) {
@@ -64,14 +59,10 @@
                         return AdSlotManager.getList()
                             .then(function(adSlot) {
                                 return adSlot.plain();
-                            })
+                            }
+                        );
                     },
-                    dynamicAdSlot: /* @ngInject */ function(DynamicAdSlotManager) {
-                        return DynamicAdSlotManager.getList()
-                            .then(function(adSlotDynamic) {
-                                return adSlotDynamic.plain();
-                            })
-                    },
+
                     site: function () {
                         return null;
                     }
@@ -134,36 +125,6 @@
                 resolve: {
                     adSlot: /* @ngInject */ function($stateParams, AdSlotManager) {
                         return AdSlotManager.one($stateParams.id).get();
-                    },
-
-                    site: /* @ngInject */ function (adSlot) {
-                        return adSlot.site;
-                    },
-
-                    publisherList: function () {
-                        return null;
-                    },
-
-                    siteList: function() {
-                        return null;
-                    }
-                },
-                ncyBreadcrumb: {
-                    label: 'Edit Ad Slot - {{ adSlot.name }}'
-                }
-            })
-
-            .state('tagManagement.adSlot.editDynamic', {
-                url: '/editDynamic/{id:[0-9]+}',
-                views: {
-                    'content@app': {
-                        controller: 'AdSlotForm',
-                        templateUrl: 'tagManagement/adSlot/adSlotForm.tpl.html'
-                    }
-                },
-                resolve: {
-                    adSlot: /* @ngInject */ function($stateParams, DynamicAdSlotManager) {
-                        return DynamicAdSlotManager.one($stateParams.id).get();
                     },
 
                     site: /* @ngInject */ function (adSlot) {

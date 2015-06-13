@@ -8,7 +8,7 @@
     /**
      * @param {Array} reportGroup.reports
      */
-    function ReportView($scope, $state, Auth, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES) {
+    function ReportView($scope, $state, Auth, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES, TYPE_AD_SLOT_FOR_LIST) {
         var isAdmin = Auth.isAdmin();
         $scope.isAdmin = isAdmin;
 
@@ -17,7 +17,11 @@
         reportGroup = reportGroup || {};
 
         $scope.reportGroup = reportGroup;
-        $scope.reports = $state.current.params.expanded ? (reportGroup.expandedReports || []) : ($scope.reportGroup.reports || []);
+        $scope.reports = $state.current.params.expanded ? ($scope.reportGroup.expandedReports || []) : ($scope.reportGroup.reports || []);
+
+        if(!!$scope.reportGroup) {
+            $scope.isNativeAdSlot = $scope.reportGroup.reportType && $scope.reportGroup.reportType.adSlotType != TYPE_AD_SLOT_FOR_LIST.native ? true : false;
+        }
 
         $scope.getExportExcelFileName = getExportExcelFileName();
 

@@ -62,9 +62,9 @@
                 <div class="form-group" ng-if="allowAdSlotSelection">
                     <label for="inputAdSlot" class="col-sm-2 control-label">Ad Slot</label>
                     <div class="col-sm-10">
-                        <ui-select name="adSlot" ng-model="adTag.adSlot" id="inputAdSlot" ng-required="true" server-error ng-disabled="!adSlotList.length" reset-search-input="'false'">
+                        <ui-select name="adSlot" ng-model="adTag.adSlot" on-select="selectAdSlot($item)" id="inputAdSlot" ng-required="true" server-error ng-disabled="!adSlotList.length" reset-search-input="'false'">
                             <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices repeat="adSlot.id as adSlot in adSlotList | filter: { name:$select.search }">
+                            <ui-select-choices repeat="adSlot.id as adSlot in adSlotList | filter: { name:$select.search } | filter:filterEntityType:adSlot">
                                 {{ adSlot.name }}
                             </ui-select-choices>
                         </ui-select>
@@ -93,7 +93,7 @@
                     <label for="inputPosition" class="col-sm-2 control-label">Ad Type</label>
                     <div class="col-sm-10">
                         <label class="ui-radio"><input ng-model="adTag.adType" type="radio" ng-value="adTypes.customAd"><span>Custom Ad</span></label>
-                        <label class="ui-radio"><input ng-model="adTag.adType" type="radio" ng-value="adTypes.imageAd"><span>Image Ad</span></label>
+                        <label class="ui-radio"><input ng-model="adTag.adType" type="radio" ng-click="adTypeImages()" ng-value="adTypes.imageAd"><span>Image Ad</span></label>
                     </div>
                 </div>
 
@@ -130,7 +130,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" ng-if="showInputPosition">
                     <label for="inputPosition" class="col-sm-2 control-label">Position</label>
                     <div class="col-sm-10">
                         <input name="height" ng-model="adTag.position" server-error min="1" type="number" class="form-control" id="inputPosition" placeholder="Position (leave blank for last position)">

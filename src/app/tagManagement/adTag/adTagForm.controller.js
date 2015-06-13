@@ -6,7 +6,7 @@
     ;
 
     function AdTagForm(
-        $scope, $state, SiteManager, AdTagManager, AlertService, ServerErrorProcessor, adTag, adSlot, site, publisher, publisherList, siteList, adSlotList, adNetworkList, AD_TYPES, historyStorage, HISTORY_TYPE_PATH
+        $scope, $state, SiteManager, AdTagManager, AlertService, ServerErrorProcessor, adTag, adSlot, site, publisher, publisherList, siteList, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT_FOR_LIST
         ) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
@@ -30,6 +30,9 @@
             site: site
         };
 
+        $scope.adSlotTypes = TYPE_AD_SLOT_FOR_LIST;
+        $scope.showInputPosition = adSlot && adSlot.adSlotType == $scope.adSlotTypes.static ? true : false;
+
         $scope.adTypes = AD_TYPES;
 
         $scope.publisherList = publisherList;
@@ -45,6 +48,30 @@
             active: true,
             adType: null,
             descriptor: null
+        };
+
+        if($scope.adTag.adType == null) {
+            $scope.adTag.adType = $scope.adTypes.customAd;
+        }
+
+        $scope.adTypeImages = function() {
+            $scope.adTag.descriptor = null;
+        };
+
+        $scope.filterEntityType = function (adSlot) {
+            if(adSlot.type != $scope.adSlotTypes.dynamic) {
+                return true;
+            }
+
+            return false;
+        };
+
+        $scope.selectAdSlot = function(item) {
+            if(item.type == $scope.adSlotTypes.static) {
+                return $scope.showInputPosition = true;
+            }
+
+            return $scope.showInputPosition = false;
         };
 
         $scope.resetSelection = function () {
@@ -68,10 +95,6 @@
         $scope.isFormValid = function() {
             return $scope.adTagForm.$valid;
         };
-
-        if($scope.adTag.adType == null) {
-            $scope.adTag.adType = $scope.adTypes.customAd;
-        }
 
         $scope.submit = function() {
             if ($scope.formProcessing) {
@@ -108,7 +131,8 @@
                             adSlotId = adSlotId.id;
                         }
 
-                        return $state.go('^.list', {
+                        var state = $scope.showInputPosition ? '^.list' : '^.nativeList';
+                        return $state.go(state, {
                             adSlotId: adSlotId
                         });
                     }

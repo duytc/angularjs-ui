@@ -26,12 +26,35 @@
                     }
                 },
                 resolve: {
-                    adSlot: /* @ngInject */ function ($stateParams, AdSlotManager) {
-                        return AdSlotManager.one($stateParams.adSlotId).get();
+                    adSlot: /* @ngInject */ function ($stateParams, DisplayAdSlotManager) {
+                        return DisplayAdSlotManager.one($stateParams.adSlotId).get();
                     },
 
-                    adTags: /* @ngInject */ function($stateParams, AdSlotManager) {
-                        return AdSlotManager.one($stateParams.adSlotId).getList('adtags').then(function (adTags) {
+                    adTags: /* @ngInject */ function($stateParams, DisplayAdSlotManager) {
+                        return DisplayAdSlotManager.one($stateParams.adSlotId).getList('adtags').then(function (adTags) {
+                            return adTags.plain();
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Ad Tags - {{ adSlot.name }}'
+                }
+            })
+            .state('tagManagement.adTag.nativeList', {
+                url: '/list/nativeadslot/{adSlotId:[0-9]+}',
+                views: {
+                    'content@app': {
+                        controller: 'NativeAdTagList',
+                        templateUrl: 'tagManagement/adTag/nativeAdTagList.tpl.html'
+                    }
+                },
+                resolve: {
+                    adSlot: /* @ngInject */ function ($stateParams, NativeAdSlotManager) {
+                        return NativeAdSlotManager.one($stateParams.adSlotId).get();
+                    },
+
+                    adTags: /* @ngInject */ function($stateParams, NativeAdSlotManager) {
+                        return NativeAdSlotManager.one($stateParams.adSlotId).getList('adtags').then(function (adTags) {
                             return adTags.plain();
                         });
                     }
@@ -59,6 +82,80 @@
                         }
 
                         return AdSlotManager.one($stateParams.adSlotId).get().then(function (adSlot) {
+                            return adSlot.plain();
+                        });
+                    },
+
+                    site: /* @ngInject */ function (adSlot) {
+                        if (!adSlot) {
+                            return null;
+                        }
+
+                        return adSlot.site;
+                    },
+
+                    publisher: /* @ngInject */ function (site) {
+                        if (!site) {
+                            return null;
+                        }
+
+                        return site.publisher;
+                    },
+
+                    siteList: /* @ngInject */ function (SiteManager) {
+                        return SiteManager.getList().then(function (sites) {
+                            return sites.plain();
+                        });
+                    },
+
+                    adSlotList: /* @ngInject */ function (SiteManager, site) {
+                        if (!site) {
+                            return null;
+                        }
+
+                        return SiteManager.one(site.id).getList('adslots').then(function (adSlots) {
+                            return adSlots.plain();
+                        });
+                    },
+
+                    adNetworkList: /* @ngInject */ function (AdNetworkManager) {
+                        return AdNetworkManager.getList().then(function (adNetworks) {
+                            return adNetworks.plain();
+                        });
+                    }
+                },
+                customResolve: {
+                    admin: {
+                        publisherList: /* @ngInject */ function(adminUserManager) {
+                            return adminUserManager.getList({ filter: 'publisher' }).then(function (users) {
+                                return users.plain();
+                            });
+                        }
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'New Ad Tag'
+                }
+            })
+            .state('tagManagement.adTag.nativeNew', {
+                url: '/nativeNew?adSlotId',
+                views: {
+                    'content@app': {
+                        controller: 'AdTagForm',
+                        templateUrl: 'tagManagement/adTag/adTagForm.tpl.html'
+                    }
+                },
+                resolve: {
+                    adTag: function() {
+                        return null;
+                    },
+
+                    adSlot: /* @ngInject */ function ($stateParams, NativeAdSlotManager) {
+                        if (!$stateParams.adSlotId) {
+                            return null;
+                        }
+
+                        return NativeAdSlotManager.one($stateParams.adSlotId).get().then(function (adSlot) {
                             return adSlot.plain();
                         });
                     },
