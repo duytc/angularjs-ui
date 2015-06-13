@@ -132,6 +132,7 @@
             }
 
             delete $scope.adSlot.type;
+            delete $scope.adSlot.adSlotType;
 
             var Manager = adSlotService.getManagerForAdSlot($scope.selected);
             var saveAdSlot = $scope.isNew ? Manager.post($scope.adSlot) : Manager.one($scope.adSlot.id).patch($scope.adSlot);
