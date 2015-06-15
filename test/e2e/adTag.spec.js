@@ -26,8 +26,10 @@ describe("Ad Tags Test", function() {
     it('drag drop', function() {
         browser.get(browser.params.role + '/tagManagement/adTags/list/adslot/' + browser.params.edit.adSlotId);
 
+        element(by.css('.ui-checkbox')).click();
+
         var getRow = function (num){
-            return element(by.repeater('adTag in adTags').row(num));
+            return element(by.repeater('adTags in adTagsGroup').row(num));
         };
 
         browser.driver.actions()

@@ -20,4 +20,23 @@ describe("Ad Slots Test", function() {
         expect(element(by.binding('message')).getText()).
             toEqual('The ad slot has been updated');
     });
+
+    it('native Ad Slots new', function() {
+
+        browser.get(browser.params.role + '/tagManagement/adSlots/new?siteId=' + browser.params.edit.siteId);
+
+        element(by.model('selected.type')).click();
+        element.all(by.css('.ui-select-choices-row')).then(function(items) {
+            items[1].click()
+        });
+
+        var name = element(by.model('adSlot.name'));
+        name.clear();
+        name.sendKeys('adSlot-test-new');
+
+        element(by.css('.btn.btn-success')).click();
+
+        expect(element(by.binding('message')).getText()).
+            toEqual('The ad slot has been created');
+    });
 });

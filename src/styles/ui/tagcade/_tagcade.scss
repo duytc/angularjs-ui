@@ -113,6 +113,11 @@ table td:before {
 }
 
 @media screen and (max-width: 600px) {
+    .pull-right-dropdown {
+      right: 0;
+      left: auto;
+    }
+
     /* rearrange table to fit width */
     .table-responsive table thead {display:none;}
 

@@ -59,7 +59,7 @@
                     <td at-title="Action" at-attribute="action">
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
-                            <ul class="dropdown-menu" role="menu">
+                            <ul class="dropdown-menu pull-right-dropdown" role="menu">
                                 <li ng-if="exist(item.type, types.static)"><a ui-sref="^.^.adTag.list({ adSlotId: item.id })">Manage Ad Tags</a></li>
                                 <li ng-if="exist(item.type, types.native)"><a ui-sref="^.^.adTag.nativeList({ adSlotId: item.id })">Manage Ad Tags</a></li>
                                 <li><a ng-click="generateAdTag(item)">Generate a Tag</a></li>
