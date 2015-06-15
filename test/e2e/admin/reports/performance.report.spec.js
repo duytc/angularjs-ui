@@ -79,7 +79,7 @@ function performanceAction() {
     };
 
     this.drillDown = function(result) {
-        element(by.repeater('item in sortedAndPaginatedList').row(0).column('{{ item.impressions | number }}')).click();
+        element(by.repeater('item in sortedAndPaginatedList').row(0)).click();
 
         expect(result).toBeDefined(true);
     }
@@ -93,7 +93,7 @@ describe("Performance Test", function() {
     var performance = new performanceAction();
 
     it('platform report type', function() {
-        var result = element(by.binding('reportGroup.averageTotalOpportunities | currency'));
+        var result = element(by.binding('reportGroup.averageTotalOpportunities | number'));
 
         //by day
         performance.platform('This Month', 0, result);
@@ -109,7 +109,7 @@ describe("Performance Test", function() {
     });
 
     it('account report type', function() {
-        var result = element(by.binding('reportGroup.averageTotalOpportunities | currency'));
+        var result = element(by.binding('reportGroup.averageTotalOpportunities | number'));
 
         performance.account('This Month', 0, result);
         performance.drillDown(result);
@@ -117,7 +117,7 @@ describe("Performance Test", function() {
     });
 
     it('ad network report type', function() {
-        var result = element(by.binding('reportGroup.averageTotalOpportunities | currency'));
+        var result = element(by.binding('reportGroup.averageTotalOpportunities | number'));
 
         ////all ad network
         performance.adNetwork('Last 30 Days', 0, 0, 0, result);
@@ -137,7 +137,7 @@ describe("Performance Test", function() {
     });
 
     it('site report type', function() {
-        var result = element(by.binding('reportGroup.averageTotalOpportunities | currency'));
+        var result = element(by.binding('reportGroup.averageTotalOpportunities | number'));
 
         ////all site
         performance.site('Last 30 Days', 0, 0, 0, result);
@@ -160,7 +160,7 @@ describe("Performance Test", function() {
     });
 
     it('ad slot report type', function() {
-        var result = element(by.binding('reportGroup.averageTotalOpportunities | currency'));
+        var result = element(by.binding('reportGroup.averageTotalOpportunities | number'));
 
         // ad slot by day
         performance.adSlot('Last Month', 0, 1, 0, 0, result);
