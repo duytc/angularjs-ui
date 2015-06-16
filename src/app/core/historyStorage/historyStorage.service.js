@@ -21,7 +21,8 @@
             $window.localStorage[HISTORY] = $window.localStorage[HISTORY] || '{}';
 
             if(type == HISTORY_TYPE_PATH.adSlot) {
-                var params = !!getParamsHistoryForAdSlot() ? getParamsHistoryForAdSlot() : paramDefault;
+                var paramHistoryForAdSlot = getParamsHistoryForAdSlot();
+                var params = !!paramHistoryForAdSlot && !!paramHistoryForAdSlot.siteId ? paramHistoryForAdSlot : paramDefault;
                 return $state.go(state, params,  {
                     reload: true,
                     inherit: false,
@@ -42,48 +43,18 @@
 
         function setParamsHistoryCurrent(type) {
             $window.localStorage[HISTORY] = $window.localStorage[HISTORY] || '{}';
-
             var stateParam = _getStateParams();
 
-            switch(type) {
-                case HISTORY_TYPE_PATH.adSlot:
-                    _setParamsHistoryCurrentAdSlot(stateParam);
-                    return;
-                case HISTORY_TYPE_PATH.site:
-                    _setParamsHistoryCurrentSite(stateParam);
-                    return;
-                case HISTORY_TYPE_PATH.adNetwork:
-                    _setParamsHistoryCurrentAdNetwork(stateParam);
-                    return;
-                case HISTORY_TYPE_PATH.publisher:
-                    _setParamsHistoryCurrentPublisherManagement(stateParam);
-                    return;
+            if(!!HISTORY_TYPE_PATH[type]) {
+                return _setParamsHistoryCurrent(stateParam, type);
             }
 
             console.log('not support type ' + type);
         }
 
-        function _setParamsHistoryCurrentAdSlot(stateParam) {
+        function _setParamsHistoryCurrent(stateParam, type) {
             var tcHistory = angular.fromJson($window.localStorage[HISTORY]);
-            tcHistory.adSlot = stateParam;
-            $window.localStorage[HISTORY] = angular.toJson(tcHistory);
-        }
-
-        function _setParamsHistoryCurrentSite(stateParam) {
-            var tcHistory = angular.fromJson($window.localStorage[HISTORY]);
-            tcHistory.site = stateParam;
-            $window.localStorage[HISTORY] = angular.toJson(tcHistory);
-        }
-
-        function _setParamsHistoryCurrentAdNetwork(stateParam) {
-            var tcHistory = angular.fromJson($window.localStorage[HISTORY]);
-            tcHistory.adNetwork = stateParam;
-            $window.localStorage[HISTORY] = angular.toJson(tcHistory);
-        }
-
-        function _setParamsHistoryCurrentPublisherManagement(stateParam) {
-            var tcHistory = angular.fromJson($window.localStorage[HISTORY]);
-            tcHistory.publisher = stateParam;
+            tcHistory[type] = stateParam;
             $window.localStorage[HISTORY] = angular.toJson(tcHistory);
         }
 

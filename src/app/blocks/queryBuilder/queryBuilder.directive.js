@@ -25,7 +25,6 @@
                     scope.conditions = CONDITIONS_STRING;
                     scope.dataTypes = DATA_TYPE;
                     scope.typesList = TYPE_AD_SLOT_FOR_LIST;
-                    scope.hideStartingPositionAdTag = false;
 
                     var groupKey = GROUP_KEY;
                     var groupTYPE = GROUP_TYPE;
@@ -48,6 +47,10 @@
 
 
                     function selectExpectAdSlot(adSlot, expressionRoot, index) {
+                        if(!scope.hideStartingPositionAdTag) {
+                            scope.hideStartingPositionAdTag = [];
+                        }
+
                         if(!scope.groups) {
                             scope.groups = [];
                         }
@@ -65,10 +68,10 @@
                         var adSlotId = !!adSlot.id ? adSlot.id : adSlot;
 
                         if(adSlot.type == scope.typesList.native) {
-                            scope.hideStartingPositionAdTag = true;
+                            scope.hideStartingPositionAdTag[index] = true;
                         }
                         if(adSlot.type == scope.typesList.static) {
-                            scope.hideStartingPositionAdTag = false;
+                            scope.hideStartingPositionAdTag[index] = false;
                             DisplayAdSlotManager.one(adSlotId).getList('adtags')
                                 .then(function(adTags) {
                                     scope.groups[index] = _setupGroup(adTags.plain());
