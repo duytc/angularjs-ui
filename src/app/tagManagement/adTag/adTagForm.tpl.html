@@ -101,7 +101,9 @@
                 <div class="form-group" ng-if="adTag.adType == adTypes.customAd">
                     <label for="inputHtml" class="col-sm-2 control-label">Html</label>
                     <div class="col-sm-10">
-                        <textarea name="html" ng-model="adTag.html" server-error ng-required="true" class="form-control" id="inputHtml" rows="12" placeholder="Place your ad tag here"></textarea>
+
+                        <ui-codemirror id="inputHtml" ng-model="adTag.html" ui-codemirror-opts="editorOptions"></ui-codemirror>
+
                         <span class="help-block">You can use the following macros in your ad tag:<br/>
                         <strong>${CACHEBUSTER}</strong>: A unique code that ensures URLs are unique<br/>
                         <strong>${PAGEURL}</strong>: The url of the current page<br/>

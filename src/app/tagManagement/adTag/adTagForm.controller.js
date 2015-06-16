@@ -17,6 +17,13 @@
             adType: 'AdType'
         };
 
+        $scope.editorOptions = {
+            lineWrapping : true,
+            indentUnit: 0,
+            mode : "xml",
+            htmlMode: true
+        };
+
         $scope.isNew = adTag === null;
         $scope.formProcessing = false;
 
@@ -55,6 +62,10 @@
         }
 
         $scope.adTypeImages = function() {
+            if(!!$scope.adTag.descriptor.imageUrl) {
+                return;
+            }
+
             $scope.adTag.descriptor = null;
         };
 

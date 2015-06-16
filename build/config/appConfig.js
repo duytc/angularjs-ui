@@ -60,7 +60,10 @@ module.exports = {
             'vendor/at-table/dist/angular-table.min.js',
             'vendor/angular-currency-filter/dist/currency-filter.min.js',
             'vendor/file-saver/FileSaver.min.js',
-            'vendor/angular-xeditable/dist/js/xeditable.js'
+            'vendor/angular-xeditable/dist/js/xeditable.js',
+            'vendor/codemirror/lib/codemirror.js',
+            'vendor/angular-ui-codemirror/ui-codemirror.js',
+            'vendor/codemirror/mode/xml/xml.js'
         ],
         css: [
             'src/styles/customvendor/**/*.css'

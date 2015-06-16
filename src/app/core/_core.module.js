@@ -49,7 +49,8 @@
         'angular-table',
         'currencyFilter',
         'xeditable',
-        'angucomplete'
+        'angucomplete',
+        'ui.codemirror'
     ]);
 
     core.run(appRun);
