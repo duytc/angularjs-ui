@@ -61,6 +61,12 @@
             $scope.adTag.adType = $scope.adTypes.customAd;
         }
 
+        $scope.backToAdTagList = function() {
+            var state = $scope.adTag.adSlot.adSlotType == TYPE_AD_SLOT_FOR_LIST.native ? '^.nativeList' : '^.list';
+
+            return $state.go(state, {adSlotId: $scope.adTag.adSlot.id});
+        };
+
         $scope.adTypeImages = function() {
             if(!!$scope.adTag.descriptor.imageUrl) {
                 return;

@@ -3,7 +3,7 @@
         <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
 
         <div class="button-bar">
-            <button ng-if="!isNew" ui-sref="^.list({adSlotId: adTag.adSlot.id})" class="btn btn-sm btn-primary" type="button">
+            <button ng-if="!isNew" ng-click="backToAdTagList()" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon glyphicon-arrow-left"></span>
                 Back to Ad Tag List
             </button>
@@ -11,7 +11,7 @@
         <div class="btn-group btnGrouped" dropdown ng-if="!isNew">
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ui-sref="^.list({adSlotId: adTag.adSlot.id})">Back to Ad Tag List</a></li>
+                <li><a ng-click="backToAdTagList()">Back to Ad Tag List</a></li>
             </ul>
         </div>
     </div>
