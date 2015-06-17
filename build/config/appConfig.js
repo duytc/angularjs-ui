@@ -63,7 +63,10 @@ module.exports = {
             'vendor/angular-xeditable/dist/js/xeditable.js',
             'vendor/codemirror/lib/codemirror.js',
             'vendor/angular-ui-codemirror/ui-codemirror.js',
-            'vendor/codemirror/mode/xml/xml.js'
+            'vendor/codemirror/mode/xml/xml.js',
+            'vendor/codemirror/mode/css/css.js',
+            'vendor/codemirror/mode/javascript/javascript.js',
+            'vendor/codemirror/mode/htmlmixed/htmlmixed.js'
         ],
         css: [
             'src/styles/customvendor/**/*.css'

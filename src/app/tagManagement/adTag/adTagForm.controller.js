@@ -20,8 +20,7 @@
         $scope.editorOptions = {
             lineWrapping : true,
             indentUnit: 0,
-            mode : "xml",
-            htmlMode: true
+            mode : "htmlmixed"
         };
 
         $scope.isNew = adTag === null;
