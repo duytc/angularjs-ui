@@ -39,6 +39,7 @@
         $scope.popupReport = popupReport;
         $scope.drillDownReport = drillDownReport;
         $scope.openUpdateCpm = openUpdateCpm;
+        $scope.backToAdTagList = backToAdTagList;
 
         if (!$scope.hasResult) {
             AlertService.replaceAlerts({
@@ -74,6 +75,12 @@
             reportTypeString = (reportTypeString != null && reportTypeString != undefined) ? reportTypeString.replace(/\./g, "-") : '';
 
             return 'tagcade-report-' + reportTypeString + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.startDate)) + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.endDate));
+        }
+
+        function backToAdTagList() {
+            var state = !!$scope.isNativeAdSlot ? '^.^.^.tagManagement.adTag.list' : '^.^.^.tagManagement.adTag.nativeList';
+
+            $state.go(state, {adSlotId: $scope.reportGroup.reportType.adSlotId})
         }
     }
 })();
