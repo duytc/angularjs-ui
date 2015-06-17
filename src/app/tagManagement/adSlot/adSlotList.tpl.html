@@ -64,8 +64,8 @@
                                 <li ng-if="exist(item.type, types.native)"><a ui-sref="^.^.adTag.nativeList({ adSlotId: item.id })">Manage Ad Tags</a></li>
                                 <li><a ng-click="generateAdTag(item)">Generate a Tag</a></li>
                                 <li class="divider"></li>
-                                <li ng-if="exist(item.type, types.static)"><a ui-sref="^.^.^.reports.performance.adSlotAdTags({ adSlotId: item.id, startDate: today})">View Today's Report</a></li>
-                                <li ng-if="exist(item.type, types.static)" class="divider"></li>
+                                <li ng-if="!exist(item.type, types.dynamic)"><a ui-sref="^.^.^.reports.performance.adSlotAdTags({ adSlotId: item.id, startDate: today})">View Today's Report</a></li>
+                                <li ng-if="!exist(item.type, types.dynamic)" class="divider"></li>
                                 <li><a ui-sref="^.edit({ id: item.id })">Edit Ad Slot</a></li>
                                 <li ng-if="!exist(item.type, types.dynamic)"><a ng-click="cloneAdSlot(item)">Clone Ad Slot</a></li>
                                 <li><a ng-click="confirmDeletion(item)">Delete Ad Slot</a></li>
