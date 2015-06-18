@@ -5,7 +5,7 @@
         .controller('TagGenerator', TagGenerator)
     ;
 
-    function TagGenerator($scope, $location, $q, SiteManager, siteList, site, jstags, publishers, adminUserManager) {
+    function TagGenerator($scope, $timeout, $location, $q, siteList, site, jstags, publishers) {
         $scope.formProcessing = false;
 
         $scope.selected = {
@@ -19,6 +19,22 @@
         $scope.allowPublisherSelection = $scope.isAdmin() && !!publishers;
         $scope.publisher = null;
         $scope.publishers = publishers;
+
+        $scope.editorOptions = {
+            lineWrapping : true,
+            indentUnit: 0,
+            readOnly: 'nocursor',
+            mode : "htmlmixed"
+        };
+
+        $scope.refresh = false;
+        $scope.selectTab = function() {
+            $scope.refresh = false;
+
+            $timeout(function() {
+                $scope.refresh = true;
+            })
+        };
 
         $scope.isFormValid = function() {
             return $scope.tagGeneratorForm.$valid;

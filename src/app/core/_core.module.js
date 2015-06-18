@@ -50,7 +50,8 @@
         'currencyFilter',
         'xeditable',
         'angucomplete',
-        'ui.codemirror'
+        'ui.codemirror',
+        'ngClipboard'
     ]);
 
     core.run(appRun);

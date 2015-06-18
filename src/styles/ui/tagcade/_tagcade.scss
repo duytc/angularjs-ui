@@ -122,11 +122,12 @@ table td:before {
     .table-responsive table thead {display:none;}
 
     .table-responsive table tbody td {
-        display: block; padding: .6rem;
+        display: block; padding: .6rem
     }
 
     .table-responsive table tbody tr td:first-child {
-        background: #666; color: #fff;
+        border-top: 5px #ddd solid;
+//        background: #666; color: #fff;
     }
 
     .table-responsive table tbody td {
@@ -160,4 +161,8 @@ table td:before {
     .userForm .col-sm-10 {
         padding-left: 15px !important;
     }
+}
+
+.btn-clipboard {
+  border-radius:0 0 2px 2px !important;
 }
