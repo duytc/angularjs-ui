@@ -44,51 +44,75 @@
 
 <section ng-if="jstags" class="panel panel-default panel-tag-generator">
     <div class="panel-heading"><strong>Tags for {{ selected.site.name }}</strong></div>
-    <div class="panel-body">
-        <div ng-if="jstags.header">
-            <h4>Header Include</h4>
-            <p><strong>Copy and paste the following tag into the &lt;head&gt; section of your website.</strong></p>
+    <tabset class="nav-tab-margin">
+
+        <tab ng-if="jstags.header" select="selectTab()" heading="Header">
+            <ul class="list-unstyled list-info">
+                <li>
+                    <p><strong>Copy and paste the following tag into the &lt;head&gt; section of your website.</strong></p>
+                    <div ui-codemirror ng-model="jstags.header" ui-codemirror-opts="editorOptions" ui-refresh='refresh'></div>
+                    <button class="btn btn-sm btn-primary btn-clipboard" clip-copy="jstags.header">Copy to Clipboard</button>
+                </li>
+            </ul>
+        </tab>
+
+        <tab ng-if="jstags.display" select="selectTab()" heading="Display Ad Slots">
             <div class="media">
                 <div class="media-body">
                     <ul class="list-unstyled list-info">
                         <li>
-                            <textarea class="form-control" rows="2" readonly="readonly" select-on-click>{{ jstags.header }}</textarea>
+                            <p><strong>Give the following tag to your ad networks as a passback/default/fallback tag for display ads.</strong></p>
+                            <div ui-codemirror ng-model="jstags.display.passback" ui-codemirror-opts="editorOptions" ui-refresh='refresh'></div>
+                            <button class="btn btn-sm btn-primary btn-clipboard" clip-copy="jstags.display.passback">Copy to Clipboard</button>
                         </li>
-                    </ul>
-
-                </div>
-            </div>
-        </div>
-
-        <div ng-if="jstags.display.passback">
-            <h4>Display Passback Tag</h4>
-            <p><strong>Give the following tag to your ad networks as a passback/default/fallback tag for display ads.</strong></p>
-            <div class="media">
-                <div class="media-body">
-                    <ul class="list-unstyled list-info">
                         <li>
-                            <textarea class="form-control" rows="2" readonly="readonly" select-on-click>{{ jstags.display.passback }}</textarea>
+                            <p><strong>Copy and paste the following ad tags into the &lt;body&gt; section of your website.</strong></p>
                         </li>
-                    </ul>
-
-                </div>
-            </div>
-        </div>
-
-        <div ng-if="jstags.display.ad_slots">
-            <h4>Display Ad Tags</h4>
-            <p><strong>Copy and paste the following ad tags into the &lt;body&gt; section of your website.</strong></p>
-            <div class="media">
-                <div class="media-body">
-                    <ul class="list-unstyled list-info">
                         <li ng-repeat="(name, tag) in jstags.display.ad_slots">
                             <p><strong>{{ name }}</strong></p>
-                            <textarea class="form-control" rows="7" readonly="readonly" select-on-click>{{ tag }}</textarea>
+                            <div ui-codemirror ng-model="tag" ui-codemirror-opts="editorOptions" ui-refresh='refresh'></div>
+                            <button class="btn btn-sm btn-primary btn-clipboard" clip-copy="tag">Copy to Clipboard</button>
                         </li>
                     </ul>
 
                 </div>
             </div>
-        </div>
-    </div>
+        </tab>
+
+        <tab ng-if="jstags.native.ad_slots" select="selectTab()" heading="Native Ad Slots">
+            <div class="media">
+                <div class="media-body">
+                    <ul class="list-unstyled list-info">
+                        <li>
+                            <p><strong>Copy and paste the following ad tags into the &lt;body&gt; section of your website.</strong></p>
+                        </li>
+                        <li ng-repeat="(name, tag) in jstags.native.ad_slots">
+                            <p><strong>{{ name }}</strong></p>
+                            <div ui-codemirror ng-model="tag" ui-codemirror-opts="editorOptions" ui-refresh='refresh'></div>
+                            <button class="btn btn-sm btn-primary btn-clipboard" clip-copy="tag">Copy to Clipboard</button>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </tab>
+
+        <tab ng-if="jstags.dynamic.ad_slots" select="selectTab()" heading="Dynamic Ad Slots">
+            <div class="media">
+                <div class="media-body">
+                    <ul class="list-unstyled list-info">
+                        <li>
+                            <p><strong>Copy and paste the following ad tags into the &lt;body&gt; section of your website.</strong></p>
+                        </li>
+                        <li ng-repeat="(name, tag) in jstags.dynamic.ad_slots">
+                            <p><strong>{{ name }}</strong></p>
+                            <div ui-codemirror ng-model="tag" ui-codemirror-opts="editorOptions" ui-refresh='refresh'></div>
+                            <button class="btn btn-sm btn-primary btn-clipboard" clip-copy="tag">Copy to Clipboard</button>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </tab>
+    </tabset>
 </section>

@@ -66,7 +66,9 @@ module.exports = {
             'vendor/codemirror/mode/xml/xml.js',
             'vendor/codemirror/mode/css/css.js',
             'vendor/codemirror/mode/javascript/javascript.js',
-            'vendor/codemirror/mode/htmlmixed/htmlmixed.js'
+            'vendor/codemirror/mode/htmlmixed/htmlmixed.js',
+            'vendor/zeroclipboard/dist/ZeroClipboard.min.js',
+            'vendor/ng-clip/src/ngClip.js'
         ],
         css: [
             'src/styles/customvendor/**/*.css'
