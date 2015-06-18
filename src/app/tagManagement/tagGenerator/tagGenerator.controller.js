@@ -23,7 +23,6 @@
         $scope.editorOptions = {
             lineWrapping : true,
             indentUnit: 0,
-            readOnly: true,
             mode : "htmlmixed"
         };
 
@@ -39,7 +38,6 @@
         $scope.editorOptions = {
             lineWrapping : true,
             indentUnit: 0,
-            readOnly: 'nocursor',
             mode : "htmlmixed"
         };
 
