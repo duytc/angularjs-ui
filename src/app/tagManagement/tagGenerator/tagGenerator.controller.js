@@ -19,9 +19,6 @@
         $scope.allowPublisherSelection = $scope.isAdmin() && !!publishers;
         $scope.publisher = null;
         $scope.publishers = publishers;
-        $scope.test = function(e, g) {
-            console.log("mouse down");
-        };
 
         $scope.editorOptions = {
             lineWrapping : true,
