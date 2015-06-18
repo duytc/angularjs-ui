@@ -55,7 +55,7 @@
                         $scope.editorOptions = {
                             lineWrapping : true,
                             indentUnit: 0,
-                            readOnly: 'nocursor',
+                            readOnly: true,
                             mode : "htmlmixed"
                         };
                     }, 0)

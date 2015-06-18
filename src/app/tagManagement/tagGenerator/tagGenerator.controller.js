@@ -19,6 +19,25 @@
         $scope.allowPublisherSelection = $scope.isAdmin() && !!publishers;
         $scope.publisher = null;
         $scope.publishers = publishers;
+        $scope.test = function(e, g) {
+            console.log("mouse down");
+        };
+
+        $scope.editorOptions = {
+            lineWrapping : true,
+            indentUnit: 0,
+            readOnly: true,
+            mode : "htmlmixed"
+        };
+
+        $scope.refresh = false;
+        $scope.selectTab = function() {
+            $scope.refresh = false;
+
+            $timeout(function() {
+                $scope.refresh = true;
+            })
+        };
 
         $scope.editorOptions = {
             lineWrapping : true,
