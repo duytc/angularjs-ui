@@ -46,28 +46,28 @@
                     <td at-title="Network Opportunities" at-attribute="totalOpportunities" at-sortable at-initial-sorting="desc">
                         {{ item.totalOpportunities | number }}
                     </td>
-                    <td ng-show="isNativeAdSlot" at-attribute="firstOpportunities" at-sortable>
+                    <td ng-show="isNativeAdSlot" at-title="First Opportunities" at-attribute="firstOpportunities" at-sortable>
                         {{ item.firstOpportunities | number }}
                     </td>
                     <td at-title="Impressions" at-attribute="impressions" at-sortable>
                         {{ item.impressions | number }}
                     </td>
-                    <td ng-show="isNativeAdSlot" at-attribute="verifiedImpressions" at-sortable>
+                    <td ng-show="isNativeAdSlot" at-title="Verified Impressions" at-attribute="verifiedImpressions" at-sortable>
                         {{ item.verifiedImpressions | number }}
                     </td>
-                    <td ng-show="isNativeAdSlot" at-attribute="unverifiedImpressions" at-sortable>
+                    <td ng-show="isNativeAdSlot" at-title="Unverified Impressions" at-attribute="unverifiedImpressions" at-sortable>
                         {{ item.unverifiedImpressions | number }}
                     </td>
-                    <td ng-show="isAdmin && isNativeAdSlot" at-attribute="blankImpressions" at-sortable>
+                    <td ng-show="isAdmin && isNativeAdSlot" at-title="Blank Impressions" at-attribute="blankImpressions" at-sortable>
                         {{ item.blankImpressions | number }}
                     </td>
-                    <td ng-show="isAdmin && isNativeAdSlot" at-attribute="voidImpressions" at-sortable>
+                    <td ng-show="isAdmin && isNativeAdSlot" at-title="Void Impressions" at-attribute="voidImpressions" at-sortable>
                         {{ item.voidImpressions | number }}
                     </td>
-                    <td ng-show="isNativeAdSlot" at-attribute="clicks" at-sortable>
+                    <td ng-show="isNativeAdSlot" at-title="Clicks" at-attribute="clicks" at-sortable>
                         {{ item.clicks | number }}
                     </td>
-                    <td ng-show="isNativeAdSlot" at-attribute="passbacks" at-sortable>
+                    <td ng-show="isNativeAdSlot" at-title="Passbacks" at-attribute="passbacks" at-sortable>
                         {{ item.passbacks | number }}
                     </td>
                     <td at-title="Tier Fill Rate" at-attribute="fillRate" at-sortable>

@@ -48,7 +48,7 @@
                         <label>Clicks</label>
                         <span class="pull-right">{{ reportGroup.clicks | number }}</span>
                     </li>
-                    <li>
+                    <li ng-if="exist(reportGroup.passbacks)">
                         <label>Passbacks</label>
                         <span class="pull-right">{{ reportGroup.passbacks | number }}</span>
                     </li>
@@ -109,7 +109,7 @@
                         <label>Clicks</label>
                         <span class="pull-right">{{ reportGroup.averageClicks | number }}</span>
                     </li>
-                    <li>
+                    <li ng-if="exist(reportGroup.averagePassbacks)">
                         <label>Passbacks</label>
                         <span class="pull-right">{{ reportGroup.averagePassbacks | number }}</span>
                     </li>
