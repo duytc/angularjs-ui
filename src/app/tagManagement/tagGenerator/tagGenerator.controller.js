@@ -35,21 +35,6 @@
             })
         };
 
-        $scope.editorOptions = {
-            lineWrapping : true,
-            indentUnit: 0,
-            mode : "htmlmixed"
-        };
-
-        $scope.refresh = false;
-        $scope.selectTab = function() {
-            $scope.refresh = false;
-
-            $timeout(function() {
-                $scope.refresh = true;
-            })
-        };
-
         $scope.isFormValid = function() {
             return $scope.tagGeneratorForm.$valid;
         };
