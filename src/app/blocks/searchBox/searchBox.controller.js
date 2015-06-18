@@ -15,8 +15,7 @@
 
         $scope.updateQueryTerm = function() {
             if(!!$scope.showQuery) {
-                var term = !!$scope.query ? {search: $scope.query} : {search: null};
-                AtSortableService.insertParamForUrl(term);
+                AtSortableService.insertParamForUrl({search: $scope.query});
             }
         };
 
