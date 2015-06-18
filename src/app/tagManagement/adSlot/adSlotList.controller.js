@@ -47,17 +47,9 @@
                         return Manager.one(adSlot.id).customGET('jstag');
                     }
                 },
-                controller: function ($scope, javascriptTag, $timeout) {
+                controller: function ($scope, javascriptTag) {
                     $scope.adSlotName = adSlot.name;
                     $scope.javascriptTag = javascriptTag;
-
-                    $timeout(function() {
-                        $scope.editorOptions = {
-                            lineWrapping : true,
-                            indentUnit: 0,
-                            mode : "htmlmixed"
-                        };
-                    }, 0)
                 }
             });
         };

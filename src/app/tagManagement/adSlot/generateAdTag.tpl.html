@@ -3,7 +3,7 @@
 </div>
 <div class="modal-body">
     <p><strong>Copy and paste the following ad tag into the &lt;body&gt; section of your website.</strong></p>
-    <ui-codemirror ng-model="javascriptTag" ui-codemirror-opts="editorOptions"></ui-codemirror>
+    <textarea class="form-control" rows="8" readonly="readonly" select-on-click>{{ javascriptTag }}</textarea>
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-click="$dismiss()">Close</button>
