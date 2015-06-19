@@ -50,7 +50,8 @@
         'currencyFilter',
         'xeditable',
         'angucomplete',
-        'ui.codemirror'
+        'ui.codemirror',
+        'hljs'
     ]);
 
     core.run(appRun);

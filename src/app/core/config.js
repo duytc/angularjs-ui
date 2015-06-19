@@ -7,8 +7,13 @@
         .config(config)
     ;
 
-    function config($httpProvider) {
+    function config($httpProvider, hljsServiceProvider) {
         $httpProvider.interceptors.push('authTokenInterceptor');
         $httpProvider.interceptors.push('responseErrorInterceptor');
+
+        hljsServiceProvider.setOptions({
+            // replace tab with 4 spaces
+            tabReplace: '    '
+        })
     }
 })();
