@@ -86,7 +86,6 @@
                         <li ng-repeat="(name, tag) in jstags.native.ad_slots">
                             <p><strong>{{ name }}</strong></p>
                             <div ui-codemirror ng-model="tag" ui-codemirror-opts="editorOptions" ui-refresh='refresh'></div>
-                            <button class="btn btn-sm btn-primary btn-clipboard" clip-copy="tag">Copy to Clipboard</button>
                         </li>
                     </ul>
 
@@ -104,7 +103,6 @@
                         <li ng-repeat="(name, tag) in jstags.dynamic.ad_slots">
                             <p><strong>{{ name }}</strong></p>
                             <div ui-codemirror ng-model="tag" ui-codemirror-opts="editorOptions" ui-refresh='refresh'></div>
-                            <button class="btn btn-sm btn-primary btn-clipboard" clip-copy="tag">Copy to Clipboard</button>
                         </li>
                     </ul>
 

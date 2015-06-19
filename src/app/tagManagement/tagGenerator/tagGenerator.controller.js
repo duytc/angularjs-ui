@@ -23,23 +23,6 @@
         $scope.editorOptions = {
             lineWrapping : true,
             indentUnit: 0,
-            readOnly: true,
-            mode : "htmlmixed"
-        };
-
-        $scope.refresh = false;
-        $scope.selectTab = function() {
-            $scope.refresh = false;
-
-            $timeout(function() {
-                $scope.refresh = true;
-            })
-        };
-
-        $scope.editorOptions = {
-            lineWrapping : true,
-            indentUnit: 0,
-            readOnly: 'nocursor',
             mode : "htmlmixed"
         };
 
