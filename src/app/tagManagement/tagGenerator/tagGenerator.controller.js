@@ -31,6 +31,14 @@
         $scope.selectSite = function (site, siteId) {
         };
 
+        $scope.getTextToCopy = function(string) {
+            if (navigator.appVersion.indexOf("Win") != -1) {
+                return string.replace(/\n/g, '\r\n');
+            }
+
+            return string;
+        };
+
         $scope.submit = function() {
             if ($scope.formProcessing) {
                 // already running, prevent duplicates

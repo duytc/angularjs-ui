@@ -51,7 +51,8 @@
         'xeditable',
         'angucomplete',
         'ui.codemirror',
-        'hljs'
+        'hljs',
+        'ngClipboard'
     ]);
 
     core.run(appRun);

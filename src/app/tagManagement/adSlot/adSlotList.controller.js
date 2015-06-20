@@ -50,6 +50,9 @@
                 controller: function ($scope, javascriptTag) {
                     $scope.adSlotName = adSlot.name;
                     $scope.javascriptTag = javascriptTag;
+                    $scope.getTextToCopy = function(string) {
+                        return string.replace(/\n/g, '\r\n');
+                    };
                 }
             });
         };

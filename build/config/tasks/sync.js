@@ -9,6 +9,7 @@ module.exports = {
                         'index.html',
                         'assets/images/**/*',
                         'assets/font*/**/*',
+                        'assets/swf/*',
                         'favicon.ico'
                     ],
                 ],
@@ -72,6 +73,14 @@ module.exports = {
                     '**/*.css'
                 ],
                 dest: '<%= appConfig.dirs.build.dev %>/assets/css'
+            },
+            {
+                expand: true,
+                flatten: true,
+                src: [
+                    '<%= appConfig.vendorFiles.swf %>'
+                ],
+                dest: '<%= appConfig.dirs.build.dev %>/assets/swf'
             }
         ]
     }

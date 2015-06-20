@@ -51,6 +51,7 @@
                 <li>
                     <p><strong>Copy and paste the following tag into the &lt;head&gt; section of your website.</strong></p>
                     <div hljs source="jstags.header" select-on-click class="highlight-js"></div>
+                    <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(jstags.header)" class="btn btn-sm btn-primary btn-clipboard">Copy to clipboard</button>
                 </li>
             </ul>
         </tab>
@@ -62,6 +63,7 @@
                         <li>
                             <p><strong>Give the following tag to your ad networks as a passback/default/fallback tag for display ads.</strong></p>
                             <div hljs source="jstags.display.passback" select-on-click class="highlight-js"></div>
+                            <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(jstags.display.passback)" class="btn btn-sm btn-primary btn-clipboard">Copy to clipboard</button>
                         </li>
                         <li>
                             <p><strong>Copy and paste the following ad tags into the &lt;body&gt; section of your website.</strong></p>
@@ -69,6 +71,7 @@
                         <li ng-repeat="(name, tag) in jstags.display.ad_slots">
                             <p><strong>{{ name }}</strong></p>
                             <div hljs source="tag" select-on-click class="highlight-js"></div>
+                            <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(tag)" class="btn btn-sm btn-primary btn-clipboard">Copy to clipboard</button>
                         </li>
                     </ul>
 
@@ -86,6 +89,7 @@
                         <li ng-repeat="(name, tag) in jstags.native.ad_slots">
                             <p><strong>{{ name }}</strong></p>
                             <div hljs source="tag" select-on-click class="highlight-js"></div>
+                            <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(tag)" class="btn btn-sm btn-primary btn-clipboard">Copy to clipboard</button>
                         </li>
                     </ul>
 
@@ -102,7 +106,8 @@
                         </li>
                         <li ng-repeat="(name, tag) in jstags.dynamic.ad_slots">
                             <p><strong>{{ name }}</strong></p>
-                            <div hljs source="tag" select-on-click class="highlight-js"></div>
+                            <div hljs source="getTextToCopy(tag)" select-on-click class="highlight-js"></div>
+                            <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(tag)" class="btn btn-sm btn-primary btn-clipboard">Copy to clipboard</button>
                         </li>
                     </ul>
 

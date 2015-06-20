@@ -28,7 +28,8 @@
     "xdomain": "*",
     "angular-ui-codemirror": "~0.3.0",
     "angular-highlightjs": "~0.4.1",
-    "highlight.js": "https://github.com/isagalaev/highlight.js.git#8.6"
+    "zeroclipboard": "~2.2.0",
+    "ng-clip": "https://github.com/dtagdev1/ng-clip.git#master"
   },
   "resolutions": {
     "angular": "~1.3.15"
