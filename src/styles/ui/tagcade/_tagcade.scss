@@ -164,6 +164,11 @@ table td:before {
     }
 }
 
-.btn-clipboard {
-  border-radius:0 0 2px 2px !important;
+.copy-clipboard {
+  padding-top: 5px;
+  text-align: right;
+
+  .btn {
+    border-radius:0 0 2px 2px !important;
+  }
 }
