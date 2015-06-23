@@ -67,11 +67,17 @@ module.exports = {
             'vendor/codemirror/mode/css/css.js',
             'vendor/codemirror/mode/javascript/javascript.js',
             'vendor/codemirror/mode/htmlmixed/htmlmixed.js',
+            'vendor/angular-highlightjs/src/angular-highlightjs.js',
+            'vendor/highlight.js/src/highlight.js',
+            'vendor/highlightjs/highlight.pack.js',
             'vendor/zeroclipboard/dist/ZeroClipboard.min.js',
             'vendor/ng-clip/src/ngClip.js'
         ],
         css: [
             'src/styles/customvendor/**/*.css'
+        ],
+        swf: [
+            'vendor/zeroclipboard/dist/ZeroClipboard.swf'
         ]
     }
 };

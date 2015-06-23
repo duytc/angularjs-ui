@@ -20,21 +20,6 @@
         $scope.publisher = null;
         $scope.publishers = publishers;
 
-        $scope.editorOptions = {
-            lineWrapping : true,
-            indentUnit: 0,
-            mode : "htmlmixed"
-        };
-
-        $scope.refresh = false;
-        $scope.selectTab = function() {
-            $scope.refresh = false;
-
-            $timeout(function() {
-                $scope.refresh = true;
-            })
-        };
-
         $scope.isFormValid = function() {
             return $scope.tagGeneratorForm.$valid;
         };
@@ -44,6 +29,14 @@
         };
 
         $scope.selectSite = function (site, siteId) {
+        };
+
+        $scope.getTextToCopy = function(string) {
+            if (navigator.appVersion.indexOf("Win") != -1) {
+                return string.replace(/\n/g, '\r\n');
+            }
+
+            return string;
         };
 
         $scope.submit = function() {

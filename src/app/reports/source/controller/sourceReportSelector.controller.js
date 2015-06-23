@@ -5,7 +5,7 @@
         .controller('SourceReportSelector', SourceReportSelector)
     ;
 
-    function SourceReportSelector($scope, Auth, UserStateHelper, AlertService, ReportParams, sourceReport, SiteManager, adminUserManager, dateUtil) {
+    function SourceReportSelector($scope, $stateParams, Auth, UserStateHelper, AlertService, ReportParams, sourceReport, SiteManager, adminUserManager, dateUtil) {
         var isAdmin = Auth.isAdmin();
         $scope.isAdmin = isAdmin;
 
@@ -22,6 +22,10 @@
             publishers: [],
             sites : []
         };
+
+        if(!$stateParams.siteId) {
+            sourceReport.resetParams();
+        }
 
         $scope.datePickerOpts = {
             maxDate:  moment().endOf('day'),

@@ -50,7 +50,10 @@
             <ul class="list-unstyled list-info">
                 <li>
                     <p><strong>Copy and paste the following tag into the &lt;head&gt; section of your website.</strong></p>
-                    <div ui-codemirror ng-model="jstags.header" ui-codemirror-opts="editorOptions" ui-refresh='refresh'></div>
+                    <div hljs source="jstags.header" select-on-click class="highlight-js"></div>
+                    <div class="copy-clipboard">
+                        <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(jstags.header)" class="btn btn-sm btn-primary">Copy to clipboard</button>
+                    </div>
                 </li>
             </ul>
         </tab>
@@ -61,14 +64,20 @@
                     <ul class="list-unstyled list-info">
                         <li>
                             <p><strong>Give the following tag to your ad networks as a passback/default/fallback tag for display ads.</strong></p>
-                            <div ui-codemirror ng-model="jstags.display.passback" ui-codemirror-opts="editorOptions" ui-refresh='refresh'></div>
+                            <div hljs source="jstags.display.passback" select-on-click class="highlight-js"></div>
+                            <div class="copy-clipboard">
+                                <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(jstags.display.passback)" class="btn btn-sm btn-primary">Copy to clipboard</button>
+                            </div>
                         </li>
                         <li>
                             <p><strong>Copy and paste the following ad tags into the &lt;body&gt; section of your website.</strong></p>
                         </li>
                         <li ng-repeat="(name, tag) in jstags.display.ad_slots">
                             <p><strong>{{ name }}</strong></p>
-                            <ui-codemirror ng-model="tag" ui-codemirror-opts="editorOptions" ui-refresh='refresh'></ui-codemirror>
+                            <div hljs source="tag" select-on-click class="highlight-js"></div>
+                            <div class="copy-clipboard">
+                                <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(tag)" class="btn btn-sm btn-primary">Copy to clipboard</button>
+                            </div>
                         </li>
                     </ul>
 
@@ -85,7 +94,10 @@
                         </li>
                         <li ng-repeat="(name, tag) in jstags.native.ad_slots">
                             <p><strong>{{ name }}</strong></p>
-                            <div ui-codemirror ng-model="tag" ui-codemirror-opts="editorOptions" ui-refresh='refresh'></div>
+                            <div hljs source="tag" select-on-click class="highlight-js"></div>
+                            <div class="copy-clipboard">
+                                <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(tag)" class="btn btn-sm btn-primary">Copy to clipboard</button>
+                            </div>
                         </li>
                     </ul>
 
@@ -102,7 +114,10 @@
                         </li>
                         <li ng-repeat="(name, tag) in jstags.dynamic.ad_slots">
                             <p><strong>{{ name }}</strong></p>
-                            <div ui-codemirror ng-model="tag" ui-codemirror-opts="editorOptions" ui-refresh='refresh'></div>
+                            <div hljs source="getTextToCopy(tag)" select-on-click class="highlight-js"></div>
+                            <div class="copy-clipboard">
+                                <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(tag)" class="btn btn-sm btn-primary">Copy to clipboard</button>
+                            </div>
                         </li>
                     </ul>
 

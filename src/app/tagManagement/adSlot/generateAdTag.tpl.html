@@ -3,8 +3,9 @@
 </div>
 <div class="modal-body">
     <p><strong>Copy and paste the following ad tag into the &lt;body&gt; section of your website.</strong></p>
-    <textarea class="form-control" rows="8" readonly="readonly" select-on-click>{{ javascriptTag }}</textarea>
+    <div hljs source="javascriptTag" select-on-click class="highlight-js"></div>
 </div>
 <div class="modal-footer">
+    <button auto-hide-on-no-flash="true" class="btn btn-primary" clip-copy="getTextToCopy(javascriptTag)">Copy to clipboard</button>
     <button class="btn btn-primary" ng-click="$dismiss()">Close</button>
 </div>

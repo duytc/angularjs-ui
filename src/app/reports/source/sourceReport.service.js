@@ -10,7 +10,8 @@
         var api = {
             getSiteReport: getSiteReport,
             getSiteReportDetail: getSiteReportDetail,
-            getInitialParams: getInitialParams
+            getInitialParams: getInitialParams,
+            resetParams: resetParams
         };
 
         var _$initialParams = null;
@@ -127,6 +128,10 @@
             }
 
             return angular.copy(_$initialParams);
+        }
+
+        function resetParams() {
+            _$initialParams = null;
         }
     }
 })();

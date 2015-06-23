@@ -7,8 +7,17 @@
         .config(config)
     ;
 
-    function config($httpProvider) {
+    function config($httpProvider, hljsServiceProvider, ngClipProvider) {
         $httpProvider.interceptors.push('authTokenInterceptor');
         $httpProvider.interceptors.push('responseErrorInterceptor');
+
+        // config for highlight
+        hljsServiceProvider.setOptions({
+            // replace tab with 4 spaces
+            tabReplace: '    '
+        });
+
+        // config for copy clipboard
+        ngClipProvider.setPath("assets/swf/ZeroClipboard.swf");
     }
 })();
