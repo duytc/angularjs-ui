@@ -388,21 +388,16 @@
                 return defaultSetting;
             }
 
-            // temp return userSetting, not yet supported mapping settings
-            if (1 == 1) {
-                return userSetting;
-            }
-
-            // detect changes
-            var delta = jsondiffpatch.diff(userSetting, defaultSetting);
-
-            if (delta === undefined) {
-                return userSetting;
-            }
-
-            // patch original
-            jsondiffpatch.patch(userSetting, delta);
-
+//            // detect changes
+//            var delta = jsondiffpatch.diff(userSetting, defaultSetting);
+//
+//            if (delta === undefined) {
+//                return userSetting;
+//            }
+//
+//            // patch original
+//            jsondiffpatch.patch(userSetting, delta);
+//
             return userSetting;
         }
 
