@@ -8,7 +8,7 @@
     /**
      * @param {Array} reportGroup.reports
      */
-    function ReportView($scope, $state, Auth, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES, TYPE_AD_SLOT_FOR_LIST) {
+    function ReportView($scope, sessionStorage, $state, Auth, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES, TYPE_AD_SLOT_FOR_LIST) {
         var isAdmin = Auth.isAdmin();
         $scope.isAdmin = isAdmin;
 
@@ -40,6 +40,8 @@
         $scope.drillDownReport = drillDownReport;
         $scope.openUpdateCpm = openUpdateCpm;
         $scope.backToAdTagList = backToAdTagList;
+
+        $scope.showConfigForPerformanceByAdTag = showConfigForPerformanceByAdTag;
 
         if (!$scope.hasResult) {
             AlertService.replaceAlerts({
@@ -76,6 +78,24 @@
 
             return 'tagcade-report-' + reportTypeString + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.startDate)) + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.endDate));
         }
+
+        var settings = isAdmin ? [] : angular.fromJson(sessionStorage.getCurrentSettings());
+        function showConfigForPerformanceByAdTag(setting) {
+            var report = 'performance';
+            var reportType = 'adTag';
+
+            if (isAdmin
+                || !settings
+                || !settings.view
+                || !settings.view.report
+                || !settings.view.report[report]
+                || !settings.view.report[report][reportType]
+                || !settings.view.report[report][reportType][setting]) {
+                return true;
+            }
+
+            return !!settings.view.report[report][reportType][setting].show;
+        };
 
         function backToAdTagList() {
             var state = !!$scope.isNativeAdSlot ? '^.^.^.tagManagement.adTag.list' : '^.^.^.tagManagement.adTag.nativeList';

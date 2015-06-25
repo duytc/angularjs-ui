@@ -18,13 +18,16 @@
                 <thead>
                 <tr>
                     <th at-attribute="reports[0].position" ng-show="isNativeAdSlot">Position</th>
-                    <th at-attribute="firstOpportunities" ng-show="isNativeAdSlot">First Opportunities</th>
-                    <th at-attribute="verifiedImpressions" ng-show="isNativeAdSlot">Verified Impressions</th>
-                    <th at-attribute="unverifiedImpressions" ng-show="isNativeAdSlot">Unverified Impressions</th>
+                    <th at-attribute="totalOpportunities" ng-show="showConfigForPerformanceByAdTag('networkOpportunities')">Network Opportunities</th>
+                    <th at-attribute="firstOpportunities" ng-show="isNativeAdSlot && showConfigForPerformanceByAdTag('firstOpportunities')">First Opportunities</th>
+                    <th at-attribute="impressions" ng-show="showConfigForPerformanceByAdTag('impressions')">Impressions</th>
+                    <th at-attribute="verifiedImpressions" ng-show="isNativeAdSlot && showConfigForPerformanceByAdTag('verifiedImpressions')">Verified Impressions</th>
+                    <th at-attribute="unverifiedImpressions" ng-show="isNativeAdSlot && showConfigForPerformanceByAdTag('unverifiedImpressions')">Unverified Impressions</th>
                     <th at-attribute="blankImpressions" ng-show="isAdmin && isNativeAdSlot">Blank Impressions</th>
                     <th at-attribute="voidImpressions" ng-show="isAdmin && isNativeAdSlot">Void Impressions</th>
-                    <th at-attribute="clicks" ng-show="isNativeAdSlot">Clicks</th>
-                    <th at-attribute="passbacks" ng-show="isNativeAdSlot">Passbacks</th>
+                    <th at-attribute="clicks" ng-show="isNativeAdSlot && showConfigForPerformanceByAdTag('clicks')">Clicks</th>
+                    <th at-attribute="passbacks" ng-show="isNativeAdSlot && showConfigForPerformanceByAdTag('passbacks')">Passbacks</th>
+                    <th at-attribute="fillRate" ng-show="showConfigForPerformanceByAdTag('fillRate')">Fill Rate</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -48,19 +51,19 @@
                     <td ng-show="isNativeAdSlot" at-title="Position" class="position" at-attribute="reports[0].position" at-sortable at-initial-sorting="asc">
                         {{ item.reports[0].position }}
                     </td>
-                    <td at-title="Network Opportunities" at-attribute="totalOpportunities" at-sortable>
+                    <td ng-show="showConfigForPerformanceByAdTag('networkOpportunities')" at-title="Network Opportunities" at-attribute="totalOpportunities" at-sortable>
                         {{ item.totalOpportunities | number }}
                     </td>
-                    <td ng-show="isNativeAdSlot" at-title="First Opportunities" at-attribute="firstOpportunities" at-sortable>
+                    <td ng-show="isNativeAdSlot && showConfigForPerformanceByAdTag('firstOpportunities')" at-title="First Opportunities" at-attribute="firstOpportunities" at-sortable>
                         {{ item.firstOpportunities | number }}
                     </td>
-                    <td at-title="Impressions" at-attribute="impressions" at-sortable>
+                    <td ng-show="showConfigForPerformanceByAdTag('impressions')" at-title="Impressions" at-attribute="impressions" at-sortable>
                         {{ item.impressions | number }}
                     </td>
-                    <td ng-show="isNativeAdSlot" at-title="Verifie Opportunities" at-attribute="verifiedImpressions" at-sortable>
+                    <td ng-show="isNativeAdSlot && showConfigForPerformanceByAdTag('verifiedImpressions')" at-title="Verified Impressions" at-attribute="verifiedImpressions" at-sortable>
                         {{ item.verifiedImpressions | number }}
                     </td>
-                    <td ng-show="isNativeAdSlot" at-title="Unverifie Opportunities" at-attribute="unverifiedImpressions" at-sortable>
+                    <td ng-show="isNativeAdSlot && showConfigForPerformanceByAdTag('unverifiedImpressions')" at-title="Unverified Impressions" at-attribute="unverifiedImpressions" at-sortable>
                         {{ item.unverifiedImpressions | number }}
                     </td>
                     <td ng-show="isAdmin && isNativeAdSlot" at-title="Blank Impressions" at-attribute="blankImpressions" at-sortable>
@@ -69,13 +72,13 @@
                     <td ng-show="isAdmin && isNativeAdSlot" at-title="Void Impressions" at-attribute="voidImpressions" at-sortable>
                         {{ item.voidImpressions | number }}
                     </td>
-                    <td ng-show="isNativeAdSlot" at-title="Clicks" at-attribute="clicks" at-sortable>
+                    <td ng-show="isNativeAdSlot && showConfigForPerformanceByAdTag('clicks')" at-title="Clicks" at-attribute="clicks" at-sortable>
                         {{ item.clicks | number }}
                     </td>
-                    <td ng-show="isNativeAdSlot" at-title="Passbacks" at-attribute="passbacks" at-sortable>
+                    <td ng-show="isNativeAdSlot && showConfigForPerformanceByAdTag('passbacks')" at-title="Passbacks" at-attribute="passbacks" at-sortable>
                         {{ item.passbacks | number }}
                     </td>
-                    <td at-title="Fill Rate" at-attribute="fillRate" at-sortable>
+                    <td ng-show="showConfigForPerformanceByAdTag('fillRate')" at-title="Fill Rate" at-attribute="fillRate" at-sortable>
                         {{ item.fillRate | percentage }}
                     </td>
 

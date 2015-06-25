@@ -13,8 +13,16 @@
             <table class="table" at-table at-paginated at-list="reports" at-config="tableConfig">
                 <thead>
                 <tr>
+                    <th at-attribute="totalOpportunities" ng-show="showConfigForPerformanceByAdTag('networkOpportunities')">Network Opportunities</th>
+                    <th at-attribute="firstOpportunities" ng-show="showConfigForPerformanceByAdTag('firstOpportunities')">First Opportunities</th>
+                    <th at-attribute="impressions" ng-show="showConfigForPerformanceByAdTag('impressions')">Impressions</th>
+                    <th at-attribute="verifiedImpressions" ng-show="showConfigForPerformanceByAdTag('verifiedImpressions')">Verified Impressions</th>
+                    <th at-attribute="unverifiedImpressions" ng-show="showConfigForPerformanceByAdTag('unverifiedImpressions')">Unverified Impressions</th>
                     <th at-attribute="blankImpressions" ng-show="isAdmin">Blank Impressions</th>
-                    <th at-attribute="voidImpressions" ng-show="isAdmin">Void Impressions</th>
+                    <th at-attribute="voidImpressions" ng-show="isAdmin ">Void Impressions</th>
+                    <th at-attribute="clicks" ng-show="showConfigForPerformanceByAdTag('clicks')">Clicks</th>
+                    <th at-attribute="passbacks" ng-show="showConfigForPerformanceByAdTag('passbacks')">Passbacks</th>
+                    <th at-attribute="fillRate" ng-show="showConfigForPerformanceByAdTag('fillRate')">Fill Rate</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,34 +46,34 @@
                     <td class="name" at-title="Ad Tag" at-attribute="name" at-sortable>
                         {{ item.name }}
                     </td>
-                    <td at-title="Network Opportunities" at-attribute="totalOpportunities" at-sortable at-initial-sorting="desc">
+                    <td at-title="Network Opportunities" at-attribute="totalOpportunities" at-sortable at-initial-sorting="desc" ng-show="showConfigForPerformanceByAdTag('networkOpportunities')">
                         {{ item.totalOpportunities | number }}
                     </td>
-                    <td at-title="First Opportunities" at-attribute="firstOpportunities" at-sortable>
+                    <td at-title="First Opportunities" at-attribute="firstOpportunities" at-sortable ng-show="showConfigForPerformanceByAdTag('firstOpportunities')">
                         {{ item.firstOpportunities | number }}
                     </td>
-                    <td at-title="Impressions" at-attribute="impressions" at-sortable>
+                    <td at-title="Impressions" at-attribute="impressions" at-sortable ng-show="showConfigForPerformanceByAdTag('impressions')">
                         {{ item.impressions | number }}
                     </td>
-                    <td at-title="Verified Impressions" at-attribute="verifiedImpressions" at-sortable>
+                    <td at-title="Verified Impressions" at-attribute="verifiedImpressions" at-sortable ng-show="showConfigForPerformanceByAdTag('verifiedImpressions')">
                         {{ item.verifiedImpressions | number }}
                     </td>
-                    <td at-title="Unverified Impressions" at-attribute="unverifiedImpressions" at-sortable>
+                    <td at-title="Unverified Impressions" at-attribute="unverifiedImpressions" at-sortable ng-show="showConfigForPerformanceByAdTag('unverifiedImpressions')">
                         {{ item.unverifiedImpressions | number }}
                     </td>
-                    <td ng-show="isAdmin" at-title="Blank Impressions" at-attribute="blankImpressions" at-sortable>
+                    <td at-title="Blank Impressions" at-attribute="blankImpressions" at-sortable ng-show="isAdmin">
                         {{ item.blankImpressions | number }}
                     </td>
-                    <td ng-show="isAdmin" at-title="Void Impressions" at-attribute="voidImpressions" at-sortable>
+                    <td at-title="Void Impressions" at-attribute="voidImpressions" at-sortable ng-show="isAdmin">
                         {{ item.voidImpressions | number }}
                     </td>
-                    <td at-title="Clicks" at-attribute="clicks" at-sortable>
+                    <td at-title="Clicks" at-attribute="clicks" at-sortable ng-show="showConfigForPerformanceByAdTag('clicks')">
                         {{ item.clicks | number }}
                     </td>
-                    <td at-title="Passbacks" at-attribute="passbacks" at-sortable>
+                    <td at-title="Passbacks" at-attribute="passbacks" at-sortable ng-show="showConfigForPerformanceByAdTag('passbacks')">
                         {{ item.passbacks | number }}
                     </td>
-                    <td at-title="Fill Rate" at-attribute="fillRate" at-sortable>
+                    <td at-title="Fill Rate" at-attribute="fillRate" at-sortable ng-show="showConfigForPerformanceByAdTag('fillRate')">
                         {{ item.fillRate | percentage }}
                     </td>
 

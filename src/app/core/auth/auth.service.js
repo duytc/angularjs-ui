@@ -44,7 +44,7 @@
                 result.hasOwnProperty('id') &&
                 result.hasOwnProperty('username') &&
                 result.hasOwnProperty('userRoles')
-            ;
+                ;
         }
 
         /**
@@ -106,11 +106,12 @@
 
                     if (_$persistToken) {
                         sessionStorage.setCurrentToken(session.token);
+                        sessionStorage.setCurrentSettings(data.settings);
                     }
 
                     return session;
                 })
-            ;
+                ;
         }
 
         /**
@@ -137,19 +138,19 @@
                 ignoreLoadingBar: true
             })
                 .then(
-                    function(response) {
-                        var data = response.data;
+                function(response) {
+                    var data = response.data;
 
-                        // use existing token
-                        data.token = token;
+                    // use existing token
+                    data.token = token;
 
-                        dfd.resolve(data);
-                    },
-                    function() {
-                        sessionStorage.clearStorage();
-                        dfd.reject(new Error(authErrors.invalidToken));
-                    }
-                )
+                    dfd.resolve(data);
+                },
+                function() {
+                    sessionStorage.clearStorage();
+                    dfd.reject(new Error(authErrors.invalidToken));
+                }
+            )
             ;
 
             return dfd.promise;

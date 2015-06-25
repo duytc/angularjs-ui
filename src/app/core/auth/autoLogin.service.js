@@ -24,6 +24,7 @@
          */
         function switchToUser(userToken, homeState) {
             sessionStorage.setPreviousToken(angular.toJson(Auth.getSession()) || {});
+            sessionStorage.setCurrentSettings(userToken.settings);
 
             var newSession = Auth.initSession(userToken);
             sessionStorage.setCurrentToken(newSession.token);
