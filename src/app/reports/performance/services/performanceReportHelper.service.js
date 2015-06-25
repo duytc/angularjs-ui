@@ -5,7 +5,7 @@
         .factory('performanceReportHelper', performanceReportHelper)
     ;
 
-    function performanceReportHelper($state, $modal, UserStateHelper, adminUserManager, AdNetworkManager, SiteManager, AdSlotManager, AdTagManager, ReportParams, AlertService, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES) {
+    function performanceReportHelper($state, _, $modal, UserStateHelper, adminUserManager, AdNetworkManager, SiteManager, AdSlotManager, AdTagManager, ReportParams, AlertService, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES) {
         var api = {
             popupReport: popupReport,
             drillDownReport: drillDownReport,

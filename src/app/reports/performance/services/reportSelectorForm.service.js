@@ -11,6 +11,7 @@
             getAdNetworks: getAdNetworks,
             getSites: getSites,
             getAdSlotsForSite: getAdSlotsForSite,
+            getSiteForAdNetwork: getSiteForAdNetwork,
             getCalculatedParams: getCalculatedParams
         };
 
@@ -49,6 +50,18 @@
                     return $filter('filter')(adSlots.plain(), {type: '!'+TYPE_AD_SLOT_FOR_LIST.dynamic});
                 }
             );
+        }
+
+        function getSiteForAdNetwork(adNetworkId) {
+            return AdNetworkManager.one(adNetworkId).one('sites').getList()
+                .then(function(datas) {
+                    var sites = [];
+                    angular.forEach(datas.plain(), function(data) {
+                        sites.push(data.site);
+                    });
+
+                    return sites;
+                })
         }
 
         function getCalculatedParams(initialParams) {

@@ -41,7 +41,8 @@
         $scope.optionData = {
             adNetworks: [],
             sites: [],
-            adSlots: []
+            adSlots: [],
+            adNetworkSites: []
         };
 
         $scope.isFormValid = isFormValid;
@@ -54,6 +55,8 @@
         $scope.selectPublisher = selectPublisher;
         $scope.selectReportType = selectReportType;
         $scope.selectEntity = selectEntity;
+        $scope.selectAdNetwork = selectAdNetwork;
+        $scope.selectSiteForAdNetwork = selectSiteForAdNetwork;
         $scope.selectBreakdownOption = selectBreakdownOption;
         $scope.getReports = getReports;
         $scope.selectSite = selectSite;
@@ -312,8 +315,61 @@
             resetToStateForCurrentReportType();
         }
 
-        function selectSite(siteId) {
+        function selectAdNetwork(adNetworkId) {
+            $scope.selectedData.adNetworkBreakdown = null;
+            $scope.selectedData.siteId = null;
 
+            if(adNetworkId){
+                reportSelectorForm.getSiteForAdNetwork(adNetworkId)
+                    .then(function(site) {
+                        addAllOption(site, 'All Sites');
+                        $scope.optionData.adNetworkSites  = site;
+                    }
+                );
+            }
+
+            resetToStateForCurrentReportType();
+        }
+
+        // reset toState of ad network
+        function selectSiteForAdNetwork(siteId) {
+            $scope.selectedData.adNetworkBreakdown = null;
+
+            if(!siteId) {
+                return $scope.selectedData.reportType.breakdownOptions = [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.performance.adNetwork'
+                    },
+                    {
+                        key: 'site',
+                        label: 'By Site',
+                        toState: 'reports.performance.adNetworkSites'
+                    },
+                    {
+                        key: 'adtag',
+                        label: 'By Ad Tag',
+                        toState: 'reports.performance.adNetworkAdTags'
+                    }
+                ]
+            }
+
+            return $scope.selectedData.reportType.breakdownOptions = [
+                {
+                    key: 'day',
+                    label: 'By Day',
+                    toState: 'reports.performance.adNetworkSite'
+                },
+                {
+                    key: 'adtag',
+                    label: 'By Ad Tag',
+                    toState: 'reports.performance.adNetworkSiteAdTags'
+                }
+            ]
+        }
+
+        function selectSite(siteId) {
             $scope.selectedData.siteBreakdown = null;
             $scope.selectedData.adSlotBreakdown = null;
             $scope.selectedData.adSlotId = null;
@@ -432,6 +488,10 @@
 
                     var breakdownValue = calculatedParams[reportType.breakdownKey];
                     if (breakdownValue != undefined && breakdownValue != null) {
+                        if (calculatedParams.adNetworkId != null) {
+                            selectSiteForAdNetwork(calculatedParams.siteId);
+                        }
+
                         var breakdownOption = _.findWhere(reportType.breakdownOptions, { key: breakdownValue });
                         selectBreakdownOption(breakdownOption);
                     }
@@ -443,6 +503,11 @@
 
                     if (calculatedParams.siteId != null) {
                         selectEntity(calculatedParams.siteId);
+                    }
+
+                    if (calculatedParams.adNetworkId != null) {
+                        selectAdNetwork(calculatedParams.adNetworkId);
+                        selectSiteForAdNetwork(calculatedParams.siteId);
                     }
 
                     angular.extend($scope.selectedData, _.omit(calculatedParams, ['reportType']));
