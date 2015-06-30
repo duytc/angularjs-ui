@@ -6,6 +6,9 @@
     ;
 
     function addStates(UserStateHelperProvider, USER_MODULES) {
+        // uniqueRequestCacheBuster is used as a work-around for reloading only the current state
+        // currently UI-Router will reload all parent states as well, this causes problems having
+
         UserStateHelperProvider
             .state('tagManagement.adSlot', {
                 abstract: true,
@@ -19,6 +22,9 @@
             })
             .state('tagManagement.adSlot.list', {
                 url: '/list/site/{siteId:[0-9]+}?page&sortField&orderBy&search',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
                 views: {
                     'content@app': {
                         controller: 'AdSlotList',
@@ -46,6 +52,9 @@
             })
             .state('tagManagement.adSlot.listAll', {
                 url: '/list?page&sortField&orderBy&search',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
                 views: {
                     'content@app': {
                         controller: 'AdSlotList',

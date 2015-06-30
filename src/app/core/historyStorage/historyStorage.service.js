@@ -23,19 +23,11 @@
             if(type == HISTORY_TYPE_PATH.adSlot) {
                 var paramHistoryForAdSlot = getParamsHistoryForAdSlot();
                 var params = !!paramHistoryForAdSlot && !!paramHistoryForAdSlot.siteId ? paramHistoryForAdSlot : paramDefault;
-                return $state.go(state, params,  {
-                    reload: true,
-                    inherit: false,
-                    notify: true
-                });
+                return $state.go(state, params);
             }
 
             if(!!HISTORY_TYPE_PATH[type]) {
-                return $state.go(state, _getHistoryParams(type),  {
-                    reload: true,
-                    inherit: false,
-                    notify: true
-                });
+                return $state.go(state, _getHistoryParams(type));
             }
 
             console.log('not support type ' + type);
@@ -80,7 +72,10 @@
                 return null;
             }
 
-            return angular.fromJson($window.localStorage[HISTORY])[historyParams];
+            var params = angular.fromJson($window.localStorage[HISTORY])[historyParams];
+            params.uniqueRequestCacheBuster = Math.random();
+
+            return params;
         }
     }
 })();
