@@ -13,15 +13,33 @@
             templateUrl: 'blocks/exportExcel/exportExcel.tpl.html',
             scope: {
                 filename: '=fileName',
-                data : '=data',
-                header: '=header',
-                fields: '=fields'
+                data : '=',
+                cssClass: '=?',
+                header: '=?',
+                fields: '=?',
+                reportFields: '&?'
             },
             controller: function ($scope, exportExcelService) {
+                $scope.class = $scope.cssClass !== undefined ? $scope.cssClass : 'btn btn-sm btn-primary';
+
                 var data = angular.copy($scope.data);
+                update();
 
                 $scope.click = function() {
+                    update();
                     exportExcelService.exportExcel(data, $scope.fields, $scope.header, $scope.filename);
+                };
+
+                function update() {
+                    var reportFields = $scope.reportFields();
+                    if(!!reportFields) {
+                        $scope.fields = [];
+                        $scope.header = [];
+                        angular.forEach(reportFields, function(field) {
+                            $scope.fields.push(field.key);
+                            $scope.header.push(field.label);
+                        })
+                    }
                 }
             }
         };

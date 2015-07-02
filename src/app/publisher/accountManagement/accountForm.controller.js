@@ -288,6 +288,8 @@
             ]
         };
 
+        var configValChanges = [];
+
         /* when selected Report drop down */
         $scope.selectReport = selectReport;
 
@@ -335,6 +337,10 @@
             delete $scope.publisher.enabledModules;
             delete $scope.publisher.billingRate;
 
+            // only get patched config changes
+            var settingsTmp = angular.copy($scope.publisher.settings);
+            $scope.publisher.settings = getPatchedConfigValChanges();
+
             var saveUser = $scope.publisher.patch();
             saveUser
                 .catch(
@@ -346,6 +352,7 @@
                 })
                 .then(
                 function () {
+                    $scope.publisher.settings = angular.copy(settingsTmp);
                     sessionStorage.setCurrentSettings($scope.publisher.settings);
 
                     $scope.formProcessing = false;
@@ -362,7 +369,15 @@
         }
 
         function initSettings() {
-            configValChanged = false;
+            configValChanges = [];
+
+            /// detect that all settings changed (because publisher has settings not config yet
+            if (!$scope.publisher.settings || $scope.publisher.settings === null || $scope.publisher.settings.length < 1) {
+                configValChanges = ['ALL'];
+            }
+
+            //only check if not changed all, else: always allow click submit
+            configValChanged = configValChanges.indexOf('ALL') > -1;
 
             var mappedSetting = mapSettings(REPORT_SETTINGS.default, $scope.publisher.settings);
             $scope.publisher.settings = JSON.parse(angular.toJson(mappedSetting));
@@ -374,9 +389,9 @@
             $scope.settings_old = JSON.parse(angular.toJson($scope.settings));
 
             /// set default selected item for report and reportType
-            if ($scope.settings.view.report
-                && $scope.settings.view.report.performance
-                && $scope.settings.view.report.performance.adTag) {
+            if (!!$scope.settings.view.report
+                && !!$scope.settings.view.report.performance
+                && !!$scope.settings.view.report.performance.adTag) {
                 $scope.selected.reportSel = reportGroups[0];
                 $scope.selected.reportTypeSel = reportTypes[reportGroups[0].key][0];
             }
@@ -397,7 +412,7 @@
 //
 //            // patch original
 //            jsondiffpatch.patch(userSetting, delta);
-//
+
             return userSetting;
         }
 
@@ -408,20 +423,38 @@
             }
 
             // re-detect change
-            configValChanged = isElementChanged($scope.settings_old, $scope.publisher.settings);
+            //only check if not changed all, else: always allow click submit
+            if(configValChanges.indexOf('ALL') > -1) {
+                configValChanged = true;
+            } else {
+                configValChanged = isElementChanged($scope.settings_old, $scope.publisher.settings);
+            }
         }
 
         /* when selected ReportType drop down */
         function selectReportType($item, $model) {
             // re-detect change
-            configValChanged = isElementChanged($scope.settings_old, $scope.publisher.settings);
+            //only check if not changed all, else: always allow click submit
+            if(configValChanges.indexOf('ALL') > -1) {
+                configValChanged = true;
+            } else {
+                configValChanged = isElementChanged($scope.settings_old, $scope.publisher.settings);
+            }
         }
 
         /* when check box of column checked/unchecked */
         function updateColumnShow($event, col) {
             //$scope.settings.view.report[$scope.selected.reportSel.key][$scope.selected.reportTypeSel.key][col].show = !($scope.settings.view.report[$scope.selected.reportSel.key][$scope.selected.reportTypeSel.key][col].show);
 
-            configValChanged = isElementChanged($scope.settings_old, $scope.settings);
+            //update configValChanges
+            updateConfigValChanges(col);
+
+            //only check if not changed all, else: always allow click submit
+            if(configValChanges.indexOf('ALL') > -1) {
+                configValChanged = true;
+            } else {
+                configValChanged = isElementChanged($scope.settings_old, $scope.settings);
+            }
         }
 
         /* detect settings changed after checked/unchecked check box */
@@ -446,5 +479,56 @@
         function getReportTypes(report) {
             return reportTypes[report];
         }
+
+        function updateConfigValChanges(col) {
+            if(configValChanges.indexOf('ALL') > -1) {
+                return;
+            }
+
+            //trigger: add if not existed / delete if existed
+            var idx = configValChanges.indexOf(col);
+            if(!(idx > -1)) {
+                configValChanges.push(col);
+            } else {
+                configValChanges.splice(idx);
+            }
+        }
+
+        /**
+         * get only changed configVals (as in configValChanges)
+         */
+        function getPatchedConfigValChanges() {
+            // only check if not changed all, else: always allow click submit
+            if(configValChanges.indexOf('ALL') > -1) {
+                return $scope.settings;
+            }
+
+            var currentConfigVals = [];
+
+            if(!!($scope.settings.view.report[$scope.selected.reportSel.key][$scope.selected.reportTypeSel.key])) {
+                currentConfigVals = angular.copy($scope.settings.view.report[$scope.selected.reportSel.key][$scope.selected.reportTypeSel.key]);
+            }
+
+            if(!currentConfigVals || currentConfigVals.length < 1) {
+                return $scope.settings;
+            }
+
+            // build patch
+            var patchedConfigVals = [];
+
+            for (var idx = 0; idx < currentConfigVals.length; idx++) {
+                // remove settings if not existed in configValChanges
+                if(configValChanges.indexOf(currentConfigVals[idx].key) > -1) {
+                    patchedConfigVals.push(angular.copy(currentConfigVals[idx]));
+                }
+            }
+
+            // apply patch
+            var newSettings = angular.copy($scope.settings);
+            newSettings.view.report[$scope.selected.reportSel.key][$scope.selected.reportTypeSel.key] = patchedConfigVals;
+
+            return newSettings;
+        }
+
     }
 })();

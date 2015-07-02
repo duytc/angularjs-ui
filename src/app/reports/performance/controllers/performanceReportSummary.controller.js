@@ -16,11 +16,11 @@
         }
 
         if(!!$scope.reportGroup) {
-            var isNativeAdSlot = $scope.reportGroup.reportType && $scope.reportGroup.reportType.adSlotType != TYPE_AD_SLOT_FOR_LIST.native ? true : false;
+            var isNotNativeAdSlot = $scope.reportGroup.reportType && $scope.reportGroup.reportType.adSlotType != TYPE_AD_SLOT_FOR_LIST.native ? true : false;
         }
 
         function exist(item) {
-            if(item == undefined || !isNativeAdSlot) {
+            if(item == undefined || !isNotNativeAdSlot) {
                 return false;
             }
 

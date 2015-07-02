@@ -103,9 +103,6 @@
             </div>
             <div ng-show="showUesrForm">
                 <form name="settingForm" class="col-lg-6 form-validation form-horizontal userForm padding_top" role="form" ng-submit="submit()" novalidate>
-                    <div class="col-sm-10">
-                        <input server-error name="settings" ng-model="publisher.settings" ng-required="true" ng-minlength="2" type="text" class="form-control" id="settings" ng-show="false">
-                    </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Report</label>
                         <div class="col-sm-9">
@@ -129,62 +126,16 @@
                         </div>
                     </div>
 
-
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">Network Opportunities</label>
-                        <div class="col-sm-9"><label class="ui-checkbox"><input
-                                class="ng-pristine ng-untouched ng-valid" server-error="" name="active"
-                                ng-model="settings.view.report[selected.reportSel.key][selected.reportTypeSel.key]['networkOpportunities'].show" id="networkOpportunities"
-                                type="checkbox" ng-click="updateColumnShow($event, 'networkOpportunities')"><span></span></label>
-                        </div>
-
-                        <label class="col-sm-3 control-label">First Opportunities</label>
-                        <div class="col-sm-9"><label class="ui-checkbox"><input
-                                class="ng-pristine ng-untouched ng-valid" server-error="" name="active"
-                                ng-model="settings.view.report[selected.reportSel.key][selected.reportTypeSel.key]['firstOpportunities'].show" id="firstOpportunities"
-                                type="checkbox" ng-click="updateColumnShow($event, 'firstOpportunities')"><span></span></label>
-                        </div>
-
-                        <label class="col-sm-3 control-label">Impressions</label>
-                        <div class="col-sm-9"><label class="ui-checkbox"><input
-                                class="ng-pristine ng-untouched ng-valid" server-error="" name="active"
-                                ng-model="settings.view.report[selected.reportSel.key][selected.reportTypeSel.key]['impressions'].show" id="impressions"
-                                type="checkbox" ng-click="updateColumnShow($event, 'impressions')"><span></span></label>
-                        </div>
-
-                        <label class="col-sm-3 control-label">Verified Impressions</label>
-                        <div class="col-sm-9"><label class="ui-checkbox"><input
-                                class="ng-pristine ng-untouched ng-valid" server-error="" name="active"
-                                ng-model="settings.view.report[selected.reportSel.key][selected.reportTypeSel.key]['verifiedImpressions'].show" id="verifiedImpressions"
-                                type="checkbox" ng-click="updateColumnShow($event, 'verifiedImpressions')"><span></span></label>
-                        </div>
-
-                        <label class="col-sm-3 control-label">Unverified Impressions</label>
-                        <div class="col-sm-9"><label class="ui-checkbox"><input
-                                class="ng-pristine ng-untouched ng-valid" server-error="" name="active"
-                                ng-model="settings.view.report[selected.reportSel.key][selected.reportTypeSel.key]['unverifiedImpressions'].show" id="unverifiedImpressions"
-                                type="checkbox" ng-click="updateColumnShow($event, 'unverifiedImpressions')"><span></span></label>
-                        </div>
-
-                        <label class="col-sm-3 control-label">Clicks</label>
-                        <div class="col-sm-9"><label class="ui-checkbox"><input
-                                class="ng-pristine ng-untouched ng-valid" server-error="" name="active"
-                                ng-model="settings.view.report[selected.reportSel.key][selected.reportTypeSel.key]['clicks'].show" id="clicks"
-                                type="checkbox" ng-click="updateColumnShow($event, 'clicks')"><span></span></label>
-                        </div>
-
-                        <label class="col-sm-3 control-label">Passbacks</label>
-                        <div class="col-sm-9"><label class="ui-checkbox"><input
-                                class="ng-pristine ng-untouched ng-valid" server-error="" name="active"
-                                ng-model="settings.view.report[selected.reportSel.key][selected.reportTypeSel.key]['passbacks'].show" id="passbacks"
-                                type="checkbox" ng-click="updateColumnShow($event, 'passbacks')"><span></span></label>
-                        </div>
-
-                        <label class="col-sm-3 control-label">Fill Rate</label>
-                        <div class="col-sm-9"><label class="ui-checkbox"><input
-                                class="ng-pristine ng-untouched ng-valid" server-error="" name="active"
-                                ng-model="settings.view.report[selected.reportSel.key][selected.reportTypeSel.key]['fillRate'].show" id="fillRate"
-                                type="checkbox" ng-click="updateColumnShow($event, 'fillRate')"><span></span></label>
+                        <div ng-repeat="setting in settings.view.report[selected.reportSel.key][selected.reportTypeSel.key]">
+                            <div ng-show="!setting.hideForAdmin">
+                                <label class="col-sm-3 control-label">{{ setting.label }}</label>
+                                <div class="col-sm-9"><label class="ui-checkbox"><input
+                                        class="ng-pristine ng-untouched ng-valid" server-error="" name="active"
+                                        ng-model="setting.show" id="networkOpportunities"
+                                        type="checkbox" ng-click="updateColumnShow($event, setting.key)"><span></span></label>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

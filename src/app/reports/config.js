@@ -14,41 +14,68 @@
             default: {
                 view: {
                     report: {
-                        'performance': {
-                            'adTag' : {
-                                'networkOpportunities' : {
+                        performance: {
+                            adTag : [
+                                {
+                                    key : 'totalOpportunities',
                                     label: 'Network Opportunities',
                                     show: true
                                 },
-                                'firstOpportunities' : {
+                                {
+                                    key: 'firstOpportunities',
                                     label: 'First Opportunities',
-                                    show: true
+                                    show: true,
+                                    hideForNativeAdSlot: true
                                 },
-                                'impressions' : {
+                                {
+                                    key: 'impressions',
                                     label: 'Impressions',
                                     show: true
                                 },
-                                'verifiedImpressions' : {
+                                {
+                                    key: 'verifiedImpressions',
                                     label: 'Verified Impressions',
-                                    show: true
+                                    show: true,
+                                    hideForNativeAdSlot: true
                                 },
-                                'unverifiedImpressions' : {
+                                {
+                                    key: 'unverifiedImpressions',
                                     label: 'Unverified Impressions',
-                                    show: true
+                                    show: true,
+                                    hideForNativeAdSlot: true
                                 },
-                                'clicks' : {
+                                {
+                                    key: 'blankImpressions',
+                                    label: 'Blank Impressions',
+                                    show: true,
+                                    hideForNativeAdSlot: true,
+                                    hideForAdmin: true
+                                },
+                                {
+                                    key: 'voidImpressions',
+                                    label: 'Void Impressions',
+                                    show: true,
+                                    hideForNativeAdSlot: true,
+                                    hideForAdmin: true
+                                },
+                                {
+                                    key: 'clicks',
                                     label: 'Clicks',
-                                    show: true
+                                    show: true,
+                                    hideForNativeAdSlot: true
                                 },
-                                'passbacks' : {
+                                {
+                                    key: 'passbacks',
                                     label: 'Passbacks',
-                                    show: true
+                                    show: true,
+                                    hideForNativeAdSlot: true
                                 },
-                                'fillRate' : {
+                                {
+                                    key: 'fillRate',
                                     label: 'Fill Rate',
                                     show: true
                                 }
-                            }
+                            ]
                         }
                     }
                 }
