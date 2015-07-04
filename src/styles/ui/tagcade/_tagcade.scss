@@ -150,9 +150,10 @@ table td:before {
 
     /* hide the original buttons and show the grouped button */
     .btnGrouped {
+        text-transform: none;
         display:block;
         float:right;
-        margin-top:-7px;
+        margin-top: -5px;
     }
 
     div.button-bar {
@@ -171,4 +172,26 @@ table td:before {
   .btn {
     border-radius:0 0 2px 2px !important;
   }
+}
+
+.panel-body form.padding_top {
+  padding-top:15px;
+}
+
+.ng-isolate-scope .multiselect-parent .dropdown-menu {
+  float: right !important;
+  right: 0;
+  left: auto;
+  overflow: hidden !important;
+}
+
+.dropdown-multiselect {
+  margin-left: 5px;
+}
+
+.btnGrouped button {
+  background-color: #ddd;
+  border: none;
+  color: #333;
+  height: 30px;
 }

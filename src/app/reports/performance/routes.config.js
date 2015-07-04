@@ -59,7 +59,13 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performance/views/reportType/adNetwork/adTags.tpl.html'
+                        templateUrl: function($stateParams) {
+                            if (!$stateParams.endDate) {
+                                return 'reports/performance/views/reportType/adNetwork/adTagsDateRange.tpl.html';
+                            }
+
+                            return 'reports/performance/views/reportType/adNetwork/adTags.tpl.html';
+                        }
                     }
                 },
                 resolve: {
@@ -125,7 +131,8 @@
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getAdNetworkSiteReport($stateParams, {
-                            reportType: PERFORMANCE_REPORT_TYPES.adNetwork
+                            reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
+                            adNetworkBreakdown: 'day'
                         });
                     }
                 }

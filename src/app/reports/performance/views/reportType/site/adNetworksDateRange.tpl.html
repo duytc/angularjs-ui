@@ -6,7 +6,15 @@
             Ad Network Breakdown
             <div class="button-bar hidden-xs">
                 <export-excel data="reports" fields="['startDate', 'endDate', 'reportType.adNetworkName', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Start Date', 'End Date', 'Ad Network', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
-                <!--<export-excel data="reports" fields="['startDate', 'endDate', 'reportType.adNetworkName', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate', 'estRevenue', 'estCpm']" header="['Start Date', 'End Date', 'Ad Network', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate', 'Est. Revenue ($)', 'Est. CPM ($)']" file-name="getExportExcelFileName"></export-excel>-->
+            </div>
+
+            <div class="btn-group btnGrouped" dropdown>
+                <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li><a>
+                        <export-excel css-class="''" data="reports" fields="['startDate', 'endDate', 'reportType.adNetworkName', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Start Date', 'End Date', 'Ad Network', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                    </a></li>
+                </ul>
             </div>
         </div>
         <div class="table-responsive">
@@ -18,12 +26,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-click="drillDownReport(reportStates.adNetwork, item)">
+                <tr ng-click="drillDownReport(reportStates.adNetworkSiteAdTags, item)">
                     <td at-title="Actions">
                         <div class="btn-group" dropdown stop-event>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li><a ng-click="popupReport(reportStates.adNetwork, item)">Ad Network Info</a></li>
+                                <li><a ng-click="popupReport(reportStates.adNetworkSiteAdTags, item)">Ad Network Info</a></li>
                                 <li><a ng-click="goToEditPage('tagManagement.adNetwork.edit', item.reportType.adNetworkId)">Edit Ad Network</a></li>
                                 <!--<li><a ng-click="openUpdateCpm(item, updateCpmTypes.adNetwork)">Update Cpm</a></li>-->
                             </ul>

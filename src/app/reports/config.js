@@ -10,6 +10,77 @@
             account: 'account',
             site: 'site'
         })
+        .constant('REPORT_SETTINGS', {
+            default: {
+                view: {
+                    report: {
+                        performance: {
+                            adTag : [
+                                {
+                                    key : 'totalOpportunities',
+                                    label: 'Network Opportunities',
+                                    show: true
+                                },
+                                {
+                                    key: 'firstOpportunities',
+                                    label: 'First Opportunities',
+                                    show: true,
+                                    hideForNativeAdSlot: true
+                                },
+                                {
+                                    key: 'impressions',
+                                    label: 'Impressions',
+                                    show: true
+                                },
+                                {
+                                    key: 'verifiedImpressions',
+                                    label: 'Verified Impressions',
+                                    show: true,
+                                    hideForNativeAdSlot: true
+                                },
+                                {
+                                    key: 'unverifiedImpressions',
+                                    label: 'Unverified Impressions',
+                                    show: true,
+                                    hideForNativeAdSlot: true
+                                },
+                                {
+                                    key: 'blankImpressions',
+                                    label: 'Blank Impressions',
+                                    show: true,
+                                    hideForNativeAdSlot: true,
+                                    hideForAdmin: true
+                                },
+                                {
+                                    key: 'voidImpressions',
+                                    label: 'Void Impressions',
+                                    show: true,
+                                    hideForNativeAdSlot: true,
+                                    hideForAdmin: true
+                                },
+                                {
+                                    key: 'clicks',
+                                    label: 'Clicks',
+                                    show: true,
+                                    hideForNativeAdSlot: true
+                                },
+                                {
+                                    key: 'passbacks',
+                                    label: 'Passbacks',
+                                    show: true,
+                                    hideForNativeAdSlot: true
+                                },
+                                {
+                                    key: 'fillRate',
+                                    label: 'Fill Rate',
+                                    show: true
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        })
 
         .provider('API_REPORTS_BASE_URL', {
             $get: function(API_END_POINT) {

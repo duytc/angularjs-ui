@@ -4,6 +4,7 @@
     angular.module('tagcade.core.auth')
         .constant('AUTH_TOKEN_NAME', 'tagcadeToken')
         .constant('PREVIOUS_AUTH_TOKEN_NAME', 'tagcadePreviousAuthTokenRaw')
+        .constant('CURRENT_PUBLISHER_SETTINGS', 'tagcadeCurrentPublisherSettings')
 
         .constant('USER_ROLES', {
             admin: 'ROLE_ADMIN',

@@ -6,15 +6,17 @@
         .controller('AccountForm', AccountForm)
     ;
 
-    function AccountForm($scope, $state, AlertService, ServerErrorProcessor, publisher) {
+    function AccountForm($scope, $timeout, sessionStorage, AlertService, ServerErrorProcessor, publisher, REPORT_SETTINGS) {
         $scope.fieldNameTranslations = {
             username: 'Username',
             plainPassword: 'Password'
         };
 
+        $scope.userForm = [];
+
         $scope.formProcessing = false;
 
-        $scope.countries =[
+        $scope.countries = [
             {name: 'Afghanistan', code: 'AF'},
             {name: 'Ã…land Islands', code: 'AX'},
             {name: 'Albania', code: 'AL'},
@@ -262,15 +264,67 @@
 
         $scope.publisher = publisher;
 
-        $scope.isFormValid = function() {
+        $scope.isFormValid = isFormValid;
+
+        $scope.submit = submit;
+
+        // ===== for report-settings =====
+        /* current item when select drop boxes Report, ReportType */
+        $scope.selected = {
+            reportSel: null,
+            reportTypeSel: null
+        };
+
+        /* mark if settings value changed */
+        var configValChanged = false;
+
+        var reportGroups = [
+            {key: 'performance', label: 'Performance'}
+        ];
+
+        var reportTypes = {
+            'performance': [
+                {key: 'adTag', label: 'Ad Tag'}
+            ]
+        };
+
+        var configValChanges = [];
+
+        /* when selected Report drop down */
+        $scope.selectReport = selectReport;
+
+        /* when selected ReportType drop down */
+        $scope.selectReportType = selectReportType;
+
+        /* when check box of column checked/unchecked */
+        $scope.updateColumnShow = updateColumnShow;
+
+        /* need show update button? */
+        $scope.showUpdateButton = showUpdateButton;
+
+        /* need enable update button? */
+        $scope.enableUpdateButton = enableUpdateButton;
+
+        /* get report groups */
+        $scope.getReportGroups = getReportGroups;
+
+        /* get report types */
+        $scope.getReportTypes = getReportTypes;
+
+        // ========== initialize ==========
+        var init = initSettings();
+        // ===== end for report-settings =====
+
+        // ========== all functions ==========
+        function isFormValid() {
             if($scope.publisher.plainPassword != null || $scope.repeatPassword != null) {
                 return $scope.userForm.$valid && $scope.repeatPassword == $scope.publisher.plainPassword;
             }
 
             return $scope.userForm.$valid;
-        };
+        }
 
-        $scope.submit = function() {
+        function submit() {
             if ($scope.formProcessing) {
                 // already running, prevent duplicates
                 return;
@@ -283,30 +337,198 @@
             delete $scope.publisher.enabledModules;
             delete $scope.publisher.billingRate;
 
+            // only get patched config changes
+            var settingsTmp = angular.copy($scope.publisher.settings);
+            $scope.publisher.settings = getPatchedConfigValChanges();
+
             var saveUser = $scope.publisher.patch();
             saveUser
                 .catch(
-                    function (response) {
-                        var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.userForm, $scope.fieldNameTranslations);
-                        $scope.formProcessing = false;
+                function (response) {
+                    var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.userForm, $scope.fieldNameTranslations);
+                    $scope.formProcessing = false;
 
-                        return errorCheck;
-                    }
-                )
+                    return errorCheck;
+                })
                 .then(
-                    function () {
-                        AlertService.addFlash({
-                            type: 'success',
-                            message: 'Your profile is updated successfully'
-                        });
-                    }
-                )
-                .then(
-                    function () {
-                        return $state.reload();
-                    }
-                )
+                function () {
+                    $scope.publisher.settings = angular.copy(settingsTmp);
+                    sessionStorage.setCurrentSettings($scope.publisher.settings);
+
+                    $scope.formProcessing = false;
+
+                    /// init Settings
+                    initSettings();
+
+                    AlertService.addAlert({
+                        type: 'success',
+                        message: 'Your changes are updated successfully'
+                    });
+                })
             ;
-        };
+        }
+
+        function initSettings() {
+            configValChanges = [];
+
+            /// detect that all settings changed (because publisher has settings not config yet
+            if (!$scope.publisher.settings || $scope.publisher.settings === null || $scope.publisher.settings.length < 1) {
+                configValChanges = ['ALL'];
+            }
+
+            //only check if not changed all, else: always allow click submit
+            configValChanged = configValChanges.indexOf('ALL') > -1;
+
+            var mappedSetting = mapSettings(REPORT_SETTINGS.default, $scope.publisher.settings);
+            $scope.publisher.settings = JSON.parse(angular.toJson(mappedSetting));
+
+            /// scope var 'settings' link to '$scope.publisher.settings'
+            $scope.settings = $scope.publisher.settings;
+
+            /// scope var 'settings_old' copy value from '$scope.settings' (as $scope.publisher.settings) for detect changes
+            $scope.settings_old = JSON.parse(angular.toJson($scope.settings));
+
+            /// set default selected item for report and reportType
+            if (!!$scope.settings.view.report
+                && !!$scope.settings.view.report.performance
+                && !!$scope.settings.view.report.performance.adTag) {
+                $scope.selected.reportSel = reportGroups[0];
+                $scope.selected.reportTypeSel = reportTypes[reportGroups[0].key][0];
+            }
+        }
+
+        /* auto mapping userSetting with defaultSetting in case of defaultSetting (from UI) changed */
+        function mapSettings(defaultSetting, userSetting) {
+            if (!userSetting || userSetting === null || userSetting.length < 1) {
+                return defaultSetting;
+            }
+
+//            // detect changes
+//            var delta = jsondiffpatch.diff(userSetting, defaultSetting);
+//
+//            if (delta === undefined) {
+//                return userSetting;
+//            }
+//
+//            // patch original
+//            jsondiffpatch.patch(userSetting, delta);
+
+            return userSetting;
+        }
+
+        /* when selected Report drop down */
+        function selectReport($item, $model) {
+            if (!!$scope.selected.reportSel && (angular.toJson($scope.selected.reportSel) !== angular.toJson($item))) {
+                $scope.selected.reportTypeSel = reportTypes[$scope.selected.reportSel.key][0];
+            }
+
+            // re-detect change
+            //only check if not changed all, else: always allow click submit
+            if(configValChanges.indexOf('ALL') > -1) {
+                configValChanged = true;
+            } else {
+                configValChanged = isElementChanged($scope.settings_old, $scope.publisher.settings);
+            }
+        }
+
+        /* when selected ReportType drop down */
+        function selectReportType($item, $model) {
+            // re-detect change
+            //only check if not changed all, else: always allow click submit
+            if(configValChanges.indexOf('ALL') > -1) {
+                configValChanged = true;
+            } else {
+                configValChanged = isElementChanged($scope.settings_old, $scope.publisher.settings);
+            }
+        }
+
+        /* when check box of column checked/unchecked */
+        function updateColumnShow($event, col) {
+            //$scope.settings.view.report[$scope.selected.reportSel.key][$scope.selected.reportTypeSel.key][col].show = !($scope.settings.view.report[$scope.selected.reportSel.key][$scope.selected.reportTypeSel.key][col].show);
+
+            //update configValChanges
+            updateConfigValChanges(col);
+
+            //only check if not changed all, else: always allow click submit
+            if(configValChanges.indexOf('ALL') > -1) {
+                configValChanged = true;
+            } else {
+                configValChanged = isElementChanged($scope.settings_old, $scope.settings);
+            }
+        }
+
+        /* detect settings changed after checked/unchecked check box */
+        function isElementChanged(original, current) {
+            return angular.toJson(original) !== angular.toJson(current);
+        }
+
+        /* need show update button? */
+        function showUpdateButton() {
+            return !!$scope.settings;
+        }
+
+        /* need enable update button? */
+        function enableUpdateButton() {
+            return configValChanged && !$scope.formProcessing;
+        }
+
+        function getReportGroups() {
+            return reportGroups;
+        }
+
+        function getReportTypes(report) {
+            return reportTypes[report];
+        }
+
+        function updateConfigValChanges(col) {
+            if(configValChanges.indexOf('ALL') > -1) {
+                return;
+            }
+
+            //trigger: add if not existed / delete if existed
+            var idx = configValChanges.indexOf(col);
+            if(!(idx > -1)) {
+                configValChanges.push(col);
+            } else {
+                configValChanges.splice(idx);
+            }
+        }
+
+        /**
+         * get only changed configVals (as in configValChanges)
+         */
+        function getPatchedConfigValChanges() {
+            // only check if not changed all, else: always allow click submit
+            if(configValChanges.indexOf('ALL') > -1) {
+                return $scope.settings;
+            }
+
+            var currentConfigVals = [];
+
+            if(!!($scope.settings.view.report[$scope.selected.reportSel.key][$scope.selected.reportTypeSel.key])) {
+                currentConfigVals = angular.copy($scope.settings.view.report[$scope.selected.reportSel.key][$scope.selected.reportTypeSel.key]);
+            }
+
+            if(!currentConfigVals || currentConfigVals.length < 1) {
+                return $scope.settings;
+            }
+
+            // build patch
+            var patchedConfigVals = [];
+
+            for (var idx = 0; idx < currentConfigVals.length; idx++) {
+                // remove settings if not existed in configValChanges
+                if(configValChanges.indexOf(currentConfigVals[idx].key) > -1) {
+                    patchedConfigVals.push(angular.copy(currentConfigVals[idx]));
+                }
+            }
+
+            // apply patch
+            var newSettings = angular.copy($scope.settings);
+            newSettings.view.report[$scope.selected.reportSel.key][$scope.selected.reportTypeSel.key] = patchedConfigVals;
+
+            return newSettings;
+        }
+
     }
 })();

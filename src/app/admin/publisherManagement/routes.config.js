@@ -7,6 +7,9 @@
     ;
 
     function addStates($stateProvider) {
+        // uniqueRequestCacheBuster is used as a work-around for reloading only the current state
+        // currently UI-Router will reload all parent states as well, this causes problems having
+
         $stateProvider
             .state({
                 name: 'app.admin.publisherManagement',
@@ -20,6 +23,9 @@
             .state({
                 name: 'app.admin.publisherManagement.list',
                 url: '/list?page&sortField&orderBy&search',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
                 views: {
                     'content@app': {
                         controller: 'PublisherList',

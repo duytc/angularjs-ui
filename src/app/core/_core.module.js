@@ -52,7 +52,8 @@
         'angucomplete',
         'ui.codemirror',
         'hljs',
-        'ngClipboard'
+        'ngClipboard',
+        'angularjs-dropdown-multiselect'
     ]);
 
     core.run(appRun);

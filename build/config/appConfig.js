@@ -71,7 +71,9 @@ module.exports = {
             'vendor/highlight.js/src/highlight.js',
             'vendor/highlightjs/highlight.pack.js',
             'vendor/zeroclipboard/dist/ZeroClipboard.min.js',
-            'vendor/ng-clip/src/ngClip.js'
+            'vendor/ng-clip/src/ngClip.js',
+            'vendor/jsondiffpatch/public/build/jsondiffpatch.js',
+            'vendor/angularjs-dropdown-multiselect/src/angularjs-dropdown-multiselect.js'
         ],
         css: [
             'src/styles/customvendor/**/*.css'
