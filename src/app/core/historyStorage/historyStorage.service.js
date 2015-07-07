@@ -73,7 +73,10 @@
             }
 
             var params = angular.fromJson($window.localStorage[HISTORY])[historyParams];
-            params.uniqueRequestCacheBuster = Math.random();
+
+            if(!!params) {
+                params.uniqueRequestCacheBuster = Math.random();
+            }
 
             return params;
         }
