@@ -19,6 +19,7 @@ exports.config = {
             adSlotId: 1,
             displayAdSlotId: 1,
             nativeAdSlotId: 2,
+            dynamicAdSlotId: 3,
             adTagId: 2,
             emailConfig: 20
         }
