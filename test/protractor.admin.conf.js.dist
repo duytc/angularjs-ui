@@ -17,6 +17,8 @@ exports.config = {
             adNetworkId : 1,
             siteId: 2,
             adSlotId: 1,
+            displayAdSlotId: 1,
+            nativeAdSlotId: 2,
             adTagId: 2,
             emailConfig: 20
         }
