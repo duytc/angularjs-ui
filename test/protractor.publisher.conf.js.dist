@@ -6,7 +6,9 @@ exports.config = {
     },
 
     specs: ['e2e/login.js', 'e2e/publisher/tagManagement/*spec.js', 'e2e/*spec.js', 'e2e/publisher/reports/*.spec.js', 'e2e/publisher/supportTools/*.spec.js'],
-
+dSlotId: 1,
+                        nativeAdSlotId: 2,
+                        dynamicA
     params: {
         login: {
             username: 'mypub',
