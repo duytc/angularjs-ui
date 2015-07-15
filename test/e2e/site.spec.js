@@ -14,12 +14,7 @@ exports.test = function (userRoleTest) {
             }
         });
 
-        it('should list Sites', function () {
-            browser.get(browser.params.role + '/tagManagement/sites/list');
-
-            expect(browser.getTitle()).
-                toEqual('Sites | Tagcade Platform');
-        });
+        it('should list Sites', listSites);
 
         it('should create Site successfully', function () {
             browser.get(browser.params.role + '/tagManagement/sites/new');
@@ -143,6 +138,40 @@ exports.test = function (userRoleTest) {
             expect(element(by.binding('message')).getText()).
                 toEqual('This value is not a valid URL.');
         });
+
+        it('should delete a site successfully', function () {
+            listSites();
+
+            element.all(by.css('.btn-group')).then(function (items) {
+                items[5].click();
+
+                items[5]
+                    .element(by.css('.dropdown-menu.pull-right-dropdown'))
+                    .all(by.tagName('a')).each(function (element, index) {
+                        element.getText().then(function (text) {
+                            console.log('text: ' + text);
+                            if (text === 'Delete Site') {
+                                element.click();
+                            }
+                        });
+                    });
+            });
+
+            element(by.css('.modal-dialog-footer.ng-scope')).element(by.buttonText('Yes, delete')).click();
+
+            expect(element(by.binding('message')).getText()).
+                toEqual('The site was deleted');
+
+            expect(browser.getTitle()).
+                toEqual('Sites | Tagcade Platform');
+        });
+
+        function listSites () {
+            browser.get(browser.params.role + '/tagManagement/sites/list?sortField=id&orderBy=asc');
+
+            expect(browser.getTitle()).
+                toEqual('Sites | Tagcade Platform');
+        }
 
         function getElementAsName() {
             return element(by.model('site.name'));
