@@ -22,19 +22,19 @@
             return sites.length > 0;
         }
 
-        function onClick(siteStatus) {
+        function onClick(siteStatus, newStatus) {
             var confirmBox = $modal.open({
                 templateUrl: 'tagManagement/adNetwork/confirmPauseForSite.tpl.html',
                 controller: 'ConfirmPauseForSite',
                 resolve: {
                     active: function () {
-                        return siteStatus.active;
+                        return newStatus;
                     }
                 }
             });
 
             confirmBox.result.then(function () {
-                var checked = siteStatus.active ? 0 : 1;
+                var checked = newStatus ? 1 : 0;
 
                 if(adNetwork.id == null) {
                     throw new Error('Unknown Ad Network');
@@ -52,6 +52,14 @@
                     })
                     .then(
                     function () {
+                        if(newStatus) {
+                            siteStatus.activeAdTagsCount += siteStatus.pausedAdTagsCount;
+                            siteStatus.pausedAdTagsCount = 0;
+                        } else {
+                            siteStatus.pausedAdTagsCount += siteStatus.activeAdTagsCount;
+                            siteStatus.activeAdTagsCount = 0;
+                        }
+
                         return siteStatus.active = checked;
                     });
             });

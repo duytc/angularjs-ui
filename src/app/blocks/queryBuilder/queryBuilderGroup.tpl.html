@@ -26,7 +26,7 @@
             <select class="form-control" ng-model="itemGroup.cmp" ng-options="condition.key as condition.label for condition in changeCondition(itemGroup.type)"></select>
 
             <div class="form-group" ng-if="itemGroup.type != dataTypes[2].key">
-                <input server-error ng-required="valIsNull(itemGroup.cmp)" type="text" class="form-control" ng-minlength="1" pattern="{{ itemGroup.type == dataTypes[1].key ? '\\d*' : ''}}" required ng-model="itemGroup.val" ng-init="itemGroup.val == null ? itemGroup.val = '' : itemGroup.val " placeholder="Value">
+                <input server-error ng-required="valIsNull(itemGroup.cmp)" type="text" class="form-control" ng-minlength="1" pattern="{{ itemGroup.type == dataTypes[1].key ? '\\d*' : '[a-z0-9?=/&-]+$'}}" required ng-model="itemGroup.val" ng-init="itemGroup.val == null ? itemGroup.val = '' : itemGroup.val " placeholder="Value">
             </div>
             <div class="form-group" ng-if="itemGroup.type == dataTypes[2].key">
                 <select class="form-control" ng-options="value for value in values" ng-model="itemGroup.val" ng-init="values = ['true', 'false']; itemGroup.val == null ? itemGroup.val = 'true' : '' "></select>

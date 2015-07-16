@@ -68,11 +68,17 @@
                 return Manager.one(adSlot.id).remove()
                     .then(
                         function () {
-                            $state.current.reloadOnSearch = true;
-                            historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, $state.current);
-                            $state.current.reloadOnSearch = false;
+                            var index = $scope.adSlots.indexOf(adSlot);
 
-                            AlertService.addFlash({
+                            if (index > -1) {
+                                $scope.adSlots.splice(index, 1);
+                            }
+
+                            //$state.current.reloadOnSearch = true;
+                            //historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, $state.current);
+                            //$state.current.reloadOnSearch = false;
+
+                            AlertService.replaceAlerts({
                                 type: 'success',
                                 message: 'The ad slot was deleted'
                             });

@@ -2,157 +2,99 @@
     <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong></div>
     <div class="panel-body">
         <div class="row">
-            <ul class="nav nav-tabs nav-tab-margin">
-                <li role="presentation" ng-click="showUesrForm = 0" ng-class="showUesrForm ?'':'active' "><a>Edit Profile</a></li>
-                <li role="presentation" ng-click="showUesrForm = 1" ng-class="showUesrForm ?'active':'' "><a>Edit Settings</a></li>
-            </ul>
-            <div ng-show="!showUesrForm">
-                <form name="userForm" class="col-lg-6 form-validation form-horizontal userForm padding_top" role="form" ng-submit="submit()" novalidate>
-                    <div class="form-group">
-                        <label for="inputUsername" class="col-sm-2 control-label">Username <strong class="text-danger">*</strong></label>
-                        <div class="col-sm-10">
-                            <input server-error name="username" ng-model="publisher.username" ng-required="true" ng-minlength="2" type="text" autocomplete="off" class="form-control" id="inputUsername" placeholder="Username">
-                        </div>
+            <form name="userForm" class="col-lg-6 form-validation form-horizontal userForm" role="form" ng-submit="submit()" novalidate>
+                <div class="form-group">
+                    <label for="inputUsername" class="col-sm-2 control-label">Username <strong class="text-danger">*</strong></label>
+                    <div class="col-sm-10">
+                        <input server-error name="username" ng-model="publisher.username" ng-required="true" ng-minlength="2" type="text" autocomplete="off" class="form-control" id="inputUsername" placeholder="Username">
                     </div>
-                    <div class="form-group">
-                        <label for="inputPassword" class="col-sm-2 control-label">Password <strong class="text-danger" ng-if="isNew">*</strong></label>
-                        <div class="col-sm-10">
-                            <input server-error name="plainPassword" ng-model="publisher.plainPassword" ng-required="isNew" ng-minlength="2" type="password" autocomplete="off" class="form-control" id="inputPassword" placeholder="Password">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword" class="col-sm-2 control-label">Password <strong class="text-danger" ng-if="isNew">*</strong></label>
+                    <div class="col-sm-10">
+                        <input server-error name="plainPassword" ng-model="publisher.plainPassword" ng-required="isNew" ng-minlength="2" type="password" autocomplete="off" class="form-control" id="inputPassword" placeholder="Password">
                     </div>
-                    <div class="form-group">
-                        <label for="inputRepeatPassword" class="col-sm-2 control-label">Repeat Password <strong class="text-danger" ng-if="isNew">*</strong></label>
-                        <div class="col-sm-10">
-                            <input server-error name="inputRepeatPassword" ng-model="repeatPassword" ng-required="isNew" ng-minlength="2" type="password" autocomplete="off" class="form-control" id="inputRepeatPassword" placeholder="Repeat Password">
-                            <span class="help-block">Leave it blank for no change</span>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputRepeatPassword" class="col-sm-2 control-label">Repeat Password <strong class="text-danger" ng-if="isNew">*</strong></label>
+                    <div class="col-sm-10">
+                        <input server-error name="inputRepeatPassword" ng-model="repeatPassword" ng-required="isNew" ng-minlength="2" type="password" autocomplete="off" class="form-control" id="inputRepeatPassword" placeholder="Repeat Password">
+                        <span class="help-block">Leave it blank for no change</span>
                     </div>
-                    <div class="form-group">
-                        <label for="inputCompany" class="col-sm-2 control-label">Company <strong class="text-danger">*</strong></label>
-                        <div class="col-sm-10">
-                            <input server-error name="company" ng-model="publisher.company" ng-required="true" type="text" class="form-control" id="inputCompany" placeholder="Company">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputCompany" class="col-sm-2 control-label">Company <strong class="text-danger">*</strong></label>
+                    <div class="col-sm-10">
+                        <input server-error name="company" ng-model="publisher.company" ng-required="true" type="text" class="form-control" id="inputCompany" placeholder="Company">
                     </div>
-                    <div class="form-group">
-                        <label for="inputEmail" class="col-sm-2 control-label">Email <strong class="text-danger">*</strong></label>
-                        <div class="col-sm-10">
-                            <input server-error ng-required="true" name="email" ng-model="publisher.email" type="email" class="form-control" id="inputEmail" placeholder="Email">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2 control-label">Email <strong class="text-danger">*</strong></label>
+                    <div class="col-sm-10">
+                        <input server-error ng-required="true" name="email" ng-model="publisher.email" type="email" class="form-control" id="inputEmail" placeholder="Email">
                     </div>
-                    <div class="form-group">
-                        <label for="inputFirstName" class="col-sm-2 control-label">First Name</label>
-                        <div class="col-sm-10">
-                            <input server-error name="firstName" ng-model="publisher.firstName" type="text" class="form-control" id="inputFirstName" placeholder="First Name">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputFirstName" class="col-sm-2 control-label">First Name</label>
+                    <div class="col-sm-10">
+                        <input server-error name="firstName" ng-model="publisher.firstName" type="text" class="form-control" id="inputFirstName" placeholder="First Name">
                     </div>
-                    <div class="form-group">
-                        <label for="inputLastName" class="col-sm-2 control-label">Last Name</label>
-                        <div class="col-sm-10">
-                            <input server-error name="lastName" ng-model="publisher.lastName" type="text" class="form-control" id="inputLastName" placeholder="Last Name">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputLastName" class="col-sm-2 control-label">Last Name</label>
+                    <div class="col-sm-10">
+                        <input server-error name="lastName" ng-model="publisher.lastName" type="text" class="form-control" id="inputLastName" placeholder="Last Name">
                     </div>
-                    <div class="form-group">
-                        <label for="inputPhone" class="col-sm-2 control-label">Phone</label>
-                        <div class="col-sm-10">
-                            <input server-error name="phone" ng-model="publisher.phone" type="text" class="form-control" id="inputPhone" placeholder="Phone">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPhone" class="col-sm-2 control-label">Phone</label>
+                    <div class="col-sm-10">
+                        <input server-error name="phone" ng-model="publisher.phone" type="text" class="form-control" id="inputPhone" placeholder="Phone">
                     </div>
-                    <div class="form-group">
-                        <label for="inputAddress" class="col-sm-2 control-label">Address</label>
-                        <div class="col-sm-10">
-                            <input server-error name="address" ng-model="publisher.address" type="text" class="form-control" id="inputAddress" placeholder="Address">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputAddress" class="col-sm-2 control-label">Address</label>
+                    <div class="col-sm-10">
+                        <input server-error name="address" ng-model="publisher.address" type="text" class="form-control" id="inputAddress" placeholder="Address">
                     </div>
-                    <div class="form-group">
-                        <label for="inputPostalCode" class="col-sm-2 control-label">Postal Code</label>
-                        <div class="col-sm-10">
-                            <input server-error name="postalCode" ng-model="publisher.postalCode" type="text" class="form-control" id="inputPostalCode" placeholder="PostalCode">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPostalCode" class="col-sm-2 control-label">Postal Code</label>
+                    <div class="col-sm-10">
+                        <input server-error name="postalCode" ng-model="publisher.postalCode" type="text" class="form-control" id="inputPostalCode" placeholder="PostalCode">
                     </div>
-                    <div class="form-group">
-                        <label for="inputCity" class="col-sm-2 control-label">City</label>
-                        <div class="col-sm-10">
-                            <input server-error name="city" ng-model="publisher.city" type="text" class="form-control" id="inputCity" placeholder="City">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputCity" class="col-sm-2 control-label">City</label>
+                    <div class="col-sm-10">
+                        <input server-error name="city" ng-model="publisher.city" type="text" class="form-control" id="inputCity" placeholder="City">
                     </div>
-                    <div class="form-group">
-                        <label for="inputState" class="col-sm-2 control-label">State</label>
-                        <div class="col-sm-10">
-                            <input server-error name="state" ng-model="publisher.state" type="text" class="form-control" id="inputState" placeholder="State">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputState" class="col-sm-2 control-label">State</label>
+                    <div class="col-sm-10">
+                        <input server-error name="state" ng-model="publisher.state" type="text" class="form-control" id="inputState" placeholder="State">
                     </div>
-                    <div class="form-group">
-                        <label for="inputCountry" class="col-sm-2 control-label">Country</label>
-                        <div class="col-sm-10">
-                            <select name="country" ng-model="publisher.country" class="form-control" id="inputCountry">
-                                <option disabled ng-selected="true">Country...</option>
-                                <option value="{{ country.name }}" ng-selected="publisher.country == country.name" ng-repeat="country in countries">{{ country.name }}</option>
-                            </select>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputCountry" class="col-sm-2 control-label">Country</label>
+                    <div class="col-sm-10">
+                        <select name="country" ng-model="publisher.country" class="form-control" id="inputCountry">
+                            <option disabled ng-selected="true">Country...</option>
+                            <option value="{{ country.name }}" ng-selected="publisher.country == country.name" ng-repeat="country in countries">{{ country.name }}</option>
+                        </select>
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">Submit</button>
-                            <div ng-show="!isFormValid()" class="callout callout-info">
-                                <p>Submit button will be active only when all fields are valid.</p>
-                            </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">Submit</button>
+                        <div ng-show="!isFormValid()" class="callout callout-info">
+                            <p>Submit button will be active only when all fields are valid.</p>
                         </div>
                     </div>
-                </form>
-            </div>
-            <div ng-show="showUesrForm">
-                <form name="settingForm" class="col-lg-6 form-validation form-horizontal userForm padding_top" role="form" ng-submit="submit()" novalidate>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Report</label>
-                        <div class="col-sm-9">
-                            <ui-select name="reportSel" ng-model="selected.reportSel" ng-required="true" on-select="selectReport($item, $model)" reset-search-input="'false'">
-                                <ui-select-match placeholder="Choose report">{{ $select.selected.label}}</ui-select-match>
-                                <ui-select-choices repeat="reportSel in getReportGroups()">
-                                    {{ reportSel.label }}
-                                </ui-select-choices>
-                            </ui-select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Report Type</label>
-                        <div class="col-sm-9">
-                            <ui-select name="reportTypeSel" ng-model="selected.reportTypeSel" ng-required="true" on-select="selectReportType($item, $model)" reset-search-input="'false'">
-                                <ui-select-match placeholder="Choose report type">{{ $select.selected.label}}</ui-select-match>
-                                <ui-select-choices repeat="reportTypeSel in getReportTypes(selected.reportSel.key)">
-                                    {{ reportTypeSel.label }}
-                                </ui-select-choices>
-                            </ui-select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div ng-repeat="setting in settings.view.report[selected.reportSel.key][selected.reportTypeSel.key]">
-                            <div ng-show="!setting.hideForAdmin">
-                                <label class="col-sm-3 control-label">{{ setting.label }}</label>
-                                <div class="col-sm-9"><label class="ui-checkbox"><input
-                                        class="ng-pristine ng-untouched ng-valid" server-error="" name="active"
-                                        ng-model="setting.show" id="networkOpportunities"
-                                        type="checkbox" ng-click="updateColumnShow($event, setting.key)"><span></span></label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-9">
-                            <button ng-disabled="!enableUpdateButton()" type="submit" class="btn btn-success">Submit</button>
-                            <div ng-show="showUpdateButton()" class="callout callout-info">
-                                <p>
-                                    If check box is checked, the column will be shown in reports.
-                                    <br>
-                                    Submit button will be active only when has at least one change.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 </section>

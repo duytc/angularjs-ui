@@ -38,7 +38,10 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li><a ng-click="toggleAdNetworkStatus(item)">{{ item.active ? 'Pause' : 'Activate' }} Ad Network</a></li>
+                                <li><a ui-sref="^.^.adTag.listByAdNetwork({ adNetworkId: item.id })">Manage Ad Tags</a></li>
+                                <li class="divider"></li>
+                                <li ng-if="item.pausedAdTagsCount > 0"><a ng-click="toggleAdNetworkStatus(item, true)">Activate Ad Network</a></li>
+                                <li ng-if="item.activeAdTagsCount > 0"><a ng-click="toggleAdNetworkStatus(item, false)">Pause Ad Network</a></li>
                                 <li><a ng-click="openListSitesForAdNetwork(item)">Pause Ad Network by Sites</a></li>
                                 <li class="divider"></li>
                                 <li ><a ui-sref="^.^.^.reports.performance.adNetworkSites({ adNetworkId: item.id, startDate: today})">View Today's Report</a></li>
@@ -51,9 +54,8 @@
                     </td>
                     <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="Ad Network"></td>
                     <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.username" at-title="Publisher"></td>
-                    <td at-sortable at-attribute="status" at-title="Status">
-                        <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
-                    </td>
+                    <td at-implicit at-sortable at-attribute="activeAdTagsCount" at-title="Active Ad Tags"></td>
+                    <td at-implicit at-sortable at-attribute="pausedAdTagsCount" at-title="Paused Ad Tags"></td>
                 </tr>
                 </tbody>
             </table>

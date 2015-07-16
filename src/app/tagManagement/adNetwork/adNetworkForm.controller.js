@@ -9,8 +9,7 @@
         $scope.fieldNameTranslations = {
             name: 'Name',
             defaultCpmRate: 'Default CPM Rate',
-            url: 'Url',
-            active: 'Active'
+            url: 'Url'
         };
 
         $scope.isNew = adNetwork === null;
@@ -23,8 +22,7 @@
         $scope.adNetwork = adNetwork || {
             name: null,
             defaultCpmRate: null,
-            url: null,
-            active: true
+            url: null
         };
 
         $scope.isFormValid = function() {

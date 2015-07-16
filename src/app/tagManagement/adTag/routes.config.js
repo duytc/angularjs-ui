@@ -63,6 +63,33 @@
                     label: 'Ad Tags - {{ adSlot.name }}'
                 }
             })
+            .state('tagManagement.adTag.listByAdNetwork', {
+                url: '/list/adNetwork/{adNetworkId:[0-9]+}?page&sortField&orderBy&search',
+                param: {
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    'content@app': {
+                        controller: 'AdTagListByAdNetwork',
+                        templateUrl: 'tagManagement/adTag/adTagListByAdNetwork.tpl.html'
+                    }
+                },
+                resolve: {
+                    adNetwork: /* @ngInject */ function ($stateParams, AdNetworkManager) {
+                        return AdNetworkManager.one($stateParams.adNetworkId).get();
+                    },
+
+                    adTags: /* @ngInject */ function($stateParams, AdNetworkManager) {
+                        return AdNetworkManager.one($stateParams.adNetworkId).getList('adtags').then(function (adTags) {
+                            return adTags.plain();
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Ad Tags By Ad Network- {{ adNetwork.name }}'
+                },
+                reloadOnSearch: false
+            })
             .state('tagManagement.adTag.new', {
                 url: '/new?adSlotId',
                 views: {
@@ -212,7 +239,7 @@
                 }
             })
             .state('tagManagement.adTag.edit', {
-                url: '/edit/{id:[0-9]+}',
+                url: '/edit/{id:[0-9]+}?adNetworkId',
                 views: {
                     'content@app': {
                         controller: 'AdTagForm',
