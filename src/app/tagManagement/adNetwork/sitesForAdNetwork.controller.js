@@ -53,9 +53,19 @@
                     .then(
                     function () {
                         if(newStatus) {
+                            // update total ad tags active/pause for ad network
+                            adNetwork.activeAdTagsCount += siteStatus.pausedAdTagsCount;
+                            adNetwork.pausedAdTagsCount -= siteStatus.pausedAdTagsCount;
+
+                            // update total ad tags active/pause for site
                             siteStatus.activeAdTagsCount += siteStatus.pausedAdTagsCount;
                             siteStatus.pausedAdTagsCount = 0;
                         } else {
+                            // update total ad tags active/pause for ad network
+                            adNetwork.activeAdTagsCount -= siteStatus.activeAdTagsCount;
+                            adNetwork.pausedAdTagsCount += siteStatus.activeAdTagsCount;
+
+                            // update total ad tags active/pause for site
                             siteStatus.pausedAdTagsCount += siteStatus.activeAdTagsCount;
                             siteStatus.activeAdTagsCount = 0;
                         }
