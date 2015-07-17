@@ -28,8 +28,8 @@
             currentPage: $location.search().page - 1 || 0
         };
 
-        $scope.toggleAdNetworkStatus = function (adNetwork) {
-            var newStatus = !adNetwork.active;
+        $scope.toggleAdNetworkStatus = function (adNetwork, newStatus) {
+            //var newStatus = !adNetwork.active;
 
             var isPause = !newStatus;
 
@@ -37,7 +37,7 @@
 
             dfd.promise
                 .then(function () {
-                    return AdNetworkManager.one(adNetwork.id).patch({ 'active': newStatus })
+                    return AdNetworkManager.one(adNetwork.id).customPUT(null, 'status', { 'active': newStatus })
                         .catch(function () {
                             AlertService.replaceAlerts({
                                 type: 'error',
@@ -47,7 +47,13 @@
                             return $q.reject('could not update ad network status');
                         })
                         .then(function () {
-                            adNetwork.active = newStatus;
+                            if(newStatus) {
+                                adNetwork.activeAdTagsCount += adNetwork.pausedAdTagsCount;
+                                adNetwork.pausedAdTagsCount = 0;
+                            } else {
+                                adNetwork.pausedAdTagsCount += adNetwork.activeAdTagsCount;
+                                adNetwork.activeAdTagsCount = 0;
+                            }
 
                             var successMessage;
 

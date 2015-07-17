@@ -6,7 +6,7 @@
     ;
 
     function AdTagForm(
-        $scope, $state, SiteManager, AdTagManager, AlertService, ServerErrorProcessor, adTag, adSlot, site, publisher, publisherList, siteList, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT_FOR_LIST
+        $scope, $state, $stateParams, SiteManager, AdTagManager, AlertService, ServerErrorProcessor, historyStorage, adTag, adSlot, site, publisher, publisherList, siteList, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT_FOR_LIST, HISTORY_TYPE_PATH
         ) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
@@ -61,6 +61,10 @@
         }
 
         $scope.backToAdTagList = function() {
+            if(!!$stateParams.adNetworkId) {
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adTag, '^.listByAdNetwork');
+            }
+
             var state = $scope.adTag.adSlot.adSlotType == TYPE_AD_SLOT_FOR_LIST.native ? '^.nativeList' : '^.list';
 
             return $state.go(state, {adSlotId: $scope.adTag.adSlot.id});
@@ -141,6 +145,10 @@
                 )
                 .then(
                     function () {
+                        if(!!$stateParams.adNetworkId) {
+                            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adTag, '^.listByAdNetwork');
+                        }
+
                         var adSlotId = $scope.adTag.adSlot;
 
                         if (angular.isObject(adSlotId)) {

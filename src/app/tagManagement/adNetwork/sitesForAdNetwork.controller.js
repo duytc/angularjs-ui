@@ -22,19 +22,19 @@
             return sites.length > 0;
         }
 
-        function onClick(siteStatus) {
+        function onClick(siteStatus, newStatus) {
             var confirmBox = $modal.open({
                 templateUrl: 'tagManagement/adNetwork/confirmPauseForSite.tpl.html',
                 controller: 'ConfirmPauseForSite',
                 resolve: {
                     active: function () {
-                        return siteStatus.active;
+                        return newStatus;
                     }
                 }
             });
 
             confirmBox.result.then(function () {
-                var checked = siteStatus.active ? 0 : 1;
+                var checked = newStatus ? 1 : 0;
 
                 if(adNetwork.id == null) {
                     throw new Error('Unknown Ad Network');
@@ -52,6 +52,24 @@
                     })
                     .then(
                     function () {
+                        if(newStatus) {
+                            // update total ad tags active/pause for ad network
+                            adNetwork.activeAdTagsCount += siteStatus.pausedAdTagsCount;
+                            adNetwork.pausedAdTagsCount -= siteStatus.pausedAdTagsCount;
+
+                            // update total ad tags active/pause for site
+                            siteStatus.activeAdTagsCount += siteStatus.pausedAdTagsCount;
+                            siteStatus.pausedAdTagsCount = 0;
+                        } else {
+                            // update total ad tags active/pause for ad network
+                            adNetwork.activeAdTagsCount -= siteStatus.activeAdTagsCount;
+                            adNetwork.pausedAdTagsCount += siteStatus.activeAdTagsCount;
+
+                            // update total ad tags active/pause for site
+                            siteStatus.pausedAdTagsCount += siteStatus.activeAdTagsCount;
+                            siteStatus.activeAdTagsCount = 0;
+                        }
+
                         return siteStatus.active = checked;
                     });
             });
