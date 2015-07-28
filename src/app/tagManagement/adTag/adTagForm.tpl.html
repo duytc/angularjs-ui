@@ -1,10 +1,10 @@
-<section class="panel panel-default">
+<section class="panel panel-default" ng-class="pickFromLibrary ? 'disabledForm' : ''">
     <div class="panel-heading">
         <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
 
         <div class="button-bar">
             <button ng-if="!isNew" ng-click="backToAdTagList()" class="btn btn-sm btn-primary" type="button">
-                <span class="glyphicon glyphicon glyphicon-arrow-left"></span>
+                <span class="glyphicon glyphicon-arrow-left"></span>
                 Back to Ad Tag List
             </button>
         </div>
@@ -64,8 +64,32 @@
                     <div class="col-sm-10">
                         <ui-select name="adSlot" ng-model="adTag.adSlot" on-select="selectAdSlot($item)" id="inputAdSlot" ng-required="true" server-error ng-disabled="!adSlotList.length" reset-search-input="'false'">
                             <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices repeat="adSlot.id as adSlot in adSlotList | filter: { name:$select.search } | filter:filterEntityType:adSlot">
+                            <ui-select-choices repeat="adSlot.id as adSlot in adSlotList | filter: $select.search | filter:filterEntityType:adSlot">
                                 {{ adSlot.name }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputPickFromLibrary" class="col-sm-2 control-label">From Library</label>
+                    <div class="col-sm-10">
+                        <div>
+                            <label class="ui-checkbox">
+                                <input name="pickFromLibrary"  ng-disabled="!isNew && adTag.libraryAdTag.visible" type="checkbox" ng-model="pickFromLibrary" ng-click="getAdTagLibrary()" server-error id="inputPickFromLibrary">
+                                <span></span>
+                            </label>
+                        </div>
+                        <span class="help-block">Network and html fields are retrieved from library and not editable once checked</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="pickFromLibrary">
+                    <label for="inputAdTagLibrary" class="col-sm-2 control-label">Reference Tag</label>
+                    <div class="col-sm-10">
+                        <ui-select name="libraryAdTag" ng-model="libraryAdTag" id="inputAdTagLibrary" server-error ng-disabled="!selected.publisher && isAdmin()" on-select="selectAdTagLibrary($item)" reset-search-input="'false'">
+                            <ui-select-match placeholder="Select an ad tag from library">{{ $select.selected.referenceName }}</ui-select-match>
+                            <ui-select-choices repeat="libraryAdTag.id as libraryAdTag in adTagLibraryList | filter:filterByPublisher:libraryAdTag">
+                                {{ libraryAdTag.referenceName }}
                             </ui-select-choices>
                         </ui-select>
                     </div>
@@ -74,7 +98,7 @@
                 <div class="form-group">
                     <label for="inputAdNetwork" class="col-sm-2 control-label">Ad Network</label>
                     <div class="col-sm-10">
-                        <ui-select name="adNetwork" ng-model="adTag.adNetwork" id="inputAdNetwork" ng-required="true" server-error ng-disabled="isAdmin() && !selected.publisher" reset-search-input="'false'">
+                        <ui-select name="adNetwork" ng-model="adTag.libraryAdTag.adNetwork" id="inputAdNetwork" ng-required="true" server-error ng-disabled="isAdmin() && !selected.publisher || pickFromLibrary" reset-search-input="'false'">
                             <ui-select-match placeholder="Select an ad network">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices repeat="adNetwork.id as adNetwork in adNetworkList | filter: { name:$select.search } | selectedPublisher:selected.publisher">
                                 {{ adNetwork.name }}
@@ -92,18 +116,16 @@
                 <div class="form-group">
                     <label for="inputPosition" class="col-sm-2 control-label">Ad Type</label>
                     <div class="col-sm-10">
-                        <label class="ui-radio"><input ng-model="adTag.adType" type="radio" ng-value="adTypes.customAd"><span>Custom Ad</span></label>
-                        <label class="ui-radio"><input ng-model="adTag.adType" type="radio" ng-click="adTypeImages()" ng-value="adTypes.imageAd"><span>Image Ad</span></label>
+                        <label class="ui-radio"><input ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.adType" type="radio" ng-value="adTypes.customAd"><span>Custom Ad</span></label>
+                        <label class="ui-radio"><input ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.adType" type="radio" ng-value="adTypes.imageAd"><span>Image Ad</span></label>
                     </div>
                 </div>
 
                 <!--ad type html-->
-                <div class="form-group" ng-if="adTag.adType == adTypes.customAd">
+                <div class="form-group" ng-if="adTag.libraryAdTag.adType == adTypes.customAd">
                     <label for="inputHtml" class="col-sm-2 control-label">Html</label>
                     <div class="col-sm-10">
-
-                        <ui-codemirror id="inputHtml" ng-model="adTag.html" ui-codemirror-opts="editorOptions"></ui-codemirror>
-
+                        <ui-codemirror id="inputHtml" ng-model="adTag.libraryAdTag.html" ui-codemirror-opts="editorOptions"></ui-codemirror>
                         <span class="help-block">You can use the following macros in your ad tag:<br/>
                         <strong>${CACHEBUSTER}</strong>: A unique code that ensures URLs are unique<br/>
                         <strong>${PAGEURL}</strong>: The url of the current page<br/>
@@ -112,18 +134,18 @@
                 </div>
 
                 <!--ad type images-->
-                <div ng-if="adTag.adType == adTypes.imageAd">
+                <div ng-if="adTag.libraryAdTag.adType == adTypes.imageAd">
                     <div class="form-group">
                         <label for="inputImageUrl" class="col-sm-2 control-label">Image Url</label>
                         <div class="col-sm-10">
-                            <input name="name" ng-model="adTag.descriptor.imageUrl" server-error ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputImageUrl" placeholder="Image Url">
+                            <input name="name" ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.descriptor.imageUrl" server-error ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputImageUrl" placeholder="Image Url">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="inputTargetUrl" class="col-sm-2 control-label">Target Url</label>
                         <div class="col-sm-10">
-                            <input name="name" ng-model="adTag.descriptor.targetUrl" server-error ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputTargetUrl" placeholder="Target Url">
+                            <input name="name" ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.descriptor.targetUrl" server-error ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputTargetUrl" placeholder="Target Url">
                             <span class="help-block">You can use the following macros in your target url:<br/>
                             <strong>${CACHEBUSTER}</strong>: A unique code that ensures URLs are unique<br/>
                             <strong>${PAGEURL}</strong>: The url of the current page<br/>
@@ -165,6 +187,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">Submit</button>

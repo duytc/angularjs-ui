@@ -5,7 +5,7 @@
         .factory('cpmEditorService', cpmEditorService)
     ;
 
-    function cpmEditorService($q, adminUserManager, SiteManager, AdNetworkManager, DisplayAdSlotManager, NativeAdSlotManager, TYPE_AD_SLOT_FOR_LIST) {
+    function cpmEditorService($q, adminUserManager, SiteManager, AdNetworkManager, DisplayAdSlotManager, NativeAdSlotManager, TYPE_AD_SLOT) {
         var api = {
             getPublishers: getPublishers,
             getSites: getSites,
@@ -58,7 +58,7 @@
                 return $q.reject(new Error('ad slot id should be a number'));
             }
 
-            var Manager = params.type == TYPE_AD_SLOT_FOR_LIST.native ? NativeAdSlotManager : DisplayAdSlotManager;
+            var Manager = params.type == TYPE_AD_SLOT.native ? NativeAdSlotManager : DisplayAdSlotManager;
 
             return Manager.one(params.id).one('adtags').getList();
         }

@@ -5,7 +5,7 @@
         .controller('NativeAdTagList', NativeAdTagList)
     ;
 
-    function NativeAdTagList($scope, $state, $modal, adTags, AdTagManager, AlertService, adSlot, historyStorage, HISTORY_TYPE_PATH) {
+    function NativeAdTagList($scope, $state, $modal, adTags, AdTagManager, AlertService, adSlot, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
         $scope.adSlot = adSlot;
         $scope.adTags = adTags;
 
@@ -13,9 +13,11 @@
             return !!adTags.length;
         };
 
+        $scope.adSlotTypes = TYPE_AD_SLOT;
         $scope.showPagination = showPagination;
         $scope.backToListAdSlot = backToListAdSlot;
         $scope.updateAdTag = updateAdTag;
+        $scope.shareAdTag = shareAdTag;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -81,6 +83,10 @@
         }
 
         function backToListAdSlot() {
+            if(!!$scope.adSlot.libType) {
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlotLibrary, '^.^.^.tagLibrary.adSlot.list');
+            }
+
             if($scope.isAdmin()) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: adSlot.site.id});
             }
@@ -94,6 +100,12 @@
         }
 
         function updateAdTag(data, field, adtag) {
+            adtag.libraryAdTag.adNetwork = adtag.libraryAdTag.adNetwork.id ? adtag.libraryAdTag.adNetwork.id : adtag.libraryAdTag.adNetwork;
+
+            if(adtag[field] == data) {
+                return;
+            }
+
             if(adtag[field] == data) {
                 return;
             }
@@ -102,7 +114,7 @@
             adtag[field] = data;
             var item = angular.copy(adtag);
 
-            AdTagManager.one(item.id).customPUT(item)
+            AdTagManager.one(item.id).patch(item)
                 .then(function() {
                     AlertService.addAlert({
                         type: 'success',
@@ -117,6 +129,40 @@
                         message: 'The ad tag has not been updated'
                     });
                 });
+        }
+
+        function shareAdTag(adTag) {
+            $modal.open({
+                templateUrl: 'tagManagement/adTag/shareAdTag.tpl.html',
+                size: 'lg',
+                controller: 'ShareAdTag',
+                resolve: {
+                    adTag: function () {
+                        return adTag;
+                    }
+                }
+            });
+
+            //var libraryAdTag = {
+            //    visible: true
+            //};
+            //
+            //AdTagManager.one(adTag.id).patch({libraryAdTag: libraryAdTag})
+            //    .then(function () {
+            //        adTag.libraryAdTag.visible = true;
+            //
+            //        AlertService.replaceAlerts({
+            //            type: 'success',
+            //            message: 'The ad tag has not been moved to library'
+            //        });
+            //    })
+            //    .catch(function () {
+            //        AlertService.replaceAlerts({
+            //            type: 'error',
+            //            message: 'The ad tag has been moved to library'
+            //        });
+            //    })
+            //;
         }
     }
 })();

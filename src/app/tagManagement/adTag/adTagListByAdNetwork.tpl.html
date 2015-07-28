@@ -4,7 +4,7 @@
         <strong current-page-title></strong>
         <div class="button-bar hidden-xs">
             <button ng-click="backToListAdNetwork()" class="btn btn-sm btn-primary" type="button">
-                <span class="glyphicon glyphicon glyphicon-arrow-left"></span>
+                <span class="glyphicon glyphicon-arrow-left"></span>
                 Back to Ad Network List
             </button>
         </div>
@@ -22,6 +22,8 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                             <ul class="dropdown-menu" role="menu">
+                                <li ng-if="!item.libraryAdTag.visible" ng-click="shareAdTag(item)"><a>Move To Library</a></li>
+                                <li ng-if="!item.libraryAdTag.visible" class="divider"></li>
                                 <li><a ui-sref="^.edit({ id: item.id, adNetworkId: adNetwork.id})">Edit Ad Tag</a></li>
                                 <li><a ng-click="toggleAdTagStatus(item)">{{ item.active ? 'Pause' : 'Activate' }} Ad Tag</a></li>
                                 <li><a ng-click="confirmDeletion(item)">Delete Ad Tag</a></li>
@@ -42,9 +44,16 @@
                     </td>
                     <td at-implicit at-title="Ad Slot" at-sortable at-attribute="adSlot.name"></td>
                     <td at-implicit at-title="Site" at-sortable at-attribute="adSlot.site.name" ></td>
-                    <td at-attribute="active">
+                    <td at-attribute="active" at-sortable>
                         <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
                     </td>
+                    <td at-title="Library" at-attribute="visible" at-sortable>
+                        {{ item.libraryAdTag.visible ? item.libraryAdTag.referenceName : '' }}
+                    </td>
+
+                    <!--<td at-title="In Library" at-attribute="visible" at-sortable>-->
+                        <!--<i class="fa" ng-class="item.libraryAdTag.visible? 'fa-check-square' : 'fa-square'"></i>-->
+                    <!--</td>-->
                 </tr>
                 </tbody>
             </table>

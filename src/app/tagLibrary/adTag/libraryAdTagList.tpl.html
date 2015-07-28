@@ -1,0 +1,57 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span>
+        <strong current-page-title></strong>
+
+        <div class="button-bar">
+            <button ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-plus"></span>
+                New Ad Tag
+            </button>
+        </div>
+        <div class="btn-group btnGrouped" dropdown>
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ui-sref="^.new">New Ad Tag</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <search-box show-query="true" sb-list="adTags" search-fields="['id', 'referenceName', 'adNetwork.name']"></search-box>
+
+    <div class="panel-body" ng-if="hasData()">
+        <div class="table-responsive">
+            <table class="table" at-sortable-query at-table at-paginated at-list="adTags" at-config="tableConfig">
+                <thead>
+                <tr>
+                    <th ng-show="isAdmin()" at-attribute="adNetwork.publisher.username">Publisher</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td at-implicit at-title="#" at-sortable at-attribute="id"></td>
+                    <td at-title="Action" at-attribute="action">
+                        <div class="btn-group" dropdown>
+                            <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                            <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <li><a ui-sref="^.associatedAdTags({ adTagId: item.id })">View Associated Ad Tags</a></li>
+                                <li class="divider"></li>
+                                <li><a ui-sref="^.edit({ id: item.id })">Edit Ad Tag</a></li>
+                                <li><a ng-click="removeMoveToLibrary(item)">Delete Ad Tag</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td at-title="Name" ng-dblclick="nameForm.$show()" at-attribute="referenceName" at-sortable at-initial-sorting="asc">
+                        <span class="fa fa-pencil" ng-hide="nameForm.$visible"></span>
+                        <div e-form="nameForm" buttons="no" oncancel="updateAdTag($data, 'referenceName', item)" onbeforesave="updateAdTag($data, 'referenceName', item)" editable-text="item.referenceName">{{ item.referenceName }}</div>
+                    </td>
+                    <td at-title="Ad Network" at-implicit at-sortable at-attribute="adNetwork.name"></td>
+                    <td ng-show="isAdmin()" at-title="Publisher" at-sortable at-implicit at-attribute="adNetwork.publisher.username"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <at-pagination ng-if="showPagination()" ng-click="setCurrentPageForUrl()" at-list="adTags" at-config="tableConfig"></at-pagination>
+        </div>
+    </div>
+</div>

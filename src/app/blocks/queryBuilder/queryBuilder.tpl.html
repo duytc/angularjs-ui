@@ -1,9 +1,9 @@
-<button class="btn btn-success" type="button" ng-click="addExpression()">
+<button ng-disabled="disabledDirective" class="btn btn-success" type="button" ng-click="addExpression()">
     <span class="glyphicon glyphicon-plus"></span>
     Add Expression
 </button>
 <label class="ui-checkbox enable-drag-drop-query-builder">
-    <input type="checkbox" ng-model="enableDragDrop" ng-click="enableDragDropQueryBuilder(!enableDragDrop)">
+    <input type="checkbox" ng-disabled="disabledDirective" ng-model="enableDragDrop" ng-click="enableDragDropQueryBuilder(!enableDragDrop)">
     <span>Enable Drag/Drop</span>
 </label>
 
@@ -11,9 +11,9 @@
     <div class="expressions-group moveable" ng-repeat="expressionRoot in expressions">
         <div class="form-group expect-adSlot">
             <label for="inputExpectAdSlot">Ad Slot</label>
-            <ui-select id="inputExpectAdSlot" ng-model="expressionRoot.expectAdSlot" on-select="selectExpectAdSlot($item, expressionRoot, $index)" ng-required="true" server-error reset-search-input="'false'">
+            <ui-select id="inputExpectAdSlot" ng-model="expressionRoot.expectAdSlot" on-select="selectExpectAdSlot($item, expressionRoot, $index)" ng-disabled="disabledDirective" ng-required="true" server-error reset-search-input="'false'">
                 <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
-                <ui-select-choices repeat="adSlot.id as adSlot in adSlots | filter:{name: $select.search} | filter:filterEntityType:adSlot">
+                <ui-select-choices repeat="adSlot.id as adSlot in adSlots | filter:$select.search | filter:filterEntityType:adSlot">
                     {{ adSlot.name }} {{ adSlot.id ? '(ID: ' + adSlot.id + ')' : '' }}
                 </ui-select-choices>
             </ui-select>
@@ -21,7 +21,7 @@
 
         <div class="form-group expect-adSlot" ng-if="!hideStartingPositionAdTag[$index] && !!expressionRoot.expectAdSlot">
             <label for="inputStartingPosition">Starting Position</label>
-            <ui-select id="inputStartingPosition" ng-model="expressionRoot.startingPosition" ng-init="selectExpectAdSlot(expressionRoot.expectAdSlot, null, $index)" ng-required="true" server-error reset-search-input="'false'">
+            <ui-select id="inputStartingPosition" ng-model="expressionRoot.startingPosition" ng-disabled="disabledDirective" ng-init="selectExpectAdSlot(expressionRoot.expectAdSlot, null, $index)" ng-required="true" server-error reset-search-input="'false'">
                 <ui-select-match placeholder="Select a position">{{ !!$select.selected[0].position ? formatPositionLabel($select.selected) : ''}}</ui-select-match>
                 <ui-select-choices repeat="adTags[0].position as adTags in groups[$index]">
                     {{ formatPositionLabel(adTags) }}
@@ -32,7 +32,7 @@
 
         <!--<span class="help-block">Select Group if you have compound conditions with AND/OR. Otherwise select Condition.</span>-->
         <label class="expression-label">Expression</label>
-        <query-builder-group group="expressionRoot.expressionDescriptor" groups="expressions" index="$index" tags="tags"></query-builder-group>
+        <query-builder-group group="expressionRoot.expressionDescriptor" groups="expressions" index="$index" tags="tags" disabled-directive="disabledDirective"></query-builder-group>
 
         <div class="form-group expression-show">
             <label class="ui-checkbox"><input server-error name="liveView" type="checkbox" ng-model="liveViewChecked"  value="checked" id="liveExpression"/><span>Show generated expression</span></label>

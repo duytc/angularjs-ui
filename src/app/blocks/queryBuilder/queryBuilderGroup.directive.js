@@ -13,7 +13,8 @@
                 group: '=',
                 groups: '=',
                 index: '=',
-                tags: '='
+                tags: '=',
+                disabledDirective: '='
             },
             restrict: 'AE',
             templateUrl: 'blocks/queryBuilder/queryBuilderGroup.tpl.html',

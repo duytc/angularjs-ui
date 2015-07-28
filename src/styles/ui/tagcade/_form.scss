@@ -14,3 +14,12 @@
 .userForm .col-sm-10 {
   padding-left: 30px !important;
 }
+
+.disabledForm {
+  [disabled="disabled"] {
+    cursor: not-allowed;
+  }
+  .CodeMirror, .CodeMirror-code, .cm-tag, .CodeMirror-lines {
+    cursor: not-allowed !important;
+  }
+}

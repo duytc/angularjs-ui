@@ -5,11 +5,11 @@
         .controller('AdSlotList', AdSlotList)
     ;
 
-    function AdSlotList($scope, $state, $location, $stateParams, $modal, $q, AlertService, adSlotService, adSlots, site, AtSortableService, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT_FOR_LIST) {
+    function AdSlotList($scope, $location, $stateParams, $modal, AlertService, adSlotService, adSlots, site, AtSortableService, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
         $scope.site = site;
 
         $scope.adSlots = adSlots;
-        $scope.types = TYPE_AD_SLOT_FOR_LIST;
+        $scope.adSlotTypes = TYPE_AD_SLOT;
 
         $scope.hasData = function () {
             return !!adSlots.length;
@@ -30,6 +30,7 @@
         $scope.setCurrentPageForUrl = setCurrentPageForUrl;
         $scope.backToListSite = backToListSite;
         $scope.exist = exist;
+        $scope.shareAdSlot = shareAdSlot;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -73,10 +74,6 @@
                             if (index > -1) {
                                 $scope.adSlots.splice(index, 1);
                             }
-
-                            //$state.current.reloadOnSearch = true;
-                            //historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, $state.current);
-                            //$state.current.reloadOnSearch = false;
 
                             AlertService.replaceAlerts({
                                 type: 'success',
@@ -128,6 +125,42 @@
             }
 
             return false;
+        }
+
+        function shareAdSlot(adSlot) {
+            $modal.open({
+                templateUrl: 'tagManagement/adSlot/shareAdSlot.tpl.html',
+                size: 'lg',
+                controller: 'ShareAdSlot',
+                resolve: {
+                    adSlot: function () {
+                        return adSlot;
+                    }
+                }
+            });
+
+
+            //var libraryAdSlot = {
+            //    visible: true
+            //};
+            //
+            //var Manager = adSlotService.getManagerForAdSlot(adSlot);
+            //Manager.one(adSlot.id).patch({libraryAdSlot: libraryAdSlot})
+            //    .then(function () {
+            //        adSlot.libraryAdSlot.visible = true;
+            //
+            //        AlertService.replaceAlerts({
+            //            type: 'success',
+            //            message: 'The ad slot has been moved to library'
+            //        });
+            //    })
+            //    .catch(function () {
+            //        AlertService.replaceAlerts({
+            //            type: 'error',
+            //            message: 'The ad slot has not been moved to library'
+            //        });
+            //    })
+            //;
         }
 
         $scope.$on('$locationChangeSuccess', function() {

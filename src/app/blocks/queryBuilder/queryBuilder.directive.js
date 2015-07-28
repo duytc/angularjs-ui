@@ -5,7 +5,7 @@
         .directive('queryBuilder', queryBuilder)
     ;
 
-    function queryBuilder($compile, CONDITIONS_STRING, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, TYPE_AD_SLOT_FOR_LIST, queryBuilderService, DisplayAdSlotManager) {
+    function queryBuilder($compile, CONDITIONS_STRING, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, TYPE_AD_SLOT, queryBuilderService, DisplayAdSlotManager) {
         'use strict';
 
         return {
@@ -13,7 +13,8 @@
                 expressions: '=',
                 adSlots: '=',
                 tags: '=',
-                native: '='
+                native: '=',
+                disabledDirective: '='
             },
             restrict: 'AE',
             templateUrl: 'blocks/queryBuilder/queryBuilder.tpl.html',
@@ -24,7 +25,7 @@
                     scope.operators = OPERATORS;
                     scope.conditions = CONDITIONS_STRING;
                     scope.dataTypes = DATA_TYPE;
-                    scope.typesList = TYPE_AD_SLOT_FOR_LIST;
+                    scope.typesList = TYPE_AD_SLOT;
 
                     var groupKey = GROUP_KEY;
                     var groupTYPE = GROUP_TYPE;
@@ -70,7 +71,7 @@
                         if(adSlot.type == scope.typesList.native) {
                             scope.hideStartingPositionAdTag[index] = true;
                         }
-                        if(adSlot.type == scope.typesList.static) {
+                        if(adSlot.type == scope.typesList.display) {
                             scope.hideStartingPositionAdTag[index] = false;
                             DisplayAdSlotManager.one(adSlotId).getList('adtags')
                                 .then(function(adTags) {
@@ -129,7 +130,7 @@
                             return true;
                         }
                         else if(!scope.native) {
-                            if(adSlot.type == scope.typesList.static) {
+                            if(adSlot.type == scope.typesList.display) {
                                 return true;
                             }
 
