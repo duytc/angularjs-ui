@@ -5,7 +5,9 @@
         .controller('AdTagList', AdTagList)
     ;
 
-    function AdTagList($scope, $q, $state, $modal, adTags, adSlot, AdTagManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AD_TYPES, TYPE_AD_SLOT) {
+    function AdTagList($scope, $q, $modal, adTags, adSlot, AdTagManager, AdSlotAdTagLibrariesManager, AdTagLibrariesManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AD_TYPES, TYPE_AD_SLOT) {
+        $scope.adTags = adTags;
+
         $scope.hasAdTags = function () {
             return !!adTags.length;
         };
@@ -23,7 +25,7 @@
         $scope.adTypes = AD_TYPES;
         $scope.adSlot = adSlot;
         $scope.actionDropdownToggled = actionDropdownToggled;
-        $scope.adTagsGroup = _sortGroup(adTags);
+        $scope.adTagsGroup = _sortGroup($scope.adTags);
         $scope.updateAdTag = updateAdTag;
         $scope.enableDragDropAdTag = enableDragDropAdTag;
         $scope.backToListAdSlot = backToListAdSlot;
@@ -65,7 +67,8 @@
         $scope.toggleAdTagStatus = function (adTag) {
             var newTagStatus = !adTag.active;
 
-            AdTagManager.one(adTag.id).patch({
+            var Manager = !!adTag.libraryAdSlot ? AdSlotAdTagLibrariesManager : AdTagManager;
+            Manager.one(adTag.id).patch({
                 'active': newTagStatus
             })
                 .catch(function () {
@@ -97,15 +100,25 @@
             });
 
             modalInstance.result.then(function () {
-                return AdTagManager.one(adTag.id).remove()
-                    .then(
-                        function () {
-                            $state.go($state.current, {uniqueRequestCacheBuster: Math.random()});
+                var Manager = !!adTag.libraryAdSlot ? AdSlotAdTagLibrariesManager : AdTagManager;
 
-                            AlertService.addFlash({
-                                type: 'success',
-                                message: 'The ad tag was deleted'
-                            });
+                return Manager.one(adTag.id).remove()
+                    .then(function () {
+                        var index = $scope.adTags.indexOf(adTag);
+
+                        if (index > -1) {
+                            $scope.adTags.splice(index, 1);
+                        }
+
+                        adTags = $scope.adTags;
+
+                        // refresh list ad tag
+                        $scope.adTagsGroup = _sortGroup($scope.adTags);
+
+                        AlertService.replaceAlerts({
+                            type: 'success',
+                            message: 'The ad tag was deleted'
+                        });
                         },
                         function () {
                             AlertService.replaceAlerts({
@@ -234,7 +247,8 @@
             adtag[field] = data;
             var item = angular.copy(adtag);
 
-            AdTagManager.one(item.id).patch(item)
+            var Manager = !!adtag.libraryAdSlot ? AdSlotAdTagLibrariesManager : AdTagManager;
+            Manager.one(item.id).patch(item)
                 .then(function() {
                     AlertService.addAlert({
                         type: 'success',
@@ -274,37 +288,26 @@
         }
 
         function shareAdTag(adTag) {
-            $modal.open({
-                templateUrl: 'tagManagement/adTag/shareAdTag.tpl.html',
-                size: 'lg',
-                controller: 'ShareAdTag',
-                resolve: {
-                    adTag: function () {
-                        return adTag;
-                    }
-                }
-            });
+            var libraryAdTag = {
+                visible: true
+            };
 
-            //var libraryAdTag = {
-            //    visible: true
-            //};
-            //
-            //AdTagManager.one(adTag.id).patch({libraryAdTag: libraryAdTag})
-            //    .then(function () {
-            //        adTag.libraryAdTag.visible = true;
-            //
-            //        AlertService.replaceAlerts({
-            //            type: 'success',
-            //            message: 'The ad tag has not been moved to library'
-            //        });
-            //    })
-            //    .catch(function () {
-            //        AlertService.replaceAlerts({
-            //            type: 'error',
-            //            message: 'The ad tag has been moved to library'
-            //        });
-            //    })
-            //;
+            AdTagLibrariesManager.one(adTag.libraryAdTag.id).patch(libraryAdTag)
+                .then(function () {
+                    adTag.libraryAdTag.visible = true;
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The ad tag has not been moved to library'
+                    });
+                })
+                .catch(function () {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'The ad tag has been moved to library'
+                    });
+                })
+            ;
         }
     }
 })();

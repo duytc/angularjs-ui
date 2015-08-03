@@ -13,6 +13,13 @@
             return !!adSlots.length;
         };
 
+        if (!$scope.hasData()) {
+            AlertService.replaceAlerts({
+                type: 'warning',
+                message: 'There is currently no ad slots associated'
+            });
+        }
+
         $scope.tableConfig = {
             itemsPerPage: 10,
             maxPages: 10
@@ -75,7 +82,7 @@
                     }
                 },
                 controller: function ($scope, javascriptTag) {
-                    $scope.adSlotName = adSlot.name;
+                    $scope.adSlotName = adSlot.libraryAdSlot.name;
                     $scope.javascriptTag = javascriptTag;
                     $scope.getTextToCopy = function(string) {
                         return string.replace(/\n/g, '\r\n');

@@ -5,7 +5,7 @@
         .controller('AdSlotList', AdSlotList)
     ;
 
-    function AdSlotList($scope, $location, $stateParams, $modal, AlertService, adSlotService, adSlots, site, AtSortableService, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
+    function AdSlotList($scope, $location, $stateParams, $modal, AlertService, adSlotService, adSlots, site, AtSortableService, libraryAdSlotService, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
         $scope.site = site;
 
         $scope.adSlots = adSlots;
@@ -49,7 +49,7 @@
                     }
                 },
                 controller: function ($scope, javascriptTag) {
-                    $scope.adSlotName = adSlot.name;
+                    $scope.adSlotName = adSlot.libraryAdSlot.name;
                     $scope.javascriptTag = javascriptTag;
                     $scope.getTextToCopy = function(string) {
                         return string.replace(/\n/g, '\r\n');
@@ -74,6 +74,8 @@
                             if (index > -1) {
                                 $scope.adSlots.splice(index, 1);
                             }
+
+                            adSlots = $scope.adSlots;
 
                             AlertService.replaceAlerts({
                                 type: 'success',
@@ -128,39 +130,27 @@
         }
 
         function shareAdSlot(adSlot) {
-            $modal.open({
-                templateUrl: 'tagManagement/adSlot/shareAdSlot.tpl.html',
-                size: 'lg',
-                controller: 'ShareAdSlot',
-                resolve: {
-                    adSlot: function () {
-                        return adSlot;
-                    }
-                }
-            });
+            var libraryAdSlot = {
+                visible: true
+            };
 
+            var Manager = libraryAdSlotService.getManagerForAdSlotLibrary(adSlot);
+            Manager.one(adSlot.libraryAdSlot.id).patch(libraryAdSlot)
+                .then(function () {
+                    adSlot.libraryAdSlot.visible = true;
 
-            //var libraryAdSlot = {
-            //    visible: true
-            //};
-            //
-            //var Manager = adSlotService.getManagerForAdSlot(adSlot);
-            //Manager.one(adSlot.id).patch({libraryAdSlot: libraryAdSlot})
-            //    .then(function () {
-            //        adSlot.libraryAdSlot.visible = true;
-            //
-            //        AlertService.replaceAlerts({
-            //            type: 'success',
-            //            message: 'The ad slot has been moved to library'
-            //        });
-            //    })
-            //    .catch(function () {
-            //        AlertService.replaceAlerts({
-            //            type: 'error',
-            //            message: 'The ad slot has not been moved to library'
-            //        });
-            //    })
-            //;
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The ad slot has been moved to library'
+                    });
+                })
+                .catch(function () {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'The ad slot has not been moved to library'
+                    });
+                })
+            ;
         }
 
         $scope.$on('$locationChangeSuccess', function() {

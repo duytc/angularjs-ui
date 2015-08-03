@@ -67,23 +67,15 @@
                     adSlot: /* @ngInject */ function($stateParams, AdSlotLibrariesManager) {
                         return AdSlotLibrariesManager.one($stateParams.id).get();
                     },
-                    adSlotType: function(adSlot, TYPE_AD_SLOT, LIBRARY_AD_SLOT_TYPE) {
-                        if(adSlot.libType == LIBRARY_AD_SLOT_TYPE.display) {
-                            return TYPE_AD_SLOT.display;
-                        }
-                        if(adSlot.libType == LIBRARY_AD_SLOT_TYPE.native) {
-                            return TYPE_AD_SLOT.native;
-                        }
-                        if(adSlot.libType == LIBRARY_AD_SLOT_TYPE.dynamic) {
-                            return TYPE_AD_SLOT.dynamic;
-                        }
+                    adSlotType: function(adSlot) {
+                        return adSlot.libType;
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Edit Ad Slot - {{ adSlot.referenceName }}'
+                    label: 'Edit Ad Slot - {{ adSlot.name }}'
                 }
             })
-            .state('app.publisher.tagLibrary.adSlot.associatedAdSlots', {
+            .state('app.publisher.tagLibrary.adSlot.associated', {
                 url: '/{adSlotType}/{adSlotId:[0-9]+}/associated',
                 params: {
                     uniqueRequestCacheBuster: null

@@ -24,7 +24,7 @@
                 var paramHistoryForAdSlot = getParamsHistoryForAdSlot();
                 var params;
 
-                if(Auth.isAdmin) {
+                if(Auth.isAdmin()) {
                     params = !!paramHistoryForAdSlot && !!paramHistoryForAdSlot.siteId ? paramHistoryForAdSlot : paramDefault;
                 } else {
                     params = !!paramHistoryForAdSlot ? paramHistoryForAdSlot : paramDefault;

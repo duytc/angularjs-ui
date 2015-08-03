@@ -5,7 +5,7 @@
         .controller('NativeAdTagList', NativeAdTagList)
     ;
 
-    function NativeAdTagList($scope, $state, $modal, adTags, AdTagManager, AlertService, adSlot, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
+    function NativeAdTagList($scope, $modal, adTags, AdTagManager, AdSlotAdTagLibrariesManager, AdTagLibrariesManager, AlertService, adSlot, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
         $scope.adSlot = adSlot;
         $scope.adTags = adTags;
 
@@ -34,7 +34,8 @@
         $scope.toggleAdTagStatus = function (adTag) {
             var newTagStatus = !adTag.active;
 
-            AdTagManager.one(adTag.id).patch({
+            var Manager = !!adTag.libraryAdSlot ? AdSlotAdTagLibrariesManager : AdTagManager;
+            Manager.one(adTag.id).patch({
                 'active': newTagStatus
             })
                 .catch(function () {
@@ -57,12 +58,20 @@
             });
 
             modalInstance.result.then(function () {
-                return AdTagManager.one(adTag.id).remove()
+                var Manager = !!adTag.libraryAdSlot ? AdSlotAdTagLibrariesManager : AdTagManager;
+
+                return Manager.one(adTag.id).remove()
                     .then(
                     function () {
-                        $state.reload();
+                        var index = $scope.adTags.indexOf(adTag);
 
-                        AlertService.addFlash({
+                        if (index > -1) {
+                            $scope.adTags.splice(index, 1);
+                        }
+
+                        adTags = $scope.adTags;
+
+                        AlertService.replaceAlerts({
                             type: 'success',
                             message: 'The ad tag was deleted'
                         });
@@ -114,7 +123,8 @@
             adtag[field] = data;
             var item = angular.copy(adtag);
 
-            AdTagManager.one(item.id).patch(item)
+            var Manager = !!adtag.libraryAdSlot ? AdSlotAdTagLibrariesManager : AdTagManager;
+            Manager.one(item.id).patch(item)
                 .then(function() {
                     AlertService.addAlert({
                         type: 'success',
@@ -132,37 +142,26 @@
         }
 
         function shareAdTag(adTag) {
-            $modal.open({
-                templateUrl: 'tagManagement/adTag/shareAdTag.tpl.html',
-                size: 'lg',
-                controller: 'ShareAdTag',
-                resolve: {
-                    adTag: function () {
-                        return adTag;
-                    }
-                }
-            });
+            var libraryAdTag = {
+                visible: true
+            };
 
-            //var libraryAdTag = {
-            //    visible: true
-            //};
-            //
-            //AdTagManager.one(adTag.id).patch({libraryAdTag: libraryAdTag})
-            //    .then(function () {
-            //        adTag.libraryAdTag.visible = true;
-            //
-            //        AlertService.replaceAlerts({
-            //            type: 'success',
-            //            message: 'The ad tag has not been moved to library'
-            //        });
-            //    })
-            //    .catch(function () {
-            //        AlertService.replaceAlerts({
-            //            type: 'error',
-            //            message: 'The ad tag has been moved to library'
-            //        });
-            //    })
-            //;
+            AdTagLibrariesManager.one(adTag.libraryAdTag.id).patch(libraryAdTag)
+                .then(function () {
+                    adTag.libraryAdTag.visible = true;
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The ad tag has not been moved to library'
+                    });
+                })
+                .catch(function () {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'The ad tag has been moved to library'
+                    });
+                })
+            ;
         }
     }
 })();

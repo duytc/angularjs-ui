@@ -12,9 +12,9 @@
         <div class="form-group expect-adSlot">
             <label for="inputExpectAdSlot">Ad Slot</label>
             <ui-select id="inputExpectAdSlot" ng-model="expressionRoot.expectAdSlot" on-select="selectExpectAdSlot($item, expressionRoot, $index)" ng-disabled="disabledDirective" ng-required="true" server-error reset-search-input="'false'">
-                <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
+                <ui-select-match placeholder="Select an ad slot">{{ $select.selected.libraryAdSlot.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
                 <ui-select-choices repeat="adSlot.id as adSlot in adSlots | filter:$select.search | filter:filterEntityType:adSlot">
-                    {{ adSlot.name }} {{ adSlot.id ? '(ID: ' + adSlot.id + ')' : '' }}
+                    {{ adSlot.libraryAdSlot.name }} {{ adSlot.id ? '(ID: ' + adSlot.id + ')' : '' }}
                 </ui-select-choices>
             </ui-select>
         </div>

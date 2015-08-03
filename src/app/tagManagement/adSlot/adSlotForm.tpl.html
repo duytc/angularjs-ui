@@ -71,7 +71,7 @@
                     <div class="col-sm-5">
                         <div>
                             <label class="ui-checkbox">
-                                <input name="pickFromLibrary" ng-disabled="!isNew && adSlot.libraryAdSlot.visible" type="checkbox" ng-model="pickFromLibrary" ng-click="getAdSlotLibrary(selected.type)" server-error id="inputPickFromLibrary">
+                                <input name="pickFromLibrary" ng-disabled="disabledCheckPickFromLibrary" type="checkbox" ng-model="pickFromLibrary" ng-click="getAdSlotLibrary(selected.type)" server-error id="inputPickFromLibrary">
                                 <span></span>
                             </label>
                         </div>
@@ -82,9 +82,9 @@
                     <label for="inputAdSlotLibrary" class="col-sm-1 control-label">Reference Slot</label>
                     <div class="col-sm-5">
                         <ui-select name="adSlotLibrary" ng-model="selected.adSlotLibrary" id="inputAdSlotLibrary" server-error ng-disabled="!selected.publisher && isAdmin()" on-select="selectAdSlotLibrary($item)" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select an ad slot from library">{{ $select.selected.referenceName }}</ui-select-match>
+                            <ui-select-match placeholder="Select an ad slot from library">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices repeat="adSlotLibrary.id as adSlotLibrary in adSlotLibraryList | selectedPublisher:selected.publisher">
-                                {{ adSlotLibrary.referenceName }}
+                                {{ adSlotLibrary.name }}
                             </ui-select-choices>
                         </ui-select>
                     </div>
@@ -93,7 +93,7 @@
                 <div class="form-group">
                     <label for="inputName" class="col-sm-1 control-label">Name</label>
                     <div class="col-sm-5">
-                        <input server-error name="name" ng-model="adSlot.name" ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="Ad slot name">
+                        <input ng-disabled="pickFromLibrary" server-error name="name" ng-model="adSlot.libraryAdSlot.name" ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="Ad slot name">
                     </div>
                 </div>
 
@@ -108,9 +108,9 @@
                     <label for="inputDefaultAdSlot" class="col-sm-1 control-label">Default Ad Slot</label>
                     <div class="col-sm-5">
                         <ui-select id="inputDefaultAdSlot" ng-model="adSlot.libraryAdSlot.defaultAdSlot" ng-required="true" server-error reset-search-input="'false'" ng-disabled="!adSlot.site || pickFromLibrary">
-                            <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
+                            <ui-select-match placeholder="Select an ad slot">{{ $select.selected.libraryAdSlot.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="adSlot.id as adSlot in adSlotsDefault | filter:$select.search | filter:filterEntityType:adSlot">
-                                {{ adSlot.name }} {{ adSlot.id ? '(ID: ' + adSlot.id + ')' : '' }}
+                                {{ adSlot.libraryAdSlot.name }} {{ adSlot.id ? '(ID: ' + adSlot.id + ')' : '' }}
                             </ui-select-choices>
                         </ui-select>
 

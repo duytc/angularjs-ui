@@ -148,7 +148,7 @@
                         var listNameAdTag = [];
 
                         angular.forEach(adTags, function(adTag) {
-                            listNameAdTag.push(adTag.name);
+                            listNameAdTag.push(adTag.libraryAdTag.name);
                         });
 
                         var showString = adTags[0].position + ': (' + listNameAdTag.toString().replace(',', ', ') + ')';

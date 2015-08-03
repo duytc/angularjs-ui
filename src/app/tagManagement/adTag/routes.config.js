@@ -40,7 +40,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Ad Tags - {{ adSlot.name }}'
+                    label: 'Ad Tags - {{ adSlot.libraryAdSlot.name }}'
                 }
             })
             .state('tagManagement.adTag.nativeList', {
@@ -66,51 +66,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Ad Tags - {{ adSlot.name }}'
-                }
-            })
-            .state('tagManagement.adTag.nativeLibraryList', {
-                url: '/nativeLibrary/list/{adSlotId:[0-9]+}',
-                views: {
-                    'content@app': {
-                        controller: 'NativeAdTagList',
-                        templateUrl: 'tagManagement/adTag/nativeAdTagList.tpl.html'
-                    }
-                },
-                resolve: {
-                    adSlot: /* @ngInject */ function ($stateParams, NativeAdSlotLibrariesManager) {
-                        return NativeAdSlotLibrariesManager.one($stateParams.adSlotId).get();
-                    },
-                    adTags: /* @ngInject */ function($stateParams, NativeAdSlotLibrariesManager) {
-                        return NativeAdSlotLibrariesManager.one($stateParams.adSlotId).getList('adtags').then(function (adTags) {
-                            return adTags.plain();
-                        });
-                    }
-                },
-                ncyBreadcrumb: {
-                    label: 'Ad Tags - {{ adSlot.referenceName }}'
-                }
-            })
-            .state('tagManagement.adTag.displayLibraryList', {
-                url: '/displayLibrary/list/{adSlotId:[0-9]+}',
-                views: {
-                    'content@app': {
-                        controller: 'AdTagList',
-                        templateUrl: 'tagManagement/adTag/adTagList.tpl.html'
-                    }
-                },
-                resolve: {
-                    adSlot: /* @ngInject */ function ($stateParams, DisplayAdSlotLibrariesManager) {
-                        return DisplayAdSlotLibrariesManager.one($stateParams.adSlotId).get();
-                    },
-                    adTags: /* @ngInject */ function($stateParams, DisplayAdSlotLibrariesManager) {
-                        return DisplayAdSlotLibrariesManager.one($stateParams.adSlotId).getList('adtags').then(function (adTags) {
-                            return adTags.plain();
-                        });
-                    }
-                },
-                ncyBreadcrumb: {
-                    label: 'Ad Tags - {{ adSlot.referenceName }}'
+                    label: 'Ad Tags - {{ adSlot.libraryAdSlot.name }}'
                 }
             })
             .state('tagManagement.adTag.listByAdNetwork', {
@@ -306,11 +262,19 @@
                     },
 
                     site: /* @ngInject */ function (adSlot) {
-                        return adSlot.site;
+                        if(!!adSlot && !!adSlot.site) {
+                            return adSlot.site;
+                        }
+
+                        return null
                     },
 
                     publisher: /* @ngInject */ function (site) {
-                        return site.publisher;
+                        if(!!site && !!site.site) {
+                            return site.site;
+                        }
+
+                        return null;
                     },
 
                     publisherList: function () {
@@ -332,36 +296,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Edit Ad Tag - {{ adTag.name }}'
-                }
-            })
-            .state('tagManagement.adTag.newForAdSlotLibrary', {
-                url: '/newForAdSlotLibrary?adSlotId',
-                views: {
-                    'content@app': {
-                        controller: 'AdTagForAdSlotLibraryForm',
-                        templateUrl: 'tagManagement/adTag/adTagForAdSlotLibraryForm.tpl.html'
-                    }
-                },
-                resolve: {
-                    adTag: function() {
-                        return null;
-                    },
-                    adSlot: /* @ngInject */ function ($stateParams, AdSlotLibrariesManager) {
-                        if(!!$stateParams.adSlotId) {
-                            return AdSlotLibrariesManager.one($stateParams.adSlotId).get();
-                        }
-
-                        return null;
-                    },
-                    adNetworkList: /* @ngInject */ function (AdNetworkManager) {
-                        return AdNetworkManager.getList().then(function (adNetworks) {
-                            return adNetworks.plain();
-                        });
-                    }
-                },
-                ncyBreadcrumb: {
-                    label: 'New Ad Tag'
+                    label: 'Edit Ad Tag - {{ adTag.libraryAdTag.name }}'
                 }
             })
         ;

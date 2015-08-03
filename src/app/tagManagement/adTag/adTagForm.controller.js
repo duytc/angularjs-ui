@@ -47,6 +47,8 @@
 
         // delete file unnecessary
         if(!$scope.isNew) {
+            $scope.disabledCheckPickFromLibrary = adTag.libraryAdTag.visible;
+
             // set pickFromLibrary when edit
             $scope.pickFromLibrary = adTag.libraryAdTag.visible;
 
@@ -63,13 +65,12 @@
 
         $scope.adTag = adTag || {
             adSlot: adSlot,
-            name: null,
             libraryAdTag: {
+                name: null,
                 html: null,
                 adNetwork: null,
                 adType: $scope.adTypes.customAd,
-                descriptor: null,
-                referenceName: null
+                descriptor: null
             },
             position: null,
             active: true
@@ -93,10 +94,10 @@
                 var stateAdTagForAdSlotLibraryList;
 
                 if($stateParams.adSlotType == $scope.adSlotTypes.display) {
-                    stateAdTagForAdSlotLibraryList = '^.displayLibraryList'
+                    stateAdTagForAdSlotLibraryList = '^.displayList'
                 }
                 if($stateParams.adSlotType == $scope.adSlotTypes.native) {
-                    stateAdTagForAdSlotLibraryList = '^.nativeLibraryList'
+                    stateAdTagForAdSlotLibraryList = '^.nativeList'
                 }
 
                 // back to ad tag for ad slot library
@@ -186,10 +187,6 @@
 
         $scope.selectAdTagLibrary = function(libraryAdTag) {
             angular.extend($scope.adTag.libraryAdTag, libraryAdTag);
-
-            if(!$scope.adTag.name) {
-                $scope.adTag.name = libraryAdTag.referenceName;
-            }
         };
 
         $scope.submit = function() {
@@ -200,10 +197,7 @@
 
             $scope.formProcessing = true;
 
-            delete $scope.adTag.libraryAdTag.isReferenced;
-
             $scope.adTag.libraryAdTag.adNetwork = $scope.adTag.libraryAdTag.adNetwork.id ? $scope.adTag.libraryAdTag.adNetwork.id : $scope.adTag.libraryAdTag.adNetwork;
-            $scope.adTag.libraryAdTag.referenceName = $scope.adTag.name;
 
             var adTag = angular.copy($scope.adTag);
             var saveAdTag = $scope.isNew ? AdTagManager.post(adTag) : $scope.adTag.patch();
@@ -230,10 +224,10 @@
                             var stateAdTagForAdSlotLibraryList;
 
                             if($stateParams.adSlotType == $scope.adSlotTypes.display) {
-                                stateAdTagForAdSlotLibraryList = '^.displayLibraryList'
+                                stateAdTagForAdSlotLibraryList = '^.displayList'
                             }
                             if($stateParams.adSlotType == $scope.adSlotTypes.native) {
-                                stateAdTagForAdSlotLibraryList = '^.nativeLibraryList'
+                                stateAdTagForAdSlotLibraryList = '^.nativeList'
                             }
 
                             // back to ad tag for ad slot library

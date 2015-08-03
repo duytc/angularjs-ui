@@ -4,7 +4,7 @@
         <strong current-page-title></strong>
 
         <div class="button-bar">
-            <button ng-if="!!adSlot.libType" ui-sref="^.newForAdSlotLibrary({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
+            <button ng-if="!!adSlot.libType" ui-sref="^.newForAdSlot({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
                 New Ad Tag
             </button>
@@ -20,7 +20,7 @@
         <div class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li ng-if="!!adSlot.libType"><a ui-sref="^.newForAdSlotLibrary({ adSlotId: adSlot.id, adSlotType: adSlotType })"> New Ad Tag</a></li>
+                <li ng-if="!!adSlot.libType"><a ui-sref="^.newForAdSlot({ adSlotId: adSlot.id, adSlotType: adSlotType })"> New Ad Tag</a></li>
                 <li ng-if="!adSlot.libType"><a ui-sref="^.nativeNew({ adSlotId: adSlot.id })"> New Ad Tag</a></li>
                 <li><a ng-click="backToListAdSlot()"> Back to Ad Slot List</a></li>
             </ul>
@@ -41,16 +41,13 @@
                                 <li ng-if="!item.libraryAdTag.visible" ng-click="shareAdTag(item)"><a>Move To Library</a></li>
                                 <li ng-if="!item.libraryAdTag.visible" class="divider"></li>
                                 <li ng-if="!adSlot.libType"><a ui-sref="^.edit({ id: adTag.id })">Edit Ad Tag</a></li>
-                                <li ng-if="!!adSlot.libType"><a ui-sref="^.edit({ id: adTag.id, adSlotId: adSlot.id, adSlotType: adSlotTypes.native })">Edit Ad Tag</a></li>
+                                <li ng-if="!!adSlot.libType"><a ui-sref="^.editForAdSlot({ id: adTag.id })">Edit Ad Tag</a></li>
                                 <li><a ng-click="toggleAdTagStatus(item)">{{ item.active ? 'Pause' : 'Activate' }} Ad Tag</a></li>
                                 <li><a ng-click="confirmDeletion(item)">Delete Ad Tag</a></li>
                             </ul>
                         </div>
                     </td>
-                    <td ng-dblclick="nameForm.$show()" at-attribute="name">
-                        <span class="fa fa-pencil" ng-hide="nameForm.$visible"></span>
-                        <div e-form="nameForm" buttons="no" oncancel="updateAdTag($data, 'name', item)" onbeforesave="updateAdTag($data, 'name', item)" editable-text="item.name">{{ item.name }}</div>
-                    </td>
+                    <td at-implicit at-title="Name" at-sortable at-attribute="libraryAdTag.name"></td>
                     <td ng-dblclick="rotationForm.$show()" at-attribute="rotation">
                         <span class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>
                         <div e-form="rotationForm" buttons="no" oncancel="updateAdTag($data, 'rotation', item)" onbeforesave="updateAdTag($data, 'rotation', item)" editable-number="item.rotation">{{ item.rotation }}</div>
@@ -62,13 +59,13 @@
                     <td at-attribute="active">
                         <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
                     </td>
-                    <td at-title="Library" at-attribute="visible">
-                        {{ item.libraryAdTag.visible ? item.libraryAdTag.referenceName : '' }}
-                    </td>
-
-                    <!--<td at-title="In Library" at-attribute="visible">-->
-                        <!--<i class="fa" ng-class="item.libraryAdTag.visible? 'fa-check-square' : 'fa-square'"></i>-->
+                    <!--<td at-title="Library" at-attribute="visible">-->
+                        <!--{{ item.libraryAdTag.visible ? item.libraryAdTag.referenceName : '' }}-->
                     <!--</td>-->
+
+                    <td at-title="In Library" at-attribute="visible">
+                        <i class="fa" ng-class="item.libraryAdTag.visible? 'fa-check-square' : 'fa-square'"></i>
+                    </td>
                 </tr>
                 </tbody>
             </table>

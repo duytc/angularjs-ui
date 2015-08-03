@@ -68,24 +68,24 @@
                                 <li ng-if="!exist(item.type, adSlotTypes.dynamic)" class="divider"></li>
                                 <li><a ui-sref="^.edit({ id: item.id })">Edit Ad Slot</a></li>
                                 <li ng-if="!exist(item.type, adSlotTypes.dynamic)"><a ng-click="cloneAdSlot(item)">Clone Ad Slot</a></li>
-                                <li ng-if="!item.libraryAdSlot.visible" ng-click="shareAdSlot(item)"><a>Move To Library</a></li>
+                                <li ng-if="!item.libraryAdSlot.visible && !isAdmin()" ng-click="shareAdSlot(item)"><a>Move To Library</a></li>
                                 <li><a ng-click="confirmDeletion(item)">Delete Ad Slot</a></li>
                             </ul>
                         </div>
                     </td>
                     <td ng-show="allAdSlot" at-title="Site" at-implicit at-sortable at-attribute="site.name"></td>
-                    <td at-implicit at-title="Ad Slot" at-sortable at-attribute="name" at-initial-sorting="asc"></td>
+                    <td at-implicit at-title="Ad Slot" at-sortable at-attribute="libraryAdSlot.name" at-initial-sorting="asc"></td>
                     <td at-title="Size" at-sortable at-attribute="width">
                         {{ !!item.libraryAdSlot.width ? item.libraryAdSlot.width + 'x' + item.libraryAdSlot.height : ''}}
                     </td>
                     <td at-title="Type" at-implicit at-attribute="type" at-sortable></td>
-                    <td at-title="Library" at-attribute="visible" at-sortable>
-                        {{ item.libraryAdSlot.visible ? item.libraryAdSlot.referenceName : '' }}
-                    </td>
-
-                    <!--<td at-title="In Library" at-attribute="visible" at-sortable>-->
-                        <!--<i class="fa" ng-class="item.libraryAdSlot.visible? 'fa-check-square' : 'fa-square'"></i>-->
+                    <!--<td at-title="Library" at-attribute="visible" at-sortable>-->
+                        <!--{{ item.libraryAdSlot.visible ? item.libraryAdSlot.referenceName : '' }}-->
                     <!--</td>-->
+
+                    <td at-title="In Library" at-attribute="visible" at-sortable>
+                        <i class="fa" ng-class="item.libraryAdSlot.visible? 'fa-check-square' : 'fa-square'"></i>
+                    </td>
                 </tr>
                 </tbody>
             </table>

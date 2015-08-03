@@ -42,22 +42,15 @@
             });
 
             modalInstance.result.then(function () {
-                var newVisible = !adTag.visible;
-
-                var removeAdTag;
-                if(adTag.isReferenced) {
-                    removeAdTag = AdTagLibrariesManager.one(adTag.id).patch({visible: newVisible})
-                } else {
-                    removeAdTag = AdTagLibrariesManager.one(adTag.id).remove()
-                }
-
-                return removeAdTag
+                return AdTagLibrariesManager.one(adTag.id).remove()
                     .then(function () {
                         var index = $scope.adTags.indexOf(adTag);
 
                         if (index > -1) {
                             $scope.adTags.splice(index, 1);
                         }
+
+                        adTags = $scope.adTags;
 
                         AlertService.replaceAlerts({
                             type: 'success',
@@ -88,7 +81,6 @@
         }
 
         function updateAdTag(data, field, adtag) {
-            delete adtag.isReferenced;
             if(adtag[field] == data) {
                 return;
             }

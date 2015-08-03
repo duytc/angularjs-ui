@@ -5,7 +5,7 @@
         .controller('AdTagListByAdNetwork', AdTagListByAdNetwork)
     ;
 
-    function AdTagListByAdNetwork($scope, $location, $modal, adTags, adNetwork, AdTagManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AtSortableService) {
+    function AdTagListByAdNetwork($scope, $location, $modal, adTags, adNetwork, AdTagManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AtSortableService, AdTagLibrariesManager) {
         $scope.adNetwork = adNetwork;
         $scope.adTags = adTags;
 
@@ -122,37 +122,26 @@
         }
 
         function shareAdTag(adTag) {
-            $modal.open({
-                templateUrl: 'tagManagement/adTag/shareAdTag.tpl.html',
-                size: 'lg',
-                controller: 'ShareAdTag',
-                resolve: {
-                    adTag: function () {
-                        return adTag;
-                    }
-                }
-            });
+            var libraryAdTag = {
+                visible: true
+            };
 
-            //var libraryAdTag = {
-            //    visible: true
-            //};
-            //
-            //AdTagManager.one(adTag.id).patch({libraryAdTag: libraryAdTag})
-            //    .then(function () {
-            //        adTag.libraryAdTag.visible = true;
-            //
-            //        AlertService.replaceAlerts({
-            //            type: 'success',
-            //            message: 'The ad tag has not been moved to library'
-            //        });
-            //    })
-            //    .catch(function () {
-            //        AlertService.replaceAlerts({
-            //            type: 'error',
-            //            message: 'The ad tag has been moved to library'
-            //        });
-            //    })
-            //;
+            AdTagLibrariesManager.one(adTag.libraryAdTag.id).patch(libraryAdTag)
+                .then(function () {
+                    adTag.libraryAdTag.visible = true;
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The ad tag has not been moved to library'
+                    });
+                })
+                .catch(function () {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'The ad tag has been moved to library'
+                    });
+                })
+            ;
         }
 
         $scope.$on('$locationChangeSuccess', function() {

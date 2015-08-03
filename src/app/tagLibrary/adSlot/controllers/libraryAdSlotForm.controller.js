@@ -12,16 +12,10 @@
 
         $scope.isNew = adSlot === null;
         $scope.adSlot = adSlot || {
-            referenceName: null,
             expressions: []
         };
         $scope.formProcessing = false;
         $scope.typesList = TYPE_AD_SLOT;
-
-        if(!$scope.isNew) {
-            delete $scope.adSlot.deletedAt;
-        }
-
         $scope.adSlotTypeOptions = [
             {
                 label: 'Display Ad Slot',
@@ -41,7 +35,10 @@
             type:  adSlotType || $scope.typesList.display
         };
 
-        $scope.adSlotsDefault = [{ id: null, name: 'None' }];
+        $scope.adSlotsDefault = [{id: null, libraryAdSlot: {
+            name: 'None'
+        }}];
+        _update();
 
         $scope.submit = submit;
         $scope.isFormValid = isFormValid;
@@ -73,33 +70,7 @@
 
             $scope.formProcessing = true;
 
-            if($scope.selected.type == $scope.typesList.native) {
-                delete $scope.adSlot.height;
-                delete $scope.adSlot.width;
-                delete $scope.adSlot.expressions;
-            }
-
-            if($scope.selected.type == $scope.typesList.dynamic) {
-                delete $scope.adSlot.height;
-                delete $scope.adSlot.width;
-            }
-            else {
-                delete $scope.adSlot.expressions;
-                delete $scope.adSlot.defaultAdSlot;
-                delete $scope.adSlot.native;
-            }
-
-            delete $scope.adSlot.publisher;
-            delete $scope.adSlot.libType;
-            delete $scope.adSlot.isReferenced;
-
-
-            var adSlot = angular.copy($scope.adSlot);
-            if($scope.selected.type == $scope.typesList.dynamic) {
-                if(!$scope.isNew) {
-                    delete adSlot.native;
-                }
-            }
+            var adSlot = _refactorAdSlot($scope.adSlot);
 
             var Manager = libraryAdSlotService.getManagerForAdSlotLibrary($scope.selected);
             var saveAdSlot = $scope.isNew ? Manager.post(adSlot) : Manager.one(adSlot.id).patch(adSlot);
@@ -252,7 +223,9 @@
 
             data.unshift({
                 id: null, // default value
-                name: label || 'None'
+                libraryAdSlot: {
+                    name: label || 'None'
+                }
             });
 
             return data;
@@ -269,7 +242,6 @@
             });
         }
 
-        _update();
         function _update() {
             if(!$scope.isNew) {
                 if(adSlotType == $scope.typesList.dynamic) {
@@ -310,6 +282,43 @@
             {
                 return adSlot.id == adSlotId;
             });
+        }
+
+        /**
+         * remove unused fields and refactor object
+         * @param adSlot
+         * @returns {*}
+         * @private
+         */
+        function _refactorAdSlot(adSlot) {
+            if($scope.selected.type == $scope.typesList.native) {
+                delete adSlot.height;
+                delete adSlot.width;
+                delete adSlot.expressions;
+            }
+
+            if($scope.selected.type == $scope.typesList.dynamic) {
+                delete adSlot.height;
+                delete adSlot.width;
+            }
+            else {
+                delete adSlot.expressions;
+                delete adSlot.defaultAdSlot;
+                delete adSlot.native;
+            }
+
+            delete adSlot.publisher;
+            delete adSlot.libType;
+
+
+            var adSlotCopy = angular.copy(adSlot);
+            if($scope.selected.type == $scope.typesList.dynamic) {
+                if(!$scope.isNew) {
+                    delete adSlotCopy.native;
+                }
+            }
+
+            return adSlotCopy;
         }
     }
 })();

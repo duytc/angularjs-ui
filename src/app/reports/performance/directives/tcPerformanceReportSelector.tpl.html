@@ -115,9 +115,9 @@
                     <div class="form-group">
                         <label>Ad Slot</label>
                         <ui-select name="adSlot" ng-model="selectedData.adSlotId" on-select="selectEntity($model)" ng-init="getAdSlot(selectedData.siteId)" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-match placeholder="Select an ad slot">{{ $select.selected.libraryAdSlot.name }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="adSlot.id as adSlot in optionData.adSlots | filter: $select.search">
-                                <div ng-bind-html="adSlot.name | highlight: $select.search"></div>
+                                <div ng-bind-html="adSlot.libraryAdSlot.name | highlight: $select.search"></div>
                             </ui-select-choices>
                         </ui-select>
                     </div>

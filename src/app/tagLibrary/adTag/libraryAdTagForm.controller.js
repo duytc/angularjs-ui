@@ -25,8 +25,7 @@
             html: null,
             adNetwork: null,
             adType: $scope.adTypes.customAd,
-            descriptor: null,
-            referenceName: null
+            descriptor: null
         };
 
         if(!!$scope.adTag.descriptor) {

@@ -5,7 +5,7 @@
         .controller('LibraryAdSlotList', LibraryAdSlotList)
     ;
 
-    function LibraryAdSlotList($scope, $modal, $location, adSlots, AlertService, DisplayAdSlotLibrariesManager, NativeAdSlotLibrariesManager, DynamicAdSlotLibrariesManager, TYPE_AD_SLOT, AtSortableService, historyStorage, HISTORY_TYPE_PATH, LIBRARY_AD_SLOT_TYPE) {
+    function LibraryAdSlotList($scope, $modal, $location, adSlots, AlertService, DisplayAdSlotLibrariesManager, NativeAdSlotLibrariesManager, DynamicAdSlotLibrariesManager, TYPE_AD_SLOT, AtSortableService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.adSlots = adSlots;
 
         $scope.hasData = function () {
@@ -25,51 +25,42 @@
             currentPage: $location.search().page - 1 || 0
         };
         $scope.adSlotTypes = TYPE_AD_SLOT;
-        $scope.libraryAdSlotTypes = LIBRARY_AD_SLOT_TYPE;
 
         $scope.showPagination = showPagination;
         $scope.removeMoveToLibrary = removeMoveToLibrary;
         $scope.setCurrentPageForUrl = setCurrentPageForUrl;
-        $scope.showLibraryAdSlotType = showLibraryAdSlotType;
 
         function showPagination() {
             return angular.isArray($scope.adSlots) && $scope.adSlots.length > $scope.tableConfig.itemsPerPage;
         }
 
-        function removeMoveToLibrary(adSlot, type) {
+        function removeMoveToLibrary(adSlot) {
             var modalInstance = $modal.open({
                 templateUrl: 'tagManagement/adSlot/confirmDeletion.tpl.html'
             });
 
             modalInstance.result.then(function () {
-                var newVisible = !adSlot.visible;
                 var Manager;
 
-                if(type == $scope.libraryAdSlotTypes.display)  {
+                if(adSlot.libType == $scope.adSlotTypes.display)  {
                     Manager = DisplayAdSlotLibrariesManager;
                 }
-                if(type == $scope.libraryAdSlotTypes.native) {
+                if(adSlot.libType == $scope.adSlotTypes.native) {
                     Manager = NativeAdSlotLibrariesManager;
                 }
-                if(type == $scope.libraryAdSlotTypes.dynamic) {
+                if(adSlot.libType == $scope.adSlotTypes.dynamic) {
                     Manager = DynamicAdSlotLibrariesManager;
                 }
 
-                var removeAdSlot;
-
-                if(adSlot.isReferenced) {
-                    removeAdSlot = Manager.one(adSlot.id).patch({visible: newVisible})
-                } else {
-                    removeAdSlot = Manager.one(adSlot.id).remove()
-                }
-
-                return removeAdSlot
+                return Manager.one(adSlot.id).remove()
                     .then(function () {
                         var index = $scope.adSlots.indexOf(adSlot);
 
                         if (index > -1) {
                             $scope.adSlots.splice(index, 1);
                         }
+
+                        adSlots = $scope.adSlots;
 
                         AlertService.replaceAlerts({
                             type: 'success',
@@ -97,20 +88,6 @@
 
         function setCurrentPageForUrl() {
             AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage + 1});
-        }
-
-        function showLibraryAdSlotType(type) {
-            if(type == $scope.libraryAdSlotTypes.display) {
-                return 'display';
-            }
-            if(type == $scope.libraryAdSlotTypes.native) {
-                return 'native';
-            }
-            if(type == $scope.libraryAdSlotTypes.dynamic) {
-                return 'dynamic';
-            }
-
-            return null;
         }
 
         $scope.$on('$locationChangeSuccess', function() {

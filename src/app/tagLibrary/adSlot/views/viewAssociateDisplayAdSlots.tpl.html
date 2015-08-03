@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'name', 'width', 'height', 'site.name']"></search-box>
+    <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'libraryAdSlot.name', 'width', 'height', 'site.name']"></search-box>
 
     <div class="panel-body" ng-if="hasData()">
         <div class="table-responsive">
@@ -41,7 +41,7 @@
                             </ul>
                         </div>
                     </td>
-                    <td at-title="Name" at-implicit at-sortable at-attribute="name" at-initial-sorting="asc"></td>
+                    <td at-title="Name" at-implicit at-sortable at-attribute="libraryAdSlot.name" at-initial-sorting="asc"></td>
                     <td at-title="Size" at-sortable at-sortable at-attribute="width">
                         {{ !!item.libraryAdSlot.width ? item.libraryAdSlot.width + 'x' + item.libraryAdSlot.height : ''}}
                     </td>

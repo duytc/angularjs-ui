@@ -12,6 +12,13 @@
             return !!adTags.length;
         };
 
+        if (!$scope.hasData()) {
+            AlertService.replaceAlerts({
+                type: 'warning',
+                message: 'There is currently no ad tags associated'
+            });
+        }
+
         $scope.adSlotTypes = TYPE_AD_SLOT;
         $scope.tableConfig = {
             itemsPerPage: 10,
