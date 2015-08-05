@@ -47,7 +47,7 @@
                             </ul>
                         </div>
                     </td>
-                    <td at-implicit at-title="Name" at-sortable at-attribute="libraryAdTag.name"></td>
+                    <td at-implicit at-title="Name" at-attribute="libraryAdTag.name"></td>
                     <td ng-dblclick="rotationForm.$show()" at-attribute="rotation">
                         <span class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>
                         <div e-form="rotationForm" buttons="no" oncancel="updateAdTag($data, 'rotation', item)" onbeforesave="updateAdTag($data, 'rotation', item)" editable-number="item.rotation">{{ item.rotation }}</div>

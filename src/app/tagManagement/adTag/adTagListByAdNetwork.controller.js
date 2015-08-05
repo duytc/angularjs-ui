@@ -61,11 +61,13 @@
                 return AdTagManager.one(adTag.id).remove()
                     .then(
                     function () {
-                        var index = $scope.adTags.indexOf(adTag);
+                        var index = adTags.indexOf(adTag);
 
                         if (index > -1) {
-                            $scope.adTags.splice(index, 1);
+                            adTags.splice(index, 1);
                         }
+
+                        $scope.adTags = adTags;
 
                         AlertService.replaceAlerts({
                             type: 'success',

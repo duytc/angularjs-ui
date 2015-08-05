@@ -69,13 +69,13 @@
                 return Manager.one(adSlot.id).remove()
                     .then(
                         function () {
-                            var index = $scope.adSlots.indexOf(adSlot);
+                            var index = adSlots.indexOf(adSlot);
 
                             if (index > -1) {
-                                $scope.adSlots.splice(index, 1);
+                                adSlots.splice(index, 1);
                             }
 
-                            adSlots = $scope.adSlots;
+                            $scope.adSlots = adSlots;
 
                             AlertService.replaceAlerts({
                                 type: 'success',
