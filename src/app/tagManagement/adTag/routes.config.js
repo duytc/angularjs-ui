@@ -270,8 +270,8 @@
                     },
 
                     publisher: /* @ngInject */ function (site) {
-                        if(!!site && !!site.site) {
-                            return site.site;
+                        if(!!site && !!site.publisher) {
+                            return site.publisher;
                         }
 
                         return null;
