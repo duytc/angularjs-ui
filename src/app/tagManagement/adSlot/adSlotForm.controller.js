@@ -245,11 +245,6 @@
             return $scope.selected.type == $scope.adSlotTypes.native;
         }
 
-        /**
-         * isResetForm use to reset form when un-check pick ad slot library
-         * @param site
-         * @param isResetForm
-         */
         function getAdSlotLibrary(site) {
             // get list adSlot library for site
             var siteId = site.id || site;
@@ -269,14 +264,9 @@
 
             if(!$scope.pickFromLibrary) {
                 //reset form ad slot when un-check form library
-                if($scope.isNew) {
-                    $scope.adSlot.libraryAdSlot = {
-                        name: null,
-                        libraryExpressions: []
-                    };
-                    $scope.adSlot.defaultAdSlot = null;
-                } else {
-                    _resetForm();
+
+                _resetForm();
+                if(!$scope.isNew) {
                     angular.extend($scope.adSlot, adSlotCopy);
                 }
 
