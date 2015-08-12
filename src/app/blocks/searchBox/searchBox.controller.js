@@ -44,7 +44,7 @@
 
             angular.forEach($scope.searchFields, function (field) {
                     if (angular.isObject(item[field]) && item[field] != undefined) {
-                        return stringFields += _.values(item[field]).toString();
+                        return stringFields += _.values(item[field]).toString() + '❋';
                     }
 
                     field = field.split(".");
@@ -60,15 +60,15 @@
                         });
 
                         if (angular.isObject(curItem) && curItem != undefined) {
-                            return stringFields += _.values(curItem).toString();
+                            return stringFields += _.values(curItem).toString() + '❋';
                         }
 
-                        return stringFields += curItem;
+                        return stringFields += curItem + '❋';
                     }
 
                     field = field.shift();
 
-                    return stringFields += item[field] != null ? item[field] : '';
+                    return stringFields += item[field] != null ? item[field] + '❋': '';
                 }
             );
 

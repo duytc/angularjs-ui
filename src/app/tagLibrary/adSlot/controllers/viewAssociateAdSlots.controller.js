@@ -49,10 +49,16 @@
                 return Manager.one(adSlot.id).remove()
                     .then(
                     function () {
-                        var index = $scope.adSlots.indexOf(adSlot);
+                        var index = adSlots.indexOf(adSlot);
 
                         if (index > -1) {
-                            $scope.adSlots.splice(index, 1);
+                            adSlots.splice(index, 1);
+                        }
+
+                        $scope.adSlots = adSlots;
+
+                        if($scope.tableConfig.currentPage > 0 && adSlots.length/10 == $scope.tableConfig.currentPage) {
+                            $scope.tableConfig.currentPage =- 1;
                         }
 
                         AlertService.replaceAlerts({

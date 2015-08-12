@@ -5,14 +5,14 @@
         .controller('LibraryAdSlotForm', LibraryAdSlotForm)
     ;
 
-    function LibraryAdSlotForm($scope, $filter, _, adSlot, adSlotType, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotManager, historyStorage, HISTORY_TYPE_PATH) {
+    function LibraryAdSlotForm($scope, $filter, _, adSlot, adSlotType, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
 
         $scope.isNew = adSlot === null;
         $scope.adSlot = adSlot || {
-            expressions: []
+            libraryExpressions: []
         };
         $scope.formProcessing = false;
         $scope.typesList = TYPE_AD_SLOT;
@@ -35,9 +35,7 @@
             type:  adSlotType || $scope.typesList.display
         };
 
-        $scope.adSlotsDefault = [{id: null, libraryAdSlot: {
-            name: 'None'
-        }}];
+        $scope.adSlotsDefault = [{id: null, name: 'None'}];
         _update();
 
         $scope.submit = submit;
@@ -101,11 +99,11 @@
             }
 
             // validate dynamic ad slot
-            if(!!$scope.adSlot.defaultAdSlot && (!$scope.adSlot.expressions || $scope.adSlot.expressions.length < 1)) {
+            if(!!$scope.adSlot.defaultLibraryAdSlot && (!$scope.adSlot.libraryExpressions || $scope.adSlot.libraryExpressions.length < 1)) {
                 return $scope.adSlotLibraryForm.$valid;
             }
 
-            var validExpression = _validateExpressions($scope.adSlot.expressions);
+            var validExpression = _validateExpressions($scope.adSlot.libraryExpressions);
 
             return validExpression && $scope.adSlotLibraryForm.$valid;
         }
@@ -115,22 +113,23 @@
                 return;
             }
 
-            if(!!$scope.adSlot.defaultAdSlot) {
-                var adSlotId = !!$scope.adSlot.defaultAdSlot.id ? $scope.adSlot.defaultAdSlot.id : $scope.adSlot.defaultAdSlot;
-                var defaultAdSlot = _findAdSlot(adSlotId);
+            if(!!$scope.adSlot.defaultLibraryAdSlot) {
+                var adSlotId = !!$scope.adSlot.defaultLibraryAdSlot.id ? $scope.adSlot.defaultLibraryAdSlot.id : $scope.adSlot.defaultLibraryAdSlot;
+                var defaultLibraryAdSlot = _findAdSlot(adSlotId);
 
-                if(defaultAdSlot.type == $scope.typesList.native) {
-                    $scope.adSlot.defaultAdSlot = null;
+                if(defaultLibraryAdSlot.libType == $scope.typesList.native) {
+                    $scope.adSlot.defaultLibraryAdSlot = null;
                 }
             }
 
-            angular.forEach($scope.adSlot.expressions, function(expressionDescriptor) {
-                if(!!expressionDescriptor.expectAdSlot) {
-                    var adSlotId = !!expressionDescriptor.expectAdSlot.id ? expressionDescriptor.expectAdSlot.id : expressionDescriptor.expectAdSlot;
+            angular.forEach($scope.adSlot.libraryExpressions, function(expressionDescriptor) {
+                if(!!expressionDescriptor.expectLibraryAdSlot) {
+                    var adSlotId = !!expressionDescriptor.expectLibraryAdSlot.id ? expressionDescriptor.expectLibraryAdSlot.id : expressionDescriptor.expectLibraryAdSlot;
                     var adSlot = _findAdSlot(adSlotId);
 
-                    if(adSlot.type == $scope.typesList.native) {
-                        expressionDescriptor.expectAdSlot = null;
+                    if(adSlot.libType == $scope.typesList.native) {
+                        expressionDescriptor.expectLibraryAdSlot = null;
+                        expressionDescriptor.expectlibraryAdSlot = null;
                     }
                 }
             });
@@ -141,7 +140,7 @@
                 return true;
             }
             else if(!$scope.adSlot.native) {
-                if(adSlot.type == $scope.typesList.display) {
+                if(adSlot.libType == $scope.typesList.display) {
                     return true;
                 }
 
@@ -178,6 +177,10 @@
         }
 
         function _validateSingleExpression(expression) {
+            delete expression.libraryDynamicAdSlot;
+            delete expression.id;
+            delete expression.expressions;
+
             if(!expression.expressionDescriptor.groupVal || expression.expressionDescriptor.groupVal.length < 1) {
                 return false;
             }
@@ -223,17 +226,15 @@
 
             data.unshift({
                 id: null, // default value
-                libraryAdSlot: {
-                    name: label || 'None'
-                }
+                name: label || 'None'
             });
 
             return data;
         }
 
         function _resetForm() {
-            if(!!$scope.adSlot.defaultAdSlot) {
-                $scope.adSlot.defaultAdSlot = null;
+            if(!!$scope.adSlot.defaultLibraryAdSlot) {
+                $scope.adSlot.defaultLibraryAdSlot = null;
             }
 
             angular.forEach($scope.adSlot.expressions, function(expressionDescriptor) {
@@ -252,9 +253,9 @@
 
         function _getAdSlots(type) {
             if(type == $scope.typesList.dynamic) {
-                AdSlotManager.getList()
+                AdSlotLibrariesManager.getList()
                     .then(function(adSlots) {
-                        $scope.adSlotsDefault = $filter('filter')(adSlots.plain(), {type: '!'+$scope.typesList.dynamic});
+                        $scope.adSlotsDefault = $filter('filter')(adSlots.plain(), {libType: '!'+$scope.typesList.dynamic});
                         $scope.adSlots = angular.copy($scope.adSlotsDefault);
 
                         _addNoneOption($scope.adSlotsDefault, 'None');
@@ -271,7 +272,7 @@
                             _resetForm();
                         }
 
-                        $scope.tags = adSlotService.getTagsAdSlotDynamic($filter('filter')(adSlots.plain(), {type: $scope.typesList.dynamic}));
+                        $scope.tags = adSlotService.getTagsAdSlotDynamic($filter('filter')(adSlots.plain(), {libType: $scope.typesList.dynamic}));
                     }
                 );
             }
@@ -294,7 +295,7 @@
             if($scope.selected.type == $scope.typesList.native) {
                 delete adSlot.height;
                 delete adSlot.width;
-                delete adSlot.expressions;
+                delete adSlot.libraryExpressions;
             }
 
             if($scope.selected.type == $scope.typesList.dynamic) {
@@ -302,8 +303,8 @@
                 delete adSlot.width;
             }
             else {
-                delete adSlot.expressions;
-                delete adSlot.defaultAdSlot;
+                delete adSlot.libraryExpressions;
+                delete adSlot.defaultLibraryAdSlot;
                 delete adSlot.native;
             }
 

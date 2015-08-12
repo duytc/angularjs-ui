@@ -123,6 +123,9 @@
             })
             .state('app.publisher.tagLibrary.adTag.displayList', {
                 url: '/display/list/{adSlotId:[0-9]+}',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
                 views: {
                     'content@app': {
                         controller: 'AdTagList',

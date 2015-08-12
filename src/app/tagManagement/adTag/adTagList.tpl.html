@@ -5,7 +5,7 @@
 
         <div class="button-bar">
             <label class="ui-checkbox">
-                <input type="checkbox" ng-model="enableDragDrop" ng-click="enableDragDropAdTag(!enableDragDrop)">
+                <input type="checkbox" ng-checked="enableDragDrop" ng-click="enableDragDropAdTag(enableDragDrop)">
                 <span>Enable Drag/Drop</span>
             </label>
             <button ng-if="!!adSlot.libType" ui-sref="^.newForAdSlot({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
@@ -24,9 +24,9 @@
         <div class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ng-click="enableDragDropAdTag(enableDragDrop)"><span class="fa" ng-class="enableDragDrop ? 'fa-check-square' : 'fa-square'"></span> Enable Drag/Drop</a></li>
                 <li ng-if="!!adSlot.libType"><a ui-sref="^.newForAdSlot({ adSlotId: adSlot.id, adSlotType: adSlotType })"> New Ad Tag</a></li>
-                <li ng-if="!adSlot.libType"><a ng-click="enableDragDropAdTag(!enableDragDrop)"><input type="checkbox" ng-model="enableDragDrop">Enable Drag/Drop</a></li>
-                <li><a ui-sref="^.new({ adSlotId: adSlot.id })">New Ad Tag</a></li>
+                <li ng-if="!adSlot.libType"><a ui-sref="^.new({ adSlotId: adSlot.id })">New Ad Tag</a></li>
                 <li><a ng-click="backToListAdSlot()">Back to Ad Slot List</a></li>
             </ul>
         </div>
@@ -82,7 +82,7 @@
                             <!--</div>-->
 
                             <div class="col-md-1">
-                                <i class="fa" ng-class="adTag.libraryAdTag.visible? 'fa-check-square' : 'fa-square'"></i>
+                                <i class="fa" ng-class="adTag.libraryAdTag.visible ? 'fa-check-square' : 'fa-square'"></i>
                             </div>
                         </li>
                     </ul>

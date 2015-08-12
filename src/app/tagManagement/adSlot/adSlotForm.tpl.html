@@ -71,7 +71,7 @@
                     <div class="col-sm-5">
                         <div>
                             <label class="ui-checkbox">
-                                <input name="pickFromLibrary" ng-disabled="disabledCheckPickFromLibrary" type="checkbox" ng-model="pickFromLibrary" ng-click="getAdSlotLibrary(selected.type)" server-error id="inputPickFromLibrary">
+                                <input name="pickFromLibrary" ng-disabled="disabledCheckPickFromLibrary" type="checkbox" ng-model="pickFromLibrary" ng-click="getAdSlotLibrary(adSlot.site, true)" server-error id="inputPickFromLibrary">
                                 <span></span>
                             </label>
                         </div>
@@ -81,9 +81,9 @@
                 <div class="form-group" ng-if="pickFromLibrary">
                     <label for="inputAdSlotLibrary" class="col-sm-1 control-label">Reference Slot</label>
                     <div class="col-sm-5">
-                        <ui-select name="adSlotLibrary" ng-model="selected.adSlotLibrary" id="inputAdSlotLibrary" server-error ng-disabled="!selected.publisher && isAdmin()" on-select="selectAdSlotLibrary($item)" reset-search-input="'false'">
+                        <ui-select name="adSlotLibrary" ng-model="selected.adSlotLibrary" id="inputAdSlotLibrary" ng-required="true" server-error ng-disabled="!selected.publisher && isAdmin()" on-select="selectAdSlotLibrary($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select an ad slot from library">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices repeat="adSlotLibrary.id as adSlotLibrary in adSlotLibraryList | selectedPublisher:selected.publisher">
+                            <ui-select-choices repeat="adSlotLibrary.id as adSlotLibrary in adSlotLibraryList | filter:$select.search | selectedPublisher:selected.publisher | filter:{ libType: selected.type}">
                                 {{ adSlotLibrary.name }}
                             </ui-select-choices>
                         </ui-select>
@@ -107,7 +107,7 @@
                 <div class="form-group" ng-if="showForDynamicAdSlot()">
                     <label for="inputDefaultAdSlot" class="col-sm-1 control-label">Default Ad Slot</label>
                     <div class="col-sm-5">
-                        <ui-select id="inputDefaultAdSlot" ng-model="adSlot.libraryAdSlot.defaultAdSlot" ng-required="true" server-error reset-search-input="'false'" ng-disabled="!adSlot.site || pickFromLibrary">
+                        <ui-select id="inputDefaultAdSlot" ng-model="adSlot.defaultAdSlot" ng-required="true" server-error on-select="selectDefaultAdSlot($item)" reset-search-input="'false'" ng-disabled="!adSlot.site || pickFromLibrary">
                             <ui-select-match placeholder="Select an ad slot">{{ $select.selected.libraryAdSlot.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="adSlot.id as adSlot in adSlotsDefault | filter:$select.search | filter:filterEntityType:adSlot">
                                 {{ adSlot.libraryAdSlot.name }} {{ adSlot.id ? '(ID: ' + adSlot.id + ')' : '' }}
@@ -136,7 +136,7 @@
                     <label class="col-sm-1 control-label">Expression Builder</label>
                     <div class="col-sm-11">
                         <div class="expressions-group">
-                            <query-builder expressions="adSlot.libraryAdSlot.expressions" ad-slots="adSlots" tags="tags" native="adSlot.libraryAdSlot.native" disabled-directive="pickFromLibrary"></query-builder>
+                            <query-builder expressions="adSlot.libraryAdSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.libraryAdSlot.native" disabled-directive="pickFromLibrary"></query-builder>
                         </div>
                     </div>
                 </div>

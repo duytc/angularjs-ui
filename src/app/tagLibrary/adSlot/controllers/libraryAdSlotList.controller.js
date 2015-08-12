@@ -5,7 +5,7 @@
         .controller('LibraryAdSlotList', LibraryAdSlotList)
     ;
 
-    function LibraryAdSlotList($scope, $modal, $location, adSlots, AlertService, DisplayAdSlotLibrariesManager, NativeAdSlotLibrariesManager, DynamicAdSlotLibrariesManager, TYPE_AD_SLOT, AtSortableService, historyStorage, HISTORY_TYPE_PATH) {
+    function LibraryAdSlotList($scope, $modal, adSlots, AlertService, DisplayAdSlotLibrariesManager, NativeAdSlotLibrariesManager, DynamicAdSlotLibrariesManager, TYPE_AD_SLOT, AtSortableService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.adSlots = adSlots;
 
         $scope.hasData = function () {
@@ -21,14 +21,12 @@
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10,
-            currentPage: $location.search().page - 1 || 0
+            maxPages: 10
         };
         $scope.adSlotTypes = TYPE_AD_SLOT;
 
         $scope.showPagination = showPagination;
         $scope.removeMoveToLibrary = removeMoveToLibrary;
-        $scope.setCurrentPageForUrl = setCurrentPageForUrl;
 
         function showPagination() {
             return angular.isArray($scope.adSlots) && $scope.adSlots.length > $scope.tableConfig.itemsPerPage;
@@ -54,13 +52,17 @@
 
                 return Manager.one(adSlot.id).remove()
                     .then(function () {
-                        var index = $scope.adSlots.indexOf(adSlot);
+                        var index = adSlots.indexOf(adSlot);
 
                         if (index > -1) {
-                            $scope.adSlots.splice(index, 1);
+                            adSlots.splice(index, 1);
                         }
 
-                        adSlots = $scope.adSlots;
+                        $scope.adSlots = adSlots;
+
+                        if($scope.tableConfig.currentPage > 0 && adSlots.length/10 == $scope.tableConfig.currentPage) {
+                            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
+                        }
 
                         AlertService.replaceAlerts({
                             type: 'success',
@@ -86,12 +88,7 @@
             });
         }
 
-        function setCurrentPageForUrl() {
-            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage + 1});
-        }
-
         $scope.$on('$locationChangeSuccess', function() {
-            $scope.tableConfig.currentPage = $location.search().page - 1;
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.adSlotLibrary)
         });
     }

@@ -5,7 +5,7 @@
         .controller('AdSlotList', AdSlotList)
     ;
 
-    function AdSlotList($scope, $location, $stateParams, $modal, AlertService, adSlotService, adSlots, site, AtSortableService, libraryAdSlotService, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
+    function AdSlotList($scope, $stateParams, $modal, AlertService, adSlotService, adSlots, site, AtSortableService, libraryAdSlotService, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
         $scope.site = site;
 
         $scope.adSlots = adSlots;
@@ -27,15 +27,13 @@
         $scope.currentSiteId = $stateParams.siteId || null;
 
         $scope.showPagination = showPagination;
-        $scope.setCurrentPageForUrl = setCurrentPageForUrl;
         $scope.backToListSite = backToListSite;
         $scope.exist = exist;
         $scope.shareAdSlot = shareAdSlot;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10,
-            currentPage: $location.search().page - 1 || 0
+            maxPages: 10
         };
 
         $scope.generateAdTag = function (adSlot) {
@@ -77,6 +75,10 @@
 
                             $scope.adSlots = adSlots;
 
+                            if($scope.tableConfig.currentPage > 0 && adSlots.length/10 == $scope.tableConfig.currentPage) {
+                                AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
+                            }
+
                             AlertService.replaceAlerts({
                                 type: 'success',
                                 message: 'The ad slot was deleted'
@@ -111,10 +113,6 @@
 
         function showPagination() {
             return angular.isArray($scope.adSlots) && $scope.adSlots.length > $scope.tableConfig.itemsPerPage;
-        }
-
-        function setCurrentPageForUrl() {
-            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage + 1});
         }
 
         function backToListSite() {
@@ -154,7 +152,6 @@
         }
 
         $scope.$on('$locationChangeSuccess', function() {
-            $scope.tableConfig.currentPage = $location.search().page - 1;
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.adSlot)
         });
     }

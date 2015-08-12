@@ -72,7 +72,7 @@
             var tags = [];
 
             angular.forEach(dynamicAdSlot, function(adSlot) {
-                angular.forEach(adSlot.expressions, function(expression) {
+                angular.forEach(adSlot.libraryExpressions, function(expression) {
                     if(!expression.expressionDescriptor.groupType) {
                         tags.push({name: expression.expressionDescriptor.var});
                     }

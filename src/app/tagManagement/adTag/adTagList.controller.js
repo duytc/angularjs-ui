@@ -5,7 +5,7 @@
         .controller('AdTagList', AdTagList)
     ;
 
-    function AdTagList($scope, $q, $modal, adTags, adSlot, AdTagManager, AdSlotAdTagLibrariesManager, AdTagLibrariesManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AD_TYPES, TYPE_AD_SLOT) {
+    function AdTagList($scope, $q, $state, $modal, adTags, adSlot, AdTagManager, AdSlotAdTagLibrariesManager, AdTagLibrariesManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AD_TYPES, TYPE_AD_SLOT) {
         $scope.adTags = adTags;
 
         $scope.hasAdTags = function () {
@@ -20,6 +20,7 @@
         }
 
         var originalGroups;
+        $scope.enableDragDrop = false;
 
         $scope.adSlotTypes = TYPE_AD_SLOT;
         $scope.adTypes = AD_TYPES;
@@ -104,18 +105,10 @@
 
                 return Manager.one(adTag.id).remove()
                     .then(function () {
-                        var index = adTags.indexOf(adTag);
+                        var state = !!adTag.libraryAdSlot ? '^.displayList' : '^.list';
+                        $state.go(state, {uniqueRequestCacheBuster: Math.random(), adSlotId: $scope.adSlot.id});
 
-                        if (index > -1) {
-                            adTags.splice(index, 1);
-                        }
-
-                        $scope.adTags = adTags;
-
-                        // refresh list ad tag
-                        $scope.adTagsGroup = _sortGroup(adTags);
-
-                        AlertService.replaceAlerts({
+                        AlertService.addFlash({
                             type: 'success',
                             message: 'The ad tag was deleted'
                         });
@@ -193,9 +186,12 @@
 
                     return $q.reject('could not reorder ad tags');
                 })
-                .then(function (adTags) {
+                .then(function (data) {
                     actionDropdownToggled(false);
-                    $scope.adTagsGroup = _sortGroup(adTags.plain());
+
+                    $scope.adTags = data.plain();
+                    adTags = $scope.adTags;
+                    $scope.adTagsGroup = _sortGroup(adTags);
 
                     AlertService.replaceAlerts({
                         type: 'success',
@@ -266,6 +262,8 @@
         }
 
         function enableDragDropAdTag(enable) {
+            $scope.enableDragDrop = !enable;
+
             $scope.sortableItemOption['disabled'] = enable;
             $scope.sortableGroupOptions['disabled'] = enable;
         }

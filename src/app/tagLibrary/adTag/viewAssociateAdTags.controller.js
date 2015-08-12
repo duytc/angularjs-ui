@@ -5,7 +5,7 @@
         .controller('ViewAssociateAdTags', ViewAssociateAdTags)
     ;
 
-    function ViewAssociateAdTags($scope, $modal, $state, adTags, TYPE_AD_SLOT, AlertService, AdTagManager, historyStorage, HISTORY_TYPE_PATH) {
+    function ViewAssociateAdTags($scope, $modal, adTags, TYPE_AD_SLOT, AlertService, AdTagManager, historyStorage, HISTORY_TYPE_PATH) {
        $scope.adTags = adTags;
 
         $scope.hasData = function () {
@@ -98,7 +98,17 @@
                 return AdTagManager.one(adTag.id).remove()
                     .then(
                     function () {
-                        $state.go($state.current, {uniqueRequestCacheBuster: Math.random()});
+                        var index = adTags.indexOf(adTag);
+
+                        if (index > -1) {
+                            adTags.splice(index, 1);
+                        }
+
+                        $scope.adTags = adTags;
+
+                        if($scope.tableConfig.currentPage > 0 && adTags.length/10 == $scope.tableConfig.currentPage) {
+                            $scope.tableConfig.currentPage =- 1;
+                        }
 
                         AlertService.addFlash({
                             type: 'success',

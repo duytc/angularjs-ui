@@ -5,7 +5,7 @@
         .controller('AdTagListByAdNetwork', AdTagListByAdNetwork)
     ;
 
-    function AdTagListByAdNetwork($scope, $location, $modal, adTags, adNetwork, AdTagManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AtSortableService, AdTagLibrariesManager) {
+    function AdTagListByAdNetwork($scope, $modal, adTags, adNetwork, AdTagManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AdTagLibrariesManager) {
         $scope.adNetwork = adNetwork;
         $scope.adTags = adTags;
 
@@ -16,13 +16,11 @@
         $scope.showPagination = showPagination;
         $scope.backToListAdNetwork = backToListAdNetwork;
         $scope.updateAdTag = updateAdTag;
-        $scope.setCurrentPageForUrl = setCurrentPageForUrl;
         $scope.shareAdTag = shareAdTag;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10,
-            currentPage: $location.search().page - 1 || 0
+            maxPages: 10
         };
 
         if (!$scope.hasAdTags()) {
@@ -119,10 +117,6 @@
                 });
         }
 
-        function setCurrentPageForUrl() {
-            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage + 1});
-        }
-
         function shareAdTag(adTag) {
             var libraryAdTag = {
                 visible: true
@@ -147,7 +141,6 @@
         }
 
         $scope.$on('$locationChangeSuccess', function() {
-            $scope.tableConfig.currentPage = $location.search().page - 1;
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.adTag)
         });
     }

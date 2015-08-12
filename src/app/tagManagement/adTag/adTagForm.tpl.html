@@ -88,7 +88,7 @@
                     <div class="col-sm-10">
                         <ui-select name="libraryAdTag" ng-model="libraryAdTag" id="inputAdTagLibrary" server-error ng-disabled="!selected.publisher && isAdmin()" on-select="selectAdTagLibrary($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select an ad tag from library">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices repeat="libraryAdTag.id as libraryAdTag in adTagLibraryList | filter:filterByPublisher:libraryAdTag">
+                            <ui-select-choices repeat="libraryAdTag.id as libraryAdTag in adTagLibraryList | filter:$select.search | filter:filterByPublisher:libraryAdTag">
                                 {{ libraryAdTag.name }}
                             </ui-select-choices>
                         </ui-select>

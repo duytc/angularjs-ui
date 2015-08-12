@@ -33,10 +33,10 @@
     </div>
 
     <div ng-show="!site">
-        <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'site.name', 'name', 'width', 'height']"></search-box>
+        <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'site.name', 'libraryAdSlot.name', 'libraryAdSlot.width', 'libraryAdSlot.height']"></search-box>
     </div>
     <div ng-show="!!site">
-        <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'name', 'width', 'height']"></search-box>
+        <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'libraryAdSlot.name', 'libraryAdSlot.width', 'libraryAdSlot.height']"></search-box>
     </div>
 
 
@@ -83,14 +83,14 @@
                         <!--{{ item.libraryAdSlot.visible ? item.libraryAdSlot.referenceName : '' }}-->
                     <!--</td>-->
 
-                    <td at-title="In Library" at-attribute="visible" at-sortable>
+                    <td at-title="In Library" at-attribute="libraryAdSlot.visible" at-sortable>
                         <i class="fa" ng-class="item.libraryAdSlot.visible? 'fa-check-square' : 'fa-square'"></i>
                     </td>
                 </tr>
                 </tbody>
             </table>
 
-            <at-pagination ng-if="showPagination()" at-list="adSlots" ng-click="setCurrentPageForUrl()" at-config="tableConfig"></at-pagination>
+            <at-pagination at-pagination-query ng-if="showPagination()" at-list="adSlots" at-config="tableConfig"></at-pagination>
         </div>
     </div>
 </div>

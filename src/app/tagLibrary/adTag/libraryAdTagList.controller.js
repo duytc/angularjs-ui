@@ -5,7 +5,7 @@
         .controller('LibraryAdTagList', LibraryAdTagList)
     ;
 
-    function LibraryAdTagList($scope, $modal, $location, adTags, AlertService, AdTagLibrariesManager, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT, AtSortableService) {
+    function LibraryAdTagList($scope, $modal, adTags, AlertService, AdTagLibrariesManager, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT, AtSortableService) {
         $scope.adTags = adTags;
 
         $scope.hasData = function () {
@@ -16,8 +16,7 @@
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10,
-            currentPage: $location.search().page - 1 || 0
+            maxPages: 10
         };
 
         if (!$scope.hasData()) {
@@ -29,7 +28,6 @@
 
         $scope.showPagination = showPagination;
         $scope.removeMoveToLibrary = removeMoveToLibrary;
-        $scope.setCurrentPageForUrl = setCurrentPageForUrl;
         $scope.updateAdTag = updateAdTag;
 
         function showPagination() {
@@ -44,13 +42,17 @@
             modalInstance.result.then(function () {
                 return AdTagLibrariesManager.one(adTag.id).remove()
                     .then(function () {
-                        var index = $scope.adTags.indexOf(adTag);
+                        var index = adTags.indexOf(adTag);
 
                         if (index > -1) {
-                            $scope.adTags.splice(index, 1);
+                            adTags.splice(index, 1);
                         }
 
-                        adTags = $scope.adTags;
+                        $scope.adTags = adTags;
+
+                        if($scope.tableConfig.currentPage > 0 && adTags.length/10 == $scope.tableConfig.currentPage) {
+                            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
+                        }
 
                         AlertService.replaceAlerts({
                             type: 'success',
@@ -74,10 +76,6 @@
                     })
                     ;
             })
-        }
-
-        function setCurrentPageForUrl() {
-            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage + 1});
         }
 
         function updateAdTag(data, field, adtag) {
@@ -107,7 +105,6 @@
         }
 
         $scope.$on('$locationChangeSuccess', function() {
-            $scope.tableConfig.currentPage = $location.search().page - 1;
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.adTagLibrary)
         });
     }

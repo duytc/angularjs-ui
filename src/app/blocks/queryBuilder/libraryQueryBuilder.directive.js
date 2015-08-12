@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('tagcade.blocks.queryBuilder')
-        .directive('queryBuilder', queryBuilder)
+        .directive('libraryQueryBuilder', libraryQueryBuilder)
     ;
 
-    function queryBuilder($compile, CONDITIONS_STRING, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, TYPE_AD_SLOT, queryBuilderService, DisplayAdSlotManager) {
+    function libraryQueryBuilder($compile, _, CONDITIONS_STRING, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, TYPE_AD_SLOT, queryBuilderService, DisplayAdSlotLibrariesManager) {
         'use strict';
 
         return {
@@ -17,7 +17,7 @@
                 disabledDirective: '='
             },
             restrict: 'AE',
-            templateUrl: 'blocks/queryBuilder/queryBuilder.tpl.html',
+            templateUrl: 'blocks/queryBuilder/libraryQueryBuilder.tpl.html',
             compile: function (element, attrs) {
                 var content, directive;
                 content = element.contents().remove();
@@ -65,23 +65,19 @@
                             return;
                         }
 
-                        if(!!adSlot.libraryAdSlot && !!expressionRoot) {
-                            expressionRoot.expectLibraryAdSlot = adSlot.libraryAdSlot.id;
-                        }
-
                         var adSlotId = !!adSlot.id ? adSlot.id : adSlot;
 
-                        if(adSlot.type == scope.typesList.native) {
+                        if(adSlot.libType == scope.typesList.native) {
                             scope.hideStartingPositionAdTag[index] = true;
                         }
-                        if(adSlot.type == scope.typesList.display) {
+                        if(adSlot.libType == scope.typesList.display) {
                             scope.hideStartingPositionAdTag[index] = false;
 
                             if(!scope.groups[adSlotId]) {
                                 // reset group by index
                                 scope.groups[adSlotId] = [];
 
-                                DisplayAdSlotManager.one(adSlotId).getList('adtags')
+                                DisplayAdSlotLibrariesManager.one(adSlotId).getList('adtags')
                                     .then(function(adTags) {
                                         scope.groups[adSlotId] = _setupGroup(adTags.plain());
                                     })
@@ -175,16 +171,8 @@
 
                         angular.forEach(scope.expressions, function(expressionRoot) {
                             if(angular.isObject(expressionRoot.expectLibraryAdSlot)) {
-                                expressionRoot.expectLibraryAdSlot = expressionRoot.expectLibraryAdSlot.id
+                                expressionRoot.expectLibraryAdSlot = expressionRoot.expectLibraryAdSlot.id;
                             }
-
-                            if(angular.isObject(expressionRoot.expressions)) {
-                                if(angular.isObject(expressionRoot.expressions[0].expectAdSlot)) {
-                                    expressionRoot.expressions[0].expectAdSlot = expressionRoot.expressions[0].expectAdSlot.id
-                                }
-                            }
-
-                            delete expressionRoot.id;
                         })
                     });
 
