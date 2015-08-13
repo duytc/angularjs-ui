@@ -18,6 +18,9 @@
         $stateProvider
             .state('app.admin.supportTools.sourceReportConfiguration.list', {
                 url: '/list?publisherId',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
                 views: {
                     'content@app': {
                         controller: 'EmailConfigsList',
@@ -48,6 +51,9 @@
         $stateProvider
             .state('app.admin.supportTools.sourceReportConfiguration.siteConfigByEmail', {
                 url: '/listSiteConfig/email/{emailId}?publisherId',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
                 views: {
                     'content@app': {
                         controller: 'SiteConfigByEmailList',

@@ -56,10 +56,10 @@
 
         function selectPublisher(publisherId) {
             if(publisherId != null) {
-                return $state.transitionTo($state.current, {publisherId: publisherId}, {reload: true});
+                return $state.transitionTo($state.current, {uniqueRequestCacheBuster: Math.random(), publisherId: publisherId});
             }
 
-            return $state.transitionTo($state.current, {}, {reload: true});
+            return $state.transitionTo($state.current, {uniqueRequestCacheBuster: Math.random()});
         }
 
         function addNewEmailConfig() {
@@ -108,7 +108,7 @@
                     })
 
                     .then(function() {
-                        $state.reload();
+                        $state.go($state.current, {uniqueRequestCacheBuster: Math.random()});
                     })
 
                     .catch(function() {

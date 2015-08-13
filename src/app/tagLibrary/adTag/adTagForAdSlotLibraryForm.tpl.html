@@ -84,7 +84,7 @@
                 <div class="form-group" ng-if="adTag.libraryAdTag.adType == adTypes.customAd">
                     <label for="inputHtml" class="col-sm-2 control-label">Html</label>
                     <div class="col-sm-10">
-                        <ui-codemirror id="inputHtml" ng-model="adTag.libraryAdTag.html" ui-codemirror-opts="editorOptions"></ui-codemirror>
+                        <ui-codemirror ng-required="true" id="inputHtml" ng-model="adTag.libraryAdTag.html" ui-codemirror-opts="editorOptions"></ui-codemirror>
                         <span class="help-block">You can use the following macros in your ad tag:<br/>
                         <strong>${CACHEBUSTER}</strong>: A unique code that ensures URLs are unique<br/>
                         <strong>${PAGEURL}</strong>: The url of the current page<br/>

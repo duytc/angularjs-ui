@@ -11,18 +11,18 @@
                 <th>Ad Slot</th>
                 <th>Site</th>
                 <th ng-show="isAdmin">Publisher</th>
-                <th>Width</th>
-                <th>Height</th>
+                <th ng-show="!!relativeEntityData.libraryAdSlot.width">Width</th>
+                <th ng-show="!!relativeEntityData.libraryAdSlot.height">Height</th>
             </tr>
             </thead>
             <tbody>
             <tr>
                 <td>{{ relativeEntityData.id }}</td>
-                <td>{{ relativeEntityData.name }}</td>
+                <td>{{ relativeEntityData.libraryAdSlot.name }}</td>
                 <td>{{ relativeEntityData.site.name }}</td>
                 <td ng-show="isAdmin">{{ relativeEntityData.site.publisher.username }}</td>
-                <td>{{ relativeEntityData.width }}</td>
-                <td>{{ relativeEntityData.height }}</td>
+                <td ng-show="!!relativeEntityData.libraryAdSlot.width">{{ relativeEntityData.libraryAdSlot.width }}</td>
+                <td ng-show="!!relativeEntityData.libraryAdSlot.height">{{ relativeEntityData.libraryAdSlot.height }}</td>
             </tr>
             </tbody>
         </table>
