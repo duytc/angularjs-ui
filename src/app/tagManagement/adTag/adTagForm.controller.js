@@ -23,6 +23,7 @@
         };
 
         $scope.isNew = adTag === null;
+        var adTagCopy = angular.copy(adTag);
         $scope.formProcessing = false;
 
         // !! converts a variable to a boolean
@@ -56,7 +57,9 @@
             getAdTagLibrary();
 
             // set ad tag library
-            $scope.libraryAdTag = adTag.libraryAdTag.id;
+            if(adTag.libraryAdTag.visible) {
+                $scope.libraryAdTag = adTag.libraryAdTag.id;
+            }
 
             if(!adTag.libraryAdTag.visible) {
                 delete adTag.libraryAdTag.id;
@@ -144,6 +147,10 @@
                 return true;
             }
 
+            if(!$scope.selected.publisher) {
+                return false;
+            }
+
             var publisher = !!$scope.selected.publisher.id ? $scope.selected.publisher.id : $scope.selected.publisher;
             if(!publisher || libraryAdTag.adNetwork.publisher.id != publisher) {
                 return false;
@@ -174,6 +181,30 @@
 
                 // disabled form input html when select ad tag library
                 return $scope.editorOptions.readOnly = 'nocursor';
+            } else {
+                if(angular.isObject($scope.adTag)) {
+                    $scope.adTag.libraryAdTag = {
+                        name: null,
+                        html: null,
+                        adNetwork: null,
+                        adType: $scope.adTypes.customAd,
+                        descriptor: null
+                    }
+                } else {
+                    $scope.adTag = {
+                        libraryAdTag: {
+                            name: null,
+                            html: null,
+                            adNetwork: null,
+                            adType: $scope.adTypes.customAd,
+                            descriptor: null
+                        }
+                    };
+                }
+            }
+
+            if(!$scope.isNew) {
+                angular.extend($scope.adTag.libraryAdTag, adTagCopy.libraryAdTag);
             }
 
             if(!!$scope.adTag) {

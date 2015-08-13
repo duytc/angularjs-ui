@@ -72,6 +72,10 @@
             var tags = [];
 
             angular.forEach(dynamicAdSlot, function(adSlot) {
+                if(angular.isObject(adSlot.libraryAdSlot))
+                // update for ad slot normal and library ad slot
+                adSlot = !!adSlot.libraryAdSlot ? adSlot.libraryAdSlot : adSlot;
+
                 angular.forEach(adSlot.libraryExpressions, function(expression) {
                     if(!expression.expressionDescriptor.groupType) {
                         tags.push({name: expression.expressionDescriptor.var});

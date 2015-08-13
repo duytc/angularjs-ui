@@ -52,6 +52,8 @@
 
         // delete file unnecessary
         if(!$scope.isNew) {
+            $scope.disabledCheckPickFromLibrary = adTag.libraryAdTag.visible;
+
             // set pickFromLibrary when edit
             $scope.pickFromLibrary = adTag.libraryAdTag.visible;
 

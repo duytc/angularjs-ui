@@ -246,23 +246,24 @@
         }
 
         function getAdSlotLibrary(site) {
+            if(!site) {
+                return;
+            }
+
             // get list adSlot library for site
             var siteId = site.id || site;
-            if($scope.pickFromLibrary && !!siteId) {
+            if($scope.pickFromLibrary) {
                 AdSlotLibrariesManager.one('unreferred').one('site', siteId).getList()
                     .then(function(adSlotLibrary) {
                         $scope.adSlotLibraryList = adSlotLibrary.plain();
 
                         // merge library adSlot when edit ad slot
-                        //
-                        if(!$scope.isNew) {
+                        if(!$scope.isNew && $scope.adSlot.libraryAdSlot.visible) {
                             $scope.adSlotLibraryList.push($scope.adSlot.libraryAdSlot);
                         }
                     }
                 );
-            }
-
-            if(!$scope.pickFromLibrary) {
+            } else {
                 //reset form ad slot when un-check form library
 
                 _resetForm();
@@ -284,6 +285,7 @@
                 return _setLibraryAdSLot(adSlotLibrary)
             }
 
+            _resetForm();
             angular.extend($scope.adSlot.libraryAdSlot, adSlotLibrary);
         }
 
@@ -391,7 +393,9 @@
         }
 
         function _resetForm() {
-            $scope.selected.adSlotLibrary = null;
+            if(!$scope.pickFromLibrary) {
+                $scope.selected.adSlotLibrary = null;
+            }
 
             //reset form ad slot when un-check form library
             $scope.adSlot.libraryAdSlot = {
@@ -423,7 +427,9 @@
                 getAdSlotLibrary($scope.adSlot.site);
 
                 // set ad slot library
-                $scope.selected.adSlotLibrary = $scope.adSlot.libraryAdSlot.id;
+                if($scope.adSlot.libraryAdSlot.visible) {
+                    $scope.selected.adSlotLibrary = $scope.adSlot.libraryAdSlot.id;
+                }
 
                 if($scope.adSlot.type == $scope.adSlotTypes.dynamic) {
                     $scope.selected.type = $scope.adSlotTypes.dynamic;
