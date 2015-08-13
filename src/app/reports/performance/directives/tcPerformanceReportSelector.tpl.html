@@ -90,7 +90,7 @@
                     </div>
                     <div class="form-group" ng-if="selectedData.reportType.toState == 'reports.performance.adSlots'">
                         <label>Site</label>
-                        <ui-select name="site" ng-model="selectedData.siteId" on-select="selectSite($model)" reset-search-input="'false'">
+                        <ui-select name="site" ng-model="selectedData.siteId" ng-required="true" on-select="selectSite($model)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select a site">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="site.id as site in optionData.sites | filter: {$: $select.search, id: '!!'} | filter:filterNonEntityValues($select.search) | selectedPublisher:selectedData.publisherId">
                                 <div ng-bind-html="site.name | highlight: $select.search"></div>
@@ -114,7 +114,7 @@
                 <div class="form-inline">
                     <div class="form-group">
                         <label>Ad Slot</label>
-                        <ui-select name="adSlot" ng-model="selectedData.adSlotId" on-select="selectEntity($model)" ng-init="getAdSlot(selectedData.siteId)" reset-search-input="'false'">
+                        <ui-select name="adSlot" ng-model="selectedData.adSlotId" ng-required="true" on-select="selectEntity($model)" ng-init="getAdSlot(selectedData.siteId)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select an ad slot">{{ $select.selected.libraryAdSlot.name }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="adSlot.id as adSlot in optionData.adSlots | filter: $select.search">
                                 <div ng-bind-html="adSlot.libraryAdSlot.name | highlight: $select.search"></div>
