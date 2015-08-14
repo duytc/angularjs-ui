@@ -155,6 +155,10 @@
         }
 
         function selectType(type) {
+            $scope.adSlot = {
+                libraryExpressions: []
+            };
+
             _getAdSlots(type)
         }
 

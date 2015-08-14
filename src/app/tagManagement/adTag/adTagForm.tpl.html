@@ -80,16 +80,16 @@
                                 <span></span>
                             </label>
                         </div>
-                        <span class="help-block">Network and html fields are retrieved from library and not editable once checked</span>
+                        <span class="help-block">You can select an existing ad tag from your library. If you choose this option some of the fields below will not be editable. If you would like to change these fields, you may do so the the Tag Library section.</span>
                     </div>
                 </div>
                 <div class="form-group" ng-if="pickFromLibrary">
-                    <label for="inputAdTagLibrary" class="col-sm-2 control-label">Reference Tag</label>
+                    <label for="inputAdTagLibrary" class="col-sm-2 control-label">Library Ad Tag</label>
                     <div class="col-sm-10">
                         <ui-select name="libraryAdTag" ng-model="libraryAdTag" id="inputAdTagLibrary" server-error ng-disabled="!selected.publisher && isAdmin()" on-select="selectAdTagLibrary($item)" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select an ad tag from library">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-match placeholder="Select an ad tag from library">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
                             <ui-select-choices repeat="libraryAdTag.id as libraryAdTag in adTagLibraryList | filter:$select.search | filter:filterByPublisher:libraryAdTag">
-                                {{ libraryAdTag.name }}
+                                {{ libraryAdTag.name }} {{ libraryAdTag.id ? '(ID: ' + libraryAdTag.id + ')' : '' }}
                             </ui-select-choices>
                         </ui-select>
                     </div>

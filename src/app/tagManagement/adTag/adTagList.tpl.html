@@ -58,6 +58,7 @@
                                         <li ng-if="!adTag.libraryAdTag.visible" class="divider"></li>
                                         <li ng-if="!adSlot.libType"><a ui-sref="^.edit({ id: adTag.id })">Edit Ad Tag</a></li>
                                         <li ng-if="!!adSlot.libType"><a ui-sref="^.editForAdSlot({ id: adTag.id })">Edit Ad Tag</a></li>
+                                        <li ng-if="adTag.libraryAdTag.visible"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: adTag.libraryAdTag.id})">Edit Ad Tag Library</a></li>
                                         <li><a ng-click="toggleAdTagStatus(adTag)">{{ adTag.active ? 'Pause' : 'Activate' }} Ad Tag</a></li>
                                         <li><a ng-click="confirmDeletion(adTag)">Delete Ad Tag</a></li>
                                         <li ng-if="adTags.length > 1" class="divider"></li>

@@ -82,6 +82,7 @@
             if(adtag[field] == data) {
                 return;
             }
+            delete adtag.associatedTagCount;
 
             var saveField = angular.copy(adtag[field]);
             adtag[field] = data;

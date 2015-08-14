@@ -75,16 +75,16 @@
                                 <span></span>
                             </label>
                         </div>
-                        <span class="help-block">The fields are retrieved from library and not editable once checked</span>
+                        <span class="help-block">You can select an existing ad slot from your library. If you choose this option, all of the fields below will not be editable. If you would like to change these fields, you may do so the the Tag Library section.</span>
                     </div>
                 </div>
                 <div class="form-group" ng-if="pickFromLibrary">
-                    <label for="inputAdSlotLibrary" class="col-sm-1 control-label">Reference Slot</label>
+                    <label for="inputAdSlotLibrary" class="col-sm-1 control-label">Library Ad Slot</label>
                     <div class="col-sm-5">
                         <ui-select name="adSlotLibrary" ng-model="selected.adSlotLibrary" id="inputAdSlotLibrary" ng-required="true" server-error ng-disabled="!selected.publisher && isAdmin()" on-select="selectAdSlotLibrary($item)" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select an ad slot from library">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-match placeholder="Select an ad slot from library">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
                             <ui-select-choices repeat="adSlotLibrary.id as adSlotLibrary in adSlotLibraryList | filter:$select.search | selectedPublisher:selected.publisher | filter:{ libType: selected.type}">
-                                {{ adSlotLibrary.name }}
+                                {{ adSlotLibrary.name }} {{ adSlotLibrary.id ? '(ID: ' + adSlotLibrary.id + ')' : '' }}
                             </ui-select-choices>
                         </ui-select>
                     </div>

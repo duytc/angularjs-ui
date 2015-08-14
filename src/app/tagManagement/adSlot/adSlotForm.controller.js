@@ -93,7 +93,7 @@
         function selectType(type) {
             _resetForm();
 
-            if(type == $scope.adSlotTypes.dynamic) {
+            if(type == $scope.adSlotTypes.dynamic && !!$scope.adSlot.site) {
                 _getAdSlots($scope.adSlot.site, type);
             }
         }

@@ -67,8 +67,9 @@
                                 <li ng-if="!exist(item.type, adSlotTypes.dynamic)"><a ui-sref="^.^.^.reports.performance.adSlotAdTags({ adSlotId: item.id, startDate: today})">View Today's Report</a></li>
                                 <li ng-if="!exist(item.type, adSlotTypes.dynamic)" class="divider"></li>
                                 <li><a ui-sref="^.edit({ id: item.id })">Edit Ad Slot</a></li>
+                                <li ng-if="item.libraryAdSlot.visible"><a  ui-sref="^.^.^.tagLibrary.adSlot.edit({ id: item.libraryAdSlot.id})">Edit Ad Slot Library</a></li>
                                 <li ng-if="!exist(item.type, adSlotTypes.dynamic)"><a ng-click="cloneAdSlot(item)">Clone Ad Slot</a></li>
-                                <li ng-if="!item.libraryAdSlot.visible && !isAdmin()" ng-click="shareAdSlot(item)"><a>Move To Library</a></li>
+                                <li ng-if="!item.libraryAdSlot.visible" ng-click="shareAdSlot(item)"><a>Move To Library</a></li>
                                 <li><a ng-click="confirmDeletion(item)">Delete Ad Slot</a></li>
                             </ul>
                         </div>
