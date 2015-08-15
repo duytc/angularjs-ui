@@ -82,11 +82,11 @@
             if(adtag[field] == data) {
                 return;
             }
-            delete adtag.associatedTagCount;
 
             var saveField = angular.copy(adtag[field]);
             adtag[field] = data;
             var item = angular.copy(adtag);
+            delete item.associatedTagCount;
 
             AdTagLibrariesManager.one(item.id).patch(item)
                 .then(function() {
