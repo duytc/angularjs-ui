@@ -5,7 +5,7 @@
         .controller('AdTagListByAdNetwork', AdTagListByAdNetwork)
     ;
 
-    function AdTagListByAdNetwork($scope, $location, $state, $modal, adTags, adNetwork, AdTagManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AtSortableService) {
+    function AdTagListByAdNetwork($scope, $modal, adTags, adNetwork, AdTagManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AdTagLibrariesManager) {
         $scope.adNetwork = adNetwork;
         $scope.adTags = adTags;
 
@@ -16,12 +16,11 @@
         $scope.showPagination = showPagination;
         $scope.backToListAdNetwork = backToListAdNetwork;
         $scope.updateAdTag = updateAdTag;
-        $scope.setCurrentPageForUrl = setCurrentPageForUrl;
+        $scope.shareAdTag = shareAdTag;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10,
-            currentPage: $location.search().page - 1 || 0
+            maxPages: 10
         };
 
         if (!$scope.hasAdTags()) {
@@ -60,15 +59,13 @@
                 return AdTagManager.one(adTag.id).remove()
                     .then(
                     function () {
-                        var index = $scope.adTags.indexOf(adTag);
+                        var index = adTags.indexOf(adTag);
 
                         if (index > -1) {
-                            $scope.adTags.splice(index, 1);
+                            adTags.splice(index, 1);
                         }
 
-                        //$state.current.reloadOnSearch = true;
-                        //historyStorage.getLocationPath(HISTORY_TYPE_PATH.adTag, $state.current);
-                        //$state.current.reloadOnSearch = false;
+                        $scope.adTags = adTags;
 
                         AlertService.replaceAlerts({
                             type: 'success',
@@ -103,7 +100,7 @@
             adtag[field] = data;
             var item = angular.copy(adtag);
 
-            AdTagManager.one(item.id).customPUT(item)
+            AdTagManager.one(item.id).patch(item)
                 .then(function() {
                     AlertService.addAlert({
                         type: 'success',
@@ -120,12 +117,30 @@
                 });
         }
 
-        function setCurrentPageForUrl() {
-            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage + 1});
+        function shareAdTag(adTag) {
+            var libraryAdTag = {
+                visible: true
+            };
+
+            AdTagLibrariesManager.one(adTag.libraryAdTag.id).patch(libraryAdTag)
+                .then(function () {
+                    adTag.libraryAdTag.visible = true;
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The ad tag has not been moved to library'
+                    });
+                })
+                .catch(function () {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'The ad tag has been moved to library'
+                    });
+                })
+            ;
         }
 
         $scope.$on('$locationChangeSuccess', function() {
-            $scope.tableConfig.currentPage = $location.search().page - 1;
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.adTag)
         });
     }

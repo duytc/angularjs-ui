@@ -5,7 +5,7 @@
 
         <div class="button-bar">
             <button ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
-                <span class="glyphicon glyphicon glyphicon-plus"></span>
+                <span class="glyphicon glyphicon-plus"></span>
                 New Ad Network
             </button>
         </div>
@@ -60,7 +60,7 @@
                 </tbody>
             </table>
 
-            <at-pagination ng-if="showPagination()" ng-click="setCurrentPageForUrl()" at-list="adNetworks" at-config="tableConfig"></at-pagination>
+            <at-pagination at-pagination-query ng-if="showPagination()" at-list="adNetworks" at-config="tableConfig"></at-pagination>
         </div>
     </div>
 </div>

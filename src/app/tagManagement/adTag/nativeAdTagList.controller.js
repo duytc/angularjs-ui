@@ -5,7 +5,7 @@
         .controller('NativeAdTagList', NativeAdTagList)
     ;
 
-    function NativeAdTagList($scope, $state, $modal, adTags, AdTagManager, AlertService, adSlot, historyStorage, HISTORY_TYPE_PATH) {
+    function NativeAdTagList($scope, $modal, adTags, AdTagManager, AdSlotAdTagLibrariesManager, AdTagLibrariesManager, AlertService, adSlot, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
         $scope.adSlot = adSlot;
         $scope.adTags = adTags;
 
@@ -13,9 +13,11 @@
             return !!adTags.length;
         };
 
+        $scope.adSlotTypes = TYPE_AD_SLOT;
         $scope.showPagination = showPagination;
         $scope.backToListAdSlot = backToListAdSlot;
         $scope.updateAdTag = updateAdTag;
+        $scope.shareAdTag = shareAdTag;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -32,7 +34,8 @@
         $scope.toggleAdTagStatus = function (adTag) {
             var newTagStatus = !adTag.active;
 
-            AdTagManager.one(adTag.id).patch({
+            var Manager = !!adTag.libraryAdSlot ? AdSlotAdTagLibrariesManager : AdTagManager;
+            Manager.one(adTag.id).patch({
                 'active': newTagStatus
             })
                 .catch(function () {
@@ -55,12 +58,20 @@
             });
 
             modalInstance.result.then(function () {
-                return AdTagManager.one(adTag.id).remove()
+                var Manager = !!adTag.libraryAdSlot ? AdSlotAdTagLibrariesManager : AdTagManager;
+
+                return Manager.one(adTag.id).remove()
                     .then(
                     function () {
-                        $state.reload();
+                        var index = adTags.indexOf(adTag);
 
-                        AlertService.addFlash({
+                        if (index > -1) {
+                            adTags.splice(index, 1);
+                        }
+
+                        $scope.adTags = adTags;
+
+                        AlertService.replaceAlerts({
                             type: 'success',
                             message: 'The ad tag was deleted'
                         });
@@ -81,6 +92,10 @@
         }
 
         function backToListAdSlot() {
+            if(!!$scope.adSlot.libType) {
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlotLibrary, '^.^.^.tagLibrary.adSlot.list');
+            }
+
             if($scope.isAdmin()) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: adSlot.site.id});
             }
@@ -94,6 +109,12 @@
         }
 
         function updateAdTag(data, field, adtag) {
+            adtag.libraryAdTag.adNetwork = adtag.libraryAdTag.adNetwork.id ? adtag.libraryAdTag.adNetwork.id : adtag.libraryAdTag.adNetwork;
+
+            if(adtag[field] == data) {
+                return;
+            }
+
             if(adtag[field] == data) {
                 return;
             }
@@ -102,7 +123,8 @@
             adtag[field] = data;
             var item = angular.copy(adtag);
 
-            AdTagManager.one(item.id).customPUT(item)
+            var Manager = !!adtag.libraryAdSlot ? AdSlotAdTagLibrariesManager : AdTagManager;
+            Manager.one(item.id).patch(item)
                 .then(function() {
                     AlertService.addAlert({
                         type: 'success',
@@ -117,6 +139,29 @@
                         message: 'The ad tag has not been updated'
                     });
                 });
+        }
+
+        function shareAdTag(adTag) {
+            var libraryAdTag = {
+                visible: true
+            };
+
+            AdTagLibrariesManager.one(adTag.libraryAdTag.id).patch(libraryAdTag)
+                .then(function () {
+                    adTag.libraryAdTag.visible = true;
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The ad tag has not been moved to library'
+                    });
+                })
+                .catch(function () {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'The ad tag has been moved to library'
+                    });
+                })
+            ;
         }
     }
 })();

@@ -6,19 +6,17 @@
         .controller('PublisherList', PublisherList)
     ;
 
-    function PublisherList($scope, publishers, $location, autoLogin, adminUserManager, AtSortableService, AlertService, historyStorage, HISTORY_TYPE_PATH) {
+    function PublisherList($scope, publishers, autoLogin, adminUserManager, AlertService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.publishers = publishers;
 
         $scope.today = new Date();
         $scope.visitPublisher = visitPublisher;
         $scope.showPagination = showPagination;
-        $scope.setCurrentPageForUrl = setCurrentPageForUrl;
         $scope.togglePublisherStatus = togglePublisherStatus;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10,
-            currentPage: $location.search().page - 1 || 0
+            maxPages: 10
         };
 
         function togglePublisherStatus(publisher) {
@@ -63,12 +61,7 @@
             return angular.isArray($scope.publishers) && $scope.publishers.length > $scope.tableConfig.itemsPerPage;
         }
 
-        function setCurrentPageForUrl() {
-            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage + 1});
-        }
-
         $scope.$on('$locationChangeSuccess', function() {
-            $scope.tableConfig.currentPage = $location.search().page - 1;
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.publisher)
         });
     }

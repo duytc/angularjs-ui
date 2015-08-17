@@ -149,7 +149,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Edit Ad Slot - {{ adSlot.name }}'
+                    label: 'Edit Ad Slot - {{ adSlot.libraryAdSlot.name }}'
                 }
             })
         ;

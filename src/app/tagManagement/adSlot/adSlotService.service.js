@@ -5,7 +5,7 @@
         .factory('adSlotService', adSlotService)
     ;
 
-    function adSlotService(SiteManager, DisplayAdSlotManager,  DynamicAdSlotManager, NativeAdSlotManager, TYPE_AD_SLOT_FOR_LIST, TYPE_AD_SLOT) {
+    function adSlotService(SiteManager, DisplayAdSlotManager,  DynamicAdSlotManager, NativeAdSlotManager, TYPE_AD_SLOT) {
         var api = {
             getManagerForAdSlot: getManagerForAdSlot,
 
@@ -18,16 +18,13 @@
         function getManagerForAdSlot(adSlot) {
             var Manager;
             switch(adSlot.type) {
-                case TYPE_AD_SLOT_FOR_LIST.static:
-                case  TYPE_AD_SLOT.adSlot:
+                case  TYPE_AD_SLOT.display:
                     Manager = DisplayAdSlotManager;
                     break;
-                case TYPE_AD_SLOT_FOR_LIST.dynamic:
-                case  TYPE_AD_SLOT.dynamicAdSlot:
+                case  TYPE_AD_SLOT.dynamic:
                     Manager = DynamicAdSlotManager;
                     break;
-                case TYPE_AD_SLOT_FOR_LIST.native:
-                case TYPE_AD_SLOT.nativeAdSlot:
+                case TYPE_AD_SLOT.native:
                     Manager = NativeAdSlotManager;
                     break;
                 default:
@@ -75,7 +72,11 @@
             var tags = [];
 
             angular.forEach(dynamicAdSlot, function(adSlot) {
-                angular.forEach(adSlot.expressions, function(expression) {
+                if(angular.isObject(adSlot.libraryAdSlot))
+                // update for ad slot normal and library ad slot
+                adSlot = !!adSlot.libraryAdSlot ? adSlot.libraryAdSlot : adSlot;
+
+                angular.forEach(adSlot.libraryExpressions, function(expression) {
                     if(!expression.expressionDescriptor.groupType) {
                         tags.push({name: expression.expressionDescriptor.var});
                     }

@@ -164,7 +164,7 @@
                 })
 
                 .then(function() {
-                    $state.reload();
+                    $state.go($state.current, {uniqueRequestCacheBuster: Math.random()});
                 })
 
                 .catch(function() {

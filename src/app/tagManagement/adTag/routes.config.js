@@ -19,6 +19,9 @@
             })
             .state('tagManagement.adTag.list', {
                 url: '/list/adslot/{adSlotId:[0-9]+}',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
                 views: {
                     'content@app': {
                         controller: 'AdTagList',
@@ -37,11 +40,14 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Ad Tags - {{ adSlot.name }}'
+                    label: 'Ad Tags - {{ adSlot.libraryAdSlot.name }}'
                 }
             })
             .state('tagManagement.adTag.nativeList', {
                 url: '/list/nativeadslot/{adSlotId:[0-9]+}',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
                 views: {
                     'content@app': {
                         controller: 'NativeAdTagList',
@@ -60,7 +66,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Ad Tags - {{ adSlot.name }}'
+                    label: 'Ad Tags - {{ adSlot.libraryAdSlot.name }}'
                 }
             })
             .state('tagManagement.adTag.listByAdNetwork', {
@@ -239,7 +245,7 @@
                 }
             })
             .state('tagManagement.adTag.edit', {
-                url: '/edit/{id:[0-9]+}?adNetworkId',
+                url: '/edit/{id:[0-9]+}?adNetworkId&adSlotId&adSlotType',
                 views: {
                     'content@app': {
                         controller: 'AdTagForm',
@@ -256,11 +262,19 @@
                     },
 
                     site: /* @ngInject */ function (adSlot) {
-                        return adSlot.site;
+                        if(!!adSlot && !!adSlot.site) {
+                            return adSlot.site;
+                        }
+
+                        return null
                     },
 
                     publisher: /* @ngInject */ function (site) {
-                        return site.publisher;
+                        if(!!site && !!site.publisher) {
+                            return site.publisher;
+                        }
+
+                        return null;
                     },
 
                     publisherList: function () {
@@ -282,7 +296,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Edit Ad Tag - {{ adTag.name }}'
+                    label: 'Edit Ad Tag - {{ adTag.libraryAdTag.name }}'
                 }
             })
         ;

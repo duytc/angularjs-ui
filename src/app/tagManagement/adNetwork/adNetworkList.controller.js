@@ -5,7 +5,7 @@
         .controller('AdNetworkList', AdNetworkList)
     ;
 
-    function AdNetworkList($scope, $location, $modal, $q, AlertService, AdNetworkManager, adNetworks, AtSortableService, historyStorage, HISTORY_TYPE_PATH) {
+    function AdNetworkList($scope, $modal, $q, AlertService, AdNetworkManager, adNetworks, historyStorage, HISTORY_TYPE_PATH) {
         $scope.adNetworks = adNetworks;
 
         $scope.hasData = function () {
@@ -21,11 +21,9 @@
 
         $scope.today = new Date();
         $scope.showPagination = showPagination;
-        $scope.setCurrentPageForUrl = setCurrentPageForUrl;
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10,
-            currentPage: $location.search().page - 1 || 0
+            maxPages: 10
         };
 
         $scope.toggleAdNetworkStatus = function (adNetwork, newStatus) {
@@ -121,12 +119,7 @@
             return angular.isArray($scope.adNetworks) && $scope.adNetworks.length > $scope.tableConfig.itemsPerPage;
         }
 
-        function setCurrentPageForUrl() {
-            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage + 1});
-        }
-
         $scope.$on('$locationChangeSuccess', function() {
-            $scope.tableConfig.currentPage = $location.search().page - 1;
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.adNetwork)
         });
     }

@@ -8,7 +8,7 @@
     /**
      * @param {Array} reportGroup.reports
      */
-    function ReportView($scope, $timeout, _, accountManager, sessionStorage, $state, Auth, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES, TYPE_AD_SLOT_FOR_LIST, REPORT_SETTINGS) {
+    function ReportView($scope, $timeout, _, accountManager, sessionStorage, $state, Auth, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES, TYPE_AD_SLOT, REPORT_SETTINGS) {
         var isAdmin = Auth.isAdmin();
         $scope.isAdmin = isAdmin;
 
@@ -45,7 +45,7 @@
         };
 
         if(!!$scope.reportGroup) {
-            $scope.isNotNativeAdSlot = $scope.reportGroup.reportType && $scope.reportGroup.reportType.adSlotType != TYPE_AD_SLOT_FOR_LIST.native ? true : false;
+            $scope.isNotNativeAdSlot = $scope.reportGroup.reportType && $scope.reportGroup.reportType.adSlotType != TYPE_AD_SLOT.native ? true : false;
         }
 
         $scope.tableConfig = {

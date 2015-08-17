@@ -5,23 +5,28 @@
 
         <div class="button-bar">
             <label class="ui-checkbox">
-                <input type="checkbox" ng-model="enableDragDrop" ng-click="enableDragDropAdTag(!enableDragDrop)">
+                <input type="checkbox" ng-checked="enableDragDrop" ng-click="enableDragDropAdTag(enableDragDrop)">
                 <span>Enable Drag/Drop</span>
             </label>
-            <button ui-sref="^.new({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
-                <span class="glyphicon glyphicon glyphicon-plus"></span>
+            <button ng-if="!!adSlot.libType" ui-sref="^.newForAdSlot({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-plus"></span>
+                New Ad Tag
+            </button>
+            <button ng-if="!adSlot.libType" ui-sref="^.new({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-plus"></span>
                 New Ad Tag
             </button>
             <button ng-click="backToListAdSlot()" class="btn btn-sm btn-primary" type="button">
-                <span class="glyphicon glyphicon glyphicon-arrow-left"></span>
+                <span class="glyphicon glyphicon-arrow-left"></span>
                 Back to Ad Slot List
             </button>
         </div>
         <div class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ng-click="enableDragDropAdTag(!enableDragDrop)"><input type="checkbox" ng-model="enableDragDrop">Enable Drag/Drop</a></li>
-                <li><a ui-sref="^.new({ adSlotId: adSlot.id })">New Ad Tag</a></li>
+                <li><a ng-click="enableDragDropAdTag(enableDragDrop)"><span class="fa" ng-class="enableDragDrop ? 'fa-check-square' : 'fa-square'"></span> Enable Drag/Drop</a></li>
+                <li ng-if="!!adSlot.libType"><a ui-sref="^.newForAdSlot({ adSlotId: adSlot.id, adSlotType: adSlotType })"> New Ad Tag</a></li>
+                <li ng-if="!adSlot.libType"><a ui-sref="^.new({ adSlotId: adSlot.id })">New Ad Tag</a></li>
                 <li><a ng-click="backToListAdSlot()">Back to Ad Slot List</a></li>
             </ul>
         </div>
@@ -33,10 +38,11 @@
             <ul class="header-list-ad-tag item">
                 <li class="col-md-1">#</li>
                 <li class="col-md-2">Actions</li>
-                <li class="col-md-3">Name</li>
+                <li class="col-md-2">Name</li>
                 <li class="col-md-2">Rotation Weight</li>
                 <li class="col-md-2">Frequency Cap</li>
                 <li class="col-md-2">Status</li>
+                <li class="col-md-1">Library</li>
             </ul>
             <ul ui-sortable="sortableGroupOptions" ng-model="adTagsGroup">
                 <li class="group-ad-tag" ng-repeat="adTags in adTagsGroup" ng-class="{'moveable': !sortableGroupOptions['disabled']}">
@@ -48,7 +54,11 @@
                                 <div class="btn-group" dropdown on-toggle="actionDropdownToggled(open)">
                                     <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a ui-sref="^.edit({ id: adTag.id })">Edit Ad Tag</a></li>
+                                        <li ng-if="!adTag.libraryAdTag.visible" ng-click="shareAdTag(adTag)"><a>Move To Library</a></li>
+                                        <li ng-if="!adTag.libraryAdTag.visible" class="divider"></li>
+                                        <li ng-if="!adSlot.libType"><a ui-sref="^.edit({ id: adTag.id })">Edit Ad Tag</a></li>
+                                        <li ng-if="!!adSlot.libType"><a ui-sref="^.editForAdSlot({ id: adTag.id })">Edit Ad Tag</a></li>
+                                        <li ng-if="adTag.libraryAdTag.visible && !isAdmin()"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: adTag.libraryAdTag.id})">Edit Ad Tag Library</a></li>
                                         <li><a ng-click="toggleAdTagStatus(adTag)">{{ adTag.active ? 'Pause' : 'Activate' }} Ad Tag</a></li>
                                         <li><a ng-click="confirmDeletion(adTag)">Delete Ad Tag</a></li>
                                         <li ng-if="adTags.length > 1" class="divider"></li>
@@ -56,9 +66,8 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="col-md-3" ng-dblclick="nameForm.$show()">
-                                <span class="fa fa-pencil" ng-hide="nameForm.$visible"></span>
-                                <div e-form="nameForm" buttons="no" oncancel="updateAdTag($data, 'name', adTag)" onbeforesave="updateAdTag($data, 'name', adTag)" editable-text="adTag.name">{{ adTag.name }}</div>
+                            <div class="col-md-2">
+                                <div>{{ adTag.libraryAdTag.name }}</div>
                             </div>
                             <div class="col-md-2" ng-dblclick="rotationForm.$show()">
                                 <span class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>
@@ -69,6 +78,13 @@
                                 <div e-form="frequencyCapForm" buttons="no" oncancel="updateAdTag($data, 'frequencyCap', adTag)" onbeforesave="updateAdTag($data, 'frequencyCap', adTag)" editable-number="adTag.frequencyCap">{{ adTag.frequencyCap }}</div>
                             </div>
                             <div class="col-md-2"><span class="label" ng-class="adTag.active ? 'label-success' : 'label-danger'">{{ adTag.active ? 'Active' : 'Paused' }}</span></div>
+                            <!--<div class="col-md-1">-->
+                                <!--{{ adTag.libraryAdTag.visible ? adTag.libraryAdTag.referenceName : '' }}-->
+                            <!--</div>-->
+
+                            <div class="col-md-1">
+                                <i class="fa" ng-class="adTag.libraryAdTag.visible ? 'fa-check-square' : 'fa-square'"></i>
+                            </div>
                         </li>
                     </ul>
                 </li>

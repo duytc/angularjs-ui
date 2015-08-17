@@ -36,7 +36,7 @@
         function submit() {
             $modalInstance.close();
 
-            Manager.one($scope.cloneAdSlot.id).customPOST({name: $scope.cloneAdSlot.name, site: $scope.cloneAdSlot.site}, 'clone')
+            Manager.one($scope.cloneAdSlot.id).customPOST({name: $scope.cloneAdSlot.libraryAdSlot.name, site: $scope.cloneAdSlot.site}, 'clone')
                 .then(function() {
                     $state.current.reloadOnSearch = true;
                     historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, $state.current);

@@ -4,7 +4,7 @@
         <strong current-page-title></strong>
         <div class="button-bar hidden-xs">
             <button ng-click="backToListAdNetwork()" class="btn btn-sm btn-primary" type="button">
-                <span class="glyphicon glyphicon glyphicon-arrow-left"></span>
+                <span class="glyphicon glyphicon-arrow-left"></span>
                 Back to Ad Network List
             </button>
         </div>
@@ -22,16 +22,16 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                             <ul class="dropdown-menu" role="menu">
+                                <li ng-if="!item.libraryAdTag.visible" ng-click="shareAdTag(item)"><a>Move To Library</a></li>
+                                <li ng-if="!item.libraryAdTag.visible" class="divider"></li>
                                 <li><a ui-sref="^.edit({ id: item.id, adNetworkId: adNetwork.id})">Edit Ad Tag</a></li>
+                                <li ng-if="item.libraryAdTag.visible && !isAdmin()"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: item.libraryAdTag.id})">Edit Ad Tag Library</a></li>
                                 <li><a ng-click="toggleAdTagStatus(item)">{{ item.active ? 'Pause' : 'Activate' }} Ad Tag</a></li>
                                 <li><a ng-click="confirmDeletion(item)">Delete Ad Tag</a></li>
                             </ul>
                         </div>
                     </td>
-                    <td ng-dblclick="nameForm.$show()" at-sortable at-attribute="name" at-initial-sorting="asc">
-                        <span class="fa fa-pencil" ng-hide="nameForm.$visible"></span>
-                        <div e-form="nameForm" buttons="no" oncancel="updateAdTag($data, 'name', item)" onbeforesave="updateAdTag($data, 'name', item)" editable-text="item.name">{{ item.name }}</div>
-                    </td>
+                    <td at-implicit at-title="Name" at-sortable at-attribute="libraryAdTag.name" at-initial-sorting="asc"></td>
                     <td ng-dblclick="rotationForm.$show()" at-sortable at-attribute="rotation">
                         <span class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>
                         <div e-form="rotationForm" buttons="no" oncancel="updateAdTag($data, 'rotation', item)" onbeforesave="updateAdTag($data, 'rotation', item)" editable-number="item.rotation">{{ item.rotation }}</div>
@@ -40,16 +40,23 @@
                         <span class="fa fa-pencil" ng-hide="frequencyCapForm.$visible"></span>
                         <div e-form="frequencyCapForm" buttons="no" oncancel="updateAdTag($data, 'frequencyCap', item)" onbeforesave="updateAdTag($data, 'frequencyCap', item)" editable-number="item.frequencyCap">{{ item.frequencyCap }}</div>
                     </td>
-                    <td at-implicit at-title="Ad Slot" at-sortable at-attribute="adSlot.name"></td>
+                    <td at-implicit at-title="Ad Slot" at-sortable at-attribute="adSlot.libraryAdSlot.name"></td>
                     <td at-implicit at-title="Site" at-sortable at-attribute="adSlot.site.name" ></td>
-                    <td at-attribute="active">
+                    <td at-attribute="active" at-sortable>
                         <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
+                    </td>
+                    <!--<td at-title="Library" at-attribute="visible" at-sortable>-->
+                        <!--{{ item.libraryAdTag.visible ? item.libraryAdTag.referenceName : '' }}-->
+                    <!--</td>-->
+
+                    <td at-title="In Library" at-attribute="visible" at-sortable>
+                        <i class="fa" ng-class="item.libraryAdTag.visible? 'fa-check-square' : 'fa-square'"></i>
                     </td>
                 </tr>
                 </tbody>
             </table>
 
-            <at-pagination ng-if="showPagination()" ng-click="setCurrentPageForUrl()" at-list="adTags" at-config="tableConfig"></at-pagination>
+            <at-pagination at-pagination-query ng-if="showPagination()" at-list="adTags" at-config="tableConfig"></at-pagination>
         </div>
     </div>
 </div>

@@ -5,7 +5,9 @@
         .controller('AdTagList', AdTagList)
     ;
 
-    function AdTagList($scope, $q, $state, $modal, adTags, adSlot, AdTagManager, AlertService, historyStorage, HISTORY_TYPE_PATH) {
+    function AdTagList($scope, $q, $state, $modal, adTags, adSlot, AdTagManager, AdSlotAdTagLibrariesManager, AdTagLibrariesManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AD_TYPES, TYPE_AD_SLOT) {
+        $scope.adTags = adTags;
+
         $scope.hasAdTags = function () {
             return !!adTags.length;
         };
@@ -18,13 +20,17 @@
         }
 
         var originalGroups;
+        $scope.enableDragDrop = false;
 
+        $scope.adSlotTypes = TYPE_AD_SLOT;
+        $scope.adTypes = AD_TYPES;
         $scope.adSlot = adSlot;
         $scope.actionDropdownToggled = actionDropdownToggled;
-        $scope.adTagsGroup = _sortGroup(adTags);
+        $scope.adTagsGroup = _sortGroup($scope.adTags);
         $scope.updateAdTag = updateAdTag;
         $scope.enableDragDropAdTag = enableDragDropAdTag;
         $scope.backToListAdSlot = backToListAdSlot;
+        $scope.shareAdTag = shareAdTag;
 
         $scope.sortableGroupOptions = {
             disabled: true,
@@ -62,7 +68,8 @@
         $scope.toggleAdTagStatus = function (adTag) {
             var newTagStatus = !adTag.active;
 
-            AdTagManager.one(adTag.id).patch({
+            var Manager = !!adTag.libraryAdSlot ? AdSlotAdTagLibrariesManager : AdTagManager;
+            Manager.one(adTag.id).patch({
                 'active': newTagStatus
             })
                 .catch(function () {
@@ -94,15 +101,17 @@
             });
 
             modalInstance.result.then(function () {
-                return AdTagManager.one(adTag.id).remove()
-                    .then(
-                        function () {
-                            $state.reload();
+                var Manager = !!adTag.libraryAdSlot ? AdSlotAdTagLibrariesManager : AdTagManager;
 
-                            AlertService.addFlash({
-                                type: 'success',
-                                message: 'The ad tag was deleted'
-                            });
+                return Manager.one(adTag.id).remove()
+                    .then(function () {
+                        var state = !!adTag.libraryAdSlot ? '^.displayList' : '^.list';
+                        $state.go(state, {uniqueRequestCacheBuster: Math.random(), adSlotId: $scope.adSlot.id});
+
+                        AlertService.addFlash({
+                            type: 'success',
+                            message: 'The ad tag was deleted'
+                        });
                         },
                         function () {
                             AlertService.replaceAlerts({
@@ -177,9 +186,12 @@
 
                     return $q.reject('could not reorder ad tags');
                 })
-                .then(function (adTags) {
+                .then(function (data) {
                     actionDropdownToggled(false);
-                    $scope.adTagsGroup = _sortGroup(adTags.plain());
+
+                    $scope.adTags = data.plain();
+                    adTags = $scope.adTags;
+                    $scope.adTagsGroup = _sortGroup(adTags);
 
                     AlertService.replaceAlerts({
                         type: 'success',
@@ -221,6 +233,8 @@
         }
 
         function updateAdTag(data, field, adtag) {
+            adtag.libraryAdTag.adNetwork = adtag.libraryAdTag.adNetwork.id ? adtag.libraryAdTag.adNetwork.id : adtag.libraryAdTag.adNetwork;
+
             if(adtag[field] == data) {
                 return;
             }
@@ -229,7 +243,8 @@
             adtag[field] = data;
             var item = angular.copy(adtag);
 
-            AdTagManager.one(item.id).customPUT(item)
+            var Manager = !!adtag.libraryAdSlot ? AdSlotAdTagLibrariesManager : AdTagManager;
+            Manager.one(item.id).patch(item)
                 .then(function() {
                     AlertService.addAlert({
                         type: 'success',
@@ -247,11 +262,17 @@
         }
 
         function enableDragDropAdTag(enable) {
+            $scope.enableDragDrop = !enable;
+
             $scope.sortableItemOption['disabled'] = enable;
             $scope.sortableGroupOptions['disabled'] = enable;
         }
 
         function backToListAdSlot() {
+            if(!!$scope.adSlot.libType) {
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlotLibrary, '^.^.^.tagLibrary.adSlot.list');
+            }
+
             if($scope.isAdmin()) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: adSlot.site.id});
             }
@@ -262,6 +283,29 @@
             }
 
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.listAll');
+        }
+
+        function shareAdTag(adTag) {
+            var libraryAdTag = {
+                visible: true
+            };
+
+            AdTagLibrariesManager.one(adTag.libraryAdTag.id).patch(libraryAdTag)
+                .then(function () {
+                    adTag.libraryAdTag.visible = true;
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The ad tag has not been moved to library'
+                    });
+                })
+                .catch(function () {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'The ad tag has been moved to library'
+                    });
+                })
+            ;
         }
     }
 })();

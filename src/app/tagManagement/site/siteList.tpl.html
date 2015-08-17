@@ -5,7 +5,7 @@
 
         <div class="button-bar">
             <button ui-sref="^.new" class="btn btn-primary btn-sm" type="button">
-                <span class="glyphicon glyphicon glyphicon-plus"></span>
+                <span class="glyphicon glyphicon-plus"></span>
                 New Site
             </button>
         </div>
@@ -55,7 +55,7 @@
                 </tbody>
             </table>
 
-            <at-pagination ng-if="showPagination()" ng-click="setCurrentPageForUrl()" at-list="sites" at-config="tableConfig"></at-pagination>
+            <at-pagination at-pagination-query ng-if="showPagination()" at-list="sites" at-config="tableConfig"></at-pagination>
         </div>
     </div>
 </div>

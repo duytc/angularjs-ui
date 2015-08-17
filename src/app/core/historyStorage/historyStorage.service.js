@@ -5,7 +5,7 @@
         .factory('historyStorage', historyStorage)
     ;
 
-    function historyStorage($window, $stateParams, $location, $state, HISTORY_TYPE_PATH, HISTORY) {
+    function historyStorage($window, $stateParams, $location, $state, HISTORY_TYPE_PATH, HISTORY, Auth) {
         var api = {
             getLocationPath: getLocationPath,
             setParamsHistoryCurrent: setParamsHistoryCurrent,
@@ -22,7 +22,20 @@
 
             if(type == HISTORY_TYPE_PATH.adSlot) {
                 var paramHistoryForAdSlot = getParamsHistoryForAdSlot();
-                var params = !!paramHistoryForAdSlot && !!paramHistoryForAdSlot.siteId ? paramHistoryForAdSlot : paramDefault;
+                var params;
+
+                if(Auth.isAdmin()) {
+                    params = !!paramHistoryForAdSlot && !!paramHistoryForAdSlot.siteId ? paramHistoryForAdSlot : paramDefault;
+                } else {
+                    params = !!paramHistoryForAdSlot ? paramHistoryForAdSlot : paramDefault;
+                }
+
+                if(!params) {
+                    params = {
+                        uniqueRequestCacheBuster: Math.random()
+                    }
+                }
+
                 return $state.go(state, params);
             }
 
@@ -76,6 +89,11 @@
 
             if(!!params) {
                 params.uniqueRequestCacheBuster = Math.random();
+            }
+            if(!params) {
+                params = {
+                    uniqueRequestCacheBuster: Math.random()
+                }
             }
 
             return params;

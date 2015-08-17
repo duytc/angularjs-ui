@@ -6,7 +6,7 @@
         .controller('SitesForAdNetwork', SitesForAdNetwork)
     ;
 
-    function SitesForAdNetwork($scope, $modal, sites, adNetwork, AdNetworkManager, $modalInstance) {
+    function SitesForAdNetwork($scope, $q, $modal, sites, adNetwork, AdNetworkManager, $modalInstance) {
         $scope.sites = sites;
         $scope.adNetwork = adNetwork;
 
@@ -16,63 +16,69 @@
         };
 
         $scope.hasSites = hasSites;
-        $scope.onClick = onClick;
+        $scope.toggleStatus = toggleStatus;
 
         function hasSites() {
             return sites.length > 0;
         }
 
-        function onClick(siteStatus, newStatus) {
-            var confirmBox = $modal.open({
-                templateUrl: 'tagManagement/adNetwork/confirmPauseForSite.tpl.html',
-                controller: 'ConfirmPauseForSite',
-                resolve: {
-                    active: function () {
-                        return newStatus;
+        function toggleStatus(siteStatus, newStatus) {
+            var dfd = $q.defer();
+
+            dfd.promise
+                .then(function () {
+                    var checked = newStatus ? 1 : 0;
+
+                    if(adNetwork.id == null) {
+                        throw new Error('Unknown Ad Network');
                     }
-                }
-            });
 
-            confirmBox.result.then(function () {
-                var checked = newStatus ? 1 : 0;
+                    if(siteStatus.site.id == null) {
+                        throw new Error('Unknown Site');
+                    }
 
-                if(adNetwork.id == null) {
-                    throw new Error('Unknown Ad Network');
-                }
+                    var request = AdNetworkManager.one(adNetwork.id).one('sites', siteStatus.site.id).customPUT('', 'status', { active: checked });
+                    request
+                        .catch(
+                        function () {
+                            $modalInstance.close();
+                        })
+                        .then(
+                        function () {
+                            if(newStatus) {
+                                // update total ad tags active/pause for ad network
+                                adNetwork.activeAdTagsCount += siteStatus.pausedAdTagsCount;
+                                adNetwork.pausedAdTagsCount -= siteStatus.pausedAdTagsCount;
 
-                if(siteStatus.site.id == null) {
-                    throw new Error('Unknown Site');
-                }
+                                // update total ad tags active/pause for site
+                                siteStatus.activeAdTagsCount += siteStatus.pausedAdTagsCount;
+                                siteStatus.pausedAdTagsCount = 0;
+                            } else {
+                                // update total ad tags active/pause for ad network
+                                adNetwork.activeAdTagsCount -= siteStatus.activeAdTagsCount;
+                                adNetwork.pausedAdTagsCount += siteStatus.activeAdTagsCount;
 
-                var request = AdNetworkManager.one(adNetwork.id).one('sites', siteStatus.site.id).customPUT('', 'status', { active: checked });
-                request
-                    .catch(
-                    function () {
-                        $modalInstance.close();
-                    })
-                    .then(
-                    function () {
-                        if(newStatus) {
-                            // update total ad tags active/pause for ad network
-                            adNetwork.activeAdTagsCount += siteStatus.pausedAdTagsCount;
-                            adNetwork.pausedAdTagsCount -= siteStatus.pausedAdTagsCount;
+                                // update total ad tags active/pause for site
+                                siteStatus.pausedAdTagsCount += siteStatus.activeAdTagsCount;
+                                siteStatus.activeAdTagsCount = 0;
+                            }
 
-                            // update total ad tags active/pause for site
-                            siteStatus.activeAdTagsCount += siteStatus.pausedAdTagsCount;
-                            siteStatus.pausedAdTagsCount = 0;
-                        } else {
-                            // update total ad tags active/pause for ad network
-                            adNetwork.activeAdTagsCount -= siteStatus.activeAdTagsCount;
-                            adNetwork.pausedAdTagsCount += siteStatus.activeAdTagsCount;
+                            return siteStatus.active = checked;
+                        });
+                });
 
-                            // update total ad tags active/pause for site
-                            siteStatus.pausedAdTagsCount += siteStatus.activeAdTagsCount;
-                            siteStatus.activeAdTagsCount = 0;
-                        }
+            if (!newStatus) {
+                var confirmBox = $modal.open({
+                    templateUrl: 'tagManagement/adNetwork/confirmPauseForSite.tpl.html'
+                });
 
-                        return siteStatus.active = checked;
-                    });
-            });
+                confirmBox.result.then(function () {
+                    dfd.resolve();
+                });
+            } else {
+                // if it is not a pause, proceed without a modal
+                dfd.resolve();
+            }
         }
     }
 })();

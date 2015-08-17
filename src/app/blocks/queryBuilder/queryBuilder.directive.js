@@ -5,7 +5,7 @@
         .directive('queryBuilder', queryBuilder)
     ;
 
-    function queryBuilder($compile, CONDITIONS_STRING, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, TYPE_AD_SLOT_FOR_LIST, queryBuilderService, DisplayAdSlotManager) {
+    function queryBuilder($compile, CONDITIONS_STRING, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, TYPE_AD_SLOT, queryBuilderService, DisplayAdSlotManager) {
         'use strict';
 
         return {
@@ -13,7 +13,8 @@
                 expressions: '=',
                 adSlots: '=',
                 tags: '=',
-                native: '='
+                native: '=',
+                disabledDirective: '='
             },
             restrict: 'AE',
             templateUrl: 'blocks/queryBuilder/queryBuilder.tpl.html',
@@ -24,7 +25,7 @@
                     scope.operators = OPERATORS;
                     scope.conditions = CONDITIONS_STRING;
                     scope.dataTypes = DATA_TYPE;
-                    scope.typesList = TYPE_AD_SLOT_FOR_LIST;
+                    scope.typesList = TYPE_AD_SLOT;
 
                     var groupKey = GROUP_KEY;
                     var groupTYPE = GROUP_TYPE;
@@ -45,7 +46,6 @@
                         return queryBuilderService.builtVariable(expressionDescriptor)
                     };
 
-
                     function selectExpectAdSlot(adSlot, expressionRoot, index) {
                         if(!scope.hideStartingPositionAdTag) {
                             scope.hideStartingPositionAdTag = [];
@@ -65,18 +65,28 @@
                             return;
                         }
 
+                        if(!!adSlot.libraryAdSlot && !!expressionRoot) {
+                            expressionRoot.expectLibraryAdSlot = adSlot.libraryAdSlot.id;
+                        }
+
                         var adSlotId = !!adSlot.id ? adSlot.id : adSlot;
 
                         if(adSlot.type == scope.typesList.native) {
                             scope.hideStartingPositionAdTag[index] = true;
                         }
-                        if(adSlot.type == scope.typesList.static) {
+                        if(adSlot.type == scope.typesList.display) {
                             scope.hideStartingPositionAdTag[index] = false;
-                            DisplayAdSlotManager.one(adSlotId).getList('adtags')
-                                .then(function(adTags) {
-                                    scope.groups[index] = _setupGroup(adTags.plain());
-                                })
-                            ;
+
+                            if(!scope.groups[adSlotId]) {
+                                // reset group by index
+                                scope.groups[adSlotId] = [];
+
+                                DisplayAdSlotManager.one(adSlotId).getList('adtags')
+                                    .then(function(adTags) {
+                                        scope.groups[adSlotId] = _setupGroup(adTags.plain());
+                                    })
+                                ;
+                            }
                         }
                     }
 
@@ -119,8 +129,7 @@
 
                         // default condition
                         scope.expressions.push({
-                            expressionDescriptor: expressionDescriptor,
-                            expectAdSlot : null
+                            expressionDescriptor: expressionDescriptor
                         });
                     }
 
@@ -129,7 +138,11 @@
                             return true;
                         }
                         else if(!scope.native) {
-                            if(adSlot.type == scope.typesList.static) {
+                            if(adSlot.type == scope.typesList.display) {
+                                return true;
+                            }
+
+                            if(adSlot.libType == scope.typesList.display) {
                                 return true;
                             }
 
@@ -147,7 +160,7 @@
                         var listNameAdTag = [];
 
                         angular.forEach(adTags, function(adTag) {
-                            listNameAdTag.push(adTag.name);
+                            listNameAdTag.push(adTag.libraryAdTag.name);
                         });
 
                         var showString = adTags[0].position + ': (' + listNameAdTag.toString().replace(',', ', ') + ')';
@@ -161,11 +174,17 @@
                         }
 
                         angular.forEach(scope.expressions, function(expressionRoot) {
-                            if(!expressionRoot.expectAdSlot) {
-                                return;
+                            if(angular.isObject(expressionRoot.expectLibraryAdSlot)) {
+                                expressionRoot.expectLibraryAdSlot = expressionRoot.expectLibraryAdSlot.id
                             }
 
-                            !!expressionRoot.expectAdSlot.id ? expressionRoot.expectAdSlot = expressionRoot.expectAdSlot.id : expressionRoot.expectAdSlot;
+                            if(angular.isObject(expressionRoot.expressions)) {
+                                if(angular.isObject(expressionRoot.expressions[0].expectAdSlot)) {
+                                    expressionRoot.expressions[0].expectAdSlot = expressionRoot.expressions[0].expectAdSlot.id
+                                }
+                            }
+
+                            delete expressionRoot.id;
                         })
                     });
 

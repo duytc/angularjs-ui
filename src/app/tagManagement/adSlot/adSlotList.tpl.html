@@ -8,15 +8,15 @@
                 Generate Ad Tags
             </button>
             <button ng-if="!allAdSlot" ui-sref="^.new({ siteId: currentSiteId })" class="btn btn-sm btn-primary" type="button">
-                <span class="glyphicon glyphicon glyphicon-plus"></span>
+                <span class="glyphicon glyphicon-plus"></span>
                 New Ad Slot
             </button>
             <button ng-if="allAdSlot" ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
-                <span class="glyphicon glyphicon glyphicon-plus"></span>
+                <span class="glyphicon glyphicon-plus"></span>
                 New Ad Slot
             </button>
             <button ng-click="backToListSite()" class="btn btn-sm btn-primary" type="button">
-                <span class="glyphicon glyphicon glyphicon-arrow-left"></span>
+                <span class="glyphicon glyphicon-arrow-left"></span>
                 Back to Site List
             </button>
         </div>
@@ -33,10 +33,10 @@
     </div>
 
     <div ng-show="!site">
-        <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'site.name', 'name', 'width', 'height']"></search-box>
+        <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'site.name', 'libraryAdSlot.name', 'libraryAdSlot.width', 'libraryAdSlot.height']"></search-box>
     </div>
     <div ng-show="!!site">
-        <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'name', 'width', 'height']"></search-box>
+        <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'libraryAdSlot.name', 'libraryAdSlot.width', 'libraryAdSlot.height']"></search-box>
     </div>
 
 
@@ -60,29 +60,38 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li ng-if="exist(item.type, types.static)"><a ui-sref="^.^.adTag.list({ adSlotId: item.id })">Manage Ad Tags</a></li>
-                                <li ng-if="exist(item.type, types.native)"><a ui-sref="^.^.adTag.nativeList({ adSlotId: item.id })">Manage Ad Tags</a></li>
+                                <li ng-if="exist(item.type, adSlotTypes.display)"><a ui-sref="^.^.adTag.list({ adSlotId: item.id })">Manage Ad Tags</a></li>
+                                <li ng-if="exist(item.type, adSlotTypes.native)"><a ui-sref="^.^.adTag.nativeList({ adSlotId: item.id })">Manage Ad Tags</a></li>
                                 <li><a ng-click="generateAdTag(item)">Generate a Tag</a></li>
                                 <li class="divider"></li>
-                                <li ng-if="!exist(item.type, types.dynamic)"><a ui-sref="^.^.^.reports.performance.adSlotAdTags({ adSlotId: item.id, startDate: today})">View Today's Report</a></li>
-                                <li ng-if="!exist(item.type, types.dynamic)" class="divider"></li>
+                                <li ng-if="!exist(item.type, adSlotTypes.dynamic)"><a ui-sref="^.^.^.reports.performance.adSlotAdTags({ adSlotId: item.id, startDate: today})">View Today's Report</a></li>
+                                <li ng-if="!exist(item.type, adSlotTypes.dynamic)" class="divider"></li>
                                 <li><a ui-sref="^.edit({ id: item.id })">Edit Ad Slot</a></li>
-                                <li ng-if="!exist(item.type, types.dynamic)"><a ng-click="cloneAdSlot(item)">Clone Ad Slot</a></li>
+                                <li ng-if="item.libraryAdSlot.visible && !isAdmin()"><a  ui-sref="^.^.^.tagLibrary.adSlot.edit({ id: item.libraryAdSlot.id})">Edit Ad Slot Library</a></li>
+                                <li ng-if="!exist(item.type, adSlotTypes.dynamic)"><a ng-click="cloneAdSlot(item)">Clone Ad Slot</a></li>
+                                <li ng-if="!item.libraryAdSlot.visible" ng-click="shareAdSlot(item)"><a>Move To Library</a></li>
                                 <li><a ng-click="confirmDeletion(item)">Delete Ad Slot</a></li>
                             </ul>
                         </div>
                     </td>
                     <td ng-show="allAdSlot" at-title="Site" at-implicit at-sortable at-attribute="site.name"></td>
-                    <td at-implicit at-title="Ad Slot" at-sortable at-attribute="name" at-initial-sorting="asc"></td>
+                    <td at-implicit at-title="Ad Slot" at-sortable at-attribute="libraryAdSlot.name" at-initial-sorting="asc"></td>
                     <td at-title="Size" at-sortable at-attribute="width">
-                        {{ !!item.width ? item.width + 'x' + item.height : ''}}
+                        {{ !!item.libraryAdSlot.width ? item.libraryAdSlot.width + 'x' + item.libraryAdSlot.height : ''}}
                     </td>
-                    <td at-title="Type" at-implicit at-attribute="type"></td>
+                    <td at-title="Type" at-implicit at-attribute="type" at-sortable></td>
+                    <!--<td at-title="Library" at-attribute="visible" at-sortable>-->
+                        <!--{{ item.libraryAdSlot.visible ? item.libraryAdSlot.referenceName : '' }}-->
+                    <!--</td>-->
+
+                    <td at-title="In Library" at-attribute="libraryAdSlot.visible" at-sortable>
+                        <i class="fa" ng-class="item.libraryAdSlot.visible? 'fa-check-square' : 'fa-square'"></i>
+                    </td>
                 </tr>
                 </tbody>
             </table>
 
-            <at-pagination ng-if="showPagination()" at-list="adSlots" ng-click="setCurrentPageForUrl()" at-config="tableConfig"></at-pagination>
+            <at-pagination at-pagination-query ng-if="showPagination()" at-list="adSlots" at-config="tableConfig"></at-pagination>
         </div>
     </div>
 </div>

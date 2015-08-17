@@ -5,7 +5,7 @@
         .controller('PerformanceReportSummary', PerformanceReportSummary)
     ;
 
-    function PerformanceReportSummary($scope, Auth, TYPE_AD_SLOT_FOR_LIST) {
+    function PerformanceReportSummary($scope, Auth, TYPE_AD_SLOT) {
         $scope.isAdmin = Auth.isAdmin();
 
         $scope.hasSlotOpportunities = hasSlotOpportunities;
@@ -16,7 +16,7 @@
         }
 
         if(!!$scope.reportGroup) {
-            var isNotNativeAdSlot = $scope.reportGroup.reportType && $scope.reportGroup.reportType.adSlotType != TYPE_AD_SLOT_FOR_LIST.native ? true : false;
+            var isNotNativeAdSlot = $scope.reportGroup.reportType && $scope.reportGroup.reportType.adSlotType != TYPE_AD_SLOT.native ? true : false;
         }
 
         function exist(item) {

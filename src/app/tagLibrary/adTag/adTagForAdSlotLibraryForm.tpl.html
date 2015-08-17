@@ -1,0 +1,161 @@
+<section class="panel panel-default" ng-class="pickFromLibrary ? 'disabledForm' : ''">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
+
+        <div class="button-bar">
+            <button ng-if="!isNew" ng-click="backToAdTagLibraryList()" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                Back to Ad Tag List
+            </button>
+        </div>
+        <div class="btn-group btnGrouped" dropdown ng-if="!isNew">
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ng-click="backToAdTagLibraryList()">Back to Ad Tag List</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <form name="adTagForm" class="col-lg-6 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
+                <div class="form-group">
+                    <label for="inputAdSlot" class="col-sm-2 control-label">Library Slot</label>
+                    <div class="col-sm-10">
+                        <ui-select name="adSlot" ng-model="selected.adSlot" on-select="selectAdSlot($item)" id="inputAdSlot" ng-required="true" server-error ng-disabled="!adSlotList.length" reset-search-input="'false'">
+                            <ui-select-match placeholder="Select an ad slot">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices repeat="adSlot as adSlot in adSlotList | filter: $select.search | filter:filterEntityType:adSlot">
+                                {{ adSlot.name }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputPickFromLibrary" class="col-sm-2 control-label">From Library</label>
+                    <div class="col-sm-10">
+                        <div>
+                            <label class="ui-checkbox">
+                                <input name="pickFromLibrary" ng-disabled="disabledCheckPickFromLibrary" type="checkbox" ng-model="pickFromLibrary" ng-click="getAdTagLibrary()" server-error id="inputPickFromLibrary">
+                                <span></span>
+                            </label>
+                        </div>
+                        <span class="help-block">You can select an existing ad tag from your library. If you choose this option some of the fields below will not be editable. If you would like to change these fields, you may do so the the Tag Library section.</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="pickFromLibrary">
+                    <label for="inputAdTagLibrary" class="col-sm-2 control-label">Library Ad Tag</label>
+                    <div class="col-sm-10">
+                        <ui-select name="libraryAdTag" ng-model="libraryAdTag" id="inputAdTagLibrary" server-error ng-disabled="!selected.publisher && isAdmin()" on-select="selectAdTagLibrary($item)" reset-search-input="'false'">
+                            <ui-select-match placeholder="Select an ad tag from library">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
+                            <ui-select-choices repeat="libraryAdTag.id as libraryAdTag in adTagLibraryList | filter:$select.search">
+                                {{ libraryAdTag.name }} {{ libraryAdTag.id ? '(ID: ' + libraryAdTag.id + ')' : '' }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputAdNetwork" class="col-sm-2 control-label">Ad Network</label>
+                    <div class="col-sm-10">
+                        <ui-select name="adNetwork" ng-model="adTag.libraryAdTag.adNetwork" id="inputAdNetwork" ng-required="true" server-error ng-disabled="isAdmin() && !selected.publisher || pickFromLibrary" reset-search-input="'false'">
+                            <ui-select-match placeholder="Select an ad network">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices repeat="adNetwork.id as adNetwork in adNetworkList | filter: { name:$select.search }">
+                                {{ adNetwork.name }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">Name</label>
+                    <div class="col-sm-10">
+                        <input ng-disabled="pickFromLibrary" name="name" ng-model="adTag.libraryAdTag.name" server-error ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="Ad tag name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputPosition" class="col-sm-2 control-label">Ad Type</label>
+                    <div class="col-sm-10">
+                        <label class="ui-radio"><input ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.adType" type="radio" ng-value="adTypes.customAd"><span>Custom Ad</span></label>
+                        <label class="ui-radio"><input ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.adType" type="radio" ng-value="adTypes.imageAd"><span>Image Ad</span></label>
+                    </div>
+                </div>
+
+                <!--ad type html-->
+                <div class="form-group" ng-if="adTag.libraryAdTag.adType == adTypes.customAd">
+                    <label for="inputHtml" class="col-sm-2 control-label">Html</label>
+                    <div class="col-sm-10">
+                        <ui-codemirror ng-required="true" id="inputHtml" ng-model="adTag.libraryAdTag.html" ui-codemirror-opts="editorOptions"></ui-codemirror>
+                        <span class="help-block">You can use the following macros in your ad tag:<br/>
+                        <strong>${CACHEBUSTER}</strong>: A unique code that ensures URLs are unique<br/>
+                        <strong>${PAGEURL}</strong>: The url of the current page<br/>
+                        <strong>${DOMAIN}</strong>: The domain of the current website</span>
+                    </div>
+                </div>
+
+                <!--ad type images-->
+                <div ng-if="adTag.libraryAdTag.adType == adTypes.imageAd">
+                    <div class="form-group">
+                        <label for="inputImageUrl" class="col-sm-2 control-label">Image Url</label>
+                        <div class="col-sm-10">
+                            <input name="name" ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.descriptor.imageUrl" server-error ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputImageUrl" placeholder="Image Url">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputTargetUrl" class="col-sm-2 control-label">Target Url</label>
+                        <div class="col-sm-10">
+                            <input name="name" ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.descriptor.targetUrl" server-error ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputTargetUrl" placeholder="Target Url">
+                            <span class="help-block">You can use the following macros in your target url:<br/>
+                            <strong>${CACHEBUSTER}</strong>: A unique code that ensures URLs are unique<br/>
+                            <strong>${PAGEURL}</strong>: The url of the current page<br/>
+                            <strong>${DOMAIN}</strong>: The domain of the current website</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="showInputPosition">
+                    <label for="inputPosition" class="col-sm-2 control-label">Position</label>
+                    <div class="col-sm-10">
+                        <input name="height" ng-model="adTag.position" server-error min="1" type="number" class="form-control" id="inputPosition" placeholder="Position (leave blank for last position)">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputRotation" class="col-sm-2 control-label">Rotation Weight</label>
+                    <div class="col-sm-10">
+                        <input name="height" ng-model="adTag.rotation" server-error min="1" type="number" class="form-control" id="inputRotation" placeholder="Rotation Weight">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputFrequencyCap" class="col-sm-2 control-label">Frequency Cap</label>
+                    <div class="col-sm-10">
+                        <input name="height" ng-model="adTag.frequencyCap" server-error min="1" type="number" class="form-control" id="inputFrequencyCap" placeholder="Frequency cap">
+                        <span class="help-block">Maximum number of network opportunities per day per user for this ad tag, leave blank for no cap.</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputActive" class="col-sm-2 control-label">Active</label>
+                    <div class="col-sm-10">
+                        <div>
+                            <label class="ui-checkbox">
+                                <input name="active" type="checkbox" ng-model="adTag.active" server-error id="inputActive">
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">Submit</button>
+                        <div ng-show="!isFormValid()" class="callout callout-info">
+                            <p>Submit button will be active only when all fields are valid.</p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

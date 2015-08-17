@@ -5,7 +5,7 @@
         .controller('SiteList', SiteList)
     ;
 
-    function SiteList($scope, $modal, $location, AlertService, SiteManager, sites, AtSortableService, historyStorage, HISTORY_TYPE_PATH) {
+    function SiteList($scope, $modal, AlertService, SiteManager, sites, AtSortableService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.sites = sites;
 
         $scope.hasData = function () {
@@ -21,12 +21,10 @@
 
         $scope.today = new Date();
         $scope.showPagination = showPagination;
-        $scope.setCurrentPageForUrl = setCurrentPageForUrl;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10,
-            currentPage: $location.search().page - 1 || 0
+            maxPages: 10
         };
 
         $scope.confirmDeletion = function (site, index) {
@@ -38,10 +36,16 @@
                 return SiteManager.one(site.id).remove()
                     .then(
                         function () {
-                            var index = $scope.sites.indexOf(site);
+                            var index = sites.indexOf(site);
 
                             if (index > -1) {
-                                $scope.sites.splice(index, 1);
+                                sites.splice(index, 1);
+                            }
+
+                            $scope.sites = sites;
+
+                            if($scope.tableConfig.currentPage > 0 && sites.length/10 == $scope.tableConfig.currentPage) {
+                                AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
                             }
 
                             AlertService.replaceAlerts({
@@ -64,12 +68,7 @@
             return angular.isArray($scope.sites) && $scope.sites.length > $scope.tableConfig.itemsPerPage;
         }
 
-        function setCurrentPageForUrl() {
-            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage + 1});
-        }
-
         $scope.$on('$locationChangeSuccess', function() {
-            $scope.tableConfig.currentPage = $location.search().page - 1;
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.site)
         });
     }
