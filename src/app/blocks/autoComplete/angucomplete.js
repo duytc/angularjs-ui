@@ -145,16 +145,17 @@ angular.module('angucomplete', [] )
                             $scope.searching = false;
                             $scope.processResults(matches, str);
 
-                        } else {
-                            $http.get($scope.url + str, {}).
-                                success(function(responseData, status, headers, config) {
-                                    $scope.searching = false;
-                                    $scope.processResults((($scope.dataField) ? responseData[$scope.dataField] : responseData ), str);
-                                }).
-                                error(function(data, status, headers, config) {
-                                    console.log("error");
-                                });
                         }
+                        //else {
+                        //    $http.get($scope.url + str, {}).
+                        //        success(function(responseData, status, headers, config) {
+                        //            $scope.searching = false;
+                        //            $scope.processResults((($scope.dataField) ? responseData[$scope.dataField] : responseData ), str);
+                        //        }).
+                        //        error(function(data, status, headers, config) {
+                        //            console.log("error");
+                        //        });
+                        //}
                     }
                 };
 
