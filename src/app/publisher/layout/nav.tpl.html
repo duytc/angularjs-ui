@@ -10,7 +10,7 @@
             <ul>
                 <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.tagGenerator"><i class="fa fa-caret-right"></i>Generate Tags</a></li>
                 <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.sites.list"><i class="fa fa-caret-right"></i>My Sites</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.adSlot.listAll"><i class="fa fa-caret-right"></i>My Ad Slots</a></li>
+                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adSlot.listAll"><i class="fa fa-caret-right"></i>My Ad Slots</a></li>
                 <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adNetwork.list"><i class="fa fa-caret-right"></i>My Ad Networks</a></li>
                 <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.sites.new"><i class="fa fa-caret-right"></i>New Site</a></li>
                 <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adSlot.new"><i class="fa fa-caret-right"></i>New Ad Slot</a></li>
