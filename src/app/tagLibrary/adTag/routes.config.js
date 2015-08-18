@@ -5,16 +5,16 @@
         .config(addStates)
     ;
 
-    function addStates($stateProvider) {
-        $stateProvider
-            .state('app.publisher.tagLibrary.adTag', {
+    function addStates(UserStateHelperProvider) {
+        UserStateHelperProvider
+            .state('tagLibrary.adTag', {
                 abstract: true,
                 url: '/adTags',
                 ncyBreadcrumb: {
                     skip: true
                 }
             })
-            .state('app.publisher.tagLibrary.adTag.list', {
+            .state('tagLibrary.adTag.list', {
                 url: '/list?page&sortField&orderBy&search',
                 params: {
                     uniqueRequestCacheBuster: null
@@ -35,7 +35,7 @@
                 },
                 reloadOnSearch: false
             })
-            .state('app.publisher.tagLibrary.adTag.new', {
+            .state('tagLibrary.adTag.new', {
                 url: '/new',
                 views: {
                     'content@app': {
@@ -53,11 +53,20 @@
                         });
                     }
                 },
+                customResolve: {
+                    admin: {
+                        publisherList: /* @ngInject */ function(adminUserManager) {
+                            return adminUserManager.getList({ filter: 'publisher' }).then(function (users) {
+                                return users.plain();
+                            });
+                        }
+                    }
+                },
                 ncyBreadcrumb: {
                     label: 'New Ad Tag'
                 }
             })
-            .state('app.publisher.tagLibrary.adTag.edit', {
+            .state('tagLibrary.adTag.edit', {
                 url: '/edit/{id:[0-9]+}',
                 views: {
                     'content@app': {
@@ -73,13 +82,16 @@
                         return AdNetworkManager.getList().then(function (adNetworks) {
                             return adNetworks.plain();
                         });
+                    },
+                    publisherList: function() {
+                        return null;
                     }
                 },
                 ncyBreadcrumb: {
                     label: 'Edit Ad Tag'
                 }
             })
-            .state('app.publisher.tagLibrary.adTag.associated', {
+            .state('tagLibrary.adTag.associated', {
                 url: '/{adTagId:[0-9]+}/associated',
                 params: {
                     uniqueRequestCacheBuster: null
@@ -99,7 +111,7 @@
                     label: 'Associated Ad Tags'
                 }
             })
-            .state('app.publisher.tagLibrary.adTag.nativeList', {
+            .state('tagLibrary.adTag.nativeList', {
                 url: '/native/list/{adSlotId:[0-9]+}',
                 views: {
                     'content@app': {
@@ -121,7 +133,7 @@
                     label: 'Ad Tags - {{ adSlot.name }}'
                 }
             })
-            .state('app.publisher.tagLibrary.adTag.displayList', {
+            .state('tagLibrary.adTag.displayList', {
                 url: '/display/list/{adSlotId:[0-9]+}',
                 params: {
                     uniqueRequestCacheBuster: null
@@ -146,7 +158,7 @@
                     label: 'Ad Tags - {{ adSlot.name }}'
                 }
             })
-            .state('app.publisher.tagLibrary.adTag.newForAdSlot', {
+            .state('tagLibrary.adTag.newForAdSlot', {
                 url: '/newForAdSlot?adSlotId',
                 views: {
                     'content@app': {
@@ -174,11 +186,20 @@
                         });
                     }
                 },
+                customResolve: {
+                    admin: {
+                        publisherList: /* @ngInject */ function(adminUserManager) {
+                            return adminUserManager.getList({ filter: 'publisher' }).then(function (users) {
+                                return users.plain();
+                            });
+                        }
+                    }
+                },
                 ncyBreadcrumb: {
                     label: 'New Ad Tag'
                 }
             })
-            .state('app.publisher.tagLibrary.adTag.editForAdSlot', {
+            .state('tagLibrary.adTag.editForAdSlot', {
                 url: '/editForAdSlot/{id:[0-9]+}',
                 views: {
                     'content@app': {
@@ -193,13 +214,16 @@
                     adSlot: /* @ngInject */ function (adTag) {
                         return adTag.libraryAdSlot;
                     },
-                    adSlotList: function(AdSlotLibrariesManager) {
-                        return AdSlotLibrariesManager.getList();
+                    adSlotList: function() {
+                        return null;
                     },
                     adNetworkList: /* @ngInject */ function (AdNetworkManager) {
                         return AdNetworkManager.getList().then(function (adNetworks) {
                             return adNetworks.plain();
                         });
+                    },
+                    publisherList: function() {
+                        return null;
                     }
                 },
                 ncyBreadcrumb: {

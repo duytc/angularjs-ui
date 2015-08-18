@@ -5,7 +5,7 @@
         .controller('AdTagForAdSlotLibraryForm', AdTagForAdSlotLibraryForm)
     ;
 
-    function AdTagForAdSlotLibraryForm($scope, $state, AlertService, ServerErrorProcessor, adTag, adSlot, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, NativeAdSlotLibrariesManager, DisplayAdSlotLibrariesManager, AdTagLibrariesManager) {
+    function AdTagForAdSlotLibraryForm($scope, $state, AlertService, ServerErrorProcessor, publisherList, adTag, adSlot, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, NativeAdSlotLibrariesManager, DisplayAdSlotLibrariesManager, AdTagLibrariesManager) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
             name: 'Name',
@@ -21,12 +21,14 @@
         };
 
         $scope.selected = {
+            publisher: !!adSlot ? adSlot.publisher : null,
             adSlot: adSlot
         };
 
         $scope.isNew = adTag === null;
         $scope.formProcessing = false;
 
+        $scope.publisherList = publisherList;
         $scope.adSlotTypes = TYPE_AD_SLOT;
         $scope.adTypes = AD_TYPES;
 
@@ -76,6 +78,8 @@
         $scope.selectAdTagLibrary = selectAdTagLibrary;
         $scope.backToAdTagLibraryList = backToAdTagLibraryList;
         $scope.filterEntityType = filterEntityType;
+        $scope.selectPublisher = selectPublisher;
+        $scope.filterByPublisher = filterByPublisher;
 
         function isFormValid() {
             return $scope.adTagForm.$valid;
@@ -85,12 +89,25 @@
             $scope.showInputPosition = adSlot && adSlot.libType == $scope.adSlotTypes.display ? true : false;
         }
 
-         function filterEntityType(adSlot) {
-            if(adSlot.type != $scope.adSlotTypes.dynamic) {
+        function filterEntityType(adSlot) {
+            if(adSlot.libType != $scope.adSlotTypes.dynamic) {
                 return true;
             }
 
             return false;
+        }
+
+        function filterByPublisher(libraryAdTag) {
+            if(!$scope.selected.publisher) {
+                return false;
+            }
+
+            var publisher = !!$scope.selected.publisher.id ? $scope.selected.publisher.id : $scope.selected.publisher;
+            if(!publisher || libraryAdTag.adNetwork.publisher.id != publisher) {
+                return false;
+            }
+
+            return true;
         }
 
         function getAdTagLibrary() {
@@ -116,6 +133,11 @@
 
         function selectAdTagLibrary(libraryAdTag) {
             angular.extend($scope.adTag.libraryAdTag, libraryAdTag);
+        }
+
+        function selectPublisher() {
+            $scope.selected.adSlot = null;
+            $scope.adTag.libraryAdTag.adNetwork = null;
         }
 
         function backToAdTagLibraryList() {

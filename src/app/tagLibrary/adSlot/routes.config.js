@@ -5,16 +5,16 @@
         .config(addStates)
     ;
 
-    function addStates($stateProvider) {
-        $stateProvider
-            .state('app.publisher.tagLibrary.adSlot', {
+    function addStates(UserStateHelperProvider) {
+        UserStateHelperProvider
+            .state('tagLibrary.adSlot', {
                 abstract: true,
                 url: '/adSlots',
                 ncyBreadcrumb: {
                     skip: true
                 }
             })
-            .state('app.publisher.tagLibrary.adSlot.list', {
+            .state('tagLibrary.adSlot.list', {
                 url: '/display/list?page&sortField&orderBy&search',
                 params: {
                     uniqueRequestCacheBuster: null
@@ -35,7 +35,7 @@
                 },
                 reloadOnSearch: false
             })
-            .state('app.publisher.tagLibrary.adSlot.new', {
+            .state('tagLibrary.adSlot.new', {
                 url: '/new',
                 views: {
                     'content@app': {
@@ -51,11 +51,20 @@
                         return null;
                     }
                 },
+                customResolve: {
+                    admin: {
+                        publisherList: /* @ngInject */ function(adminUserManager) {
+                            return adminUserManager.getList({ filter: 'publisher' }).then(function (users) {
+                                return users.plain();
+                            });
+                        }
+                    }
+                },
                 ncyBreadcrumb: {
                     label: 'New Ad Slot'
                 }
             })
-            .state('app.publisher.tagLibrary.adSlot.edit', {
+            .state('tagLibrary.adSlot.edit', {
                 url: '/edit/{id:[0-9]+}',
                 views: {
                     'content@app': {
@@ -69,13 +78,16 @@
                     },
                     adSlotType: function(adSlot) {
                         return adSlot.libType;
+                    },
+                    publisherList: function() {
+                        return null;
                     }
                 },
                 ncyBreadcrumb: {
                     label: 'Edit Ad Slot - {{ adSlot.name }}'
                 }
             })
-            .state('app.publisher.tagLibrary.adSlot.associated', {
+            .state('tagLibrary.adSlot.associated', {
                 url: '/{adSlotType}/{adSlotId:[0-9]+}/associated',
                 params: {
                     uniqueRequestCacheBuster: null

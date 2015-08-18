@@ -5,7 +5,7 @@
         .controller('LibraryAdTagForm', LibraryAdTagForm)
     ;
 
-    function LibraryAdTagForm($scope, AlertService, ServerErrorProcessor, adTag, adNetworkList, AdTagLibrariesManager, historyStorage, AD_TYPES, HISTORY_TYPE_PATH) {
+    function LibraryAdTagForm($scope, AlertService, ServerErrorProcessor, adTag, publisherList, adNetworkList, AdTagLibrariesManager, historyStorage, AD_TYPES, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             adNetwork: 'adNetwork',
             html: 'html'
@@ -21,11 +21,17 @@
         $scope.adTypes = AD_TYPES;
         $scope.formProcessing = false;
         $scope.adNetworkList = adNetworkList;
+        $scope.publisherList = publisherList;
+
         $scope.adTag = adTag || {
             html: null,
             adNetwork: null,
             adType: $scope.adTypes.customAd,
             descriptor: null
+        };
+
+        $scope.selected = {
+            publisher: !$scope.isNew ? adTag.adNetwork.publisher : null
         };
 
         if(!!$scope.adTag.descriptor) {
@@ -36,6 +42,10 @@
 
         $scope.isFormValid = function() {
             return $scope.adTagLibraryForm.$valid;
+        };
+
+        $scope.selectPublisher = function() {
+            $scope.adTag.adNetwork = null;
         };
 
         $scope.backToAdTagLibraryList = function() {

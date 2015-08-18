@@ -23,7 +23,11 @@
     <div class="panel-body" ng-if="hasData()">
         <div class="table-responsive">
             <table class="table" at-sortable-query at-table at-paginated at-list="adSlots" at-config="tableConfig">
-                <thead></thead>
+                <thead>
+                <tr>
+                    <th ng-show="isAdmin()" at-attribute="publisher.company">Publisher</th>
+                </tr>
+                </thead>
                 <tbody>
                 <tr>
                     <td at-implicit at-title="#" at-sortable at-attribute="id"></td>
@@ -51,6 +55,8 @@
                     </td>
                     <td at-title="Type" at-implicit at-sortable at-attribute="libType"></td>
                     <td at-title="Associated Ad Slots" at-implicit at-sortable at-attribute="associatedSlotCount"></td>
+
+                    <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company" at-title="Publisher"></td>
                 </tr>
                 </tbody>
             </table>

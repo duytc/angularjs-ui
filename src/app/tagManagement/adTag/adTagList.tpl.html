@@ -54,13 +54,13 @@
                                 <div class="btn-group" dropdown on-toggle="actionDropdownToggled(open)">
                                     <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li ng-if="!adTag.libraryAdTag.visible" ng-click="shareAdTag(adTag)"><a>Move To Library</a></li>
-                                        <li ng-if="!adTag.libraryAdTag.visible" class="divider"></li>
                                         <li ng-if="!adSlot.libType"><a ui-sref="^.edit({ id: adTag.id })">Edit Ad Tag</a></li>
                                         <li ng-if="!!adSlot.libType"><a ui-sref="^.editForAdSlot({ id: adTag.id })">Edit Ad Tag</a></li>
-                                        <li ng-if="adTag.libraryAdTag.visible && !isAdmin()"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: adTag.libraryAdTag.id})">Edit Ad Tag Library</a></li>
                                         <li><a ng-click="toggleAdTagStatus(adTag)">{{ adTag.active ? 'Pause' : 'Activate' }} Ad Tag</a></li>
                                         <li><a ng-click="confirmDeletion(adTag)">Delete Ad Tag</a></li>
+                                        <li class="divider"></li>
+                                        <li ng-if="!adTag.libraryAdTag.visible" ng-click="shareAdTag(adTag)"><a>Move To Library</a></li>
+                                        <li ng-if="adTag.libraryAdTag.visible"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: adTag.libraryAdTag.id})">Edit Ad Tag in The Library</a></li>
                                         <li ng-if="adTags.length > 1" class="divider"></li>
                                         <li ng-if="adTags.length > 1"><a ng-click="splitFromGroup(adTags, adTag)">Split Group</a></li>
                                     </ul>

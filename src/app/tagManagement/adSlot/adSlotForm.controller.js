@@ -497,7 +497,12 @@
             }
 
             delete adSlot.type;
-            delete adSlot.libraryAdSlot.publisher;
+            if(!$scope.isAdmin()) {
+                delete adSlot.libraryAdSlot.publisher;
+            } else {
+                adSlot.libraryAdSlot.publisher = $scope.selected.publisher.id || $scope.selected.publisher;
+            }
+
             delete adSlot.libraryAdSlot.libType;
 
             if(!adSlot.libraryAdSlot.visible) {
