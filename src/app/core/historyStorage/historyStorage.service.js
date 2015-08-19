@@ -19,6 +19,7 @@
 
         function getLocationPath(type, state, paramDefault) {
             $window.localStorage[HISTORY] = $window.localStorage[HISTORY] || '{}';
+            $state.current.reloadOnSearch = true;
 
             if(type == HISTORY_TYPE_PATH.adSlot) {
                 var paramHistoryForAdSlot = getParamsHistoryForAdSlot();

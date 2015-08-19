@@ -5,15 +5,18 @@
         .controller('LibraryAdSlotForm', LibraryAdSlotForm)
     ;
 
-    function LibraryAdSlotForm($scope, $filter, _, adSlot, adSlotType, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, historyStorage, HISTORY_TYPE_PATH) {
+    function LibraryAdSlotForm($scope, $filter, _, adSlot, publisherList, adSlotType, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
 
         $scope.isNew = adSlot === null;
+        $scope.publisherList = publisherList;
+
         $scope.adSlot = adSlot || {
             libraryExpressions: []
         };
+
         $scope.formProcessing = false;
         $scope.typesList = TYPE_AD_SLOT;
         $scope.adSlotTypeOptions = [
@@ -47,6 +50,7 @@
         $scope.selectType = selectType;
         $scope.filterEntityType = filterEntityType;
         $scope.backToAdSlotLibraryList = backToAdSlotLibraryList;
+        $scope.findTypeLabel = findTypeLabel;
 
         function showForDisplayAdSlot() {
             return $scope.selected.type == TYPE_AD_SLOT.display;
@@ -160,6 +164,13 @@
             };
 
             _getAdSlots(type)
+        }
+
+        function findTypeLabel(type) {
+            return _.find($scope.adSlotTypeOptions, function(typeOption)
+            {
+                return typeOption.key == type;
+            });
         }
 
         function _validateExpressions(expressions) {
@@ -296,6 +307,8 @@
          * @private
          */
         function _refactorAdSlot(adSlot) {
+            adSlot = angular.copy(adSlot);
+
             if($scope.selected.type == $scope.typesList.native) {
                 delete adSlot.height;
                 delete adSlot.width;
@@ -312,18 +325,19 @@
                 delete adSlot.native;
             }
 
-            delete adSlot.publisher;
+            if(!$scope.isAdmin()) {
+                delete adSlot.publisher;
+            }
+
             delete adSlot.libType;
 
-
-            var adSlotCopy = angular.copy(adSlot);
             if($scope.selected.type == $scope.typesList.dynamic) {
                 if(!$scope.isNew) {
-                    delete adSlotCopy.native;
+                    delete adSlot.native;
                 }
             }
 
-            return adSlotCopy;
+            return adSlot;
         }
     }
 })();

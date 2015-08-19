@@ -47,8 +47,7 @@
                 },
                 ncyBreadcrumb: {
                     label: 'Ad Slots - {{ site.name }}' // TODO cannot show site variable here, why?
-                },
-                reloadOnSearch: false
+                }
             })
             .state('tagManagement.adSlot.listAll', {
                 url: '/list?page&sortField&orderBy&search',
@@ -78,8 +77,7 @@
                 },
                 ncyBreadcrumb: {
                     label: 'Ad Slots'
-                },
-                reloadOnSearch: false
+                }
             })
             .state('tagManagement.adSlot.new', {
                 url: '/new?siteId',

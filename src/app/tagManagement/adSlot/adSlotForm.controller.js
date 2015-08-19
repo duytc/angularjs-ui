@@ -498,6 +498,7 @@
 
             delete adSlot.type;
             delete adSlot.libraryAdSlot.publisher;
+
             delete adSlot.libraryAdSlot.libType;
 
             if(!adSlot.libraryAdSlot.visible) {

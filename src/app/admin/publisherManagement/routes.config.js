@@ -39,8 +39,7 @@
                 },
                 ncyBreadcrumb: {
                     label: 'Publishers'
-                },
-                reloadOnSearch: false
+                }
             })
 
             .state({

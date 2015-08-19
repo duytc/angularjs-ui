@@ -38,13 +38,13 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
                             <ul class="dropdown-menu" role="menu">
-                                <li ng-if="!item.libraryAdTag.visible" ng-click="shareAdTag(item)"><a>Move To Library</a></li>
-                                <li ng-if="!item.libraryAdTag.visible" class="divider"></li>
                                 <li ng-if="!adSlot.libType"><a ui-sref="^.edit({ id: item.id })">Edit Ad Tag</a></li>
-                                <li ng-if="item.libraryAdTag.visible && !isAdmin()"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: item.libraryAdTag.id})">Edit Ad Tag Library</a></li>
                                 <li ng-if="!!adSlot.libType"><a ui-sref="^.editForAdSlot({ id: item.id })">Edit Ad Tag</a></li>
                                 <li><a ng-click="toggleAdTagStatus(item)">{{ item.active ? 'Pause' : 'Activate' }} Ad Tag</a></li>
                                 <li><a ng-click="confirmDeletion(item)">Delete Ad Tag</a></li>
+                                <li class="divider"></li>
+                                <li ng-if="!item.libraryAdTag.visible" ng-click="shareAdTag(item)"><a>Move To Library</a></li>
+                                <li ng-if="item.libraryAdTag.visible"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: item.libraryAdTag.id})">Edit Ad Tag in The Library</a></li>
                             </ul>
                         </div>
                     </td>

@@ -27,7 +27,7 @@
                         <th at-attribute="id">#</th>
                         <th>Actions</th>
                         <th at-attribute="name">Ad Network</th>
-                        <th ng-show="isAdmin()" at-attribute="publisher.username">Publisher</th>
+                        <th ng-show="isAdmin()" at-attribute="publisher.company">Publisher</th>
                         <th at-attribute="status">Status</th>
                     </tr>
                 </thead>
@@ -53,7 +53,7 @@
                         </div>
                     </td>
                     <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="Ad Network"></td>
-                    <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.username" at-title="Publisher"></td>
+                    <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company" at-title="Publisher"></td>
                     <td at-implicit at-sortable at-attribute="activeAdTagsCount" at-title="Active Ad Tags"></td>
                     <td at-implicit at-sortable at-attribute="pausedAdTagsCount" at-title="Paused Ad Tags"></td>
                 </tr>
