@@ -38,8 +38,7 @@
                 },
                 ncyBreadcrumb: {
                     label: 'Ad Networks'
-                },
-                reloadOnSearch: false
+                }
 
             })
             .state('tagManagement.adNetwork.new', {

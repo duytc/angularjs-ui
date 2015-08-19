@@ -93,8 +93,7 @@
                 },
                 ncyBreadcrumb: {
                     label: 'Ad Tags By Ad Network- {{ adNetwork.name }}'
-                },
-                reloadOnSearch: false
+                }
             })
             .state('tagManagement.adTag.new', {
                 url: '/new?adSlotId',

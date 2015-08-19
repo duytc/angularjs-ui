@@ -50,13 +50,12 @@
                         </div>
                     </td>
                     <td at-title="Name" at-implicit at-sortable at-attribute="name" at-initial-sorting="asc"></td>
+                    <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company" at-title="Publisher"></td>
                     <td at-title="Size" at-sortable at-attribute="width">
                         {{ !!item.width ? item.width + 'x' + item.height : ''}}
                     </td>
                     <td at-title="Type" at-implicit at-sortable at-attribute="libType"></td>
                     <td at-title="Associated Ad Slots" at-implicit at-sortable at-attribute="associatedSlotCount"></td>
-
-                    <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company" at-title="Publisher"></td>
                 </tr>
                 </tbody>
             </table>

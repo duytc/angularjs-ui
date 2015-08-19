@@ -5,7 +5,7 @@
         .controller('AdSlotList', AdSlotList)
     ;
 
-    function AdSlotList($scope, $stateParams, $modal, AlertService, adSlotService, adSlots, site, AtSortableService, libraryAdSlotService, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
+    function AdSlotList($scope, $state, $stateParams, $modal, AlertService, adSlotService, adSlots, site, AtSortableService, libraryAdSlotService, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
         $scope.site = site;
 
         $scope.adSlots = adSlots;
@@ -135,9 +135,9 @@
             var Manager = libraryAdSlotService.getManagerForAdSlotLibrary(adSlot);
             Manager.one(adSlot.libraryAdSlot.id).patch(libraryAdSlot)
                 .then(function () {
-                    adSlot.libraryAdSlot.visible = true;
+                    historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, $state.current);
 
-                    AlertService.replaceAlerts({
+                    AlertService.addFlash({
                         type: 'success',
                         message: 'The ad slot has been moved to library'
                     });

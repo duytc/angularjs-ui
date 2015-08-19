@@ -32,8 +32,7 @@
                 },
                 ncyBreadcrumb: {
                     label: 'Ad Tag Library'
-                },
-                reloadOnSearch: false
+                }
             })
             .state('tagLibrary.adTag.new', {
                 url: '/new',

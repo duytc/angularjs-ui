@@ -37,8 +37,7 @@
                 },
                 ncyBreadcrumb: {
                     label: 'Sites'
-                },
-                reloadOnSearch: false
+                }
             })
             .state('tagManagement.sites.new', {
                 url: '/new',

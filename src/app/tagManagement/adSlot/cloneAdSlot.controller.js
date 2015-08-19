@@ -38,9 +38,7 @@
 
             Manager.one($scope.cloneAdSlot.id).customPOST({name: $scope.cloneAdSlot.libraryAdSlot.name, site: $scope.cloneAdSlot.site}, 'clone')
                 .then(function() {
-                    $state.current.reloadOnSearch = true;
                     historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, $state.current);
-                    $state.current.reloadOnSearch = false;
 
                     AlertService.addFlash({
                         type: 'success',

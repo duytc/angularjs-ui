@@ -6,7 +6,7 @@
         .controller('SitesForAdNetwork', SitesForAdNetwork)
     ;
 
-    function SitesForAdNetwork($scope, $q, $modal, sites, adNetwork, AdNetworkManager, $modalInstance) {
+    function SitesForAdNetwork($scope, $q, $modal, $state, sites, adNetwork, AdNetworkManager, $modalInstance, historyStorage, HISTORY_TYPE_PATH) {
         $scope.sites = sites;
         $scope.adNetwork = adNetwork;
 
@@ -45,25 +45,12 @@
                         })
                         .then(
                         function () {
-                            if(newStatus) {
-                                // update total ad tags active/pause for ad network
-                                adNetwork.activeAdTagsCount += siteStatus.pausedAdTagsCount;
-                                adNetwork.pausedAdTagsCount -= siteStatus.pausedAdTagsCount;
+                            AdNetworkManager.one(adNetwork.id).one('sites').getList()
+                                .then(function(siteList) {
+                                    $scope.sites = sites = siteList.plain();
+                                });
 
-                                // update total ad tags active/pause for site
-                                siteStatus.activeAdTagsCount += siteStatus.pausedAdTagsCount;
-                                siteStatus.pausedAdTagsCount = 0;
-                            } else {
-                                // update total ad tags active/pause for ad network
-                                adNetwork.activeAdTagsCount -= siteStatus.activeAdTagsCount;
-                                adNetwork.pausedAdTagsCount += siteStatus.activeAdTagsCount;
-
-                                // update total ad tags active/pause for site
-                                siteStatus.pausedAdTagsCount += siteStatus.activeAdTagsCount;
-                                siteStatus.activeAdTagsCount = 0;
-                            }
-
-                            return siteStatus.active = checked;
+                            historyStorage.getLocationPath(HISTORY_TYPE_PATH.adNetwork, $state.current);
                         });
                 });
 

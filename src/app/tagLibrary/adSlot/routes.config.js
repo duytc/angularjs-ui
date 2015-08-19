@@ -32,8 +32,7 @@
                 },
                 ncyBreadcrumb: {
                     label: 'Ad Slot Library'
-                },
-                reloadOnSearch: false
+                }
             })
             .state('tagLibrary.adSlot.new', {
                 url: '/new',

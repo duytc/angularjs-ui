@@ -8,8 +8,11 @@
     function atSortableQuery() {
         return {
             restrict: 'A',
-            controller: function ($scope, $location, $timeout, AtSortableService, $element) {
+            controller: function ($scope, $state, $location, $timeout, AtSortableService, $element) {
                 $element.children().first().bind('click', function() {
+                    // not reload page when click header table
+                    $state.current.reloadOnSearch = false;
+
                     $timeout(function() {
                         var orderBy = $scope.descending ? 'desc' : 'asc';
                         var sortField = AtSortableService.getHeaderFromQueryParam($scope.predicate);
