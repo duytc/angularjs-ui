@@ -39,7 +39,7 @@
                 <th at-attribute="email">Email</th>
                 <th at-attribute="includedAll">Include All</th>
                 <th at-attribute="sourceReportSiteConfigs">Sites Configs</th>
-                <th at-attribute="active">Enabled</th>
+                <th at-attribute="active">Status</th>
             </tr>
             </thead>
             <tbody>
@@ -65,7 +65,7 @@
                         <li>{{ config.site.name }} - {{ config.site.domain }}</li>
                     </ul>
                 </td>
-                <td at-sortable at-attribute="active" at-title="Enabled">
+                <td at-sortable at-attribute="active" at-title="Status">
                     <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
                 </td>
             </tbody>

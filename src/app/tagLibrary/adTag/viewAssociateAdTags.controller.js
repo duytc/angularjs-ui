@@ -72,9 +72,7 @@
         $scope.toggleAdTagStatus = function (adTag) {
             var newTagStatus = !adTag.active;
 
-            AdTagManager.one(adTag.id).patch({
-                'active': newTagStatus
-            })
+            AdTagManager.one(adTag.id).patch({'active': newTagStatus})
                 .catch(function () {
                     AlertService.replaceAlerts({
                         type: 'error',
@@ -85,6 +83,12 @@
                 })
                 .then(function () {
                     adTag.active = newTagStatus;
+
+                    angular.forEach(adTags, function(adTagChange) {
+                        if(adTagChange.libraryAdTag.id == adTag.libraryAdTag.id && adTagChange.adSlot.libraryAdSlot.id == adTag.adSlot.libraryAdSlot.id && adTagChange.adSlot.site.id != adTag.adSlot.site.id) {
+                            adTagChange.active = newTagStatus;
+                        }
+                    });
                 })
             ;
         };
