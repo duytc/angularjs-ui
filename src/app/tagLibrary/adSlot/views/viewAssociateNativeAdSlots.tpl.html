@@ -41,8 +41,12 @@
                             </ul>
                         </div>
                     </td>
-                    <td at-title="Name" at-implicit at-sortable at-attribute="libraryAdSlot.name" at-initial-sorting="asc"></td>
+                    <td at-title="Ad Slot" at-implicit at-sortable at-attribute="libraryAdSlot.name" at-initial-sorting="asc"></td>
                     <td at-title="Site" at-implicit at-sortable at-attribute="site.name"></td>
+                    <td at-title="Type" at-implicit at-attribute="type" at-sortable></td>
+                    <td at-title="In Library" at-attribute="libraryAdSlot.visible" at-sortable>
+                        <i class="fa" ng-class="item.libraryAdSlot.visible? 'fa-check-square' : 'fa-square'"></i>
+                    </td>
                 </tr>
                 </tbody>
             </table>

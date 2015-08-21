@@ -44,12 +44,12 @@
                         <span class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>
                         <div e-form="rotationForm" buttons="no" oncancel="updateAdTag($data, 'rotation', item)" onbeforesave="updateAdTag($data, 'rotation', item)" editable-number="item.rotation">{{ item.rotation }}</div>
                     </td>
-                    <td at-title="Frequency Cap" ng-dblclick="frequencyCapForm.$show()" at-attribute="frequencyCap">
+                    <td at-title="Frequency Cap" at-sortable ng-dblclick="frequencyCapForm.$show()" at-attribute="frequencyCap">
                         <span class="fa fa-pencil" ng-hide="frequencyCapForm.$visible"></span>
                         <div e-form="frequencyCapForm" buttons="no" oncancel="updateAdTag($data, 'frequencyCap', item)" onbeforesave="updateAdTag($data, 'frequencyCap', item)" editable-number="item.frequencyCap">{{ item.frequencyCap }}</div>
                     </td>
-                    <td at-title="Ad Slot" at-implicit at-attribute="adSlot.libraryAdSlot.name"></td>
-                    <td at-title="Site" at-implicit at-attribute="adSlot.site.name"></td>
+                    <td at-title="Ad Slot" at-sortable at-implicit at-attribute="adSlot.libraryAdSlot.name"></td>
+                    <td at-title="Site" at-sortable at-implicit at-attribute="adSlot.site.name"></td>
                     <td at-attribute="active">
                         <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
                     </td>

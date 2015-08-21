@@ -46,6 +46,12 @@
                 })
                 .then(function () {
                     adTag.active = newTagStatus;
+
+                    angular.forEach(adTags, function(adTagChange) {
+                        if(adTagChange.libraryAdTag.id == adTag.libraryAdTag.id && adTagChange.adSlot.libraryAdSlot.id == adTag.adSlot.libraryAdSlot.id && adTagChange.adSlot.site.id != adTag.adSlot.site.id) {
+                            adTagChange.active = newTagStatus;
+                        }
+                    });
                 })
             ;
         };
