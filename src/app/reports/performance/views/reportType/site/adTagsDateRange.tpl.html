@@ -23,7 +23,7 @@
             <table class="table" at-table at-paginated at-list="reports" at-config="tableConfig">
                 <thead>
                 <tr>
-                    <th at-attribute="totalOpportunities" ng-show="showConfigForPerformanceByAdTag('networkOpportunities')">Network Opportunities</th>
+                    <th at-attribute="totalOpportunities" ng-show="showConfigForPerformanceByAdTag('totalOpportunities')">Network Opportunities</th>
                     <th at-attribute="firstOpportunities" ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('firstOpportunities')">First Opportunities</th>
                     <th at-attribute="impressions" ng-show="showConfigForPerformanceByAdTag('impressions')">Impressions</th>
                     <th at-attribute="verifiedImpressions" ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('verifiedImpressions')">Verified Impressions</th>
@@ -56,7 +56,7 @@
                     <td class="name" at-title="Ad Tag" at-attribute="name" at-sortable>
                         {{ item.name }}
                     </td>
-                    <td ng-show="showConfigForPerformanceByAdTag('networkOpportunities')" at-title="Network Opportunities" at-attribute="totalOpportunities" at-sortable at-initial-sorting="desc">
+                    <td ng-show="showConfigForPerformanceByAdTag('totalOpportunities')" at-title="Network Opportunities" at-attribute="totalOpportunities" at-sortable at-initial-sorting="desc">
                         {{ item.totalOpportunities | number }}
                     </td>
                     <td ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('firstOpportunities')" at-title="First Opportunities" at-attribute="firstOpportunities" at-sortable>

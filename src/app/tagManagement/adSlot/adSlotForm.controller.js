@@ -285,7 +285,6 @@
                 return _setLibraryAdSLot(adSlotLibrary)
             }
 
-            _resetForm();
             angular.extend($scope.adSlot.libraryAdSlot, adSlotLibrary);
         }
 
@@ -393,9 +392,7 @@
         }
 
         function _resetForm() {
-            if(!$scope.pickFromLibrary) {
-                $scope.selected.adSlotLibrary = null;
-            }
+            $scope.selected.adSlotLibrary = null;
 
             //reset form ad slot when un-check form library
             $scope.adSlot.libraryAdSlot = {

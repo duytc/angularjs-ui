@@ -123,8 +123,12 @@
             }
 
             if(!!$scope.adTag) {
-                delete $scope.adTag.libraryAdTag.id;
-                delete $scope.adTag.libraryAdTag.visible;
+                $scope.adTag.libraryAdTag = {
+                    html: null,
+                    adNetwork: null,
+                    adType: $scope.adTypes.customAd,
+                    descriptor: null
+                }
             }
 
             // enable form input html when select ad tag library
