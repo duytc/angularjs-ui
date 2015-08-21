@@ -138,14 +138,14 @@
                     <div class="form-group">
                         <label for="inputImageUrl" class="col-sm-2 control-label">Image Url</label>
                         <div class="col-sm-10">
-                            <input name="name" ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.descriptor.imageUrl" server-error ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputImageUrl" placeholder="Image Url">
+                            <input name="name" ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.descriptor.imageUrl" server-error ng-required="true" ng-minlength="2" type="url" class="form-control" id="inputImageUrl" placeholder="Image Url">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="inputTargetUrl" class="col-sm-2 control-label">Target Url</label>
                         <div class="col-sm-10">
-                            <input name="name" ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.descriptor.targetUrl" server-error ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputTargetUrl" placeholder="Target Url">
+                            <input name="name" ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.descriptor.targetUrl" server-error ng-required="true" ng-minlength="2" type="url" class="form-control" id="inputTargetUrl" placeholder="Target Url">
                             <span class="help-block">You can use the following macros in your target url:<br/>
                             <strong>${CACHEBUSTER}</strong>: A unique code that ensures URLs are unique<br/>
                             <strong>${PAGEURL}</strong>: The url of the current page<br/>
