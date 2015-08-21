@@ -142,7 +142,17 @@
             $scope.resetSelection();
         };
 
+        /**
+         * Decide whether to include this library ad tag in display list or not.
+         *
+         * @param libraryAdTag
+         * @returns {boolean}
+         */
         $scope.filterByPublisher = function(libraryAdTag) {
+            if(!$scope.isAdmin()) {
+                return true;
+            }
+
             if(!$scope.selected.publisher) {
                 return false;
             }
