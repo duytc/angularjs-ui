@@ -149,6 +149,10 @@
          * @returns {boolean}
          */
         $scope.filterByPublisher = function(libraryAdTag) {
+            if(!$scope.isAdmin()) {
+                return true;
+            }
+            
             if(!$scope.selected.publisher) {
                 return false;
             }
