@@ -22,7 +22,7 @@
                 <td>{{ relativeEntityData.libraryAdTag.name }}</td>
                 <td>{{ relativeEntityData.adSlot.libraryAdSlot.name }} {{ !!relativeEntityData.adSlot.libraryAdSlot.width ? ( '(' + relativeEntityData.adSlot.libraryAdSlot.width + 'x' + relativeEntityData.adSlot.libraryAdSlot.height + ')') : ''}}</td>
                 <td>{{ relativeEntityData.adSlot.site.name }}</td>
-                <td ng-show="isAdmin">{{ relativeEntityData.adSlot.site.publisher.username }}</td>
+                <td ng-show="isAdmin">{{ relativeEntityData.adSlot.site.publisher.company }}</td>
                 <td ng-show="relativeEntityData.adSlot.type == 'display'">{{ relativeEntityData.position }}</td>
                 <td><span class="label" ng-class="relativeEntityData.active ? 'label-success' : 'label-danger'">{{ relativeEntityData.active ? 'Active' : 'Paused' }}</span></td>
             </tr>

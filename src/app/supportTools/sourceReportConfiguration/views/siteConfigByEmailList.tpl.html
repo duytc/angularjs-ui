@@ -23,7 +23,7 @@
     </div>
 
     <div ng-if="sourceReportHasConfig.length || sourceReportHasConfig[0].sourceReportEmailConfig.includedAll">
-        <search-box sb-list="sourceReportHasConfig" search-fields="['site.name', 'site.publisher.username', 'site.domain']"></search-box>
+        <search-box sb-list="sourceReportHasConfig" search-fields="['site.name', 'site.publisher.username', 'site.publisher.company', 'site.domain']"></search-box>
 
         <div class="panel-body">
             <div class="table-responsive">
@@ -41,7 +41,7 @@
                         </td>
                         <td at-title="Site" at-implicit at-sortable at-attribute="site.name" at-initial-sorting="desc"></td>
                         <td at-title="Domain" at-implicit at-sortable at-attribute="site.domain"></td>
-                        <td at-title="Publisher" at-implicit at-sortable at-attribute="site.publisher.username"></td>
+                        <td at-title="Publisher" at-implicit at-sortable at-attribute="site.publisher.company"></td>
                     </tr>
                     </tbody>
                 </table>

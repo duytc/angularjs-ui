@@ -101,6 +101,16 @@
     }
 }
 
+.nav-tab-margin-linked {
+  li:first-child {
+    margin-left: 5px;
+  }
+
+  .tab-content {
+    margin-top: 15px;
+  }
+}
+
 /*
 table td:before {
   content: none !important;

@@ -53,7 +53,8 @@
         'ui.codemirror',
         'hljs',
         'ngClipboard',
-        'angularjs-dropdown-multiselect'
+        'angularjs-dropdown-multiselect',
+        'isteven-multi-select'
     ]);
 
     core.run(appRun);

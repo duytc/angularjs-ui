@@ -1,0 +1,50 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span>
+        <strong current-page-title></strong>
+
+        <div class="button-bar">
+            <button class="btn btn-primary btn-sm" ng-click="addChannelForChannel()" type="button">
+                <span class="glyphicon glyphicon-plus"></span>
+                Add Channels to Site
+            </button>
+            <button ng-click="backToListSite()" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                Back to Site List
+            </button>
+        </div>
+        <div class="btn-group btnGrouped" dropdown>
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ng-click="addChannelForChannel()">Add Channels to Site</a></li>
+                <li><a ng-click="backToListSite()">Back to Site List</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <search-box show-query="true" sb-list="channels" search-fields="['id', 'name', 'publisher.username', 'publisher.company']"></search-box>
+
+    <div class="panel-body" ng-if="hasData()">
+        <div class="table-responsive">
+            <table class="table" at-table at-paginated at-list="channels" at-config="tableConfig">
+                <thead></thead>
+                <tbody>
+                <tr>
+                    <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
+                    <td at-title="Actions">
+                        <div class="btn-group" dropdown>
+                            <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                            <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <li><a ng-click="confirmDeletion(item, $index)">Remove Channel from Site</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="Channel"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <at-pagination ng-if="showPagination()" at-list="channels" at-config="tableConfig"></at-pagination>
+        </div>
+    </div>
+</div>

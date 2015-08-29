@@ -73,7 +73,8 @@ module.exports = {
             'vendor/zeroclipboard/dist/ZeroClipboard.min.js',
             'vendor/ng-clip/src/ngClip.js',
             'vendor/jsondiffpatch/public/build/jsondiffpatch.js',
-            'vendor/angularjs-dropdown-multiselect/src/angularjs-dropdown-multiselect.js'
+            'vendor/angularjs-dropdown-multiselect/src/angularjs-dropdown-multiselect.js',
+            'vendor/isteven-angular-multiselect/isteven-multi-select.js'
         ],
         css: [
             'src/styles/customvendor/**/*.css'

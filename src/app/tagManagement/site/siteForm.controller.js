@@ -5,7 +5,7 @@
         .controller('SiteForm', SiteForm)
     ;
 
-    function SiteForm($scope, SiteManager, AlertService, ServerErrorProcessor, site, publishers, userSession, historyStorage, HISTORY_TYPE_PATH) {
+    function SiteForm($scope, $filter, SiteManager, AlertService, ServerErrorProcessor, site, publishers, channels, userSession, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             domain: 'Domain'
@@ -17,6 +17,7 @@
 
         $scope.allowPublisherSelection = $scope.isAdmin() && !!publishers;
         $scope.publishers = publishers;
+        $scope.channels = !$scope.isAdmin() ? channels : [];
 
         $scope.selectPublisher = selectPublisher;
         $scope.isEnabledAnalytics = isEnabledAnalytics;
@@ -25,7 +26,12 @@
 
         $scope.site = site || {
             name: null,
-            domain: null
+            domain: null,
+            channelSites: []
+        };
+
+        $scope.data = {
+          channels: []
         };
 
         function isFormValid() {
@@ -33,7 +39,10 @@
         }
 
         function selectPublisher(publisher) {
-             enabledModules = publisher.enabledModules
+            $scope.channels = $filter('selectedPublisher')(channels, publisher);
+
+            $scope.data.channels = [];
+            enabledModules = publisher.enabledModules
         }
 
         function isEnabledAnalytics() {
@@ -59,6 +68,15 @@
             }
 
             $scope.formProcessing = true;
+
+            // refactor json channel
+            if($scope.isNew) {
+                angular.forEach($scope.data.channels, function(channel) {
+                    $scope.site.channelSites.push({channel: channel.id})
+                });
+            } else {
+                delete $scope.site.channels;
+            }
 
             var saveSite = $scope.isNew ? SiteManager.post($scope.site) : $scope.site.patch();
 

@@ -6,6 +6,16 @@
     }
 }
 
+.ui-select-multiple {
+  min-height: $input-height-base;
+  border-color: #cfcfcf !important;
+}
+
+.ui-select-match {
+  z-index: 9999;
+  height: 34px;
+}
+
 .userForm .col-sm-2 {
   padding-left: 15px !important;
   padding-right: 0 !important;

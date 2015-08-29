@@ -6,6 +6,7 @@
         'tagcade.tagManagement.adNetwork',
         'tagcade.tagManagement.site',
         'tagcade.tagManagement.adSlot',
-        'tagcade.tagManagement.adTag'
+        'tagcade.tagManagement.adTag',
+        'tagcade.tagManagement.channel'
     ]);
 })();

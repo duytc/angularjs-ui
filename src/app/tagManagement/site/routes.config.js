@@ -50,6 +50,9 @@
                 resolve: {
                     site: function() {
                         return null;
+                    },
+                    channels: /* @ngInject */ function(ChannelManager) {
+                        return ChannelManager.getList();
                     }
                 },
                 customResolve: {
@@ -76,6 +79,9 @@
                 resolve: {
                     site: /* @ngInject */ function($stateParams, SiteManager) {
                         return SiteManager.one($stateParams.id).get();
+                    },
+                    channels: /* @ngInject */ function(ChannelManager) {
+                        return ChannelManager.getList();
                     }
                 },
                 customResolve: {
@@ -89,6 +95,32 @@
                 },
                 ncyBreadcrumb: {
                     label: 'Edit Site - {{ site.name }}'
+                }
+            })
+
+            .state('tagManagement.sites.channelList', {
+                url: '/site/{id:[0-9]+}/channel?page&sortField&orderBy&search',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    'content@app': {
+                        controller: 'SiteChannelList',
+                        templateUrl: 'tagManagement/site/siteChannelList.tpl.html'
+                    }
+                },
+                resolve: {
+                    site: /* @ngInject */ function(SiteManager, $stateParams) {
+                        return SiteManager.one($stateParams.id).get().then(function (site) {
+                            return site.plain();
+                        });
+                    },
+                    channels: /* @ngInject */ function(site) {
+                        return site.channels
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Channels - {{ site.name }}'
                 }
             })
         ;

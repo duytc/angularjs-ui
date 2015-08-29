@@ -38,6 +38,8 @@
                                 <li ng-if="item.libType == adSlotTypes.display" ><a ui-sref="^.^.adTag.displayList({adSlotId: item.id})">Manage Ad Tags</a></li>
                                 <li ng-if="item.libType == adSlotTypes.native" ><a ui-sref="^.^.adTag.nativeList({adSlotId: item.id})">Manage Ad Tags</a></li>
 
+                                <li ng-click="createLinkedAdSlots(item)"><a>Create Linked Ad Slots</a></li>
+
                                 <li ng-if="item.libType == adSlotTypes.display"><a ui-sref="^.associated({ adSlotId: item.id, adSlotType: adSlotTypes.display})">View Linked Ad Slots</a></li>
                                 <li ng-if="item.libType == adSlotTypes.native"><a ui-sref="^.associated({ adSlotId: item.id, adSlotType: adSlotTypes.native})">View Linked Ad Slots</a></li>
                                 <li ng-if="item.libType == adSlotTypes.dynamic"><a ui-sref="^.associated({ adSlotId: item.id, adSlotType: adSlotTypes.dynamic})">View Linked Ad Slots</a></li>

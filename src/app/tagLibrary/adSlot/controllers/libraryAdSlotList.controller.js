@@ -5,7 +5,7 @@
         .controller('LibraryAdSlotList', LibraryAdSlotList)
     ;
 
-    function LibraryAdSlotList($scope, $modal, adSlots, AlertService, DisplayAdSlotLibrariesManager, NativeAdSlotLibrariesManager, DynamicAdSlotLibrariesManager, TYPE_AD_SLOT, AtSortableService, historyStorage, HISTORY_TYPE_PATH) {
+    function LibraryAdSlotList($scope, $modal, adSlots, AlertService, ChannelManager, DisplayAdSlotLibrariesManager, NativeAdSlotLibrariesManager, DynamicAdSlotLibrariesManager, TYPE_AD_SLOT, AtSortableService, historyStorage, HISTORY_TYPE_PATH, SiteManager) {
         $scope.adSlots = adSlots;
 
         $scope.hasData = function () {
@@ -27,6 +27,7 @@
 
         $scope.showPagination = showPagination;
         $scope.removeMoveToLibrary = removeMoveToLibrary;
+        $scope.createLinkedAdSlots = createLinkedAdSlots;
 
         function showPagination() {
             return angular.isArray($scope.adSlots) && $scope.adSlots.length > $scope.tableConfig.itemsPerPage;
@@ -85,6 +86,40 @@
                         });
                     })
                     ;
+            });
+        }
+
+        function createLinkedAdSlots(adSlot) {
+            var sites = SiteManager.one('noreference').getList(null, {slotLibrary: adSlot.id});
+            var channels = ChannelManager.one('noreference').getList(null, {slotLibrary: adSlot.id});
+
+            channels.then(function(channels) {
+                sites.then(function(sites) {
+                    if(!!channels.length || !!sites.length) {
+                        $modal.open({
+                            templateUrl: 'tagLibrary/adSlot/views/createLinkedAdSlots.tpl.html',
+                            size: 'lg',
+                            controller: 'CreateLinkedAdSlots',
+                            resolve: {
+                                adSlot: function () {
+                                    return adSlot;
+                                },
+                                channels: function() {
+                                    return channels
+                                },
+                                sites: function() {
+                                    return sites
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        AlertService.replaceAlerts({
+                            type: 'warning',
+                            message: 'Every site already has a link to this ad slot'
+                        });
+                    }
+                });
             });
         }
 
