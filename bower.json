@@ -27,7 +27,7 @@
     "angular-xeditable": "~0.1.9",
     "xdomain": "*",
     "angular-ui-codemirror": "~0.3.0",
-    "angular-highlightjs": "~0.4.1",
+    "angular-highlightjs": "0.4.1",
     "zeroclipboard": "~2.2.0",
     "ng-clip": "https://github.com/dtagdev1/ng-clip.git#master",
     "highlight.js": "https://github.com/isagalaev/highlight.js.git#8.6",
