@@ -27,11 +27,48 @@
 
         $scope.showPagination = showPagination;
         $scope.confirmDeletion = confirmDeletion;
+        $scope.removeChannelFromSite = removeChannelFromSite;
         $scope.addChannelForChannel = addChannelForChannel;
         $scope.backToListSite = backToListSite;
 
-
         function confirmDeletion(channel, index) {
+            var modalInstance = $modal.open({
+                templateUrl: 'tagManagement/channel/confirmDeletion.tpl.html'
+            });
+
+            modalInstance.result.then(function () {
+                return ChannelManager.one(channel.id).remove()
+                    .then(
+                    function () {
+                        var index = channels.indexOf(channel);
+
+                        if (index > -1) {
+                            channels.splice(index, 1);
+                        }
+
+                        $scope.channels = channels;
+
+                        if($scope.tableConfig.currentPage > 0 && channels.length/10 == $scope.tableConfig.currentPage) {
+                            $scope.tableConfig.currentPage =- 1;
+                        }
+
+                        AlertService.replaceAlerts({
+                            type: 'success',
+                            message: 'The channel was deleted'
+                        });
+                    },
+                    function () {
+                        AlertService.replaceAlerts({
+                            type: 'danger',
+                            message: 'The channel could not be deleted'
+                        });
+                    }
+                )
+                    ;
+            });
+        }
+
+        function removeChannelFromSite(channel, index) {
             var modalInstance = $modal.open({
                 templateUrl: 'tagManagement/site/confirmChannelDeletion.tpl.html'
             });
@@ -88,7 +125,7 @@
                             });
                     },
                     channelsSite : function() {
-                        return $filter('selectedPublisher')($scope.channels, site.publisher);
+                        return $scope.channels
                     }
                 }
             });

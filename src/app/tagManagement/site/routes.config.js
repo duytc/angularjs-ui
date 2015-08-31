@@ -115,8 +115,10 @@
                             return site.plain();
                         });
                     },
-                    channels: /* @ngInject */ function(site) {
-                        return site.channels
+                    channels: /* @ngInject */ function(SiteManager, $stateParams) {
+                        return SiteManager.one($stateParams.id).getList('channels').then(function (channels) {
+                            return channels.plain();
+                        });
                     }
                 },
                 ncyBreadcrumb: {

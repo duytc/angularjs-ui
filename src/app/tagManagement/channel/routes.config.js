@@ -113,8 +113,10 @@
                             return channel.plain();
                         });
                     },
-                    sites: /* @ngInject */ function(channel) {
-                        return channel.sites
+                    sites: /* @ngInject */ function(ChannelManager, $stateParams) {
+                        return ChannelManager.one($stateParams.id).getList('sites').then(function (sites) {
+                            return sites.plain();
+                        });
                     }
                 },
                 ncyBreadcrumb: {
