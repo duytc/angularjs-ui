@@ -5,7 +5,7 @@
         .controller('AdTagListByAdNetwork', AdTagListByAdNetwork)
     ;
 
-    function AdTagListByAdNetwork($scope, $modal, adTags, adNetwork, AdTagManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AdTagLibrariesManager) {
+    function AdTagListByAdNetwork($scope, $state, $modal, adTags, adNetwork, AdTagManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AdTagLibrariesManager) {
         $scope.adNetwork = adNetwork;
         $scope.adTags = adTags;
 
@@ -65,15 +65,9 @@
                 return AdTagManager.one(adTag.id).remove()
                     .then(
                     function () {
-                        var index = adTags.indexOf(adTag);
+                        historyStorage.getLocationPath(HISTORY_TYPE_PATH.adTagAdNetwork, $state.current);
 
-                        if (index > -1) {
-                            adTags.splice(index, 1);
-                        }
-
-                        $scope.adTags = adTags;
-
-                        AlertService.replaceAlerts({
+                        AlertService.addFlash({
                             type: 'success',
                             message: 'The ad tag was deleted'
                         });
@@ -147,7 +141,7 @@
         }
 
         $scope.$on('$locationChangeSuccess', function() {
-            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.adTag)
+            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.adTagAdNetwork)
         });
     }
 })();

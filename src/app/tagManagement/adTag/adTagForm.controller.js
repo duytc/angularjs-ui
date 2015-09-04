@@ -108,7 +108,7 @@
             }
 
             if(!!$stateParams.adNetworkId) {
-                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adTag, '^.listByAdNetwork');
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adTagAdNetwork, '^.listByAdNetwork');
             }
 
             var state = $scope.adTag.adSlot.type == $scope.adSlotTypes.native ? '^.nativeList' : '^.list';
@@ -272,7 +272,7 @@
                         }
 
                         if(!!$stateParams.adNetworkId) {
-                            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adTag, '^.listByAdNetwork');
+                            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adTagAdNetwork, '^.listByAdNetwork');
                         }
 
                         var adSlotId = $scope.adTag.adSlot;

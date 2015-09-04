@@ -71,7 +71,7 @@
             })
             .state('tagManagement.adTag.listByAdNetwork', {
                 url: '/list/adNetwork/{adNetworkId:[0-9]+}?page&sortField&orderBy&search',
-                param: {
+                params: {
                     uniqueRequestCacheBuster: null
                 },
                 views: {

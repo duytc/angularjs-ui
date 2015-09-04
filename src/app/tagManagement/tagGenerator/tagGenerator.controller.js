@@ -5,12 +5,18 @@
         .controller('TagGenerator', TagGenerator)
     ;
 
-    function TagGenerator($scope, $timeout, $location, $q, siteList, site, jstags, publishers) {
+    function TagGenerator($scope, $location, $q, siteList, site, jstags, publishers) {
         $scope.formProcessing = false;
 
         $scope.selected = {
             publisher: site && site.publisher,
             site: site
+        };
+
+        $scope.keywordGuide = {
+            header : 'Copy and paste the following tag into the <head> section of your website.',
+            passback: 'Give the following tag to your ad networks as a passback/default/fallback tag for display ads.',
+            adSlot : 'Copy and paste the following ad tags into the <body> section of your website.'
         };
 
         $scope.siteList = siteList;
@@ -72,5 +78,51 @@
                 })
             ;
         };
+
+        $scope.exportTags = function(jstags) {
+            var tagsString = _tagsString(jstags);
+
+            var blob = new Blob([tagsString], {type: "text/plain;charset=utf-8"});
+            return saveAs(blob, [$scope.selected.site.name  + '+export-tags.txt']);
+        };
+
+        function _tagsString(jstags) {
+            var tags = 'HEADER' + '\n#' + $scope.keywordGuide.header + _downLine('=') + jstags.header + _downLine();
+
+            angular.forEach(jstags, function(adSlotTags, name) {
+                if(angular.isObject(adSlotTags)) {
+                    tags = tags + _downLine('=') + name.toUpperCase() + '\n#' + $scope.keywordGuide.adSlot + _printTags(adSlotTags);
+                }
+            });
+
+            return tags;
+        }
+
+        function _downLine(divider) {
+            var dividers = '';
+            divider = !divider ? '-' : divider;
+
+            var i = 0;
+            for(i; i < 25; i++) {
+                dividers = dividers + divider;
+            }
+
+            return '\n' + dividers + '\n';
+        }
+
+        function _printTags(adSlotTags) {
+            var adTags = _downLine('=');
+
+
+            if(adSlotTags.passback) {
+                adTags = adTags + 'Passback' + '\n#' + $scope.keywordGuide.passback + _downLine() + adSlotTags.passback + _downLine();
+            }
+
+            angular.forEach(adSlotTags.ad_slots, function(tag, name) {
+                adTags = adTags + name + _downLine() + tag + _downLine();
+            });
+
+            return adTags;
+        }
     }
 })();

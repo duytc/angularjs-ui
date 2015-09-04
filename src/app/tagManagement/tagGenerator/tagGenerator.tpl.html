@@ -43,13 +43,28 @@
 </section>
 
 <section ng-if="jstags" class="panel panel-default panel-tag-generator">
-    <div class="panel-heading"><strong>Tags for {{ selected.site.name }}</strong></div>
+    <div class="panel-heading">
+        <strong>Tags for {{ selected.site.name }}</strong>
+
+        <div class="button-bar hidden-xs">
+            <button ng-click="exportTags(jstags)" class="btn btn-sm btn-primary" type="button">
+                Export Tags
+            </button>
+        </div>
+
+        <div class="btn-group btnGrouped" dropdown>
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ng-click="exportTags(jstags)">Export Tags</a></li>
+            </ul>
+        </div>
+    </div>
     <tabset class="nav-tab-margin">
 
         <tab ng-if="jstags.header" select="selectTab()" heading="Header">
             <ul class="list-unstyled list-info">
                 <li>
-                    <p><strong>Copy and paste the following tag into the &lt;head&gt; section of your website.</strong></p>
+                    <p><strong>{{ keywordGuide.header }}</strong></p>
                     <div hljs source="jstags.header" select-on-click class="highlight-js"></div>
                     <div class="copy-clipboard">
                         <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(jstags.header)" class="btn btn-sm btn-primary">Copy to clipboard</button>
@@ -63,14 +78,14 @@
                 <div class="media-body">
                     <ul class="list-unstyled list-info">
                         <li>
-                            <p><strong>Give the following tag to your ad networks as a passback/default/fallback tag for display ads.</strong></p>
+                            <p><strong>{{ keywordGuide.passback }}</strong></p>
                             <div hljs source="jstags.display.passback" select-on-click class="highlight-js"></div>
                             <div class="copy-clipboard">
                                 <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(jstags.display.passback)" class="btn btn-sm btn-primary">Copy to clipboard</button>
                             </div>
                         </li>
                         <li>
-                            <p><strong>Copy and paste the following ad tags into the &lt;body&gt; section of your website.</strong></p>
+                            <p><strong>{{ keywordGuide.adSlot }}</strong></p>
                         </li>
                         <li ng-repeat="(name, tag) in jstags.display.ad_slots">
                             <p><strong>{{ name }}</strong></p>
@@ -90,7 +105,7 @@
                 <div class="media-body">
                     <ul class="list-unstyled list-info">
                         <li>
-                            <p><strong>Copy and paste the following ad tags into the &lt;body&gt; section of your website.</strong></p>
+                            <p><strong>{{ keywordGuide.adSlot }}</strong></p>
                         </li>
                         <li ng-repeat="(name, tag) in jstags.native.ad_slots">
                             <p><strong>{{ name }}</strong></p>
@@ -110,7 +125,7 @@
                 <div class="media-body">
                     <ul class="list-unstyled list-info">
                         <li>
-                            <p><strong>Copy and paste the following ad tags into the &lt;body&gt; section of your website.</strong></p>
+                            <p><strong>{{ keywordGuide.adSlot }}</strong></p>
                         </li>
                         <li ng-repeat="(name, tag) in jstags.dynamic.ad_slots">
                             <p><strong>{{ name }}</strong></p>
