@@ -5,7 +5,7 @@
         .controller('ChannelSiteList', ChannelSiteList)
     ;
 
-    function ChannelSiteList($scope, $filter, $modal, AlertService, channel, sites, ChannelManager, SiteManager, historyStorage, HISTORY_TYPE_PATH) {
+    function ChannelSiteList($scope, $translate, $filter, $modal, AlertService, channel, sites, ChannelManager, SiteManager, historyStorage, HISTORY_TYPE_PATH) {
         $scope.sites = sites;
         $scope.channel = channel;
 
@@ -16,7 +16,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no sites in this channel'
+                message: $translate.instant('CHANNEL_MODUlE.CURRENTLY_NO_SITE_CHANNELS')
             });
         }
 
@@ -56,13 +56,13 @@
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message: 'The site was deleted'
+                            message: $translate.instant('SITE_MODUlE.DELETE_SUCCESS')
                         });
                     },
                     function () {
                         AlertService.replaceAlerts({
                             type: 'danger',
-                            message: 'The site could not be deleted'
+                            message: $translate.instant('SITE_MODUlE.DELETE_FAIL')
                         });
                     }
                 )
@@ -93,13 +93,13 @@
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message: 'The site was deleted'
+                            message: $translate.instant('CHANNEL_MODUlE.REMOVE_SITE_FROM_CHANNEL_SUCCESS')
                         });
                     },
                     function () {
                         AlertService.replaceAlerts({
                             type: 'danger',
-                            message: 'The site could not be deleted'
+                            message: $translate.instant('CHANNEL_MODUlE.REMOVE_SITE_FROM_CHANNEL_FAIL')
                         });
                     }
                 )

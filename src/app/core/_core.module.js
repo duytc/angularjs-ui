@@ -8,7 +8,7 @@
 
         'ngAnimate',
         'ngSanitize',
-
+        'pascalprecht.translate',
         // cached templates
 
         'templates-app',
@@ -36,6 +36,7 @@
         'tagcade.core.util',
         'tagcade.core.resetPassword',
         'tagcade.core.historyStorage',
+        'tagcade.core.language',
 
         // 3rd party modules
 

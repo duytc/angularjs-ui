@@ -73,7 +73,8 @@ module.exports = {
             'vendor/ng-clip/src/ngClip.js',
             'vendor/jsondiffpatch/public/build/jsondiffpatch.js',
             'vendor/angularjs-dropdown-multiselect/src/angularjs-dropdown-multiselect.js',
-            'vendor/isteven-angular-multiselect/isteven-multi-select.js'
+            'vendor/isteven-angular-multiselect/isteven-multi-select.js',
+            'vendor/angular-translate/angular-translate.js'
         ],
         css: [
             'src/styles/customvendor/**/*.css'

@@ -5,7 +5,7 @@
         .controller('ChannelForm', ChannelForm)
     ;
 
-    function ChannelForm($scope, $filter, sites, channel, publishers, AlertService, ChannelManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH) {
+    function ChannelForm($scope, $filter, $translate, sites, channel, publishers, AlertService, ChannelManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             sites: 'Sites'
@@ -74,7 +74,7 @@
                 function () {
                     AlertService.addFlash({
                         type: 'success',
-                        message: 'The channel has been ' + ($scope.isNew ? 'created' : 'updated')
+                        message: $scope.isNew ? $translate.instant('CHANNEL_MODUlE.ADD_NEW_SUCCESS') : $translate.instant('CHANNEL_MODUlE.UPDATE_SUCCESS')
                     });
                 })
                 .then(

@@ -5,7 +5,7 @@
         .controller('ChannelList', ChannelList)
     ;
 
-    function ChannelList($scope, $modal, AlertService, channels, ChannelManager, AtSortableService, HISTORY_TYPE_PATH, historyStorage) {
+    function ChannelList($scope, $translate, $modal, AlertService, channels, ChannelManager, AtSortableService, HISTORY_TYPE_PATH, historyStorage) {
         $scope.channels = channels;
 
         $scope.hasData = function () {
@@ -15,7 +15,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no channels'
+                message: $translate.instant('CHANNEL_MODUlE.CURRENTLY_NO_CHANNELS')
             });
         }
 
@@ -50,13 +50,13 @@
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message: 'The channel was deleted'
+                            message: $translate.instant('CHANNEL_MODUlE.DELETE_SUCCESS')
                         });
                     },
                     function () {
                         AlertService.replaceAlerts({
                             type: 'danger',
-                            message: 'The channel could not be deleted'
+                            message:  $translate.instant('CHANNEL_MODUlE.DELETE_FAIL')
                         });
                     }
                 )
