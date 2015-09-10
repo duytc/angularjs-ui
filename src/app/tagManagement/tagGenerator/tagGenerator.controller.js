@@ -83,7 +83,8 @@
             var tagsString = _tagsString(jstags);
 
             var blob = new Blob([tagsString], {type: "text/plain;charset=utf-8"});
-            return saveAs(blob, [$scope.selected.site.name  + '+export-tags.txt']);
+            var domain = $scope.selected.site.domain.substring(7);
+            return saveAs(blob, [domain  + '-tags.txt']);
         };
 
         function _tagsString(jstags) {

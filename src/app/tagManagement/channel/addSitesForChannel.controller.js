@@ -40,13 +40,13 @@
 
                     AlertService.addFlash({
                         type: 'success',
-                        message: $translate.instant('CHANNEL_MODUlE.UPDATE_SUCCESS')
+                        message: $translate.instant('CHANNEL_MODULE.UPDATE_SUCCESS')
                     });
                 })
                 .catch(function() {
                     AlertService.addAlert({
                         type: 'error',
-                        message: $translate.instant('CHANNEL_MODUlE.UPDATE_FAIL')
+                        message: $translate.instant('CHANNEL_MODULE.UPDATE_FAIL')
                     });
                 });
         }

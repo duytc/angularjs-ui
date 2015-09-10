@@ -74,7 +74,7 @@
                 function () {
                     AlertService.addFlash({
                         type: 'success',
-                        message: $scope.isNew ? $translate.instant('CHANNEL_MODUlE.ADD_NEW_SUCCESS') : $translate.instant('CHANNEL_MODUlE.UPDATE_SUCCESS')
+                        message: $scope.isNew ? $translate.instant('CHANNEL_MODULE.ADD_NEW_SUCCESS') : $translate.instant('CHANNEL_MODULE.UPDATE_SUCCESS')
                     });
                 })
                 .then(

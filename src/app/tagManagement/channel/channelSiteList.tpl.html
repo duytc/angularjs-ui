@@ -6,18 +6,18 @@
         <div class="button-bar">
             <button class="btn btn-primary btn-sm" ng-click="addSitesForChannel()" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
-                {{ 'CHANNEL_MODUlE.ADD_SITES_TO_CHANNEL' | translate }}
+                {{ 'CHANNEL_MODULE.ADD_SITES_TO_CHANNEL' | translate }}
             </button>
             <button ng-click="backToListChannel()" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-arrow-left"></span>
-                {{ 'CHANNEL_MODUlE.BACK_TO_CHANNEL_LIST' | translate }}
+                {{ 'CHANNEL_MODULE.BACK_TO_CHANNEL_LIST' | translate }}
             </button>
         </div>
         <div class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ng-click="addSitesForChannel()">{{ 'CHANNEL_MODUlE.ADD_SITES_TO_CHANNEL' | translate }}</a></li>
-                <li><a ng-click="backToListChannel()">{{ 'CHANNEL_MODUlE.BACK_TO_CHANNEL_LIST' | translate }}</a></li>
+                <li><a ng-click="addSitesForChannel()">{{ 'CHANNEL_MODULE.ADD_SITES_TO_CHANNEL' | translate }}</a></li>
+                <li><a ng-click="backToListChannel()">{{ 'CHANNEL_MODULE.BACK_TO_CHANNEL_LIST' | translate }}</a></li>
             </ul>
         </div>
     </div>
@@ -35,20 +35,19 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li><a ng-click="removeSiteFromChannel(item, $index)">{{ 'CHANNEL_MODUlE.REMOVE_SITE_FROM_CHANNEL' | translate }}</a></li>
-                                <li class="divider"></li>
                                 <li ng-if="hasDisplayAdsModule"><a ui-sref="^.^.adSlot.list({ siteId: item.id })">{{ 'MANAGE' | translate }} {{ 'AD_SLOTS' | translate }}</a></li>
-                                <li><a ui-sref="^.^.tagGenerator({ siteId: item.id })">{{ 'CHANNEL_MODUlE.GENERATE_TAGS' | translate }}</a></li>
+                                <li><a ui-sref="^.^.tagGenerator({ siteId: item.id })">{{ 'CHANNEL_MODULE.GENERATE_TAGS' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li ><a ui-sref="^.^.^.reports.performance.siteAdSlots({ siteId: item.id, startDate: today})">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li><a ui-sref="^.^.sites.edit({ id: item.id })">{{ 'EDIT' | translate }} {{ 'SITE' | translate }}</a></li>
                                 <li><a ng-click="confirmDeletion(item, $index)">{{ 'DELETE' | translate }} {{ 'SITE' | translate }}</a></li>
+                                <li><a ng-click="removeSiteFromChannel(item, $index)">{{ 'CHANNEL_MODULE.REMOVE_SITE_FROM_CHANNEL' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>
                     <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="{{ 'SITE' | translate }}"></td>
-                    <td at-title="Domain" at-implicit at-sortable at-attribute="domain" at-title="{{ 'SITE_MODUlE.DOMAIN' | translate }}"></td>
+                    <td at-title="Domain" at-implicit at-sortable at-attribute="domain" at-title="{{ 'SITE_MODULE.DOMAIN' | translate }}"></td>
                 </tr>
                 </tbody>
             </table>

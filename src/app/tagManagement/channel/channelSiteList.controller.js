@@ -16,7 +16,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: $translate.instant('CHANNEL_MODUlE.CURRENTLY_NO_SITE_CHANNELS')
+                message: $translate.instant('CHANNEL_MODULE.CURRENTLY_NO_SITE_CHANNELS')
             });
         }
 
@@ -56,13 +56,13 @@
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message: $translate.instant('SITE_MODUlE.DELETE_SUCCESS')
+                            message: $translate.instant('SITE_MODULE.DELETE_SUCCESS')
                         });
                     },
                     function () {
                         AlertService.replaceAlerts({
                             type: 'danger',
-                            message: $translate.instant('SITE_MODUlE.DELETE_FAIL')
+                            message: $translate.instant('SITE_MODULE.DELETE_FAIL')
                         });
                     }
                 )
@@ -93,13 +93,13 @@
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message: $translate.instant('CHANNEL_MODUlE.REMOVE_SITE_FROM_CHANNEL_SUCCESS')
+                            message: $translate.instant('CHANNEL_MODULE.REMOVE_SITE_FROM_CHANNEL_SUCCESS')
                         });
                     },
                     function () {
                         AlertService.replaceAlerts({
                             type: 'danger',
-                            message: $translate.instant('CHANNEL_MODUlE.REMOVE_SITE_FROM_CHANNEL_FAIL')
+                            message: $translate.instant('CHANNEL_MODULE.REMOVE_SITE_FROM_CHANNEL_FAIL')
                         });
                     }
                 )

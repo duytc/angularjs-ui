@@ -28,7 +28,7 @@
 
             "VIEW_TODAY_REPORT": "View Today's Report",
 
-            "CHANNEL_MODUlE": {
+            "CHANNEL_MODULE": {
                 "ADD_NEW_SUCCESS": "The channel has been created",
                 "UPDATE_SUCCESS": "The channel has been updated",
                 "UPDATE_FAIL": "The channel could not be updated",
@@ -53,7 +53,7 @@
                 "REMOVE_SITE_FROM_CHANNEL": "Remove Site from Channel"
             },
 
-            "SITE_MODUlE": {
+            "SITE_MODULE": {
                 "DOMAIN": "Domain",
 
                 "DELETE_SUCCESS": "The site was deleted",

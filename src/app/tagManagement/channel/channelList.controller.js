@@ -15,7 +15,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: $translate.instant('CHANNEL_MODUlE.CURRENTLY_NO_CHANNELS')
+                message: $translate.instant('CHANNEL_MODULE.CURRENTLY_NO_CHANNELS')
             });
         }
 
@@ -50,13 +50,13 @@
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message: $translate.instant('CHANNEL_MODUlE.DELETE_SUCCESS')
+                            message: $translate.instant('CHANNEL_MODULE.DELETE_SUCCESS')
                         });
                     },
                     function () {
                         AlertService.replaceAlerts({
                             type: 'danger',
-                            message:  $translate.instant('CHANNEL_MODUlE.DELETE_FAIL')
+                            message:  $translate.instant('CHANNEL_MODULE.DELETE_FAIL')
                         });
                     }
                 )
