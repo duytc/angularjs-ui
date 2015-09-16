@@ -5,7 +5,7 @@
         .controller('AdNetworkList', AdNetworkList)
     ;
 
-    function AdNetworkList($scope, $modal, $q, AlertService, AdNetworkManager, adNetworks, historyStorage, HISTORY_TYPE_PATH) {
+    function AdNetworkList($scope, $translate, $modal, $q, AlertService, AdNetworkManager, AdNetworkCache, adNetworks, historyStorage, HISTORY_TYPE_PATH) {
         $scope.adNetworks = adNetworks;
 
         $scope.hasData = function () {
@@ -15,7 +15,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no ad networks'
+                message: $translate.instant('AD_NETWORK_MODULE.CURRENTLY_NO_AD_NETWORK')
             });
         }
 
@@ -39,10 +39,10 @@
                         .catch(function () {
                             AlertService.replaceAlerts({
                                 type: 'error',
-                                message: 'Could not change ad network status'
+                                message: $translate.instant('AD_NETWORK_MODULE.UPDATE_STATUS_FAIL')
                             });
 
-                            return $q.reject('could not update ad network status');
+                            return $q.reject($translate.instant('AD_NETWORK_MODULE.UPDATE_STATUS_FAIL'));
                         })
                         .then(function () {
                             if(newStatus) {
@@ -53,12 +53,14 @@
                                 adNetwork.activeAdTagsCount = 0;
                             }
 
+                            AdNetworkCache.updateAdNetwork(adNetwork);
+
                             var successMessage;
 
                             if (isPause) {
-                                successMessage = 'The ad network has been paused. There may be a short delay before the associated ad tags are paused.';
+                                successMessage = $translate.instant('AD_NETWORK_MODULE.PAUSE_STATUS_SUCCESS');
                             } else {
-                                successMessage = 'The ad network has been activated';
+                                successMessage = $translate.instant('AD_NETWORK_MODULE.ACTIVE_STATUS_SUCCESS');
                             }
 
                             AlertService.replaceAlerts({
@@ -92,7 +94,7 @@
                     if(!sitesForAdNetwork.length) {
                         AlertService.addAlert({
                             type: 'warning',
-                            message: 'Ad network : ' + adNetwork.name + ' does not have sites'
+                            message: $translate.instant('AD_NETWORK_MODULE.CURRENTLY_NO_SITES_AD_NETWORK', {ad_network_name: adNetwork.name})
                         });
 
                         return;

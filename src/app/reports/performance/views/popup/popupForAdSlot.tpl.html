@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="$dismiss()">×</button>
-    <h4 class="modal-title">Ad Slot Info</h4>
+    <h4 class="modal-title">{{ 'PERFORMANCE_REPORT_MODULE.TITLE_AD_SLOT_INFO' | translate }}</h4>
 </div>
 <div class="modal-body">
     <div class="table-responsive">
@@ -8,11 +8,11 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>Ad Slot</th>
-                <th>Site</th>
-                <th ng-show="isAdmin">Publisher</th>
-                <th ng-show="!!relativeEntityData.libraryAdSlot.width">Width</th>
-                <th ng-show="!!relativeEntityData.libraryAdSlot.height">Height</th>
+                <th>{{ 'AD_SLOT' | translate }}</th>
+                <th>{{ 'SITE' | translate }}</th>
+                <th ng-show="isAdmin">{{ 'PUBLISHER' | translate }}</th>
+                <th ng-show="!!relativeEntityData.libraryAdSlot.width">{{ 'SITE_MODULE.WIDTH' | translate }}</th>
+                <th ng-show="!!relativeEntityData.libraryAdSlot.height">{{ 'SITE_MODULE.HEIGHT' | translate }}</th>
             </tr>
             </thead>
             <tbody>
@@ -29,6 +29,6 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="$close()">Drill Down</button>
-    <button class="btn btn-primary" ng-click="$dismiss(); goToEditPage('tagManagement.adSlot.edit', relativeEntityData.id)">Edit This AdSlot</button>
+    <button class="btn btn-primary" ng-click="$close()">{{ 'PERFORMANCE_REPORT_MODULE.DRILL_DOWN' | translate }}</button>
+    <button class="btn btn-primary" ng-click="$dismiss(); goToEditPage('tagManagement.adSlot.edit', relativeEntityData.id)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_THIS_AD_SLOT' | translate }}</button>
 </div>

@@ -5,7 +5,7 @@
         .controller('LibraryAdTagList', LibraryAdTagList)
     ;
 
-    function LibraryAdTagList($scope, $modal, adTags, AlertService, AdTagLibrariesManager, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT, AtSortableService) {
+    function LibraryAdTagList($scope, $translate, $modal, adTags, AlertService, AdTagLibrariesManager, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT, AtSortableService) {
         $scope.adTags = adTags;
 
         $scope.hasData = function () {
@@ -22,7 +22,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no ad tags in the library'
+                message: $translate.instant('AD_TAG_LIBRARY_MODULE.CURRENTLY_NO_AD_TAG')
             });
         }
 
@@ -56,7 +56,7 @@
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message: 'Remove ad tag from library successfully'
+                            message: $translate.instant('AD_TAG_LIBRARY_MODULE.REMOVE_SUCCESS')
                         });
                     })
                     .catch(function (status) {
@@ -66,7 +66,7 @@
                             message = status.data.message
                         }
                         else {
-                            message = 'Could not remove ad tag from library';
+                            message = $translate.instant('AD_TAG_LIBRARY_MODULE.REMOVE_FAIL')
                         }
 
                         AlertService.replaceAlerts({
@@ -92,7 +92,7 @@
                 .then(function() {
                     AlertService.addAlert({
                         type: 'success',
-                        message: 'The ad tag has been updated'
+                        message: $translate.instant('AD_TAG_MODULE.UPDATE_SUCCESS')
                     });
                 })
                 .catch(function() {
@@ -100,7 +100,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'The ad tag has not been updated'
+                        message: $translate.instant('AD_TAG_MODULE.UPDATE_FAIL')
                     });
                 });
         }

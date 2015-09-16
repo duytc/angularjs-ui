@@ -3,23 +3,23 @@
         <thead></thead>
         <tbody>
         <tr>
-            <td at-implicit at-sortable at-attribute="name" at-title="Name"></td>
-            <td at-sortable at-attribute="billedAmount" at-title="Billed Amount" at-initial-sorting="desc">
+            <td at-implicit at-sortable at-attribute="name" at-title="{{ 'NAME' | translate }}"></td>
+            <td at-sortable at-attribute="billedAmount" at-title="{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}" at-initial-sorting="desc">
                 {{ item.billedAmount | currency }}
             </td>
-            <td at-sortable at-attribute="slotOpportunities" at-title="Slot Opportunities">
+            <td at-sortable at-attribute="slotOpportunities" at-title="{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}">
                 {{ item.slotOpportunities | number }}
             </td>
-            <td at-sortable at-attribute="totalOpportunities" at-title="Network Opportunities">
+            <td at-sortable at-attribute="totalOpportunities" at-title="{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}">
                 {{ item.totalOpportunities | number }}
             </td>
-            <td at-attribute="fillRate" at-sortable at-title="Fill Rate">
+            <td at-attribute="fillRate" at-sortable at-title="{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}">
                 {{ item.fillRate | percentage }}
             </td>
-            <td at-attribute="impressions" at-sortable at-title="Impressions">
+            <td at-attribute="impressions" at-sortable at-title="{{ 'DASHBOARD_MODULE.IMPRESSIONS' | translate }}">
                 {{ item.impressions | number }}
             </td>
-            <td at-attribute="passbacks" at-sortable at-title="Passbacks">
+            <td at-attribute="passbacks" at-sortable at-title="{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}">
                 {{ item.passbacks | number }}
             </td>
         </tr>

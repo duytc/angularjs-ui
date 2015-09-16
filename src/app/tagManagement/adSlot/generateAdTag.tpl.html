@@ -1,11 +1,11 @@
 <div class="modal-header">
-    <h4 class="modal-title">Tag for {{ adSlotName }}</h4>
+    <h4 class="modal-title" translate="AD_SLOT_MODULE.TAG_FOR_NAME" translate-values='{name: adSlotName}'></h4>
 </div>
 <div class="modal-body">
-    <p><strong>Copy and paste the following ad tag into the &lt;body&gt; section of your website.</strong></p>
+    <p><strong>{{ 'AD_SLOT_MODULE.HELP_BLOCK_COPY_TAG' | translate }}</strong></p>
     <div hljs source="javascriptTag" select-on-click class="highlight-js"></div>
 </div>
 <div class="modal-footer">
-    <button auto-hide-on-no-flash="true" class="btn btn-primary" clip-copy="getTextToCopy(javascriptTag)">Copy to clipboard</button>
-    <button class="btn btn-primary" ng-click="$dismiss()">Close</button>
+    <button auto-hide-on-no-flash="true" class="btn btn-primary" clip-copy="getTextToCopy(javascriptTag)">{{ 'COPY_TO_CLIPBOARD' | translate }}</button>
+    <button class="btn btn-primary" ng-click="$dismiss()">{{ 'CLOSE' | translate }}</button>
 </div>

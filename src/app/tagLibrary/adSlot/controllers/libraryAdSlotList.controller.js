@@ -5,7 +5,7 @@
         .controller('LibraryAdSlotList', LibraryAdSlotList)
     ;
 
-    function LibraryAdSlotList($scope, $modal, adSlots, AlertService, ChannelManager, DisplayAdSlotLibrariesManager, NativeAdSlotLibrariesManager, DynamicAdSlotLibrariesManager, TYPE_AD_SLOT, AtSortableService, historyStorage, HISTORY_TYPE_PATH, SiteManager) {
+    function LibraryAdSlotList($scope, $translate, $modal, adSlots, AlertService, ChannelManager, DisplayAdSlotLibrariesManager, NativeAdSlotLibrariesManager, DynamicAdSlotLibrariesManager, TYPE_AD_SLOT, AtSortableService, historyStorage, HISTORY_TYPE_PATH, SiteManager) {
         $scope.adSlots = adSlots;
 
         $scope.hasData = function () {
@@ -15,7 +15,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no ad slots in the library'
+                message: $translate.instant('AD_SLOT_LIBRARY_MODULE.CURRENTLY_NO_AD_SLOT')
             });
         }
 
@@ -67,7 +67,7 @@
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message: 'Remove ad slot from library successfully'
+                            message:  $translate.instant('AD_SLOT_LIBRARY_MODULE.REMOVE_SUCCESS')
                         });
                     })
                     .catch(function (status) {
@@ -77,7 +77,7 @@
                             message = status.data.message
                         }
                         else {
-                            message = 'Could not remove ad slot from library'
+                            message = $translate.instant('AD_SLOT_LIBRARY_MODULE.REMOVE_FAIL')
                         }
 
                         AlertService.replaceAlerts({
@@ -116,7 +116,7 @@
                     else {
                         AlertService.replaceAlerts({
                             type: 'warning',
-                            message: 'Every site already has a link to this ad slot'
+                            message: $translate.instant('AD_SLOT_LIBRARY_MODULE.ALERT_CREATE_LINKED_AD_SLOTS_FULL_SITE')
                         });
                     }
                 });

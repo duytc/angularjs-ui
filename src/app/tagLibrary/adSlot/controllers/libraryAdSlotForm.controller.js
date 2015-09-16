@@ -5,7 +5,7 @@
         .controller('LibraryAdSlotForm', LibraryAdSlotForm)
     ;
 
-    function LibraryAdSlotForm($scope, $filter, _, adSlot, publisherList, adSlotType, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, historyStorage, HISTORY_TYPE_PATH) {
+    function LibraryAdSlotForm($scope, $translate, $filter, _, adSlot, publisherList, adSlotType, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
@@ -21,15 +21,15 @@
         $scope.typesList = TYPE_AD_SLOT;
         $scope.adSlotTypeOptions = [
             {
-                label: 'Display Ad Slot',
+                label: $translate.instant('DISPLAY_AD_SLOTS'),
                 key: TYPE_AD_SLOT.display
             },
             {
-                label: 'Native Ad Slot',
+                label: $translate.instant('NATIVE_AD_SLOTS'),
                 key: TYPE_AD_SLOT.native
             },
             {
-                label: 'Dynamic Ad Slot',
+                label: $translate.instant('DYNAMIC_AD_SLOTS'),
                 key: TYPE_AD_SLOT.dynamic
             }
         ];
@@ -87,7 +87,7 @@
                 function () {
                     AlertService.addFlash({
                         type: 'success',
-                        message: 'The ad slot has been ' + ($scope.isNew ? 'created' : 'updated')
+                        message: $scope.isNew ? $translate.instant('AD_SLOT_MODULE.ADD_NEW_SUCCESS') : $translate.instant('AD_SLOT_MODULE.UPDATE_SUCCESS')
                     });
                 })
                 .then(

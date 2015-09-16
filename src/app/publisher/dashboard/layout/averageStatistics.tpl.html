@@ -10,23 +10,23 @@
             <!--<span class="pull-right">{{ dataAverage.averageEstCpm | currency:'$':4 }}</span>-->
         <!--</li>-->
         <li>
-            <label>Slot Opportunities</label>
+            <label>{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}</label>
             <span class="pull-right">{{ dataAverage.averageSlotOpportunities | number }}</span>
         </li>
         <li>
-            <label>Network Opportunities</label>
+            <label>{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}</label>
             <span class="pull-right">{{ dataAverage.averageTotalOpportunities | number }}</span>
         </li>
         <li>
-            <label>Impressions</label>
+            <label>{{ 'DASHBOARD_MODULE.IMPRESSIONS' | translate }}</label>
             <span class="pull-right">{{ dataAverage.averageImpressions | number }}</span>
         </li>
         <li>
-            <label>Passbacks</label>
+            <label>{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}</label>
             <span class="pull-right">{{ dataAverage.averagePassbacks | number }}</span>
         </li>
         <li>
-            <label>Fill Rate</label>
+            <label>{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}</label>
             <span class="pull-right">{{ dataAverage.averageFillRate | percentage }}</span>
         </li>
     </ul>

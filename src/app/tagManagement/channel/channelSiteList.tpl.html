@@ -31,17 +31,17 @@
                 <tbody>
                 <tr>
                     <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
-                    <td at-title="Actions">
+                    <td at-title="{{ 'ACTIONS' | translate }}">
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li ng-if="hasDisplayAdsModule"><a ui-sref="^.^.adSlot.list({ siteId: item.id })">{{ 'MANAGE' | translate }} {{ 'AD_SLOTS' | translate }}</a></li>
-                                <li><a ui-sref="^.^.tagGenerator({ siteId: item.id })">{{ 'CHANNEL_MODULE.GENERATE_TAGS' | translate }}</a></li>
+                                <li ng-if="hasDisplayAdsModule"><a ui-sref="^.^.adSlot.list({ siteId: item.id })">{{ 'SITE_MODULE.MANAGE_AD_SLOTS' | translate }}</a></li>
+                                <li><a ui-sref="^.^.tagGenerator({ siteId: item.id })">{{ 'SITE_MODULE.GENERATE_TAGS' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li ><a ui-sref="^.^.^.reports.performance.siteAdSlots({ siteId: item.id, startDate: today})">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
                                 <li class="divider"></li>
-                                <li><a ui-sref="^.^.sites.edit({ id: item.id })">{{ 'EDIT' | translate }} {{ 'SITE' | translate }}</a></li>
-                                <li><a ng-click="confirmDeletion(item, $index)">{{ 'DELETE' | translate }} {{ 'SITE' | translate }}</a></li>
+                                <li><a ui-sref="^.^.sites.edit({ id: item.id })">{{ 'SITE_MODULE.EDIT_SITE' | translate }}</a></li>
+                                <li><a ng-click="confirmDeletion(item, $index)">{{ 'SITE_MODULE.DELETE_SITE' | translate }}</a></li>
                                 <li><a ng-click="removeSiteFromChannel(item, $index)">{{ 'CHANNEL_MODULE.REMOVE_SITE_FROM_CHANNEL' | translate }}</a></li>
                             </ul>
                         </div>

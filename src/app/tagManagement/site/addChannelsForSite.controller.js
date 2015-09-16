@@ -6,7 +6,7 @@
         .controller('AddChannelsForSite', AddChannelsForSite)
     ;
 
-    function AddChannelsForSite($scope, _, $state, site, channels, channelsSite, $modalInstance, AlertService, SiteManager, historyStorage, HISTORY_TYPE_PATH) {
+    function AddChannelsForSite($scope, _, $translate, $state, site, channels, channelsSite, $modalInstance, AlertService, SiteManager, historyStorage, HISTORY_TYPE_PATH) {
         $scope.site = site;
         $scope.channels = channels;
 
@@ -40,13 +40,13 @@
 
                     AlertService.addFlash({
                         type: 'success',
-                        message: 'The site has been updated'
+                        message: $translate.instant('SITE_MODULE.UPDATE_SUCCESS')
                     });
                 })
                 .catch(function() {
                     AlertService.addAlert({
                         type: 'error',
-                        message: 'The site could not be updated'
+                        message: $translate.instant('SITE_MODULE.UPDATE_FAIL')
                     });
                 });
         }

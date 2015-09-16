@@ -1,13 +1,13 @@
 <form name="addChannelsForSiteForm" role="form" ng-submit="submit()" novalidate>
     <div class="modal-header">
-        <h4 class="modal-title">Add Channels for : <strong>{{ site.name }}</strong></h4>
+        <h4 class="modal-title">{{ 'SITE_MODULE.ADD_CHANNELS_FOR' | translate }} : <strong>{{ site.name }}</strong></h4>
     </div>
     <div class="modal-body">
         <div class="row">
             <div class="col-lg-12 form-validation form-horizontal">
 
                 <div class="form-group">
-                    <label for="inputSite" class="col-sm-1 control-label">Channels</label>
+                    <label for="inputSite" class="col-sm-1 control-label">{{ 'CHANNELS' | translate }}</label>
                     <div class="col-sm-11">
                         <isteven-multi-select id="inputSite" input-model="channels" output-model="channelsSite" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
                     </div>
@@ -17,7 +17,7 @@
     </div>
 
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="$dismiss()" type="button">Cancel</button>
-        <button class="btn btn-danger" ng-disabled="!isFormValid()" type="submit">Submit</button>
+        <button class="btn btn-primary" ng-click="$dismiss()" type="button">{{ 'CANCEL' | translate }}</button>
+        <button class="btn btn-danger" ng-disabled="!isFormValid()" type="submit">{{ 'SUBMIT' | translate }}</button>
     </div>
 </form>

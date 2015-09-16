@@ -5,7 +5,7 @@
         .controller('TagGenerator', TagGenerator)
     ;
 
-    function TagGenerator($scope, $location, $q, siteList, site, jstags, publishers) {
+    function TagGenerator($scope, $translate, $location, $q, siteList, site, jstags, publishers) {
         $scope.formProcessing = false;
 
         $scope.selected = {
@@ -14,9 +14,9 @@
         };
 
         $scope.keywordGuide = {
-            header : 'Copy and paste the following tag into the <head> section of your website.',
-            passback: 'Give the following tag to your ad networks as a passback/default/fallback tag for display ads.',
-            adSlot : 'Copy and paste the following ad tags into the <body> section of your website.'
+            header : $translate.instant('TAG_GENERATOR_MODULE.GUIDE_COPY_HEADER'),
+            adSlot : $translate.instant('TAG_GENERATOR_MODULE.GUIDE_COPY_BODY'),
+            passback: $translate.instant('TAG_GENERATOR_MODULE.GUIDE_PASSBACK')
         };
 
         $scope.siteList = siteList;

@@ -5,7 +5,7 @@
         .controller('AdSlotList', AdSlotList)
     ;
 
-    function AdSlotList($scope, $state, $stateParams, $modal, AlertService, adSlotService, adSlots, site, AtSortableService, libraryAdSlotService, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
+    function AdSlotList($scope, $translate, $state, $stateParams, $modal, AlertService, adSlotService, adSlots, site, AtSortableService, libraryAdSlotService, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
         $scope.site = site;
 
         $scope.adSlots = adSlots;
@@ -18,7 +18,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no ad slots in this site'
+                message: $translate.instant('AD_SLOT_MODULE.CURRENTLY_NO_AD_SLOT')
             });
         }
 
@@ -81,13 +81,13 @@
 
                             AlertService.replaceAlerts({
                                 type: 'success',
-                                message: 'The ad slot was deleted'
+                                message: $translate.instant('AD_SLOT_MODULE.DELETE_SUCCESS')
                             });
                         },
                         function () {
                             AlertService.replaceAlerts({
                                 type: 'danger',
-                                message: 'The ad slot could not be deleted'
+                                message: $translate.instant('AD_SLOT_MODULE.DELETE_FAIL')
                             });
                         }
                     )
@@ -139,13 +139,13 @@
 
                     AlertService.addFlash({
                         type: 'success',
-                        message: 'The ad slot has been moved to library'
+                        message: $translate.instant('AD_SLOT_MODULE.MOVED_TO_LIBRARY_SUCCESS')
                     });
                 })
                 .catch(function () {
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'The ad slot has not been moved to library'
+                        message: $translate.instant('AD_SLOT_MODULE.MOVED_TO_LIBRARY_FAIL')
                     });
                 })
             ;

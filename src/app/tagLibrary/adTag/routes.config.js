@@ -46,10 +46,8 @@
                     adTag: /* @ngInject */ function() {
                         return null;
                     },
-                    adNetworkList: /* @ngInject */ function (AdNetworkManager) {
-                        return AdNetworkManager.getList().then(function (adNetworks) {
-                            return adNetworks.plain();
-                        });
+                    adNetworkList: /* @ngInject */ function (AdNetworkCache) {
+                        return AdNetworkCache.getAllAdNetworks();
                     }
                 },
                 customResolve: {
@@ -77,10 +75,8 @@
                     adTag: /* @ngInject */ function($stateParams, AdTagLibrariesManager) {
                         return AdTagLibrariesManager.one($stateParams.id).get();
                     },
-                    adNetworkList: /* @ngInject */ function (AdNetworkManager) {
-                        return AdNetworkManager.getList().then(function (adNetworks) {
-                            return adNetworks.plain();
-                        });
+                    adNetworkList: /* @ngInject */ function (AdNetworkCache) {
+                        return AdNetworkCache.getAllAdNetworks();
                     },
                     publisherList: function() {
                         return null;
@@ -179,10 +175,8 @@
                     adSlotList: function(AdSlotLibrariesManager) {
                         return AdSlotLibrariesManager.getList();
                     },
-                    adNetworkList: /* @ngInject */ function (AdNetworkManager) {
-                        return AdNetworkManager.getList().then(function (adNetworks) {
-                            return adNetworks.plain();
-                        });
+                    adNetworkList: /* @ngInject */ function (AdNetworkCache) {
+                        return AdNetworkCache.getAllAdNetworks();
                     }
                 },
                 customResolve: {
@@ -216,10 +210,8 @@
                     adSlotList: function() {
                         return null;
                     },
-                    adNetworkList: /* @ngInject */ function (AdNetworkManager) {
-                        return AdNetworkManager.getList().then(function (adNetworks) {
-                            return adNetworks.plain();
-                        });
+                    adNetworkList: /* @ngInject */ function (AdNetworkCache) {
+                        return AdNetworkCache.getAllAdNetworks();
                     },
                     publisherList: function() {
                         return null;

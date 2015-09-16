@@ -39,10 +39,8 @@
                             return adSlots.plain();
                         });
                     },
-                    site: /* @ngInject */ function ($stateParams, SiteManager) {
-                        return SiteManager.one($stateParams.siteId).get().then(function (site) {
-                            return site.plain();
-                        });
+                    site: /* @ngInject */ function ($stateParams, SiteCache) {
+                        return SiteCache.getSiteById($stateParams.siteId);
                     }
                 },
                 ncyBreadcrumb: {
@@ -92,20 +90,16 @@
                         return null;
                     },
 
-                    site: /* @ngInject */ function ($stateParams, SiteManager) {
+                    site: /* @ngInject */ function ($stateParams, SiteCache) {
                         if (!$stateParams.siteId) {
                             return null;
                         }
 
-                        return SiteManager.one($stateParams.siteId).get().then(function (site) {
-                            return site.plain();
-                        });
+                        return SiteCache.getSiteById($stateParams.siteId);
                     },
 
-                    siteList: /* @ngInject */ function(SiteManager) {
-                        return SiteManager.getList().then(function (sites) {
-                            return sites.plain();
-                        });
+                    siteList: /* @ngInject */ function(SiteCache) {
+                        return SiteCache.getAllSites();
                     }
                 },
                 customResolve: {

@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title">Sites for ad network : <strong>{{ adNetwork.name }}</strong></h4>
+    <h4 class="modal-title">{{ 'AD_NETWORK_MODULE.SITES_FOR_AD_NETWORK' | translate }} : <strong>{{ adNetwork.name }}</strong></h4>
 </div>
 <div class="modal-body">
 
@@ -9,19 +9,19 @@
             <tbody>
             <tr>
                 <td at-title="#" at-implicit at-sortable at-attribute="site.id" at-initial-sorting="asc"></td>
-                <td at-title="Actions">
+                <td at-title="{{ 'ACTIONS' | translate }}">
                     <div class="btn-group" dropdown>
-                        <button type="button" class="btn" dropdown-toggle> Actions <span class="caret"></span> </button>
+                        <button type="button" class="btn" dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                         <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                            <li ng-if="item.pausedAdTagsCount > 0"><a ng-click="toggleStatus(item, true)">Activate Ad Tags</a></li>
-                            <li ng-if="item.activeAdTagsCount > 0"><a ng-click="toggleStatus(item, false)">Pause Ad Tags</a></li>
+                            <li ng-if="item.pausedAdTagsCount > 0"><a ng-click="toggleStatus(item, true)">{{ 'AD_NETWORK_MODULE.DROPDOWN_ACTIVE' | translate }}</a></li>
+                            <li ng-if="item.activeAdTagsCount > 0"><a ng-click="toggleStatus(item, false)">{{ 'AD_NETWORK_MODULE.DROPDOWN_PAUSE' | translate }}</a></li>
                         </ul>
                     </div>
                 </td>
-                <td at-title="Site Name" at-sortable at-implicit at-attribute="site.name"></td>
-                <td at-title="Domain" at-sortable at-implicit at-attribute="site.domain"></td>
-                <td at-implicit at-sortable at-attribute="activeAdTagsCount" at-title="Active Ad Tags"></td>
-                <td at-implicit at-sortable at-attribute="pausedAdTagsCount" at-title="Paused Ad Tags"></td>
+                <td at-title="{{ 'SITE' | translate }}" at-sortable at-implicit at-attribute="site.name"></td>
+                <td at-title="{{ 'SITE_MODULE.DOMAIN' | translate }}" at-sortable at-implicit at-attribute="site.domain"></td>
+                <td at-implicit at-sortable at-attribute="activeAdTagsCount" at-title="{{ 'AD_NETWORK_MODULE.ACTIVE_AD_TAGS_COUNT' | translate }}"></td>
+                <td at-implicit at-sortable at-attribute="pausedAdTagsCount" at-title="{{ 'AD_NETWORK_MODULE.PAUSE_AD_TAGS_COUNT' | translate }}"></td>
             </tr>
             </tbody>
         </table>
@@ -31,5 +31,5 @@
 </div>
 
 <div class="modal-footer">
-    <button class="btn btn-default" ng-click="$close()">Close</button>
+    <button class="btn btn-default" ng-click="$close()">{{ 'CLOSE' | translate }}</button>
 </div>

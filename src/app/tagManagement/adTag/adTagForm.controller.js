@@ -6,7 +6,7 @@
     ;
 
     function AdTagForm(
-        $scope, $state, $stateParams, SiteManager, AdTagManager, AlertService, ServerErrorProcessor, historyStorage, AdTagLibrariesManager, adTag, adSlot, site, publisher, publisherList, siteList, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, HISTORY_TYPE_PATH
+        $scope, $state, $translate, $stateParams, SiteManager, AdTagManager, AlertService, ServerErrorProcessor, historyStorage, AdTagLibrariesManager, adTag, adSlot, site, publisher, publisherList, siteList, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, HISTORY_TYPE_PATH
         ) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
@@ -34,6 +34,14 @@
         $scope.selected = {
             publisher: publisher,
             site: site
+        };
+
+        //Infinite Scroll Magic
+        $scope.infiniteScroll = {
+            numToAddSite: 20,
+            currentSites: 20,
+            numToAddAdNetwork: 20,
+            currentAdNetworks: 20
         };
 
         $scope.adSlotTypes = TYPE_AD_SLOT;
@@ -140,6 +148,9 @@
         $scope.selectPublisher = function (publisher, publisherId) {
             $scope.selected.site = null;
             $scope.resetSelection();
+
+            $scope.resetInfiniteScrollSite();
+            $scope.resetInfiniteScrollAdNetwork();
         };
 
         /**
@@ -251,7 +262,7 @@
                     function () {
                         AlertService.addFlash({
                             type: 'success',
-                            message: 'The ad tag has been ' + ($scope.isNew ? 'created' : 'updated')
+                            message: $scope.isNew ? $translate.instant('AD_TAG_MODULE.ADD_NEW_SUCCESS') : $translate.instant('AD_TAG_MODULE.UPDATE_SUCCESS')
                         });
                     }
                 )
@@ -289,5 +300,23 @@
                 )
             ;
         };
+
+        $scope.addMoreSites = function(){
+            $scope.infiniteScroll.currentSites += $scope.infiniteScroll.numToAddSite;
+        };
+
+        $scope.addMoreAdNetworks = function(){
+            $scope.infiniteScroll.currentAdNetworks += $scope.infiniteScroll.numToAddAdNetwork;
+        };
+
+        $scope.resetInfiniteScrollSite = function() {
+            $scope.infiniteScroll.numToAddSite = 20;
+            $scope.infiniteScroll.currentSites = 20;
+        };
+
+        $scope.resetInfiniteScrollAdNetwork = function() {
+            $scope.infiniteScroll.numToAddAdNetwork = 20;
+            $scope.infiniteScroll.currentAdNetworks = 20;
+        }
     }
 })();

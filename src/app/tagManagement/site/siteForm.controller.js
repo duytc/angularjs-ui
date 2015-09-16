@@ -5,7 +5,7 @@
         .controller('SiteForm', SiteForm)
     ;
 
-    function SiteForm($scope, $filter, SiteManager, AlertService, ServerErrorProcessor, site, publishers, channels, userSession, historyStorage, HISTORY_TYPE_PATH) {
+    function SiteForm($scope, $translate, $filter, SiteCache, AlertService, ServerErrorProcessor, site, publishers, channels, userSession, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             domain: 'Domain'
@@ -20,15 +20,30 @@
         $scope.channels = !$scope.isAdmin() ? channels : [];
 
         $scope.selectPublisher = selectPublisher;
-        $scope.isEnabledAnalytics = isEnabledAnalytics;
+        $scope.isEnabledModule = isEnabledModule;
         $scope.isFormValid = isFormValid;
         $scope.backToListSite = backToListSite;
+        $scope.toggleVideoPlayer =  toggleVideoPlayer;
+        $scope.hasVideoPlayer =  hasVideoPlayer;
+        $scope.submit =  submit;
 
         $scope.site = site || {
             name: null,
             domain: null,
+            players: [],
             channelSites: []
         };
+
+        $scope.videoPlayers = [
+            { label: '5min', name: '5min'},
+            { label: 'Defy', name: 'defy' },
+            { label: 'JwPlayer5', name: 'jwplayer5' },
+            { label: 'JwPlayer6', name: 'jwplayer6' },
+            { label: 'Limelight', name: 'limelight' },
+            { label: 'Ooyala', name: 'ooyala' },
+            { label: 'Scripps', name: 'scripps' },
+            { label: 'ULive', name: 'ulive' }
+        ];
 
         $scope.data = {
           channels: []
@@ -45,23 +60,41 @@
             enabledModules = publisher.enabledModules
         }
 
-        function isEnabledAnalytics() {
+        function isEnabledModule(module) {
             if(!$scope.isAdmin()) {
                 enabledModules = userSession.enabledModules
             }
 
             if($scope.isNew) {
-                return enabledModules != null ? enabledModules.indexOf('MODULE_ANALYTICS') > -1 : false;
+                return enabledModules != null ? enabledModules.indexOf(module) > -1 : false;
             }
 
-            return $scope.site.publisher != null ? $scope.site.publisher.enabledModules : false;
+            return $scope.site.publisher != null ? $scope.site.publisher.enabledModules.indexOf(module) : false;
         }
 
         function backToListSite() {
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.site, '^.list');
         }
 
-        $scope.submit = function() {
+        function hasVideoPlayer(player) {
+            if(!$scope.site.players) {
+                return false;
+            }
+
+            return $scope.site.players.indexOf(player) > -1;
+        }
+
+        function toggleVideoPlayer(player) {
+            var idx = $scope.site.players.indexOf(player);
+
+            if (idx > -1) {
+                $scope.site.players.splice(idx, 1);
+            } else {
+                $scope.site.players.push(player);
+            }
+        }
+
+        function submit() {
             if ($scope.formProcessing) {
                 // already running, prevent duplicates
                 return;
@@ -78,7 +111,7 @@
                 delete $scope.site.channels;
             }
 
-            var saveSite = $scope.isNew ? SiteManager.post($scope.site) : $scope.site.patch();
+            var saveSite = $scope.isNew ? SiteCache.postSite($scope.site) : SiteCache.patchSite($scope.site);
 
             saveSite
                 .catch(
@@ -93,7 +126,7 @@
                     function () {
                         AlertService.addFlash({
                             type: 'success',
-                            message: 'The site has been ' + ($scope.isNew ? 'created' : 'updated')
+                            message: $scope.isNew ? $translate.instant('SITE_MODULE.ADD_NEW_SUCCESS') : $translate.instant('SITE_MODULE.UPDATE_SUCCESS')
                         });
                     }
                 )
@@ -103,6 +136,6 @@
                     }
                 )
             ;
-        };
+        }
     }
 })();

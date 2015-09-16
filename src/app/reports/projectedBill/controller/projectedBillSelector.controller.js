@@ -5,7 +5,7 @@
         .controller('ProjectedBillSelector', ProjectedBillSelector)
     ;
 
-    function ProjectedBillSelector($scope, $q, $state, _, Auth, UserStateHelper, AlertService, projectedBillService, ReportParams, REPORT_TYPES, selectorFormCalculator) {
+    function ProjectedBillSelector($scope, $translate, $q, $state, _, Auth, UserStateHelper, AlertService, projectedBillService, ReportParams, REPORT_TYPES, selectorFormCalculator) {
         var toState;
         var isAdmin = Auth.isAdmin();
         $scope.isAdmin = isAdmin;
@@ -159,7 +159,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'An error occurred trying to request the report'
+                        message: $translate.instant('REPORT.REPORT_FAIL')
                     });
                 })
             ;

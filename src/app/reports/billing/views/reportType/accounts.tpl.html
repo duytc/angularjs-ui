@@ -3,7 +3,7 @@
 
     <div class="panel panel-default daily-reports">
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
-            Daily Account Breakdown
+            {{ 'REPORT.DAILY_ACCOUNT_BREAKDOWN' | translate }}
             <div class="button-bar">
                 <export-excel data="reports" fields="['startDate', 'endDate', 'name', 'slotOpportunities', 'billedAmount']" header="['Start Date', 'End Date', 'Publisher','Slot Opportunities', 'Billed Amount ($)']" file-name="getExportExcelFileName"></export-excel>
             </div>
@@ -13,19 +13,19 @@
                 <thead></thead>
                 <tbody>
                 <tr ng-click="drillDownReport(params.endDate ? reportStates.account : reportStates.sites, item)">
-                    <td at-title="Start Date" at-attribute="startDate">
+                    <td at-title="{{ 'REPORT.START_DATE' | translate }}" at-attribute="startDate">
                         {{ item.startDate | date }}
                     </td>
-                    <td at-title="End Date" at-attribute="endDate">
+                    <td at-title="{{ 'REPORT.END_DATE' | translate }}" at-attribute="endDate">
                         {{ item.endDate | date }}
                     </td>
-                    <td class="name" at-title="Publisher" at-attribute="name" at-sortable>
+                    <td class="{{ 'NAME' | translate }}" at-title="Publisher" at-attribute="name" at-sortable>
                         {{ item.name }}
                     </td>
-                    <td at-title="Slot Opportunities" at-attribute="slotOpportunities" at-sortable at-initial-sorting="desc">
+                    <td at-title="{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}" at-attribute="slotOpportunities" at-sortable at-initial-sorting="desc">
                         {{ item.slotOpportunities | number }}
                     </td>
-                    <td at-title="Billed Amount" at-attribute="billedAmount" at-sortable>
+                    <td at-title="{{ 'REPORT.BILLED_AMOUNT' | translate }}" at-attribute="billedAmount" at-sortable>
                         {{ item.billedAmount | currency }}
                     </td>
                 </tr>

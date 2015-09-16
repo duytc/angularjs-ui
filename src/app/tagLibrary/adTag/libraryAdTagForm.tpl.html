@@ -5,13 +5,13 @@
         <div class="button-bar">
             <button ng-if="!isNew" ng-click="backToAdTagLibraryList()" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-arrow-left"></span>
-                Back to Ad Tag List
+                {{ 'AD_TAG_MODULE.BACK_TO_AD_TAG_LIST' | translate }}
             </button>
         </div>
         <div class="btn-group btnGrouped" dropdown ng-if="!isNew">
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ng-click="backToAdTagLibraryList()">Back to Ad Tag List</a></li>
+                <li><a ng-click="backToAdTagLibraryList()">{{ 'AD_TAG_MODULE.BACK_TO_AD_TAG_LIST' | translate }}</a></li>
             </ul>
         </div>
     </div>
@@ -19,14 +19,14 @@
         <div class="row">
             <form name="adTagLibraryForm" class="col-lg-6 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
                 <div class="form-group" ng-if="isAdmin() && !isNew">
-                    <label class="col-sm-2 control-label">Publisher</label>
+                    <label class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
                     <div class="col-sm-10 form-control-static">
                         {{ selected.publisher.company }}
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="isAdmin() && isNew">
-                    <label for="inputPublisher" class="col-sm-2 control-label">Publisher</label>
+                    <label for="inputPublisher" class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
                     <div class="col-sm-10">
                         <ui-select id="inputPublisher" ng-model="selected.publisher" on-select="selectPublisher()" reset-search-input="'false'">
                             <ui-select-match placeholder="Select a publisher">{{ $select.selected.company }}</ui-select-match>
@@ -38,11 +38,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="inputAdNetwork" class="col-sm-2 control-label">Ad Network</label>
+                    <label for="inputAdNetwork" class="col-sm-2 control-label">{{ 'AD_NETWORK' | translate }}</label>
                     <div class="col-sm-10">
                         <ui-select name="adNetwork" ng-model="adTag.adNetwork" id="inputAdNetwork" ng-disabled="isAdmin() && !selected.publisher" ng-required="true" server-error reset-search-input="'false'">
-                            <ui-select-match placeholder="Select an ad network">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices repeat="adNetwork.id as adNetwork in adNetworkList | filter: { name:$select.search } | selectedPublisher:selected.publisher">
+                            <ui-select-match placeholder="{{ 'AD_NETWORK_MODULE.SELECT_A_AD_NETWORK' | translate }}">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices infinite-scroll="addMoreAdNetworks()" class="content" infinite-scroll-container="'.content'" infinite-scroll-distance="2" repeat="adNetwork.id as adNetwork in adNetworkList | filter: { name:$select.search } | selectedPublisher:selected.publisher | limitTo:infiniteScroll.currentAdNetworks">
                                 {{ adNetwork.name }}
                             </ui-select-choices>
                         </ui-select>
@@ -50,58 +50,58 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="inputName" class="col-sm-2 control-label">Name</label>
+                    <label for="inputName" class="col-sm-2 control-label">{{ 'NAME' | translate }}</label>
                     <div class="col-sm-10">
-                        <input name="name" ng-model="adTag.name" server-error ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="Ad tag name">
+                        <input name="name" ng-model="adTag.name" server-error ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="{{ 'AD_TAG_MODULE.AD_TAG_NAME' | translate }}">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">Ad Type</label>
+                    <label class="col-sm-2 control-label">{{ 'AD_TAG_MODULE.AD_TYPE' | translate }}</label>
                     <div class="col-sm-10">
-                        <label class="ui-radio"><input ng-model="adTag.adType" type="radio" ng-value="adTypes.customAd"><span>Custom Ad</span></label>
-                        <label class="ui-radio"><input ng-model="adTag.adType" type="radio" ng-value="adTypes.imageAd"><span>Image Ad</span></label>
+                        <label class="ui-radio"><input ng-model="adTag.adType" type="radio" ng-value="adTypes.customAd"><span>{{ 'AD_TAG_MODULE.CUSTOM_AD' | translate }}</span></label>
+                        <label class="ui-radio"><input ng-model="adTag.adType" type="radio" ng-value="adTypes.imageAd"><span>{{ 'AD_TAG_MODULE.IMAGE_AD' | translate }}</span></label>
                     </div>
                 </div>
 
                 <!--ad type html-->
                 <div class="form-group" ng-if="adTag.adType == adTypes.customAd">
-                    <label for="inputHtml" class="col-sm-2 control-label">Html</label>
+                    <label for="inputHtml" class="col-sm-2 control-label">{{ 'AD_TAG_MODULE.HTML' | translate }}</label>
                     <div class="col-sm-10">
                         <ui-codemirror ng-required="true" id="inputHtml" ng-model="adTag.html" ui-codemirror-opts="editorOptions"></ui-codemirror>
-                        <span class="help-block">You can use the following macros in your ad tag:<br/>
-                        <strong>${CACHEBUSTER}</strong>: A unique code that ensures URLs are unique<br/>
-                        <strong>${PAGEURL}</strong>: The url of the current page<br/>
-                        <strong>${DOMAIN}</strong>: The domain of the current website</span>
+                        <span class="help-block">{{ 'AD_TAG_MODULE.HELP_BLOCK_HTML' | translate }}:<br/>
+                        <strong>${CACHEBUSTER}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_CACHE_BUSTER' | translate }}<br/>
+                        <strong>${PAGEURL}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_PAGE_URL' | translate }}<br/>
+                        <strong>${DOMAIN}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_DOMAIN' | translate }}</span>
                     </div>
                 </div>
 
                 <!--ad type images-->
                 <div ng-if="adTag.adType == adTypes.imageAd">
                     <div class="form-group">
-                        <label for="inputImageUrl" class="col-sm-2 control-label">Image Url</label>
+                        <label for="inputImageUrl" class="col-sm-2 control-label">{{ 'AD_TAG_MODULE.IMAGE_URL' | translate }}</label>
                         <div class="col-sm-10">
-                            <input name="name" ng-model="adTag.descriptor.imageUrl" server-error ng-required="true" ng-minlength="2" type="url" class="form-control" id="inputImageUrl" placeholder="Image Url">
+                            <input name="name" ng-model="adTag.descriptor.imageUrl" server-error ng-required="true" ng-minlength="2" type="url" class="form-control" id="inputImageUrl" placeholder="{{ 'AD_TAG_MODULE.IMAGE_URL' | translate }}">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="inputTargetUrl" class="col-sm-2 control-label">Target Url</label>
+                        <label for="inputTargetUrl" class="col-sm-2 control-label">{{ 'AD_TAG_MODULE.TARGET_URL' | translate }}</label>
                         <div class="col-sm-10">
-                            <input name="name" ng-model="adTag.descriptor.targetUrl" server-error ng-required="true" ng-minlength="2" type="url" class="form-control" id="inputTargetUrl" placeholder="Target Url">
-                            <span class="help-block">You can use the following macros in your target url:<br/>
-                            <strong>${CACHEBUSTER}</strong>: A unique code that ensures URLs are unique<br/>
-                            <strong>${PAGEURL}</strong>: The url of the current page<br/>
-                            <strong>${DOMAIN}</strong>: The domain of the current website</span>
+                            <input name="name" ng-model="adTag.descriptor.targetUrl" server-error ng-required="true" ng-minlength="2" type="url" class="form-control" id="inputTargetUrl" placeholder="{{ 'AD_TAG_MODULE.TARGET_URL' | translate }}">
+                            <span class="help-block">{{ 'AD_TAG_MODULE.HELP_BLOCK_TARGET_URL' | translate }}:<br/>
+                            <strong>${CACHEBUSTER}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_CACHE_BUSTER' | translate }}<br/>
+                            <strong>${PAGEURL}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_PAGE_URL' | translate }}<br/>
+                            <strong>${DOMAIN}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_DOMAIN' | translate }}</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">Submit</button>
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">
-                            <p>Submit button will be active only when all fields are valid.</p>
+                            <p>{{ 'VALID_FORM' | translate }}</p>
                         </div>
                     </div>
                 </div>

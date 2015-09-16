@@ -5,7 +5,7 @@
         .controller('ProjectedBill', ProjectedBill)
     ;
 
-    function ProjectedBill($scope, _,  AlertService, reportGroup, DateFormatter) {
+    function ProjectedBill($scope, $translate,  AlertService, reportGroup, DateFormatter) {
         $scope.hasResult = reportGroup !== false;
 
         reportGroup = reportGroup || {};
@@ -27,7 +27,7 @@
             if (!$scope.hasResult) {
                 AlertService.replaceAlerts({
                     type: 'warning',
-                    message: 'There are no reports for that selection'
+                    message: $translate.instant('REPORT.REPORTS_EMPTY')
                 });
             }
         }

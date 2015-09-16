@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="$dismiss()">×</button>
-    <h4 class="modal-title">Ad Tag Info</h4>
+    <h4 class="modal-title">{{ 'PERFORMANCE_REPORT_MODULE.TITLE_AD_TAG_INFO' | translate }}</h4>
 </div>
 <div class="modal-body">
     <div class="table-responsive">
@@ -8,12 +8,12 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>Ad Tag</th>
-                <th>Ad Slot</th>
-                <th>Site</th>
-                <th ng-show="isAdmin">Publisher</th>
-                <th ng-show="relativeEntityData.adSlot.type == 'display'">Position</th>
-                <th>Status</th>
+                <th>{{ 'AD_TAG' | translate }}</th>
+                <th>{{ 'AD_SLOT' | translate }}</th>
+                <th>{{ 'SITE' | translate }}</th>
+                <th ng-show="isAdmin">{{ 'PUBLISHER' | translate }}</th>
+                <th ng-show="relativeEntityData.adSlot.type == 'display'">{{ 'AD_TAG_MODULE.POSITION' | translate }}</th>
+                <th>{{ 'AD_TAG_MODULE.STATUS' | translate }}</th>
             </tr>
             </thead>
             <tbody>
@@ -31,6 +31,6 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="$dismiss(); goToEditPage('tagManagement.adTag.edit', relativeEntityData.id)">Edit This AdTag</button>
+    <button class="btn btn-primary" ng-click="$dismiss(); goToEditPage('tagManagement.adTag.edit', relativeEntityData.id)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_THIS_AD_TAG' | translate }}</button>
     <!--<button class="btn btn-primary" ng-click="openUpdateCpm(updateCpmTypes.adTag)">Update CPM</button>-->
 </div>

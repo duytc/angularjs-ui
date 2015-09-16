@@ -5,13 +5,13 @@
         <div class="button-bar">
             <button ng-if="!isNew" ng-click="backToListAdSlot()" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-arrow-left"></span>
-                Back to Ad Slot List
+                {{ 'AD_SLOT_MODULE.BACK_TO_AD_SLOT_LIST' | translate }}
             </button>
         </div>
         <div class="btn-group btnGrouped" dropdown ng-if="!isNew">
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ng-click="backToListAdSlot()">Back to Ad Slot List</a></li>
+                <li><a ng-click="backToListAdSlot()">{{ 'AD_SLOT_MODULE.BACK_TO_AD_SLOT_LIST' | translate }}</a></li>
             </ul>
         </div>
     </div>
@@ -19,10 +19,10 @@
         <div class="row">
             <form name="adSlotForm" class="col-lg-12 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
                 <div class="form-group" ng-if="isNew">
-                    <label class="col-sm-1 control-label">Type</label>
+                    <label class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.TYPE' | translate }}</label>
                     <div class="col-sm-5">
                         <ui-select ng-model="selected.type" on-select="selectType($model)" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select a type">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_TYPE' | translate }}">{{ $select.selected.label }}</ui-select-match>
                             <ui-select-choices repeat="type.key as type in adSlotTypeOptions">
                                 {{ type.label }}
                             </ui-select-choices>
@@ -31,23 +31,23 @@
                 </div>
 
                 <div class="form-group" ng-if="isAdmin() && !allowSiteSelection">
-                    <label class="col-sm-1 control-label">Publisher</label>
+                    <label class="col-sm-1 control-label">{{ 'PUBLISHER' | translate }}</label>
                     <div class="col-sm-5 form-control-static">
                         {{ adSlot.site.publisher.company }}
                     </div>
                 </div>
                 <div class="form-group" ng-if="!allowSiteSelection">
-                    <label class="col-sm-1 control-label">Site</label>
+                    <label class="col-sm-1 control-label">{{ 'SITE' | translate }}</label>
                     <div class="col-sm-5 form-control-static">
                         {{ adSlot.site.name }}
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="isAdmin() && allowSiteSelection">
-                    <label for="inputPublisher" class="col-sm-1 control-label">Publisher</label>
+                    <label for="inputPublisher" class="col-sm-1 control-label">{{ 'PUBLISHER' | translate }}</label>
                     <div class="col-sm-5">
                         <ui-select id="inputPublisher" ng-model="selected.publisher" on-select="selectPublisher($item, $model)" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select a publisher">{{ $select.selected.company }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
                             <ui-select-choices repeat="publisher.id as publisher in publisherList | filter: { company: $select.search }">
                                 {{ publisher.company }}
                             </ui-select-choices>
@@ -55,11 +55,11 @@
                     </div>
                 </div>
                 <div class="form-group" ng-if="allowSiteSelection">
-                    <label for="inputSite" class="col-sm-1 control-label">Site</label>
+                    <label for="inputSite" class="col-sm-1 control-label">{{ 'SITE' | translate }}</label>
                     <div class="col-sm-5">
                         <ui-select name="site" id="inputSite" ng-model="adSlot.site" ng-disabled="isAdmin() && !selected.publisher" ng-required="true" server-error on-select="selectSite($model)" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select a site...">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices repeat="site.id as site in siteList | filter:{name: $select.search} | selectedPublisher:selected.publisher">
+                            <ui-select-match placeholder="{{ 'SITE_MODULE.SELECT_A_SITE' | translate }}">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices infinite-scroll="addMoreSites()" class="content" infinite-scroll-container="'.content'" infinite-scroll-distance="2" repeat="site.id as site in siteList | filter:{name: $select.search} | selectedPublisher:selected.publisher | limitTo:infiniteScroll.currentSites">
                                 {{ site.name }}
                             </ui-select-choices>
                         </ui-select>
@@ -67,7 +67,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="inputPickFromLibrary" class="col-sm-1 control-label">From Library</label>
+                    <label for="inputPickFromLibrary" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.FROM_LIBRARY' | translate }}</label>
                     <div class="col-sm-5">
                         <div>
                             <label class="ui-checkbox">
@@ -75,11 +75,11 @@
                                 <span></span>
                             </label>
                         </div>
-                        <span class="help-block">You can select an existing ad slot from your library. If you choose this option, all of the fields below will not be editable. If you would like to change these fields, you may do so the the Tag Library section.</span>
+                        <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_FROM_LIBRARY' | translate }}</span>
                     </div>
                 </div>
                 <div class="form-group" ng-if="pickFromLibrary">
-                    <label for="inputAdSlotLibrary" class="col-sm-1 control-label">Library Ad Slot</label>
+                    <label for="inputAdSlotLibrary" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.LIBRARY_AD_SLOT' | translate }}</label>
                     <div class="col-sm-5">
                         <ui-select name="adSlotLibrary" ng-model="selected.adSlotLibrary" id="inputAdSlotLibrary" ng-required="true" server-error ng-disabled="!selected.publisher && isAdmin()" on-select="selectAdSlotLibrary($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select an ad slot from library">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
@@ -91,49 +91,49 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="inputName" class="col-sm-1 control-label">Name</label>
+                    <label for="inputName" class="col-sm-1 control-label">{{ 'NAME' | translate }}</label>
                     <div class="col-sm-5">
-                        <input ng-disabled="pickFromLibrary" server-error name="name" ng-model="adSlot.libraryAdSlot.name" ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="Ad slot name">
+                        <input ng-disabled="pickFromLibrary" server-error name="name" ng-model="adSlot.libraryAdSlot.name" ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="{{ 'AD_SLOT_MODULE.PLACEHOLDER_AD_SLOT_NAME' | translate }}">
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="showForDynamicAdSlot()">
-                    <label for="inputNative" class="col-sm-1 control-label">Native</label>
+                    <label for="inputNative" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.NATIVE' | translate }}</label>
                     <div class="col-sm-5">
                         <label class="ui-checkbox"><input ng-disabled="!isNew || pickFromLibrary" ng-click="checkNative()" server-error name="native" type="checkbox" ng-model="adSlot.libraryAdSlot.native" id="inputNative"><span></span></label>
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="showForDynamicAdSlot()">
-                    <label for="inputDefaultAdSlot" class="col-sm-1 control-label">Default Ad Slot</label>
+                    <label for="inputDefaultAdSlot" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.DEFAULT_AD_LOT' | translate }}</label>
                     <div class="col-sm-5">
                         <ui-select id="inputDefaultAdSlot" ng-model="adSlot.defaultAdSlot" ng-required="true" server-error on-select="selectDefaultAdSlot($item)" reset-search-input="'false'" ng-disabled="!adSlot.site || pickFromLibrary">
-                            <ui-select-match placeholder="Select an ad slot">{{ $select.selected.libraryAdSlot.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_AD_SLOT' | translate }}">{{ $select.selected.libraryAdSlot.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="adSlot.id as adSlot in adSlotsDefault | filter:$select.search | filter:filterEntityType:adSlot">
                                 {{ adSlot.libraryAdSlot.name }} {{ adSlot.id ? '(ID: ' + adSlot.id + ')' : '' }}
                             </ui-select-choices>
                         </ui-select>
 
-                        <span class="help-block">If no default ad slot is selected and no expressions match, the ad slot will not be shown on the page.</span>
+                        <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_DEFAULT_AD_SLOT' | translate }}</span>
 
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="showForDisplayAdSlot()">
-                    <label for="inputWidth" class="col-sm-1 control-label">Width</label>
+                    <label for="inputWidth" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.WIDTH' | translate }}</label>
                     <div class="col-sm-5">
-                        <input ng-disabled="pickFromLibrary" name="width" server-error  ng-model="adSlot.libraryAdSlot.width" ng-required="true" min="1" type="number" class="form-control" id="inputWidth" placeholder="Width">
+                        <input ng-disabled="pickFromLibrary" name="width" server-error  ng-model="adSlot.libraryAdSlot.width" ng-required="true" min="1" type="number" class="form-control" id="inputWidth" placeholder="{{ 'AD_SLOT_MODULE.WIDTH' | translate }}">
                     </div>
                 </div>
                 <div class="form-group" ng-if="showForDisplayAdSlot()">
-                    <label for="inputWidth" class="col-sm-1 control-label">Height</label>
+                    <label for="inputWidth" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.HEIGHT' | translate }}</label>
                     <div class="col-sm-5">
-                        <input ng-disabled="pickFromLibrary" server-error name="height" ng-model="adSlot.libraryAdSlot.height" ng-required="true" min="1" type="number" class="form-control" id="inputHeight" placeholder="Height">
+                        <input ng-disabled="pickFromLibrary" server-error name="height" ng-model="adSlot.libraryAdSlot.height" ng-required="true" min="1" type="number" class="form-control" id="inputHeight" placeholder="{{ 'AD_SLOT_MODULE.HEIGHT' | translate }}">
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="showForDynamicAdSlot()">
-                    <label class="col-sm-1 control-label">Expression Builder</label>
+                    <label class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.EXPRESSION_BUILDER' | translate }}</label>
                     <div class="col-sm-11">
                         <div class="expressions-group">
                             <query-builder expressions="adSlot.libraryAdSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.libraryAdSlot.native" disabled-directive="pickFromLibrary"></query-builder>
@@ -143,9 +143,9 @@
 
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-5">
-                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">Submit</button>
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">
-                            <p>Submit button will be active only when all fields are valid.</p>
+                            <p>{{ 'VALID_FORM' | translate }}</p>
                         </div>
                     </div>
                 </div>

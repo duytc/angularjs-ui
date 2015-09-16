@@ -5,7 +5,7 @@
         .controller('AdSlotForm', AdSlotForm)
     ;
 
-    function AdSlotForm($scope, $filter, $stateParams, $q, _, AdSlotLibrariesManager, DynamicAdSlotManager, historyStorage, SiteManager, adSlotService, AlertService, ServerErrorProcessor, site, publisherList, siteList, adSlot, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
+    function AdSlotForm($scope, $translate, $filter, $stateParams, $q, _, AdSlotLibrariesManager, DynamicAdSlotManager, historyStorage, SiteManager, adSlotService, AlertService, ServerErrorProcessor, site, publisherList, siteList, adSlot, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
         $scope.fieldNameTranslations = {
             site: 'Site',
             name: 'Name',
@@ -17,15 +17,15 @@
         $scope.adSlotTypes = TYPE_AD_SLOT;
         $scope.adSlotTypeOptions = [
             {
-            label: 'Display Ad Slot',
+            label: $translate.instant('DISPLAY_AD_SLOTS'),
             key: TYPE_AD_SLOT.display
             },
             {
-                label: 'Native Ad Slot',
+                label: $translate.instant('NATIVE_AD_SLOTS'),
                 key: TYPE_AD_SLOT.native
             },
             {
-                label: 'Dynamic Ad Slot',
+                label: $translate.instant('DYNAMIC_AD_SLOTS'),
                 key: TYPE_AD_SLOT.dynamic
             }
         ];
@@ -39,6 +39,12 @@
             publisher: site && site.publisher,
             type:  $scope.adSlotTypes.display,
             adSlotLibrary: null
+        };
+
+        //Infinite Scroll Magic
+        $scope.infiniteScroll = {
+            numToAddSite: 20,
+            currentSites: 20
         };
 
         $scope.publisherList = publisherList;
@@ -69,6 +75,8 @@
         $scope.groupEntities = groupEntities;
         $scope.filterEntityType = filterEntityType;
         $scope.selectDefaultAdSlot = selectDefaultAdSlot;
+        $scope.resetInfiniteScrollSite = resetInfiniteScrollSite;
+        $scope.addMoreSites = addMoreSites;
 
         $scope.adSlotsDefault = [{id: null, libraryAdSlot: {
             name: 'None'
@@ -106,6 +114,8 @@
 
         function selectPublisher(publisher, publisherId) {
             $scope.adSlot.site = null;
+
+            $scope.resetInfiniteScrollSite();
         }
 
         function isFormValid() {
@@ -161,13 +171,13 @@
                     function () {
                         AlertService.addFlash({
                             type: 'success',
-                            message: 'The ad slot has been ' + ($scope.isNew ? 'created' : 'updated')
+                            message: $scope.isNew ? $translate.instant('AD_SLOT_MODULE.ADD_NEW_SUCCESS') : $translate.instant('AD_SLOT_MODULE.UPDATE_SUCCESS')
                         });
                     },
                     function () {
                         AlertService.replaceAlerts({
                             type: 'error',
-                            message: 'An error occurred. The ad slot could not be ' + ($scope.isNew ? 'created' : 'updated')
+                            message: $scope.isNew ? $translate.instant('AD_SLOT_MODULE.ADD_NEW_FAIL') : $translate.instant('AD_SLOT_MODULE.UPDATE_FAIL')
                         });
 
                         return $q.reject();
@@ -285,7 +295,19 @@
                 return _setLibraryAdSLot(adSlotLibrary)
             }
 
+            // reset form
+            $scope.adSlot.libraryAdSlot = {};
+            $scope.adSlot.defaultAdSlot = null;
             angular.extend($scope.adSlot.libraryAdSlot, adSlotLibrary);
+        }
+
+        function addMoreSites(){
+            $scope.infiniteScroll.currentSites += $scope.infiniteScroll.numToAddSite;
+        }
+
+        function resetInfiniteScrollSite() {
+            $scope.infiniteScroll.numToAddSite = 20;
+            $scope.infiniteScroll.currentSites = 20;
         }
 
         /**
@@ -430,7 +452,7 @@
 
                 if($scope.adSlot.type == $scope.adSlotTypes.dynamic) {
                     $scope.selected.type = $scope.adSlotTypes.dynamic;
-                    _getAdSlots($scope.adSlot.site.id);
+                    //_getAdSlots($scope.adSlot.site.id);
 
                     if($scope.pickFromLibrary) {
                         _setExpressions($scope.adSlot)

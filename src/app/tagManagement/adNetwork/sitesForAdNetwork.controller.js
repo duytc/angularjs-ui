@@ -6,7 +6,7 @@
         .controller('SitesForAdNetwork', SitesForAdNetwork)
     ;
 
-    function SitesForAdNetwork($scope, $q, $modal, $state, sites, adNetwork, AdNetworkManager, $modalInstance, historyStorage, HISTORY_TYPE_PATH) {
+    function SitesForAdNetwork($scope, $q, $modal, $state, sites, adNetwork, AdNetworkManager, AdNetworkCache, $modalInstance, historyStorage, HISTORY_TYPE_PATH) {
         $scope.sites = sites;
         $scope.adNetwork = adNetwork;
 
@@ -50,6 +50,7 @@
                                     $scope.sites = sites = siteList.plain();
                                 });
 
+                            AdNetworkCache.removeCacheAdNetwork();
                             historyStorage.getLocationPath(HISTORY_TYPE_PATH.adNetwork, $state.current);
                         });
                 });

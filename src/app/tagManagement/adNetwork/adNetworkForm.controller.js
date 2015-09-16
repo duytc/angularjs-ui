@@ -5,7 +5,7 @@
         .controller('AdNetworkForm', AdNetworkForm)
     ;
 
-    function AdNetworkForm($scope, AdNetworkManager, AlertService, ServerErrorProcessor, adNetwork, publishers, historyStorage, HISTORY_TYPE_PATH) {
+    function AdNetworkForm($scope, $translate, AdNetworkCache, AdNetworkManager, AlertService, ServerErrorProcessor, adNetwork, publishers, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             defaultCpmRate: 'Default CPM Rate',
@@ -15,7 +15,7 @@
         $scope.isNew = adNetwork === null;
         $scope.formProcessing = false;
 
-        $scope.allowPublisherSelection = $scope.isAdmin() && !!publishers;
+        $scope.allowPublisherSelection = $scope.isAdmin();
         $scope.publishers = publishers;
         $scope.backToListAdNetwork = backToListAdNetwork;
 
@@ -41,7 +41,7 @@
 
             $scope.formProcessing = true;
 
-            var saveAdNetwork = $scope.isNew ? AdNetworkManager.post($scope.adNetwork) : $scope.adNetwork.patch();
+            var saveAdNetwork = $scope.isNew ? AdNetworkCache.postAdNetwork($scope.adNetwork) : AdNetworkCache.patchAdNetwork($scope.adNetwork);
 
             saveAdNetwork
                 .catch(
@@ -56,7 +56,7 @@
                     function () {
                         AlertService.addFlash({
                             type: 'success',
-                            message: 'The ad network has been ' + ($scope.isNew ? 'created' : 'updated')
+                            message: $scope.isNew ? $translate.instant('AD_NETWORK_MODULE.ADD_NEW_SUCCESS') : $translate.instant('AD_NETWORK_MODULE.UPDATE_SUCCESS')
                         });
                     }
                 )

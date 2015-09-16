@@ -6,28 +6,28 @@
         <div class="button-bar">
             <label class="ui-checkbox">
                 <input type="checkbox" ng-checked="enableDragDrop" ng-click="enableDragDropAdTag(enableDragDrop)">
-                <span>Enable Drag/Drop</span>
+                <span>{{ 'AD_TAG_MODULE.ENABLE_DRAG_DROP' | translate }}</span>
             </label>
             <button ng-if="!!adSlot.libType" ui-sref="^.newForAdSlot({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
-                New Ad Tag
+                {{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}
             </button>
             <button ng-if="!adSlot.libType" ui-sref="^.new({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
-                New Ad Tag
+                {{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}
             </button>
             <button ng-click="backToListAdSlot()" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-arrow-left"></span>
-                Back to Ad Slot List
+                {{ 'AD_SLOT_MODULE.BACK_TO_AD_SLOT_LIST' | translate }}
             </button>
         </div>
         <div class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ng-click="enableDragDropAdTag(enableDragDrop)"><span class="fa" ng-class="enableDragDrop ? 'fa-check-square' : 'fa-square'"></span> Enable Drag/Drop</a></li>
-                <li ng-if="!!adSlot.libType"><a ui-sref="^.newForAdSlot({ adSlotId: adSlot.id, adSlotType: adSlotType })"> New Ad Tag</a></li>
-                <li ng-if="!adSlot.libType"><a ui-sref="^.new({ adSlotId: adSlot.id })">New Ad Tag</a></li>
-                <li><a ng-click="backToListAdSlot()">Back to Ad Slot List</a></li>
+                <li><a ng-click="enableDragDropAdTag(enableDragDrop)"><span class="fa" ng-class="enableDragDrop ? 'fa-check-square' : 'fa-square'"></span> {{ 'AD_TAG_MODULE.ENABLE_DRAG_DROP' | translate }}</a></li>
+                <li ng-if="!!adSlot.libType"><a ui-sref="^.newForAdSlot({ adSlotId: adSlot.id, adSlotType: adSlotType })"> {{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}</a></li>
+                <li ng-if="!adSlot.libType"><a ui-sref="^.new({ adSlotId: adSlot.id })">{{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}</a></li>
+                <li><a ng-click="backToListAdSlot()">{{ 'AD_SLOT_MODULE.BACK_TO_AD_SLOT_LIST' | translate }}</a></li>
             </ul>
         </div>
 
@@ -37,12 +37,12 @@
         <div class="row">
             <ul class="header-list-ad-tag item">
                 <li class="col-md-1">#</li>
-                <li class="col-md-2">Actions</li>
-                <li class="col-md-2">Name</li>
-                <li class="col-md-2">Rotation Weight</li>
-                <li class="col-md-2">Frequency Cap</li>
-                <li class="col-md-2">Status</li>
-                <li class="col-md-1">In Library</li>
+                <li class="col-md-2">{{ 'ACTIONS' | translate }}</li>
+                <li class="col-md-2">{{ 'NAME' | translate }}</li>
+                <li class="col-md-2">{{ 'AD_TAG_MODULE.ROTATION_WEIGHT' | translate }}</li>
+                <li class="col-md-2">{{ 'AD_TAG_MODULE.FREQUENCY_CAP' | translate }}</li>
+                <li class="col-md-2">{{ 'AD_TAG_MODULE.STATUS' | translate }}</li>
+                <li class="col-md-1">{{ 'AD_TAG_MODULE.IN_LIBRARY' | translate }}</li>
             </ul>
             <ul ui-sortable="sortableGroupOptions" ng-model="adTagsGroup">
                 <li class="group-ad-tag" ng-repeat="adTags in adTagsGroup" ng-class="{'moveable': !sortableGroupOptions['disabled']}">
@@ -52,17 +52,17 @@
                             <div class="col-md-1">{{ adTag.id }}</div>
                             <div class="col-md-2">
                                 <div class="btn-group" dropdown on-toggle="actionDropdownToggled(open)">
-                                    <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                                    <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li ng-if="!adSlot.libType"><a ui-sref="^.edit({ id: adTag.id })">Edit Ad Tag</a></li>
-                                        <li ng-if="!!adSlot.libType"><a ui-sref="^.editForAdSlot({ id: adTag.id })">Edit Ad Tag</a></li>
-                                        <li><a ng-click="toggleAdTagStatus(adTag)">{{ adTag.active ? 'Pause' : 'Activate' }} Ad Tag</a></li>
-                                        <li><a ng-click="confirmDeletion(adTag)">Delete Ad Tag</a></li>
+                                        <li ng-if="!adSlot.libType"><a ui-sref="^.edit({ id: adTag.id })">{{ 'AD_TAG_MODULE.EDIT_AD_TAG' | translate }}</a></li>
+                                        <li ng-if="!!adSlot.libType"><a ui-sref="^.editForAdSlot({ id: adTag.id })">{{ 'AD_TAG_MODULE.EDIT_AD_TAG' | translate }}</a></li>
+                                        <li><a ng-click="toggleAdTagStatus(adTag)">{{ adTag.active ? ('AD_TAG_MODULE.PAUSE_AD_TAG' | translate) : ('AD_TAG_MODULE.ACTIVATE_AD_TAG' | translate) }}</a></li>
+                                        <li><a ng-click="confirmDeletion(adTag)">{{ 'AD_TAG_MODULE.DELETE_AD_TAG' | translate }}</a></li>
                                         <li class="divider"></li>
-                                        <li ng-if="!adTag.libraryAdTag.visible" ng-click="shareAdTag(adTag)"><a>Move To Library</a></li>
-                                        <li ng-if="adTag.libraryAdTag.visible"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: adTag.libraryAdTag.id})">Edit Ad Tag in The Library</a></li>
+                                        <li ng-if="!adTag.libraryAdTag.visible" ng-click="shareAdTag(adTag)"><a>{{ 'AD_TAG_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>
+                                        <li ng-if="adTag.libraryAdTag.visible"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: adTag.libraryAdTag.id})">{{ 'AD_TAG_MODULE.EDIT_AD_TAG_IN_LIBRARY' | translate }}</a></li>
                                         <li ng-if="adTags.length > 1" class="divider"></li>
-                                        <li ng-if="adTags.length > 1"><a ng-click="splitFromGroup(adTags, adTag)">Split Group</a></li>
+                                        <li ng-if="adTags.length > 1"><a ng-click="splitFromGroup(adTags, adTag)">{{ 'AD_TAG_MODULE.SPLIT_GROUP' | translate }}</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -94,10 +94,10 @@
     </div>
 
     <div class="callout callout-info ad-tag-drag-help" ng-if="hasAdTags()">
-        <p>You can drag and drop to re-order your ad tags.</p>
-        <p>To move all ad tags from one position group to another, click and drag the gray position header bar up and down.</p>
-        <p>To move a single ad tag to another position, click and drag on that ad tag only.</p>
-        <p>To quickly remove an ad tag from a position group, click on Actions > Split Group.</p>
+        <p>{{ 'AD_TAG_MODULE.GUIDE_DRAG_DROP_TITLE' | translate }}</p>
+        <p>{{ 'AD_TAG_MODULE.GUIDE_DRAG_DROP_GROUP_AD_TAG' | translate }}</p>
+        <p>{{ 'AD_TAG_MODULE.GUIDE_DRAG_DROP_AD_TAG' | translate }}</p>
+        <p>{{ 'AD_TAG_MODULE.GUIDE_SPLIT_GROUP' | translate }}</p>
     </div>
 
 </div>

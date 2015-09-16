@@ -29,10 +29,8 @@
                     }
                 },
                 resolve: {
-                    sites: /* @ngInject */ function(SiteManager) {
-                        return SiteManager.getList().then(function (sites) {
-                            return sites.plain();
-                        });
+                    sites: /* @ngInject */ function(SiteCache) {
+                        return SiteCache.getAllSites();
                     }
                 },
                 ncyBreadcrumb: {
@@ -77,11 +75,11 @@
                     }
                 },
                 resolve: {
-                    site: /* @ngInject */ function($stateParams, SiteManager) {
-                        return SiteManager.one($stateParams.id).get();
+                    site: /* @ngInject */ function($stateParams, SiteCache) {
+                        return SiteCache.getSiteById($stateParams.id);
                     },
-                    channels: /* @ngInject */ function(ChannelManager) {
-                        return ChannelManager.getList();
+                    channels: function() {
+                        return null;
                     }
                 },
                 customResolve: {
@@ -110,10 +108,8 @@
                     }
                 },
                 resolve: {
-                    site: /* @ngInject */ function(SiteManager, $stateParams) {
-                        return SiteManager.one($stateParams.id).get().then(function (site) {
-                            return site.plain();
-                        });
+                    site: /* @ngInject */ function(SiteCache, $stateParams) {
+                        return SiteCache.getSiteById($stateParams.id);
                     },
                     channels: /* @ngInject */ function(SiteManager, $stateParams) {
                         return SiteManager.one($stateParams.id).getList('channels').then(function (channels) {

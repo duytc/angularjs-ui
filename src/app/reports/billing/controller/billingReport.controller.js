@@ -5,7 +5,7 @@
         .controller('BillingReport', BillingReport)
     ;
 
-    function BillingReport($scope, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES) {
+    function BillingReport($scope, $translate, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES) {
         $scope.hasResult = reportGroup !== false;
 
         reportGroup = reportGroup || {};
@@ -30,7 +30,7 @@
             if (!$scope.hasResult) {
                 AlertService.replaceAlerts({
                     type: 'warning',
-                    message: 'There are no reports for that selection'
+                    message: $translate.instant('REPORT.REPORTS_EMPTY')
                 });
             }
         }

@@ -6,7 +6,7 @@
         .controller('CloneAdSlot', CloneAdSlot)
     ;
 
-    function CloneAdSlot($scope, $state, adSlot, $modalInstance, Manager, AlertService, SiteManager, adminUserManager, Auth, historyStorage, HISTORY_TYPE_PATH) {
+    function CloneAdSlot($scope, $translate, $state, adSlot, $modalInstance, Manager, AlertService, SiteManager, adminUserManager, Auth, historyStorage, HISTORY_TYPE_PATH) {
         $scope.adSlot = adSlot;
         $scope.cloneAdSlot = angular.copy($scope.adSlot);
 
@@ -42,13 +42,13 @@
 
                     AlertService.addFlash({
                         type: 'success',
-                        message: 'The ad slot has been cloned successfully'
+                        message: $translate.instant('AD_SLOT_MODULE.CLONE_SUCCESS')
                     });
                 })
                 .catch(function() {
                     AlertService.addAlert({
                         type: 'error',
-                        message: 'Could not clone the ad slot'
+                        message: $translate.instant('AD_SLOT_MODULE.CLONE_FAIL')
                     });
                 });
         }

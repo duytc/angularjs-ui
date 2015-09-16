@@ -32,8 +32,8 @@
                     }
                 },
                 resolve: {
-                    adNetworks: /* @ngInject */ function(AdNetworkManager) {
-                        return AdNetworkManager.getList();
+                    adNetworks: /* @ngInject */ function(AdNetworkCache) {
+                        return AdNetworkCache.getAllAdNetworks();
                     }
                 },
                 ncyBreadcrumb: {
@@ -76,16 +76,14 @@
                     }
                 },
                 resolve: {
-                    adNetwork: /* @ngInject */ function($stateParams, AdNetworkManager) {
-                        return AdNetworkManager.one($stateParams.id).get();
+                    adNetwork: /* @ngInject */ function($stateParams, AdNetworkCache) {
+                        return AdNetworkCache.getAdNetworkById($stateParams.id);
                     }
                 },
                 customResolve: {
                     admin: {
-                        publishers: /* @ngInject */ function(adminUserManager) {
-                            return adminUserManager.getList({ filter: 'publisher' }).then(function (users) {
-                                return users.plain();
-                            });
+                        publishers: function() {
+                            return null;
                         }
                     }
                 },

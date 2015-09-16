@@ -5,7 +5,7 @@
         .controller('NativeAdTagList', NativeAdTagList)
     ;
 
-    function NativeAdTagList($scope, $modal, adTags, AdTagManager, AdSlotAdTagLibrariesManager, AdTagLibrariesManager, AlertService, adSlot, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
+    function NativeAdTagList($scope, $translate, $modal, adTags, AdTagManager, AdSlotAdTagLibrariesManager, AdTagLibrariesManager, AlertService, adSlot, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
         $scope.adSlot = adSlot;
         $scope.adTags = adTags;
 
@@ -27,7 +27,7 @@
         if (!$scope.hasAdTags()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no ad tags in this ad slot'
+                message: $translate.instant('AD_TAG_MODULE.CURRENTLY_NO_AD_TAG')
             });
         }
 
@@ -41,10 +41,10 @@
                 .catch(function () {
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'Could not change ad tag status'
+                        message: $translate.instant('AD_TAG_MODULE.CHANGE_STATUS_FAIL')
                     });
 
-                    return $q.reject('could not update ad tag status');
+                    return $q.reject($translate.instant('AD_TAG_MODULE.CHANGE_STATUS_FAIL'));
                 })
                 .then(function () {
                     adTag.active = newTagStatus;
@@ -73,13 +73,13 @@
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message: 'The ad tag was deleted'
+                            message: $translate.instant('AD_TAG_MODULE.DELETE_SUCCESS')
                         });
                     },
                     function () {
                         AlertService.replaceAlerts({
                             type: 'danger',
-                            message: 'The ad tag could not be deleted'
+                            message: $translate.instant('AD_TAG_MODULE.DELETE_FAIL')
                         });
                     }
                 )
@@ -128,7 +128,7 @@
                 .then(function() {
                     AlertService.addAlert({
                         type: 'success',
-                        message: 'The ad tag has been updated'
+                        message: $translate.instant('AD_TAG_MODULE.UPDATE_SUCCESS')
                     });
                 })
                 .catch(function() {
@@ -136,7 +136,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'The ad tag has not been updated'
+                        message: $translate.instant('AD_TAG_MODULE.UPDATE_FAIL')
                     });
                 });
         }
@@ -152,13 +152,13 @@
 
                     AlertService.replaceAlerts({
                         type: 'success',
-                        message: 'The ad tag has not been moved to library'
+                        message: $translate.instant('AD_TAG_MODULE.MOVED_TO_LIBRARY_SUCCESS')
                     });
                 })
                 .catch(function () {
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'The ad tag has been moved to library'
+                        message: $translate.instant('AD_TAG_MODULE.MOVED_TO_LIBRARY_FAIL')
                     });
                 })
             ;

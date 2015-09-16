@@ -3,7 +3,7 @@
 
     <div class="panel panel-default daily-reports">
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
-            Daily Site Breakdown
+            {{ 'REPORT.DAILY_SITE_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
                 <export-excel data="reports" fields="['date', 'slotOpportunities', 'billedAmount', 'billedRate']" header="['Date', 'Slot Opportunities', 'Billed Amount ($)', 'Billed CPM Rate ($)']" file-name="getExportExcelFileName"></export-excel>
             </div>
@@ -13,16 +13,16 @@
                 <thead></thead>
                 <tbody>
                 <tr>
-                    <td at-title="Date" at-attribute="date" at-sortable at-initial-sorting="desc">
+                    <td at-title="{{ 'REPORT.DATE' | translate }}" at-attribute="date" at-sortable at-initial-sorting="desc">
                         {{ item.date | date }}
                     </td>
-                    <td at-title="Slot Opportunities" at-attribute="slotOpportunities" at-sortable>
+                    <td at-title="{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}" at-attribute="slotOpportunities" at-sortable>
                         {{ item.slotOpportunities | number }}
                     </td>
-                    <td at-title="Billed Amount" at-attribute="billedAmount" at-sortable>
+                    <td at-title="{{ 'REPORT.BILLED_AMOUNT' | translate }}" at-attribute="billedAmount" at-sortable>
                         {{ item.billedAmount | currency }}
                     </td>
-                    <td at-title="Billed CPM Rate">
+                    <td at-title="{{ 'REPORT.BILLED_CPM_RATE' | translate }}">
                         {{ item.billedRate | currency:'$':4 }}
                     </td>
                 </tr>

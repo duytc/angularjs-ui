@@ -5,7 +5,7 @@
         .controller('SourceReportSelector', SourceReportSelector)
     ;
 
-    function SourceReportSelector($scope, $stateParams, Auth, UserStateHelper, AlertService, ReportParams, sourceReport, SiteManager, adminUserManager, dateUtil) {
+    function SourceReportSelector($scope, $translate, $stateParams, Auth, UserStateHelper, AlertService, ReportParams, sourceReport, SiteManager, adminUserManager, dateUtil) {
         var isAdmin = Auth.isAdmin();
         $scope.isAdmin = isAdmin;
 
@@ -110,7 +110,7 @@
                 .catch(function(error) {
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'An error occurs while getting reports.'
+                        message: $translate.instant('SOURCE_REPORT_MODULE.GET_REPORT_FAIL')
                     });
                 })
             ;

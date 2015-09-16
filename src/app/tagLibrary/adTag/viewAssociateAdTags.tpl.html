@@ -6,14 +6,14 @@
         <div class="button-bar">
             <button ng-click="backToListAdTagLibrary()" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-arrow-left"></span>
-                Back to Ad Tag List
+                {{ 'AD_TAG_MODULE.BACK_TO_AD_TAG_LIST' | translate }}
             </button>
         </div>
 
         <div class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li ng-click="backToListAdTagLibrary()"><a> Back to Ad Tag List</a></li>
+                <li ng-click="backToListAdTagLibrary()"><a>  {{ 'AD_TAG_MODULE.BACK_TO_AD_TAG_LIST' | translate }}</a></li>
             </ul>
         </div>
     </div>
@@ -27,33 +27,33 @@
                 <tbody>
                 <tr>
                     <td at-implicit at-title="#" at-sortable at-attribute="id"></td>
-                    <td at-title="Action" at-attribute="action">
+                    <td at-title="{{ 'ACTIONS' | translate }}" at-attribute="action">
                         <div class="btn-group" dropdown>
-                            <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li ng-if="item.adSlot.type == adSlotTypes.display"><a ui-sref="^.^.^.tagManagement.adTag.list({ adSlotId: item.adSlot.id })">Go To Ad Slot</a></li>
-                                <li ng-if="item.adSlot.type == adSlotTypes.native"><a ui-sref="^.^.^.tagManagement.adTag.nativeList({ adSlotId: item.adSlot.id })">Go To Ad Slot</a></li>
+                                <li ng-if="item.adSlot.type == adSlotTypes.display"><a ui-sref="^.^.^.tagManagement.adTag.list({ adSlotId: item.adSlot.id })">{{ 'AD_TAG_LIBRARY_MODULE.GO_TO_AD_SLOT' | translate }}</a></li>
+                                <li ng-if="item.adSlot.type == adSlotTypes.native"><a ui-sref="^.^.^.tagManagement.adTag.nativeList({ adSlotId: item.adSlot.id })">{{ 'AD_TAG_LIBRARY_MODULE.GO_TO_AD_SLOT' | translate }}</a></li>
                                 <li class="divider"></li>
-                                <li><a ng-click="toggleAdTagStatus(item)">{{ item.active ? 'Pause' : 'Activate' }} Ad Tag</a></li>
-                                <li><a ng-click="confirmDeletion(item)">Delete Ad Tag</a></li>
+                                <li><a ng-click="toggleAdTagStatus(item)">{{ adTag.active ? ('AD_TAG_MODULE.PAUSE_AD_TAG' | translate) : ('AD_TAG_MODULE.ACTIVATE_AD_TAG' | translate) }}</a></li>
+                                <li><a ng-click="confirmDeletion(item)">{{ 'AD_TAG_MODULE.DELETE_AD_TAG' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>
-                    <td at-title="Name" at-implicit at-sortable at-attribute="libraryAdTag.name"></td>
-                    <td ng-dblclick="rotationForm.$show()" at-attribute="rotation">
+                    <td at-implicit at-title="{{ 'NAME' | translate }}" at-implicit at-sortable at-attribute="libraryAdTag.name"></td>
+                    <td at-title="{{ 'AD_TAG_MODULE.ROTATION_WEIGHT' | translate }}" ng-dblclick="rotationForm.$show()" at-attribute="rotation">
                         <span class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>
                         <div e-form="rotationForm" buttons="no" oncancel="updateAdTag($data, 'rotation', item)" onbeforesave="updateAdTag($data, 'rotation', item)" editable-number="item.rotation">{{ item.rotation }}</div>
                     </td>
-                    <td at-title="Frequency Cap" at-sortable ng-dblclick="frequencyCapForm.$show()" at-attribute="frequencyCap">
+                    <td at-title="{{ 'AD_TAG_MODULE.FREQUENCY_CAP' | translate }}" at-sortable ng-dblclick="frequencyCapForm.$show()" at-attribute="frequencyCap">
                         <span class="fa fa-pencil" ng-hide="frequencyCapForm.$visible"></span>
                         <div e-form="frequencyCapForm" buttons="no" oncancel="updateAdTag($data, 'frequencyCap', item)" onbeforesave="updateAdTag($data, 'frequencyCap', item)" editable-number="item.frequencyCap">{{ item.frequencyCap }}</div>
                     </td>
-                    <td at-title="Ad Slot" at-sortable at-implicit at-attribute="adSlot.libraryAdSlot.name"></td>
-                    <td at-title="Site" at-sortable at-implicit at-attribute="adSlot.site.name"></td>
-                    <td at-attribute="active">
+                    <td at-title="{{ 'AD_SLOT' | translate }}" at-sortable at-implicit at-attribute="adSlot.libraryAdSlot.name"></td>
+                    <td at-title="{{ 'SITE' | translate }}" at-sortable at-implicit at-attribute="adSlot.site.name"></td>
+                    <td at-title="{{ 'AD_TAG_MODULE.STATUS' | translate }}" at-attribute="active">
                         <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
                     </td>
-                    <td at-title="In Library" at-attribute="visible">
+                    <td at-title="{{ 'AD_TAG_MODULE.IN_LIBRARY' | translate }}" at-attribute="visible">
                         <i class="fa" ng-class="item.libraryAdTag.visible? 'fa-check-square' : 'fa-square'"></i>
                     </td>
                 </tr>

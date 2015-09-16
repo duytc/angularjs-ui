@@ -3,7 +3,7 @@
 
     <div class="panel panel-default daily-reports">
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
-            Site Breakdown
+            {{ 'REPORT.SITE_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
                 <export-excel data="reports" fields="['startDate', 'endDate', 'name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Start Date', 'End Date', 'Site', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
             </div>
@@ -22,37 +22,37 @@
                 <thead></thead>
                 <tbody>
                 <tr ng-click="drillDownReport(reportStates.site, item)">
-                    <td at-title="Actions">
+                    <td at-title="{{ 'ACTIONS' | translate }}">
                         <div class="btn-group" dropdown stop-event>
-                            <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li><a ng-click="popupReport(reportStates.site, item)">Site Info</a></li>
-                                <li><a ng-click="goToEditPage('tagManagement.sites.edit', item.reportType.siteId)">Edit Site</a></li>
+                                <li><a ng-click="popupReport(reportStates.site, item)">{{ 'PERFORMANCE_REPORT_MODULE.SITE_INFO' | translate }}</a></li>
+                                <li><a ng-click="goToEditPage('tagManagement.sites.edit', item.reportType.siteId)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_SITE' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>
-                    <td at-title="Start Date" at-attribute="startDate">
+                    <td at-title="{{ 'REPORT.START_DATE' | translate }}" at-attribute="startDate">
                         {{ item.startDate | date }}
                     </td>
-                    <td at-title="End Date" at-attribute="endDate">
+                    <td at-title="{{ 'REPORT.END_DATE' | translate }}" at-attribute="endDate">
                         {{ item.endDate | date }}
                     </td>
-                    <td class="name" at-title="Site" at-attribute="name" at-sortable>
+                    <td class="name" at-title="{{ 'SITE' | translate }}" at-attribute="name" at-sortable>
                         {{ item.name }}
                     </td>
-                    <td at-title="Slot Opportunities" at-attribute="slotOpportunities" at-sortable at-initial-sorting="desc">
+                    <td at-title="{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}" at-attribute="slotOpportunities" at-sortable at-initial-sorting="desc">
                         {{ item.slotOpportunities | number }}
                     </td>
-                    <td at-title="Network Opportunities" at-attribute="totalOpportunities" at-sortable>
+                    <td at-title="{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}" at-attribute="totalOpportunities" at-sortable>
                         {{ item.totalOpportunities | number }}
                     </td>
-                    <td at-title="Impressions" at-attribute="impressions" at-sortable>
+                    <td at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="impressions" at-sortable>
                         {{ item.impressions | number }}
                     </td>
-                    <td at-title="Passbacks" at-attribute="passbacks" at-sortable>
+                    <td at-title="{{ 'REPORT.PASSBACKS' | translate }}" at-attribute="passbacks" at-sortable>
                         {{ item.passbacks | number }}
                     </td>
-                    <td at-title="Fill Rate" at-attribute="fillRate" at-sortable>
+                    <td at-title="{{ 'REPORT.FILL_RATE' | translate }}" at-attribute="fillRate" at-sortable>
                         {{ item.fillRate | percentage }}
                     </td>
 

@@ -134,10 +134,8 @@
                         return site.publisher;
                     },
 
-                    siteList: /* @ngInject */ function (SiteManager) {
-                        return SiteManager.getList().then(function (sites) {
-                            return sites.plain();
-                        });
+                    siteList: /* @ngInject */ function (SiteCache) {
+                        return SiteCache.getAllSites();
                     },
 
                     adSlotList: /* @ngInject */ function (SiteManager, site) {
@@ -150,10 +148,8 @@
                         });
                     },
 
-                    adNetworkList: /* @ngInject */ function (AdNetworkManager) {
-                        return AdNetworkManager.getList().then(function (adNetworks) {
-                            return adNetworks.plain();
-                        });
+                    adNetworkList: /* @ngInject */ function (AdNetworkCache) {
+                        return AdNetworkCache.getAllAdNetworks();
                     }
                 },
                 customResolve: {
@@ -208,10 +204,8 @@
                         return site.publisher;
                     },
 
-                    siteList: /* @ngInject */ function (SiteManager) {
-                        return SiteManager.getList().then(function (sites) {
-                            return sites.plain();
-                        });
+                    siteList: /* @ngInject */ function (SiteCache) {
+                        return SiteCache.getAllSites();
                     },
 
                     adSlotList: /* @ngInject */ function (SiteManager, site) {
@@ -224,10 +218,8 @@
                         });
                     },
 
-                    adNetworkList: /* @ngInject */ function (AdNetworkManager) {
-                        return AdNetworkManager.getList().then(function (adNetworks) {
-                            return adNetworks.plain();
-                        });
+                    adNetworkList: /* @ngInject */ function (AdNetworkCache) {
+                        return AdNetworkCache.getAllAdNetworks();
                     }
                 },
                 customResolve: {
@@ -288,10 +280,8 @@
                         return null;
                     },
 
-                    adNetworkList: /* @ngInject */ function (AdNetworkManager) {
-                        return AdNetworkManager.getList().then(function (adNetworks) {
-                            return adNetworks.plain();
-                        });
+                    adNetworkList: /* @ngInject */ function (AdNetworkCache) {
+                        return AdNetworkCache.getAllAdNetworks();
                     }
                 },
                 ncyBreadcrumb: {

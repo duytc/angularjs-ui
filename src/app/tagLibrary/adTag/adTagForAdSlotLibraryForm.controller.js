@@ -5,7 +5,7 @@
         .controller('AdTagForAdSlotLibraryForm', AdTagForAdSlotLibraryForm)
     ;
 
-    function AdTagForAdSlotLibraryForm($scope, $state, AlertService, ServerErrorProcessor, publisherList, adTag, adSlot, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, NativeAdSlotLibrariesManager, DisplayAdSlotLibrariesManager, AdTagLibrariesManager) {
+    function AdTagForAdSlotLibraryForm($scope, $translate, $state, AlertService, ServerErrorProcessor, publisherList, adTag, adSlot, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, NativeAdSlotLibrariesManager, DisplayAdSlotLibrariesManager, AdTagLibrariesManager) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
             name: 'Name',
@@ -70,6 +70,12 @@
             }
         }
 
+        //Infinite Scroll Magic
+        $scope.infiniteScroll = {
+            numToAddAdNetwork: 20,
+            currentAdNetworks: 20
+        };
+
         $scope.showInputPosition = $scope.selected.adSlot && $scope.selected.adSlot.libType == $scope.adSlotTypes.display ? true : false;
         $scope.isFormValid = isFormValid;
         $scope.submit = submit;
@@ -80,6 +86,8 @@
         $scope.filterEntityType = filterEntityType;
         $scope.selectPublisher = selectPublisher;
         $scope.filterByPublisher = filterByPublisher;
+        $scope.addMoreAdNetworks = addMoreAdNetworks;
+        $scope.resetInfiniteScrollAdNetwork = resetInfiniteScrollAdNetwork;
 
         function isFormValid() {
             return $scope.adTagForm.$valid;
@@ -142,6 +150,8 @@
         function selectPublisher() {
             $scope.selected.adSlot = null;
             $scope.adTag.libraryAdTag.adNetwork = null;
+
+            $scope.resetInfiniteScrollAdNetwork();
         }
 
         function backToAdTagLibraryList() {
@@ -174,7 +184,7 @@
                 .then(function () {
                     AlertService.addFlash({
                         type: 'success',
-                        message: 'The ad tag has been created'
+                        message: $translate.instant('AD_TAG_MODULE.ADD_NEW_SUCCESS')
                     });
                 })
                 .then(function () {
@@ -184,6 +194,15 @@
                 }
             )
             ;
+        }
+
+        function addMoreAdNetworks(){
+            $scope.infiniteScroll.currentAdNetworks += $scope.infiniteScroll.numToAddAdNetwork;
+        }
+
+        function resetInfiniteScrollAdNetwork() {
+            $scope.infiniteScroll.numToAddAdNetwork = 20;
+            $scope.infiniteScroll.currentAdNetworks = 20;
         }
     }
 })();

@@ -5,13 +5,13 @@
         <div class="button-bar">
             <button ng-if="!isNew" ng-click="backToListAdNetwork()" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-arrow-left"></span>
-                Back to Ad Network List
+                {{ 'AD_NETWORK_MODULE.BACK_TO_AD_NETWORK_LIST' | translate }}
             </button>
         </div>
         <div class="btn-group btnGrouped" dropdown ng-if="!isNew">
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ng-click="backToListAdNetwork()">Back to Ad Network List</a></li>
+                <li><a ng-click="backToListAdNetwork()">{{ 'AD_NETWORK_MODULE.BACK_TO_AD_NETWORK_LIST' | translate }}</a></li>
             </ul>
         </div>
     </div>
@@ -19,17 +19,17 @@
         <div class="row">
             <form name="adNetworkForm" class="col-lg-6 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
                 <div class="form-group" ng-if="!isNew && allowPublisherSelection">
-                    <label class="col-sm-2 control-label">Publisher</label>
+                    <label class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
                     <div class="col-sm-10 form-control-static">
                         {{ adNetwork.publisher.company }}
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="isNew && allowPublisherSelection">
-                    <label for="inputPublisher" class="col-sm-2 control-label">Publisher</label>
+                    <label for="inputPublisher" class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
                     <div class="col-sm-10">
                         <ui-select name="publisher" id="inputPublisher" ng-model="adNetwork.publisher" ng-required="true" server-error reset-search-input="'false'">
-                            <ui-select-match placeholder="Select a publisher">{{ $select.selected.company }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
                             <ui-select-choices repeat="publisher.id as publisher in publishers | filter: { company: $select.search }">
                                 {{ publisher.company }}
                             </ui-select-choices>
@@ -38,9 +38,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="inputName" class="col-sm-2 control-label">Name</label>
+                    <label for="inputName" class="col-sm-2 control-label">{{ 'NAME' | translate }}</label>
                     <div class="col-sm-10">
-                        <input server-error name="name" ng-model="adNetwork.name" ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="Ad network name">
+                        <input server-error name="name" ng-model="adNetwork.name" ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="{{ 'AD_NETWORK_MODULE.PLACEHOLDER_AD_NETWORK_NAME' | translate }}">
                     </div>
                 </div>
                 <!--<div class="form-group">-->
@@ -51,10 +51,10 @@
                     <!--</div>-->
                 <!--</div>-->
                 <div class="form-group">
-                    <label for="inputUrl" class="col-sm-2 control-label">Url</label>
+                    <label for="inputUrl" class="col-sm-2 control-label">{{ 'AD_NETWORK_MODULE.URL' | translate }}</label>
                     <div class="col-sm-10">
-                        <input server-error name="url" ng-model="adNetwork.url" type="text" class="form-control" id="inputUrl" placeholder="An optional url to this ad network">
-                        <span class="help-block">You can use this field to add the login url for your ad network.</span>
+                        <input server-error name="url" ng-model="adNetwork.url" type="text" class="form-control" id="inputUrl" placeholder="{{ 'AD_NETWORK_MODULE.PLACEHOLDER_AD_NETWORK_URL' | translate }}">
+                        <span class="help-block">{{ 'AD_NETWORK_MODULE.HELP_BLOCK_URL' | translate }}</span>
                     </div>
                 </div>
                 <!--<div class="form-group">-->
@@ -65,9 +65,9 @@
                 <!--</div>-->
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">Submit</button>
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">
-                            <p>Submit button will be active only when all fields are valid.</p>
+                            <p>{{ 'VALID_FORM' | translate }}</p>
                         </div>
                     </div>
                 </div>

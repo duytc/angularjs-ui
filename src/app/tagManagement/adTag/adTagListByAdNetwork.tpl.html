@@ -5,9 +5,16 @@
         <div class="button-bar hidden-xs">
             <button ng-click="backToListAdNetwork()" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-arrow-left"></span>
-                Back to Ad Network List
+                {{ 'AD_NETWORK_MODULE.BACK_TO_AD_NETWORK_LIST' | translate }}
             </button>
         </div>
+        <div class="btn-group btnGrouped" dropdown>
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ng-click="backToListAdNetwork()">{{ 'AD_NETWORK_MODULE.BACK_TO_AD_NETWORK_LIST' | translate }}</a></li>
+            </ul>
+        </div>
+
     </div>
 
     <search-box show-query="true" sb-list="adTags" search-fields="['id', 'name', 'rotation', 'frequencyCap', 'adSlot.name', 'adSlot.site.name']"></search-box>
@@ -18,38 +25,38 @@
                 <tbody>
                 <tr>
                     <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
-                    <td at-title="Action" at-attribute="action">
+                    <td at-title="{{ 'ACTIONS' | translate }}" at-attribute="action">
                         <div class="btn-group" dropdown>
-                            <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a ui-sref="^.edit({ id: item.id, adNetworkId: adNetwork.id})">Edit Ad Tag</a></li>
-                                <li><a ng-click="toggleAdTagStatus(item)">{{ item.active ? 'Pause' : 'Activate' }} Ad Tag</a></li>
-                                <li><a ng-click="confirmDeletion(item)">Delete Ad Tag</a></li>
+                                <li><a ui-sref="^.edit({ id: item.id, adNetworkId: adNetwork.id})">{{ 'AD_TAG_MODULE.EDIT_AD_TAG' | translate }}</a></li>
+                                <li><a ng-click="toggleAdTagStatus(item)">{{ adTag.active ? ('AD_TAG_MODULE.PAUSE_AD_TAG' | translate) : ('AD_TAG_MODULE.ACTIVATE_AD_TAG' | translate) }}</a></li>
+                                <li><a ng-click="confirmDeletion(item)">{{ 'AD_TAG_MODULE.DELETE_AD_TAG' | translate }}</a></li>
                                 <li class="divider"></li>
-                                <li ng-if="!item.libraryAdTag.visible" ng-click="shareAdTag(item)"><a>Move To Library</a></li>
-                                <li ng-if="item.libraryAdTag.visible"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: item.libraryAdTag.id})">Edit Ad Tag in The Library</a></li>
+                                <li ng-if="!item.libraryAdTag.visible" ng-click="shareAdTag(item)"><a>{{ 'AD_TAG_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>
+                                <li ng-if="item.libraryAdTag.visible"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: item.libraryAdTag.id})">{{ 'AD_TAG_MODULE.EDIT_AD_TAG_IN_LIBRARY' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>
-                    <td at-implicit at-title="Name" at-sortable at-attribute="libraryAdTag.name" at-initial-sorting="asc"></td>
-                    <td ng-dblclick="rotationForm.$show()" at-sortable at-attribute="rotation">
+                    <td at-implicit at-title="{{ 'NAME' | translate }}" at-sortable at-attribute="libraryAdTag.name" at-initial-sorting="asc"></td>
+                    <td at-title="{{ 'AD_TAG_MODULE.ROTATION_WEIGHT' | translate }}" ng-dblclick="rotationForm.$show()" at-sortable at-attribute="rotation">
                         <span class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>
                         <div e-form="rotationForm" buttons="no" oncancel="updateAdTag($data, 'rotation', item)" onbeforesave="updateAdTag($data, 'rotation', item)" editable-number="item.rotation">{{ item.rotation }}</div>
                     </td>
-                    <td at-title="Frequency Cap" ng-dblclick="frequencyCapForm.$show()" at-sortable at-attribute="frequencyCap">
+                    <td at-title="{{ 'AD_TAG_MODULE.FREQUENCY_CAP' | translate }}" ng-dblclick="frequencyCapForm.$show()" at-sortable at-attribute="frequencyCap">
                         <span class="fa fa-pencil" ng-hide="frequencyCapForm.$visible"></span>
                         <div e-form="frequencyCapForm" buttons="no" oncancel="updateAdTag($data, 'frequencyCap', item)" onbeforesave="updateAdTag($data, 'frequencyCap', item)" editable-number="item.frequencyCap">{{ item.frequencyCap }}</div>
                     </td>
-                    <td at-implicit at-title="Ad Slot" at-sortable at-attribute="adSlot.libraryAdSlot.name"></td>
-                    <td at-implicit at-title="Site" at-sortable at-attribute="adSlot.site.name" ></td>
-                    <td at-attribute="active" at-sortable>
+                    <td at-title="{{ 'AD_SLOT' | translate }}" at-implicit at-sortable at-attribute="adSlot.libraryAdSlot.name"></td>
+                    <td at-title="{{ 'SITE' | translate }}" at-implicit at-sortable at-attribute="adSlot.site.name" ></td>
+                    <td at-title="{{ 'AD_TAG_MODULE.STATUS' | translate }}" at-attribute="active" at-sortable>
                         <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
                     </td>
                     <!--<td at-title="Library" at-attribute="visible" at-sortable>-->
                         <!--{{ item.libraryAdTag.visible ? item.libraryAdTag.referenceName : '' }}-->
                     <!--</td>-->
 
-                    <td at-title="In Library" at-attribute="visible" at-sortable>
+                    <td at-title="{{ 'AD_TAG_MODULE.IN_LIBRARY' | translate }}" at-attribute="visible" at-sortable>
                         <i class="fa" ng-class="item.libraryAdTag.visible? 'fa-check-square' : 'fa-square'"></i>
                     </td>
                 </tr>

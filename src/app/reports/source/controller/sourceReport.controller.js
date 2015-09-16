@@ -5,7 +5,7 @@
         .controller('SourceReportController', SourceReportController)
     ;
 
-    function SourceReportController($state, $scope, AlertService, dateUtil, reportGroup, DateFormatter) {
+    function SourceReportController($state, $translate, $scope, AlertService, dateUtil, reportGroup, DateFormatter) {
         $scope.hasResult = reportGroup !== false;
 
         reportGroup = reportGroup || {};
@@ -40,7 +40,7 @@
             if (!$scope.hasResult) {
                 AlertService.replaceAlerts({
                     type: 'warning',
-                    message: 'There are no reports for that selection'
+                    message: $translate.instant('REPORT.REPORTS_EMPTY')
                 });
             }
         }
@@ -71,7 +71,7 @@
 
                 AlertService.replaceAlerts({
                     type: 'error',
-                    message: 'An error occurred trying to open the report'
+                    message: $translate.instant('REPORT.REPORT_FAIL')
                 });
             })
         }

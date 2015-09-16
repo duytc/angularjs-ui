@@ -5,7 +5,7 @@
         .factory('performanceReportHelper', performanceReportHelper)
     ;
 
-    function performanceReportHelper($state, _, $modal, UserStateHelper, adminUserManager, AdNetworkManager, SiteManager, AdSlotManager, AdTagManager, ReportParams, AlertService, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES) {
+    function performanceReportHelper($state, $translate, _, $modal, UserStateHelper, adminUserManager, AdNetworkManager, SiteManager, AdSlotManager, AdTagManager, ReportParams, AlertService, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES) {
         var api = {
             popupReport: popupReport,
             drillDownReport: drillDownReport,
@@ -64,7 +64,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'An error occurred trying to request the report'
+                        message: $translate.instant('REPORT.REPORT_FAIL')
                     });
                 })
             ;

@@ -6,7 +6,7 @@
         .controller('PublisherForm', PublisherForm)
     ;
 
-    function PublisherForm($scope, adminUserManager, AlertService, ServerErrorProcessor, publisher, historyStorage, HISTORY_TYPE_PATH) {
+    function PublisherForm($scope, $translate, adminUserManager, AlertService, ServerErrorProcessor, publisher, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             username: 'Username',
             plainPassword: 'Password',
@@ -267,7 +267,6 @@
             email: null,
             billingRate : null,
             enabledModules: [],
-            moduleConfigs: {},
             enabled: true,
             lastLogin: null,
             firstName: null,
@@ -288,17 +287,6 @@
 //            { label: 'Fraud Detection', role: 'MODULE_FRAUD_DETECTION' }
         ];
 
-        $scope.videoPlayers = [
-            { label: '5min', name: '5min'},
-            { label: 'Defy', name: 'defy' },
-            { label: 'JwPlayer5', name: 'jwplayer5' },
-            { label: 'JwPlayer6', name: 'jwplayer6' },
-            { label: 'Limelight', name: 'limelight' },
-            { label: 'Ooyala', name: 'ooyala' },
-            { label: 'Scripps', name: 'scripps' },
-            { label: 'ULive', name: 'ulive' }
-        ];
-
         $scope.hasModuleEnabled = function (role) {
             return $scope.publisher.enabledModules.indexOf(role) > -1;
         };
@@ -308,54 +296,17 @@
 
             if (idx > -1) {
                 $scope.publisher.enabledModules.splice(idx, 1);
-
-                if(role == 'MODULE_VIDEO_ANALYTICS') {
-                    $scope.publisher.moduleConfigs = {};
-                }
             } else {
                 $scope.publisher.enabledModules.push(role);
             }
         };
 
-        $scope.hasVideoPlayer = function (player) {
-            if(!$scope.publisher.moduleConfigs.MODULE_VIDEO_ANALYTICS) {
-                return false;
-            }
-
-            return $scope.publisher.moduleConfigs.MODULE_VIDEO_ANALYTICS.players.indexOf(player) > -1;
-        };
-
-        $scope.toggleVideoPlayer = function (player) {
-            if(!$scope.publisher.moduleConfigs.MODULE_VIDEO_ANALYTICS) {
-                $scope.publisher.moduleConfigs = {
-                    MODULE_VIDEO_ANALYTICS: {
-                        players: []
-                    }
-                }
-            }
-
-            var idx = $scope.publisher.moduleConfigs.MODULE_VIDEO_ANALYTICS.players.indexOf(player);
-
-            if (idx > -1) {
-                $scope.publisher.moduleConfigs.MODULE_VIDEO_ANALYTICS.players.splice(idx, 1);
-            } else {
-                $scope.publisher.moduleConfigs.MODULE_VIDEO_ANALYTICS.players.push(player);
-            }
-        };
-
         $scope.isFormValid = function() {
-            var hasVideoConfig = true;
-            if($scope.hasModuleEnabled('MODULE_VIDEO_ANALYTICS')) {
-                if(!$scope.publisher.moduleConfigs.MODULE_VIDEO_ANALYTICS || !$scope.publisher.moduleConfigs.MODULE_VIDEO_ANALYTICS.players.length) {
-                    hasVideoConfig = false;
-                }
-            }
-
             if($scope.publisher.plainPassword != null || $scope.repeatPassword != null) {
-                return $scope.userForm.$valid && $scope.repeatPassword == $scope.publisher.plainPassword && hasVideoConfig;
+                return $scope.userForm.$valid && $scope.repeatPassword == $scope.publisher.plainPassword;
             }
 
-            return $scope.userForm.$valid && hasVideoConfig;
+            return $scope.userForm.$valid;
         };
 
         $scope.backToListPublisher = function() {
@@ -385,7 +336,7 @@
                     function () {
                         AlertService.addFlash({
                             type: 'success',
-                            message: 'The publisher has been updated'
+                            message: $translate.instant('PUBLISHER_MODULE.ADD_NEW_SUCCESS')
                         });
                     }
                 )

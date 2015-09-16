@@ -8,7 +8,7 @@
     /**
      * @param {Array} reportGroup.reports
      */
-    function ReportView($scope, $timeout, _, accountManager, sessionStorage, $state, Auth, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES, TYPE_AD_SLOT, REPORT_SETTINGS) {
+    function ReportView($scope, $translate, $timeout, _, accountManager, sessionStorage, $state, Auth, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES, TYPE_AD_SLOT, REPORT_SETTINGS) {
         var isAdmin = Auth.isAdmin();
         $scope.isAdmin = isAdmin;
 
@@ -70,7 +70,7 @@
         if (!$scope.hasResult) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There are no reports for that selection'
+                message: $translate.instant('REPORT.REPORTS_EMPTY')
             });
         }
 

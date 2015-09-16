@@ -6,13 +6,13 @@
         <div class="button-bar">
             <button ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
-                New Publisher
+                {{ 'PUBLISHER_MODULE.NEW_PUBLISHER' | translate }}
             </button>
         </div>
         <div class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ui-sref="^.new">New Publisher</a></li>
+                <li><a ui-sref="^.new">{{ 'PUBLISHER_MODULE.NEW_PUBLISHER' | translate }}</a></li>
             </ul>
         </div>
     </div>
@@ -26,30 +26,30 @@
                 <tbody>
                 <tr>
                     <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
-                    <td at-title="Actions">
+                    <td at-title="{{ 'ACTIONS' | translate }}">
                         <div class="btn-group" dropdown>
-                            <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li><a ng-click="visitPublisher(item.id)">Login as this publisher</a></li>
+                                <li><a ng-click="visitPublisher(item.id)">{{ 'PUBLISHER_MODULE.LOGIN_AS_THIS_PUBLISHER' | translate }}</a></li>
                                 <li class="divider"></li>
-                                <li><a ui-sref="app.admin.reports.performance.account({publisherId: item.id, startDate: today})">View Today's Report</a></li>
+                                <li><a ui-sref="app.admin.reports.performance.account({publisherId: item.id, startDate: today})">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
                                 <li class="divider"></li>
-                                <li><a ng-click="togglePublisherStatus(item)">{{ item.enabled ? 'Deactivate' : 'Activate' }} Publisher</a></li>
-                                <li><a ui-sref="^.edit({ id: item.id })">Edit Publisher</a></li>
+                                <li><a ng-click="togglePublisherStatus(item)">{{ item.enabled ? ( 'PUBLISHER_MODULE.DEACTIVATE_PUBLISHER' | translate ) : ( 'PUBLISHER_MODULE.ACTIVATE_PUBLISHER' | translate ) }} Publisher</a></li>
+                                <li><a ui-sref="^.edit({ id: item.id })">{{ 'PUBLISHER_MODULE.EDIT_PUBLISHER' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>
-                    <td at-title="Name" at-sortable at-attribute="name">
+                    <td at-title="{{ 'NAME' | translate }}" at-sortable at-attribute="name">
                         {{ item.firstName }} {{ item.lastName }}
                     </td>
-                    <td at-title="Username" at-implicit at-sortable at-attribute="username"></td>
-                    <td at-title="Company" at-implicit at-sortable at-attribute="company"></td>
-                    <td at-title="Email" at-implicit at-sortable at-attribute="email"></td>
-                    <td at-title="Phone" at-implicit at-sortable at-attribute="phone"></td>
-                    <td at-title="Last Login" at-sortable at-attribute="lastLogin" at-initial-sorting="desc">
+                    <td at-title="{{ 'PUBLISHER_MODULE.USERNAME' | translate }}" at-implicit at-sortable at-attribute="username"></td>
+                    <td at-title="{{ 'PUBLISHER_MODULE.COMPANY' | translate }}" at-implicit at-sortable at-attribute="company"></td>
+                    <td at-title="{{ 'PUBLISHER_MODULE.EMAIL' | translate }}" at-implicit at-sortable at-attribute="email"></td>
+                    <td at-title="{{ 'PUBLISHER_MODULE.PHONE' | translate }}" at-implicit at-sortable at-attribute="phone"></td>
+                    <td at-title="{{ 'PUBLISHER_MODULE.LAST_LOGIN' | translate }}" at-sortable at-attribute="lastLogin" at-initial-sorting="desc">
                         {{ item.lastLogin | date }}
                     </td>
-                    <td at-title="Status" at-sortable at-attribute="enabled">
+                    <td at-title="{{ 'PUBLISHER_MODULE.STATUS' | translate }}" at-sortable at-attribute="enabled">
                         <span class="label" ng-class="item.enabled ? 'label-success' : 'label-danger'">{{ item.enabled ? 'Active' : 'Inactive' }}</span>
                     </td>
                 </tr>

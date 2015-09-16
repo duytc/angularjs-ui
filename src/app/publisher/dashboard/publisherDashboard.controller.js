@@ -6,7 +6,7 @@
         .controller('PublisherDashboard', PublisherDashboard)
     ;
 
-    function PublisherDashboard($scope, dataDashboard, DateFormatter, $filter, $stateParams, UserStateHelper, AlertService, userSession) {
+    function PublisherDashboard($scope, $translate, dataDashboard, DateFormatter, $filter, $stateParams, UserStateHelper, AlertService, userSession) {
         $scope.dataDashboard = dataDashboard;
 
         $scope.hasData = function () {
@@ -55,7 +55,7 @@
             });
 
             var chartSeriesAccount = [
-                {"name": "Estimated Revenue", "data": chartSeriesEstRevenue, connectNulls: true, color: {
+                {"name": $translate.instant('DASHBOARD_MODULE.ESTIMATED_REVENUE'), "data": chartSeriesEstRevenue, connectNulls: true, color: {
                     linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
                     stops: [
                         [0, '#FF0000']
@@ -108,19 +108,19 @@
             });
 
             var chartSeriesOpportunities = [
-                {"name": "Slot Opportunities", "data": chartSeriesSlotOpportunities, connectNulls: true, color: {
+                {"name": $translate.instant('DASHBOARD_MODULE.SLOT_OPPORTUNITIES'), "data": chartSeriesSlotOpportunities, connectNulls: true, color: {
                     linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
                     stops: [
                         [0, '#0066FF']
                     ]
                 }},
-                {"name": "Network Opportunities", "data": chartSeriesTotalOpportunities, connectNulls: true, color: {
+                {"name": $translate.instant('DASHBOARD_MODULE.NETWORK_OPPORTUNITIES'), "data": chartSeriesTotalOpportunities, connectNulls: true, color: {
                     linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
                     stops: [
                         [0, '#66FF00']
                     ]
                 }},
-                {"name": "Impressions", "data": chartSeriesTotalImpressions, connectNulls: true, color: {
+                {"name": $translate.instant('DASHBOARD_MODULE.IMPRESSIONS'), "data": chartSeriesTotalImpressions, connectNulls: true, color: {
                     linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
                     stops: [
                         [0, '#990000']
@@ -170,7 +170,7 @@
                 .catch(function(error) {
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'An error occurred while trying to request the dashboard'
+                        message: $translate.instant('DASHBOARD_MODULE.UPDATE_FAIL')
                     });
                 })
             ;

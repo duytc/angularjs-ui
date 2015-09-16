@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="$dismiss()">×</button>
-    <h4 class="modal-title">Publisher Info</h4>
+    <h4 class="modal-title">{{ 'PERFORMANCE_REPORT_MODULE.TITLE_PUBLISHER_INFO' | translate }}</h4>
 </div>
 <div class="modal-body">
     <div class="table-responsive">
@@ -8,11 +8,11 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>Publisher Name</th>
-                <th>Full Name</th>
-                <th>Company</th>
-                <th>Email</th>
-                <th>Phone</th>
+                <th>{{ 'PUBLISHER_MODULE.USERNAME' | translate }}</th>
+                <th>{{ 'PUBLISHER_MODULE.FIRST_NAME' | translate }}</th>
+                <th>{{ 'PUBLISHER_MODULE.COMPANY' | translate }}</th>
+                <th>{{ 'PUBLISHER_MODULE.EMAIL' | translate }}</th>
+                <th>{{ 'PUBLISHER_MODULE.PHONE' | translate }}</th>
             </tr>
             </thead>
             <tbody>
@@ -29,6 +29,6 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="$close()">Drill Down</button>
-    <button class="btn btn-primary" ng-click="$dismiss(); goToEditPage('publisherManagement.edit', relativeEntityData.publisherId)">Edit This Publisher</button>
+    <button class="btn btn-primary" ng-click="$close()">{{ 'PERFORMANCE_REPORT_MODULE.DRILL_DOWN' | translate }}</button>
+    <button class="btn btn-primary" ng-click="$dismiss(); goToEditPage('publisherManagement.edit', relativeEntityData.publisherId)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_THIS_PUBLISHER' | translate }}</button>
 </div>

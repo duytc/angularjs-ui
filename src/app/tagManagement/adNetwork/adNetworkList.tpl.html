@@ -6,13 +6,13 @@
         <div class="button-bar">
             <button ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
-                New Ad Network
+                {{ 'AD_NETWORK_MODULE.NEW_AD_NETWORK' | translate }}
             </button>
         </div>
         <div class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ui-sref="^.new">New Ad Network</a></li>
+                <li><a ui-sref="^.new">{{ 'AD_NETWORK_MODULE.NEW_AD_NETWORK' | translate }}</a></li>
             </ul>
         </div>
     </div>
@@ -24,38 +24,34 @@
             <table class="table" at-sortable-query at-table at-paginated at-list="adNetworks" at-config="tableConfig">
                 <thead>
                     <tr>
-                        <th at-attribute="id">#</th>
-                        <th>Actions</th>
-                        <th at-attribute="name">Ad Network</th>
-                        <th ng-show="isAdmin()" at-attribute="publisher.company">Publisher</th>
-                        <th at-attribute="status">Status</th>
+                        <th ng-show="isAdmin()" at-attribute="publisher.company">{{ 'PUBLISHER' | translate }}</th>
                     </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td at-implicit at-sortable at-attribute="id" at-title="#"></td>
-                    <td at-title="Actions">
+                    <td at-title="{{ 'ACTIONS' | translate }}">
                         <div class="btn-group" dropdown>
-                            <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li><a ui-sref="^.^.adTag.listByAdNetwork({ adNetworkId: item.id })">Manage Ad Tags</a></li>
+                                <li><a ui-sref="^.^.adTag.listByAdNetwork({ adNetworkId: item.id })">>{{ 'AD_NETWORK_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
                                 <li class="divider"></li>
-                                <li ng-if="item.pausedAdTagsCount > 0"><a ng-click="toggleAdNetworkStatus(item, true)">Activate Ad Network</a></li>
-                                <li ng-if="item.activeAdTagsCount > 0"><a ng-click="toggleAdNetworkStatus(item, false)">Pause Ad Network</a></li>
-                                <li><a ng-click="openListSitesForAdNetwork(item)">Pause Ad Network by Sites</a></li>
+                                <li ng-if="item.pausedAdTagsCount > 0"><a ng-click="toggleAdNetworkStatus(item, true)">{{ 'AD_NETWORK_MODULE.DROPDOWN_ACTIVE' | translate }}</a></li>
+                                <li ng-if="item.activeAdTagsCount > 0"><a ng-click="toggleAdNetworkStatus(item, false)">{{ 'AD_NETWORK_MODULE.DROPDOWN_PAUSE' | translate }}</a></li>
+                                <li><a ng-click="openListSitesForAdNetwork(item)">{{ 'AD_NETWORK_MODULE.PAUSE_AD_NETWORK_BY_SITE' | translate }}</a></li>
                                 <li class="divider"></li>
-                                <li ><a ui-sref="^.^.^.reports.performance.adNetworkSites({ adNetworkId: item.id, startDate: today})">View Today's Report</a></li>
+                                <li ><a ui-sref="^.^.^.reports.performance.adNetworkSites({ adNetworkId: item.id, startDate: today})">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
                                 <li class="divider"></li>
-                                <li><a ui-sref="^.edit({ id: item.id })">Edit Ad Network</a></li>
+                                <li><a ui-sref="^.edit({ id: item.id })">{{ 'AD_NETWORK_MODULE.EDIT_AD_NETWORK' | translate }}</a></li>
                                 <li ng-if="item.url" class="divider"></li>
-                                <li ng-if="item.url"><a ng-href="{{ item.url }}" target="_blank">Visit Ad Network</a></li>
+                                <li ng-if="item.url"><a ng-href="{{ item.url }}" target="_blank">{{ 'AD_NETWORK_MODULE.DROPDOWN_VISIT_AS_NETWORK' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>
-                    <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="Ad Network"></td>
-                    <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company" at-title="Publisher"></td>
-                    <td at-implicit at-sortable at-attribute="activeAdTagsCount" at-title="Active Ad Tags"></td>
-                    <td at-implicit at-sortable at-attribute="pausedAdTagsCount" at-title="Paused Ad Tags"></td>
+                    <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="{{ 'AD_NETWORK' | translate }}"></td>
+                    <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
+                    <td at-implicit at-sortable at-attribute="activeAdTagsCount" at-title="{{ 'AD_NETWORK_MODULE.ACTIVE_AD_TAGS_COUNT' | translate }}"></td>
+                    <td at-implicit at-sortable at-attribute="pausedAdTagsCount" at-title="{{ 'AD_NETWORK_MODULE.PAUSE_AD_TAGS_COUNT' | translate }}"></td>
                 </tr>
                 </tbody>
             </table>

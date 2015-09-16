@@ -3,7 +3,7 @@
 
     <div class="panel panel-default daily-reports">
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
-            Ad Network Breakdown
+            {{ 'REPORT.AD_NETWORK_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
                 <export-excel data="reports" fields="['startDate', 'endDate', 'name', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Start Date', 'End Date', 'Ad Network', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
             </div>
@@ -21,59 +21,59 @@
             <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
                 <thead>
                 <tr>
-                    <th at-attribute="blankImpressions" ng-show="isAdmin">Blank Impressions</th>
-                    <th at-attribute="voidImpressions" ng-show="isAdmin">Void Impressions</th>
+                    <th at-attribute="blankImpressions" ng-show="isAdmin">{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}</th>
+                    <th at-attribute="voidImpressions" ng-show="isAdmin">{{ 'REPORT.VOID_IMPRESSIONS' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-click="drillDownReport(reportStates.adNetworkSites, item)">
-                    <td at-title="Actions">
+                    <td at-title="{{ 'ACTIONS' | translate }}">
                         <div class="btn-group" dropdown stop-event>
-                            <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li><a ng-click="popupReport(reportStates.adNetworkSites, item)">Ad Network Info</a></li>
-                                <li><a ng-click="goToEditPage('tagManagement.adNetwork.edit', item.reportType.adNetworkId)">Edit Ad Network</a></li>
+                                <li><a ng-click="popupReport(reportStates.adNetworkSites, item)">{{ 'PERFORMANCE_REPORT_MODULE.AD_NETWORK_INFO' | translate }}</a></li>
+                                <li><a ng-click="goToEditPage('tagManagement.adNetwork.edit', item.reportType.adNetworkId)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_AD_NETWORK' | translate }}</a></li>
                                 <!--<li><a ng-click="openUpdateCpm(item, updateCpmTypes.adNetwork)">Update Cpm</a></li>-->
                             </ul>
                         </div>
                     </td>
-                    <td at-title="Start Date" at-attribute="startDate">
+                    <td at-title="{{ 'REPORT.START_DATE' | translate }}" at-attribute="startDate">
                         {{ item.startDate | date }}
                     </td>
-                    <td at-title="End Date" at-attribute="endDate">
+                    <td at-title="{{ 'REPORT.END_DATE' | translate }}" at-attribute="endDate">
                         {{ item.endDate | date }}
                     </td>
-                    <td class="name" at-title="Ad Network" at-attribute="name" at-sortable>
+                    <td class="name" at-title="{{ 'AD_NETWORK' | translate }}" at-attribute="name" at-sortable>
                         {{ item.name }}
                     </td>
-                    <td at-title="Network Opportunities" at-attribute="totalOpportunities" at-sortable at-initial-sorting="desc">
+                    <td at-title="{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}" at-attribute="totalOpportunities" at-sortable at-initial-sorting="desc">
                         {{ item.totalOpportunities | number }}
                     </td>
-                    <td at-title="First Opportunities" at-attribute="firstOpportunities" at-sortable>
+                    <td at-title="{{ 'REPORT.FIRST_OPPORTUNITIES' | translate }}" at-attribute="firstOpportunities" at-sortable>
                         {{ item.firstOpportunities | number }}
                     </td>
-                    <td at-title="Impressions" at-attribute="impressions" at-sortable>
+                    <td at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="impressions" at-sortable>
                         {{ item.impressions | number }}
                     </td>
-                    <td at-title="Verified Impressions" at-attribute="verifiedImpressions" at-sortable>
+                    <td at-title="{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}" at-attribute="verifiedImpressions" at-sortable>
                         {{ item.verifiedImpressions | number }}
                     </td>
-                    <td at-title="Unverified Impressions" at-attribute="unverifiedImpressions" at-sortable>
+                    <td at-title="{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}" at-attribute="unverifiedImpressions" at-sortable>
                         {{ item.unverifiedImpressions | number }}
                     </td>
-                    <td ng-show="isAdmin" at-title="Blank Impressions" at-attribute="blankImpressions" at-sortable>
+                    <td ng-show="isAdmin" at-title="{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}" at-attribute="blankImpressions" at-sortable>
                         {{ item.blankImpressions | number }}
                     </td>
-                    <td ng-show="isAdmin" at-title="Void Impressions" at-attribute="voidImpressions" at-sortable>
+                    <td ng-show="isAdmin" at-title="{{ 'REPORT.VOID_IMPRESSIONS' | translate }}" at-attribute="voidImpressions" at-sortable>
                         {{ item.voidImpressions | number }}
                     </td>
-                    <td at-title="Clicks" at-attribute="clicks" at-sortable>
+                    <td at-title="{{ 'REPORT.CLICKS' | translate }}" at-attribute="clicks" at-sortable>
                         {{ item.clicks | number }}
                     </td>
-                    <td at-title="Passbacks" at-attribute="passbacks" at-sortable>
+                    <td at-title="{{ 'REPORT.PASSBACKS' | translate }}" at-attribute="passbacks" at-sortable>
                         {{ item.passbacks | number }}
                     </td>
-                    <td at-title="Fill Rate" at-attribute="fillRate" at-sortable>
+                    <td at-title="{{ 'REPORT.FILL_RATE' | translate }}" at-attribute="fillRate" at-sortable>
                         {{ item.fillRate | percentage }}
                     </td>
 

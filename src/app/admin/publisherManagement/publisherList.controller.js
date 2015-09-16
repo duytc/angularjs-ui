@@ -6,7 +6,7 @@
         .controller('PublisherList', PublisherList)
     ;
 
-    function PublisherList($scope, publishers, autoLogin, adminUserManager, AlertService, historyStorage, HISTORY_TYPE_PATH) {
+    function PublisherList($scope, $translate, publishers, autoLogin, adminUserManager, AlertService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.publishers = publishers;
 
         $scope.today = new Date();
@@ -30,9 +30,9 @@
                     var successMessage;
 
                     if (isPause) {
-                        successMessage = 'The publisher has been deactivated';
+                        successMessage = $translate.instant('PUBLISHER_MODULE.PAUSE_STATUS_SUCCESS');
                     } else {
-                        successMessage = 'The publisher has been activated';
+                        successMessage = $translate.instant('PUBLISHER_MODULE.ACTIVE_STATUS_SUCCESS');
                     }
 
                     AlertService.replaceAlerts({
@@ -43,7 +43,7 @@
                 .catch(function () {
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'Could not change publisher status'
+                        message: $translate.instant('PUBLISHER_MODULE.UPDATE_STATUS_FAIL')
                     });
                 })
 

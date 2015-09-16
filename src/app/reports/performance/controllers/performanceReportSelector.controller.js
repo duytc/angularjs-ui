@@ -5,7 +5,7 @@
         .controller('PerformanceReportSelector', PerformanceReportSelector)
     ;
 
-    function PerformanceReportSelector($scope, $q, $state, _, PERFORMANCE_REPORT_TYPES, Auth, UserStateHelper, AlertService, performanceReport, reportSelectorForm, ReportParams) {
+    function PerformanceReportSelector($scope, $translate, $q, $state, _, PERFORMANCE_REPORT_TYPES, Auth, UserStateHelper, AlertService, performanceReport, reportSelectorForm, ReportParams) {
         // important init code at the bottom
 
         var toState = null;
@@ -428,7 +428,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'An error occurred trying to request the report'
+                        message:  $translate.instant('REPORT.REPORT_FAIL')
                     });
                 })
             ;

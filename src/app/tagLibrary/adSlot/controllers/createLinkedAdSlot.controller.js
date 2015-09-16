@@ -5,7 +5,7 @@
         .controller('CreateLinkedAdSlots', CreateLinkedAdSlots)
     ;
 
-    function CreateLinkedAdSlots($scope, $state, $modalInstance, adSlot, channels, sites, AdSlotLibrariesManager, AlertService, historyStorage, HISTORY_TYPE_PATH) {
+    function CreateLinkedAdSlots($scope, $translate, $state, $modalInstance, adSlot, channels, sites, AdSlotLibrariesManager, AlertService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.adSlot = adSlot;
         $scope.channels = channels;
         $scope.sites = sites;
@@ -32,13 +32,13 @@
 
                     AlertService.addFlash({
                         type: 'success',
-                        message: 'New ad slots have been added to sites'
+                        message: $translate.instant('AD_SLOT_LIBRARY_MODULE.AD_SLOT_FOR_SITE_SUCCESS')
                     });
                 })
                 .catch(function() {
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'Could not add new ad slots'
+                        message: $translate.instant('AD_SLOT_LIBRARY_MODULE.AD_SLOT_FOR_SITE_FAIL')
                     });
                 }
             );

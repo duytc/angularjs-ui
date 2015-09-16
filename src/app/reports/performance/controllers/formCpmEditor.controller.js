@@ -5,7 +5,7 @@
         .controller('FormCpmEditor', FormCpmEditor)
     ;
 
-    function FormCpmEditor($scope, $modalInstance, cpmData, Manager, DateFormatter, AlertService, startDate, endDate) {
+    function FormCpmEditor($scope, $translate, $modalInstance, cpmData, Manager, DateFormatter, AlertService, startDate, endDate) {
         $scope.cpmData = cpmData;
 
         $scope.isFormValid = isFormValid;
@@ -48,7 +48,7 @@
                     $modalInstance.close();
                     AlertService.addAlert({
                         type: 'success',
-                        message: 'The CPM value has been scheduled for updating'
+                        message: $translate.instant('PERFORMANCE_REPORT_MODULE.UPDATE_CPM_SUCCESS')
                     });
                 })
                 .catch(
@@ -56,7 +56,7 @@
                     $modalInstance.close();
                     AlertService.addAlert({
                         type: 'error',
-                        message: 'An error occurred. The CPM value could not be updated'
+                        message: $translate.instant('PERFORMANCE_REPORT_MODULE.UPDATE_CPM_FAIL')
                     });
                 });
         }

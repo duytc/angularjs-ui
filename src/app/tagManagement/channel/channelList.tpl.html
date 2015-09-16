@@ -30,14 +30,14 @@
                 <tbody>
                 <tr>
                     <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
-                    <td at-title="Actions">
+                    <td at-title="{{ 'ACTIONS' | translate }}">
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li><a ui-sref="^.siteList({ id: item.id })">{{ 'MANAGE' | translate }} {{ 'SITES' | translate }}</a></li>
+                                <li><a ui-sref="^.siteList({ id: item.id })">{{ 'CHANNEL_MODULE.MANAGE_SITES' | translate }}</a></li>
                                 <li class="divider"></li>
-                                <li><a ui-sref="^.edit({ id: item.id })">{{ 'EDIT' | translate }} {{ 'CHANNEL' | translate }}</a></li>
-                                <li><a ng-click="confirmDeletion(item, $index)">{{ 'DELETE' | translate }} {{ 'CHANNEL' | translate }}</a></li>
+                                <li><a ui-sref="^.edit({ id: item.id })">{{ 'CHANNEL_MODULE.EDIT_CHANNEL' | translate }}</a></li>
+                                <li><a ng-click="confirmDeletion(item, $index)">{{ 'CHANNEL_MODULE.DELETE_CHANNEL' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>

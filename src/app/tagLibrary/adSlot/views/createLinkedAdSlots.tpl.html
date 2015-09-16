@@ -1,6 +1,6 @@
 <form name="createLinkedAdSlots" role="form" ng-submit="submit()" novalidate>
     <div class="modal-header">
-        <h4 class="modal-title">Create Linked Ad Slots : <strong>{{ adSlot.name }}</strong></h4>
+        <h4 class="modal-title">{{ 'AD_SLOT_LIBRARY_MODULE.TITLE_CREATE_LINKED_AD_SLOTS' | translate }} : <strong>{{ adSlot.name }}</strong></h4>
     </div>
     <div class="modal-body">
         <div class="row">
@@ -9,7 +9,7 @@
                 <tabset class="nav-tab-margin-linked">
                     <tab heading="By Channel">
                         <div class="form-group">
-                            <label for="inputSite" class="col-sm-1 control-label">Channels</label>
+                            <label for="inputSite" class="col-sm-1 control-label">{{ 'CHANNELS' | translate }}</label>
                             <div class="col-sm-11">
                                 <isteven-multi-select id="inputSite" input-model="channels" output-model="selectData.channels" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
                             </div>
@@ -17,7 +17,7 @@
                     </tab>
                     <tab heading="By Site">
                         <div class="form-group">
-                            <label for="inputChannel" class="col-sm-1 control-label">Sites</label>
+                            <label for="inputChannel" class="col-sm-1 control-label">{{ 'SITES' | translate }}</label>
                             <div class="col-sm-11">
                                 <isteven-multi-select id="inputChannel" input-model="sites" output-model="selectData.sites" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
                             </div>
@@ -30,7 +30,7 @@
     </div>
 
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="$dismiss()" type="button">Cancel</button>
-        <button class="btn btn-danger" ng-disabled="!isFormValid()" type="submit">Submit</button>
+        <button class="btn btn-primary" ng-click="$dismiss()" type="button">{{ 'CANCEL' | translate }}</button>
+        <button class="btn btn-danger" ng-disabled="!isFormValid()" type="submit">{{ 'SUBMIT' | translate }}</button>
     </div>
 </form>

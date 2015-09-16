@@ -36,6 +36,7 @@
         'tagcade.core.util',
         'tagcade.core.resetPassword',
         'tagcade.core.historyStorage',
+        'tagcade.core.cache',
         'tagcade.core.language',
 
         // 3rd party modules
@@ -55,7 +56,9 @@
         'hljs',
         'ngClipboard',
         'angularjs-dropdown-multiselect',
-        'isteven-multi-select'
+        'isteven-multi-select',
+        'angular-cache',
+        'infinite-scroll'
     ]);
 
     core.run(appRun);

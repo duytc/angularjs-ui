@@ -5,7 +5,7 @@
         .controller('BillingReportSelector', BillingReportSelector)
     ;
 
-    function BillingReportSelector($scope, $q, $state, _, Auth, UserStateHelper, AlertService, ReportParams, billingService, performanceReport, REPORT_TYPES, reportSelectorForm, selectorFormCalculator, UISelectMethod) {
+    function BillingReportSelector($scope, $translate, $q, $state, _, Auth, UserStateHelper, AlertService, ReportParams, billingService, performanceReport, REPORT_TYPES, reportSelectorForm, selectorFormCalculator, UISelectMethod) {
         var toState;
 
         var isAdmin = Auth.isAdmin();
@@ -289,7 +289,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'An error occurred trying to request the report'
+                        message: $translate.instant('REPORT.REPORT_FAIL')
                     });
                 })
             ;

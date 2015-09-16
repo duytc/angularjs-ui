@@ -6,7 +6,7 @@
         .controller('AccountForm', AccountForm)
     ;
 
-    function AccountForm($scope, $state, AlertService, ServerErrorProcessor, publisher, REPORT_SETTINGS) {
+    function AccountForm($scope, $translate, $state, AlertService, ServerErrorProcessor, publisher, REPORT_SETTINGS) {
         $scope.fieldNameTranslations = {
             username: 'Username',
             plainPassword: 'Password'
@@ -301,7 +301,7 @@
                 function () {
                     AlertService.addFlash({
                         type: 'success',
-                        message: 'Your profile is updated successfully'
+                        message: $translate.instant('PUBLISHER_MODULE.UPDATE_PROFILE_SUCCESS')
                     });
                 }
             )

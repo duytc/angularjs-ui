@@ -5,7 +5,7 @@
         .controller('LibraryAdTagForm', LibraryAdTagForm)
     ;
 
-    function LibraryAdTagForm($scope, AlertService, ServerErrorProcessor, adTag, publisherList, adNetworkList, AdTagLibrariesManager, historyStorage, AD_TYPES, HISTORY_TYPE_PATH) {
+    function LibraryAdTagForm($scope, $translate, AlertService, ServerErrorProcessor, adTag, publisherList, adNetworkList, AdTagLibrariesManager, historyStorage, AD_TYPES, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             adNetwork: 'adNetwork',
             html: 'html'
@@ -40,12 +40,20 @@
             }
         }
 
+        //Infinite Scroll Magic
+        $scope.infiniteScroll = {
+            numToAddAdNetwork: 20,
+            currentAdNetworks: 20
+        };
+
         $scope.isFormValid = function() {
             return $scope.adTagLibraryForm.$valid;
         };
 
         $scope.selectPublisher = function() {
             $scope.adTag.adNetwork = null;
+
+            $scope.resetInfiniteScrollAdNetwork();
         };
 
         $scope.backToAdTagLibraryList = function() {
@@ -74,7 +82,7 @@
                 function () {
                     AlertService.addFlash({
                         type: 'success',
-                        message: 'The ad tag has been ' + ($scope.isNew ? 'created' : 'updated')
+                        message: $scope.isNew ? $translate.instant('AD_TAG_MODULE.ADD_NEW_SUCCESS') : $translate.instant('AD_TAG_MODULE.UPDATE_SUCCESS')
                     });
                 }
             )
@@ -85,5 +93,14 @@
             )
             ;
         };
+
+        $scope.addMoreAdNetworks = function(){
+            $scope.infiniteScroll.currentAdNetworks += $scope.infiniteScroll.numToAddAdNetwork;
+        };
+
+        $scope.resetInfiniteScrollAdNetwork = function() {
+            $scope.infiniteScroll.numToAddAdNetwork = 20;
+            $scope.infiniteScroll.currentAdNetworks = 20;
+        }
     }
 })();

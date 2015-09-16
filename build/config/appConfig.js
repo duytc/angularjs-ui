@@ -74,6 +74,8 @@ module.exports = {
             'vendor/jsondiffpatch/public/build/jsondiffpatch.js',
             'vendor/angularjs-dropdown-multiselect/src/angularjs-dropdown-multiselect.js',
             'vendor/isteven-angular-multiselect/isteven-multi-select.js',
+            'vendor/angular-cache/dist/angular-cache.js',
+            'vendor/ngInfiniteScroll/build/ng-infinite-scroll.js',
             'vendor/angular-translate/angular-translate.js'
         ],
         css: [

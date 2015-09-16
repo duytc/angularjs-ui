@@ -5,10 +5,10 @@
             <form name="tagGeneratorForm" class="col-lg-6 form-horizontal" ng-submit="submit()" novalidate>
 
                 <div class="form-group" ng-if="allowPublisherSelection">
-                    <label class="col-sm-2 control-label">Publisher</label>
+                    <label class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
                     <div class="col-sm-10">
                         <ui-select ng-model="selected.publisher" ng-required="true" on-select="selectPublisher($item, $model)" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select a publisher">{{ $select.selected.company }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
                             <ui-select-choices repeat="publisher in publishers | filter: { company: $select.search }">
                                 {{ publisher.company }}
                             </ui-select-choices>
@@ -17,10 +17,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">Site</label>
+                    <label class="col-sm-2 control-label">{{ 'SITE' | translate }}</label>
                     <div class="col-sm-10">
                         <ui-select name="site" ng-model="selected.site" ng-required="true" on-select="selectSite($item, $model)" ng-disabled="allowPublisherSelection && !selected.publisher" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select a site to generate tags for...">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'TAG_GENERATOR_MODULE.SELECT_A_SITE_TO_GENERATE' | translate }}">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices repeat="site in siteList | filter: { name: $select.search } | selectedPublisher:selected.publisher">
                                 {{ site.name }}
                             </ui-select-choices>
@@ -30,9 +30,9 @@
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">Submit</button>
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
                         <div class="callout callout-info">
-                            <p>Submit button will be active only when all fields are valid.</p>
+                            <p>{{ 'VALID_FORM' | translate }}</p>
                         </div>
                     </div>
                 </div>
@@ -44,36 +44,36 @@
 
 <section ng-if="jstags" class="panel panel-default panel-tag-generator">
     <div class="panel-heading">
-        <strong>Tags for {{ selected.site.name }}</strong>
+        <strong translate="TAG_GENERATOR_MODULE.TAGS_FOR_SITE" translate-value-name="{{ selected.site.name }}"></strong>
 
         <div class="button-bar hidden-xs">
             <button ng-click="exportTags(jstags)" class="btn btn-sm btn-primary" type="button">
-                Export Tags
+                {{ 'TAG_GENERATOR_MODULE.EXPORT_TAG' | translate }}
             </button>
         </div>
 
         <div class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ng-click="exportTags(jstags)">Export Tags</a></li>
+                <li><a ng-click="exportTags(jstags)">{{ 'TAG_GENERATOR_MODULE.EXPORT_TAG' | translate }}</a></li>
             </ul>
         </div>
     </div>
     <tabset class="nav-tab-margin">
 
-        <tab ng-if="jstags.header" select="selectTab()" heading="Header">
+        <tab ng-if="jstags.header" select="selectTab()" heading="{{ 'TAG_GENERATOR_MODULE.HEADER' | translate }}">
             <ul class="list-unstyled list-info">
                 <li>
                     <p><strong>{{ keywordGuide.header }}</strong></p>
                     <div hljs source="jstags.header" select-on-click class="highlight-js"></div>
                     <div class="copy-clipboard">
-                        <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(jstags.header)" class="btn btn-sm btn-primary">Copy to clipboard</button>
+                        <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(jstags.header)" class="btn btn-sm btn-primary"><p>{{ 'COPY_TO_CLIPBOARD' | translate }}</p></button>
                     </div>
                 </li>
             </ul>
         </tab>
 
-        <tab ng-if="jstags.display" select="selectTab()" heading="Display Ad Slots">
+        <tab ng-if="jstags.display" select="selectTab()" heading="{{ 'DISPLAY_AD_SLOTS' | translate }}">
             <div class="media">
                 <div class="media-body">
                     <ul class="list-unstyled list-info">
@@ -81,7 +81,7 @@
                             <p><strong>{{ keywordGuide.passback }}</strong></p>
                             <div hljs source="jstags.display.passback" select-on-click class="highlight-js"></div>
                             <div class="copy-clipboard">
-                                <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(jstags.display.passback)" class="btn btn-sm btn-primary">Copy to clipboard</button>
+                                <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(jstags.display.passback)" class="btn btn-sm btn-primary"><p>{{ 'COPY_TO_CLIPBOARD' | translate }}</p></button>
                             </div>
                         </li>
                         <li>
@@ -91,7 +91,7 @@
                             <p><strong>{{ name }}</strong></p>
                             <div hljs source="tag" select-on-click class="highlight-js"></div>
                             <div class="copy-clipboard">
-                                <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(tag)" class="btn btn-sm btn-primary">Copy to clipboard</button>
+                                <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(tag)" class="btn btn-sm btn-primary"><p>{{ 'COPY_TO_CLIPBOARD' | translate }}</p></button>
                             </div>
                         </li>
                     </ul>
@@ -100,7 +100,7 @@
             </div>
         </tab>
 
-        <tab ng-if="jstags.native.ad_slots" select="selectTab()" heading="Native Ad Slots">
+        <tab ng-if="jstags.native.ad_slots" select="selectTab()" heading="{{ 'NATIVE_AD_SLOTS' | translate }}">
             <div class="media">
                 <div class="media-body">
                     <ul class="list-unstyled list-info">
@@ -111,7 +111,7 @@
                             <p><strong>{{ name }}</strong></p>
                             <div hljs source="tag" select-on-click class="highlight-js"></div>
                             <div class="copy-clipboard">
-                                <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(tag)" class="btn btn-sm btn-primary">Copy to clipboard</button>
+                                <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(tag)" class="btn btn-sm btn-primary"><p>{{ 'COPY_TO_CLIPBOARD' | translate }}</p></button>
                             </div>
                         </li>
                     </ul>
@@ -120,7 +120,7 @@
             </div>
         </tab>
 
-        <tab ng-if="jstags.dynamic.ad_slots" select="selectTab()" heading="Dynamic Ad Slots">
+        <tab ng-if="jstags.dynamic.ad_slots" select="selectTab()" heading="{{ 'DYNAMIC_AD_SLOTS' | translate }}">
             <div class="media">
                 <div class="media-body">
                     <ul class="list-unstyled list-info">
@@ -131,7 +131,7 @@
                             <p><strong>{{ name }}</strong></p>
                             <div hljs source="getTextToCopy(tag)" select-on-click class="highlight-js"></div>
                             <div class="copy-clipboard">
-                                <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(tag)" class="btn btn-sm btn-primary">Copy to clipboard</button>
+                                <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(tag)" class="btn btn-sm btn-primary"><p>{{ 'COPY_TO_CLIPBOARD' | translate }}</p></button>
                             </div>
                         </li>
                     </ul>

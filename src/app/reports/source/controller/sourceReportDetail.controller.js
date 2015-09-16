@@ -5,7 +5,7 @@
         .controller('SourceReportDetailController', SourceReportDetailController)
     ;
 
-    function SourceReportDetailController($scope, AlertService, reportGroup, DateFormatter) {
+    function SourceReportDetailController($scope, $translate, AlertService, reportGroup, DateFormatter) {
         reportGroup = reportGroup || {};
 
         $scope.reportGroup = reportGroup;
@@ -45,7 +45,7 @@
             if (!$scope.hasResult) {
                 AlertService.replaceAlerts({
                     type: 'warning',
-                    message: 'There is no report for that selection'
+                    message: $translate.instant('SOURCE_REPORT_MODULE.NO_REPORT_FOR_SELECTION')
                 });
             }
         }

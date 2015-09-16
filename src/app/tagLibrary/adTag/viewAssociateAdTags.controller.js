@@ -5,7 +5,7 @@
         .controller('ViewAssociateAdTags', ViewAssociateAdTags)
     ;
 
-    function ViewAssociateAdTags($scope, $modal, adTags, TYPE_AD_SLOT, AlertService, AdTagManager, historyStorage, HISTORY_TYPE_PATH) {
+    function ViewAssociateAdTags($scope, $translate, $modal, adTags, TYPE_AD_SLOT, AlertService, AdTagManager, historyStorage, HISTORY_TYPE_PATH) {
        $scope.adTags = adTags;
 
         $scope.hasData = function () {
@@ -15,7 +15,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no ad tags associated'
+                message: $translate.instant('AD_TAG_LIBRARY_MODULE.CURRENTLY_NO_AD_TAG_ASSOCIATED')
             });
         }
 
@@ -52,7 +52,7 @@
                 .then(function() {
                     AlertService.addAlert({
                         type: 'success',
-                        message: 'The ad tag has been updated'
+                        message: $translate.instant('AD_TAG_MODULE.UPDATE_SUCCESS')
                     });
                 })
                 .catch(function() {
@@ -60,7 +60,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'The ad tag has not been updated'
+                        message: $translate.instant('AD_TAG_MODULE.UPDATE_FAIL')
                     });
                 });
         }
@@ -76,10 +76,10 @@
                 .catch(function () {
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'Could not change ad tag status'
+                        message: $translate.instant('AD_TAG_MODULE.CHANGE_STATUS_FAIL')
                     });
 
-                    return $q.reject('could not update ad tag status');
+                    return $q.reject($translate.instant('AD_TAG_MODULE.CHANGE_STATUS_FAIL'));
                 })
                 .then(function () {
                     adTag.active = newTagStatus;
@@ -116,13 +116,13 @@
 
                         AlertService.addFlash({
                             type: 'success',
-                            message: 'The ad tag was deleted'
+                            message: $translate.instant('AD_TAG_MODULE.DELETE_SUCCESS')
                         });
                     },
                     function () {
                         AlertService.replaceAlerts({
                             type: 'danger',
-                            message: 'The ad tag could not be deleted'
+                            message: $translate.instant('AD_TAG_MODULE.DELETE_FAIL')
                         });
                     }
                 );

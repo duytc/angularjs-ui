@@ -6,13 +6,13 @@
         <div class="button-bar">
             <button ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
-                New Ad Tag
+                {{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}
             </button>
         </div>
         <div class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ui-sref="^.new">New Ad Tag</a></li>
+                <li><a ui-sref="^.new">{{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}</a></li>
             </ul>
         </div>
     </div>
@@ -24,30 +24,30 @@
             <table class="table" at-sortable-query at-table at-paginated at-list="adTags" at-config="tableConfig">
                 <thead>
                 <tr>
-                    <th ng-show="isAdmin()" at-attribute="adNetwork.publisher.company">Publisher</th>
+                    <th ng-show="isAdmin()" at-attribute="adNetwork.publisher.company">{{ 'PUBLISHER' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td at-implicit at-title="#" at-sortable at-attribute="id"></td>
-                    <td at-title="Action" at-attribute="action">
+                    <td at-title="{{ 'ACTIONS' | translate }}" at-attribute="action">
                         <div class="btn-group" dropdown>
-                            <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li><a ui-sref="^.associated({ adTagId: item.id })">View Linked Ad Tags</a></li>
+                                <li><a ui-sref="^.associated({ adTagId: item.id })">{{ 'AD_TAG_LIBRARY_MODULE.VIEW_LINKED_AD_TAGS' | translate }}</a></li>
                                 <li class="divider"></li>
-                                <li><a ui-sref="^.edit({ id: item.id })">Edit Ad Tag</a></li>
-                                <li><a ng-click="removeMoveToLibrary(item)">Delete Ad Tag</a></li>
+                                <li><a ui-sref="^.edit({ id: item.id })">{{ 'AD_TAG_MODULE.EDIT_AD_TAG' | translate }}</a></li>
+                                <li><a ng-click="removeMoveToLibrary(item)">{{ 'AD_TAG_MODULE.DELETE_AD_TAG' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>
-                    <td at-title="Name" ng-dblclick="nameForm.$show()" at-attribute="name" at-sortable at-initial-sorting="asc">
+                    <td at-title="{{ 'NAME' | translate }}" ng-dblclick="nameForm.$show()" at-attribute="name" at-sortable at-initial-sorting="asc">
                         <span class="fa fa-pencil" ng-hide="nameForm.$visible"></span>
                         <div e-form="nameForm" buttons="no" oncancel="updateAdTag($data, 'name', item)" onbeforesave="updateAdTag($data, 'name', item)" editable-text="item.name">{{ item.name }}</div>
                     </td>
-                    <td at-title="Ad Network" at-implicit at-sortable at-attribute="adNetwork.name"></td>
-                    <td ng-show="isAdmin()" at-title="Publisher" at-sortable at-implicit at-attribute="adNetwork.publisher.company"></td>
-                    <td at-title="Linked Ad Tags" at-implicit at-sortable at-attribute="associatedTagCount"></td>
+                    <td at-title="{{ 'AD_NETWORK' | translate }}" at-implicit at-sortable at-attribute="adNetwork.name"></td>
+                    <td ng-show="isAdmin()" at-title="{{ 'PUBLISHER' | translate }}" at-sortable at-implicit at-attribute="adNetwork.publisher.company"></td>
+                    <td at-title="{{ 'AD_TAG_LIBRARY_MODULE.LINKED_AD_TAGS' | translate }}" at-implicit at-sortable at-attribute="associatedTagCount"></td>
                 </tr>
                 </tbody>
             </table>

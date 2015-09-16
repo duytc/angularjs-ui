@@ -5,7 +5,7 @@
         .controller('SiteChannelList', SiteChannelList)
     ;
 
-    function SiteChannelList($scope, $filter, $modal, AlertService, channels, site, ChannelManager, SiteManager, historyStorage, HISTORY_TYPE_PATH) {
+    function SiteChannelList($scope, $translate, $filter, $modal, AlertService, channels, site, ChannelManager, SiteManager, historyStorage, HISTORY_TYPE_PATH) {
         $scope.channels = channels;
         $scope.site = site;
 
@@ -16,7 +16,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no channels in this site'
+                message: $translate.instant('CHANNEL_MODULE.CURRENTLY_NO_CHANNELS_SITE')
             });
         }
 
@@ -54,13 +54,13 @@
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message: 'The channel was deleted'
+                            message: $translate.instant('CHANNEL_MODULE.DELETE_SUCCESS')
                         });
                     },
                     function () {
                         AlertService.replaceAlerts({
                             type: 'danger',
-                            message: 'The channel could not be deleted'
+                            message: $translate.instant('CHANNEL_MODULE.DELETE_FAIL')
                         });
                     }
                 )
@@ -91,13 +91,13 @@
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message: 'The channel was deleted'
+                            message: $translate.instant('SITE_MODULE.REMOVE_CHANNEL_FROM_SITE_SUCCESS')
                         });
                     },
                     function () {
                         AlertService.replaceAlerts({
                             type: 'danger',
-                            message: 'The channel could not be deleted'
+                            message: $translate.instant('SITE_MODULE.REMOVE_CHANNEL_FROM_SITE_FAIL')
                         });
                     }
                 )

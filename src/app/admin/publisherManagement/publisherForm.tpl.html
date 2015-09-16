@@ -5,13 +5,13 @@
         <div class="button-bar">
             <button ng-if="!isNew" ng-click="backToListPublisher()" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-arrow-left"></span>
-                Back to Publisher List
+                {{ 'PUBLISHER_MODULE.BACK_TO_PUBLISHER_LIST' | translate }}
             </button>
         </div>
         <div class="btn-group btnGrouped" dropdown ng-if="!isNew">
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ng-click="backToListPublisher()">Back to Publisher List</a></li>
+                <li><a ng-click="backToListPublisher()">{{ 'PUBLISHER_MODULE.BACK_TO_PUBLISHER_LIST' | translate }}</a></li>
             </ul>
         </div>
     </div>
@@ -19,80 +19,80 @@
         <div class="row">
             <form name="userForm" class="col-lg-6 form-validation form-horizontal userForm" role="form" ng-submit="submit()" novalidate>
                 <div class="form-group">
-                    <label for="inputUsername" class="col-sm-2 control-label">Username <strong class="text-danger">*</strong></label>
+                    <label for="inputUsername" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.USERNAME' | translate }} <strong class="text-danger">*</strong></label>
                     <div class="col-sm-10">
-                        <input server-error name="username" ng-model="publisher.username" ng-required="true" ng-minlength="2" type="text" autocomplete="off" class="form-control" id="inputUsername" placeholder="Username">
+                        <input server-error name="username" ng-model="publisher.username" ng-required="true" ng-minlength="2" type="text" autocomplete="off" class="form-control" id="inputUsername" placeholder="{{ 'PUBLISHER_MODULE.USERNAME' | translate }}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputPassword" class="col-sm-2 control-label">Password <strong class="text-danger" ng-if="isNew">*</strong></label>
+                    <label for="inputPassword" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.PASSWORD' | translate }} <strong class="text-danger" ng-if="isNew">*</strong></label>
                     <div class="col-sm-10">
-                        <input server-error name="plainPassword" ng-model="publisher.plainPassword" ng-required="isNew" ng-minlength="2" type="password" autocomplete="off" class="form-control" id="inputPassword" placeholder="Password">
+                        <input server-error name="plainPassword" ng-model="publisher.plainPassword" ng-required="isNew" ng-minlength="2" type="password" autocomplete="off" class="form-control" id="inputPassword" placeholder="{{ 'PUBLISHER_MODULE.PASSWORD' | translate }}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputRepeatPassword" class="col-sm-2 control-label">Repeat Password <strong class="text-danger" ng-if="isNew">*</strong></label>
+                    <label for="inputRepeatPassword" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.REPEAT_PASSWORD' | translate }} <strong class="text-danger" ng-if="isNew">*</strong></label>
                     <div class="col-sm-10">
-                        <input server-error name="inputRepeatPassword" ng-model="repeatPassword" ng-required="isNew" ng-minlength="2" type="password" autocomplete="off" class="form-control" id="inputRepeatPassword" placeholder="Repeat Password">
-                        <span class="help-block">Leave it blank for no change</span>
+                        <input server-error name="inputRepeatPassword" ng-model="repeatPassword" ng-required="isNew" ng-minlength="2" type="password" autocomplete="off" class="form-control" id="inputRepeatPassword" placeholder="{{ 'PUBLISHER_MODULE.REPEAT_PASSWORD' | translate }}">
+                        <span class="help-block">{{ 'PUBLISHER_MODULE.HELP_BLOCK_REPEAT_PASSWORD' | translate }}</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputCompany" class="col-sm-2 control-label">Company <strong class="text-danger">*</strong></label>
+                    <label for="inputCompany" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.COMPANY' | translate }} <strong class="text-danger">*</strong></label>
                     <div class="col-sm-10">
-                        <input server-error name="company" ng-model="publisher.company" ng-required="true" type="text" class="form-control" id="inputCompany" placeholder="Company">
+                        <input server-error name="company" ng-model="publisher.company" ng-required="true" type="text" class="form-control" id="inputCompany" placeholder="{{ 'PUBLISHER_MODULE.COMPANY' | translate }}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputEmail" class="col-sm-2 control-label">Email <strong class="text-danger">*</strong></label>
+                    <label for="inputEmail" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.EMAIL' | translate }} <strong class="text-danger">*</strong></label>
                     <div class="col-sm-10">
-                        <input server-error ng-required="true" name="email" ng-model="publisher.email" type="email" class="form-control" id="inputEmail" placeholder="Email">
+                        <input server-error ng-required="true" name="email" ng-model="publisher.email" type="email" class="form-control" id="inputEmail" placeholder="{{ 'PUBLISHER_MODULE.EMAIL' | translate }}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputFirstName" class="col-sm-2 control-label">First Name</label>
+                    <label for="inputFirstName" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.FIRST_NAME' | translate }}</label>
                     <div class="col-sm-10">
-                        <input server-error name="firstName" ng-model="publisher.firstName" type="text" class="form-control" id="inputFirstName" placeholder="First Name">
+                        <input server-error name="firstName" ng-model="publisher.firstName" type="text" class="form-control" id="inputFirstName" placeholder="{{ 'PUBLISHER_MODULE.FIRST_NAME' | translate }}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputLastName" class="col-sm-2 control-label">Last Name</label>
+                    <label for="inputLastName" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.LAST_NAME' | translate }}</label>
                     <div class="col-sm-10">
-                        <input server-error name="lastName" ng-model="publisher.lastName" type="text" class="form-control" id="inputLastName" placeholder="Last Name">
+                        <input server-error name="lastName" ng-model="publisher.lastName" type="text" class="form-control" id="inputLastName" placeholder="{{ 'PUBLISHER_MODULE.LAST_NAME' | translate }}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputPhone" class="col-sm-2 control-label">Phone</label>
+                    <label for="inputPhone" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.PHONE' | translate }}</label>
                     <div class="col-sm-10">
-                        <input server-error name="phone" ng-model="publisher.phone" type="text" class="form-control" id="inputPhone" placeholder="Phone">
+                        <input server-error name="phone" ng-model="publisher.phone" type="text" class="form-control" id="inputPhone" placeholder="{{ 'PUBLISHER_MODULE.PHONE' | translate }}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputAddress" class="col-sm-2 control-label">Address</label>
+                    <label for="inputAddress" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.ADDRESS' | translate }}</label>
                     <div class="col-sm-10">
-                        <input server-error name="address" ng-model="publisher.address" type="text" class="form-control" id="inputAddress" placeholder="Address">
+                        <input server-error name="address" ng-model="publisher.address" type="text" class="form-control" id="inputAddress" placeholder="{{ 'PUBLISHER_MODULE.ADDRESS' | translate }}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputPostalCode" class="col-sm-2 control-label">Postal Code</label>
+                    <label for="inputPostalCode" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.POSTAL_CODE' | translate }}</label>
                     <div class="col-sm-10">
-                        <input server-error name="postalCode" ng-model="publisher.postalCode" type="text" class="form-control" id="inputPostalCode" placeholder="PostalCode">
+                        <input server-error name="postalCode" ng-model="publisher.postalCode" type="text" class="form-control" id="inputPostalCode" placeholder="{{ 'PUBLISHER_MODULE.POSTAL_CODE' | translate }}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputCity" class="col-sm-2 control-label">City</label>
+                    <label for="inputCity" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.CITY' | translate }}</label>
                     <div class="col-sm-10">
-                        <input server-error name="city" ng-model="publisher.city" type="text" class="form-control" id="inputCity" placeholder="City">
+                        <input server-error name="city" ng-model="publisher.city" type="text" class="form-control" id="inputCity" placeholder="{{ 'PUBLISHER_MODULE.CITY' | translate }}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputState" class="col-sm-2 control-label">State</label>
+                    <label for="inputState" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.STATE' | translate }}</label>
                     <div class="col-sm-10">
-                        <input server-error name="state" ng-model="publisher.state" type="text" class="form-control" id="inputState" placeholder="State">
+                        <input server-error name="state" ng-model="publisher.state" type="text" class="form-control" id="inputState" placeholder="{{ 'PUBLISHER_MODULE.STATE' | translate }}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputCountry" class="col-sm-2 control-label">Country</label>
+                    <label for="inputCountry" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.COUNTRY' | translate }}</label>
                     <div class="col-sm-10">
                         <select name="country" ng-model="publisher.country" class="form-control" id="inputCountry">
                             <option disabled ng-selected="true">Country...</option>
@@ -101,7 +101,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">Modules</label>
+                    <label class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.MODULES' | translate }}</label>
                     <div class="col-sm-10">
                         <div ng-repeat="module in modules">
                             <label class="ui-checkbox"><input name="enabledModules[]" type="checkbox" ng-click="toggleModuleRole(module.role)" ng-checked="hasModuleEnabled(module.role)">
@@ -111,36 +111,25 @@
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="hasModuleEnabled('MODULE_VIDEO_ANALYTICS')">
-                    <label for="inputRate" class="col-sm-2 control-label">Video Players</label>
-                    <div class="col-sm-10">
-                        <div ng-repeat="player in videoPlayers">
-                            <label class="ui-checkbox"><input name="moduleConfigs[]" type="checkbox" ng-click="toggleVideoPlayer(player.name)" ng-checked="hasVideoPlayer(player.name)">
-                                <span>{{ player.label }}</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="form-group" ng-if="hasModuleEnabled('MODULE_DISPLAY')">
-                    <label for="inputRate" class="col-sm-2 control-label">Billing Rate</label>
+                    <label for="inputRate" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.BILLING_RATE' | translate }}</label>
                     <div class="col-sm-10">
-                        <input server-error name="billingRate" ng-model="publisher.billingRate" type="number" class="form-control" id="inputRate" placeholder="Display billing Rate">
-                        <span class="help-block">You can set a custom CPM rate for this publisher. If you do not set a custom rate, the rate is calculated from our rate card.</span>
+                        <input server-error name="billingRate" ng-model="publisher.billingRate" type="number" class="form-control" id="inputRate" placeholder="{{ 'PUBLISHER_MODULE.DISPLAY_BILLING_RATE' | translate }}">
+                        <span class="help-block">{{ 'PUBLISHER_MODULE.HELP_BLOCK_BILLING_RATE' | translate }}</span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="inputEnabled" class="col-sm-2 control-label">Enabled</label>
+                    <label for="inputEnabled" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.ENABLED' | translate }}</label>
                     <div class="col-sm-10">
                         <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="publisher.enabled" id="inputEnabled"><span></span></label>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">Submit</button>
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">
-                            <p>Submit button will be active only when all fields are valid.</p>
+                            <p>{{ 'VALID_FORM' | translate }}</p>
                         </div>
                     </div>
                 </div>

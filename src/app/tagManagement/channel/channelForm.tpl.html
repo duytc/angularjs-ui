@@ -29,7 +29,7 @@
                     <label for="inputPublisher" class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
                     <div class="col-sm-10">
                         <ui-select name="publisher" id="inputPublisher" ng-model="channel.publisher" ng-required="true" server-error on-select="selectPublisher($item)">
-                            <ui-select-match placeholder="{{ 'CHANNEL_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
                             <ui-select-choices repeat="publisher.id as publisher in publishers | filter:$select.search">
                                 {{ publisher.company }}
                             </ui-select-choices>
@@ -53,7 +53,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'CANCEL' | translate }}</button>
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">
                             <p>{{ 'VALID_FORM' | translate }}</p>
                         </div>

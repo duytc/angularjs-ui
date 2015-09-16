@@ -82,10 +82,8 @@
                     channel: /* @ngInject */ function($stateParams, ChannelManager) {
                         return ChannelManager.one($stateParams.id).get();
                     },
-                    sites: /* @ngInject */ function(SiteManager) {
-                        return SiteManager.getList().then(function (users) {
-                            return users.plain();
-                        });
+                    sites: function() {
+                        return null;
                     },
                     publishers: function() {
                         return null;

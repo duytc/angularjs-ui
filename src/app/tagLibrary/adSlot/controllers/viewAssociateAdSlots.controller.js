@@ -5,7 +5,7 @@
         .controller('ViewAssociateAdSlots', ViewAssociateAdSlots)
     ;
 
-    function ViewAssociateAdSlots($scope, $modal, adSlots, historyStorage, adSlotService, AlertService, TYPE_AD_SLOT, HISTORY_TYPE_PATH) {
+    function ViewAssociateAdSlots($scope, $translate, $modal, adSlots, historyStorage, adSlotService, AlertService, TYPE_AD_SLOT, HISTORY_TYPE_PATH) {
         $scope.adSlots = adSlots;
         $scope.adSlotTypes = TYPE_AD_SLOT;
 
@@ -16,7 +16,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no ad slots associated'
+                message: $translate.instant('AD_SLOT_LIBRARY_MODULE.CURRENTLY_NO_AD_SLOT_ASSOCIATED')
             });
         }
 
@@ -63,13 +63,13 @@
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message: 'The ad slot was deleted'
+                            message: $translate.instant('AD_SLOT_MODULE.DELETE_SUCCESS')
                         });
                     },
                     function () {
                         AlertService.replaceAlerts({
                             type: 'danger',
-                            message: 'The ad slot could not be deleted'
+                            message: $translate.instant('AD_SLOT_MODULE.DELETE_FAIL')
                         });
                     }
                 )

@@ -3,7 +3,7 @@
 
     <div class="panel panel-default daily-reports">
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
-            Daily Breakdown
+            {{ 'REPORT.DAILY_AVERAGES' | translate }}
             <div class="button-bar">
                 <export-excel
                         data="reports"
@@ -24,34 +24,34 @@
         </div>
 
         <ul class="nav nav-tabs source-reports">
-            <li role="presentation" ng-class="reportViews.user ? 'active' : ''"><a ng-click="showView('user')">User</a></li>
-            <li role="presentation" ng-class="reportViews.display ? 'active' : ''"><a ng-click="showView('display')">Display</a></li>
-            <li role="presentation" ng-class="reportViews.video ? 'active' : ''"><a ng-click="showView('video')">Video</a></li>
+            <li role="presentation" ng-class="reportViews.user ? 'active' : ''"><a ng-click="showView('user')">{{ 'SOURCE_REPORT_MODULE.VISITS' | translate }}</a></li>
+            <li role="presentation" ng-class="reportViews.display ? 'active' : ''"><a ng-click="showView('display')">{{ 'SOURCE_REPORT_MODULE.DISPLAY' | translate }}</a></li>
+            <li role="presentation" ng-class="reportViews.video ? 'active' : ''"><a ng-click="showView('video')">{{ 'SOURCE_REPORT_MODULE.VIDEO' | translate }}</a></li>
         </ul>
 
         <div class="table-responsive" ng-cloak>
             <table class="table table-hover source-reports" at-table at-paginated at-list="reports" at-config="tableConfig">
                 <thead>
                 <tr>
-                    <th at-attribute="date">Date</th>
-                    <th ng-show="reportViews.user" at-attribute="visits">Visits</th>
-                    <th ng-show="reportViews.user" at-attribute="pageViews">Page Views</th>
-                    <th ng-show="reportViews.user" at-attribute="viewsPerVisit">Views Per Visit</th>
-                    <th ng-show="reportViews.user" at-attribute="qtos">QTOS</th>
-                    <th ng-show="reportViews.user" at-attribute="qtosPercentage">QTOS %</th>
-                    <th ng-show="reportViews.display" at-attribute="displayOpportunities">Slot Opportunities</th>
-                    <th ng-show="reportViews.display" at-attribute="displayImpressions">Impressions</th>
-                    <th ng-show="reportViews.display" at-attribute="displayFillRate">Fill Rate</th>
-                    <th ng-show="reportViews.display" at-attribute="displayClicks">Clicks</th>
-                    <th ng-show="reportViews.display" at-attribute="displayCTR">CTR</th>
-                    <th ng-show="reportViews.display" at-attribute="displayIPV">IPV</th>
-                    <th ng-show="reportViews.video" at-attribute="videoPlayerReady">Player Ready</th>
-                    <th ng-show="reportViews.video" at-attribute="videoAdPlays">Ad Plays</th>
-                    <th ng-show="reportViews.video" at-attribute="videoAdImpressions">Ad Impressions</th>
-                    <th ng-show="reportViews.video" at-attribute="videoAdCompletions">Ad Completions</th>
-                    <th ng-show="reportViews.video" at-attribute="videoAdCompletionRate">Ad Completion Rate</th>
-                    <th ng-show="reportViews.video" at-attribute="videoIPV">IPV</th>
-                    <th ng-show="reportViews.video" at-attribute="videoAdClicks">Ad Clicks</th>
+                    <th at-attribute="date">{{ 'REPORT.DATE' | translate }}</th>
+                    <th ng-show="reportViews.user" at-attribute="visits">{{ 'SOURCE_REPORT_MODULE.VISITS' | translate }}</th>
+                    <th ng-show="reportViews.user" at-attribute="pageViews">{{ 'SOURCE_REPORT_MODULE.PAGE_VIEWS' | translate }}</th>
+                    <th ng-show="reportViews.user" at-attribute="viewsPerVisit">{{ 'SOURCE_REPORT_MODULE.VIEWS_PER_VISIT' | translate }}</th>
+                    <th ng-show="reportViews.user" at-attribute="qtos">{{ 'SOURCE_REPORT_MODULE.QTOS' | translate }}</th>
+                    <th ng-show="reportViews.user" at-attribute="qtosPercentage">{{ 'SOURCE_REPORT_MODULE.QTOS_PERCENTAGE' | translate }}</th>
+                    <th ng-show="reportViews.display" at-attribute="displayOpportunities">{{ 'SOURCE_REPORT_MODULE.SLOT_OPPORTUNITIES' | translate }}</th>
+                    <th ng-show="reportViews.display" at-attribute="displayImpressions">{{ 'SOURCE_REPORT_MODULE.IMPRESSIONS' | translate }}</th>
+                    <th ng-show="reportViews.display" at-attribute="displayFillRate">{{ 'SOURCE_REPORT_MODULE.FILL_RATE' | translate }}</th>
+                    <th ng-show="reportViews.display" at-attribute="displayClicks">{{ 'SOURCE_REPORT_MODULE.CLICKS' | translate }}</th>
+                    <th ng-show="reportViews.display" at-attribute="displayCTR">{{ 'SOURCE_REPORT_MODULE.CTR' | translate }}</th>
+                    <th ng-show="reportViews.display" at-attribute="displayIPV">{{ 'SOURCE_REPORT_MODULE.IPV' | translate }}</th>
+                    <th ng-show="reportViews.video" at-attribute="videoPlayerReady">{{ 'SOURCE_REPORT_MODULE.PLAYER_READY' | translate }}</th>
+                    <th ng-show="reportViews.video" at-attribute="videoAdPlays">{{ 'SOURCE_REPORT_MODULE.AD_PLAYS' | translate }}</th>
+                    <th ng-show="reportViews.video" at-attribute="videoAdImpressions">{{ 'SOURCE_REPORT_MODULE.AD_IMPRESSIONS' | translate }}</th>
+                    <th ng-show="reportViews.video" at-attribute="videoAdCompletions">{{ 'SOURCE_REPORT_MODULE.AD_COMPLETIONS' | translate }}</th>
+                    <th ng-show="reportViews.video" at-attribute="videoAdCompletionRate">{{ 'SOURCE_REPORT_MODULE.AD_COMPLETION_RATE' | translate }}</th>
+                    <th ng-show="reportViews.video" at-attribute="videoIPV">{{ 'SOURCE_REPORT_MODULE.IPV' | translate }}</th>
+                    <th ng-show="reportViews.video" at-attribute="videoAdClicks">{{ 'SOURCE_REPORT_MODULE.AD_CLICKS' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -59,58 +59,58 @@
                     <td at-title="Date" at-attribute="date" at-sortable at-initial-sorting="desc">
                         {{ item.date | date }}
                     </td>
-                    <td ng-show="reportViews.user" at-title="Visits" at-attribute="visits" at-sortable>
+                    <td ng-show="reportViews.user" at-title="{{ 'SOURCE_REPORT_MODULE.VISITS' | translate }}" at-attribute="visits" at-sortable>
                         {{ item.visits | number }}
                     </td>
-                    <td ng-show="reportViews.user" at-title="Page Views" at-attribute="pageViews" at-sortable>
+                    <td ng-show="reportViews.user" at-title="{{ 'SOURCE_REPORT_MODULE.PAGE_VIEWS' | translate }}" at-attribute="pageViews" at-sortable>
                         {{ item.pageViews | number }}
                     </td>
-                    <td ng-show="reportViews.user" at-title="Views Per Visit" at-attribute="viewsPerVisit" at-sortable>
+                    <td ng-show="reportViews.user" at-title="{{ 'SOURCE_REPORT_MODULE.VIEWS_PER_VISIT' | translate }}" at-attribute="viewsPerVisit" at-sortable>
                         {{ item.viewsPerVisit | number }}
                     </td>
-                    <td ng-show="reportViews.user" at-title="QTOS" at-attribute="qtos" at-sortable>
+                    <td ng-show="reportViews.user" at-title="{{ 'SOURCE_REPORT_MODULE.QTOS' | translate }}" at-attribute="qtos" at-sortable>
                         {{ item.qtos | number }}
                     </td>
-                    <td ng-show="reportViews.user" at-title="QTOS %" at-attribute="qtosPercentage" at-sortable>
+                    <td ng-show="reportViews.user" at-title="{{ 'SOURCE_REPORT_MODULE.QTOS_PERCENTAGE' | translate }}" at-attribute="qtosPercentage" at-sortable>
                         {{ item.qtosPercentage | percentage }}
                     </td>
-                    <td ng-show="reportViews.display" at-title="Slot Opportunities" at-attribute="displayOpportunities" at-sortable>
+                    <td ng-show="reportViews.display" at-title="{{ 'SOURCE_REPORT_MODULE.SLOT_OPPORTUNITIES' | translate }}" at-attribute="displayOpportunities" at-sortable>
                         {{ item.displayOpportunities | number }}
                     </td>
-                    <td ng-show="reportViews.display" at-title="Impressions" at-attribute="displayImpressions" at-sortable>
+                    <td ng-show="reportViews.display" at-title="{{ 'SOURCE_REPORT_MODULE.IMPRESSIONS' | translate }}" at-attribute="displayImpressions" at-sortable>
                         {{ item.displayImpressions | number }}
                     </td>
-                    <td ng-show="reportViews.display" at-title="Fill Rate" at-attribute="displayFillRate" at-sortable>
+                    <td ng-show="reportViews.display" at-title="{{ 'SOURCE_REPORT_MODULE.FILL_RATE' | translate }}" at-attribute="displayFillRate" at-sortable>
                         {{ item.displayFillRate | percentage }}
                     </td>
-                    <td ng-show="reportViews.display" at-title="Clicks" at-attribute="displayClicks" at-sortable>
+                    <td ng-show="reportViews.display" at-title="{{ 'SOURCE_REPORT_MODULE.CLICKS' | translate }}" at-attribute="displayClicks" at-sortable>
                         {{ item.displayClicks | number }}
                     </td>
-                    <td ng-show="reportViews.display" at-title="CTR" at-attribute="displayCTR" at-sortable>
+                    <td ng-show="reportViews.display" at-title="{{ 'SOURCE_REPORT_MODULE.CTR' | translate }}" at-attribute="displayCTR" at-sortable>
                         {{ item.displayCTR | percentage }}
                     </td>
-                    <td ng-show="reportViews.display" at-title="IPV" at-attribute="displayIPV" at-sortable>
+                    <td ng-show="reportViews.display" at-title="{{ 'SOURCE_REPORT_MODULE.IPV' | translate }}" at-attribute="displayIPV" at-sortable>
                         {{ item.displayIPV | number }}
                     </td>
-                    <td ng-show="reportViews.video" at-title="Player Ready" at-attribute="videoPlayerReady" at-sortable>
+                    <td ng-show="reportViews.video" at-title="{{ 'SOURCE_REPORT_MODULE.PLAYER_READY' | translate }}" at-attribute="videoPlayerReady" at-sortable>
                         {{ item.videoPlayerReady | number }}
                     </td>
-                    <td ng-show="reportViews.video" at-title="Ad Plays" at-attribute="videoAdPlays" at-sortable>
+                    <td ng-show="reportViews.video" at-title="{{ 'SOURCE_REPORT_MODULE.AD_PLAYS' | translate }}" at-attribute="videoAdPlays" at-sortable>
                         {{ item.videoAdPlays | number }}
                     </td>
-                    <td ng-show="reportViews.video" at-title="Ad Impressions" at-attribute="videoAdImpressions" at-sortable>
+                    <td ng-show="reportViews.video" at-title="{{ 'SOURCE_REPORT_MODULE.AD_IMPRESSIONS' | translate }}" at-attribute="videoAdImpressions" at-sortable>
                         {{ item.videoAdImpressions | number }}
                     </td>
-                    <td ng-show="reportViews.video" at-title="Ad Completions" at-attribute="videoAdCompletions" at-sortable>
+                    <td ng-show="reportViews.video" at-title="{{ 'SOURCE_REPORT_MODULE.AD_COMPLETIONS' | translate }}" at-attribute="videoAdCompletions" at-sortable>
                         {{ item.videoAdCompletions | number }}
                     </td>
-                    <td ng-show="reportViews.video" at-title="Ad Completion Rate" at-attribute="videoAdCompletionRate" at-sortable>
+                    <td ng-show="reportViews.video" at-title="{{ 'SOURCE_REPORT_MODULE.AD_COMPLETION_RATE' | translate }}" at-attribute="videoAdCompletionRate" at-sortable>
                         {{ item.videoAdCompletionRate | percentage }}
                     </td>
-                    <td ng-show="reportViews.video" at-title="IPV" at-attribute="videoIPV" at-sortable>
+                    <td ng-show="reportViews.video" at-title="{{ 'SOURCE_REPORT_MODULE.IPV' | translate }}" at-attribute="videoIPV" at-sortable>
                         {{ item.videoIPV | number }}
                     </td>
-                    <td ng-show="reportViews.video" at-title="Ad Clicks" at-attribute="videoAdClicks" at-sortable>
+                    <td ng-show="reportViews.video" at-title="{{ 'SOURCE_REPORT_MODULE.AD_CLICKS' | translate }}" at-attribute="videoAdClicks" at-sortable>
                         {{ item.videoAdClicks | number }}
                     </td>
                 </tr>

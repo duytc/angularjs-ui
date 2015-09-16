@@ -6,14 +6,14 @@
         <div class="button-bar">
             <button ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
-                New Ad Slot
+                {{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}
             </button>
         </div>
 
         <div class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ui-sref="^.new"> New Ad Slot</a></li>
+                <li><a ui-sref="^.new"> {{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}</a></li>
             </ul>
         </div>
     </div>
@@ -25,39 +25,39 @@
             <table class="table" at-sortable-query at-table at-paginated at-list="adSlots" at-config="tableConfig">
                 <thead>
                 <tr>
-                    <th ng-show="isAdmin()" at-attribute="publisher.company">Publisher</th>
+                    <th ng-show="isAdmin()" at-attribute="publisher.company">{{ 'PUBLISHER' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td at-implicit at-title="#" at-sortable at-attribute="id"></td>
-                    <td at-title="Action" at-attribute="action">
+                    <td at-title="{{ 'ACTIONS' | translate }}" at-attribute="action">
                         <div class="btn-group" dropdown>
-                            <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li ng-if="item.libType == adSlotTypes.display" ><a ui-sref="^.^.adTag.displayList({adSlotId: item.id})">Manage Ad Tags</a></li>
-                                <li ng-if="item.libType == adSlotTypes.native" ><a ui-sref="^.^.adTag.nativeList({adSlotId: item.id})">Manage Ad Tags</a></li>
+                                <li ng-if="item.libType == adSlotTypes.display" ><a ui-sref="^.^.adTag.displayList({adSlotId: item.id})">{{ 'AD_SLOT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
+                                <li ng-if="item.libType == adSlotTypes.native" ><a ui-sref="^.^.adTag.nativeList({adSlotId: item.id})">{{ 'AD_SLOT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
 
-                                <li ng-click="createLinkedAdSlots(item)"><a>Create Linked Ad Slots</a></li>
+                                <li ng-click="createLinkedAdSlots(item)"><a>{{ 'AD_SLOT_LIBRARY_MODULE.CREATE_LINKED_AD_SLOTS' | translate }}</a></li>
 
-                                <li ng-if="item.libType == adSlotTypes.display"><a ui-sref="^.associated({ adSlotId: item.id, adSlotType: adSlotTypes.display})">View Linked Ad Slots</a></li>
-                                <li ng-if="item.libType == adSlotTypes.native"><a ui-sref="^.associated({ adSlotId: item.id, adSlotType: adSlotTypes.native})">View Linked Ad Slots</a></li>
-                                <li ng-if="item.libType == adSlotTypes.dynamic"><a ui-sref="^.associated({ adSlotId: item.id, adSlotType: adSlotTypes.dynamic})">View Linked Ad Slots</a></li>
+                                <li ng-if="item.libType == adSlotTypes.display"><a ui-sref="^.associated({ adSlotId: item.id, adSlotType: adSlotTypes.display})">{{ 'AD_SLOT_LIBRARY_MODULE.VIEW_LINKED_AD_SLOTS' | translate }}</a></li>
+                                <li ng-if="item.libType == adSlotTypes.native"><a ui-sref="^.associated({ adSlotId: item.id, adSlotType: adSlotTypes.native})">{{ 'AD_SLOT_LIBRARY_MODULE.VIEW_LINKED_AD_SLOTS' | translate }}</a></li>
+                                <li ng-if="item.libType == adSlotTypes.dynamic"><a ui-sref="^.associated({ adSlotId: item.id, adSlotType: adSlotTypes.dynamic})">{{ 'AD_SLOT_LIBRARY_MODULE.VIEW_LINKED_AD_SLOTS' | translate }}</a></li>
 
                                 <li class="divider"></li>
 
-                                <li><a ui-sref="^.edit({ id: item.id })">Edit Ad Slot</a></li>
-                                <li><a ng-click="removeMoveToLibrary(item)">Delete Ad Slot</a></li>
+                                <li><a ui-sref="^.edit({ id: item.id })">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT' | translate }}</a></li>
+                                <li><a ng-click="removeMoveToLibrary(item)">{{ 'AD_SLOT_MODULE.DELETE_AD_SLOT' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>
-                    <td at-title="Name" at-implicit at-sortable at-attribute="name" at-initial-sorting="asc"></td>
-                    <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company" at-title="Publisher"></td>
-                    <td at-title="Size" at-sortable at-attribute="width">
+                    <td at-title="{{ 'NAME' | translate }}" at-implicit at-sortable at-attribute="name" at-initial-sorting="asc"></td>
+                    <td at-title="{{ 'PUBLISHER' | translate }}" ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company"></td>
+                    <td at-title="{{ 'AD_SLOT_MODULE.SIZE' | translate }}" at-sortable at-attribute="width">
                         {{ !!item.width ? item.width + 'x' + item.height : ''}}
                     </td>
-                    <td at-title="Type" at-implicit at-sortable at-attribute="libType"></td>
-                    <td at-title="Linked Ad Slots" at-implicit at-sortable at-attribute="associatedSlotCount"></td>
+                    <td at-title="{{ 'AD_SLOT_MODULE.TYPE' | translate }}" at-implicit at-sortable at-attribute="libType"></td>
+                    <td at-title="{{ 'AD_SLOT_LIBRARY_MODULE.LINKED_AD_SLOTS' | translate }}" at-implicit at-sortable at-attribute="associatedSlotCount"></td>
                 </tr>
                 </tbody>
             </table>

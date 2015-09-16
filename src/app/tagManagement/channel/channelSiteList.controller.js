@@ -5,7 +5,7 @@
         .controller('ChannelSiteList', ChannelSiteList)
     ;
 
-    function ChannelSiteList($scope, $translate, $filter, $modal, AlertService, channel, sites, ChannelManager, SiteManager, historyStorage, HISTORY_TYPE_PATH) {
+    function ChannelSiteList($scope, $translate, $filter, $modal, AlertService, channel, sites, ChannelManager, SiteManager, SiteCache, historyStorage, HISTORY_TYPE_PATH) {
         $scope.sites = sites;
         $scope.channel = channel;
 
@@ -16,7 +16,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: $translate.instant('CHANNEL_MODULE.CURRENTLY_NO_SITE_CHANNELS')
+                message: $translate.instant('CHANNEL_MODULE.CURRENTLY_NO_SITES_CHANNEL')
             });
         }
 
@@ -49,6 +49,7 @@
                         }
 
                         $scope.sites = sites;
+                        SiteCache.deleteSite(site);
 
                         if($scope.tableConfig.currentPage > 0 && sites.length/10 == $scope.tableConfig.currentPage) {
                             $scope.tableConfig.currentPage =- 1;
@@ -115,6 +116,7 @@
             $modal.open({
                 templateUrl: 'tagManagement/channel/addSitesForChannel.tpl.html',
                 size: 'lg',
+                backdrop: 'static',
                 controller: 'AddSitesForChannel',
                 resolve: {
                     channel: function () {
