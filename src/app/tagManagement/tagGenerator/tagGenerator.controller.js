@@ -19,6 +19,12 @@
             passback: $translate.instant('TAG_GENERATOR_MODULE.GUIDE_PASSBACK')
         };
 
+        //Infinite Scroll Magic
+        $scope.infiniteScroll = {
+            numToAddSite: 20,
+            currentSites: 20
+        };
+
         $scope.siteList = siteList;
         $scope.jstags = jstags;
 
@@ -32,6 +38,8 @@
 
         $scope.selectPublisher = function (publisher, publisherId) {
             $scope.selected.site = null;
+
+            $scope.resetInfiniteScrollSite();
         };
 
         $scope.selectSite = function (site, siteId) {
@@ -125,5 +133,14 @@
 
             return adTags;
         }
+
+        $scope.addMoreSites = function(){
+            $scope.infiniteScroll.currentSites += $scope.infiniteScroll.numToAddSite;
+        };
+
+        $scope.resetInfiniteScrollSite = function() {
+            $scope.infiniteScroll.numToAddSite = 20;
+            $scope.infiniteScroll.currentSites = 20;
+        };
     }
 })();

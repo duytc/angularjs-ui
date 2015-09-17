@@ -5,7 +5,7 @@
         .controller('EmailConfigsList', EmailConfigsList)
     ;
 
-    function EmailConfigsList($scope, $modal, $state, $stateParams, publishers, sourceReportList, AlertService, sourceReportConfig) {
+    function EmailConfigsList($scope, $translate, $modal, $state, $stateParams, publishers, sourceReportList, AlertService, sourceReportConfig) {
         $scope.sourceReportList = sourceReportList;
 
         $scope.tableConfig = {
@@ -103,7 +103,7 @@
                     .then(function() {
                         AlertService.addFlash({
                             type: 'success',
-                            message: 'The email config has been deleted'
+                            message: $translate.instant('SOURCE_CONFIG_MODULE.DELETE_EMAIL_SUCCESS')
                         });
                     })
 
@@ -114,7 +114,7 @@
                     .catch(function() {
                         AlertService.addAlert({
                             type: 'error',
-                            message: 'The email config not been deleted'
+                            message: $translate.instant('SOURCE_CONFIG_MODULE.DELETE_EMAIL_FAIL')
                         });
                     });
             })

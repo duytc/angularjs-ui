@@ -5,7 +5,7 @@
         .run(eventListeners)
     ;
 
-    function eventListeners($rootScope, $state, AUTH_EVENTS, ENTRY_STATE, AlertService, UserStateHelper) {
+    function eventListeners($rootScope, $translate, $state, AUTH_EVENTS, ENTRY_STATE, AlertService, UserStateHelper) {
         $rootScope.$on(AUTH_EVENTS.loginSuccess, function() {
             UserStateHelper.transitionRelativeToBaseState('dashboard');
         });
@@ -13,14 +13,14 @@
         $rootScope.$on(AUTH_EVENTS.loginFailed, function() {
             AlertService.replaceAlerts({
                 type: 'error',
-                message: 'Login failed, did you provide an invalid username and/or password?'
+                message: $translate.instant('EVENT_LISTENER.LOGIN_FAIL')
             });
         });
 
         $rootScope.$on(AUTH_EVENTS.logoutSuccess, function() {
             $state.go(ENTRY_STATE).then(function () {
                 AlertService.replaceAlerts({
-                    message: 'You are now logged out'
+                    message: $translate.instant('EVENT_LISTENER.LOGOUT_SUCCESS')
                 });
             });
         });
@@ -33,7 +33,7 @@
             $state.go(ENTRY_STATE).then(function() {
                 AlertService.replaceAlerts({
                     type: 'error',
-                    message: 'You are not authenticated. This could mean your session expired, please log in again'
+                    message: $translate.instant('EVENT_LISTENER.SESSION_EXPIRED')
                 });
             });
         });

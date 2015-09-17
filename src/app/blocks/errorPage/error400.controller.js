@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('tagcade.blocks.errorPage')
-        .controller('400ErrorController', function(AlertService) {
+        .controller('400ErrorController', function($translate, AlertService) {
             AlertService.replaceAlerts({
                 type: 'error',
-                message: 'An invalid request was sent to the server'
+                message: $translate.instant('ERROR_PAGE.404')
             });
         })
     ;

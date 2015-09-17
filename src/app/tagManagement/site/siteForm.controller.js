@@ -69,7 +69,7 @@
                 return enabledModules != null ? enabledModules.indexOf(module) > -1 : false;
             }
 
-            return $scope.site.publisher != null ? $scope.site.publisher.enabledModules.indexOf(module) : false;
+            return $scope.site.publisher != null ? $scope.site.publisher.enabledModules.indexOf(module) > -1 : false;
         }
 
         function backToListSite() {
@@ -109,6 +109,10 @@
                 });
             } else {
                 delete $scope.site.channels;
+            }
+
+            if(!isEnabledModule('MODULE_VIDEO_ANALYTICS')) {
+                $scope.site.players = null;
             }
 
             var saveSite = $scope.isNew ? SiteCache.postSite($scope.site) : SiteCache.patchSite($scope.site);

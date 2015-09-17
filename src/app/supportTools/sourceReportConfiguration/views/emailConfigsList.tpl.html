@@ -6,7 +6,7 @@
         <div class="button-bar">
             <button ng-click="addNewEmailConfig()" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
-                New Configuration
+                {{ 'SOURCE_CONFIG_MODULE.NEW_CONFIGURATION' | translate }}
             </button>
         </div>
     </div>
@@ -14,9 +14,9 @@
     <div class="panel-body">
         <form name="sourceReportConfig" class="form-inline" role="form" novalidate>
             <div class="publisher-source-report-config form-group">
-                <label>Publisher</label>
+                <label>{{ 'PUBLISHER' | translate }}</label>
                 <ui-select id="inputPublisher" ng-model="selected.publisher" ng-required="true" server-error on-select="selectPublisher($model)" reset-search-input="'false'">
-                    <ui-select-match placeholder="Select a publisher">{{ $select.selected.company }}</ui-select-match>
+                    <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
                     <ui-select-choices group-by="groupEntities" repeat="publisher.id as publisher in publishers | orderBy: 'company' | filter:{ company: $select.search }">
                         {{ publisher.company }}
                     </ui-select-choices>
@@ -28,7 +28,7 @@
 
 
 <div class="panel panel-default daily-reports">
-    <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Configuration</div>
+    <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> {{ 'SOURCE_CONFIG_MODULE.CONFIGURATION' | translate }}</div>
 
     <search-box sb-list="sourceReportList" place-holder="'Search by email'" search-fields="['email']"></search-box>
 
@@ -36,36 +36,36 @@
         <table class="table" at-table at-list="sourceReportList" at-paginated at-config="tableConfig">
             <thead>
             <tr>
-                <th at-attribute="email">Email</th>
-                <th at-attribute="includedAll">Include All</th>
-                <th at-attribute="sourceReportSiteConfigs">Sites Configs</th>
-                <th at-attribute="active">Status</th>
+                <th at-attribute="email">{{ 'SOURCE_CONFIG_MODULE.EMAIL' | translate }}</th>
+                <th at-attribute="includedAll">{{ 'SOURCE_CONFIG_MODULE.INCLUDE_ALL' | translate }}</th>
+                <th at-attribute="sourceReportSiteConfigs">{{ 'SOURCE_CONFIG_MODULE.SITES_CONFIGS' | translate }}</th>
+                <th at-attribute="active">{{ 'SOURCE_CONFIG_MODULE.STATUS' | translate }}</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td at-attribute="actions" at-title="Actions">
+                <td at-attribute="actions" at-title="{{ 'ACTIONS' | translate }}">
                     <div class="btn-group" dropdown>
-                        <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                        <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li ng-show="!item.includedAll"><a ui-sref="^.siteConfigByEmail({emailId: item.id, publisherId: selected.publisher})">Manage Site Config</a></li>
-                            <li ng-show="item.includedAll"><a ng-click="openPopupIncludedAll()">Manage Site Config</a></li>
+                            <li ng-show="!item.includedAll"><a ui-sref="^.siteConfigByEmail({emailId: item.id, publisherId: selected.publisher})">{{ 'SOURCE_CONFIG_MODULE.MANAGE_SITE_CONFIG' | translate }}</a></li>
+                            <li ng-show="item.includedAll"><a ng-click="openPopupIncludedAll()">{{ 'SOURCE_CONFIG_MODULE.MANAGE_SITE_CONFIG' | translate }}</a></li>
                             <li class="divider"></li>
-                            <li><a ng-click="editSourceReportConfig(item)">Edit This Config</a></li>
-                            <li><a ng-click="deleteEmailConfig(item.id)">Delete This Config</a></li>
+                            <li><a ng-click="editSourceReportConfig(item)">{{ 'SOURCE_CONFIG_MODULE.EDIT_THIS_CONFIG' | translate }}</a></li>
+                            <li><a ng-click="deleteEmailConfig(item.id)">{{ 'SOURCE_CONFIG_MODULE.DELETE_THIS_CONFIG' | translate }}</a></li>
                         </ul>
                     </div>
                 </td>
-                <td at-implicit at-sortable at-attribute="email" at-initial-sorting="desc" at-title="Email"></td>
-                <td at-sortable at-attribute="includedAll" at-title="Include All">
+                <td at-implicit at-sortable at-attribute="email" at-initial-sorting="desc" at-title="{{ 'SOURCE_CONFIG_MODULE.EMAIL' | translate }}"></td>
+                <td at-sortable at-attribute="includedAll" at-title="{{ 'SOURCE_CONFIG_MODULE.INCLUDE_ALL' | translate }}">
                     <span class="label" ng-class="item.includedAll ? 'label-success' : 'label-danger'">{{ item.includedAll ? 'Yes' : 'No' }}</span>
                 </td>
-                <td at-sortable at-attribute="sourceReportSiteConfigs" at-title="Sites Configs">
+                <td at-sortable at-attribute="sourceReportSiteConfigs" at-title="{{ 'SOURCE_CONFIG_MODULE.SITES_CONFIGS' | translate }}">
                     <ul ng-show="!item.includedAll" ng-repeat="config in item.sourceReportSiteConfigs">
                         <li>{{ config.site.name }} - {{ config.site.domain }}</li>
                     </ul>
                 </td>
-                <td at-sortable at-attribute="active" at-title="Status">
+                <td at-sortable at-attribute="active" at-title="{{ 'SOURCE_CONFIG_MODULE.STATUS' | translate }}">
                     <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
                 </td>
             </tbody>

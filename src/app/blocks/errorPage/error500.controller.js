@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('tagcade.blocks.errorPage')
-        .controller('500ErrorController', function(AlertService) {
+        .controller('500ErrorController', function($translate, AlertService) {
             AlertService.replaceAlerts({
                 type: 'error',
-                message: 'An error occurred'
+                message: $translate.instant('ERROR_PAGE.500')
             });
         })
     ;

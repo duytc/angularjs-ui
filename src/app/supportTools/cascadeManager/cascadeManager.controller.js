@@ -6,7 +6,7 @@
         .controller('CascadeManager', CascadeManager)
     ;
 
-    function CascadeManager($scope, adNetworks, AdNetworkManager, AlertService, UISelectMethod, adminUserManager, Auth) {
+    function CascadeManager($scope, $translate, adNetworks, AdNetworkManager, AlertService, UISelectMethod, adminUserManager, Auth) {
         $scope.adNetworks = null;
         $scope.sites = null;
 
@@ -66,7 +66,7 @@
                     function () {
                         AlertService.addAlert({
                             type: 'success',
-                            message: 'The ad network position has been updated'
+                            message: $translate.instant('CASCADE_MODULE.UPDATE_SUCCESS')
                         });
                     }
                 )
@@ -74,7 +74,7 @@
                     function () {
                         AlertService.addAlert({
                             type: 'error',
-                            message: 'An error occurred. The position could not be updated'
+                            message: $translate.instant('CASCADE_MODULE.UPDATE_SUCCESS')
                         });
                     }
                 );

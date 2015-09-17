@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('tagcade.blocks.errorPage')
-        .controller('403ErrorController', function(AlertService) {
+        .controller('403ErrorController', function($translate, AlertService) {
             AlertService.replaceAlerts({
                 type: 'error',
-                message: 'You do not have the required permissions to access this'
+                message: $translate.instant('ERROR_PAGE.403')
             });
         })
     ;

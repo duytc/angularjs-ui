@@ -5,7 +5,7 @@
         .controller('ChangePassword', ChangePassword)
     ;
 
-    function ChangePassword($scope, $state, Restangular, token, AlertService) {
+    function ChangePassword($scope, $translate, $state, Restangular, token, AlertService) {
         $scope.password = null;
         $scope.repeatPassword = null;
 
@@ -19,7 +19,7 @@
                 function() {
                     AlertService.addFlash({
                         type: 'success',
-                        message: 'Change successful, login to continue'
+                        message: $translate.instant('RESET_PASSWORD_MODULE.RESET_SUCCESS')
                     });
 
                     $state.go('login');
@@ -28,21 +28,21 @@
                     if(response.status = 404) {
                         AlertService.addAlert({
                             type: 'error',
-                            message: 'The token "' + token + '" is not existed'
+                            message: $translate.instant('RESET_PASSWORD_MODULE.TOKEN_NOT_EXISTED', { token: token })
                         });
                     }
 
                     if(response.status = 408) {
                         AlertService.addAlert({
                             type: 'error',
-                            message: 'The token "' + token + '" is expired. Please try to reset password again'
+                            message: $translate.instant('RESET_PASSWORD_MODULE.TOKEN_EXPIRED', { token: token })
                         });
                     }
 
                     else {
                         AlertService.addAlert({
                             type: 'error',
-                            message: 'Internal error. Please contact administrator for further instruction'
+                            message: $translate.instant('RESET_PASSWORD_MODULE.INTERNAL_ERROR')
                         });
                     }
                 })

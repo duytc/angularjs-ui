@@ -5,7 +5,7 @@
         .controller('CheckEmail', CheckEmail)
     ;
 
-    function CheckEmail($scope, Restangular, AlertService) {
+    function CheckEmail($scope, $translate, Restangular, AlertService) {
         $scope.username = null;
 
         $scope.sendEmail = sendEmail;
@@ -23,21 +23,21 @@
 
                     AlertService.addAlert({
                         type: 'success',
-                        message: 'An email has been sent to "'+ $scope.username +'". It contains a link you must click to reset your password'
+                        message: $translate.instant('RESET_PASSWORD_MODULE.SEND_EMAIL_SUCCESS', {username: $scope.username})
                     })
                 },
                 function(response) {
                     if(response.status === 404) {
                         AlertService.addAlert({
                             type: 'error',
-                            message: 'Could not reset password for "'+ $scope.username +'"'
+                            message: $translate.instant('RESET_PASSWORD_MODULE.SEND_EMAIL_FAIL', {username: $scope.username})
                         });
                     }
 
                     else {
                         AlertService.addAlert({
                             type: 'error',
-                            message: 'Internal error. Please contact administrator for further instruction'
+                            message: $translate.instant('RESET_PASSWORD_MODULE.INTERNAL_ERROR')
                         });
                     }
                 })

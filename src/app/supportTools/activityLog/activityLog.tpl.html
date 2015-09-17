@@ -1,10 +1,10 @@
 <div class="panel panel-default daily-reports">
-    <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Activity Logs</div>
+    <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> {{ 'ACTION_LOG_MODULE.TITLE_ACTIVITY_LOGS' | translate }}</div>
     <div class="row">
         <div class="col-md-12">
             <ul class="nav nav-tabs nav-tab-margin">
-                <li role="presentation" ng-class="showTabMenu ? '' : 'active' "><a ui-sref="app.admin.supportTools.activityLog.list({ loginLogs: false , rowOffset: 0})">Action</a></li>
-                <li role="presentation" ng-class="showTabMenu ? 'active' : '' "><a ui-sref="app.admin.supportTools.activityLog.list({ loginLogs: true , rowOffset: 0})" >Login</a></li>
+                <li role="presentation" ng-class="showTabMenu ? '' : 'active' "><a ui-sref="app.admin.supportTools.activityLog.list({ loginLogs: false , rowOffset: 0})">{{ 'ACTION_LOG_MODULE.NAV_ACTION' | translate }}</a></li>
+                <li role="presentation" ng-class="showTabMenu ? 'active' : '' "><a ui-sref="app.admin.supportTools.activityLog.list({ loginLogs: true , rowOffset: 0})" >{{ 'ACTION_LOG_MODULE.NAV_LOGIN' | translate }}</a></li>
             </ul>
             <div>
 
@@ -15,22 +15,22 @@
                         <thead>
                         <tr>
                             <th at-attribute="id">#</th>
-                            <th at-attribute="action">Action</th>
-                            <th at-attribute="user.username">User Name</th>
-                            <th at-attribute="createdAt">Time</th>
-                            <th ng-show="!showTabMenu" at-attribute="data">Description</th>
-                            <th at-attribute="ip">IP</th>
+                            <th at-attribute="action">{{ 'ACTION_LOG_MODULE.ACTION' | translate }}</th>
+                            <th at-attribute="user.username">{{ 'ACTION_LOG_MODULE.USERNAME' | translate }}</th>
+                            <th at-attribute="createdAt">{{ 'ACTION_LOG_MODULE.TIME' | translate }}</th>
+                            <th ng-show="!showTabMenu" at-attribute="data">{{ 'ACTION_LOG_MODULE.DESCRIPTION' | translate }}</th>
+                            <th at-attribute="ip">{{ 'ACTION_LOG_MODULE.IP' | translate }}</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <td at-implicit at-sortable at-attribute="id" at-initial-sorting="desc" at-title="#"></td>
-                            <td at-implicit at-sortable at-attribute="action" at-title="Actions"></td>
-                            <td at-implicit at-sortable at-attribute="user.username" at-title="Username"></td>
-                            <td at-sortable at-attribute="createdAt" at-title="Time">
+                            <td at-implicit at-sortable at-attribute="action" at-title="{{ 'ACTION_LOG_MODULE.ACTION' | translate }}"></td>
+                            <td at-implicit at-sortable at-attribute="user.username" at-title="{{ 'ACTION_LOG_MODULE.USERNAME' | translate }}"></td>
+                            <td at-sortable at-attribute="createdAt" at-title="{{ 'ACTION_LOG_MODULE.TIME' | translate }}">
                                 {{ item.createdAt | date : 'medium' }}
                             </td>
-                            <td ng-show="!showTabMenu" at-attribute="data" at-title="Description">
+                            <td ng-show="!showTabMenu" at-attribute="data" at-title="{{ 'ACTION_LOG_MODULE.DESCRIPTION' | translate }}">
                                 <div>
                                     <strong>{{ item.data.action }}</strong>
                                     {{ item.data.entity.className }}
@@ -64,7 +64,7 @@
                                 <!--</li>-->
                                 <!--</ul>-->
                             </td>
-                            <td at-sortable at-implicit at-attribute="ip" at-title="IP"></td>
+                            <td at-sortable at-implicit at-attribute="ip" at-title="{{ 'ACTION_LOG_MODULE.IP' | translate }}"></td>
                         </tr>
                         </tbody>
                     </table>

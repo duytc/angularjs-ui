@@ -5,7 +5,7 @@
         .factory('AdNetworkCache', AdNetworkCache)
     ;
 
-    function AdNetworkCache($filter, CacheFactory, AdNetworkManager, _, Auth) {
+    function AdNetworkCache($filter, CacheFactory, AdNetworkManager, _, Auth, sessionStorage) {
         var api = {
             getAllAdNetworks: getAllAdNetworks,
             getAdNetworkById: getAdNetworkById,
@@ -42,7 +42,10 @@
 
             return AdNetworkManager.getList()
                 .then(function(adNetworkList) {
-                    adNetworkCache.put('adNetworkList', adNetworkList);
+                    var previousToken =  angular.fromJson(sessionStorage.getPreviousToken());
+                    if(!angular.isObject(previousToken)) {
+                        adNetworkCache.put('adNetworkList', adNetworkList);
+                    }
 
                     return adNetworkList;
                 });
@@ -91,8 +94,10 @@
             var idx = _.findLastIndex(adNetworkList, {id: parseFloat(adNetwork.id) });
 
             // update adNetwork list
-            angular.extend(adNetworkList[idx], adNetwork);
-            adNetworkCache.put('adNetworkList', adNetworkList);
+            if(!!adNetworkList && idx > -1) {
+                angular.extend(adNetworkList[idx], adNetwork);
+                adNetworkCache.put('adNetworkList', adNetworkList);
+            }
         }
 
         function removeCacheAdNetwork() {

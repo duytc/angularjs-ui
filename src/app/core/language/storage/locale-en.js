@@ -4,16 +4,21 @@
     angular.module("tagcade.core.language")
         .constant("LOCALE_EN", {
             "LOGIN": "Log in",
+            "LOGOUT": "Log Out",
+            "EDIT_PROFILE": "Edit Profile",
+            "RETURN_TO_ADMIN": "Return to admin account",
             "PASSWORD": "Password",
             "USERNAME": "Username",
             "FORGOT_PASSWORD": "Forgot your password?",
             "CANCEL": "Cancel",
             "NO_CANCEL": "No, cancel",
+            "OK_CANCEL": "Ok, cancel",
             "YES_DELETE": "Yes, delete",
             "SUBMIT": "Submit",
             "VALID_FORM": "Submit button will be active only when all fields are valid.",
             "ACTIONS": "Actions",
             "CLOSE": "Close",
+            "ALERTS": "Alerts",
 
             "NAME": "Name",
             "PUBLISHER": "Publisher",
@@ -34,6 +39,44 @@
             "VIEW_TODAY_REPORT": "View Today's Report",
             "COPY_TO_CLIPBOARD": "Copy to clipboard",
 
+            "EVENT_LISTENER": {
+                "LOGIN_FAIL": "Login failed, did you provide an invalid username and/or password?",
+                "LOGOUT_SUCCESS": "You are now logged out",
+                "SESSION_EXPIRED": "You are not authenticated. This could mean your session expired, please log in again"
+            },
+            "NAVBAR": {
+                "DASHBOARD": "Dashboard",
+                "PUBLISHER_MANAGEMENT": "Publisher Management",
+                "PUBLISHERS": "Publishers",
+                "NEW_PUBLISHER": "New Publisher",
+                "TAG_MANAGEMENT": "Tag Management",
+                "GENERATE_TAGS": "Generate Tags",
+                "CHANNELS": "Channels",
+                "MY_CHANNELS": "My Channels",
+                "SITES": "Sites",
+                "MY_SITES": "My Sites",
+                "AD_SLOTS": "Ad Slots",
+                "MY_AD_SLOTS": "My Ad Slots",
+                "AD_NETWORKS": "Ad Networks",
+                "MY_AD_NETWORKS": "My Ad Networks",
+                "AD_TAGS": "Ad Tags",
+                "NEW_CHANNEL": "New Channel",
+                "NEW_SITE": "New Site",
+                "NEW_AD_NETWORK": "New Ad Network",
+                "NEW_AD_SLOT": "New Ad Slot",
+                "NEW_AD_TAG": "New Ad Tag",
+                "TAG_LIBRARY": "Tag Library",
+                "REPORTS": "Reports",
+                "PERFORMANCE_REPORTS": "Performance Reports",
+                "SOURCE_REPORTS": "Source Reports",
+                "BILLING_REPORTS": "Billing Reports",
+                "PROJECTED_BILL": "Projected Bill",
+                "TOOLS": "Tools",
+                "CPM_EDITOR": "Cpm Editor",
+                "CASCADE_MANAGER": "Cascade Manager",
+                "SOURCE_REPORT_CONFIG": "Source Report Config",
+                "ACTIVITY_LOG": "Activity Log"
+            },
             "DASHBOARD_MODULE": {
                 "DATE_RANGE": "Date Range",
                 "BUTTON_UPDATE": "Update",
@@ -445,6 +488,105 @@
                 "VIDEO_AD_COMPLETION_RATE": "Video Ad Completion Rate",
                 "VIDEO_IPV": "Video IPV",
                 "VIDEO_AD_CLICKS": "Video Ad Clicks"
+            },
+            "ACTION_LOG_MODULE": {
+                "DATE_RANGE": "Date Range",
+                "BUTTON_GET_LOGS": "Get Logs",
+                "NAV_ACTION": "Action",
+                "NAV_LOGIN": "Login",
+
+                "IP": "IP",
+                "ACTION": "Action",
+                "USERNAME": "User Name",
+                "TIME": "Time",
+                "DESCRIPTION": "Description",
+
+                "TITLE_ACTIVITY_LOGS": "Activity Logs",
+                "GET_ACTION_LOG_FAIL": "An error occurred during the request"
+            },
+            "CASCADE_MODULE": {
+                "POSITION": "Position",
+                
+                "UPDATE_SUCCESS": "The ad network position has been updated",
+                "UPDATE_FAIL": "An error occurred. The position could not be updated"
+            },
+            "CPM_EDITOR_MODULE": {
+                "UPDATE_SUCCESS": "The CPM value has been scheduled for updating",
+                "UPDATE_FAIL": "An error occurred. The CPM value could not be updated",
+
+                "UPDATE_CPM_FOR": "Update CPM For",
+                "SELECT_AN_OPTION": "Select an option",
+                "DATE_RANGE": "Date Range",
+                "CPM_RATE": "CPM Rate"
+            },
+            "SOURCE_CONFIG_MODULE": {
+                "CONFIRM_INCLUDE_ALL": "All reports are sent to this email. Please uncheck option include all to configure this email manually",
+                "CONFIRM_DELETE_CONFIG": "Are you sure you want to delete this config?",
+
+                "UPDATE_EMAIL_SUCCESS": "The email config has been updated",
+                "UPDATE_EMAIL_FAIL": "The email config is not updated",
+                "DELETE_EMAIL_SUCCESS": "The email config has been deleted",
+                "DELETE_EMAIL_FAIL": "The email config is not deleted",
+
+                "DELETE_SITE_SUCCESS": "The site config has been deleted",
+                "DELETE_SITE_FAIL": "The site config is not deleted",
+
+                "ADD_SITES_CONFIG_FOR_EMAIL": "Add Sites Config For Email",
+
+                "AVAILABLE_SITES": "Available Sites",
+                "SELECTED_SITES": "Selected Sites",
+                "EDIT_EMAIL_CONFIG": "Edit Email Config",
+                "RECEIVING_EMAIL": "Receiving Email",
+                "ACTIVE": "Active",
+                "INCLUDE_ALL": "Include All",
+
+                "BACK": "Back",
+                "NEW_SITE_CONFIG": "New Site Config",
+                "MANAGE_SITE_CONFIG": "Manage Site Config",
+                "EDIT_THIS_CONFIG": "Edit This Config",
+                "DELETE_THIS_CONFIG": "Delete This Config",
+                "NEW_CONFIGURATION": "New Configuration",
+                "ADD_NEW_EMAIL_CONFIG": "Add New Email Config",
+                "CONFIGURATION": "Configuration",
+                "EMAIL": "Email",
+                "SITES_CONFIGS": "Sites Configs",
+                "STATUS": "Status",
+                "PLACEHOLDER_EMAIL_ADDRESS": "Email Address",
+                "ADD_ANOTHER_EMAIL": "Add another email"
+            },
+            "ERROR_PAGE": {
+                "400": "An invalid request was sent to the server",
+                "403": "You do not have the required permissions to access this",
+                "404": "The requested resource could not be found",
+                "500": "An error occurred"
+            },
+            "RESET_PASSWORD_MODULE": {
+                "RESET": "Reset",
+                "USERNAME_EMAIL": "Username or email",
+                "NEW_PASSWORD": "New password",
+                "REPEAT_PASSWORD": "Repeat password",
+                "RESET_PASSWORD": "Reset password",
+
+                "SEND_EMAIL_SUCCESS": "An email has been sent to '{{ username }}'. It contains a link you must click to reset your password",
+                "SEND_EMAIL_FAIL": "Could not reset password for '{{ username }}'",
+                "RESET_SUCCESS": "Change successful, login to continue",
+                "TOKEN_NOT_EXISTED": "The token '{{ token }}' is not existed",
+                "TOKEN_EXPIRED": "The token '{{ token }}' is expired. Please try to reset password again",
+                "INTERNAL_ERROR": "Internal error. Please contact administrator for further instruction",
+
+                "HELP_BLOCK_CHECK_EMAIL": "Enter your username or email address that you used to register. We'll send you an email with your username and a link to reset your password."
+            },
+            "QUERY_BUILDER": {
+                "ADD_EXPRESSION": "Add Expression",
+                "EXPRESSION": "Expression",
+                "SHOW_GENERATED_EXPRESSION": "Show generated expression",
+                "ENABLE_DRAG_DROP": "Enable Drag/Drop",
+                "STARTING_POSITION": "Starting Position",
+                "SELECT_A_POSITION": "Select a position",
+                "ADD_CONDITION": "Add Condition",
+                "ADD_GROUP": "Add Group",
+
+                "HELP_BLOCK_STARTING_POSITION": "Default position is the position of first ad tag found in this ad slot"
             }
         });
 })();

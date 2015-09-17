@@ -6,18 +6,18 @@
         <div class="button-bar">
             <button ui-sref="^.list" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-arrow-left"></span>
-                Back
+                {{ 'SOURCE_CONFIG_MODULE.BACK' | translate }}
             </button>
             <button ng-click="addSitesConfigForEmail()" class="btn btn-primary btn-sm" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
-                New Site Config
+                {{ 'SOURCE_CONFIG_MODULE.NEW_SITE_CONFIG' | translate }}
             </button>
         </div>
         <div class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ui-sref="^.list">Back</a></li>
-                <li><a ng-click="addSitesConfigForEmail()">New Site Config</a></li>
+                <li><a ui-sref="^.list">{{ 'SOURCE_CONFIG_MODULE.BACK' | translate }}</a></li>
+                <li><a ng-click="addSitesConfigForEmail()">{{ 'SOURCE_CONFIG_MODULE.NEW_SITE_CONFIG' | translate }}</a></li>
             </ul>
         </div>
     </div>
@@ -31,17 +31,17 @@
                     <thead></thead>
                     <tbody>
                     <tr>
-                        <td at-title="Actions">
+                        <td at-title="{{ 'ACTIONS' | translate }}">
                             <div class="btn-group" dropdown>
-                                <button type="button" class="btn " dropdown-toggle> Actions <span class="caret"></span> </button>
+                                <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a ng-click="confirmDeletion(item)">Delete This Config</a></li>
+                                    <li><a ng-click="confirmDeletion(item)">{{ 'SOURCE_CONFIG_MODULE.DELETE_THIS_CONFIG' | translate }}</a></li>
                                 </ul>
                             </div>
                         </td>
-                        <td at-title="Site" at-implicit at-sortable at-attribute="site.name" at-initial-sorting="desc"></td>
-                        <td at-title="Domain" at-implicit at-sortable at-attribute="site.domain"></td>
-                        <td at-title="Publisher" at-implicit at-sortable at-attribute="site.publisher.company"></td>
+                        <td at-title="{{ 'SITE' | translate }}" at-implicit at-sortable at-attribute="site.name" at-initial-sorting="desc"></td>
+                        <td at-title="{{ 'SITE_MODULE.DOMAIN' | translate }}" at-implicit at-sortable at-attribute="site.domain"></td>
+                        <td at-title="{{ 'PUBLISHER' | translate }}" at-implicit at-sortable at-attribute="site.publisher.company"></td>
                     </tr>
                     </tbody>
                 </table>

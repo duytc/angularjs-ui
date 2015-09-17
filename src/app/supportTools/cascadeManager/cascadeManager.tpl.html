@@ -4,10 +4,10 @@
         <div class="row">
             <form name="positionForm" class="col-lg-6 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
                 <div class="form-group" ng-if="isAdmin">
-                    <label for="inputPublisher" class="col-sm-2 control-label">Publisher</label>
+                    <label for="inputPublisher" class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
                     <div class="col-sm-10">
                         <ui-select id="inputPublisher" ng-model="selected.publisher" ng-required="true" server-error on-select="selectPublisher()" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select a publisher">{{ $select.selected.company }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
                             <ui-select-choices repeat="publisher.id as publisher in publishers | orderBy: 'company' | filter:{ company: $select.search }">
                                 <div ng-bind-html="publisher.company | highlight: $select.search"></div>
                             </ui-select-choices>
@@ -16,10 +16,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="inputAdNetwork" class="col-sm-2 control-label">Ad Network</label>
+                    <label for="inputAdNetwork" class="col-sm-2 control-label">{{ 'AD_NETWORK' | translate }}</label>
                     <div class="col-sm-10">
                         <ui-select id="inputAdNetwork" ng-model="selected.adNetwork" ng-required="true" server-error on-select="selectAdNetwork($model)" ng-disabled="!adNetworks.length && !selected.publisher" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select adNetwork">{{$select.selected.name}}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'AD_NETWORK_MODULE.SELECT_A_AD_NETWORK' | translate }}">{{$select.selected.name}}</ui-select-match>
                             <ui-select-choices repeat="adNetwork.id as adNetwork in adNetworks | orderBy: 'name' | filter:{ name: $select.search } | selectedPublisher:selected.publisher">
                                 {{ adNetwork.name }}
                             </ui-select-choices>
@@ -27,10 +27,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputSites" class="col-sm-2 control-label">Site</label>
+                    <label for="inputSites" class="col-sm-2 control-label">{{ 'SITE' | translate }}</label>
                     <div class="col-sm-10">
                         <ui-select id="inputSites" ng-model="selected.site" ng-required="true" server-error ng-disabled="!sites.length" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select site">{{$select.selected.name}}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'SITE_MODULE.SELECT_A_SITE' | translate }}">{{$select.selected.name}}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="site.id as site in sites | orderBy: 'name' | filter:{ name: $select.search }">
                                 {{ site.name }}
                             </ui-select-choices>
@@ -38,16 +38,16 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputPosition" class="col-sm-2 control-label">Position</label>
+                    <label for="inputPosition" class="col-sm-2 control-label">{{ 'CASCADE_MODULE.POSITION' | translate }}</label>
                     <div class="col-sm-10">
-                        <input name="position" server-error ng-model="selected.position" ng-required="true" min="1" type="number" class="form-control" id="inputPosition" placeholder="Position">
+                        <input name="position" server-error ng-model="selected.position" ng-required="true" min="1" type="number" class="form-control" id="inputPosition" placeholder="{{ 'CASCADE_MODULE.POSITION' | translate }}">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button ng-disabled="!isFormValid()" type="submit" class="btn btn-success">Submit</button>
+                        <button ng-disabled="!isFormValid()" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">
-                            <p>Submit button will be active only when all fields are valid.</p>
+                            <p>{{ 'VALID_FORM' | translate }}</p>
                         </div>
                     </div>
                 </div>

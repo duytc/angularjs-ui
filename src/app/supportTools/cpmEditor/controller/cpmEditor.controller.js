@@ -5,7 +5,7 @@
         .controller('CpmEditor', CpmEditor)
     ;
 
-    function CpmEditor($scope, Auth, AlertService, cpmEditorService, CPM_EDITOR_TYPES, DateFormatter, AdTagManager, AdNetworkManager) {
+    function CpmEditor($scope, $translate, Auth, AlertService, cpmEditorService, CPM_EDITOR_TYPES, DateFormatter, AdTagManager, AdNetworkManager) {
         var isAdmin = Auth.isAdmin();
         $scope.isAdmin = isAdmin;
 
@@ -174,14 +174,14 @@
                 function () {
                     AlertService.addAlert({
                         type: 'success',
-                        message: 'The CPM value has been scheduled for updating'
+                        message: $translate.instant('CPM_EDITOR_MODULE.UPDATE_SUCCESS')
                     });
                 })
                 .catch(
                 function () {
                     AlertService.addAlert({
                         type: 'error',
-                        message: 'An error occurred. The CPM value could not be updated'
+                        message: $translate.instant('CPM_EDITOR_MODULE.UPDATE_FAIL')
                     });
                 });
         }

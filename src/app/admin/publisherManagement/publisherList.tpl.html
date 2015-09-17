@@ -34,7 +34,7 @@
                                 <li class="divider"></li>
                                 <li><a ui-sref="app.admin.reports.performance.account({publisherId: item.id, startDate: today})">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
                                 <li class="divider"></li>
-                                <li><a ng-click="togglePublisherStatus(item)">{{ item.enabled ? ( 'PUBLISHER_MODULE.DEACTIVATE_PUBLISHER' | translate ) : ( 'PUBLISHER_MODULE.ACTIVATE_PUBLISHER' | translate ) }} Publisher</a></li>
+                                <li><a ng-click="togglePublisherStatus(item)">{{ item.enabled ? ( 'PUBLISHER_MODULE.DEACTIVATE_PUBLISHER' | translate ) : ( 'PUBLISHER_MODULE.ACTIVATE_PUBLISHER' | translate ) }}</a></li>
                                 <li><a ui-sref="^.edit({ id: item.id })">{{ 'PUBLISHER_MODULE.EDIT_PUBLISHER' | translate }}</a></li>
                             </ul>
                         </div>

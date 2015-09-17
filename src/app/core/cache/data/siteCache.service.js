@@ -5,7 +5,7 @@
         .factory('SiteCache', SiteCache)
     ;
 
-    function SiteCache($filter, CacheFactory, SiteManager, _, Auth) {
+    function SiteCache($filter, CacheFactory, SiteManager, _, Auth, sessionStorage) {
         var api = {
             getAllSites: getAllSites,
             getSiteById: getSiteById,
@@ -43,7 +43,10 @@
 
             return SiteManager.getList()
                 .then(function(siteList) {
-                    siteCache.put('siteList', siteList);
+                    var previousToken =  angular.fromJson(sessionStorage.getPreviousToken());
+                    if(!angular.isObject(previousToken)) {
+                        siteCache.put('siteList', siteList);
+                    }
 
                     return siteList;
                 });
@@ -97,8 +100,10 @@
             var idx = _.findLastIndex(siteList, {id: parseFloat(site.id) });
 
             // update site list
-            angular.extend(siteList[idx], site);
-            siteCache.put('siteList', siteList);
+            if(!!siteList && idx > -1) {
+                angular.extend(siteList[idx], site);
+                siteCache.put('siteList', siteList);
+            }
         }
 
         function removeCacheSite() {

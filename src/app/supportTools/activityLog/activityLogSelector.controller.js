@@ -6,7 +6,7 @@
         .controller('ActivityLogSelector', ActivityLogSelector)
     ;
 
-    function ActivityLogSelector($scope, _, UserStateHelper, adminUserManager, AlertService, activityLogs, selectorFormCalculator, DateFormatter) {
+    function ActivityLogSelector($scope, $translate, _, UserStateHelper, adminUserManager, AlertService, activityLogs, selectorFormCalculator, DateFormatter) {
         $scope.groupEntities = groupEntities;
         $scope.getLogs = getLogs;
 
@@ -103,7 +103,7 @@
                 .catch(function(error) {
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'An error occurred during the request'
+                        message: $translate.instant('ACTION_LOG_MODULE.GET_ACTION_LOG_FAIL')
                     });
                 })
             ;

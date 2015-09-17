@@ -1,36 +1,36 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="$dismiss()">×</button>
-    <h4 class="modal-title">Edit Email Config</h4>
+    <h4 class="modal-title">{{ 'SOURCE_CONFIG_MODULE.EDIT_EMAIL_CONFIG' | translate }}</h4>
 </div>
 <div class="modal-body">
     <div class="row source-report-configuration">
         <form name="sourceReportConfig" class="col-lg-12 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
 
             <div class="form-group">
-                <label for="inputEmail" class="col-sm-3 control-label">Receiving Email</label>
+                <label for="inputEmail" class="col-sm-3 control-label">{{ 'SOURCE_CONFIG_MODULE.RECEIVING_EMAIL' | translate }}</label>
                 <div class="col-sm-9">
-                    <input server-error ng-required="true" type="email" ng-model="emailReceive.email" class="form-control" id="inputEmail" placeholder="More receiving email">
+                    <input server-error ng-required="true" type="email" ng-model="emailReceive.email" class="form-control" id="inputEmail" placeholder="{{ 'SOURCE_CONFIG_MODULE.RECEIVING_EMAIL' | translate }}">
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="inputEnabled" class="col-sm-3 control-label">Active</label>
+                <label for="inputEnabled" class="col-sm-3 control-label">{{ 'SOURCE_CONFIG_MODULE.ACTIVE' | translate }}</label>
                 <div class="col-sm-9">
                     <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="emailReceive.active" id="inputEnabled"><span></span></label>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="inputIncludedAll" class="col-sm-3 control-label">Include All</label>
+                <label for="inputIncludedAll" class="col-sm-3 control-label">{{ 'SOURCE_CONFIG_MODULE.INCLUDE_ALL' | translate }}</label>
                 <div class="col-sm-9">
                     <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="emailReceive.includedAll" id="inputIncludedAll"><span></span></label>
                 </div>
             </div>
 
             <div class="col-sm-offset-3 col-sm-9">
-                <button ng-disabled="!isFormValid()" type="submit" class="btn btn-success" ng-click="$dismiss()">Submit</button>
+                <button ng-disabled="!isFormValid()" type="submit" class="btn btn-success" ng-click="$dismiss()">{{ 'SUBMIT' | translate }}</button>
                 <div ng-show="!isFormValid()" class="callout callout-info">
-                    <p>Submit button will be active only when all fields are valid.</p>
+                    <p>{{ 'VALID_FORM' | translate }}</p>
                 </div>
             </div>
         </form>

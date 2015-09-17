@@ -5,7 +5,7 @@
         .controller('AddSitesConfigForEmail', AddSitesConfigForEmail)
     ;
 
-    function AddSitesConfigForEmail($scope, $stateParams, $state, publishers, sourceReportHasConfig, sourceReportConfig, AlertService) {
+    function AddSitesConfigForEmail($scope, $translate, $stateParams, $state, publishers, sourceReportHasConfig, sourceReportConfig, AlertService) {
         $scope.sourceReportHasConfig = sourceReportHasConfig;
         $scope.sitesConfigSucceed = $scope.sourceReportHasConfig;
         $scope.sitesNoConfig = [];
@@ -136,7 +136,7 @@
                 .then(function() {
                     AlertService.addFlash({
                         type: 'success',
-                        message: 'The email config has been updated'
+                        message: $translate.instant('SOURCE_CONFIG_MODULE.UPDATE_EMAIL_SUCCESS')
                     });
                 })
 
@@ -147,7 +147,7 @@
                 .catch(function() {
                     AlertService.addAlert({
                         type: 'error',
-                        message: 'The email config is not updated'
+                        message: $translate.instant('SOURCE_CONFIG_MODULE.UPDATE_EMAIL_FAIL')
                     });
                 });
         }

@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('tagcade.blocks.errorPage')
-        .controller('404ErrorController', function(AlertService) {
+        .controller('404ErrorController', function($translate, AlertService) {
             AlertService.replaceAlerts({
                 type: 'error',
-                message: 'The requested resource could not be found'
+                message: $translate.instant('ERROR_PAGE.404')
             });
         })
     ;

@@ -5,13 +5,13 @@
         .controller('SiteConfigByEmailList', SiteConfigByEmailList)
     ;
 
-    function SiteConfigByEmailList($scope, $modal, $state, sourceReportHasConfig, AlertService, sourceReportConfig) {
+    function SiteConfigByEmailList($scope, $translate, $modal, $state, sourceReportHasConfig, AlertService, sourceReportConfig) {
         $scope.sourceReportHasConfig = sourceReportHasConfig;
 
         if(!$scope.sourceReportHasConfig.length) {
             AlertService.addFlash({
                 type: 'success',
-                message: 'The site config has been deleted'
+                message: $translate.instant('SOURCE_CONFIG_MODULE.DELETE_SITE_SUCCESS')
             });
         }
 
@@ -33,7 +33,7 @@
                     .then(function() {
                         AlertService.addFlash({
                             type: 'success',
-                            message: 'The site config has been deleted'
+                            message: $translate.instant('SOURCE_CONFIG_MODULE.DELETE_SITE_SUCCESS')
                         });
                     })
 
@@ -44,7 +44,7 @@
                     .catch(function() {
                         AlertService.addAlert({
                             type: 'error',
-                            message: 'The site config not been deleted'
+                            message: $translate.instant('SOURCE_CONFIG_MODULE.DELETE_SITE_FAIL')
                         });
                     });
             })

@@ -5,7 +5,7 @@
         .controller('EmailConfigsForm', EmailConfigsForm)
     ;
 
-    function EmailConfigsForm($scope, $state, AlertService, publishers, sourceReportConfig) {
+    function EmailConfigsForm($scope, $translate, $state, AlertService, publishers, sourceReportConfig) {
         $scope.publishers = publishers;
 
         $scope.emailReceive = [{id: 1}];
@@ -159,7 +159,7 @@
                 .then(function () {
                     AlertService.addFlash({
                         type: 'success',
-                        message: 'The email config has been updated'
+                        message: $translate.instant('SOURCE_CONFIG_MODULE.UPDATE_EMAIL_SUCCESS')
                     });
                 })
 
@@ -170,7 +170,7 @@
                 .catch(function() {
                     AlertService.addAlert({
                         type: 'error',
-                        message: 'The email config is not updated'
+                        message: $translate.instant('SOURCE_CONFIG_MODULE.UPDATE_EMAIL_FAIL')
                     });
                 })
             ;

@@ -72,7 +72,7 @@
                 </div>
 
                 <div class="form-group" ng-if="showForDynamicAdSlot()">
-                    <label for="inputDefaultLibraryAdSlot" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.DEFAULT_AD_LOT' | translate }}</label>
+                    <label for="inputDefaultLibraryAdSlot" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.DEFAULT_AD_SLOT' | translate }}</label>
                     <div class="col-sm-5">
                         <ui-select id="inputDefaultLibraryAdSlot" ng-model="adSlot.defaultLibraryAdSlot" ng-required="true" server-error reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_AD_SLOT' | translate }}">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>

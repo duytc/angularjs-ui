@@ -26,19 +26,19 @@
             <li ng-controller="Logout">
                 <a ng-click="logout()">
                     <i class="fa fa-sign-out"></i>
-                    Log Out
+                    {{ 'LOGOUT' | translate }}
                 </a>
             </li>
             <li>
                 <a ui-sref=".accountManagement.edit">
                     <i class="fa fa-edit"></i>
-                    Edit Profile
+                    {{ 'EDIT_PROFILE' | translate }}
                 </a>
             </li>
         </ul>
     </li>
     <li ng-controller="LayoutHeader" class="text-normal">
-        <a ng-if="showButtonSwitchBackToAdmin()" ng-click="switchBackToAdminAccount()"><span>Return to admin account</span></a>
+        <a ng-if="showButtonSwitchBackToAdmin()" ng-click="switchBackToAdminAccount()"><span>{{ 'RETURN_TO_ADMIN' | translate }}</span></a>
     </li>
 </ul>
 </div>

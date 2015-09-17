@@ -3,49 +3,49 @@
         class="nav"
         collapse-nav>
 
-        <li ui-sref-active-eq="active"><a ui-sref=".dashboard" ui-sref-opts="{reload: true}"><i class="fa fa-home"></i><span>Dashboard</span></a></li>
+        <li ui-sref-active-eq="active"><a ui-sref=".dashboard" ui-sref-opts="{reload: true}"><i class="fa fa-home"></i><span>{{ 'NAVBAR.DASHBOARD' | translate }}</span></a></li>
 
         <li ui-sref-active="active">
-            <a ui-sref=".tagManagement"><i class="fa fa-location-arrow"></i><span>Tag Management</span></a>
+            <a ui-sref=".tagManagement"><i class="fa fa-location-arrow"></i><span>{{ 'NAVBAR.TAG_MANAGEMENT' | translate }}</span></a>
             <ul>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.tagGenerator"><i class="fa fa-caret-right"></i>Generate Tags</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.channel.list"><i class="fa fa-caret-right"></i>My Channels</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.sites.list"><i class="fa fa-caret-right"></i>My Sites</a></li>
-                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adSlot.listAll"><i class="fa fa-caret-right"></i>My Ad Slots</a></li>
-                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adNetwork.list"><i class="fa fa-caret-right"></i>My Ad Networks</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.channel.new"><i class="fa fa-caret-right"></i>New Channel</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.sites.new"><i class="fa fa-caret-right"></i>New Site</a></li>
-                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adSlot.new"><i class="fa fa-caret-right"></i>New Ad Slot</a></li>
-                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adNetwork.new"><i class="fa fa-caret-right"></i>New Ad Network</a></li>
-                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adTag.new"><i class="fa fa-caret-right"></i>New Ad Tag</a></li>
+                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.tagGenerator"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.GENERATE_TAGS' | translate }}</a></li>
+                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.channel.list"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.MY_CHANNELS' | translate }}</a></li>
+                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.sites.list"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.MY_SITES' | translate }}</a></li>
+                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adSlot.listAll"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.MY_AD_SLOTS' | translate }}</a></li>
+                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adNetwork.list"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.MY_AD_NETWORKS' | translate }}</a></li>
+                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.channel.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_CHANNEL' | translate }}</a></li>
+                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.sites.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_SITE' | translate }}</a></li>
+                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adSlot.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_AD_SLOT' | translate }}</a></li>
+                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adNetwork.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_AD_NETWORK' | translate }}</a></li>
+                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adTag.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_AD_TAG' | translate }}</a></li>
             </ul>
         </li>
 
         <li ui-sref-active="active">
-            <a ui-sref=".tagLibrary"><i class="fa fa-book"></i><span>Tag Library</span></a>
+            <a ui-sref=".tagLibrary"><i class="fa fa-book"></i><span>{{ 'NAVBAR.TAG_LIBRARY' | translate }}</span></a>
             <ul>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagLibrary.adSlot.list"><i class="fa fa-caret-right"></i>Ad Slots</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagLibrary.adTag.list"><i class="fa fa-caret-right"></i>Ad Tags</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagLibrary.adSlot.new"><i class="fa fa-caret-right"></i>New Ad Slot</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagLibrary.adTag.new"><i class="fa fa-caret-right"></i>New Ad Tag</a></li>
+                <li ui-sref-active-eq="active"><a ui-sref=".tagLibrary.adSlot.list"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.AD_SLOTS' | translate }}</a></li>
+                <li ui-sref-active-eq="active"><a ui-sref=".tagLibrary.adTag.list"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.AD_TAGS' | translate }}</a></li>
+                <li ui-sref-active-eq="active"><a ui-sref=".tagLibrary.adSlot.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_AD_SLOT' | translate }}</a></li>
+                <li ui-sref-active-eq="active"><a ui-sref=".tagLibrary.adTag.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_AD_TAG' | translate }}</a></li>
             </ul>
         </li>
 
         <li ui-sref-active="active">
-            <a ui-sref=".reports"><i class="fa fa-tachometer"></i><span>Reports</span></a>
+            <a ui-sref=".reports"><i class="fa fa-tachometer"></i><span>{{ 'NAVBAR.REPORTS' | translate }}</span></a>
             <ul>
-                <li ng-if="hasDisplayAdsModule" ui-sref-active="active"><a ui-sref=".reports.performance.account"><i class="fa fa-caret-right"></i>Performance Reports</a></li>
-                <li ng-if="hasAnalyticsModule" ui-sref-active="active"><a ui-sref=".reports.source"><i class="fa fa-caret-right"></i>Source Reports</a></li>
-                <li ui-sref-active="active"><a ui-sref=".reports.billing.account"><i class="fa fa-caret-right"></i>Billing Reports</a></li>
-                <li ui-sref-active="active"><a ui-sref=".reports.projectedBill.account"><i class="fa fa-caret-right"></i>Projected Bill</a></li>
+                <li ng-if="hasDisplayAdsModule" ui-sref-active="active"><a ui-sref=".reports.performance.account"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.PERFORMANCE_REPORTS' | translate }}</a></li>
+                <li ng-if="hasAnalyticsModule" ui-sref-active="active"><a ui-sref=".reports.source"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.SOURCE_REPORTS' | translate }}</a></li>
+                <li ui-sref-active="active"><a ui-sref=".reports.billing.account"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.BILLING_REPORTS' | translate }}</a></li>
+                <li ui-sref-active="active"><a ui-sref=".reports.projectedBill.account"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.PROJECTED_BILL' | translate }}</a></li>
             </ul>
         </li>
 
         <li ui-sref-active="active">
-            <a ui-sref=".supportTools"><i class="glyphicon glyphicon-wrench"></i><span>Tools</span></a>
+            <a ui-sref=".supportTools"><i class="glyphicon glyphicon-wrench"></i><span>{{ 'NAVBAR.TOOLS' | translate }}</span></a>
             <ul>
-                <!--<li ui-sref-active="active"><a ui-sref=".supportTools.cpmEditor"><i class="fa fa-caret-right"></i>Cpm Editor</a></li>-->
-                <li ui-sref-active="active"><a ui-sref=".supportTools.cascadeManager.edit"><i class="fa fa-caret-right"></i>Cascade Manager</a></li>
+                <!--<li ui-sref-active="active"><a ui-sref=".supportTools.cpmEditor"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.CPM_EDITOR' | translate }}</a></li>-->
+                <li ui-sref-active="active"><a ui-sref=".supportTools.cascadeManager.edit"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.CASCADE_MANAGER' | translate }}</a></li>
             </ul>
         </li>
     </ul>

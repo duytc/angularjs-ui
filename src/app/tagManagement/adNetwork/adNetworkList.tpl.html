@@ -34,7 +34,7 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li><a ui-sref="^.^.adTag.listByAdNetwork({ adNetworkId: item.id })">>{{ 'AD_NETWORK_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
+                                <li><a ui-sref="^.^.adTag.listByAdNetwork({ adNetworkId: item.id })">{{ 'AD_NETWORK_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li ng-if="item.pausedAdTagsCount > 0"><a ng-click="toggleAdNetworkStatus(item, true)">{{ 'AD_NETWORK_MODULE.DROPDOWN_ACTIVE' | translate }}</a></li>
                                 <li ng-if="item.activeAdTagsCount > 0"><a ng-click="toggleAdNetworkStatus(item, false)">{{ 'AD_NETWORK_MODULE.DROPDOWN_PAUSE' | translate }}</a></li>

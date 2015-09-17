@@ -5,7 +5,7 @@
         .controller('EmailConfigsEdit', EmailConfigsEdit)
     ;
 
-    function EmailConfigsEdit($scope, $state, emailConfig, AlertService, sourceReportConfig) {
+    function EmailConfigsEdit($scope, $translate, $state, emailConfig, AlertService, sourceReportConfig) {
         $scope.emailReceive = emailConfig;
 
         $scope.isFormValid = isFormValid;
@@ -20,7 +20,7 @@
                 .then(function() {
                     AlertService.addFlash({
                         type: 'success',
-                        message: 'The email config has been updated'
+                        message: $translate.instant('SOURCE_CONFIG_MODULE.UPDATE_EMAIL_SUCCESS')
                     });
                 })
 
@@ -31,7 +31,7 @@
                 .catch(function() {
                     AlertService.addAlert({
                         type: 'error',
-                        message: 'The email config is not updated'
+                        message: $translate.instant('SOURCE_CONFIG_MODULE.UPDATE_EMAIL_FAIL')
                     });
                 });
         }

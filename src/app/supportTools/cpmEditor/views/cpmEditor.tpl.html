@@ -4,10 +4,10 @@
         <div class="row">
             <form name="cpmSelectorForm" class="col-lg-6 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">Update CPM For</label>
+                    <label class="col-sm-3 control-label">{{ 'CPM_EDITOR_MODULE.UPDATE_CPM_FOR' | translate }}</label>
                     <div class="col-sm-9">
                         <ui-select name="updateTypes" ng-model="selectedData.updateTypes" ng-required="true" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select an option">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'CPM_EDITOR_MODULE.SELECT_AN_OPTION' | translate }}">{{ $select.selected.label }}</ui-select-match>
                             <ui-select-choices repeat="type in updateTypesOptions | filter: $select.search">
                                 <div ng-bind-html="type.label | highlight: $select.search"></div>
                             </ui-select-choices>
@@ -16,7 +16,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">Date Range</label>
+                    <label class="col-sm-3 control-label">{{ 'CPM_EDITOR_MODULE.DATE_RANGE' | translate }}</label>
                     <div class="col-sm-9">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -25,10 +25,10 @@
                     </div>
                 </div>
                 <div class="form-group" ng-if="isAdmin">
-                    <label class="col-sm-3 control-label">Publisher</label>
+                    <label class="col-sm-3 control-label">{{ 'PUBLISHER' | translate }}</label>
                     <div class="col-sm-9">
                         <ui-select name="publisher" ng-model="selectedData.publisherId" ng-required="true" ng-disabled="!optionData.publishers.length" on-select="selectPublisher()" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select a publisher">{{ $select.selected.company }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="publisher.id as publisher in optionData.publishers | filter: $select.search">
                                 <div ng-bind-html="publisher.company | highlight: $select.search"></div>
                             </ui-select-choices>
@@ -36,10 +36,10 @@
                     </div>
                 </div>
                 <div class="form-group" ng-if="selectUpdateTypesis(updateTypes.adTag)">
-                    <label class="col-sm-3 control-label">Site</label>
+                    <label class="col-sm-3 control-label">{{ 'SITE' | translate }}</label>
                     <div class="col-sm-9">
                         <ui-select name="site" ng-model="selectedData.siteId" ng-required="true" ng-disabled="!selectedData.publisherId" on-select="selectSite($item)" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select a site">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'SITE_MODULE.SELECT_A_SITE' | translate }}">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices repeat="site.id as site in optionData.sites | filter: $select.search | selectedPublisher:selectedData.publisherId">
                                 <div ng-bind-html="site.name | highlight: $select.search"></div>
                             </ui-select-choices>
@@ -47,10 +47,10 @@
                     </div>
                 </div>
                 <div class="form-group" ng-if="selectUpdateTypesis(updateTypes.adNetwork)">
-                    <label class="col-sm-3 control-label">Ad Network</label>
+                    <label class="col-sm-3 control-label">{{ 'AD_NETWORK' | translate }}</label>
                     <div class="col-sm-9">
                         <ui-select name="adNetwork" ng-model="selectedData.adNetworkId" ng-required="true" ng-disabled="!selectedData.publisherId" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select a ad network">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'AD_NETWORK_MODULE.SELECT_A_AD_NETWORK' | translate }}">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices repeat="adNetwork.id as adNetwork in optionData.adNetworks | filter: $select.search | selectedPublisher:selectedData.publisherId">
                                 <div ng-bind-html="adNetwork.name | highlight: $select.search"></div>
                             </ui-select-choices>
@@ -58,10 +58,10 @@
                     </div>
                 </div>
                 <div class="form-group" ng-if="selectUpdateTypesis(updateTypes.site)">
-                    <label class="col-sm-3 control-label">Ad Network</label>
+                    <label class="col-sm-3 control-label">{{ 'AD_NETWORK' | translate }}</label>
                     <div class="col-sm-9">
                         <ui-select name="adNetwork" ng-model="selectedData.adNetworkForSiteId" ng-required="true" ng-disabled="!selectedData.publisherId" on-select="selectAdNetworkForSiteId($item)" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select a ad network">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'AD_NETWORK_MODULE.SELECT_A_AD_NETWORK' | translate }}">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices repeat="adNetwork.id as adNetwork in optionData.adNetworks | filter: $select.search | selectedPublisher:selectedData.publisherId">
                                 <div ng-bind-html="adNetwork.name | highlight: $select.search"></div>
                             </ui-select-choices>
@@ -69,10 +69,10 @@
                     </div>
                 </div>
                 <div class="form-group" ng-if="selectUpdateTypesis(updateTypes.site)">
-                    <label class="col-sm-3 control-label">Site</label>
+                    <label class="col-sm-3 control-label">{{ 'SITE' | translate }}</label>
                     <div class="col-sm-9">
                         <ui-select name="site" ng-model="selectedData.sitesByAdNetworkId" ng-required="true" ng-disabled="!selectedData.adNetworkForSiteId" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select a site">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'SITE_MODULE.SELECT_A_SITE' | translate }}">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices repeat="site.id as site in optionData.sitesByAdNetwork | filter: $select.search">
                                 <div ng-bind-html="site.name | highlight: $select.search"></div>
                             </ui-select-choices>
@@ -80,10 +80,10 @@
                     </div>
                 </div>
                 <div class="form-group" ng-if="selectUpdateTypesis(updateTypes.adTag)">
-                    <label class="col-sm-3 control-label">Ad Slot</label>
+                    <label class="col-sm-3 control-label">{{ 'AD_SLOT' | translate }}</label>
                     <div class="col-sm-9">
                         <ui-select name="adSlot" ng-model="selectedData.adSlotId" ng-required="true" ng-disabled="!selectedData.siteId" on-select="selectAdSlot($item)" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select a ad slot">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_AD_SLOT' | translate }}">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices repeat="adSlot.id as adSlot in optionData.adSlots | filter: $select.search">
                                 <div ng-bind-html="adSlot.name | highlight: $select.search"></div>
                             </ui-select-choices>
@@ -91,10 +91,10 @@
                     </div>
                 </div>
                 <div class="form-group" ng-if="selectUpdateTypesis(updateTypes.adTag)">
-                    <label class="col-sm-3 control-label">Ad Tags</label>
+                    <label class="col-sm-3 control-label">{{ 'AD_TAG' | translate }}</label>
                     <div class="col-sm-9">
                         <ui-select name="adNetwork" ng-model="selectedData.adTagId" ng-required="true" ng-disabled="!selectedData.adSlotId" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select a ad tag">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'AD_TAG_MODULE.SELECT_A_AD_TAG' | translate }}">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices repeat="adTag.id as adTag in optionData.adTags | filter: $select.search">
                                 <div ng-bind-html="adTag.name | highlight: $select.search"></div>
                             </ui-select-choices>
@@ -102,16 +102,16 @@
                     </div>
                 </div>
                 <div class="form-group input-spinners">
-                    <label class="col-sm-3 control-label">CPM Rate</label>
+                    <label class="col-sm-3 control-label">{{ 'CPM_EDITOR_MODULE.CPM_RATE' | translate }}</label>
                     <div class="col-sm-9">
-                        <input type="number" name="inputCpmRate" class="form-control" ng-model="selectedData.CPM" min="1" placeholder="New CPM Rate">
+                        <input type="number" name="inputCpmRate" class="form-control" ng-model="selectedData.CPM" min="1" placeholder="{{ 'CPM_EDITOR_MODULE.CPM_RATE' | translate }}">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-9">
-                        <button ng-disabled="!isFormValid()" type="submit" class="btn btn-success">Submit</button>
+                        <button ng-disabled="!isFormValid()" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">
-                            <p>Submit button will be active only when all fields are valid.</p>
+                            <p>{{ 'VALID_FORM' | translate }}</p>
                         </div>
                     </div>
                 </div>
