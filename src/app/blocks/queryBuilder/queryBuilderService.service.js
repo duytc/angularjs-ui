@@ -39,28 +39,42 @@
                     !group.val ? value = '""' : value;
 
                     var showDefaultGroup = null;
-                    var variable = group.var == '${PAGEURL}' ? 'location.href' : group.var;
-
-                    if(group.cmp == CONDITIONS_STRING[2].key) {
-                        showDefaultGroup = '(' + 'window.' + variable + '.search(/' + group.val + '/i) > -1' + ') ' + type + ' ';
+                    var variable = null;
+                    if( group.var == '${PAGEURL}') {
+                        variable = 'window.location.href';
                     }
-                    else if(group.cmp == CONDITIONS_STRING[3].key) {
-                        showDefaultGroup = '(' + 'window.' + variable + '.search(/' + group.val + '/i) < 0' + ') ' + type + ' ';
+                    else if( group.var == '${COUNTRY}') {
+                        variable = 'empty';
                     }
-                    else if(group.cmp == CONDITIONS_STRING[4].key) {
-                        showDefaultGroup = '(' + 'window.' + variable + '.search(/' + group.val + '/i) === 0' + ') ' + type + ' ';
-                    }
-                    else if(group.cmp == CONDITIONS_STRING[5].key) {
-                        showDefaultGroup = '(' + 'window.' + variable + '.search(/' + group.val + '/i) !== 0' + ') ' + type + ' ';
-                    }
-                    else if(group.cmp == CONDITIONS_STRING[6].key) {
-                        showDefaultGroup = '(' + 'window.' + variable + '.search(/' + group.val + '$/i) === window.'+ variable +'.length - ' + value + '.length)' + type + ' ';
-                    }
-                    else if(group.cmp == CONDITIONS_STRING[7].key) {
-                        showDefaultGroup = '(' + 'window.' + variable + '.search(/' + group.val + '$/i) !== window.'+ variable +'.length - ' + value + '.length)' + type + ' ';
+                    else if( group.var == '${USERAGENT}') {
+                        variable = 'window.navigator.userAgent';
                     }
                     else {
-                        showDefaultGroup = '(' + 'window.' + variable + ' ' + group.cmp + ' ' + value + ') ' + type + ' ';
+                        if(!!group.var) {
+                            variable = 'window.' + group.var;
+                        }
+                    }
+
+                    if(group.cmp == CONDITIONS_STRING[2].key) {
+                        showDefaultGroup = '(' + variable + '.search(/' + group.val + '/i) > -1' + ') ' + type + ' ';
+                    }
+                    else if(group.cmp == CONDITIONS_STRING[3].key) {
+                        showDefaultGroup = '(' + variable + '.search(/' + group.val + '/i) < 0' + ') ' + type + ' ';
+                    }
+                    else if(group.cmp == CONDITIONS_STRING[4].key) {
+                        showDefaultGroup = '(' + variable + '.search(/' + group.val + '/i) === 0' + ') ' + type + ' ';
+                    }
+                    else if(group.cmp == CONDITIONS_STRING[5].key) {
+                        showDefaultGroup = '(' + variable + '.search(/' + group.val + '/i) !== 0' + ') ' + type + ' ';
+                    }
+                    else if(group.cmp == CONDITIONS_STRING[6].key) {
+                        showDefaultGroup = '(' + variable + '.search(/' + group.val + '$/i) === '+ variable +'.length - ' + value + '.length)' + type + ' ';
+                    }
+                    else if(group.cmp == CONDITIONS_STRING[7].key) {
+                        showDefaultGroup = '(' + variable + '.search(/' + group.val + '$/i) !== '+ variable +'.length - ' + value + '.length)' + type + ' ';
+                    }
+                    else {
+                        showDefaultGroup = '(' + variable + ' ' + group.cmp + ' ' + value + ') ' + type + ' ';
                     }
 
                     groupBuild += (!variable && !group.val) ? '()' : showDefaultGroup;
