@@ -44,7 +44,7 @@
         }
 
         function getTagsAdSlotDynamic(dynamicAdSlot) {
-            var defaultTags = [{name: "utm_term"}, {name: "utm_source"}, {name: "utm_campaign"}, {name: "${PAGEURL}"}];
+            var defaultTags = [{name: "utm_term"}, {name: "utm_source"}, {name: "utm_campaign"}, {name: "${PAGEURL}"}, {name: "${USERAGENT}"}];
             var currentTags = _buildTags(dynamicAdSlot);
 
             var allTags = defaultTags.concat(currentTags);
