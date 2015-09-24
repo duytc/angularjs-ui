@@ -173,6 +173,10 @@ angular.module('angucomplete', [] )
                     }
 
                     if(!searchItemExisted) {
+                        if(!$scope.localData) {
+                            return;
+                        }
+
                         return $scope.localData.push({name : $scope.searchStr});
                     }
                 };

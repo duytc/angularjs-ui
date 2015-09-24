@@ -5,7 +5,7 @@
         .factory('queryBuilderService', queryBuilderService)
     ;
 
-    function queryBuilderService(GROUP_TYPE, GROUP_KEY, DATA_TYPE, CONDITIONS_STRING) {
+    function queryBuilderService(GROUP_TYPE, GROUP_KEY, CONDITIONS_STRING) {
         var api = {
             builtVariable: builtVariable
         };
@@ -25,6 +25,46 @@
             return convertedExpressions;
         }
 
+        function _getConvertedVariable(myVar) {
+            var trueJsVariable = myVar;
+
+            if (myVar == '${PAGEURL}') {
+                trueJsVariable = 'window.location.href';
+            }
+            else if (myVar == '${COUNTRY}') {
+                trueJsVariable = '${COUNTRY}';
+            }
+            else if (myVar == '${USERAGENT}') {
+                trueJsVariable = 'window.navigator.userAgent';
+            }
+            else if(!!myVar) {
+                    trueJsVariable = 'window.' + myVar;
+            }
+
+            return trueJsVariable;
+        }
+
+        function _getComparatorConfig(comparator) {
+            for(var i = 0; i < CONDITIONS_STRING.length; i++) {
+                if (comparator == CONDITIONS_STRING[i].key) {
+                    return CONDITIONS_STRING[i];
+                }
+            }
+
+            return '';
+        }
+
+        function _getJSStringFromPattern(jsPattern, variable, value) {
+            if(!variable || (!variable && !value)) {
+                return '()';
+            }
+
+            jsPattern = jsPattern.replace(/{VARIABLE}/g, variable);
+            jsPattern = jsPattern.replace(/{VALUE}/g, value);
+
+            return jsPattern;
+        }
+
         function _buildNested(groups, groupType) {
             var groupBuild = '';
 
@@ -35,49 +75,18 @@
                     groupBuild += '(' + _buildNested(group[GROUP_KEY], group[GROUP_TYPE]) + ') ' + type + ' ';
                 }
                 else {
-                    var value = (group.type == DATA_TYPE[0].key && !!group.val) ? '"' + group.val + '"' : group.val;
-                    !group.val ? value = '""' : value;
+                    var variable = _getConvertedVariable(group.var);
 
-                    var showDefaultGroup = null;
-                    var variable = null;
-                    if( group.var == '${PAGEURL}') {
-                        variable = 'window.location.href';
-                    }
-                    else if( group.var == '${COUNTRY}') {
-                        variable = 'empty';
-                    }
-                    else if( group.var == '${USERAGENT}') {
-                        variable = 'window.navigator.userAgent';
-                    }
-                    else {
-                        if(!!group.var) {
-                            variable = 'window.' + group.var;
-                        }
-                    }
+                    var value = !group.val ? "" : group.val;
+                    value = value.replace(/[/]/g, '\\/');
+                    value = value.replace(/[&]/g, '\\&');
+                    value = value.replace(/[-]/g, '\\-');
+                    value = value.replace(/[?]/g, '\\?');
 
-                    if(group.cmp == CONDITIONS_STRING[2].key) {
-                        showDefaultGroup = '(' + variable + '.search(/' + group.val + '/i) > -1' + ') ' + type + ' ';
-                    }
-                    else if(group.cmp == CONDITIONS_STRING[3].key) {
-                        showDefaultGroup = '(' + variable + '.search(/' + group.val + '/i) < 0' + ') ' + type + ' ';
-                    }
-                    else if(group.cmp == CONDITIONS_STRING[4].key) {
-                        showDefaultGroup = '(' + variable + '.search(/' + group.val + '/i) === 0' + ') ' + type + ' ';
-                    }
-                    else if(group.cmp == CONDITIONS_STRING[5].key) {
-                        showDefaultGroup = '(' + variable + '.search(/' + group.val + '/i) !== 0' + ') ' + type + ' ';
-                    }
-                    else if(group.cmp == CONDITIONS_STRING[6].key) {
-                        showDefaultGroup = '(' + variable + '.search(/' + group.val + '$/i) === '+ variable +'.length - ' + value + '.length)' + type + ' ';
-                    }
-                    else if(group.cmp == CONDITIONS_STRING[7].key) {
-                        showDefaultGroup = '(' + variable + '.search(/' + group.val + '$/i) !== '+ variable +'.length - ' + value + '.length)' + type + ' ';
-                    }
-                    else {
-                        showDefaultGroup = '(' + variable + ' ' + group.cmp + ' ' + value + ') ' + type + ' ';
-                    }
+                    var cmpConfig = _getComparatorConfig(group.cmp);
+                    var defaultGroupLabel = _getJSStringFromPattern(cmpConfig.jsPattern, variable, value) + type + ' ';
 
-                    groupBuild += (!variable && !group.val) ? '()' : showDefaultGroup;
+                    groupBuild += defaultGroupLabel;
                 }
             });
 

@@ -15,14 +15,14 @@
             {key: '!=', label: 'NOT EQUAL TO' }
         ])
         .constant('CONDITIONS_STRING', [
-            {key: '==', label: 'EQUAL TO'},
-            {key: '!=', label: 'NOT EQUAL TO' },
-            {key: 'contains', label:'CONTAINS'},
-            {key: 'notContains', label:'DOES NOT CONTAIN'},
-            {key: 'startsWith', label:'STARTS WITH'},
-            {key: 'notStartsWith', label:'DOES NOT START WITH'},
-            {key: 'endsWith', label:'ENDS WITH'},
-            {key: 'notEndsWith', label:'DOES NOT END WITH'}
+            {key: '==', label: 'EQUAL TO', jsPattern: '({VARIABLE} == "{VALUE}") '},
+            {key: '!=', label: 'NOT EQUAL TO' , jsPattern: '({VARIABLE} != "{VALUE}") '},
+            {key: 'contains', label:'CONTAINS', jsPattern: '({VARIABLE}.search(/{VALUE}/i) > -1) '},
+            {key: 'notContains', label:'DOES NOT CONTAIN', jsPattern: '({VARIABLE}.search(/{VALUE}/i) < 0) '},
+            {key: 'startsWith', label:'STARTS WITH', jsPattern: '({VARIABLE}.search(/{VALUE}/i) === 0) '},
+            {key: 'notStartsWith', label:'DOES NOT START WITH', jsPattern: '({VARIABLE}.search(/{VALUE}/i) !== 0) '},
+            {key: 'endsWith', label:'ENDS WITH', jsPattern: '({VARIABLE}.search(/{VALUE}$/i) === {VARIABLE}.length - "{VALUE}".length) '},
+            {key: 'notEndsWith', label:'DOES NOT END WITH', jsPattern: '({VARIABLE}.search(/{VALUE}$/i) !== {VARIABLE}.length - "{VALUE}".length) '}
         ])
         .constant('OPERATORS', ['AND' , 'OR'])
         .constant('DATA_TYPE', [
