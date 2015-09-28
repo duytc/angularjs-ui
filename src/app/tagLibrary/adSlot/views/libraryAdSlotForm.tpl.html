@@ -48,7 +48,7 @@
                 <div class="form-group" ng-if="isAdmin() && isNew">
                     <label for="inputPublisher" class="col-sm-1 control-label">{{ 'PUBLISHER' | translate }}</label>
                     <div class="col-sm-5">
-                        <ui-select id="inputPublisher" ng-model="adSlot.publisher" reset-search-input="'false'">
+                        <ui-select ng-required="true" id="inputPublisher" ng-model="adSlot.publisher" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
                             <ui-select-choices repeat="publisher.id as publisher in publisherList | filter: { company: $select.search }">
                                 {{ publisher.company }}
@@ -105,6 +105,15 @@
                         <div class="expressions-group">
                             <library-query-builder expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native"></library-query-builder>
                         </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="showForDisplayAdSlot()">
+                    <label for="inputAutoFit" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.AUTO_FIT' | translate }}</label>
+                    <div class="col-sm-5">
+                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="adSlot.autoFit" id="inputAutoFit"><span></span></label>
+
+                        <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_AUTO_FIT' | translate }}</span>
                     </div>
                 </div>
 

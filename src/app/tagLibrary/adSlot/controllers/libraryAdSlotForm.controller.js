@@ -313,11 +313,13 @@
                 delete adSlot.height;
                 delete adSlot.width;
                 delete adSlot.libraryExpressions;
+                delete adSlot.autoFit;
             }
 
             if($scope.selected.type == $scope.typesList.dynamic) {
                 delete adSlot.height;
                 delete adSlot.width;
+                delete adSlot.autoFit;
             }
             else {
                 delete adSlot.libraryExpressions;

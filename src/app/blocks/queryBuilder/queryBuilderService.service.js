@@ -28,14 +28,26 @@
         function _getConvertedVariable(myVar) {
             var trueJsVariable = myVar;
 
-            if (myVar == '${PAGEURL}') {
+            if (myVar == '${PAGE_URL}') {
                 trueJsVariable = 'window.location.href';
             }
             else if (myVar == '${COUNTRY}') {
                 trueJsVariable = '${COUNTRY}';
             }
-            else if (myVar == '${USERAGENT}') {
+            else if (myVar == '${USER_AGENT}') {
                 trueJsVariable = 'window.navigator.userAgent';
+            }
+            else if (myVar == '${SCREEN_WIDTH}') {
+                trueJsVariable = 'top.screen.width';
+            }
+            else if (myVar == '${SCREEN_HEIGHT}') {
+                trueJsVariable = 'top.screen.height';
+            }
+            else if (myVar == '${WINDOW_WIDTH}') {
+                trueJsVariable = 'top.screen.availWidth';
+            }
+            else if (myVar == '${WINDOW_HEIGHT}') {
+                trueJsVariable = 'top.screen.availHeight';
             }
             else if(!!myVar) {
                     trueJsVariable = 'window.' + myVar;

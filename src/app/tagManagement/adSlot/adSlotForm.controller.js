@@ -487,11 +487,13 @@
             if($scope.selected.type == $scope.adSlotTypes.native) {
                 delete adSlot.libraryAdSlot.height;
                 delete adSlot.libraryAdSlot.width;
+                delete adSlot.libraryAdSlot.autoFit;
             }
 
             if($scope.selected.type == $scope.adSlotTypes.dynamic) {
                 delete adSlot.libraryAdSlot.height;
                 delete adSlot.libraryAdSlot.width;
+                delete adSlot.libraryAdSlot.autoFit;
 
                 // transfer of format number
                 adSlot.defaultAdSlot = angular.isObject(adSlot.defaultAdSlot) ? adSlot.defaultAdSlot.id : adSlot.defaultAdSlot;

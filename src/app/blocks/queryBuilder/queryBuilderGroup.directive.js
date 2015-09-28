@@ -88,6 +88,8 @@
                     }
 
                     function isGroup(itemGroup) {
+                        _refactorVar(itemGroup);
+
                         if(itemGroup[scope.groupKey] === undefined) {
                             return false;
                         }
@@ -117,6 +119,16 @@
                         }
 
                         return true;
+                    }
+
+                    // change variable not using underscore info using underscore
+                    function _refactorVar(itemGroup) {
+                        if (itemGroup.var == '${PAGEURL}') {
+                            itemGroup.var = '${PAGE_URL}';
+                        }
+                        else if (itemGroup.var == '${USERAGENT}') {
+                            itemGroup.var = '${USER_AGENT}';
+                        }
                     }
 
                     directive || (directive = $compile(content));

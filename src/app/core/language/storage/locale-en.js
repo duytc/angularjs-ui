@@ -255,6 +255,7 @@
                 "HEIGHT": "Height",
                 "EXPRESSION_BUILDER": "Expression Builder",
                 "SIZE": "Size",
+                "AUTO_FIT": "Auto Fit",
 
                 "ADD_NEW_SUCCESS": "The ad slot has been created",
                 "ADD_NEW_FAIL": "An error occurred. The ad slot could not be created",
@@ -287,7 +288,8 @@
                 "PLACEHOLDER_AD_SLOT_NAME": "Ad Slot name",
                 "HELP_BLOCK_COPY_TAG": "Copy and paste the following ad tag into the <body> section of your website.",
                 "HELP_BLOCK_FROM_LIBRARY": "You can select an existing ad slot from your library. If you choose this option, all of the fields below will not be editable. If you would like to change these fields, you may do so the the Tag Library section.",
-                "HELP_BLOCK_DEFAULT_AD_SLOT": "If no default ad slot is selected and no expressions match, the ad slot will not be shown on the page."
+                "HELP_BLOCK_DEFAULT_AD_SLOT": "If no default ad slot is selected and no expressions match, the ad slot will not be shown on the page.",
+                "HELP_BLOCK_AUTO_FIT": "When Auto Fit is enabled, the ad slot will dynamically resize if the ad served is different from the size defined above."
             },
             "AD_TAG_MODULE": {
                 "ADD_NEW_SUCCESS": "The ad tag has been created",

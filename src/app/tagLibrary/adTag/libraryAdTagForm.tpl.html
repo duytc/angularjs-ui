@@ -71,7 +71,7 @@
                         <ui-codemirror ng-required="true" id="inputHtml" ng-model="adTag.html" ui-codemirror-opts="editorOptions"></ui-codemirror>
                         <span class="help-block">{{ 'AD_TAG_MODULE.HELP_BLOCK_HTML' | translate }}:<br/>
                         <strong>${CACHEBUSTER}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_CACHE_BUSTER' | translate }}<br/>
-                        <strong>${PAGEURL}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_PAGE_URL' | translate }}<br/>
+                        <strong>${PAGE_URL}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_PAGE_URL' | translate }}<br/>
                         <strong>${DOMAIN}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_DOMAIN' | translate }}</span>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
                             <input name="name" ng-model="adTag.descriptor.targetUrl" server-error ng-required="true" ng-minlength="2" type="url" class="form-control" id="inputTargetUrl" placeholder="{{ 'AD_TAG_MODULE.TARGET_URL' | translate }}">
                             <span class="help-block">{{ 'AD_TAG_MODULE.HELP_BLOCK_TARGET_URL' | translate }}:<br/>
                             <strong>${CACHEBUSTER}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_CACHE_BUSTER' | translate }}<br/>
-                            <strong>${PAGEURL}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_PAGE_URL' | translate }}<br/>
+                            <strong>${PAGE_URL}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_PAGE_URL' | translate }}<br/>
                             <strong>${DOMAIN}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_DOMAIN' | translate }}</span>
                         </div>
                     </div>
