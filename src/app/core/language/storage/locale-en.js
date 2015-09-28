@@ -37,7 +37,7 @@
             "AD_TAGS": "Ad Tags",
 
             "VIEW_TODAY_REPORT": "View Today's Report",
-            "COPY_TO_CLIPBOARD": "Copy to clipboard",
+            "COPY_TO_CLIPBOARD": "Copy to Clipboard",
 
             "EVENT_LISTENER": {
                 "LOGIN_FAIL": "Login failed, did you provide an invalid username and/or password?",
@@ -121,7 +121,7 @@
                 "DISPLAY_BILLING_RATE": "Display billing Rate",
 
                 "ADD_NEW_SUCCESS": "The publisher has been updated",
-                "UPDATE_PROFILE_SUCCESS": "Your profile is updated successfully",
+                "UPDATE_PROFILE_SUCCESS": "Your profile has been updated successfully",
                 "UPDATE_STATUS_FAIL": "Could not change publisher status",
                 "PAUSE_STATUS_SUCCESS": "The publisher has been deactivated",
                 "ACTIVE_STATUS_SUCCESS": "The publisher has been activated",
@@ -185,7 +185,7 @@
                 "REMOVE_CHANNEL_FROM_SITE_SUCCESS": "The channel was removed",
                 "REMOVE_CHANNEL_FROM_SITE_FAIL": "The channel could not be removed",
                 "CONFIRM_DELETE_SITE": "Are you sure you want to delete this site?",
-                "CONFIRM_REMOVE_CHANNEL_FROM_SITE": "Are you sure you want to remove channel from site?",
+                "CONFIRM_REMOVE_CHANNEL_FROM_SITE": "Are you sure you want to remove this channel from the site?",
                 "DELETE_SUCCESS": "The site was deleted",
                 "DELETE_FAIL": "The site could not be deleted",
                 "CURRENTLY_NO_SITES": "There is currently no sites",
@@ -346,12 +346,12 @@
                 "GUIDE_SPLIT_GROUP": "To quickly remove an ad tag from a position group, click on Actions > Split Group."
             },
             "AD_SLOT_LIBRARY_MODULE": {
-                "REMOVE_SUCCESS": "Remove ad slot from library successfully",
-                "REMOVE_FAIL": "Could not remove ad slot from library",
-                "AD_SLOT_FOR_SITE_SUCCESS": "New ad slots have been added to sites",
+                "REMOVE_SUCCESS": "The ad slot was removed from the library successfully",
+                "REMOVE_FAIL": "Could not remove the ad slot from the library",
+                "AD_SLOT_FOR_SITE_SUCCESS": "New ad slots have been added to the selected sites",
                 "AD_SLOT_FOR_SITE_FAIL": "Could not add new ad slots",
                 "CURRENTLY_NO_AD_SLOT": "There is currently no ad slots in the library",
-                "CURRENTLY_NO_AD_SLOT_ASSOCIATED": "There is currently no ad slots associated",
+                "CURRENTLY_NO_AD_SLOT_ASSOCIATED": "This ad slot is currently not linked to any sites",
                 "ALERT_CREATE_LINKED_AD_SLOTS_FULL_SITE": "Every site already has a link to this ad slot",
 
                 "TITLE_CREATE_LINKED_AD_SLOTS": "Create Linked Ad Slots",
@@ -362,10 +362,10 @@
                 "LINKED_AD_SLOTS": "Linked Ad Slots"
             },
             "AD_TAG_LIBRARY_MODULE": {
-                "REMOVE_SUCCESS": "Remove ad tag from library successfully",
+                "REMOVE_SUCCESS": "The ad tag was removed from the library successfully",
                 "REMOVE_FAIL": "Could not remove ad tag from library",
                 "CURRENTLY_NO_AD_TAG": "There is currently no ad tags in the library",
-                "CURRENTLY_NO_AD_TAG_ASSOCIATED": "There is currently no ad tags associated",
+                "CURRENTLY_NO_AD_TAG_ASSOCIATED": "This ad tag is currently not linked to any other ad tag",
 
                 "LIBRARY_AD_SLOT": "Library Ad Slot",
 
