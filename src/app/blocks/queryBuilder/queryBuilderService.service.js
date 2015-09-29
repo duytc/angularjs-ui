@@ -29,13 +29,13 @@
             var trueJsVariable = myVar;
 
             if (myVar == '${PAGE_URL}') {
-                trueJsVariable = 'window.location.href';
+                trueJsVariable = 'location.href';
             }
             else if (myVar == '${COUNTRY}') {
                 trueJsVariable = '${COUNTRY}';
             }
             else if (myVar == '${USER_AGENT}') {
-                trueJsVariable = 'window.navigator.userAgent';
+                trueJsVariable = 'navigator.userAgent';
             }
             else if (myVar == '${SCREEN_WIDTH}') {
                 trueJsVariable = 'top.screen.width';
