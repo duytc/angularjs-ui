@@ -5,7 +5,7 @@
         .factory('queryBuilderService', queryBuilderService)
     ;
 
-    function queryBuilderService(GROUP_TYPE, GROUP_KEY, CONDITIONS_STRING) {
+    function queryBuilderService(GROUP_TYPE, GROUP_KEY, DATA_TYPE, CONDITIONS_STRING, CONDITIONS_NUMERIC, CONDITIONS_BOOLEAN) {
         var api = {
             builtVariable: builtVariable
         };
@@ -44,10 +44,10 @@
                 trueJsVariable = 'top.screen.height';
             }
             else if (myVar == '${WINDOW_WIDTH}') {
-                trueJsVariable = 'top.screen.availWidth';
+                trueJsVariable = 'top.screen.outerWidth';
             }
             else if (myVar == '${WINDOW_HEIGHT}') {
-                trueJsVariable = 'top.screen.availHeight';
+                trueJsVariable = 'top.screen.outerHeight';
             }
             else if(!!myVar) {
                     trueJsVariable = 'window.' + myVar;
@@ -56,10 +56,22 @@
             return trueJsVariable;
         }
 
-        function _getComparatorConfig(comparator) {
-            for(var i = 0; i < CONDITIONS_STRING.length; i++) {
-                if (comparator == CONDITIONS_STRING[i].key) {
-                    return CONDITIONS_STRING[i];
+        function _getComparatorConfig(comparator, dataType) {
+            var CONDITIONS;
+
+            if(dataType == DATA_TYPE[0].key) {
+                CONDITIONS = CONDITIONS_STRING;
+            }
+            else if(dataType == DATA_TYPE[1].key) {
+                CONDITIONS = CONDITIONS_NUMERIC;
+            }
+            else {
+                CONDITIONS = CONDITIONS_BOOLEAN;
+            }
+
+            for(var i = 0; i < CONDITIONS.length; i++) {
+                if (comparator == CONDITIONS[i].key) {
+                    return CONDITIONS[i];
                 }
             }
 
@@ -95,7 +107,7 @@
                     value = value.replace(/[-]/g, '\\-');
                     value = value.replace(/[?]/g, '\\?');
 
-                    var cmpConfig = _getComparatorConfig(group.cmp);
+                    var cmpConfig = _getComparatorConfig(group.cmp, group.type);
                     var defaultGroupLabel = _getJSStringFromPattern(cmpConfig.jsPattern, variable, value) + type + ' ';
 
                     groupBuild += defaultGroupLabel;
