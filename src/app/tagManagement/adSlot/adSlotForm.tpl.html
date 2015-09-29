@@ -59,7 +59,7 @@
                     <div class="col-sm-5">
                         <ui-select name="site" id="inputSite" ng-model="adSlot.site" ng-disabled="isAdmin() && !selected.publisher" ng-required="true" server-error on-select="selectSite($model)" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'SITE_MODULE.SELECT_A_SITE' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices infinite-scroll="addMoreSites()" class="content" infinite-scroll-container="'.content'" infinite-scroll-distance="2" repeat="site.id as site in siteList | filter:{name: $select.search} | selectedPublisher:selected.publisher | limitTo:infiniteScroll.currentSites">
+                            <ui-select-choices repeat="site.id as site in siteList | filter:{name: $select.search} | selectedPublisher:selected.publisher">
                                 {{ site.name }}
                             </ui-select-choices>
                         </ui-select>
@@ -144,7 +144,7 @@
                 <div class="form-group" ng-if="showForDisplayAdSlot()">
                     <label for="inputAutoFit" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.AUTO_FIT' | translate }}</label>
                     <div class="col-sm-5">
-                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="adSlot.libraryAdSlot.autoFit" id="inputAutoFit"><span></span></label>
+                        <label class="ui-checkbox"><input ng-disabled="pickFromLibrary" server-error name="active" type="checkbox" ng-model="adSlot.libraryAdSlot.autoFit" id="inputAutoFit"><span></span></label>
 
                         <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_AUTO_FIT' | translate }}</span>
                     </div>

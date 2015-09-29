@@ -34,7 +34,6 @@
     "angularjs-dropdown-multiselect": "https://github.com/dtagdev1/angularjs-dropdown-multiselect.git#master",
     "isteven-angular-multiselect": "~4.0.0",
     "angular-cache": "~4.3.2",
-    "ngInfiniteScroll": "~1.2.1",
     "angular-translate": "~2.7.2"
   },
   "resolutions": {

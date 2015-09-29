@@ -40,20 +40,12 @@
             }
         }
 
-        //Infinite Scroll Magic
-        $scope.infiniteScroll = {
-            numToAddAdNetwork: 20,
-            currentAdNetworks: 20
-        };
-
         $scope.isFormValid = function() {
             return $scope.adTagLibraryForm.$valid;
         };
 
         $scope.selectPublisher = function() {
             $scope.adTag.adNetwork = null;
-
-            $scope.resetInfiniteScrollAdNetwork();
         };
 
         $scope.backToAdTagLibraryList = function() {
@@ -93,14 +85,5 @@
             )
             ;
         };
-
-        $scope.addMoreAdNetworks = function(){
-            $scope.infiniteScroll.currentAdNetworks += $scope.infiniteScroll.numToAddAdNetwork;
-        };
-
-        $scope.resetInfiniteScrollAdNetwork = function() {
-            $scope.infiniteScroll.numToAddAdNetwork = 20;
-            $scope.infiniteScroll.currentAdNetworks = 20;
-        }
     }
 })();

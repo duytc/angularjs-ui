@@ -85,7 +85,7 @@
                     <div class="col-sm-10">
                         <ui-select name="adNetwork" ng-model="adTag.libraryAdTag.adNetwork" id="inputAdNetwork" ng-required="true" server-error ng-disabled="isAdmin() && !selected.publisher || pickFromLibrary" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'AD_NETWORK_MODULE.SELECT_A_AD_NETWORK' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices infinite-scroll="addMoreAdNetworks()" class="content" infinite-scroll-container="'.content'" infinite-scroll-distance="2" repeat="adNetwork.id as adNetwork in adNetworkList | filter: { name:$select.search } | selectedPublisher:selected.publisher | limitTo:infiniteScroll.currentAdNetworks">
+                            <ui-select-choices repeat="adNetwork.id as adNetwork in adNetworkList | filter: { name:$select.search } | selectedPublisher:selected.publisher">
                                 {{ adNetwork.name }}
                             </ui-select-choices>
                         </ui-select>

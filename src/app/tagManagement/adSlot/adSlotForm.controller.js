@@ -41,12 +41,6 @@
             adSlotLibrary: null
         };
 
-        //Infinite Scroll Magic
-        $scope.infiniteScroll = {
-            numToAddSite: 20,
-            currentSites: 20
-        };
-
         $scope.publisherList = publisherList;
         $scope.siteList = siteList;
 
@@ -75,8 +69,6 @@
         $scope.groupEntities = groupEntities;
         $scope.filterEntityType = filterEntityType;
         $scope.selectDefaultAdSlot = selectDefaultAdSlot;
-        $scope.resetInfiniteScrollSite = resetInfiniteScrollSite;
-        $scope.addMoreSites = addMoreSites;
 
         $scope.adSlotsDefault = [{id: null, libraryAdSlot: {
             name: 'None'
@@ -114,8 +106,6 @@
 
         function selectPublisher(publisher, publisherId) {
             $scope.adSlot.site = null;
-
-            $scope.resetInfiniteScrollSite();
         }
 
         function isFormValid() {
@@ -299,15 +289,6 @@
             $scope.adSlot.libraryAdSlot = {};
             $scope.adSlot.defaultAdSlot = null;
             angular.extend($scope.adSlot.libraryAdSlot, adSlotLibrary);
-        }
-
-        function addMoreSites(){
-            $scope.infiniteScroll.currentSites += $scope.infiniteScroll.numToAddSite;
-        }
-
-        function resetInfiniteScrollSite() {
-            $scope.infiniteScroll.numToAddSite = 20;
-            $scope.infiniteScroll.currentSites = 20;
         }
 
         /**

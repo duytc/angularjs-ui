@@ -21,7 +21,7 @@
                     <div class="col-sm-10">
                         <ui-select name="site" ng-model="selected.site" ng-required="true" on-select="selectSite($item, $model)" ng-disabled="allowPublisherSelection && !selected.publisher" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'TAG_GENERATOR_MODULE.SELECT_A_SITE_TO_GENERATE' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices infinite-scroll="addMoreSites()" class="content" infinite-scroll-container="'.content'" infinite-scroll-distance="2" repeat="site in siteList | filter: { name: $select.search } | selectedPublisher:selected.publisher | limitTo:infiniteScroll.currentSites">
+                            <ui-select-choices repeat="site in siteList | filter: { name: $select.search } | selectedPublisher:selected.publisher">
                                 {{ site.name }}
                             </ui-select-choices>
                         </ui-select>

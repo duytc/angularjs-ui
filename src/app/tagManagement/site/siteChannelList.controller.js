@@ -16,7 +16,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: $translate.instant('CHANNEL_MODULE.CURRENTLY_NO_CHANNELS_SITE')
+                message: $translate.instant('SITE_MODULE.CURRENTLY_NO_CHANNELS_SITE')
             });
         }
 
