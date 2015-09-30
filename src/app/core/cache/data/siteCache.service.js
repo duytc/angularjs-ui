@@ -63,6 +63,7 @@
                     name: siteList[idx].name,
                     publisher: siteList[idx].publisher,
                     domain: siteList[idx].domain,
+                    enableSourceReport: siteList[idx].enableSourceReport,
                     players: siteList[idx].players
                 };
             }

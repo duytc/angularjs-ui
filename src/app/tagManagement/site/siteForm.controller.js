@@ -30,6 +30,7 @@
         $scope.site = site || {
             name: null,
             domain: null,
+            enableSourceReport: false,
             players: [],
             channelSites: []
         };
