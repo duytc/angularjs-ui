@@ -140,7 +140,7 @@
                 "HELP_BLOCK_BILLING_RATE": "You can set a custom CPM rate for this publisher. If you do not set a custom rate, the rate is calculated from our rate card."
             },
             "TAG_GENERATOR_MODULE": {
-                "GUIDE_COPY_HEADER": "Copy and paste the following tag into the <head> section of your website.",
+                "GUIDE_COPY_HEADER": "To enable source reports, copy and paste the following tag into the <head> section of your website.",
                 "GUIDE_COPY_BODY": "Copy and paste the following ad tags into the <body> section of your website.",
                 "GUIDE_PASSBACK": "Give the following tag to your ad networks as a passback/default/fallback tag for display ads.",
                 "SELECT_A_SITE_TO_GENERATE": "Select a site to generate tags for...",

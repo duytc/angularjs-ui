@@ -60,19 +60,6 @@
         </div>
     </div>
     <tabset class="nav-tab-margin">
-
-        <tab ng-if="jstags.header" select="selectTab()" heading="{{ 'TAG_GENERATOR_MODULE.HEADER' | translate }}">
-            <ul class="list-unstyled list-info">
-                <li>
-                    <p><strong>{{ keywordGuide.header }}</strong></p>
-                    <div hljs source="jstags.header" select-on-click class="highlight-js"></div>
-                    <div class="copy-clipboard">
-                        <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(jstags.header)" class="btn btn-sm btn-primary"><p>{{ 'COPY_TO_CLIPBOARD' | translate }}</p></button>
-                    </div>
-                </li>
-            </ul>
-        </tab>
-
         <tab ng-if="jstags.display" select="selectTab()" heading="{{ 'DISPLAY_AD_SLOTS' | translate }}">
             <div class="media">
                 <div class="media-body">
@@ -138,6 +125,18 @@
 
                 </div>
             </div>
+        </tab>
+
+        <tab ng-if="jstags.header && hasAnalyticsModule" select="selectTab()" heading="{{ 'TAG_GENERATOR_MODULE.HEADER' | translate }}">
+            <ul class="list-unstyled list-info">
+                <li>
+                    <p><strong>{{ keywordGuide.header }}</strong></p>
+                    <div hljs source="jstags.header" select-on-click class="highlight-js"></div>
+                    <div class="copy-clipboard">
+                        <button auto-hide-on-no-flash="true" clip-copy="getTextToCopy(jstags.header)" class="btn btn-sm btn-primary"><p>{{ 'COPY_TO_CLIPBOARD' | translate }}</p></button>
+                    </div>
+                </li>
+            </ul>
         </tab>
     </tabset>
 </section>

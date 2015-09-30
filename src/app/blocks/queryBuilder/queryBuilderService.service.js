@@ -49,6 +49,9 @@
             else if (myVar == '${WINDOW_HEIGHT}') {
                 trueJsVariable = 'top.screen.outerHeight';
             }
+            else if(myVar == '${DOMAIN}') {
+                trueJsVariable = 'top.location.hostname';
+            }
             else if(!!myVar) {
                     trueJsVariable = 'window.' + myVar;
             }

@@ -5,7 +5,7 @@
         .controller('TagGenerator', TagGenerator)
     ;
 
-    function TagGenerator($scope, $translate, $location, $q, siteList, site, jstags, publishers) {
+    function TagGenerator($scope, $translate, $location, $q, siteList, site, jstags, publishers, USER_MODULES) {
         $scope.formProcessing = false;
 
         $scope.selected = {
@@ -25,6 +25,7 @@
         $scope.allowPublisherSelection = $scope.isAdmin() && !!publishers;
         $scope.publisher = null;
         $scope.publishers = publishers;
+        $scope.hasAnalyticsModule = false;
 
         $scope.isFormValid = function() {
             return $scope.tagGeneratorForm.$valid;
@@ -68,6 +69,8 @@
             $q.when(getJsTagsPromise)
                 .then(function (javascriptTags) {
                     $scope.jstags = javascriptTags;
+
+                    _hasAnalyticsModule(site);
 
                     // change siteId parameter on the current state without reloading
                     // reloadOnSearch: false set on the state
@@ -124,6 +127,10 @@
             });
 
             return adTags;
+        }
+
+        function _hasAnalyticsModule(site) {
+            $scope.hasAnalyticsModule = site.publisher.enabledModules.indexOf(USER_MODULES.analytics) > -1;
         }
     }
 })();
