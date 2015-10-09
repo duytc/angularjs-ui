@@ -256,6 +256,7 @@
                 "EXPRESSION_BUILDER": "Expression Builder",
                 "SIZE": "Size",
                 "AUTO_FIT": "Auto Fit",
+                "PASSBACK_MODE": "Passback Mode",
 
                 "ADD_NEW_SUCCESS": "The ad slot has been created",
                 "ADD_NEW_FAIL": "An error occurred. The ad slot could not be created",
@@ -272,6 +273,7 @@
 
                 "BACK_TO_AD_SLOT_LIST": "Back to Ad Slot List",
                 "SELECT_A_TYPE": "Select a type",
+                "SELECT_A_PASS_BACK": "Select a passback",
                 "GENERATE_AD_TAGS": "Generate Ad Tags",
                 "GENERATE_A_TAGS": "Generate a Tag",
                 "TAG_FOR_NAME": "Tag for {{ name }}",

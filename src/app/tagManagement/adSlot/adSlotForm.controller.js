@@ -29,8 +29,19 @@
                 key: TYPE_AD_SLOT.dynamic
             }
         ];
-        $scope.tags = null;
 
+        $scope.passbackOption = [
+            {
+                label: 'Position',
+                key: 'position'
+            },
+            {
+                label: 'Peer Priority',
+                key: 'peerpriority'
+            }
+        ];
+
+        $scope.tags = null;
         $scope.formProcessing = false;
         $scope.allowSiteSelection = $scope.isNew && !!siteList;
 
@@ -49,9 +60,11 @@
             site: $scope.isNew && !!$stateParams.siteId ? parseInt($stateParams.siteId, 10) : null,
             libraryAdSlot: {
                 name: null,
-                libraryExpressions: []
+                libraryExpressions: [],
+                passbackMode: $scope.passbackOption[0].key
             }
         };
+
         var adSlotCopy = angular.copy(adSlot);
 
         $scope.submit = submit;
@@ -400,7 +413,8 @@
             //reset form ad slot when un-check form library
             $scope.adSlot.libraryAdSlot = {
                 name: null,
-                libraryExpressions: []
+                libraryExpressions: [],
+                passbackMode: $scope.passbackOption[0].key
             };
             $scope.adSlot.defaultAdSlot = null;
         }
@@ -469,12 +483,14 @@
                 delete adSlot.libraryAdSlot.height;
                 delete adSlot.libraryAdSlot.width;
                 delete adSlot.libraryAdSlot.autoFit;
+                delete adSlot.libraryAdSlot.passbackMode;
             }
 
             if($scope.selected.type == $scope.adSlotTypes.dynamic) {
                 delete adSlot.libraryAdSlot.height;
                 delete adSlot.libraryAdSlot.width;
                 delete adSlot.libraryAdSlot.autoFit;
+                delete adSlot.libraryAdSlot.passbackMode;
 
                 // transfer of format number
                 adSlot.defaultAdSlot = angular.isObject(adSlot.defaultAdSlot) ? adSlot.defaultAdSlot.id : adSlot.defaultAdSlot;

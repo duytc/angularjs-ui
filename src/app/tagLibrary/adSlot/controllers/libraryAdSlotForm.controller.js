@@ -13,10 +13,6 @@
         $scope.isNew = adSlot === null;
         $scope.publisherList = publisherList;
 
-        $scope.adSlot = adSlot || {
-            libraryExpressions: []
-        };
-
         $scope.formProcessing = false;
         $scope.typesList = TYPE_AD_SLOT;
         $scope.adSlotTypeOptions = [
@@ -33,6 +29,22 @@
                 key: TYPE_AD_SLOT.dynamic
             }
         ];
+
+        $scope.passbackOption = [
+            {
+                label: 'Position',
+                key: 'position'
+            },
+            {
+                label: 'Peer Priority',
+                key: 'peerpriority'
+            }
+        ];
+
+        $scope.adSlot = adSlot || {
+            libraryExpressions: [],
+            passbackMode: $scope.passbackOption[0].key
+        };
 
         $scope.selected = {
             type:  adSlotType || $scope.typesList.display
@@ -160,7 +172,8 @@
 
         function selectType(type) {
             $scope.adSlot = {
-                libraryExpressions: []
+                libraryExpressions: [],
+                passbackMode: $scope.passbackOption[0].key
             };
 
             _getAdSlots(type)
@@ -314,12 +327,14 @@
                 delete adSlot.width;
                 delete adSlot.libraryExpressions;
                 delete adSlot.autoFit;
+                delete adSlot.passbackMode;
             }
 
             if($scope.selected.type == $scope.typesList.dynamic) {
                 delete adSlot.height;
                 delete adSlot.width;
                 delete adSlot.autoFit;
+                delete adSlot.passbackMode;
             }
             else {
                 delete adSlot.libraryExpressions;
