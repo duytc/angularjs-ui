@@ -6,7 +6,7 @@
         .constant('ENTRY_STATE', 'login')
         .constant('COUNTRY_LIST', [
         {name: 'Afghanistan', code: 'AF'},
-        {name: 'Ã…land Islands', code: 'AX'},
+        {name: 'Åland Islands', code: 'AX'},
         {name: 'Albania', code: 'AL'},
         {name: 'Algeria', code: 'DZ'},
         {name: 'American Samoa', code: 'AS'},
