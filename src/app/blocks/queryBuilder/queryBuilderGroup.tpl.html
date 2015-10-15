@@ -28,7 +28,7 @@
             <select ng-disabled="disabledDirective" class="form-control" ng-model="itemGroup.cmp" ng-options="condition.key as condition.label for condition in changeCondition(itemGroup)"></select>
 
             <div class="form-group" ng-if="itemGroup.type != dataTypes[2].key && itemGroup.var != '${COUNTRY}'">
-                <input ng-disabled="disabledDirective" server-error ng-required="valIsNull(itemGroup.cmp)" type="text" class="form-control" ng-minlength="1" pattern="{{ itemGroup.type == dataTypes[1].key ? '\\d*' : '[a-zA-Z0-9?=/&-]+$'}}" required ng-model="itemGroup.val" ng-init="itemGroup.val == null ? itemGroup.val = '' : itemGroup.val " placeholder="Value">
+                <input ng-disabled="disabledDirective" server-error ng-required="valIsNull(itemGroup.cmp)" type="text" class="form-control" ng-minlength="1" pattern="{{ itemGroup.type == dataTypes[1].key ? '\\d*' : '[a-zA-Z0-9?=/&-_]+$'}}" required ng-model="itemGroup.val" ng-init="itemGroup.val == null ? itemGroup.val = '' : itemGroup.val " placeholder="Value">
             </div>
             <div class="form-group" ng-if="itemGroup.type == dataTypes[2].key && itemGroup.var != '${COUNTRY}'">
                 <select ng-disabled="disabledDirective" class="form-control" ng-options="value for value in values" ng-model="itemGroup.val" ng-init="values = ['true', 'false']; itemGroup.val == null ? itemGroup.val = 'true' : '' "></select>
