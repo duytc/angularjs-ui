@@ -34,7 +34,7 @@
                 <select ng-disabled="disabledDirective" class="form-control" ng-options="value for value in values" ng-model="itemGroup.val" ng-init="values = ['true', 'false']; itemGroup.val == null ? itemGroup.val = 'true' : '' "></select>
             </div>
             <div class="form-group" ng-if="itemGroup.var == '${COUNTRY}'">
-                <select name="country" ng-model="itemGroup.val" class="form-control select-country" id="inputCountry">
+                <select ng-disabled="disabledDirective" name="country" ng-model="itemGroup.val" class="form-control select-country" id="inputCountry">
                     <option disabled ng-selected="true">Country...</option>
                     <option value="{{ country.code }}" ng-selected="itemGroup.val == country.code" ng-repeat="country in countries">{{ country.name }}</option>
                 </select>
