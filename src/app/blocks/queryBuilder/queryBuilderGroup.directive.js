@@ -41,6 +41,7 @@
                     scope.selectType = selectType;
                     scope.valIsNull = valIsNull;
                     scope.changeVarName = changeVarName;
+                    scope.getDataTypeList = getDataTypeList;
 
                     function addGroup() {
                         // set default group, including two conditions
@@ -51,28 +52,28 @@
                         scope.group[scope.groupKey].push(group);
                     }
 
-                    function changeVarName(group) {
+                    function changeVarName(group, indexValue) {
                         numberLoad++;
 
+                        if(numberLoad > indexValue + 1) {
+                            // reset group
+                            group.type = getDataTypeList(group)[0].key;
+                            group.cmp = scope.conditions[0].key;
+                            group.val = null;
+                        }
+                    }
+
+                    function getDataTypeList(group) {
                         var dataTypeList = [];
                         for(var index in DATA_TYPE) {
                             if(DATA_TYPE[index].builtInVars.indexOf(group.var) > -1) {
                                 dataTypeList.push(DATA_TYPE[index]);
 
-                                if(numberLoad > 1) {
-                                    // reset group
-                                    group.type = DATA_TYPE[index].key;
-                                    group.cmp = scope.conditions[0].key;
-                                    group.val = null;
-                                }
-
-                                scope.dataTypeList = dataTypeList;
-
-                                return;
+                                return dataTypeList;
                             }
                         }
 
-                        scope.dataTypeList = DATA_TYPE;
+                        return DATA_TYPE;
                     }
 
                     function removeGroup() {
