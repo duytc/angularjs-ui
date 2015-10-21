@@ -1,0 +1,168 @@
+<section class="panel panel-default" ng-class="pickFromLibrary ? 'disabledForm' : ''">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
+
+        <div class="button-bar">
+            <button ng-if="!isNew" ng-click="backToListAdSlot()" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                {{ 'RON_AD_SLOT_MODULE.BACK_TO_AD_SLOT_LIST' | translate }}
+            </button>
+        </div>
+        <div class="btn-group btnGrouped" dropdown ng-if="!isNew">
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ng-click="backToListAdSlot()">{{ 'RON_AD_SLOT_MODULE.BACK_TO_AD_SLOT_LIST' | translate }}</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <form name="ronAdSlotForm" class="col-lg-12 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
+                <div class="form-group" ng-if="!isNew">
+                    <label class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.TYPE' | translate }}</label>
+                    <div class="col-sm-5 form-control-static">
+                        {{ findTypeLabel(ronAdSlot.libraryAdSlot.libType).label }}
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="isAdmin() && !isNew">
+                    <label class="col-sm-1 control-label">{{ 'PUBLISHER' | translate }}</label>
+                    <div class="col-sm-5 form-control-static">
+                        {{ ronAdSlot.libraryAdSlot.publisher.company }}
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="isNew">
+                    <label class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.TYPE' | translate }}</label>
+                    <div class="col-sm-5">
+                        <ui-select ng-model="selected.type" on-select="selectType($model)" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_TYPE' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices repeat="type.key as type in adSlotTypeOptions">
+                                {{ type.label }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="isAdmin() && isNew">
+                    <label for="inputPublisher" class="col-sm-1 control-label">{{ 'PUBLISHER' | translate }}</label>
+                    <div class="col-sm-5">
+                        <ui-select ng-required="true" id="inputPublisher" ng-model="selected.publisher" on-select="selectPublisher()" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
+                            <ui-select-choices repeat="publisher.id as publisher in publisherList | filter: { company: $select.search } ">
+                                {{ publisher.company }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputAdSlotLibrary" class="col-sm-1 control-label">{{ 'RON_AD_SLOT_MODULE.LIBRARY_AD_SLOT' | translate }}</label>
+                    <div class="col-sm-5">
+                        <ui-select name="adSlotLibrary" ng-model="ronAdSlot.libraryAdSlot" id="inputAdSlotLibrary" on-select="selectLibraryAdSlot($item)" ng-required="true" server-error ng-disabled="!selected.publisher && isAdmin() || !isNew" reset-search-input="'false'">
+                            <ui-select-match placeholder="Select an ad slot from library">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
+                            <ui-select-choices repeat="adSlotLibrary.id as adSlotLibrary in adSlotLibraryList | filter:$select.search | selectedPublisher:selected.publisher | filter:{ libType: selected.type}">
+                                {{ adSlotLibrary.name }} {{ adSlotLibrary.id ? '(ID: ' + adSlotLibrary.id + ')' : '' }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">{{ 'SEGMENT' | translate }}</label>
+                    <div class="col-sm-5">
+                        <oi-select oi-options="item.name for item in segments | selectedPublisher:selected.publisher" ng-disabled="!selected.publisher && isAdmin()" ng-model="ronAdSlotSegments" multiple oi-select-options="{newItem: true, newItemFn: 'addSegment($query)'}" placeholder="Select"></oi-select>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="inputEnabled" class="col-sm-1 control-label">{{ 'RON_AD_SLOT_MODULE.SHOW_DETAIL' | translate }}</label>
+                    <div class="col-sm-5">
+                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="showForm" id="inputEnabled"><span></span></label>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="showForm">
+                    <label for="inputName" class="col-sm-1 control-label">{{ 'NAME' | translate }}</label>
+                    <div class="col-sm-5">
+                        <input ng-disabled="true" server-error name="name" ng-model="adSlot.name" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="{{ 'AD_SLOT_MODULE.PLACEHOLDER_AD_SLOT_NAME' | translate }}">
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="showForDynamicAdSlot() && showForm">
+                    <label for="inputNative" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.NATIVE' | translate }}</label>
+                    <div class="col-sm-5">
+                        <label class="ui-checkbox"><input ng-disabled="true" server-error name="native" type="checkbox" ng-model="adSlot.native" id="inputNative"><span></span></label>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="showForDynamicAdSlot() && showForm">
+                    <label for="inputDefaultAdSlot" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.DEFAULT_AD_SLOT' | translate }}</label>
+                    <div class="col-sm-5">
+                        <ui-select id="inputDefaultAdSlot" ng-model="adSlot.defaultLibraryAdSlot"  server-error reset-search-input="'false'" ng-disabled="true">
+                            <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_AD_SLOT' | translate }}">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="adSlot.id as adSlot in adSlotsDefault">
+                            </ui-select-choices>
+                        </ui-select>
+
+                        <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_DEFAULT_AD_SLOT' | translate }}</span>
+
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="showForDisplayAdSlot() && showForm">
+                    <label for="inputWidth" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.WIDTH' | translate }}</label>
+                    <div class="col-sm-5">
+                        <input ng-disabled="true" name="width" server-error ng-model="adSlot.width" min="1" type="number" class="form-control" id="inputWidth" placeholder="{{ 'AD_SLOT_MODULE.WIDTH' | translate }}">
+                    </div>
+                </div>
+                <div class="form-group" ng-if="showForDisplayAdSlot() && showForm">
+                    <label for="inputWidth" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.HEIGHT' | translate }}</label>
+                    <div class="col-sm-5">
+                        <input ng-disabled="true" server-error name="height" ng-model="adSlot.height" min="1" type="number" class="form-control" id="inputHeight" placeholder="{{ 'AD_SLOT_MODULE.HEIGHT' | translate }}">
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="showForDisplayAdSlot() && showForm">
+                    <label for="inputPassbackMode" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.PASSBACK_MODE' | translate }}</label>
+                    <div class="col-sm-5">
+                        <ui-select id="inputPassbackMode" ng-model="adSlot.passbackMode" server-error reset-search-input="'false'" ng-disabled="true">
+                            <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_PASS_BACK' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in passbackOption">
+                                {{ option.label }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="showForDynamicAdSlot() && showForm">
+                    <label class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.EXPRESSION_BUILDER' | translate }}</label>
+                    <div class="col-sm-11">
+                        <div class="expressions-group">
+                            <library-query-builder expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native" disabled-directive="true"></library-query-builder>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="showForDisplayAdSlot() && showForm">
+                    <label for="inputAutoFit" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.AUTO_FIT' | translate }}</label>
+                    <div class="col-sm-5">
+                        <label class="ui-checkbox"><input ng-disabled="true" server-error name="active" type="checkbox" ng-model="adSlot.autoFit" id="inputAutoFit"><span></span></label>
+
+                        <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_AUTO_FIT' | translate }}</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-5">
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
+                        <div ng-show="!isFormValid()" class="callout callout-info">
+                            <p>{{ 'VALID_FORM' | translate }}</p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

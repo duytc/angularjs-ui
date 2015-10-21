@@ -8,8 +8,7 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>{{ 'AD_SLOT' | translate }}</th>
-                <th>{{ 'SITE' | translate }}</th>
+                <th>{{ 'RON_AD_SLOT' | translate }}</th>
                 <th ng-show="isAdmin">{{ 'PUBLISHER' | translate }}</th>
                 <th ng-show="!!relativeEntityData.libraryAdSlot.width">{{ 'AD_SLOT_MODULE.WIDTH' | translate }}</th>
                 <th ng-show="!!relativeEntityData.libraryAdSlot.height">{{ 'AD_SLOT_MODULE.HEIGHT' | translate }}</th>
@@ -19,8 +18,7 @@
             <tr>
                 <td>{{ relativeEntityData.id }}</td>
                 <td>{{ relativeEntityData.libraryAdSlot.name }}</td>
-                <td>{{ relativeEntityData.site.name }}</td>
-                <td ng-show="isAdmin">{{ relativeEntityData.site.publisher.company }}</td>
+                <td ng-show="isAdmin">{{ relativeEntityData.libraryAdSlot.publisher.company }}</td>
                 <td ng-show="!!relativeEntityData.libraryAdSlot.width">{{ relativeEntityData.libraryAdSlot.width }}</td>
                 <td ng-show="!!relativeEntityData.libraryAdSlot.height">{{ relativeEntityData.libraryAdSlot.height }}</td>
             </tr>
@@ -30,5 +28,5 @@
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-click="$close()">{{ 'PERFORMANCE_REPORT_MODULE.DRILL_DOWN' | translate }}</button>
-    <button class="btn btn-primary" ng-click="$dismiss(); goToEditPage('tagManagement.adSlot.edit', relativeEntityData.id)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_THIS_AD_SLOT' | translate }}</button>
+    <button class="btn btn-primary" ng-click="$dismiss(); goToEditPage('tagManagement.ronAdSlot.edit', relativeEntityData.id)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_THIS_RON_AD_SLOT' | translate }}</button>
 </div>

@@ -57,7 +57,8 @@
         'ngClipboard',
         'angularjs-dropdown-multiselect',
         'isteven-multi-select',
-        'angular-cache'
+        'angular-cache',
+        'oi.select'
     ]);
 
     core.run(appRun);

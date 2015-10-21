@@ -24,7 +24,11 @@
             getSiteAdSlotsReport: getSiteAdSlotsReport,
             getSiteAdTagsReport: getSiteAdTagsReport,
             getAdSlotReport: getAdSlotReport,
-            getAdSlotAdTagsReport: getAdSlotAdTagsReport
+            getAdSlotAdTagsReport: getAdSlotAdTagsReport,
+            getRonAdSlotReport: getRonAdSlotReport,
+            getRonAdSlotSitesReport: getRonAdSlotSitesReport,
+            getRonAdSlotSegmentsReport: getRonAdSlotSegmentsReport,
+            getRonAdSlotAdTagsReport: getRonAdSlotAdTagsReport
         };
 
         return api;
@@ -201,6 +205,42 @@
          */
         function getAdSlotAdTagsReport(params) {
             return getReports('/adslots/:adSlotId/adtags', params);
+        }
+
+        /**
+         *
+         * @param {object} params
+         * @param {int} params.ronAdSlotId
+         */
+        function getRonAdSlotReport(params) {
+            return getReports('/ronadslots/:ronAdSlotId', params);
+        }
+
+        /**
+         *
+         * @param params
+         * @returns {Promise}
+         */
+        function getRonAdSlotSitesReport(params) {
+            return getReports('/ronadslots/:ronAdSlotId/sites', params);
+        }
+
+        /**
+         *
+         * @param params
+         * @returns {Promise}
+         */
+        function getRonAdSlotSegmentsReport(params) {
+            return getReports('/ronadslots/:ronAdSlotId/segments', params);
+        }
+
+        /**
+         *
+         * @param params
+         * @returns {Promise}
+         */
+        function getRonAdSlotAdTagsReport(params) {
+            return getReports('/ronadslots/:ronAdSlotId/adtags', params);
         }
     }
 })(angular);

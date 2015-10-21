@@ -25,7 +25,8 @@
             siteId: null,
             siteBreakdown: null,
             adSlotId: null,
-            adSlotBreakdown: null
+            adSlotBreakdown: null,
+            ronAdSlotId: null
         };
 
         $scope.selectedData = selectedData;
@@ -42,7 +43,8 @@
             adNetworks: [],
             sites: [],
             adSlots: [],
-            adNetworkSites: []
+            adNetworkSites: [],
+            ronAdSlots: []
         };
 
         $scope.isFormValid = isFormValid;
@@ -61,6 +63,8 @@
         $scope.getReports = getReports;
         $scope.selectSite = selectSite;
         $scope.getAdSlot = getAdSlot;
+        $scope.getRonAdSlot = getRonAdSlot;
+        $scope.selectedPublisherRonAdSlot = selectedPublisherRonAdSlot;
 
         $scope.datePickerOpts = {
             maxDate:  moment().endOf('day'),
@@ -80,7 +84,8 @@
             publisher: 'publisher',
             adNetwork: 'adnetwork',
             site: 'site',
-            adSlot: 'adSlot'
+            adSlot: 'adSlot',
+            ronAdSlot: 'ronAdSlot'
         };
 
         $scope.reportFields = reportFields;
@@ -163,6 +168,34 @@
                         toState: 'reports.performance.adSlotAdTags'
                     }
                 ]
+            },
+            {
+                key: PERFORMANCE_REPORT_TYPES.ronAdSlot,
+                breakdownKey: 'ronAdSlotBreakdown',
+                label: 'RON Ad Slot',
+                toState: 'reports.performance.ronAdSlots',
+                breakdownOptions: [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.performance.ronAdSlot'
+                    },
+                    {
+                        key: 'segment',
+                        label: 'By Segment',
+                        toState: 'reports.performance.ronAdSlotSegments'
+                    },
+                    {
+                        key: 'site',
+                        label: 'By Site',
+                        toState: 'reports.performance.ronAdSlotSites'
+                    },
+                    {
+                        key: 'adtag',
+                        label: 'By Ad Tag',
+                        toState: 'reports.performance.ronAdSlotAdTags'
+                    }
+                ]
             }
         ];
 
@@ -193,6 +226,9 @@
         }
 
         $scope.reportTypeOptions = reportTypeOptions;
+
+        var hasGetAdSlot = false;
+        var hasGetRonAdSlot = false;
 
         function isFormValid() {
             return $scope.reportSelectorForm.$valid;
@@ -303,6 +339,10 @@
                 throw new Error('report type is missing a target state');
             }
 
+            if(reportType.key == $scope.reportTypes.ronAdSlot) {
+                getRonAdSlot()
+            }
+
             toState = reportType.toState;
 
         }
@@ -379,6 +419,12 @@
         }
 
         function getAdSlot(siteId) {
+            if(hasGetAdSlot) {
+                return
+            }
+
+            hasGetAdSlot = true;
+
             if(toState == 'reports.performance.adSlots') {
                 reportSelectorForm.getAdSlotsForSite(siteId)
                     .then(function(adSlots) {
@@ -389,6 +435,31 @@
             }
         }
 
+        function getRonAdSlot() {
+            if(hasGetRonAdSlot) {
+                return
+            }
+
+            hasGetRonAdSlot = true;
+
+            reportSelectorForm.getRonAdSlot()
+                .then(function(ronAdSlots) {
+                    $scope.optionData.ronAdSlots = ronAdSlots;
+                }
+            );
+        }
+
+        function selectedPublisherRonAdSlot(ronAdSlot) {
+            if(!isAdmin) {
+                return true;
+            }
+
+            else if(ronAdSlot.libraryAdSlot.publisher.id == $scope.selectedData.publisherId) {
+                return true
+            }
+
+            return false
+        }
         function selectBreakdownOption(breakdownOption) {
             if (!angular.isObject(breakdownOption) || !breakdownOption.toState) {
                 throw new Error('breakdown option is missing a target state');

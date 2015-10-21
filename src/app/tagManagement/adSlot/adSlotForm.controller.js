@@ -512,6 +512,7 @@
                 delete adSlot.libraryAdSlot.libraryExpressions;
                 delete adSlot.defaultAdSlot;
                 delete adSlot.libraryAdSlot.native;
+                delete adSlot.expressions;
             }
 
             delete adSlot.type;

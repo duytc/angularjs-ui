@@ -1,0 +1,33 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span>
+        <strong current-page-title></strong>
+
+    </div>
+
+    <search-box show-query="true" sb-list="segments" search-fields="['id', 'name']"></search-box>
+
+    <div class="panel-body" >
+        <div class="table-responsive">
+            <table class="table" at-sortable-query at-table at-paginated at-list="segments" at-config="tableConfig">
+                <thead></thead>
+                <tbody>
+                <tr>
+                    <td at-implicit at-title="#" at-sortable at-attribute="id"></td>
+                    <td at-title="{{ 'ACTIONS' | translate }}" at-attribute="action">
+                        <div class="btn-group" dropdown>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                            <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <li><a ng-click="confirmDeletion(item)">{{ 'SEGMENT_MODULE.DELETE_SEGMENT' | translate }}</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td at-title="{{ 'NAME' | translate }}" at-implicit at-attribute="name" at-sortable></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <at-pagination at-pagination-query ng-if="showPagination()" at-list="segments" at-config="tableConfig"></at-pagination>
+        </div>
+    </div>
+</div>

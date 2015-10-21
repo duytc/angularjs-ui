@@ -7,6 +7,8 @@
         'tagcade.tagManagement.site',
         'tagcade.tagManagement.adSlot',
         'tagcade.tagManagement.adTag',
-        'tagcade.tagManagement.channel'
+        'tagcade.tagManagement.channel',
+        'tagcade.tagManagement.ronAdSlot',
+        'tagcade.tagManagement.segment'
     ]);
 })();

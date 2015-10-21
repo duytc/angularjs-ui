@@ -347,6 +347,7 @@
             }
 
             delete adSlot.libType;
+            delete adSlot.isRonAdSlot;
 
             if($scope.selected.type == $scope.typesList.dynamic) {
                 if(!$scope.isNew) {

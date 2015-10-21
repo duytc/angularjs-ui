@@ -133,6 +133,29 @@
                 </div>
             </div>
 
+            <div class="ad-slot form-group" ng-if="selectedReportTypeis(reportTypes.ronAdSlot)">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>Ron Ad Slot</label>
+                        <ui-select name="ronAdSlot" ng-model="selectedData.ronAdSlotId" ng-required="true" on-select="selectEntity($model)" ng-init="getRonAdSlot()" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_AD_SLOT' | translate }}">{{ $select.selected.libraryAdSlot.name }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="ronAdSlot.id as ronAdSlot in optionData.ronAdSlots | filter: $select.search | filter:selectedPublisherRonAdSlot:ronAdSlot">
+                                <div ng-bind-html="ronAdSlot.libraryAdSlot.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="ron-ad-slot form-group" ng-if="selectedReportTypeis(reportTypes.ronAdSlot) && selectedData.ronAdSlotId">
+                        <label>{{ 'REPORT.BREAKDOWN' | translate }}</label>
+                        <ui-select ng-model="selectedData.ronAdSlotBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
+                                <div ng-bind-html="option.label"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+
             <button  ng-disabled="!isFormValid()" type="submit" class="btn btn-primary">{{ 'REPORT.GET_REPORTS' | translate }}</button>
         </form>
     </div>
