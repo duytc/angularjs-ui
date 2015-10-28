@@ -47,7 +47,7 @@
                 <div class="form-group" ng-if="isAdmin() && isNew">
                     <label for="inputPublisher" class="col-sm-1 control-label">{{ 'PUBLISHER' | translate }}</label>
                     <div class="col-sm-5">
-                        <ui-select ng-required="true" id="inputPublisher" ng-model="selected.publisher" on-select="selectPublisher()" reset-search-input="'false'">
+                        <ui-select ng-required="true" id="inputPublisher" ng-model="selected.publisher" on-select="selectPublisher($model)" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
                             <ui-select-choices repeat="publisher.id as publisher in publisherList | filter: { company: $select.search } ">
                                 {{ publisher.company }}
@@ -69,15 +69,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-1 control-label">{{ 'SEGMENT' | translate }}</label>
+                    <label class="col-sm-1 control-label">{{ 'SEGMENTS' | translate }}</label>
                     <div class="col-sm-5">
                         <oi-select oi-options="item.name for item in segments | selectedPublisher:selected.publisher" ng-disabled="!selected.publisher && isAdmin()" ng-model="ronAdSlotSegments" multiple oi-select-options="{newItem: true, newItemFn: 'addSegment($query)'}" placeholder="Select"></oi-select>
                     </div>
                 </div>
 
-
                 <div class="form-group">
-                    <label for="inputEnabled" class="col-sm-1 control-label">{{ 'RON_AD_SLOT_MODULE.SHOW_DETAIL' | translate }}</label>
+                    <label for="inputEnabled" class="col-sm-1 control-label">{{ 'RON_AD_SLOT_MODULE.SHOW_DETAILS' | translate }}</label>
                     <div class="col-sm-5">
                         <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="showForm" id="inputEnabled"><span></span></label>
                     </div>
@@ -117,6 +116,7 @@
                         <input ng-disabled="true" name="width" server-error ng-model="adSlot.width" min="1" type="number" class="form-control" id="inputWidth" placeholder="{{ 'AD_SLOT_MODULE.WIDTH' | translate }}">
                     </div>
                 </div>
+
                 <div class="form-group" ng-if="showForDisplayAdSlot() && showForm">
                     <label for="inputWidth" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.HEIGHT' | translate }}</label>
                     <div class="col-sm-5">

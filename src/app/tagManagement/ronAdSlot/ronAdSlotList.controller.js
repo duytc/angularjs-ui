@@ -62,7 +62,7 @@
 
         $scope.generateAdTag = function (ronAdSlot) {
             $modal.open({
-                templateUrl: 'tagManagement/adSlot/generateAdTag.tpl.html',
+                templateUrl: 'tagManagement/ronAdSlot/generateAdTag.tpl.html',
                 resolve: {
                     javascriptTag: function () {
                         return RonAdSlotManager.one(ronAdSlot.id).customGET('jstag');
@@ -70,10 +70,22 @@
                 },
                 controller: function ($scope, javascriptTag) {
                     $scope.adSlotName = ronAdSlot.libraryAdSlot.name;
-                    $scope.javascriptTag = javascriptTag;
+                    $scope.javascriptTag = javascriptTag.jstag;
                     $scope.getTextToCopy = function(string) {
                         return string.replace(/\n/g, '\r\n');
                     };
+
+                    var globalReport = $translate.instant('SEGMENT_MODULE.GLOBAL_REPORT_SEGMENT');
+
+                    $scope.segmentList = Object.keys(javascriptTag.segments);
+                    $scope.segmentList.unshift(globalReport);
+
+                    $scope.selectedSegmentModel = globalReport;
+
+                    $scope.selectSegment = function(type){
+                        $scope.javascriptTag = type == globalReport ? javascriptTag.jstag : javascriptTag.segments[type];
+                    };
+
                 }
             });
         };

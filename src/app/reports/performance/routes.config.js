@@ -450,7 +450,7 @@
 
         UserStateHelperProvider
             .state('reports.performance.ronAdSlotAdTags', {
-                url: '/ronAdSlots/{ronAdSlotId:int}/adtags?{startDate:date}&{endDate:date}',
+                url: '/ronAdSlots/{ronAdSlotId:int}/adTags?{startDate:date}&{endDate:date}',
                 params: {
                     endDate: null,
                     expanded: true,

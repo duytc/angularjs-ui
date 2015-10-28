@@ -1,0 +1,29 @@
+<div class="modal-header">
+    <h4 class="modal-title" translate="AD_SLOT_MODULE.TAG_FOR_NAME" translate-values='{name: adSlotName}'></h4>
+</div>
+<div class="modal-body">
+    <div>
+        <label>{{ 'SEGMENTS' | translate }}</label>
+        <div>
+            <ui-select ng-model="selectedSegmentModel" on-select="selectSegment($model)" reset-search-input="'false'">
+                <ui-select-match placeholder="{{ 'SEGMENT_MODULE.SELECT_A_SEGMENT' | translate }}">{{ $select.selected }}</ui-select-match>
+                <ui-select-choices repeat="segment in segmentList" >
+                    {{ segment }}
+                </ui-select-choices>
+            </ui-select>
+
+        </div>
+    </div>
+
+    <br>
+    <strong>{{ 'TAG_GENERATOR_MODULE.GUIDE_COPY_BODY' | translate }}</strong>
+    <br>
+
+    <div hljs source="javascriptTag" select-on-click class="highlight-js"></div>
+
+
+</div>
+<div class="modal-footer">
+    <button auto-hide-on-no-flash="true" class="btn btn-primary" clip-copy="getTextToCopy(javascriptTag)">{{ 'COPY_TO_CLIPBOARD' | translate }}</button>
+    <button class="btn btn-primary" ng-click="$dismiss()">{{ 'CLOSE' | translate }}</button>
+</div>

@@ -5,7 +5,7 @@
         .controller('LibraryAdSlotList', LibraryAdSlotList)
     ;
 
-    function LibraryAdSlotList($scope, $translate, $modal, adSlots, AlertService, ChannelManager, DisplayAdSlotLibrariesManager, NativeAdSlotLibrariesManager, DynamicAdSlotLibrariesManager, TYPE_AD_SLOT, AtSortableService, historyStorage, HISTORY_TYPE_PATH, SiteManager) {
+    function LibraryAdSlotList($scope, $translate, $modal, adSlots, AlertService, ChannelManager, DisplayAdSlotLibrariesManager, NativeAdSlotLibrariesManager, DynamicAdSlotLibrariesManager, TYPE_AD_SLOT, AtSortableService, historyStorage, HISTORY_TYPE_PATH, SiteManager, RonAdSlotManager) {
         $scope.adSlots = adSlots;
 
         $scope.hasData = function () {
@@ -28,6 +28,7 @@
         $scope.showPagination = showPagination;
         $scope.removeMoveToLibrary = removeMoveToLibrary;
         $scope.createLinkedAdSlots = createLinkedAdSlots;
+        $scope.createRonAdSlot = createRonAdSlot;
 
         function showPagination() {
             return angular.isArray($scope.adSlots) && $scope.adSlots.length > $scope.tableConfig.itemsPerPage;
@@ -120,6 +121,33 @@
                         });
                     }
                 });
+            });
+        }
+
+        function createRonAdSlot(adSlotLibrary, ronAdSlotId) {
+            var modalInstance = $modal.open({
+                templateUrl: 'tagLibrary/adSlot/views/createRonAdSlotForAdSlot.tpl.html',
+                size: 'lg',
+                controller: 'CreateRonAdSlotForAdSlots',
+                resolve: {
+                    adSlotLib: function(){
+                        return adSlotLibrary;
+                    },
+                    ronAdSlot: function() {
+                        if(!!ronAdSlotId) {
+                            return RonAdSlotManager.one(ronAdSlotId).get()
+                        }
+
+                        return null;
+                    },
+                    segments: function(SegmentManager){
+                        return SegmentManager.getList();
+                    }
+                }
+            });
+
+            modalInstance.result.then(function(){
+
             });
         }
 

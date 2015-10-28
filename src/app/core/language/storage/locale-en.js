@@ -35,9 +35,13 @@
             "DISPLAY_AD_SLOTS": "Display Ad Slots",
             "DYNAMIC_AD_SLOTS": "Dynamic Ad Slots",
             "NATIVE_AD_SLOTS": "Native Ad Slots",
+            "DISPLAY_AD_SLOT": "Display Ad Slot",
+            "DYNAMIC_AD_SLOT": "Dynamic Ad Slot",
+            "NATIVE_AD_SLOT": "Native Ad Slot",
             "AD_TAG": "Ad Tag",
             "AD_TAGS": "Ad Tags",
-            "SEGMENT": "Segment",
+            "SEGMENT": "Report Segment",
+            "SEGMENTS": "Report Segments",
 
             "VIEW_TODAY_REPORT": "View Today's Report",
             "COPY_TO_CLIPBOARD": "Copy to Clipboard",
@@ -56,12 +60,13 @@
                 "GENERATE_TAGS": "Generate Tags",
                 "CHANNELS": "Channels",
                 "MY_CHANNELS": "My Channels",
-                "MY_SEGMENTS": "My Segments",
+                "MY_SEGMENTS": "My Report Segments",
                 "SITES": "Sites",
                 "MY_SITES": "My Sites",
                 "AD_SLOTS": "Ad Slots",
                 "MY_AD_SLOTS": "My Ad Slots",
                 "MY_RON_AD_SLOTS": "My RON Ad Slots",
+                "RON_AD_SLOTS": "RON Ad Slots",
                 "AD_NETWORKS": "Ad Networks",
                 "MY_AD_NETWORKS": "My Ad Networks",
                 "AD_TAGS": "Ad Tags",
@@ -120,6 +125,7 @@
                 "POSTAL_CODE": "Postal Code",
                 "CITY": "City",
                 "STATE": "State",
+                "TAG_DOMAIN": "Tag Domain",
                 "COUNTRY": "Country",
                 "MODULES": "Modules",
                 "BILLING_RATE": "Billing Rate",
@@ -143,7 +149,8 @@
                 "ACTIVATE_PUBLISHER": "Activate Publisher",
 
                 "HELP_BLOCK_REPEAT_PASSWORD": "Leave it blank for no change",
-                "HELP_BLOCK_BILLING_RATE": "You can set a custom CPM rate for this publisher. If you do not set a custom rate, the rate is calculated from our rate card."
+                "HELP_BLOCK_BILLING_RATE": "You can set a custom CPM rate for this publisher. If you do not set a custom rate, the rate is calculated from our rate card.",
+                "HELP_BLOCK_TAG_DOMAIN": "This will allow you to pull js tags data from your custom domain."
             },
             "TAG_GENERATOR_MODULE": {
                 "GUIDE_COPY_HEADER": "To enable source reports, copy and paste the following tag into the <head> section of your website.",
@@ -153,6 +160,8 @@
 
                 "EXPORT_TAG": "Export Tags",
                 "TAGS_FOR_SITE": "Tags for {{ name }}",
+                "RON_AD_SLOT_FOR": "RON ad slot : {{ name }}",
+                "TAGS_FOR_RON_AD_SLOT": "Tags for RON ad slot",
                 "HEADER": "Header"
             },
             "CHANNEL_MODULE": {
@@ -282,7 +291,7 @@
                 "SELECT_A_PASS_BACK": "Select a passback",
                 "GENERATE_AD_TAGS": "Generate Ad Tags",
                 "GENERATE_A_TAGS": "Generate a Tag",
-                "TAG_FOR_NAME": "Tag for {{ name }}",
+                "TAG_FOR_NAME": "Tag for: {{ name }}",
                 "SELECT_A_AD_SLOT": "Select an ad slot",
 
                 "MANAGE_AD_TAGS": "Manage Ad Tags",
@@ -310,23 +319,27 @@
                 "CONFIRM_DELETE_RON_AD_SLOT": "Are you sure you want to delete this RON ad slot?",
 
                 "REFERENCE_LIBRARY_AD_SLOT": "Reference Library",
-                "LIBRARY_AD_SLOT": "Library ad slot",
+                "LIBRARY_AD_SLOT": "Library Ad Slot",
                 "BACK_TO_AD_SLOT_LIST": "Back to RON Ad Slot List",
                 "SELECT_LIBRARY_AD_SLOT": "Select library ad slot",
                 "PICK_FROM_LIBRARY": "Pick from library",
                 "NEW_RON_AD_SLOT": "New RON Ad Slot",
                 "EDIT_RON_AD_SLOT": "Edit RON Ad Slot",
                 "DELETE_RON_AD_SLOT": "Delete RON Ad Slot",
-                "SEGMENTS": "Segments",
-                "SHOW_DETAIL": 'Show Detail'
+                "SEGMENTS": "Report Segments",
+                "SHOW_DETAILS": 'Show Details',
+                "SEGMENT_NOTHING_IS_SELECTED": 'Nothing is selected',
+                "HELP_BLOCK_SELECT_SEGMENT": "You can create custom report segments above. To create new segments, enter in a text value and press enter. You may repeat this process to create more segments"
             },
             "SEGMENT_MODULE": {
-                "CURRENTLY_SEGMENT": "There is currently no segments in the library",
-                "DELETE_SUCCESS": "The segment was deleted",
-                "DELETE_FAIL": "The segment could not be deleted",
-                "CONFIRM_DELETE_SEGMENT": "Are you sure you want to delete this segment?",
+                "CURRENTLY_SEGMENT": "There is currently no report segments in the library",
+                "DELETE_SUCCESS": "The report segment was deleted",
+                "DELETE_FAIL": "The report segment could not be deleted",
+                "CONFIRM_DELETE_SEGMENT": "Are you sure you want to delete this report segment?",
 
-                "DELETE_SEGMENT": "Delete Segment"
+                "DELETE_SEGMENT": "Delete Report Segment",
+                "SELECT_A_SEGMENT": "Select Segment",
+                "GLOBAL_REPORT_SEGMENT": "Global"
             },
             "AD_TAG_MODULE": {
                 "ADD_NEW_SUCCESS": "The ad tag has been created",
@@ -395,6 +408,7 @@
 
                 "TITLE_CREATE_LINKED_AD_SLOTS": "Create Linked Ad Slots",
                 "CREATE_RON_AD_SLOT": "Create RON Ad Slot",
+                "EDIT_RON_AD_SLOT": "Edit RON Ad Slot",
                 "GO_TO_SITE": "Go To Site",
 
                 "CREATE_LINKED_AD_SLOTS": "Create Linked Ad Slots",
@@ -427,7 +441,7 @@
                 "DAILY_AVERAGES": "Daily Averages",
                 "AD_NETWORK_BREAKDOWN": "Ad Network Breakdown",
                 "SITE_BREAKDOWN": "Site Breakdown",
-                "SEGMENT_BREAKDOWN": "Segment Breakdown",
+                "SEGMENT_BREAKDOWN": "Report Segment Breakdown",
                 "AD_SLOT_BREAKDOWN": "Ad Slot Breakdown",
                 "AD_TAG_BREAKDOWN": "Ad Tag Breakdown",
                 "DAILY_BREAKDOWN": "Daily Breakdown",
@@ -472,7 +486,7 @@
                 "TITLE_AD_TAG_INFO": "Ad Tag Info",
                 "TITLE_SITE_INFO": "Site Info",
                 "TITLE_PUBLISHER_INFO": "Publisher Info",
-                "TITLE_SEGMENT_INFO": "Segment Info",
+                "TITLE_SEGMENT_INFO": "Report Segment Info",
 
                 "AD_NETWORK_INFO": "Ad Network Info",
                 "AD_SLOT_INFO": "Ad Slot Info",

@@ -199,7 +199,8 @@
     padding: 8px;   
     /*overflow: hidden;*/
     position: relative;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
     max-height: 300px;
     border-top: 1px solid #f2f2f2;
 }

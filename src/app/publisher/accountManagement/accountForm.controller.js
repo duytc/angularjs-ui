@@ -9,7 +9,8 @@
     function AccountForm($scope, $translate, $state, AlertService, ServerErrorProcessor, publisher, REPORT_SETTINGS, COUNTRY_LIST) {
         $scope.fieldNameTranslations = {
             username: 'Username',
-            plainPassword: 'Password'
+            plainPassword: 'Password',
+            tagDomain: 'Tag Domain'
         };
 
         $scope.formProcessing = false;
@@ -51,16 +52,14 @@
                     $scope.formProcessing = false;
 
                     return errorCheck;
-                }
-            )
+                })
                 .then(
                 function () {
                     AlertService.addFlash({
                         type: 'success',
                         message: $translate.instant('PUBLISHER_MODULE.UPDATE_PROFILE_SUCCESS')
                     });
-                }
-            )
+                })
                 .then(
                 function () {
                     return $state.reload();

@@ -10,7 +10,8 @@
         $scope.fieldNameTranslations = {
             username: 'Username',
             plainPassword: 'Password',
-            company: 'company'
+            company: 'Company',
+            tagDomain: 'Tag Domain'
         };
 
         $scope.isNew = publisher === null;
@@ -33,7 +34,8 @@
             state: null,
             address: null,
             postalCode: null,
-            country: null
+            country: null,
+            tagDomain: null
         };
 
         $scope.modules = [

@@ -17,15 +17,15 @@
         $scope.adSlotTypes = TYPE_AD_SLOT;
         $scope.adSlotTypeOptions = [
             {
-            label: $translate.instant('DISPLAY_AD_SLOTS'),
+            label: $translate.instant('DISPLAY_AD_SLOT'),
             key: TYPE_AD_SLOT.display
             },
             {
-                label: $translate.instant('NATIVE_AD_SLOTS'),
+                label: $translate.instant('NATIVE_AD_SLOT'),
                 key: TYPE_AD_SLOT.native
             },
             {
-                label: $translate.instant('DYNAMIC_AD_SLOTS'),
+                label: $translate.instant('DYNAMIC_AD_SLOT'),
                 key: TYPE_AD_SLOT.dynamic
             }
         ];
@@ -517,6 +517,7 @@
 
             delete adSlot.type;
             delete adSlot.libraryAdSlot.publisher;
+            delete adSlot.libraryAdSlot.isRonAdSlot;
 
             delete adSlot.libraryAdSlot.libType;
 

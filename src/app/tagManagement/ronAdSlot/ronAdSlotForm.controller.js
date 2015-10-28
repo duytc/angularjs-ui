@@ -14,18 +14,18 @@
 
         $scope.isNew = ronAdSlot === null;
         $scope.adSlotTypes = TYPE_AD_SLOT;
-        $scope.segments = segments;
+        $scope.segments = $scope.isNew && $scope.isAdmin() ? [] : segments;
         $scope.adSlotTypeOptions = [
             {
-                label: $translate.instant('DISPLAY_AD_SLOTS'),
+                label: $translate.instant('DISPLAY_AD_SLOT'),
                 key: TYPE_AD_SLOT.display
             },
             {
-                label: $translate.instant('NATIVE_AD_SLOTS'),
+                label: $translate.instant('NATIVE_AD_SLOT'),
                 key: TYPE_AD_SLOT.native
             },
             {
-                label: $translate.instant('DYNAMIC_AD_SLOTS'),
+                label: $translate.instant('DYNAMIC_AD_SLOT'),
                 key: TYPE_AD_SLOT.dynamic
             }
         ];
@@ -187,7 +187,13 @@
                     $scope.ronAdSlot.ronAdSlotSegments.push({segment: ronAdSlotSegment.id});
                 }
                 else {
-                    $scope.ronAdSlot.ronAdSlotSegments.push({segment: {name: ronAdSlotSegment.name}});
+                    var segment = {name: ronAdSlotSegment.name};
+
+                    if($scope.isAdmin()) {
+                        segment['publisher'] = $scope.selected.publisher;
+                    }
+
+                    $scope.ronAdSlot.ronAdSlotSegments.push({segment: segment});
                 }
             });
         }

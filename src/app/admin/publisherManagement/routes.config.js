@@ -34,7 +34,7 @@
                 },
                 resolve: {
                     publishers: function(adminUserManager) {
-                        return adminUserManager.getList();
+                        return adminUserManager.getList({all: true});
                     }
                 },
                 ncyBreadcrumb: {
