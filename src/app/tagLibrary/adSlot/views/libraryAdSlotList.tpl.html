@@ -38,9 +38,11 @@
                                 <li ng-if="item.libType == adSlotTypes.display" ><a ui-sref="^.^.adTag.displayList({adSlotId: item.id})">{{ 'AD_SLOT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
                                 <li ng-if="item.libType == adSlotTypes.native" ><a ui-sref="^.^.adTag.nativeList({adSlotId: item.id})">{{ 'AD_SLOT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
 
+                                <li class="divider"></li>
+
                                 <li ng-click="createLinkedAdSlots(item)"><a>{{ 'AD_SLOT_LIBRARY_MODULE.CREATE_LINKED_AD_SLOTS' | translate }}</a></li>
-                                <li ng-if="!item.isRonAdSlot.id"><a ng-click="createRonAdSlot(item)">{{ 'AD_SLOT_LIBRARY_MODULE.CREATE_RON_AD_SLOT' | translate }}</a></li>
-                                <li ng-if="!!item.isRonAdSlot.id"><a ng-click="createRonAdSlot(null, item.isRonAdSlot.id)">{{ 'AD_SLOT_LIBRARY_MODULE.EDIT_RON_AD_SLOT' | translate }}</a></li>
+                                <!--<li ng-if="!item.isRonAdSlot.id"><a ng-click="createRonAdSlot(item)">{{ 'AD_SLOT_LIBRARY_MODULE.CREATE_RON_AD_SLOT' | translate }}</a></li>-->
+                                <!--<li ng-if="!!item.isRonAdSlot.id"><a ng-click="createRonAdSlot(null, item.isRonAdSlot.id)">{{ 'AD_SLOT_LIBRARY_MODULE.EDIT_RON_AD_SLOT' | translate }}</a></li>-->
 
                                 <li ng-if="item.libType == adSlotTypes.display"><a ui-sref="^.associated({ adSlotId: item.id, adSlotType: adSlotTypes.display})">{{ 'AD_SLOT_LIBRARY_MODULE.VIEW_LINKED_AD_SLOTS' | translate }}</a></li>
                                 <li ng-if="item.libType == adSlotTypes.native"><a ui-sref="^.associated({ adSlotId: item.id, adSlotType: adSlotTypes.native})">{{ 'AD_SLOT_LIBRARY_MODULE.VIEW_LINKED_AD_SLOTS' | translate }}</a></li>
@@ -60,6 +62,9 @@
                     </td>
                     <td at-title="{{ 'AD_SLOT_MODULE.TYPE' | translate }}" at-implicit at-sortable at-attribute="libType"></td>
                     <td at-title="{{ 'AD_SLOT_LIBRARY_MODULE.LINKED_AD_SLOTS' | translate }}" at-implicit at-sortable at-attribute="associatedSlotCount"></td>
+                    <td at-title="{{ 'AD_SLOT_LIBRARY_MODULE.IN_RON_AD_SLOT' | translate }}" at-attribute="libraryAdSlot.visible" at-sortable>
+                        <i class="fa" ng-class="!!item.isRonAdSlot.id? 'fa-check-square' : 'fa-square'"></i>
+                    </td>
                 </tr>
                 </tbody>
             </table>

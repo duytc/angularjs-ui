@@ -147,10 +147,12 @@
         function selectPublisher() {
             $scope.ronAdSlot.libraryAdSlot = null;
             $scope.ronAdSlotSegments = [];
+            $scope.adSlot = null;
         }
 
         function selectType(type) {
-            $scope.ronAdSlot.libraryAdSlot = null
+            $scope.ronAdSlot.libraryAdSlot = null;
+            $scope.adSlot = null;
         }
 
         function isFormValid() {

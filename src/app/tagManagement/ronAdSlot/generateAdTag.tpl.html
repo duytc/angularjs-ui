@@ -3,7 +3,7 @@
 </div>
 <div class="modal-body">
     <div>
-        <label>{{ 'SEGMENTS' | translate }}</label>
+        <label>{{ 'SEGMENT' | translate }}</label>
         <div>
             <ui-select ng-model="selectedSegmentModel" on-select="selectSegment($model)" reset-search-input="'false'">
                 <ui-select-match placeholder="{{ 'SEGMENT_MODULE.SELECT_A_SEGMENT' | translate }}">{{ $select.selected }}</ui-select-match>
@@ -11,7 +11,7 @@
                     {{ segment }}
                 </ui-select-choices>
             </ui-select>
-
+            <span class="help-block">{{ 'RON_AD_SLOT_MODULE.HELP_BLOCK_GLOBAL' | translate }}</span>
         </div>
     </div>
 

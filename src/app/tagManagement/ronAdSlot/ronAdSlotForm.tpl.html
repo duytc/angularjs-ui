@@ -72,6 +72,8 @@
                     <label class="col-sm-1 control-label">{{ 'SEGMENTS' | translate }}</label>
                     <div class="col-sm-5">
                         <oi-select oi-options="item.name for item in segments | selectedPublisher:selected.publisher" ng-disabled="!selected.publisher && isAdmin()" ng-model="ronAdSlotSegments" multiple oi-select-options="{newItem: true, newItemFn: 'addSegment($query)'}" placeholder="Select"></oi-select>
+
+                        <span class="help-block">{{ 'RON_AD_SLOT_MODULE.HELP_BLOCK_SELECT_SEGMENT' | translate }}</span>
                     </div>
                 </div>
 

@@ -1,3 +1,8 @@
-.list-segment {
-  list-style: none
+.generate.list-info {
+  li {
+    label {
+      width: 140px;
+      margin-top: 5px;
+    }
+  }
 }

@@ -107,7 +107,7 @@
         <tab ng-if="jstags.display" select="selectTab()" heading="{{ 'DISPLAY_AD_SLOTS' | translate }}">
             <div class="media">
                 <div class="media-body">
-                    <ul class="list-unstyled list-info">
+                    <ul class="list-unstyled list-info generate">
                         <li>
                             <p><strong>{{ keywordGuide.adSlot }}</strong></p>
                         </li>
@@ -116,7 +116,8 @@
                             <p ng-if="typeSelected == typeKey.ronAdSlot"><strong translate="TAG_GENERATOR_MODULE.RON_AD_SLOT_FOR" translate-value-name="{{ tag.name }}"></strong></p>
 
                             <div ng-if="typeSelected == typeKey.ronAdSlot" class="row form-group">
-                                <div class="col-lg-3">
+                                <label class="col-sm-2 control-label">{{ 'SEGMENT' | translate }}</label>
+                                <div class="col-sm-3">
                                     <ui-select ng-model="selectedSegmentModel" on-select="selectSegment($model, tag, jstagCopy.display.ad_slots, key)" reset-search-input="'false'">
                                         <ui-select-match placeholder="{{ 'SEGMENT_MODULE.SELECT_A_SEGMENT' | translate }}">{{ $select.selected }}</ui-select-match>
                                         <ui-select-choices repeat="segment in convertSegmentArr(tag.segments)" >
@@ -124,6 +125,8 @@
                                         </ui-select-choices>
                                     </ui-select>
                                 </div>
+
+                                <span class="col-sm-12 help-block">{{ 'RON_AD_SLOT_MODULE.HELP_BLOCK_GLOBAL' | translate }}</span>
                             </div>
 
                             <div hljs source="getTextToCopy(tag.jstag)" select-on-click class="highlight-js"></div>
@@ -140,7 +143,7 @@
         <tab ng-if="jstags.native.ad_slots" select="selectTab()" heading="{{ 'NATIVE_AD_SLOTS' | translate }}">
             <div class="media">
                 <div class="media-body">
-                    <ul class="list-unstyled list-info">
+                    <ul class="list-unstyled list-info generate">
                         <li>
                             <p><strong>{{ keywordGuide.adSlot }}</strong></p>
                         </li>
@@ -149,7 +152,8 @@
                             <p ng-if="typeSelected == typeKey.ronAdSlot"><strong translate="TAG_GENERATOR_MODULE.RON_AD_SLOT_FOR" translate-value-name="{{ tag.name }}"></strong></p>
 
                             <div ng-if="typeSelected == typeKey.ronAdSlot" class="row form-group">
-                                <div class="col-lg-3">
+                                <label class="col-sm-2 control-label">{{ 'SEGMENT' | translate }}</label>
+                                <div class="col-sm-3">
                                     <ui-select ng-model="selectedSegmentModel" on-select="selectSegment($model, tag, jstagCopy.native.ad_slots, key)" reset-search-input="'false'">
                                         <ui-select-match placeholder="{{ 'SEGMENT_MODULE.SELECT_A_SEGMENT' | translate }}">{{ $select.selected }}</ui-select-match>
                                         <ui-select-choices repeat="segment in convertSegmentArr(tag.segments)" >
@@ -157,6 +161,8 @@
                                         </ui-select-choices>
                                     </ui-select>
                                 </div>
+
+                                <span class="col-sm-12 help-block">{{ 'RON_AD_SLOT_MODULE.HELP_BLOCK_GLOBAL' | translate }}</span>
                             </div>
 
                             <div hljs source="getTextToCopy(tag.jstag)" select-on-click class="highlight-js"></div>
@@ -173,7 +179,7 @@
         <tab ng-if="jstags.dynamic.ad_slots" select="selectTab()" heading="{{ 'DYNAMIC_AD_SLOTS' | translate }}">
             <div class="media">
                 <div class="media-body">
-                    <ul class="list-unstyled list-info">
+                    <ul class="list-unstyled list-info generate">
                         <li>
                             <p><strong>{{ keywordGuide.adSlot }}</strong></p>
                         </li>
@@ -182,7 +188,8 @@
                             <p ng-if="typeSelected == typeKey.ronAdSlot"><strong translate="TAG_GENERATOR_MODULE.RON_AD_SLOT_FOR" translate-value-name="{{ tag.name }}"></strong></p>
 
                             <div ng-if="typeSelected == typeKey.ronAdSlot" class="row form-group">
-                                <div class="col-lg-3">
+                                <label class="col-sm-2 control-label">{{ 'SEGMENT' | translate }}</label>
+                                <div class="col-sm-3">
                                     <ui-select ng-model="selectedSegmentModel" on-select="selectSegment($model, tag, jstagCopy.dynamic.ad_slots, key)" reset-search-input="'false'">
                                         <ui-select-match placeholder="{{ 'SEGMENT_MODULE.SELECT_A_SEGMENT' | translate }}">{{ $select.selected }}</ui-select-match>
                                         <ui-select-choices repeat="segment in convertSegmentArr(tag.segments)" >
@@ -190,6 +197,8 @@
                                         </ui-select-choices>
                                     </ui-select>
                                 </div>
+
+                                <span class="col-sm-12 help-block">{{ 'RON_AD_SLOT_MODULE.HELP_BLOCK_GLOBAL' | translate }}</span>
                             </div>
 
                             <div hljs source="getTextToCopy(tag.jstag)" select-on-click class="highlight-js"></div>

@@ -160,7 +160,7 @@
 
                 "EXPORT_TAG": "Export Tags",
                 "TAGS_FOR_SITE": "Tags for {{ name }}",
-                "RON_AD_SLOT_FOR": "RON ad slot : {{ name }}",
+                "RON_AD_SLOT_FOR": "{{ name }}",
                 "TAGS_FOR_RON_AD_SLOT": "Tags for RON ad slot",
                 "HEADER": "Header"
             },
@@ -329,7 +329,8 @@
                 "SEGMENTS": "Report Segments",
                 "SHOW_DETAILS": 'Show Details',
                 "SEGMENT_NOTHING_IS_SELECTED": 'Nothing is selected',
-                "HELP_BLOCK_SELECT_SEGMENT": "You can create custom report segments above. To create new segments, enter in a text value and press enter. You may repeat this process to create more segments"
+                "HELP_BLOCK_SELECT_SEGMENT": "You can create custom report segments above. To create new segments, enter in a text value and press enter. You may repeat this process to create more segments",
+                "HELP_BLOCK_GLOBAL": "Global is a default report segment. It tells the report of all segments and itself if no segment is configured."
             },
             "SEGMENT_MODULE": {
                 "CURRENTLY_SEGMENT": "There is currently no report segments in the library",
@@ -410,6 +411,7 @@
                 "CREATE_RON_AD_SLOT": "Create RON Ad Slot",
                 "EDIT_RON_AD_SLOT": "Edit RON Ad Slot",
                 "GO_TO_SITE": "Go To Site",
+                "IN_RON_AD_SLOT": "Ron Ad Slot",
 
                 "CREATE_LINKED_AD_SLOTS": "Create Linked Ad Slots",
                 "VIEW_LINKED_AD_SLOTS": "View Linked Ad Slots",
