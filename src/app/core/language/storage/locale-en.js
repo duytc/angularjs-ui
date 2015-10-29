@@ -173,7 +173,7 @@
                 "REMOVE_SITE_FROM_CHANNEL_SUCCESS": "The site was removed",
                 "REMOVE_SITE_FROM_CHANNEL_FAIL": "The site could not be removed",
                 "CONFIRM_DELETE_CHANNEL": "Are you sure you want to delete this channel?",
-                "CONFIRM_REMOVE_SITE_FROM_CHANNEL": "Are you sure you want to remove site from channel?",
+                "CONFIRM_REMOVE_SITE_FROM_CHANNEL": "Are you sure you want to remove this site from the channel?",
                 "CONFIRM_DELETE_SUCCESS": "The channel was deleted",
                 "CONFIRM_DELETE_FAIL": "The channel could not be deleted",
                 "CURRENTLY_NO_CHANNELS": "There is currently no channels",
@@ -283,8 +283,8 @@
                 "DELETE_FAIL": "The ad slot could not be deleted",
                 "CONFIRM_DELETE_AD_SLOT": "Are you sure you want to delete this ad slot?",
                 "CURRENTLY_NO_AD_SLOT": "There is currently no ad slots in this site",
-                "MOVED_TO_LIBRARY_SUCCESS": "The ad slot has been moved to library",
-                "MOVED_TO_LIBRARY_FAIL": "The ad slot has not been moved to library",
+                "MOVED_TO_LIBRARY_SUCCESS": "The ad slot has been moved to the library",
+                "MOVED_TO_LIBRARY_FAIL": "The ad slot has not been moved to the library",
 
                 "BACK_TO_AD_SLOT_LIST": "Back to Ad Slot List",
                 "SELECT_A_TYPE": "Select a type",
@@ -330,7 +330,7 @@
                 "SHOW_DETAILS": 'Show Details',
                 "SEGMENT_NOTHING_IS_SELECTED": 'Nothing is selected',
                 "HELP_BLOCK_SELECT_SEGMENT": "You can create custom report segments above. To create new segments, enter in a text value and press enter. You may repeat this process to create more segments",
-                "HELP_BLOCK_GLOBAL": "Global is a default report segment. It tells the report of all segments and itself if no segment is configured."
+                "HELP_BLOCK_GLOBAL": "You can generate unique tags for each report segment. The Global segment is the default report segment and should be used when you do not have any custom segments or do not want to track a specific segment."
             },
             "SEGMENT_MODULE": {
                 "CURRENTLY_SEGMENT": "There is currently no report segments in the library",
@@ -351,8 +351,8 @@
                 "CHANGE_STATUS_FAIL": "Could not change ad tag status",
                 "REORDERED_AD_TAG_FAIL": "The ad tags could not be reordered",
                 "REORDERED_AD_TAG_SUCCESS": "The ad tags have been reordered",
-                "MOVED_TO_LIBRARY_SUCCESS": "The ad tag has been moved to library",
-                "MOVED_TO_LIBRARY_FAIL": "The ad tag has not been moved to library",
+                "MOVED_TO_LIBRARY_SUCCESS": "The ad tag has been moved to the library",
+                "MOVED_TO_LIBRARY_FAIL": "The ad tag has not been moved to the library",
                 "CONFIRM_DELETE_AD_TAG": "Are you sure you want to delete this ad tag?",
                 "CURRENTLY_NO_AD_TAG": "There is currently no ad tags in this ad slot",
 
@@ -513,7 +513,7 @@
                 "EDIT_PUBLISHER": "Edit Publisher"
             },
             "SOURCE_REPORT_MODULE": {
-                "GET_REPORT_FAIL": "An error occurs while getting reports.",
+                "GET_REPORT_FAIL": "An error occurred while getting reports.",
                 "NO_REPORT_FOR_SELECTION": "There is no report for that selection",
                 "BREAKDOWN_BY_TRAFFIC_SOURCE": "Breakdown by Traffic Source",
 
@@ -582,18 +582,18 @@
                 "CPM_RATE": "CPM Rate"
             },
             "SOURCE_CONFIG_MODULE": {
-                "CONFIRM_INCLUDE_ALL": "All reports are sent to this email. Please uncheck option include all to configure this email manually",
+                "CONFIRM_INCLUDE_ALL": "All reports are sent to this email. Please uncheck the option to include all to configure this email manually",
                 "CONFIRM_DELETE_CONFIG": "Are you sure you want to delete this config?",
 
                 "UPDATE_EMAIL_SUCCESS": "The email config has been updated",
-                "UPDATE_EMAIL_FAIL": "The email config is not updated",
+                "UPDATE_EMAIL_FAIL": "The email config could not be updated",
                 "DELETE_EMAIL_SUCCESS": "The email config has been deleted",
-                "DELETE_EMAIL_FAIL": "The email config is not deleted",
+                "DELETE_EMAIL_FAIL": "The email config could not be deleted",
 
                 "DELETE_SITE_SUCCESS": "The site config has been deleted",
-                "DELETE_SITE_FAIL": "The site config is not deleted",
+                "DELETE_SITE_FAIL": "The site config could not be deleted",
 
-                "ADD_SITES_CONFIG_FOR_EMAIL": "Add Sites Config For Email",
+                "ADD_SITES_CONFIG_FOR_EMAIL": "Add Site Config For Email",
 
                 "AVAILABLE_SITES": "Available Sites",
                 "SELECTED_SITES": "Selected Sites",
@@ -611,7 +611,7 @@
                 "ADD_NEW_EMAIL_CONFIG": "Add New Email Config",
                 "CONFIGURATION": "Configuration",
                 "EMAIL": "Email",
-                "SITES_CONFIGS": "Sites Configs",
+                "SITES_CONFIGS": "Site Configs",
                 "STATUS": "Status",
                 "PLACEHOLDER_EMAIL_ADDRESS": "Email Address",
                 "ADD_ANOTHER_EMAIL": "Add another email"
@@ -632,9 +632,9 @@
                 "SEND_EMAIL_SUCCESS": "An email has been sent to '{{ username }}'. It contains a link you must click to reset your password",
                 "SEND_EMAIL_FAIL": "Could not reset password for '{{ username }}'",
                 "RESET_SUCCESS": "Change successful, login to continue",
-                "TOKEN_NOT_EXISTED": "The token '{{ token }}' is not existed",
+                "TOKEN_NOT_EXISTED": "The token '{{ token }}' does not exist",
                 "TOKEN_EXPIRED": "The token '{{ token }}' is expired. Please try to reset password again",
-                "INTERNAL_ERROR": "Internal error. Please contact administrator for further instruction",
+                "INTERNAL_ERROR": "Internal error. Please contact administrator for further instructions",
 
                 "HELP_BLOCK_CHECK_EMAIL": "Enter your username or email address that you used to register. We'll send you an email with your username and a link to reset your password."
             },
