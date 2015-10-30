@@ -30,7 +30,7 @@
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a ui-sref="^.edit({ id: item.id, adNetworkId: adNetwork.id})">{{ 'AD_TAG_MODULE.EDIT_AD_TAG' | translate }}</a></li>
-                                <li><a ng-click="toggleAdTagStatus(item)">{{ adTag.active ? ('AD_TAG_MODULE.PAUSE_AD_TAG' | translate) : ('AD_TAG_MODULE.ACTIVATE_AD_TAG' | translate) }}</a></li>
+                                <li><a ng-click="toggleAdTagStatus(item)">{{ item.active ? ('AD_TAG_MODULE.PAUSE_AD_TAG' | translate) : ('AD_TAG_MODULE.ACTIVATE_AD_TAG' | translate) }}</a></li>
                                 <li><a ng-click="confirmDeletion(item)">{{ 'AD_TAG_MODULE.DELETE_AD_TAG' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li ng-if="!item.libraryAdTag.visible" ng-click="shareAdTag(item)"><a>{{ 'AD_TAG_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>
