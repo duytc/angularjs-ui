@@ -5,7 +5,7 @@
         .factory('performanceReportHelper', performanceReportHelper)
     ;
 
-    function performanceReportHelper($state, $translate, _, $modal, UserStateHelper, adminUserManager, AdNetworkManager, SiteManager, AdSlotManager, AdTagManager, ReportParams, AlertService, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES) {
+    function performanceReportHelper($state, $translate, _, $modal, UserStateHelper, adminUserManager, AdNetworkManager, SiteManager, AdSlotManager, RonAdSlotManager, AdTagManager, SegmentManager, ReportParams, AlertService, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES) {
         var api = {
             popupReport: popupReport,
             drillDownReport: drillDownReport,
@@ -147,6 +147,16 @@
                 case PERFORMANCE_REPORT_STATES.adSlotAdTags:
                     return 'reports/performance/views/popup/popupForAdSlot.tpl.html';
 
+                case PERFORMANCE_REPORT_STATES.ronAdSlotSegments:
+                case PERFORMANCE_REPORT_STATES.ronAdSlot:
+                    return 'reports/performance/views/popup/popupForRonAdSlot.tpl.html';
+
+                case PERFORMANCE_REPORT_STATES.ronAdSlotSites:
+                    return 'reports/performance/views/popup/popupForRonAdSlotSegments.tpl.html';
+
+                case PERFORMANCE_REPORT_STATES.ronAdSlotAdTags:
+                    return 'reports/performance/views/popup/popupForSites.tpl.html';
+
                 case PERFORMANCE_REPORT_STATES.adTags:
                     return 'reports/performance/views/popup/popupForAdTag.tpl.html';
             }
@@ -174,8 +184,20 @@
                 case PERFORMANCE_REPORT_STATES.adSlotAdTags:
                     return AdSlotManager.one(reportType.adSlotId).get();
 
+                case PERFORMANCE_REPORT_STATES.ronAdSlotSegments:
+                case PERFORMANCE_REPORT_STATES.ronAdSlot:
+                    return RonAdSlotManager.one(reportType.ronAdSlotId).get();
+
+                case PERFORMANCE_REPORT_STATES.ronAdSlotAdTags:
+                    return SiteManager.one(reportType.site.id).get();
+
+                case PERFORMANCE_REPORT_STATES.ronAdSlotSites:
+                    return SegmentManager.one(reportType.segment.id).get();
+
                 case PERFORMANCE_REPORT_STATES.adTags:
-                    return AdTagManager.one(reportType.adTagId).get();
+                    var adTagId = !reportType.adTagId ? reportType.ronAdTagId : reportType.adTagId;
+
+                    return AdTagManager.one(adTagId).get();
             }
         }
     }

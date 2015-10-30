@@ -13,26 +13,38 @@
         $scope.isNew = adSlot === null;
         $scope.publisherList = publisherList;
 
-        $scope.adSlot = adSlot || {
-            libraryExpressions: []
-        };
-
         $scope.formProcessing = false;
         $scope.typesList = TYPE_AD_SLOT;
         $scope.adSlotTypeOptions = [
             {
-                label: $translate.instant('DISPLAY_AD_SLOTS'),
+                label: $translate.instant('DISPLAY_AD_SLOT'),
                 key: TYPE_AD_SLOT.display
             },
             {
-                label: $translate.instant('NATIVE_AD_SLOTS'),
+                label: $translate.instant('NATIVE_AD_SLOT'),
                 key: TYPE_AD_SLOT.native
             },
             {
-                label: $translate.instant('DYNAMIC_AD_SLOTS'),
+                label: $translate.instant('DYNAMIC_AD_SLOT'),
                 key: TYPE_AD_SLOT.dynamic
             }
         ];
+
+        $scope.passbackOption = [
+            {
+                label: 'Position',
+                key: 'position'
+            },
+            {
+                label: 'Peer Priority',
+                key: 'peerpriority'
+            }
+        ];
+
+        $scope.adSlot = adSlot || {
+            libraryExpressions: [],
+            passbackMode: $scope.passbackOption[0].key
+        };
 
         $scope.selected = {
             type:  adSlotType || $scope.typesList.display
@@ -160,7 +172,8 @@
 
         function selectType(type) {
             $scope.adSlot = {
-                libraryExpressions: []
+                libraryExpressions: [],
+                passbackMode: $scope.passbackOption[0].key
             };
 
             _getAdSlots(type)
@@ -314,12 +327,14 @@
                 delete adSlot.width;
                 delete adSlot.libraryExpressions;
                 delete adSlot.autoFit;
+                delete adSlot.passbackMode;
             }
 
             if($scope.selected.type == $scope.typesList.dynamic) {
                 delete adSlot.height;
                 delete adSlot.width;
                 delete adSlot.autoFit;
+                delete adSlot.passbackMode;
             }
             else {
                 delete adSlot.libraryExpressions;
@@ -332,6 +347,7 @@
             }
 
             delete adSlot.libType;
+            delete adSlot.isRonAdSlot;
 
             if($scope.selected.type == $scope.typesList.dynamic) {
                 if(!$scope.isNew) {

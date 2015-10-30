@@ -34,7 +34,8 @@
     "angularjs-dropdown-multiselect": "https://github.com/dtagdev1/angularjs-dropdown-multiselect.git#master",
     "isteven-angular-multiselect": "~4.0.0",
     "angular-cache": "~4.3.2",
-    "angular-translate": "~2.7.2"
+    "angular-translate": "~2.7.2",
+    "oi.select": "~0.2.15"
   },
   "resolutions": {
     "angular": "~1.3.15"

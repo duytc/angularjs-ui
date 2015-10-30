@@ -27,7 +27,11 @@
             getSiteAdSlotsReport: getSiteAdSlotsReport,
             getSiteAdTagsReport: getSiteAdTagsReport,
             getAdSlotReport: getAdSlotReport,
-            getAdSlotAdTagsReport: getAdSlotAdTagsReport
+            getAdSlotAdTagsReport: getAdSlotAdTagsReport,
+            getRonAdSlotReport: getRonAdSlotReport,
+            getRonAdSlotSitesReport: getRonAdSlotSitesReport,
+            getRonAdSlotSegmentsReport: getRonAdSlotSegmentsReport,
+            getRonAdSlotAdTagsReport: getRonAdSlotAdTagsReport
         };
 
         var _$initialParams = null;
@@ -96,7 +100,7 @@
                 return $q.reject(new Error('Invalid initial params supplied'));
             }
 
-            params = _.omit(params, ['reportType', 'uniqueRequestCacheBuster', 'adSlotBreakdown', 'siteBreakdown', 'adNetworkBreakdown']);
+            params = _.omit(params, ['reportType', 'uniqueRequestCacheBuster', 'adSlotBreakdown', 'ronAdSlotBreakdown', 'siteBreakdown', 'adNetworkBreakdown']); 
 
             return $q.when(fetcher(params)).catch(function(response) {
                 if (response.status == 404) {
@@ -186,6 +190,22 @@
 
         function getAdSlotAdTagsReport(params, additionalParams) {
             return getReport(ReportFetcher.getAdSlotAdTagsReport, params, additionalParams);
+        }
+
+        function getRonAdSlotReport(params, additionalParams) {
+            return getReport(ReportFetcher.getRonAdSlotReport, params, additionalParams);
+        }
+
+        function getRonAdSlotSitesReport(params, additionalParams) {
+            return getReport(ReportFetcher.getRonAdSlotSitesReport, params, additionalParams);
+        }
+
+        function getRonAdSlotSegmentsReport(params, additionalParams) {
+            return getReport(ReportFetcher.getRonAdSlotSegmentsReport, params, additionalParams);
+        }
+
+        function getRonAdSlotAdTagsReport(params, additionalParams) {
+            return getReport(ReportFetcher.getRonAdSlotAdTagsReport, params, additionalParams);
         }
     }
 })(angular);

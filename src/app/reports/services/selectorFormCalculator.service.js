@@ -5,14 +5,15 @@
         .factory('selectorFormCalculator', selectorFormCalculator)
     ;
 
-    function selectorFormCalculator($q, _, adminUserManager, AdNetworkManager, SiteManager, AdSlotManager, AdTagManager) {
+    function selectorFormCalculator($q, _, adminUserManager, AdNetworkManager, SiteManager, AdSlotManager, AdTagManager, RonAdSlotManager) {
         var api = {
             getCalculatedParams: getCalculatedParams,
         };
 
         var _entityFieldHierarchies = [
             ['publisherId', 'siteId', 'adSlotId', 'adTagId'],
-            ['publisherId', 'adNetworkId']
+            ['publisherId', 'adNetworkId'],
+            ['publisherId', 'libraryAdSlotId', 'ronAdSlotId']
         ];
 
         // used only for the initial setting of criteria to determine any missing criteria
@@ -33,6 +34,11 @@
             adSlotId: function (id) {
                 return AdSlotManager.one(id).get().then(function (adSlot) {
                     return adSlot.plain();
+                });
+            },
+            ronAdSlotId: function (id) {
+                return RonAdSlotManager.one(id).get().then(function (ronAdSlot) {
+                    return ronAdSlot.plain();
                 });
             },
             adTagId: function (id) {

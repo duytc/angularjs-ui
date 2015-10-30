@@ -5,12 +5,13 @@
         .factory('reportSelectorForm', reportSelectorForm)
     ;
 
-    function reportSelectorForm($filter, adminUserManager, AdNetworkManager, SiteManager, selectorFormCalculator, TYPE_AD_SLOT) {
+    function reportSelectorForm($filter, adminUserManager, AdNetworkManager, SiteManager, selectorFormCalculator, RonAdSlotManager, TYPE_AD_SLOT) {
         var api = {
             getPublishers: getPublishers,
             getAdNetworks: getAdNetworks,
             getSites: getSites,
             getAdSlotsForSite: getAdSlotsForSite,
+            getRonAdSlot: getRonAdSlot,
             getSiteForAdNetwork: getSiteForAdNetwork,
             getCalculatedParams: getCalculatedParams
         };
@@ -50,6 +51,13 @@
                     return $filter('filter')(adSlots.plain(), {type: '!'+TYPE_AD_SLOT.dynamic});
                 }
             );
+        }
+
+        function getRonAdSlot() {
+            return RonAdSlotManager.getList()
+                .then(function(ronAdSlots) {
+                    return ronAdSlots.plain();
+                });
         }
 
         function getSiteForAdNetwork(adNetworkId) {

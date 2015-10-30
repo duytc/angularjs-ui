@@ -12,24 +12,32 @@
         </div>
 
         <div class="form-inline condition" ng-if="!isGroup(itemGroup)">
+            <div class="form-group">
+                <angucomplete disabled-form="disabledDirective" ng-change="changeVarName(itemGroup, $index)" matchClass="highlight" ng-model="itemGroup.var" selectedobject="selectedCountry" pause="100" localdata="tags" searchfields="name" titlefield="name" minlength="1" inputclass="form-control" placeholder="Variable Name"></angucomplete>
+            </div>
+
             <div class="form-group select-data-type">
                 <ui-select ng-model="itemGroup.type" ng-required="true" server-error on-select="selectType(itemGroup)" reset-search-input="'false'" ng-disabled="disabledDirective">
                     <ui-select-match placeholder="Select data type">{{ $select.selected.label }}</ui-select-match>
-                    <ui-select-choices repeat="dataType.key as dataType in dataTypes">
+                    <ui-select-choices repeat="dataType.key as dataType in getDataTypeList(itemGroup)">
                         {{ dataType.label }}
                     </ui-select-choices>
                 </ui-select>
             </div>
-            <div class="form-group">
-                <angucomplete disabled-form="disabledDirective" matchClass="highlight" ng-model="itemGroup.var" selectedobject="selectedCountry" pause="100" localdata="tags" searchfields="name" titlefield="name" minlength="1" inputclass="form-control" placeholder="Variable Name"></angucomplete>
-            </div>
-            <select ng-disabled="disabledDirective" class="form-control" ng-model="itemGroup.cmp" ng-options="condition.key as condition.label for condition in changeCondition(itemGroup.type)"></select>
 
-            <div class="form-group" ng-if="itemGroup.type != dataTypes[2].key">
-                <input ng-disabled="disabledDirective" server-error ng-required="valIsNull(itemGroup.cmp)" type="text" class="form-control" ng-minlength="1" pattern="{{ itemGroup.type == dataTypes[1].key ? '\\d*' : '[a-zA-Z0-9?=/&-]+$'}}" required ng-model="itemGroup.val" ng-init="itemGroup.val == null ? itemGroup.val = '' : itemGroup.val " placeholder="Value">
+            <select ng-disabled="disabledDirective" class="form-control" ng-model="itemGroup.cmp" ng-options="condition.key as condition.label for condition in changeCondition(itemGroup)"></select>
+
+            <div class="form-group" ng-if="itemGroup.type != dataTypes[2].key && itemGroup.var != '${COUNTRY}'">
+                <input ng-disabled="disabledDirective" server-error ng-required="valIsNull(itemGroup.cmp)" type="text" class="form-control" ng-minlength="1" pattern="{{ itemGroup.type == dataTypes[1].key ? '\\d*' : '[a-zA-Z0-9?=/&\\-_$.,;:@?+!*()#\\[\\]\']+$'}}" required ng-model="itemGroup.val" ng-init="itemGroup.val == null ? itemGroup.val = '' : itemGroup.val " placeholder="Value">
             </div>
-            <div class="form-group" ng-if="itemGroup.type == dataTypes[2].key">
+            <div class="form-group" ng-if="itemGroup.type == dataTypes[2].key && itemGroup.var != '${COUNTRY}'">
                 <select ng-disabled="disabledDirective" class="form-control" ng-options="value for value in values" ng-model="itemGroup.val" ng-init="values = ['true', 'false']; itemGroup.val == null ? itemGroup.val = 'true' : '' "></select>
+            </div>
+            <div class="form-group" ng-if="itemGroup.var == '${COUNTRY}'">
+                <select ng-disabled="disabledDirective" name="country" ng-model="itemGroup.val" class="form-control select-country" id="inputCountry">
+                    <option disabled ng-selected="true">Country...</option>
+                    <option value="{{ country.code }}" ng-selected="itemGroup.val == country.code" ng-repeat="country in countries">{{ country.name }}</option>
+                </select>
             </div>
 
             <!--<button class="btn btn-danger" type="button" ng-minlength="1" required ng-disabled="isDisabledButtonRemoveCondition()" ng-click="removeCondition($index)"><span class="glyphicon glyphicon-minus"></span></button>-->

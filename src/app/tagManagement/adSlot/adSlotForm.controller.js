@@ -17,20 +17,31 @@
         $scope.adSlotTypes = TYPE_AD_SLOT;
         $scope.adSlotTypeOptions = [
             {
-            label: $translate.instant('DISPLAY_AD_SLOTS'),
+            label: $translate.instant('DISPLAY_AD_SLOT'),
             key: TYPE_AD_SLOT.display
             },
             {
-                label: $translate.instant('NATIVE_AD_SLOTS'),
+                label: $translate.instant('NATIVE_AD_SLOT'),
                 key: TYPE_AD_SLOT.native
             },
             {
-                label: $translate.instant('DYNAMIC_AD_SLOTS'),
+                label: $translate.instant('DYNAMIC_AD_SLOT'),
                 key: TYPE_AD_SLOT.dynamic
             }
         ];
-        $scope.tags = null;
 
+        $scope.passbackOption = [
+            {
+                label: 'Position',
+                key: 'position'
+            },
+            {
+                label: 'Peer Priority',
+                key: 'peerpriority'
+            }
+        ];
+
+        $scope.tags = null;
         $scope.formProcessing = false;
         $scope.allowSiteSelection = $scope.isNew && !!siteList;
 
@@ -49,9 +60,11 @@
             site: $scope.isNew && !!$stateParams.siteId ? parseInt($stateParams.siteId, 10) : null,
             libraryAdSlot: {
                 name: null,
-                libraryExpressions: []
+                libraryExpressions: [],
+                passbackMode: $scope.passbackOption[0].key
             }
         };
+
         var adSlotCopy = angular.copy(adSlot);
 
         $scope.submit = submit;
@@ -400,7 +413,8 @@
             //reset form ad slot when un-check form library
             $scope.adSlot.libraryAdSlot = {
                 name: null,
-                libraryExpressions: []
+                libraryExpressions: [],
+                passbackMode: $scope.passbackOption[0].key
             };
             $scope.adSlot.defaultAdSlot = null;
         }
@@ -469,12 +483,14 @@
                 delete adSlot.libraryAdSlot.height;
                 delete adSlot.libraryAdSlot.width;
                 delete adSlot.libraryAdSlot.autoFit;
+                delete adSlot.libraryAdSlot.passbackMode;
             }
 
             if($scope.selected.type == $scope.adSlotTypes.dynamic) {
                 delete adSlot.libraryAdSlot.height;
                 delete adSlot.libraryAdSlot.width;
                 delete adSlot.libraryAdSlot.autoFit;
+                delete adSlot.libraryAdSlot.passbackMode;
 
                 // transfer of format number
                 adSlot.defaultAdSlot = angular.isObject(adSlot.defaultAdSlot) ? adSlot.defaultAdSlot.id : adSlot.defaultAdSlot;
@@ -496,10 +512,12 @@
                 delete adSlot.libraryAdSlot.libraryExpressions;
                 delete adSlot.defaultAdSlot;
                 delete adSlot.libraryAdSlot.native;
+                delete adSlot.expressions;
             }
 
             delete adSlot.type;
             delete adSlot.libraryAdSlot.publisher;
+            delete adSlot.libraryAdSlot.isRonAdSlot;
 
             delete adSlot.libraryAdSlot.libType;
 

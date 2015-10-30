@@ -353,5 +353,133 @@
                 }
             })
         ;
+
+        UserStateHelperProvider
+            .state('reports.performance.ronAdSlot', {
+                url: '/ronAdSlots/{ronAdSlotId:int}?{startDate:date}&{endDate:date}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    report: {
+                        controller: 'ReportView',
+                        templateUrl: 'reports/performance/views/reportType/ronAdSlot/ronAdSlot.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getRonAdSlotReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.ronAdSlot,
+                            ronAdSlotBreakdown: 'day'
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
+                }
+            })
+        ;
+
+        UserStateHelperProvider
+            .state('reports.performance.ronAdSlotSites', {
+                url: '/ronAdSlots/{ronAdSlotId:int}/sites?{startDate:date}&{endDate:date}',
+                params: {
+                    endDate: null,
+                    expanded: true,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    report: {
+                        controller: 'ReportView',
+                        templateUrl: function($stateParams) {
+                            if (!$stateParams.endDate) {
+                                return 'reports/performance/views/reportType/ronAdSlot/sites.tpl.html';
+                            }
+
+                            return 'reports/performance/views/reportType/ronAdSlot/sitesDateRange.tpl.html';
+                        }
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getRonAdSlotSitesReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.ronAdSlot,
+                            ronAdSlotBreakdown: 'site'
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
+                }
+            })
+        ;
+
+        UserStateHelperProvider
+            .state('reports.performance.ronAdSlotSegments', {
+                url: '/ronAdSlots/{ronAdSlotId:int}/segments?{startDate:date}&{endDate:date}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    report: {
+                        controller: 'ReportView',
+                        templateUrl: function($stateParams) {
+                            if (!$stateParams.endDate) {
+                                return 'reports/performance/views/reportType/ronAdSlot/segments.tpl.html';
+                            }
+
+                            return 'reports/performance/views/reportType/ronAdSlot/segmentsDateRange.tpl.html';
+                        }
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getRonAdSlotSegmentsReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.ronAdSlot,
+                            ronAdSlotBreakdown: 'segment'
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
+                }
+            })
+        ;
+
+        UserStateHelperProvider
+            .state('reports.performance.ronAdSlotAdTags', {
+                url: '/ronAdSlots/{ronAdSlotId:int}/adTags?{startDate:date}&{endDate:date}',
+                params: {
+                    endDate: null,
+                    expanded: true,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    report: {
+                        controller: 'ReportView',
+                        templateUrl: function($stateParams) {
+                            if (!$stateParams.endDate) {
+                                return 'reports/performance/views/reportType/ronAdSlot/adTags.tpl.html';
+                            }
+
+                            return 'reports/performance/views/reportType/ronAdSlot/adTagsDateRange.tpl.html';
+                        }
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+                        return performanceReport.getRonAdSlotAdTagsReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.ronAdSlot,
+                            ronAdSlotBreakdown: 'adtag'
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
+                }
+            })
+        ;
     }
 })();

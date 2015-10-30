@@ -7,7 +7,8 @@
             account: 'account',
             adNetwork: 'adNetwork',
             site: 'site',
-            adSlot: 'adslot'
+            adSlot: 'adslot',
+            ronAdSlot: 'ronAdSlot'
         })
 
         .constant('PERFORMANCE_REPORT_STATES', {
@@ -22,6 +23,10 @@
             adNetwork: '^.adNetwork',
             adSlot: '^.adSlot',
             adSlotAdTags: '^.adSlotAdTags',
+            ronAdSlot: '^.ronAdSlot',
+            ronAdSlotSites: '^.ronAdSlotSites',
+            ronAdSlotSegments: '^.ronAdSlotSegments',
+            ronAdSlotAdTags: '^.ronAdSlotAdTags',
             adTags: 'adTags'
         })
 

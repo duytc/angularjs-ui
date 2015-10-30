@@ -30,11 +30,18 @@
             "AD_NETWORKS": "Ad Networks",
             "AD_SLOT": "Ad Slot",
             "AD_SLOTS": "Ad Slots",
+            "RON_AD_SLOT": "RON Ad Slot",
+            "RON_AD_SLOTS": "RON Ad Slots",
             "DISPLAY_AD_SLOTS": "Display Ad Slots",
             "DYNAMIC_AD_SLOTS": "Dynamic Ad Slots",
             "NATIVE_AD_SLOTS": "Native Ad Slots",
+            "DISPLAY_AD_SLOT": "Display Ad Slot",
+            "DYNAMIC_AD_SLOT": "Dynamic Ad Slot",
+            "NATIVE_AD_SLOT": "Native Ad Slot",
             "AD_TAG": "Ad Tag",
             "AD_TAGS": "Ad Tags",
+            "SEGMENT": "Report Segment",
+            "SEGMENTS": "Report Segments",
 
             "VIEW_TODAY_REPORT": "View Today's Report",
             "COPY_TO_CLIPBOARD": "Copy to Clipboard",
@@ -53,10 +60,13 @@
                 "GENERATE_TAGS": "Generate Tags",
                 "CHANNELS": "Channels",
                 "MY_CHANNELS": "My Channels",
+                "MY_SEGMENTS": "My Report Segments",
                 "SITES": "Sites",
                 "MY_SITES": "My Sites",
                 "AD_SLOTS": "Ad Slots",
                 "MY_AD_SLOTS": "My Ad Slots",
+                "MY_RON_AD_SLOTS": "My RON Ad Slots",
+                "RON_AD_SLOTS": "RON Ad Slots",
                 "AD_NETWORKS": "Ad Networks",
                 "MY_AD_NETWORKS": "My Ad Networks",
                 "AD_TAGS": "Ad Tags",
@@ -64,6 +74,7 @@
                 "NEW_SITE": "New Site",
                 "NEW_AD_NETWORK": "New Ad Network",
                 "NEW_AD_SLOT": "New Ad Slot",
+                "NEW_RON_AD_SLOT": "New RON Ad Slot",
                 "NEW_AD_TAG": "New Ad Tag",
                 "TAG_LIBRARY": "Tag Library",
                 "REPORTS": "Reports",
@@ -114,6 +125,7 @@
                 "POSTAL_CODE": "Postal Code",
                 "CITY": "City",
                 "STATE": "State",
+                "TAG_DOMAIN": "Tag Domain",
                 "COUNTRY": "Country",
                 "MODULES": "Modules",
                 "BILLING_RATE": "Billing Rate",
@@ -137,7 +149,8 @@
                 "ACTIVATE_PUBLISHER": "Activate Publisher",
 
                 "HELP_BLOCK_REPEAT_PASSWORD": "Leave it blank for no change",
-                "HELP_BLOCK_BILLING_RATE": "You can set a custom CPM rate for this publisher. If you do not set a custom rate, the rate is calculated from our rate card."
+                "HELP_BLOCK_BILLING_RATE": "You can set a custom CPM rate for this publisher. If you do not set a custom rate, the rate is calculated from our rate card.",
+                "HELP_BLOCK_TAG_DOMAIN": "This will allow you to pull js tags data from your custom domain."
             },
             "TAG_GENERATOR_MODULE": {
                 "GUIDE_COPY_HEADER": "To enable source reports, copy and paste the following tag into the <head> section of your website.",
@@ -147,6 +160,8 @@
 
                 "EXPORT_TAG": "Export Tags",
                 "TAGS_FOR_SITE": "Tags for {{ name }}",
+                "RON_AD_SLOT_FOR": "{{ name }}",
+                "TAGS_FOR_RON_AD_SLOT": "Tags for RON ad slot",
                 "HEADER": "Header"
             },
             "CHANNEL_MODULE": {
@@ -158,7 +173,7 @@
                 "REMOVE_SITE_FROM_CHANNEL_SUCCESS": "The site was removed",
                 "REMOVE_SITE_FROM_CHANNEL_FAIL": "The site could not be removed",
                 "CONFIRM_DELETE_CHANNEL": "Are you sure you want to delete this channel?",
-                "CONFIRM_REMOVE_SITE_FROM_CHANNEL": "Are you sure you want to remove site from channel?",
+                "CONFIRM_REMOVE_SITE_FROM_CHANNEL": "Are you sure you want to remove this site from the channel?",
                 "CONFIRM_DELETE_SUCCESS": "The channel was deleted",
                 "CONFIRM_DELETE_FAIL": "The channel could not be deleted",
                 "CURRENTLY_NO_CHANNELS": "There is currently no channels",
@@ -256,6 +271,7 @@
                 "EXPRESSION_BUILDER": "Expression Builder",
                 "SIZE": "Size",
                 "AUTO_FIT": "Auto Fit",
+                "PASSBACK_MODE": "Passback Mode",
 
                 "ADD_NEW_SUCCESS": "The ad slot has been created",
                 "ADD_NEW_FAIL": "An error occurred. The ad slot could not be created",
@@ -267,14 +283,15 @@
                 "DELETE_FAIL": "The ad slot could not be deleted",
                 "CONFIRM_DELETE_AD_SLOT": "Are you sure you want to delete this ad slot?",
                 "CURRENTLY_NO_AD_SLOT": "There is currently no ad slots in this site",
-                "MOVED_TO_LIBRARY_SUCCESS": "The ad slot has been moved to library",
-                "MOVED_TO_LIBRARY_FAIL": "The ad slot has not been moved to library",
+                "MOVED_TO_LIBRARY_SUCCESS": "The ad slot has been moved to the library",
+                "MOVED_TO_LIBRARY_FAIL": "The ad slot has not been moved to the library",
 
                 "BACK_TO_AD_SLOT_LIST": "Back to Ad Slot List",
                 "SELECT_A_TYPE": "Select a type",
+                "SELECT_A_PASS_BACK": "Select a passback",
                 "GENERATE_AD_TAGS": "Generate Ad Tags",
                 "GENERATE_A_TAGS": "Generate a Tag",
-                "TAG_FOR_NAME": "Tag for {{ name }}",
+                "TAG_FOR_NAME": "Tag for: {{ name }}",
                 "SELECT_A_AD_SLOT": "Select an ad slot",
 
                 "MANAGE_AD_TAGS": "Manage Ad Tags",
@@ -291,6 +308,40 @@
                 "HELP_BLOCK_DEFAULT_AD_SLOT": "If no default ad slot is selected and no expressions match, the ad slot will not be shown on the page.",
                 "HELP_BLOCK_AUTO_FIT": "When Auto Fit is enabled, the ad slot will dynamically resize if the ad served is different from the size defined above."
             },
+            "RON_AD_SLOT_MODULE": {
+                "CURRENTLY_NO_RON_AD_SLOT": "There is currently no RON ad slots",
+                "ADD_NEW_SUCCESS": "The RON ad slot has been created",
+                "ADD_NEW_FAIL": "An error occurred. The RON ad slot could not be created",
+                "UPDATE_SUCCESS": "The RON ad slot has been updated",
+                "UPDATE_FAIL": "An error occurred. The RON ad slot could not be updated",
+                "DELETE_SUCCESS": "The RON ad slot was deleted",
+                "DELETE_FAIL": "The RON ad slot could not be deleted",
+                "CONFIRM_DELETE_RON_AD_SLOT": "Are you sure you want to delete this RON ad slot?",
+
+                "REFERENCE_LIBRARY_AD_SLOT": "Reference Library",
+                "LIBRARY_AD_SLOT": "Library Ad Slot",
+                "BACK_TO_AD_SLOT_LIST": "Back to RON Ad Slot List",
+                "SELECT_LIBRARY_AD_SLOT": "Select library ad slot",
+                "PICK_FROM_LIBRARY": "Pick from library",
+                "NEW_RON_AD_SLOT": "New RON Ad Slot",
+                "EDIT_RON_AD_SLOT": "Edit RON Ad Slot",
+                "DELETE_RON_AD_SLOT": "Delete RON Ad Slot",
+                "SEGMENTS": "Report Segments",
+                "SHOW_DETAILS": 'Show Details',
+                "SEGMENT_NOTHING_IS_SELECTED": 'Nothing is selected',
+                "HELP_BLOCK_SELECT_SEGMENT": "You can create custom report segments above. To create new segments, enter in a text value and press enter. You may repeat this process to create more segments",
+                "HELP_BLOCK_GLOBAL": "You can generate unique tags for each report segment. The Global segment is the default report segment and should be used when you do not have any custom segments or do not want to track a specific segment."
+            },
+            "SEGMENT_MODULE": {
+                "CURRENTLY_SEGMENT": "There is currently no report segments in the library",
+                "DELETE_SUCCESS": "The report segment was deleted",
+                "DELETE_FAIL": "The report segment could not be deleted",
+                "CONFIRM_DELETE_SEGMENT": "Are you sure you want to delete this report segment?",
+
+                "DELETE_SEGMENT": "Delete Report Segment",
+                "SELECT_A_SEGMENT": "Select Segment",
+                "GLOBAL_REPORT_SEGMENT": "Global"
+            },
             "AD_TAG_MODULE": {
                 "ADD_NEW_SUCCESS": "The ad tag has been created",
                 "UPDATE_SUCCESS": "The ad tag has been updated",
@@ -300,8 +351,8 @@
                 "CHANGE_STATUS_FAIL": "Could not change ad tag status",
                 "REORDERED_AD_TAG_FAIL": "The ad tags could not be reordered",
                 "REORDERED_AD_TAG_SUCCESS": "The ad tags have been reordered",
-                "MOVED_TO_LIBRARY_SUCCESS": "The ad tag has been moved to library",
-                "MOVED_TO_LIBRARY_FAIL": "The ad tag has not been moved to library",
+                "MOVED_TO_LIBRARY_SUCCESS": "The ad tag has been moved to the library",
+                "MOVED_TO_LIBRARY_FAIL": "The ad tag has not been moved to the library",
                 "CONFIRM_DELETE_AD_TAG": "Are you sure you want to delete this ad tag?",
                 "CURRENTLY_NO_AD_TAG": "There is currently no ad tags in this ad slot",
 
@@ -357,7 +408,10 @@
                 "ALERT_CREATE_LINKED_AD_SLOTS_FULL_SITE": "Every site already has a link to this ad slot",
 
                 "TITLE_CREATE_LINKED_AD_SLOTS": "Create Linked Ad Slots",
+                "CREATE_RON_AD_SLOT": "Create RON Ad Slot",
+                "EDIT_RON_AD_SLOT": "Edit RON Ad Slot",
                 "GO_TO_SITE": "Go To Site",
+                "IN_RON_AD_SLOT": "Ron Ad Slot",
 
                 "CREATE_LINKED_AD_SLOTS": "Create Linked Ad Slots",
                 "VIEW_LINKED_AD_SLOTS": "View Linked Ad Slots",
@@ -385,9 +439,11 @@
                 "DAILY_ACCOUNT_BREAKDOWN": "Daily Account Breakdown",
                 "DAILY_SITE_BREAKDOWN": "Daily Site Breakdown",
                 "DAILY_AD_SLOT_BREAKDOWN": "Daily Ad Slot Breakdown",
+                "DAILY_RON_AD_SLOT_BREAKDOWN": "Daily RON Ad Slot Breakdown",
                 "DAILY_AVERAGES": "Daily Averages",
                 "AD_NETWORK_BREAKDOWN": "Ad Network Breakdown",
                 "SITE_BREAKDOWN": "Site Breakdown",
+                "SEGMENT_BREAKDOWN": "Report Segment Breakdown",
                 "AD_SLOT_BREAKDOWN": "Ad Slot Breakdown",
                 "AD_TAG_BREAKDOWN": "Ad Tag Breakdown",
                 "DAILY_BREAKDOWN": "Daily Breakdown",
@@ -432,9 +488,11 @@
                 "TITLE_AD_TAG_INFO": "Ad Tag Info",
                 "TITLE_SITE_INFO": "Site Info",
                 "TITLE_PUBLISHER_INFO": "Publisher Info",
+                "TITLE_SEGMENT_INFO": "Report Segment Info",
 
                 "AD_NETWORK_INFO": "Ad Network Info",
                 "AD_SLOT_INFO": "Ad Slot Info",
+                "RON_AD_SLOT_INFO": "RON Ad Slot Info",
                 "AD_TAG_INFO": "Ad Tag Info",
                 "SITE_INFO": "Site Info",
                 "PUBLISHER_INFO": "Publisher Info",
@@ -442,18 +500,20 @@
                 "DRILL_DOWN": "Drill Down",
                 "EDIT_THIS_AD_NETWORK": "Edit This Ad Network",
                 "EDIT_THIS_AD_SLOT": "Edit This AdSlot",
+                "EDIT_THIS_RON_AD_SLOT": "Edit This RON AdSlot",
                 "EDIT_THIS_AD_TAG": "Edit This AdTag",
                 "EDIT_THIS_SITE": "Edit This Site",
                 "EDIT_THIS_PUBLISHER": "Edit This Publisher",
 
                 "EDIT_AD_NETWORK": "Edit Ad Network",
                 "EDIT_AD_SLOT": "Edit Ad Slot",
+                "EDIT_RON_AD_SLOT": "Edit RON Ad Slot",
                 "EDIT_AD_TAG": "Edit AdTag",
                 "EDIT_SITE": "Edit Site",
                 "EDIT_PUBLISHER": "Edit Publisher"
             },
             "SOURCE_REPORT_MODULE": {
-                "GET_REPORT_FAIL": "An error occurs while getting reports.",
+                "GET_REPORT_FAIL": "An error occurred while getting reports.",
                 "NO_REPORT_FOR_SELECTION": "There is no report for that selection",
                 "BREAKDOWN_BY_TRAFFIC_SOURCE": "Breakdown by Traffic Source",
 
@@ -522,18 +582,18 @@
                 "CPM_RATE": "CPM Rate"
             },
             "SOURCE_CONFIG_MODULE": {
-                "CONFIRM_INCLUDE_ALL": "All reports are sent to this email. Please uncheck option include all to configure this email manually",
+                "CONFIRM_INCLUDE_ALL": "All reports are sent to this email. Please uncheck the option to include all to configure this email manually",
                 "CONFIRM_DELETE_CONFIG": "Are you sure you want to delete this config?",
 
                 "UPDATE_EMAIL_SUCCESS": "The email config has been updated",
-                "UPDATE_EMAIL_FAIL": "The email config is not updated",
+                "UPDATE_EMAIL_FAIL": "The email config could not be updated",
                 "DELETE_EMAIL_SUCCESS": "The email config has been deleted",
-                "DELETE_EMAIL_FAIL": "The email config is not deleted",
+                "DELETE_EMAIL_FAIL": "The email config could not be deleted",
 
                 "DELETE_SITE_SUCCESS": "The site config has been deleted",
-                "DELETE_SITE_FAIL": "The site config is not deleted",
+                "DELETE_SITE_FAIL": "The site config could not be deleted",
 
-                "ADD_SITES_CONFIG_FOR_EMAIL": "Add Sites Config For Email",
+                "ADD_SITES_CONFIG_FOR_EMAIL": "Add Site Config For Email",
 
                 "AVAILABLE_SITES": "Available Sites",
                 "SELECTED_SITES": "Selected Sites",
@@ -551,7 +611,7 @@
                 "ADD_NEW_EMAIL_CONFIG": "Add New Email Config",
                 "CONFIGURATION": "Configuration",
                 "EMAIL": "Email",
-                "SITES_CONFIGS": "Sites Configs",
+                "SITES_CONFIGS": "Site Configs",
                 "STATUS": "Status",
                 "PLACEHOLDER_EMAIL_ADDRESS": "Email Address",
                 "ADD_ANOTHER_EMAIL": "Add another email"
@@ -572,9 +632,9 @@
                 "SEND_EMAIL_SUCCESS": "An email has been sent to '{{ username }}'. It contains a link you must click to reset your password",
                 "SEND_EMAIL_FAIL": "Could not reset password for '{{ username }}'",
                 "RESET_SUCCESS": "Change successful, login to continue",
-                "TOKEN_NOT_EXISTED": "The token '{{ token }}' is not existed",
+                "TOKEN_NOT_EXISTED": "The token '{{ token }}' does not exist",
                 "TOKEN_EXPIRED": "The token '{{ token }}' is expired. Please try to reset password again",
-                "INTERNAL_ERROR": "Internal error. Please contact administrator for further instruction",
+                "INTERNAL_ERROR": "Internal error. Please contact administrator for further instructions",
 
                 "HELP_BLOCK_CHECK_EMAIL": "Enter your username or email address that you used to register. We'll send you an email with your username and a link to reset your password."
             },

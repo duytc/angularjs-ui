@@ -44,9 +44,18 @@
             onSubmit: eventSubmitSetting
         };
 
-        if(!!$scope.reportGroup) {
-            $scope.isNotNativeAdSlot = $scope.reportGroup.reportType && $scope.reportGroup.reportType.adSlotType != TYPE_AD_SLOT.native ? true : false;
+        if(!!$scope.reportGroup && !!$scope.reportGroup.reportType) {
+            if(!!$scope.reportGroup.reportType.adSlotType) {
+                $scope.isNotNativeAdSlot = $scope.reportGroup.reportType.adSlotType != TYPE_AD_SLOT.native ? true : false;
+            }
+
+            else {
+                $scope.isNotNativeAdSlot = $scope.reportGroup.reportType.ronAdSlotType != TYPE_AD_SLOT.native ? true : false;
+            }
+
         }
+
+        console.log($scope.reportGroup.reportType);
 
         $scope.tableConfig = {
             maxPages: 10,

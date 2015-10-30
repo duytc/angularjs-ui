@@ -36,12 +36,12 @@
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
                                 <li><a ui-sref="^.^.channel.edit({ id: item.id })">{{ 'CHANNEL_MODULE.EDIT_CHANNEL' | translate }}</a></li>
-                                <li><a ng-click="confirmDeletion(item, $index)">{{ 'DELETE' | translate }} {{ 'CHANNEL' | translate }}</a></li>
-                                <li><a ng-click="removeChannelFromSite(item, $index)">{{ 'CHANNEL_MODULE.DELETE_CHANNEL' | translate }}</a></li>
+                                <li><a ng-click="confirmDeletion(item, $index)">{{ 'CHANNEL_MODULE.DELETE_CHANNEL' | translate }}</a></li>
+                                <li><a ng-click="removeChannelFromSite(item, $index)">{{ 'SITE_MODULE.REMOVE_CHANNEL_FROM_SITE' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>
-                    <td at-implicit at-sortable at-attribute="Channel" at-initial-sorting="asc" at-title="{{ 'NAME' | translate }}"></td>
+                    <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="{{ 'NAME' | translate }}"></td>
                 </tr>
                 </tbody>
             </table>

@@ -20,7 +20,7 @@
 
         if (!CacheFactory.get('adNetworkCache')) {
             adNetworkCache = CacheFactory('adNetworkCache', {
-                maxAge: 60 * 60 * 1000, // cache expire after 60 minutes
+                maxAge: 30 * 1000, // cache expire after 60 minutes
                 cacheFlushInterval: 60 * 60 * 1000, // This cache will clear itself every hour.
                 deleteOnExpire: 'aggressive', // Items will be deleted from this cache right when they expire.
                 storageMode: 'localStorage' // This cache will use `localStorage`.

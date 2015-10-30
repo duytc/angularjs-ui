@@ -8,7 +8,8 @@
     "blocks/searchBox/searchBox",
     "blocks/queryBuilder/queryBuilder",
     "tagsManagement/adTags",
-    "tagsManagement/adTagForm"
+    "tagsManagement/adTagForm",
+    "tagsManagement/tagGenerator"
 ;
 // custom
 
@@ -204,4 +205,8 @@ table td:before {
   border: none;
   color: #333;
   height: 30px;
+}
+
+.panel-tag-generator .ui-select-choices-group {
+  margin: -10px -10px -1px -10px !important;
 }
