@@ -107,16 +107,16 @@
         <tab ng-if="jstags.display" select="selectTab()" heading="{{ 'DISPLAY_AD_SLOTS' | translate }}">
             <div class="media">
                 <div class="media-body">
-                    <ul class="list-unstyled list-info generate">
+                    <ul class="list-unstyled list-info">
                         <li>
                             <p><strong>{{ keywordGuide.adSlot }}</strong></p>
                         </li>
                         <li ng-repeat="(key, tag) in jstags.display.ad_slots">
-                            <p ng-if="typeSelected == typeKey.adSlot"><strong>{{ tag.name }}</strong></p>
-                            <p ng-if="typeSelected == typeKey.ronAdSlot"><strong translate="TAG_GENERATOR_MODULE.RON_AD_SLOT_FOR" translate-value-name="{{ tag.name }}"></strong></p>
+                            <h3 ng-if="typeSelected == typeKey.adSlot"><strong>{{ tag.name }}</strong></h3>
+                            <h3 ng-if="typeSelected == typeKey.ronAdSlot"><strong translate="TAG_GENERATOR_MODULE.RON_AD_SLOT_FOR" translate-value-name="{{ tag.name }}"></strong></h3>
 
                             <div ng-if="typeSelected == typeKey.ronAdSlot" class="row form-group">
-                                <label class="col-sm-2 control-label">{{ 'SEGMENT' | translate }}</label>
+                                <div class="col-sm-12">{{ 'SEGMENT' | translate }}</div>
                                 <div class="col-sm-3">
                                     <ui-select ng-model="selectedSegmentModel" on-select="selectSegment($model, tag, jstagCopy.display.ad_slots, key)" reset-search-input="'false'">
                                         <ui-select-match placeholder="{{ 'SEGMENT_MODULE.SELECT_A_SEGMENT' | translate }}">{{ $select.selected }}</ui-select-match>
@@ -143,16 +143,16 @@
         <tab ng-if="jstags.native.ad_slots" select="selectTab()" heading="{{ 'NATIVE_AD_SLOTS' | translate }}">
             <div class="media">
                 <div class="media-body">
-                    <ul class="list-unstyled list-info generate">
+                    <ul class="list-unstyled list-info">
                         <li>
                             <p><strong>{{ keywordGuide.adSlot }}</strong></p>
                         </li>
                         <li ng-repeat="(key, tag) in jstags.native.ad_slots">
-                            <p ng-if="typeSelected == typeKey.adSlot"><strong>{{ tag.name }}</strong></p>
-                            <p ng-if="typeSelected == typeKey.ronAdSlot"><strong translate="TAG_GENERATOR_MODULE.RON_AD_SLOT_FOR" translate-value-name="{{ tag.name }}"></strong></p>
+                            <h3 ng-if="typeSelected == typeKey.adSlot"><strong>{{ tag.name }}</strong></h3>
+                            <h3 ng-if="typeSelected == typeKey.ronAdSlot"><strong translate="TAG_GENERATOR_MODULE.RON_AD_SLOT_FOR" translate-value-name="{{ tag.name }}"></strong></h3>
 
                             <div ng-if="typeSelected == typeKey.ronAdSlot" class="row form-group">
-                                <label class="col-sm-2 control-label">{{ 'SEGMENT' | translate }}</label>
+                                <div class="col-sm-12">{{ 'SEGMENT' | translate }}</div>
                                 <div class="col-sm-3">
                                     <ui-select ng-model="selectedSegmentModel" on-select="selectSegment($model, tag, jstagCopy.native.ad_slots, key)" reset-search-input="'false'">
                                         <ui-select-match placeholder="{{ 'SEGMENT_MODULE.SELECT_A_SEGMENT' | translate }}">{{ $select.selected }}</ui-select-match>
@@ -179,16 +179,16 @@
         <tab ng-if="jstags.dynamic.ad_slots" select="selectTab()" heading="{{ 'DYNAMIC_AD_SLOTS' | translate }}">
             <div class="media">
                 <div class="media-body">
-                    <ul class="list-unstyled list-info generate">
+                    <ul class="list-unstyled list-info">
                         <li>
                             <p><strong>{{ keywordGuide.adSlot }}</strong></p>
                         </li>
                         <li ng-repeat="(key, tag) in jstags.dynamic.ad_slots">
-                            <p ng-if="typeSelected == typeKey.adSlot"><strong>{{ tag.name }}</strong></p>
-                            <p ng-if="typeSelected == typeKey.ronAdSlot"><strong translate="TAG_GENERATOR_MODULE.RON_AD_SLOT_FOR" translate-value-name="{{ tag.name }}"></strong></p>
+                            <h3 ng-if="typeSelected == typeKey.adSlot"><strong>{{ tag.name }}</strong></h3>
+                            <h3 ng-if="typeSelected == typeKey.ronAdSlot"><strong translate="TAG_GENERATOR_MODULE.RON_AD_SLOT_FOR" translate-value-name="{{ tag.name }}"></strong></h3>
 
                             <div ng-if="typeSelected == typeKey.ronAdSlot" class="row form-group">
-                                <label class="col-sm-2 control-label">{{ 'SEGMENT' | translate }}</label>
+                                <div class="col-sm-12">{{ 'SEGMENT' | translate }}</div>
                                 <div class="col-sm-3">
                                     <ui-select ng-model="selectedSegmentModel" on-select="selectSegment($model, tag, jstagCopy.dynamic.ad_slots, key)" reset-search-input="'false'">
                                         <ui-select-match placeholder="{{ 'SEGMENT_MODULE.SELECT_A_SEGMENT' | translate }}">{{ $select.selected }}</ui-select-match>
