@@ -14,7 +14,7 @@
 
         $scope.isNew = ronAdSlot === null;
         $scope.adSlotTypes = TYPE_AD_SLOT;
-        $scope.segments = $scope.isNew && $scope.isAdmin() ? [] : segments;
+        $scope.segments = segments;
         $scope.adSlotTypeOptions = [
             {
                 label: $translate.instant('DISPLAY_AD_SLOT'),
