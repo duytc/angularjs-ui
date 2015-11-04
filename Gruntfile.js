@@ -15,12 +15,24 @@ module.exports = function(grunt) {
 
     var configs = require('load-grunt-configs')(grunt, options);
     grunt.initConfig(configs);
-
     require('load-grunt-tasks')(grunt);
 
     grunt.loadNpmTasks('grunt-protractor-webdriver');
 
     grunt.renameTask('delete_sync', 'deleteSync');
+
+    grunt.registerTask('fileReplace:prodWhiteLabel', 'replace logo.png and logo-header.png', function(){
+
+        grunt.file.copy(
+            configs.appConfig.deployment.origin.prodWhiteLabel.image.logo,
+            configs.appConfig.dirs.build.prodWhiteLabel + '/assets/images/logo.png'
+        );
+
+        grunt.file.copy(
+            configs.appConfig.deployment.origin.prodWhiteLabel.image.logoHeader,
+            configs.appConfig.dirs.build.prodWhiteLabel + '/assets/images/logo-header.png'
+        );
+    });
 
     grunt.registerTask('default', [
         'build',
@@ -53,6 +65,30 @@ module.exports = function(grunt) {
         'replace:prod'
     ]);
 
+    grunt.registerTask('build-prod-white-label-default', [
+        'build-prod',
+        'clean:prodWhiteLabel',
+        'sync:prodWhiteLabel',
+        'replace:prodWhiteLabel',
+        'fileReplace:prodWhiteLabel'
+    ]);
+
+    grunt.registerTask('build-prod-white-label-custom', 'Task to build white label target', function(title, logo, logoHeader) {
+        if (!!title) {
+            configs.appConfig.deployment.origin.prodWhiteLabel.title.replacement = title;
+        }
+
+        if (!!logo) {
+            configs.appConfig.deployment.origin.prodWhiteLabel.image.logo = logo;
+        }
+
+        if (!!logoHeader) {
+            configs.appConfig.deployment.origin.prodWhiteLabel.image.logoHeader = logoHeader;
+        }
+
+        grunt.task.run('build-prod-white-label-default');
+    });
+
     grunt.registerTask('e2e-admin', [
         'protractor_webdriver',
         'protractor:e2eAdmin'
@@ -68,4 +104,6 @@ module.exports = function(grunt) {
         'protractor:e2ePub',
         'protractor:e2eAdmin'
     ]);
+
+
 };

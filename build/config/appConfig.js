@@ -2,7 +2,8 @@ module.exports = {
     dirs: {
         build: {
             dev: 'build/targets/dev',
-            prod: 'build/targets/prod'
+            prod: 'build/targets/prod',
+            prodWhiteLabel: 'build/targets/prod-whitelabel'
         },
         temp: 'build/temp'
     },
@@ -14,6 +15,16 @@ module.exports = {
             },
             prod: {
                 val: 'api.tagcade.com'
+            },
+            prodWhiteLabel: {
+                title: {
+                    match: /Tagcade Platform/g,
+                    replacement: 'Test Platform'
+                },
+                image: {
+                    logo: 'build/images/whitelabel/logo.png',
+                    logoHeader: 'build/images/whitelabel/logo-header.png'
+                }
             }
         }
     },

@@ -60,6 +60,24 @@ module.exports = function(grunt, options) {
             }
         ]
     };
-
+    config.prodWhiteLabel = {
+        options: {
+            patterns: [
+                {
+                    match: '<%=  appConfig.deployment.origin.prodWhiteLabel.title.match %>',
+                    replacement:  '<%= appConfig.deployment.origin.prodWhiteLabel.title.replacement %>'
+                }
+            ]
+        },
+        files: [
+            {
+                expand: true,
+                src: [
+                    '<%= appConfig.dirs.build.prodWhiteLabel %>/index.html',
+                    '<%= appConfig.dirs.build.prodWhiteLabel %>/src/app/core/config.js'
+                ]
+            }
+        ]
+    };
     return config;
 };

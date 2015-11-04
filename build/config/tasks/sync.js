@@ -11,9 +11,28 @@ module.exports = {
                         'assets/font*/**/*',
                         'assets/swf/*',
                         'favicon.ico'
-                    ],
+                    ]
                 ],
                 dest: '<%= appConfig.dirs.build.prod %>'
+            }
+        ]
+    },
+    prodWhiteLabel: {
+        files: [
+            {
+                expand: true,
+                cwd: '<%= appConfig.dirs.build.prod %>',
+                src: [
+                    [
+                        'index.html',
+                        'assets/images/**/*',
+                        'assets/font*/**/*',
+                        'assets/swf/*',
+                        'favicon.ico',
+                        'app*.js'
+                    ]
+                ],
+                dest: '<%= appConfig.dirs.build.prodWhiteLabel %>'
             }
         ]
     },
