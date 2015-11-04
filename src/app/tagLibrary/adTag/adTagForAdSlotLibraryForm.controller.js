@@ -5,7 +5,7 @@
         .controller('AdTagForAdSlotLibraryForm', AdTagForAdSlotLibraryForm)
     ;
 
-    function AdTagForAdSlotLibraryForm($scope, $translate, $state, AlertService, ServerErrorProcessor, publisherList, adTag, adSlot, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, NativeAdSlotLibrariesManager, DisplayAdSlotLibrariesManager, AdTagLibrariesManager) {
+    function AdTagForAdSlotLibraryForm($scope, $modal, $translate, $state, AlertService, AdNetworkCache, ServerErrorProcessor, publisherList, adTag, adSlot, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, NativeAdSlotLibrariesManager, DisplayAdSlotLibrariesManager, AdTagLibrariesManager) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
             name: 'Name',
@@ -185,5 +185,24 @@
             )
             ;
         }
+
+        $scope.createAdNetwork = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'tagManagement/adTag/adNetworkQuicklyForm.tpl.html',
+                controller: 'AdNetworkQuicklyForm',
+                resolve: {
+                    publishers: function(){
+                        return publisherList;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function () {
+                AdNetworkCache.getAllAdNetworks()
+                    .then(function(adNetworks) {
+                        $scope.adNetworkList = adNetworks;
+                    });
+            })
+        };
     }
 })();

@@ -76,7 +76,7 @@
                     <div class="col-sm-5">
                         <ui-select id="inputDefaultLibraryAdSlot" ng-model="adSlot.defaultLibraryAdSlot" ng-required="true" server-error reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_AD_SLOT' | translate }}">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
-                            <ui-select-choices group-by="groupEntities" repeat="adSlot.id as adSlot in adSlotsDefault | filter:$select.search | filter:filterEntityType:adSlot">
+                            <ui-select-choices group-by="groupEntities" repeat="adSlot.id as adSlot in adSlotsDefault | filter:$select.search | selectedPublisher:adSlot.publisher | filter:filterEntityType:adSlot">
                                 {{ adSlot.name }} {{ adSlot.id ? '(ID: ' + adSlot.id + ')' : '' }}
                             </ui-select-choices>
                         </ui-select>
