@@ -74,7 +74,7 @@ module.exports = function(grunt, options) {
                 expand: true,
                 src: [
                     '<%= appConfig.dirs.build.prodWhiteLabel %>/index.html',
-                    '<%= appConfig.dirs.build.prodWhiteLabel %>/src/app/core/config.js'
+                    '<%= appConfig.dirs.build.prodWhiteLabel %>/app*.js'
                 ]
             }
         ]
