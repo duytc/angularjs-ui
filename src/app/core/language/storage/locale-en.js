@@ -131,6 +131,7 @@
                 "BILLING_RATE": "Billing Rate",
                 "ENABLED": "Enabled",
                 "DISPLAY_BILLING_RATE": "Display billing Rate",
+                "ENABLE_HTTPS": "Enable Https",
 
                 "ADD_NEW_SUCCESS": "The publisher has been updated",
                 "UPDATE_PROFILE_SUCCESS": "Your profile has been updated successfully",
@@ -249,6 +250,7 @@
                 "DROPDOWN_ACTIVE": "Activate Ad Network",
                 "DROPDOWN_PAUSE": "Pause Ad Network",
                 "DROPDOWN_VISIT_AS_NETWORK": "Visit Ad Network",
+                "ADD_NEW_AD_NETWORK": "Add New Ad Network",
 
                 "BACK_TO_AD_NETWORK_LIST": "Back to Ad Network List",
                 "ACTIVE_AD_TAGS_COUNT": "Active Ad Tags",

@@ -5,7 +5,7 @@
         .controller('LibraryAdTagForm', LibraryAdTagForm)
     ;
 
-    function LibraryAdTagForm($scope, $translate, AlertService, ServerErrorProcessor, adTag, publisherList, adNetworkList, AdTagLibrariesManager, historyStorage, AD_TYPES, HISTORY_TYPE_PATH) {
+    function LibraryAdTagForm($scope, $modal, $translate, AlertService, ServerErrorProcessor, AdNetworkCache, adTag, publisherList, adNetworkList, AdTagLibrariesManager, historyStorage, AD_TYPES, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             adNetwork: 'adNetwork',
             html: 'html'
@@ -50,6 +50,25 @@
 
         $scope.backToAdTagLibraryList = function() {
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adTagLibrary, '^.list');
+        };
+
+        $scope.createAdNetwork = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'tagManagement/adTag/adNetworkQuicklyForm.tpl.html',
+                controller: 'AdNetworkQuicklyForm',
+                resolve: {
+                    publishers: function(){
+                        return publisherList;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function () {
+                AdNetworkCache.getAllAdNetworks()
+                    .then(function(adNetworks) {
+                        $scope.adNetworkList = adNetworks;
+                    });
+            })
         };
 
         $scope.submit = function() {

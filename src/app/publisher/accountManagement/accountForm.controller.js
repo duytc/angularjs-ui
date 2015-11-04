@@ -23,6 +23,13 @@
             $scope.publisher.settings = REPORT_SETTINGS.default;
         }
 
+        if($scope.publisher.tagDomain.length == 0) {
+            $scope.publisher.tagDomain = {
+                secure: true,
+                domain: null
+            };
+        }
+
         $scope.isFormValid = function() {
             if($scope.publisher.plainPassword != null || $scope.repeatPassword != null) {
                 return $scope.userForm.$valid && $scope.repeatPassword == $scope.publisher.plainPassword;
@@ -43,6 +50,10 @@
             delete $scope.publisher.enabled;
             delete $scope.publisher.enabledModules;
             delete $scope.publisher.billingRate;
+
+            if(!$scope.publisher.tagDomain.domain) {
+                $scope.publisher.tagDomain = null;
+            }
 
             var saveUser = $scope.publisher.patch();
             saveUser

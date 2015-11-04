@@ -35,8 +35,18 @@
             address: null,
             postalCode: null,
             country: null,
-            tagDomain: null
+            tagDomain: {
+                secure: true,
+                domain: null
+            }
         };
+
+        if(!$scope.isNew && publisher.tagDomain.length == 0) {
+            $scope.publisher.tagDomain = {
+                secure: true,
+                domain: null
+            };
+        }
 
         $scope.modules = [
             { label: 'Display', role: 'MODULE_DISPLAY' },
@@ -75,6 +85,10 @@
             if ($scope.formProcessing) {
                 // already running, prevent duplicates
                 return;
+            }
+
+            if(!$scope.publisher.tagDomain.domain) {
+                $scope.publisher.tagDomain = null;
             }
 
             $scope.formProcessing = true;
