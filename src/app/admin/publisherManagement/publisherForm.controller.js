@@ -41,7 +41,7 @@
             }
         };
 
-        if(!$scope.isNew && publisher.tagDomain.length == 0) {
+        if(!$scope.isNew && !angular.isObject(publisher.tagDomain)) {
             $scope.publisher.tagDomain = {
                 secure: true,
                 domain: null

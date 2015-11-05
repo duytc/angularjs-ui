@@ -589,8 +589,11 @@
 
                 "UPDATE_EMAIL_SUCCESS": "The email config has been updated",
                 "UPDATE_EMAIL_FAIL": "The email config could not be updated",
+                "CLONE_EMAIL_SUCCESS": "The email config has been clone",
+                "CLONE_EMAIL_FAIL": "The email config could not be clone",
                 "DELETE_EMAIL_SUCCESS": "The email config has been deleted",
                 "DELETE_EMAIL_FAIL": "The email config could not be deleted",
+                "CURRENTLY_NO_SITE_CONFIG": "There is currently no site config",
 
                 "DELETE_SITE_SUCCESS": "The site config has been deleted",
                 "DELETE_SITE_FAIL": "The site config could not be deleted",
@@ -603,6 +606,9 @@
                 "RECEIVING_EMAIL": "Receiving Email",
                 "ACTIVE": "Active",
                 "INCLUDE_ALL": "Include All",
+                "INCLUDE_ALL_SITES": "Include All Sites Of Publishers",
+                "INCLUDE": "Include",
+                "SHOW_DETAILS": 'Show Details',
 
                 "BACK": "Back",
                 "NEW_SITE_CONFIG": "New Site Config",

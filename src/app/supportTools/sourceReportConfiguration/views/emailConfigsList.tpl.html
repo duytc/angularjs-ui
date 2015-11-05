@@ -52,6 +52,7 @@
                             <li ng-show="item.includedAll"><a ng-click="openPopupIncludedAll()">{{ 'SOURCE_CONFIG_MODULE.MANAGE_SITE_CONFIG' | translate }}</a></li>
                             <li class="divider"></li>
                             <li><a ng-click="editSourceReportConfig(item)">{{ 'SOURCE_CONFIG_MODULE.EDIT_THIS_CONFIG' | translate }}</a></li>
+                            <li><a ng-click="cloneThisConfig(item)">Clone This Config</a></li>
                             <li><a ng-click="deleteEmailConfig(item.id)">{{ 'SOURCE_CONFIG_MODULE.DELETE_THIS_CONFIG' | translate }}</a></li>
                         </ul>
                     </div>
@@ -60,8 +61,13 @@
                 <td at-sortable at-attribute="includedAll" at-title="{{ 'SOURCE_CONFIG_MODULE.INCLUDE_ALL' | translate }}">
                     <span class="label" ng-class="item.includedAll ? 'label-success' : 'label-danger'">{{ item.includedAll ? 'Yes' : 'No' }}</span>
                 </td>
+                <td at-sortable at-attribute="includedAllSitesOfPublishers" at-title="{{ 'SOURCE_CONFIG_MODULE.INCLUDE_ALL_SITES' | translate }}">
+                    <ul ng-show="!item.includedAll" ng-repeat="publisher in item.includedAllSitesOfPublishers">
+                        <li>{{ publisher.company }}</li>
+                    </ul>
+                </td>
                 <td at-sortable at-attribute="sourceReportSiteConfigs" at-title="{{ 'SOURCE_CONFIG_MODULE.SITES_CONFIGS' | translate }}">
-                    <ul ng-show="!item.includedAll" ng-repeat="config in item.sourceReportSiteConfigs">
+                    <ul ng-show="!item.includedAll && item.includedAllSitesOfPublishers.length == 0" ng-repeat="config in item.sourceReportSiteConfigs">
                         <li>{{ config.site.name }} - {{ config.site.domain }}</li>
                     </ul>
                 </td>

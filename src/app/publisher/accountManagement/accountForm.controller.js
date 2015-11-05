@@ -9,8 +9,7 @@
     function AccountForm($scope, $translate, $state, AlertService, ServerErrorProcessor, publisher, REPORT_SETTINGS, COUNTRY_LIST) {
         $scope.fieldNameTranslations = {
             username: 'Username',
-            plainPassword: 'Password',
-            tagDomain: 'Tag Domain'
+            plainPassword: 'Password'
         };
 
         $scope.formProcessing = false;
@@ -21,13 +20,6 @@
 
         if($scope.publisher.settings.length == 0) {
             $scope.publisher.settings = REPORT_SETTINGS.default;
-        }
-
-        if($scope.publisher.tagDomain.length == 0) {
-            $scope.publisher.tagDomain = {
-                secure: true,
-                domain: null
-            };
         }
 
         $scope.isFormValid = function() {
@@ -50,10 +42,7 @@
             delete $scope.publisher.enabled;
             delete $scope.publisher.enabledModules;
             delete $scope.publisher.billingRate;
-
-            if(!$scope.publisher.tagDomain.domain) {
-                $scope.publisher.tagDomain = null;
-            }
+            delete $scope.publisher.tagDomain;
 
             var saveUser = $scope.publisher.patch();
             saveUser

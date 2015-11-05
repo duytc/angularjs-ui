@@ -104,7 +104,7 @@
         </div>
     </div>
     <tabset class="nav-tab-margin">
-        <tab ng-if="jstags.display" select="selectTab()" heading="{{ 'DISPLAY_AD_SLOTS' | translate }}">
+        <tab ng-if="jstags.display" heading="{{ 'DISPLAY_AD_SLOTS' | translate }}">
             <div class="media">
                 <div class="media-body">
                     <ul class="list-unstyled list-info generate">
@@ -140,7 +140,7 @@
             </div>
         </tab>
 
-        <tab ng-if="jstags.native.ad_slots" select="selectTab()" heading="{{ 'NATIVE_AD_SLOTS' | translate }}">
+        <tab ng-if="jstags.native.ad_slots" heading="{{ 'NATIVE_AD_SLOTS' | translate }}">
             <div class="media">
                 <div class="media-body">
                     <ul class="list-unstyled list-info generate">
@@ -176,7 +176,7 @@
             </div>
         </tab>
 
-        <tab ng-if="jstags.dynamic.ad_slots" select="selectTab()" heading="{{ 'DYNAMIC_AD_SLOTS' | translate }}">
+        <tab ng-if="jstags.dynamic.ad_slots" heading="{{ 'DYNAMIC_AD_SLOTS' | translate }}">
             <div class="media">
                 <div class="media-body">
                     <ul class="list-unstyled list-info generate">
@@ -212,7 +212,7 @@
             </div>
         </tab>
 
-        <tab ng-if="jstags.header && (hasAnalyticsModule || typeSelected == typeKey.ronAdSlot)" select="selectTab()" heading="{{ 'TAG_GENERATOR_MODULE.HEADER' | translate }}">
+        <tab ng-if="jstags.header && hasAnalyticsModule" heading="{{ 'TAG_GENERATOR_MODULE.HEADER' | translate }}">
             <ul class="list-unstyled list-info">
                 <li>
                     <p><strong>{{ keywordGuide.header }}</strong></p>

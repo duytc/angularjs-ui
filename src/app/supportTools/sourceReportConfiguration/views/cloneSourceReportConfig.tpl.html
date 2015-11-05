@@ -1,0 +1,72 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()">×</button>
+    <h4 class="modal-title">Clone Source Report Config For Emails</h4>
+</div>
+<div class="modal-body">
+    <div class="row source-report-configuration">
+
+        <form name="sourceReportConfig" class="col-lg-12 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
+            <div class="form-group">
+                <label for="inputEmail" class="col-sm-2 control-label">{{ 'SOURCE_CONFIG_MODULE.RECEIVING_EMAIL' | translate }}</label>
+                <div class="col-sm-10">
+                    <div ng-repeat="emailReceive in emailReceive" class="emailInput">
+                        <div class="input-group">
+                            <input name="email[]" server-error ng-required="true" type="email" ng-model="emailReceive.email" class="form-control" id="inputEmail" placeholder="{{ 'SOURCE_CONFIG_MODULE.PLACEHOLDER_EMAIL_ADDRESS' | translate }}">
+                            <span class="input-group-addon" ng-click="removeEmailInput(emailReceive)"><i class="fa fa-remove"></i></span>
+                        </div>
+                    </div>
+                    <a class="help-block" ng-click="addEmailInput()">{{ 'SOURCE_CONFIG_MODULE.ADD_ANOTHER_EMAIL' | translate }}</a>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputShowDetail" class="col-sm-2 control-label">{{ 'SOURCE_CONFIG_MODULE.SHOW_DETAILS' | translate }}</label>
+                <div class="col-sm-10">
+                    <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="showDetail" id="inputShowDetail"><span></span></label>
+                </div>
+            </div>
+
+            <div ng-if="showDetail">
+                <div class="form-group">
+                    <label for="inputEnabled" class="col-sm-2 control-label">{{ 'SOURCE_CONFIG_MODULE.ACTIVE' | translate }}</label>
+                    <div class="col-sm-10">
+                        <label class="ui-checkbox"><input ng-disabled="true" server-error name="active" type="checkbox" ng-model="emailConfig.active" id="inputEnabled"><span></span></label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputIncludedAll" class="col-sm-2 control-label">{{ 'SOURCE_CONFIG_MODULE.INCLUDE' | translate }}</label>
+                    <div class="col-sm-10">
+                        <label class="ui-checkbox"><input ng-disabled="true" server-error name="active" type="checkbox" ng-model="emailConfig.includedAll" id="inputIncludedAll"><span>{{ 'SOURCE_CONFIG_MODULE.INCLUDE_ALL' | translate }}</span></label>
+                        <label class="ui-checkbox"><input ng-disabled="true" server-error name="active" type="checkbox" ng-model="emailConfig.includedAllSites" id="inputIncludedAllSites"><span>{{ 'SOURCE_CONFIG_MODULE.INCLUDE_ALL_SITES' | translate }}</span></label>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="emailConfig.includedAllSites">
+                    <label for="inputIncludedAllSitesOfPublishers" class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
+                    <div class="col-sm-10">
+                        <oi-select oi-options="publisher.company for publisher in publishers" ng-disabled="true" id="inputIncludedAllSitesOfPublishers" ng-model="emailConfig.includedAllSitesOfPublishers" multiple placeholder="Select"></oi-select>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="!emailConfig.includedAll && !emailConfig.includedAllSites">
+                    <label for="siteConfigs" class="col-sm-2 control-label">{{ 'SOURCE_CONFIG_MODULE.SITES_CONFIGS' | translate }}</label>
+                    <div class="col-sm-10" id="siteConfigs">
+                        <ul ng-repeat="config in emailConfig.sourceReportSiteConfigs">
+                            <li>{{ config.site.name }} - {{ config.site.domain }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-offset-2 col-sm-10">
+                    <button ng-disabled="!isFormValid()" type="submit" class="btn btn-success" ng-click="$dismiss()">{{ 'SUBMIT' | translate }}</button>
+                    <div ng-show="!isFormValid()" class="callout callout-info">
+                        <p>{{ 'VALID_FORM' | translate }}</p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

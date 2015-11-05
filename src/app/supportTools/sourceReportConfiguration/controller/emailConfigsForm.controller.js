@@ -12,7 +12,9 @@
         $scope.sitesHasConfig = [];
         $scope.selected = {
             publisher: null,
+            includedAllSitesOfPublishers: [],
             includedAll: false,
+            includedAllSites: false,
             listPush: [],
             listDrop: []
         };
@@ -124,12 +126,16 @@
                 return $scope.sourceReportConfig.$valid
             }
 
+            if($scope.selected.includedAllSites) {
+                return $scope.selected.includedAllSitesOfPublishers.length > 0 && $scope.sourceReportConfig.$valid;
+            }
+
             return $scope.sourceReportConfig.$valid && $scope.sitesHasConfig.length > 0;
         }
 
         function submit() {
             var emails = [];
-            var sites = [];
+            var sourceReportConfigPost;
 
             angular.forEach($scope.emailReceive, function(emailReceive) {
                 if(emailReceive.email != null) {
@@ -137,24 +143,38 @@
                 }
             });
 
-            if(!$scope.selected.includedAll) {
+            // add manually sites
+            if(!$scope.selected.includedAll && !$scope.selected.includedAllSites) {
+                var sites = [];
+
                 angular.forEach($scope.sitesHasConfig, function(site) {
                     if(site.id != null) {
                         sites.push(site.id);
                     }
                 });
+
+                sourceReportConfigPost = sourceReportConfig.postEmailConfig(emails, sites);
             }
 
-            var sourceReportConfigPost;
-
+            // add with includedAll
             if($scope.selected.includedAll) {
                 sourceReportConfigPost = sourceReportConfig.postEmailIncludedAllConfig(emails, $scope.selected.includedAll);
             }
 
-            else {
-                sourceReportConfigPost = sourceReportConfig.postEmailConfig(emails, sites);
+            // add with includedAllSites
+            if($scope.selected.includedAllSites) {
+                var publishers = [];
+
+                angular.forEach($scope.selected.includedAllSitesOfPublishers, function(publisher) {
+                    if(publisher.id != null) {
+                        publishers.push(publisher.id);
+                    }
+                });
+
+                sourceReportConfigPost = sourceReportConfig.postEmailIncludedAllSitesConfig(emails, publishers);
             }
 
+            // handle post result
             return sourceReportConfigPost
                 .then(function () {
                     AlertService.addFlash({

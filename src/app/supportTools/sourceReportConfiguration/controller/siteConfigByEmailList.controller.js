@@ -9,9 +9,9 @@
         $scope.sourceReportHasConfig = sourceReportHasConfig;
 
         if(!$scope.sourceReportHasConfig.length) {
-            AlertService.addFlash({
-                type: 'success',
-                message: $translate.instant('SOURCE_CONFIG_MODULE.DELETE_SITE_SUCCESS')
+            AlertService.addAlert({
+                type: 'warning',
+                message: $translate.instant('SOURCE_CONFIG_MODULE.CURRENTLY_NO_SITE_CONFIG')
             });
         }
 

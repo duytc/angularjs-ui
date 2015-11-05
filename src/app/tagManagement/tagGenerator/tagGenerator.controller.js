@@ -5,7 +5,7 @@
         .controller('TagGenerator', TagGenerator)
     ;
 
-    function TagGenerator($scope, $translate, $location, $q, siteList, site, jstags, publishers, adminUserManager, accountManager, USER_MODULES) {
+    function TagGenerator($scope, $translate, $location, $q, siteList, site, jstags, publishers, adminUserManager, accountManager, Auth, USER_MODULES) {
         $scope.formProcessing = false;
         $scope.jstagCopy = angular.copy(jstags);
 
@@ -120,13 +120,19 @@
 
                     if($scope.selected.type == $scope.typeKey.adSlot) {
                         var site = $scope.selected.site;
-                        _hasAnalyticsModule(site);
+                        _hasAnalyticsModule(site.publisher);
 
                         // change siteId parameter on the current state without reloading
                         // reloadOnSearch: false set on the state
                         $location.search({ siteId: site.id });
-                    } else {
+                    }
+                    else {
                         $location.search({ siteId: null });
+
+                        if($scope.selected.type == $scope.typeKey.ronAdSlot) {
+                            var publisher = $scope.isAdmin() ? $scope.selected.publisher : Auth.getSession();
+                            _hasAnalyticsModule(publisher);
+                        }
                     }
                 })
                 .finally(function () {
@@ -232,8 +238,8 @@
             return adTags;
         }
 
-        function _hasAnalyticsModule(site) {
-            $scope.hasAnalyticsModule = site.publisher.enabledModules.indexOf(USER_MODULES.analytics) > -1;
+        function _hasAnalyticsModule(publisher) {
+            $scope.hasAnalyticsModule = publisher.enabledModules.indexOf(USER_MODULES.analytics) > -1;
         }
     }
 })();
