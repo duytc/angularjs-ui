@@ -250,7 +250,7 @@
                 "DROPDOWN_ACTIVE": "Activate Ad Network",
                 "DROPDOWN_PAUSE": "Pause Ad Network",
                 "DROPDOWN_VISIT_AS_NETWORK": "Visit Ad Network",
-                "ADD_NEW_AD_NETWORK": "Add New Ad Network",
+                "ADD_NEW_AD_NETWORK": "+ Add New Ad Network",
 
                 "BACK_TO_AD_NETWORK_LIST": "Back to Ad Network List",
                 "ACTIVE_AD_TAGS_COUNT": "Active Ad Tags",
