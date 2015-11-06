@@ -51,10 +51,19 @@
                             message: $translate.instant('RON_AD_SLOT_MODULE.DELETE_SUCCESS')
                         });
                     })
-                    .catch(function() {
+                    .catch(function(status) {
+                        var message;
+
+                        if(!!status && !!status.data && !!status.data.message) {
+                            message = status.data.message
+                        }
+                        else {
+                            message = $translate.instant('RON_AD_SLOT_MODULE.DELETE_FAIL')
+                        }
+
                         AlertService.replaceAlerts({
                             type: 'danger',
-                            message: $translate.instant('RON_AD_SLOT_MODULE.DELETE_FAIL')
+                            message: message
                         });
                     });
             });
