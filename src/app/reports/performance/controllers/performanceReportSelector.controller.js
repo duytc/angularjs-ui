@@ -415,6 +415,7 @@
             $scope.selectedData.adSlotId = null;
             resetToStateForCurrentReportType();
 
+            hasGetAdSlot = false;
             getAdSlot(siteId);
         }
 
