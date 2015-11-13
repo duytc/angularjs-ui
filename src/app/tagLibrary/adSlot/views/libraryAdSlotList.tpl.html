@@ -38,7 +38,7 @@
                                 <li ng-if="item.libType == adSlotTypes.display" ><a ui-sref="^.^.adTag.displayList({adSlotId: item.id})">{{ 'AD_SLOT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
                                 <li ng-if="item.libType == adSlotTypes.native" ><a ui-sref="^.^.adTag.nativeList({adSlotId: item.id})">{{ 'AD_SLOT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
 
-                                <li class="divider"></li>
+                                <li ng-if="item.libType != adSlotTypes.dynamic" class="divider"></li>
 
                                 <li ng-click="createLinkedAdSlots(item)"><a>{{ 'AD_SLOT_LIBRARY_MODULE.CREATE_LINKED_AD_SLOTS' | translate }}</a></li>
                                 <!--<li ng-if="!item.isRonAdSlot.id"><a ng-click="createRonAdSlot(item)">{{ 'AD_SLOT_LIBRARY_MODULE.CREATE_RON_AD_SLOT' | translate }}</a></li>-->

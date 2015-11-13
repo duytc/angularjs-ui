@@ -73,7 +73,10 @@ module.exports = function(grunt) {
         'fileReplace:prodWhiteLabel'
     ]);
 
-    grunt.registerTask('build-prod-white-label-custom', 'Task to build white label target', function(title, logo, logoHeader) {
+    grunt.registerTask('build-prod-white-label-custom', 'Task to build white label target', function() {
+        var title = grunt.option('title');
+        var logo = grunt.option('logo');
+        var logoHeader = grunt.option('logoHeader');
         if (!!title) {
             configs.appConfig.deployment.origin.prodWhiteLabel.title.replacement = title;
         }

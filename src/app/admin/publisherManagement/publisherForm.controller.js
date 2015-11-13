@@ -41,7 +41,7 @@
             }
         };
 
-        if(!$scope.isNew && !angular.isObject(publisher.tagDomain)) {
+        if(!$scope.isNew && publisher.tagDomain.length == 0) {
             $scope.publisher.tagDomain = {
                 secure: true,
                 domain: null
@@ -87,13 +87,15 @@
                 return;
             }
 
-            if(!$scope.publisher.tagDomain.domain) {
-                $scope.publisher.tagDomain = null;
+            var publisher = angular.copy($scope.publisher);
+
+            if(!publisher.tagDomain.domain) {
+                publisher.tagDomain = null;
             }
 
             $scope.formProcessing = true;
 
-            var saveUser = $scope.isNew ? adminUserManager.post($scope.publisher) : $scope.publisher.patch();
+            var saveUser = $scope.isNew ? adminUserManager.post(publisher) : adminUserManager.one(publisher.id).patch(publisher);
 
             saveUser
                 .catch(

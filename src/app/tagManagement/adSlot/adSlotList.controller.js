@@ -84,10 +84,19 @@
                                 message: $translate.instant('AD_SLOT_MODULE.DELETE_SUCCESS')
                             });
                         },
-                        function () {
+                        function (status) {
+                            var message;
+
+                            if(!!status && !!status.data && !!status.data.message) {
+                                message = status.data.message
+                            }
+                            else {
+                                message = $translate.instant('AD_SLOT_MODULE.DELETE_FAIL')
+                            }
+
                             AlertService.replaceAlerts({
                                 type: 'danger',
-                                message: $translate.instant('AD_SLOT_MODULE.DELETE_FAIL')
+                                message: message
                             });
                         }
                     )
