@@ -122,7 +122,7 @@
                 <div class="form-group">
                     <label for="inputTagDomain" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.TAG_DOMAIN' | translate }}</label>
                     <div class="col-sm-10">
-                        <input server-error name="tagDomain" ng-model="publisher.tagDomain.domain" pattern="[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,6}" type="text" class="form-control" id="inputTagDomain" placeholder="{{ 'PUBLISHER_MODULE.TAG_DOMAIN' | translate }}">
+                        <input server-error name="tagDomain" ng-model="publisher.tagDomain.domain" pattern="^((([a-zA-Z]{1,2})|([0-9]{1,2})|([a-zA-Z0-9]{1,2})|([a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]))\.)+[a-zA-Z]{2,6}$" type="text" class="form-control" id="inputTagDomain" placeholder="{{ 'PUBLISHER_MODULE.TAG_DOMAIN' | translate }}">
                         <span class="help-block">{{ 'PUBLISHER_MODULE.HELP_BLOCK_TAG_DOMAIN' | translate }}</span>
                     </div>
                 </div>
