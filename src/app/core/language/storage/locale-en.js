@@ -163,7 +163,10 @@
                 "TAGS_FOR_SITE": "Tags for {{ name }}",
                 "RON_AD_SLOT_FOR": "{{ name }}",
                 "TAGS_FOR_RON_AD_SLOT": "Tags for RON ad slot",
-                "HEADER": "Header"
+                "HEADER": "Header",
+                "AD_SLOT_TYPE": "Ad Slot Type",
+                "SELECT_A_AD_SLOT_TYPE": "Select a ad slot type",
+                "PUBLISHER_IS_NOT_ANALYTICS_MODULE": "Publisher is not enabled Analytics module"
             },
             "CHANNEL_MODULE": {
                 "ADD_NEW_SUCCESS": "The channel has been created",
