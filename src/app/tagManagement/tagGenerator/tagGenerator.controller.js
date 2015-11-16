@@ -5,12 +5,13 @@
         .controller('TagGenerator', TagGenerator)
     ;
 
-    function TagGenerator($scope, $translate, $location, $q, siteList, site, jstags, publishers, adminUserManager, accountManager, Auth, USER_MODULES) {
+    function TagGenerator($scope, $translate, $location, $q, siteList, site, jstags, publishers, adminUserManager, SiteManager, accountManager, Auth, AlertService, USER_MODULES) {
         $scope.formProcessing = false;
         $scope.jstagCopy = angular.copy(jstags);
 
         $scope.typeKey = {
             passback: 'passback',
+            header: 'header',
             adSlot: 'adSlot',
             ronAdSlot: 'ronAdSlot'
         };
@@ -19,6 +20,10 @@
             {
                 key: $scope.typeKey.passback,
                 label: 'Universal Passback'
+            },
+            {
+                key: $scope.typeKey.header,
+                label: 'Header'
             },
             {
                 key: $scope.typeKey.adSlot,
@@ -30,10 +35,28 @@
             }
         ];
 
+        var adSlotTypeKey = {
+            adSlot: "adSlot",
+            ronAdSlot: "ronAdSlot"
+        };
+        $scope.adSlotTypeKey = adSlotTypeKey;
+
+        $scope.adSlotTypes = [
+            {
+                key: adSlotTypeKey.adSlot,
+                label: 'Ad Slot'
+            },
+            {
+                key: adSlotTypeKey.ronAdSlot,
+                label: 'RON Ad Slot'
+            }
+        ];
+
         $scope.selected = {
             type: !!site ? $scope.typeKey.adSlot : $scope.typeKey.passback,
             publisher: site && site.publisher,
-            site: site
+            site: site,
+            adSlotType: null
         };
 
         $scope.typeSelected = !!site ? $scope.typeKey.adSlot : $scope.typeKey.passback;
@@ -113,6 +136,7 @@
 
             $q.when(getJsTagsPromise)
                 .then(function (javascriptTags) {
+                    AlertService.clearAll();
                     $scope.jstags = javascriptTags;
                     $scope.jstagCopy = angular.copy(javascriptTags);
 
@@ -120,7 +144,7 @@
 
                     if($scope.selected.type == $scope.typeKey.adSlot) {
                         var site = $scope.selected.site;
-                        _hasAnalyticsModule(site.publisher);
+                        //_hasAnalyticsModule(site.publisher);
 
                         // change siteId parameter on the current state without reloading
                         // reloadOnSearch: false set on the state
@@ -129,7 +153,7 @@
                     else {
                         $location.search({ siteId: null });
 
-                        if($scope.selected.type == $scope.typeKey.ronAdSlot) {
+                        if($scope.selected.type != $scope.typeKey.passback) {
                             var publisher = $scope.isAdmin() ? $scope.selected.publisher : Auth.getSession();
                             _hasAnalyticsModule(publisher);
                         }
@@ -137,6 +161,12 @@
                 })
                 .finally(function () {
                     $scope.formProcessing = false;
+                })
+                .catch(function() {
+                    AlertService.replaceAlerts({
+                        type: 'warning',
+                        message: $translate.instant('TAG_GENERATOR_MODULE.PUBLISHER_IS_NOT_ANALYTICS_MODULE')
+                    });
                 })
             ;
         };
@@ -179,6 +209,18 @@
                 } else {
                     return accountManager.one().customGET('jspassback')
                 }
+            }
+
+            if ($scope.selected.type == $scope.typeKey.header && $scope.selected.adSlotType != adSlotTypeKey.adSlot) {
+                if($scope.isAdmin()) {
+                    return adminUserManager.one($scope.selected.publisher.id).customGET('jsheadertag');
+                } else {
+                    return accountManager.one().customGET('jsheadertag')
+                }
+            }
+
+            if ($scope.selected.type == $scope.typeKey.header && $scope.selected.adSlotType == adSlotTypeKey.adSlot) {
+                return SiteManager.one($scope.selected.site.id).customGET('jsheadertag');
             }
 
             if($scope.isAdmin()) {
@@ -240,6 +282,13 @@
 
         function _hasAnalyticsModule(publisher) {
             $scope.hasAnalyticsModule = publisher.enabledModules.indexOf(USER_MODULES.analytics) > -1;
+
+            if(!$scope.hasAnalyticsModule) {
+                AlertService.replaceAlerts({
+                    type: 'warning',
+                    message: $translate.instant('TAG_GENERATOR_MODULE.PUBLISHER_IS_NOT_ANALYTICS_MODULE')
+                });
+            }
         }
     }
 })();
