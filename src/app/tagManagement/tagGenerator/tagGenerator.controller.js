@@ -5,7 +5,7 @@
         .controller('TagGenerator', TagGenerator)
     ;
 
-    function TagGenerator($scope, $translate, $location, $q, siteList, site, jstags, publishers, adminUserManager, SiteManager, accountManager, Auth, AlertService, USER_MODULES) {
+    function TagGenerator($scope, $translate, $location, $q, siteList, site, jstags, publishers, SiteManager, adminUserManager, accountManager, Auth, USER_MODULES) {
         $scope.formProcessing = false;
         $scope.jstagCopy = angular.copy(jstags);
 
@@ -35,22 +35,22 @@
             }
         ];
 
-        var adSlotTypeKey = {
+        $scope.adSlotTypeKey = {
             adSlot: "adSlot",
             ronAdSlot: "ronAdSlot"
         };
-        $scope.adSlotTypeKey = adSlotTypeKey;
 
         $scope.adSlotTypes = [
             {
-                key: adSlotTypeKey.adSlot,
+                key: $scope.adSlotTypeKey.adSlot,
                 label: 'Ad Slot'
             },
             {
-                key: adSlotTypeKey.ronAdSlot,
+                key: $scope.adSlotTypeKey.ronAdSlot,
                 label: 'RON Ad Slot'
             }
         ];
+
 
         $scope.selected = {
             type: !!site ? $scope.typeKey.adSlot : $scope.typeKey.passback,
@@ -74,7 +74,6 @@
         $scope.allowPublisherSelection = $scope.isAdmin() && !!publishers;
         $scope.publisher = null;
         $scope.publishers = publishers;
-        $scope.hasAnalyticsModule = !!site ? site.publisher.enabledModules.indexOf(USER_MODULES.analytics) > -1 : false;
 
         $scope.isFormValid = function() {
             return $scope.tagGeneratorForm.$valid;
@@ -85,8 +84,7 @@
         };
 
         $scope.selectType = function() {
-            $scope.selected.site = null;
-            $scope.selected.publisher = null;
+
         };
 
         $scope.selectSite = function (site, siteId) {
@@ -136,7 +134,6 @@
 
             $q.when(getJsTagsPromise)
                 .then(function (javascriptTags) {
-                    AlertService.clearAll();
                     $scope.jstags = javascriptTags;
                     $scope.jstagCopy = angular.copy(javascriptTags);
 
@@ -144,7 +141,6 @@
 
                     if($scope.selected.type == $scope.typeKey.adSlot) {
                         var site = $scope.selected.site;
-                        //_hasAnalyticsModule(site.publisher);
 
                         // change siteId parameter on the current state without reloading
                         // reloadOnSearch: false set on the state
@@ -152,23 +148,20 @@
                     }
                     else {
                         $location.search({ siteId: null });
-
-                        if($scope.selected.type != $scope.typeKey.passback) {
-                            var publisher = $scope.isAdmin() ? $scope.selected.publisher : Auth.getSession();
-                            _hasAnalyticsModule(publisher);
-                        }
                     }
                 })
                 .finally(function () {
                     $scope.formProcessing = false;
                 })
-                .catch(function() {
-                    AlertService.replaceAlerts({
-                        type: 'warning',
-                        message: $translate.instant('TAG_GENERATOR_MODULE.PUBLISHER_IS_NOT_ANALYTICS_MODULE')
-                    });
-                })
             ;
+        };
+
+        $scope.filterByAnalytics = function(type) {
+            if(!$scope.isAdmin() && type.key == $scope.typeKey.header && Auth.getSession().enabledModules.indexOf(USER_MODULES.analytics) == -1) {
+                return false
+            }
+
+            return true;
         };
 
         $scope.exportTags = function(jstags) {
@@ -211,7 +204,7 @@
                 }
             }
 
-            if ($scope.selected.type == $scope.typeKey.header && $scope.selected.adSlotType != adSlotTypeKey.adSlot) {
+            if ($scope.selected.type == $scope.typeKey.header && $scope.selected.adSlotType != $scope.adSlotTypeKey.adSlot) {
                 if($scope.isAdmin()) {
                     return adminUserManager.one($scope.selected.publisher.id).customGET('jsheadertag');
                 } else {
@@ -219,7 +212,7 @@
                 }
             }
 
-            if ($scope.selected.type == $scope.typeKey.header && $scope.selected.adSlotType == adSlotTypeKey.adSlot) {
+            if ($scope.selected.type == $scope.typeKey.header && $scope.selected.adSlotType == $scope.adSlotTypeKey.adSlot) {
                 return SiteManager.one($scope.selected.site.id).customGET('jsheadertag');
             }
 
@@ -233,7 +226,7 @@
         function _tagsAdSlotString(jstags) {
             var tags = '';
 
-            if(!!jstags.header && ($scope.hasAnalyticsModule || $scope.typeSelected == $scope.typeKey.ronAdSlot)) {
+            if(!!jstags.header && $scope.typeSelected == $scope.typeKey.header) {
                 tags = 'HEADER' + '\n#' + $scope.keywordGuide.header + _downLine('=') + jstags.header + _downLine();
             }
 
@@ -278,17 +271,6 @@
             });
 
             return adTags;
-        }
-
-        function _hasAnalyticsModule(publisher) {
-            $scope.hasAnalyticsModule = publisher.enabledModules.indexOf(USER_MODULES.analytics) > -1;
-
-            if(!$scope.hasAnalyticsModule) {
-                AlertService.replaceAlerts({
-                    type: 'warning',
-                    message: $translate.instant('TAG_GENERATOR_MODULE.PUBLISHER_IS_NOT_ANALYTICS_MODULE')
-                });
-            }
         }
     }
 })();

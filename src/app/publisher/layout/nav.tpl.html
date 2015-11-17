@@ -39,7 +39,7 @@
             <ul>
                 <li ng-if="hasDisplayAdsModule" ui-sref-active="active"><a ui-sref=".reports.performance.account"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.PERFORMANCE_REPORTS' | translate }}</a></li>
                 <li ng-if="hasAnalyticsModule" ui-sref-active="active"><a ui-sref=".reports.source"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.SOURCE_REPORTS' | translate }}</a></li>
-                <li ng-if="hasAnalyticsModule" ui-sref-active="active"><a ui-sref=".reports.billing.account"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.BILLING_REPORTS' | translate }}</a></li>
+                <li ui-sref-active="active"><a ui-sref=".reports.billing.account"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.BILLING_REPORTS' | translate }}</a></li>
                 <li ui-sref-active="active"><a ui-sref=".reports.projectedBill.account"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.PROJECTED_BILL' | translate }}</a></li>
             </ul>
         </li>
