@@ -28,19 +28,7 @@
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="selected.type == typeKey.header">
-                    <label class="col-sm-2 control-label">{{ 'TAG_GENERATOR_MODULE.AD_SLOT_TYPE' | translate }}</label>
-                    <div class="col-sm-10">
-                        <ui-select ng-model="selected.adSlotType" ng-required="true" reset-search-input="'false'">
-                            <ui-select-match placeholder="{{ 'TAG_GENERATOR_MODULE.SELECT_A_AD_SLOT_TYPE' | translate }}">{{ $select.selected.label }}</ui-select-match>
-                            <ui-select-choices repeat="adSlotType.key as adSlotType in adSlotTypes">
-                                {{ adSlotType.label }}
-                            </ui-select-choices>
-                        </ui-select>
-                    </div>
-                </div>
-
-                <div class="form-group" ng-if="selected.type == typeKey.adSlot || (selected.type == typeKey.header && selected.adSlotType == adSlotTypeKey.adSlot)">
+                <div class="form-group" ng-if="selected.type == typeKey.adSlot || selected.type == typeKey.header">
                     <label class="col-sm-2 control-label">{{ 'SITE' | translate }}</label>
                     <div class="col-sm-10">
                         <ui-select name="site" ng-model="selected.site" ng-required="true" on-select="selectSite($item, $model)" ng-disabled="allowPublisherSelection && !selected.publisher" reset-search-input="'false'">

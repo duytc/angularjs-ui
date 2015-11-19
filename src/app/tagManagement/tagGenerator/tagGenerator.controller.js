@@ -35,23 +35,6 @@
             }
         ];
 
-        $scope.adSlotTypeKey = {
-            adSlot: "adSlot",
-            ronAdSlot: "ronAdSlot"
-        };
-
-        $scope.adSlotTypes = [
-            {
-                key: $scope.adSlotTypeKey.adSlot,
-                label: 'Ad Slot'
-            },
-            {
-                key: $scope.adSlotTypeKey.ronAdSlot,
-                label: 'RON Ad Slot'
-            }
-        ];
-
-
         $scope.selected = {
             type: !!site ? $scope.typeKey.adSlot : $scope.typeKey.passback,
             publisher: site && site.publisher,
@@ -204,15 +187,7 @@
                 }
             }
 
-            if ($scope.selected.type == $scope.typeKey.header && $scope.selected.adSlotType != $scope.adSlotTypeKey.adSlot) {
-                if($scope.isAdmin()) {
-                    return adminUserManager.one($scope.selected.publisher.id).customGET('jsheadertag');
-                } else {
-                    return accountManager.one().customGET('jsheadertag')
-                }
-            }
-
-            if ($scope.selected.type == $scope.typeKey.header && $scope.selected.adSlotType == $scope.adSlotTypeKey.adSlot) {
+            if ($scope.selected.type == $scope.typeKey.header) {
                 return SiteManager.one($scope.selected.site.id).customGET('jsheadertag');
             }
 
