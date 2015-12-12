@@ -555,6 +555,23 @@
                 "VIDEO_IPV": "Video IPV",
                 "VIDEO_AD_CLICKS": "Video Ad Clicks"
             },
+            "UNIFIED_REPORT_MODULE": {
+                "AVERAGES": "Averages",
+                "BACKUP_IMPS": "Backup Imps",
+                "AVG_CPM": "Avg Cpm",
+                "FILL_RATE": "Fill Rate",
+                "PAID_IMPS": "Paid Imps",
+                "REVENUE": "Revenue",
+                "TOTAL_IMPS": "Total Imps",
+                "SIZE": "Size",
+
+                "SEARCH": "Search",
+                "AD_TAG_GROUP": "Ad Tag Group",
+                "COUNTRY": "Country",
+                "CPM": "Cpm",
+                "PUB_PAYOUT": "Pub Payout",
+                "ASK_PRICE": "Ask Price"
+            },
             "ACTION_LOG_MODULE": {
                 "DATE_RANGE": "Date Range",
                 "BUTTON_GET_LOGS": "Get Logs",

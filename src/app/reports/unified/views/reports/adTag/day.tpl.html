@@ -1,0 +1,165 @@
+<div ng-if="hasResult" ng-init="setDataSelect([{key: 'adTag', label: ('AD_TAG' | translate) }, {key: 'adTagGroup', label: ('UNIFIED_REPORT_MODULE.AD_TAG_GROUP' | translate) }], (modelSelect.length > 0 ? modelSelect : [{id: 'adTag'}, {id: 'adTagGroup'}]))">
+    <div class="row">
+        <div class="col-md-3">
+            <section class="panel panel-box info-box">
+                <div class="panel-item bg-reverse">
+                    <p class="size-h1 no-margin">{{ reportGroup.totalImps | number }}</p>
+                    <p class="text-muted no-margin">{{ 'UNIFIED_REPORT_MODULE.TOTAL_IMPS' | translate }}</p>
+                </div>
+            </section>
+        </div>
+        <div class="col-md-3">
+            <section class="panel panel-box info-box">
+                <div class="panel-item bg-reverse">
+                    <p class="size-h1 no-margin">{{ reportGroup.paidImps | number }}</p>
+                    <p class="text-muted no-margin">{{ 'UNIFIED_REPORT_MODULE.PAID_IMPS' | translate }}</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-md-3">
+            <section class="panel panel-box info-box">
+                <div class="panel-item bg-reverse">
+                    <p class="size-h1 no-margin">{{ reportGroup.backupImpression | number }}</p>
+                    <p class="text-muted no-margin">{{ 'UNIFIED_REPORT_MODULE.BACKUP_IMPS' | translate }}</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-md-3">
+            <section class="panel panel-box info-box">
+                <div class="panel-item bg-reverse">
+                    <p class="size-h1 no-margin">{{ reportGroup.fillRate | percentage }}</p>
+                    <p class="text-muted no-margin">{{ 'REPORT.FILL_RATE' | translate }}</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="panel panel-default daily-reports">
+        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
+            Details
+        </div>
+
+        <form class="form-inline unified-search" ng-submit="searchData()">
+            <input class="form-control" ng-model="selectData.query" placeholder="{{ 'UNIFIED_REPORT_MODULE.SEARCH' | translate }}" type="text"/>
+            <button type="submit" class="btn btn-primary">{{ 'UNIFIED_REPORT_MODULE.SEARCH' |translate }}</button>
+
+            <div class="pull-right" ng-dropdown-multiselect="" checkboxes="true" events="eventSettings" options="dataSelect" selected-model="modelSelect" extra-settings="settingsSelect" translation-texts="translationTexts"></div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-hover" at-action-sortable-query at-table at-paginated at-list="reports" at-config="tableConfig">
+                <thead></thead>
+                <tbody>
+                <tr ng-click="drillDownReport('^.site')">
+                    <td at-title="{{ 'REPORT.DATE' | translate }}" at-attribute="date">
+                        {{ item.date | date }}
+                    </td>
+                    <td at-title="{{ 'AD_TAG' |translate }}" at-attribute="adTag">
+                        {{ (!!item.adTag ? item.adTag : '') + (!!item.adTagId ? '('+ item.adTagId +')' : '') }}
+                    </td>
+                    <td at-title="{{ 'UNIFIED_REPORT_MODULE.AD_TAG_GROUP' | translate }}" at-attribute="adTagGroup">
+                        {{ !!item.adTagGroup ? item.adTagGroup : '' }}
+                    </td>
+                    <td at-title="{{ 'UNIFIED_REPORT_MODULE.SIZE' | translate }}" at-attribute="size">
+                        {{ !!item.size ? item.size : '' }}
+                    </td>
+                    <td at-title="{{ 'UNIFIED_REPORT_MODULE.TOTAL_IMPS' | translate }}" at-sortable at-initial-sorting="desc" at-attribute="totalImps">
+                        {{ item.totalImps | number }}
+                    </td>
+                    <td at-title="{{ 'UNIFIED_REPORT_MODULE.PAID_IMPS' | translate }}" at-sortable at-attribute="paidImps">
+                        {{ item.paidImps | number }}
+                    </td>
+                    <td at-title="{{ 'UNIFIED_REPORT_MODULE.BACKUP_IMPS' | translate }}" at-sortable at-attribute="backupImpression">
+                        {{ item.backupImpression | number }}
+                    </td>
+                    <td at-title="{{ 'UNIFIED_REPORT_MODULE.ASK_PRICE' | translate }}" at-sortable at-attribute="askPrice">
+                        {{ item.askPrice | currency }}
+                    </td>
+                    <td at-title="{{ 'UNIFIED_REPORT_MODULE.REVENUE' | translate }}" at-sortable at-attribute="revenue">
+                        {{ item.revenue | currency }}
+                    </td>
+                    <td at-title="{{ 'UNIFIED_REPORT_MODULE.AVG_CPM' | translate }}" at-sortable at-attribute="avgCpm">
+                        {{ item.avgCpm | currency }}
+                    </td>
+                    <td at-title="{{ 'REPORT.FILL_RATE' | translate }}" at-sortable at-attribute="fillRate">
+                        {{ item.fillRate | percentage }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="paginationConfig.itemsPerPage" total-items="paginationConfig.totalItems" ng-model="currentPage" max-size="paginationConfig.maxSize" ng-click="changePage(currentPage)"></pagination>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> {{ 'REPORT.TOTALS' | translate }}</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled report list-info">
+                        <li>
+                            <label>{{ 'UNIFIED_REPORT_MODULE.TOTAL_IMPS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.totalImps | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'UNIFIED_REPORT_MODULE.PAID_IMPS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.paidImps | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'UNIFIED_REPORT_MODULE.BACKUP_IMPS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.backupImpression | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'UNIFIED_REPORT_MODULE.REVENUE' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.revenue | currency }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'UNIFIED_REPORT_MODULE.AVG_CPM' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.avgCpm | currency }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'REPORT.FILL_RATE' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.fillRate | percentage }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> {{ 'UNIFIED_REPORT_MODULE.AVERAGES' | translate }}</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled report list-info">
+                        <li>
+                            <label>{{ 'UNIFIED_REPORT_MODULE.TOTAL_IMPS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageTotalImps | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'UNIFIED_REPORT_MODULE.PAID_IMPS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averagePaidImps | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'UNIFIED_REPORT_MODULE.BACKUP_IMPS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageBackupImpression | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'UNIFIED_REPORT_MODULE.REVENUE' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageRevenue | currency }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'UNIFIED_REPORT_MODULE.AVG_CPM' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageAvgCpm | currency }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'REPORT.FILL_RATE' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageFillRate | percentage }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

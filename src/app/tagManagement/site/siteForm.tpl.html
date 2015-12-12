@@ -28,7 +28,7 @@
                     <label for="inputName" class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
                     <div class="col-sm-10">
                         <ui-select name="publisher" id="publisher" ng-model="site.publisher" ng-required="true" server-error on-select="selectPublisher($item)" reset-search-input="'false'">
-                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}r">{{ $select.selected.company }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
                             <ui-select-choices repeat="publisher.id as publisher in publishers | filter:$select.search">
                                 {{ publisher.company }}
                             </ui-select-choices>

@@ -1,0 +1,14 @@
+.unified-search {
+  margin: 5px;
+
+  .form-control {
+    width: 40% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .unified-search .form-control {
+      width: 100% !important;
+      margin-bottom: 5px;
+    }
+}

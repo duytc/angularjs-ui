@@ -51,7 +51,8 @@
         $scope.modules = [
             { label: 'Display', role: 'MODULE_DISPLAY' },
             { label: 'Analytics', role: 'MODULE_ANALYTICS' },
-            { label: 'Video Analytics', role: 'MODULE_VIDEO_ANALYTICS' }
+            { label: 'Video Analytics', role: 'MODULE_VIDEO_ANALYTICS' },
+            { label: 'Unified Report', role: 'MODULE_UNIFIED_REPORT' }
 //            { label: 'Fraud Detection', role: 'MODULE_FRAUD_DETECTION' }
         ];
 

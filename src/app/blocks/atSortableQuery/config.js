@@ -6,5 +6,6 @@
             {publisher: 'publisher.username', site: 'site.name'}
         )
         .constant('QUERY_PARAM_TO_HEADER_MAP', {'publisher.username':'publisher', 'site.name': 'site'})
+        .constant('EVENT_ACTION_SORTABLE', 'action_sortable')
     ;
 })();
