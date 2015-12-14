@@ -557,12 +557,12 @@
             },
             "UNIFIED_REPORT_MODULE": {
                 "AVERAGES": "Averages",
-                "BACKUP_IMPS": "Backup Imps",
+                "BACKUP_IMPS": "Backup Impressions",
                 "AVG_CPM": "Avg Cpm",
                 "FILL_RATE": "Fill Rate",
-                "PAID_IMPS": "Paid Imps",
+                "PAID_IMPS": "Paid Impressions",
                 "REVENUE": "Revenue",
-                "TOTAL_IMPS": "Total Imps",
+                "TOTAL_IMPS": "Total Impressions",
                 "SIZE": "Size",
 
                 "SEARCH": "Search",

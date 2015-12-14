@@ -6,6 +6,20 @@
   }
 }
 
+.page-unified {
+  width: 100%;
+  display: inline-block;
+
+  .number-page-unified {
+    width: auto !important;
+    float: right !important;
+  }
+
+  .pagination, .number-page-unified {
+      margin: 20px 15px;
+  }
+}
+
 @media (max-width: 768px) {
   .unified-search .form-control {
       width: 100% !important;

@@ -5,7 +5,7 @@
         .controller('UnifiedReport', UnifiedReport)
     ;
 
-    function UnifiedReport($scope, _, $state, $stateParams, $translate, reportGroup, AlertService, unifiedReport, ReportParams, dateUtil, REPORT_TYPE_KEY, EVENT_ACTION_SORTABLE) {
+    function UnifiedReport($scope, _, $state, $translate, reportGroup, AlertService, unifiedReport, ReportParams, dateUtil, REPORT_TYPE_KEY, EVENT_ACTION_SORTABLE) {
         $scope.hasResult = angular.isObject(reportGroup) ? reportGroup.reports.length > 0 :reportGroup !== false;
 
         reportGroup = reportGroup || {};
@@ -14,11 +14,6 @@
         $scope.reports = $scope.reportGroup.reports || [];
         $scope.reportTypeKey = REPORT_TYPE_KEY;
 
-        $scope.tableConfig = {
-            maxPages: 10,
-            itemsPerPage: 10
-        };
-
         if (!$scope.hasResult) {
             AlertService.replaceAlerts({
                 type: 'warning',
@@ -26,14 +21,17 @@
             });
         }
 
-        // default page = 1
-        $scope.currentPage = $stateParams.page || 1;
-        $scope.paginationConfig = {
-            itemsPerPage: 10,
+        $scope.tableConfig = {
+            maxPages: 10,
             totalItems: reportGroup.totalRecord,
-            maxSize: 10
+            itemsPerPage: 10
         };
 
+        $scope.availableOptions = {
+            itemsPerPage: [10, 20, 30, 50],
+            currentPage: 1,
+            pageSize: 10
+        };
         $scope.selectData = {
             query: null,
             searchBoxFields: null
@@ -92,6 +90,7 @@
         $scope.drillDownReport = drillDownReport;
         $scope.searchData = searchData;
         $scope.changePage = changePage;
+        $scope.changePageSize = changePageSize;
 
         function drillDownReport(state, drillParams) {
             if (!angular.isString(state)) {
@@ -128,37 +127,44 @@
         }
 
         function searchData() {
-            var params = unifiedReport.getInitialParams();
-            params.page = 1;
+            if(!$scope.selectData.searchBoxFields) {
+                return;
+            }
 
-            unifiedReport.getPulsePoint(params, {searchField: $scope.selectData.searchBoxFields, searchKey: $scope.selectData.query})
-                .then(function(reportGroup) {
-                    $scope.reports = reportGroup.reports || [];
-                    $scope.paginationConfig.totalItems = reportGroup.totalRecord;
-                });
+            var query = {page: 1, searchField: $scope.selectData.searchBoxFields || null, searchKey: $scope.selectData.query || null};
+            _getByQuery(query);
         }
 
         function changePage(page) {
-            var params = unifiedReport.getInitialParams();
-            params.page = page;
+            var query = {page: page, searchField: $scope.selectData.searchBoxFields || null, searchKey: $scope.selectData.query || null};
+            _getByQuery(query);
+        }
 
-            unifiedReport.getPulsePoint(params, {searchField: $scope.selectData.searchBoxFields, searchKey: $scope.selectData.query})
-                .then(function(reportGroup) {
-                    $scope.reports = reportGroup.reports || [];
-                });
+        function changePageSize(size) {
+            var query = {page: 1, size: size, searchField: $scope.selectData.searchBoxFields || null, searchKey: $scope.selectData.query || null};
+            _getByQuery(query);
         }
 
         function showPagination() {
-            return angular.isArray($scope.reports) && $scope.paginationConfig.totalItems > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.reports) && $scope.tableConfig.totalItems > $scope.tableConfig.itemsPerPage;
         }
 
         $scope.$on(EVENT_ACTION_SORTABLE, function(event, args) {
-            var params = unifiedReport.getInitialParams();
+            _getByQuery(args);
+        });
 
-            unifiedReport.getPulsePoint(params, args)
+        function _getByQuery(query) {
+            var params = unifiedReport.getInitialParams();
+            angular.extend(params, query);
+
+            unifiedReport.getPulsePoint(params)
                 .then(function(reportGroup) {
                     $scope.reports = reportGroup.reports || [];
+                    $scope.tableConfig.totalItems = reportGroup.totalRecord;
+
+                    $scope.tableConfig.itemsPerPage = query.size || $scope.availableOptions.pageSize;
+                    $scope.availableOptions.currentPage = query.page || $scope.availableOptions.currentPage;
                 });
-        });
+        }
     }
 })();
