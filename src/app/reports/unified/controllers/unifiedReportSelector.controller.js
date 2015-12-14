@@ -116,7 +116,9 @@
             $scope.selectedData.breakDown = null;
 
             if(reportTypeKey.dailyStats == reportType.key) {
-                $scope.selectedData.breakDown = $scope.breakdownOptions[0].key
+                $scope.selectedData.breakDown = $scope.breakdownOptions[0].key;
+
+                selectBreakdownOption($scope.breakdownOptions[0]);
             }
         }
 
