@@ -115,10 +115,19 @@
         function selectReportType(reportType) {
             $scope.selectedData.breakDown = null;
 
-            if(reportTypeKey.dailyStats == reportType.key) {
-                $scope.selectedData.breakDown = $scope.breakdownOptions[0].key;
+            // set breakDown when reportType support 1 break down
+            var listSupportForReportType = [];
+            angular.forEach($scope.breakdownOptions, function(breakDown, key) {
+                if(breakDown.supportReportType.indexOf(reportType.key) > -1) {
+                    listSupportForReportType.push(key)
+                }
+            });
 
-                selectBreakdownOption($scope.breakdownOptions[0]);
+            if(listSupportForReportType.length == 1) {
+                var index = listSupportForReportType[0];
+
+                $scope.selectedData.breakDown = $scope.breakdownOptions[index].key;
+                selectBreakdownOption($scope.breakdownOptions[index]);
             }
         }
 
@@ -189,12 +198,12 @@
                 return;
             }
 
-            if (!params.date.startDate) {
-                params.date.startDate = moment().subtract(6, 'days').startOf('day');
+            if (!params.date.endDate) {
+                params.date.endDate = !params.date.startDate ? moment().subtract(1, 'days').startOf('day') : params.date.startDate;
             }
 
-            if (!params.date.endDate) {
-                params.date.endDate = (new Date(params.date.startDate).toDateString() == new Date().toDateString()) ? params.date.startDate : moment().subtract(1, 'days').startOf('day');
+            if (!params.date.startDate) {
+                params.date.startDate = moment().subtract(6, 'days').startOf('day');
             }
 
             angular.extend($scope.selectedData, params);

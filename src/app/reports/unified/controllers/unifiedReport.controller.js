@@ -23,7 +23,7 @@
 
         $scope.tableConfig = {
             maxPages: 10,
-            totalItems: reportGroup.totalRecord,
+            totalItems: Number(reportGroup.totalRecord),
             itemsPerPage: 10
         };
 
@@ -160,10 +160,10 @@
             unifiedReport.getPulsePoint(params)
                 .then(function(reportGroup) {
                     $scope.reports = reportGroup.reports || [];
-                    $scope.tableConfig.totalItems = reportGroup.totalRecord;
+                    $scope.tableConfig.totalItems = Number(reportGroup.totalRecord);
 
-                    $scope.tableConfig.itemsPerPage = query.size || $scope.availableOptions.pageSize;
-                    $scope.availableOptions.currentPage = query.page || $scope.availableOptions.currentPage;
+                    $scope.tableConfig.itemsPerPage = Number(query.size) || $scope.availableOptions.pageSize;
+                    $scope.availableOptions.currentPage = Number(query.page) || $scope.availableOptions.currentPage;
                 });
         }
     }

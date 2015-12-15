@@ -66,9 +66,9 @@
         </div>
 
         <div class="page-unified">
-            <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-click="changePage(availableOptions.currentPage)"></pagination>
+            <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
 
-            <select ng-if="tableConfig.totalItems > availableOptions.itemsPerPage[0]" ng-model="availableOptions.pageSize" class="form-control number-page-unified" ng-click="changePageSize(availableOptions.pageSize)">
+            <select ng-if="tableConfig.totalItems > availableOptions.itemsPerPage[0]" ng-model="availableOptions.pageSize" class="form-control number-page-unified" ng-change="changePageSize(availableOptions.pageSize)">
                 <option ng-repeat="option in availableOptions.itemsPerPage" ng-if="tableConfig.totalItems >= option" value="{{option}}">{{option}}</option>
             </select>
         </div>
