@@ -159,8 +159,8 @@
             var blob = new Blob([tagsString], {type: "text/plain;charset=utf-8"});
             var name = null;
 
-            if($scope.typeSelected == $scope.typeKey.adSlot) {
-                name = $scope.selected.site.domain.substring(7);
+            if($scope.typeSelected == $scope.typeKey.adSlot || $scope.typeSelected == $scope.typeKey.header) {
+                name = $scope.selected.site.domain;
             }
             else if($scope.typeSelected == $scope.typeKey.passback) {
                 name = 'Universal Passback';

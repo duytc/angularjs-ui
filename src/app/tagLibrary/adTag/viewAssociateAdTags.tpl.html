@@ -34,7 +34,7 @@
                                 <li ng-if="item.adSlot.type == adSlotTypes.display"><a ui-sref="^.^.^.tagManagement.adTag.list({ adSlotId: item.adSlot.id })">{{ 'AD_TAG_LIBRARY_MODULE.GO_TO_AD_SLOT' | translate }}</a></li>
                                 <li ng-if="item.adSlot.type == adSlotTypes.native"><a ui-sref="^.^.^.tagManagement.adTag.nativeList({ adSlotId: item.adSlot.id })">{{ 'AD_TAG_LIBRARY_MODULE.GO_TO_AD_SLOT' | translate }}</a></li>
                                 <li class="divider"></li>
-                                <li><a ng-click="toggleAdTagStatus(item)">{{ adTag.active ? ('AD_TAG_MODULE.PAUSE_AD_TAG' | translate) : ('AD_TAG_MODULE.ACTIVATE_AD_TAG' | translate) }}</a></li>
+                                <li><a ng-click="toggleAdTagStatus(item)">{{ item.active ? ('AD_TAG_MODULE.PAUSE_AD_TAG' | translate) : ('AD_TAG_MODULE.ACTIVATE_AD_TAG' | translate) }}</a></li>
                                 <li><a ng-click="confirmDeletion(item)">{{ 'AD_TAG_MODULE.DELETE_AD_TAG' | translate }}</a></li>
                             </ul>
                         </div>

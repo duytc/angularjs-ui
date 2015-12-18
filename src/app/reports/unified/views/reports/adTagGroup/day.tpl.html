@@ -71,7 +71,7 @@
                     <td at-title="{{ 'UNIFIED_REPORT_MODULE.BACKUP_IMPS' | translate }}" at-sortable at-attribute="backupImpression">
                         {{ item.backupImpression | number }}
                     </td>
-                    <td at-title="{{ 'UNIFIED_REPORT_MODULE.ASK_PRICE' | translate }}" at-sortable at-attribute="askPrice">
+                    <td at-title="{{ 'UNIFIED_REPORT_MODULE.ASK_PRICE' | translate }}" at-attribute="askPrice">
                         {{ item.askPrice | currency }}
                     </td>
                     <td at-title="{{ 'UNIFIED_REPORT_MODULE.REVENUE' | translate }}" at-sortable at-attribute="revenue">
@@ -92,7 +92,7 @@
             <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
 
             <select ng-if="tableConfig.totalItems > availableOptions.itemsPerPage[0]" ng-model="availableOptions.pageSize" class="form-control number-page-unified" ng-change="changePageSize(availableOptions.pageSize)">
-                <option ng-repeat="option in availableOptions.itemsPerPage" ng-if="tableConfig.totalItems >= option" value="{{option}}">{{option}}</option>
+                <option ng-repeat="option in availableOptions.itemsPerPage" ng-selected="availableOptions.pageSize == option" ng-if="tableConfig.totalItems >= option" value="{{option}}">{{option}}</option>
             </select>
         </div>
     </div>
