@@ -17,42 +17,134 @@
         </div>
     </div>
 
-    <search-box show-query="true" sb-list="sites" search-fields="['id', 'name', 'publisher.username', 'publisher.company', 'domain']"></search-box>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs nav-tab-margin">
+                <li role="presentation" ng-click="typeList = 0" ng-class="!typeList ? 'active' : ''  "><a>All Sites</a></li>
+                <li role="presentation" ng-click="getAutoCreatedSite()" ng-class="typeList == 1? 'active' : '' "><a>Auto Created Sites</a></li>
+                <li role="presentation" ng-click="getSiteCreatedManually()" ng-class="typeList == 2? 'active' : '' "><a>Sites Created Manually</a></li>
+            </ul>
+        </div>
+    </div>
 
-    <div class="panel-body" ng-if="hasData()">
-        <div class="table-responsive">
-            <table class="table" at-sortable-query at-table at-paginated at-list="sites" at-config="tableConfig">
-                <thead>
+    <div ng-if="!typeList">
+        <search-box show-query="true" sb-list="sites" search-fields="['id', 'name', 'publisher.username', 'publisher.company', 'domain']"></search-box>
+
+        <div class="panel-body" ng-if="hasData()">
+            <div class="table-responsive">
+                <table class="table" at-sortable-query at-table at-paginated at-list="sites" at-config="tableConfig">
+                    <thead>
                     <tr>
                         <th ng-show="isAdmin()" at-attribute="publisher.company">{{ 'PUBLISHER' | translate }}</th>
                     </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
-                    <td at-title="{{ 'ACTIONS' | translate }}">
-                        <div class="btn-group" dropdown>
-                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
-                            <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li ng-if="hasDisplayAdsModule"><a ui-sref="^.^.adSlot.list({ siteId: item.id })">{{ 'SITE_MODULE.MANAGE_AD_SLOTS' | translate }}</a></li>
-                                <li><a ui-sref="^.channelList({ id: item.id })">{{ 'SITE_MODULE.MANAGE_CHANNELS' | translate }}</a></li>
-                                <li><a ui-sref="^.^.tagGenerator({ siteId: item.id })">{{ 'SITE_MODULE.GENERATE_TAGS' | translate }}</a></li>
-                                <li class="divider"></li>
-                                <li ><a ui-sref="^.^.^.reports.performance.siteAdSlots({ siteId: item.id, startDate: today})">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
-                                <li class="divider"></li>
-                                <li><a ui-sref="^.edit({ id: item.id })">{{ 'SITE_MODULE.EDIT_SITE' | translate }}</a></li>
-                                <li><a ng-click="confirmDeletion(item, $index)">{{ 'SITE_MODULE.DELETE_SITE' | translate }}</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                    <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="{{ 'SITE' | translate }}"></td>
-                    <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
-                    <td at-title="Domain" at-implicit at-sortable at-attribute="domain" at-title="{{ 'SITE_MODULE.DOMAIN' | translate }}"></td>
-                </tr>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
+                        <td at-title="{{ 'ACTIONS' | translate }}">
+                            <div class="btn-group" dropdown>
+                                <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                                <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                    <li ng-if="hasDisplayAdsModule"><a ui-sref="^.^.adSlot.list({ siteId: item.id })">{{ 'SITE_MODULE.MANAGE_AD_SLOTS' | translate }}</a></li>
+                                    <li><a ui-sref="^.channelList({ id: item.id })">{{ 'SITE_MODULE.MANAGE_CHANNELS' | translate }}</a></li>
+                                    <li><a ui-sref="^.^.tagGenerator({ siteId: item.id })">{{ 'SITE_MODULE.GENERATE_TAGS' | translate }}</a></li>
+                                    <li class="divider"></li>
+                                    <li ><a ui-sref="^.^.^.reports.performance.siteAdSlots({ siteId: item.id, startDate: today})">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
+                                    <li class="divider"></li>
+                                    <li><a ui-sref="^.edit({ id: item.id })">{{ 'SITE_MODULE.EDIT_SITE' | translate }}</a></li>
+                                    <li><a ng-click="confirmDeletion(item, $index)">{{ 'SITE_MODULE.DELETE_SITE' | translate }}</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="{{ 'SITE' | translate }}"></td>
+                        <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
+                        <td at-title="Domain" at-implicit at-sortable at-attribute="domain" at-title="{{ 'SITE_MODULE.DOMAIN' | translate }}"></td>
+                    </tr>
+                    </tbody>
+                </table>
 
-            <at-pagination at-pagination-query ng-if="showPagination()" at-list="sites" at-config="tableConfig"></at-pagination>
+                <at-pagination at-pagination-query ng-if="showPagination()" at-list="sites" at-config="tableConfig"></at-pagination>
+            </div>
+        </div>
+    </div>
+    <div ng-if="typeList == 1">
+        <search-box show-query="true" sb-list="sitesAutoCreate" search-fields="['id', 'name', 'publisher.username', 'publisher.company', 'domain']"></search-box>
+
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table" at-sortable-query at-table at-paginated at-list="sitesAutoCreate" at-config="tableConfig">
+                    <thead>
+                    <tr>
+                        <th ng-show="isAdmin()" at-attribute="publisher.company">{{ 'PUBLISHER' | translate }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
+                        <td at-title="{{ 'ACTIONS' | translate }}">
+                            <div class="btn-group" dropdown>
+                                <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                                <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                    <li ng-if="hasDisplayAdsModule"><a ui-sref="^.^.adSlot.list({ siteId: item.id })">{{ 'SITE_MODULE.MANAGE_AD_SLOTS' | translate }}</a></li>
+                                    <li><a ui-sref="^.channelList({ id: item.id })">{{ 'SITE_MODULE.MANAGE_CHANNELS' | translate }}</a></li>
+                                    <li><a ui-sref="^.^.tagGenerator({ siteId: item.id })">{{ 'SITE_MODULE.GENERATE_TAGS' | translate }}</a></li>
+                                    <li class="divider"></li>
+                                    <li ><a ui-sref="^.^.^.reports.performance.siteAdSlots({ siteId: item.id, startDate: today})">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
+                                    <li class="divider"></li>
+                                    <li><a ui-sref="^.edit({ id: item.id })">{{ 'SITE_MODULE.EDIT_SITE' | translate }}</a></li>
+                                    <li><a ng-click="confirmDeletion(item, $index)">{{ 'SITE_MODULE.DELETE_SITE' | translate }}</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="{{ 'SITE' | translate }}"></td>
+                        <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
+                        <td at-title="Domain" at-implicit at-sortable at-attribute="domain" at-title="{{ 'SITE_MODULE.DOMAIN' | translate }}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <at-pagination at-pagination-query ng-if="showPagination()" at-list="sitesAutoCreate" at-config="tableConfig"></at-pagination>
+            </div>
+        </div>
+    </div>
+    <div ng-if="typeList == 2">
+        <search-box show-query="true" sb-list="sitesManuallyCreate" search-fields="['id', 'name', 'publisher.username', 'publisher.company', 'domain']"></search-box>
+
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table" at-sortable-query at-table at-paginated at-list="sitesManuallyCreate" at-config="tableConfig">
+                    <thead>
+                    <tr>
+                        <th ng-show="isAdmin()" at-attribute="publisher.company">{{ 'PUBLISHER' | translate }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
+                        <td at-title="{{ 'ACTIONS' | translate }}">
+                            <div class="btn-group" dropdown>
+                                <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                                <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                    <li ng-if="hasDisplayAdsModule"><a ui-sref="^.^.adSlot.list({ siteId: item.id })">{{ 'SITE_MODULE.MANAGE_AD_SLOTS' | translate }}</a></li>
+                                    <li><a ui-sref="^.channelList({ id: item.id })">{{ 'SITE_MODULE.MANAGE_CHANNELS' | translate }}</a></li>
+                                    <li><a ui-sref="^.^.tagGenerator({ siteId: item.id })">{{ 'SITE_MODULE.GENERATE_TAGS' | translate }}</a></li>
+                                    <li class="divider"></li>
+                                    <li ><a ui-sref="^.^.^.reports.performance.siteAdSlots({ siteId: item.id, startDate: today})">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
+                                    <li class="divider"></li>
+                                    <li><a ui-sref="^.edit({ id: item.id })">{{ 'SITE_MODULE.EDIT_SITE' | translate }}</a></li>
+                                    <li><a ng-click="confirmDeletion(item, $index)">{{ 'SITE_MODULE.DELETE_SITE' | translate }}</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="{{ 'SITE' | translate }}"></td>
+                        <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
+                        <td at-title="Domain" at-implicit at-sortable at-attribute="domain" at-title="{{ 'SITE_MODULE.DOMAIN' | translate }}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <at-pagination at-pagination-query ng-if="showPagination()" at-list="sitesManuallyCreate" at-config="tableConfig"></at-pagination>
+            </div>
         </div>
     </div>
 </div>

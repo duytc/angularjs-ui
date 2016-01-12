@@ -7,6 +7,9 @@
 
     function SiteList($scope, $modal, $translate, AlertService, SiteManager, SiteCache, sites, AtSortableService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.sites = sites;
+        $scope.sitesAutoCreate = [];
+        $scope.sitesManuallyCreate = [];
+        $scope.typeList = 0;
 
         $scope.hasData = function () {
             return !!sites.length;
@@ -21,6 +24,8 @@
 
         $scope.today = new Date();
         $scope.showPagination = showPagination;
+        $scope.getAutoCreatedSite = getAutoCreatedSite;
+        $scope.getSiteCreatedManually = getSiteCreatedManually;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -64,6 +69,22 @@
                 ;
             });
         };
+
+        function getAutoCreatedSite() {
+            SiteManager.getList({createType: 'auto'})
+                .then(function(data) {
+                    $scope.typeList = 1;
+                    $scope.sitesAutoCreate = data.plain();
+                })
+        }
+
+        function getSiteCreatedManually() {
+            SiteManager.getList({createType: 'manual'})
+                .then(function(data) {
+                    $scope.sitesManuallyCreate = data.plain();
+                    $scope.typeList = 2;
+                })
+        }
 
         function showPagination() {
             return angular.isArray($scope.sites) && $scope.sites.length > $scope.tableConfig.itemsPerPage;
