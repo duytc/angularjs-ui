@@ -5,10 +5,10 @@
         .controller('SiteList', SiteList)
     ;
 
-    function SiteList($scope, $modal, $translate, AlertService, SiteManager, SiteCache, sites, AtSortableService, historyStorage, HISTORY_TYPE_PATH) {
+    function SiteList($scope, $rootScope, $modal, $translate, AlertService, SiteManager, SiteCache, sites, AtSortableService, historyStorage, HISTORY_TYPE_PATH, EVENT_SEARCH_AGAIN) {
         $scope.sites = sites;
-        $scope.sitesAutoCreate = [];
-        $scope.sitesManuallyCreate = [];
+        $scope.sitesAutoCreate = _filterSiteByAutoCreate(true);
+        $scope.sitesManuallyCreate = _filterSiteByAutoCreate(false);
         $scope.typeList = 0;
 
         $scope.hasData = function () {
@@ -26,6 +26,7 @@
         $scope.showPagination = showPagination;
         $scope.getAutoCreatedSite = getAutoCreatedSite;
         $scope.getSiteCreatedManually = getSiteCreatedManually;
+        $scope.getSites = getSites;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -49,6 +50,8 @@
 
                             $scope.sites = sites;
                             SiteCache.deleteSite(site);
+                            $scope.sitesAutoCreate = _filterSiteByAutoCreate(true);
+                            $scope.sitesManuallyCreate = _filterSiteByAutoCreate(false);
 
                             if($scope.tableConfig.currentPage > 0 && sites.length/10 == $scope.tableConfig.currentPage) {
                                 AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
@@ -70,24 +73,37 @@
             });
         };
 
+        function getSites() {
+            $scope.typeList = 0;
+            $scope.sites = sites;
+
+            // this event to call filter again
+            $rootScope.$broadcast(EVENT_SEARCH_AGAIN)
+        }
+
         function getAutoCreatedSite() {
-            SiteManager.getList({createType: 'auto'})
-                .then(function(data) {
-                    $scope.typeList = 1;
-                    $scope.sitesAutoCreate = data.plain();
-                })
+            $scope.typeList = 1;
         }
 
         function getSiteCreatedManually() {
-            SiteManager.getList({createType: 'manual'})
-                .then(function(data) {
-                    $scope.sitesManuallyCreate = data.plain();
-                    $scope.typeList = 2;
-                })
+            $scope.typeList = 2;
         }
 
-        function showPagination() {
-            return angular.isArray($scope.sites) && $scope.sites.length > $scope.tableConfig.itemsPerPage;
+        function showPagination(dataList) {
+            return angular.isArray(dataList) && dataList.length > $scope.tableConfig.itemsPerPage;
+        }
+
+        function _filterSiteByAutoCreate(autoCreate) {
+            var siteList = [];
+
+            for(var idx in sites.plain()) {
+                var site = sites[idx];
+                if(site.autoCreate == autoCreate) {
+                    siteList.push(site);
+                }
+            }
+
+            return siteList;
         }
 
         $scope.$on('$locationChangeSuccess', function() {

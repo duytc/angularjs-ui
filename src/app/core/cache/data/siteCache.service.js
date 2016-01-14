@@ -90,6 +90,11 @@
 
         function deleteSite(site) {
             var siteList = siteCache.get('siteList');
+
+            if(!siteList) {
+                return;
+            }
+
             var index = siteList.indexOf(site);
 
             siteList.splice(index, 1);
@@ -98,6 +103,11 @@
 
         function updateSite(site) {
             var siteList = siteCache.get('siteList');
+
+            if(!siteList) {
+                return;
+            }
+
             var idx = _.findLastIndex(siteList, {id: parseFloat(site.id) });
 
             // update site list

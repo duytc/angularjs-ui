@@ -249,12 +249,14 @@
         {name: 'Zambia', code: 'ZM'},
         {name: 'Zimbabwe', code: 'ZW'}
     ])
+        .constant('EVENT_SEARCH_AGAIN', 'eventSearchAgain')
         .config(config)
     ;
 
     function config($httpProvider, hljsServiceProvider, ngClipProvider) {
         $httpProvider.interceptors.push('authTokenInterceptor');
         $httpProvider.interceptors.push('responseErrorInterceptor');
+        $httpProvider.interceptors.push('responseInterceptor');
 
         // config for highlight
         hljsServiceProvider.setOptions({

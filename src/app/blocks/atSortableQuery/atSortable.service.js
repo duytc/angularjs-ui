@@ -5,7 +5,7 @@
         .factory('AtSortableService', AtSortableService)
     ;
 
-    function AtSortableService($location, COLUMN_HEADER_TO_QUERY_PARAM_MAP, QUERY_PARAM_TO_HEADER_MAP) {
+    function AtSortableService($location, $state, COLUMN_HEADER_TO_QUERY_PARAM_MAP, QUERY_PARAM_TO_HEADER_MAP) {
         var api = {
             insertParamForUrl: insertParamForUrl,
             getHeaderFromQueryParam: getHeaderFromQueryParam,
@@ -25,6 +25,7 @@
                 param[key] = value;
             });
 
+            $state.current.reloadOnSearch = false;
             $location.search(param);
         }
 

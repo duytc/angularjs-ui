@@ -91,6 +91,11 @@
 
         function updateAdNetwork(adNetwork) {
             var adNetworkList = adNetworkCache.get('adNetworkList');
+
+            if(!adNetworkList) {
+                return;
+            }
+
             var idx = _.findLastIndex(adNetworkList, {id: parseFloat(adNetwork.id) });
 
             // update adNetwork list

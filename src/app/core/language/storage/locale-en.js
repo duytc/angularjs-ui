@@ -224,7 +224,9 @@
                 "SELECT_A_SITE": "Select a site",
                 "PLACEHOLDER_SITE_NAME": "Site name",
                 "PLACEHOLDER_SITE_DOMAIN": "Domain name",
-
+                "ALL_SITES" : "All Sites",
+                "AUTO_CREATED_SITES": "Auto Created Sites",
+                "MANUALLY_CREATED_SITES": "Manually Created Sites",
                 "HELP_BLOCK_SOURCE_REPORT": "If checked, source reports will be created every day for this site"
             },
             "AD_NETWORK_MODULE": {

@@ -17,7 +17,7 @@
 
     </div>
 
-    <search-box show-query="true" sb-list="adTags" search-fields="['id', 'name', 'rotation', 'frequencyCap', 'adSlot.name', 'adSlot.site.name']"></search-box>
+    <search-box show-query="true" sb-list="adTags" search-fields="['id', 'libraryAdTag.name', 'rotation', 'frequencyCap', 'adSlot.name', 'adSlot.site.name']"></search-box>
     <div class="panel-body" ng-if="hasAdTags()">
         <div class="table-responsive">
             <table class="table" at-sortable-query at-table at-paginated at-list="adTags" at-config="tableConfig">
