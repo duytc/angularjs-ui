@@ -14,7 +14,8 @@
         .constant('USER_MODULES', {
             displayAds: 'MODULE_DISPLAY',
             video: 'MODULE_VIDEO',
-            analytics: 'MODULE_ANALYTICS'
+            analytics: 'MODULE_ANALYTICS',
+            unified: 'MODULE_UNIFIED_REPORT'
         })
 
         .constant('AUTH_EVENTS', {
