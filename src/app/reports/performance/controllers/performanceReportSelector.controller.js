@@ -424,9 +424,9 @@
                 return
             }
 
+            hasGetAdSlot = true;
             reportSelectorForm.getAdSlotsForSite(siteId)
                 .then(function(adSlots) {
-                    hasGetAdSlot = true;
 //                        addAllOption(adSlots, 'All AdSlots');
                     $scope.optionData.adSlots = adSlots;
                 }
@@ -438,9 +438,9 @@
                 return
             }
 
+            hasGetRonAdSlot = true;
             reportSelectorForm.getRonAdSlot()
                 .then(function(ronAdSlots) {
-                    hasGetRonAdSlot = true;
 
                     $scope.optionData.ronAdSlots = ronAdSlots;
                 }
@@ -448,6 +448,10 @@
         }
 
         function selectedPublisherRonAdSlot(ronAdSlot) {
+            if(ronAdSlot.libraryAdSlot.libType == 'dynamic') {
+                return false;
+            }
+
             if(!isAdmin) {
                 return true;
             }
