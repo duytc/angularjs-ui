@@ -96,9 +96,9 @@
         function _filterSiteByAutoCreate(autoCreate) {
             var siteList = [];
 
-            for(var idx in sites.plain()) {
+            for(var idx in sites) {
                 var site = sites[idx];
-                if(site.autoCreate == autoCreate) {
+                if(angular.isObject(site) && site.autoCreate == autoCreate) {
                     siteList.push(site);
                 }
             }
