@@ -7,27 +7,35 @@
         <form name="sourceReportConfig" class="col-lg-12 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
 
             <div class="form-group">
-                <label for="inputEmail" class="col-sm-3 control-label">{{ 'SOURCE_CONFIG_MODULE.RECEIVING_EMAIL' | translate }}</label>
-                <div class="col-sm-9">
+                <label for="inputEmail" class="col-sm-2 control-label">{{ 'SOURCE_CONFIG_MODULE.RECEIVING_EMAIL' | translate }}</label>
+                <div class="col-sm-10">
                     <input server-error ng-required="true" type="email" ng-model="emailReceive.email" class="form-control" id="inputEmail" placeholder="{{ 'SOURCE_CONFIG_MODULE.RECEIVING_EMAIL' | translate }}">
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="inputEnabled" class="col-sm-3 control-label">{{ 'SOURCE_CONFIG_MODULE.ACTIVE' | translate }}</label>
-                <div class="col-sm-9">
+                <label for="inputEnabled" class="col-sm-2 control-label">{{ 'SOURCE_CONFIG_MODULE.ACTIVE' | translate }}</label>
+                <div class="col-sm-10">
                     <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="emailReceive.active" id="inputEnabled"><span></span></label>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="inputIncludedAll" class="col-sm-3 control-label">{{ 'SOURCE_CONFIG_MODULE.INCLUDE_ALL' | translate }}</label>
-                <div class="col-sm-9">
-                    <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="emailReceive.includedAll" id="inputIncludedAll"><span></span></label>
+                <label for="inputIncludedAll" class="col-sm-2 control-label">{{ 'SOURCE_CONFIG_MODULE.INCLUDE' | translate }}</label>
+                <div class="col-sm-10">
+                    <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="selected.includedAll" ng-click="selected.includedAllSites = false" id="inputIncludedAll"><span>{{ 'SOURCE_CONFIG_MODULE.INCLUDE_ALL' | translate }}</span></label>
+                    <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="selected.includedAllSites" ng-click="selected.includedAll = false" id="inputIncludedAllSites"><span>{{ 'SOURCE_CONFIG_MODULE.INCLUDE_ALL_SITES' | translate }}</span></label>
                 </div>
             </div>
 
-            <div class="col-sm-offset-3 col-sm-9">
+            <div class="form-group" ng-if="!!selected.includedAllSites">
+                <label for="inputIncludedAllSitesOfPublishers" class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
+                <div class="col-sm-10">
+                    <oi-select oi-options="publisher.company for publisher in publishers" id="inputIncludedAllSitesOfPublishers" ng-model="selected.includedAllSitesOfPublishers" multiple placeholder="Select"></oi-select>
+                </div>
+            </div>
+
+            <div class="col-sm-offset-2 col-sm-10">
                 <button ng-disabled="!isFormValid()" type="submit" class="btn btn-success" ng-click="$dismiss()">{{ 'SUBMIT' | translate }}</button>
                 <div ng-show="!isFormValid()" class="callout callout-info">
                     <p>{{ 'VALID_FORM' | translate }}</p>

@@ -5,7 +5,8 @@
         'tagcade.reports.performance',
         'tagcade.reports.source',
         'tagcade.reports.billing',
-        'tagcade.reports.projectedBill'
+        'tagcade.reports.projectedBill',
+        'tagcade.reports.unified'
     ]);
 
 })();

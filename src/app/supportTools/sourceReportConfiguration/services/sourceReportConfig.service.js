@@ -20,7 +20,9 @@
             postEmailIncludedAllConfig: postEmailIncludedAllConfig,
             updateEmailConfig: updateEmailConfig,
             getAllSourceConfig: getAllSourceConfig,
-            getSourceReportConfigById: getSourceReportConfigById
+            getSourceReportConfigById: getSourceReportConfigById,
+            cloneSourceReportConfig: cloneSourceReportConfig,
+            postEmailIncludedAllSitesConfig: postEmailIncludedAllSitesConfig
         };
 
         return api;
@@ -112,7 +114,8 @@
                 id: emailReceive.id,
                 active: emailReceive.active,
                 email: emailReceive.email,
-                includedAll: emailReceive.includedAll
+                includedAll: emailReceive.includedAll,
+                includedAllSitesOfPublishers: emailReceive.includedAllSitesOfPublishers
             };
 
             return adminRestangular.one('sourcereportemailconfigs', params.id).customPUT(params)
@@ -124,6 +127,14 @@
 
         function getSourceReportConfigById(emailId) {
             return adminRestangular.one('sourcereportemailconfigs', emailId).get();
+        }
+
+        function cloneSourceReportConfig(emailConfigId, emails) {
+            return adminRestangular.one('sourcereportemailconfigs', emailConfigId).one('clone').customPOST({emails: emails});
+        }
+
+        function postEmailIncludedAllSitesConfig(emails, publishers) {
+            return adminRestangular.one('sourcereportemailconfigs','emailIncludedAllSites').customPOST({emails: emails, includedAllSitesOfPublishers: publishers});
         }
     }
 })();

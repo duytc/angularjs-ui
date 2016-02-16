@@ -5,12 +5,13 @@
         .controller('TagGenerator', TagGenerator)
     ;
 
-    function TagGenerator($scope, $translate, $location, $q, siteList, site, jstags, publishers, adminUserManager, accountManager, USER_MODULES) {
+    function TagGenerator($scope, $translate, $location, $q, siteList, site, jstags, publishers, SiteManager, adminUserManager, accountManager, Auth, USER_MODULES) {
         $scope.formProcessing = false;
         $scope.jstagCopy = angular.copy(jstags);
 
         $scope.typeKey = {
             passback: 'passback',
+            header: 'header',
             adSlot: 'adSlot',
             ronAdSlot: 'ronAdSlot'
         };
@@ -19,6 +20,10 @@
             {
                 key: $scope.typeKey.passback,
                 label: 'Universal Passback'
+            },
+            {
+                key: $scope.typeKey.header,
+                label: 'Header'
             },
             {
                 key: $scope.typeKey.adSlot,
@@ -33,7 +38,8 @@
         $scope.selected = {
             type: !!site ? $scope.typeKey.adSlot : $scope.typeKey.passback,
             publisher: site && site.publisher,
-            site: site
+            site: site,
+            adSlotType: null
         };
 
         $scope.typeSelected = !!site ? $scope.typeKey.adSlot : $scope.typeKey.passback;
@@ -51,7 +57,6 @@
         $scope.allowPublisherSelection = $scope.isAdmin() && !!publishers;
         $scope.publisher = null;
         $scope.publishers = publishers;
-        $scope.hasAnalyticsModule = !!site ? site.publisher.enabledModules.indexOf(USER_MODULES.analytics) > -1 : false;
 
         $scope.isFormValid = function() {
             return $scope.tagGeneratorForm.$valid;
@@ -62,8 +67,7 @@
         };
 
         $scope.selectType = function() {
-            $scope.selected.site = null;
-            $scope.selected.publisher = null;
+
         };
 
         $scope.selectSite = function (site, siteId) {
@@ -120,12 +124,12 @@
 
                     if($scope.selected.type == $scope.typeKey.adSlot) {
                         var site = $scope.selected.site;
-                        _hasAnalyticsModule(site);
 
                         // change siteId parameter on the current state without reloading
                         // reloadOnSearch: false set on the state
                         $location.search({ siteId: site.id });
-                    } else {
+                    }
+                    else {
                         $location.search({ siteId: null });
                     }
                 })
@@ -133,6 +137,14 @@
                     $scope.formProcessing = false;
                 })
             ;
+        };
+
+        $scope.filterByAnalytics = function(type) {
+            if(!$scope.isAdmin() && type.key == $scope.typeKey.header && Auth.getSession().enabledModules.indexOf(USER_MODULES.analytics) == -1) {
+                return false
+            }
+
+            return true;
         };
 
         $scope.exportTags = function(jstags) {
@@ -147,8 +159,8 @@
             var blob = new Blob([tagsString], {type: "text/plain;charset=utf-8"});
             var name = null;
 
-            if($scope.typeSelected == $scope.typeKey.adSlot) {
-                name = $scope.selected.site.domain.substring(7);
+            if($scope.typeSelected == $scope.typeKey.adSlot || $scope.typeSelected == $scope.typeKey.header) {
+                name = $scope.selected.site.domain;
             }
             else if($scope.typeSelected == $scope.typeKey.passback) {
                 name = 'Universal Passback';
@@ -175,6 +187,10 @@
                 }
             }
 
+            if ($scope.selected.type == $scope.typeKey.header) {
+                return SiteManager.one($scope.selected.site.id).customGET('jsheadertag');
+            }
+
             if($scope.isAdmin()) {
                 return adminUserManager.one($scope.selected.publisher.id).customGET('ronjstags');
             } else {
@@ -185,7 +201,7 @@
         function _tagsAdSlotString(jstags) {
             var tags = '';
 
-            if(!!jstags.header && ($scope.hasAnalyticsModule || $scope.typeSelected == $scope.typeKey.ronAdSlot)) {
+            if(!!jstags.header && $scope.typeSelected == $scope.typeKey.header) {
                 tags = 'HEADER' + '\n#' + $scope.keywordGuide.header + _downLine('=') + jstags.header + _downLine();
             }
 
@@ -230,10 +246,6 @@
             });
 
             return adTags;
-        }
-
-        function _hasAnalyticsModule(site) {
-            $scope.hasAnalyticsModule = site.publisher.enabledModules.indexOf(USER_MODULES.analytics) > -1;
         }
     }
 })();

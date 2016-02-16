@@ -51,7 +51,8 @@
         $scope.modules = [
             { label: 'Display', role: 'MODULE_DISPLAY' },
             { label: 'Analytics', role: 'MODULE_ANALYTICS' },
-            { label: 'Video Analytics', role: 'MODULE_VIDEO_ANALYTICS' }
+            { label: 'Video Analytics', role: 'MODULE_VIDEO_ANALYTICS' },
+            { label: 'Unified Report', role: 'MODULE_UNIFIED_REPORT' }
 //            { label: 'Fraud Detection', role: 'MODULE_FRAUD_DETECTION' }
         ];
 
@@ -87,13 +88,15 @@
                 return;
             }
 
-            if(!$scope.publisher.tagDomain.domain) {
-                $scope.publisher.tagDomain = null;
+            var publisher = angular.copy($scope.publisher);
+
+            if(!publisher.tagDomain.domain) {
+                publisher.tagDomain = null;
             }
 
             $scope.formProcessing = true;
 
-            var saveUser = $scope.isNew ? adminUserManager.post($scope.publisher) : $scope.publisher.patch();
+            var saveUser = $scope.isNew ? adminUserManager.post(publisher) : adminUserManager.one(publisher.id).patch(publisher);
 
             saveUser
                 .catch(

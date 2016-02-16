@@ -163,7 +163,9 @@
                 "TAGS_FOR_SITE": "Tags for {{ name }}",
                 "RON_AD_SLOT_FOR": "{{ name }}",
                 "TAGS_FOR_RON_AD_SLOT": "Tags for RON ad slot",
-                "HEADER": "Header"
+                "HEADER": "Header",
+                "AD_SLOT_TYPE": "Ad Slot Type",
+                "SELECT_A_AD_SLOT_TYPE": "Select a ad slot type"
             },
             "CHANNEL_MODULE": {
                 "ADD_NEW_SUCCESS": "The channel has been created",
@@ -222,7 +224,9 @@
                 "SELECT_A_SITE": "Select a site",
                 "PLACEHOLDER_SITE_NAME": "Site name",
                 "PLACEHOLDER_SITE_DOMAIN": "Domain name",
-
+                "ALL_SITES" : "All Sites",
+                "AUTO_CREATED_SITES": "Auto Created Sites",
+                "MANUALLY_CREATED_SITES": "Manually Created Sites",
                 "HELP_BLOCK_SOURCE_REPORT": "If checked, source reports will be created every day for this site"
             },
             "AD_NETWORK_MODULE": {
@@ -250,7 +254,7 @@
                 "DROPDOWN_ACTIVE": "Activate Ad Network",
                 "DROPDOWN_PAUSE": "Pause Ad Network",
                 "DROPDOWN_VISIT_AS_NETWORK": "Visit Ad Network",
-                "ADD_NEW_AD_NETWORK": "Add New Ad Network",
+                "ADD_NEW_AD_NETWORK": "+ Add New Ad Network",
 
                 "BACK_TO_AD_NETWORK_LIST": "Back to Ad Network List",
                 "ACTIVE_AD_TAGS_COUNT": "Active Ad Tags",
@@ -553,6 +557,23 @@
                 "VIDEO_IPV": "Video IPV",
                 "VIDEO_AD_CLICKS": "Video Ad Clicks"
             },
+            "UNIFIED_REPORT_MODULE": {
+                "AVERAGES": "Averages",
+                "BACKUP_IMPS": "Backup Impressions",
+                "AVG_CPM": "Avg Cpm",
+                "FILL_RATE": "Fill Rate",
+                "PAID_IMPS": "Paid Impressions",
+                "REVENUE": "Revenue",
+                "TOTAL_IMPS": "Total Impressions",
+                "SIZE": "Size",
+
+                "SEARCH": "Search",
+                "AD_TAG_GROUP": "Ad Tag Group",
+                "COUNTRY": "Country",
+                "CPM": "Cpm",
+                "PUB_PAYOUT": "Pub Payout",
+                "ASK_PRICE": "Ask Price"
+            },
             "ACTION_LOG_MODULE": {
                 "DATE_RANGE": "Date Range",
                 "BUTTON_GET_LOGS": "Get Logs",
@@ -589,8 +610,11 @@
 
                 "UPDATE_EMAIL_SUCCESS": "The email config has been updated",
                 "UPDATE_EMAIL_FAIL": "The email config could not be updated",
+                "CLONE_EMAIL_SUCCESS": "The email config has been clone",
+                "CLONE_EMAIL_FAIL": "The email config could not be clone",
                 "DELETE_EMAIL_SUCCESS": "The email config has been deleted",
                 "DELETE_EMAIL_FAIL": "The email config could not be deleted",
+                "CURRENTLY_NO_SITE_CONFIG": "There is currently no site config",
 
                 "DELETE_SITE_SUCCESS": "The site config has been deleted",
                 "DELETE_SITE_FAIL": "The site config could not be deleted",
@@ -603,6 +627,9 @@
                 "RECEIVING_EMAIL": "Receiving Email",
                 "ACTIVE": "Active",
                 "INCLUDE_ALL": "Include All",
+                "INCLUDE_ALL_SITES": "Include All Sites Of Publishers",
+                "INCLUDE": "Include",
+                "SHOW_DETAILS": 'Show Details',
 
                 "BACK": "Back",
                 "NEW_SITE_CONFIG": "New Site Config",

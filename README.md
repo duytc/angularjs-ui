@@ -50,3 +50,19 @@ Then run end to end test
 ```
 grunt e2e
 ```
+
+4) Custom page title and logo
+------------------------------
+
+* Run grunt task `build-prod-white-label-custom` with parameters
+
+    ```
+    grunt build-prod-white-label-custom --title="{Page title}" --logo="{path to logo}" --logoHeader="{path to header logo}"
+    ```
+
+
+* For example
+
+    ```
+    grunt build-prod-white-label-custom --title="Test Platform" --logo="build/images/whitelabel/logo.png" --logoHeader="build/images/whitelabel/logo-header.png"
+    ```

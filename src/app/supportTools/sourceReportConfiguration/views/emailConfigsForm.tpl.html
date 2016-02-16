@@ -20,13 +20,22 @@
             </div>
 
             <div class="form-group">
-                <label for="inputIncludedAll" class="col-sm-2 control-label">{{ 'SOURCE_CONFIG_MODULE.INCLUDE_ALL' | translate }}</label>
+                <label for="inputIncludedAll" class="col-sm-2 control-label">{{ 'SOURCE_CONFIG_MODULE.INCLUDE' | translate }}</label>
                 <div class="col-sm-10">
-                    <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="selected.includedAll" id="inputIncludedAll"><span></span></label>
+                    <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="selected.includedAll" ng-click="selected.includedAllSites = false" id="inputIncludedAll"><span>{{ 'SOURCE_CONFIG_MODULE.INCLUDE_ALL' | translate }}</span></label>
+                    <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="selected.includedAllSites" ng-click="selected.includedAll = false" id="inputIncludedAllSites"><span>{{ 'SOURCE_CONFIG_MODULE.INCLUDE_ALL_SITES' | translate }}</span></label>
                 </div>
             </div>
 
-            <div class="form-group" ng-if="!selected.includedAll">
+
+            <div class="form-group" ng-if="!!selected.includedAllSites">
+                <label for="inputIncludedAllSitesOfPublishers" class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
+                <div class="col-sm-10">
+                    <oi-select oi-options="publisher.company for publisher in publishers" id="inputIncludedAllSitesOfPublishers" ng-model="selected.includedAllSitesOfPublishers" multiple placeholder="Select"></oi-select>
+                </div>
+            </div>
+
+            <div class="form-group" ng-if="!selected.includedAll && !selected.includedAllSites">
                 <label for="inputPublisher" class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
                 <div class="col-sm-10">
                     <ui-select id="inputPublisher" ng-model="selected.publisher" ng-required="true" server-error on-select="selectPublisher($model)" reset-search-input="'false'">
@@ -39,7 +48,7 @@
             </div>
 
             <div class="row">
-                <div ng-if="!selected.includedAll" class="col-lg-offset-2 col-sm-10">
+                <div ng-if="!selected.includedAll && !selected.includedAllSites" class="col-lg-offset-2 col-sm-10">
                     <div class="col-sm-5">
                         <section class="panel panel-default row">
                             <div class="panel-heading">{{ 'SOURCE_CONFIG_MODULE.AVAILABLE_SITES' | translate }}</div>

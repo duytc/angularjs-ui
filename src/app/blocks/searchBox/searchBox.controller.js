@@ -5,7 +5,7 @@
         .controller('SearchBox', SearchBox)
     ;
 
-    function SearchBox($scope, $filter, _, $location, AtSortableService) {
+    function SearchBox($scope, $filter, _, $location, AtSortableService, EVENT_SEARCH_AGAIN) {
         var sbList = $scope.sbList;
         $scope.pHolder = ($scope.placeHolder == null || $scope.placeHolder == undefined) ? 'Search' : $scope.placeHolder;
 
@@ -18,6 +18,19 @@
                 AtSortableService.insertParamForUrl({search: $scope.query});
             }
         };
+
+        $scope.$on(EVENT_SEARCH_AGAIN, function() {
+            var hasWatch = true;
+            $scope.$watch('sbList', function() {
+                if(!hasWatch) {
+                    return
+                }
+
+                hasWatch = false;
+                sbList = $scope.sbList;
+                update();
+            });
+        });
 
         update();
         $scope.$on('$locationChangeSuccess', function() {

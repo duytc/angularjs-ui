@@ -25,6 +25,7 @@
         $scope.deleteEmailConfig = deleteEmailConfig;
         $scope.openPopupIncludedAll = openPopupIncludedAll;
         $scope.groupEntities = groupEntities;
+        $scope.cloneThisConfig = cloneThisConfig;
 
         function groupEntities(item){
             if (item.id === null) {
@@ -75,11 +76,31 @@
             });
         }
 
+        function cloneThisConfig(emailConfig) {
+            $modal.open({
+                templateUrl: 'supportTools/sourceReportConfiguration/views/cloneSourceReportConfig.tpl.html',
+                size : 'lg',
+                controller: 'CloneSourceReportConfig',
+                resolve: {
+                    publishers: function() {
+                        return publishers;
+                    },
+                    emailConfig: function() {
+                        return emailConfig;
+                    }
+                }
+            });
+        }
+
         function editSourceReportConfig(emailConfig) {
             $modal.open({
                 templateUrl: 'supportTools/sourceReportConfiguration/views/emailConfigsEdit.tpl.html',
                 controller: 'EmailConfigsEdit',
+                size : 'lg',
                 resolve: {
+                    publishers: function() {
+                        return publishers;
+                    },
                     emailConfig: function() {
                         return angular.copy(emailConfig);
                     }

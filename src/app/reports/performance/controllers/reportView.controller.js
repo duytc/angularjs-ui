@@ -55,8 +55,6 @@
 
         }
 
-        console.log($scope.reportGroup.reportType);
-
         $scope.tableConfig = {
             maxPages: 10,
             itemsPerPage: 10

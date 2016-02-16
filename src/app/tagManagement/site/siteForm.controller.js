@@ -110,6 +110,7 @@
                 });
             } else {
                 delete $scope.site.channels;
+                delete $scope.site.autoCreate;
             }
 
             if(!isEnabledModule('MODULE_VIDEO_ANALYTICS')) {

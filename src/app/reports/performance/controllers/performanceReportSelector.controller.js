@@ -415,24 +415,22 @@
             $scope.selectedData.adSlotId = null;
             resetToStateForCurrentReportType();
 
+            hasGetAdSlot = false;
             getAdSlot(siteId);
         }
 
         function getAdSlot(siteId) {
-            if(hasGetAdSlot) {
+            if(hasGetAdSlot && toState != 'reports.performance.adSlots') {
                 return
             }
 
             hasGetAdSlot = true;
-
-            if(toState == 'reports.performance.adSlots') {
-                reportSelectorForm.getAdSlotsForSite(siteId)
-                    .then(function(adSlots) {
+            reportSelectorForm.getAdSlotsForSite(siteId)
+                .then(function(adSlots) {
 //                        addAllOption(adSlots, 'All AdSlots');
-                        $scope.optionData.adSlots = adSlots;
-                    }
-                );
-            }
+                    $scope.optionData.adSlots = adSlots;
+                }
+            );
         }
 
         function getRonAdSlot() {
@@ -441,15 +439,19 @@
             }
 
             hasGetRonAdSlot = true;
-
             reportSelectorForm.getRonAdSlot()
                 .then(function(ronAdSlots) {
+
                     $scope.optionData.ronAdSlots = ronAdSlots;
                 }
             );
         }
 
         function selectedPublisherRonAdSlot(ronAdSlot) {
+            if(ronAdSlot.libraryAdSlot.libType == 'dynamic') {
+                return false;
+            }
+
             if(!isAdmin) {
                 return true;
             }

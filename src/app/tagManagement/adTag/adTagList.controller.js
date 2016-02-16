@@ -92,6 +92,10 @@
             if($scope.enableDragDrop) {
                 $scope.sortableItemOption['disabled'] = isOpen;
                 $scope.sortableGroupOptions['disabled'] = isOpen;
+
+                setTimeout(function() {
+                    $scope.$apply()
+                }, 0)
             }
         }
 

@@ -26,6 +26,7 @@ module.exports = {
                     [
                         'index.html',
                         'assets/images/**/*',
+                        'assets/css/**/*',
                         'assets/font*/**/*',
                         'assets/swf/*',
                         'favicon.ico',
