@@ -441,10 +441,12 @@
             hasGetRonAdSlot = true;
             reportSelectorForm.getRonAdSlot()
                 .then(function(ronAdSlots) {
-
+                    hasGetRonAdSlot = true;
                     $scope.optionData.ronAdSlots = ronAdSlots;
-                }
-            );
+                })
+                .catch(function() {
+                    hasGetRonAdSlot = false;
+                });
         }
 
         function selectedPublisherRonAdSlot(ronAdSlot) {

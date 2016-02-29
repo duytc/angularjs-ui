@@ -83,6 +83,9 @@
                     <td at-title="{{ 'AD_SLOT_MODULE.IN_LIBRARY' | translate }}" at-attribute="libraryAdSlot.visible" at-sortable>
                         <i class="fa" ng-class="item.libraryAdSlot.visible? 'fa-check-square' : 'fa-square'"></i>
                     </td>
+                    <td at-title="{{ 'SITE_MODULE.RTB' | translate }}" at-attribute="rtb" at-sortable>
+                        {{ rtbStatusLabels[item.rtbStatus] }}
+                    </td>
                 </tr>
                 </tbody>
             </table>

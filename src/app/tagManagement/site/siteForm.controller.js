@@ -5,7 +5,7 @@
         .controller('SiteForm', SiteForm)
     ;
 
-    function SiteForm($scope, $translate, $filter, SiteCache, AlertService, ServerErrorProcessor, site, publishers, channels, userSession, historyStorage, HISTORY_TYPE_PATH) {
+    function SiteForm($scope, $translate, _, $filter, SiteCache, AlertService, ServerErrorProcessor, site, publishers, channels, userSession, historyStorage, HISTORY_TYPE_PATH, RTB_STATUS_TYPES) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             domain: 'Domain'
@@ -18,13 +18,17 @@
         $scope.allowPublisherSelection = $scope.isAdmin() && !!publishers;
         $scope.publishers = publishers;
         $scope.channels = !$scope.isAdmin() ? channels : [];
+        $scope.rtbStatusTypes = RTB_STATUS_TYPES;
 
+        $scope.rtbStatusChanged = rtbStatusChanged;
         $scope.selectPublisher = selectPublisher;
         $scope.isEnabledModule = isEnabledModule;
         $scope.isFormValid = isFormValid;
         $scope.backToListSite = backToListSite;
         $scope.toggleVideoPlayer =  toggleVideoPlayer;
         $scope.hasVideoPlayer =  hasVideoPlayer;
+        $scope.hasExchange = hasExchange;
+        $scope.toggleExchange = toggleExchange;
         $scope.submit =  submit;
 
         $scope.site = site || {
@@ -32,7 +36,9 @@
             domain: null,
             enableSourceReport: false,
             players: [],
-            channelSites: []
+            channelSites: [],
+            exchanges: [],
+            rtbStatus: RTB_STATUS_TYPES.inherit
         };
 
         $scope.videoPlayers = [
@@ -46,6 +52,19 @@
             { label: 'ULive', name: 'ulive' }
         ];
 
+        $scope.exchangesOfPublisher = [];
+        $scope.exchanges = [
+            { label: 'Index Exchange', name: 'index-exchange'}
+        ];
+
+        if(!$scope.isNew) {
+            $scope.exchangesOfPublisher = site.publisher.exchanges;
+        } else {
+            if(!$scope.isAdmin()) {
+                $scope.exchangesOfPublisher = userSession.exchanges;
+            }
+        }
+
         $scope.data = {
           channels: []
         };
@@ -54,9 +73,14 @@
             return $scope.siteForm.$valid;
         }
 
+        function rtbStatusChanged(rtbStatus) {
+            $scope.site.rtbStatus = rtbStatus;
+        }
+
         function selectPublisher(publisher) {
             $scope.channels = $filter('selectedPublisher')(channels, publisher);
 
+            $scope.exchangesOfPublisher = publisher.exchanges;
             $scope.data.channels = [];
             enabledModules = publisher.enabledModules
         }
@@ -85,6 +109,14 @@
             return $scope.site.players.indexOf(player) > -1;
         }
 
+        function hasExchange(exchange) {
+            if(!$scope.site.exchanges) {
+                return false;
+            }
+
+            return $scope.site.exchanges.indexOf(exchange) > -1;
+        }
+
         function toggleVideoPlayer(player) {
             var idx = $scope.site.players.indexOf(player);
 
@@ -92,6 +124,16 @@
                 $scope.site.players.splice(idx, 1);
             } else {
                 $scope.site.players.push(player);
+            }
+        }
+
+        function toggleExchange(exchange) {
+            var idx = $scope.site.exchanges.indexOf(exchange);
+
+            if (idx > -1) {
+                $scope.site.exchanges.splice(idx, 1);
+            } else {
+                $scope.site.exchanges.push(exchange);
             }
         }
 
@@ -103,7 +145,7 @@
 
             $scope.formProcessing = true;
 
-            // refactor json channel
+            // refactor json site
             if($scope.isNew) {
                 angular.forEach($scope.data.channels, function(channel) {
                     $scope.site.channelSites.push({channel: channel.id})
@@ -111,6 +153,15 @@
             } else {
                 delete $scope.site.channels;
                 delete $scope.site.autoCreate;
+            }
+
+            // use the default value for site.exchanges when disable view exchanges in form
+            $scope.site.exchanges = $scope.exchangesOfPublisher;
+
+            // not include rtbStatus if module rtb not enabled in publisher
+            if (!isEnabledModule('MODULE_RTB')) {
+                delete $scope.site.rtbStatus;
+                delete $scope.site.exchanges;
             }
 
             if(!isEnabledModule('MODULE_VIDEO_ANALYTICS')) {

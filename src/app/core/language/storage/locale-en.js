@@ -43,6 +43,11 @@
             "SEGMENT": "Report Segment",
             "SEGMENTS": "Report Segments",
 
+            "RTB_STATUS": "RTB status",
+            "RTB_STATUS_INHERIT": "Inherit",
+            "RTB_STATUS_ENABLE": "Enable",
+            "RTB_STATUS_DISABLE": "Disable",
+
             "VIEW_TODAY_REPORT": "View Today's Report",
             "COPY_TO_CLIPBOARD": "Copy to Clipboard",
 
@@ -78,6 +83,7 @@
                 "NEW_AD_TAG": "New Ad Tag",
                 "TAG_LIBRARY": "Tag Library",
                 "REPORTS": "Reports",
+                "RTB_REPORTS": "RTB Reports",
                 "PERFORMANCE_REPORTS": "Performance Reports",
                 "SOURCE_REPORTS": "Source Reports",
                 "BILLING_REPORTS": "Billing Reports",
@@ -191,11 +197,15 @@
                 "NEW_CHANNEL": "New Channel",
                 "REMOVE_SITE_FROM_CHANNEL": "Remove Site from Channel",
 
-                "PLACEHOLDER_CHANNEL_NAME": "Channel name"
+                "PLACEHOLDER_CHANNEL_NAME": "Channel name",
+
+                "HELP_BLOCK_RTB": "If enabled or inherited from publisher that has rtb enabled, all sites of that channel will be enabled real-time bidding feature."
             },
             "SITE_MODULE": {
                 "DOMAIN": "Domain",
                 "VIDEO_PLAYERS": "Video Players",
+                "RTB": "RTB",
+                "EXCHANGES" : "Exchanges",
 
                 "ADD_NEW_SUCCESS": "The site has been created",
                 "UPDATE_SUCCESS": "The site has been updated",
@@ -227,7 +237,8 @@
                 "ALL_SITES" : "All Sites",
                 "AUTO_CREATED_SITES": "Auto Created Sites",
                 "MANUALLY_CREATED_SITES": "Manually Created Sites",
-                "HELP_BLOCK_SOURCE_REPORT": "If checked, source reports will be created every day for this site"
+                "HELP_BLOCK_SOURCE_REPORT": "If checked, source reports will be created every day for this site",
+                "HELP_BLOCK_RTB": "If enabled or inherited from channel that has rtb enabled, all ad slots of that site will be enabled real-time bidding feature."
             },
             "AD_NETWORK_MODULE": {
                 "URL": "Url",
@@ -278,6 +289,7 @@
                 "SIZE": "Size",
                 "AUTO_FIT": "Auto Fit",
                 "PASSBACK_MODE": "Passback Mode",
+                "FLOOR_PRICE": "Floor Price",
 
                 "ADD_NEW_SUCCESS": "The ad slot has been created",
                 "ADD_NEW_FAIL": "An error occurred. The ad slot could not be created",
@@ -312,7 +324,9 @@
                 "HELP_BLOCK_COPY_TAG": "Copy and paste the following ad tag into the <body> section of your website.",
                 "HELP_BLOCK_FROM_LIBRARY": "You can select an existing ad slot from your library. If you choose this option, all of the fields below will not be editable. If you would like to change these fields, you may do so the the Tag Library section.",
                 "HELP_BLOCK_DEFAULT_AD_SLOT": "If no default ad slot is selected and no expressions match, the ad slot will not be shown on the page.",
-                "HELP_BLOCK_AUTO_FIT": "When Auto Fit is enabled, the ad slot will dynamically resize if the ad served is different from the size defined above."
+                "HELP_BLOCK_AUTO_FIT": "When Auto Fit is enabled, the ad slot will dynamically resize if the ad served is different from the size defined above.",
+                "HELP_BLOCK_FLOOR_PRICE": "This is the lowest price to be accepted in RTB auction. The winning bidder is the one whose bid price is highest among bidders and it must be higher than or equal to this price. Otherwise regular ad tag display will be executed.",
+                "HELP_BLOCK_RTB": "If enabled or inherited from site that has rtb enabled, the display of tag will be auctioned to find higher revenue compares to regular ad tag display"
             },
             "RON_AD_SLOT_MODULE": {
                 "CURRENTLY_NO_RON_AD_SLOT": "There is currently no RON ad slots",
@@ -336,7 +350,8 @@
                 "SHOW_DETAILS": 'Show Details',
                 "SEGMENT_NOTHING_IS_SELECTED": 'Nothing is selected',
                 "HELP_BLOCK_SELECT_SEGMENT": "You can create custom report segments above. To create new segments, enter in a text value and press enter. You may repeat this process to create more segments",
-                "HELP_BLOCK_GLOBAL": "You can generate unique tags for each report segment. The Global segment is the default report segment and should be used when you do not have any custom segments or do not want to track a specific segment."
+                "HELP_BLOCK_GLOBAL": "You can generate unique tags for each report segment. The Global segment is the default report segment and should be used when you do not have any custom segments or do not want to track a specific segment.",
+                "HELP_BLOCK_RTB": "If enabled or inherited from publisher that has rtb module enabled, the display of tag will be auctioned to find higher revenue compares to regular ad tag display"
             },
             "SEGMENT_MODULE": {
                 "CURRENTLY_SEGMENT": "There is currently no report segments in the library",
@@ -464,6 +479,7 @@
                 "SLOT_OPPORTUNITIES": "Slot Opportunities",
                 "NETWORK_OPPORTUNITIES": "Network Opportunities",
                 "IMPRESSIONS": "Impressions",
+                "RTB_IMPRESSIONS": "RTB Impressions",
                 "PASSBACKS": "Passbacks",
                 "FILL_RATE": "Fill Rate",
                 "BILLED_CPM_RATE": "Billed CPM Rate",
@@ -573,6 +589,10 @@
                 "CPM": "Cpm",
                 "PUB_PAYOUT": "Pub Payout",
                 "ASK_PRICE": "Ask Price"
+            },
+            "RTB_REPORT_MODULE": {
+                "EARNED_AMOUNT": "Earned Amount",
+                "OPPORTUNITIES": "Opportunities"
             },
             "ACTION_LOG_MODULE": {
                 "DATE_RANGE": "Date Range",

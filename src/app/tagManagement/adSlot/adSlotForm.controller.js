@@ -5,7 +5,7 @@
         .controller('AdSlotForm', AdSlotForm)
     ;
 
-    function AdSlotForm($scope, $translate, $filter, $stateParams, $q, _, AdSlotLibrariesManager, DynamicAdSlotManager, historyStorage, SiteManager, adSlotService, AlertService, ServerErrorProcessor, site, publisherList, siteList, adSlot, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
+    function AdSlotForm($scope, $translate, $filter, $stateParams, $q, _, AdSlotLibrariesManager, DynamicAdSlotManager, historyStorage, SiteManager, adSlotService, AlertService, ServerErrorProcessor, site, publisherList, siteList, adSlot, HISTORY_TYPE_PATH, TYPE_AD_SLOT, RTB_STATUS_TYPES, userSession) {
         $scope.fieldNameTranslations = {
             site: 'Site',
             name: 'Name',
@@ -41,8 +41,11 @@
             }
         ];
 
+        $scope.rtbStatusTypes = RTB_STATUS_TYPES;
+
         $scope.tags = null;
         $scope.formProcessing = false;
+        $scope.rtbEnable = false;
         $scope.allowSiteSelection = $scope.isNew && !!siteList;
 
         // required by ui select
@@ -62,9 +65,11 @@
                 name: null,
                 libraryExpressions: [],
                 passbackMode: $scope.passbackOption[0].key
-            }
+            },
+            rtbStatus: RTB_STATUS_TYPES.inherit
         };
 
+        var enabledModules = !!$scope.selected.publisher ? $scope.selected.publisher.enabledModules : null;
         var adSlotCopy = angular.copy(adSlot);
 
         $scope.submit = submit;
@@ -82,6 +87,8 @@
         $scope.groupEntities = groupEntities;
         $scope.filterEntityType = filterEntityType;
         $scope.selectDefaultAdSlot = selectDefaultAdSlot;
+        $scope.rtbStatusChanged = rtbStatusChanged;
+        $scope.isEnabledModuleRtb = isEnabledModuleRtb;
 
         $scope.adSlotsDefault = [{id: null, libraryAdSlot: {
             name: 'None'
@@ -96,11 +103,13 @@
             return ''; // separate group with no name
         }
 
-        function selectSite(siteId) {
+        function selectSite(site, siteId) {
             _resetForm();
 
             // get again ad slot library when choose site
             getAdSlotLibrary(siteId);
+
+            //hasEnableRTBSite(site);
         }
 
         function selectType(type) {
@@ -119,6 +128,28 @@
 
         function selectPublisher(publisher, publisherId) {
             $scope.adSlot.site = null;
+
+            enabledModules = publisher.enabledModules;
+        }
+
+        function rtbStatusChanged(rtbStatus) {
+            $scope.adSlot.rtbStatus = rtbStatus;
+        }
+
+        function isEnabledModuleRtb() {
+            return isEnabledModule('MODULE_RTB');
+        }
+
+        function isEnabledModule(module) {
+            if(!$scope.isAdmin()) {
+                enabledModules = userSession.enabledModules
+            }
+
+            if($scope.isNew) {
+                return enabledModules != null ? enabledModules.indexOf(module) > -1 : false;
+            }
+
+            return $scope.adSlot.site.publisher != null ? $scope.adSlot.site.publisher.enabledModules.indexOf(module) > -1 : false;
         }
 
         function isFormValid() {
@@ -456,11 +487,18 @@
                 if($scope.adSlot.type == $scope.adSlotTypes.native) {
                     $scope.selected.type = $scope.adSlotTypes.native;
                 }
+
+                if($scope.adSlot.type == $scope.adSlotTypes.display) {
+                    //hasEnableRTBSite($scope.adSlot.site);
+                }
             }
             if($scope.isNew && !!$stateParams.siteId) {
                 if($scope.selected.type == $scope.adSlotTypes.dynamic) {
                     _getAdSlots($stateParams.siteId);
                 }
+
+                var site = _findSite($stateParams.siteId);
+                //hasEnableRTBSite(site);
             }
         }
 
@@ -468,6 +506,13 @@
             return _.find($scope.adSlotsDefault, function(adSlot)
             {
                 return adSlot.id == adSlotId;
+            });
+        }
+
+        function _findSite(siteId) {
+            return _.find($scope.siteList, function(site)
+            {
+                return site.id == siteId;
             });
         }
 
@@ -484,6 +529,7 @@
                 delete adSlot.libraryAdSlot.width;
                 delete adSlot.libraryAdSlot.autoFit;
                 delete adSlot.libraryAdSlot.passbackMode;
+                delete adSlot.rtbStatus;
             }
 
             if($scope.selected.type == $scope.adSlotTypes.dynamic) {
@@ -491,6 +537,7 @@
                 delete adSlot.libraryAdSlot.width;
                 delete adSlot.libraryAdSlot.autoFit;
                 delete adSlot.libraryAdSlot.passbackMode;
+                delete adSlot.rtbStatus;
 
                 // transfer of format number
                 adSlot.defaultAdSlot = angular.isObject(adSlot.defaultAdSlot) ? adSlot.defaultAdSlot.id : adSlot.defaultAdSlot;
@@ -508,11 +555,16 @@
                     delete adSlot.libraryAdSlot.native;
                 }
             }
-            else {
+            else { // is display ad slot
                 delete adSlot.libraryAdSlot.libraryExpressions;
                 delete adSlot.defaultAdSlot;
                 delete adSlot.libraryAdSlot.native;
                 delete adSlot.expressions;
+            }
+
+            // not include rtbStatus if module rtb not enabled in publisher
+            if (!isEnabledModuleRtb()) {
+                delete adSlot.rtbStatus;
             }
 
             delete adSlot.type;

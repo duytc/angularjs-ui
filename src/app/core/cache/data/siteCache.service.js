@@ -64,7 +64,9 @@
                     publisher: siteList[idx].publisher,
                     domain: siteList[idx].domain,
                     enableSourceReport: siteList[idx].enableSourceReport,
-                    players: siteList[idx].players
+                    exchanges: siteList[idx].exchanges,
+                    players: siteList[idx].players,
+                    rtbStatus: siteList[idx].rtbStatus
                 };
             }
 

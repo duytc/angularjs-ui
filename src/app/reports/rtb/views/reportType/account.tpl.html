@@ -1,0 +1,64 @@
+<div ng-if="hasResult">
+    <tc-rtb-report-overview report-group="reportGroup"></tc-rtb-report-overview>
+
+    <div class="panel panel-default daily-reports">
+        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
+            {{ 'REPORT.DAILY_ACCOUNT_BREAKDOWN' | translate }}
+            <div class="button-bar">
+                <export-excel data="reports" fields="['date', 'name', 'opportunities', 'impressions', 'fillRate', 'earnedAmount']" header="['Date', 'Publisher' , 'Opportunities', 'Impressions', 'Fill Rate', 'Earned Amount']" file-name="getExportExcelFileName"></export-excel>
+            </div>
+            <div class="btn-group btnGrouped" dropdown>
+                <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li><a>
+                        <export-excel css-class="''" data="reports" fields="['date', 'name', 'opportunities', 'impressions', 'fillRate', 'earnedAmount']" header="['Date', 'Publisher' , 'Opportunities', 'Impressions', 'Fill Rate', 'Earned Amount']" file-name="getExportExcelFileName"></export-excel>
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
+                <thead>
+                <tr>
+                    <th at-attribute="actions" ng-if="isAdmin">{{ 'ACTIONS' | translate }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-click="drillDownReport(reportStates.sites, item)">
+                    <td at-attribute="actions" ng-if="isAdmin" at-title="{{ 'ACTIONS' | translate }}">
+                        <div class="btn-group" dropdown stop-event>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                            <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <li><a ng-click="popupReport(reportStates.sites, item)">{{ 'PERFORMANCE_REPORT_MODULE.PUBLISHER_INFO' | translate }}</a></li>
+                                <li><a ng-click="goToEditPage('publisherManagement.edit', item.publisherId)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_PUBLISHER' | translate }}</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td at-title="{{ 'REPORT.DATE' | translate }}" at-attribute="date" at-sortable at-initial-sorting="desc">
+                        {{ item.date | date }}
+                    </td>
+                    <td class="name" at-title="{{ 'PUBLISHER' | translate }}" at-attribute="name" at-sortable>
+                        {{ item.name }}
+                    </td>
+                    <td at-title="{{ 'RTB_REPORT_MODULE.OPPORTUNITIES' | translate }}" at-attribute="opportunities" at-sortable>
+                        {{ item.opportunities | number }}
+                    </td>
+                    <td at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="impressions" at-sortable>
+                        {{ item.impressions | number }}
+                    </td>
+                    <td at-title="{{ 'REPORT.FILL_RATE' | translate }}" at-attribute="fillRate" at-sortable>
+                        {{ item.fillRate | percentage }}
+                    </td>
+                    <td at-title="{{ 'RTB_REPORT_MODULE.EARNED_AMOUNT' | translate }}" at-attribute="earnedAmount" at-sortable>
+                        {{ item.earnedAmount | currency }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <at-pagination ng-if="showPagination()" class="table-footer" at-list="reports" at-config="tableConfig"></at-pagination>
+    </div>
+
+    <tc-rtb-report-summary report-group="reportGroup"></tc-rtb-report-summary>
+</div>

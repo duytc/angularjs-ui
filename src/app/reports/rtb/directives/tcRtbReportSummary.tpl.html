@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> {{ 'REPORT.TOTALS' | translate }}</div>
+            <div class="panel-body">
+                <ul class="list-unstyled report list-info">
+                    <li>
+                        <label>{{ 'RTB_REPORT_MODULE.OPPORTUNITIES' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.opportunities | number }}</span>
+                    </li>
+                    <li>
+                        <label>{{ 'REPORT.IMPRESSIONS' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.impressions | number }}</span>
+                    </li>
+                    <li>
+                        <label>{{ 'REPORT.FILL_RATE' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.fillRate | percentage }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> {{ 'REPORT.DAILY_AVERAGES' | translate }}</div>
+            <div class="panel-body">
+                <ul class="list-unstyled report list-info">
+                    <li>
+                        <label>{{ 'RTB_REPORT_MODULE.OPPORTUNITIES' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.averageOpportunities | number }}</span>
+                    </li>
+                    <li>
+                        <label>{{ 'REPORT.IMPRESSIONS' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.averageImpressions | number }}</span>
+                    </li>
+                    <li>
+                        <label>{{ 'REPORT.FILL_RATE' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.averageFillRate | percentage }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

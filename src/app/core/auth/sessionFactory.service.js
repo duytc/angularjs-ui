@@ -14,8 +14,8 @@
              * @param {Array} [userRoles]
              * @param {Array} [enabledModules]
              */
-            createNew: function(token, id, username, userRoles, enabledModules) {
-                return new Session(token, id, username, userRoles, enabledModules);
+            createNew: function(token, id, username, userRoles, enabledModules, exchanges) {
+                return new Session(token, id, username, userRoles, enabledModules, exchanges);
             },
 
             /**
@@ -34,7 +34,7 @@
                     throw new Error('missing username');
                 }
 
-                return this.createNew(data.token, data.id, data.username, data.userRoles, data.enabledModules);
+                return this.createNew(data.token, data.id, data.username, data.userRoles, data.enabledModules, data.exchanges);
             },
 
             isSession: function(session) {
@@ -42,10 +42,11 @@
             }
         };
 
-        function Session(token, id, username, userRoles, enabledModules) {
+        function Session(token, id, username, userRoles, enabledModules, exchanges) {
             this.token = token;
             this.id = parseInt(id, 10) || null;
             this.username = username;
+            this.exchanges = exchanges;
 
             if (!angular.isArray(userRoles)) {
                 userRoles = [];

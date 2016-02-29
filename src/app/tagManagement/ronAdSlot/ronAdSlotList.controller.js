@@ -5,7 +5,7 @@
         .controller('RonAdSlotList', RonAdSlotList)
     ;
 
-    function RonAdSlotList($scope, $modal, $translate, AlertService, ronAdSlots, historyStorage, HISTORY_TYPE_PATH, RonAdSlotManager, AtSortableService) {
+    function RonAdSlotList($scope, $modal, $translate, AlertService, ronAdSlots, historyStorage, HISTORY_TYPE_PATH, RTB_STATUS_LABELS, RonAdSlotManager, AtSortableService) {
         $scope.ronAdSlots = ronAdSlots;
         $scope.hasData = function () {
             return !!ronAdSlots.length;
@@ -18,6 +18,7 @@
             });
         }
 
+        $scope.rtbStatusLabels = RTB_STATUS_LABELS;
         $scope.today = new Date();
 
         $scope.tableConfig = {

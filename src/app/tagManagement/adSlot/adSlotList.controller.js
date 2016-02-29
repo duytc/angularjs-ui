@@ -5,11 +5,12 @@
         .controller('AdSlotList', AdSlotList)
     ;
 
-    function AdSlotList($scope, $translate, $state, $stateParams, $modal, AlertService, adSlotService, adSlots, site, AtSortableService, libraryAdSlotService, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
+    function AdSlotList($scope, $translate, $state, $stateParams, $modal, AlertService, adSlotService, adSlots, site, AtSortableService, libraryAdSlotService, historyStorage, HISTORY_TYPE_PATH, RTB_STATUS_LABELS, TYPE_AD_SLOT) {
         $scope.site = site;
 
         $scope.adSlots = adSlots;
         $scope.adSlotTypes = TYPE_AD_SLOT;
+        $scope.rtbStatusLabels = RTB_STATUS_LABELS;
 
         $scope.hasData = function () {
             return !!adSlots.length;

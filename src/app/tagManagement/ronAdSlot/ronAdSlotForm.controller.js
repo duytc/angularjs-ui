@@ -5,7 +5,7 @@
         .controller('RonAdSlotForm', RonAdSlotForm)
     ;
 
-    function RonAdSlotForm($scope, _, $q, $translate, ronAdSlot, libraryAdSlot, segments, publisherList, adSlotLibraryList, AlertService, RonAdSlotManager, historyStorage, ServerErrorProcessor, TYPE_AD_SLOT, HISTORY_TYPE_PATH) {
+    function RonAdSlotForm($scope, _, $q, $translate, ronAdSlot, libraryAdSlot, segments, publisherList, adSlotLibraryList, AlertService, RonAdSlotManager, historyStorage, ServerErrorProcessor, TYPE_AD_SLOT, HISTORY_TYPE_PATH, RTB_STATUS_TYPES, userSession) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             width: 'Width',
@@ -15,6 +15,7 @@
         $scope.isNew = ronAdSlot === null;
         $scope.adSlotTypes = TYPE_AD_SLOT;
         $scope.segments = segments;
+        $scope.rtbStatusTypes = RTB_STATUS_TYPES;
         $scope.adSlotTypeOptions = [
             {
                 label: $translate.instant('DISPLAY_AD_SLOT'),
@@ -38,7 +39,10 @@
 
         $scope.ronAdSlot = ronAdSlot || {
             libraryAdSlot: libraryAdSlot.id || null,
-            ronAdSlotSegments: []
+            ronAdSlotSegments: [],
+            exchanges: [],
+            floorPrice: null,
+            rtbStatus: RTB_STATUS_TYPES.disable
         };
 
         $scope.selected = {
@@ -57,6 +61,21 @@
             }
         ];
 
+        $scope.exchanges = [
+            { label: 'Index Exchange', name: 'index-exchange'}
+        ];
+
+        $scope.exchangesOfPublisher = [];
+
+        if(!$scope.isNew) {
+            $scope.exchangesOfPublisher = ronAdSlot.libraryAdSlot.publisher.exchanges;
+        } else {
+            if(!$scope.isAdmin()) {
+                $scope.exchangesOfPublisher = userSession.exchanges;
+            }
+        }
+
+        var enabledModules = null;
         $scope.adSlot = null;
 
         _update();
@@ -72,6 +91,10 @@
         $scope.showForNativeAdSlot = showForNativeAdSlot;
         $scope.showForDynamicAdSlot = showForDynamicAdSlot;
         $scope.selectLibraryAdSlot = selectLibraryAdSlot;
+        $scope.rtbStatusChanged = rtbStatusChanged;
+        $scope.isEnabledModuleRtb = isEnabledModuleRtb;
+        $scope.hasExchange = hasExchange;
+        $scope.toggleExchange = toggleExchange;
 
         function submit() {
             if ($scope.formProcessing) {
@@ -144,15 +167,55 @@
             };
         }
 
-        function selectPublisher() {
+        function selectPublisher(publisher) {
             $scope.ronAdSlot.libraryAdSlot = null;
             $scope.ronAdSlotSegments = [];
             $scope.adSlot = null;
+            enabledModules = publisher.enabledModules;
+            $scope.exchangesOfPublisher = publisher.exchanges;
         }
 
         function selectType(type) {
             $scope.ronAdSlot.libraryAdSlot = null;
             $scope.adSlot = null;
+        }
+
+        function rtbStatusChanged(rtbStatus) {
+            $scope.ronAdSlot.rtbStatus = rtbStatus;
+        }
+
+        function hasExchange(exchange) {
+            if(!$scope.ronAdSlot.exchanges) {
+                return false;
+            }
+
+            return $scope.ronAdSlot.exchanges.indexOf(exchange) > -1;
+        }
+
+        function toggleExchange(exchange) {
+            var idx = $scope.ronAdSlot.exchanges.indexOf(exchange);
+
+            if (idx > -1) {
+                $scope.ronAdSlot.exchanges.splice(idx, 1);
+            } else {
+                $scope.ronAdSlot.exchanges.push(exchange);
+            }
+        }
+
+        function isEnabledModuleRtb() {
+            return isEnabledModule('MODULE_RTB');
+        }
+
+        function isEnabledModule(module) {
+            if(!$scope.isAdmin()) {
+                enabledModules = userSession.enabledModules
+            }
+
+            if($scope.isNew) {
+                return enabledModules != null ? enabledModules.indexOf(module) > -1 : false;
+            }
+
+            return $scope.ronAdSlot.libraryAdSlot.publisher != null ? $scope.ronAdSlot.libraryAdSlot.publisher.enabledModules.indexOf(module) > -1 : false;
         }
 
         function isFormValid() {
@@ -198,6 +261,15 @@
                     $scope.ronAdSlot.ronAdSlotSegments.push({segment: segment});
                 }
             });
+
+            // use the default value for ronAdSlot.exchanges when disable view exchanges in form
+            $scope.ronAdSlot.exchanges = $scope.exchangesOfPublisher;
+
+            // only set rtbStatus for RonDisplayAdSlot and module rtb enabled in publisher
+            if (!showForDisplayAdSlot() || !$scope.isEnabledModuleRtb()) {
+                delete $scope.ronAdSlot.rtbStatus;
+                delete $scope.ronAdSlot.exchanges;
+            }
         }
     }
 })();

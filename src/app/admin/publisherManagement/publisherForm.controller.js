@@ -35,25 +35,37 @@
             address: null,
             postalCode: null,
             country: null,
+            exchanges: [],
             tagDomain: {
                 secure: true,
                 domain: null
             }
         };
 
-        if(!$scope.isNew && publisher.tagDomain.length == 0) {
-            $scope.publisher.tagDomain = {
-                secure: true,
-                domain: null
-            };
+        if(!$scope.isNew) {
+            if(publisher.tagDomain.length == 0) {
+                $scope.publisher.tagDomain = {
+                    secure: true,
+                    domain: null
+                };
+            }
+
+            if(!$scope.publisher.exchanges) {
+                $scope.publisher.exchanges = []
+            }
         }
 
         $scope.modules = [
             { label: 'Display', role: 'MODULE_DISPLAY' },
             { label: 'Analytics', role: 'MODULE_ANALYTICS' },
             { label: 'Video Analytics', role: 'MODULE_VIDEO_ANALYTICS' },
-            { label: 'Unified Report', role: 'MODULE_UNIFIED_REPORT' }
+            { label: 'Unified Report', role: 'MODULE_UNIFIED_REPORT' },
+            { label: 'RTB (Real Time Bidding)', role: 'MODULE_RTB' }
 //            { label: 'Fraud Detection', role: 'MODULE_FRAUD_DETECTION' }
+        ];
+
+        $scope.exchanges = [
+            { label: 'Index Exchange', name: 'index-exchange'}
         ];
 
         $scope.hasModuleEnabled = function (role) {
@@ -80,6 +92,24 @@
 
         $scope.backToListPublisher = function() {
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.publisher, '^.list');
+        };
+
+        $scope.hasExchange = function (exchange) {
+            if(!$scope.publisher.exchanges) {
+                return false;
+            }
+
+            return $scope.publisher.exchanges.indexOf(exchange) > -1;
+        };
+
+        $scope.toggleExchange= function (exchange) {
+            var idx = $scope.publisher.exchanges.indexOf(exchange);
+
+            if (idx > -1) {
+                $scope.publisher.exchanges.splice(idx, 1);
+            } else {
+                $scope.publisher.exchanges.push(exchange);
+            }
         };
 
         $scope.submit = function() {

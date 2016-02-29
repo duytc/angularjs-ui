@@ -1,0 +1,129 @@
+<section id="performance-report-selector" class="panel panel-default">
+    <div class="panel-body">
+        <form name="reportSelectorForm" class="form-inline" role="form" ng-submit="getReports()" novalidate>
+            <div class="form-group">
+                <label for="inputDateRange">{{ 'REPORT.DATE_RANGE' | translate }}</label>
+                <div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input date-range-picker options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="selectedData.date" ng-required="true">
+                    </div>
+                </div>
+            </div>
+
+            <div class="report-type form-group" ng-if="showReportTypeSelect()">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>{{ 'REPORT.REPORT_TYPE' | translate }}</label>
+                        <ui-select name="reportType" ng-model="selectedData.reportType" ng-required="true" on-select="selectReportType($item)" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'REPORT.SELECT_A_REPORT_TYPE' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices repeat="type in reportTypeOptions | filter: $select.search">
+                                <div ng-bind-html="type.label | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="form-group" ng-if="selectedReportTypeis(reportTypes.platform)">
+                        <label>{{ 'REPORT.BREAKDOWN' | translate }}</label>
+                        <ui-select ng-model="selectedData.platformBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
+                                <div ng-bind-html="option.label"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="publisher form-group" ng-if="!selectedReportTypeis(reportTypes.platform) && showPublisherSelect()">
+                <label>{{ 'PUBLISHER' | translate }}</label>
+                <ui-select name="publisher" ng-model="selectedData.publisherId" ng-required="true" ng-disabled="!optionData.publishers.length" on-select="selectPublisher()" reset-search-input="'false'">
+                    <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
+                    <ui-select-choices group-by="groupEntities" repeat="publisher.id as publisher in optionData.publishers | filter: $select.search">
+                        <div ng-bind-html="publisher.company | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="site form-group" ng-if="fieldShouldBeVisible(reportFields.site) && optionData.sites.length && selectedData.publisherId">
+                <div class="form-inline">
+                    <div class="form-group" ng-if="selectedData.reportType.toState != 'reports.rtb.adSlots'">
+                        <label>{{ 'SITE' | translate }}</label>
+                        <ui-select name="site" ng-model="selectedData.siteId" on-select="selectSite($model)" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'SITE_MODULE.SELECT_A_SITE' | translate }}">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="site.id as site in optionData.sites | filter: $select.search | filter:filterNonEntityValues($select.search) | selectedPublisher:selectedData.publisherId">
+                                <div ng-bind-html="site.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="form-group" ng-if="selectedData.reportType.toState == 'reports.rtb.adSlots'">
+                        <label>{{ 'SITE' | translate }}</label>
+                        <ui-select name="site" ng-model="selectedData.siteId" ng-required="true" on-select="selectSite($model)" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'SITE_MODULE.SELECT_A_SITE' | translate }}">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="site.id as site in optionData.sites | filter: {$: $select.search, id: '!!'} | filter:filterNonEntityValues($select.search) | selectedPublisher:selectedData.publisherId">
+                                <div ng-bind-html="site.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="site form-group" ng-if="selectedReportTypeis(reportTypes.site) && selectedData.siteId">
+                        <label>{{ 'REPORT.BREAKDOWN' | translate }}</label>
+                        <ui-select ng-model="selectedData.siteBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
+                                <div ng-bind-html="option.label"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="ad-slot form-group" ng-if="selectedReportTypeis(reportTypes.adSlot) && selectedData.siteId">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>{{ 'AD_SLOT' | translate }}</label>
+                        <ui-select name="adSlot" ng-model="selectedData.adSlotId" ng-required="true" on-select="selectEntity($model)" ng-init="getAdSlot(selectedData.siteId)" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_AD_SLOT' | translate }}">{{ $select.selected.libraryAdSlot.name }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="adSlot.id as adSlot in optionData.adSlots | filter: $select.search">
+                                <div ng-bind-html="adSlot.libraryAdSlot.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="ad-slot form-group" ng-if="selectedReportTypeis(reportTypes.adSlot) && selectedData.adSlotId">
+                        <label>{{ 'REPORT.BREAKDOWN' | translate }}</label>
+                        <ui-select ng-model="selectedData.adSlotBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
+                                <div ng-bind-html="option.label"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ad-slot form-group" ng-if="selectedReportTypeis(reportTypes.ronAdSlot)">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>Ron Ad Slot</label>
+                        <ui-select name="ronAdSlot" ng-model="selectedData.ronAdSlotId" ng-required="true" on-select="selectEntity($model)" ng-init="getRonAdSlot()" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_AD_SLOT' | translate }}">{{ $select.selected.libraryAdSlot.name }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="ronAdSlot.id as ronAdSlot in optionData.ronAdSlots | filter: $select.search | filter:selectedPublisherRonAdSlot:ronAdSlot">
+                                <div ng-bind-html="ronAdSlot.libraryAdSlot.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="ron-ad-slot form-group" ng-if="selectedReportTypeis(reportTypes.ronAdSlot) && selectedData.ronAdSlotId">
+                        <label>{{ 'REPORT.BREAKDOWN' | translate }}</label>
+                        <ui-select ng-model="selectedData.ronAdSlotBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
+                                <div ng-bind-html="option.label"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+
+            <button  ng-disabled="!isFormValid()" type="submit" class="btn btn-primary">{{ 'REPORT.GET_REPORTS' | translate }}</button>
+        </form>
+    </div>
+</section>
