@@ -6,7 +6,7 @@
         .controller('PublisherForm', PublisherForm)
     ;
 
-    function PublisherForm($scope, $translate, adminUserManager, AlertService, ServerErrorProcessor, publisher, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST) {
+    function PublisherForm($scope, $translate, _, exchanges, adminUserManager, AlertService, ServerErrorProcessor, publisher, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST) {
         $scope.fieldNameTranslations = {
             username: 'Username',
             plainPassword: 'Password',
@@ -35,7 +35,7 @@
             address: null,
             postalCode: null,
             country: null,
-            exchanges: [],
+            publisherExchanges: [],
             tagDomain: {
                 secure: true,
                 domain: null
@@ -50,8 +50,8 @@
                 };
             }
 
-            if(!$scope.publisher.exchanges) {
-                $scope.publisher.exchanges = []
+            if(!$scope.publisher.publisherExchanges) {
+                $scope.publisher.publisherExchanges = []
             }
         }
 
@@ -64,9 +64,7 @@
 //            { label: 'Fraud Detection', role: 'MODULE_FRAUD_DETECTION' }
         ];
 
-        $scope.exchanges = [
-            { label: 'Index Exchange', name: 'index-exchange'}
-        ];
+        $scope.exchanges = exchanges;
 
         $scope.hasModuleEnabled = function (role) {
             return $scope.publisher.enabledModules.indexOf(role) > -1;
@@ -95,20 +93,24 @@
         };
 
         $scope.hasExchange = function (exchange) {
-            if(!$scope.publisher.exchanges) {
+            if(!$scope.publisher.publisherExchanges) {
                 return false;
             }
 
-            return $scope.publisher.exchanges.indexOf(exchange) > -1;
+            return _.findIndex($scope.publisher.publisherExchanges, function(publisherExchange) {
+                    return exchange == publisherExchange.exchange.id
+                }) > -1;
         };
 
         $scope.toggleExchange= function (exchange) {
-            var idx = $scope.publisher.exchanges.indexOf(exchange);
+            var idx =  _.findIndex($scope.publisher.publisherExchanges, function(publisherExchange) {
+                return exchange == publisherExchange.exchange.id
+            });
 
             if (idx > -1) {
-                $scope.publisher.exchanges.splice(idx, 1);
+                $scope.publisher.publisherExchanges.splice(idx, 1);
             } else {
-                $scope.publisher.exchanges.push(exchange);
+                $scope.publisher.publisherExchanges.push({exchange: exchange});
             }
         };
 
@@ -123,6 +125,14 @@
             if(!publisher.tagDomain.domain) {
                 publisher.tagDomain = null;
             }
+
+            var publisherExchanges = [];
+
+            angular.forEach(publisher.publisherExchanges, function(publisherExchange) {
+                publisherExchanges.push({exchange: publisherExchange.exchange.id || publisherExchange.exchange});
+            });
+
+            publisher.publisherExchanges = publisherExchanges;
 
             $scope.formProcessing = true;
 

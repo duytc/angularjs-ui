@@ -14,6 +14,14 @@
         </li>
 
         <li ui-sref-active="active">
+            <a ui-sref=".publisherManagement"><i class="fa fa-exchange"></i><span>{{ 'NAVBAR.EXCHANGE_MANAGEMENT' | translate }}</span></a>
+            <ul>
+                <li ui-sref-active="active"><a ui-sref=".exchangeManagement.list"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.EXCHANGES' | translate }}</a></li>
+                <li ui-sref-active-eq="active"><a ui-sref=".exchangeManagement.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_EXCHANGE' | translate }}</a></li>
+            </ul>
+        </li>
+
+        <li ui-sref-active="active">
             <a ui-sref=".tagManagement"><i class="fa fa-location-arrow"></i><span>{{ 'NAVBAR.TAG_MANAGEMENT' | translate }}</span></a>
             <ul>
                 <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.tagGenerator"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.GENERATE_TAGS' | translate }}</a></li>

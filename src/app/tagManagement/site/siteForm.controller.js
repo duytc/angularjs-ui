@@ -58,7 +58,7 @@
         ];
 
         if(!$scope.isNew) {
-            $scope.exchangesOfPublisher = site.publisher.exchanges;
+            $scope.exchangesOfPublisher = site.publisher.publisherExchanges;
         } else {
             if(!$scope.isAdmin()) {
                 $scope.exchangesOfPublisher = userSession.exchanges;
@@ -80,7 +80,7 @@
         function selectPublisher(publisher) {
             $scope.channels = $filter('selectedPublisher')(channels, publisher);
 
-            $scope.exchangesOfPublisher = publisher.exchanges;
+            $scope.exchangesOfPublisher = publisher.publisherExchanges;
             $scope.data.channels = [];
             enabledModules = publisher.enabledModules
         }
@@ -155,8 +155,19 @@
                 delete $scope.site.autoCreate;
             }
 
+            var exchanges = [];
+            angular.forEach($scope.exchangesOfPublisher, function(data) {
+                if(typeof data == 'string') {
+                    exchanges.push(data);
+                }
+                else if(!!data.canonicalName  || !!data.exchange) {
+                    var canonicalName = data.canonicalName || data.exchange.canonicalName;
+                    exchanges.push(canonicalName);
+                }
+            });
+
             // use the default value for site.exchanges when disable view exchanges in form
-            $scope.site.exchanges = $scope.exchangesOfPublisher;
+            $scope.site.exchanges = exchanges;
 
             // not include rtbStatus if module rtb not enabled in publisher
             if (!isEnabledModule('MODULE_RTB')) {

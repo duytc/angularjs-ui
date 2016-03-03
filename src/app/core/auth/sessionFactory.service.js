@@ -13,6 +13,7 @@
              * @param {String} username
              * @param {Array} [userRoles]
              * @param {Array} [enabledModules]
+             * @param {Array} [exchanges]
              */
             createNew: function(token, id, username, userRoles, enabledModules, exchanges) {
                 return new Session(token, id, username, userRoles, enabledModules, exchanges);

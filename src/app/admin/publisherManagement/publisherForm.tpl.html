@@ -122,9 +122,9 @@
                 <div class="form-group" ng-if="hasModuleEnabled('MODULE_RTB')">
                     <label class="col-sm-2 control-label">{{ 'SITE_MODULE.EXCHANGES' | translate}}</label>
                     <div class="col-sm-10">
-                        <div ng-repeat="exchange in exchanges" class="check_video_player">
-                            <label class="ui-checkbox"><input name="exchanges[]" type="checkbox" ng-click="toggleExchange(exchange.name)" ng-checked="hasExchange(exchange.name)">
-                                <span>{{ exchange.label }}</span>
+                        <div ng-repeat="exchange in exchanges" class="check_exchange">
+                            <label class="ui-checkbox"><input name="exchanges[]" type="checkbox" ng-click="toggleExchange(exchange.id)" ng-checked="hasExchange(exchange.id)">
+                                <span>{{ exchange.name }}</span>
                             </label>
                         </div>
                     </div>

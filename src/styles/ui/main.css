@@ -9764,6 +9764,11 @@ body {
   float: left;
   width: 150px; }
 
+.check_exchange {
+  float: left;
+  width: 200px;
+  height: 40px !important; }
+
 #performance-report-selector label {
   font-size: 12px;
   text-transform: uppercase; }

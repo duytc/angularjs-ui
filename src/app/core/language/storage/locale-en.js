@@ -81,6 +81,8 @@
                 "NEW_AD_SLOT": "New Ad Slot",
                 "NEW_RON_AD_SLOT": "New RON Ad Slot",
                 "NEW_AD_TAG": "New Ad Tag",
+                "EXCHANGE_MANAGEMENT": "Exchange Management",
+                "NEW_EXCHANGE": "New Exchange",
                 "TAG_LIBRARY": "Tag Library",
                 "REPORTS": "Reports",
                 "RTB_REPORTS": "RTB Reports",
@@ -92,7 +94,8 @@
                 "CPM_EDITOR": "Cpm Editor",
                 "CASCADE_MANAGER": "Cascade Manager",
                 "SOURCE_REPORT_CONFIG": "Source Report Config",
-                "ACTIVITY_LOG": "Activity Log"
+                "ACTIVITY_LOG": "Activity Log",
+                "EXCHANGES": "Exchanges"
             },
             "DASHBOARD_MODULE": {
                 "DATE_RANGE": "Date Range",
@@ -665,6 +668,21 @@
                 "STATUS": "Status",
                 "PLACEHOLDER_EMAIL_ADDRESS": "Email Address",
                 "ADD_ANOTHER_EMAIL": "Add another email"
+            },
+            "EXCHANGE_MODULE": {
+                "CANONICAL_NAME": "Abbreviation",
+                "ADD_NEW_SUCCESS": "The exchange has been created",
+                "UPDATE_SUCCESS": "The exchange has been updated",
+                "UPDATE_FAIL": "The exchange could not be updated",
+                "CONFIRM_DELETE_EXCHANGE": "Are you sure you want to delete this exchange?",
+                "DELETE_SUCCESS": "The exchange was deleted",
+                "DELETE_FAIL": "The exchange could not be deleted",
+                "CURRENTLY_NO_SITES": "There is currently no exchanges",
+
+                "EDIT_EXCHANGE": "Edit Exchange",
+                "DELETE_EXCHANGE": "Delete Exchange",
+                "NEW_EXCHANGE": "New Exchange",
+                "HELP_BLOCK_CANONICAL_NAME": "This abbreviation will be used in the auction service configuration in order to enable this exchange"
             },
             "ERROR_PAGE": {
                 "400": "An invalid request was sent to the server",
