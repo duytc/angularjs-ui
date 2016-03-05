@@ -102,15 +102,17 @@
                 }) > -1;
         };
 
-        $scope.toggleExchange= function (exchange) {
+        $scope.toggleExchange= function (exchangeId) {
             var idx =  _.findIndex($scope.publisher.publisherExchanges, function(publisherExchange) {
-                return exchange == publisherExchange.exchange.id
+                return exchangeId == publisherExchange.exchange.id
             });
 
             if (idx > -1) {
                 $scope.publisher.publisherExchanges.splice(idx, 1);
             } else {
-                $scope.publisher.publisherExchanges.push({exchange: exchange});
+                // !VERY IMPORTANT HERE: make exchange object "contains id" same as old data in $scope.publisher.publisherExchanges
+                // DON'T GET SAME MISTAKE AGAIN!!!
+                $scope.publisher.publisherExchanges.push({exchange: {id: exchangeId}});
             }
         };
 
