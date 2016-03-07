@@ -35,9 +35,9 @@
                                 <li><a ng-click="generateAdTag(item)">{{ 'AD_SLOT_MODULE.GENERATE_A_TAGS' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li><a ui-sref="^.^.^.reports.performance.adSlotAdTags({ adSlotId: item.id, startDate: today})">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
-                                <li class="divider"></li>
+                                <li ng-if="!isSubPublisher()" class="divider"></li>
                                 <!--<li><a ui-sref="^.^.^.tagManagement.adSlot.edit({ id: item.id })">Edit Ad Slot</a></li>-->
-                                <li><a ng-click="confirmDeletion(item)">{{ 'AD_SLOT_MODULE.DELETE_AD_SLOT' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item)">{{ 'AD_SLOT_MODULE.DELETE_AD_SLOT' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>

@@ -7,11 +7,11 @@
             <button ng-if="!allAdSlot" ui-sref="^.^.tagGenerator({ siteId: currentSiteId })" class="btn btn-sm btn-primary" type="button">
                 {{ 'AD_SLOT_MODULE.GENERATE_AD_TAGS' | translate }}
             </button>
-            <button ng-if="!allAdSlot" ui-sref="^.new({ siteId: currentSiteId })" class="btn btn-sm btn-primary" type="button">
+            <button ng-if="!allAdSlot && !isSubPublisher()" ui-sref="^.new({ siteId: currentSiteId })" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
                 {{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}
             </button>
-            <button ng-if="allAdSlot" ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
+            <button ng-if="allAdSlot && !isSubPublisher()" ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
                 {{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}
             </button>
@@ -25,8 +25,8 @@
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
                 <li ng-if="!allAdSlot"><a ui-sref="^.^.tagGenerator({ siteId: currentSiteId })">{{ 'AD_SLOT_MODULE.GENERATE_AD_TAGS' | translate }}</a></li>
-                <li ng-if="!allAdSlot"><a ui-sref="^.new({ siteId: currentSiteId })">{{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}</a></li>
-                <li ng-if="allAdSlot"><a ui-sref="^.new">{{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}</a></li>
+                <li ng-if="!allAdSlot && !isSubPublisher()"><a ui-sref="^.new({ siteId: currentSiteId })">{{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}</a></li>
+                <li ng-if="allAdSlot && !isSubPublisher()"><a ui-sref="^.new">{{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}</a></li>
                 <li><a ng-click="backToListSite()">{{ 'SITE_MODULE.BACK_TO_SITE_LIST' | translate }}</a></li>
             </ul>
         </div>
@@ -58,15 +58,15 @@
                                 <li ng-if="exist(item.type, adSlotTypes.display)"><a ui-sref="^.^.adTag.list({ adSlotId: item.id })">{{ 'AD_SLOT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
                                 <li ng-if="exist(item.type, adSlotTypes.native)"><a ui-sref="^.^.adTag.nativeList({ adSlotId: item.id })">{{ 'AD_SLOT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
                                 <li><a ng-click="generateAdTag(item)">{{ 'AD_SLOT_MODULE.GENERATE_A_TAGS' | translate }}</a></li>
-                                <li class="divider"></li>
+                                <li ng-if="!exist(item.type, adSlotTypes.dynamic) || !isSubPublisher()" class="divider"></li>
                                 <li ng-if="!exist(item.type, adSlotTypes.dynamic)"><a ui-sref="^.^.^.reports.performance.adSlotAdTags({ adSlotId: item.id, startDate: today})">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
-                                <li ng-if="!exist(item.type, adSlotTypes.dynamic)" class="divider"></li>
-                                <li><a ui-sref="^.edit({ id: item.id })">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT' | translate }}</a></li>
-                                <li ng-if="!exist(item.type, adSlotTypes.dynamic)"><a ng-click="cloneAdSlot(item)">{{ 'AD_SLOT_MODULE.CLONE_AD_SLOT' | translate }}</a></li>
-                                <li><a ng-click="confirmDeletion(item)">{{ 'AD_SLOT_MODULE.DELETE_AD_SLOT' | translate }}</a></li>
-                                <li class="divider"></li>
-                                <li ng-if="!item.libraryAdSlot.visible" ng-click="shareAdSlot(item)"><a>{{ 'AD_SLOT_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>
-                                <li ng-if="item.libraryAdSlot.visible"><a  ui-sref="^.^.^.tagLibrary.adSlot.edit({ id: item.libraryAdSlot.id})">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT_IN_LIBRARY' | translate }}</a></li>
+                                <li ng-if="!exist(item.type, adSlotTypes.dynamic) && !isSubPublisher()" class="divider"></li>
+                                <li ng-if="!isSubPublisher()"><a ui-sref="^.edit({ id: item.id })">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT' | translate }}</a></li>
+                                <li ng-if="!exist(item.type, adSlotTypes.dynamic) && !isSubPublisher()"><a ng-click="cloneAdSlot(item)">{{ 'AD_SLOT_MODULE.CLONE_AD_SLOT' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item)">{{ 'AD_SLOT_MODULE.DELETE_AD_SLOT' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()" class="divider"></li>
+                                <li ng-if="!item.libraryAdSlot.visible && !isSubPublisher()" ng-click="shareAdSlot(item)"><a>{{ 'AD_SLOT_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>
+                                <li ng-if="item.libraryAdSlot.visible && !isSubPublisher()"><a  ui-sref="^.^.^.tagLibrary.adSlot.edit({ id: item.libraryAdSlot.id})">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT_IN_LIBRARY' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>

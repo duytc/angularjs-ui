@@ -77,13 +77,13 @@
                         <!--<label>Estimated CPM</label>-->
                         <!--<span class="pull-right">{{ reportGroup.averageEstCpm | currency:'$':4 }}</span>-->
                     <!--</li>-->
-                    <li>
-                        <label>{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}</label>
-                        <span class="pull-right">{{ reportGroup.averageTotalOpportunities | number }}</span>
-                    </li>
                     <li ng-if="hasSlotOpportunities()">
                         <label>{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageSlotOpportunities | number }}</span>
+                    </li>
+                    <li>
+                        <label>{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.averageTotalOpportunities | number }}</span>
                     </li>
                     <li ng-if="exist(reportGroup.averageFirstOpportunities)">
                         <label>{{ 'REPORT.FIRST_OPPORTUNITIES' | translate }}</label>

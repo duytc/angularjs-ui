@@ -8,14 +8,16 @@
 
         .constant('USER_ROLES', {
             admin: 'ROLE_ADMIN',
-            publisher: 'ROLE_PUBLISHER'
+            publisher: 'ROLE_PUBLISHER',
+            subPublisher: 'ROLE_SUB_PUBLISHER'
         })
 
         .constant('USER_MODULES', {
             displayAds: 'MODULE_DISPLAY',
             video: 'MODULE_VIDEO',
             analytics: 'MODULE_ANALYTICS',
-            unified: 'MODULE_UNIFIED_REPORT'
+            unified: 'MODULE_UNIFIED_REPORT',
+            subPublisher: 'MODULE_SUB_PUBLISHER'
         })
 
         .constant('AUTH_EVENTS', {

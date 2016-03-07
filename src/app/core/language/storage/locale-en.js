@@ -58,9 +58,12 @@
             },
             "NAVBAR": {
                 "DASHBOARD": "Dashboard",
+                "SUB_PUBLISHER_MANAGEMENT": "Sub Pub.Management",
                 "PUBLISHER_MANAGEMENT": "Publisher Management",
                 "PUBLISHERS": "Publishers",
                 "NEW_PUBLISHER": "New Publisher",
+                "SUB_PUBLISHERS": "Sub Publishers",
+                "NEW_SUB_PUBLISHER": "New Sub Publisher",
                 "TAG_MANAGEMENT": "Tag Management",
                 "GENERATE_TAGS": "Generate Tags",
                 "CHANNELS": "Channels",

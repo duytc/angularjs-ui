@@ -28,12 +28,15 @@
             {
                 key: $scope.typeKey.adSlot,
                 label: 'Ad Slot'
-            },
-            {
-                key: $scope.typeKey.ronAdSlot,
-                label: 'RON Ad Slot'
             }
         ];
+
+        if(!$scope.isSubPublisher()) {
+            $scope.types.push({
+                key: $scope.typeKey.ronAdSlot,
+                label: 'RON Ad Slot'
+            })
+        }
 
         $scope.selected = {
             type: !!site ? $scope.typeKey.adSlot : $scope.typeKey.passback,

@@ -31,6 +31,6 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="$dismiss(); goToEditPage('tagManagement.adTag.edit', relativeEntityData.id)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_THIS_AD_TAG' | translate }}</button>
+    <button ng-disabled="!isSubPublisher()" class="btn btn-primary" ng-click="$dismiss(); goToEditPage('tagManagement.adTag.edit', relativeEntityData.id)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_THIS_AD_TAG' | translate }}</button>
     <!--<button class="btn btn-primary" ng-click="openUpdateCpm(updateCpmTypes.adTag)">Update CPM</button>-->
 </div>

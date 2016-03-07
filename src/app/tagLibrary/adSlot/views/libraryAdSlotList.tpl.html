@@ -4,13 +4,13 @@
         <strong current-page-title></strong>
 
         <div class="button-bar">
-            <button ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
+            <button ng-if="!isSubPublisher()" ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
                 {{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}
             </button>
         </div>
 
-        <div class="btn-group btnGrouped" dropdown>
+        <div ng-if="!isSubPublisher()" class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
                 <li><a ui-sref="^.new"> {{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}</a></li>
@@ -40,7 +40,7 @@
 
                                 <li ng-if="item.libType != adSlotTypes.dynamic" class="divider"></li>
 
-                                <li ng-click="createLinkedAdSlots(item)"><a>{{ 'AD_SLOT_LIBRARY_MODULE.CREATE_LINKED_AD_SLOTS' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()" ng-click="createLinkedAdSlots(item)"><a>{{ 'AD_SLOT_LIBRARY_MODULE.CREATE_LINKED_AD_SLOTS' | translate }}</a></li>
                                 <!--<li ng-if="!item.isRonAdSlot.id"><a ng-click="createRonAdSlot(item)">{{ 'AD_SLOT_LIBRARY_MODULE.CREATE_RON_AD_SLOT' | translate }}</a></li>-->
                                 <!--<li ng-if="!!item.isRonAdSlot.id"><a ng-click="createRonAdSlot(null, item.isRonAdSlot.id)">{{ 'AD_SLOT_LIBRARY_MODULE.EDIT_RON_AD_SLOT' | translate }}</a></li>-->
 
@@ -48,10 +48,10 @@
                                 <li ng-if="item.libType == adSlotTypes.native"><a ui-sref="^.associated({ adSlotId: item.id, adSlotType: adSlotTypes.native})">{{ 'AD_SLOT_LIBRARY_MODULE.VIEW_LINKED_AD_SLOTS' | translate }}</a></li>
                                 <li ng-if="item.libType == adSlotTypes.dynamic"><a ui-sref="^.associated({ adSlotId: item.id, adSlotType: adSlotTypes.dynamic})">{{ 'AD_SLOT_LIBRARY_MODULE.VIEW_LINKED_AD_SLOTS' | translate }}</a></li>
 
-                                <li class="divider"></li>
+                                <li ng-if="!isSubPublisher()" class="divider"></li>
 
-                                <li><a ui-sref="^.edit({ id: item.id })">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT' | translate }}</a></li>
-                                <li><a ng-click="removeMoveToLibrary(item)">{{ 'AD_SLOT_MODULE.DELETE_AD_SLOT' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ui-sref="^.edit({ id: item.id })">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ng-click="removeMoveToLibrary(item)">{{ 'AD_SLOT_MODULE.DELETE_AD_SLOT' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>

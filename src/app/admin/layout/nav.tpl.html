@@ -9,12 +9,15 @@
             <a ui-sref=".publisherManagement"><i class="fa fa-user"></i><span>{{ 'NAVBAR.PUBLISHER_MANAGEMENT' | translate }}</span></a>
             <ul>
                 <li ui-sref-active-eq="active"><a ui-sref=".publisherManagement.list"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.PUBLISHERS' | translate }}</a></li>
+                <li ui-sref-active-eq="active"><a ui-sref=".subPublisher.list"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.SUB_PUBLISHERS' | translate }}</a></li>
+
                 <li ui-sref-active-eq="active"><a ui-sref=".publisherManagement.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_PUBLISHER' | translate }}</a></li>
+                <li ui-sref-active-eq="active"><a ui-sref=".subPublisher.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_SUB_PUBLISHER' | translate }}</a></li>
             </ul>
         </li>
 
         <li ui-sref-active="active">
-            <a ui-sref=".publisherManagement"><i class="fa fa-exchange"></i><span>{{ 'NAVBAR.EXCHANGE_MANAGEMENT' | translate }}</span></a>
+            <a ui-sref=".exchangeManagement"><i class="fa fa-exchange"></i><span>{{ 'NAVBAR.EXCHANGE_MANAGEMENT' | translate }}</span></a>
             <ul>
                 <li ui-sref-active="active"><a ui-sref=".exchangeManagement.list"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.EXCHANGES' | translate }}</a></li>
                 <li ui-sref-active-eq="active"><a ui-sref=".exchangeManagement.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_EXCHANGE' | translate }}</a></li>

@@ -119,7 +119,7 @@
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="hasModuleEnabled('MODULE_RTB')">
+                <div class="form-group" ng-if="hasModuleEnabled('MODULE_RTB') && exchanges.length">
                     <label class="col-sm-2 control-label">{{ 'SITE_MODULE.EXCHANGES' | translate}}</label>
                     <div class="col-sm-10">
                         <div ng-repeat="exchange in exchanges" class="check_exchange">

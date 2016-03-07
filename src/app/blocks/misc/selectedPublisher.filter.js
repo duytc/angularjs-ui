@@ -5,8 +5,12 @@
         .filter('selectedPublisher', selectedPublisher)
     ;
 
-    function selectedPublisher() {
+    function selectedPublisher(Auth) {
         return function (items, publisherId) {
+            if(Auth.isSubPublisher()) {
+                return items;
+            }
+
             if (angular.isObject(publisherId) && publisherId.id) {
                 // allow user to pass in a publisher object
                 publisherId = publisherId.id;

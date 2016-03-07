@@ -60,7 +60,8 @@
             { label: 'Analytics', role: 'MODULE_ANALYTICS' },
             { label: 'Video Analytics', role: 'MODULE_VIDEO_ANALYTICS' },
             { label: 'Unified Report', role: 'MODULE_UNIFIED_REPORT' },
-            { label: 'RTB (Real Time Bidding)', role: 'MODULE_RTB' }
+            { label: 'RTB (Real Time Bidding)', role: 'MODULE_RTB' },
+            { label: 'Sub Publisher', role: 'MODULE_SUB_PUBLISHER' }
 //            { label: 'Fraud Detection', role: 'MODULE_FRAUD_DETECTION' }
         ];
 

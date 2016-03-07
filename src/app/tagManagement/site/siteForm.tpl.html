@@ -71,18 +71,6 @@
                     </div>
                 </div>
 
-                <!--temporarily disable view/edit exchanges for site. exchanges will be inherited from publisher-->
-                <!--<div class="form-group" ng-if="isEnabledModule('MODULE_RTB') && site.rtbStatus != rtbStatusTypes.disable && exchangesOfPublisher.length > 0">-->
-                    <!--<label class="col-sm-2 control-label">{{ 'SITE_MODULE.EXCHANGES' | translate}}</label>-->
-                    <!--<div class="col-sm-10">-->
-                        <!--<div ng-repeat="exchange in exchanges" class="check_video_player">-->
-                            <!--<label ng-if="exchangesOfPublisher.indexOf(exchange.name) > -1" class="ui-checkbox"><input name="exchanges[]" type="checkbox" ng-click="toggleExchange(exchange.name)" ng-checked="hasExchange(exchange.name)">-->
-                                <!--<span>{{ exchange.label }}</span>-->
-                            <!--</label>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-
                 <div class="form-group" ng-if="isEnabledModule('MODULE_VIDEO_ANALYTICS')">
                     <label class="col-sm-2 control-label">{{ 'SITE_MODULE.VIDEO_PLAYERS' | translate }}</label>
                     <div class="col-sm-10">

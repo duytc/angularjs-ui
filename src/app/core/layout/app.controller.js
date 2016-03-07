@@ -11,8 +11,10 @@
         $scope.hasDisplayAdsModule = userSession.hasModuleEnabled(USER_MODULES.displayAds);
         $scope.hasAnalyticsModule = userSession.hasModuleEnabled(USER_MODULES.analytics);
         $scope.hasUnifiedModule = userSession.hasModuleEnabled(USER_MODULES.unified);
+        $scope.hasSubPublisherModule = userSession.hasModuleEnabled(USER_MODULES.subPublisher);
 
         $scope.isAdmin = Auth.isAdmin;
+        $scope.isSubPublisher = Auth.isSubPublisher;
 
         $scope.admin = {
             layout: 'wide',

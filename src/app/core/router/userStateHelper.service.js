@@ -109,6 +109,8 @@
                         baseState = BASE_USER_STATES.admin;
                     } else if (Auth.isAuthorized(USER_ROLES.publisher)) {
                         baseState = BASE_USER_STATES.publisher;
+                    } else if (Auth.isAuthorized(USER_ROLES.subPublisher)) {
+                        baseState = BASE_USER_STATES.subPublisher;
                     }
 
                     return baseState;

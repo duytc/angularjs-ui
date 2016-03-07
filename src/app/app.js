@@ -8,5 +8,6 @@ angular.module('tagcade', [
     'tagcade.reports',
     'tagcade.supportTools',
     'tagcade.tagLibrary',
-    'tagcade.exchangeManagement'
+    'tagcade.exchangeManagement',
+    'tagcade.subPublisher'
 ]);

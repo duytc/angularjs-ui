@@ -27,8 +27,6 @@
         $scope.backToListSite = backToListSite;
         $scope.toggleVideoPlayer =  toggleVideoPlayer;
         $scope.hasVideoPlayer =  hasVideoPlayer;
-        $scope.hasExchange = hasExchange;
-        $scope.toggleExchange = toggleExchange;
         $scope.submit =  submit;
 
         $scope.site = site || {
@@ -37,7 +35,6 @@
             enableSourceReport: false,
             players: [],
             channelSites: [],
-            exchanges: [],
             rtbStatus: RTB_STATUS_TYPES.inherit
         };
 
@@ -51,19 +48,6 @@
             { label: 'Scripps', name: 'scripps' },
             { label: 'ULive', name: 'ulive' }
         ];
-
-        $scope.exchangesOfPublisher = [];
-        $scope.exchanges = [
-            { label: 'Index Exchange', name: 'index-exchange'}
-        ];
-
-        if(!$scope.isNew) {
-            $scope.exchangesOfPublisher = site.publisher.publisherExchanges;
-        } else {
-            if(!$scope.isAdmin()) {
-                $scope.exchangesOfPublisher = userSession.exchanges;
-            }
-        }
 
         $scope.data = {
           channels: []
@@ -80,7 +64,6 @@
         function selectPublisher(publisher) {
             $scope.channels = $filter('selectedPublisher')(channels, publisher);
 
-            $scope.exchangesOfPublisher = publisher.publisherExchanges;
             $scope.data.channels = [];
             enabledModules = publisher.enabledModules
         }
@@ -109,14 +92,6 @@
             return $scope.site.players.indexOf(player) > -1;
         }
 
-        function hasExchange(exchange) {
-            if(!$scope.site.exchanges) {
-                return false;
-            }
-
-            return $scope.site.exchanges.indexOf(exchange) > -1;
-        }
-
         function toggleVideoPlayer(player) {
             var idx = $scope.site.players.indexOf(player);
 
@@ -124,16 +99,6 @@
                 $scope.site.players.splice(idx, 1);
             } else {
                 $scope.site.players.push(player);
-            }
-        }
-
-        function toggleExchange(exchange) {
-            var idx = $scope.site.exchanges.indexOf(exchange);
-
-            if (idx > -1) {
-                $scope.site.exchanges.splice(idx, 1);
-            } else {
-                $scope.site.exchanges.push(exchange);
             }
         }
 
@@ -155,24 +120,9 @@
                 delete $scope.site.autoCreate;
             }
 
-            var exchanges = [];
-            angular.forEach($scope.exchangesOfPublisher, function(data) {
-                if(typeof data == 'string') {
-                    exchanges.push(data);
-                }
-                else if(!!data.canonicalName  || !!data.exchange) {
-                    var canonicalName = data.canonicalName || data.exchange.canonicalName;
-                    exchanges.push(canonicalName);
-                }
-            });
-
-            // use the default value for site.exchanges when disable view exchanges in form
-            $scope.site.exchanges = exchanges;
-
             // not include rtbStatus if module rtb not enabled in publisher
             if (!isEnabledModule('MODULE_RTB')) {
                 delete $scope.site.rtbStatus;
-                delete $scope.site.exchanges;
             }
 
             if(!isEnabledModule('MODULE_VIDEO_ANALYTICS')) {

@@ -11,7 +11,9 @@
         var toState = null;
 
         var isAdmin = Auth.isAdmin();
+        var isSubPublisher = Auth.isSubPublisher();
         $scope.isAdmin = isAdmin;
+        $scope.isSubPublisher = isSubPublisher;
 
         var selectedData = {
             date: {
@@ -90,14 +92,64 @@
 
         $scope.reportFields = reportFields;
 
+        var reportTypeSite = {
+                key: PERFORMANCE_REPORT_TYPES.site,
+                breakdownKey: 'siteBreakdown',
+                label: 'Site',
+                toState: 'reports.performance.sites',
+                visibleFields: [reportFields.site],
+                breakdownOptions: [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.performance.site'
+                    },
+                    {
+                        key: 'adslot',
+                        label: 'By Ad Slot',
+                        toState: 'reports.performance.siteAdSlots'
+                    },
+                    {
+                        key: 'adtag',
+                        label: 'By Ad Tag',
+                        toState: 'reports.performance.siteAdTags'
+                    }
+                ]
+            };
+
+        if(!isSubPublisher) {
+            reportTypeSite.breakdownOptions.push({
+                key: 'adnetwork',
+                label: 'By Ad Network',
+                toState: 'reports.performance.siteAdNetworks'
+            })
+        }
+
         var reportTypeOptions = [
+            reportTypeSite,
             {
-                key: PERFORMANCE_REPORT_TYPES.account,
-                breakdownKey: 'accountBreakdown',
-                label: 'Account',
-                toState: 'reports.performance.account'
-            },
-            {
+                key: PERFORMANCE_REPORT_TYPES.adSlot,
+                breakdownKey: 'adSlotBreakdown',
+                label: 'Ad Slot',
+                toState: 'reports.performance.adSlots',
+                visibleFields: [reportFields.site, reportFields.adslot],
+                breakdownOptions: [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.performance.adSlot'
+                    },
+                    {
+                        key: 'adtag',
+                        label: 'By Ad Tag',
+                        toState: 'reports.performance.adSlotAdTags'
+                    }
+                ]
+            }
+        ];
+
+        if(!isSubPublisher) {
+            reportTypeOptions.unshift({
                 key: PERFORMANCE_REPORT_TYPES.adNetwork,
                 breakdownKey: 'adNetworkBreakdown',
                 label: 'Ad Network',
@@ -120,56 +172,16 @@
                         toState: 'reports.performance.adNetworkAdTags'
                     }
                 ]
-            },
-            {
-                key: PERFORMANCE_REPORT_TYPES.site,
-                breakdownKey: 'siteBreakdown',
-                label: 'Site',
-                toState: 'reports.performance.sites',
-                visibleFields: [reportFields.site],
-                breakdownOptions: [
-                    {
-                        key: 'day',
-                        label: 'By Day',
-                        toState: 'reports.performance.site'
-                    },
-                    {
-                        key: 'adslot',
-                        label: 'By Ad Slot',
-                        toState: 'reports.performance.siteAdSlots'
-                    },
-                    {
-                        key: 'adtag',
-                        label: 'By Ad Tag',
-                        toState: 'reports.performance.siteAdTags'
-                    },
-                    {
-                        key: 'adnetwork',
-                        label: 'By Ad Network',
-                        toState: 'reports.performance.siteAdNetworks'
-                    }
-                ]
-            },
-            {
-                key: PERFORMANCE_REPORT_TYPES.adSlot,
-                breakdownKey: 'adSlotBreakdown',
-                label: 'Ad Slot',
-                toState: 'reports.performance.adSlots',
-                visibleFields: [reportFields.site, reportFields.adslot],
-                breakdownOptions: [
-                    {
-                        key: 'day',
-                        label: 'By Day',
-                        toState: 'reports.performance.adSlot'
-                    },
-                    {
-                        key: 'adtag',
-                        label: 'By Ad Tag',
-                        toState: 'reports.performance.adSlotAdTags'
-                    }
-                ]
-            },
-            {
+            });
+
+            reportTypeOptions.unshift({
+                key: PERFORMANCE_REPORT_TYPES.account,
+                breakdownKey: 'accountBreakdown',
+                label: 'Account',
+                toState: 'reports.performance.account'
+            });
+
+            reportTypeOptions.push( {
                 key: PERFORMANCE_REPORT_TYPES.ronAdSlot,
                 breakdownKey: 'ronAdSlotBreakdown',
                 label: 'RON Ad Slot',
@@ -196,8 +208,8 @@
                         toState: 'reports.performance.ronAdSlotAdTags'
                     }
                 ]
-            }
-        ];
+            });
+        }
 
         if (isAdmin) {
             reportTypeOptions.unshift({
@@ -420,7 +432,7 @@
         }
 
         function getAdSlot(siteId) {
-            if(hasGetAdSlot && toState != 'reports.performance.adSlots') {
+            if(hasGetAdSlot && toState != 'reports.performance.adSlots' || !siteId) {
                 return
             }
 

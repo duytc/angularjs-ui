@@ -165,6 +165,12 @@
         }
 
         function getPublisherSitesReport(params, additionalParams) {
+            if (params.startDate == null) {
+                params.startDate = moment().subtract(6, 'days').startOf('day').toDate();
+                //params.endDate = moment().startOf('day').toDate();
+                params.endDate = moment().subtract(1, 'days').startOf('day').toDate();
+            }
+
             return getReport(ReportFetcher.getPublisherSitesReport, params, additionalParams);
         }
 

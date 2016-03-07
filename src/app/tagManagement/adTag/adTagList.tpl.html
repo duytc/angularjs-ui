@@ -5,14 +5,14 @@
 
         <div class="button-bar">
             <label class="ui-checkbox">
-                <input type="checkbox" ng-checked="enableDragDrop" ng-click="enableDragDropAdTag(enableDragDrop)">
+                <input type="checkbox" ng-checked="enableDragDrop" ng-disabled="isSubPublisher()" ng-click="enableDragDropAdTag(enableDragDrop)">
                 <span>{{ 'AD_TAG_MODULE.ENABLE_DRAG_DROP' | translate }}</span>
             </label>
-            <button ng-if="!!adSlot.libType" ui-sref="^.newForAdSlot({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
+            <button ng-if="!!adSlot.libType && !isSubPublisher()" ui-sref="^.newForAdSlot({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
                 {{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}
             </button>
-            <button ng-if="!adSlot.libType" ui-sref="^.new({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
+            <button ng-if="!adSlot.libType && !isSubPublisher()" ui-sref="^.new({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
                 {{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}
             </button>
@@ -25,8 +25,8 @@
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
                 <li><a ng-click="enableDragDropAdTag(enableDragDrop)"><span class="fa" ng-class="enableDragDrop ? 'fa-check-square' : 'fa-square'"></span> {{ 'AD_TAG_MODULE.ENABLE_DRAG_DROP' | translate }}</a></li>
-                <li ng-if="!!adSlot.libType"><a ui-sref="^.newForAdSlot({ adSlotId: adSlot.id, adSlotType: adSlotType })"> {{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}</a></li>
-                <li ng-if="!adSlot.libType"><a ui-sref="^.new({ adSlotId: adSlot.id })">{{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}</a></li>
+                <li ng-if="!!adSlot.libType && !isSubPublisher()"><a ui-sref="^.newForAdSlot({ adSlotId: adSlot.id, adSlotType: adSlotType })"> {{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}</a></li>
+                <li ng-if="!adSlot.libType && !isSubPublisher()"><a ui-sref="^.new({ adSlotId: adSlot.id })">{{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}</a></li>
                 <li><a ng-click="backToListAdSlot()">{{ 'AD_SLOT_MODULE.BACK_TO_AD_SLOT_LIST' | translate }}</a></li>
             </ul>
         </div>
@@ -54,15 +54,15 @@
                                 <div class="btn-group" dropdown on-toggle="actionDropdownToggled(open)">
                                     <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li ng-if="!adSlot.libType"><a ui-sref="^.edit({ id: adTag.id })">{{ 'AD_TAG_MODULE.EDIT_AD_TAG' | translate }}</a></li>
-                                        <li ng-if="!!adSlot.libType"><a ui-sref="^.editForAdSlot({ id: adTag.id })">{{ 'AD_TAG_MODULE.EDIT_AD_TAG' | translate }}</a></li>
-                                        <li><a ng-click="toggleAdTagStatus(adTag)">{{ adTag.active ? ('AD_TAG_MODULE.PAUSE_AD_TAG' | translate) : ('AD_TAG_MODULE.ACTIVATE_AD_TAG' | translate) }}</a></li>
-                                        <li><a ng-click="confirmDeletion(adTag)">{{ 'AD_TAG_MODULE.DELETE_AD_TAG' | translate }}</a></li>
-                                        <li class="divider"></li>
-                                        <li ng-if="!adTag.libraryAdTag.visible" ng-click="shareAdTag(adTag)"><a>{{ 'AD_TAG_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>
-                                        <li ng-if="adTag.libraryAdTag.visible"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: adTag.libraryAdTag.id})">{{ 'AD_TAG_MODULE.EDIT_AD_TAG_IN_LIBRARY' | translate }}</a></li>
-                                        <li ng-if="adTags.length > 1" class="divider"></li>
-                                        <li ng-if="adTags.length > 1"><a ng-click="splitFromGroup(adTags, adTag)">{{ 'AD_TAG_MODULE.SPLIT_GROUP' | translate }}</a></li>
+                                        <li ng-if="!adSlot.libType && !isSubPublisher()"><a ui-sref="^.edit({ id: adTag.id })">{{ 'AD_TAG_MODULE.EDIT_AD_TAG' | translate }}</a></li>
+                                        <li ng-if="!!adSlot.libType && !isSubPublisher()"><a ui-sref="^.editForAdSlot({ id: adTag.id })">{{ 'AD_TAG_MODULE.EDIT_AD_TAG' | translate }}</a></li>
+                                        <li ng-if="!isSubPublisher()"><a ng-click="toggleAdTagStatus(adTag)">{{ adTag.active ? ('AD_TAG_MODULE.PAUSE_AD_TAG' | translate) : ('AD_TAG_MODULE.ACTIVATE_AD_TAG' | translate) }}</a></li>
+                                        <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(adTag)">{{ 'AD_TAG_MODULE.DELETE_AD_TAG' | translate }}</a></li>
+                                        <li ng-if="!isSubPublisher()" class="divider"></li>
+                                        <li ng-if="!adTag.libraryAdTag.visible && !isSubPublisher()" ng-click="shareAdTag(adTag)"><a>{{ 'AD_TAG_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>
+                                        <li ng-if="adTag.libraryAdTag.visible && !isSubPublisher()"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: adTag.libraryAdTag.id})">{{ 'AD_TAG_MODULE.EDIT_AD_TAG_IN_LIBRARY' | translate }}</a></li>
+                                        <li ng-if="adTags.length > 1 && !isSubPublisher()" class="divider"></li>
+                                        <li ng-if="adTags.length > 1 && !isSubPublisher()"><a ng-click="splitFromGroup(adTags, adTag)">{{ 'AD_TAG_MODULE.SPLIT_GROUP' | translate }}</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -70,12 +70,14 @@
                                 <div>{{ adTag.libraryAdTag.name }}</div>
                             </div>
                             <div class="col-md-2" ng-dblclick="rotationForm.$show()">
-                                <span class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>
-                                <div e-form="rotationForm" buttons="no" oncancel="updateAdTag($data, 'rotation', adTag)" onbeforesave="updateAdTag($data, 'rotation', adTag)" editable-number="adTag.rotation">{{ adTag.rotation }}</div>
+                                <span ng-if="!isSubPublisher()" class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>
+                                <div ng-if="!isSubPublisher()" e-form="rotationForm" buttons="no" oncancel="updateAdTag($data, 'rotation', adTag)" onbeforesave="updateAdTag($data, 'rotation', adTag)" editable-number="adTag.rotation">{{ adTag.rotation }}</div>
+                                <div ng-if="isSubPublisher()">{{ adTag.rotation }}</div>
                             </div>
                             <div class="col-md-2" ng-dblclick="frequencyCapForm.$show()">
-                                <span class="fa fa-pencil" ng-hide="frequencyCapForm.$visible"></span>
-                                <div e-form="frequencyCapForm" buttons="no" oncancel="updateAdTag($data, 'frequencyCap', adTag)" onbeforesave="updateAdTag($data, 'frequencyCap', adTag)" editable-number="adTag.frequencyCap">{{ adTag.frequencyCap }}</div>
+                                <span ng-if="!isSubPublisher()" class="fa fa-pencil" ng-hide="frequencyCapForm.$visible"></span>
+                                <div ng-if="!isSubPublisher()" e-form="frequencyCapForm" buttons="no" oncancel="updateAdTag($data, 'frequencyCap', adTag)" onbeforesave="updateAdTag($data, 'frequencyCap', adTag)" editable-number="adTag.frequencyCap">{{ adTag.frequencyCap }}</div>
+                                <div ng-if="isSubPublisher()">{{ adTag.frequencyCap }}</div>
                             </div>
                             <div class="col-md-2"><span class="label" ng-class="adTag.active ? 'label-success' : 'label-danger'">{{ adTag.active ? 'Active' : 'Paused' }}</span></div>
                             <!--<div class="col-md-1">-->

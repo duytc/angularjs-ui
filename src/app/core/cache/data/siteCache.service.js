@@ -33,7 +33,7 @@
         function getAllSites() {
             var siteList = siteCache.get('siteList');
 
-            if(!Auth.isAdmin() && !!siteList) {
+            if(!Auth.isAdmin() && !Auth.isSubPublisher() && !!siteList) {
                 return $filter('selectedPublisher')(siteList, Auth.getSession().id)
             }
 

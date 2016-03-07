@@ -32,7 +32,7 @@
         function getAllAdNetworks() {
             var adNetworkList = adNetworkCache.get('adNetworkList');
 
-            if(!Auth.isAdmin() && !!adNetworkList) {
+            if(!Auth.isAdmin() && !Auth.isSubPublisher() && !!adNetworkList) {
                 return $filter('selectedPublisher')(adNetworkList, Auth.getSession().id)
             }
 

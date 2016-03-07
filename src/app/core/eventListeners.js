@@ -5,8 +5,13 @@
         .run(eventListeners)
     ;
 
-    function eventListeners($rootScope, $translate, $state, AUTH_EVENTS, ENTRY_STATE, AlertService, UserStateHelper) {
+    function eventListeners($rootScope, $translate, $state, AUTH_EVENTS, ENTRY_STATE, AlertService, UserStateHelper, Auth) {
         $rootScope.$on(AUTH_EVENTS.loginSuccess, function() {
+            if(Auth.isSubPublisher()) {
+                // todo
+                return UserStateHelper.transitionRelativeToBaseState('reports.performance.sites');
+            }
+
             UserStateHelper.transitionRelativeToBaseState('dashboard');
         });
 

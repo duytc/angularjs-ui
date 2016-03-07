@@ -27,7 +27,7 @@
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
                                 <li><a ng-click="popupReport(reportStates.site, item)">{{ 'PERFORMANCE_REPORT_MODULE.SITE_INFO' | translate }}</a></li>
-                                <li><a ng-click="goToEditPage('tagManagement.sites.edit', item.reportType.siteId)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_SITE' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ng-click="goToEditPage('tagManagement.sites.edit', item.reportType.siteId)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_SITE' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>

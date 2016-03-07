@@ -3,14 +3,14 @@
         <span class="glyphicon glyphicon-th"></span>
         <strong current-page-title></strong>
 
-        <div class="button-bar">
+        <div class="button-bar" ng-if="!isSubPublisher()">
             <button ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
                 {{ 'RON_AD_SLOT_MODULE.NEW_RON_AD_SLOT' | translate }}
             </button>
         </div>
 
-        <div class="btn-group btnGrouped" dropdown>
+        <div ng-if="!isSubPublisher()" class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
                 <li><a ui-sref="^.new">{{ 'RON_AD_SLOT_MODULE.NEW_RON_AD_SLOT' | translate }}</a></li>
@@ -38,10 +38,10 @@
                                 <li><a ng-click="generateAdTag(item)">{{ 'AD_SLOT_MODULE.GENERATE_A_TAGS' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li><a ui-sref="^.^.^.reports.performance.ronAdSlotAdTags({ ronAdSlotId: item.id, startDate: today})">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
-                                <li class="divider"></li>
-                                <li><a ui-sref="^.edit({ id: item.id })">{{ 'RON_AD_SLOT_MODULE.EDIT_RON_AD_SLOT' | translate }}</a></li>
-                                <li><a ng-click="confirmDeletion(item)">{{ 'RON_AD_SLOT_MODULE.DELETE_RON_AD_SLOT' | translate }}</a></li>
-                                <li><a  ui-sref="^.^.^.tagLibrary.adSlot.edit({ id: item.libraryAdSlot.id})">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT_IN_LIBRARY' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()" class="divider"></li>
+                                <li ng-if="!isSubPublisher()"><a ui-sref="^.edit({ id: item.id })">{{ 'RON_AD_SLOT_MODULE.EDIT_RON_AD_SLOT' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item)">{{ 'RON_AD_SLOT_MODULE.DELETE_RON_AD_SLOT' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a  ui-sref="^.^.^.tagLibrary.adSlot.edit({ id: item.libraryAdSlot.id})">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT_IN_LIBRARY' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>
