@@ -31,13 +31,10 @@
                 resolve: {
                     ronAdSlots: /* @ngInject */ function(RonAdSlotManager) {
                         return RonAdSlotManager.getList();
-                    },
-                    ronAdSlotSegments: function(SegmentManager){
-                        return SegmentManager.getList();
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'RON Ad Slots'
+                    label: 'Smart Ad Slots'
                 }
             })
             .state('tagManagement.ronAdSlot.new', {
@@ -80,7 +77,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'New RON Ad Slot'
+                    label: 'New Smart Ad Slot'
                 }
             })
             .state('tagManagement.ronAdSlot.edit', {
@@ -112,7 +109,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Edit RON Ad Slot'
+                    label: 'Edit Smart Ad Slot'
                 }
             })
         ;

@@ -1,4 +1,4 @@
-<section class="panel panel-default" ng-class="pickFromLibrary ? 'disabledForm' : ''">
+<section class="panel panel-default">
     <div class="panel-heading">
         <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
 
@@ -71,34 +71,27 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="inputPickFromLibrary" class="col-sm-2 control-label">{{ 'AD_TAG_MODULE.FROM_LIBRARY' | translate }}</label>
-                    <div class="col-sm-10">
-                        <div>
-                            <label class="ui-checkbox">
-                                <input name="pickFromLibrary" ng-disabled="disabledCheckPickFromLibrary" type="checkbox" ng-model="pickFromLibrary" ng-click="getAdTagLibrary()" server-error id="inputPickFromLibrary">
-                                <span></span>
-                            </label>
+
+
+                <!--demo-->
+                <div class="row" ng-if="showInputPosition">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div style="background-color: #e6e6e6; height: 85px; margin-bottom: 15px; clear: both" ng-repeat="adTagList in adTagGroup">
+                            <span style="text-align: center; float: left; height: 100%" ng-repeat="adTag in adTagList" ng-style="{width: 100/adTagList.length+'%', 'border-left': ($index != 0 ? '1px solid #000000' : '')}">
+                                <p style="margin: 10px 0 5px 0 !important;"><strong>{{ adTag.libraryAdTag.adNetwork.name }}</strong></p>
+                                <p style="margin: 5px !important;">{{ !!adTag.frequencyCap ? adTag.frequencyCap : 'N/A'}} FC</p>
+                                <p style="margin: 5px !important;">{{ !!adTag.rotation ? adTag.rotation : 'N/A'}} Weight</p>
+                            </span>
                         </div>
-                        <span class="help-block">{{ 'AD_TAG_MODULE.HELP_BLOCK_FROM_LIBRARY' | translate }}</span>
                     </div>
                 </div>
-                <div class="form-group" ng-if="pickFromLibrary">
-                    <label for="inputAdTagLibrary" class="col-sm-2 control-label">{{ 'AD_TAG_MODULE.LIBRARY_AD_TAG' | translate }}</label>
-                    <div class="col-sm-10">
-                        <ui-select name="libraryAdTag" ng-model="libraryAdTag" id="inputAdTagLibrary" server-error ng-disabled="!selected.publisher && isAdmin()" on-select="selectAdTagLibrary($item)" reset-search-input="'false'">
-                            <ui-select-match placeholder="{{ 'AD_TAG_MODULE.SELECT_AN_AD_TAG_FROM_LIBRARY' | translate }}">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
-                            <ui-select-choices repeat="libraryAdTag.id as libraryAdTag in adTagLibraryList | filter:$select.search | filter:filterByPublisher:libraryAdTag">
-                                {{ libraryAdTag.name }} {{ libraryAdTag.id ? '(ID: ' + libraryAdTag.id + ')' : '' }}
-                            </ui-select-choices>
-                        </ui-select>
-                    </div>
-                </div>
+
+
 
                 <div class="form-group">
                     <label for="inputAdNetwork" class="col-sm-2 control-label">{{ 'AD_NETWORK' | translate }}</label>
                     <div class="col-sm-10">
-                        <ui-select name="adNetwork" ng-model="adTag.libraryAdTag.adNetwork" id="inputAdNetwork" ng-required="true" server-error ng-disabled="isAdmin() && !selected.publisher || pickFromLibrary" reset-search-input="'false'">
+                        <ui-select name="adNetwork" ng-model="adTag.libraryAdTag.adNetwork" id="inputAdNetwork" ng-required="true" server-error ng-disabled="isAdmin() && !selected.publisher" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'AD_NETWORK_MODULE.SELECT_A_AD_NETWORK' | translate }}">{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices repeat="adNetwork.id as adNetwork in adNetworkList | filter: { name:$select.search } | selectedPublisher:selected.publisher">
                                 {{ adNetwork.name }}
@@ -111,15 +104,15 @@
                 <div class="form-group">
                     <label for="inputName" class="col-sm-2 control-label">{{ 'NAME' | translate }}</label>
                     <div class="col-sm-10">
-                        <input ng-disabled="pickFromLibrary" name="name" ng-model="adTag.libraryAdTag.name" server-error ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="{{ 'AD_TAG_MODULE.AD_TAG_NAME' | translate }}">
+                        <input name="name" ng-model="adTag.libraryAdTag.name" server-error ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="{{ 'AD_TAG_MODULE.AD_TAG_NAME' | translate }}">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="inputPosition" class="col-sm-2 control-label">{{ 'AD_TAG_MODULE.AD_TYPE' | translate }}</label>
                     <div class="col-sm-10">
-                        <label class="ui-radio"><input ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.adType" type="radio" ng-value="adTypes.customAd"><span>{{ 'AD_TAG_MODULE.CUSTOM_AD' | translate }}</span></label>
-                        <label class="ui-radio"><input ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.adType" type="radio" ng-value="adTypes.imageAd"><span>{{ 'AD_TAG_MODULE.IMAGE_AD' | translate }}</span></label>
+                        <label class="ui-radio"><input ng-model="adTag.libraryAdTag.adType" type="radio" ng-value="adTypes.customAd"><span>{{ 'AD_TAG_MODULE.CUSTOM_AD' | translate }}</span></label>
+                        <label class="ui-radio"><input ng-model="adTag.libraryAdTag.adType" type="radio" ng-value="adTypes.imageAd"><span>{{ 'AD_TAG_MODULE.IMAGE_AD' | translate }}</span></label>
                     </div>
                 </div>
 
@@ -141,14 +134,14 @@
                     <div class="form-group">
                         <label for="inputImageUrl" class="col-sm-2 control-label">{{ 'AD_TAG_MODULE.IMAGE_URL' | translate }}</label>
                         <div class="col-sm-10">
-                            <input name="name" ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.descriptor.imageUrl" server-error ng-required="true" ng-minlength="2" type="url" class="form-control" id="inputImageUrl" placeholder="{{ 'AD_TAG_MODULE.IMAGE_URL' | translate }}">
+                            <input name="name" ng-model="adTag.libraryAdTag.descriptor.imageUrl" server-error ng-required="true" ng-minlength="2" type="url" class="form-control" id="inputImageUrl" placeholder="{{ 'AD_TAG_MODULE.IMAGE_URL' | translate }}">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="inputTargetUrl" class="col-sm-2 control-label">{{ 'AD_TAG_MODULE.TARGET_URL' | translate }}</label>
                         <div class="col-sm-10">
-                            <input name="name" ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.descriptor.targetUrl" server-error ng-required="true" ng-minlength="2" type="url" class="form-control" id="inputTargetUrl" placeholder="{{ 'AD_TAG_MODULE.TARGET_URL' | translate }}">
+                            <input name="name" ng-model="adTag.libraryAdTag.descriptor.targetUrl" server-error ng-required="true" ng-minlength="2" type="url" class="form-control" id="inputTargetUrl" placeholder="{{ 'AD_TAG_MODULE.TARGET_URL' | translate }}">
                             <span class="help-block">{{ 'AD_TAG_MODULE.HELP_BLOCK_TARGET_URL' | translate }}:<br/>
                             <strong>${CACHEBUSTER}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_CACHE_BUSTER' | translate }}<br/>
                             <strong>${PAGE_URL}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_PAGE_URL' | translate }}<br/>

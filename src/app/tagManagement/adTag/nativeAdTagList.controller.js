@@ -5,7 +5,7 @@
         .controller('NativeAdTagList', NativeAdTagList)
     ;
 
-    function NativeAdTagList($scope, $translate, $modal, adTags, AdTagManager, AdSlotAdTagLibrariesManager, AdTagLibrariesManager, AlertService, adSlot, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
+    function NativeAdTagList($scope, $translate, $modal, adTags, AdTagManager, AdSlotAdTagLibrariesManager, AlertService, adSlot, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
         $scope.adSlot = adSlot;
         $scope.adTags = adTags;
 
@@ -17,7 +17,6 @@
         $scope.showPagination = showPagination;
         $scope.backToListAdSlot = backToListAdSlot;
         $scope.updateAdTag = updateAdTag;
-        $scope.shareAdTag = shareAdTag;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -139,29 +138,6 @@
                         message: $translate.instant('AD_TAG_MODULE.UPDATE_FAIL')
                     });
                 });
-        }
-
-        function shareAdTag(adTag) {
-            var libraryAdTag = {
-                visible: true
-            };
-
-            AdTagLibrariesManager.one(adTag.libraryAdTag.id).patch(libraryAdTag)
-                .then(function () {
-                    adTag.libraryAdTag.visible = true;
-
-                    AlertService.replaceAlerts({
-                        type: 'success',
-                        message: $translate.instant('AD_TAG_MODULE.MOVED_TO_LIBRARY_SUCCESS')
-                    });
-                })
-                .catch(function () {
-                    AlertService.replaceAlerts({
-                        type: 'error',
-                        message: $translate.instant('AD_TAG_MODULE.MOVED_TO_LIBRARY_FAIL')
-                    });
-                })
-            ;
         }
     }
 })();

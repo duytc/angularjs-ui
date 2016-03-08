@@ -32,20 +32,27 @@
         </div>
     </div>
 
-    <div ng-show="!site">
-        <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'site.name', 'libraryAdSlot.name', 'libraryAdSlot.width', 'libraryAdSlot.height']"></search-box>
-    </div>
-    <div ng-show="!!site">
-        <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'libraryAdSlot.name', 'libraryAdSlot.width', 'libraryAdSlot.height']"></search-box>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs nav-tab-margin">
+                <li ng-if="allAdSlot" role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.adSlot.listAll">By Site</a></li>
+                <li ng-if="!allAdSlot" role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.adSlot.list">By Site</a></li>
+                <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.adSlot.listByChannel">By Channel</a></li>
+                <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.ronAdSlot.list">Smart Ad Slots</a></li>
+                <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagLibrary.adSlot.list">Standalone Ad Slots</a></li>
+            </ul>
+        </div>
     </div>
 
+    <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'libraryAdSlot.name', 'libraryAdSlot.width', 'libraryAdSlot.height']"></search-box>
 
     <div class="panel-body" ng-if="hasData()">
         <div class="table-responsive">
             <table class="table" at-sortable-query at-table at-paginated at-list="adSlots" at-config="tableConfig">
                 <thead>
                 <tr>
-                    <th ng-show="allAdSlot" at-attribute="site.name">{{ 'SITE' | translate }}</th>
+                    <th ng-show="allAdSlot && !isChannel" at-attribute="site.name">{{ 'SITE' | translate }}</th>
+                    <th ng-show="isChannel && allAdSlot" at-attribute="channels">{{ 'CHANNELS' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -71,17 +78,15 @@
                         </div>
                     </td>
                     <td at-implicit at-title="{{ 'AD_SLOT' | translate }}" at-sortable at-attribute="libraryAdSlot.name" at-initial-sorting="asc"></td>
-                    <td ng-show="allAdSlot" at-title="{{ 'SITE' | translate }}" at-implicit at-sortable at-attribute="site.name"></td>
+                    <td ng-show="allAdSlot && !isChannel" at-title="{{ 'SITE' | translate }}" at-implicit at-sortable at-attribute="site.name"></td>
                     <td at-title="{{ 'AD_SLOT_MODULE.SIZE' | translate }}" at-sortable at-attribute="width">
                         {{ !!item.libraryAdSlot.width ? item.libraryAdSlot.width + 'x' + item.libraryAdSlot.height : ''}}
                     </td>
                     <td at-title="{{ 'AD_SLOT_MODULE.TYPE' | translate }}" at-implicit at-attribute="type" at-sortable></td>
-                    <!--<td at-title="Library" at-attribute="visible" at-sortable>-->
-                        <!--{{ item.libraryAdSlot.visible ? item.libraryAdSlot.referenceName : '' }}-->
-                    <!--</td>-->
-
-                    <td at-title="{{ 'AD_SLOT_MODULE.IN_LIBRARY' | translate }}" at-attribute="libraryAdSlot.visible" at-sortable>
-                        <i class="fa" ng-class="item.libraryAdSlot.visible? 'fa-check-square' : 'fa-square'"></i>
+                    <td ng-show="isChannel && allAdSlot" at-sortable at-attribute="channels" at-title="{{ 'CHANNELS' | translate }}">
+                        <ul ng-repeat="channel in item.channels">
+                            <li>{{ channel.name }}</li>
+                        </ul>
                     </td>
                     <td at-title="{{ 'SITE_MODULE.RTB' | translate }}" at-attribute="rtb" at-sortable>
                         {{ rtbStatusLabels[item.rtbStatus] }}
@@ -90,7 +95,7 @@
                 </tbody>
             </table>
 
-            <at-pagination at-pagination-query ng-if="showPagination()" at-list="adSlots" at-config="tableConfig"></at-pagination>
+            <at-pagination at-pagination-query ng-if="showPagination(adSlots)" at-list="adSlots" at-config="tableConfig"></at-pagination>
         </div>
     </div>
 </div>

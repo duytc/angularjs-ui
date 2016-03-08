@@ -17,6 +17,7 @@
 
         $scope.allowPublisherSelection = $scope.isAdmin();
         $scope.publishers = publishers;
+        $scope.getPageTitle = getPageTitle;
         $scope.backToListAdNetwork = backToListAdNetwork;
 
         $scope.adNetwork = adNetwork || {
@@ -28,6 +29,12 @@
         $scope.isFormValid = function() {
             return $scope.adNetworkForm.$valid;
         };
+
+        function getPageTitle() {
+            return $scope.isNew
+                ? $translate.instant('AD_NETWORK_MODULE.PAGE_TITLE_NEW_AD_NETWORK')
+                : ($translate.instant('AD_NETWORK_MODULE.PAGE_TITLE_EDIT_AD_NETWORK') + ' - ' + $scope.adNetwork.name)
+        }
 
         function backToListAdNetwork() {
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adNetwork, '^.list');

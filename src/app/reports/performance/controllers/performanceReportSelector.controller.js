@@ -120,7 +120,7 @@
         if(!isSubPublisher) {
             reportTypeSite.breakdownOptions.push({
                 key: 'adnetwork',
-                label: 'By Ad Network',
+                label: 'By Demand Partner',
                 toState: 'reports.performance.siteAdNetworks'
             })
         }
@@ -152,7 +152,7 @@
             reportTypeOptions.unshift({
                 key: PERFORMANCE_REPORT_TYPES.adNetwork,
                 breakdownKey: 'adNetworkBreakdown',
-                label: 'Ad Network',
+                label: 'Demand Partner',
                 toState: 'reports.performance.adNetworks',
                 visibleFields: [reportFields.adNetwork],
                 breakdownOptions: [
@@ -184,7 +184,7 @@
             reportTypeOptions.push( {
                 key: PERFORMANCE_REPORT_TYPES.ronAdSlot,
                 breakdownKey: 'ronAdSlotBreakdown',
-                label: 'RON Ad Slot',
+                label: 'Smart Ad Slot',
                 toState: 'reports.performance.ronAdSlots',
                 breakdownOptions: [
                     {
@@ -321,7 +321,7 @@
 
         /**
          * When searching for values in ui-select, we may have values that represent collections instead of single values
-         * i.e "All Ad Networks" option. We filter out these values if the user is searching specifically for a value
+         * i.e "All Demand Partners" option. We filter out these values if the user is searching specifically for a value
          *
          * @param {String} searchText
          * @returns {Function}
@@ -383,7 +383,7 @@
             resetToStateForCurrentReportType();
         }
 
-        // reset toState of ad network
+        // reset toState of Demand Partner
         function selectSiteForAdNetwork(siteId) {
             $scope.selectedData.adNetworkBreakdown = null;
 
@@ -453,7 +453,7 @@
             hasGetRonAdSlot = true;
             reportSelectorForm.getRonAdSlot()
                 .then(function(ronAdSlots) {
-                    hasGetRonAdSlot = true;
+
                     $scope.optionData.ronAdSlots = ronAdSlots;
                 })
                 .catch(function() {
@@ -534,7 +534,7 @@
 
             reportSelectorForm.getAdNetworks()
                 .then(function (data) {
-                    addAllOption(data, 'All Ad Networks');
+                    addAllOption(data, 'All Demand Partners');
 
                     $scope.optionData.adNetworks = data;
                 })

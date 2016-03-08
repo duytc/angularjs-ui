@@ -34,7 +34,7 @@
         if(!$scope.isSubPublisher()) {
             $scope.types.push({
                 key: $scope.typeKey.ronAdSlot,
-                label: 'RON Ad Slot'
+                label: 'Smart Ad Slot'
             })
         }
 
@@ -169,7 +169,7 @@
                 name = 'Universal Passback';
             }
             else {
-                name = 'RON ad slot';
+                name = 'Smart ad slot';
             }
 
             return saveAs(blob, [name  + '-tags.txt']);

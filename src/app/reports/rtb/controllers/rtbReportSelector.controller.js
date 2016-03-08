@@ -130,7 +130,7 @@
             {
                 key: PERFORMANCE_REPORT_TYPES.ronAdSlot,
                 breakdownKey: 'ronAdSlotBreakdown',
-                label: 'RON Ad Slot',
+                label: 'Smart Ad Slot',
                 toState: 'reports.rtb.ronAdSlots',
                 breakdownOptions: [
                     {

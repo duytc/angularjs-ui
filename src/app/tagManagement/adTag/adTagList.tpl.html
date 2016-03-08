@@ -38,11 +38,10 @@
             <ul class="header-list-ad-tag item">
                 <li class="col-md-1">#</li>
                 <li class="col-md-2">{{ 'ACTIONS' | translate }}</li>
-                <li class="col-md-2">{{ 'NAME' | translate }}</li>
+                <li class="col-md-3">{{ 'NAME' | translate }}</li>
                 <li class="col-md-2">{{ 'AD_TAG_MODULE.ROTATION_WEIGHT' | translate }}</li>
                 <li class="col-md-2">{{ 'AD_TAG_MODULE.FREQUENCY_CAP' | translate }}</li>
                 <li class="col-md-2">{{ 'AD_TAG_MODULE.STATUS' | translate }}</li>
-                <li class="col-md-1">{{ 'AD_TAG_MODULE.IN_LIBRARY' | translate }}</li>
             </ul>
             <ul ui-sortable="sortableGroupOptions" ng-model="adTagsGroup">
                 <li class="group-ad-tag" ng-repeat="adTags in adTagsGroup" ng-class="{'moveable': !sortableGroupOptions['disabled']}">
@@ -66,7 +65,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div>{{ adTag.libraryAdTag.name }}</div>
                             </div>
                             <div class="col-md-2" ng-dblclick="rotationForm.$show()">
@@ -80,13 +79,6 @@
                                 <div ng-if="isSubPublisher()">{{ adTag.frequencyCap }}</div>
                             </div>
                             <div class="col-md-2"><span class="label" ng-class="adTag.active ? 'label-success' : 'label-danger'">{{ adTag.active ? 'Active' : 'Paused' }}</span></div>
-                            <!--<div class="col-md-1">-->
-                                <!--{{ adTag.libraryAdTag.visible ? adTag.libraryAdTag.referenceName : '' }}-->
-                            <!--</div>-->
-
-                            <div class="col-md-1">
-                                <i class="fa" ng-class="adTag.libraryAdTag.visible ? 'fa-check-square' : 'fa-square'"></i>
-                            </div>
                         </li>
                     </ul>
                 </li>

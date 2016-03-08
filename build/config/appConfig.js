@@ -48,6 +48,7 @@ module.exports = {
     vendorFiles: {
         js: [
             'vendor/jquery/dist/jquery.min.js',
+            'vendor/jquery-slimscroll/jquery.slimscroll.js',
             'vendor/jquery-ui/jquery-ui.min.js',
             'vendor/angular/angular.js',
             'vendor/angular-deferred-bootstrap/angular-deferred-bootstrap.js',

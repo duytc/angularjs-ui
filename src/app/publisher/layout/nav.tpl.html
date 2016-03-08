@@ -1,67 +1,186 @@
-<div class="nav-wrapper">
-    <ul id="nav"
-        class="nav"
-        collapse-nav>
+<ul class="nav sidebar-menu">
+    <li ui-sref-active="active">
+        <a ui-sref=".dashboard">
+            <i class="menu-icon glyphicon glyphicon-home"></i>
+            <span class="menu-text"> {{ 'NAVBAR.DASHBOARD' | translate }} </span>
+        </a>
+    </li>
 
-        <li ui-sref-active-eq="active"><a ui-sref=".dashboard" ui-sref-opts="{reload: true}"><i class="fa fa-home"></i><span>{{ 'NAVBAR.DASHBOARD' | translate }}</span></a></li>
+    <li ng-show="hasSubPublisherModule" ui-sref-active="active">
+        <a href="#" class="menu-dropdown">
+            <i class="menu-icon fa fa-user"></i>
+            <span class="menu-text"> {{ 'NAVBAR.SUB_PUBLISHER_MANAGEMENT' | translate }} </span>
+            <i class="menu-expand"></i>
+        </a>
 
-        <li ng-show="hasSubPublisherModule" ui-sref-active="active">
-            <a ui-sref=".subPublisher"><i class="fa fa-user"></i><span>{{ 'NAVBAR.SUB_PUBLISHER_MANAGEMENT' | translate }}</span></a>
-            <ul>
-                <li ui-sref-active-eq="active"><a ui-sref=".subPublisher.list"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.SUB_PUBLISHERS' | translate }}</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref=".subPublisher.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_SUB_PUBLISHER' | translate }}</a></li>
-            </ul>
-        </li>
+        <ul class="submenu">
+            <li ui-sref-active="active">
+                <a ui-sref=".subPublisher.list">
+                    <span class="menu-text"> {{ 'NAVBAR.SUB_PUBLISHERS' | translate }} </span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref=".subPublisher.new">
+                    <span class="menu-text"> {{ 'NAVBAR.NEW_SUB_PUBLISHER' | translate }} </span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    
+    <li >
+        <a href="#" class="menu-dropdown">
+            <i class="menu-icon fa fa-location-arrow"></i>
+            <span class="menu-text"> {{ 'NAVBAR.TAG_MANAGEMENT' | translate }} </span>
+            <i class="menu-expand"></i>
+        </a>
 
-        <li ui-sref-active="active">
-            <a ui-sref=".tagManagement"><i class="fa fa-location-arrow"></i><span>{{ 'NAVBAR.TAG_MANAGEMENT' | translate }}</span></a>
-            <ul>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.tagGenerator"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.GENERATE_TAGS' | translate }}</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.channel.list"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.MY_CHANNELS' | translate }}</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.sites.list"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.MY_SITES' | translate }}</a></li>
-                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adSlot.listAll"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.MY_AD_SLOTS' | translate }}</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.ronAdSlot.list"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.MY_RON_AD_SLOTS' | translate }}</a></li>
-                <!--<li ui-sref-active-eq="active"><a ui-sref=".tagManagement.segment.list"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.MY_SEGMENTS' | translate }}</a></li>-->
-                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adNetwork.list"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.MY_AD_NETWORKS' | translate }}</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.channel.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_CHANNEL' | translate }}</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.sites.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_SITE' | translate }}</a></li>
-                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adSlot.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_AD_SLOT' | translate }}</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagManagement.ronAdSlot.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_RON_AD_SLOT' | translate }}</a></li>
-                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adNetwork.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_AD_NETWORK' | translate }}</a></li>
-                <li ng-if="hasDisplayAdsModule" ui-sref-active-eq="active"><a ui-sref=".tagManagement.adTag.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_AD_TAG' | translate }}</a></li>
-            </ul>
-        </li>
+        <ul class="submenu">
+            <li >
+                <a href="#" class="menu-dropdown">
+                    <span class="menu-text">{{ 'CHANNELS' | translate }}</span>
+                    <i class="menu-expand"></i>
+                </a>
 
-        <li ui-sref-active="active">
-            <a ui-sref=".tagLibrary"><i class="fa fa-book"></i><span>{{ 'NAVBAR.TAG_LIBRARY' | translate }}</span></a>
-            <ul>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagLibrary.adSlot.list"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.AD_SLOTS' | translate }}</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagLibrary.adTag.list"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.AD_TAGS' | translate }}</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagLibrary.adSlot.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_AD_SLOT' | translate }}</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref=".tagLibrary.adTag.new"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.NEW_AD_TAG' | translate }}</a></li>
-            </ul>
-        </li>
+                <ul class="submenu">
+                    <li ui-sref-active="active">
+                        <a ui-sref=".tagManagement.channel.list">
+                            <span class="menu-text"> {{ 'NAVBAR.MY_CHANNELS' | translate }} </span>
+                        </a>
+                    </li>
 
-        <li ui-sref-active="active">
-            <a ui-sref=".reports"><i class="fa fa-tachometer"></i><span>{{ 'NAVBAR.REPORTS' | translate }}</span></a>
-            <ul>
-                <li ng-if="hasDisplayAdsModule" ui-sref-active="active"><a ui-sref=".reports.performance.account"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.PERFORMANCE_REPORTS' | translate }}</a></li>
+                    <li ui-sref-active="active">
+                        <a ui-sref=".tagManagement.channel.new">
+                            <span class="menu-text">{{ 'NAVBAR.NEW_CHANNEL' | translate }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li >
+                <a href="#" class="menu-dropdown">
+                    <span class="menu-text">{{ 'SITES' | translate }}</span>
+                    <i class="menu-expand"></i>
+                </a>
 
-                <li ng-if="hasDisplayAdsModule" ui-sref-active="active"><a ui-sref=".reports.rtb.account"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.RTB_REPORTS' | translate }}</a></li>
+                <ul class="submenu">
+                    <li ui-sref-active="active">
+                        <a ui-sref=".tagManagement.sites.list">
+                            <span class="menu-text"> {{ 'NAVBAR.MY_SITES' | translate }} </span>
+                        </a>
+                    </li>
 
-                <li ng-if="hasAnalyticsModule" ui-sref-active="active"><a ui-sref=".reports.source"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.SOURCE_REPORTS' | translate }}</a></li>
-                <li ui-sref-active="active"><a ui-sref=".reports.billing.account"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.BILLING_REPORTS' | translate }}</a></li>
-                <li ui-sref-active="active"><a ui-sref=".reports.projectedBill.account"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.PROJECTED_BILL' | translate }}</a></li>
-                <li ng-if="hasUnifiedModule" ui-sref-active="active"><a ui-sref=".reports.unified"><i class="fa fa-caret-right"></i>Unified Report</a></li>
-            </ul>
-        </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref=".tagManagement.sites.new">
+                            <span class="menu-text">{{ 'NAVBAR.NEW_SITE' | translate }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li ng-show="hasDisplayAdsModule">
+                <a href="#" class="menu-dropdown">
+                    <span class="menu-text">{{ 'AD_SLOTS' | translate }}</span>
+                    <i class="menu-expand"></i>
+                </a>
+                <ul class="submenu">
+                    <li ui-sref-active="active">
+                        <a ui-sref=".tagManagement.adSlot.listAll">
+                            <span class="menu-text">{{ 'NAVBAR.MY_AD_SLOTS' | translate }}</span>
+                        </a>
+                    </li>
 
-        <li ui-sref-active="active">
-            <a ui-sref=".supportTools"><i class="glyphicon glyphicon-wrench"></i><span>{{ 'NAVBAR.TOOLS' | translate }}</span></a>
-            <ul>
-                <!--<li ui-sref-active="active"><a ui-sref=".supportTools.cpmEditor"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.CPM_EDITOR' | translate }}</a></li>-->
-                <li ui-sref-active="active"><a ui-sref=".supportTools.cascadeManager.edit"><i class="fa fa-caret-right"></i>{{ 'NAVBAR.CASCADE_MANAGER' | translate }}</a></li>
-            </ul>
-        </li>
-    </ul>
-</div>
+                    <li ui-sref-active="active">
+                        <a ui-sref=".tagManagement.adSlot.new">
+                            <span class="menu-text">{{ 'NAVBAR.NEW_AD_SLOT' | translate }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li ng-show="hasDisplayAdsModule">
+                <a href="#" class="menu-dropdown">
+                    <span class="menu-text">{{ 'AD_NETWORKS' | translate }}</span>
+                    <i class="menu-expand"></i>
+                </a>
+                <ul class="submenu">
+                    <li ui-sref-active="active">
+                        <a ui-sref=".tagManagement.adNetwork.list">
+                            <span class="menu-text">{{ 'NAVBAR.MY_AD_NETWORKS' | translate }}</span>
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref=".tagManagement.adNetwork.new">
+                            <span class="menu-text">{{ 'NAVBAR.NEW_AD_NETWORK' | translate }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li ng-show="hasDisplayAdsModule" ui-sref-active="active">
+                <a ui-sref=".tagManagement.adTag.new">
+                    <span class="menu-text"> {{ 'NAVBAR.NEW_AD_TAG' | translate }} </span>
+                </a>
+            </li>
+
+            <li ui-sref-active="active">
+                <a ui-sref=".tagManagement.tagGenerator">
+                    <span class="menu-text"> {{ 'NAVBAR.GENERATE_TAGS' | translate }} </span>
+                </a>
+            </li>
+
+        </ul>
+    </li>
+    <li >
+        <a href="#" class="menu-dropdown">
+            <i class="menu-icon fa fa-tachometer"></i>
+            <span class="menu-text"> {{ 'NAVBAR.REPORTS' | translate }} </span>
+            <i class="menu-expand"></i>
+        </a>
+
+        <ul class="submenu">
+            <li ng-show="hasDisplayAdsModule" ui-sref-active="active">
+                <a ui-sref=".reports.performance.account">
+                    <span class="menu-text"> {{ 'NAVBAR.PERFORMANCE_REPORTS' | translate }} </span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref=".reports.rtb.account">
+                    <span class="menu-text"> {{ 'NAVBAR.RTB_REPORTS' | translate }} </span>
+                </a>
+            </li>
+            <li ng-show="hasAnalyticsModule" ui-sref-active="active">
+                <a ui-sref=".reports.source">
+                    <span class="menu-text"> {{ 'NAVBAR.SOURCE_REPORTS' | translate }} </span>
+                </a>
+            </li>
+
+            <li ui-sref-active="active">
+                <a ui-sref=".reports.billing.account">
+                    <span class="menu-text"> {{ 'NAVBAR.BILLING_REPORTS' | translate }} </span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref=".reports.projectedBill.account">
+                    <span class="menu-text"> {{ 'NAVBAR.PROJECTED_BILL' | translate }} </span>
+                </a>
+            </li>
+            <li ng-show="hasUnifiedModule" ui-sref-active="active">
+                <a ui-sref=".reports.unified">
+                    <span class="menu-text"> {{ 'NAVBAR.UNIFIED_REPORTS' | translate }} </span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li >
+        <a href="#" class="menu-dropdown">
+            <i class="menu-icon glyphicon glyphicon-wrench"></i>
+            <span class="menu-text"> {{ 'NAVBAR.TOOLS' | translate }} </span>
+            <i class="menu-expand"></i>
+        </a>
+
+        <ul class="submenu">
+            <li ui-sref-active="active">
+                <a ui-sref=".supportTools.cascadeManager.edit" class="menu-dropdown">
+                    <span class="menu-text"> {{ 'NAVBAR.CASCADE_MANAGER' | translate }} </span>
+                </a>
+            </li>
+        </ul>
+    </li>
+</ul>

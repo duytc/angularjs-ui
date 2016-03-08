@@ -5,7 +5,7 @@
         .controller('AdTagList', AdTagList)
     ;
 
-    function AdTagList($scope, $translate, $q, $state, $modal, adTags, adSlot, AdTagManager, AdSlotAdTagLibrariesManager, AdTagLibrariesManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AD_TYPES, TYPE_AD_SLOT) {
+    function AdTagList($scope, $translate, $q, $state, $modal, adTags, adSlot, AdTagManager, AdSlotAdTagLibrariesManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AD_TYPES, TYPE_AD_SLOT) {
         $scope.adTags = adTags;
 
         $scope.hasAdTags = function () {
@@ -30,7 +30,6 @@
         $scope.updateAdTag = updateAdTag;
         $scope.enableDragDropAdTag = enableDragDropAdTag;
         $scope.backToListAdSlot = backToListAdSlot;
-        $scope.shareAdTag = shareAdTag;
 
         $scope.sortableGroupOptions = {
             disabled: true,
@@ -287,29 +286,6 @@
             }
 
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.listAll');
-        }
-
-        function shareAdTag(adTag) {
-            var libraryAdTag = {
-                visible: true
-            };
-
-            AdTagLibrariesManager.one(adTag.libraryAdTag.id).patch(libraryAdTag)
-                .then(function () {
-                    adTag.libraryAdTag.visible = true;
-
-                    AlertService.replaceAlerts({
-                        type: 'success',
-                        message: $translate.instant('AD_TAG_MODULE.MOVED_TO_LIBRARY_SUCCESS')
-                    });
-                })
-                .catch(function () {
-                    AlertService.replaceAlerts({
-                        type: 'error',
-                        message: $translate.instant('AD_TAG_MODULE.MOVED_TO_LIBRARY_FAIL')
-                    });
-                })
-            ;
         }
     }
 })();

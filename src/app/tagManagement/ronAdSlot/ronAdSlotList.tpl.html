@@ -18,6 +18,17 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs nav-tab-margin">
+                <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.adSlot.listAll">By Site</a></li>
+                <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.adSlot.listByChannel">By Channel</a></li>
+                <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.ronAdSlot.list">Smart Ad Slots</a></li>
+                <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagLibrary.adSlot.list">Standalone Ad Slots</a></li>
+            </ul>
+        </div>
+    </div>
+
     <search-box show-query="true" sb-list="ronAdSlots" search-fields="['id', 'libraryAdSlot.name', 'libraryAdSlot.width', 'libraryAdSlot.height']"></search-box>
 
     <div class="panel-body" ng-if="hasData()">
@@ -45,7 +56,7 @@
                             </ul>
                         </div>
                     </td>
-                    <td at-title="{{ 'RON_AD_SLOT_MODULE.LIBRARY_AD_SLOT' | translate }}" at-attribute="libraryAdSlot.name" at-implicit at-initial-sorting="asc" at-sortable></td>
+                    <td at-title="{{ 'NAME' | translate }}" at-attribute="libraryAdSlot.name" at-implicit at-initial-sorting="asc" at-sortable></td>
                     <td ng-show="isAdmin()" at-title="{{ 'PUBLISHER' | translate }}" at-implicit at-sortable at-attribute="libraryAdSlot.publisher.company"></td>
                     <td at-title="{{ 'AD_SLOT_MODULE.TYPE' | translate }}" at-implicit at-attribute="libraryAdSlot.libType" at-sortable></td>
                     <td at-title="{{ 'RON_AD_SLOT_MODULE.SEGMENTS' | translate }}" at-sortable>

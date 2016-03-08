@@ -12,6 +12,10 @@
         $scope.adSlotTypes = TYPE_AD_SLOT;
         $scope.rtbStatusLabels = RTB_STATUS_LABELS;
 
+        $scope.smartAdSlots = [];
+        $scope.standaloneAdSlots = [];
+        $scope.isChannel = angular.isArray(adSlots) && adSlots.length > 0 && angular.isObject(adSlots[0].channels);
+
         $scope.hasData = function () {
             return !!adSlots.length;
         };

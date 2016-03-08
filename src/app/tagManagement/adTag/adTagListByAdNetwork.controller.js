@@ -5,7 +5,7 @@
         .controller('AdTagListByAdNetwork', AdTagListByAdNetwork)
     ;
 
-    function AdTagListByAdNetwork($scope, $translate, $state, $modal, adTags, adNetwork, AdTagManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AdTagLibrariesManager) {
+    function AdTagListByAdNetwork($scope, $translate, $state, $modal, adTags, adNetwork, AdTagManager, AlertService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.adNetwork = adNetwork;
         $scope.adTags = adTags;
 
@@ -16,7 +16,6 @@
         $scope.showPagination = showPagination;
         $scope.backToListAdNetwork = backToListAdNetwork;
         $scope.updateAdTag = updateAdTag;
-        $scope.shareAdTag = shareAdTag;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -115,29 +114,6 @@
                         message: $translate.instant('AD_TAG_MODULE.UPDATE_FAIL')
                     });
                 });
-        }
-
-        function shareAdTag(adTag) {
-            var libraryAdTag = {
-                visible: true
-            };
-
-            AdTagLibrariesManager.one(adTag.libraryAdTag.id).patch(libraryAdTag)
-                .then(function () {
-                    adTag.libraryAdTag.visible = true;
-
-                    AlertService.replaceAlerts({
-                        type: 'success',
-                        message: $translate.instant('AD_TAG_MODULE.MOVED_TO_LIBRARY_SUCCESS')
-                    });
-                })
-                .catch(function () {
-                    AlertService.replaceAlerts({
-                        type: 'error',
-                        message: $translate.instant('AD_TAG_MODULE.MOVED_TO_LIBRARY_FAIL')
-                    });
-                })
-            ;
         }
 
         $scope.$on('$locationChangeSuccess', function() {

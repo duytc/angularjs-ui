@@ -5,9 +5,7 @@
         .controller('AdTagForm', AdTagForm)
     ;
 
-    function AdTagForm(
-        $scope, $state, $modal, $translate, $stateParams, SiteManager, AdNetworkCache, AdTagManager, AlertService, ServerErrorProcessor, historyStorage, AdTagLibrariesManager, adTag, adSlot, site, publisher, publisherList, siteList, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, HISTORY_TYPE_PATH
-        ) {
+    function AdTagForm($scope, _, $state, $modal, $translate, $stateParams, SiteManager, AdNetworkCache, AdTagManager, AlertService, ServerErrorProcessor, DisplayAdSlotManager, NativeAdSlotManager, historyStorage, adTag, adSlot, site, publisher, publisherList, siteList, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
             name: 'Name',
@@ -23,7 +21,6 @@
         };
 
         $scope.isNew = adTag === null;
-        var adTagCopy = angular.copy(adTag);
         $scope.formProcessing = false;
 
         // !! converts a variable to a boolean
@@ -48,13 +45,8 @@
 
         // delete file unnecessary
         if(!$scope.isNew) {
-            $scope.disabledCheckPickFromLibrary = adTag.libraryAdTag.visible;
-
             // set pickFromLibrary when edit
             $scope.pickFromLibrary = adTag.libraryAdTag.visible;
-
-            // get ad tag library
-            getAdTagLibrary();
 
             // set ad tag library
             if(adTag.libraryAdTag.visible) {
@@ -66,6 +58,7 @@
             }
         }
 
+        $scope.adTagGroup = [];
         $scope.adTag = adTag || {
             adSlot: adSlot,
             libraryAdTag: {
@@ -89,8 +82,6 @@
             // disabled form input html when select ad tag library
             $scope.editorOptions.readOnly = 'nocursor';
         }
-
-        $scope.getAdTagLibrary = getAdTagLibrary;
 
         $scope.backToAdTagList = function() {
             if(!!$stateParams.adSlotType && !!$stateParams.adSlotId) {
@@ -125,11 +116,11 @@
         };
 
         $scope.selectAdSlot = function(item) {
-            if(item.type == $scope.adSlotTypes.display) {
-                return $scope.showInputPosition = true;
-            }
+            $scope.showInputPosition = item.type == $scope.adSlotTypes.display;
 
-            return $scope.showInputPosition = false;
+            if($scope.showInputPosition) {
+                _getAdTagGroup(item)
+            }
         };
 
         $scope.resetSelection = function () {
@@ -175,55 +166,6 @@
 
         $scope.isFormValid = function() {
             return $scope.adTagForm.$valid;
-        };
-
-        function getAdTagLibrary() {
-            if($scope.pickFromLibrary) {
-                AdTagLibrariesManager.getList()
-                    .then(function(libraryAdTag) {
-                        $scope.adTagLibraryList = libraryAdTag.plain();
-                    }
-                );
-
-                // disabled form input html when select ad tag library
-                return $scope.editorOptions.readOnly = 'nocursor';
-            } else {
-                if(angular.isObject($scope.adTag)) {
-                    $scope.adTag.libraryAdTag = {
-                        name: null,
-                        html: null,
-                        adNetwork: null,
-                        adType: $scope.adTypes.customAd,
-                        descriptor: null
-                    }
-                } else {
-                    $scope.adTag = {
-                        libraryAdTag: {
-                            name: null,
-                            html: null,
-                            adNetwork: null,
-                            adType: $scope.adTypes.customAd,
-                            descriptor: null
-                        }
-                    };
-                }
-            }
-
-            if(!$scope.isNew) {
-                angular.extend($scope.adTag.libraryAdTag, adTagCopy.libraryAdTag);
-            }
-
-            if(!!$scope.adTag) {
-                delete $scope.adTag.libraryAdTag.id;
-                delete $scope.adTag.libraryAdTag.visible;
-            }
-
-            // enable form input html when select ad tag library
-            return $scope.editorOptions.readOnly = false;
-        }
-
-        $scope.selectAdTagLibrary = function(libraryAdTag) {
-            angular.extend($scope.adTag.libraryAdTag, libraryAdTag);
         };
 
         $scope.createAdNetwork = function() {
@@ -308,5 +250,66 @@
                 )
             ;
         };
+
+        function _findAdSlot(adSlotId) {
+            return _.find($scope.adSlotList, function(adSlot)
+            {
+                return adSlot.id == adSlotId;
+            });
+        }
+
+        function _setupGroup(listAdTags) {
+            var adTagGroups = [];
+
+            angular.forEach(listAdTags, function(item) {
+                var index = 0;
+
+                if(adTagGroups.length == 0) {
+                    adTagGroups[index] = [];
+                }
+                else {
+                    var found = false;
+                    angular.forEach(adTagGroups, function(group, indexGroup) {
+                        if(group[0].position == item.position && !found) {
+                            found = true;
+                            index = indexGroup;
+                        }
+                    });
+
+                    if(found == false) {
+                        index = adTagGroups.length;
+                        adTagGroups[index] = [];
+                    }
+                }
+
+                adTagGroups[index].push(item);
+            });
+
+            return adTagGroups;
+        }
+
+        function _getAdTagGroup(adSlot) {
+            if(adSlot.type == $scope.adSlotTypes.display) {
+                DisplayAdSlotManager.one(adSlot.id).getList('adtags').then(function (adTags) {
+                    $scope.adTagGroup = _setupGroup(adTags.plain());
+                });
+            }
+
+            if(adSlot.type == $scope.adSlotTypes.native) {
+                NativeAdSlotManager.one(adSlot.id).getList('adtags').then(function (adTags) {
+                    $scope.adTagGroup = adTags.plain();
+                });
+            }
+        }
+
+        update();
+
+        function update() {
+            if(!!$stateParams.adSlotId) {
+                var adSlot = _findAdSlot($stateParams.adSlotId);
+
+                _getAdTagGroup(adSlot);
+            }
+        }
     }
 })();

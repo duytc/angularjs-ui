@@ -6,11 +6,13 @@
      </section>
 
     <div class="main-container">
-        <aside ui-view="nav"
-           id="nav-container"
-           class="nav-container"
-           ng-class="{'nav-fixed': admin.fixedSidebar, 'nav-horizontal': admin.menu === 'horizontal', 'nav-vertical': admin.menu === 'vertical'}">
-        </aside>
+        <div
+            class="page-sidebar sidebar-fixed"
+            ui-view="nav"
+            slim-scroll
+            id="sidebar"
+            >
+        </div>
 
         <div id="content" class="content-container">
 
