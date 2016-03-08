@@ -43,7 +43,7 @@
             "SEGMENT": "Report Segment",
             "SEGMENTS": "Report Segments",
 
-            "RTB_STATUS": "RTB status",
+            "RTB_STATUS": "RTB",
             "RTB_STATUS_INHERIT": "Inherit",
             "RTB_STATUS_ENABLE": "Enable",
             "RTB_STATUS_DISABLE": "Disable",
@@ -245,7 +245,7 @@
                 "AUTO_CREATED_SITES": "Auto Created Sites",
                 "MANUALLY_CREATED_SITES": "Manually Created Sites",
                 "HELP_BLOCK_SOURCE_REPORT": "If checked, source reports will be created every day for this site",
-                "HELP_BLOCK_RTB": "Enable RTB for this site or inherit the RTB status from any channels associated with this site."
+                "HELP_BLOCK_RTB": "Enable RTB for this site or inherit the RTB config from any channels associated with this site."
             },
             "AD_NETWORK_MODULE": {
                 "URL": "Url",
@@ -335,7 +335,7 @@
                 "HELP_BLOCK_DEFAULT_AD_SLOT": "If no default ad slot is selected and no expressions match, the ad slot will not be shown on the page.",
                 "HELP_BLOCK_AUTO_FIT": "When Auto Fit is enabled, the ad slot will dynamically resize if the ad served is different from the size defined above.",
                 "HELP_BLOCK_FLOOR_PRICE": "If the RTB bid price is lower than this amount, the ad tag waterfall will serve instead.",
-                "HELP_BLOCK_RTB": "Enable RTB for this ad slot or inherit the RTB status from the associated site."
+                "HELP_BLOCK_RTB": "Enable RTB for this ad slot or inherit the RTB config from the associated site."
             },
             "RON_AD_SLOT_MODULE": {
                 "CURRENTLY_NO_RON_AD_SLOT": "There is currently no smart ad slots",
