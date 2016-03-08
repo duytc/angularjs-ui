@@ -18,43 +18,46 @@
                     <span class="menu-text"> {{ 'NAVBAR.PUBLISHERS' | translate }} </span>
                 </a>
             </li>
-            <li ui-sref-active="active">
-                <a ui-sref=".subPublisher.list">
-                    <span class="menu-text"> {{ 'NAVBAR.SUB_PUBLISHERS' | translate }} </span>
-                </a>
-            </li>
+            <!-- temporarily disable for admin -->
+            <!--<li ui-sref-active="active">-->
+                <!--<a ui-sref=".subPublisher.list">-->
+                    <!--<span class="menu-text"> {{ 'NAVBAR.SUB_PUBLISHERS' | translate }} </span>-->
+                <!--</a>-->
+            <!--</li>-->
             <li ui-sref-active="active">
                 <a ui-sref=".publisherManagement.new">
                     <span class="menu-text"> {{ 'NAVBAR.NEW_PUBLISHER' | translate }} </span>
                 </a>
             </li>
-            <li ui-sref-active="active">
-                <a ui-sref=".subPublisher.new">
-                    <span class="menu-text"> {{ 'NAVBAR.NEW_SUB_PUBLISHER' | translate }} </span>
-                </a>
-            </li>
+            <!-- temporarily disable for admin -->
+            <!--<li ui-sref-active="active">-->
+                <!--<a ui-sref=".subPublisher.new">-->
+                    <!--<span class="menu-text"> {{ 'NAVBAR.NEW_SUB_PUBLISHER' | translate }} </span>-->
+                <!--</a>-->
+            <!--</li>-->
         </ul>
     </li>
-    <li >
-        <a href="#" class="menu-dropdown">
-            <i class="menu-icon fa fa-exchange"></i>
-            <span class="menu-text"> {{ 'NAVBAR.EXCHANGE_MANAGEMENT' | translate }} </span>
-            <i class="menu-expand"></i>
-        </a>
+    <!-- temporarily disable for admin because using config at tagcade-api -->
+    <!--<li >-->
+        <!--<a href="#" class="menu-dropdown">-->
+            <!--<i class="menu-icon fa fa-exchange"></i>-->
+            <!--<span class="menu-text"> {{ 'NAVBAR.EXCHANGE_MANAGEMENT' | translate }} </span>-->
+            <!--<i class="menu-expand"></i>-->
+        <!--</a>-->
 
-        <ul class="submenu">
-            <li ui-sref-active="active">
-                <a ui-sref=".exchangeManagement.list">
-                    <span class="menu-text"> {{ 'NAVBAR.EXCHANGES' | translate }} </span>
-                </a>
-            </li>
-            <li ui-sref-active="active">
-                <a ui-sref=".exchangeManagement.new">
-                    <span class="menu-text"> {{ 'NAVBAR.NEW_EXCHANGE' | translate }} </span>
-                </a>
-            </li>
-        </ul>
-    </li>
+        <!--<ul class="submenu">-->
+            <!--<li ui-sref-active="active">-->
+                <!--<a ui-sref=".exchangeManagement.list">-->
+                    <!--<span class="menu-text"> {{ 'NAVBAR.EXCHANGES' | translate }} </span>-->
+                <!--</a>-->
+            <!--</li>-->
+            <!--<li ui-sref-active="active">-->
+                <!--<a ui-sref=".exchangeManagement.new">-->
+                    <!--<span class="menu-text"> {{ 'NAVBAR.NEW_EXCHANGE' | translate }} </span>-->
+                <!--</a>-->
+            <!--</li>-->
+        <!--</ul>-->
+    <!--</li>-->
     <li >
         <a href="#" class="menu-dropdown">
             <i class="menu-icon fa fa-location-arrow"></i>
