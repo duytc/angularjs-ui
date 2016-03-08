@@ -41,6 +41,11 @@
                 return;
             }
 
+            // TODO: temporarily convert to common state if siteByAdNetwork
+            // need refactor for more clearly understanding report states
+            relativeToState = relativeToState == PERFORMANCE_REPORT_STATES.siteByAdNetwork ? PERFORMANCE_REPORT_STATES.adNetworkSiteAdTags : relativeToState;
+            // TODO-END
+
             relativeToState = $state.get(relativeToState, $state.$current);
 
             if (!relativeToState) {
@@ -141,6 +146,7 @@
 
                 case PERFORMANCE_REPORT_STATES.adNetworkSites:
                 case PERFORMANCE_REPORT_STATES.adNetwork:
+                case PERFORMANCE_REPORT_STATES.siteByAdNetwork:
                     return 'reports/performance/views/popup/popupForAdNetwork.tpl.html';
 
                 case PERFORMANCE_REPORT_STATES.adSlot:
@@ -178,6 +184,7 @@
 
                 case PERFORMANCE_REPORT_STATES.adNetworkSites:
                 case PERFORMANCE_REPORT_STATES.adNetwork:
+                case PERFORMANCE_REPORT_STATES.siteByAdNetwork:
                     return AdNetworkManager.one(reportType.adNetworkId).get();
 
                 case PERFORMANCE_REPORT_STATES.adSlot:

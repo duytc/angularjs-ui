@@ -17,6 +17,7 @@
             account: '^.account',
             siteAdSlots: '^.siteAdSlots',
             site: '^.site',
+            siteByAdNetwork: '^.siteByAdNetwork',
             adNetworkSite: '^.adNetworkSite',
             adNetworkSiteAdTags : '^.adNetworkSiteAdTags',
             adNetworkSites: '^.adNetworkSites',
