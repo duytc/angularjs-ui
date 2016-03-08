@@ -38,6 +38,7 @@
             "DISPLAY_AD_SLOT": "Display Ad Slot",
             "DYNAMIC_AD_SLOT": "Dynamic Ad Slot",
             "NATIVE_AD_SLOT": "Native Ad Slot",
+            "STANDALONE_AD_SLOT": "Stand.Ad Slot",
             "AD_TAG": "Ad Tag",
             "AD_TAGS": "Ad Tags",
             "SEGMENT": "Report Segment",
@@ -350,7 +351,9 @@
                 "REFERENCE_LIBRARY_AD_SLOT": "Reference Library",
                 "LIBRARY_AD_SLOT": "Library Ad Slot",
                 "BACK_TO_AD_SLOT_LIST": "Back to Smart Ad Slot List",
-                "SELECT_LIBRARY_AD_SLOT": "Select library ad slot",
+                "SELECT_A_STANDALONE_AD_SLOT": "Select a standalone ad slot",
+                "SELECT_SEGMENTS": "Select segments",
+
                 "PICK_FROM_LIBRARY": "Pick from library",
                 "NEW_RON_AD_SLOT": "New Smart Ad Slot",
                 "EDIT_RON_AD_SLOT": "Edit Smart Ad Slot",
@@ -358,6 +361,8 @@
                 "SEGMENTS": "Report Segments",
                 "SHOW_DETAILS": 'Show Details',
                 "SEGMENT_NOTHING_IS_SELECTED": 'Nothing is selected',
+
+                "HELP_BLOCK_SELECT_STANDALONE_AD_SLOT": "You must create a new Standalone Ad Slot if currently have no Standalone Ad Slot that is not Smart Ad Slot yet",
                 "HELP_BLOCK_SELECT_SEGMENT": "You can create custom report segments above. To create new segments, enter in a text value and press enter. You may repeat this process to create more segments",
                 "HELP_BLOCK_GLOBAL": "You can generate unique tags for each report segment. The Global segment is the default report segment and should be used when you do not have any custom segments or do not want to track a specific segment.",
                 "HELP_BLOCK_RTB": "Enable RTB for this smart ad slot."
