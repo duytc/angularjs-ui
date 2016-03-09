@@ -38,7 +38,7 @@
             "DISPLAY_AD_SLOT": "Display Ad Slot",
             "DYNAMIC_AD_SLOT": "Dynamic Ad Slot",
             "NATIVE_AD_SLOT": "Native Ad Slot",
-            "STANDALONE_AD_SLOT": "Stand.Ad Slot",
+            "STANDALONE_AD_SLOT": "Standalone Ad Slot",
             "AD_TAG": "Ad Tag",
             "AD_TAGS": "Ad Tags",
             "SEGMENT": "Report Segment",
