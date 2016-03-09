@@ -123,7 +123,7 @@
                     <label class="col-sm-2 control-label">{{ 'SITE_MODULE.EXCHANGES' | translate}}</label>
                     <div class="col-sm-10">
                         <div ng-repeat="exchange in exchanges" class="check_exchange">
-                            <label class="ui-checkbox"><input name="exchanges[]" type="checkbox" ng-click="toggleExchange(exchange.id)" ng-checked="hasExchange(exchange.id)">
+                            <label class="ui-checkbox"><input name="exchanges[]" type="checkbox" ng-click="toggleExchange(exchange)" ng-checked="hasExchange(exchange)">
                                 <span>{{ exchange.name }}</span>
                             </label>
                         </div>

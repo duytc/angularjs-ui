@@ -35,7 +35,7 @@
             address: null,
             postalCode: null,
             country: null,
-            publisherExchanges: [],
+            exchanges: [],
             tagDomain: {
                 secure: true,
                 domain: null
@@ -50,8 +50,8 @@
                 };
             }
 
-            if(!$scope.publisher.publisherExchanges) {
-                $scope.publisher.publisherExchanges = []
+            if(!$scope.publisher.exchanges) {
+                $scope.publisher.exchanges = []
             }
         }
 
@@ -65,13 +65,30 @@
 //            { label: 'Fraud Detection', role: 'MODULE_FRAUD_DETECTION' }
         ];
 
+        $scope.hasModuleEnabled = hasModuleEnabled;
         $scope.exchanges = exchanges;
+        $scope.toggleModuleRole = toggleModuleRole;
+        $scope.isFormValid = isFormValid;
+        $scope.backToListPublisher = backToListPublisher;
+        $scope.hasExchange = hasExchange;
+        $scope.toggleExchange = toggleExchange;
 
-        $scope.hasModuleEnabled = function (role) {
+        /**
+         * check if current Publisher has a module enabled
+         *
+         * @param role
+         * @return {boolean}
+         */
+        function hasModuleEnabled(role) {
             return $scope.publisher.enabledModules.indexOf(role) > -1;
-        };
+        }
 
-        $scope.toggleModuleRole = function (role) {
+        /**
+         * handle event toggle module roles
+         *
+         * @param role
+         */
+        function toggleModuleRole(role) {
             var idx = $scope.publisher.enabledModules.indexOf(role);
 
             if (idx > -1) {
@@ -79,43 +96,77 @@
             } else {
                 $scope.publisher.enabledModules.push(role);
             }
-        };
+        }
 
-        $scope.isFormValid = function() {
+        /**
+         * Check if form is valid
+         *
+         * @return {boolean}
+         */
+        function isFormValid() {
             if($scope.publisher.plainPassword != null || $scope.repeatPassword != null) {
                 return $scope.userForm.$valid && $scope.repeatPassword == $scope.publisher.plainPassword;
             }
 
             return $scope.userForm.$valid;
-        };
+        }
 
-        $scope.backToListPublisher = function() {
+        /**
+         * navigate back list Publishers
+         *
+         * @return {*}
+         */
+        function backToListPublisher() {
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.publisher, '^.list');
-        };
+        }
 
-        $scope.hasExchange = function (exchange) {
-            if(!$scope.publisher.publisherExchanges) {
+        /**
+         * check if publisher already has an exchange, search by abbreviation of exchange
+         *
+         * @param {Object} exchange
+         * @param {String} exchange.abbreviation
+         * @return {boolean}
+         */
+        function hasExchange(exchange) {
+            var idx = getExchangeIdx(exchange);
+
+            return idx !== false && idx > -1;
+        }
+
+        /**
+         * get idx of an exchange of current publisher, search by abbreviation of exchange
+         *
+         * @param {Object} exchange
+         * @param {String} exchange.abbreviation
+         * @return {*}
+         */
+        function getExchangeIdx(exchange)
+        {
+            if (!$scope.publisher.exchanges) {
                 return false;
             }
 
-            return _.findIndex($scope.publisher.publisherExchanges, function(publisherExchange) {
-                    return exchange == publisherExchange.exchange.id
-                }) > -1;
-        };
-
-        $scope.toggleExchange= function (exchangeId) {
-            var idx =  _.findIndex($scope.publisher.publisherExchanges, function(publisherExchange) {
-                return exchangeId == publisherExchange.exchange.id
+            return _.findIndex($scope.publisher.exchanges, function (publisherExchange) {
+                return exchange.abbreviation == publisherExchange
             });
+        }
 
-            if (idx > -1) {
-                $scope.publisher.publisherExchanges.splice(idx, 1);
+        /**
+         * handle event toggleExchange
+         *
+         * @param {Object} exchange
+         */
+        function toggleExchange(exchange) {
+            var exchangeIdx = getExchangeIdx(exchange);
+
+            if (hasExchange(exchange)) {
+                $scope.publisher.exchanges.splice(exchangeIdx, 1);
             } else {
-                // !VERY IMPORTANT HERE: make exchange object "contains id" same as old data in $scope.publisher.publisherExchanges
+                // !VERY IMPORTANT HERE: make exchange object "contains id" same as old data in $scope.publisher.exchanges
                 // DON'T GET SAME MISTAKE AGAIN!!!
-                $scope.publisher.publisherExchanges.push({exchange: {id: exchangeId}});
+                $scope.publisher.exchanges.push(exchange.abbreviation);
             }
-        };
+        }
 
         $scope.submit = function() {
             if ($scope.formProcessing) {
@@ -128,14 +179,6 @@
             if(!publisher.tagDomain.domain) {
                 publisher.tagDomain = null;
             }
-
-            var publisherExchanges = [];
-
-            angular.forEach(publisher.publisherExchanges, function(publisherExchange) {
-                publisherExchanges.push({exchange: publisherExchange.exchange.id || publisherExchange.exchange});
-            });
-
-            publisher.publisherExchanges = publisherExchanges;
 
             $scope.formProcessing = true;
 
