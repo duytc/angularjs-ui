@@ -76,7 +76,22 @@
         var enabledModules = !!$scope.selected.publisher ? $scope.selected.publisher.enabledModules : null;
         $scope.siteList = angular.isObject(adSlot) ? adSlot.sites : [];
         $scope.channelList = angular.isObject(adSlot) ? adSlot.channels : [];
-        $scope.isLibrary = $scope.isNew;
+
+        var AD_SLOT_CONTEXTS = {
+            normal: {
+                notUseStandalone: 11,
+                useStandalone: 12
+            },
+            standalone: 2
+        };
+
+        $scope.adSlotContext = $scope.isNew ?
+            AD_SLOT_CONTEXTS.standalone
+            : ( adSlot.libraryAdSlot.visible == false
+            ? AD_SLOT_CONTEXTS.normal.notUseStandalone
+            : AD_SLOT_CONTEXTS.normal.useStandalone
+        )
+        ;
 
         $scope.adSlotsDefault = [{id: null, name: 'None', libraryAdSlot: {name: 'None'}}];
         _update();
@@ -96,6 +111,9 @@
         $scope.selectDefaultAdSlot = selectDefaultAdSlot;
         $scope.isEnabledModuleRtb = isEnabledModuleRtb;
         $scope.selectPublisher = selectPublisher;
+        $scope.isNormalAdSlotNotUseStandalone = isNormalAdSlotNotUseStandalone;
+        $scope.isNormalAdSlotUseStandalone = isNormalAdSlotUseStandalone;
+        $scope.isStandaloneAdSlot = isStandaloneAdSlot;
 
         function selectDeployment(deployment) {
             if(deployment == 'siteOrChannel' && $scope.siteList.length === 0) {
@@ -111,8 +129,9 @@
                 return;
             }
 
+            // if no deployment => this is new standalone ad slot
             if(deployment == 'none') {
-                $scope.isLibrary = true;
+                $scope.adSlotContext = AD_SLOT_CONTEXTS.standalone;
 
                 // reset previous selected sites/channels
                 $scope.selected.sites = [];
@@ -136,6 +155,18 @@
             $scope.adSlot.site = null;
 
             enabledModules = publisher.enabledModules;
+        }
+
+        function isNormalAdSlotNotUseStandalone() {
+            return $scope.adSlotContext == AD_SLOT_CONTEXTS.normal.notUseStandalone;
+        }
+
+        function isNormalAdSlotUseStandalone() {
+            return $scope.adSlotContext == AD_SLOT_CONTEXTS.normal.useStandalone;
+        }
+
+        function isStandaloneAdSlot() {
+            return $scope.adSlotContext == AD_SLOT_CONTEXTS.standalone;
         }
 
         function isEnabledModule(module) {
@@ -175,7 +206,7 @@
             adSlot = _refactorAdSlot($scope.adSlot);
             adSlotRefactor = adSlot;
 
-            if($scope.isLibrary) {
+            if(isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) {
                 Manager = libraryAdSlotService.getManagerForAdSlotLibrary($scope.selected);
             } else {
                 Manager = adSlotService.getManagerForAdSlot($scope.selected);
@@ -219,7 +250,7 @@
         }
 
         function checkNative() {
-            if($scope.isLibrary) {
+            if(isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) {
                 checkNativeForLibrary();
             } else {
                 checkNativeForDeploy()
@@ -310,7 +341,7 @@
         }
 
         function backToAdSlotList() {
-            if($scope.isLibrary) {
+            if(isStandaloneAdSlot()) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlotLibrary, '^.^.^.tagLibrary.adSlot.list');
             }
 
@@ -361,7 +392,7 @@
         }
 
         function _validateSingleExpression(expression) {
-            if($scope.isLibrary) {
+            if(isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) {
                 return _validateSingleExpressionLibrary(expression);
             }
 
@@ -468,7 +499,7 @@
         function _update() {
             if(!$scope.isNew) {
                 if($scope.selected.type == $scope.typesList.dynamic) {
-                    if($scope.isLibrary) {
+                    if(isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) {
                         _getAdSlots($scope.selected.type);
                     } else {
                         _getAdSlotList($scope.selected.site.id)
@@ -558,7 +589,7 @@
          * @private
          */
         function _refactorAdSlot(adSlot) {
-            if($scope.isLibrary) return _refactorLibraryAdSlot(adSlot);
+            if(isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) return _refactorLibraryAdSlot(adSlot);
             return _refactorDeployAdSlot(adSlot);
         }
 
@@ -675,29 +706,69 @@
             return adSlot;
         }
 
-        $scope.$watch(function(){ return $scope.selected.sites }, function() {
-            if($scope.selected.channels.length > 0 || !$scope.isNew) {
-                return
+        /* watch the changing of sites selected in deployment method */
+        $scope.$watch(function () {
+                return $scope.selected.sites
+            },
+            updateDueToDeploymentChanged
+        );
+
+        /* watch the changing of channel selected in deployment method */
+        $scope.$watch(function () {
+                return $scope.selected.channels
+            },
+            updateDueToDeploymentChanged
+        );
+
+        /**
+         * update var, form Due To Deployment way Changed
+         */
+        function updateDueToDeploymentChanged() {
+            // skip check if edit mode
+            if (!$scope.isNew) {
+                return;
             }
 
-            if($scope.selected.sites.length == 1 && $scope.isLibrary) {
-                $scope.isLibrary = false;
-                _resetFormForDynamic();
-                _getAdSlotList($scope.selected.sites[0].id, $scope.selected.type);
-            } else if($scope.selected.sites.length != 1 && !$scope.isLibrary){
-                $scope.isLibrary = true;
-                _resetForm();
-                _getAdSlots($scope.selected.type);
-            }
-        });
+            // if multiple selected channels => this is normal ad slot use standalone ad slot
+            if ($scope.selected.channels.length > 0) {
+                $scope.adSlotContext = AD_SLOT_CONTEXTS.normal.useStandalone;
 
-        $scope.$watch(function(){ return $scope.selected.channels }, function() {
-            if($scope.selected.channels.length > 0 && !$scope.isLibrary) {
-                $scope.isLibrary = true;
+                // reset form
                 _resetForm();
+
                 // get ad slots in library
                 _getAdSlots($scope.selected.type);
+                return;
             }
-        });
+
+            // if selected sites only one => this is normal ad slot with no standalone ad slot
+            if ($scope.selected.sites.length == 1) {
+                $scope.adSlotContext = AD_SLOT_CONTEXTS.normal.notUseStandalone;
+
+                // reset form for dynamic only
+                _resetFormForDynamic();
+
+                // get ad slots list
+                _getAdSlotList($scope.selected.sites[0].id, $scope.selected.type);
+                return;
+            }
+
+            // if no site selected => this is standalone ad slot
+            if ($scope.selected.sites.length == 0) {
+                $scope.adSlotContext = AD_SLOT_CONTEXTS.standalone;
+
+                _resetForm();
+
+                _getAdSlots($scope.selected.type);
+                return;
+            }
+
+            // if selected sites more than one => this is normal ad slot use standalone ad slot
+            if ($scope.selected.sites.length > 1) {
+                $scope.adSlotContext = AD_SLOT_CONTEXTS.normal.useStandalone;
+                _resetForm();
+                _getAdSlots($scope.selected.type);
+            }
+        }
     }
 })();
