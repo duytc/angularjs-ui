@@ -425,7 +425,7 @@
                 "HELP_BLOCK_CACHE_BUSTER": "A unique code that ensures URLs are unique",
                 "HELP_BLOCK_PAGE_URL": "The url of the current page",
                 "HELP_BLOCK_DOMAIN": "The domain of the current website",
-                "HELP_BLOCK_PLACEMENT_ID": "The placement ID of the current tag",
+                "HELP_BLOCK_SLOT_ID": "The ad slot ID of the current tag",
 
                 "GUIDE_DRAG_DROP_TITLE": "You can drag and drop to re-order your ad tags.",
                 "GUIDE_DRAG_DROP_GROUP_AD_TAG": "To move all ad tags from one position group to another, click and drag the gray position header bar up and down.",
