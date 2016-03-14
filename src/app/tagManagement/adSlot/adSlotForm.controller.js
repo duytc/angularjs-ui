@@ -93,6 +93,10 @@
         )
         ;
 
+        if(!$scope.isNew) {
+            adSlotRefactor = adSlot;
+        }
+
         $scope.adSlotsDefault = [{id: null, name: 'None', libraryAdSlot: {name: 'None'}}];
         _update();
 
@@ -341,12 +345,12 @@
         }
 
         function backToAdSlotList() {
-            if(isStandaloneAdSlot()) {
+            if(isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlotLibrary, '^.^.^.tagLibrary.adSlot.list');
             }
 
             if($scope.isAdmin()) {
-                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: adSlotRefactor.site});
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: adSlotRefactor.site.id || adSlotRefactor.site});
             }
 
             var historyAdSlot = historyStorage.getParamsHistoryForAdSlot();
@@ -627,6 +631,11 @@
 
             if(!$scope.isAdmin()) {
                 delete adSlot.publisher;
+            }
+
+            if(!$scope.isNew) {
+                delete adSlot.sites;
+                delete adSlot.channels;
             }
 
             delete adSlot.libType;

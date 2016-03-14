@@ -80,10 +80,20 @@
                     </div>
                 </div>
 
+
                 <div class="form-group">
-                    <label class="col-sm-1quarter control-label">{{ 'SEGMENTS' | translate }}</label>
+                    <label class="col-sm-1quarter control-label">{{ 'RON_AD_SLOT_MODULE.SELECT_PUBLISHER_SEGMENTS' | translate }}</label>
                     <div class="col-sm-5">
-                        <oi-select oi-options="item.name for item in segments | selectedPublisher:selected.publisher" ng-disabled="!selected.publisher && isAdmin()" ng-model="ronAdSlotSegments" multiple oi-select-options="{newItem: true, newItemFn: 'addSegment($query)'}" placeholder="{{ 'RON_AD_SLOT_MODULE.SELECT_SEGMENTS' | translate }}"></oi-select>
+                        <oi-select oi-options="item.name for item in segments | selectedPublisher:selected.publisher | filter:getSubPublisherSegment:item" ng-disabled="!selected.publisher && isAdmin()" ng-model="publisherSegments" multiple oi-select-options="{newItem: false, newItemFn: 'addSegment($query)'}" placeholder="{{ 'RON_AD_SLOT_MODULE.SELECT_PUBLISHER_SEGMENTS' | translate }}"></oi-select>
+
+                        <span class="help-block">{{ 'RON_AD_SLOT_MODULE.HELP_BLOCK_SELECT_SUB_PUBLISHER_SEGMENT' | translate }}</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1quarter control-label">{{ 'RON_AD_SLOT_MODULE.SELECT_SEGMENTS' | translate }}</label>
+                    <div class="col-sm-5">
+                        <oi-select oi-options="item.name for item in segments | selectedPublisher:selected.publisher | filter:{subPublisher: null}" ng-disabled="!selected.publisher && isAdmin()" ng-model="ronAdSlotSegments" multiple oi-select-options="{newItem: true, newItemFn: 'addSegment($query)'}" placeholder="{{ 'RON_AD_SLOT_MODULE.SELECT_SEGMENTS' | translate }}"></oi-select>
 
                         <span class="help-block">{{ 'RON_AD_SLOT_MODULE.HELP_BLOCK_SELECT_SEGMENT' | translate }}</span>
                     </div>

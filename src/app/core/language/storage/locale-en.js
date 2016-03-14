@@ -352,7 +352,8 @@
                 "LIBRARY_AD_SLOT": "Library Ad Slot",
                 "BACK_TO_AD_SLOT_LIST": "Back to Smart Ad Slot List",
                 "SELECT_A_STANDALONE_AD_SLOT": "Select a standalone ad slot",
-                "SELECT_SEGMENTS": "Select segments",
+                "SELECT_SEGMENTS": "Custom Report Segments",
+                "SELECT_PUBLISHER_SEGMENTS": "Sub Publisher",
 
                 "PICK_FROM_LIBRARY": "Pick from library",
                 "NEW_RON_AD_SLOT": "New Smart Ad Slot",
@@ -365,7 +366,8 @@
                 "HELP_BLOCK_SELECT_STANDALONE_AD_SLOT": "You must create a new Standalone Ad Slot if currently have no Standalone Ad Slot that is not Smart Ad Slot yet",
                 "HELP_BLOCK_SELECT_SEGMENT": "You can create custom report segments above. To create new segments, enter in a text value and press enter. You may repeat this process to create more segments",
                 "HELP_BLOCK_GLOBAL": "You can generate unique tags for each report segment. The Global segment is the default report segment and should be used when you do not have any custom segments or do not want to track a specific segment.",
-                "HELP_BLOCK_RTB": "Enable RTB for this smart ad slot."
+                "HELP_BLOCK_RTB": "Enable RTB for this smart ad slot.",
+                "HELP_BLOCK_SELECT_SUB_PUBLISHER_SEGMENT": "Select to enable publisher's report"
             },
             "SEGMENT_MODULE": {
                 "CURRENTLY_SEGMENT": "There is currently no report segments in the library",
@@ -417,6 +419,7 @@
                 "MOVE_TO_LIBRARY": "Move To Library",
                 "EDIT_AD_TAG_IN_LIBRARY": "Edit Ad Tag in The Library",
                 "SPLIT_GROUP": "Split Group",
+                "LIBRARY_AD_SLOT": "standalone Ad Slot",
 
                 "HELP_BLOCK_FROM_LIBRARY": "You can select an existing ad tag from your library. If you choose this option some of the fields below will not be editable. If you would like to change these fields, you may do so the the Tag Library section.",
                 "HELP_BLOCK_FREQUENCY_CAP": "Maximum number of network opportunities per day per user for this ad tag, leave blank for no cap.",

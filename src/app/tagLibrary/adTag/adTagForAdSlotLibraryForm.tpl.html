@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="form-group" ng-if="!isNew">
-                    <label class="col-sm-2 control-label">{{ 'AD_TAG_LIBRARY_MODULE.LIBRARY_AD_SLOT' | translate }}</label>
+                    <label class="col-sm-2 control-label">{{ 'AD_TAG_MODULE.LIBRARY_AD_SLOT' | translate }}</label>
                     <div class="col-sm-10 form-control-static">
                         {{ selected.adSlot.name }}
                     </div>
@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="form-group" ng-if="isNew">
-                    <label for="inputAdSlot" class="col-sm-2 control-label">{{ 'AD_TAG_LIBRARY_MODULE.LIBRARY_AD_SLOT' | translate }}</label>
+                    <label for="inputAdSlot" class="col-sm-2 control-label">{{ 'AD_TAG_MODULE.LIBRARY_AD_SLOT' | translate }}</label>
                     <div class="col-sm-10">
                         <ui-select name="adSlot" ng-model="selected.adSlot" on-select="selectAdSlot($item)" id="inputAdSlot" ng-required="true" server-error ng-disabled="!adSlotList.length || !selected.publisher" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_AD_SLOT' | translate }}">{{ $select.selected.name }}</ui-select-match>

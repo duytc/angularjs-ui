@@ -15,6 +15,7 @@
         $scope.isNew = ronAdSlot === null;
         $scope.adSlotTypes = TYPE_AD_SLOT;
         $scope.segments = segments;
+
         $scope.rtbStatusTypes = RTB_STATUS_TYPES;
         $scope.adSlotTypeOptions = [
             {
@@ -33,6 +34,7 @@
 
         $scope.formProcessing = false;
         $scope.ronAdSlotSegments = [];
+        $scope.publisherSegments = [];
 
         $scope.adSlotLibraryList = adSlotLibraryList;
         $scope.publisherList = publisherList;
@@ -78,6 +80,7 @@
         $scope.selectLibraryAdSlot = selectLibraryAdSlot;
         $scope.rtbStatusChanged = rtbStatusChanged;
         $scope.isEnabledModuleRtb = isEnabledModuleRtb;
+        $scope.getSubPublisherSegment = getSubPublisherSegment;
 
         function submit() {
             if ($scope.formProcessing) {
@@ -153,8 +156,11 @@
         function selectPublisher(publisher) {
             $scope.ronAdSlot.libraryAdSlot = null;
             $scope.ronAdSlotSegments = [];
+            $scope.publisherSegments = [];
             $scope.adSlot = null;
             enabledModules = publisher.enabledModules;
+
+
         }
 
         function selectType(type) {
@@ -168,6 +174,14 @@
 
         function isEnabledModuleRtb() {
             return isEnabledModule('MODULE_RTB');
+        }
+
+        function getSubPublisherSegment(segment) {
+            if(!segment.subPublisher) {
+                return false
+            }
+
+            return true;
         }
 
         function isEnabledModule(module) {
@@ -201,7 +215,11 @@
                 $scope.selected.type = $scope.ronAdSlot.libraryAdSlot.libType;
 
                 angular.forEach($scope.ronAdSlot.ronAdSlotSegments, function(ronAdSlotSegment) {
-                    $scope.ronAdSlotSegments.push(ronAdSlotSegment.segment);
+                    if(!ronAdSlotSegment.segment.subPublisher) {
+                        $scope.ronAdSlotSegments.push(ronAdSlotSegment.segment);
+                    } else {
+                        $scope.publisherSegments.push(ronAdSlotSegment.segment);
+                    }
                 });
 
                 $scope.adSlot = $scope.ronAdSlot.libraryAdSlot
@@ -212,6 +230,21 @@
             $scope.ronAdSlot.ronAdSlotSegments = [];
 
             angular.forEach($scope.ronAdSlotSegments, function(ronAdSlotSegment) {
+                if(!!ronAdSlotSegment.id) {
+                    $scope.ronAdSlot.ronAdSlotSegments.push({segment: ronAdSlotSegment.id});
+                }
+                else {
+                    var segment = {name: ronAdSlotSegment.name};
+
+                    if($scope.isAdmin()) {
+                        segment['publisher'] = $scope.selected.publisher;
+                    }
+
+                    $scope.ronAdSlot.ronAdSlotSegments.push({segment: segment});
+                }
+            });
+
+            angular.forEach($scope.publisherSegments, function(ronAdSlotSegment) {
                 if(!!ronAdSlotSegment.id) {
                     $scope.ronAdSlot.ronAdSlotSegments.push({segment: ronAdSlotSegment.id});
                 }
