@@ -5,12 +5,19 @@
         .controller('AdTagList', AdTagList)
     ;
 
-    function AdTagList($scope, $translate, $q, $state, $modal, adTags, adSlot, AdTagManager, AdSlotAdTagLibrariesManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AD_TYPES, TYPE_AD_SLOT) {
+    function AdTagList($scope, $stateParams, $translate, $q, $state, $modal, adTags, adSlot, AdTagManager, AdSlotAdTagLibrariesManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AD_TYPES, TYPE_AD_SLOT) {
         $scope.adTags = adTags;
 
         $scope.hasAdTags = function () {
             return !!adTags.length;
         };
+
+        if(!adSlot.libraryAdSlot) {
+            AlertService.addAlert({
+                type: 'warning',
+                message: $translate.instant('AD_SLOT_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
+            });
+        }
 
         if (!$scope.hasAdTags()) {
             AlertService.replaceAlerts({
@@ -242,20 +249,21 @@
                 return;
             }
 
-            var saveField = angular.copy(adtag[field]);
-            adtag[field] = data;
-            var item = angular.copy(adtag);
+            var item = {};
+            item[field] = data;
 
             var Manager = !!adtag.libraryAdSlot ? AdSlotAdTagLibrariesManager : AdTagManager;
-            Manager.one(item.id).patch(item)
+            Manager.one(adtag.id).patch(item)
                 .then(function() {
+                    adtag[field] = data;
+
                     AlertService.addAlert({
                         type: 'success',
                         message: $translate.instant('AD_TAG_MODULE.UPDATE_SUCCESS')
                     });
                 })
                 .catch(function() {
-                    adtag[field] = saveField;
+                    adtag[field] = adtag[field];
 
                     AlertService.replaceAlerts({
                         type: 'error',
@@ -272,6 +280,10 @@
         }
 
         function backToListAdSlot() {
+            if($stateParams.from == 'smart') {
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.ronAdSlot, '^.^.^.tagManagement.ronAdSlot.list');
+            }
+
             if(!!$scope.adSlot.libType) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlotLibrary, '^.^.^.tagLibrary.adSlot.list');
             }

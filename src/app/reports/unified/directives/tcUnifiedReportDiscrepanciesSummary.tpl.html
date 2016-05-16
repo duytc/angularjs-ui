@@ -1,0 +1,52 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> {{ 'REPORT.TOTALS' | translate }}</div>
+            <div class="panel-body">
+                <ul class="list-unstyled report list-info">
+                    <li>
+                        <label>{{ 'UNIFIED_REPORT_MODULE.OPPORTUNITY_COMPARISON' | translate }}</label>
+                        <span class="pull-right">{{reportGroup.totalOpportunityComparison | percentageLunisolar }}</span>
+                    </li>
+                    <li>
+                        <label>{{ 'UNIFIED_REPORT_MODULE.IMPRESSION_COMPARISON' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.impressions | percentageLunisolar }}</span>
+                    </li>
+                    <li>
+                        <label>{{ 'UNIFIED_REPORT_MODULE.PASSBACK_COMPARISON' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.passbacks | percentageLunisolar }}</span>
+                    </li>
+                    <!--<li>-->
+                    <!--<label>ECPM Comparison</label>-->
+                    <!--<span class="pull-right">{{ reportGroup.estCPM | percentageLunisolar }}</span>-->
+                    <!--</li>-->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> {{ 'UNIFIED_REPORT_MODULE.AVERAGES' | translate }}</div>
+            <div class="panel-body">
+                <ul class="list-unstyled report list-info">
+                    <li>
+                        <label>{{ 'UNIFIED_REPORT_MODULE.OPPORTUNITY_COMPARISON' | translate }}</label>
+                        <span class="pull-right">{{reportGroup.averageTotalOpportunities | percentageLunisolar }}</span>
+                    </li>
+                    <li>
+                        <label>{{ 'UNIFIED_REPORT_MODULE.IMPRESSION_COMPARISON' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.averageImpressions | percentageLunisolar }}</span>
+                    </li>
+                    <li>
+                        <label>{{ 'UNIFIED_REPORT_MODULE.PASSBACK_COMPARISON' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.averagePassbacks | percentageLunisolar }}</span>
+                    </li>
+                    <!--<li>-->
+                    <!--<label>ECPM Comparison</label>-->
+                    <!--<span class="pull-right">{{ reportGroup.averageEstCPM | percentageLunisolar }}</span>-->
+                    <!--</li>-->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

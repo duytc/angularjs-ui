@@ -5,7 +5,7 @@
         .controller('PerformanceReportSelector', PerformanceReportSelector)
     ;
 
-    function PerformanceReportSelector($scope, $translate, $q, $state, _, PERFORMANCE_REPORT_TYPES, Auth, UserStateHelper, AlertService, performanceReport, reportSelectorForm, ReportParams) {
+    function PerformanceReportSelector($scope, $translate, $q, $state, _, PERFORMANCE_REPORT_TYPES, Auth, UserStateHelper, AlertService, performanceReport, adminUserManager, reportSelectorForm, ReportParams) {
         // important init code at the bottom
 
         var toState = null;
@@ -14,6 +14,7 @@
         var isSubPublisher = Auth.isSubPublisher();
         $scope.isAdmin = isAdmin;
         $scope.isSubPublisher = isSubPublisher;
+        var demandSourceTransparency = $scope.demandSourceTransparency = Auth.getSession().demandSourceTransparency;
 
         var selectedData = {
             date: {
@@ -67,6 +68,7 @@
         $scope.getAdSlot = getAdSlot;
         $scope.getRonAdSlot = getRonAdSlot;
         $scope.selectedPublisherRonAdSlot = selectedPublisherRonAdSlot;
+        $scope.filterForDemandSourceReport = filterForDemandSourceReport;
 
         $scope.datePickerOpts = {
             maxDate:  moment().endOf('day'),
@@ -75,7 +77,7 @@
                 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                 'Last 7 Days': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
                 'Last 30 Days': [moment().subtract(30, 'days'), moment().subtract(1, 'days')],
-                'This Month': [moment().startOf('month'), moment().subtract(1, 'days')],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
         };
@@ -184,7 +186,7 @@
             reportTypeOptions.push( {
                 key: PERFORMANCE_REPORT_TYPES.ronAdSlot,
                 breakdownKey: 'ronAdSlotBreakdown',
-                label: 'Smart Ad Slot',
+                label: 'RON Ad Slot',
                 toState: 'reports.performance.ronAdSlots',
                 breakdownOptions: [
                     {
@@ -336,8 +338,9 @@
             };
         }
 
-        function selectPublisher() {
+        function selectPublisher(publisher) {
             resetForm();
+            getData(publisher.id, $scope.selectedData.reportType);
         }
 
         /**
@@ -354,6 +357,8 @@
             if(reportType.key == $scope.reportTypes.ronAdSlot) {
                 getRonAdSlot()
             }
+
+            getData($scope.selectedData.publisherId, reportType);
 
             toState = reportType.toState;
 
@@ -476,6 +481,15 @@
 
             return false
         }
+
+        function filterForDemandSourceReport(option) {
+            if(!demandSourceTransparency && option.key == 'adtag') {
+                return false;
+            }
+
+            return true;
+        }
+
         function selectBreakdownOption(breakdownOption) {
             if (!angular.isObject(breakdownOption) || !breakdownOption.toState) {
                 throw new Error('breakdown option is missing a target state');
@@ -521,6 +535,52 @@
             ;
         }
 
+        function getData(publisher, reportType) {
+            var publisherId = isAdmin ? publisher : Auth.getSession().id;
+
+            if(!publisherId || !reportType) {
+                return;
+            }
+
+            if(reportType.key == $scope.reportTypes.adNetwork) {
+                if(!isAdmin) {
+                    reportSelectorForm.getAdNetworks()
+                        .then(function (data) {
+                            addAllOption(data, 'All Demand Partners');
+
+                            $scope.optionData.adNetworks = data;
+                        })
+                    ;
+                } else {
+                    adminUserManager.one(publisherId).one('adnetworks').getList()
+                        .then(function (data) {
+                            addAllOption(data, 'All Demand Partners');
+
+                            $scope.optionData.adNetworks = data;
+                        })
+                }
+            }
+
+            if(reportType.key == $scope.reportTypes.site || reportType.key == $scope.reportTypes.adSlot) {
+                if(!isAdmin) {
+                    reportSelectorForm.getSites()
+                        .then(function (data) {
+
+                            addAllOption(data, 'All Sites');
+                            $scope.optionData.sites = data;
+                        })
+                    ;
+                } else {
+                    adminUserManager.one(publisherId).one('sites').getList()
+                        .then(function (data) {
+
+                            addAllOption(data, 'All Sites');
+                            $scope.optionData.sites = data;
+                        })
+                }
+            }
+        }
+
         /////
 
         function init() {
@@ -531,22 +591,6 @@
                     })
                 ;
             }
-
-            reportSelectorForm.getAdNetworks()
-                .then(function (data) {
-                    addAllOption(data, 'All Demand Partners');
-
-                    $scope.optionData.adNetworks = data;
-                })
-            ;
-
-            reportSelectorForm.getSites()
-                .then(function (data) {
-
-                    addAllOption(data, 'All Sites');
-                    $scope.optionData.sites = data;
-                })
-            ;
 
             update();
 
@@ -595,6 +639,10 @@
                     if (calculatedParams.adNetworkId != null) {
                         selectAdNetwork(calculatedParams.adNetworkId);
                         selectSiteForAdNetwork(calculatedParams.siteId);
+                    }
+
+                    if(($scope.optionData.adNetworks.length == 0 && calculatedParams.reportType == $scope.reportTypes.adNetwork) || ($scope.optionData.sites.length == 0 && (calculatedParams.reportType == $scope.reportTypes.site || calculatedParams.reportType == $scope.reportTypes.adSlot))) {
+                        getData(calculatedParams.publisherId, {key: calculatedParams.reportType});
                     }
 
                     angular.extend($scope.selectedData, _.omit(calculatedParams, ['reportType']));

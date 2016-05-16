@@ -1,0 +1,70 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> {{ 'REPORT.TOTALS' | translate }}</div>
+            <div class="panel-body">
+                <ul class="list-unstyled report list-info">
+                    <li>
+                        <label ng-if="!tagcade">{{ 'UNIFIED_REPORT_MODULE.PARTNER_REQUESTS' | translate }}</label>
+                        <label ng-if="tagcade">{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}</label>
+                        <span class="pull-right">{{(reportGroup.totalOpportunities || 0) | number }}</span>
+                    </li>
+                    <li>
+                        <label>{{ 'REPORT.IMPRESSIONS' | translate }}</label>
+                        <span class="pull-right">{{(reportGroup.impressions || 0) | number }}</span>
+                    </li>
+                    <li>
+                        <label>{{ 'REPORT.PASSBACKS' | translate }}</label>
+                        <span class="pull-right">{{(reportGroup.passbacks || 0) | number }}</span>
+                    </li>
+                    <li ng-if="!tagcade">
+                        <label>{{ 'UNIFIED_REPORT_MODULE.REVENUE' | translate }}</label>
+                        <span class="pull-right">{{(reportGroup.estRevenue || 0) | currency }}</span>
+                    </li>
+                    <li ng-if="!tagcade">
+                        <label>{{ 'UNIFIED_REPORT_MODULE.CPM' | translate }}</label>
+                        <span class="pull-right">{{(reportGroup.estCpm || 0) | currency }}</span>
+                    </li>
+                    <li>
+                        <label>{{ 'REPORT.FILL_RATE' | translate }}</label>
+                        <span class="pull-right">{{(reportGroup.fillRate || 0) | percentage }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> {{ 'UNIFIED_REPORT_MODULE.AVERAGES' | translate }}</div>
+            <div class="panel-body">
+                <ul class="list-unstyled report list-info">
+                    <li>
+                        <label ng-if="!tagcade">{{ 'UNIFIED_REPORT_MODULE.PARTNER_REQUESTS' | translate }}</label>
+                        <label ng-if="tagcade">{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}</label>
+                        <span class="pull-right">{{(reportGroup.averageTotalOpportunities || 0) | number }}</span>
+                    </li>
+                    <li>
+                        <label>{{ 'REPORT.IMPRESSIONS' | translate }}</label>
+                        <span class="pull-right">{{(reportGroup.averageImpressions || 0) | number }}</span>
+                    </li>
+                    <li>
+                        <label>{{ 'REPORT.PASSBACKS' | translate }}</label>
+                        <span class="pull-right">{{(reportGroup.averagePassbacks || 0) | number }}</span>
+                    </li>
+                    <li ng-if="!tagcade">
+                        <label>{{ 'UNIFIED_REPORT_MODULE.REVENUE' | translate }}</label>
+                        <span class="pull-right">{{(reportGroup.averageEstRevenue || 0) | currency }}</span>
+                    </li>
+                    <li ng-if="!tagcade">
+                        <label>{{ 'UNIFIED_REPORT_MODULE.CPM' | translate }}</label>
+                        <span class="pull-right">{{(reportGroup.averageEstCpm || 0) | currency }}</span>
+                    </li>
+                    <li>
+                        <label>{{ 'REPORT.FILL_RATE' | translate }}</label>
+                        <span class="pull-right">{{(reportGroup.averageFillRate || 0) | percentage }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

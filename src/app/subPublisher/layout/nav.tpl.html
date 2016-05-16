@@ -1,75 +1,83 @@
-<ul class="nav sidebar-menu">
-    <li >
-        <a href="#" class="menu-dropdown">
-            <i class="menu-icon fa fa-location-arrow"></i>
-            <span class="menu-text"> {{ 'NAVBAR.TAG_MANAGEMENT' | translate }} </span>
-            <i class="menu-expand"></i>
-        </a>
+<div slim-scroll>
+    <ul class="nav sidebar-menu">
+        <li >
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-location-arrow"></i>
+                <span class="menu-text"> {{ 'NAVBAR.TAG_MANAGEMENT' | translate }} </span>
+                <i class="menu-expand"></i>
+            </a>
 
-        <ul class="submenu">
-            <li >
-                <a href="#" class="menu-dropdown">
-                    <span class="menu-text">{{ 'SITES' | translate }}</span>
-                    <i class="menu-expand"></i>
-                </a>
+            <ul class="submenu">
+                <li >
+                    <a href="#" class="menu-dropdown">
+                        <span class="menu-text">{{ 'SITES' | translate }}</span>
+                        <i class="menu-expand"></i>
+                    </a>
 
-                <ul class="submenu">
-                    <li ui-sref-active="active">
-                        <a ui-sref=".tagManagement.sites.list">
-                            <span class="menu-text"> {{ 'NAVBAR.MY_SITES' | translate }} </span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+                    <ul class="submenu">
+                        <li ui-sref-active="active">
+                            <a ui-sref=".tagManagement.sites.list">
+                                <span class="menu-text"> {{ 'NAVBAR.MY_SITES' | translate }} </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
-            <li ng-show="hasDisplayAdsModule">
-                <a href="#" class="menu-dropdown">
-                    <span class="menu-text">{{ 'AD_SLOTS' | translate }}</span>
-                    <i class="menu-expand"></i>
-                </a>
-                <ul class="submenu">
-                    <li ui-sref-active="active">
-                        <a ui-sref=".tagManagement.adSlot.listAll">
-                            <span class="menu-text">{{ 'NAVBAR.MY_AD_SLOTS' | translate }}</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+                <li ng-show="hasDisplayAdsModule">
+                    <a href="#" class="menu-dropdown">
+                        <span class="menu-text">{{ 'AD_SLOTS' | translate }}</span>
+                        <i class="menu-expand"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li ui-sref-active="active">
+                            <a ui-sref=".tagManagement.adSlot.listAll">
+                                <span class="menu-text">{{ 'NAVBAR.MY_AD_SLOTS' | translate }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
-            <li ui-sref-active="active">
-                <a ui-sref=".tagManagement.tagGenerator">
-                    <span class="menu-text"> {{ 'NAVBAR.GENERATE_TAGS' | translate }} </span>
-                </a>
-            </li>
+                <li ui-sref-active="active">
+                    <a ui-sref=".tagManagement.tagGenerator">
+                        <span class="menu-text"> {{ 'NAVBAR.GENERATE_TAGS' | translate }} </span>
+                    </a>
+                </li>
 
-        </ul>
-    </li>
+            </ul>
+        </li>
 
-    <li >
-        <a href="#" class="menu-dropdown">
-            <i class="menu-icon fa fa-tachometer"></i>
-            <span class="menu-text"> {{ 'NAVBAR.REPORTS' | translate }} </span>
-            <i class="menu-expand"></i>
-        </a>
+        <li >
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-tachometer"></i>
+                <span class="menu-text"> {{ 'NAVBAR.REPORTS' | translate }} </span>
+                <i class="menu-expand"></i>
+            </a>
 
-        <ul class="submenu">
-            <li ng-show="hasDisplayAdsModule" ui-sref-active="active">
-                <a ui-sref=".reports.performance.sites">
-                    <span class="menu-text"> {{ 'NAVBAR.PERFORMANCE_REPORTS' | translate }} </span>
-                </a>
-            </li>
+            <ul class="submenu">
+                <li ng-show="hasDisplayAdsModule" ui-sref-active="active">
+                    <a ui-sref=".reports.performance.sites">
+                        <span class="menu-text"> {{ 'NAVBAR.PERFORMANCE_REPORTS' | translate }} </span>
+                    </a>
+                </li>
 
-            <li ng-show="hasAnalyticsModule" ui-sref-active="active">
-                <a ui-sref=".reports.source">
-                    <span class="menu-text"> {{ 'NAVBAR.SOURCE_REPORTS' | translate }} </span>
-                </a>
-            </li>
+                <!--<li ng-show="hasAnalyticsModule" ui-sref-active="active">-->
+                <!--<a ui-sref=".reports.source">-->
+                <!--<span class="menu-text"> {{ 'NAVBAR.SOURCE_REPORTS' | translate }} </span>-->
+                <!--</a>-->
+                <!--</li>-->
 
-            <li ui-sref-active="active">
-                <a ui-sref=".reports.projectedBill">
-                    <span class="menu-text"> {{ 'NAVBAR.PROJECTED_BILL' | translate }} </span>
-                </a>
-            </li>
-        </ul>
-    </li>
-</ul>
+                <!--<li ng-show="hasDisplayAdsModule" ui-sref-active="active">-->
+                <!--<a ui-sref=".reports.projectedBill">-->
+                <!--<span class="menu-text"> {{ 'NAVBAR.PROJECTED_BILL' | translate }} </span>-->
+                <!--</a>-->
+                <!--</li>-->
+                <li ng-show="hasUnifiedModule" ui-sref-active="active">
+                    <a ui-sref=".reports.unified.day">
+                        <span class="menu-text"> {{ 'NAVBAR.UNIFIED_REPORTS' | translate }} </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+</div>

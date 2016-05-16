@@ -26,6 +26,9 @@
                 resolve: {
                     adNetworks: function(AdNetworkManager) {
                         return AdNetworkManager.getList();
+                    },
+                    channels: function(ChannelManager) {
+                        return ChannelManager.getList();
                     }
                 },
                 ncyBreadcrumb: {

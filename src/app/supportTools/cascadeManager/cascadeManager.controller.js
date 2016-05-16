@@ -6,14 +6,17 @@
         .controller('CascadeManager', CascadeManager)
     ;
 
-    function CascadeManager($scope, $translate, adNetworks, AdNetworkManager, AlertService, UISelectMethod, adminUserManager, Auth) {
+    function CascadeManager($scope, $translate, adNetworks, channels, AdNetworkManager, AlertService, UISelectMethod, adminUserManager, Auth) {
         $scope.adNetworks = null;
         $scope.sites = null;
+        $scope.channels = channels;
 
         $scope.selected = {
             publisher : null,
             adNetwork : null,
-            position: null
+            position: null,
+            deployment: 'sites',
+            autoIncreasePosition: false
         };
 
         var isAdmin = Auth.isAdmin();
@@ -31,6 +34,17 @@
             $scope.adNetworks = adNetworks;
         }
 
+        $scope.deploymentOptions = [
+            {
+                label: 'Sites',
+                key: 'sites'
+            },
+            {
+                label: 'Channels',
+                key: 'channels'
+            }
+        ];
+
         $scope.groupEntities = UISelectMethod.groupEntities;
 
         $scope.selectPublisher = function() {
@@ -41,24 +55,29 @@
         $scope.selectAdNetwork = function (adNetworkId) {
             return AdNetworkManager.one(adNetworkId).one('sites').one('active').getList()
                     .then(function (data) {
-                        UISelectMethod.addAllOption(data, 'All Site');
+                        UISelectMethod.addAllOption(data, 'All Sites');
                         $scope.sites = data.plain();
                     })
                 ;
         };
 
         $scope.isFormValid = function() {
-            return $scope.selected.adNetwork != null && $scope.selected.position != null;
+            return $scope.positionForm.$valid;
         };
 
         $scope.submit = function () {
             var savePosition;
 
-            if(!$scope.selected.site) {
-                savePosition = AdNetworkManager.one($scope.selected.adNetwork).customPUT('', 'position', {position: $scope.selected.position});
+            var params = {position: $scope.selected.position, autoIncreasePosition: $scope.selected.autoIncreasePosition};
+
+            if($scope.selected.site && $scope.selected.deployment == 'sites') {
+                savePosition = AdNetworkManager.one($scope.selected.adNetwork).one('sites', $scope.selected.site).customPUT('', 'position', params);
+            }
+            else if($scope.selected.channel && $scope.selected.deployment == 'channels') {
+                savePosition = AdNetworkManager.one($scope.selected.adNetwork).one('channels', $scope.selected.channel).customPUT('', 'position', params);
             }
             else {
-                savePosition = AdNetworkManager.one($scope.selected.adNetwork).one('sites', $scope.selected.site).customPUT('', 'position', {position: $scope.selected.position});
+                savePosition = AdNetworkManager.one($scope.selected.adNetwork).customPUT('', 'position', params);
             }
 
             savePosition

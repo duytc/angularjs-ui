@@ -10,13 +10,15 @@
             /**
              * @param {String|Object} token
              * @param {Number} id
+             * @param {Boolean} demandSourceTransparency
+             * @param {Boolean} enableViewTagcadeReport
              * @param {String} username
              * @param {Array} [userRoles]
              * @param {Array} [enabledModules]
              * @param {Array} [exchanges]
              */
-            createNew: function(token, id, username, userRoles, enabledModules, exchanges) {
-                return new Session(token, id, username, userRoles, enabledModules, exchanges);
+            createNew: function(token, id, username, userRoles, enabledModules, exchanges, demandSourceTransparency, enableViewTagcadeReport) {
+                return new Session(token, id, username, userRoles, enabledModules, exchanges, demandSourceTransparency, enableViewTagcadeReport);
             },
 
             /**
@@ -35,7 +37,7 @@
                     throw new Error('missing username');
                 }
 
-                return this.createNew(data.token, data.id, data.username, data.userRoles, data.enabledModules, data.exchanges);
+                return this.createNew(data.token, data.id, data.username, data.userRoles, data.enabledModules, data.exchanges, data.demandSourceTransparency, data.enableViewTagcadeReport);
             },
 
             isSession: function(session) {
@@ -43,11 +45,16 @@
             }
         };
 
-        function Session(token, id, username, userRoles, enabledModules, exchanges) {
+        function Session(token, id, username, userRoles, enabledModules, exchanges, demandSourceTransparency, enableViewTagcadeReport) {
             this.token = token;
             this.id = parseInt(id, 10) || null;
             this.username = username;
             this.exchanges = exchanges;
+
+            // demandSourceTransparency is enabled if current user is not sub publisher
+            this.demandSourceTransparency = userRoles.indexOf(USER_ROLES.subPublisher) > - 1 ? demandSourceTransparency : true;
+            // enableViewTagcadeReport is enabled if current user is not sub publisher
+            this.enableViewTagcadeReport = userRoles.indexOf(USER_ROLES.subPublisher) > - 1 ? enableViewTagcadeReport : true;
 
             if (!angular.isArray(userRoles)) {
                 userRoles = [];

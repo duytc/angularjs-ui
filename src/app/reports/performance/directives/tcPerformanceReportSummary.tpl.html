@@ -24,7 +24,7 @@
                         <label>{{ 'REPORT.FIRST_OPPORTUNITIES' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.firstOpportunities | number }}</span>
                     </li>
-                    <li ng-if="exist(reportGroup.rtbImpressions)">
+                    <li ng-if="hideRTB()">
                         <label>{{ 'REPORT.RTB_IMPRESSIONS' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.rtbImpressions | number }}</span>
                     </li>
@@ -89,7 +89,7 @@
                         <label>{{ 'REPORT.FIRST_OPPORTUNITIES' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageFirstOpportunities | number }}</span>
                     </li>
-                    <li ng-if="exist(reportGroup.averageRtbImpressions)">
+                    <li ng-if="hideRTB()">
                         <label>{{ 'REPORT.RTB_IMPRESSIONS' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageRtbImpressions | number }}</span>
                     </li>

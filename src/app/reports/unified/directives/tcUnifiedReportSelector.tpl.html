@@ -21,31 +21,43 @@
                 </ui-select>
             </div>
 
-            <div class="form-group" ng-if="selectedData.publisher || !isAdmin">
+            <div class="publisher form-group" ng-if="!isAdmin && !isSubPublisher">
+                <label>{{ 'ACCOUNT' | translate }}</label>
+                <ui-select name="publisher" ng-model="selectedData.publisher" ng-required="true" ng-disabled="!optionData.subPublishers.length" on-select="selectSubPublisher($model)" reset-search-input="'false'">
+                    <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.username }}</ui-select-match>
+                    <ui-select-choices group-by="groupEntities" repeat="publisher.id as publisher in optionData.subPublishers | filter: $select.search">
+                        <div ng-bind-html="publisher.username | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="form-group" ng-if="!!selectedData.publisher && isAdmin || !isAdmin">
                 <div class="form-inline">
-                    <div class="ad-network form-group">
+                    <div class="ad-network form-group" ng-if="!!demandSourceTransparency">
                         <label>{{ 'AD_NETWORK' | translate }}</label>
-                        <ui-select name="reportType" ng-model="selectedData.adNetwork" on-select="selectAdNetwork($item)" ng-required="true" reset-search-input="'false'">
+                        <ui-select name="adNetwork" ng-model="selectedData.adNetwork" on-select="selectAdNetwork($item)" ng-required="true" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'AD_NETWORK_MODULE.SELECT_A_AD_NETWORK' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices repeat="adNetwork.id as adNetwork in optionData.adNetworks | filter: $select.search">
+                            <ui-select-choices group-by="groupEntities" repeat="adNetwork.id as adNetwork in optionData.adNetworks | filter: $select.search">
                                 <div ng-bind-html="adNetwork.name | highlight: $select.search"></div>
                             </ui-select-choices>
                         </ui-select>
                     </div>
-                    <div class="report-type form-group" ng-if="selectedData.adNetwork">
-                        <label>{{ 'REPORT.REPORT_TYPE' | translate }}</label>
-                        <ui-select name="reportType" ng-model="selectedData.reportType" ng-required="true"  on-select="selectReportType($item)" reset-search-input="'false'">
-                            <ui-select-match placeholder="{{ 'REPORT.SELECT_A_REPORT_TYPE' | translate }}">{{ $select.selected.label }}</ui-select-match>
-                            <ui-select-choices repeat="type.key as type in reportTypeOptions | filter:filterReportTypeForAdNetwork:type">
-                                <div ng-bind-html="type.label"></div>
+
+                    <div class="ad-network form-group" ng-if="selectedData.adNetwork">
+                        <label>{{ 'SITE' | translate }}</label>
+                        <ui-select name="site" ng-model="selectedData.site" on-select="selectSite($item)" ng-required="true" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'AD_NETWORK_MODULE.SELECT_A_AD_NETWORK' | translate }}">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="site.id as site in optionData.sites | filter: $select.search">
+                                <div ng-bind-html="site.name | highlight: $select.search"></div>
                             </ui-select-choices>
                         </ui-select>
                     </div>
-                    <div class="report-type form-group" ng-if="selectedData.reportType">
+
+                    <div class="report-type form-group">
                         <label>{{ 'REPORT.BREAKDOWN' | translate }}</label>
                         <ui-select ng-model="selectedData.breakDown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ $select.selected.label }}</ui-select-match>
-                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in breakdownOptions | filter:filterDrillDownForReportType:option">
+                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in breakdownOptions | filter:filterBreakdown:option">
                                 <div ng-bind-html="option.label"></div>
                             </ui-select-choices>
                         </ui-select>

@@ -42,25 +42,29 @@
                                 <li ng-if="!!adSlot.libType && !isSubPublisher()"><a ui-sref="^.editForAdSlot({ id: item.id })">{{ 'AD_TAG_MODULE.EDIT_AD_TAG' | translate }}</a></li>
                                 <li ng-if="!isSubPublisher()"><a ng-click="toggleAdTagStatus(item)">{{ item.active ? ('AD_TAG_MODULE.PAUSE_AD_TAG' | translate) : ('AD_TAG_MODULE.ACTIVATE_AD_TAG' | translate) }}</a></li>
                                 <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item)">{{ 'AD_TAG_MODULE.DELETE_AD_TAG' | translate }}</a></li>
-                                <li ng-if="!isSubPublisher()" class="divider"></li>
-                                <li ng-if="!item.libraryAdTag.visible && !isSubPublisher()" ng-click="shareAdTag(item)"><a>{{ 'AD_TAG_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>
-                                <li ng-if="item.libraryAdTag.visible && !isSubPublisher()"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: item.libraryAdTag.id})">{{ 'AD_TAG_MODULE.EDIT_AD_TAG_IN_LIBRARY' | translate }}</a></li>
+                                <!--<li ng-if="!isSubPublisher()" class="divider"></li>-->
+                                <!--<li ng-if="!item.libraryAdTag.visible && !isSubPublisher()" ng-click="shareAdTag(item)"><a>{{ 'AD_TAG_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>-->
+                                <!--<li ng-if="item.libraryAdTag.visible && !isSubPublisher()"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: item.libraryAdTag.id})">{{ 'AD_TAG_MODULE.EDIT_AD_TAG_IN_LIBRARY' | translate }}</a></li>-->
                             </ul>
                         </div>
                     </td>
                     <td at-implicit at-title="{{ 'NAME' | translate }}" at-attribute="libraryAdTag.name"></td>
                     <td at-title="{{ 'AD_TAG_MODULE.ROTATION_WEIGHT' | translate }}" ng-dblclick="rotationForm.$show()" at-attribute="rotation">
-                        <span ng-if="!isSubPublisher()" class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>
-                        <div ng-if="!isSubPublisher()" e-form="rotationForm" buttons="no" oncancel="updateAdTag($data, 'rotation', item)" onbeforesave="updateAdTag($data, 'rotation', item)" editable-number="item.rotation">{{ item.rotation }}</div>
-                        <div ng-if="isSubPublisher()">{{ item.rotation }}</div>
+                        <div ng-show="!isSubPublisher()">
+                            <span class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>
+                            <div e-form="rotationForm" buttons="no" oncancel="updateAdTag($data, 'rotation', item)" onbeforesave="updateAdTag($data, 'rotation', item)" editable-number="item.rotation">{{ item.rotation }}</div>
+                        </div>
+                        <div ng-show="isSubPublisher()">{{ item.rotation }}</div>
                     </td>
                     <td at-title="{{ 'AD_TAG_MODULE.FREQUENCY_CAP' | translate }}" ng-dblclick="frequencyCapForm.$show()" at-attribute="frequencyCap">
-                        <span ng-if="!isSubPublisher()" class="fa fa-pencil" ng-hide="frequencyCapForm.$visible"></span>
-                        <div ng-if="!isSubPublisher()" e-form="frequencyCapForm" buttons="no" oncancel="updateAdTag($data, 'frequencyCap', item)" onbeforesave="updateAdTag($data, 'frequencyCap', item)" editable-number="item.frequencyCap">{{ item.frequencyCap }}</div>
-                        <div ng-if="isSubPublisher()">{{ item.frequencyCap }}</div>
+                        <div ng-show="!isSubPublisher()">
+                            <span class="fa fa-pencil" ng-hide="frequencyCapForm.$visible"></span>
+                            <div e-form="frequencyCapForm" buttons="no" oncancel="updateAdTag($data, 'frequencyCap', item)" onbeforesave="updateAdTag($data, 'frequencyCap', item)" editable-number="item.frequencyCap">{{ item.frequencyCap }}</div>
+                        </div>
+                        <div ng-show="isSubPublisher()">{{ item.frequencyCap }}</div>
                     </td>
                     <td at-title="{{ 'AD_TAG_MODULE.STATUS' | translate }}" at-attribute="active">
-                        <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
+                        <span class="label" ng-class="item.active == 1 ? 'label-success' : (item.active == -1 ? 'label-warning' : 'label-danger')">{{ item.active == 1 ? 'Active' : (item.active == -1 ? 'Auto Paused' : 'Paused') }}</span>
                     </td>
                 </tr>
                 </tbody>

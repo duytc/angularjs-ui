@@ -20,7 +20,7 @@
         <div class="col-md-12">
             <ul class="nav nav-tabs nav-tab-margin">
                 <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.adSlot.new">Ad Slot</a></li>
-                <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.ronAdSlot.new">Smart Ad Slot</a></li>
+                <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.ronAdSlot.new">RON Ad Slot</a></li>
             </ul>
         </div>
     </div>
@@ -86,14 +86,14 @@
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="selected.deployment == 'siteOrChannel'">
+                <div class="form-group" ng-if="selected.deployment == 'siteAndChannel' || selected.deployment == 'sites' ">
                     <label for="inputSite" class="col-sm-1quarter control-label">{{ 'SITE' | translate }}</label>
                     <div class="col-sm-5">
                         <isteven-multi-select id="inputSite" input-model="siteList" output-model="selected.sites" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="selected.deployment == 'siteOrChannel'">
+                <div class="form-group" ng-if="selected.deployment == 'siteAndChannel' || selected.deployment == 'channels'">
                     <label for="inputChannel" class="col-sm-1quarter control-label">{{ 'CHANNEL' | translate }}</label>
                     <div class="col-sm-5">
                         <isteven-multi-select id="inputChannel" input-model="channelList" output-model="selected.channels" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>

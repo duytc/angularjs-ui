@@ -71,7 +71,7 @@
                 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                 'Last 7 Days': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
                 'Last 30 Days': [moment().subtract(30, 'days'), moment().subtract(1, 'days')],
-                'This Month': [moment().startOf('month'), moment().subtract(1, 'days')],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
         };
@@ -130,7 +130,7 @@
             {
                 key: PERFORMANCE_REPORT_TYPES.ronAdSlot,
                 breakdownKey: 'ronAdSlotBreakdown',
-                label: 'Smart Ad Slot',
+                label: 'RON Ad Slot',
                 toState: 'reports.rtb.ronAdSlots',
                 breakdownOptions: [
                     {

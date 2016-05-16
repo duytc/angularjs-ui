@@ -23,20 +23,28 @@
             <ul class="nav nav-tabs nav-tab-margin">
                 <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.adSlot.listAll">By Site</a></li>
                 <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.adSlot.listByChannel">By Channel</a></li>
-                <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.ronAdSlot.list">Smart Ad Slots</a></li>
+                <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.ronAdSlot.list">RON Ad Slots</a></li>
                 <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagLibrary.adSlot.list">Standalone Ad Slots</a></li>
             </ul>
         </div>
     </div>
 
-    <search-box show-query="true" sb-list="ronAdSlots" search-fields="['id', 'libraryAdSlot.name', 'libraryAdSlot.width', 'libraryAdSlot.height']"></search-box>
+    <!--<search-box show-query="true" sb-list="ronAdSlots" search-fields="['id', 'libraryAdSlot.name', 'libraryAdSlot.width', 'libraryAdSlot.height']"></search-box>-->
+
+    <form class="input-group col-sm-6 search-box">
+        <input class="form-control" ng-model="selectData.query" ng-change="searchData()" placeholder="{{ 'UNIFIED_REPORT_MODULE.SEARCH' | translate }}" type="text"/>
+            <span class="input-group-addon">
+                {{ tableConfig.totalItems }} records found
+            </span>
+    </form>
 
     <div class="panel-body" ng-if="hasData()">
         <div class="table-responsive">
-            <table class="table" at-sortable-query at-table at-paginated at-list="ronAdSlots" at-config="tableConfig">
+            <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="ronAdSlots.records" at-config="tableConfig">
                 <thead>
                 <tr>
                     <th ng-show="isAdmin()" at-attribute="libraryAdSlot.publisher.company">{{ 'PUBLISHER' | translate }}</th>
+                    <th ng-show="hasRtbModule" at-attribute="rtb">{{ 'SITE_MODULE.RTB' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -46,32 +54,35 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <li ng-if="item.libraryAdSlot.libType == adSlotTypes.display && demandSourceTransparency" ><a ui-sref="^.^.^.tagLibrary.adTag.displayList({adSlotId: item.libraryAdSlot.id, from: 'smart'})">{{ 'AD_SLOT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
+                                <li ng-if="item.libraryAdSlot.libType == adSlotTypes.native && demandSourceTransparency" ><a ui-sref="^.^.^.tagLibrary.adTag.nativeList({adSlotId: item.libraryAdSlot.id, from: 'smart'})">{{ 'AD_SLOT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
                                 <li><a ng-click="generateAdTag(item)">{{ 'AD_SLOT_MODULE.GENERATE_A_TAGS' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li><a ui-sref="^.^.^.reports.performance.ronAdSlotAdTags({ ronAdSlotId: item.id, startDate: today})">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
                                 <li ng-if="!isSubPublisher()" class="divider"></li>
                                 <li ng-if="!isSubPublisher()"><a ui-sref="^.edit({ id: item.id })">{{ 'RON_AD_SLOT_MODULE.EDIT_RON_AD_SLOT' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a  ui-sref="^.^.^.tagLibrary.adSlot.edit({ id: item.libraryAdSlot.id, from: 'smartAdSlot'})">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT_IN_LIBRARY' | translate }}</a></li>
                                 <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item)">{{ 'RON_AD_SLOT_MODULE.DELETE_RON_AD_SLOT' | translate }}</a></li>
-                                <li ng-if="!isSubPublisher()"><a  ui-sref="^.^.^.tagLibrary.adSlot.edit({ id: item.libraryAdSlot.id})">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT_IN_LIBRARY' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>
                     <td at-title="{{ 'NAME' | translate }}" at-attribute="libraryAdSlot.name" at-implicit at-initial-sorting="asc" at-sortable></td>
                     <td ng-show="isAdmin()" at-title="{{ 'PUBLISHER' | translate }}" at-implicit at-sortable at-attribute="libraryAdSlot.publisher.company"></td>
-                    <td at-title="{{ 'AD_SLOT_MODULE.TYPE' | translate }}" at-implicit at-attribute="libraryAdSlot.libType" at-sortable></td>
-                    <td at-title="{{ 'RON_AD_SLOT_MODULE.SEGMENTS' | translate }}" at-sortable>
+                    <td at-title="{{ 'AD_SLOT_MODULE.TYPE' | translate }}" at-implicit at-attribute="libraryAdSlot.libType"></td>
+                    <td at-title="{{ 'RON_AD_SLOT_MODULE.SEGMENTS' | translate }}">
                         <ul ng-repeat="segmentItem in item.ronAdSlotSegments">
                             <li>{{ segmentItem.segment.name }}</li>
                         </ul>
                     </td>
-                    <td at-title="{{ 'SITE_MODULE.RTB' | translate }}" at-attribute="rtb" at-sortable>
+                    <td ng-show="hasRtbModule" at-title="{{ 'SITE_MODULE.RTB' | translate }}" at-attribute="rtb">
                         {{ item.libraryAdSlot.libType != 'display' ? '' : rtbStatusLabels[item.rtbStatus] }}
                     </td>
                 </tr>
                 </tbody>
             </table>
 
-            <at-pagination at-pagination-query ng-if="showPagination()" at-list="ronAdSlots" at-config="tableConfig"></at-pagination>
+            <!--<at-pagination at-pagination-query ng-if="showPagination()" at-list="ronAdSlots" at-config="tableConfig"></at-pagination>-->
+            <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
         </div>
     </div>
 </div>

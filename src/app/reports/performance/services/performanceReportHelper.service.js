@@ -63,6 +63,18 @@
 
             var params = ReportParams.getStateParams(unfilteredParams);
 
+            angular.forEach(params, function (value, key) {
+                if (!angular.isObject(value)) {
+                    return;
+                }
+
+                // if data being sent to the server is an object and has an id key
+                // replace the value with just the id
+                if (value.id) {
+                    params[key+'Id'] = value.id;
+                }
+            });
+
             $state.transitionTo(relativeToState, params)
                 .catch(function() {
                     console.log(params);

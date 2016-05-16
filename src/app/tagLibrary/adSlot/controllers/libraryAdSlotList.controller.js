@@ -5,11 +5,15 @@
         .controller('LibraryAdSlotList', LibraryAdSlotList)
     ;
 
-    function LibraryAdSlotList($scope, $translate, $modal, adSlots, AlertService, ChannelManager, DisplayAdSlotLibrariesManager, NativeAdSlotLibrariesManager, DynamicAdSlotLibrariesManager, TYPE_AD_SLOT, AtSortableService, historyStorage, HISTORY_TYPE_PATH, SiteManager, RonAdSlotManager) {
+    function LibraryAdSlotList($scope, $translate, $modal, Auth, adSlots, AlertService, ChannelManager, AdSlotLibrariesManager, DisplayAdSlotLibrariesManager, NativeAdSlotLibrariesManager, DynamicAdSlotLibrariesManager, TYPE_AD_SLOT, historyStorage, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE, SiteManager, RonAdSlotManager) {
         $scope.adSlots = adSlots;
 
+        var params = {
+            page: 1
+        };
+
         $scope.hasData = function () {
-            return !!adSlots.length;
+            return !!adSlots.totalRecord;
         };
 
         if (!$scope.hasData()) {
@@ -21,17 +25,33 @@
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10
+            maxPages: 10,
+            totalItems: Number(adSlots.totalRecord)
         };
+
+        $scope.availableOptions = {
+            currentPage: 1,
+            pageSize: 10
+        };
+
+        $scope.selectData = {
+            query: null
+        };
+
+        var getAdSlot;
+
         $scope.adSlotTypes = TYPE_AD_SLOT;
+        $scope.demandSourceTransparency = Auth.getSession().demandSourceTransparency;
 
         $scope.showPagination = showPagination;
         $scope.removeMoveToLibrary = removeMoveToLibrary;
         $scope.createLinkedAdSlots = createLinkedAdSlots;
         $scope.createRonAdSlot = createRonAdSlot;
+        $scope.changePage = changePage;
+        $scope.searchData = searchData;
 
         function showPagination() {
-            return angular.isArray($scope.adSlots) && $scope.adSlots.length > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.adSlots.records) && $scope.adSlots.totalRecord > $scope.tableConfig.itemsPerPage;
         }
 
         function removeMoveToLibrary(adSlot) {
@@ -54,17 +74,7 @@
 
                 return Manager.one(adSlot.id).remove()
                     .then(function () {
-                        var index = adSlots.indexOf(adSlot);
-
-                        if (index > -1) {
-                            adSlots.splice(index, 1);
-                        }
-
-                        $scope.adSlots = adSlots;
-
-                        if($scope.tableConfig.currentPage > 0 && adSlots.length/10 == $scope.tableConfig.currentPage) {
-                            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
-                        }
+                        _getAdSlot(params);
 
                         AlertService.replaceAlerts({
                             type: 'success',
@@ -91,8 +101,8 @@
         }
 
         function createLinkedAdSlots(adSlot) {
-            var sites = SiteManager.one('noreference').getList(null, {slotLibrary: adSlot.id});
-            var channels = ChannelManager.one('noreference').getList(null, {slotLibrary: adSlot.id});
+            var sites = SiteManager.one('nodeployments').getList(null, {slotLibrary: adSlot.id});
+            var channels = ChannelManager.one('nodeployments').getList(null, {slotLibrary: adSlot.id});
 
             channels.then(function(channels) {
                 sites.then(function(sites) {
@@ -149,6 +159,38 @@
             modalInstance.result.then(function(){
 
             });
+        }
+
+        function changePage(currentPage) {
+            params = angular.extend(params, {page: currentPage});
+            _getAdSlot(params);
+        }
+
+        function searchData() {
+            var query = {searchKey: $scope.selectData.query || null};
+            params = angular.extend(params, query);
+            _getAdSlot(params);
+        }
+
+        $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
+            params = angular.extend(params, query);
+            _getAdSlot(params);
+        });
+
+        function _getAdSlot(query) {
+            params = query;
+
+            clearTimeout(getAdSlot);
+
+            getAdSlot = setTimeout(function() {
+                params = query;
+                return AdSlotLibrariesManager.one().get(query)
+                    .then(function(adSlots) {
+                        $scope.adSlots = adSlots;
+                        $scope.tableConfig.totalItems = Number(adSlots.totalRecord);
+                        $scope.availableOptions.currentPage = Number(query.page);
+                    });
+            }, 500);
         }
 
         $scope.$on('$locationChangeSuccess', function() {

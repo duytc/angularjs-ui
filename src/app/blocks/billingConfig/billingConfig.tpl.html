@@ -1,0 +1,55 @@
+<div class="billing-config-for-publisher">
+    <div class="billing-config-item" ng-repeat="billingConfig in billingConfigs" ng-if="hasModuleEnabled(billingConfig.module)">
+        <div class="form-inline row">
+            <div class="col-sm-3">
+                <label>Module Name</label>
+                <div>
+                    {{ getLabelModuleConfig(billingConfig.module) }}
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <label>Billing Factor</label>
+                <div>
+                   <div class="form-group">
+                       <ui-select ng-model="billingConfig.billingFactor" ng-required="true" server-error reset-search-input="'false'">
+                           <ui-select-match placeholder="Select billing factor">{{ $select.selected.label }}</ui-select-match>
+                           <ui-select-choices repeat="factor.key as factor in getBillingFactorsForModule(billingConfig.module, billingConfig)">
+                               {{ factor.label }}
+                           </ui-select-choices>
+                       </ui-select>
+                   </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <label>Use Default</label>
+                <div>
+                    <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-click="removeDefaultConfig(billingConfig)" ng-model="billingConfig.defaultConfig" id="inputActive"><span></span></label>
+                </div>
+            </div>
+
+            <div class="tiers" ng-if="!billingConfig.defaultConfig">
+                <div class="form-inline" ng-repeat="tier in billingConfig.tiers">
+                    <div class="col-sm-3">
+                        <label ng-if="tier.threshold === 0 && $index == 0" style="padding-top: 5px">Default</label>
+                        <input ng-if="tier.threshold !== 0" name="name" ng-model="tier.threshold" min="0.000000001" server-error ng-required="true" type="number" class="form-control" placeholder="Threshold">
+                    </div>
+                    <div class="col-sm-5">
+                        <select class="form-control" ng-model="tier.number" ng-if="$index != 0">
+                            <option value="1000">Thousand</option>
+                            <option value="1000000">Million</option>
+                            <option value="1000000000">Billion</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <input name="name" ng-model="tier.cpmRate" min="0" server-error ng-required="true" type="number" class="form-control" placeholder="Cpm Rate">
+                    </div>
+                    <div class="col-sm-1">
+                        <button class="btn btn-danger" ng-disabled="tier.threshold === 0" type="button" ng-click="removeTier($index, billingConfig)"><span class="glyphicon glyphicon-minus"></span></button>
+                    </div>
+                </div>
+
+                <a class="help-block" ng-click="addTier(billingConfig)">+ Add tier</a>
+            </div>
+        </div>
+    </div>
+</div>

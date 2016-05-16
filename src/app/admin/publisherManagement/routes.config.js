@@ -57,6 +57,9 @@
                     },
                     exchanges: /* @ngInject */ function(ExchangeManager) {
                         return ExchangeManager.getList()
+                    },
+                    headerBiddings: /* @ngInject */ function(HeaderBiddingManager) {
+                        return HeaderBiddingManager.getList()
                     }
                 },
                 ncyBreadcrumb: {
@@ -79,6 +82,9 @@
                     },
                     exchanges: /* @ngInject */ function(ExchangeManager) {
                         return ExchangeManager.getList()
+                    },
+                    headerBiddings: /* @ngInject */ function(HeaderBiddingManager) {
+                        return HeaderBiddingManager.getList()
                     }
                 },
                 ncyBreadcrumb: {

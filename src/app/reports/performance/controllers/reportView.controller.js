@@ -17,6 +17,7 @@
         reportGroup = reportGroup || {};
         $scope.reportGroup = reportGroup;
         $scope.reports = $state.current.params.expanded ? ($scope.reportGroup.expandedReports || []) : ($scope.reportGroup.reports || []);
+        $scope.demandSourceTransparency = Auth.getSession().demandSourceTransparency;
 
         var reportType = 'adTag';
         var settings = isAdmin || isSubPublisher ? [] : angular.fromJson(sessionStorage.getCurrentSettings());

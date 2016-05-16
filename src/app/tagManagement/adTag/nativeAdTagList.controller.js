@@ -5,7 +5,7 @@
         .controller('NativeAdTagList', NativeAdTagList)
     ;
 
-    function NativeAdTagList($scope, $translate, $modal, adTags, AdTagManager, AdSlotAdTagLibrariesManager, AlertService, adSlot, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
+    function NativeAdTagList($scope, $stateParams, $translate, $modal, adTags, AdTagManager, AdSlotAdTagLibrariesManager, AlertService, adSlot, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
         $scope.adSlot = adSlot;
         $scope.adTags = adTags;
 
@@ -91,6 +91,10 @@
         }
 
         function backToListAdSlot() {
+            if($stateParams.from == 'smart') {
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.ronAdSlot, '^.^.^.tagManagement.ronAdSlot.list');
+            }
+
             if(!!$scope.adSlot.libType) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlotLibrary, '^.^.^.tagLibrary.adSlot.list');
             }
@@ -114,24 +118,21 @@
                 return;
             }
 
-            if(adtag[field] == data) {
-                return;
-            }
-
-            var saveField = angular.copy(adtag[field]);
-            adtag[field] = data;
-            var item = angular.copy(adtag);
+            var item = {};
+            item[field] = data;
 
             var Manager = !!adtag.libraryAdSlot ? AdSlotAdTagLibrariesManager : AdTagManager;
-            Manager.one(item.id).patch(item)
+            Manager.one(adtag.id).patch(item)
                 .then(function() {
+                    adtag[field] = data;
+
                     AlertService.addAlert({
                         type: 'success',
                         message: $translate.instant('AD_TAG_MODULE.UPDATE_SUCCESS')
                     });
                 })
                 .catch(function() {
-                    adtag[field] = saveField;
+                    adtag[field] = adtag[field];
 
                     AlertService.replaceAlerts({
                         type: 'error',

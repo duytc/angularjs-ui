@@ -15,20 +15,37 @@
             {key: '!=', label: 'NOT EQUAL TO', jsPattern: '({VARIABLE} != {VALUE}) ', unsupportedBuiltInVars: []}
         ])
         .constant('CONDITIONS_STRING', [
-            {key: '==', label: 'EQUAL TO', jsPattern: '({VARIABLE} == "{VALUE}") ', unsupportedBuiltInVars: []},
-            {key: '!=', label: 'NOT EQUAL TO', jsPattern: '({VARIABLE} != "{VALUE}") ', unsupportedBuiltInVars: []},
-            {key: 'contains', label:'CONTAINS', jsPattern: '({VARIABLE}.search(/{VALUE}/i) > -1) ', unsupportedBuiltInVars: ['${COUNTRY}']},
-            {key: 'notContains', label:'DOES NOT CONTAIN', jsPattern: '({VARIABLE}.search(/{VALUE}/i) < 0) ', unsupportedBuiltInVars: ['${COUNTRY}']},
-            {key: 'startsWith', label:'STARTS WITH', jsPattern: '({VARIABLE}.search(/{VALUE}/i) === 0) ', unsupportedBuiltInVars: ['${COUNTRY}']},
-            {key: 'notStartsWith', label:'DOES NOT START WITH', jsPattern: '({VARIABLE}.search(/{VALUE}/i) !== 0) ', unsupportedBuiltInVars: ['${COUNTRY}']},
-            {key: 'endsWith', label:'ENDS WITH', jsPattern: '({VARIABLE}.search(/{VALUE}$/i) === {VARIABLE}.length - "{VALUE}".length) ', unsupportedBuiltInVars: ['${COUNTRY}']},
-            {key: 'notEndsWith', label:'DOES NOT END WITH', jsPattern: '({VARIABLE}.search(/{VALUE}$/i) !== {VARIABLE}.length - "{VALUE}".length) ', unsupportedBuiltInVars: ['${COUNTRY}']}
+            {key: '==', label: 'EQUAL TO', jsPattern: '({VARIABLE} == "{VALUE}") ', unsupportedBuiltInVars: ['${COUNTRY}', '${DEVICE}']},
+            {key: '!=', label: 'NOT EQUAL TO', jsPattern: '({VARIABLE} != "{VALUE}") ', unsupportedBuiltInVars: ['${COUNTRY}', '${DEVICE}']},
+
+            {key: 'is', label: 'IS', jsPattern: '(navigator.platform.search(/{VALUE}$/i) > -1) ', unsupportedBuiltInVars: ['${COUNTRY}'], onlySupport: ['${DEVICE}']},
+            {key: 'isNot', label: 'IS NOT', jsPattern: '(navigator.platform.search(/{VALUE}$/i) < 0)', unsupportedBuiltInVars: ['${COUNTRY}'], onlySupport: ['${DEVICE}']},
+
+            {key: 'is', label: 'IS', jsPattern: '({VARIABLE} == "{VALUE}") ', unsupportedBuiltInVars: ['${DEVICE}'], onlySupport: ['${COUNTRY}']},
+            {key: 'isNot', label: 'IS NOT', jsPattern: '({VARIABLE} != "{VALUE}") ', unsupportedBuiltInVars: ['${DEVICE}'], onlySupport: ['${COUNTRY}']},
+
+            {key: 'contains', label:'CONTAINS', jsPattern: '({VARIABLE}.search(/{VALUE}/i) > -1) ', unsupportedBuiltInVars: ['${COUNTRY}', '${DEVICE}']},
+            {key: 'notContains', label:'DOES NOT CONTAIN', jsPattern: '({VARIABLE}.search(/{VALUE}/i) < 0) ', unsupportedBuiltInVars: ['${COUNTRY}', '${DEVICE}']},
+            {key: 'startsWith', label:'STARTS WITH', jsPattern: '({VARIABLE}.search(/{VALUE}/i) === 0) ', unsupportedBuiltInVars: ['${COUNTRY}', '${DEVICE}']},
+            {key: 'notStartsWith', label:'DOES NOT START WITH', jsPattern: '({VARIABLE}.search(/{VALUE}/i) !== 0) ', unsupportedBuiltInVars: ['${COUNTRY}', '${DEVICE}']},
+            {key: 'endsWith', label:'ENDS WITH', jsPattern: '({VARIABLE}.search(/{VALUE}$/i) === {VARIABLE}.length - "{VALUE}".length) ', unsupportedBuiltInVars: ['${COUNTRY}', '${DEVICE}']},
+            {key: 'notEndsWith', label:'DOES NOT END WITH', jsPattern: '({VARIABLE}.search(/{VALUE}$/i) !== {VARIABLE}.length - "{VALUE}".length) ', unsupportedBuiltInVars: ['${COUNTRY}', '${DEVICE}']}
         ])
         .constant('OPERATORS', ['AND' , 'OR'])
         .constant('DATA_TYPE', [
-            {key: 'string', label: 'TEXT', builtInVars: ['${USER_AGENT}', '${DOMAIN}', '${COUNTRY}', '${PAGE_URL}', '${PAGEURL}']},
+            {key: 'string', label: 'TEXT', builtInVars: ['${USER_AGENT}', '${DOMAIN}', '${COUNTRY}', '${PAGE_URL}', '${PAGEURL}', '${DEVICE}']},
             {key: 'numeric', label: 'NUMBER', builtInVars: ['${SCREEN_WIDTH}', '${SCREEN_HEIGHT}', '${WINDOW_WIDTH}', '${WINDOW_HEIGHT}']},
             {key: 'boolean', label: 'TRUE/FALSE', builtInVars: []}
+        ])
+        .constant('DEVICES', [
+            {code: 'Mac OS X', name: 'iOS'},
+            {code: 'Android', name: 'Android'},
+            {code: 'Windows Phone 10.0', name: 'Windows 10 Mobile'},
+            {code: 'BB10', name: 'BlackBerry 10'},
+            {code: 'Mobile', name: 'Firefox OS'},
+            {code: 'Sailfish', name: 'Sailfish OS'},
+            {code: 'Tizen', name: 'Tizen'},
+            {code: 'Ubuntu', name: 'Ubuntu Touch OS'}
         ])
         .constant('GROUP_KEY', 'groupVal')
         .constant('GROUP_TYPE', 'groupType')

@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="{{ reportGroup.rtbImpressions == undefined ? 'col-md-4': 'col-md-3' }}" ng-if="hasSlotOpportunities()">
+    <div class="{{ hideRTB() ? 'col-md-3': 'col-md-4' }}" ng-if="hasSlotOpportunities()">
         <section class="panel panel-box info-box">
             <div class="panel-item bg-reverse">
                 <p class="size-h1 no-margin">{{ reportGroup.slotOpportunities | number }}</p>
@@ -8,7 +8,7 @@
         </section>
     </div>
 
-    <div class="{{ reportGroup.rtbImpressions == undefined ? 'col-md-4': 'col-md-3' }}" ng-if="!hasSlotOpportunities()">
+    <div class="{{ hideRTB() ? 'col-md-3': 'col-md-4' }}" ng-if="!hasSlotOpportunities()">
         <section class="panel panel-box info-box">
             <div class="panel-item bg-reverse">
                 <p class="size-h1 no-margin">{{ reportGroup.totalOpportunities | number }}</p>
@@ -17,7 +17,7 @@
         </section>
     </div>
 
-    <div ng-if="reportGroup.rtbImpressions != undefined" class="{{ reportGroup.rtbImpressions == undefined ? 'col-md-4': 'col-md-3' }}">
+    <div ng-if="hideRTB()" class="{{ hideRTB() ? 'col-md-3': 'col-md-4' }}">
         <section class="panel panel-box info-box">
             <div class="panel-item bg-reverse">
                 <p class="size-h1 no-margin">{{ reportGroup.rtbImpressions | number }}</p>
@@ -26,7 +26,7 @@
         </section>
     </div>
 
-    <div class="{{ reportGroup.rtbImpressions == undefined ? 'col-md-4': 'col-md-3' }}">
+    <div class="{{ hideRTB() ? 'col-md-3': 'col-md-4' }}">
         <section class="panel panel-box info-box">
             <div class="panel-item bg-reverse">
                 <p class="size-h1 no-margin">{{ reportGroup.impressions | number }}</p>
@@ -35,7 +35,7 @@
         </section>
     </div>
 
-    <div class="{{ reportGroup.rtbImpressions == undefined ? 'col-md-4': 'col-md-3' }}">
+    <div class="{{ hideRTB() ? 'col-md-3': 'col-md-4' }}">
         <section class="panel panel-box info-box">
             <div class="panel-item bg-reverse">
                 <p class="size-h1 no-margin">{{ reportGroup.fillRate | percentage }}</p>

@@ -26,7 +26,22 @@
                         </ui-select>
                     </div>
                 </div>
+
+
                 <div class="form-group">
+                    <label class="col-sm-2 control-label">Apply for</label>
+                    <div class="col-sm-10">
+                        <ui-select ng-model="selected.deployment" on-select="selectDeployment($model)" ng-disabled="!selected.adNetwork" reset-search-input="'false'">
+                            <ui-select-match placeholder="Select an option">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices repeat="deployment.key as deployment in deploymentOptions">
+                                {{ deployment.label }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+
+                <div class="form-group" ng-if="selected.deployment == 'sites' ">
                     <label for="inputSites" class="col-sm-2 control-label">{{ 'SITE' | translate }}</label>
                     <div class="col-sm-10">
                         <ui-select id="inputSites" ng-model="selected.site" ng-required="true" server-error ng-disabled="!sites.length" reset-search-input="'false'">
@@ -37,12 +52,37 @@
                         </ui-select>
                     </div>
                 </div>
+
+                <div class="form-group" ng-if="selected.deployment == 'channels' ">
+                    <label for="inputChannels" class="col-sm-2 control-label">{{ 'CHANNEL' | translate }}</label>
+                    <div class="col-sm-10">
+                        <ui-select id="inputChannels" ng-model="selected.channel" ng-required="true" server-error ng-disabled="!sites.length" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'CHANNEL_MODULE.SELECT_A_CHANNEL' | translate }}">{{$select.selected.name}}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="channel.id as channel in channels | orderBy: 'name' | filter:{ name: $select.search } | selectedPublisher:selected.publisher">
+                                {{ channel.name }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="inputPosition" class="col-sm-2 control-label">{{ 'CASCADE_MODULE.POSITION' | translate }}</label>
                     <div class="col-sm-10">
                         <input name="position" server-error ng-model="selected.position" ng-required="true" min="1" type="number" class="form-control" id="inputPosition" placeholder="{{ 'CASCADE_MODULE.POSITION' | translate }}">
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="inputAutoIncreasePosition" class="col-sm-2 control-label">{{ 'AD_TAG_MODULE.SHIFT_DOWN' | translate }}</label>
+                    <div class="col-sm-10">
+                        <label class="ui-checkbox">
+                            <input name="active" type="checkbox" ng-model="selected.autoIncreasePosition" server-error id="inputAutoIncreasePosition"><span></span>
+                        </label>
+
+                        <span class="help-block">{{ 'AD_TAG_MODULE.HELP_BLOCK_AUTO_POSITION' | translate }}</span>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button ng-disabled="!isFormValid()" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>

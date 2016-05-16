@@ -118,6 +118,7 @@
             } else {
                 delete $scope.site.channels;
                 delete $scope.site.autoCreate;
+                delete $scope.site.subPublisher;
             }
 
             // not include rtbStatus if module rtb not enabled in publisher

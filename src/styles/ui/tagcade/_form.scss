@@ -35,3 +35,11 @@
   width: 200px;
   height: 40px !important;
 }
+
+.input-group-fixed-width {
+  width: 100% !important;
+
+  .input-group-addon {
+    width: 34px !important;
+  }
+}

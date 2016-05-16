@@ -5,14 +5,14 @@
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
             {{ 'REPORT.DAILY_RON_AD_SLOT_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" fields="['date', 'name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Date', 'Smart Ad Slot', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate' ]" file-name="getExportExcelFileName"></export-excel>
+                <export-excel data="reports" fields="['date', 'name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Date', 'RON Ad Slot', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate' ]" file-name="getExportExcelFileName"></export-excel>
             </div>
 
             <div class="btn-group btnGrouped" dropdown>
                 <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><a>
-                        <export-excel css-class="''" data="reports" fields="['date', 'name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Date', 'Smart Ad Slot', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel css-class="''" data="reports" fields="['date', 'name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Date', 'RON Ad Slot', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
             </div>
@@ -22,6 +22,7 @@
                 <thead>
                 <tr>
                     <th at-attribute="passbacks" ng-show="isNotNativeAdSlot">{{ 'REPORT.PASSBACKS' | translate }}</th>
+                    <th at-attribute="rtbImpressions" ng-show="hasRtbModule">{{ 'REPORT.RTB_IMPRESSIONS' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,7 +48,7 @@
                     <td at-title="{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}" at-attribute="totalOpportunities" at-sortable>
                         {{ item.totalOpportunities | number }}
                     </td>
-                    <td at-title="{{ 'REPORT.RTB_IMPRESSIONS' | translate }}" at-attribute="rtbImpressions" at-sortable>
+                    <td ng-show="hasRtbModule" at-title="{{ 'REPORT.RTB_IMPRESSIONS' | translate }}" at-attribute="rtbImpressions" at-sortable>
                         {{ item.rtbImpressions | number }}
                     </td>
                     <td at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="impressions" at-sortable>

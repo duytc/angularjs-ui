@@ -5,7 +5,7 @@
         .config(addStates)
     ;
 
-    function addStates(UserStateHelperProvider, USER_MODULES) {
+    function addStates(UserStateHelperProvider, USER_MODULES, STATUS_STATE_FOR_SUB_PUBLISHER_PERMISSION) {
         // uniqueRequestCacheBuster is used as a work-around for reloading only the current state
         // currently UI-Router will reload all parent states as well, this causes problems having
 
@@ -14,7 +14,8 @@
                 abstract: true,
                 url: '/adNetworks',
                 data: {
-                    requiredModule: USER_MODULES.displayAds
+                    requiredModule: USER_MODULES.displayAds,
+                    demandSourceTransparency: STATUS_STATE_FOR_SUB_PUBLISHER_PERMISSION.hide
                 },
                 ncyBreadcrumb: {
                     skip: true
@@ -37,7 +38,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Ad Networks'
+                    label: 'Demand Partner'
                 }
 
             })
@@ -64,7 +65,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'New Ad Network'
+                    label: 'New Demand Partner'
                 }
             })
             .state('tagManagement.adNetwork.edit', {
@@ -88,7 +89,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Edit Ad Network - {{ adNetwork.name }}'
+                    label: 'Edit Demand Partner - {{ adNetwork.name }}'
                 }
             })
         ;

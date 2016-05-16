@@ -26,5 +26,5 @@
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-click="$close()">{{ 'PERFORMANCE_REPORT_MODULE.DRILL_DOWN' | translate }}</button>
-    <button ng-disabled="!isSubPublisher()" class="btn btn-primary" ng-click="$dismiss(); goToEditPage('tagManagement.sites.edit', relativeEntityData.id)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_THIS_SITE' | translate }}</button>
+    <button ng-disabled="isSubPublisher" class="btn btn-primary" ng-click="$dismiss(); goToEditPage('tagManagement.sites.edit', relativeEntityData.id)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_THIS_SITE' | translate }}</button>
 </div>

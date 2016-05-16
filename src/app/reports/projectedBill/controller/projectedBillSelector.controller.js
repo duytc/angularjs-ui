@@ -13,6 +13,7 @@
         $scope.isAdmin = isAdmin;
 
         var selectedData = {
+            product: 'display',
             reportType: null,
             publisherId: isSubPublisher || null,
             siteId: null
@@ -31,6 +32,17 @@
         $scope.getReports = getReports;
         $scope.selectReportType = selectReportType;
         $scope.reportTypes = REPORT_TYPES;
+
+        $scope.productOptions = [
+            {
+                key: 'display',
+                label: 'Display'
+            },
+            //{
+            //    key: 'source',
+            //    label: 'Source'
+            //}
+        ];
 
         var reportTypeOptions = [
             {

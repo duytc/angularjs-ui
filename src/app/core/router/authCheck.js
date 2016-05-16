@@ -5,7 +5,7 @@
         .run(authCheck)
     ;
 
-    function authCheck($rootScope, Auth, AUTH_EVENTS, EXISTING_SESSION) {
+    function authCheck($rootScope, Auth, AUTH_EVENTS, EXISTING_SESSION, STATUS_STATE_FOR_SUB_PUBLISHER_PERMISSION) {
         $rootScope.$on('$stateChangeStart', function(event, toState) {
             console.log('$stateChangeStart', toState);
 
@@ -38,6 +38,14 @@
 
             if (requiredModule && !currentSession.hasModuleEnabled(requiredModule)) {
                 return cancelStateChange(AUTH_EVENTS.notAuthorized);
+            }
+
+            var demandSourceTransparency = stateData.demandSourceTransparency == undefined ? true : stateData.demandSourceTransparency;
+
+            if(Auth.isSubPublisher()) {
+                if((demandSourceTransparency === STATUS_STATE_FOR_SUB_PUBLISHER_PERMISSION.hide) || (demandSourceTransparency === STATUS_STATE_FOR_SUB_PUBLISHER_PERMISSION.auto && !currentSession.demandSourceTransparency)) {
+                    return cancelStateChange(AUTH_EVENTS.notAuthorized);
+                }
             }
         });
     }

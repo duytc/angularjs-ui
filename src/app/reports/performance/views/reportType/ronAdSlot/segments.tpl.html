@@ -31,6 +31,7 @@
                     <th at-attribute="clicks" ng-show="isNotNativeAdSlot">{{ 'REPORT.CLICKS' | translate }}</th>
                     <th at-attribute="passbacks" ng-show="isNotNativeAdSlot">{{ 'REPORT.PASSBACKS' | translate }}</th>
                     <th at-attribute="fillRate">{{ 'REPORT.FILL_RATE' | translate }}</th>
+                    <th at-attribute="rtbImpressions" ng-show="hasRtbModule">{{ 'REPORT.RTB_IMPRESSIONS' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -53,7 +54,7 @@
                     <td at-title="{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}" at-attribute="totalOpportunities" at-sortable>
                         {{ item.totalOpportunities | number }}
                     </td>
-                    <td at-title="{{ 'REPORT.RTB_IMPRESSIONS' | translate }}" at-attribute="rtbImpressions" at-sortable>
+                    <td ng-show="hasRtbModule" at-title="{{ 'REPORT.RTB_IMPRESSIONS' | translate }}" at-attribute="rtbImpressions" at-sortable>
                         {{ item.rtbImpressions | number }}
                     </td>
                     <td at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="Impressions" at-sortable>

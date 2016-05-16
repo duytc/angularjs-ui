@@ -56,70 +56,28 @@
                         <span class="help-block">{{ 'PUBLISHER_MODULE.HELP_BLOCK_REPEAT_PASSWORD' | translate }}</span>
                     </div>
                 </div>
-                <!--<div class="form-group">-->
-                    <!--<label for="inputCompany" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.COMPANY' | translate }} <strong class="text-danger">*</strong></label>-->
-                    <!--<div class="col-sm-10">-->
-                        <!--<input server-error name="company" ng-model="publisher.company" ng-required="true" type="text" class="form-control" id="inputCompany" placeholder="{{ 'PUBLISHER_MODULE.COMPANY' | translate }}">-->
-                    <!--</div>-->
-                <!--</div>-->
                 <div class="form-group">
                     <label for="inputEmail" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.EMAIL' | translate }} <strong class="text-danger">*</strong></label>
                     <div class="col-sm-10">
                         <input server-error ng-required="true" name="email" ng-model="subPublisher.email" type="email" class="form-control" id="inputEmail" placeholder="{{ 'PUBLISHER_MODULE.EMAIL' | translate }}">
                     </div>
                 </div>
-                <!--<div class="form-group">-->
-                    <!--<label for="inputFirstName" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.FIRST_NAME' | translate }}</label>-->
-                    <!--<div class="col-sm-10">-->
-                        <!--<input server-error name="firstName" ng-model="publisher.firstName" type="text" class="form-control" id="inputFirstName" placeholder="{{ 'PUBLISHER_MODULE.FIRST_NAME' | translate }}">-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label for="inputLastName" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.LAST_NAME' | translate }}</label>-->
-                    <!--<div class="col-sm-10">-->
-                        <!--<input server-error name="lastName" ng-model="publisher.lastName" type="text" class="form-control" id="inputLastName" placeholder="{{ 'PUBLISHER_MODULE.LAST_NAME' | translate }}">-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label for="inputPhone" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.PHONE' | translate }}</label>-->
-                    <!--<div class="col-sm-10">-->
-                        <!--<input server-error name="phone" ng-model="publisher.phone" type="text" class="form-control" id="inputPhone" placeholder="{{ 'PUBLISHER_MODULE.PHONE' | translate }}">-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label for="inputAddress" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.ADDRESS' | translate }}</label>-->
-                    <!--<div class="col-sm-10">-->
-                        <!--<input server-error name="address" ng-model="publisher.address" type="text" class="form-control" id="inputAddress" placeholder="{{ 'PUBLISHER_MODULE.ADDRESS' | translate }}">-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label for="inputPostalCode" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.POSTAL_CODE' | translate }}</label>-->
-                    <!--<div class="col-sm-10">-->
-                        <!--<input server-error name="postalCode" ng-model="publisher.postalCode" type="text" class="form-control" id="inputPostalCode" placeholder="{{ 'PUBLISHER_MODULE.POSTAL_CODE' | translate }}">-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label for="inputCity" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.CITY' | translate }}</label>-->
-                    <!--<div class="col-sm-10">-->
-                        <!--<input server-error name="city" ng-model="publisher.city" type="text" class="form-control" id="inputCity" placeholder="{{ 'PUBLISHER_MODULE.CITY' | translate }}">-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label for="inputState" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.STATE' | translate }}</label>-->
-                    <!--<div class="col-sm-10">-->
-                        <!--<input server-error name="state" ng-model="publisher.state" type="text" class="form-control" id="inputState" placeholder="{{ 'PUBLISHER_MODULE.STATE' | translate }}">-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label for="inputCountry" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.COUNTRY' | translate }}</label>-->
-                    <!--<div class="col-sm-10">-->
-                        <!--<select name="country" ng-model="publisher.country" class="form-control" id="inputCountry">-->
-                            <!--<option disabled ng-selected="true">Country...</option>-->
-                            <!--<option value="{{ country.name }}" ng-selected="publisher.country == country.name" ng-repeat="country in countries">{{ country.name }}</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
-                <!--</div>-->
+                <div class="form-group" ng-if="hasUnifiedModule">
+                    <label for="inputDemandSourceTransparency" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.DEMAND_SOURCE_TRANSPARENCY' | translate }}</label>
+                    <div class="col-sm-10">
+                        <label class="ui-checkbox"><input server-error name="active" ng-click="checkDemandSourceTransparency()" type="checkbox" ng-model="subPublisher.demandSourceTransparency" id="inputDemandSourceTransparency"><span></span></label>
 
+                        <span class="help-block">{{ 'SUB_PUBLISHER_MODULE.HELP_BLOCK_DEMAND_SOURCE_REPORT' | translate }}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEnableViewTagcadeReport" class="col-sm-2 control-label">{{ 'SUB_PUBLISHER_MODULE.ENABLE_VIEW_TAGCADE_REPORT' | translate }}</label>
+                    <div class="col-sm-10">
+                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="subPublisher.enableViewTagcadeReport" id="inputEnableViewTagcadeReport"><span></span></label>
+
+                        <span class="help-block">{{ 'SUB_PUBLISHER_MODULE.HELP_BLOCK_ENABLE_VIEW_TAGCADE_REPORT' | translate }}</span>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="inputEnabled" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.ENABLED' | translate }}</label>
                     <div class="col-sm-10">
@@ -131,6 +89,44 @@
                     <label for="inputSite" class="col-sm-2 control-label">{{ 'SITES' | translate }}</label>
                     <div class="col-sm-10">
                         <isteven-multi-select id="inputSite" input-model="sites" output-model="siteData" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
+
+                        <a ng-click="createSite()" class="help-block">{{ 'PUBLISHER_MODULE.ADD_NEW_SITE' | translate }}</a>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="!!partners.length">
+                    <label class="col-sm-2 control-label">{{ 'SUB_PUBLISHER_MODULE.PARTNER_CONFIG' | translate }} <strong class="text-danger">*</strong></label>
+                    <div class="col-sm-10 row">
+                        <div class="form-inline" ng-repeat="partner in partners">
+                            <div class="col-sm-1">
+                                <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="partner.active" id="inputActive"><span></span></label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group"><label class="col-sm-12"></label>{{ partner.name }}</div>
+                            </div>
+                            <div class="col-sm-3">
+                                <select class="form-control" ng-disabled="!partner.active" ng-model="partner.revenueOption" convert-to-number>
+                                    <option ng-selected="partner.revenueOption == revenueOption.none" value="{{ revenueOption.none }}">{{ 'SUB_PUBLISHER_MODULE.NONE' | translate }}</option>
+                                    <option ng-selected="partner.revenueOption == revenueOption.fixedRate" value="{{ revenueOption.fixedRate }}">{{ 'SUB_PUBLISHER_MODULE.FIXED_RATE' | translate }}</option>
+                                    <option ng-selected="partner.revenueOption == revenueOption.percentage" value="{{ revenueOption.percentage }}">{{ 'SUB_PUBLISHER_MODULE.PERCENTAGE' | translate }}</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <input ng-if="partner.revenueOption == revenueOption.none" ng-disabled="true" ng-model="partner.revenueValue" type="number" class="form-control input-group-fixed-width" placeholder="None">
+
+                                <div ng-if="partner.revenueOption == revenueOption.fixedRate" class="input-group">
+                                    <input ng-if="partner.revenueOption == revenueOption.fixedRate" ng-disabled="!partner.active" server-error ng-required="true" name="revenueValue" ng-model="partner.revenueValue" type="number" class="form-control" placeholder="Rate">
+                                    <div ng-if="partner.revenueOption == revenueOption.fixedRate" class="input-group-addon">$</div>
+                                </div>
+
+                                <div ng-if="partner.revenueOption == revenueOption.percentage" class="input-group input-group-fixed-width">
+                                    <input ng-if="partner.revenueOption == revenueOption.percentage" ng-disabled="!partner.active" server-error ng-required="true" name="revenueValue" ng-model="partner.revenueValue" type="number" class="form-control" min="0" max="100" placeholder="Percentage">
+                                    <div ng-if="partner.revenueOption == revenueOption.percentage" class="input-group-addon">%</div>
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
                     </div>
                 </div>
 

@@ -95,19 +95,20 @@
                 return;
             }
 
-            var saveField = angular.copy(adtag[field]);
-            adtag[field] = data;
-            var item = angular.copy(adtag);
+            var item = {};
+            item[field] = data;
 
-            AdTagManager.one(item.id).patch(item)
+            AdTagManager.one(adtag.id).patch(item)
                 .then(function() {
+                    adtag[field] = data;
+
                     AlertService.addAlert({
                         type: 'success',
                         message: $translate.instant('AD_TAG_MODULE.UPDATE_SUCCESS')
                     });
                 })
                 .catch(function() {
-                    adtag[field] = saveField;
+                    adtag[field] = adtag[field];
 
                     AlertService.replaceAlerts({
                         type: 'error',

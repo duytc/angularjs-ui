@@ -88,7 +88,8 @@ module.exports = {
             'vendor/isteven-angular-multiselect/isteven-multi-select.js',
             'vendor/angular-cache/dist/angular-cache.js',
             'vendor/angular-translate/angular-translate.js',
-            'vendor/oi.select/dist/select-tpls.min.js'
+            'vendor/oi.select/dist/select-tpls.min.js',
+            'vendor/ngInfiniteScroll/build/ng-infinite-scroll.min.js'
         ],
         css: [
             'src/styles/customvendor/**/*.css'

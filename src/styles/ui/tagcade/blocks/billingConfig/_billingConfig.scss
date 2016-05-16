@@ -1,0 +1,51 @@
+.billing-config-for-publisher {
+  border: 1px solid #ddd;
+  padding: 0 10px 10px 10px;
+
+  .billing-config-item {
+    border: 1px solid #ddd;
+    padding: 5px;
+    margin-top: 10px;
+  }
+
+  .form-inline {
+    .form-group {
+      @include ui-select-width(200px);
+    }
+  }
+
+  .tiers {
+    clear: both;
+    border: 1px solid #ddd;
+    margin: 0 20px !important;
+    padding: 5px;
+
+    .form-inline {
+      .col-sm-4, .col-sm-5, .col-sm-3 {
+        input, select {
+          width: 100%;
+        }
+
+        padding-left: 3px;
+        padding-right: 3px;
+
+        margin-bottom: 5px;
+      }
+
+      .col-sm-1 {
+        float: left;
+
+        margin-bottom: 5px;
+        padding-left: 3px;
+        padding-right: 3px;
+      }
+
+      margin-bottom: 5px;
+      padding-right: 5px;
+    }
+
+    .help-block {
+      clear: both;
+    }
+  }
+}

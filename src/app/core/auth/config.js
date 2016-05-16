@@ -14,10 +14,13 @@
 
         .constant('USER_MODULES', {
             displayAds: 'MODULE_DISPLAY',
-            video: 'MODULE_VIDEO',
+            video: 'MODULE_VIDEO_ANALYTICS',
             analytics: 'MODULE_ANALYTICS',
+            source: 'MODULE_SOURCE_REPORT',
             unified: 'MODULE_UNIFIED_REPORT',
-            subPublisher: 'MODULE_SUB_PUBLISHER'
+            subPublisher: 'MODULE_SUB_PUBLISHER',
+            rtb: 'MODULE_RTB',
+            headerBidding: 'MODULE_HEADER_BIDDING'
         })
 
         .constant('AUTH_EVENTS', {

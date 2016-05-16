@@ -27,7 +27,7 @@
                 },
                 resolve: {
                     adSlots: function(AdSlotLibrariesManager) {
-                        return AdSlotLibrariesManager.getList();
+                        return AdSlotLibrariesManager.one().get({page: 1});
                     }
                 },
                 ncyBreadcrumb: {
@@ -64,7 +64,7 @@
                 }
             })
             .state('tagLibrary.adSlot.edit', {
-                url: '/edit/{id:[0-9]+}',
+                url: '/edit/{id:[0-9]+}?from',
                 views: {
                     'content@app': {
                         controller: 'LibraryAdSlotForm',

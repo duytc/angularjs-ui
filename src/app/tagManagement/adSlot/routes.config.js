@@ -28,7 +28,7 @@
                 views: {
                     'content@app': {
                         controller: 'AdSlotList',
-                        templateUrl: 'tagManagement/adSlot/adSlotList.tpl.html'
+                        templateUrl: 'tagManagement/adSlot/adSlotListBySite.tpl.html'
                     }
                 },
                 resolve: {
@@ -62,11 +62,7 @@
                     // AdSlotManager is provided as a parameter to make sure the service is invoked
                     // because during init it attaches additional behaviour to the adslots resource
                     adSlots: /* @ngInject */ function(AdSlotManager) {
-                        return AdSlotManager.getList()
-                            .then(function(adSlot) {
-                                return adSlot.plain();
-                            }
-                        );
+                        return AdSlotManager.one().get({page: 1});
                     },
 
                     site: function () {
@@ -92,7 +88,7 @@
                     // AdSlotManager is provided as a parameter to make sure the service is invoked
                     // because during init it attaches additional behaviour to the adslots resource
                     adSlots: /* @ngInject */ function(AdSlotManager) {
-                        return AdSlotManager.one('relatedchannel').getList().then(function (adSlots) {
+                        return AdSlotManager.one('relatedchannel').get({page: 1}).then(function (adSlots) {
                             return adSlots.plain();
                         });
                     },

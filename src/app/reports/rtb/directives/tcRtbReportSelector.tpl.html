@@ -103,7 +103,7 @@
             <div class="ad-slot form-group" ng-if="selectedReportTypeis(reportTypes.ronAdSlot)">
                 <div class="form-inline">
                     <div class="form-group">
-                        <label>Smart Ad Slot</label>
+                        <label>{{ 'RON_AD_SLOT' | translate }}</label>
                         <ui-select name="ronAdSlot" ng-model="selectedData.ronAdSlotId" ng-required="true" on-select="selectEntity($model)" ng-init="getRonAdSlot()" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_AD_SLOT' | translate }}">{{ $select.selected.libraryAdSlot.name }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="ronAdSlot.id as ronAdSlot in optionData.ronAdSlots | filter: $select.search | filter:selectedPublisherRonAdSlot:ronAdSlot">

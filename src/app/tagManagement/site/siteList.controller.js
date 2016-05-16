@@ -5,14 +5,26 @@
         .controller('SiteList', SiteList)
     ;
 
-    function SiteList($scope, $rootScope, $modal, $translate, AlertService, SiteManager, SiteCache, sites, AtSortableService, historyStorage, HISTORY_TYPE_PATH, EVENT_SEARCH_AGAIN, RTB_STATUS_LABELS) {
+    function SiteList($scope, $rootScope, $modal, $translate, AlertService, SiteManager, sites, historyStorage, HISTORY_TYPE_PATH, EVENT_SEARCH_AGAIN, RTB_STATUS_LABELS, EVENT_ACTION_SORTABLE) {
         $scope.sites = sites;
-        $scope.sitesAutoCreate = _filterSiteByAutoCreate(true);
-        $scope.sitesManuallyCreate = _filterSiteByAutoCreate(false);
-        $scope.typeList = 0;
+        var typeOption = $scope.typeOption = {
+            allSite: 0,
+            AutoSite: 1,
+            manualSite: 2
+        };
+        var createType = {
+            manual: 0,
+            auto: 1
+        };
+        $scope.typeList = typeOption.allSite;
+        var params = {
+            page: 1
+        };
+
+        var getSite;
 
         $scope.hasData = function () {
-            return !!sites.length;
+            return !!sites.records.length;
         };
 
         if (!$scope.hasData()) {
@@ -28,13 +40,25 @@
         $scope.getAutoCreatedSite = getAutoCreatedSite;
         $scope.getSiteCreatedManually = getSiteCreatedManually;
         $scope.getSites = getSites;
+        $scope.changePage = changePage;
+        $scope.searchData = searchData;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10
+            maxPages: 10,
+            totalItems: Number(sites.totalRecord)
         };
 
-        $scope.confirmDeletion = function (site, index) {
+        $scope.availableOptions = {
+            currentPage: 1,
+            pageSize: 10
+        };
+
+        $scope.selectData = {
+            query: null
+        };
+
+        $scope.confirmDeletion = function (site) {
             var modalInstance = $modal.open({
                 templateUrl: 'tagManagement/site/confirmDeletion.tpl.html'
             });
@@ -43,20 +67,7 @@
                 return SiteManager.one(site.id).remove()
                     .then(
                         function () {
-                            var index = sites.indexOf(site);
-
-                            if (index > -1) {
-                                sites.splice(index, 1);
-                            }
-
-                            $scope.sites = sites;
-                            SiteCache.deleteSite(site);
-                            $scope.sitesAutoCreate = _filterSiteByAutoCreate(true);
-                            $scope.sitesManuallyCreate = _filterSiteByAutoCreate(false);
-
-                            if($scope.tableConfig.currentPage > 0 && sites.length/10 == $scope.tableConfig.currentPage) {
-                                AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
-                            }
+                            _getSite(params);
 
                             AlertService.replaceAlerts({
                                 type: 'success',
@@ -75,40 +86,63 @@
         };
 
         function getSites() {
-            $scope.typeList = 0;
+            $scope.typeList = typeOption.allSite;
             $scope.sites = sites;
 
             // this event to call filter again
-            $rootScope.$broadcast(EVENT_SEARCH_AGAIN)
+            $rootScope.$broadcast(EVENT_SEARCH_AGAIN);
+
+            _getSite({page: 1});
         }
 
         function getAutoCreatedSite() {
-            $scope.typeList = 1;
+            $scope.typeList = typeOption.AutoSite;
+
+            _getSite({autoCreate: createType.auto, page: 1});
         }
 
         function getSiteCreatedManually() {
-            $scope.typeList = 2;
+            $scope.typeList = typeOption.manualSite;
+
+            _getSite({autoCreate: createType.manual, page: 1});
         }
 
-        function showPagination(dataList) {
-            return angular.isArray(dataList) && dataList.length > $scope.tableConfig.itemsPerPage;
-        }
-
-        function _filterSiteByAutoCreate(autoCreate) {
-            var siteList = [];
-
-            for(var idx in sites) {
-                var site = sites[idx];
-                if(angular.isObject(site) && site.autoCreate == autoCreate) {
-                    siteList.push(site);
-                }
-            }
-
-            return siteList;
+        function showPagination() {
+            return angular.isArray($scope.sites.records) && $scope.sites.totalRecord > $scope.tableConfig.itemsPerPage;
         }
 
         $scope.$on('$locationChangeSuccess', function() {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.site)
         });
+
+        function searchData() {
+            var query = {searchKey: $scope.selectData.query || null};
+            params = angular.extend(params, query);
+            _getSite(params);
+        }
+
+        $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
+            params = angular.extend(params, query);
+            _getSite(params);
+        });
+
+        function changePage(currentPage) {
+            params = angular.extend(params, {page: currentPage});
+            _getSite(params);
+        }
+
+        function _getSite(query) {
+            clearTimeout(getSite);
+
+            getSite = setTimeout(function() {
+                params = query;
+                return SiteManager.one().get(query)
+                    .then(function(sites) {
+                        $scope.sites = sites;
+                        $scope.tableConfig.totalItems = Number(sites.totalRecord);
+                        $scope.availableOptions.currentPage = Number(query.page);
+                    });
+            }, 500);
+        }
     }
 })();

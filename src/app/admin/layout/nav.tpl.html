@@ -1,233 +1,235 @@
-<ul class="nav sidebar-menu">
-    <li ui-sref-active="active">
-        <a ui-sref=".dashboard">
-            <i class="menu-icon glyphicon glyphicon-home"></i>
-            <span class="menu-text"> {{ 'NAVBAR.DASHBOARD' | translate }} </span>
-        </a>
-    </li>
-    <li >
-        <a href="#" class="menu-dropdown">
-            <i class="menu-icon fa fa-user"></i>
-            <span class="menu-text"> {{ 'NAVBAR.PUBLISHER_MANAGEMENT' | translate }} </span>
-            <i class="menu-expand"></i>
-        </a>
+<div slim-scroll>
+    <ul class="nav sidebar-menu">
+        <li ui-sref-active="active">
+            <a ui-sref=".dashboard">
+                <i class="menu-icon glyphicon glyphicon-home"></i>
+                <span class="menu-text"> {{ 'NAVBAR.DASHBOARD' | translate }} </span>
+            </a>
+        </li>
+        <li >
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-user"></i>
+                <span class="menu-text"> {{ 'NAVBAR.PUBLISHER_MANAGEMENT' | translate }} </span>
+                <i class="menu-expand"></i>
+            </a>
 
-        <ul class="submenu">
-            <li ui-sref-active="active">
-                <a ui-sref=".publisherManagement.list">
-                    <span class="menu-text"> {{ 'NAVBAR.PUBLISHERS' | translate }} </span>
-                </a>
-            </li>
-            <!-- temporarily disable for admin -->
-            <!--<li ui-sref-active="active">-->
+            <ul class="submenu">
+                <li ui-sref-active="active">
+                    <a ui-sref=".publisherManagement.list">
+                        <span class="menu-text"> {{ 'NAVBAR.PUBLISHERS' | translate }} </span>
+                    </a>
+                </li>
+                <!-- temporarily disable for admin -->
+                <!--<li ui-sref-active="active">-->
                 <!--<a ui-sref=".subPublisher.list">-->
-                    <!--<span class="menu-text"> {{ 'NAVBAR.SUB_PUBLISHERS' | translate }} </span>-->
+                <!--<span class="menu-text"> {{ 'NAVBAR.SUB_PUBLISHERS' | translate }} </span>-->
                 <!--</a>-->
-            <!--</li>-->
-            <li ui-sref-active="active">
-                <a ui-sref=".publisherManagement.new">
-                    <span class="menu-text"> {{ 'NAVBAR.NEW_PUBLISHER' | translate }} </span>
-                </a>
-            </li>
-            <!-- temporarily disable for admin -->
-            <!--<li ui-sref-active="active">-->
+                <!--</li>-->
+                <li ui-sref-active="active">
+                    <a ui-sref=".publisherManagement.new">
+                        <span class="menu-text"> {{ 'NAVBAR.NEW_PUBLISHER' | translate }} </span>
+                    </a>
+                </li>
+                <!-- temporarily disable for admin -->
+                <!--<li ui-sref-active="active">-->
                 <!--<a ui-sref=".subPublisher.new">-->
-                    <!--<span class="menu-text"> {{ 'NAVBAR.NEW_SUB_PUBLISHER' | translate }} </span>-->
+                <!--<span class="menu-text"> {{ 'NAVBAR.NEW_SUB_PUBLISHER' | translate }} </span>-->
                 <!--</a>-->
-            <!--</li>-->
-        </ul>
-    </li>
-    <!-- temporarily disable for admin because using config at tagcade-api -->
-    <!--<li >-->
+                <!--</li>-->
+            </ul>
+        </li>
+        <!-- temporarily disable for admin because using config at tagcade-api -->
+        <!--<li >-->
         <!--<a href="#" class="menu-dropdown">-->
-            <!--<i class="menu-icon fa fa-exchange"></i>-->
-            <!--<span class="menu-text"> {{ 'NAVBAR.EXCHANGE_MANAGEMENT' | translate }} </span>-->
-            <!--<i class="menu-expand"></i>-->
+        <!--<i class="menu-icon fa fa-exchange"></i>-->
+        <!--<span class="menu-text"> {{ 'NAVBAR.EXCHANGE_MANAGEMENT' | translate }} </span>-->
+        <!--<i class="menu-expand"></i>-->
         <!--</a>-->
 
         <!--<ul class="submenu">-->
-            <!--<li ui-sref-active="active">-->
-                <!--<a ui-sref=".exchangeManagement.list">-->
-                    <!--<span class="menu-text"> {{ 'NAVBAR.EXCHANGES' | translate }} </span>-->
-                <!--</a>-->
-            <!--</li>-->
-            <!--<li ui-sref-active="active">-->
-                <!--<a ui-sref=".exchangeManagement.new">-->
-                    <!--<span class="menu-text"> {{ 'NAVBAR.NEW_EXCHANGE' | translate }} </span>-->
-                <!--</a>-->
-            <!--</li>-->
+        <!--<li ui-sref-active="active">-->
+        <!--<a ui-sref=".exchangeManagement.list">-->
+        <!--<span class="menu-text"> {{ 'NAVBAR.EXCHANGES' | translate }} </span>-->
+        <!--</a>-->
+        <!--</li>-->
+        <!--<li ui-sref-active="active">-->
+        <!--<a ui-sref=".exchangeManagement.new">-->
+        <!--<span class="menu-text"> {{ 'NAVBAR.NEW_EXCHANGE' | translate }} </span>-->
+        <!--</a>-->
+        <!--</li>-->
         <!--</ul>-->
-    <!--</li>-->
-    <li >
-        <a href="#" class="menu-dropdown">
-            <i class="menu-icon fa fa-location-arrow"></i>
-            <span class="menu-text"> {{ 'NAVBAR.TAG_MANAGEMENT' | translate }} </span>
-            <i class="menu-expand"></i>
-        </a>
+        <!--</li>-->
+        <li >
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-location-arrow"></i>
+                <span class="menu-text"> {{ 'NAVBAR.TAG_MANAGEMENT' | translate }} </span>
+                <i class="menu-expand"></i>
+            </a>
 
-        <ul class="submenu">
-            <li >
-                <a href="#" class="menu-dropdown">
-                    <span class="menu-text">{{ 'CHANNELS' | translate }}</span>
-                    <i class="menu-expand"></i>
-                </a>
+            <ul class="submenu">
+                <li >
+                    <a href="#" class="menu-dropdown">
+                        <span class="menu-text">{{ 'CHANNELS' | translate }}</span>
+                        <i class="menu-expand"></i>
+                    </a>
 
-                <ul class="submenu">
-                    <li ui-sref-active="active">
-                        <a ui-sref=".tagManagement.channel.list">
-                            <span class="menu-text"> {{ 'NAVBAR.MY_CHANNELS' | translate }} </span>
-                        </a>
-                    </li>
+                    <ul class="submenu">
+                        <li ui-sref-active="active">
+                            <a ui-sref=".tagManagement.channel.list">
+                                <span class="menu-text"> {{ 'NAVBAR.MY_CHANNELS' | translate }} </span>
+                            </a>
+                        </li>
 
-                    <li ui-sref-active="active">
-                        <a ui-sref=".tagManagement.channel.new">
-                            <span class="menu-text">{{ 'NAVBAR.NEW_CHANNEL' | translate }}</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li >
-                <a href="#" class="menu-dropdown">
-                    <span class="menu-text">{{ 'SITES' | translate }}</span>
-                    <i class="menu-expand"></i>
-                </a>
+                        <li ui-sref-active="active">
+                            <a ui-sref=".tagManagement.channel.new">
+                                <span class="menu-text">{{ 'NAVBAR.NEW_CHANNEL' | translate }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li >
+                    <a href="#" class="menu-dropdown">
+                        <span class="menu-text">{{ 'SITES' | translate }}</span>
+                        <i class="menu-expand"></i>
+                    </a>
 
-                <ul class="submenu">
-                    <li ui-sref-active="active">
-                        <a ui-sref=".tagManagement.sites.list">
-                            <span class="menu-text"> {{ 'NAVBAR.MY_SITES' | translate }} </span>
-                        </a>
-                    </li>
+                    <ul class="submenu">
+                        <li ui-sref-active="active">
+                            <a ui-sref=".tagManagement.sites.list">
+                                <span class="menu-text"> {{ 'NAVBAR.MY_SITES' | translate }} </span>
+                            </a>
+                        </li>
 
-                    <li ui-sref-active="active">
-                        <a ui-sref=".tagManagement.sites.new">
-                            <span class="menu-text">{{ 'NAVBAR.NEW_SITE' | translate }}</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#" class="menu-dropdown">
-                    <span class="menu-text">{{ 'AD_SLOTS' | translate }}</span>
-                    <i class="menu-expand"></i>
-                </a>
-                <ul class="submenu">
-                    <li ui-sref-active="active">
-                        <a ui-sref=".tagManagement.adSlot.listAll">
-                            <span class="menu-text">{{ 'NAVBAR.MY_AD_SLOTS' | translate }}</span>
-                        </a>
-                    </li>
+                        <li ui-sref-active="active">
+                            <a ui-sref=".tagManagement.sites.new">
+                                <span class="menu-text">{{ 'NAVBAR.NEW_SITE' | translate }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="menu-dropdown">
+                        <span class="menu-text">{{ 'AD_SLOTS' | translate }}</span>
+                        <i class="menu-expand"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li ui-sref-active="active">
+                            <a ui-sref=".tagManagement.adSlot.listAll">
+                                <span class="menu-text">{{ 'NAVBAR.MY_AD_SLOTS' | translate }}</span>
+                            </a>
+                        </li>
 
-                    <li ui-sref-active="active">
-                        <a ui-sref=".tagManagement.adSlot.new">
-                            <span class="menu-text">{{ 'NAVBAR.NEW_AD_SLOT' | translate }}</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#" class="menu-dropdown">
-                    <span class="menu-text">{{ 'AD_NETWORKS' | translate }}</span>
-                    <i class="menu-expand"></i>
-                </a>
-                <ul class="submenu">
-                    <li ui-sref-active="active">
-                        <a ui-sref=".tagManagement.adNetwork.list">
-                            <span class="menu-text">{{ 'NAVBAR.MY_AD_NETWORKS' | translate }}</span>
-                        </a>
-                    </li>
-                    <li ui-sref-active="active">
-                        <a ui-sref=".tagManagement.adNetwork.new">
-                            <span class="menu-text">{{ 'NAVBAR.NEW_AD_NETWORK' | translate }}</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+                        <li ui-sref-active="active">
+                            <a ui-sref=".tagManagement.adSlot.new">
+                                <span class="menu-text">{{ 'NAVBAR.NEW_AD_SLOT' | translate }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="menu-dropdown">
+                        <span class="menu-text">{{ 'AD_NETWORKS' | translate }}</span>
+                        <i class="menu-expand"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li ui-sref-active="active">
+                            <a ui-sref=".tagManagement.adNetwork.list">
+                                <span class="menu-text">{{ 'NAVBAR.MY_AD_NETWORKS' | translate }}</span>
+                            </a>
+                        </li>
+                        <li ui-sref-active="active">
+                            <a ui-sref=".tagManagement.adNetwork.new">
+                                <span class="menu-text">{{ 'NAVBAR.NEW_AD_NETWORK' | translate }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
-            <li ui-sref-active="active">
-                <a ui-sref=".tagManagement.adTag.new">
-                    <span class="menu-text"> {{ 'NAVBAR.NEW_AD_TAG' | translate }} </span>
-                </a>
-            </li>
+                <li ui-sref-active="active">
+                    <a ui-sref=".tagManagement.adTag.new">
+                        <span class="menu-text"> {{ 'NAVBAR.NEW_AD_TAG' | translate }} </span>
+                    </a>
+                </li>
 
-            <li ui-sref-active="active">
-                <a ui-sref=".tagManagement.tagGenerator">
-                    <span class="menu-text"> {{ 'NAVBAR.GENERATE_TAGS' | translate }} </span>
-                </a>
-            </li>
+                <li ui-sref-active="active">
+                    <a ui-sref=".tagManagement.tagGenerator">
+                        <span class="menu-text"> {{ 'NAVBAR.GENERATE_TAGS' | translate }} </span>
+                    </a>
+                </li>
 
-        </ul>
-    </li>
-    <li >
-        <a href="#" class="menu-dropdown">
-            <i class="menu-icon fa fa-tachometer"></i>
-            <span class="menu-text"> {{ 'NAVBAR.REPORTS' | translate }} </span>
-            <i class="menu-expand"></i>
-        </a>
+            </ul>
+        </li>
+        <li >
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-tachometer"></i>
+                <span class="menu-text"> {{ 'NAVBAR.REPORTS' | translate }} </span>
+                <i class="menu-expand"></i>
+            </a>
 
-        <ul class="submenu">
-            <li ui-sref-active="active">
-                <a ui-sref=".reports.performance.platform">
-                    <span class="menu-text"> {{ 'NAVBAR.PERFORMANCE_REPORTS' | translate }} </span>
-                </a>
-            </li>
-            <li ui-sref-active="active">
-                <a ui-sref=".reports.rtb.platform">
-                    <span class="menu-text"> {{ 'NAVBAR.RTB_REPORTS' | translate }} </span>
-                </a>
-            </li>
-            <li ui-sref-active="active">
-                <a ui-sref=".reports.source">
-                    <span class="menu-text"> {{ 'NAVBAR.SOURCE_REPORTS' | translate }} </span>
-                </a>
-            </li>
+            <ul class="submenu">
+                <li ui-sref-active="active">
+                    <a ui-sref=".reports.performance.platform">
+                        <span class="menu-text"> {{ 'NAVBAR.PERFORMANCE_REPORTS' | translate }} </span>
+                    </a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref=".reports.rtb.platform">
+                        <span class="menu-text"> {{ 'NAVBAR.RTB_REPORTS' | translate }} </span>
+                    </a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref=".reports.source">
+                        <span class="menu-text"> {{ 'NAVBAR.SOURCE_REPORTS' | translate }} </span>
+                    </a>
+                </li>
 
-            <li ui-sref-active="active">
-                <a ui-sref=".reports.billing.platform">
-                    <span class="menu-text"> {{ 'NAVBAR.BILLING_REPORTS' | translate }} </span>
-                </a>
-            </li>
-            <li ui-sref-active="active">
-                <a ui-sref=".reports.projectedBill.platform">
-                    <span class="menu-text"> {{ 'NAVBAR.PROJECTED_BILL' | translate }} </span>
-                </a>
-            </li>
-            <li ui-sref-active="active">
-                <a ui-sref=".reports.unified">
-                    <span class="menu-text"> {{ 'NAVBAR.UNIFIED_REPORTS' | translate }} </span>
-                </a>
-            </li>
-        </ul>
-    </li>
-    <li >
-        <a href="#" class="menu-dropdown">
-            <i class="menu-icon glyphicon glyphicon-wrench"></i>
-            <span class="menu-text"> {{ 'NAVBAR.TOOLS' | translate }} </span>
-            <i class="menu-expand"></i>
-        </a>
+                <li ui-sref-active="active">
+                    <a ui-sref=".reports.billing.platform">
+                        <span class="menu-text"> {{ 'NAVBAR.BILLING_REPORTS' | translate }} </span>
+                    </a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref=".reports.projectedBill.platform">
+                        <span class="menu-text"> {{ 'NAVBAR.PROJECTED_BILL' | translate }} </span>
+                    </a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref=".reports.unified">
+                        <span class="menu-text"> {{ 'NAVBAR.UNIFIED_REPORTS' | translate }} </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li >
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-wrench"></i>
+                <span class="menu-text"> {{ 'NAVBAR.TOOLS' | translate }} </span>
+                <i class="menu-expand"></i>
+            </a>
 
-        <ul class="submenu">
-            <li ui-sref-active="active">
-                <a ui-sref=".supportTools.cpmEditor">
-                    <span class="menu-text"> {{ 'NAVBAR.CPM_EDITOR' | translate }} </span>
-                </a>
-            </li>
-            <li ui-sref-active="active">
-                <a ui-sref=".supportTools.cascadeManager.edit">
-                    <span class="menu-text"> {{ 'NAVBAR.CASCADE_MANAGER' | translate }} </span>
-                </a>
-            </li>
+            <ul class="submenu">
+                <li ui-sref-active="active">
+                    <a ui-sref=".supportTools.cpmEditor">
+                        <span class="menu-text"> {{ 'NAVBAR.CPM_EDITOR' | translate }} </span>
+                    </a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref=".supportTools.cascadeManager.edit">
+                        <span class="menu-text"> {{ 'NAVBAR.CASCADE_MANAGER' | translate }} </span>
+                    </a>
+                </li>
 
-            <li ui-sref-active="active">
-                <a ui-sref=".supportTools.sourceReportConfiguration.list">
-                    <span class="menu-text"> {{ 'NAVBAR.SOURCE_REPORT_CONFIG' | translate }} </span>
-                </a>
-            </li>
-            <li ui-sref-active="active">
-                <a ui-sref=".supportTools.activityLog.list">
-                    <span class="menu-text"> {{ 'NAVBAR.ACTIVITY_LOG' | translate }} </span>
-                </a>
-            </li>
-        </ul>
-    </li>
-</ul>
+                <li ui-sref-active="active">
+                    <a ui-sref=".supportTools.sourceReportConfiguration.list">
+                        <span class="menu-text"> {{ 'NAVBAR.SOURCE_REPORT_CONFIG' | translate }} </span>
+                    </a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref=".supportTools.activityLog.list">
+                        <span class="menu-text"> {{ 'NAVBAR.ACTIVITY_LOG' | translate }} </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

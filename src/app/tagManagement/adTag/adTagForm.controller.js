@@ -5,7 +5,7 @@
         .controller('AdTagForm', AdTagForm)
     ;
 
-    function AdTagForm($scope, _, $state, $modal, $translate, $stateParams, SiteManager, AdNetworkCache, AdTagManager, AlertService, ServerErrorProcessor, DisplayAdSlotManager, NativeAdSlotManager, historyStorage, adTag, adSlot, site, publisher, publisherList, siteList, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, HISTORY_TYPE_PATH) {
+    function AdTagForm($scope, _, $state, $modal, $translate, $stateParams, SiteManager, AdNetworkCache, AdTagManager, AlertService, ServerErrorProcessor, DisplayAdSlotManager, historyStorage, adTag, adSlot, site, publisher, publisherList, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
             name: 'Name',
@@ -20,12 +20,20 @@
             mode : "htmlmixed"
         };
 
+        if($scope.isAdmin()) {
+            if(!!publisher) {
+                $scope.hasUnifiedModule = publisher.enabledModules.indexOf('MODULE_UNIFIED_REPORT') !== -1
+            } else {
+                $scope.hasUnifiedModule = null;
+            }
+        }
+
         $scope.isNew = adTag === null;
         $scope.formProcessing = false;
 
         // !! converts a variable to a boolean
         // we are saying, if we don't have a predefined ad slot but we have a list of all ad slots, allow the user to choose
-        $scope.allowAdSlotSelection = $scope.isNew && !!siteList;
+        $scope.allowAdSlotSelection = $scope.isNew;
 
         // required by ui select
         $scope.selected = {
@@ -39,7 +47,7 @@
         $scope.adTypes = AD_TYPES;
 
         $scope.publisherList = publisherList;
-        $scope.siteList = siteList;
+        $scope.siteList = [];
         $scope.adSlotList = adSlotList;
         $scope.adNetworkList = adNetworkList;
 
@@ -66,9 +74,12 @@
                 html: null,
                 adNetwork: null,
                 adType: $scope.adTypes.customAd,
+                partnerTagId: null,
                 descriptor: null
             },
             position: null,
+            impressionCap: null,
+            networkOpportunityCap: null,
             active: true
         };
 
@@ -78,10 +89,10 @@
             }
         }
 
-        if(!$scope.isNew && adTag.libraryAdTag.visible) {
-            // disabled form input html when select ad tag library
-            $scope.editorOptions.readOnly = 'nocursor';
-        }
+        //if(!$scope.isNew && adTag.libraryAdTag.visible) {
+        //    // disabled form input html when select ad tag library
+        //    $scope.editorOptions.readOnly = 'nocursor';
+        //}
 
         $scope.backToAdTagList = function() {
             if(!!$stateParams.adSlotType && !!$stateParams.adSlotId) {
@@ -131,6 +142,11 @@
         $scope.selectPublisher = function (publisher, publisherId) {
             $scope.selected.site = null;
             $scope.resetSelection();
+
+            $scope.hasUnifiedModule = publisher.enabledModules.indexOf('MODULE_UNIFIED_REPORT') !== -1;
+
+            params.publisherId = publisher.id;
+            searchItem();
         };
 
         /**
@@ -156,6 +172,10 @@
             return true;
         };
 
+        $scope.selectAdNetwork = function(adNetwork) {
+            $scope.adTag.libraryAdTag.name = adNetwork.name;
+        };
+
         $scope.selectSite = function (site, siteId) {
             $scope.resetSelection();
 
@@ -172,6 +192,7 @@
             var modalInstance = $modal.open({
                 templateUrl: 'tagManagement/adTag/adNetworkQuicklyForm.tpl.html',
                 controller: 'AdNetworkQuicklyForm',
+                size: 'lg',
                 resolve: {
                     publishers: function(){
                         return publisherList;
@@ -183,6 +204,12 @@
                 AdNetworkCache.getAllAdNetworks()
                     .then(function(adNetworks) {
                         $scope.adNetworkList = adNetworks;
+
+                        var adNetworkNew = _.max($scope.adNetworkList, function(adNetwork){ return adNetwork.id; });
+                        var publisherId = $scope.selected.publisher.id || $scope.selected.publisher;
+                        if(adNetworkNew.publisher.id == publisherId || !$scope.isAdmin()) {
+                            $scope.adTag.libraryAdTag.adNetwork = adNetworkNew;
+                        }
                     });
             })
         };
@@ -198,6 +225,7 @@
             $scope.adTag.libraryAdTag.adNetwork = $scope.adTag.libraryAdTag.adNetwork.id ? $scope.adTag.libraryAdTag.adNetwork.id : $scope.adTag.libraryAdTag.adNetwork;
 
             var adTag = angular.copy($scope.adTag);
+
             var saveAdTag = $scope.isNew ? AdTagManager.post(adTag) : $scope.adTag.patch();
             saveAdTag
                 .catch(
@@ -295,11 +323,11 @@
                 });
             }
 
-            if(adSlot.type == $scope.adSlotTypes.native) {
-                NativeAdSlotManager.one(adSlot.id).getList('adtags').then(function (adTags) {
-                    $scope.adTagGroup = adTags.plain();
-                });
-            }
+            //if(adSlot.type == $scope.adSlotTypes.native) {
+            //    NativeAdSlotManager.one(adSlot.id).getList('adtags').then(function (adTags) {
+            //        $scope.adTagGroup = adTags.plain();
+            //    });
+            //}
         }
 
         update();
@@ -310,6 +338,47 @@
 
                 _getAdTagGroup(adSlot);
             }
+        }
+
+
+
+        var params = {
+            query: '',
+            publisherId: adSlot && adSlot.site.publisher.id
+        };
+
+        $scope.searchItem = searchItem;
+        $scope.addMoreItems = addMoreItems;
+
+        function searchItem(query) {
+            if(query == params.query) {
+                return;
+            }
+
+            params.page = 1;
+            params.searchKey = query;
+
+            SiteManager.one().get(params)
+                .then(function(data) {
+                    $scope.siteList = data.records;
+                });
+        }
+
+        function addMoreItems() {
+            var page = Math.ceil(($scope.siteList.length/10) + 1);
+
+            if(params.page === page) {
+                return
+            }
+
+            params.page = page;
+
+            SiteManager.one().get(params)
+                .then(function(data) {
+                    angular.forEach(data.records, function(item) {
+                        $scope.siteList.push(item);
+                    })
+                });
         }
     }
 })();

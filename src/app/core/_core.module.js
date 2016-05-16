@@ -25,6 +25,7 @@
         'tagcade.blocks.searchBox',
         'tagcade.blocks.queryBuilder',
         'tagcade.blocks.atSortableQuery',
+        'tagcade.blocks.billingConfig',
 
         'tagcade.core.bootstrap',
         'tagcade.core.auth',
@@ -58,7 +59,8 @@
         'angularjs-dropdown-multiselect',
         'isteven-multi-select',
         'angular-cache',
-        'oi.select'
+        'oi.select',
+        'infinite-scroll'
     ]);
 
     core.run(appRun);

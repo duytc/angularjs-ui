@@ -6,10 +6,13 @@
         .config(addStates)
     ;
 
-    function addStates(UserStateHelperProvider) {
+    function addStates(UserStateHelperProvider, STATUS_STATE_FOR_SUB_PUBLISHER_PERMISSION) {
         UserStateHelperProvider
             .state({
                 name: 'subPublisher',
+                data: {
+                    demandSourceTransparency: STATUS_STATE_FOR_SUB_PUBLISHER_PERMISSION.hide
+                },
                 abstract: true,
                 url: '/subPublisherManagement'
             })
@@ -49,8 +52,11 @@
                     subPublisher: function() {
                         return null;
                     },
-                    sites: /* @ngInject */ function(SiteCache) {
-                        return SiteCache.getAllSites();
+                    sites: /* @ngInject */ function(SiteManager) {
+                        return SiteManager.one('notBelongToSubPublisher').getList();
+                    },
+                    partners: function(PartnerManager) {
+                        return PartnerManager.getList();
                     }
                 },
                 customResolve: {
@@ -80,8 +86,11 @@
                     subPublisher: function($stateParams, subPublisherRestangular) {
                         return subPublisherRestangular.one('subpublishers', $stateParams.id).get();
                     },
-                    sites: /* @ngInject */ function(SiteCache) {
-                        return SiteCache.getAllSites();
+                    sites: /* @ngInject */ function(SiteManager) {
+                        return SiteManager.one('notBelongToSubPublisher').getList();
+                    },
+                    partners: function(PartnerManager) {
+                        return PartnerManager.getList();
                     }
                 },
                 customResolve: {

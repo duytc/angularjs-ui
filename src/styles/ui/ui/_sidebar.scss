@@ -10,7 +10,7 @@
     position: fixed;
     top: 50px;
     float: none !important;
-    z-index: 1000;
+    z-index: 90;
 
     &:before {
       height: 5000px;
@@ -74,7 +74,7 @@
 
         ~ .searchhelper {
           display: block;
-          z-index: 124;
+          z-index: 80;
         }
       }
 
@@ -112,7 +112,7 @@
       top: 14px;
       width: 12px;
       color: $themeprimary;
-      z-index: 124;
+      z-index: 80;
     }
 
     .searchhelper {
@@ -145,7 +145,7 @@
       font-size: 13px;
       text-decoration: none;
       color: $sonic-silver;
-      z-index: 123;
+      z-index: 70;
 
       &:hover {
         color: $darkcarbon;
@@ -173,7 +173,7 @@
         line-height: 10px;
         height: 10px;
         width: 10px;
-        right: 12px;
+        right: 15px;
         top: 15px;
         margin: 0;
         text-align: center;
@@ -332,7 +332,7 @@
       position: relative;
       background-color: $snow;
       border-top: 0;
-      z-index: 123;
+      z-index: 70;
 
       li {
         margin-left: 0;
@@ -464,7 +464,7 @@
 
         > a {
           position: relative;
-          z-index: 123;
+          z-index: 70;
 
           .menu-text {
             display: none;
@@ -475,7 +475,7 @@
             height: 38px;
             line-height: 38px;
             background-color: $white;
-            z-index: 121;
+            z-index: 60;
             padding-left: 25px;
           }
 
@@ -502,7 +502,7 @@
         > .submenu {
           background: $snow;
           position: absolute;
-          z-index: 120;
+          z-index: 50;
           left: 42px;
           top: 0;
           width: 195px;

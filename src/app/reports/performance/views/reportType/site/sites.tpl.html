@@ -19,7 +19,11 @@
         </div>
         <div class="table-responsive">
             <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
-                <thead></thead>
+                <thead>
+                <tr>
+                    <th at-attribute="rtbImpressions" ng-show="hasRtbModule">{{ 'REPORT.RTB_IMPRESSIONS' | translate }}</th>
+                </tr>
+                </thead>
                 <tbody>
                 <tr ng-click="drillDownReport(reportStates.siteAdSlots, item)">
                     <td at-title="{{ 'ACTIONS' | translate }}">
@@ -46,7 +50,7 @@
                     <td at-title="{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}" at-attribute="totalOpportunities" at-sortable>
                         {{ item.totalOpportunities | number }}
                     </td>
-                    <td at-title="{{ 'REPORT.RTB_IMPRESSIONS' | translate }}" at-attribute="rtbImpressions" at-sortable>
+                    <td ng-show="hasRtbModule" at-title="{{ 'REPORT.RTB_IMPRESSIONS' | translate }}" at-attribute="rtbImpressions" at-sortable>
                         {{ item.rtbImpressions | number }}
                     </td>
                     <td at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="impressions" at-sortable>

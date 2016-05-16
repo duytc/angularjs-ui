@@ -5,13 +5,20 @@
         .controller('LibraryAdSlotForm', LibraryAdSlotForm)
     ;
 
-    function LibraryAdSlotForm($scope, $translate, $filter, _, adSlot, publisherList, adSlotType, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, historyStorage, HISTORY_TYPE_PATH) {
+    function LibraryAdSlotForm($scope, $translate, $stateParams, $filter, _, adSlot, publisherList, adSlotType, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
 
         $scope.isNew = adSlot === null;
         $scope.publisherList = publisherList;
+
+        if(!$scope.isNew) {
+            AlertService.addAlert({
+                type: 'warning',
+                message: $translate.instant('AD_SLOT_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
+            });
+        }
 
         $scope.formProcessing = false;
         $scope.typesList = TYPE_AD_SLOT;
@@ -104,7 +111,7 @@
                 })
                 .then(
                 function () {
-                    return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlotLibrary, '^.list');
+                    return backToAdSlotLibraryList();
                 })
             ;
         }
@@ -167,6 +174,23 @@
         }
 
         function backToAdSlotLibraryList() {
+            if($stateParams.from == 'channel') {
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.^.tagManagement.adSlot.listByChannel');
+            }
+
+            if($stateParams.from == 'site') {
+                var historyAdSlot = historyStorage.getParamsHistoryForAdSlot();
+                if(!!historyAdSlot && !!historyAdSlot.siteId) {
+                    return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.^.tagManagement.adSlot.list');
+                }
+
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.^.tagManagement.adSlot.listAll');
+            }
+
+            if($stateParams.from == 'smartAdSlot') {
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.ronAdSlot, '^.^.^.tagManagement.ronAdSlot.list');
+            }
+
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlotLibrary, '^.list');
         }
 
@@ -274,6 +298,15 @@
         function _update() {
             if(!$scope.isNew) {
                 if(adSlotType == $scope.typesList.dynamic) {
+                    angular.forEach(adSlot.libraryExpressions, function(libraryExpression) {
+                        angular.forEach(libraryExpression.expressionDescriptor.groupVal, function(group) {
+                            if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}')) {
+                                group.val = group.val.split(',');
+                                group.cmp = group.cmp == '==' ||  group.cmp == 'is' ? 'is' : 'isNot';
+                            }
+                        });
+                    });
+
                     _getAdSlots(adSlotType)
                 }
             }
@@ -335,6 +368,14 @@
                 delete adSlot.width;
                 delete adSlot.autoFit;
                 delete adSlot.passbackMode;
+
+                angular.forEach(adSlot.libraryExpressions, function(libraryExpression) {
+                    angular.forEach(libraryExpression.expressionDescriptor.groupVal, function(group) {
+                        if(angular.isObject(group.val)) {
+                            group.val = group.val.toString();
+                        }
+                    });
+                });
             }
             else {
                 delete adSlot.libraryExpressions;

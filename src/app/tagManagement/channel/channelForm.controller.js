@@ -26,7 +26,7 @@
 
         $scope.channel = channel || {
             name: null,
-            channelSites: [],
+            channelSites: [], // only exist when NEW!!!
             rtbStatus: RTB_STATUS_TYPES.disable
         };
 
@@ -83,24 +83,11 @@
             $scope.formProcessing = true;
 
             // refactor json channel
-            if($scope.isNew) {
-                angular.forEach($scope.data.sites, function(site) {
-                    $scope.channel.channelSites.push({site: site.id})
-                });
-            }
-
-            // not include rtbStatus if module rtb not enabled in publisher
-            if (!$scope.isEnabledModuleRtb()) {
-                delete $scope.channel.rtbStatus;
-            }
+            var channel = refactorJson($scope.channel);
 
             var saveChannel = $scope.isNew
-                ? ChannelManager.post($scope.channel)
-                : ChannelManager.one($scope.channel.id).patch(
-                {
-                    name: $scope.channel.name,
-                    rtbStatus: $scope.channel.rtbStatus
-                });
+                ? ChannelManager.post(channel)
+                : ChannelManager.one(channel.id).patch(channel);
 
             saveChannel
                 .catch(
@@ -123,6 +110,35 @@
                 }
             )
             ;
+        }
+
+        /**
+         * Refactor channel json before submitting
+         */
+        function refactorJson(channel) {
+            var channel = angular.copy(channel);
+
+            if($scope.isNew) {
+                // add sites for channel if sites selected, only when NEW
+                angular.forEach($scope.data.sites, function(site) {
+                    channel.channelSites.push(
+                        { site: site.id }
+                    )
+                });
+            }
+
+            // not include rtbStatus if module rtb not enabled in publisher
+            if (!$scope.isEnabledModuleRtb()) {
+                delete channel.rtbStatus;
+            }
+
+            // finally, remove publisher if editing
+            if(!$scope.isNew) {
+                // TODO: not need clear publisher field???
+                delete channel.publisher;
+            }
+
+            return channel;
         }
     }
 })();

@@ -5,7 +5,7 @@
         .directive('queryBuilderGroup', queryBuilderGroup)
     ;
 
-    function queryBuilderGroup($compile, _, CONDITIONS_STRING, CONDITIONS_BOOLEAN, CONDITIONS_NUMERIC, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, COUNTRY_LIST) {
+    function queryBuilderGroup($compile, _, CONDITIONS_STRING, CONDITIONS_BOOLEAN, CONDITIONS_NUMERIC, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, COUNTRY_LIST, DEVICES) {
         'use strict';
 
         return {
@@ -28,7 +28,24 @@
                     scope.groupType = GROUP_TYPE;
                     scope.dataTypes = DATA_TYPE;
                     scope.dataTypeList = DATA_TYPE;
+                    scope.devices = DEVICES;
                     scope.countries = COUNTRY_LIST;
+                    var mostCommonlyCountry = [
+                        {name: 'Australia', code: 'AU', line: true},
+                        {name: 'Canada', code: 'CA', line: true},
+                        {name: 'United Kingdom', code: 'GB', line: true},
+                        {name: 'United States', code: 'US', line: true}
+                    ];
+
+                    angular.forEach(scope.countries, function(country, index) {
+                        angular.forEach(mostCommonlyCountry, function(mostCommonly) {
+                            if(mostCommonly.code == country.code) {
+                                delete scope.countries[index];
+                                scope.countries.unshift(mostCommonly);
+                            }
+                        })
+                    });
+
                     var numberLoad = 0;
 
                     scope.addGroup = addGroup;
@@ -42,6 +59,7 @@
                     scope.valIsNull = valIsNull;
                     scope.changeVarName = changeVarName;
                     scope.getDataTypeList = getDataTypeList;
+                    scope.groupEntities = groupEntities;
 
                     function addGroup() {
                         // set default group, including two conditions
@@ -127,6 +145,8 @@
                     }
 
                     function changeCondition(group) {
+                        console.log(group);
+
                         var conditions = [];
 
                         if(group.type == scope.dataTypes[1].key) {
@@ -146,7 +166,13 @@
                         else {
                             for(var index in CONDITIONS_STRING) {
                                 if(CONDITIONS_STRING[index].unsupportedBuiltInVars.indexOf(group.var) == -1) {
-                                    conditions.push(CONDITIONS_STRING[index])
+                                    if(!CONDITIONS_STRING[index].onlySupport) {
+                                        conditions.push(CONDITIONS_STRING[index])
+                                    } else {
+                                        if(CONDITIONS_STRING[index].onlySupport.indexOf(group.var) > -1) {
+                                            conditions.push(CONDITIONS_STRING[index])
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -179,6 +205,14 @@
                         else if (itemGroup.var == '${USERAGENT}') {
                             itemGroup.var = '${USER_AGENT}';
                         }
+                    }
+
+                    function groupEntities(item){
+                        if (item.line) {
+                            return undefined; // no group
+                        }
+
+                        return ''; // separate group with no name
                     }
 
                     directive || (directive = $compile(content));

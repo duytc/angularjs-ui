@@ -23,17 +23,24 @@
             <ul class="nav nav-tabs nav-tab-margin">
                 <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.adSlot.listAll">By Site</a></li>
                 <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.adSlot.listByChannel">By Channel</a></li>
-                <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.ronAdSlot.list">Smart Ad Slots</a></li>
+                <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.ronAdSlot.list">RON Ad Slots</a></li>
                 <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagLibrary.adSlot.list">Standalone Ad Slots</a></li>
             </ul>
         </div>
     </div>
 
-    <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'name', 'height', 'width']"></search-box>
+    <!--<search-box show-query="true" sb-list="adSlots" search-fields="['id', 'name', 'height', 'width']"></search-box>-->
+
+    <form class="input-group col-sm-6 search-box">
+        <input class="form-control" ng-model="selectData.query" ng-change="searchData()" placeholder="{{ 'UNIFIED_REPORT_MODULE.SEARCH' | translate }}" type="text"/>
+            <span class="input-group-addon">
+                {{ tableConfig.totalItems }} records found
+            </span>
+    </form>
 
     <div class="panel-body" ng-if="hasData()">
         <div class="table-responsive">
-            <table class="table" at-sortable-query at-table at-paginated at-list="adSlots" at-config="tableConfig">
+            <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="adSlots.records" at-config="tableConfig">
                 <thead>
                 <tr>
                     <th ng-show="isAdmin()" at-attribute="publisher.company">{{ 'PUBLISHER' | translate }}</th>
@@ -46,8 +53,8 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li ng-if="item.libType == adSlotTypes.display" ><a ui-sref="^.^.adTag.displayList({adSlotId: item.id})">{{ 'AD_SLOT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
-                                <li ng-if="item.libType == adSlotTypes.native" ><a ui-sref="^.^.adTag.nativeList({adSlotId: item.id})">{{ 'AD_SLOT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
+                                <li ng-if="item.libType == adSlotTypes.display && demandSourceTransparency" ><a ui-sref="^.^.adTag.displayList({adSlotId: item.id})">{{ 'AD_SLOT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
+                                <li ng-if="item.libType == adSlotTypes.native && demandSourceTransparency" ><a ui-sref="^.^.adTag.nativeList({adSlotId: item.id})">{{ 'AD_SLOT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
 
                                 <li ng-if="item.libType != adSlotTypes.dynamic" class="divider"></li>
 
@@ -68,19 +75,20 @@
                     </td>
                     <td at-title="{{ 'NAME' | translate }}" at-implicit at-sortable at-attribute="name" at-initial-sorting="asc"></td>
                     <td at-title="{{ 'PUBLISHER' | translate }}" ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company"></td>
-                    <td at-title="{{ 'AD_SLOT_MODULE.SIZE' | translate }}" at-sortable at-attribute="width">
+                    <td at-title="{{ 'AD_SLOT_MODULE.SIZE' | translate }}" at-attribute="width">
                         {{ !!item.width ? item.width + 'x' + item.height : ''}}
                     </td>
-                    <td at-title="{{ 'AD_SLOT_MODULE.TYPE' | translate }}" at-implicit at-sortable at-attribute="libType"></td>
-                    <td at-title="{{ 'AD_SLOT_LIBRARY_MODULE.LINKED_AD_SLOTS' | translate }}" at-implicit at-sortable at-attribute="associatedSlotCount"></td>
-                    <td at-title="{{ 'AD_SLOT_LIBRARY_MODULE.IN_RON_AD_SLOT' | translate }}" at-attribute="libraryAdSlot.visible" at-sortable>
+                    <td at-title="{{ 'AD_SLOT_MODULE.TYPE' | translate }}" at-implicit at-attribute="libType"></td>
+                    <td at-title="{{ 'AD_SLOT_LIBRARY_MODULE.LINKED_AD_SLOTS' | translate }}" at-implicit at-attribute="associatedSlotCount"></td>
+                    <td at-title="{{ 'AD_SLOT_LIBRARY_MODULE.IN_RON_AD_SLOT' | translate }}" at-attribute="libraryAdSlot.visible">
                         <i class="fa" ng-class="!!item.isRonAdSlot.id? 'fa-check-square' : 'fa-square'"></i>
                     </td>
                 </tr>
                 </tbody>
             </table>
 
-            <at-pagination at-pagination-query ng-if="showPagination()" at-list="adSlots" at-config="tableConfig"></at-pagination>
+            <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+            <!--<at-pagination at-pagination-query ng-if="showPagination()" at-list="adSlots" at-config="tableConfig"></at-pagination>-->
         </div>
     </div>
 </div>

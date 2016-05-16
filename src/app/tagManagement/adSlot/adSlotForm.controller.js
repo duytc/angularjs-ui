@@ -11,6 +11,8 @@
         };
 
         var adSlotRefactor = null; // this adSlotRefactor use to copy ad slot have been refactor
+        var sitesCopy = [];
+        var channelsCopy = [];
         $scope.isNew = adSlot === null;
         $scope.publisherList = publisherList;
 
@@ -50,8 +52,16 @@
                 key: 'none'
             },
             {
-                label: 'Sites Or Channels',
-                key: 'siteOrChannel'
+                label: 'Sites',
+                key: 'sites'
+            },
+            {
+                label: 'Channels',
+                key: 'channels'
+            },
+            {
+                label: 'Sites and Channels',
+                key: 'siteAndChannel'
             }
         ];
 
@@ -97,6 +107,12 @@
             adSlotRefactor = adSlot;
         }
 
+        // add new adslot for siteId
+        if(!!$stateParams.siteId) {
+            $scope.selected.deployment = 'sites';
+            selectDeployment('sites');
+        }
+
         $scope.adSlotsDefault = [{id: null, name: 'None', libraryAdSlot: {name: 'None'}}];
         _update();
 
@@ -120,21 +136,58 @@
         $scope.isStandaloneAdSlot = isStandaloneAdSlot;
 
         function selectDeployment(deployment) {
-            if(deployment == 'siteOrChannel' && $scope.siteList.length === 0) {
-                SiteManager.getList()
-                    .then(function(sites) {
-                        $scope.siteList = sites;
-                    });
-
-                ChannelManager.getList().then(function (channels) {
-                    $scope.channelList = channels.plain();
-                });
-
-                return;
+            if(deployment == 'channels') {
+                // reset previous selected sites
+                $scope.selected.sites = [];
             }
 
-            // if no deployment => this is new standalone ad slot
-            if(deployment == 'none') {
+            if(deployment == 'sites') {
+                // reset previous selected channels
+                $scope.selected.channels = [];
+            }
+
+            if(deployment != 'none') {
+                if(deployment != 'channels' && $scope.siteList.length === 0) {
+                    SiteManager.getList()
+                        .then(function(sites) {
+                            sitesCopy = sites;
+                            $scope.siteList = $filter('selectedPublisher')(sitesCopy, $scope.adSlot.publisher);
+
+                            // ticked site when add new ad slot for site
+                            var selectedSite = null;
+
+                            if(!!$stateParams.siteId) {
+                                var idxSite = _.findIndex(sites, function(site) {
+                                    /* save the matched site by $stateParams.siteId */
+                                    selectedSite = site;
+
+                                    return $stateParams.siteId == site.id
+                                });
+
+                                if(idxSite > -1) {
+                                    /**
+                                     * set default publisher when create ad slot quickly from list adslot for site
+                                     */
+                                    $scope.adSlot.publisher = $scope.siteList[idxSite].publisher.id;
+                                    $scope.siteList[idxSite]['ticked'] = true;
+
+                                    /* IMPORTANT: remember set selected site to site got from $stateParams.siteId!!! */
+                                    $scope.selected.sites = [selectedSite];
+
+                                    //updateDueToDeploymentChanged();
+                                }
+                            }
+                        });
+
+                }
+
+                if(deployment != 'sites' && $scope.channelList.length === 0) {
+                    ChannelManager.one('havesite').getList().then(function (channels) {
+                        channelsCopy = channels;
+                        $scope.channelList = $filter('selectedPublisher')(channelsCopy, $scope.adSlot.publisher);
+                    });
+                }
+            } else{
                 $scope.adSlotContext = AD_SLOT_CONTEXTS.standalone;
 
                 // reset previous selected sites/channels
@@ -157,6 +210,13 @@
 
         function selectPublisher(publisher, publisherId) {
             $scope.adSlot.site = null;
+
+            if(sitesCopy.length > 0) {
+                $scope.siteList = $filter('selectedPublisher')(sitesCopy, publisher);
+            }
+            if(channelsCopy.length > 0) {
+                $scope.channelList = $filter('selectedPublisher')(channelsCopy, publisher);
+            }
 
             enabledModules = publisher.enabledModules;
         }
@@ -184,7 +244,6 @@
 
             return $scope.adSlot.publisher != null ? $scope.adSlot.publisher.enabledModules.indexOf(module) > -1 : false;
         }
-
 
         function showForNativeAdSlot() {
             return $scope.selected.type == TYPE_AD_SLOT.native;
@@ -233,6 +292,11 @@
                 })
                 .then(
                 function () {
+                    // location path to channel list
+                    if((isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) && adSlot.channels.length == 1 && adSlot.sites.length == 0) {
+                        return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.listByChannel');
+                    }
+
                     return backToAdSlotList();
                 })
             ;
@@ -362,12 +426,15 @@
         }
 
         function selectType(type) {
+            $scope.selected.type = type;
+
             $scope.adSlot = {
                 libraryExpressions: [],
-                passbackMode: $scope.passbackOption[0].key
+                passbackMode: $scope.passbackOption[0].key,
+                publisher: $scope.adSlot.publisher
             };
 
-            _getAdSlots(type)
+            updateDueToDeploymentChanged();
         }
 
         function findTypeLabel(type) {
@@ -504,8 +571,17 @@
             if(!$scope.isNew) {
                 if($scope.selected.type == $scope.typesList.dynamic) {
                     if(isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) {
-                        _getAdSlots($scope.selected.type);
+                        _getLibraryAdSlots($scope.selected.type);
                     } else {
+                        angular.forEach(adSlot.libraryAdSlot.libraryExpressions, function(libraryExpression) {
+                            angular.forEach(libraryExpression.expressionDescriptor.groupVal, function(group) {
+                                if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}')) {
+                                    group.val = group.val.split(',');
+                                    group.cmp = group.cmp == '==' ||  group.cmp == 'is' ? 'is' : 'isNot';
+                                }
+                            });
+                        });
+
                         _getAdSlotList($scope.selected.site.id)
                     }
 
@@ -518,7 +594,7 @@
          * @param type
          * @private
          */
-        function _getAdSlots(type) {
+        function _getLibraryAdSlots(type) {
             if(type == $scope.typesList.dynamic) {
                 AdSlotLibrariesManager.getList()
                     .then(function(adSlots) {
@@ -622,6 +698,8 @@
                 delete adSlot.width;
                 delete adSlot.autoFit;
                 delete adSlot.passbackMode;
+
+                _refactorExpressions(adSlot.libraryExpressions);
             }
             else {
                 delete adSlot.libraryExpressions;
@@ -678,6 +756,8 @@
                 delete adSlot.libraryAdSlot.passbackMode;
                 delete adSlot.floorPrice;
 
+                _refactorExpressions(adSlot.libraryAdSlot.libraryExpressions);
+
                 // transfer of format number
                 adSlot.defaultAdSlot = angular.isObject($scope.selected.defaultAdSlot) ? $scope.selected.defaultAdSlot.id : $scope.selected.defaultAdSlot;
 
@@ -715,18 +795,36 @@
             return adSlot;
         }
 
+        function _refactorExpressions(libraryExpressions) {
+            angular.forEach(libraryExpressions, function(libraryExpression) {
+                angular.forEach(libraryExpression.expressionDescriptor.groupVal, function(group) {
+                    if(angular.isObject(group.val)) {
+                        group.val = group.val.toString();
+                    }
+                });
+            });
+        }
+
         /* watch the changing of sites selected in deployment method */
         $scope.$watch(function () {
                 return $scope.selected.sites
             },
-            updateDueToDeploymentChanged
+            function(newValue, oldValue) {
+                if(newValue.length !== oldValue.length) {
+                    updateDueToDeploymentChanged()
+                }
+            }
         );
 
         /* watch the changing of channel selected in deployment method */
         $scope.$watch(function () {
                 return $scope.selected.channels
             },
-            updateDueToDeploymentChanged
+            function(newValue, oldValue) {
+                if(newValue.length !== oldValue.length) {
+                    updateDueToDeploymentChanged()
+                }
+            }
         );
 
         /**
@@ -746,7 +844,7 @@
                 _resetForm();
 
                 // get ad slots in library
-                _getAdSlots($scope.selected.type);
+                _getLibraryAdSlots($scope.selected.type);
                 return;
             }
 
@@ -755,7 +853,9 @@
                 $scope.adSlotContext = AD_SLOT_CONTEXTS.normal.notUseStandalone;
 
                 // reset form for dynamic only
-                _resetFormForDynamic();
+                if ($scope.selected.type == $scope.typesList.dynamic) {
+                    _resetFormForDynamic();
+                }
 
                 // get ad slots list
                 _getAdSlotList($scope.selected.sites[0].id, $scope.selected.type);
@@ -768,7 +868,7 @@
 
                 _resetForm();
 
-                _getAdSlots($scope.selected.type);
+                _getLibraryAdSlots($scope.selected.type);
                 return;
             }
 
@@ -776,7 +876,7 @@
             if ($scope.selected.sites.length > 1) {
                 $scope.adSlotContext = AD_SLOT_CONTEXTS.normal.useStandalone;
                 _resetForm();
-                _getAdSlots($scope.selected.type);
+                _getLibraryAdSlots($scope.selected.type);
             }
         }
     }
