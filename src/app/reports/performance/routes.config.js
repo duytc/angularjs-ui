@@ -12,7 +12,7 @@
 
         UserStateHelperProvider
             .state('reports.performance', {
-                abstract: true,
+                //abstract: true,
                 url: '/performance',
                 views: {
                     'content@app': {

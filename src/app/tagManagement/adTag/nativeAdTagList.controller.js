@@ -5,7 +5,7 @@
         .controller('NativeAdTagList', NativeAdTagList)
     ;
 
-    function NativeAdTagList($scope, $translate, $modal, adTags, AdTagManager, AdSlotAdTagLibrariesManager, AdTagLibrariesManager, AlertService, adSlot, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
+    function NativeAdTagList($scope, $stateParams, $translate, $modal, adTags, AdTagManager, AdSlotAdTagLibrariesManager, AlertService, adSlot, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
         $scope.adSlot = adSlot;
         $scope.adTags = adTags;
 
@@ -17,7 +17,6 @@
         $scope.showPagination = showPagination;
         $scope.backToListAdSlot = backToListAdSlot;
         $scope.updateAdTag = updateAdTag;
-        $scope.shareAdTag = shareAdTag;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -92,6 +91,10 @@
         }
 
         function backToListAdSlot() {
+            if($stateParams.from == 'smart') {
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.ronAdSlot, '^.^.^.tagManagement.ronAdSlot.list');
+            }
+
             if(!!$scope.adSlot.libType) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlotLibrary, '^.^.^.tagLibrary.adSlot.list');
             }
@@ -115,53 +118,27 @@
                 return;
             }
 
-            if(adtag[field] == data) {
-                return;
-            }
-
-            var saveField = angular.copy(adtag[field]);
-            adtag[field] = data;
-            var item = angular.copy(adtag);
+            var item = {};
+            item[field] = data;
 
             var Manager = !!adtag.libraryAdSlot ? AdSlotAdTagLibrariesManager : AdTagManager;
-            Manager.one(item.id).patch(item)
+            Manager.one(adtag.id).patch(item)
                 .then(function() {
+                    adtag[field] = data;
+
                     AlertService.addAlert({
                         type: 'success',
                         message: $translate.instant('AD_TAG_MODULE.UPDATE_SUCCESS')
                     });
                 })
                 .catch(function() {
-                    adtag[field] = saveField;
+                    adtag[field] = adtag[field];
 
                     AlertService.replaceAlerts({
                         type: 'error',
                         message: $translate.instant('AD_TAG_MODULE.UPDATE_FAIL')
                     });
                 });
-        }
-
-        function shareAdTag(adTag) {
-            var libraryAdTag = {
-                visible: true
-            };
-
-            AdTagLibrariesManager.one(adTag.libraryAdTag.id).patch(libraryAdTag)
-                .then(function () {
-                    adTag.libraryAdTag.visible = true;
-
-                    AlertService.replaceAlerts({
-                        type: 'success',
-                        message: $translate.instant('AD_TAG_MODULE.MOVED_TO_LIBRARY_SUCCESS')
-                    });
-                })
-                .catch(function () {
-                    AlertService.replaceAlerts({
-                        type: 'error',
-                        message: $translate.instant('AD_TAG_MODULE.MOVED_TO_LIBRARY_FAIL')
-                    });
-                })
-            ;
         }
     }
 })();

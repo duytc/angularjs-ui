@@ -5,14 +5,28 @@
         .controller('AdSlotList', AdSlotList)
     ;
 
-    function AdSlotList($scope, $translate, $state, $stateParams, $modal, AlertService, adSlotService, adSlots, site, AtSortableService, libraryAdSlotService, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
+    function AdSlotList($scope, $translate, $state, $stateParams, $modal, Auth, AlertService, adSlotService, adSlots, site, AdSlotManager, AtSortableService, libraryAdSlotService, historyStorage, HISTORY_TYPE_PATH, RTB_STATUS_LABELS, TYPE_AD_SLOT, EVENT_ACTION_SORTABLE) {
         $scope.site = site;
 
         $scope.adSlots = adSlots;
         $scope.adSlotTypes = TYPE_AD_SLOT;
+        $scope.rtbStatusLabels = RTB_STATUS_LABELS;
+
+        $scope.smartAdSlots = [];
+        $scope.standaloneAdSlots = [];
+        $scope.isChannel = angular.isArray(adSlots.records) && adSlots.totalRecord > 0 && angular.isObject(adSlots.records[0].channels);
+        $scope.demandSourceTransparency = Auth.getSession().demandSourceTransparency;
+
+        var params = {
+            page: 1
+        };
 
         $scope.hasData = function () {
-            return !!adSlots.length;
+            if(angular.isArray(adSlots)) {
+                return  adSlots.length > 0;
+            }
+
+            return !!adSlots.totalRecord;
         };
 
         if (!$scope.hasData()) {
@@ -30,11 +44,25 @@
         $scope.backToListSite = backToListSite;
         $scope.exist = exist;
         $scope.shareAdSlot = shareAdSlot;
+        $scope.changePage = changePage;
+        $scope.searchData = searchData;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10
+            maxPages: 10,
+            totalItems: Number(adSlots.totalRecord)
         };
+
+        $scope.availableOptions = {
+            currentPage: 1,
+            pageSize: 10
+        };
+
+        $scope.selectData = {
+            query: null
+        };
+
+        var getAdSlot;
 
         $scope.generateAdTag = function (adSlot) {
             var Manager = adSlotService.getManagerForAdSlot(adSlot);
@@ -67,16 +95,20 @@
                 return Manager.one(adSlot.id).remove()
                     .then(
                         function () {
-                            var index = adSlots.indexOf(adSlot);
+                            if(angular.isArray(adSlots)) {
+                                var index = adSlots.indexOf(adSlot);
 
-                            if (index > -1) {
-                                adSlots.splice(index, 1);
-                            }
+                                if (index > -1) {
+                                    adSlots.splice(index, 1);
+                                }
 
-                            $scope.adSlots = adSlots;
+                                $scope.adSlots = adSlots;
 
-                            if($scope.tableConfig.currentPage > 0 && adSlots.length/10 == $scope.tableConfig.currentPage) {
-                                AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
+                                if($scope.tableConfig.currentPage > 0 && adSlots.length/10 == $scope.tableConfig.currentPage) {
+                                    AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
+                                }
+                            } else {
+                                _getAdSlot(params);
                             }
 
                             AlertService.replaceAlerts({
@@ -121,7 +153,11 @@
         };
 
         function showPagination() {
-            return angular.isArray($scope.adSlots) && $scope.adSlots.length > $scope.tableConfig.itemsPerPage;
+            if(angular.isArray($scope.adSlots)) {
+                return $scope.adSlots.length > $scope.tableConfig.itemsPerPage;
+            }
+
+            return angular.isArray($scope.adSlots.records) && $scope.adSlots.totalRecord > $scope.tableConfig.itemsPerPage;
         }
 
         function backToListSite() {
@@ -158,6 +194,40 @@
                     });
                 })
             ;
+        }
+
+        function changePage(currentPage) {
+            params = angular.extend(params, {page: currentPage});
+            _getAdSlot(params);
+        }
+
+        function searchData() {
+            var query = {searchKey: $scope.selectData.query || null};
+            params = angular.extend(params, query);
+            _getAdSlot(params);
+        }
+
+        $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
+            params = angular.extend(params, query);
+            _getAdSlot(params);
+        });
+
+        function _getAdSlot(query) {
+            params = query;
+
+            clearTimeout(getAdSlot);
+
+            getAdSlot = setTimeout(function() {
+                var Manager = $scope.isChannel ? AdSlotManager.one('relatedchannel').get(query) : AdSlotManager.one().get(query);
+
+                params = query;
+                return Manager
+                    .then(function(adSlots) {
+                        $scope.adSlots = adSlots;
+                        $scope.tableConfig.totalItems = Number(adSlots.totalRecord);
+                        $scope.availableOptions.currentPage = Number(query.page);
+                    });
+            }, 500);
         }
 
         $scope.$on('$locationChangeSuccess', function() {

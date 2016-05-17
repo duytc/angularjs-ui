@@ -45,7 +45,7 @@
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
                                 <li><a ng-click="popupReport(reportStates.adTags, item)">{{ 'PERFORMANCE_REPORT_MODULE.AD_TAG_INFO' | translate }}</a></li>
-                                <li><a ng-click="goToEditPage('tagManagement.adTag.edit', item.reportType.adTagId)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_AD_TAG' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ng-click="goToEditPage('tagManagement.adTag.edit', item.reportType.adTagId)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_AD_TAG' | translate }}</a></li>
                                 <!--<li><a ng-click="openUpdateCpm(item, 'adTag')">Update Cpm</a></li>-->
                             </ul>
                         </div>

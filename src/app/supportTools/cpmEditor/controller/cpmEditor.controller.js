@@ -63,7 +63,7 @@
             },
             {
                 key: CPM_EDITOR_TYPES.adNetwork,
-                label: 'Ad Network'
+                label: 'Demand Partner'
             },
             {
                 key: CPM_EDITOR_TYPES.site,

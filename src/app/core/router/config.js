@@ -6,12 +6,20 @@
 
         .constant('BASE_USER_URLS', {
             admin: '/adm',
-            publisher: '/pub'
+            publisher: '/pub',
+            subPublisher: '/sub'
         })
 
         .constant('BASE_USER_STATES', {
             admin: 'app.admin',
-            publisher: 'app.publisher'
+            publisher: 'app.publisher',
+            subPublisher: 'app.subPublisher'
+        })
+
+        .constant('STATUS_STATE_FOR_SUB_PUBLISHER_PERMISSION', {
+            hide: 0,
+            show: 1,
+            auto: 2
         })
     ;
 
@@ -27,6 +35,11 @@
                 }
 
                 if (path === '/') {
+                    if(Auth.isSubPublisher()) {
+                        // todo
+                        return urlPrefixService.getPrefixedUrl('/reports/performance/sites');
+                    }
+
                     return urlPrefixService.getPrefixedUrl('/dashboard');
                 }
 

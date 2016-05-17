@@ -43,6 +43,7 @@
             delete $scope.publisher.enabledModules;
             delete $scope.publisher.billingRate;
             delete $scope.publisher.tagDomain;
+            delete publisher.publisherExchanges;
 
             var saveUser = $scope.publisher.patch();
             saveUser

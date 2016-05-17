@@ -5,16 +5,17 @@
         .controller('UnifiedReportSelector', UnifiedReportSelector)
     ;
 
-    function UnifiedReportSelector($scope, $stateParams, $translate, $q, $state, _, Auth, adminUserManager, PartnerManager, UserStateHelper, AlertService, ReportParams, unifiedReport, REPORT_TYPE_KEY, UISelectMethod) {
+    function UnifiedReportSelector($scope, $stateParams, $translate, $q, $state, _, Auth, adminUserManager, subPublisherRestangular, AdNetworkManager, UserStateHelper, AlertService, ReportParams, unifiedReport) {
         var toState = null;
 
         var isAdmin = Auth.isAdmin();
+        var isSubPublisher = Auth.isSubPublisher();
+        var userSession = Auth.getSession();
+        var demandSourceTransparency = $scope.demandSourceTransparency = Auth.getSession().demandSourceTransparency;
+
         $scope.isAdmin = isAdmin;
+        $scope.isSubPublisher = isSubPublisher;
 
-        var reportTypeKey = REPORT_TYPE_KEY;
-        $scope.reportTypeKey = reportTypeKey;
-
-        var adNetworkSupportReportType = [];
         $scope.selectedData = {
             date: {
                 startDate: null,
@@ -22,24 +23,26 @@
             },
             publisher: null,
             adNetwork: null,
-            reportType: null,
+            site : null,
             breakDown: null,
             page: 1
         };
 
         $scope.optionData = {
             publishers: [],
-            adNetworks: []
+            subPublishers: addAllOption([], 'My Account'),
+            adNetworks: addAllOption([], 'All Demand Partners'),
+            sites: addAllOption([], 'All Sites')
         };
 
         $scope.datePickerOpts = {
-            maxDate:  moment().endOf('day'),
+            maxDate:  moment().subtract(1, 'days'),
             ranges: {
                 'Today': [moment().startOf('day'), moment().endOf('day')],
                 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                 'Last 7 Days': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
                 'Last 30 Days': [moment().subtract(30, 'days'), moment().subtract(1, 'days')],
-                'This Month': [moment().startOf('month'), moment().subtract(1, 'days')],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
         };
@@ -48,104 +51,159 @@
         $scope.selectBreakdownOption = selectBreakdownOption;
         $scope.isFormValid = isFormValid;
         $scope.selectPublisher = selectPublisher;
+        $scope.selectSubPublisher = selectSubPublisher;
         $scope.getPartnerForPublisher = getPartnerForPublisher;
         $scope.selectAdNetwork = selectAdNetwork;
-        $scope.selectReportType = selectReportType;
-        $scope.filterReportTypeForAdNetwork = filterReportTypeForAdNetwork;
-        $scope.filterDrillDownForReportType = filterDrillDownForReportType;
+        $scope.selectSite = selectSite;
+        $scope.groupEntities = groupEntities;
+        $scope.filterBreakdown = filterBreakdown;
 
-        // beak down is displayed when beak down support
+        $scope.reportTypeOptions = [
+            {
+                key: 'myaccount',
+                label: 'My Account'
+            },
+            {
+                key: 'subpublisher',
+                label: 'Sub Publisher'
+            }
+        ];
+
         $scope.breakdownOptions = [
             {
                 key: 'day',
                 label: 'By Day',
-                toState: 'reports.unified.day',
-                supportReportType: [reportTypeKey.adTag, reportTypeKey.dailyStats, reportTypeKey.site, reportTypeKey.adTagGroup]
+                toState: 'reports.unified.day'
             },
             {
-                key: 'site',
+                key: 'partners',
+                label: 'By Partner',
+                toState: 'reports.unified.partner'
+            },
+            {
+                key: 'sites',
                 label: 'By Site',
-                toState: 'reports.unified.site',
-                supportReportType: [reportTypeKey.adTag]
+                toState: 'reports.unified.site'
             },
             {
-                key: 'country',
-                label: 'By Country',
-                toState: 'reports.unified.country',
-                supportReportType: [reportTypeKey.adTag, reportTypeKey.adTagGroup]
+                key: 'adtags',
+                label: 'By Ad Tag',
+                toState: 'reports.unified.adtag'
             }
         ];
 
-        // report type is displayed when ad network have supportReportType
-        $scope.reportTypeOptions = [
-            {
-                key: reportTypeKey.dailyStats,
-                label: 'Daily Stats'
-            },
-            {
-                key: reportTypeKey.adTag,
-                label: 'Ad Tag'
-            },
-            {
-                key: reportTypeKey.adTagGroup,
-                label: 'Ad Tag Group'
-            },
-            {
-                key: reportTypeKey.site,
-                label: 'Site'
+        function groupEntities(item){
+            if (item.id === null) {
+                return undefined; // no group
             }
-        ];
+
+            return ''; // separate group with no name
+        }
+
+        function filterBreakdown(option) {
+            if(!demandSourceTransparency) {
+                if(option.key == 'day' || option.key == 'sites') {
+                    return true;
+                }
+
+                return false;
+            }
+
+            if(!!$scope.selectedData.adNetwork && option.key == 'partners') {
+                return false;
+            }
+
+            if(!!$scope.selectedData.site && option.key == 'sites') {
+                return false;
+            }
+
+            return true;
+        }
+
+        /**
+         *
+         * @param {Array} data
+         * @param {String} [label]
+         * @returns {Array}
+         */
+        function addAllOption(data, label)
+        {
+            if (!angular.isArray(data)) {
+                throw new Error('Expected an array of data');
+            }
+
+            data.unshift({
+                id: null, // default value
+                name: label || 'All',
+                username: label || 'All' // username to for list sub publisher use
+            });
+
+            return data;
+        }
 
         function selectPublisher(publisherId) {
             $scope.selectedData.adNetwork = null;
-            $scope.selectedData.breakDown = null;
+            //$scope.selectedData.breakDown = null;
+            $scope.selectedData.site = null;
 
             getPartnerForPublisher(publisherId)
         }
 
+        function selectSubPublisher(subPublisherId) {
+            $scope.selectedData.adNetwork = null;
+            //$scope.selectedData.breakDown = null;
+            $scope.selectedData.site = null;
+        }
+
         function selectAdNetwork(adNetwork) {
-            if (!angular.isObject(adNetwork) || !adNetwork.reportTypes) {
+            if (!angular.isObject(adNetwork)) {
                 throw new Error('no report type');
             }
 
-            $scope.selectedData.reportType = null;
-            adNetworkSupportReportType = adNetwork.reportTypes;
+            $scope.selectedData.site = null;
+
+            if(!adNetwork.id) {
+                return
+            }
+
+            if($scope.selectedData.breakDown == 'partners') {
+                $scope.selectedData.breakDown = null;
+            }
+
+            getSitesForAdNetworkAndSubPublisher(adNetwork.id, $scope.selectedData.publisher);
         }
 
-        function selectReportType(reportType) {
-            $scope.selectedData.breakDown = null;
+        function getSitesForAdNetworkAndSubPublisher(adNetworkId, publisherId) {
+            if(adNetworkId == 'all') {
+                return;
+            }
 
-            // set breakDown when reportType support 1 break down
-            var listSupportForReportType = [];
-            angular.forEach($scope.breakdownOptions, function(breakDown, key) {
-                if(breakDown.supportReportType.indexOf(reportType.key) > -1) {
-                    listSupportForReportType.push(key)
-                }
-            });
+            AdNetworkManager.one(adNetworkId).one('sites').getList(null, {publisher: publisherId})
+                .then(function(datas) {
+                    var sites = [];
+                    angular.forEach(datas.plain(), function(data) {
+                        sites.push(data.site);
+                    });
 
-            if(listSupportForReportType.length == 1) {
-                var index = listSupportForReportType[0];
+                    addAllOption(sites, 'All Sites');
+                    $scope.optionData.sites = sites;
+                });
+        }
 
-                $scope.selectedData.breakDown = $scope.breakdownOptions[index].key;
-                selectBreakdownOption($scope.breakdownOptions[index]);
+        function selectSite(site) {
+            if(!!site.id && $scope.selectedData.breakDown == 'sites') {
+                $scope.selectedData.breakDown = null;
             }
         }
 
-        function filterReportTypeForAdNetwork(type) {
-            return adNetworkSupportReportType.indexOf(type.key) > -1
-        }
-
-        function filterDrillDownForReportType(option) {
-            return option.supportReportType.indexOf($scope.selectedData.reportType) > -1;
-        }
-
         function getPartnerForPublisher(publisherId) {
-            PartnerManager.getList({publisher: publisherId})
-                .then(function(partner) {
-                    $scope.optionData.adNetworks = partner.plain();
-                    //UISelectMethod.addAllOption($scope.optionData.adNetworks, 'Over All');
+            if(!demandSourceTransparency) {
+                return;
+            }
 
-                    _setAdNetworkSupport()
+            AdNetworkManager.getList({builtIn: true, publisher: publisherId})
+                .then(function(partner) {
+                    $scope.optionData.adNetworks = addAllOption(partner.plain(), 'All Demand Partners');
                 });
         }
 
@@ -198,6 +256,14 @@
                 return;
             }
 
+            if(params.publisher == userSession.id) {
+                params.publisher = null;
+            }
+
+            if(params.adNetwork == 'all') {
+                params.adNetwork = null;
+            }
+
             if (!params.date.endDate) {
                 params.date.endDate = !params.date.startDate ? moment().subtract(1, 'days').startOf('day') : params.date.startDate;
             }
@@ -216,33 +282,37 @@
                         $scope.optionData.publishers = users;
                     })
                 ;
-            } else {
-                PartnerManager.getList()
-                    .then(function(partner) {
-                        $scope.optionData.adNetworks = partner.plain();
-                        //UISelectMethod.addAllOption($scope.optionData.adNetworks, 'Over All');
+            }
 
-                        _setAdNetworkSupport();
+            if (!isSubPublisher && !isAdmin) {
+                subPublisherRestangular.one('subpublishers').getList()
+                    .then(function(users) {
+                        $scope.optionData.subPublishers = addAllOption(users.plain(), 'My Account');
                     });
+            }
+
+            if(!isAdmin) {
+                if(!!demandSourceTransparency) {
+                    AdNetworkManager.getList({builtIn: true})
+                        .then(function(adNetworks) {
+                            $scope.optionData.adNetworks = addAllOption(adNetworks.plain(), 'All Demand Partners');
+                        });
+                }
             }
 
             if(!$stateParams.startDate) {
                 unifiedReport.resetParams();
             }
 
-            if(!!$stateParams.publisher) {
+            if(!!$stateParams.publisher && isAdmin) {
                 getPartnerForPublisher($stateParams.publisher);
             }
 
-            update();
-        }
-
-        function _setAdNetworkSupport() {
-            if(!!$stateParams.adNetwork) {
-                var adNetwork = _.findWhere($scope.optionData.adNetworks, {id: $stateParams.adNetwork});
-
-                adNetworkSupportReportType = adNetwork.reportTypes;
+            if(!!$stateParams.publisher && !!$stateParams.adNetwork) {
+                getSitesForAdNetworkAndSubPublisher($stateParams.adNetwork, $stateParams.publisher);
             }
+
+            update();
         }
 
         init();

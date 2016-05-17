@@ -29,8 +29,8 @@
                     }
                 },
                 resolve: {
-                    sites: /* @ngInject */ function(SiteCache) {
-                        return SiteCache.getAllSites();
+                    sites: /* @ngInject */ function(SiteManager) {
+                        return SiteManager.one().get({page: 1});
                     }
                 },
                 ncyBreadcrumb: {

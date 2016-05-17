@@ -111,11 +111,40 @@
                     </div>
                 </div>
 
+                <div class="form-group" ng-if="hasModuleEnabled('MODULE_DISPLAY') || hasModuleEnabled('MODULE_ANALYTICS')">
+                    <label for="inputRate" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.BILLING_CONFIG' | translate }}</label>
+                    <div class="col-sm-10">
+                        <billing-config billing-configs="publisher.billingConfigs" publisher="publisher"></billing-config>
+                    </div>
+                </div>
+
                 <div class="form-group" ng-if="hasModuleEnabled('MODULE_DISPLAY')">
                     <label for="inputRate" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.BILLING_RATE' | translate }}</label>
                     <div class="col-sm-10">
                         <input server-error name="billingRate" ng-model="publisher.billingRate" type="number" class="form-control" id="inputRate" placeholder="{{ 'PUBLISHER_MODULE.DISPLAY_BILLING_RATE' | translate }}">
                         <span class="help-block">{{ 'PUBLISHER_MODULE.HELP_BLOCK_BILLING_RATE' | translate }}</span>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="hasModuleEnabled('MODULE_RTB') && exchanges.length">
+                    <label class="col-sm-2 control-label">{{ 'SITE_MODULE.EXCHANGES' | translate}}</label>
+                    <div class="col-sm-10">
+                        <div ng-repeat="exchange in exchanges" class="check_exchange">
+                            <label class="ui-checkbox"><input name="exchanges[]" type="checkbox" ng-click="toggleExchange(exchange)" ng-checked="hasExchange(exchange)">
+                                <span>{{ exchange.name }}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="hasModuleEnabled('MODULE_HEADER_BIDDING') && headerBiddings.length">
+                    <label class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.HEADER_BIDDING' | translate}}</label>
+                    <div class="col-sm-10">
+                        <div ng-repeat="headerBidding in headerBiddings" class="check_exchange">
+                            <label class="ui-checkbox"><input name="headerBidding[]" type="checkbox" ng-click="toggleHeaderBidding(headerBidding)" ng-checked="hasBidder(headerBidding)">
+                                <span>{{ headerBidding.name }}</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
 

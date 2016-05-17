@@ -8,14 +8,19 @@
 
         .constant('USER_ROLES', {
             admin: 'ROLE_ADMIN',
-            publisher: 'ROLE_PUBLISHER'
+            publisher: 'ROLE_PUBLISHER',
+            subPublisher: 'ROLE_SUB_PUBLISHER'
         })
 
         .constant('USER_MODULES', {
             displayAds: 'MODULE_DISPLAY',
-            video: 'MODULE_VIDEO',
+            video: 'MODULE_VIDEO_ANALYTICS',
             analytics: 'MODULE_ANALYTICS',
-            unified: 'MODULE_UNIFIED_REPORT'
+            source: 'MODULE_SOURCE_REPORT',
+            unified: 'MODULE_UNIFIED_REPORT',
+            subPublisher: 'MODULE_SUB_PUBLISHER',
+            rtb: 'MODULE_RTB',
+            headerBidding: 'MODULE_HEADER_BIDDING'
         })
 
         .constant('AUTH_EVENTS', {

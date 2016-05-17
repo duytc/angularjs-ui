@@ -7,7 +7,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">{{ 'AD_SLOT_MODULE.TYPE' | translate }}</label>
                     <div class="col-sm-10">
-                        <ui-select ng-model="selected.type" ng-required="true" on-select="selectType()" reset-search-input="'false'">
+                        <ui-select ng-model="selected.type" ng-required="true" on-select="selectType($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_TYPE' | translate }}">{{ $select.selected.label }}</ui-select-match>
                             <ui-select-choices repeat="type.key as type in types | filter:filterByAnalytics:type">
                                 {{ type.label }}
@@ -19,7 +19,7 @@
                 <div class="form-group" ng-if="allowPublisherSelection">
                     <label class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
                     <div class="col-sm-10">
-                        <ui-select ng-model="selected.publisher" ng-required="true" on-select="selectPublisher()" reset-search-input="'false'">
+                        <ui-select ng-model="selected.publisher" ng-required="true" on-select="selectPublisher($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
                             <ui-select-choices repeat="publisher in publishers | filter: { company: $select.search }">
                                 {{ publisher.company }}
@@ -28,12 +28,36 @@
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="selected.type == typeKey.adSlot || selected.type == typeKey.header">
+                <div class="form-group" ng-if="selected.type == typeKey.adSlot && !isSubPublisher()">
+                    <label class="col-sm-2 control-label">{{ 'TAG_GENERATOR_MODULE.GENERATE_FOR' | translate }}</label>
+                    <div class="col-sm-10">
+                        <ui-select ng-model="selected.generatorFor" on-select="selectGenerator($model)" reset-search-input="'false'">
+                            <ui-select-match placeholder="Select an option">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices repeat="generator.key as generator in generatorOptions">
+                                {{ generator.label }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="(selected.type == typeKey.adSlot || selected.type == typeKey.header) && selected.generatorFor == 'channel'">
+                    <label class="col-sm-2 control-label">{{ 'CHANNEL' | translate }}</label>
+                    <div class="col-sm-10">
+                        <ui-select name="site" ng-model="selected.channel" ng-required="true" on-select="selectChannel($item, $model)" ng-disabled="allowPublisherSelection && !selected.publisher" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'TAG_GENERATOR_MODULE.SELECT_A_CHANNEL_TO_GENERATE' | translate }}">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices repeat="channel in channelList | filter: { name: $select.search } | selectedPublisher:selected.publisher">
+                                {{ channel.name }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="(selected.type == typeKey.adSlot || selected.type == typeKey.header) && selected.generatorFor == 'site'">
                     <label class="col-sm-2 control-label">{{ 'SITE' | translate }}</label>
                     <div class="col-sm-10">
                         <ui-select name="site" ng-model="selected.site" ng-required="true" on-select="selectSite($item, $model)" ng-disabled="allowPublisherSelection && !selected.publisher" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'TAG_GENERATOR_MODULE.SELECT_A_SITE_TO_GENERATE' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices repeat="site in siteList | filter: { name: $select.search } | selectedPublisher:selected.publisher">
+                            <ui-select-choices infinite-scroll="addMoreItems()" infinite-scroll-container="'#reload'" id="reload" infinite-scroll-distance="200" refresh="searchItem($select.search)" refresh-delay="500" repeat="site in siteList | selectedPublisher:selected.publisher">
                                 {{ site.name }}
                             </ui-select-choices>
                         </ui-select>

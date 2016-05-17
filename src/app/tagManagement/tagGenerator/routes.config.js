@@ -8,7 +8,7 @@
     function addStates(UserStateHelperProvider) {
         UserStateHelperProvider
             .state('tagManagement.tagGenerator', {
-                url: '/generateTags?siteId',
+                url: '/generateTags?siteId&channelId',
                 views: {
                     'content@app': {
                         controller: 'TagGenerator',
@@ -16,10 +16,9 @@
                     }
                 },
                 resolve: {
-                    siteList: /* @ngInject */ function (SiteManager) {
-                        return SiteManager.getList();
+                    channelList: function(ChannelManager) {
+                        return ChannelManager.getList();
                     },
-
                     site: /* @ngInject */ function ($stateParams, SiteManager) {
                         var siteId = $stateParams.siteId;
 
@@ -29,13 +28,25 @@
 
                         return SiteManager.one(siteId).get();
                     },
+                    channel: /* @ngInject */ function ($stateParams, ChannelManager) {
+                        var channelId = $stateParams.channelId;
 
-                    jstags: /* @ngInject */ function (site) {
-                        if (!site) {
+                        if (!channelId) {
                             return null;
                         }
 
-                        return site.customGET('jstags');
+                        return ChannelManager.one(channelId).get();
+                    },
+                    jstags: /* @ngInject */ function (site, channel) {
+                        if (!site && !channel) {
+                            return null;
+                        }
+
+                        if(!!site) {
+                            return site.customGET('jstags');
+                        }
+
+                        return channel.customGET('jstags');
                     }
                 },
                 customResolve: {

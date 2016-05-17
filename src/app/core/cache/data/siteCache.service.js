@@ -33,7 +33,7 @@
         function getAllSites() {
             var siteList = siteCache.get('siteList');
 
-            if(!Auth.isAdmin() && !!siteList) {
+            if(!Auth.isAdmin() && !Auth.isSubPublisher() && !!siteList) {
                 return $filter('selectedPublisher')(siteList, Auth.getSession().id)
             }
 
@@ -64,7 +64,9 @@
                     publisher: siteList[idx].publisher,
                     domain: siteList[idx].domain,
                     enableSourceReport: siteList[idx].enableSourceReport,
-                    players: siteList[idx].players
+                    exchanges: siteList[idx].exchanges,
+                    players: siteList[idx].players,
+                    rtbStatus: siteList[idx].rtbStatus
                 };
             }
 

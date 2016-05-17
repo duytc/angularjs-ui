@@ -1,0 +1,43 @@
+<section class="panel panel-default">
+    <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong></div>
+    <div class="panel-body">
+        <div class="row">
+            <form name="userForm" class="col-lg-6 form-validation form-horizontal userForm" role="form" ng-submit="submit()" novalidate>
+                <div class="form-group">
+                    <label for="inputUsername" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.USERNAME' | translate }} <strong class="text-danger">*</strong></label>
+                    <div class="col-sm-10">
+                        <input server-error name="username" ng-model="subPublisher.username" ng-required="true" ng-minlength="2" type="text" autocomplete="off" class="form-control" id="inputUsername" placeholder="{{ 'PUBLISHER_MODULE.USERNAME' | translate }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.PASSWORD' | translate }} <strong class="text-danger" ng-if="isNew">*</strong></label>
+                    <div class="col-sm-10">
+                        <input server-error name="plainPassword" ng-model="subPublisher.plainPassword" ng-required="isNew" ng-minlength="2" type="password" autocomplete="off" class="form-control" id="inputPassword" placeholder="{{ 'PUBLISHER_MODULE.PASSWORD' | translate }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputRepeatPassword" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.REPEAT_PASSWORD' | translate }} <strong class="text-danger" ng-if="isNew">*</strong></label>
+                    <div class="col-sm-10">
+                        <input server-error name="inputRepeatPassword" ng-model="repeatPassword" ng-required="isNew" ng-minlength="2" type="password" autocomplete="off" class="form-control" id="inputRepeatPassword" placeholder="{{ 'PUBLISHER_MODULE.REPEAT_PASSWORD' | translate }}">
+                        <span class="help-block">{{ 'PUBLISHER_MODULE.HELP_BLOCK_REPEAT_PASSWORD' | translate }}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.EMAIL' | translate }} <strong class="text-danger">*</strong></label>
+                    <div class="col-sm-10">
+                        <input server-error ng-required="true" name="email" ng-model="subPublisher.email" type="email" class="form-control" id="inputEmail" placeholder="{{ 'PUBLISHER_MODULE.EMAIL' | translate }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
+                        <div ng-show="!isFormValid()" class="callout callout-info">
+                            <p>{{ 'VALID_FORM' | translate }}</p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

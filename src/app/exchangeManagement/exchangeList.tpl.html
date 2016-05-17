@@ -1,0 +1,48 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span>
+        <strong current-page-title></strong>
+
+        <div class="button-bar">
+            <button ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-plus"></span>
+                {{ 'EXCHANGE_MODULE.NEW_EXCHANGE' | translate }}
+            </button>
+        </div>
+
+        <div class="btn-group btnGrouped" dropdown>
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ui-sref="^.new">{{ 'EXCHANGE_MODULE.NEW_EXCHANGE' | translate }}</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <search-box show-query="true" sb-list="exchanges" search-fields="['id', 'name', 'canonicalName']"></search-box>
+
+    <div class="panel-body" ng-if="hasData()">
+        <div class="table-responsive">
+            <table class="table" at-sortable-query at-table at-paginated at-list="exchanges" at-config="tableConfig">
+                <thead></thead>
+                <tbody>
+                <tr>
+                    <td at-implicit at-title="#" at-sortable at-attribute="id"></td>
+                    <td at-title="{{ 'ACTIONS' | translate }}" at-attribute="action">
+                        <div class="btn-group" dropdown>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                            <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <li><a ui-sref="^.edit({ id: item.id })">{{ 'EXCHANGE_MODULE.EDIT_EXCHANGE' | translate }}</a></li>
+                                <li><a ng-click="confirmDeletion(item, $index)">{{ 'EXCHANGE_MODULE.DELETE_EXCHANGE' | translate }}</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td at-implicit at-title="{{ 'NAME' | translate }}" at-sortable at-attribute="name"></td>
+                    <td at-implicit at-title="{{ 'EXCHANGE_MODULE.CANONICAL_NAME' | translate }}" at-sortable at-attribute="canonicalName"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <at-pagination at-pagination-query ng-if="showPagination()" at-list="exchanges" at-config="tableConfig"></at-pagination>
+        </div>
+    </div>
+</div>

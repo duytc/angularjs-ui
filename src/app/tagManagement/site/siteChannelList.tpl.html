@@ -4,7 +4,7 @@
         <strong current-page-title></strong>
 
         <div class="button-bar">
-            <button class="btn btn-primary btn-sm" ng-click="addChannelForChannel()" type="button">
+            <button ng-if="!isSubPublisher()" class="btn btn-primary btn-sm" ng-click="addChannelForChannel()" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
                 {{ 'SITE_MODULE.ADD_CHANNELS_TO_SITE' | translate }}
             </button>
@@ -16,7 +16,7 @@
         <div class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ng-click="addChannelForChannel()">{{ 'SITE_MODULE.ADD_CHANNELS_TO_SITE' | translate }}</a></li>
+                <li ng-if="!isSubPublisher()"><a ng-click="addChannelForChannel()">{{ 'SITE_MODULE.ADD_CHANNELS_TO_SITE' | translate }}</a></li>
                 <li><a ng-click="backToListSite()">{{ 'SITE_MODULE.BACK_TO_SITE_LIST' | translate }}</a></li>
             </ul>
         </div>
@@ -35,9 +35,9 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li><a ui-sref="^.^.channel.edit({ id: item.id })">{{ 'CHANNEL_MODULE.EDIT_CHANNEL' | translate }}</a></li>
-                                <li><a ng-click="confirmDeletion(item, $index)">{{ 'CHANNEL_MODULE.DELETE_CHANNEL' | translate }}</a></li>
-                                <li><a ng-click="removeChannelFromSite(item, $index)">{{ 'SITE_MODULE.REMOVE_CHANNEL_FROM_SITE' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ui-sref="^.^.channel.edit({ id: item.id })">{{ 'CHANNEL_MODULE.EDIT_CHANNEL' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item, $index)">{{ 'CHANNEL_MODULE.DELETE_CHANNEL' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ng-click="removeChannelFromSite(item, $index)">{{ 'SITE_MODULE.REMOVE_CHANNEL_FROM_SITE' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>

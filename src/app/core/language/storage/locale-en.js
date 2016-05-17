@@ -22,12 +22,14 @@
 
             "NAME": "Name",
             "PUBLISHER": "Publisher",
-            "CHANNEL": "channel",
+            "SUB_PUBLISHER": "Sub Publisher",
+            "ACCOUNT": "Account",
+            "CHANNEL": "Channel",
             "CHANNELS": "Channels",
             "SITE": "Site",
             "SITES": "Sites",
-            "AD_NETWORK": "Ad Network",
-            "AD_NETWORKS": "Ad Networks",
+            "AD_NETWORK": "Demand Partner",
+            "AD_NETWORKS": "Demand Partners",
             "AD_SLOT": "Ad Slot",
             "AD_SLOTS": "Ad Slots",
             "RON_AD_SLOT": "RON Ad Slot",
@@ -38,10 +40,16 @@
             "DISPLAY_AD_SLOT": "Display Ad Slot",
             "DYNAMIC_AD_SLOT": "Dynamic Ad Slot",
             "NATIVE_AD_SLOT": "Native Ad Slot",
+            "STANDALONE_AD_SLOT": "Standalone Ad Slot",
             "AD_TAG": "Ad Tag",
             "AD_TAGS": "Ad Tags",
             "SEGMENT": "Report Segment",
             "SEGMENTS": "Report Segments",
+
+            "RTB_STATUS": "RTB",
+            "RTB_STATUS_INHERIT": "Inherit",
+            "RTB_STATUS_ENABLE": "Enable",
+            "RTB_STATUS_DISABLE": "Disable",
 
             "VIEW_TODAY_REPORT": "View Today's Report",
             "COPY_TO_CLIPBOARD": "Copy to Clipboard",
@@ -53,10 +61,13 @@
             },
             "NAVBAR": {
                 "DASHBOARD": "Dashboard",
+                "SUB_PUBLISHER_MANAGEMENT": "Publisher Management",
                 "PUBLISHER_MANAGEMENT": "Publisher Management",
                 "PUBLISHERS": "Publishers",
                 "NEW_PUBLISHER": "New Publisher",
-                "TAG_MANAGEMENT": "Tag Management",
+                "SUB_PUBLISHERS": "Sub Publishers",
+                "NEW_SUB_PUBLISHER": "New Sub Publisher",
+                "TAG_MANAGEMENT": "Account Management",
                 "GENERATE_TAGS": "Generate Tags",
                 "CHANNELS": "Channels",
                 "MY_CHANNELS": "My Channels",
@@ -67,26 +78,31 @@
                 "MY_AD_SLOTS": "My Ad Slots",
                 "MY_RON_AD_SLOTS": "My RON Ad Slots",
                 "RON_AD_SLOTS": "RON Ad Slots",
-                "AD_NETWORKS": "Ad Networks",
-                "MY_AD_NETWORKS": "My Ad Networks",
+                "AD_NETWORKS": "Demand Partners",
+                "MY_AD_NETWORKS": "My Demand Partners",
                 "AD_TAGS": "Ad Tags",
                 "NEW_CHANNEL": "New Channel",
                 "NEW_SITE": "New Site",
-                "NEW_AD_NETWORK": "New Ad Network",
+                "NEW_AD_NETWORK": "New Demand Partner",
                 "NEW_AD_SLOT": "New Ad Slot",
                 "NEW_RON_AD_SLOT": "New RON Ad Slot",
                 "NEW_AD_TAG": "New Ad Tag",
+                "EXCHANGE_MANAGEMENT": "Exchange Management",
+                "NEW_EXCHANGE": "New Exchange",
                 "TAG_LIBRARY": "Tag Library",
                 "REPORTS": "Reports",
+                "RTB_REPORTS": "RTB Reports",
                 "PERFORMANCE_REPORTS": "Performance Reports",
                 "SOURCE_REPORTS": "Source Reports",
                 "BILLING_REPORTS": "Billing Reports",
+                "UNIFIED_REPORTS": "Unified Reports",
                 "PROJECTED_BILL": "Projected Bill",
                 "TOOLS": "Tools",
                 "CPM_EDITOR": "Cpm Editor",
                 "CASCADE_MANAGER": "Cascade Manager",
                 "SOURCE_REPORT_CONFIG": "Source Report Config",
-                "ACTIVITY_LOG": "Activity Log"
+                "ACTIVITY_LOG": "Activity Log",
+                "EXCHANGES": "Exchanges"
             },
             "DASHBOARD_MODULE": {
                 "DATE_RANGE": "Date Range",
@@ -95,7 +111,7 @@
                 "TOP_PUBLISHERS": "Top Publishers",
                 "TOP_SITES": "Top Sites",
                 "TOP_PERFORMERS": "Top Performers",
-                "TOP_AD_NETWORKS": "Top Ad Networks",
+                "TOP_AD_NETWORKS": "Top Demand Partners",
 
                 "UPDATE_FAIL": "An error occurred while trying to request the dashboard",
                 "DAILY_OVERVIEW": "Daily Overview",
@@ -129,11 +145,15 @@
                 "COUNTRY": "Country",
                 "MODULES": "Modules",
                 "BILLING_RATE": "Billing Rate",
+                "HEADER_BIDDING": "Header Bidding",
                 "ENABLED": "Enabled",
                 "DISPLAY_BILLING_RATE": "Display billing Rate",
                 "ENABLE_HTTPS": "Enable Https",
+                "BILLING_CONFIG": "Billing Config",
+                "DEMAND_SOURCE_TRANSPARENCY": 'Demand Source Transparency',
 
-                "ADD_NEW_SUCCESS": "The publisher has been updated",
+                "ADD_NEW_SUCCESS": "The publisher has been created",
+                "UPDATE_SUCCESS": "The publisher has been updated",
                 "UPDATE_PROFILE_SUCCESS": "Your profile has been updated successfully",
                 "UPDATE_STATUS_FAIL": "Could not change publisher status",
                 "PAUSE_STATUS_SUCCESS": "The publisher has been deactivated",
@@ -148,16 +168,29 @@
                 "EDIT_PUBLISHER": "Edit Publisher",
                 "DEACTIVATE_PUBLISHER": "Deactivate Publisher",
                 "ACTIVATE_PUBLISHER": "Activate Publisher",
+                "ADD_NEW_SITE": "+ Add New Site",
 
                 "HELP_BLOCK_REPEAT_PASSWORD": "Leave it blank for no change",
                 "HELP_BLOCK_BILLING_RATE": "You can set a custom CPM rate for this publisher. If you do not set a custom rate, the rate is calculated from our rate card.",
                 "HELP_BLOCK_TAG_DOMAIN": "This will allow you to pull js tags data from your custom domain."
             },
+            "SUB_PUBLISHER_MODULE": {
+                "PARTNER_CONFIG": "Revenue Share",
+                "NONE": "None",
+                "FIXED_RATE": "Fixed Rate",
+                "PERCENTAGE": "Percentage",
+
+                "CONFIRM_DEMAND_SOURCE_REPORT_ON": "The sub publisher will see demand sources that are associated to their account through the unified reporting data.",
+                "HELP_BLOCK_DEMAND_SOURCE_REPORT": "If checked, the sub publisher will see demand sources that are associated to their account through the unified reporting data.",
+                "ENABLE_VIEW_TAGCADE_REPORT": "View Tagcade Report",
+                "HELP_BLOCK_ENABLE_VIEW_TAGCADE_REPORT": 'If checked, the sub publisher will be able to see tagcade and comparison report in unified report.'
+            },
             "TAG_GENERATOR_MODULE": {
                 "GUIDE_COPY_HEADER": "To enable source reports, copy and paste the following tag into the <head> section of your website.",
                 "GUIDE_COPY_BODY": "Copy and paste the following ad tags into the <body> section of your website.",
-                "GUIDE_PASSBACK": "Give the following tag to your ad networks as a passback/default/fallback tag for display ads.",
+                "GUIDE_PASSBACK": "Give the following tag to your demand partners as a passback/default/fallback tag for display ads.",
                 "SELECT_A_SITE_TO_GENERATE": "Select a site to generate tags for...",
+                "SELECT_A_CHANNEL_TO_GENERATE": "Select a channel to generate tags for...",
 
                 "EXPORT_TAG": "Export Tags",
                 "TAGS_FOR_SITE": "Tags for {{ name }}",
@@ -165,9 +198,11 @@
                 "TAGS_FOR_RON_AD_SLOT": "Tags for RON ad slot",
                 "HEADER": "Header",
                 "AD_SLOT_TYPE": "Ad Slot Type",
-                "SELECT_A_AD_SLOT_TYPE": "Select a ad slot type"
+                "SELECT_A_AD_SLOT_TYPE": "Select a ad slot type",
+                "GENERATE_FOR": "Generate for"
             },
             "CHANNEL_MODULE": {
+                "SELECT_A_CHANNEL": "Select a channel",
                 "ADD_NEW_SUCCESS": "The channel has been created",
                 "UPDATE_SUCCESS": "The channel has been updated",
                 "UPDATE_FAIL": "The channel could not be updated",
@@ -191,11 +226,15 @@
                 "NEW_CHANNEL": "New Channel",
                 "REMOVE_SITE_FROM_CHANNEL": "Remove Site from Channel",
 
-                "PLACEHOLDER_CHANNEL_NAME": "Channel name"
+                "PLACEHOLDER_CHANNEL_NAME": "Channel name",
+
+                "HELP_BLOCK_RTB": "Enable RTB for all sites in this channel."
             },
             "SITE_MODULE": {
                 "DOMAIN": "Domain",
                 "VIDEO_PLAYERS": "Video Players",
+                "RTB": "RTB",
+                "EXCHANGES" : "Exchanges",
 
                 "ADD_NEW_SUCCESS": "The site has been created",
                 "UPDATE_SUCCESS": "The site has been updated",
@@ -227,57 +266,68 @@
                 "ALL_SITES" : "All Sites",
                 "AUTO_CREATED_SITES": "Auto Created Sites",
                 "MANUALLY_CREATED_SITES": "Manually Created Sites",
-                "HELP_BLOCK_SOURCE_REPORT": "If checked, source reports will be created every day for this site"
+                "HELP_BLOCK_SOURCE_REPORT": "If checked, source reports will be created every day for this site",
+                "HELP_BLOCK_RTB": "Enable RTB for this site or inherit the RTB config from any channels associated with this site."
             },
             "AD_NETWORK_MODULE": {
                 "URL": "Url",
-
-                "ADD_NEW_SUCCESS": "The ad network has been created",
-                "UPDATE_SUCCESS": "The ad network has been updated",
-                "UPDATE_FAIL": "The ad network could not be updated",
-                "UPDATE_STATUS_FAIL": "Could not change ad network status",
-                "PAUSE_STATUS_SUCCESS": "The ad network has been paused. There may be a short delay before the associated ad tags are paused.",
-                "ACTIVE_STATUS_SUCCESS": "The ad network has been activated",
-                "CURRENTLY_NO_AD_NETWORK": "There is currently no ad network",
-                "CURRENTLY_NO_SITES_AD_NETWORK": "Ad network : ' {{ ad_network_name }} ' does not have sites",
-                "CONFIRM_PAUSE_AD_NETWORK": "Are you sure you want to pause this ad network?",
-                "NOTE_CONFIRM_PAUSE_AD_NETWORK": "Every ad tag associated with this ad network will be also paused.",
+                "BUILT_IN_PARTNER" : "Built-in Partner",
+                "CUSTOM": "Custom",
+                "FROM": "From",
+                "IMPRESSION_CAP": "Impression Cap",
+                "NETWORK_OPPORTUNITY_CAP": "Opportunity Cap",
+                "ENABLE_UNIFIED_REPORT": "Unified Report",
+                "PAGE_TITLE_AD_NETWORKS": "Demand Partners",
+                "ADD_NEW_SUCCESS": "The demand partner has been created",
+                "UPDATE_SUCCESS": "The demand partner has been updated",
+                "UPDATE_FAIL": "The demand partner could not be updated",
+                "UPDATE_STATUS_FAIL": "Could not change demand partner status",
+                "PAUSE_STATUS_SUCCESS": "The demand partner has been paused. There may be a short delay before the associated ad tags are paused.",
+                "ACTIVE_STATUS_SUCCESS": "The demand partner has been activated",
+                "CURRENTLY_NO_AD_NETWORK": "There is currently no demand partners",
+                "CURRENTLY_NO_SITES_AD_NETWORK": "Demand Partner : ' {{ ad_network_name }} ' does not have sites",
+                "CONFIRM_PAUSE_AD_NETWORK": "Are you sure you want to pause this demand partner?",
+                "NOTE_CONFIRM_PAUSE_AD_NETWORK": "Every ad tag associated with this demand partner will be also paused.",
                 "CONFIRM_PAUSE_SITE": "Are you sure you want to pause this site?",
-                "NOTE_CONFIRM_PAUSE_SITE": "Every ad tag associated with this ad network and site will be also paused.",
+                "NOTE_CONFIRM_PAUSE_SITE": "Every ad tag associated with this demand partner and site will be also paused.",
 
                 "MANAGE_AD_TAGS": "Manage Ad Tags",
-                "EDIT_AD_NETWORK": "Edit Ad Network",
-                "SITES_FOR_AD_NETWORK": "Sites for ad network",
-                "PLACEHOLDER_AD_NETWORK_NAME": "Ad network name",
-                "PLACEHOLDER_AD_NETWORK_URL": "An optional url to this ad network",
-                "NEW_AD_NETWORK": "New Ad Network",
-                "DROPDOWN_ACTIVE": "Activate Ad Network",
-                "DROPDOWN_PAUSE": "Pause Ad Network",
-                "DROPDOWN_VISIT_AS_NETWORK": "Visit Ad Network",
-                "ADD_NEW_AD_NETWORK": "+ Add New Ad Network",
+                "EDIT_AD_NETWORK": "Edit Demand Partner",
+                "SITES_FOR_AD_NETWORK": "Sites for Demand Partner",
+                "PLACEHOLDER_AD_NETWORK_NAME": "Demand Partner name",
+                "PLACEHOLDER_AD_NETWORK_URL": "An optional url to this Demand Partner",
+                "PLACEHOLDER_IMPRESSION_CAP": "An optional impression cap for this Demand Partner",
+                "PLACEHOLDER_NETWORK_OPPORTUNITY_CAP": "An optional network opportunity cap for this Demand Partner",
+                "NEW_AD_NETWORK": "New Demand Partner",
+                "DROPDOWN_ACTIVE": "Activate Demand Partner",
+                "DROPDOWN_PAUSE": "Pause Demand Partner",
+                "DROPDOWN_VISIT_AS_NETWORK": "Visit Demand Partner",
+                "ADD_NEW_AD_NETWORK": "+ Add New Demand Partner",
 
-                "BACK_TO_AD_NETWORK_LIST": "Back to Ad Network List",
+                "BACK_TO_AD_NETWORK_LIST": "Back to Demand Partner List",
                 "ACTIVE_AD_TAGS_COUNT": "Active Ad Tags",
                 "PAUSE_AD_TAGS_COUNT": "Paused Ad Tags",
-                "PAUSE_AD_NETWORK_BY_SITE": "Pause Ad Network by Sites",
+                "PAUSE_AD_NETWORK_BY_SITE": "Pause Demand Partner by Sites",
                 "YES_PAUSE": "Yes, pause",
-                "SELECT_A_AD_NETWORK": "Select a ad network",
+                "SELECT_A_AD_NETWORK": "Select a Demand Partner",
 
-                "HELP_BLOCK_URL": "You can use this field to add the login url for your ad network."
+                "HELP_BLOCK_URL": "You can use this field to add the login url for your demand partner.",
+                "HELP_BLOCK_ENABLE_UNIFIED": "Check to enable unified report for this demand partner",
+                "BLANK_FOR_NO_CHANGE":  "Leave it blank for no change"
             },
             "AD_SLOT_MODULE": {
                 "NATIVE": "Native",
                 "DEFAULT_AD_SLOT": "Default Ad Slot",
                 "TYPE": "Type",
-                "IN_LIBRARY": "In Library",
-                "FROM_LIBRARY": "From Library",
-                "LIBRARY_AD_SLOT": "Library Ad Slot",
+                "IN_LIBRARY": "In Standalone",
+                "FROM_LIBRARY": "From Standalone",
                 "WIDTH": "Width",
                 "HEIGHT": "Height",
                 "EXPRESSION_BUILDER": "Expression Builder",
                 "SIZE": "Size",
                 "AUTO_FIT": "Auto Fit",
                 "PASSBACK_MODE": "Passback Mode",
+                "FLOOR_PRICE": "Floor Price",
 
                 "ADD_NEW_SUCCESS": "The ad slot has been created",
                 "ADD_NEW_FAIL": "An error occurred. The ad slot could not be created",
@@ -288,9 +338,7 @@
                 "DELETE_SUCCESS": "The ad slot was deleted",
                 "DELETE_FAIL": "The ad slot could not be deleted",
                 "CONFIRM_DELETE_AD_SLOT": "Are you sure you want to delete this ad slot?",
-                "CURRENTLY_NO_AD_SLOT": "There is currently no ad slots in this site",
-                "MOVED_TO_LIBRARY_SUCCESS": "The ad slot has been moved to the library",
-                "MOVED_TO_LIBRARY_FAIL": "The ad slot has not been moved to the library",
+                "CURRENTLY_NO_AD_SLOT": "There is currently no ad slots",
 
                 "BACK_TO_AD_SLOT_LIST": "Back to Ad Slot List",
                 "SELECT_A_TYPE": "Select a type",
@@ -304,15 +352,19 @@
                 "EDIT_AD_SLOT": "Edit Ad Slot",
                 "CLONE_AD_SLOT": "Clone Ad Slot",
                 "DELETE_AD_SLOT": "Delete Ad Slot",
-                "MOVE_TO_LIBRARY": "Move To Library",
-                "EDIT_AD_SLOT_IN_LIBRARY": "Edit Ad Slot in The Library",
+                "MOVE_TO_LIBRARY": "Make Standalone",
+                "EDIT_AD_SLOT_IN_LIBRARY": "Edit Ad Slot",
                 "NEW_AD_SLOT": "New Ad Slot",
+                "MOVED_TO_LIBRARY_SUCCESS": "The ad slot has been moved to the Standalone Ad Slot",
+                "MOVED_TO_LIBRARY_FAIL": "The ad slot has not been moved to the Standalone Ad Slot",
 
                 "PLACEHOLDER_AD_SLOT_NAME": "Ad Slot name",
                 "HELP_BLOCK_COPY_TAG": "Copy and paste the following ad tag into the <body> section of your website.",
                 "HELP_BLOCK_FROM_LIBRARY": "You can select an existing ad slot from your library. If you choose this option, all of the fields below will not be editable. If you would like to change these fields, you may do so the the Tag Library section.",
                 "HELP_BLOCK_DEFAULT_AD_SLOT": "If no default ad slot is selected and no expressions match, the ad slot will not be shown on the page.",
-                "HELP_BLOCK_AUTO_FIT": "When Auto Fit is enabled, the ad slot will dynamically resize if the ad served is different from the size defined above."
+                "HELP_BLOCK_AUTO_FIT": "When Auto Fit is enabled, the ad slot will dynamically resize if the ad served is different from the size defined above.",
+                "HELP_BLOCK_FLOOR_PRICE": "If the RTB bid price is lower than this amount, the ad tag waterfall will serve instead.",
+                "HELP_BLOCK_RTB": "Enable RTB for this ad slot or inherit the RTB config from the associated site."
             },
             "RON_AD_SLOT_MODULE": {
                 "CURRENTLY_NO_RON_AD_SLOT": "There is currently no RON ad slots",
@@ -327,16 +379,23 @@
                 "REFERENCE_LIBRARY_AD_SLOT": "Reference Library",
                 "LIBRARY_AD_SLOT": "Library Ad Slot",
                 "BACK_TO_AD_SLOT_LIST": "Back to RON Ad Slot List",
-                "SELECT_LIBRARY_AD_SLOT": "Select library ad slot",
+                "SELECT_A_STANDALONE_AD_SLOT": "Select a standalone ad slot",
+                "SELECT_SEGMENTS": "Custom Report Segments",
+                "SELECT_PUBLISHER_SEGMENTS": "Sub Publisher",
+
                 "PICK_FROM_LIBRARY": "Pick from library",
                 "NEW_RON_AD_SLOT": "New RON Ad Slot",
                 "EDIT_RON_AD_SLOT": "Edit RON Ad Slot",
-                "DELETE_RON_AD_SLOT": "Delete RON Ad Slot",
+                "DELETE_RON_AD_SLOT": "Delete Ad Slot",
                 "SEGMENTS": "Report Segments",
                 "SHOW_DETAILS": 'Show Details',
                 "SEGMENT_NOTHING_IS_SELECTED": 'Nothing is selected',
+
+                "HELP_BLOCK_SELECT_STANDALONE_AD_SLOT": "A RON ad slot gets its configuration from a standalone ad slot. You must create a standalone ad slot first if the above drop down is blank",
                 "HELP_BLOCK_SELECT_SEGMENT": "You can create custom report segments above. To create new segments, enter in a text value and press enter. You may repeat this process to create more segments",
-                "HELP_BLOCK_GLOBAL": "You can generate unique tags for each report segment. The Global segment is the default report segment and should be used when you do not have any custom segments or do not want to track a specific segment."
+                "HELP_BLOCK_GLOBAL": "You can generate unique tags for each report segment. The Global segment is the default report segment and should be used when you do not have any custom segments or do not want to track a specific segment.",
+                "HELP_BLOCK_RTB": "Enable RTB for this RON ad slot.",
+                "HELP_BLOCK_SELECT_SUB_PUBLISHER_SEGMENT": "Select to enable publisher's report"
             },
             "SEGMENT_MODULE": {
                 "CURRENTLY_SEGMENT": "There is currently no report segments in the library",
@@ -357,8 +416,6 @@
                 "CHANGE_STATUS_FAIL": "Could not change ad tag status",
                 "REORDERED_AD_TAG_FAIL": "The ad tags could not be reordered",
                 "REORDERED_AD_TAG_SUCCESS": "The ad tags have been reordered",
-                "MOVED_TO_LIBRARY_SUCCESS": "The ad tag has been moved to the library",
-                "MOVED_TO_LIBRARY_FAIL": "The ad tag has not been moved to the library",
                 "CONFIRM_DELETE_AD_TAG": "Are you sure you want to delete this ad tag?",
                 "CURRENTLY_NO_AD_TAG": "There is currently no ad tags in this ad slot",
 
@@ -366,6 +423,7 @@
                 "FROM_LIBRARY": "From Library",
                 "LIBRARY_AD_TAG": "Library Ad Tag",
                 "SELECT_AN_AD_TAG_FROM_LIBRARY": "Select an ad tag from library",
+                "SELECT_A_AD_TAG": "Select a ad tag",
                 "AD_TYPE": "Ad Type",
                 "CUSTOM_AD": "Custom Ad",
                 "IMAGE_AD": "Image Ad",
@@ -378,6 +436,8 @@
                 "FREQUENCY_CAP": "Frequency Cap",
                 "ACTIVE": "Active",
                 "AD_TAG_NAME": "Ad tag name",
+                "PARTNER_TAG_SIZE": "Partner Tag Size",
+                "PARTNER_TAG_ID": "Partner Tag ID",
 
                 "ENABLE_DRAG_DROP": "Enable Drag/Drop",
                 "NEW_AD_TAG": "New Ad Tag",
@@ -390,6 +450,7 @@
                 "MOVE_TO_LIBRARY": "Move To Library",
                 "EDIT_AD_TAG_IN_LIBRARY": "Edit Ad Tag in The Library",
                 "SPLIT_GROUP": "Split Group",
+                "LIBRARY_AD_SLOT": "Standalone Ad Slot",
 
                 "HELP_BLOCK_FROM_LIBRARY": "You can select an existing ad tag from your library. If you choose this option some of the fields below will not be editable. If you would like to change these fields, you may do so the the Tag Library section.",
                 "HELP_BLOCK_FREQUENCY_CAP": "Maximum number of network opportunities per day per user for this ad tag, leave blank for no cap.",
@@ -398,6 +459,10 @@
                 "HELP_BLOCK_CACHE_BUSTER": "A unique code that ensures URLs are unique",
                 "HELP_BLOCK_PAGE_URL": "The url of the current page",
                 "HELP_BLOCK_DOMAIN": "The domain of the current website",
+                "HELP_BLOCK_SLOT_ID": "The ad slot ID of the current tag",
+                "HELP_BLOCK_PARTNER_TAG_ID": "This is the ad tag id provided by your ad network partner. You have to fill in value for this field in order to see comparison between our report and your ad network partner report",
+                "HELP_BLOCK_AUTO_POSITION": "If Shift down is checked, all ad tags at the same or higher position will be shifted down.",
+                "SHIFT_DOWN": "Shift Down",
 
                 "GUIDE_DRAG_DROP_TITLE": "You can drag and drop to re-order your ad tags.",
                 "GUIDE_DRAG_DROP_GROUP_AD_TAG": "To move all ad tags from one position group to another, click and drag the gray position header bar up and down.",
@@ -405,35 +470,24 @@
                 "GUIDE_SPLIT_GROUP": "To quickly remove an ad tag from a position group, click on Actions > Split Group."
             },
             "AD_SLOT_LIBRARY_MODULE": {
-                "REMOVE_SUCCESS": "The ad slot was removed from the library successfully",
-                "REMOVE_FAIL": "Could not remove the ad slot from the library",
-                "AD_SLOT_FOR_SITE_SUCCESS": "New ad slots have been added to the selected sites",
-                "AD_SLOT_FOR_SITE_FAIL": "Could not add new ad slots",
-                "CURRENTLY_NO_AD_SLOT": "There is currently no ad slots in the library",
-                "CURRENTLY_NO_AD_SLOT_ASSOCIATED": "This ad slot is currently not linked to any sites",
-                "ALERT_CREATE_LINKED_AD_SLOTS_FULL_SITE": "Every site already has a link to this ad slot",
+                "REMOVE_SUCCESS": "The ad slot was removed successfully",
+                "REMOVE_FAIL": "Could not remove the standalone ad slot",
+                "AD_SLOT_FOR_SITE_SUCCESS": "This ad slot has been deployed to the selected sites",
+                "AD_SLOT_FOR_SITE_FAIL": "Could not deploy the ad slot",
+                "CURRENTLY_NO_AD_SLOT": "There is currently no standalone ad slots",
+                "CURRENTLY_NO_AD_SLOT_ASSOCIATED": "This standalone ad slot is currently not deployed to any sites",
+                "ALERT_CREATE_LINKED_AD_SLOTS_FULL_SITE": "This ad slot is already deployed on every site",
 
-                "TITLE_CREATE_LINKED_AD_SLOTS": "Create Linked Ad Slots",
+                "TITLE_CREATE_LINKED_AD_SLOTS": "Deploy standalone Ad Slot",
                 "CREATE_RON_AD_SLOT": "Create RON Ad Slot",
                 "EDIT_RON_AD_SLOT": "Edit RON Ad Slot",
                 "GO_TO_SITE": "Go To Site",
-                "IN_RON_AD_SLOT": "Ron Ad Slot",
+                "IN_RON_AD_SLOT": "RON Ad Slot",
 
-                "CREATE_LINKED_AD_SLOTS": "Create Linked Ad Slots",
-                "VIEW_LINKED_AD_SLOTS": "View Linked Ad Slots",
-                "LINKED_AD_SLOTS": "Linked Ad Slots"
-            },
-            "AD_TAG_LIBRARY_MODULE": {
-                "REMOVE_SUCCESS": "The ad tag was removed from the library successfully",
-                "REMOVE_FAIL": "Could not remove ad tag from library",
-                "CURRENTLY_NO_AD_TAG": "There is currently no ad tags in the library",
-                "CURRENTLY_NO_AD_TAG_ASSOCIATED": "This ad tag is currently not linked to any other ad tag",
-
-                "LIBRARY_AD_SLOT": "Library Ad Slot",
-
-                "GO_TO_AD_SLOT": "Go To Ad Slot",
-                "VIEW_LINKED_AD_TAGS": "View Linked Ad Tags",
-                "LINKED_AD_TAGS": "Linked Ad Tags"
+                "CREATE_LINKED_AD_SLOTS": "Deploy This Ad Slot",
+                "VIEW_LINKED_AD_SLOTS": "View Deployments",
+                "LINKED_AD_SLOTS": "Deployments",
+                "WARNING_EDIT_LIBRARY": "This ad slot is deployed to multiple sites. Modifying this ad slot will result in the changes being propagated to all sites that run this ad slot."
             },
             "REPORT": {
                 "DATE_RANGE": "Date Range",
@@ -447,7 +501,7 @@
                 "DAILY_AD_SLOT_BREAKDOWN": "Daily Ad Slot Breakdown",
                 "DAILY_RON_AD_SLOT_BREAKDOWN": "Daily RON Ad Slot Breakdown",
                 "DAILY_AVERAGES": "Daily Averages",
-                "AD_NETWORK_BREAKDOWN": "Ad Network Breakdown",
+                "AD_NETWORK_BREAKDOWN": "Demand Partner Breakdown",
                 "SITE_BREAKDOWN": "Site Breakdown",
                 "SEGMENT_BREAKDOWN": "Report Segment Breakdown",
                 "AD_SLOT_BREAKDOWN": "Ad Slot Breakdown",
@@ -464,6 +518,7 @@
                 "SLOT_OPPORTUNITIES": "Slot Opportunities",
                 "NETWORK_OPPORTUNITIES": "Network Opportunities",
                 "IMPRESSIONS": "Impressions",
+                "RTB_IMPRESSIONS": "RTB Impressions",
                 "PASSBACKS": "Passbacks",
                 "FILL_RATE": "Fill Rate",
                 "BILLED_CPM_RATE": "Billed CPM Rate",
@@ -478,6 +533,7 @@
                 "POSITION": "Position",
 
                 "PROJECTED_BILL": "Projected Bill",
+                "PRODUCT": "Product",
 
                 "REPORTS_EMPTY": "There are no reports for that selection",
                 "REPORT_FAIL": "An error occurred trying to request the report"
@@ -489,14 +545,14 @@
 
                 "UPDATE_CPM": "Update CPM",
                 "TITLE_UPDATE_CPM": "Update CPM",
-                "TITLE_AD_NETWORK_INFO": "Ad Network Info",
+                "TITLE_AD_NETWORK_INFO": "Demand Partner Info",
                 "TITLE_AD_SLOT_INFO": "Ad Slot Info",
                 "TITLE_AD_TAG_INFO": "Ad Tag Info",
                 "TITLE_SITE_INFO": "Site Info",
                 "TITLE_PUBLISHER_INFO": "Publisher Info",
                 "TITLE_SEGMENT_INFO": "Report Segment Info",
 
-                "AD_NETWORK_INFO": "Ad Network Info",
+                "AD_NETWORK_INFO": "Demand Partner Info",
                 "AD_SLOT_INFO": "Ad Slot Info",
                 "RON_AD_SLOT_INFO": "RON Ad Slot Info",
                 "AD_TAG_INFO": "Ad Tag Info",
@@ -504,14 +560,14 @@
                 "PUBLISHER_INFO": "Publisher Info",
 
                 "DRILL_DOWN": "Drill Down",
-                "EDIT_THIS_AD_NETWORK": "Edit This Ad Network",
+                "EDIT_THIS_AD_NETWORK": "Edit This Demand Partner",
                 "EDIT_THIS_AD_SLOT": "Edit This AdSlot",
-                "EDIT_THIS_RON_AD_SLOT": "Edit This RON AdSlot",
+                "EDIT_THIS_RON_AD_SLOT": "Edit This RON Ad Slot",
                 "EDIT_THIS_AD_TAG": "Edit This AdTag",
                 "EDIT_THIS_SITE": "Edit This Site",
                 "EDIT_THIS_PUBLISHER": "Edit This Publisher",
 
-                "EDIT_AD_NETWORK": "Edit Ad Network",
+                "EDIT_AD_NETWORK": "Edit Demand Partner",
                 "EDIT_AD_SLOT": "Edit Ad Slot",
                 "EDIT_RON_AD_SLOT": "Edit RON Ad Slot",
                 "EDIT_AD_TAG": "Edit AdTag",
@@ -558,21 +614,32 @@
                 "VIDEO_AD_CLICKS": "Video Ad Clicks"
             },
             "UNIFIED_REPORT_MODULE": {
-                "AVERAGES": "Averages",
-                "BACKUP_IMPS": "Backup Impressions",
-                "AVG_CPM": "Avg Cpm",
-                "FILL_RATE": "Fill Rate",
-                "PAID_IMPS": "Paid Impressions",
-                "REVENUE": "Revenue",
-                "TOTAL_IMPS": "Total Impressions",
-                "SIZE": "Size",
+                "PARTNER_REQUESTS":         "Requests",
+                "TAGCADE_OPPORTUNITIES":    "Tagcade Opportunities",
+                "OPPORTUNITY_COMPARISON":   "Opportunity Comparison",
+                "PARTNER_PASSBACKS":        "Partner Passbacks",
+                "TAGCADE_PASSBACKS":        "Tagcade Passbacks",
+                "PASSBACK_COMPARISON":      "Passback Comparison",
+                "PARTNER_ECPM":             "Partner ECPM",
+                "TAGCADE_ECPM":             "Tagcade ECPM",
+                "ECPM_COMPARISON":          "ECPM Comparison",
+                "REVENUE_OPPORTUNITY":      "Revenue Opportunity",
+                "IMPRESSION_COMPARISON":    "Impression Comparison",
 
                 "SEARCH": "Search",
-                "AD_TAG_GROUP": "Ad Tag Group",
-                "COUNTRY": "Country",
-                "CPM": "Cpm",
-                "PUB_PAYOUT": "Pub Payout",
-                "ASK_PRICE": "Ask Price"
+                "DETAILS": "Details",
+                "AVERAGES": "Averages",
+                "FILL_RATE": "Fill Rate",
+                "REVENUE": "Revenue",
+                "CPM": "CPM",
+
+                "UNIFIED": "Unified",
+                "TAGCADE": "Tagcade",
+                "DISCREPANCIES": "Comparison"
+            },
+            "RTB_REPORT_MODULE": {
+                "EARNED_AMOUNT": "Earned Amount",
+                "OPPORTUNITIES": "Opportunities"
             },
             "ACTION_LOG_MODULE": {
                 "DATE_RANGE": "Date Range",
@@ -592,7 +659,7 @@
             "CASCADE_MODULE": {
                 "POSITION": "Position",
                 
-                "UPDATE_SUCCESS": "The ad network position has been updated",
+                "UPDATE_SUCCESS": "The Demand Partner position has been updated",
                 "UPDATE_FAIL": "An error occurred. The position could not be updated"
             },
             "CPM_EDITOR_MODULE": {
@@ -610,8 +677,8 @@
 
                 "UPDATE_EMAIL_SUCCESS": "The email config has been updated",
                 "UPDATE_EMAIL_FAIL": "The email config could not be updated",
-                "CLONE_EMAIL_SUCCESS": "The email config has been clone",
-                "CLONE_EMAIL_FAIL": "The email config could not be clone",
+                "CLONE_EMAIL_SUCCESS": "The email config has been cloned",
+                "CLONE_EMAIL_FAIL": "The email config could not be cloned",
                 "DELETE_EMAIL_SUCCESS": "The email config has been deleted",
                 "DELETE_EMAIL_FAIL": "The email config could not be deleted",
                 "CURRENTLY_NO_SITE_CONFIG": "There is currently no site config",
@@ -644,6 +711,21 @@
                 "STATUS": "Status",
                 "PLACEHOLDER_EMAIL_ADDRESS": "Email Address",
                 "ADD_ANOTHER_EMAIL": "Add another email"
+            },
+            "EXCHANGE_MODULE": {
+                "CANONICAL_NAME": "Abbreviation",
+                "ADD_NEW_SUCCESS": "The exchange has been created",
+                "UPDATE_SUCCESS": "The exchange has been updated",
+                "UPDATE_FAIL": "The exchange could not be updated",
+                "CONFIRM_DELETE_EXCHANGE": "Are you sure you want to delete this exchange?",
+                "DELETE_SUCCESS": "The exchange was deleted",
+                "DELETE_FAIL": "The exchange could not be deleted",
+                "CURRENTLY_NO_SITES": "There is currently no exchanges",
+
+                "EDIT_EXCHANGE": "Edit Exchange",
+                "DELETE_EXCHANGE": "Delete Exchange",
+                "NEW_EXCHANGE": "New Exchange",
+                "HELP_BLOCK_CANONICAL_NAME": "This abbreviation will be used in the auction service configuration in order to enable this exchange"
             },
             "ERROR_PAGE": {
                 "400": "An invalid request was sent to the server",

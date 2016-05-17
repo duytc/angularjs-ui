@@ -107,7 +107,7 @@
                 }
             })
             .state('tagLibrary.adTag.nativeList', {
-                url: '/native/list/{adSlotId:[0-9]+}',
+                url: '/native/list/{adSlotId:[0-9]+}?from',
                 views: {
                     'content@app': {
                         controller: 'NativeAdTagList',
@@ -129,7 +129,7 @@
                 }
             })
             .state('tagLibrary.adTag.displayList', {
-                url: '/display/list/{adSlotId:[0-9]+}',
+                url: '/display/list/{adSlotId:[0-9]+}?from',
                 params: {
                     uniqueRequestCacheBuster: null
                 },

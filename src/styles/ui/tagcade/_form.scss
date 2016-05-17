@@ -25,16 +25,21 @@
   padding-left: 30px !important;
 }
 
-.disabledForm {
-  [disabled="disabled"] {
-    cursor: not-allowed;
-  }
-  .CodeMirror, .CodeMirror-code, .cm-tag, .CodeMirror-lines {
-    cursor: not-allowed !important;
-  }
-}
-
 .check_video_player {
   float: left;
   width: 150px
+}
+
+.check_exchange{
+  float: left;
+  width: 200px;
+  height: 40px !important;
+}
+
+.input-group-fixed-width {
+  width: 100% !important;
+
+  .input-group-addon {
+    width: 34px !important;
+  }
 }

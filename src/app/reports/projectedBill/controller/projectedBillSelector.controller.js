@@ -8,11 +8,14 @@
     function ProjectedBillSelector($scope, $translate, $q, $state, _, Auth, UserStateHelper, AlertService, projectedBillService, ReportParams, REPORT_TYPES, selectorFormCalculator) {
         var toState;
         var isAdmin = Auth.isAdmin();
+        var isSubPublisher = Auth.isSubPublisher();
+
         $scope.isAdmin = isAdmin;
 
         var selectedData = {
+            product: 'display',
             reportType: null,
-            publisherId: null,
+            publisherId: isSubPublisher || null,
             siteId: null
         };
 
@@ -30,18 +33,32 @@
         $scope.selectReportType = selectReportType;
         $scope.reportTypes = REPORT_TYPES;
 
-        var reportTypeOptions = [
+        $scope.productOptions = [
             {
-                key: REPORT_TYPES.account,
-                label: 'Account',
-                toState: 'reports.projectedBill.account'
+                key: 'display',
+                label: 'Display'
             },
+            //{
+            //    key: 'source',
+            //    label: 'Source'
+            //}
+        ];
+
+        var reportTypeOptions = [
             {
                 key: REPORT_TYPES.site,
                 label: 'Site',
                 toState: 'reports.projectedBill.site'
             }
         ];
+
+        if (!isSubPublisher) {
+            reportTypeOptions.unshift({
+                key: REPORT_TYPES.account,
+                label: 'Account',
+                toState: 'reports.projectedBill.account'
+            });
+        }
 
         if (isAdmin) {
             reportTypeOptions.unshift({

@@ -83,9 +83,9 @@
                     <label class="col-sm-3 control-label">{{ 'AD_SLOT' | translate }}</label>
                     <div class="col-sm-9">
                         <ui-select name="adSlot" ng-model="selectedData.adSlotId" ng-required="true" ng-disabled="!selectedData.siteId" on-select="selectAdSlot($item)" reset-search-input="'false'">
-                            <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_AD_SLOT' | translate }}">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_AD_SLOT' | translate }}">{{ $select.selected.libraryAdSlot.name }}</ui-select-match>
                             <ui-select-choices repeat="adSlot.id as adSlot in optionData.adSlots | filter: $select.search">
-                                <div ng-bind-html="adSlot.name | highlight: $select.search"></div>
+                                <div ng-bind-html="adSlot.libraryAdSlot.name | highlight: $select.search"></div>
                             </ui-select-choices>
                         </ui-select>
                     </div>
@@ -94,9 +94,9 @@
                     <label class="col-sm-3 control-label">{{ 'AD_TAG' | translate }}</label>
                     <div class="col-sm-9">
                         <ui-select name="adNetwork" ng-model="selectedData.adTagId" ng-required="true" ng-disabled="!selectedData.adSlotId" reset-search-input="'false'">
-                            <ui-select-match placeholder="{{ 'AD_TAG_MODULE.SELECT_A_AD_TAG' | translate }}">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'AD_TAG_MODULE.SELECT_A_AD_TAG' | translate }}">{{ $select.selected.libraryAdTag.name }}</ui-select-match>
                             <ui-select-choices repeat="adTag.id as adTag in optionData.adTags | filter: $select.search">
-                                <div ng-bind-html="adTag.name | highlight: $select.search"></div>
+                                <div ng-bind-html="adTag.libraryAdTag.name | highlight: $select.search"></div>
                             </ui-select-choices>
                         </ui-select>
                     </div>

@@ -32,7 +32,7 @@
         function getAllAdNetworks() {
             var adNetworkList = adNetworkCache.get('adNetworkList');
 
-            if(!Auth.isAdmin() && !!adNetworkList) {
+            if(!Auth.isAdmin() && !Auth.isSubPublisher() && !!adNetworkList) {
                 return $filter('selectedPublisher')(adNetworkList, Auth.getSession().id)
             }
 
@@ -63,22 +63,35 @@
                     publisher: adNetworkList[idx].publisher,
                     url: adNetworkList[idx].url,
                     pausedAdTagsCount: adNetworkList[idx].pausedAdTagsCount,
-                    activeAdTagsCount: adNetworkList[idx].activeAdTagsCount
+                    activeAdTagsCount: adNetworkList[idx].activeAdTagsCount,
+                    username: adNetworkList[idx].username,
+                    password: adNetworkList[idx].password,
+                    networkPartner: adNetworkList[idx].networkPartner,
+                    impressionCap: adNetworkList[idx].impressionCap,
+                    networkOpportunityCap: adNetworkList[idx].networkOpportunityCap
                 };
             }
 
             return AdNetworkManager.one(id).get();
         }
 
-        function patchAdNetwork(data) {
+        /**
+         * use networkPartner to set name and url for ad network
+         *
+         * @param data
+         * @param networkPartner
+         * @returns {*}
+         */
+        function patchAdNetwork(data, networkPartner) {
             var adNetwork = angular.copy(data);
             var adNetworkId = adNetwork.id;
+            adNetwork.networkPartner = networkPartner == null || !networkPartner.id ? networkPartner : networkPartner.id;
             delete adNetwork.pausedAdTagsCount;
             delete adNetwork.activeAdTagsCount;
 
             return AdNetworkManager.one(adNetworkId).patch(adNetwork)
                 .then(function() {
-                    updateAdNetwork(data);
+                    updateAdNetwork(data, networkPartner);
                 });
         }
 
@@ -89,7 +102,12 @@
                 });
         }
 
-        function updateAdNetwork(adNetwork) {
+        function updateAdNetwork(adNetwork, networkPartner) {
+            if(!!networkPartner) {
+                adNetwork.name = networkPartner.name;
+                adNetwork.url = networkPartner.url
+            }
+
             var adNetworkList = adNetworkCache.get('adNetworkList');
 
             if(!adNetworkList) {

@@ -22,7 +22,8 @@
             isAuthenticated: isAuthenticated,
             isAuthorized: isAuthorized,
             getAuthorizationHeaderValue: getAuthorizationHeaderValue,
-            isAdmin: isAdmin
+            isAdmin: isAdmin,
+            isSubPublisher: isSubPublisher
         };
 
         ////////////////////////
@@ -189,6 +190,10 @@
             // If the admin is currently logged in as a publisher
             // they will have a previous token set
             return isAuthorized(USER_ROLES.admin) && !sessionStorage.getPreviousToken();
+        }
+
+        function isSubPublisher() {
+            return isAuthorized(USER_ROLES.subPublisher) && !sessionStorage.getPreviousToken();
         }
 
         return api;

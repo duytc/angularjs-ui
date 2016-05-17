@@ -30,10 +30,7 @@
                 },
                 resolve: {
                     ronAdSlots: /* @ngInject */ function(RonAdSlotManager) {
-                        return RonAdSlotManager.getList();
-                    },
-                    ronAdSlotSegments: function(SegmentManager){
-                        return SegmentManager.getList();
+                        return RonAdSlotManager.one().get({page: 1});
                     }
                 },
                 ncyBreadcrumb: {

@@ -3,13 +3,13 @@
         <span class="glyphicon glyphicon-th"></span>
         <strong current-page-title></strong>
 
-        <div class="button-bar">
+        <div class="button-bar" ng-if="!isSubPublisher()">
             <button ui-sref="^.new" class="btn btn-primary btn-sm" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
                 {{ 'CHANNEL_MODULE.NEW_CHANNEL' | translate }}
             </button>
         </div>
-        <div class="btn-group btnGrouped" dropdown>
+        <div class="btn-group btnGrouped" ng-if="!isSubPublisher()" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
                 <li><a ui-sref="^.new">{{ 'CHANNEL_MODULE.NEW_CHANNEL' | translate }}</a></li>
@@ -25,6 +25,7 @@
                 <thead>
                 <tr>
                     <th ng-show="isAdmin()" at-attribute="publisher.company" >{{ 'PUBLISHER' | translate }}</th>
+                    <th ng-show="hasRtbModule" at-attribute="rtb">{{ 'SITE_MODULE.RTB' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -35,14 +36,18 @@
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
                                 <li><a ui-sref="^.siteList({ id: item.id })">{{ 'CHANNEL_MODULE.MANAGE_SITES' | translate }}</a></li>
-                                <li class="divider"></li>
-                                <li><a ui-sref="^.edit({ id: item.id })">{{ 'CHANNEL_MODULE.EDIT_CHANNEL' | translate }}</a></li>
-                                <li><a ng-click="confirmDeletion(item, $index)">{{ 'CHANNEL_MODULE.DELETE_CHANNEL' | translate }}</a></li>
+                                <li><a ui-sref="^.^.tagGenerator({ channelId: item.id })">{{ 'SITE_MODULE.GENERATE_TAGS' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()" class="divider"></li>
+                                <li ng-if="!isSubPublisher()"><a ui-sref="^.edit({ id: item.id })">{{ 'CHANNEL_MODULE.EDIT_CHANNEL' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item, $index)">{{ 'CHANNEL_MODULE.DELETE_CHANNEL' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>
                     <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="{{ 'CHANNEL' | translate }}"></td>
                     <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
+                    <td ng-show="hasRtbModule" at-title="{{ 'SITE_MODULE.RTB' | translate }}" at-attribute="rtb" at-sortable>
+                        {{ rtbStatusLabels[item.rtbStatus] }}
+                    </td>
                 </tr>
                 </tbody>
             </table>

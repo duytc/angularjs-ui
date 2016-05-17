@@ -1,6 +1,16 @@
 <section id="performance-report-selector" class="panel panel-default">
     <div class="panel-body">
         <form name="reportSelectorForm" class="form-inline" role="form" ng-submit="getReports()" novalidate>
+            <div class="report-type form-group" ng-if="isAdmin">
+                <label>{{ 'REPORT.PRODUCT' | translate }}</label>
+                <ui-select name="reportType" ng-model="selectedData.product" ng-required="true" on-select="selectProduct($item)" reset-search-input="'false'">
+                    <ui-select-match placeholder="{{ 'REPORT.SELECT_A_REPORT_TYPE' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                    <ui-select-choices repeat="product.key as product in productOptions">
+                        <div ng-bind-html="product.label"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
             <div class="report-type form-group">
                 <div class="form-inline">
                     <div class="form-group">

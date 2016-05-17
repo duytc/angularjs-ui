@@ -5,10 +5,14 @@
         .controller('RonAdSlotList', RonAdSlotList)
     ;
 
-    function RonAdSlotList($scope, $modal, $translate, AlertService, ronAdSlots, historyStorage, HISTORY_TYPE_PATH, RonAdSlotManager, AtSortableService) {
+    function RonAdSlotList($scope, $modal, $translate, Auth, AlertService, ronAdSlots, historyStorage, HISTORY_TYPE_PATH, RTB_STATUS_LABELS, EVENT_ACTION_SORTABLE, TYPE_AD_SLOT, RonAdSlotManager) {
         $scope.ronAdSlots = ronAdSlots;
         $scope.hasData = function () {
-            return !!ronAdSlots.length;
+            return !!ronAdSlots.totalRecord;
+        };
+
+        var params = {
+            page: 1
         };
 
         if (!$scope.hasData()) {
@@ -18,15 +22,32 @@
             });
         }
 
+        $scope.adSlotTypes = TYPE_AD_SLOT;
+        $scope.rtbStatusLabels = RTB_STATUS_LABELS;
         $scope.today = new Date();
+        $scope.demandSourceTransparency = Auth.getSession().demandSourceTransparency;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10
+            maxPages: 10,
+            totalItems: Number(ronAdSlots.totalRecord)
         };
+
+        $scope.availableOptions = {
+            currentPage: 1,
+            pageSize: 10
+        };
+
+        $scope.selectData = {
+            query: null
+        };
+
+        var getAdSlot;
 
         $scope.showPagination = showPagination;
         $scope.confirmDeletion = confirmDeletion;
+        $scope.changePage = changePage;
+        $scope.searchData = searchData;
 
         function confirmDeletion(ronAdSlot) {
             var modalInstance = $modal.open({
@@ -35,17 +56,8 @@
             modalInstance.result.then(function(){
                 return RonAdSlotManager.one(ronAdSlot.id).remove()
                     .then(function(){
-                        var index = ronAdSlots.indexOf(ronAdSlot);
+                        _getAdSlot(params);
 
-                        if (index > -1) {
-                            ronAdSlots.splice(index, 1);
-                        }
-
-                        $scope.ronAdSlots = ronAdSlots;
-
-                        if($scope.tableConfig.currentPage > 0 && ronAdSlots.length/10 == $scope.tableConfig.currentPage) {
-                            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
-                        }
                         AlertService.replaceAlerts({
                             type: 'success',
                             message: $translate.instant('RON_AD_SLOT_MODULE.DELETE_SUCCESS')
@@ -100,7 +112,39 @@
         };
 
         function showPagination() {
-            return angular.isArray($scope.ronAdSlots) && $scope.ronAdSlots.length > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.ronAdSlots.records) && $scope.ronAdSlots.totalRecord > $scope.tableConfig.itemsPerPage;
+        }
+
+        function changePage(currentPage) {
+            params = angular.extend(params, {page: currentPage});
+            _getAdSlot(params);
+        }
+
+        function searchData() {
+            var query = {searchKey: $scope.selectData.query || null};
+            params = angular.extend(params, query);
+            _getAdSlot(params);
+        }
+
+        $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
+            params = angular.extend(params, query);
+            _getAdSlot(params);
+        });
+
+        function _getAdSlot(query) {
+            params = query;
+
+            clearTimeout(getAdSlot);
+
+            getAdSlot = setTimeout(function() {
+                params = query;
+                return RonAdSlotManager.one().get(query)
+                    .then(function(ronAdSlots) {
+                        $scope.ronAdSlots = ronAdSlots;
+                        $scope.tableConfig.totalItems = Number(ronAdSlots.totalRecord);
+                        $scope.availableOptions.currentPage = Number(query.page);
+                    });
+            }, 500);
         }
 
         $scope.$on('$locationChangeSuccess', function() {

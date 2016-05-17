@@ -5,7 +5,7 @@
         .config(addStates)
     ;
 
-    function addStates(UserStateHelperProvider) {
+    function addStates(UserStateHelperProvider, STATUS_STATE_FOR_SUB_PUBLISHER_PERMISSION) {
         // uniqueRequestCacheBuster is used as a work-around for reloading only the current state
         // currently UI-Router will reload all parent states as well, this causes problems having
 
@@ -13,6 +13,9 @@
             .state('tagManagement.segment', {
                 abstract: true,
                 url: '/segments',
+                data: {
+                    demandSourceTransparency: STATUS_STATE_FOR_SUB_PUBLISHER_PERMISSION.hide
+                },
                 ncyBreadcrumb: {
                     skip: true
                 }

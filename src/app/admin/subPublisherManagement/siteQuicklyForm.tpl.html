@@ -1,0 +1,70 @@
+<form name="siteForm" role="form" ng-submit="submit()" novalidate>
+    <div class="modal-header">
+        <h4 class="modal-title">{{ 'SITE_MODULE.NEW_SITE' | translate }}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-12 form-validation form-horizontal">
+                <div class="form-group" ng-if="allowPublisherSelection">
+                    <label for="inputName" class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
+                    <div class="col-sm-10">
+                        <ui-select name="publisher" id="publisher" ng-model="site.publisher" ng-required="true" server-error on-select="selectPublisher($item)" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
+                            <ui-select-choices repeat="publisher.id as publisher in publishers | filter:$select.search">
+                                {{ publisher.company }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">{{ 'NAME' | translate }}</label>
+                    <div class="col-sm-10">
+                        <input name="name" ng-model="site.name" server-error ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="{{ 'SITE_MODULE.PLACEHOLDER_SITE_NAME' | translate }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputDomain" class="col-sm-2 control-label">{{ 'SITE_MODULE.DOMAIN' | translate }}</label>
+                    <div class="col-sm-10">
+                        <input name="domain" ng-model="site.domain" server-error ng-required="true" ng-minlength="2" type="text" pattern="^((([a-zA-Z]{1,2})|([0-9]{1,2})|([a-zA-Z0-9]{1,2})|([a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]))\.)+[a-zA-Z]{2,6}$" class="form-control" id="inputDomain" placeholder="{{ 'SITE_MODULE.PLACEHOLDER_SITE_DOMAIN' | translate }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputSite" class="col-sm-2 control-label">{{ 'CHANNELS' | translate }}</label>
+                    <div class="col-sm-10">
+                        <isteven-multi-select id="inputSite" input-model="channels" output-model="data.channels" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="isEnabledModule('MODULE_ANALYTICS')">
+                    <label for="inputEnabled" class="col-sm-2 control-label">{{ 'SITE_MODULE.SOURCE_REPORT' | translate }}</label>
+                    <div class="col-sm-10">
+                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="site.enableSourceReport" id="inputEnabled"><span></span></label>
+                        <span class="help-block">{{ 'SITE_MODULE.HELP_BLOCK_SOURCE_REPORT' | translate }}</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="isEnabledModule('MODULE_RTB')">
+                    <label for="inputRtb" class="col-sm-2 control-label">{{ 'RTB_STATUS' | translate }}</label>
+                    <div class="col-sm-10" id="inputRtb">
+                        <label class="ui-radio"><input ng-model="site.rtbStatus" type="radio" ng-click="rtbStatusChanged(rtbStatusTypes.inherit)" ng-value="rtbStatusTypes.inherit"><span>{{ 'RTB_STATUS_INHERIT' | translate }}</span></label>
+                        <label class="ui-radio"><input ng-model="site.rtbStatus" type="radio" ng-click="rtbStatusChanged(rtbStatusTypes.enable)" ng-value="rtbStatusTypes.enable"><span>{{ 'RTB_STATUS_ENABLE' | translate }}</span></label>
+                        <label class="ui-radio"><input ng-model="site.rtbStatus" type="radio" ng-click="rtbStatusChanged(rtbStatusTypes.disable)" ng-value="rtbStatusTypes.disable"><span>{{ 'RTB_STATUS_DISABLE' | translate }}</span></label>
+                        <span class="help-block">{{ 'SITE_MODULE.HELP_BLOCK_RTB' | translate }}</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="isEnabledModule('MODULE_VIDEO_ANALYTICS')">
+                    <label class="col-sm-2 control-label">{{ 'SITE_MODULE.VIDEO_PLAYERS' | translate }}</label>
+                    <div class="col-sm-10">
+                        <div ng-repeat="player in videoPlayers" class="check_video_player">
+                            <label class="ui-checkbox"><input name="moduleConfigs[]" type="checkbox" ng-click="toggleVideoPlayer(player.name)" ng-checked="hasVideoPlayer(player.name)">
+                                <span>{{ player.label }}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-dialog-footer">
+        <button class="btn btn-primary" ng-click="$dismiss()" type="button">{{ 'CANCEL' | translate }}</button>
+        <button class="btn btn-success" ng-disabled="!isFormValid()" type="submit">{{ 'SUBMIT' | translate }}</button>
+    </div>
+</form>

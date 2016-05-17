@@ -5,13 +5,14 @@
         .config(addStates)
     ;
 
-    function addStates(UserStateHelperProvider, USER_MODULES) {
+    function addStates(UserStateHelperProvider, USER_MODULES, STATUS_STATE_FOR_SUB_PUBLISHER_PERMISSION) {
         UserStateHelperProvider
             .state('tagManagement.adTag', {
                 abstract: true,
                 url: '/adTags',
                 data: {
-                    requiredModule: USER_MODULES.displayAds
+                    requiredModule: USER_MODULES.displayAds,
+                    demandSourceTransparency: STATUS_STATE_FOR_SUB_PUBLISHER_PERMISSION.auto
                 },
                 ncyBreadcrumb: {
                     skip: true
@@ -134,10 +135,6 @@
                         return site.publisher;
                     },
 
-                    siteList: /* @ngInject */ function (SiteCache) {
-                        return SiteCache.getAllSites();
-                    },
-
                     adSlotList: /* @ngInject */ function (SiteManager, site) {
                         if (!site) {
                             return null;
@@ -204,10 +201,6 @@
                         return site.publisher;
                     },
 
-                    siteList: /* @ngInject */ function (SiteCache) {
-                        return SiteCache.getAllSites();
-                    },
-
                     adSlotList: /* @ngInject */ function (SiteManager, site) {
                         if (!site) {
                             return null;
@@ -245,7 +238,11 @@
                 },
                 resolve: {
                     adTag: /* @ngInject */ function($stateParams, AdTagManager) {
-                        return AdTagManager.one($stateParams.id).get();
+                        return AdTagManager.one($stateParams.id).get()
+                            .then(function(adTag) {
+                                adTag.active = adTag.active ? true : false;
+                                return adTag;
+                            });
                     },
 
                     adSlot: /* @ngInject */ function (adTag) {

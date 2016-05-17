@@ -28,7 +28,7 @@
                 views: {
                     'content@app': {
                         controller: 'AdSlotList',
-                        templateUrl: 'tagManagement/adSlot/adSlotList.tpl.html'
+                        templateUrl: 'tagManagement/adSlot/adSlotListBySite.tpl.html'
                     }
                 },
                 resolve: {
@@ -62,11 +62,35 @@
                     // AdSlotManager is provided as a parameter to make sure the service is invoked
                     // because during init it attaches additional behaviour to the adslots resource
                     adSlots: /* @ngInject */ function(AdSlotManager) {
-                        return AdSlotManager.getList()
-                            .then(function(adSlot) {
-                                return adSlot.plain();
-                            }
-                        );
+                        return AdSlotManager.one().get({page: 1});
+                    },
+
+                    site: function () {
+                        return null;
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Ad Slots'
+                }
+            })
+            .state('tagManagement.adSlot.listByChannel', {
+                url: '/listByChannel?page&sortField&orderBy&search',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    'content@app': {
+                        controller: 'AdSlotList',
+                        templateUrl: 'tagManagement/adSlot/adSlotList.tpl.html'
+                    }
+                },
+                resolve: {
+                    // AdSlotManager is provided as a parameter to make sure the service is invoked
+                    // because during init it attaches additional behaviour to the adslots resource
+                    adSlots: /* @ngInject */ function(AdSlotManager) {
+                        return AdSlotManager.one('relatedchannel').get({page: 1}).then(function (adSlots) {
+                            return adSlots.plain();
+                        });
                     },
 
                     site: function () {
@@ -88,18 +112,6 @@
                 resolve: {
                     adSlot: function() {
                         return null;
-                    },
-
-                    site: /* @ngInject */ function ($stateParams, SiteCache) {
-                        if (!$stateParams.siteId) {
-                            return null;
-                        }
-
-                        return SiteCache.getSiteById($stateParams.siteId);
-                    },
-
-                    siteList: /* @ngInject */ function(SiteCache) {
-                        return SiteCache.getAllSites();
                     }
                 },
                 customResolve: {
@@ -127,16 +139,7 @@
                     adSlot: /* @ngInject */ function($stateParams, AdSlotManager) {
                         return AdSlotManager.one($stateParams.id).get();
                     },
-
-                    site: /* @ngInject */ function (adSlot) {
-                        return adSlot.site;
-                    },
-
                     publisherList: function () {
-                        return null;
-                    },
-
-                    siteList: function() {
                         return null;
                     }
                 },

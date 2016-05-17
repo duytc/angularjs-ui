@@ -27,17 +27,27 @@
 
             <select ng-disabled="disabledDirective" class="form-control" ng-model="itemGroup.cmp" ng-options="condition.key as condition.label for condition in changeCondition(itemGroup)"></select>
 
-            <div class="form-group" ng-if="itemGroup.type != dataTypes[2].key && itemGroup.var != '${COUNTRY}'">
+            <div class="form-group" ng-if="itemGroup.type != dataTypes[2].key && itemGroup.var != '${COUNTRY}' && itemGroup.var != '${DEVICE}'">
                 <input ng-disabled="disabledDirective" server-error ng-required="valIsNull(itemGroup.cmp)" type="text" class="form-control" ng-minlength="1" pattern="{{ itemGroup.type == dataTypes[1].key ? '\\d*' : '[a-zA-Z0-9?=/&\\-_$.,;:@?+!*()#\\[\\]\']+$'}}" required ng-model="itemGroup.val" ng-init="itemGroup.val == null ? itemGroup.val = '' : itemGroup.val " placeholder="Value">
             </div>
-            <div class="form-group" ng-if="itemGroup.type == dataTypes[2].key && itemGroup.var != '${COUNTRY}'">
+            <div class="form-group" ng-if="itemGroup.type == dataTypes[2].key && itemGroup.var != '${COUNTRY}' && itemGroup.var != '${DEVICE}'">
                 <select ng-disabled="disabledDirective" class="form-control" ng-options="value for value in values" ng-model="itemGroup.val" ng-init="values = ['true', 'false']; itemGroup.val == null ? itemGroup.val = 'true' : '' "></select>
             </div>
-            <div class="form-group" ng-if="itemGroup.var == '${COUNTRY}'">
-                <select ng-disabled="disabledDirective" name="country" ng-model="itemGroup.val" class="form-control select-country" id="inputCountry">
-                    <option disabled ng-selected="true">Country...</option>
-                    <option value="{{ country.code }}" ng-selected="itemGroup.val == country.code" ng-repeat="country in countries">{{ country.name }}</option>
-                </select>
+            <div class="form-group select-county" ng-if="itemGroup.var == '${COUNTRY}'">
+                <ui-select multiple ng-model="itemGroup.val" ng-required="true" close-on-select="false" server-error reset-search-input="'false'" ng-disabled="disabledDirective" style="min-width: 180px;">
+                    <ui-select-match placeholder="Select a country">{{ $item.name }}</ui-select-match>
+                    <ui-select-choices group-by="groupEntities" repeat="country.code as country in countries | filter:$select.search">
+                        {{ country.name }}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="form-group select-county" ng-if="itemGroup.var == '${DEVICE}'">
+                <ui-select multiple ng-model="itemGroup.val" ng-required="true" close-on-select="false" server-error reset-search-input="'false'" ng-disabled="disabledDirective" style="min-width: 180px;">
+                    <ui-select-match placeholder="Select a device">{{ $item.name }}</ui-select-match>
+                    <ui-select-choices group-by="groupEntities" repeat="device.code as device in devices | filter:$select.search">
+                        {{ device.name }}
+                    </ui-select-choices>
+                </ui-select>
             </div>
 
             <!--<button class="btn btn-danger" type="button" ng-minlength="1" required ng-disabled="isDisabledButtonRemoveCondition()" ng-click="removeCondition($index)"><span class="glyphicon glyphicon-minus"></span></button>-->

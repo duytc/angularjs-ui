@@ -5,11 +5,12 @@
         .controller('PerformanceReportSummary', PerformanceReportSummary)
     ;
 
-    function PerformanceReportSummary($scope, Auth, TYPE_AD_SLOT) {
+    function PerformanceReportSummary($scope, Auth, TYPE_AD_SLOT, USER_MODULES) {
         $scope.isAdmin = Auth.isAdmin();
 
         $scope.hasSlotOpportunities = hasSlotOpportunities;
         $scope.exist = exist;
+        $scope.hideRTB = hideRTB;
 
         function hasSlotOpportunities() {
             return angular.isObject($scope.reportGroup) && angular.isNumber($scope.reportGroup.slotOpportunities);
@@ -21,6 +22,14 @@
 
         function exist(item) {
             if(item == undefined || !isNotNativeAdSlot) {
+                return false;
+            }
+
+            return true;
+        }
+
+        function hideRTB() {
+            if(!Auth.getSession().hasModuleEnabled(USER_MODULES.rtb) || $scope.reportGroup.rtbImpressions == undefined) {
                 return false;
             }
 

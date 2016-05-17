@@ -41,6 +41,11 @@
                 return;
             }
 
+            // TODO: temporarily convert to common state if siteByAdNetwork
+            // need refactor for more clearly understanding report states
+            relativeToState = relativeToState == PERFORMANCE_REPORT_STATES.siteByAdNetwork ? PERFORMANCE_REPORT_STATES.adNetworkSiteAdTags : relativeToState;
+            // TODO-END
+
             relativeToState = $state.get(relativeToState, $state.$current);
 
             if (!relativeToState) {
@@ -57,6 +62,18 @@
             _.extend(unfilteredParams, report);
 
             var params = ReportParams.getStateParams(unfilteredParams);
+
+            angular.forEach(params, function (value, key) {
+                if (!angular.isObject(value)) {
+                    return;
+                }
+
+                // if data being sent to the server is an object and has an id key
+                // replace the value with just the id
+                if (value.id) {
+                    params[key+'Id'] = value.id;
+                }
+            });
 
             $state.transitionTo(relativeToState, params)
                 .catch(function() {
@@ -141,6 +158,7 @@
 
                 case PERFORMANCE_REPORT_STATES.adNetworkSites:
                 case PERFORMANCE_REPORT_STATES.adNetwork:
+                case PERFORMANCE_REPORT_STATES.siteByAdNetwork:
                     return 'reports/performance/views/popup/popupForAdNetwork.tpl.html';
 
                 case PERFORMANCE_REPORT_STATES.adSlot:
@@ -178,6 +196,7 @@
 
                 case PERFORMANCE_REPORT_STATES.adNetworkSites:
                 case PERFORMANCE_REPORT_STATES.adNetwork:
+                case PERFORMANCE_REPORT_STATES.siteByAdNetwork:
                     return AdNetworkManager.one(reportType.adNetworkId).get();
 
                 case PERFORMANCE_REPORT_STATES.adSlot:

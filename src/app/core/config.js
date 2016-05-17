@@ -253,7 +253,7 @@
         .config(config)
     ;
 
-    function config($httpProvider, hljsServiceProvider, ngClipProvider) {
+    function config($httpProvider, $provide, hljsServiceProvider, ngClipProvider) {
         $httpProvider.interceptors.push('authTokenInterceptor');
         $httpProvider.interceptors.push('responseErrorInterceptor');
         $httpProvider.interceptors.push('responseInterceptor');
@@ -266,5 +266,14 @@
 
         // config for copy clipboard
         ngClipProvider.setPath("assets/swf/ZeroClipboard.swf");
+
+        // this config to fix for filter currency
+        $provide.decorator('$locale', ['$delegate', function ($delegate) {
+            if ($delegate.id == 'en-us') {
+                $delegate.NUMBER_FORMATS.PATTERNS[1].negPre = '-\u00A4';
+                $delegate.NUMBER_FORMATS.PATTERNS[1].negSuf = '';
+            }
+            return $delegate;
+        }])
     }
 })();

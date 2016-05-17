@@ -7,11 +7,11 @@
             <button ng-if="!allAdSlot" ui-sref="^.^.tagGenerator({ siteId: currentSiteId })" class="btn btn-sm btn-primary" type="button">
                 {{ 'AD_SLOT_MODULE.GENERATE_AD_TAGS' | translate }}
             </button>
-            <button ng-if="!allAdSlot" ui-sref="^.new({ siteId: currentSiteId })" class="btn btn-sm btn-primary" type="button">
+            <button ng-if="!allAdSlot && !isSubPublisher()" ui-sref="^.new({ siteId: currentSiteId })" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
                 {{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}
             </button>
-            <button ng-if="allAdSlot" ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
+            <button ng-if="allAdSlot && !isSubPublisher()" ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
                 {{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}
             </button>
@@ -25,27 +25,42 @@
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
                 <li ng-if="!allAdSlot"><a ui-sref="^.^.tagGenerator({ siteId: currentSiteId })">{{ 'AD_SLOT_MODULE.GENERATE_AD_TAGS' | translate }}</a></li>
-                <li ng-if="!allAdSlot"><a ui-sref="^.new({ siteId: currentSiteId })">{{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}</a></li>
-                <li ng-if="allAdSlot"><a ui-sref="^.new">{{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}</a></li>
+                <li ng-if="!allAdSlot && !isSubPublisher()"><a ui-sref="^.new({ siteId: currentSiteId })">{{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}</a></li>
+                <li ng-if="allAdSlot && !isSubPublisher()"><a ui-sref="^.new">{{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}</a></li>
                 <li><a ng-click="backToListSite()">{{ 'SITE_MODULE.BACK_TO_SITE_LIST' | translate }}</a></li>
             </ul>
         </div>
     </div>
 
-    <div ng-show="!site">
-        <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'site.name', 'libraryAdSlot.name', 'libraryAdSlot.width', 'libraryAdSlot.height']"></search-box>
-    </div>
-    <div ng-show="!!site">
-        <search-box show-query="true" sb-list="adSlots" search-fields="['id', 'libraryAdSlot.name', 'libraryAdSlot.width', 'libraryAdSlot.height']"></search-box>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs nav-tab-margin">
+                <li ng-if="allAdSlot" role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.adSlot.listAll">By Site</a></li>
+                <li ng-if="!allAdSlot" role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.adSlot.list">By Site</a></li>
+                <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.adSlot.listByChannel">By Channel</a></li>
+                <li ng-if="demandSourceTransparency" role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.ronAdSlot.list">RON Ad Slots</a></li>
+                <li ng-if="demandSourceTransparency" role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagLibrary.adSlot.list">Standalone Ad Slots</a></li>
+            </ul>
+        </div>
     </div>
 
+    <!--<search-box show-query="true" sb-list="adSlots" search-fields="['id', 'libraryAdSlot.name', 'libraryAdSlot.width', 'libraryAdSlot.height']"></search-box>-->
+
+    <form class="input-group col-sm-6 search-box">
+        <input class="form-control" ng-model="selectData.query" ng-change="searchData()" placeholder="{{ 'UNIFIED_REPORT_MODULE.SEARCH' | translate }}" type="text"/>
+            <span class="input-group-addon">
+                {{ tableConfig.totalItems }} records found
+            </span>
+    </form>
 
     <div class="panel-body" ng-if="hasData()">
         <div class="table-responsive">
-            <table class="table" at-sortable-query at-table at-paginated at-list="adSlots" at-config="tableConfig">
+            <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="adSlots.records" at-config="tableConfig">
                 <thead>
                 <tr>
-                    <th ng-show="allAdSlot" at-attribute="site.name">{{ 'SITE' | translate }}</th>
+                    <th ng-show="allAdSlot && !isChannel" at-attribute="site.name">{{ 'SITE' | translate }}</th>
+                    <th ng-show="isChannel && allAdSlot" at-attribute="channels">{{ 'CHANNELS' | translate }}</th>
+                    <th ng-show="hasRtbModule" at-attribute="rtb">{{ 'SITE_MODULE.RTB' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -55,39 +70,43 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li ng-if="exist(item.type, adSlotTypes.display)"><a ui-sref="^.^.adTag.list({ adSlotId: item.id })">{{ 'AD_SLOT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
-                                <li ng-if="exist(item.type, adSlotTypes.native)"><a ui-sref="^.^.adTag.nativeList({ adSlotId: item.id })">{{ 'AD_SLOT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
+                                <li ng-if="exist(item.type, adSlotTypes.display) && demandSourceTransparency"><a ui-sref="^.^.adTag.list({ adSlotId: item.id })">{{ 'AD_SLOT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
+                                <li ng-if="exist(item.type, adSlotTypes.native) && demandSourceTransparency"><a ui-sref="^.^.adTag.nativeList({ adSlotId: item.id })">{{ 'AD_SLOT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
                                 <li><a ng-click="generateAdTag(item)">{{ 'AD_SLOT_MODULE.GENERATE_A_TAGS' | translate }}</a></li>
-                                <li class="divider"></li>
-                                <li ng-if="!exist(item.type, adSlotTypes.dynamic)"><a ui-sref="^.^.^.reports.performance.adSlotAdTags({ adSlotId: item.id, startDate: today})">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
-                                <li ng-if="!exist(item.type, adSlotTypes.dynamic)" class="divider"></li>
-                                <li><a ui-sref="^.edit({ id: item.id })">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT' | translate }}</a></li>
-                                <li ng-if="!exist(item.type, adSlotTypes.dynamic)"><a ng-click="cloneAdSlot(item)">{{ 'AD_SLOT_MODULE.CLONE_AD_SLOT' | translate }}</a></li>
-                                <li><a ng-click="confirmDeletion(item)">{{ 'AD_SLOT_MODULE.DELETE_AD_SLOT' | translate }}</a></li>
-                                <li class="divider"></li>
-                                <li ng-if="!item.libraryAdSlot.visible" ng-click="shareAdSlot(item)"><a>{{ 'AD_SLOT_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>
-                                <li ng-if="item.libraryAdSlot.visible"><a  ui-sref="^.^.^.tagLibrary.adSlot.edit({ id: item.libraryAdSlot.id})">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT_IN_LIBRARY' | translate }}</a></li>
+                                <li ng-if="!exist(item.type, adSlotTypes.dynamic) && demandSourceTransparency" class="divider"></li>
+                                <li ng-if="!exist(item.type, adSlotTypes.dynamic) && demandSourceTransparency"><a ui-sref="^.^.^.reports.performance.adSlotAdTags({ adSlotId: item.id, startDate: today})">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
+
+                                <li ng-if="!exist(item.type, adSlotTypes.dynamic) && !isSubPublisher()" class="divider"></li>
+                                <li ng-if="!item.libraryAdSlot.visible && !isSubPublisher()"><a ui-sref="^.edit({ id: item.id })">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT' | translate }}</a></li>
+                                <li ng-if="item.libraryAdSlot.visible && !isSubPublisher()"><a  ui-sref="^.^.^.tagLibrary.adSlot.edit({ id: item.libraryAdSlot.id, from: isChannel ? 'channel' : 'site'})">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT' | translate }}</a></li>
+
+                                <li ng-if="!exist(item.type, adSlotTypes.dynamic) && !isSubPublisher()"><a ng-click="cloneAdSlot(item)">{{ 'AD_SLOT_MODULE.CLONE_AD_SLOT' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item)">{{ 'AD_SLOT_MODULE.DELETE_AD_SLOT' | translate }}</a></li>
+                                <li ng-if="!item.libraryAdSlot.visible && !isSubPublisher()" class="divider"></li>
+                                <li ng-if="!item.libraryAdSlot.visible && !isSubPublisher()" ng-click="shareAdSlot(item)"><a>{{ 'AD_SLOT_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>
                     <td at-implicit at-title="{{ 'AD_SLOT' | translate }}" at-sortable at-attribute="libraryAdSlot.name" at-initial-sorting="asc"></td>
-                    <td ng-show="allAdSlot" at-title="{{ 'SITE' | translate }}" at-implicit at-sortable at-attribute="site.name"></td>
-                    <td at-title="{{ 'AD_SLOT_MODULE.SIZE' | translate }}" at-sortable at-attribute="width">
+                    <td ng-show="allAdSlot && !isChannel" at-title="{{ 'SITE' | translate }}" at-implicit at-sortable at-attribute="site.name"></td>
+                    <td at-title="{{ 'AD_SLOT_MODULE.SIZE' | translate }}" at-attribute="width">
                         {{ !!item.libraryAdSlot.width ? item.libraryAdSlot.width + 'x' + item.libraryAdSlot.height : ''}}
                     </td>
-                    <td at-title="{{ 'AD_SLOT_MODULE.TYPE' | translate }}" at-implicit at-attribute="type" at-sortable></td>
-                    <!--<td at-title="Library" at-attribute="visible" at-sortable>-->
-                        <!--{{ item.libraryAdSlot.visible ? item.libraryAdSlot.referenceName : '' }}-->
-                    <!--</td>-->
-
-                    <td at-title="{{ 'AD_SLOT_MODULE.IN_LIBRARY' | translate }}" at-attribute="libraryAdSlot.visible" at-sortable>
-                        <i class="fa" ng-class="item.libraryAdSlot.visible? 'fa-check-square' : 'fa-square'"></i>
+                    <td at-title="{{ 'AD_SLOT_MODULE.TYPE' | translate }}" at-implicit at-attribute="type"></td>
+                    <td ng-show="isChannel && allAdSlot" at-sortable at-attribute="channels" at-title="{{ 'CHANNELS' | translate }}">
+                        <ul ng-repeat="channel in item.channels">
+                            <li>{{ channel.name }}</li>
+                        </ul>
+                    </td>
+                    <td ng-show="hasRtbModule" at-title="{{ 'SITE_MODULE.RTB' | translate }}" at-attribute="rtb">
+                        {{ rtbStatusLabels[item.rtbStatus] }}
                     </td>
                 </tr>
                 </tbody>
             </table>
 
-            <at-pagination at-pagination-query ng-if="showPagination()" at-list="adSlots" at-config="tableConfig"></at-pagination>
+            <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+            <!--<at-pagination at-pagination-query ng-if="showPagination(adSlots)" at-list="adSlots" at-config="tableConfig"></at-pagination>-->
         </div>
     </div>
 </div>

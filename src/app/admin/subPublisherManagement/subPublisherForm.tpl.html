@@ -1,0 +1,144 @@
+<section class="panel panel-default">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
+
+        <div class="button-bar">
+            <button ng-if="!isNew" ng-click="backToListPublisher()" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                {{ 'PUBLISHER_MODULE.BACK_TO_PUBLISHER_LIST' | translate }}
+            </button>
+        </div>
+        <div class="btn-group btnGrouped" dropdown ng-if="!isNew">
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ng-click="backToListPublisher()">{{ 'PUBLISHER_MODULE.BACK_TO_PUBLISHER_LIST' | translate }}</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <form name="userForm" class="col-lg-6 form-validation form-horizontal userForm" role="form" ng-submit="submit()" novalidate>
+                <div class="form-group" ng-if="!isNew && isAdmin()">
+                    <label class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
+                    <div class="col-sm-10 form-control-static">
+                        {{ subPublisher.publisher.company }}
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="isNew && isAdmin()">
+                    <label for="inputPublisher" class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
+                    <div class="col-sm-10">
+                        <ui-select name="publisher" id="inputPublisher" ng-model="subPublisher.publisher" ng-required="true" on-select="selectPublisher($item)" server-error reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
+                            <ui-select-choices repeat="publisher.id as publisher in publishers | filter: { company: $select.search }">
+                                {{ publisher.company }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputUsername" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.USERNAME' | translate }} <strong class="text-danger">*</strong></label>
+                    <div class="col-sm-10">
+                        <input server-error name="username" ng-model="subPublisher.username" ng-required="true" ng-minlength="2" type="text" autocomplete="off" class="form-control" id="inputUsername" placeholder="{{ 'PUBLISHER_MODULE.USERNAME' | translate }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.PASSWORD' | translate }} <strong class="text-danger" ng-if="isNew">*</strong></label>
+                    <div class="col-sm-10">
+                        <input server-error name="plainPassword" ng-model="subPublisher.plainPassword" ng-required="isNew" ng-minlength="2" type="password" autocomplete="off" class="form-control" id="inputPassword" placeholder="{{ 'PUBLISHER_MODULE.PASSWORD' | translate }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputRepeatPassword" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.REPEAT_PASSWORD' | translate }} <strong class="text-danger" ng-if="isNew">*</strong></label>
+                    <div class="col-sm-10">
+                        <input server-error name="inputRepeatPassword" ng-model="repeatPassword" ng-required="isNew" ng-minlength="2" type="password" autocomplete="off" class="form-control" id="inputRepeatPassword" placeholder="{{ 'PUBLISHER_MODULE.REPEAT_PASSWORD' | translate }}">
+                        <span class="help-block">{{ 'PUBLISHER_MODULE.HELP_BLOCK_REPEAT_PASSWORD' | translate }}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.EMAIL' | translate }} <strong class="text-danger">*</strong></label>
+                    <div class="col-sm-10">
+                        <input server-error ng-required="true" name="email" ng-model="subPublisher.email" type="email" class="form-control" id="inputEmail" placeholder="{{ 'PUBLISHER_MODULE.EMAIL' | translate }}">
+                    </div>
+                </div>
+                <div class="form-group" ng-if="hasUnifiedModule">
+                    <label for="inputDemandSourceTransparency" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.DEMAND_SOURCE_TRANSPARENCY' | translate }}</label>
+                    <div class="col-sm-10">
+                        <label class="ui-checkbox"><input server-error name="active" ng-click="checkDemandSourceTransparency()" type="checkbox" ng-model="subPublisher.demandSourceTransparency" id="inputDemandSourceTransparency"><span></span></label>
+
+                        <span class="help-block">{{ 'SUB_PUBLISHER_MODULE.HELP_BLOCK_DEMAND_SOURCE_REPORT' | translate }}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEnableViewTagcadeReport" class="col-sm-2 control-label">{{ 'SUB_PUBLISHER_MODULE.ENABLE_VIEW_TAGCADE_REPORT' | translate }}</label>
+                    <div class="col-sm-10">
+                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="subPublisher.enableViewTagcadeReport" id="inputEnableViewTagcadeReport"><span></span></label>
+
+                        <span class="help-block">{{ 'SUB_PUBLISHER_MODULE.HELP_BLOCK_ENABLE_VIEW_TAGCADE_REPORT' | translate }}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEnabled" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.ENABLED' | translate }}</label>
+                    <div class="col-sm-10">
+                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="subPublisher.enabled" id="inputEnabled"><span></span></label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputSite" class="col-sm-2 control-label">{{ 'SITES' | translate }}</label>
+                    <div class="col-sm-10">
+                        <isteven-multi-select id="inputSite" input-model="sites" output-model="siteData" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
+
+                        <a ng-click="createSite()" class="help-block">{{ 'PUBLISHER_MODULE.ADD_NEW_SITE' | translate }}</a>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="!!partners.length">
+                    <label class="col-sm-2 control-label">{{ 'SUB_PUBLISHER_MODULE.PARTNER_CONFIG' | translate }} <strong class="text-danger">*</strong></label>
+                    <div class="col-sm-10 row">
+                        <div class="form-inline" ng-repeat="partner in partners">
+                            <div class="col-sm-1">
+                                <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="partner.active" id="inputActive"><span></span></label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group"><label class="col-sm-12"></label>{{ partner.name }}</div>
+                            </div>
+                            <div class="col-sm-3">
+                                <select class="form-control" ng-disabled="!partner.active" ng-model="partner.revenueOption" convert-to-number>
+                                    <option ng-selected="partner.revenueOption == revenueOption.none" value="{{ revenueOption.none }}">{{ 'SUB_PUBLISHER_MODULE.NONE' | translate }}</option>
+                                    <option ng-selected="partner.revenueOption == revenueOption.fixedRate" value="{{ revenueOption.fixedRate }}">{{ 'SUB_PUBLISHER_MODULE.FIXED_RATE' | translate }}</option>
+                                    <option ng-selected="partner.revenueOption == revenueOption.percentage" value="{{ revenueOption.percentage }}">{{ 'SUB_PUBLISHER_MODULE.PERCENTAGE' | translate }}</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <input ng-if="partner.revenueOption == revenueOption.none" ng-disabled="true" ng-model="partner.revenueValue" type="number" class="form-control input-group-fixed-width" placeholder="None">
+
+                                <div ng-if="partner.revenueOption == revenueOption.fixedRate" class="input-group">
+                                    <input ng-if="partner.revenueOption == revenueOption.fixedRate" ng-disabled="!partner.active" server-error ng-required="true" name="revenueValue" ng-model="partner.revenueValue" type="number" class="form-control" placeholder="Rate">
+                                    <div ng-if="partner.revenueOption == revenueOption.fixedRate" class="input-group-addon">$</div>
+                                </div>
+
+                                <div ng-if="partner.revenueOption == revenueOption.percentage" class="input-group input-group-fixed-width">
+                                    <input ng-if="partner.revenueOption == revenueOption.percentage" ng-disabled="!partner.active" server-error ng-required="true" name="revenueValue" ng-model="partner.revenueValue" type="number" class="form-control" min="0" max="100" placeholder="Percentage">
+                                    <div ng-if="partner.revenueOption == revenueOption.percentage" class="input-group-addon">%</div>
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
+                        <div ng-show="!isFormValid()" class="callout callout-info">
+                            <p>{{ 'VALID_FORM' | translate }}</p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

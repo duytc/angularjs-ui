@@ -10,15 +10,17 @@
      */
     function ReportView($scope, $translate, $timeout, _, accountManager, sessionStorage, $state, Auth, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES, TYPE_AD_SLOT, REPORT_SETTINGS) {
         var isAdmin = Auth.isAdmin();
+        var isSubPublisher = Auth.isSubPublisher();
         $scope.isAdmin = isAdmin;
 
         $scope.hasResult = reportGroup !== false;
         reportGroup = reportGroup || {};
         $scope.reportGroup = reportGroup;
         $scope.reports = $state.current.params.expanded ? ($scope.reportGroup.expandedReports || []) : ($scope.reportGroup.reports || []);
+        $scope.demandSourceTransparency = Auth.getSession().demandSourceTransparency;
 
         var reportType = 'adTag';
-        var settings = isAdmin ? [] : angular.fromJson(sessionStorage.getCurrentSettings());
+        var settings = isAdmin || isSubPublisher ? [] : angular.fromJson(sessionStorage.getCurrentSettings());
 
         $scope.dataSelect = dataSelect();
         $scope.modelSelect = modelSelect();

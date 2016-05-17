@@ -34,6 +34,9 @@
             else if (myVar == '${COUNTRY}') {
                 trueJsVariable = '${COUNTRY}';
             }
+            else if (myVar == '${DEVICE}') {
+                trueJsVariable = '${DEVICE}';
+            }
             else if (myVar == '${USER_AGENT}') {
                 trueJsVariable = 'navigator.userAgent';
             }
@@ -53,13 +56,13 @@
                 trueJsVariable = 'top.location.hostname';
             }
             else if(!!myVar) {
-                    trueJsVariable = 'window.' + myVar;
+                trueJsVariable = 'window.' + myVar;
             }
 
             return trueJsVariable;
         }
 
-        function _getComparatorConfig(comparator, dataType) {
+        function _getComparatorConfig(comparator, dataType, variable) {
             var CONDITIONS;
 
             if(dataType == DATA_TYPE[0].key) {
@@ -73,7 +76,7 @@
             }
 
             for(var i = 0; i < CONDITIONS.length; i++) {
-                if (comparator == CONDITIONS[i].key) {
+                if (comparator == CONDITIONS[i].key && CONDITIONS[i].unsupportedBuiltInVars.indexOf(variable) == -1) {
                     return CONDITIONS[i];
                 }
             }
@@ -105,15 +108,25 @@
                     var variable = _getConvertedVariable(group.var);
 
                     var value = !group.val ? "" : group.val;
-                    value = value.replace(/[/]/g, '\\/');
-                    value = value.replace(/[&]/g, '\\&');
-                    value = value.replace(/[-]/g, '\\-');
-                    value = value.replace(/[?]/g, '\\?');
 
-                    var cmpConfig = _getComparatorConfig(group.cmp, group.type);
-                    var defaultGroupLabel = _getJSStringFromPattern(cmpConfig.jsPattern, variable, value) + type + ' ';
+                    var cmpConfig = _getComparatorConfig(group.cmp, group.type, group.var);
+                    var defaultGroupLabel = '';
 
-                    groupBuild += defaultGroupLabel;
+                    if(typeof value == 'object') {
+                        angular.forEach(value, function(item, key) {
+                            var typeForValueObject =  key+1 == value.length ? '' : group.cmp == 'isNot' ? 'AND' : 'OR';
+                            defaultGroupLabel = defaultGroupLabel + _getJSStringFromPattern(cmpConfig.jsPattern, variable, item) + typeForValueObject + ' ';
+                        })
+                    } else {
+                        value = value.replace(/[/]/g, '\\/');
+                        value = value.replace(/[&]/g, '\\&');
+                        value = value.replace(/[-]/g, '\\-');
+                        value = value.replace(/[?]/g, '\\?');
+
+                        defaultGroupLabel = _getJSStringFromPattern(cmpConfig.jsPattern, variable, value);
+                    }
+
+                    groupBuild += defaultGroupLabel + type + ' ';
                 }
             });
 

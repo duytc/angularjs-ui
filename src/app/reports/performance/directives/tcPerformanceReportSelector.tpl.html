@@ -36,7 +36,7 @@
 
             <div class="publisher form-group" ng-if="!selectedReportTypeis(reportTypes.platform) && showPublisherSelect()">
                 <label>{{ 'PUBLISHER' | translate }}</label>
-                <ui-select name="publisher" ng-model="selectedData.publisherId" ng-required="true" ng-disabled="!optionData.publishers.length" on-select="selectPublisher()" reset-search-input="'false'">
+                <ui-select name="publisher" ng-model="selectedData.publisherId" ng-required="true" ng-disabled="!optionData.publishers.length" on-select="selectPublisher($item)" reset-search-input="'false'">
                     <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
                     <ui-select-choices group-by="groupEntities" repeat="publisher.id as publisher in optionData.publishers | filter: $select.search">
                         <div ng-bind-html="publisher.company | highlight: $select.search"></div>
@@ -101,7 +101,7 @@
                         <label>{{ 'REPORT.BREAKDOWN' | translate }}</label>
                         <ui-select ng-model="selectedData.siteBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ $select.selected.label }}</ui-select-match>
-                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
+                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions | filter:filterForDemandSourceReport:option">
                                 <div ng-bind-html="option.label"></div>
                             </ui-select-choices>
                         </ui-select>
@@ -125,7 +125,7 @@
                         <label>{{ 'REPORT.BREAKDOWN' | translate }}</label>
                         <ui-select ng-model="selectedData.adSlotBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ $select.selected.label }}</ui-select-match>
-                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
+                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions | filter:filterForDemandSourceReport:option">
                                 <div ng-bind-html="option.label"></div>
                             </ui-select-choices>
                         </ui-select>
@@ -136,7 +136,7 @@
             <div class="ad-slot form-group" ng-if="selectedReportTypeis(reportTypes.ronAdSlot)">
                 <div class="form-inline">
                     <div class="form-group">
-                        <label>Ron Ad Slot</label>
+                        <label>{{ 'RON_AD_SLOT' | translate }}</label>
                         <ui-select name="ronAdSlot" ng-model="selectedData.ronAdSlotId" ng-required="true" on-select="selectEntity($model)" ng-init="getRonAdSlot()" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_AD_SLOT' | translate }}">{{ $select.selected.libraryAdSlot.name }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="ronAdSlot.id as ronAdSlot in optionData.ronAdSlots | filter: $select.search | filter:selectedPublisherRonAdSlot:ronAdSlot">

@@ -1,0 +1,46 @@
+<header class="top-header clearfix">
+
+<!-- Logo -->
+<div class="logo">
+    <img src="assets/images/logo-header.png" alt="Tagcade">
+</div>
+
+<!-- needs to be put after logo to make it work-->
+<div class="menu-button" toggle-off-canvas>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+</div>
+
+<div class="top-nav">
+<ul class="nav-left list-unstyled">
+    <li>
+        <a href="javascript:;" toggle-nav-collapsed-min class="toggle-min"><i class="fa fa-bars"></i></a>
+    </li>
+    <li class="dropdown text-normal nav-profile" dropdown>
+        <a href="javascript:;" dropdown-toggle>
+            <span>{{ currentUser.username }}</span>
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu with-arrow">
+            <li ng-controller="Logout">
+                <a ng-click="logout()">
+                    <i class="fa fa-sign-out"></i>
+                    {{ 'LOGOUT' | translate }}
+                </a>
+            </li>
+            <li>
+                <a ui-sref=".subPublisherManagement.edit">
+                    <i class="fa fa-edit"></i>
+                    {{ 'EDIT_PROFILE' | translate }}
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li ng-controller="LayoutHeader" class="text-normal">
+        <a ng-if="showButtonSwitchBackToAdmin()" ng-click="switchBackToAdminAccount()"><span>{{ 'RETURN_TO_ADMIN' | translate }}</span></a>
+    </li>
+</ul>
+</div>
+
+</header>

@@ -21,6 +21,8 @@
                 urlPrefix = BASE_USER_URLS.admin;
             } else if (Auth.isAuthorized(USER_ROLES.publisher)) {
                 urlPrefix = BASE_USER_URLS.publisher;
+            } else if (Auth.isAuthorized(USER_ROLES.subPublisher)) {
+                urlPrefix = BASE_USER_URLS.subPublisher;
             }
 
             return urlPrefix;

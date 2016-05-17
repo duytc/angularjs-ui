@@ -7,5 +7,7 @@ angular.module('tagcade', [
     'tagcade.tagManagement',
     'tagcade.reports',
     'tagcade.supportTools',
-    'tagcade.tagLibrary'
+    'tagcade.tagLibrary',
+    'tagcade.exchangeManagement',
+    'tagcade.subPublisher'
 ]);

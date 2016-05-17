@@ -1,0 +1,70 @@
+<div>
+    <tc-unified-report-overview report-group="reportGroup" tagcade="true"></tc-unified-report-overview>
+
+    <div class="panel panel-default daily-reports">
+        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
+            {{ 'UNIFIED_REPORT_MODULE.DETAILS' | translate }}
+
+
+            <div class="button-bar hidden-xs">
+                <export-excel data="reports" fields="['name', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Ad Tag', 'Partner Requests', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+            </div>
+
+            <div class="btn-group btnGrouped" dropdown>
+                <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li><a>
+                        <export-excel data="reports" fields="['name', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Ad Tag', 'Partner Requests', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+
+        <ul class="nav nav-tabs source-reports">
+            <li role="presentation"><a ui-sref="^.partner(params)">{{ 'UNIFIED_REPORT_MODULE.UNIFIED' | translate }}</a></li>
+            <li role="presentation" class="active"><a ui-sref="^.tagcadePartner(params)">{{ 'UNIFIED_REPORT_MODULE.TAGCADE' | translate }}</a></li>
+            <li role="presentation"><a ui-sref="^.discrepanciesPartner(params)">{{ 'UNIFIED_REPORT_MODULE.DISCREPANCIES' | translate }}</a></li>
+        </ul>
+
+        <div class="table-responsive">
+            <table class="table" at-table at-paginated at-list="reports" at-config="tableConfig">
+                <thead></thead>
+                <tbody>
+                <tr>
+                    <!--<td at-title="{{ 'REPORT.START_DATE' | translate }}" at-attribute="startDate">-->
+                        <!--{{ item.startDate | date }}-->
+                    <!--</td>-->
+                    <!--<td at-title="{{ 'REPORT.END_DATE' | translate }}" at-attribute="endDate">-->
+                        <!--{{ item.endDate | date }}-->
+                    <!--</td>-->
+                    <td at-title="{{ 'AD_NETWORK' | translate }}" at-sortable at-initial-sorting="asc" at-attribute="name">
+                        {{ item.name }}
+                    </td>
+                    <td at-title="{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}" at-sortable at-attribute="totalOpportunities">
+                        {{ item.totalOpportunities | number }}
+                    </td>
+                    <td at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-sortable at-attribute="impressions">
+                        {{ item.impressions | number }}
+                    </td>
+                    <td at-title="{{ 'REPORT.PASSBACKS' | translate }}" at-sortable at-attribute="passbacks">
+                        {{ item.passbacks | number }}
+                    </td>
+                    <!--<td at-title="{{ 'UNIFIED_REPORT_MODULE.REVENUE' | translate }}" at-sortable at-attribute="estRevenue">-->
+                        <!--{{ item.estRevenue | currency }}-->
+                    <!--</td>-->
+                    <!--<td at-title="{{ 'UNIFIED_REPORT_MODULE.CPM' | translate }}" at-sortable at-attribute="estCpm">-->
+                        <!--{{ item.estCpm | currency }}-->
+                    </td>
+                    <td at-title="{{ 'REPORT.FILL_RATE' | translate }}" at-sortable at-attribute="fillRate">
+                        {{ item.fillRate | percentage }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <at-pagination ng-if="showPagination()" class="table-footer" at-list="reports" at-config="tableConfig"></at-pagination>
+    </div>
+
+    <tc-unified-report-summary report-group="reportGroup" tagcade="true"></tc-unified-report-summary>
+</div>

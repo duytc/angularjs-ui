@@ -16,6 +16,7 @@
                 startDate: null,
                 endDate: null
             },
+            product: 'display',
             publisherId: null,
             reportType: null,
             siteId: null,
@@ -44,7 +45,7 @@
                 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                 'Last 7 Days': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
                 'Last 30 Days': [moment().subtract(30, 'days'), moment().subtract(1, 'days')],
-                'This Month': [moment().startOf('month'), moment().subtract(1, 'days')],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
         };
@@ -59,6 +60,18 @@
         $scope.getReports = getReports;
         $scope.reportTypes = REPORT_TYPES;
         $scope.selectEntity = selectEntity;
+        $scope.selectProduct = selectProduct;
+
+        $scope.productOptions = [
+            {
+                key: 'display',
+                label: 'Display'
+            },
+            //{
+            //    key: 'source',
+            //    label: 'Source'
+            //}
+        ];
 
         var reportTypeOptions = [
             {
@@ -212,6 +225,10 @@
             }
 
             return reportType.key == reportTypeKey;
+        }
+
+        function selectProduct(product) {
+            console.log(product);
         }
 
         function selectEntity(entityId) {

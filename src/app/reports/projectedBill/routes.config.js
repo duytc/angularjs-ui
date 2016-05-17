@@ -8,7 +8,7 @@
     function addStates($stateProvider, UserStateHelperProvider) {
         UserStateHelperProvider
             .state('reports.projectedBill', {
-                abstract: true,
+                //abstract: true,
                 url: '/projectedBill',
                 views: {
                     'content@app': {
@@ -76,6 +76,7 @@
                 },
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, projectedBillService, userSession, REPORT_TYPES) {
+                        console.log(userSession);
                         return projectedBillService.getAccountProjectedBill($stateParams, {
                             reportType: REPORT_TYPES.account,
                             publisherId: userSession.id
