@@ -193,7 +193,8 @@
         }
 
         function isSubPublisher() {
-            return isAuthorized(USER_ROLES.subPublisher) && !sessionStorage.getPreviousToken();
+            return isAuthorized(USER_ROLES.subPublisher);
+            //return isAuthorized(USER_ROLES.subPublisher) && !sessionStorage.getPreviousToken();
         }
 
         return api;

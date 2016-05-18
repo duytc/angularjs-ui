@@ -20,28 +20,32 @@
          *
          * @param userToken
          * @param homeState
+         * @param unSavePreToken
          * @returns {promise}
          */
-        function switchToUser(userToken, homeState) {
-            sessionStorage.setPreviousToken(angular.toJson(Auth.getSession()) || {});
+        function switchToUser(userToken, homeState, unSavePreToken) {
+            if(!unSavePreToken) {
+                sessionStorage.setPreviousToken(Auth.getSession());
+            }
+
             sessionStorage.setCurrentSettings(userToken.settings);
 
             var newSession = Auth.initSession(userToken);
             sessionStorage.setCurrentToken(newSession.token);
 
-            var transition = $state.transitionTo(homeState, {}, {
+            var stateReload = $state.transitionTo(homeState, {}, {
                 reload: true,
                 inherit: false,
                 notify: true
             });
 
-            return transition;
+            return stateReload;
         }
 
         function switchBackMyAccount(homeState) {
             var previousAuthToken = angular.fromJson(sessionStorage.getPreviousToken());
 
-            switchToUser(previousAuthToken, homeState).then(function() {
+            switchToUser(previousAuthToken, homeState, true).then(function() {
                 sessionStorage.clearPreviousToken();
             });
         }

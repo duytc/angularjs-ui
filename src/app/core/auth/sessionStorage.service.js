@@ -33,11 +33,20 @@
         }
 
         function setPreviousToken(previousAuthToken) {
-            $window.localStorage[PREVIOUS_AUTH_TOKEN_NAME] = previousAuthToken;
+            var tokenList = angular.fromJson($window.localStorage[PREVIOUS_AUTH_TOKEN_NAME]) || [];
+            tokenList.push(previousAuthToken);
+
+            $window.localStorage[PREVIOUS_AUTH_TOKEN_NAME] = angular.toJson(tokenList);
         }
 
         function getPreviousToken() {
-            return $window.localStorage[PREVIOUS_AUTH_TOKEN_NAME];
+            var listPreviousToken = angular.fromJson($window.localStorage[PREVIOUS_AUTH_TOKEN_NAME]);
+
+            if(angular.isArray(listPreviousToken) && listPreviousToken.length > 0) {
+                return listPreviousToken[listPreviousToken.length - 1];
+            }
+
+            return null;
         }
 
         function setCurrentSettings(setCurrentSettings) {
@@ -48,13 +57,19 @@
             return $window.localStorage[CURRENT_PUBLISHER_SETTINGS];
         }
 
-
         function clearStorage() {
             $window.localStorage.clear();
         }
 
         function clearPreviousToken() {
-            $window.localStorage.removeItem(PREVIOUS_AUTH_TOKEN_NAME);
+            var listPreviousToken = angular.fromJson($window.localStorage[PREVIOUS_AUTH_TOKEN_NAME]);
+
+            if(angular.isArray(listPreviousToken) && listPreviousToken.length == 1) {
+                $window.localStorage.removeItem(PREVIOUS_AUTH_TOKEN_NAME);
+            } else {
+                listPreviousToken.splice(listPreviousToken.length - 1, 1);
+                $window.localStorage[PREVIOUS_AUTH_TOKEN_NAME] = angular.toJson(listPreviousToken);
+            }
         }
     }
 })();

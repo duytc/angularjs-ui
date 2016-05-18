@@ -30,6 +30,8 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <li><a ng-click="visitPublisher(item.id)">{{ 'PUBLISHER_MODULE.LOGIN_AS_THIS_SUB_PUBLISHER' | translate }}</a></li>
+                                <li class="divider"></li>
                                 <li><a ng-click="togglePublisherStatus(item)">{{ item.enabled ? ( 'PUBLISHER_MODULE.DEACTIVATE_PUBLISHER' | translate ) : ( 'PUBLISHER_MODULE.ACTIVATE_PUBLISHER' | translate ) }}</a></li>
                                 <li><a ui-sref="^.edit({ id: item.id })">{{ 'PUBLISHER_MODULE.EDIT_PUBLISHER' | translate }}</a></li>
                             </ul>
