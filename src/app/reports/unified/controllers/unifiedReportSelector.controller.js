@@ -25,6 +25,8 @@
             adNetwork: null,
             site : null,
             breakDown: null,
+            breakDowns: {},
+            subBreakDown: null,
             page: 1
         };
 
@@ -57,6 +59,7 @@
         $scope.selectSite = selectSite;
         $scope.groupEntities = groupEntities;
         $scope.filterBreakdown = filterBreakdown;
+        $scope.clickBreakdown = clickBreakdown;
 
         $scope.reportTypeOptions = [
             {
@@ -118,6 +121,57 @@
             }
 
             return true;
+        }
+
+        function clickBreakdown(option) {
+            var breakdowns = [];
+
+            angular.forEach($scope.selectedData.breakDowns, function(support, key) {
+                if(option != 'day' && support && key != 'day' && key != option) {
+                    $scope.selectedData.breakDowns[key] = false;
+                }
+
+                if($scope.selectedData.breakDowns[key]) {
+                    breakdowns.push(key)
+                }
+            });
+
+            _setVarBreakdown(breakdowns);
+        }
+
+        function _setVarBreakdown(breakdowns) {
+            if(breakdowns.length == 2) {
+                var indexOfDay = breakdowns.indexOf('day');
+                $scope.selectedData.subBreakDown = breakdowns[indexOfDay];
+                $scope.selectedData.breakDown = breakdowns[indexOfDay == 0 ? 1 : 0]
+            } else {
+                $scope.selectedData.breakDown = breakdowns[0];
+                $scope.selectedData.subBreakDown = null;
+            }
+
+            var breakdownOption = _.find($scope.breakdownOptions, function(breakdownOption) {
+                return breakdownOption.key == $scope.selectedData.breakDown;
+            });
+
+            $scope.selectedData.labelBreakdown = _getLabelBreakdown(breakdowns);
+
+            toState = breakdownOption.toState;
+        }
+
+        function _getLabelBreakdown(breakdowns) {
+            var labels = '';
+
+            angular.forEach(breakdowns, function(breakdown, index) {
+                var breakdownOption = _.find($scope.breakdownOptions, function(breakdownOption) {
+                    return breakdownOption.key == breakdown;
+                });
+
+                if(!!breakdownOption) {
+                    labels = labels + (index != 0 ? ', ' : '') + breakdownOption.label;
+                }
+            });
+
+            return labels;
         }
 
         /**
@@ -270,6 +324,17 @@
 
             if (!params.date.startDate) {
                 params.date.startDate = moment().subtract(6, 'days').startOf('day');
+            }
+
+            if(params.breakDown) {
+                $scope.selectedData.breakDowns = {};
+                $scope.selectedData.breakDowns[params.breakDown] = true;
+
+                if(params.subBreakDown) {
+                    $scope.selectedData.breakDowns[params.subBreakDown] = true;
+                }
+
+                $scope.selectedData.labelBreakdown = _getLabelBreakdown([params.breakDown, params.subBreakDown]);
             }
 
             angular.extend($scope.selectedData, params);

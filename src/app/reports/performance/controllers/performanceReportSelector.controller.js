@@ -21,14 +21,12 @@
                 startDate: null,
                 endDate: null
             },
+            breakDowns: null,
             publisherId: null,
             reportType: null,
             adNetworkId: null,
-            adNetworkBreakdown: null,
             siteId: null,
-            siteBreakdown: null,
             adSlotId: null,
-            adSlotBreakdown: null,
             ronAdSlotId: null
         };
 
@@ -69,6 +67,7 @@
         $scope.getRonAdSlot = getRonAdSlot;
         $scope.selectedPublisherRonAdSlot = selectedPublisherRonAdSlot;
         $scope.filterForDemandSourceReport = filterForDemandSourceReport;
+        $scope.clickBreakdown = clickBreakdown;
 
         $scope.datePickerOpts = {
             maxDate:  moment().endOf('day'),
@@ -96,7 +95,7 @@
 
         var reportTypeSite = {
                 key: PERFORMANCE_REPORT_TYPES.site,
-                breakdownKey: 'siteBreakdown',
+                breakdownKey: 'breakDown',
                 label: 'Site',
                 toState: 'reports.performance.sites',
                 visibleFields: [reportFields.site],
@@ -131,7 +130,7 @@
             reportTypeSite,
             {
                 key: PERFORMANCE_REPORT_TYPES.adSlot,
-                breakdownKey: 'adSlotBreakdown',
+                breakdownKey: 'breakDown',
                 label: 'Ad Slot',
                 toState: 'reports.performance.adSlots',
                 visibleFields: [reportFields.site, reportFields.adslot],
@@ -153,7 +152,7 @@
         if(!isSubPublisher) {
             reportTypeOptions.unshift({
                 key: PERFORMANCE_REPORT_TYPES.adNetwork,
-                breakdownKey: 'adNetworkBreakdown',
+                breakdownKey: 'breakDown',
                 label: 'Demand Partner',
                 toState: 'reports.performance.adNetworks',
                 visibleFields: [reportFields.adNetwork],
@@ -178,14 +177,14 @@
 
             reportTypeOptions.unshift({
                 key: PERFORMANCE_REPORT_TYPES.account,
-                breakdownKey: 'accountBreakdown',
+                breakdownKey: 'breakDown',
                 label: 'Account',
                 toState: 'reports.performance.account'
             });
 
             reportTypeOptions.push( {
                 key: PERFORMANCE_REPORT_TYPES.ronAdSlot,
-                breakdownKey: 'ronAdSlotBreakdown',
+                breakdownKey: 'breakDown',
                 label: 'RON Ad Slot',
                 toState: 'reports.performance.ronAdSlots',
                 breakdownOptions: [
@@ -216,7 +215,7 @@
         if (isAdmin) {
             reportTypeOptions.unshift({
                 key: PERFORMANCE_REPORT_TYPES.platform,
-                breakdownKey: 'platformBreakdown',
+                breakdownKey: 'breakDown',
                 label: 'Platform',
                 toState: 'reports.performance.platform',
                 breakdownOptions: [
@@ -243,6 +242,59 @@
 
         var hasGetAdSlot = false;
         var hasGetRonAdSlot = false;
+
+        function clickBreakdown(option) {
+            var breakdowns = [];
+
+            for(var index in $scope.selectedData.breakDowns) {
+                if(option != 'day' && $scope.selectedData.breakDowns[index] && index != 'day' && index != option) {
+                    $scope.selectedData.breakDowns[index] = false;
+                }
+
+                if($scope.selectedData.breakDowns[index]) {
+                    breakdowns.push(index)
+                }
+            }
+
+            _setVarBreakdown(breakdowns);
+        }
+
+        function _setVarBreakdown(breakdowns) {
+            if(breakdowns.length == 2) {
+                var indexOfDay = breakdowns.indexOf('day');
+                $scope.selectedData.breakDown = breakdowns[indexOfDay == 0 ? 1 : 0];
+                $scope.selectedData.subBreakDown = breakdowns[indexOfDay];
+            } else {
+                $scope.selectedData.breakDown = breakdowns[0];
+                $scope.selectedData.subBreakDown = null;
+            }
+
+            var breakdownOption = _.find($scope.selectedData.reportType.breakdownOptions, function(breakdownOption) {
+                return breakdownOption.key == $scope.selectedData.breakDown;
+            });
+
+            $scope.selectedData.labelBreakdown = _getLabelBreakdown([$scope.selectedData.breakDown, $scope.selectedData.subBreakDown]);
+
+            if(!!breakdownOption && !!breakdownOption.toState) {
+                toState = breakdownOption.toState;
+            }
+        }
+
+        function _getLabelBreakdown(breakdowns) {
+            var labels = '';
+
+            angular.forEach(breakdowns, function(breakdown, index) {
+                var breakdownOption = _.find($scope.selectedData.reportType.breakdownOptions, function(breakdownOption) {
+                    return breakdownOption.key == breakdown;
+                });
+
+                if(!!breakdownOption) {
+                    labels = labels + (index != 0 ? ', ' : '') + breakdownOption.label;
+                }
+            });
+
+            return labels;
+        }
 
         function isFormValid() {
             return $scope.reportSelectorForm.$valid;
@@ -349,6 +401,9 @@
          */
         function selectReportType(reportType) {
             $scope.selectedData.siteId = null;
+            $scope.selectedData.labelBreakdown = null;
+            $scope.selectedData.breakDown = null;
+            $scope.selectedData.breakDowns = [];
 
             if (!angular.isObject(reportType) || !reportType.toState) {
                 throw new Error('report type is missing a target state');
@@ -365,15 +420,18 @@
         }
 
         function selectEntity(entityId) {
-            $scope.selectedData.siteBreakdown = null;
-            $scope.selectedData.adSlotBreakdown = null;
-            $scope.selectedData.adNetworkBreakdown = null;
-            $scope.selectedData.accountBreakdown = null;
+            $scope.selectedData.labelBreakdown = null;
+            $scope.selectedData.breakDown = null;
+            $scope.selectedData.breakDowns = [];
+
+            clickBreakdown(null);
             resetToStateForCurrentReportType();
         }
 
         function selectAdNetwork(adNetworkId) {
-            $scope.selectedData.adNetworkBreakdown = null;
+            $scope.selectedData.labelBreakdown = null;
+            $scope.selectedData.breakDown = null;
+            $scope.selectedData.breakDowns = [];
             $scope.selectedData.siteId = null;
 
             if(adNetworkId){
@@ -385,12 +443,17 @@
                 );
             }
 
+            clickBreakdown(null);
             resetToStateForCurrentReportType();
         }
 
         // reset toState of Demand Partner
         function selectSiteForAdNetwork(siteId) {
-            $scope.selectedData.adNetworkBreakdown = null;
+            $scope.selectedData.labelBreakdown = null;
+            $scope.selectedData.breakDown = null;
+            $scope.selectedData.breakDowns = [];
+
+            clickBreakdown(null);
 
             if(!siteId) {
                 return $scope.selectedData.reportType.breakdownOptions = [
@@ -427,9 +490,11 @@
         }
 
         function selectSite(siteId) {
-            $scope.selectedData.siteBreakdown = null;
-            $scope.selectedData.adSlotBreakdown = null;
+            $scope.selectedData.labelBreakdown = null;
+            $scope.selectedData.breakDown = null;
+            $scope.selectedData.breakDowns = [];
             $scope.selectedData.adSlotId = null;
+            clickBreakdown(null);
             resetToStateForCurrentReportType();
 
             hasGetAdSlot = false;
@@ -502,13 +567,14 @@
             var transition;
             var params = ReportParams.getStateParams($scope.selectedData);
 
-
             var reportType = params.reportType;
             var breakdownValue = params[params.breakdownKey];
 
             if (breakdownValue != undefined && breakdownValue != null) {
                 var breakdownOption = _.findWhere(reportType.breakdownOptions, { key: breakdownValue });
-                selectBreakdownOption(breakdownOption);
+                if(!!breakdownOption) {
+                    selectBreakdownOption(breakdownOption);
+                }
             }
 
             if (toState == null) {
@@ -649,6 +715,17 @@
 
                     if (!$scope.selectedData.date.endDate) {
                         $scope.selectedData.date.endDate = $scope.selectedData.date.startDate
+                    }
+
+                    if($scope.selectedData.breakDown) {
+                        $scope.selectedData.breakDowns = {};
+                        $scope.selectedData.breakDowns[$scope.selectedData.breakDown] = true;
+
+                        if($scope.selectedData.subBreakDown) {
+                            $scope.selectedData.breakDowns[$scope.selectedData.subBreakDown] = true;
+                        }
+
+                        $scope.selectedData.labelBreakdown = _getLabelBreakdown([$scope.selectedData.breakDown, $scope.selectedData.subBreakDown]);
                     }
                 }
             );

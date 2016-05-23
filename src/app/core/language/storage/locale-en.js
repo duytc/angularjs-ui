@@ -513,6 +513,7 @@
                 "REPORT_TYPE": "Report Type",
                 "SELECT_A_REPORT_TYPE": "Select a report type",
                 "BREAKDOWN": "Breakdown",
+                "SUB_BREAKDOWN": "Sub Breakdown",
                 "SELECT_AN_OPTION": "Select an option",
                 "GET_REPORTS": "Get Reports",
                 "DAILY_ACCOUNT_BREAKDOWN": "Daily Account Breakdown",

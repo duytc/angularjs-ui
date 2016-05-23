@@ -37,7 +37,7 @@
                 if (path === '/') {
                     if(Auth.isSubPublisher()) {
                         // todo
-                        return urlPrefixService.getPrefixedUrl('/reports/performance/sites');
+                        return urlPrefixService.getPrefixedUrl('/reports/unified/day');
                     }
 
                     return urlPrefixService.getPrefixedUrl('/dashboard');

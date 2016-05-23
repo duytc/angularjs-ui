@@ -9,7 +9,7 @@
         $rootScope.$on(AUTH_EVENTS.loginSuccess, function() {
             if(Auth.isSubPublisher()) {
                 // todo
-                return UserStateHelper.transitionRelativeToBaseState('reports.performance.sites');
+                return UserStateHelper.transitionRelativeToBaseState('reports.unified.day');
             }
 
             UserStateHelper.transitionRelativeToBaseState('dashboard');

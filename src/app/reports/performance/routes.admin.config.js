@@ -8,7 +8,7 @@
     function addStates($stateProvider) {
         $stateProvider
             .state('app.admin.reports.performance.platform', {
-                url: '/platform?{startDate:date}&{endDate:date}',
+                url: '/platform?{startDate:date}&{endDate:date}&{subBreakDown}',
                 params: {
                     startDate: null,
                     endDate: null,
@@ -24,7 +24,7 @@
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getPlatformReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.platform,
-                            platformBreakdown: 'day'
+                            breakDown: 'day'
                         });
                     }
                 },
@@ -36,7 +36,7 @@
 
         $stateProvider
             .state('app.admin.reports.performance.platformAccounts', {
-                url: '/platform/accounts?{startDate:date}&{endDate:date}',
+                url: '/platform/accounts?{startDate:date}&{endDate:date}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -44,14 +44,20 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performance/views/reportType/accounts.tpl.html'
+                        templateUrl: function($stateParams) {
+                            if($stateParams.subBreakDown == 'day') {
+                                return 'reports/performance/views/reportType/accountsByDay.tpl.html'
+                            }
+
+                            return 'reports/performance/views/reportType/accounts.tpl.html'
+                        }
                     }
                 },
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getPlatformAccountsReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.platform,
-                            platformBreakdown: 'account'
+                            breakDown: 'account'
                         });
                     }
                 },
@@ -63,7 +69,7 @@
 
         $stateProvider
             .state('app.admin.reports.performance.platformSites', {
-                url: '/platform/sites?{startDate:date}&{endDate:date}',
+                url: '/platform/sites?{startDate:date}&{endDate:date}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -71,14 +77,20 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performance/views/reportType/site/sites.tpl.html'
+                        templateUrl: function($stateParams) {
+                            if($stateParams.subBreakDown == 'day') {
+                                return 'reports/performance/views/reportType/site/sitesByDay.tpl.html'
+                            }
+
+                            return 'reports/performance/views/reportType/site/sites.tpl.html'
+                        }
                     }
                 },
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getPlatformSitesReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.platform,
-                            platformBreakdown: 'site'
+                            breakDown: 'site'
                         });
                     }
                 },

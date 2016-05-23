@@ -50,9 +50,9 @@
         }
 
         function visitPublisher(publisherId) {
-            publisherRestangular.one('subpublisher').one(publisherId.toString()).one('token').get()
+            publisherRestangular.one('subpublishers').one(publisherId.toString()).one('token').get()
                 .then(function(tokenPublisher) {
-                    autoLogin.switchToUser(tokenPublisher.plain(), 'app.subPublisher.reports.performance.sites');
+                    autoLogin.switchToUser(tokenPublisher.plain(), 'app.subPublisher.reports.unified.day');
                 });
         }
 

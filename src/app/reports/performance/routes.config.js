@@ -24,7 +24,7 @@
 
         UserStateHelperProvider
             .state('reports.performance.adNetwork', {
-                url: '/adNetworks/{adNetworkId:int}?{startDate:date}&{endDate:date}',
+                url: '/adNetworks/{adNetworkId:int}?{startDate:date}&{endDate:date}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -39,7 +39,7 @@
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getAdNetworkReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
-                            adNetworkBreakdown: 'day'
+                            breakDown: 'day'
                         });
                     }
                 },
@@ -51,7 +51,7 @@
 
         UserStateHelperProvider
             .state('reports.performance.adNetworkAdTags', {
-                url: '/adNetworks/{adNetworkId:int}/adTags?{startDate:date}&{endDate:date}',
+                url: '/adNetworks/{adNetworkId:int}/adTags?{startDate:date}&{endDate:date}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -60,6 +60,10 @@
                     report: {
                         controller: 'ReportView',
                         templateUrl: function($stateParams) {
+                            if ($stateParams.subBreakDown == 'day') {
+                                return 'reports/performance/views/reportType/adNetwork/adTagsByDay.tpl.html';
+                            }
+
                             if (!$stateParams.endDate) {
                                 return 'reports/performance/views/reportType/adNetwork/adTagsDateRange.tpl.html';
                             }
@@ -72,7 +76,7 @@
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getAdNetworkAdTagsReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
-                            adNetworkBreakdown: 'adtag'
+                            breakDown: 'adtag'
                         });
                     }
                 },
@@ -84,7 +88,7 @@
 
         UserStateHelperProvider
             .state('reports.performance.adNetworkSites', {
-                url: '/adNetworks/{adNetworkId:int}/sites?{startDate:date}&{endDate:date}',
+                url: '/adNetworks/{adNetworkId:int}/sites?{startDate:date}&{endDate:date}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -93,6 +97,10 @@
                     report: {
                         controller: 'ReportView',
                         templateUrl: function($stateParams) {
+                            if($stateParams.subBreakDown == 'day') {
+                                return 'reports/performance/views/reportType/adNetwork/sitesByDay.tpl.html'
+                            }
+
                             if (!$stateParams.endDate) {
                                 return 'reports/performance/views/reportType/adNetwork/sites.tpl.html'
                             }
@@ -105,7 +113,7 @@
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getAdNetworkSitesReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
-                            adNetworkBreakdown: 'site'
+                            breakDown: 'site'
                         });
                     }
                 },
@@ -117,7 +125,7 @@
 
         UserStateHelperProvider
             .state('reports.performance.adNetworkSite', {
-                url: '/adNetworks/{adNetworkId:int}/sites/{siteId:int}?{startDate:date}&{endDate:date}',
+                url: '/adNetworks/{adNetworkId:int}/sites/{siteId:int}?{startDate:date}&{endDate:date}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -132,7 +140,7 @@
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getAdNetworkSiteReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
-                            adNetworkBreakdown: 'day'
+                            breakDown: 'day'
                         });
                     }
                 }
@@ -141,7 +149,7 @@
 
         UserStateHelperProvider
             .state('reports.performance.adNetworkSiteAdTags', {
-                url: '/adNetworks/{adNetworkId:int}/sites/{siteId:int}/adTags?{startDate:date}&{endDate:date}',
+                url: '/adNetworks/{adNetworkId:int}/sites/{siteId:int}/adTags?{startDate:date}&{endDate:date}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -149,14 +157,20 @@
                 views: {
                     report: {
                         controller: 'ReportView',
-                        templateUrl: 'reports/performance/views/reportType/adNetwork/adTags.tpl.html'
+                        templateUrl: function($stateParams) {
+                            if($stateParams.subBreakDown == 'day') {
+                                return 'reports/performance/views/reportType/adNetwork/adTagsByDay.tpl.html'
+                            }
+
+                            return 'reports/performance/views/reportType/adNetwork/adTags.tpl.html'
+                        }
                     }
                 },
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getAdNetworkSiteAdTagsReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
-                            adNetworkBreakdown: 'adtag'
+                            breakDown: 'adtag'
                         });
                     }
                 },
@@ -183,7 +197,7 @@
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getSiteReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.site,
-                            siteBreakdown: 'day'
+                            breakDown: 'day'
                         });
                     }
                 },
@@ -195,7 +209,7 @@
 
         UserStateHelperProvider
             .state('reports.performance.siteAdNetworks', {
-                url: '/sites/{siteId:int}/adNetworks?{startDate:date}&{endDate:date}',
+                url: '/sites/{siteId:int}/adNetworks?{startDate:date}&{endDate:date}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -204,6 +218,10 @@
                     report: {
                         controller: 'ReportView',
                         templateUrl: function($stateParams) {
+                            if($stateParams.subBreakDown == 'day') {
+                                return 'reports/performance/views/reportType/site/adNetworksByDay.tpl.html'
+                            }
+
                             if (!$stateParams.endDate) {
                                 return 'reports/performance/views/reportType/site/adNetworks.tpl.html';
                             }
@@ -216,7 +234,7 @@
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getSiteAdNetworksReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.site,
-                            siteBreakdown: 'adnetwork'
+                            breakDown: 'adnetwork'
                         });
                     }
                 },
@@ -228,7 +246,7 @@
 
         UserStateHelperProvider
             .state('reports.performance.siteAdSlots', {
-                url: '/sites/{siteId:int}/adSlots?{startDate:date}&{endDate:date}',
+                url: '/sites/{siteId:int}/adSlots?{startDate:date}&{endDate:date}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -237,6 +255,10 @@
                     report: {
                         controller: 'ReportView',
                         templateUrl: function($stateParams) {
+                            if($stateParams.subBreakDown == 'day') {
+                                return 'reports/performance/views/reportType/site/adSlotsByDay.tpl.html'
+                            }
+
                             if (!$stateParams.endDate) {
                                 return 'reports/performance/views/reportType/site/adSlots.tpl.html';
                             }
@@ -249,7 +271,7 @@
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getSiteAdSlotsReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.site,
-                            siteBreakdown: 'adslot'
+                            breakDown: 'adslot'
                         });
                     }
                 },
@@ -261,7 +283,7 @@
 
         UserStateHelperProvider
             .state('reports.performance.siteAdTags', {
-                url: '/sites/{siteId:int}/adTags?{startDate:date}&{endDate:date}',
+                url: '/sites/{siteId:int}/adTags?{startDate:date}&{endDate:date}&{subBreakDown}',
                 params: {
                     endDate: null,
                     expanded: true,
@@ -271,6 +293,10 @@
                     report: {
                         controller: 'ReportView',
                         templateUrl: function($stateParams) {
+                            if($stateParams.subBreakDown == 'day') {
+                                return 'reports/performance/views/reportType/site/adTagsByDay.tpl.html'
+                            }
+
                             if (!$stateParams.endDate) {
                                 return 'reports/performance/views/reportType/site/adTags.tpl.html';
                             }
@@ -283,7 +309,7 @@
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getSiteAdTagsReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.site,
-                            siteBreakdown: 'adtag'
+                            breakDown: 'adtag'
                         });
                     }
                 },
@@ -310,7 +336,7 @@
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getAdSlotReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.adSlot,
-                            adSlotBreakdown: 'day'
+                            breakDown: 'day'
                         });
                     }
                 },
@@ -322,7 +348,7 @@
 
         UserStateHelperProvider
             .state('reports.performance.adSlotAdTags', {
-                url: '/adSlots/{adSlotId:int}/adTags?{startDate:date}&{endDate:date}',
+                url: '/adSlots/{adSlotId:int}/adTags?{startDate:date}&{endDate:date}&{subBreakDown}',
                 params: {
                     endDate: null,
                     expanded: true,
@@ -332,6 +358,10 @@
                     report: {
                         controller: 'ReportView',
                         templateUrl: function($stateParams) {
+                            if($stateParams.subBreakDown == 'day') {
+                                return 'reports/performance/views/reportType/adSlot/adTagsByDay.tpl.html'
+                            }
+
                             if (!$stateParams.endDate) {
                                 return 'reports/performance/views/reportType/adSlot/adTags.tpl.html';
                             }
@@ -344,7 +374,7 @@
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getAdSlotAdTagsReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.adSlot,
-                            adSlotBreakdown: 'adtag'
+                            breakDown: 'adtag'
                         });
                     }
                 },
@@ -371,7 +401,7 @@
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getRonAdSlotReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.ronAdSlot,
-                            ronAdSlotBreakdown: 'day'
+                            breakDown: 'day'
                         });
                     }
                 },
@@ -383,7 +413,7 @@
 
         UserStateHelperProvider
             .state('reports.performance.ronAdSlotSites', {
-                url: '/ronAdSlots/{ronAdSlotId:int}/sites?{startDate:date}&{endDate:date}',
+                url: '/ronAdSlots/{ronAdSlotId:int}/sites?{startDate:date}&{endDate:date}&{subBreakDown}',
                 params: {
                     endDate: null,
                     expanded: true,
@@ -393,6 +423,10 @@
                     report: {
                         controller: 'ReportView',
                         templateUrl: function($stateParams) {
+                            if($stateParams.subBreakDown == 'day') {
+                                return 'reports/performance/views/reportType/ronAdSlot/sitesByDay.tpl.html'
+                            }
+
                             if (!$stateParams.endDate) {
                                 return 'reports/performance/views/reportType/ronAdSlot/sites.tpl.html';
                             }
@@ -405,7 +439,7 @@
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getRonAdSlotSitesReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.ronAdSlot,
-                            ronAdSlotBreakdown: 'site'
+                            breakDown: 'site'
                         });
                     }
                 },
@@ -417,7 +451,7 @@
 
         UserStateHelperProvider
             .state('reports.performance.ronAdSlotSegments', {
-                url: '/ronAdSlots/{ronAdSlotId:int}/segments?{startDate:date}&{endDate:date}',
+                url: '/ronAdSlots/{ronAdSlotId:int}/segments?{startDate:date}&{endDate:date}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -426,6 +460,10 @@
                     report: {
                         controller: 'ReportView',
                         templateUrl: function($stateParams) {
+                            if($stateParams.subBreakDown == 'day') {
+                                return 'reports/performance/views/reportType/ronAdSlot/segmentsByDay.tpl.html'
+                            }
+
                             if (!$stateParams.endDate) {
                                 return 'reports/performance/views/reportType/ronAdSlot/segments.tpl.html';
                             }
@@ -438,7 +476,7 @@
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getRonAdSlotSegmentsReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.ronAdSlot,
-                            ronAdSlotBreakdown: 'segment'
+                            breakDown: 'segment'
                         });
                     }
                 },
@@ -450,7 +488,7 @@
 
         UserStateHelperProvider
             .state('reports.performance.ronAdSlotAdTags', {
-                url: '/ronAdSlots/{ronAdSlotId:int}/adTags?{startDate:date}&{endDate:date}',
+                url: '/ronAdSlots/{ronAdSlotId:int}/adTags?{startDate:date}&{endDate:date}&{subBreakDown}',
                 params: {
                     endDate: null,
                     expanded: true,
@@ -460,6 +498,10 @@
                     report: {
                         controller: 'ReportView',
                         templateUrl: function($stateParams) {
+                            if($stateParams.subBreakDown == 'day') {
+                                return 'reports/performance/views/reportType/ronAdSlot/adTagsByDay.tpl.html'
+                            }
+
                             if (!$stateParams.endDate) {
                                 return 'reports/performance/views/reportType/ronAdSlot/adTags.tpl.html';
                             }
@@ -472,7 +514,7 @@
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
                         return performanceReport.getRonAdSlotAdTagsReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.ronAdSlot,
-                            ronAdSlotBreakdown: 'adtag'
+                            breakDown: 'adtag'
                         });
                     }
                 },

@@ -1,0 +1,78 @@
+<div ng-if="hasResult">
+    <tc-performance-report-overview report-group="reportGroup"></tc-performance-report-overview>
+
+    <div class="panel panel-default daily-reports">
+        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
+            {{ 'REPORT.SITE_BREAKDOWN' | translate }}
+            <div class="button-bar hidden-xs">
+                <export-excel data="reports" fields="['date', 'name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Date','Site', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+            </div>
+
+            <div class="btn-group btnGrouped" dropdown>
+                <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li><a>
+                        <export-excel css-class="''" data="reports" fields="['date', 'name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Date', 'Site', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
+                <thead>
+                <tr>
+                    <th at-attribute="rtbImpressions" ng-show="hasRtbModule">{{ 'REPORT.RTB_IMPRESSIONS' | translate }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-click="drillDownReport(reportStates.siteAdSlots, item)">
+                    <td at-title="{{ 'ACTIONS' | translate }}">
+                        <div class="btn-group" dropdown stop-event>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                            <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <li><a ng-click="popupReport(reportStates.siteAdSlots, item)">{{ 'PERFORMANCE_REPORT_MODULE.SITE_INFO' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ng-click="goToEditPage('tagManagement.sites.edit', item.reportType.siteId)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_SITE' | translate }}</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td at-title="{{ 'REPORT.DATE' | translate }}" at-sortable at-initial-sorting="desc" at-attribute="date">
+                        {{ item.date | date }}
+                    </td>
+                    <td class="name" at-title="{{ 'SITE' | translate }}" at-attribute="name" at-sortable>
+                        {{ item.name }}
+                    </td>
+                    <td at-title="{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}" at-attribute="slotOpportunities" at-sortable>
+                        {{ item.slotOpportunities | number }}
+                    </td>
+                    <td at-title="{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}" at-attribute="totalOpportunities" at-sortable>
+                        {{ item.totalOpportunities | number }}
+                    </td>
+                    <td ng-show="hasRtbModule" at-title="{{ 'REPORT.RTB_IMPRESSIONS' | translate }}" at-attribute="rtbImpressions" at-sortable>
+                        {{ item.rtbImpressions | number }}
+                    </td>
+                    <td at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="impressions" at-sortable>
+                        {{ item.impressions | number }}
+                    </td>
+                    <td at-title="{{ 'REPORT.PASSBACKS' | translate }}" at-attribute="passbacks" at-sortable>
+                        {{ item.passbacks | number }}
+                    </td>
+                    <td at-title="{{ 'REPORT.FILL_RATE' | translate }}" at-attribute="fillRate" at-sortable>
+                        {{ item.fillRate | percentage }}
+                    </td>
+
+                    <!--<td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>-->
+                        <!--{{ item.estRevenue | currency:'$':4 }}-->
+                    <!--</td>-->
+                    <!--<td at-title="Est. CPM" at-attribute="estCpm" at-sortable>-->
+                        <!--{{ item.estCpm | currency:'$':4 }}-->
+                    <!--</td>-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <at-pagination ng-if="showPagination()" class="table-footer" at-list="reports" at-config="tableConfig"></at-pagination>
+    </div>
+
+    <tc-performance-report-summary report-group="reportGroup"></tc-performance-report-summary>
+</div>
