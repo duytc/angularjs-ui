@@ -48,10 +48,6 @@
 
         $scope.deploymentOptions = [
             {
-                label: 'Standalone',
-                key: 'none'
-            },
-            {
                 label: 'Sites',
                 key: 'sites'
             },
@@ -60,8 +56,8 @@
                 key: 'channels'
             },
             {
-                label: 'Sites and Channels',
-                key: 'siteAndChannel'
+                label: 'Standalone Ad Slots',
+                key: 'none'
             }
         ];
 
@@ -75,17 +71,18 @@
 
         $scope.selected = {
             type: angular.isObject(adSlot) ? adSlot.type : $scope.typesList.display,
-            deployment: 'none',
+            deployment: 'sites',
             defaultAdSlot: angular.isObject(adSlot) && !! adSlot.defaultAdSlot ? adSlot.defaultAdSlot : null,
             sites: [],
             channels: [],
             site: angular.isObject(adSlot) ? adSlot.site : null,
-            publisher: adSlot && adSlot.publisher
+            publisher: adSlot && adSlot.publisher,
+            adSlotLibrary: null
         };
 
         var enabledModules = !!$scope.selected.publisher ? $scope.selected.publisher.enabledModules : null;
-        $scope.siteList = angular.isObject(adSlot) ? adSlot.sites : [];
-        $scope.channelList = angular.isObject(adSlot) ? adSlot.channels : [];
+        $scope.siteList = angular.isObject(adSlot) && angular.isObject(adSlot.sites) ? adSlot.sites : [];
+        $scope.channelList = angular.isObject(adSlot) && angular.isObject(adSlot.channels) ? adSlot.channels : [];
 
         var AD_SLOT_CONTEXTS = {
             normal: {
@@ -105,6 +102,10 @@
 
         if(!$scope.isNew) {
             adSlotRefactor = adSlot;
+        }
+
+        if($scope.selected.deployment == 'sites') {
+            selectDeployment('sites');
         }
 
         // add new adslot for siteId
@@ -134,6 +135,8 @@
         $scope.isNormalAdSlotNotUseStandalone = isNormalAdSlotNotUseStandalone;
         $scope.isNormalAdSlotUseStandalone = isNormalAdSlotUseStandalone;
         $scope.isStandaloneAdSlot = isStandaloneAdSlot;
+        $scope.getAdSlotLibrary = getAdSlotLibrary;
+        $scope.selectAdSlotLibrary = selectAdSlotLibrary;
 
         function selectDeployment(deployment) {
             if(deployment == 'channels') {
@@ -233,6 +236,20 @@
             return $scope.adSlotContext == AD_SLOT_CONTEXTS.standalone;
         }
 
+        function getAdSlotLibrary() {
+            if($scope.pickFromLibrary) {
+                AdSlotLibrariesManager.getList()
+                    .then(function(adSlotLibrary) {
+                        $scope.adSlotLibraryList = adSlotLibrary.plain();
+                    }
+                );
+            }
+        }
+
+        function selectAdSlotLibrary(adSlotLibrary) {
+            $scope.adSlot = adSlotLibrary;
+        }
+
         function isEnabledModule(module) {
             if(!$scope.isAdmin()) {
                 enabledModules = userSession.enabledModules
@@ -269,13 +286,16 @@
             adSlot = _refactorAdSlot($scope.adSlot);
             adSlotRefactor = adSlot;
 
-            if(isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) {
+            if($scope.pickFromLibrary) {
+                Manager = AdSlotLibrariesManager.one($scope.selected.adSlotLibrary).customPOST(adSlot, 'createlinks');
+            }
+            else if(isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) {
                 Manager = libraryAdSlotService.getManagerForAdSlotLibrary($scope.selected);
             } else {
                 Manager = adSlotService.getManagerForAdSlot($scope.selected);
             }
 
-            var saveAdSlot = $scope.isNew ? Manager.post(adSlot) : Manager.one(adSlot.id).patch(adSlot);
+            var saveAdSlot = $scope.isNew ? ($scope.pickFromLibrary ? Manager : Manager.post(adSlot)) : Manager.one(adSlot.id).patch(adSlot);
             saveAdSlot
                 .catch(
                 function (response) {
@@ -303,6 +323,10 @@
         }
 
         function isFormValid() {
+            if($scope.pickFromLibrary) {
+                return $scope.adSlotLibraryForm.$valid && ($scope.selected.sites.length > 0 || $scope.selected.channels.length > 0);
+            }
+
             if($scope.selected.type != $scope.typesList.dynamic) { // validate display ad slot
                 return $scope.adSlotLibraryForm.$valid;
             }
@@ -409,7 +433,7 @@
         }
 
         function backToAdSlotList() {
-            if(isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) {
+            if((isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) && !$scope.pickFromLibrary) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlotLibrary, '^.^.^.tagLibrary.adSlot.list');
             }
 
@@ -669,7 +693,14 @@
          * @private
          */
         function _refactorAdSlot(adSlot) {
-            if(isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) return _refactorLibraryAdSlot(adSlot);
+            if($scope.pickFromLibrary) {
+                return _refactorCreateAdSlot();
+            }
+
+            else if(isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) {
+                return _refactorLibraryAdSlot(adSlot);
+            }
+
             return _refactorDeployAdSlot(adSlot);
         }
 
@@ -727,6 +758,22 @@
                     delete adSlot.native;
                 }
             }
+
+            return adSlot;
+        }
+
+        function _refactorCreateAdSlot() {
+            var adSlot = {
+                sites: [],
+                channels: []
+            };
+
+            angular.forEach($scope.selected.sites, function(site) {
+                adSlot.sites.push(site.id)
+            });
+            angular.forEach($scope.selected.channels, function(channel) {
+                adSlot.channels.push(channel.id)
+            });
 
             return adSlot;
         }

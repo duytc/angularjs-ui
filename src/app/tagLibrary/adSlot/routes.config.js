@@ -124,7 +124,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Associated Ad Slots'
+                    label: 'Linked Ad Slots'
                 }
             })
         ;

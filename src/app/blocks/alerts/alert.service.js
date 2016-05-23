@@ -56,8 +56,6 @@
              * @param {object} message
              */
             addAlert: function (message) {
-                this.clearAll();
-
                 addAlert(_$alerts, message);
             },
 

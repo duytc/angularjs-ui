@@ -145,10 +145,23 @@
                     </ul>
                 </li>
 
-                <li ui-sref-active="active">
-                    <a ui-sref=".tagManagement.adTag.new">
-                        <span class="menu-text"> {{ 'NAVBAR.NEW_AD_TAG' | translate }} </span>
+                <li>
+                    <a href="#" class="menu-dropdown">
+                        <span class="menu-text">{{ 'AD_TAGS' | translate }}</span>
+                        <i class="menu-expand"></i>
                     </a>
+                    <ul class="submenu">
+                        <li ui-sref-active="active">
+                            <a ui-sref=".tagLibrary.adTag.list">
+                                <span class="menu-text">{{ 'NAVBAR.MY_AD_TAGS' | translate }}</span>
+                            </a>
+                        </li>
+                        <li ui-sref-active="active">
+                            <a ui-sref=".tagManagement.adTag.new">
+                                <span class="menu-text">{{ 'NAVBAR.NEW_AD_TAG' | translate }}</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li ui-sref-active="active">

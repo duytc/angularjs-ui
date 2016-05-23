@@ -5,14 +5,14 @@
         .controller('AdTagList', AdTagList)
     ;
 
-    function AdTagList($scope, $stateParams, $translate, $q, $state, $modal, adTags, adSlot, AdTagManager, AdSlotAdTagLibrariesManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AD_TYPES, TYPE_AD_SLOT) {
+    function AdTagList($scope, $stateParams, $translate, $q, $state, $modal, adTags, adSlot, AdTagManager, AdSlotAdTagLibrariesManager, AdTagLibrariesManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AD_TYPES, TYPE_AD_SLOT) {
         $scope.adTags = adTags;
 
         $scope.hasAdTags = function () {
             return !!adTags.length;
         };
 
-        if(!adSlot.libraryAdSlot) {
+        if(!!adSlot.libraryAdSlot && adSlot.libraryAdSlot.visible || adSlot.visible) {
             AlertService.addAlert({
                 type: 'warning',
                 message: $translate.instant('AD_SLOT_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
@@ -20,7 +20,7 @@
         }
 
         if (!$scope.hasAdTags()) {
-            AlertService.replaceAlerts({
+            AlertService.addAlert({
                 type: 'warning',
                 message: $translate.instant('AD_TAG_MODULE.CURRENTLY_NO_AD_TAG')
             });
@@ -37,6 +37,7 @@
         $scope.updateAdTag = updateAdTag;
         $scope.enableDragDropAdTag = enableDragDropAdTag;
         $scope.backToListAdSlot = backToListAdSlot;
+        $scope.shareAdTag = shareAdTag;
 
         $scope.sortableGroupOptions = {
             disabled: true,
@@ -79,7 +80,7 @@
                 'active': newTagStatus
             })
                 .catch(function () {
-                    AlertService.replaceAlerts({
+                    AlertService.addAlert({
                         type: 'error',
                         message: $translate.instant('AD_TAG_MODULE.CHANGE_STATUS_FAIL')
                     });
@@ -136,7 +137,6 @@
 
         function _start() {
             originalGroups = angular.copy($scope.adTagsGroup);
-
         }
 
         function getIdsWithRespectToGroup(adTagsGroup) {
@@ -203,7 +203,7 @@
                     adTags = $scope.adTags;
                     $scope.adTagsGroup = _sortGroup(adTags);
 
-                    AlertService.replaceAlerts({
+                    AlertService.addAlert({
                         type: 'success',
                         message: $translate.instant('AD_TAG_MODULE.REORDERED_AD_TAG_SUCCESS')
                     });
@@ -265,7 +265,7 @@
                 .catch(function() {
                     adtag[field] = adtag[field];
 
-                    AlertService.replaceAlerts({
+                    AlertService.addAlert({
                         type: 'error',
                         message: $translate.instant('AD_TAG_MODULE.UPDATE_FAIL')
                     });
@@ -298,6 +298,29 @@
             }
 
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.listAll');
+        }
+
+        function shareAdTag(adTag) {
+            var libraryAdTag = {
+                visible: true
+            };
+
+            AdTagLibrariesManager.one(adTag.libraryAdTag.id).patch(libraryAdTag)
+                .then(function () {
+                    adTag.libraryAdTag.visible = true;
+
+                    AlertService.addAlert({
+                        type: 'success',
+                        message: $translate.instant('AD_TAG_MODULE.MOVED_TO_LIBRARY_SUCCESS')
+                    });
+                })
+                .catch(function () {
+                    AlertService.addAlert({
+                        type: 'error',
+                        message: $translate.instant('AD_TAG_MODULE.MOVED_TO_LIBRARY_FAIL')
+                    });
+                })
+            ;
         }
     }
 })();

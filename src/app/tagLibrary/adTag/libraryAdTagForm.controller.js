@@ -56,9 +56,16 @@
             var modalInstance = $modal.open({
                 templateUrl: 'tagManagement/adTag/adNetworkQuicklyForm.tpl.html',
                 controller: 'AdNetworkQuicklyForm',
+                size: 'lg',
                 resolve: {
-                    publishers: function(){
-                        return publisherList;
+                    publishers: function(adminUserManager){
+                        if(!!publisherList) {
+                            return publisherList;
+                        }
+
+                        return adminUserManager.getList({ filter: 'publisher' }).then(function (users) {
+                            return users.plain();
+                        });
                     }
                 }
             });

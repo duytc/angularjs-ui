@@ -75,7 +75,7 @@
                 </div>
 
                 <div class="form-group" ng-if="isNew">
-                    <label class="col-sm-1quarter control-label">Deployment</label>
+                    <label class="col-sm-1quarter control-label">Add to</label>
                     <div class="col-sm-5">
                         <ui-select ng-model="selected.deployment" on-select="selectDeployment($model)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select an deployment">{{ $select.selected.label }}</ui-select-match>
@@ -86,14 +86,14 @@
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="selected.deployment == 'siteAndChannel' || selected.deployment == 'sites' ">
+                <div class="form-group" ng-if="selected.deployment == 'sites' && isNew">
                     <label for="inputSite" class="col-sm-1quarter control-label">{{ 'SITE' | translate }}</label>
                     <div class="col-sm-5">
                         <isteven-multi-select id="inputSite" input-model="siteList" output-model="selected.sites" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="selected.deployment == 'siteAndChannel' || selected.deployment == 'channels'">
+                <div class="form-group" ng-if="selected.deployment == 'channels'">
                     <label for="inputChannel" class="col-sm-1quarter control-label">{{ 'CHANNEL' | translate }}</label>
                     <div class="col-sm-5">
                         <isteven-multi-select id="inputChannel" input-model="channelList" output-model="selected.channels" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
@@ -101,23 +101,47 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="inputPickFromLibrary" class="col-sm-1quarter control-label">Use Existing Ad Slot</label>
+                    <div class="col-sm-5">
+                        <div>
+                            <label class="ui-checkbox">
+                                <input name="pickFromLibrary" type="checkbox" ng-model="pickFromLibrary" ng-click="getAdSlotLibrary()" server-error id="inputPickFromLibrary">
+                                <span></span>
+                            </label>
+                        </div>
+                        <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_FROM_LIBRARY' | translate }}</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="pickFromLibrary">
+                    <label for="inputAdSlotLibrary" class="col-sm-1quarter control-label">Standalone Ad Slot</label>
+                    <div class="col-sm-5">
+                        <ui-select name="adSlotLibrary" ng-model="selected.adSlotLibrary" id="inputAdSlotLibrary" ng-required="true" server-error ng-disabled="!selected.publisher && isAdmin()" on-select="selectAdSlotLibrary($item)" reset-search-input="'false'">
+                            <ui-select-match placeholder="Select an ad slot from standalone">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
+                            <ui-select-choices repeat="adSlotLibrary.id as adSlotLibrary in adSlotLibraryList | filter:$select.search | selectedPublisher:selected.publisher | filter:{ libType: selected.type}">
+                                {{ adSlotLibrary.name }} {{ adSlotLibrary.id ? '(ID: ' + adSlotLibrary.id + ')' : '' }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label for="inputName" class="col-sm-1quarter control-label">{{ 'NAME' | translate }}</label>
                     <div class="col-sm-5">
-                        <input server-error name="name" ng-model="adSlot.name" ng-disabled="isNormalAdSlotUseStandalone() && !isNew" ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="{{ 'AD_SLOT_MODULE.PLACEHOLDER_AD_SLOT_NAME' | translate }}">
+                        <input server-error name="name" ng-model="adSlot.name" ng-disabled="isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary" ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="{{ 'AD_SLOT_MODULE.PLACEHOLDER_AD_SLOT_NAME' | translate }}">
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="showForDynamicAdSlot()">
                     <label for="inputNative" class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.NATIVE' | translate }}</label>
                     <div class="col-sm-5">
-                        <label class="ui-checkbox"><input ng-disabled="!isNew" ng-click="checkNative()" server-error name="native" type="checkbox" ng-model="adSlot.native" id="inputNative"><span></span></label>
+                        <label class="ui-checkbox"><input ng-disabled="!isNew || pickFromLibrary" ng-click="checkNative()" server-error name="native" type="checkbox" ng-model="adSlot.native" id="inputNative"><span></span></label>
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="showForDynamicAdSlot() && !isNormalAdSlotNotUseStandalone()">
                     <label for="inputDefaultLibraryAdSlot" class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.DEFAULT_AD_SLOT' | translate }}</label>
                     <div class="col-sm-5">
-                        <ui-select id="inputDefaultLibraryAdSlot" ng-model="adSlot.defaultLibraryAdSlot" ng-required="true" server-error reset-search-input="'false'">
+                        <ui-select id="inputDefaultLibraryAdSlot" ng-model="adSlot.defaultLibraryAdSlot" ng-disabled="pickFromLibrary" ng-required="true" server-error reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_AD_SLOT' | translate }}">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="adSlot.id as adSlot in adSlotsDefault | filter:$select.search | selectedPublisher:adSlot.publisher | filter:filterEntityType:adSlot">
                                 {{ adSlot.name }} {{ adSlot.id ? '(ID: ' + adSlot.id + ')' : '' }}
@@ -132,7 +156,7 @@
                 <div class="form-group" ng-if="showForDynamicAdSlot() && isNormalAdSlotNotUseStandalone()">
                     <label for="inputDefaultAdSlot" class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.DEFAULT_AD_SLOT' | translate }}</label>
                     <div class="col-sm-5">
-                        <ui-select id="inputDefaultAdSlot" ng-model="selected.defaultAdSlot" ng-disabled="isNormalAdSlotUseStandalone() && !isNew" ng-required="true" server-error on-select="selectDefaultAdSlot($item)" reset-search-input="'false'">
+                        <ui-select id="inputDefaultAdSlot" ng-model="selected.defaultAdSlot" ng-disabled="isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary" ng-required="true" server-error on-select="selectDefaultAdSlot($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_AD_SLOT' | translate }}">{{ $select.selected.libraryAdSlot.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="adSlot.id as adSlot in adSlotsDefault | filter:$select.search | filter:filterDeployEntityType:adSlot">
                                 {{ adSlot.libraryAdSlot.name }} {{ adSlot.id ? '(ID: ' + adSlot.id + ')' : '' }}
@@ -147,20 +171,20 @@
                 <div class="form-group" ng-if="showForDisplayAdSlot()">
                     <label for="inputWidth" class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.WIDTH' | translate }}</label>
                     <div class="col-sm-5">
-                        <input name="width" server-error  ng-model="adSlot.width" ng-disabled="isNormalAdSlotUseStandalone() && !isNew" ng-required="true" min="1" type="number" class="form-control" id="inputWidth" placeholder="{{ 'AD_SLOT_MODULE.WIDTH' | translate }}">
+                        <input name="width" server-error  ng-model="adSlot.width" ng-disabled="isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary" ng-required="true" min="1" type="number" class="form-control" id="inputWidth" placeholder="{{ 'AD_SLOT_MODULE.WIDTH' | translate }}">
                     </div>
                 </div>
                 <div class="form-group" ng-if="showForDisplayAdSlot()">
                     <label for="inputWidth" class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.HEIGHT' | translate }}</label>
                     <div class="col-sm-5">
-                        <input server-error name="height" ng-model="adSlot.height" ng-disabled="isNormalAdSlotUseStandalone() && !isNew" ng-required="true" min="1" type="number" class="form-control" id="inputHeight" placeholder="{{ 'AD_SLOT_MODULE.HEIGHT' | translate }}">
+                        <input server-error name="height" ng-model="adSlot.height" ng-disabled="isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary" ng-required="true" min="1" type="number" class="form-control" id="inputHeight" placeholder="{{ 'AD_SLOT_MODULE.HEIGHT' | translate }}">
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="showForDisplayAdSlot()">
                     <label for="inputPassbackMode" class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.PASSBACK_MODE' | translate }}</label>
                     <div class="col-sm-5">
-                        <ui-select id="inputPassbackMode" ng-model="adSlot.passbackMode" ng-disabled="isNormalAdSlotUseStandalone() && !isNew" ng-required="true" server-error reset-search-input="'false'" ng-disabled="pickFromLibrary">
+                        <ui-select id="inputPassbackMode" ng-model="adSlot.passbackMode" ng-disabled="isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary" ng-required="true" server-error reset-search-input="'false'" ng-disabled="pickFromLibrary">
                             <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_PASS_BACK' | translate }}">{{ $select.selected.label }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="option.key as option in passbackOption | filter:$select.search">
                                 {{ option.label }}
@@ -177,7 +201,7 @@
                             <library-query-builder expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native"></library-query-builder>
                         </div>
                         <div class="expressions-group" ng-if="isNormalAdSlotNotUseStandalone()">
-                            <query-builder disabled-directive="isNormalAdSlotUseStandalone() && !isNew" expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native"></query-builder>
+                            <query-builder disabled-directive="isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary" expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native"></query-builder>
                         </div>
                     </div>
                 </div>
@@ -185,7 +209,7 @@
                 <div class="form-group" ng-if="showForDisplayAdSlot()">
                     <label for="inputAutoFit" class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.AUTO_FIT' | translate }}</label>
                     <div class="col-sm-5">
-                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="adSlot.autoFit" ng-disabled="isNormalAdSlotUseStandalone() && !isNew" id="inputAutoFit"><span></span></label>
+                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="adSlot.autoFit" ng-disabled="isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary" id="inputAutoFit"><span></span></label>
 
                         <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_AUTO_FIT' | translate }}</span>
                     </div>
@@ -204,7 +228,7 @@
                 <div class="form-group" ng-if="showForDisplayAdSlot() && isEnabledModuleRtb() && adSlot.rtbStatus != rtbStatusTypes.disable && isNormalAdSlotNotUseStandalone()">
                     <label for="inputFloorPrice" class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.FLOOR_PRICE' | translate }}</label>
                     <div class="col-sm-5">
-                        <input server-error name="floorPrice" ng-model="adSlot.floorPrice" type="number" class="form-control" id="inputFloorPrice" placeholder="{{ 'AD_SLOT_MODULE.FLOOR_PRICE' | translate }}">
+                        <input server-error name="floorPrice" ng-model="adSlot.floorPrice" ng-disabled="pickFromLibrary" type="number" class="form-control" id="inputFloorPrice" placeholder="{{ 'AD_SLOT_MODULE.FLOOR_PRICE' | translate }}">
 
                         <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_FLOOR_PRICE' | translate }}</span>
                     </div>

@@ -48,7 +48,9 @@
                             </ul>
                         </div>
                     </td>
-                    <td at-implicit at-title="{{ 'NAME' | translate }}" at-attribute="libraryAdTag.name"></td>
+                    <td at-title="{{ 'NAME' | translate }}" at-attribute="libraryAdTag.name">
+                        {{ item.labraryAdTag.name }}  <span ng-if="item.libraryAdTag.visible" class="glyphicon glyphicon-link"></span>
+                    </td>
                     <td at-title="{{ 'AD_TAG_MODULE.ROTATION_WEIGHT' | translate }}" ng-dblclick="rotationForm.$show()" at-attribute="rotation">
                         <div ng-show="!isSubPublisher()">
                             <span class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>

@@ -32,9 +32,9 @@
 
                 angular.forEach(element, function (value, key) {
                     // submit all libraryAdTag
-                    if((['adtags'].indexOf(what) > -1 || ['libraryslottags'].indexOf(what) > -1) && key == 'libraryAdTag') {
-                        return;
-                    }
+                    //if((['adtags'].indexOf(what) > -1 || ['libraryslottags'].indexOf(what) > -1) && key == 'libraryAdTag') {
+                    //    return;
+                    //}
 
                     if (!angular.isObject(value)) {
                         return;

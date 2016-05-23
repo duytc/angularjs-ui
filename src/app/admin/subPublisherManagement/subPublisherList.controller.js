@@ -50,7 +50,7 @@
         }
 
         function visitPublisher(publisherId) {
-            publisherRestangular.one(publisherId.toString()).one('token').get()
+            publisherRestangular.one('subpublisher').one(publisherId.toString()).one('token').get()
                 .then(function(tokenPublisher) {
                     autoLogin.switchToUser(tokenPublisher.plain(), 'app.subPublisher.reports.performance.sites');
                 });

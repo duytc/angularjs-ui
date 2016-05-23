@@ -5,7 +5,7 @@
         .controller('AdTagForm', AdTagForm)
     ;
 
-    function AdTagForm($scope, _, $state, $modal, $translate, $stateParams, SiteManager, AdNetworkCache, AdTagManager, AlertService, ServerErrorProcessor, DisplayAdSlotManager, historyStorage, adTag, adSlot, site, publisher, publisherList, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, HISTORY_TYPE_PATH) {
+    function AdTagForm($scope, _, $state, $modal, $translate, $stateParams, SiteManager, AdNetworkCache, AdTagManager, AlertService, AdTagLibrariesManager, ServerErrorProcessor, DisplayAdSlotManager, historyStorage, adTag, adSlot, site, publisher, publisherList, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
             name: 'Name',
@@ -19,6 +19,13 @@
             indentUnit: 0,
             mode : "htmlmixed"
         };
+
+        if(!!adSlot && !!adSlot.libraryAdSlot && adSlot.libraryAdSlot.visible) {
+            AlertService.addAlert({
+                type: 'warning',
+                message: $translate.instant('AD_SLOT_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
+            });
+        }
 
         if($scope.isAdmin()) {
             if(!!publisher) {
@@ -58,6 +65,7 @@
 
             // set ad tag library
             if(adTag.libraryAdTag.visible) {
+                getAdTagLibrary();
                 $scope.libraryAdTag = adTag.libraryAdTag.id;
             }
 
@@ -88,6 +96,8 @@
                 $scope.adTag.libraryAdTag.descriptor = null;
             }
         }
+
+        $scope.getAdTagLibrary = getAdTagLibrary;
 
         //if(!$scope.isNew && adTag.libraryAdTag.visible) {
         //    // disabled form input html when select ad tag library
@@ -214,6 +224,55 @@
             })
         };
 
+        function getAdTagLibrary() {
+            if($scope.pickFromLibrary) {
+                AdTagLibrariesManager.getList()
+                    .then(function(libraryAdTag) {
+                        $scope.adTagLibraryList = libraryAdTag.plain();
+                    }
+                );
+
+                // disabled form input html when select ad tag library
+                return $scope.editorOptions.readOnly = 'nocursor';
+            } else {
+                if(angular.isObject($scope.adTag)) {
+                    $scope.adTag.libraryAdTag = {
+                        name: null,
+                        html: null,
+                        adNetwork: null,
+                        adType: $scope.adTypes.customAd,
+                        descriptor: null
+                    }
+                } else {
+                    $scope.adTag = {
+                        libraryAdTag: {
+                            name: null,
+                            html: null,
+                            adNetwork: null,
+                            adType: $scope.adTypes.customAd,
+                            descriptor: null
+                        }
+                    };
+                }
+            }
+
+            if(!$scope.isNew) {
+                angular.extend($scope.adTag.libraryAdTag, adTagCopy.libraryAdTag);
+            }
+
+            if(!!$scope.adTag) {
+                delete $scope.adTag.libraryAdTag.id;
+                delete $scope.adTag.libraryAdTag.visible;
+            }
+
+            // enable form input html when select ad tag library
+            return $scope.editorOptions.readOnly = false;
+        }
+
+        $scope.selectAdTagLibrary = function(libraryAdTag) {
+            angular.extend($scope.adTag.libraryAdTag, libraryAdTag);
+        };
+
         $scope.submit = function() {
             if ($scope.formProcessing) {
                 // already running, prevent duplicates
@@ -223,6 +282,7 @@
             $scope.formProcessing = true;
 
             $scope.adTag.libraryAdTag.adNetwork = $scope.adTag.libraryAdTag.adNetwork.id ? $scope.adTag.libraryAdTag.adNetwork.id : $scope.adTag.libraryAdTag.adNetwork;
+            delete $scope.adTag.libraryAdTag.associatedTagCount;
 
             var adTag = angular.copy($scope.adTag);
 
@@ -241,7 +301,7 @@
                         AlertService.addFlash({
                             type: 'success',
                             message: $scope.isNew ? $translate.instant('AD_TAG_MODULE.ADD_NEW_SUCCESS') : $translate.instant('AD_TAG_MODULE.UPDATE_SUCCESS')
-                        });
+                        })
                     }
                 )
                 .then(
@@ -339,8 +399,6 @@
                 _getAdTagGroup(adSlot);
             }
         }
-
-
 
         var params = {
             query: '',

@@ -32,13 +32,15 @@
                                 <li  ng-if="!isSubPublisher()"><a ui-sref="^.edit({ id: item.id, adNetworkId: adNetwork.id})">{{ 'AD_TAG_MODULE.EDIT_AD_TAG' | translate }}</a></li>
                                 <li  ng-if="!isSubPublisher()"><a ng-click="toggleAdTagStatus(item)">{{ item.active ? ('AD_TAG_MODULE.PAUSE_AD_TAG' | translate) : ('AD_TAG_MODULE.ACTIVATE_AD_TAG' | translate) }}</a></li>
                                 <li  ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item)">{{ 'AD_TAG_MODULE.DELETE_AD_TAG' | translate }}</a></li>
-                                <!--<li  ng-if="!isSubPublisher()" class="divider"></li>-->
-                                <!--<li  ng-if="!item.libraryAdTag.visible && !isSubPublisher()" ng-click="shareAdTag(item)"><a>{{ 'AD_TAG_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>-->
+                                <li  ng-if="!item.libraryAdTag.visible && !isSubPublisher()" class="divider"></li>
+                                <li  ng-if="!item.libraryAdTag.visible && !isSubPublisher()" ng-click="shareAdTag(item)"><a>{{ 'AD_TAG_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>
                                 <!--<li ng-if="item.libraryAdTag.visible && !isSubPublisher()"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: item.libraryAdTag.id})">{{ 'AD_TAG_MODULE.EDIT_AD_TAG_IN_LIBRARY' | translate }}</a></li>-->
                             </ul>
                         </div>
                     </td>
-                    <td at-implicit at-title="{{ 'NAME' | translate }}" at-sortable at-attribute="libraryAdTag.name" at-initial-sorting="asc"></td>
+                    <td at-title="{{ 'NAME' | translate }}" at-sortable at-attribute="libraryAdTag.name" at-initial-sorting="asc">
+                        {{ item.libraryAdTag.name }}  <span ng-if="item.libraryAdTag.visible" class="glyphicon glyphicon-link"></span>
+                    </td>
                     <td at-title="{{ 'AD_TAG_MODULE.ROTATION_WEIGHT' | translate }}" ng-dblclick="rotationForm.$show()" at-sortable at-attribute="rotation">
                         <div ng-show="!isSubPublisher()">
                             <span class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>
