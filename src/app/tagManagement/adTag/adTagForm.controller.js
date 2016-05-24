@@ -20,7 +20,11 @@
             mode : "htmlmixed"
         };
 
-        if(!!adSlot && !!adSlot.libraryAdSlot && adSlot.libraryAdSlot.visible) {
+
+        $scope.isNew = adTag === null;
+        $scope.formProcessing = false;
+
+        if((!!adSlot && !!adSlot.libraryAdSlot && adSlot.libraryAdSlot.visible) || (!$scope.isNew && !!adTag && !!adTag.libraryAdTag && adTag.libraryAdTag.visible)) {
             AlertService.addAlert({
                 type: 'warning',
                 message: $translate.instant('AD_SLOT_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
@@ -34,9 +38,6 @@
                 $scope.hasUnifiedModule = null;
             }
         }
-
-        $scope.isNew = adTag === null;
-        $scope.formProcessing = false;
 
         // !! converts a variable to a boolean
         // we are saying, if we don't have a predefined ad slot but we have a list of all ad slots, allow the user to choose

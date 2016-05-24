@@ -66,7 +66,7 @@
                         </ui-select>
                     </div>
 
-                    <div class="form-group select-breakdown" ng-if="selectedData.adNetworkId && optionData.adNetworkSites.length">
+                    <div class="form-group select-breakdown" ng-if="(selectedData.adNetworkId && optionData.adNetworkSites.length) || selectedReportTypeis(reportTypes.adNetwork)">
                         <label>{{ 'REPORT.BREAKDOWN' | translate }}</label>
                         <ui-select ng-model="selectedData.labelBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ selectedData.labelBreakdown }}</ui-select-match>
@@ -97,7 +97,7 @@
                             </ui-select-choices>
                         </ui-select>
                     </div>
-                    <div class="site form-group select-breakdown" ng-if="selectedReportTypeis(reportTypes.site) && selectedData.siteId">
+                    <div class="site form-group select-breakdown" ng-if="selectedReportTypeis(reportTypes.site)">
                         <label>{{ 'REPORT.BREAKDOWN' | translate }}</label>
                         <ui-select ng-model="selectedData.labelBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ selectedData.labelBreakdown }}</ui-select-match>

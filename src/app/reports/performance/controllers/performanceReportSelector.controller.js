@@ -415,8 +415,48 @@
 
             getData($scope.selectedData.publisherId, reportType);
 
+            _setBreakdownOptionsDefaultForReportType(reportType);
+            clickBreakdown(null);
+
             toState = reportType.toState;
 
+        }
+
+        function _setBreakdownOptionsDefaultForReportType(reportType) {
+            if(reportType.key == 'adNetwork') {
+                reportType.breakdownOptions = [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.performance.adNetworksDay'
+                    },
+                    {
+                        key: 'partner',
+                        label: 'By Partner',
+                        toState: 'reports.performance.adNetworks'
+                    },
+                    {
+                        key: 'adtag',
+                        label: 'By Ad Tag',
+                        toState: 'reports.performance.adNetworksAdTags'
+                    }
+                ];
+            }
+
+            if(reportType.key == 'site' && reportType.toState == 'reports.performance.sites') {
+                reportType.breakdownOptions = [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.performance.sitesDay'
+                    },
+                    {
+                        key: 'site',
+                        label: 'By Site',
+                        toState: 'reports.performance.sites'
+                    }
+                ];
+            }
         }
 
         function selectEntity(entityId) {
@@ -441,6 +481,37 @@
                         $scope.optionData.adNetworkSites  = site;
                     }
                 );
+
+                $scope.selectedData.reportType.breakdownOptions = [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.performance.adNetwork'
+                    },
+                    {
+                        key: 'site',
+                        label: 'By Site',
+                        toState: 'reports.performance.adNetworkSites'
+                    },
+                    {
+                        key: 'adtag',
+                        label: 'By Ad Tag',
+                        toState: 'reports.performance.adNetworkAdTags'
+                    }
+                ];
+            } else {
+                $scope.selectedData.reportType.breakdownOptions = [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.performance.adNetworksDay'
+                    },
+                    {
+                        key: 'partner',
+                        label: 'By Partner',
+                        toState: 'reports.performance.adNetworks'
+                    }
+                ];
             }
 
             clickBreakdown(null);
@@ -499,6 +570,38 @@
 
             hasGetAdSlot = false;
             getAdSlot(siteId);
+
+            if($scope.selectedData.reportType.toState != 'reports.performance.adSlots') {
+                if(!siteId) {
+                    _setBreakdownOptionsDefaultForReportType($scope.selectedData.reportType)
+                } else {
+                    $scope.selectedData.reportType.breakdownOptions = [
+                        {
+                            key: 'day',
+                            label: 'By Day',
+                            toState: 'reports.performance.site'
+                        },
+                        {
+                            key: 'adslot',
+                            label: 'By Ad Slot',
+                            toState: 'reports.performance.siteAdSlots'
+                        },
+                        {
+                            key: 'adtag',
+                            label: 'By Ad Tag',
+                            toState: 'reports.performance.siteAdTags'
+                        }
+                    ];
+
+                    if(!isSubPublisher) {
+                        $scope.selectedData.reportType.breakdownOptions.push({
+                            key: 'adnetwork',
+                            label: 'By Demand Partner',
+                            toState: 'reports.performance.siteAdNetworks'
+                        })
+                    }
+                }
+            }
         }
 
         function getAdSlot(siteId) {
@@ -681,6 +784,8 @@
             reportSelectorForm.getCalculatedParams(params).then(
                 function (calculatedParams) {
                     var reportType = findReportType(calculatedParams.reportType) || null;
+                    _setBreakdownOptionsDefaultForReportType(reportType);
+
                     $scope.selectedData.reportType = reportType;
 
                     var breakdownValue = calculatedParams[reportType.breakdownKey];

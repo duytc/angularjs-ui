@@ -75,7 +75,7 @@
                 </div>
 
                 <div class="form-group" ng-if="isNew">
-                    <label class="col-sm-1quarter control-label">Add to</label>
+                    <label class="col-sm-1quarter control-label">Add To</label>
                     <div class="col-sm-5">
                         <ui-select ng-model="selected.deployment" on-select="selectDeployment($model)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select an deployment">{{ $select.selected.label }}</ui-select-match>
@@ -116,7 +116,7 @@
                     <label for="inputAdSlotLibrary" class="col-sm-1quarter control-label">Standalone Ad Slot</label>
                     <div class="col-sm-5">
                         <ui-select name="adSlotLibrary" ng-model="selected.adSlotLibrary" id="inputAdSlotLibrary" ng-required="true" server-error ng-disabled="!pickFromLibrary" on-select="selectAdSlotLibrary($item)" reset-search-input="'false'">
-                            <ui-select-match placeholder="Select an ad slot from standalone">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
+                            <ui-select-match placeholder="Select a standalone ad slot">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
                             <ui-select-choices repeat="adSlotLibrary.id as adSlotLibrary in adSlotLibraryList | filter:$select.search | selectedPublisher:selected.publisher | filter:{ libType: selected.type}">
                                 {{ adSlotLibrary.name }} {{ adSlotLibrary.id ? '(ID: ' + adSlotLibrary.id + ')' : '' }}
                             </ui-select-choices>

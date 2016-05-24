@@ -36,7 +36,7 @@
 
         $stateProvider
             .state('app.subPublisher.reports.performance.adNetworks', {
-                url: '/adNetworks?{startDate:date}&{endDate:date}',
+                url: '/adNetworks?{startDate:date}&{endDate:date}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -45,6 +45,10 @@
                     report: {
                         controller: 'ReportView',
                         templateUrl: function($stateParams) {
+                            if($stateParams.subBreakDown == 'day') {
+                                return 'reports/performance/views/reportType/adNetwork/adNetworksByDay.tpl.html'
+                            }
+
                             if (!$stateParams.endDate) {
                                 return 'reports/performance/views/reportType/adNetwork/adNetworks.tpl.html';
                             }
@@ -57,7 +61,8 @@
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport, userSession) {
                         return performanceReport.getPublisherAdNetworksReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
-                            publisherId: userSession.id
+                            publisherId: userSession.id,
+                            breakDown: 'partner'
                         });
                     }
                 },
@@ -69,7 +74,7 @@
 
         $stateProvider
             .state('app.subPublisher.reports.performance.sites', {
-                url: '/sites?{startDate:date}&{endDate:date}',
+                url: '/sites?{startDate:date}&{endDate:date}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -78,6 +83,10 @@
                     report: {
                         controller: 'ReportView',
                         templateUrl: function($stateParams) {
+                            if($stateParams.subBreakDown == 'day') {
+                                return 'reports/performance/views/reportType/site/sitesByDay.tpl.html';
+                            }
+
                             if (!$stateParams.endDate) {
                                 return 'reports/performance/views/reportType/site/sites.tpl.html';
                             }
@@ -90,7 +99,102 @@
                     reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport, userSession) {
                         return performanceReport.getPublisherSitesReport($stateParams, {
                             reportType: PERFORMANCE_REPORT_TYPES.site,
-                            publisherId: userSession.id
+                            publisherId: userSession.id,
+                            breakDown: 'site'
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
+                }
+            })
+        ;
+
+        $stateProvider
+            .state('app.subPublisher.reports.performance.sitesDay', {
+                url: '/sitesDay?{startDate:date}&{endDate:date}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    report: {
+                        controller: 'ReportView',
+                        templateUrl: 'reports/performance/views/reportType/site/sitesByDay.tpl.html' // change tpl
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport, userSession) {
+                        return performanceReport.getPublisherSitesByDayReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.site,
+                            publisherId: userSession.id,
+                            breakDown: 'day'
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
+                }
+            })
+        ;
+
+        $stateProvider
+            .state('app.subPublisher.reports.performance.adNetworksDay', {
+                url: '/adNetworksDay?{startDate:date}&{endDate:date}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    report: {
+                        controller: 'ReportView',
+                        templateUrl: 'reports/performance/views/reportType/adNetwork/allAdNetworkByDay.tpl.html' // change tpl
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport, userSession) {
+                        return performanceReport.getPublisherAdNetworksByDayReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
+                            publisherId: userSession.id,
+                            breakDown: 'day'
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
+                }
+            })
+        ;
+
+        $stateProvider
+            .state('app.subPublisher.reports.performance.adNetworksAdTags', {
+                url: '/adNetworksAdTags?{startDate:date}&{endDate:date}&{subBreakDown}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    report: {
+                        controller: 'ReportView',
+                        templateUrl: function($stateParams) {
+                            if ($stateParams.subBreakDown == 'day') {
+                                return 'reports/performance/views/reportType/adNetwork/adTagsByDay.tpl.html';
+                            }
+
+                            if (!$stateParams.endDate) {
+                                return 'reports/performance/views/reportType/adNetwork/adTagsDateRange.tpl.html';
+                            }
+
+                            return 'reports/performance/views/reportType/adNetwork/adTags.tpl.html';
+                        }
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport, userSession) {
+                        return performanceReport.getPublisherAdNetworksByAdTagsReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
+                            publisherId: userSession.id,
+                            breakDown: 'adtag'
                         });
                     }
                 },

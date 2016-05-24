@@ -155,7 +155,9 @@
 
             $scope.selectedData.labelBreakdown = _getLabelBreakdown(breakdowns);
 
-            toState = breakdownOption.toState;
+            if(!!breakdownOption && !!breakdownOption.toState) {
+                toState = breakdownOption.toState;
+            }
         }
 
         function _getLabelBreakdown(breakdowns) {

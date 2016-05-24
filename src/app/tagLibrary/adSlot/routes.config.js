@@ -31,7 +31,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Ad Slot Library'
+                    label: 'Standalone Ad Slots'
                 }
             })
             .state('tagLibrary.adSlot.new', {

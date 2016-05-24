@@ -28,7 +28,9 @@
                 sessionStorage.setPreviousToken(Auth.getSession());
             }
 
-            sessionStorage.setCurrentSettings(userToken.settings);
+            if(!!userToken.settings) {
+                sessionStorage.setCurrentSettings(userToken.settings);
+            }
 
             var newSession = Auth.initSession(userToken);
             sessionStorage.setCurrentToken(newSession.token);
