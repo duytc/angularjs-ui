@@ -437,11 +437,16 @@
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlotLibrary, '^.^.^.tagLibrary.adSlot.list');
             }
 
+            var historyAdSlot = historyStorage.getParamsHistoryForAdSlot();
+
             if($scope.isAdmin()) {
-                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: adSlotRefactor.site.id || adSlotRefactor.site});
+                if(!!historyAdSlot.siteId) {
+                    return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: adSlotRefactor.site.id || adSlotRefactor.site});
+                } else {
+                    return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.listAll');
+                }
             }
 
-            var historyAdSlot = historyStorage.getParamsHistoryForAdSlot();
             if(!!historyAdSlot && !!historyAdSlot.siteId) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list');
             }

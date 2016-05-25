@@ -87,11 +87,11 @@
         };
 
         $scope.openListSitesForAdNetwork = function (adNetwork) {
-            AdNetworkManager.one(adNetwork.id).one('sites').getList()
+            AdNetworkManager.one(adNetwork.id).one('sites').get({page: 1})
                 .then(function(data) {
                     var sitesForAdNetwork = data.plain();
 
-                    if(!sitesForAdNetwork.length) {
+                    if(!sitesForAdNetwork.records.length) {
                         AlertService.addAlert({
                             type: 'warning',
                             message: $translate.instant('AD_NETWORK_MODULE.CURRENTLY_NO_SITES_AD_NETWORK', {ad_network_name: adNetwork.name})

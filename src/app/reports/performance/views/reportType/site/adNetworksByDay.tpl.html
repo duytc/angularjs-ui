@@ -5,14 +5,14 @@
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
             {{ 'REPORT.AD_NETWORK_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" report-fields="getReportFields([{key: 'date', label: 'Date'}])" file-name="getExportExcelFileName"></export-excel>
+                <export-excel data="reports" report-fields="getReportFields([{key: 'date', label: 'Date'}, {key: 'reportType.adNetworkName', label: 'Demand Partner'}])" file-name="getExportExcelFileName"></export-excel>
             </div>
 
             <div class="btn-group btnGrouped" dropdown>
                 <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><a>
-                        <export-excel css-class="''" data="reports" report-fields="getReportFields([{key: 'date', label: 'Date'}])" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel css-class="''" data="reports" report-fields="getReportFields([{key: 'date', label: 'Date'}, {key: 'reportType.adNetworkName', label: 'Demand Partner'}])" file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
             </div>
@@ -27,8 +27,21 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td at-title="{{ 'REPORT.DATE' | translate }}" at-initial-sorting="desc" at-sortable at-attribute="date">
+                    <td at-title="{{ 'ACTIONS' | translate }}">
+                        <div class="btn-group" dropdown stop-event>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                            <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <li><a ng-click="popupReport(reportStates.siteByAdNetwork, item)">{{ 'PERFORMANCE_REPORT_MODULE.AD_NETWORK_INFO' | translate }}</a></li>
+                                <li><a ng-click="goToEditPage('tagManagement.adNetwork.edit', item.reportType.adNetworkId)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_AD_NETWORK' | translate }}</a></li>
+                                <!--<li><a ng-click="openUpdateCpm(item, updateCpmTypes.adNetwork)">Update Cpm</a></li>-->
+                            </ul>
+                        </div>
+                    </td>
+                    <td at-title="{{ 'REPORT.DATE' | translate }}" at-attribute="date" at-sortable at-initial-sorting="desc">
                         {{ item.date | date }}
+                    </td>
+                    <td class="name" at-title="{{ 'AD_NETWORK' | translate }}" at-attribute="name" at-sortable>
+                        {{ item.name }}
                     </td>
                     <td at-title="{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}" at-attribute="totalOpportunities" at-sortable>
                         {{ item.totalOpportunities | number }}
@@ -62,10 +75,10 @@
                     </td>
 
                     <!--<td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>-->
-                    <!--{{ item.estRevenue | currency }}-->
+                        <!--{{ item.estRevenue | currency:'$':4 }}-->
                     <!--</td>-->
                     <!--<td at-title="Est. CPM" at-attribute="estCpm" at-sortable>-->
-                    <!--{{ item.estCpm | currency:'$':4 }}-->
+                        <!--{{ item.estCpm | currency:'$':4 }}-->
                     <!--</td>-->
                 </tr>
                 </tbody>

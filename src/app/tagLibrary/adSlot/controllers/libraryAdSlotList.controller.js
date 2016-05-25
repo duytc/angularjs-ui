@@ -5,7 +5,7 @@
         .controller('LibraryAdSlotList', LibraryAdSlotList)
     ;
 
-    function LibraryAdSlotList($scope, $translate, $modal, Auth, adSlots, AlertService, ChannelManager, AdSlotLibrariesManager, DisplayAdSlotLibrariesManager, NativeAdSlotLibrariesManager, DynamicAdSlotLibrariesManager, TYPE_AD_SLOT, historyStorage, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE, SiteManager, RonAdSlotManager) {
+    function LibraryAdSlotList($scope, $translate, $stateParams, $modal, Auth, adSlots, AlertService, ChannelManager, AdSlotLibrariesManager, DisplayAdSlotLibrariesManager, NativeAdSlotLibrariesManager, DynamicAdSlotLibrariesManager, TYPE_AD_SLOT, historyStorage, AtSortableService, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE, SiteManager, RonAdSlotManager) {
         $scope.adSlots = adSlots;
 
         var params = {
@@ -30,12 +30,12 @@
         };
 
         $scope.availableOptions = {
-            currentPage: 1,
+            currentPage: $stateParams.page || 1,
             pageSize: 10
         };
 
         $scope.selectData = {
-            query: null
+            query: $stateParams.searchKey || null
         };
 
         var getAdSlot;
@@ -167,7 +167,7 @@
         }
 
         function searchData() {
-            var query = {searchKey: $scope.selectData.query || null};
+            var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
             _getAdSlot(params);
         }
@@ -186,6 +186,7 @@
                 params = query;
                 return AdSlotLibrariesManager.one().get(query)
                     .then(function(adSlots) {
+                        AtSortableService.insertParamForUrl(query);
                         $scope.adSlots = adSlots;
                         $scope.tableConfig.totalItems = Number(adSlots.totalRecord);
                         $scope.availableOptions.currentPage = Number(query.page);

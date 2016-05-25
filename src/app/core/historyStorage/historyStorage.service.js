@@ -26,7 +26,7 @@
                 var params;
 
                 if(Auth.isAdmin()) {
-                    params = !!paramHistoryForAdSlot && !!paramHistoryForAdSlot.siteId ? paramHistoryForAdSlot : paramDefault;
+                    params = !!paramHistoryForAdSlot && !!paramHistoryForAdSlot.page ? paramHistoryForAdSlot : paramDefault;
                 } else {
                     params = !!paramHistoryForAdSlot ? paramHistoryForAdSlot : paramDefault;
                 }

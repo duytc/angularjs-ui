@@ -4,11 +4,11 @@
 <div class="modal-body">
 
     <div class="table-responsive">
-        <table class="table" at-table at-paginated at-list="sites" at-config="configPagination">
+        <table class="table" at-table at-paginated at-list="sites.records" at-config="configPagination">
             <thead></thead>
             <tbody>
             <tr>
-                <td at-title="#" at-implicit at-sortable at-attribute="site.id" at-initial-sorting="asc"></td>
+                <td at-title="#" at-implicit at-attribute="site.id"></td>
                 <td at-title="{{ 'ACTIONS' | translate }}">
                     <div class="btn-group" dropdown>
                         <button type="button" class="btn" dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
@@ -18,15 +18,15 @@
                         </ul>
                     </div>
                 </td>
-                <td at-title="{{ 'SITE' | translate }}" at-sortable at-implicit at-attribute="site.name"></td>
-                <td at-title="{{ 'SITE_MODULE.DOMAIN' | translate }}" at-sortable at-implicit at-attribute="site.domain"></td>
-                <td at-implicit at-sortable at-attribute="activeAdTagsCount" at-title="{{ 'AD_NETWORK_MODULE.ACTIVE_AD_TAGS_COUNT' | translate }}"></td>
-                <td at-implicit at-sortable at-attribute="pausedAdTagsCount" at-title="{{ 'AD_NETWORK_MODULE.PAUSE_AD_TAGS_COUNT' | translate }}"></td>
+                <td at-title="{{ 'SITE' | translate }}" at-implicit at-attribute="site.name"></td>
+                <td at-title="{{ 'SITE_MODULE.DOMAIN' | translate }}" at-implicit at-attribute="site.domain"></td>
+                <td at-implicit at-attribute="activeAdTagsCount" at-title="{{ 'AD_NETWORK_MODULE.ACTIVE_AD_TAGS_COUNT' | translate }}"></td>
+                <td at-implicit at-attribute="pausedAdTagsCount" at-title="{{ 'AD_NETWORK_MODULE.PAUSE_AD_TAGS_COUNT' | translate }}"></td>
             </tr>
             </tbody>
         </table>
 
-        <at-pagination ng-if="sites.length > configPagination.itemsPerPage" at-list="sites" at-config="configPagination"></at-pagination>
+        <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
     </div>
 </div>
 

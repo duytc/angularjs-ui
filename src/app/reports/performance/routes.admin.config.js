@@ -193,60 +193,6 @@
         ;
 
         $stateProvider
-            .state('app.admin.reports.performance.sitesDay', {
-                url: '/accounts/{publisherId:int}/sitesDay?{startDate:date}&{endDate:date}',
-                params: {
-                    endDate: null,
-                    uniqueRequestCacheBuster: null
-                },
-                views: {
-                    report: {
-                        controller: 'ReportView',
-                        templateUrl: 'reports/performance/views/reportType/site/sitesByDay.tpl.html' // change tpl
-                    }
-                },
-                resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
-                        return performanceReport.getPublisherSitesByDayReport($stateParams, {
-                            reportType: PERFORMANCE_REPORT_TYPES.site,
-                            breakDown: 'day'
-                        });
-                    }
-                },
-                ncyBreadcrumb: {
-                    label: 'Performance reports'
-                }
-            })
-        ;
-
-        $stateProvider
-            .state('app.admin.reports.performance.adNetworksDay', {
-                url: '/accounts/{publisherId:int}/adNetworksDay?{startDate:date}&{endDate:date}',
-                params: {
-                    endDate: null,
-                    uniqueRequestCacheBuster: null
-                },
-                views: {
-                    report: {
-                        controller: 'ReportView',
-                        templateUrl: 'reports/performance/views/reportType/adNetwork/allAdNetworkByDay.tpl.html' // change tpl
-                    }
-                },
-                resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
-                        return performanceReport.getPublisherAdNetworksByDayReport($stateParams, {
-                            reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
-                            breakDown: 'day'
-                        });
-                    }
-                },
-                ncyBreadcrumb: {
-                    label: 'Performance reports'
-                }
-            })
-        ;
-
-        $stateProvider
             .state('app.admin.reports.performance.adNetworksAdTags', {
                 url: '/accounts/{publisherId:int}/adNetworksAdTags?{startDate:date}&{endDate:date}&{subBreakDown}',
                 params: {

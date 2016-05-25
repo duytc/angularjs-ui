@@ -27,7 +27,7 @@
 
         AlertService.addAlert({
             type: 'warning',
-            message: $translate.instant('AD_SLOT_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
+            message: $translate.instant('AD_TAG_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
         });
 
         $scope.isNew = adTag === null;

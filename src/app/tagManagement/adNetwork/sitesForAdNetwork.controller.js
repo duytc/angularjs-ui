@@ -6,20 +6,33 @@
         .controller('SitesForAdNetwork', SitesForAdNetwork)
     ;
 
-    function SitesForAdNetwork($scope, $q, $modal, $state, sites, adNetwork, AdNetworkManager, AdNetworkCache, $modalInstance, historyStorage, HISTORY_TYPE_PATH) {
+    function SitesForAdNetwork($scope, $q, $stateParams, $modal, $state, sites, adNetwork, AdNetworkManager, AdNetworkCache, $modalInstance, historyStorage, HISTORY_TYPE_PATH) {
         $scope.sites = sites;
         $scope.adNetwork = adNetwork;
 
-        $scope.configPagination = {
+
+        $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 5
+            maxPages: 10,
+            totalItems: Number(sites.totalRecord)
+        };
+
+        $scope.availableOptions = {
+            currentPage: $stateParams.page || 1,
+            pageSize: 10
+        };
+
+        var params = {
+            page: 1
         };
 
         $scope.hasSites = hasSites;
         $scope.toggleStatus = toggleStatus;
+        $scope.showPagination = showPagination;
+        $scope.changePage = changePage;
 
         function hasSites() {
-            return sites.length > 0;
+            return sites.records.length > 0;
         }
 
         function toggleStatus(siteStatus, newStatus) {
@@ -45,10 +58,7 @@
                         })
                         .then(
                         function () {
-                            AdNetworkManager.one(adNetwork.id).one('sites').getList()
-                                .then(function(siteList) {
-                                    $scope.sites = sites = siteList.plain();
-                                });
+                            _getSite(params);
 
                             AdNetworkCache.removeCacheAdNetwork();
                             historyStorage.getLocationPath(HISTORY_TYPE_PATH.adNetwork, $state.current);
@@ -67,6 +77,24 @@
                 // if it is not a pause, proceed without a modal
                 dfd.resolve();
             }
+        }
+
+        function showPagination() {
+            return angular.isArray($scope.sites.records) && $scope.sites.totalRecord > $scope.tableConfig.itemsPerPage;
+        }
+
+        function changePage(currentPage) {
+            params = angular.extend(params, {page: currentPage});
+            _getSite(params);
+        }
+
+        function _getSite(query) {
+            return AdNetworkManager.one(adNetwork.id).one('sites').get(query)
+                .then(function(sites) {
+                    $scope.sites = sites;
+                    $scope.tableConfig.totalItems = Number(sites.totalRecord);
+                    $scope.availableOptions.currentPage = Number(query.page);
+                });
         }
     }
 })();

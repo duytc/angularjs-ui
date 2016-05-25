@@ -84,7 +84,7 @@
                 },
                 resolve: {
                     subPublisher: function($stateParams, subPublisherRestangular) {
-                        return subPublisherRestangular.one('subpublishers', $stateParams.id).get();
+                        return subPublisherRestangular.one('fullInfo', $stateParams.id).get();
                     },
                     sites: /* @ngInject */ function(SiteManager) {
                         return SiteManager.one('notBelongToSubPublisher').getList();

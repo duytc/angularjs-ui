@@ -5,7 +5,7 @@
         .controller('PerformanceReportSelector', PerformanceReportSelector)
     ;
 
-    function PerformanceReportSelector($scope, $translate, $q, $state, _, PERFORMANCE_REPORT_TYPES, Auth, UserStateHelper, AlertService, performanceReport, adminUserManager, reportSelectorForm, ReportParams) {
+    function PerformanceReportSelector($scope, $translate, $q, $state, _, PERFORMANCE_REPORT_TYPES, Auth, UserStateHelper, AlertService, performanceReport, AdNetworkManager, adminUserManager, reportSelectorForm, ReportParams) {
         // important init code at the bottom
 
         var toState = null;
@@ -48,6 +48,11 @@
             ronAdSlots: []
         };
 
+        var totalRecord = 0;
+        var paramsForPager = {
+            page: 1
+        };
+
         $scope.isFormValid = isFormValid;
         $scope.showPublisherSelect = showPublisherSelect;
         $scope.showReportTypeSelect = showReportTypeSelect;
@@ -68,6 +73,8 @@
         $scope.selectedPublisherRonAdSlot = selectedPublisherRonAdSlot;
         $scope.filterForDemandSourceReport = filterForDemandSourceReport;
         $scope.clickBreakdown = clickBreakdown;
+        $scope.disabledOption = disabledOption;
+        $scope.addMoreItems = addMoreItems;
 
         $scope.datePickerOpts = {
             maxDate:  moment().endOf('day'),
@@ -244,15 +251,16 @@
         var hasGetRonAdSlot = false;
 
         function clickBreakdown(option) {
-            var breakdowns = [];
+            var breakdowns = _addToArrayBreakdownSupport(option);
 
-            for(var index in $scope.selectedData.breakDowns) {
-                if(option != 'day' && $scope.selectedData.breakDowns[index] && index != 'day' && index != option) {
-                    $scope.selectedData.breakDowns[index] = false;
-                }
-
-                if($scope.selectedData.breakDowns[index]) {
-                    breakdowns.push(index)
+            if(($scope.selectedData.reportType.key == 'adNetwork' && !$scope.selectedData.adNetworkId) || ($scope.selectedData.reportType.key == 'site' && !$scope.selectedData.siteId)) {
+                if(breakdowns.length == 1 && breakdowns.indexOf('day') > -1 && option != 'day' && option != null) {
+                    $scope.selectedData.breakDowns['day'] = false;
+                    $scope.selectedData.labelBreakdown = null;
+                    $scope.selectedData.breakdown = null;
+                    $scope.selectedData.subBreakdown = null;
+                    _setVarBreakdown([]);
+                    return
                 }
             }
 
@@ -294,6 +302,38 @@
             });
 
             return labels;
+        }
+
+        function _addToArrayBreakdownSupport(option) {
+            var breakdowns = [];
+
+            for(var index in $scope.selectedData.breakDowns) {
+                if(option != 'day' && $scope.selectedData.breakDowns[index] && index != 'day' && index != option) {
+                    $scope.selectedData.breakDowns[index] = false;
+                }
+
+                if($scope.selectedData.breakDowns[index]) {
+                    breakdowns.push(index)
+                }
+            }
+
+            return breakdowns;
+        }
+
+        function disabledOption(option) {
+            if(option != 'day') {
+                return false
+            }
+
+            var breakdowns = _addToArrayBreakdownSupport(option);
+
+            if($scope.selectedData.reportType.key == 'adNetwork' && !$scope.selectedData.adNetworkId && breakdowns.length == 0) {
+                return true;
+            } else if($scope.selectedData.reportType.key == 'site' && !$scope.selectedData.siteId && breakdowns.length == 0) {
+                return true;
+            }
+
+            return false;
         }
 
         function isFormValid() {
@@ -415,15 +455,15 @@
 
             getData($scope.selectedData.publisherId, reportType);
 
-            _setBreakdownOptionsDefaultForReportType(reportType);
+            _setBreakdownOptionsDefaultForReportType(reportType, $scope.selectedData);
             clickBreakdown(null);
 
             toState = reportType.toState;
 
         }
 
-        function _setBreakdownOptionsDefaultForReportType(reportType) {
-            if(reportType.key == 'adNetwork') {
+        function _setBreakdownOptionsDefaultForReportType(reportType, selectedData) {
+            if(reportType.key == 'adNetwork' && !selectedData.adNetworkId) {
                 reportType.breakdownOptions = [
                     {
                         key: 'day',
@@ -443,7 +483,7 @@
                 ];
             }
 
-            if(reportType.key == 'site' && reportType.toState == 'reports.performance.sites') {
+            if(reportType.key == 'site' && reportType.toState == 'reports.performance.sites' && !selectedData.siteId) {
                 reportType.breakdownOptions = [
                     {
                         key: 'day',
@@ -475,12 +515,17 @@
             $scope.selectedData.siteId = null;
 
             if(adNetworkId){
-                reportSelectorForm.getSiteForAdNetwork(adNetworkId)
-                    .then(function(site) {
-                        addAllOption(site, 'All Sites');
-                        $scope.optionData.adNetworkSites  = site;
-                    }
-                );
+                AdNetworkManager.one(adNetworkId).one('sites').get(paramsForPager)
+                    .then(function(datas) {
+                        var sites = [];
+                        totalRecord = datas.totalRecord;
+                        angular.forEach(datas.records, function(data) {
+                            sites.push(data.site);
+                        });
+
+                        addAllOption(sites, 'All Sites');
+                        $scope.optionData.adNetworkSites = sites;
+                    });
 
                 $scope.selectedData.reportType.breakdownOptions = [
                     {
@@ -510,6 +555,11 @@
                         key: 'partner',
                         label: 'By Partner',
                         toState: 'reports.performance.adNetworks'
+                    },
+                    {
+                        key: 'adtag',
+                        label: 'By Ad Tag',
+                        toState: 'reports.performance.adNetworksAdTags'
                     }
                 ];
             }
@@ -565,6 +615,8 @@
             $scope.selectedData.breakDown = null;
             $scope.selectedData.breakDowns = [];
             $scope.selectedData.adSlotId = null;
+            $scope.selectedData.siteId = siteId;
+
             clickBreakdown(null);
             resetToStateForCurrentReportType();
 
@@ -573,7 +625,7 @@
 
             if($scope.selectedData.reportType.toState != 'reports.performance.adSlots') {
                 if(!siteId) {
-                    _setBreakdownOptionsDefaultForReportType($scope.selectedData.reportType)
+                    _setBreakdownOptionsDefaultForReportType($scope.selectedData.reportType, $scope.selectedData)
                 } else {
                     $scope.selectedData.reportType.breakdownOptions = [
                         {
@@ -750,6 +802,24 @@
             }
         }
 
+        function addMoreItems() {
+            var page = Math.ceil((($scope.optionData.adNetworkSites.length -1)/10) + 1);
+
+            if(paramsForPager.page === page || (page > Math.ceil(totalRecord/10) && page != 1)) {
+                return
+            }
+
+            paramsForPager.page = page;
+
+            return AdNetworkManager.one($scope.selectedData.adNetworkId).one('sites').get(paramsForPager)
+                .then(function(datas) {
+                    totalRecord = datas.totalRecord;
+                    angular.forEach(datas.records, function(data) {
+                        $scope.optionData.adNetworkSites.push(data.site);
+                    });
+                })
+        }
+
         /////
 
         function init() {
@@ -784,7 +854,7 @@
             reportSelectorForm.getCalculatedParams(params).then(
                 function (calculatedParams) {
                     var reportType = findReportType(calculatedParams.reportType) || null;
-                    _setBreakdownOptionsDefaultForReportType(reportType);
+                    _setBreakdownOptionsDefaultForReportType(reportType, calculatedParams);
 
                     $scope.selectedData.reportType = reportType;
 

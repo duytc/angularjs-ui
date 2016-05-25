@@ -501,6 +501,7 @@
                 "REMOVE_FAIL": "Could not remove ad tag from standalone",
                 "CURRENTLY_NO_AD_TAG": "There is currently no ad tags in the standalone",
                 "CURRENTLY_NO_AD_TAG_ASSOCIATED": "This ad tag is currently not linked to any other ad tag",
+                "WARNING_EDIT_LIBRARY": "This ad tag is linked to multiple ad slots. Modifying this ad tag will result in the changes being propagated to all ad slots that run this ad tag.",
 
                 "LIBRARY_AD_SLOT": "Standalone Ad Slot",
 

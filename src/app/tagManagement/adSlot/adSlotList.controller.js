@@ -54,12 +54,12 @@
         };
 
         $scope.availableOptions = {
-            currentPage: 1,
+            currentPage: $stateParams.page || 1,
             pageSize: 10
         };
 
         $scope.selectData = {
-            query: null
+            query: $stateParams.searchKey || null
         };
 
         var getAdSlot;
@@ -202,7 +202,7 @@
         }
 
         function searchData() {
-            var query = {searchKey: $scope.selectData.query || null};
+            var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
             _getAdSlot(params);
         }
@@ -223,6 +223,7 @@
                 params = query;
                 return Manager
                     .then(function(adSlots) {
+                        AtSortableService.insertParamForUrl(query);
                         $scope.adSlots = adSlots;
                         $scope.tableConfig.totalItems = Number(adSlots.totalRecord);
                         $scope.availableOptions.currentPage = Number(query.page);

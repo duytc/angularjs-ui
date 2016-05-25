@@ -15,7 +15,7 @@
                 }
             })
             .state('tagLibrary.adSlot.list', {
-                url: '/display/list?page&sortField&orderBy&search',
+                url: '/display/list?page&sortField&orderBy&searchKey',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -26,8 +26,9 @@
                     }
                 },
                 resolve: {
-                    adSlots: function(AdSlotLibrariesManager) {
-                        return AdSlotLibrariesManager.one().get({page: 1});
+                    adSlots: function(AdSlotLibrariesManager, $stateParams) {
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        return AdSlotLibrariesManager.one().get($stateParams);
                     }
                 },
                 ncyBreadcrumb: {
