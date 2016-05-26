@@ -23,8 +23,15 @@
             maxPages: 10
         };
 
+        if(!!adSlot.libraryAdSlot && adSlot.libraryAdSlot.visible || adSlot.visible) {
+            AlertService.addAlert({
+                type: 'warning',
+                message: $translate.instant('AD_SLOT_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
+            });
+        }
+
         if (!$scope.hasAdTags()) {
-            AlertService.replaceAlerts({
+            AlertService.addAlert({
                 type: 'warning',
                 message: $translate.instant('AD_TAG_MODULE.CURRENTLY_NO_AD_TAG')
             });

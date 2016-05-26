@@ -9,7 +9,7 @@
                     {{ 'PERFORMANCE_REPORT_MODULE.MANAGE_AD_TAGS' | translate }}
                 </button>
                 <div ng-show="!isAdmin" class="pull-right" ng-dropdown-multiselect="" checkboxes="true" events="eventSettings" options="dataSelect" selected-model="modelSelect" extra-settings="settingsSelect" translation-texts="translationTexts"></div>
-                <export-excel data="reports" report-fields="getReportFields([{key: 'date', label: 'Date'}, {key: 'name', label: 'Ad Tag'}, {key: 'reports.0.position', label: 'Position'}])" file-name="getExportExcelFileName"></export-excel>
+                <export-excel data="reports" report-fields="getReportFields([{key: 'date', label: 'Date'}, {key: 'name', label: 'Ad Tag'}])" file-name="getExportExcelFileName"></export-excel>
             </div>
 
             <div class="btn-group btnGrouped" dropdown>
@@ -18,7 +18,7 @@
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li ng-click="backToAdTagList()"><a>{{ 'PERFORMANCE_REPORT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
                     <li><a>
-                        <export-excel css-class="''" data="reports" report-fields="getReportFields([{key: 'date', label: 'Date'}, {key: 'name', label: 'Ad Tag'}, {key: 'reports.0.position', label: 'Position'}])" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel css-class="''" data="reports" report-fields="getReportFields([{key: 'date', label: 'Date'}, {key: 'name', label: 'Ad Tag'}])" file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
             </div>
@@ -27,7 +27,6 @@
             <table class="table" at-table at-paginated at-list="reports" at-config="tableConfig">
                 <thead>
                 <tr>
-                    <th at-attribute="position" ng-show="isNotNativeAdSlot">{{ 'REPORT.POSITION' | translate }}</th>
                     <th at-attribute="totalOpportunities" ng-show="showConfigForPerformanceByAdTag('totalOpportunities')">{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}</th>
                     <th at-attribute="firstOpportunities" ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('firstOpportunities')">{{ 'REPORT.FIRST_OPPORTUNITIES' | translate }}</th>
                     <th at-attribute="impressions" ng-show="showConfigForPerformanceByAdTag('impressions')">Impressions</th>
@@ -57,9 +56,6 @@
                     </td>
                     <td class="name" at-title="{{ 'AD_TAG' | translate }}" at-attribute="name" at-sortable>
                         {{ item.name }}
-                    </td>
-                    <td ng-show="isNotNativeAdSlot" at-title="{{ 'REPORT.POSITION' | translate }}" class="position" at-attribute="position" at-sortable>
-                        {{ item.reports[0].position }}
                     </td>
                     <td ng-show="showConfigForPerformanceByAdTag('totalOpportunities')" at-title="{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}" at-attribute="totalOpportunities" at-sortable>
                         {{ item.totalOpportunities | number }}

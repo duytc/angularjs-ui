@@ -456,10 +456,24 @@
             getData($scope.selectedData.publisherId, reportType);
 
             _setBreakdownOptionsDefaultForReportType(reportType, $scope.selectedData);
-            clickBreakdown(null);
+
+            $scope.selectedData.reportType = reportType;
+            _setDefaultBreakDown(reportType, $scope.selectedData);
 
             toState = reportType.toState;
 
+        }
+
+        function _setDefaultBreakDown(reportType, selectedData) {
+            if(reportType.key == 'adNetwork' && !selectedData.adNetworkId) {
+                $scope.selectedData.breakDowns['partner'] = true;
+                clickBreakdown('partner');
+            } else if(reportType.key == 'site' && reportType.toState == 'reports.performance.sites' && !selectedData.siteId) {
+                $scope.selectedData.breakDowns['site'] = true;
+                clickBreakdown('site');
+            } else {
+                clickBreakdown(null);
+            }
         }
 
         function _setBreakdownOptionsDefaultForReportType(reportType, selectedData) {
@@ -544,6 +558,8 @@
                         toState: 'reports.performance.adNetworkAdTags'
                     }
                 ];
+
+                clickBreakdown(null);
             } else {
                 $scope.selectedData.reportType.breakdownOptions = [
                     {
@@ -562,9 +578,11 @@
                         toState: 'reports.performance.adNetworksAdTags'
                     }
                 ];
+
+                $scope.selectedData.adNetworkId = adNetworkId;
+                _setDefaultBreakDown($scope.selectedData.reportType, $scope.selectedData);
             }
 
-            clickBreakdown(null);
             resetToStateForCurrentReportType();
         }
 
@@ -625,7 +643,8 @@
 
             if($scope.selectedData.reportType.toState != 'reports.performance.adSlots') {
                 if(!siteId) {
-                    _setBreakdownOptionsDefaultForReportType($scope.selectedData.reportType, $scope.selectedData)
+                    _setBreakdownOptionsDefaultForReportType($scope.selectedData.reportType, $scope.selectedData);
+                    _setDefaultBreakDown($scope.selectedData.reportType, $scope.selectedData);
                 } else {
                     $scope.selectedData.reportType.breakdownOptions = [
                         {
