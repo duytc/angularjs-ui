@@ -71,7 +71,7 @@
 
         $scope.selected = {
             type: angular.isObject(adSlot) ? adSlot.type : $scope.typesList.display,
-            deployment: 'sites',
+            deployment: !!$stateParams.deployment ? $stateParams.deployment : 'sites',
             defaultAdSlot: angular.isObject(adSlot) && !! adSlot.defaultAdSlot ? adSlot.defaultAdSlot : null,
             sites: [],
             channels: [],
@@ -286,7 +286,7 @@
             adSlot = _refactorAdSlot($scope.adSlot);
             adSlotRefactor = adSlot;
 
-            if($scope.pickFromLibrary) {
+            if($scope.pickFromLibrary && $scope.isNew) {
                 Manager = AdSlotLibrariesManager.one($scope.selected.adSlotLibrary).customPOST(adSlot, 'createlinks');
             }
             else if(isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) {
@@ -323,8 +323,12 @@
         }
 
         function isFormValid() {
-            if($scope.pickFromLibrary) {
+            if($scope.pickFromLibrary && $scope.isNew) {
                 return $scope.adSlotLibraryForm.$valid && ($scope.selected.sites.length > 0 || $scope.selected.channels.length > 0);
+            }
+
+            if($scope.pickFromLibrary && !$scope.isNew) {
+                return $scope.adSlotLibraryForm.$valid;
             }
 
             if($scope.selected.type != $scope.typesList.dynamic) { // validate display ad slot
@@ -698,7 +702,7 @@
          * @private
          */
         function _refactorAdSlot(adSlot) {
-            if($scope.pickFromLibrary) {
+            if($scope.pickFromLibrary && ($scope.selected.sites.length > 0 || $scope.selected.channels.length > 0)) {
                 return _refactorCreateAdSlot();
             }
 

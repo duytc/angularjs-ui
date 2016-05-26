@@ -4,7 +4,7 @@
         <strong current-page-title></strong>
 
         <div class="button-bar">
-            <button ng-if="!isSubPublisher()" ui-sref="^.^.^.tagManagement.adSlot.new" class="btn btn-sm btn-primary" type="button">
+            <button ng-if="!isSubPublisher()" ui-sref="^.^.^.tagManagement.adSlot.new({deployment: 'none'})" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
                 {{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}
             </button>
@@ -13,7 +13,7 @@
         <div ng-if="!isSubPublisher()" class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ui-sref="^.^.^.tagManagement.adSlot.new"> {{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}</a></li>
+                <li><a ui-sref="^.^.^.tagManagement.adSlot.new({deployment: 'none'})"> {{ 'AD_SLOT_MODULE.NEW_AD_SLOT' | translate }}</a></li>
             </ul>
         </div>
     </div>

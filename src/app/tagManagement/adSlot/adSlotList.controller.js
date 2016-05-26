@@ -44,6 +44,7 @@
         $scope.backToListSite = backToListSite;
         $scope.exist = exist;
         $scope.shareAdSlot = shareAdSlot;
+        $scope.unLinkAdSlot = unLinkAdSlot;
         $scope.changePage = changePage;
         $scope.searchData = searchData;
 
@@ -191,6 +192,26 @@
                     AlertService.replaceAlerts({
                         type: 'error',
                         message: $translate.instant('AD_SLOT_MODULE.MOVED_TO_LIBRARY_FAIL')
+                    });
+                })
+            ;
+        }
+
+        function unLinkAdSlot(adSlot) {
+            var Manager = AdSlotManager.one(adSlot.id).one('unlink').patch();
+            Manager
+                .then(function () {
+                    adSlot.libraryAdSlot.visible = false;
+
+                    AlertService.addAlert({
+                        type: 'success',
+                        message: $translate.instant('AD_SLOT_MODULE.UNLINK_SUCCESS')
+                    });
+                })
+                .catch(function () {
+                    AlertService.addAlert({
+                        type: 'error',
+                        message: $translate.instant('AD_SLOT_MODULE.UNLINK_FAIL')
                     });
                 })
             ;

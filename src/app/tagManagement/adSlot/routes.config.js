@@ -103,7 +103,7 @@
                 }
             })
             .state('tagManagement.adSlot.new', {
-                url: '/new?siteId',
+                url: '/new?siteId&deployment',
                 views: {
                     'content@app': {
                         controller: 'AdSlotForm',

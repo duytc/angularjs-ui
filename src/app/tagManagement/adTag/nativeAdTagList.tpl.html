@@ -42,8 +42,9 @@
                                 <li ng-if="!!adSlot.libType && !isSubPublisher()"><a ui-sref="^.editForAdSlot({ id: item.id })">{{ 'AD_TAG_MODULE.EDIT_AD_TAG' | translate }}</a></li>
                                 <li ng-if="!isSubPublisher()"><a ng-click="toggleAdTagStatus(item)">{{ item.active ? ('AD_TAG_MODULE.PAUSE_AD_TAG' | translate) : ('AD_TAG_MODULE.ACTIVATE_AD_TAG' | translate) }}</a></li>
                                 <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item)">{{ 'AD_TAG_MODULE.DELETE_AD_TAG' | translate }}</a></li>
-                                <!--<li ng-if="!isSubPublisher()" class="divider"></li>-->
-                                <!--<li ng-if="!item.libraryAdTag.visible && !isSubPublisher()" ng-click="shareAdTag(item)"><a>{{ 'AD_TAG_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>-->
+                                <li ng-if="!isSubPublisher() && (!item.libraryAdTag.visible || (item.libraryAdTag.visible && !adSlot.libraryAdSlot.visible))" class="divider"></li>
+                                <li ng-if="!item.libraryAdTag.visible && !isSubPublisher()" ng-click="shareAdTag(item)"><a>{{ 'AD_TAG_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>
+                                <li  ng-if="item.libraryAdTag.visible && !adSlot.libraryAdSlot.visible && !isSubPublisher()" ng-click="unLinkAdTag(item)"><a>{{ 'AD_TAG_MODULE.UNLINK' | translate }}</a></li>
                                 <!--<li ng-if="item.libraryAdTag.visible && !isSubPublisher()"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: item.libraryAdTag.id})">{{ 'AD_TAG_MODULE.EDIT_AD_TAG_IN_LIBRARY' | translate }}</a></li>-->
                             </ul>
                         </div>
