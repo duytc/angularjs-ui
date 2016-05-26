@@ -5,7 +5,7 @@
         .controller('NativeAdTagList', NativeAdTagList)
     ;
 
-    function NativeAdTagList($scope, $stateParams, $translate, $modal, adTags, AdTagManager, AdSlotAdTagLibrariesManager, AlertService, adSlot, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
+    function NativeAdTagList($scope, $stateParams, $translate, $modal, adTags, AdTagManager, AdSlotAdTagLibrariesManager, AdTagLibrariesManager, AlertService, adSlot, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT) {
         $scope.adSlot = adSlot;
         $scope.adTags = adTags;
 
@@ -17,6 +17,7 @@
         $scope.showPagination = showPagination;
         $scope.backToListAdSlot = backToListAdSlot;
         $scope.updateAdTag = updateAdTag;
+        $scope.shareAdTag = shareAdTag;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -54,6 +55,26 @@
                 })
                 .then(function () {
                     adTag.active = newTagStatus;
+                })
+            ;
+        };
+
+        $scope.unLinkAdTag = function (adTag) {
+            var Manager = AdTagManager.one(adTag.id).one('unlink').patch();
+            Manager
+                .then(function () {
+                    adTag.libraryAdTag.visible = false;
+
+                    AlertService.addAlert({
+                        type: 'success',
+                        message: $translate.instant('AD_TAG_MODULE.UNLINK_SUCCESS')
+                    });
+                })
+                .catch(function () {
+                    AlertService.addAlert({
+                        type: 'error',
+                        message: $translate.instant('AD_TAG_MODULE.UNLINK_FAIL')
+                    });
                 })
             ;
         };
@@ -97,6 +118,29 @@
             return angular.isArray($scope.adTags) && $scope.adTags.length > $scope.tableConfig.itemsPerPage;
         }
 
+        function shareAdTag(adTag) {
+            var libraryAdTag = {
+                visible: true
+            };
+
+            AdTagLibrariesManager.one(adTag.libraryAdTag.id).patch(libraryAdTag)
+                .then(function () {
+                    adTag.libraryAdTag.visible = true;
+
+                    AlertService.addAlert({
+                        type: 'success',
+                        message: $translate.instant('AD_TAG_MODULE.MOVED_TO_LIBRARY_SUCCESS')
+                    });
+                })
+                .catch(function () {
+                    AlertService.addAlert({
+                        type: 'error',
+                        message: $translate.instant('AD_TAG_MODULE.MOVED_TO_LIBRARY_FAIL')
+                    });
+                })
+            ;
+        }
+
         function backToListAdSlot() {
             if($stateParams.from == 'smart') {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.ronAdSlot, '^.^.^.tagManagement.ronAdSlot.list');
@@ -106,11 +150,14 @@
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlotLibrary, '^.^.^.tagLibrary.adSlot.list');
             }
 
-            if($scope.isAdmin()) {
-                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: adSlot.site.id});
-            }
-
             var historyAdSlot = historyStorage.getParamsHistoryForAdSlot();
+
+            //if($scope.isAdmin()) {
+            //    if(!!historyAdSlot && !!historyAdSlot.siteId) {
+            //        return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list');
+            //    }
+            //}
+
             if(!!historyAdSlot && !!historyAdSlot.siteId) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list');
             }

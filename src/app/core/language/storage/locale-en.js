@@ -345,6 +345,8 @@
                 "DELETE_FAIL": "The ad slot could not be deleted",
                 "CONFIRM_DELETE_AD_SLOT": "Are you sure you want to delete this ad slot?",
                 "CURRENTLY_NO_AD_SLOT": "There is currently no ad slots",
+                "UNLINK_SUCCESS": "The ad slot has been unlinked",
+                "UNLINK_FAIL": "An error occurred. The ad slot could not be unlinked",
 
                 "BACK_TO_AD_SLOT_LIST": "Back to Ad Slot List",
                 "SELECT_A_TYPE": "Select a type",
@@ -359,6 +361,7 @@
                 "CLONE_AD_SLOT": "Clone Ad Slot",
                 "DELETE_AD_SLOT": "Delete Ad Slot",
                 "MOVE_TO_LIBRARY": "Make Standalone",
+                "UNLINK": "Unlink Ad Slot",
                 "EDIT_AD_SLOT_IN_LIBRARY": "Edit Ad Slot",
                 "NEW_AD_SLOT": "New Ad Slot",
                 "MOVED_TO_LIBRARY_SUCCESS": "The ad slot has been moved to the Standalone Ad Slot",
@@ -425,6 +428,9 @@
                 "CONFIRM_DELETE_AD_TAG": "Are you sure you want to delete this ad tag?",
                 "CURRENTLY_NO_AD_TAG": "There is currently no ad tags in this ad slot",
                 "MOVED_TO_LIBRARY_SUCCESS": "The ad tag has been moved to standalone",
+                "UNLINK_SUCCESS": "The ad tag has been unlinked",
+                "UNLINK_FAIL": "An error occurred. The ad tag could not be unlinked",
+                "UNLINK": "Unlink Ad Slot",
 
                 "BACK_TO_AD_TAG_LIST": "Back to Ad Tag List",
                 "FROM_LIBRARY": "From Library",

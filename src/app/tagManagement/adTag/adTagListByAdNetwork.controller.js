@@ -56,6 +56,26 @@
             ;
         };
 
+        $scope.unLinkAdTag = function (adTag) {
+            var Manager = AdTagManager.one(adTag.id).one('unlink').patch();
+            Manager
+                .then(function () {
+                    adTag.libraryAdTag.visible = false;
+
+                    AlertService.addAlert({
+                        type: 'success',
+                        message: $translate.instant('AD_TAG_MODULE.UNLINK_SUCCESS')
+                    });
+                })
+                .catch(function () {
+                    AlertService.addAlert({
+                        type: 'error',
+                        message: $translate.instant('AD_TAG_MODULE.UNLINK_FAIL')
+                    });
+                })
+            ;
+        };
+
         $scope.confirmDeletion = function (adTag) {
             var modalInstance = $modal.open({
                 templateUrl: 'tagManagement/adTag/confirmDeletion.tpl.html'

@@ -7,6 +7,7 @@
 
     function AdTagList($scope, $stateParams, $translate, $q, $state, $modal, adTags, adSlot, AdTagManager, AdSlotAdTagLibrariesManager, AdTagLibrariesManager, AlertService, historyStorage, HISTORY_TYPE_PATH, AD_TYPES, TYPE_AD_SLOT) {
         $scope.adTags = adTags;
+        $scope.adSlot = adSlot;
 
         $scope.hasAdTags = function () {
             return !!adTags.length;
@@ -54,6 +55,26 @@
             connectWith: ".itemAdTag",
             stop: _stop,
             start: _start
+        };
+
+        $scope.unLinkAdTag = function (adTag) {
+            var Manager = AdTagManager.one(adTag.id).one('unlink').patch();
+            Manager
+                .then(function () {
+                    adTag.libraryAdTag.visible = false;
+
+                    AlertService.addAlert({
+                        type: 'success',
+                        message: $translate.instant('AD_TAG_MODULE.UNLINK_SUCCESS')
+                    });
+                })
+                .catch(function () {
+                    AlertService.addAlert({
+                        type: 'error',
+                        message: $translate.instant('AD_TAG_MODULE.UNLINK_FAIL')
+                    });
+                })
+            ;
         };
 
         $scope.splitFromGroup = function(group, adTag) {
@@ -290,13 +311,13 @@
 
             var historyAdSlot = historyStorage.getParamsHistoryForAdSlot();
 
-            if($scope.isAdmin()) {
-                if(!!historyAdSlot.siteId) {
-                    return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: adSlot.site.id});
-                } else {
-                    return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.listAll');
-                }
-            }
+            //if($scope.isAdmin()) {
+            //    if(!!historyAdSlot.siteId) {
+            //        return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: adSlot.site.id});
+            //    } else {
+            //        return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.listAll');
+            //    }
+            //}
 
             if(!!historyAdSlot && !!historyAdSlot.siteId) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list');
