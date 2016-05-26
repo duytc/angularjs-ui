@@ -106,9 +106,9 @@
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlotLibrary, '^.^.^.tagLibrary.adSlot.list');
             }
 
-            if($scope.isAdmin()) {
-                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: adSlot.site.id});
-            }
+            //if($scope.isAdmin()) {
+            //    return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: adSlot.site.id});
+            //}
 
             var historyAdSlot = historyStorage.getParamsHistoryForAdSlot();
             if(!!historyAdSlot && !!historyAdSlot.siteId) {
