@@ -59,6 +59,10 @@
                 size: 'lg',
                 resolve: {
                     publishers: function(adminUserManager){
+                        if(!$scope.isAdmin()) {
+                            return null;
+                        }
+
                         if(!!publisherList) {
                             return publisherList;
                         }
