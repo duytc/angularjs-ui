@@ -269,13 +269,13 @@
                 angular.forEach(adSlotTags.ad_slots, function(adSlotTag, id) {
                     var row = '';
                     if($scope.selected.generatorFor == 'channel' && $scope.typeSelected == $scope.typeKey.adSlot) {
-                        row = '"' + adSlotTag.name + '"' + ',' + type + ',' + adSlotTag.site + ',' + '"' + adSlotTag.jstag + '"' + '\n'
+                        row = '"' + adSlotTag.name + '"' + ',' + type + ',' + adSlotTag.site + ',' + '"' + adSlotTag.jstag.replace(/"/g, '""') + '"' + '\n'
                     }
                     else if($scope.selected.generatorFor == 'site' && $scope.typeSelected == $scope.typeKey.adSlot) {
-                        row = '"' + adSlotTag.name + '"' + ',' + type + ',' + '"' + adSlotTag.jstag + '"' + '\n'
+                        row = '"' + adSlotTag.name + '"' + ',' + type + ',' + '"' + adSlotTag.jstag.replace(/"/g, '""') + '"' + '\n'
                     }
                     else if($scope.typeSelected == $scope.selected.type) {
-                        row = '"' + adSlotTag.name + '"' + ',' + type + ', <Global>, ' + '"' + adSlotTag.jstag + '"' + '\n';
+                        row = '"' + adSlotTag.name + '"' + ',' + type + ', <Global>, ' + '"' + adSlotTag.jstag.replace(/"/g, '""') + '"' + '\n';
 
                         angular.forEach(adSlotTag.segments, function(segmentTag, segmentName) {
                             row += '"' + adSlotTag.name + '"' + ',' + type + ', ' + segmentName + ', ' + '"' + segmentTag + '"' + '\n';
