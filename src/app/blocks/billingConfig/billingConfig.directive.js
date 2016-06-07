@@ -96,7 +96,7 @@
                         if(!billingConfig.defaultConfig && (billingConfig.tiers.length == 0 || thresholdIZero == -1)) {
                             billingConfig.tiers.unshift({
                                 threshold: 0,
-                                cpmRate: null,
+                                cpmRate: billingConfig.module == 'MODULE_HEADER_BIDDING' ? 0 : null,
                                 number: 1000
                             })
                         }

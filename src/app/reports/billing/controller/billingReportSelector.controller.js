@@ -5,7 +5,7 @@
         .controller('BillingReportSelector', BillingReportSelector)
     ;
 
-    function BillingReportSelector($scope, $translate, $q, $state, _, Auth, UserStateHelper, AlertService, ReportParams, billingService, performanceReport, REPORT_TYPES, reportSelectorForm, selectorFormCalculator, UISelectMethod) {
+    function BillingReportSelector($scope, $translate, $q, $state, _, Auth, UserStateHelper, AlertService, ReportParams, billingService, performanceReport, adminUserManager, REPORT_TYPES, reportSelectorForm, selectorFormCalculator, UISelectMethod) {
         var toState;
 
         var isAdmin = Auth.isAdmin();
@@ -65,7 +65,7 @@
         $scope.productOptions = [
             {
                 key: 'display',
-                label: 'Display'
+                label: 'Header Bidding'
             },
             //{
             //    key: 'source',
@@ -133,6 +133,8 @@
             }
 
             toState = reportType.toState;
+            $scope.selectedData.reportType = reportType;
+            _getSitesForPublisher($scope.selectedData.publisherId);
         }
 
         function selectBreakdownOption(breakdownOption) {
@@ -161,12 +163,14 @@
                 ;
             }
 
-            billingService.getSites()
-                .then(function (data) {
-                    UISelectMethod.addAllOption(data, 'All Sites');
-                    $scope.optionData.sites = data;
-                })
-            ;
+            if(!isAdmin) {
+                billingService.getSites()
+                    .then(function (data) {
+                        UISelectMethod.addAllOption(data, 'All Sites');
+                        $scope.optionData.sites = data;
+                    })
+                ;
+            }
 
             var initialParams = performanceReport.getInitialParams();
             if (initialParams == null) {
@@ -209,8 +213,10 @@
             );
         }
 
-        function selectPublisher() {
-            return $scope.selectedData.siteId = null;
+        function selectPublisher(publisher) {
+            $scope.selectedData.siteId = null;
+
+            _getSitesForPublisher(publisher.id);
         }
 
         function showPublisherSelect() {
@@ -228,7 +234,6 @@
         }
 
         function selectProduct(product) {
-            console.log(product);
         }
 
         function selectEntity(entityId) {
@@ -236,6 +241,19 @@
                 $scope.selectedData.siteBreakdown = null;
                 toState = $scope.selectedData.reportType.toState;
             }
+        }
+
+        function _getSitesForPublisher(publisherId) {
+            if(!isAdmin || $scope.selectedData.reportType.key != REPORT_TYPES.site || !publisherId) {
+                return
+            }
+
+            adminUserManager.one(publisherId).one('sites').getList()
+                .then(function (data) {
+                    UISelectMethod.addAllOption(data, 'All Sites');
+                    $scope.optionData.sites = data;
+                })
+            ;
         }
 
         function isFormValid() {
@@ -271,6 +289,10 @@
 
                     if (!$scope.selectedData.date.endDate) {
                         $scope.selectedData.date.endDate = $scope.selectedData.date.startDate
+                    }
+
+                    if(!!$scope.optionData.sites && $scope.optionData.sites.length == 0) {
+                        _getSitesForPublisher($scope.selectedData.publisherId)
                     }
                 }
             );

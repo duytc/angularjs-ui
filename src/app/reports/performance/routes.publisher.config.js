@@ -147,5 +147,77 @@
                 }
             })
         ;
+
+        $stateProvider
+            .state('app.publisher.reports.performance.adNetworksSubPublishers', {
+                url: '/adNetworksSubPublishers?{startDate:date}&{endDate:date}&{subBreakDown}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    report: {
+                        controller: 'ReportView',
+                        templateUrl: function($stateParams) {
+                            if ($stateParams.subBreakDown == 'day') {
+                                return 'reports/performance/views/reportType/adNetwork/subPublishersByDay.tpl.html';
+                            }
+
+                            if (!$stateParams.endDate) {
+                                return 'reports/performance/views/reportType/adNetwork/subPublisher.tpl.html';
+                            }
+
+                            return 'reports/performance/views/reportType/adNetwork/subPublishersDateRange.tpl.html';
+                        }
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport, userSession) {
+                        return performanceReport.getPublisherAdNetworksBySubPublishersReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
+                            breakDown: 'subpublisher',
+                            publisherId: userSession.id
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
+                }
+            })
+        ;
+
+        $stateProvider
+            .state('app.publisher.reports.performance.adNetworkSiteSubPublishers', {
+                url: '/adNetworks/{adNetworkId:int}/subPublishers?{startDate:date}&{endDate:date}&{subBreakDown}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    report: {
+                        controller: 'ReportView',
+                        templateUrl: function($stateParams) {
+                            if($stateParams.subBreakDown == 'day') {
+                                return 'reports/performance/views/reportType/adNetwork/subPublishersByDay.tpl.html'
+                            }
+
+                            return 'reports/performance/views/reportType/adNetwork/subPublishersDateRange.tpl.html'
+                        }
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport, userSession) {
+                        return performanceReport.getAdNetworkSiteSubPublisherReport($stateParams, {
+                            reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
+                            breakDown: 'subpublisher',
+                            publisherId: userSession.id
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Performance reports'
+                }
+            })
+        ;
     }
 })();

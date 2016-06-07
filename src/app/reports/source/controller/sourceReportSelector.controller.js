@@ -54,9 +54,11 @@
                 ;
             }
 
-            SiteManager.getList().then(function (sites) {
-                $scope.optionData.sites = sites.plain();
-            });
+            if (!isAdmin) {
+                SiteManager.getList().then(function (sites) {
+                    $scope.optionData.sites = sites.plain();
+                });
+            }
 
             var selectedData = {
                 date: {
@@ -93,10 +95,28 @@
             }
 
             angular.extend($scope.selectedData, selectedData);
+
+            if(!!$scope.optionData.sites && $scope.optionData.sites.length == 0) {
+                _getSitesForPublisher($scope.selectedData.publisherId)
+            }
         }
 
-        function selectPublisher() {
+        function selectPublisher(publisher) {
             $scope.selectedData.siteId = null;
+
+            _getSitesForPublisher(publisher.id);
+        }
+
+        function _getSitesForPublisher(publisherId) {
+            if(!isAdmin || !publisherId) {
+                return
+            }
+
+            adminUserManager.one(publisherId).one('sites').getList()
+                .then(function (data) {
+                    $scope.optionData.sites = data;
+                })
+            ;
         }
 
         function isFormValid() {

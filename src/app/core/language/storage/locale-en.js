@@ -20,6 +20,7 @@
             "ACTIONS": "Actions",
             "CLOSE": "Close",
             "ALERTS": "Alerts",
+            "EXPORT_EXCEL": "Export Excel",
 
             "NAME": "Name",
             "PUBLISHER": "Publisher",
@@ -334,6 +335,7 @@
                 "AUTO_FIT": "Auto Fit",
                 "PASSBACK_MODE": "Passback Mode",
                 "FLOOR_PRICE": "Floor Price",
+                "HEADER_BID_PRICE": "Header Bid Price",
 
                 "ADD_NEW_SUCCESS": "The ad slot has been created",
                 "ADD_NEW_FAIL": "An error occurred. The ad slot could not be created",

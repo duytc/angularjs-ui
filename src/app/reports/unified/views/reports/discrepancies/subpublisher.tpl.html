@@ -13,17 +13,17 @@
                 <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><a>
-                        <export-excel ng-show="subBreakDown != 'day'" data="reports" fields="['name', 'partnerTotalOpportunities', 'tagcadeTotalOpportunities', 'totalOpportunityComparison', 'partnerPassbacks', 'tagcadePassbacks', 'passbacksComparison', 'partnerEstCPM', 'tagcadeECPM', 'eCPMComparison', 'revenueOpportunity']" header="['Ad Tag', 'Partner Requests', 'Tagcade Opportunities', 'Opportunity Comparison', 'Partner Passbacks', 'Tagcade Passbacks', 'Passback Comparison', 'Partner ECPM', 'Tagcade ECPM', 'ECPM Comparison', 'Revenue Opportunity']" file-name="getExportExcelFileName"></export-excel>
-                        <export-excel ng-show="subBreakDown == 'day'" data="reports" fields="['name', 'date', 'partnerTotalOpportunities', 'tagcadeTotalOpportunities', 'totalOpportunityComparison', 'partnerPassbacks', 'tagcadePassbacks', 'passbacksComparison', 'partnerEstCPM', 'tagcadeECPM', 'eCPMComparison', 'revenueOpportunity']" header="['Ad Tag', 'Date', 'Partner Requests', 'Tagcade Opportunities', 'Opportunity Comparison', 'Partner Passbacks', 'Tagcade Passbacks', 'Passback Comparison', 'Partner ECPM', 'Tagcade ECPM', 'ECPM Comparison', 'Revenue Opportunity']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel ng-show="subBreakDown != 'day'" data="reports" fields="['name', 'partnerTotalOpportunities', 'tagcadeTotalOpportunities', 'totalOpportunityComparison', 'partnerPassbacks', 'tagcadePassbacks', 'passbacksComparison', 'partnerEstCPM', 'tagcadeECPM', 'eCPMComparison', 'revenueOpportunity']" header="['Sub Publisher', 'Partner Requests', 'Tagcade Opportunities', 'Opportunity Comparison', 'Partner Passbacks', 'Tagcade Passbacks', 'Passback Comparison', 'Partner ECPM', 'Tagcade ECPM', 'ECPM Comparison', 'Revenue Opportunity']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel ng-show="subBreakDown == 'day'" data="reports" fields="['name', 'date', 'partnerTotalOpportunities', 'tagcadeTotalOpportunities', 'totalOpportunityComparison', 'partnerPassbacks', 'tagcadePassbacks', 'passbacksComparison', 'partnerEstCPM', 'tagcadeECPM', 'eCPMComparison', 'revenueOpportunity']" header="['Sub Publisher', 'Date', 'Partner Requests', 'Tagcade Opportunities', 'Opportunity Comparison', 'Partner Passbacks', 'Tagcade Passbacks', 'Passback Comparison', 'Partner ECPM', 'Tagcade ECPM', 'ECPM Comparison', 'Revenue Opportunity']" file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
             </div>
         </div>
 
         <ul class="nav nav-tabs source-reports">
-            <li role="presentation"><a ui-sref="^.adtag(params)">{{ 'UNIFIED_REPORT_MODULE.UNIFIED' | translate }}</a></li>
-            <li role="presentation"><a ui-sref="^.tagcadeAdtag(params)">{{ 'UNIFIED_REPORT_MODULE.TAGCADE' | translate }}</a></li>
-            <li role="presentation" class="active"><a ui-sref="^.discrepanciesAdtag(params)">{{ 'UNIFIED_REPORT_MODULE.DISCREPANCIES' | translate }}</a></li>
+            <li role="presentation"><a ui-sref="^.subpublisher(params)">{{ 'UNIFIED_REPORT_MODULE.UNIFIED' | translate }}</a></li>
+            <li role="presentation"><a ui-sref="^.tagcadeSubpublisher(params)">{{ 'UNIFIED_REPORT_MODULE.TAGCADE' | translate }}</a></li>
+            <li role="presentation" class="active"><a ui-sref="^.discrepanciesSubpublisher(params)">{{ 'UNIFIED_REPORT_MODULE.DISCREPANCIES' | translate }}</a></li>
         </ul>
 
         <div class="table-responsive">
@@ -35,7 +35,7 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td at-title="{{ 'AD_TAG' | translate }}" at-sortable at-initial-sorting="asc" at-attribute="name">
+                    <td at-title="{{ 'SUB_PUBLISHER' | translate }}" at-sortable at-initial-sorting="asc" at-attribute="name">
                         {{ item.name }}
                     </td>
                     <td ng-show="subBreakDown == 'day'" at-title="{{ 'REPORT.DATE' | translate }}" at-sortable at-attribute="date">

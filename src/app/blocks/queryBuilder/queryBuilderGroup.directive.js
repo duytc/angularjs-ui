@@ -145,8 +145,6 @@
                     }
 
                     function changeCondition(group) {
-                        console.log(group);
-
                         var conditions = [];
 
                         if(group.type == scope.dataTypes[1].key) {

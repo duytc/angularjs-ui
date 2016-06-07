@@ -6,8 +6,7 @@
             {{ 'UNIFIED_REPORT_MODULE.DETAILS' | translate }}
 
             <div class="button-bar hidden-xs">
-                <export-excel ng-show="subBreakDown != 'day'" data="reports" fields="['name', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Ad Tag', 'Partner Requests', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
-                <export-excel ng-show="subBreakDown == 'day'" data="reports" fields="['name', 'date', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Ad Tag', 'Date', 'Partner Requests', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                <div class="btn btn-sm btn-primary" ng-click="downloadExportExcel()">{{ 'EXPORT_EXCEL' | translate }}</div>
             </div>
 
             <div class="btn-group btnGrouped" dropdown>

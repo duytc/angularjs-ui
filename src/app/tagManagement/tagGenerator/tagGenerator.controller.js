@@ -341,6 +341,7 @@
             SiteManager.one().get(params)
                 .then(function(data) {
                     angular.forEach(data.records, function(item) {
+                        totalRecord = data.totalRecord;
                         $scope.siteList.push(item);
                     })
             });

@@ -5,13 +5,12 @@
         .controller('AdSlotForm', AdSlotForm)
     ;
 
-    function AdSlotForm($scope, $translate, $stateParams, $filter, _, adSlot, publisherList, SiteManager, ChannelManager, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, userSession, historyStorage, HISTORY_TYPE_PATH, RTB_STATUS_TYPES) {
+    function AdSlotForm($scope, $translate, $stateParams, $filter, _, adSlot, publisherList, SiteManager, ChannelManager, adminUserManager, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, userSession, historyStorage, HISTORY_TYPE_PATH, RTB_STATUS_TYPES) {
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
 
-        var adSlotRefactor = null; // this adSlotRefactor use to copy ad slot have been refactor
-        var sitesCopy = [];
+        //var adSlotRefactor = null; // this adSlotRefactor use to copy ad slot have been refactor
         var channelsCopy = [];
         $scope.isNew = adSlot === null;
         $scope.publisherList = publisherList;
@@ -68,6 +67,7 @@
 
         $scope.adSlot.rtbStatus = $scope.isNew ? RTB_STATUS_TYPES.inherit : adSlot.rtbStatus;
         $scope.adSlot.floorPrice = $scope.isNew ? null : adSlot.floorPrice;
+        $scope.adSlot.hbBidPrice = $scope.isNew ? null : _convertHeaderBiddingPriceToString(adSlot.hbBidPrice);
 
         $scope.selected = {
             type: angular.isObject(adSlot) ? adSlot.type : $scope.typesList.display,
@@ -100,18 +100,23 @@
         )
         ;
 
-        if(!$scope.isNew) {
-            adSlotRefactor = adSlot;
-        }
-
-        if($scope.selected.deployment == 'sites') {
-            selectDeployment('sites');
-        }
+        //if(!$scope.isNew) {
+        //    adSlotRefactor = adSlot;
+        //}
 
         // add new adslot for siteId
         if(!!$stateParams.siteId) {
             $scope.selected.deployment = 'sites';
-            selectDeployment('sites');
+
+            SiteManager.one($stateParams.siteId).get()
+                .then(function(site) {
+                    $scope.adSlot.publisher = site.publisher.id;
+                    _getSitesForPublisher($scope.adSlot.publisher, site);
+                });
+        }
+
+        if(!$scope.isAdmin() && !$stateParams.siteId) {
+            _getSitesForPublisher();
         }
 
         $scope.adSlotsDefault = [{id: null, name: 'None', libraryAdSlot: {name: 'None'}}];
@@ -131,6 +136,7 @@
         $scope.filterDeployEntityType = filterDeployEntityType;
         $scope.selectDefaultAdSlot = selectDefaultAdSlot;
         $scope.isEnabledModuleRtb = isEnabledModuleRtb;
+        $scope.isEnabledModuleHeaderBidding = isEnabledModuleHeaderBidding;
         $scope.selectPublisher = selectPublisher;
         $scope.isNormalAdSlotNotUseStandalone = isNormalAdSlotNotUseStandalone;
         $scope.isNormalAdSlotUseStandalone = isNormalAdSlotUseStandalone;
@@ -151,37 +157,7 @@
 
             if(deployment != 'none') {
                 if(deployment != 'channels' && $scope.siteList.length === 0) {
-                    SiteManager.getList()
-                        .then(function(sites) {
-                            sitesCopy = sites;
-                            $scope.siteList = $filter('selectedPublisher')(sitesCopy, $scope.adSlot.publisher);
-
-                            // ticked site when add new ad slot for site
-                            var selectedSite = null;
-
-                            if(!!$stateParams.siteId) {
-                                var idxSite = _.findIndex(sites, function(site) {
-                                    /* save the matched site by $stateParams.siteId */
-                                    selectedSite = site;
-
-                                    return $stateParams.siteId == site.id
-                                });
-
-                                if(idxSite > -1) {
-                                    /**
-                                     * set default publisher when create ad slot quickly from list adslot for site
-                                     */
-                                    $scope.adSlot.publisher = $scope.siteList[idxSite].publisher.id;
-                                    $scope.siteList[idxSite]['ticked'] = true;
-
-                                    /* IMPORTANT: remember set selected site to site got from $stateParams.siteId!!! */
-                                    $scope.selected.sites = [selectedSite];
-
-                                    //updateDueToDeploymentChanged();
-                                }
-                            }
-                        });
-
+                    _getSitesForPublisher($scope.adSlot.publisher);
                 }
 
                 if(deployment != 'sites' && $scope.channelList.length === 0) {
@@ -211,12 +187,17 @@
             return isEnabledModule('MODULE_RTB');
         }
 
+        function isEnabledModuleHeaderBidding() {
+            return isEnabledModule('MODULE_HEADER_BIDDING');
+        }
+
         function selectPublisher(publisher, publisherId) {
             $scope.adSlot.site = null;
 
-            if(sitesCopy.length > 0) {
-                $scope.siteList = $filter('selectedPublisher')(sitesCopy, publisher);
+            if($scope.selected.deployment == 'sites') {
+                _getSitesForPublisher(publisher.id);
             }
+
             if(channelsCopy.length > 0) {
                 $scope.channelList = $filter('selectedPublisher')(channelsCopy, publisher);
             }
@@ -284,7 +265,7 @@
             var Manager;
 
             adSlot = _refactorAdSlot($scope.adSlot);
-            adSlotRefactor = adSlot;
+            //adSlotRefactor = adSlot;
 
             if($scope.pickFromLibrary && $scope.isNew) {
                 Manager = AdSlotLibrariesManager.one($scope.selected.adSlotLibrary).customPOST(adSlot, 'createlinks');
@@ -443,13 +424,13 @@
 
             var historyAdSlot = historyStorage.getParamsHistoryForAdSlot();
 
-            if($scope.isAdmin()) {
-                if(!!historyAdSlot.siteId) {
-                    return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: adSlotRefactor.site.id || adSlotRefactor.site});
-                } else {
-                    return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.listAll');
-                }
-            }
+            //if($scope.isAdmin()) {
+            //    if(!!historyAdSlot.siteId) {
+            //        return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list', {siteId: adSlotRefactor.site.id || adSlotRefactor.site});
+            //    } else {
+            //        return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.listAll');
+            //    }
+            //}
 
             if(!!historyAdSlot && !!historyAdSlot.siteId) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlot, '^.^.adSlot.list');
@@ -475,6 +456,34 @@
             {
                 return typeOption.key == type;
             });
+        }
+
+        function _getSitesForPublisher(publisherId, site) {
+            var Manager = !$scope.isAdmin() ? SiteManager.getList() : adminUserManager.one(publisherId).one('sites').getList();
+
+            Manager
+                .then(function (data) {
+                    $scope.siteList = data;
+
+                    if(!!site) {
+                        var idxSite = _.findIndex(data, function(site) {
+
+                            return $stateParams.siteId == site.id
+                        });
+
+                        if(idxSite > -1) {
+                            /**
+                             * set default publisher when create ad slot quickly from list adslot for site
+                             */
+                            $scope.adSlot.publisher = $scope.siteList[idxSite].publisher.id;
+                            $scope.siteList[idxSite]['ticked'] = true;
+
+                            /* IMPORTANT: remember set selected site to site got from $stateParams.siteId!!! */
+                            $scope.selected.sites = [site];
+                        }
+                    }
+                })
+            ;
         }
 
         function _validateExpressions(expressions) {
@@ -745,6 +754,7 @@
                 delete adSlot.libraryExpressions;
                 delete adSlot.defaultLibraryAdSlot;
                 delete adSlot.native;
+                delete adSlot.hbBidPrice;
             }
 
             if(!$scope.isAdmin()) {
@@ -793,7 +803,8 @@
                 defaultAdSlot: null,
                 libraryAdSlot: angular.copy(adSlot),
                 rtbStatus: adSlot.rtbStatus,
-                floorPrice: adSlot.floorPrice
+                floorPrice: adSlot.floorPrice,
+                hbBidPrice: adSlot.hbBidPrice
             };
 
             adSlot.site = $scope.isNew ? $scope.selected.sites[0].id : $scope.selected.site.id;
@@ -803,6 +814,7 @@
                 delete adSlot.libraryAdSlot.autoFit;
                 delete adSlot.libraryAdSlot.passbackMode;
                 delete adSlot.floorPrice;
+                delete adSlot.hbBidPrice;
             }
 
             if($scope.selected.type == $scope.typesList.dynamic) {
@@ -811,6 +823,8 @@
                 delete adSlot.libraryAdSlot.autoFit;
                 delete adSlot.libraryAdSlot.passbackMode;
                 delete adSlot.floorPrice;
+                delete adSlot.hbBidPrice;
+                delete adSlot.libraryAdSlot.hbBidPrice;
 
                 _refactorExpressions(adSlot.libraryAdSlot.libraryExpressions);
 
@@ -826,6 +840,7 @@
                 delete adSlot.defaultAdSlot;
                 delete adSlot.libraryAdSlot.native;
                 delete adSlot.expressions;
+                delete adSlot.libraryAdSlot.hbBidPrice;
             }
 
             // not include rtbStatus if module rtb not enabled in publisher
@@ -859,6 +874,18 @@
                     }
                 });
             });
+        }
+
+        function _convertHeaderBiddingPriceToString(price) {
+            if(!price) {
+                return null
+            }
+
+            if((price*10) % 1 == 0 && (price*10) % 10 != 0) {
+                return price.toString() + '0'
+            }
+
+            return price.toString()
         }
 
         /* watch the changing of sites selected in deployment method */

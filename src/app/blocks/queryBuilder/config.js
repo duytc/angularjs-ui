@@ -18,8 +18,8 @@
             {key: '==', label: 'EQUAL TO', jsPattern: '({VARIABLE} == "{VALUE}") ', unsupportedBuiltInVars: ['${COUNTRY}', '${DEVICE}']},
             {key: '!=', label: 'NOT EQUAL TO', jsPattern: '({VARIABLE} != "{VALUE}") ', unsupportedBuiltInVars: ['${COUNTRY}', '${DEVICE}']},
 
-            {key: 'is', label: 'IS', jsPattern: '(navigator.platform.search(/{VALUE}$/i) > -1) ', unsupportedBuiltInVars: ['${COUNTRY}'], onlySupport: ['${DEVICE}']},
-            {key: 'isNot', label: 'IS NOT', jsPattern: '(navigator.platform.search(/{VALUE}$/i) < 0)', unsupportedBuiltInVars: ['${COUNTRY}'], onlySupport: ['${DEVICE}']},
+            {key: 'is', label: 'IS', jsPattern: '(navigator.userAgent.search(/{VALUE}/i) > -1) ', unsupportedBuiltInVars: ['${COUNTRY}'], onlySupport: ['${DEVICE}']},
+            {key: 'isNot', label: 'IS NOT', jsPattern: '(navigator.userAgent.search(/{VALUE}/i) < 0) ', unsupportedBuiltInVars: ['${COUNTRY}'], onlySupport: ['${DEVICE}']},
 
             {key: 'is', label: 'IS', jsPattern: '({VARIABLE} == "{VALUE}") ', unsupportedBuiltInVars: ['${DEVICE}'], onlySupport: ['${COUNTRY}']},
             {key: 'isNot', label: 'IS NOT', jsPattern: '({VARIABLE} != "{VALUE}") ', unsupportedBuiltInVars: ['${DEVICE}'], onlySupport: ['${COUNTRY}']},
@@ -38,7 +38,7 @@
             {key: 'boolean', label: 'TRUE/FALSE', builtInVars: []}
         ])
         .constant('DEVICES', [
-            {code: 'Mac OS X', name: 'iOS'},
+            {code: 'iPad|iPhone|iPod', name: 'iOS'},
             {code: 'Android', name: 'Android'},
             {code: 'Windows Phone 10.0', name: 'Windows 10 Mobile'},
             {code: 'BB10', name: 'BlackBerry 10'},

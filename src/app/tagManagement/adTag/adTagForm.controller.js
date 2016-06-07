@@ -426,6 +426,10 @@
         }
 
         function addMoreItems() {
+            if($scope.isAdmin() && !$scope.selected.publisher) {
+                return
+            }
+
             var page = Math.ceil(($scope.siteList.length/10) + 1);
 
             if(params.page === page) {

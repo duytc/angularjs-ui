@@ -35,7 +35,9 @@
 
             getPublisherAdNetworksByDayReport: getPublisherAdNetworksByDayReport,
             getPublisherSitesByDayReport: getPublisherSitesByDayReport,
-            getPublisherAdNetworksByAdTagsReport: getPublisherAdNetworksByAdTagsReport
+            getPublisherAdNetworksByAdTagsReport: getPublisherAdNetworksByAdTagsReport,
+            getPublisherAdNetworksBySubPublishersReport: getPublisherAdNetworksBySubPublishersReport,
+            getAdNetworkSiteSubPublisherReport: getAdNetworkSiteSubPublisherReport
         };
 
         var _$initialParams = null;
@@ -228,6 +230,14 @@
 
         function getPublisherAdNetworksByAdTagsReport(params, additionalParams) {
             return getReport(ReportFetcher.getPublisherAdNetworksByAdTagsReport, params, additionalParams);
+        }
+
+        function getPublisherAdNetworksBySubPublishersReport(params, additionalParams) {
+            return getReport(ReportFetcher.getPublisherAdNetworksBySubPublishersReport, params, additionalParams);
+        }
+
+        function getAdNetworkSiteSubPublisherReport(params, additionalParams) {
+            return getReport(ReportFetcher.getAdNetworkSiteSubPublisherReport, params, additionalParams);
         }
     }
 })(angular);

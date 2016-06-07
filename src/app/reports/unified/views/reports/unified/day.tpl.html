@@ -6,7 +6,7 @@
             {{ 'UNIFIED_REPORT_MODULE.DETAILS' | translate }}
 
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" fields="['date', 'totalOpportunities', 'impressions', 'passbacks', 'estRevenue', 'estCpm', 'fillRate']" header="['Date', 'Partner Requests', 'Impressions', 'Passbacks', 'Revenue', 'CPM', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                <div class="btn btn-sm btn-primary" ng-click="downloadExportExcel()">{{ 'EXPORT_EXCEL' | translate }}</div>
             </div>
 
             <div class="btn-group btnGrouped" dropdown>
