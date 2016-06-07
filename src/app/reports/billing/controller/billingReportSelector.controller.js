@@ -65,7 +65,7 @@
         $scope.productOptions = [
             {
                 key: 'display',
-                label: 'Header Bidding'
+                label: 'Display'
             },
             //{
             //    key: 'source',
