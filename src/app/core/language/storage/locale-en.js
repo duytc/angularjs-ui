@@ -375,7 +375,8 @@
                 "HELP_BLOCK_DEFAULT_AD_SLOT": "If no default ad slot is selected and no expressions match, the ad slot will not be shown on the page.",
                 "HELP_BLOCK_AUTO_FIT": "When Auto Fit is enabled, the ad slot will dynamically resize if the ad served is different from the size defined above.",
                 "HELP_BLOCK_FLOOR_PRICE": "If the RTB bid price is lower than this amount, the ad tag waterfall will serve instead.",
-                "HELP_BLOCK_RTB": "Enable RTB for this ad slot or inherit the RTB config from the associated site."
+                "HELP_BLOCK_RTB": "Enable RTB for this ad slot or inherit the RTB config from the associated site.",
+                "HELP_BLOCK_HEADER_BIDDING_PRICE": "Set the Bid price to the Tagcade bidder will always bid at"
             },
             "RON_AD_SLOT_MODULE": {
                 "CURRENTLY_NO_RON_AD_SLOT": "There is currently no RON ad slots",

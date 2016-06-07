@@ -76,7 +76,6 @@
                 },
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, projectedBillService, userSession, REPORT_TYPES) {
-                        console.log(userSession);
                         return projectedBillService.getAccountProjectedBill($stateParams, {
                             reportType: REPORT_TYPES.account,
                             publisherId: userSession.id

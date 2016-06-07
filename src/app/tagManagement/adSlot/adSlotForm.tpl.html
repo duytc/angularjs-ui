@@ -238,6 +238,8 @@
                     <label for="inputHbBidPrice" class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.HEADER_BID_PRICE' | translate }}</label>
                     <div class="col-sm-5">
                         <input server-error name="hbBidPrice" ng-model="adSlot.hbBidPrice" type="text" ng-pattern="/^\-?\d+((\.|\,)\d+)?$/" class="form-control" id="inputHbBidPrice" placeholder="{{ 'AD_SLOT_MODULE.HEADER_BID_PRICE' | translate }}">
+
+                        <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_HEADER_BIDDING_PRICE' | translate }}</span>
                     </div>
                 </div>
 
