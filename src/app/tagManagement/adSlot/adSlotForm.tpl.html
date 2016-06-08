@@ -105,7 +105,7 @@
                     <div class="col-sm-5">
                         <div>
                             <label class="ui-checkbox">
-                                <input name="pickFromLibrary" type="checkbox" ng-model="pickFromLibrary" ng-click="getAdSlotLibrary()" server-error id="inputPickFromLibrary">
+                                <input name="pickFromLibrary" ng-disabled="!isNew" type="checkbox" ng-model="pickFromLibrary" ng-click="getAdSlotLibrary()" server-error id="inputPickFromLibrary">
                                 <span></span>
                             </label>
                         </div>
@@ -115,9 +115,9 @@
                 <div class="form-group" ng-if="pickFromLibrary">
                     <label for="inputAdSlotLibrary" class="col-sm-1quarter control-label">Standalone Ad Slot</label>
                     <div class="col-sm-5">
-                        <ui-select name="adSlotLibrary" ng-model="selected.adSlotLibrary" id="inputAdSlotLibrary" ng-required="true" server-error ng-disabled="!pickFromLibrary" on-select="selectAdSlotLibrary($item)" reset-search-input="'false'">
+                        <ui-select name="adSlotLibrary" ng-model="selected.adSlotLibrary" id="inputAdSlotLibrary" ng-required="true" server-error ng-disabled="!pickFromLibrary || !isNew" on-select="selectAdSlotLibrary($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select a standalone ad slot">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
-                            <ui-select-choices repeat="adSlotLibrary.id as adSlotLibrary in adSlotLibraryList | filter:$select.search | selectedPublisher:selected.publisher | filter:{ libType: selected.type}">
+                            <ui-select-choices repeat="adSlotLibrary.id as adSlotLibrary in adSlotLibraryList | filter:$select.search | selectedPublisher:selected.publisher | filter:{ libType: selected.type} | filter:filterAdSlotForSite:adSlotLibrary">
                                 {{ adSlotLibrary.name }} {{ adSlotLibrary.id ? '(ID: ' + adSlotLibrary.id + ')' : '' }}
                             </ui-select-choices>
                         </ui-select>
@@ -198,10 +198,10 @@
                     <label class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.EXPRESSION_BUILDER' | translate }}</label>
                     <div class="col-sm-10">
                         <div class="expressions-group" ng-if="!isNormalAdSlotNotUseStandalone()">
-                            <library-query-builder expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native"></library-query-builder>
+                            <library-query-builder is-enabled-module-header-bidding="isEnabledModuleHeaderBidding() && (isStandaloneAdSlot() || isNormalAdSlotUseStandalone())" disabled-directive="isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary" expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native"></library-query-builder>
                         </div>
                         <div class="expressions-group" ng-if="isNormalAdSlotNotUseStandalone()">
-                            <query-builder is-enabled-module-header-bidding="isEnabledModuleHeaderBidding()" disabled-directive="isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary" expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native"></query-builder>
+                            <query-builder is-enabled-module-header-bidding="isEnabledModuleHeaderBidding() && (isStandaloneAdSlot() || isNormalAdSlotUseStandalone())" disabled-directive="isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary" expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native"></query-builder>
                         </div>
                     </div>
                 </div>
@@ -228,7 +228,7 @@
                 <div class="form-group" ng-if="showForDisplayAdSlot() && isEnabledModuleRtb() && adSlot.rtbStatus != rtbStatusTypes.disable && isNormalAdSlotNotUseStandalone()">
                     <label for="inputFloorPrice" class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.FLOOR_PRICE' | translate }}</label>
                     <div class="col-sm-5">
-                        <input server-error name="floorPrice" ng-model="adSlot.floorPrice" ng-disabled="pickFromLibrary" type="number" class="form-control" id="inputFloorPrice" placeholder="{{ 'AD_SLOT_MODULE.FLOOR_PRICE' | translate }}">
+                        <input server-error name="floorPrice" ng-model="adSlot.floorPrice" type="number" class="form-control" id="inputFloorPrice" placeholder="{{ 'AD_SLOT_MODULE.FLOOR_PRICE' | translate }}">
 
                         <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_FLOOR_PRICE' | translate }}</span>
                     </div>

@@ -155,10 +155,12 @@
                     }
 
                     function expectAdSlotIsDisplay(expectAdSlot) {
-                        var expectAdSlotId = angular.isObject(expectAdSlot) ? expectAdSlot.id : expectAdSlot;
+                        if(angular.isObject(expectAdSlot) && expectAdSlot.type == scope.typesList.display) {
+                            return true
+                        }
 
                         var adSlot = _.find(scope.adSlots, function(adSlot) {
-                            return adSlot.id == expectAdSlotId;
+                            return adSlot.id == expectAdSlot;
                         });
 
                         if(!adSlot) {
