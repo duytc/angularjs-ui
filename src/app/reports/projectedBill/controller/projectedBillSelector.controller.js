@@ -5,7 +5,7 @@
         .controller('ProjectedBillSelector', ProjectedBillSelector)
     ;
 
-    function ProjectedBillSelector($scope, $translate, $q, $state, _, Auth, UserStateHelper, AlertService, projectedBillService, ReportParams, REPORT_TYPES, selectorFormCalculator) {
+    function ProjectedBillSelector($scope, $translate, $q, $state, _, Auth, UserStateHelper, AlertService, projectedBillService, adminUserManager, ReportParams, REPORT_TYPES, selectorFormCalculator) {
         var toState;
         var isAdmin = Auth.isAdmin();
         var isSubPublisher = Auth.isSubPublisher();
@@ -82,6 +82,8 @@
             }
 
             toState = reportType.toState;
+            $scope.selectedData.reportType = reportType;
+            _getSitesForPublisher($scope.selectedData.publisherId);
         }
 
         /**
@@ -103,11 +105,13 @@
                 ;
             }
 
-            projectedBillService.getSites()
-                .then(function (data) {
-                    $scope.optionData.sites = data;
-                })
-            ;
+            if (!isAdmin) {
+                projectedBillService.getSites()
+                    .then(function (data) {
+                        $scope.optionData.sites = data;
+                    })
+                ;
+            }
 
             var initialParams = projectedBillService.getInitialParams();
             if (initialParams == null) {
@@ -128,12 +132,30 @@
                     angular.extend(initialData, _.omit(calculatedParams, ['reportType']));
 
                     angular.extend($scope.selectedData, initialData);
+
+                    if(!!$scope.optionData.sites && $scope.optionData.sites.length == 0) {
+                        _getSitesForPublisher($scope.selectedData.publisherId)
+                    }
                 }
             );
         }
 
-        function selectPublisher() {
-            return $scope.selectedData.siteId = null;
+        function selectPublisher(publisher) {
+            $scope.selectedData.siteId = null;
+
+            _getSitesForPublisher(publisher.id);
+        }
+
+        function _getSitesForPublisher(publisherId) {
+            if($scope.selectedData.reportType.key != 'site' || !publisherId || !isAdmin) {
+                return
+            }
+
+            adminUserManager.one(publisherId).one('sites').getList()
+                .then(function (data) {
+                    $scope.optionData.sites = data;
+                })
+            ;
         }
 
         function showPublisherSelect() {

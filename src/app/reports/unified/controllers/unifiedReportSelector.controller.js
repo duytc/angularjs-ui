@@ -79,6 +79,11 @@
                 toState: 'reports.unified.day'
             },
             {
+                key: 'subpublishers',
+                label: 'By Sub Publishers',
+                toState: 'reports.unified.subpublisher'
+            },
+            {
                 key: 'partners',
                 label: 'By Partner',
                 toState: 'reports.unified.partner'
@@ -104,6 +109,10 @@
         }
 
         function filterBreakdown(option) {
+            if((isSubPublisher && option.key == 'subpublishers') || (!!$scope.selectedData.publisher && !isSubPublisher && !isAdmin && option.key == 'subpublishers')) {
+                return false;
+            }
+
             if(!demandSourceTransparency) {
                 if(option.key == 'day' || option.key == 'sites') {
                     return true;
@@ -120,23 +129,33 @@
                 return false;
             }
 
+            if(!!$scope.selectedData.site && option.key == 'subpublishers') {
+                return false;
+            }
+
             return true;
         }
 
         function clickBreakdown(option) {
-            var breakdowns = [];
-
-            angular.forEach($scope.selectedData.breakDowns, function(support, key) {
-                if(option != 'day' && support && key != 'day' && key != option) {
-                    $scope.selectedData.breakDowns[key] = false;
-                }
-
-                if($scope.selectedData.breakDowns[key]) {
-                    breakdowns.push(key)
-                }
-            });
+            var breakdowns = _addToArrayBreakdownSupport(option);
 
             _setVarBreakdown(breakdowns);
+        }
+
+        function _addToArrayBreakdownSupport(option) {
+            var breakdowns = [];
+
+            for(var index in $scope.selectedData.breakDowns) {
+                if(option != 'day' && $scope.selectedData.breakDowns[index] && index != 'day' && index != option) {
+                    $scope.selectedData.breakDowns[index] = false;
+                }
+
+                if($scope.selectedData.breakDowns[index]) {
+                    breakdowns.push(index)
+                }
+            }
+
+            return breakdowns;
         }
 
         function _setVarBreakdown(breakdowns) {
@@ -209,6 +228,12 @@
             $scope.selectedData.adNetwork = null;
             //$scope.selectedData.breakDown = null;
             $scope.selectedData.site = null;
+
+            $scope.selectedData.labelBreakdown = null;
+            $scope.selectedData.breakDown = null;
+            $scope.selectedData.subBreakDown = null;
+            $scope.selectedData.breakDowns = [];
+            clickBreakdown(null);
         }
 
         function selectAdNetwork(adNetwork) {
@@ -217,13 +242,14 @@
             }
 
             $scope.selectedData.site = null;
+            $scope.selectedData.labelBreakdown = null;
+            $scope.selectedData.breakDown = null;
+            $scope.selectedData.subBreakDown = null;
+            $scope.selectedData.breakDowns = [];
+            clickBreakdown(null);
 
             if(!adNetwork.id) {
                 return
-            }
-
-            if($scope.selectedData.breakDown == 'partners') {
-                $scope.selectedData.breakDown = null;
             }
 
             getSitesForAdNetworkAndSubPublisher(adNetwork.id, $scope.selectedData.publisher);
@@ -247,9 +273,11 @@
         }
 
         function selectSite(site) {
-            if(!!site.id && $scope.selectedData.breakDown == 'sites') {
-                $scope.selectedData.breakDown = null;
-            }
+            $scope.selectedData.labelBreakdown = null;
+            $scope.selectedData.breakDown = null;
+            $scope.selectedData.subBreakDown = null;
+            $scope.selectedData.breakDowns = [];
+            clickBreakdown(null);
         }
 
         function getPartnerForPublisher(publisherId) {

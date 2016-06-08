@@ -31,6 +31,7 @@
         $scope.showPagination = showPagination;
         $scope.drillDownReport = drillDownReport;
         $scope.getExportExcelFileName = getExportExcelFileName();
+        $scope.downloadExportExcel = downloadExportExcel;
 
         function drillDownReport(state, drillParams) {
             if (!angular.isString(state)) {
@@ -64,6 +65,16 @@
                     });
                 })
             ;
+        }
+
+        function downloadExportExcel() {
+            var params = ReportParams.getStateParams(unifiedReport.getInitialParams());
+
+            unifiedReport.getLinkDownloadExcel(params)
+                .then(function(data) {
+                    var file = new Blob([data], { type: 'text/csv' });
+                    saveAs(file, getExportExcelFileName() + '.csv');
+                });
         }
 
         function showPagination() {

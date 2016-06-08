@@ -14,7 +14,8 @@
                 adSlots: '=',
                 tags: '=',
                 native: '=',
-                disabledDirective: '='
+                disabledDirective: '=',
+                isEnabledModuleHeaderBidding: '='
             },
             restrict: 'AE',
             templateUrl: 'blocks/queryBuilder/libraryQueryBuilder.tpl.html',
@@ -35,6 +36,7 @@
                     scope.selectExpectAdSlot = selectExpectAdSlot;
                     scope.formatPositionLabel = formatPositionLabel;
                     scope.filterEntityType = filterEntityType;
+                    scope.expectAdSlotIsDisplay = expectAdSlotIsDisplay;
 
                     scope.sortableOptions = {
                         disabled: true,
@@ -146,6 +148,29 @@
                         }
 
                         return false;
+                    }
+
+                    var hasCheckExpectAdSlotIsDisplay = false;
+
+                    function expectAdSlotIsDisplay(expectAdSlot) {
+                        if(hasCheckExpectAdSlotIsDisplay) {
+                            return true;
+                        }
+
+                        if(angular.isObject(expectAdSlot) && expectAdSlot.libType == scope.typesList.display) {
+                            hasCheckExpectAdSlotIsDisplay = true;
+                            return true
+                        }
+
+                        var adSlot = _.find(scope.adSlots, function(adSlot) {
+                            return adSlot.id == expectAdSlot;
+                        });
+
+                        if(!adSlot) {
+                            return false
+                        }
+
+                        return adSlot.libType == scope.typesList.display || adSlot.type == scope.typesList.display
                     }
 
                     function enableDragDropQueryBuilder(enable) {

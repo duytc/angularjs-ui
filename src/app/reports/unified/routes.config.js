@@ -299,6 +299,76 @@
                     label: 'Unified reports'
                 }
             })
+
+            .state('reports.unified.subpublisher', {
+                url: '/subpublisher?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}&{subBreakDown}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    unified: {
+                        controller: 'UnifiedReport',
+                        templateUrl: 'reports/unified/views/reports/unified/subpublisher.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, unifiedReport, userSession) {
+                        $stateParams.publisher = !!$stateParams.publisher ? $stateParams.publisher : userSession.id;
+
+                        return unifiedReport.getPulsePoint($stateParams, {breakDown: 'subpublishers'});
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Unified reports'
+                }
+            })
+            .state('reports.unified.tagcadeSubpublisher', {
+                url: '/tagcadeSubpublisher?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}&{subBreakDown}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    unified: {
+                        controller: 'UnifiedReport',
+                        templateUrl: 'reports/unified/views/reports/tagcade/subpublisher.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, unifiedReport, userSession) {
+                        $stateParams.publisher = !!$stateParams.publisher ? $stateParams.publisher : userSession.id;
+
+                        return unifiedReport.getAdNetworkReport($stateParams, {breakDown: 'subpublishers'});
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Unified reports'
+                }
+            })
+            .state('reports.unified.discrepanciesSubpublisher', {
+                url: '/discrepanciesSubpublisher?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}&{subBreakDown}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    unified: {
+                        controller: 'UnifiedReport',
+                        templateUrl: 'reports/unified/views/reports/discrepancies/subpublisher.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, unifiedReport, userSession) {
+                        $stateParams.publisher = !!$stateParams.publisher ? $stateParams.publisher : userSession.id;
+
+                        return unifiedReport.getPulsePointDiscrepancies($stateParams, {breakDown: 'subpublishers'});
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Unified reports'
+                }
+            })
         ;
     }
 })();

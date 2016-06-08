@@ -12,7 +12,8 @@
 
             getPulsePoint: getPulsePoint,
             getPulsePointDiscrepancies: getPulsePointDiscrepancies,
-            getAdNetworkReport: getAdNetworkReport
+            getAdNetworkReport: getAdNetworkReport,
+            getLinkDownloadExcel: getLinkDownloadExcel
         };
 
         var _$initialParams = null;
@@ -109,6 +110,12 @@
             var url = _getUrl(params, additionalParams, '');
 
             return getReport(url, params, additionalParams, API_PERFORMANCE_REPORTS_BASE_URL);
+        }
+
+        function getLinkDownloadExcel(params, additionalParams) {
+            var url = _getUrl(params, additionalParams, '');
+
+            return getReport(url, params, additionalParams, API_UNIFIED_REPORTS_BASE_URL + '/export');
         }
 
         function _getUrl(params, additionalParams, prefix) {

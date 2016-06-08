@@ -36,7 +36,7 @@
 
             <div class="publisher form-group" ng-if="!selectedReportTypeis(reportTypes.platform) && showPublisherSelect()">
                 <label>{{ 'PUBLISHER' | translate }}</label>
-                <ui-select name="publisher" ng-model="selectedData.publisherId" ng-required="true" ng-disabled="!optionData.publishers.length" on-select="selectPublisher()" reset-search-input="'false'">
+                <ui-select name="publisher" ng-model="selectedData.publisherId" ng-required="true" ng-disabled="!optionData.publishers.length" on-select="selectPublisher($item)" reset-search-input="'false'">
                     <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
                     <ui-select-choices group-by="groupEntities" repeat="publisher.id as publisher in optionData.publishers | filter: $select.search">
                         <div ng-bind-html="publisher.company | highlight: $select.search"></div>

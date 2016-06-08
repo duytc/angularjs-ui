@@ -4,7 +4,6 @@
     <div class="panel panel-default daily-reports">
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
             {{ 'UNIFIED_REPORT_MODULE.DETAILS' | translate }}
-
             <div class="button-bar hidden-xs">
                 <div class="btn btn-sm btn-primary" ng-click="downloadExportExcel()">{{ 'EXPORT_EXCEL' | translate }}</div>
             </div>
@@ -13,17 +12,17 @@
                 <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><a>
-                        <export-excel ng-show="subBreakDown != 'day'" data="reports" fields="['name', 'totalOpportunities', 'impressions', 'passbacks', 'estRevenue', 'estCpm', 'fillRate']" header="['Site', 'Partner Requests', 'Impressions', 'Passbacks', 'Revenue', 'CPM', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
-                        <export-excel ng-show="subBreakDown == 'day'" data="reports" fields="['name', 'date', 'totalOpportunities', 'impressions', 'passbacks', 'estRevenue', 'estCpm', 'fillRate']" header="['Site', 'Date', 'Partner Requests', 'Impressions', 'Passbacks', 'Revenue', 'CPM', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel  ng-show="subBreakDown != 'day'" data="reports" fields="['name', 'totalOpportunities', 'impressions', 'passbacks', 'estRevenue', 'estCpm', 'fillRate']" header="['Sub Publisher', 'Partner Requests', 'Impressions', 'Passbacks', 'Revenue', 'CPM', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel  ng-show="subBreakDown == 'day'" data="reports" fields="['name', 'date', 'totalOpportunities', 'impressions', 'passbacks', 'estRevenue', 'estCpm', 'fillRate']" header="['Sub Publisher', 'Date', 'Partner Requests', 'Impressions', 'Passbacks', 'Revenue', 'CPM', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
             </div>
         </div>
 
         <ul class="nav nav-tabs source-reports" ng-if="enableViewTagcadeReport">
-            <li role="presentation" class="active"><a ui-sref="^.site(params)">{{ 'UNIFIED_REPORT_MODULE.UNIFIED' | translate }}</a></li>
-            <li role="presentation"><a ui-sref="^.tagcadeSite(params)">{{ 'UNIFIED_REPORT_MODULE.TAGCADE' | translate }}</a></li>
-            <li role="presentation"><a ui-sref="^.discrepanciesSite(params)">{{ 'UNIFIED_REPORT_MODULE.DISCREPANCIES' | translate }}</a></li>
+            <li role="presentation" class="active"><a ui-sref="^.subpublisher(params)">{{ 'UNIFIED_REPORT_MODULE.UNIFIED' | translate }}</a></li>
+            <li role="presentation"><a ui-sref="^.tagcadeSubpublisher(params)">{{ 'UNIFIED_REPORT_MODULE.TAGCADE' | translate }}</a></li>
+            <li role="presentation"><a ui-sref="^.discrepanciesSubpublisher(params)">{{ 'UNIFIED_REPORT_MODULE.DISCREPANCIES' | translate }}</a></li>
         </ul>
 
         <div class="table-responsive">
@@ -41,7 +40,7 @@
                     <!--<td at-title="{{ 'REPORT.END_DATE' | translate }}" at-attribute="endDate">-->
                         <!--{{ item.endDate | date }}-->
                     <!--</td>-->
-                    <td at-title="{{ 'SITE' | translate }}" at-sortable at-initial-sorting="asc" at-attribute="name">
+                    <td at-title="{{ 'SUB_PUBLISHER' | translate }}" at-sortable at-initial-sorting="asc" at-attribute="name">
                         {{ item.name }}
                     </td>
                     <td ng-show="subBreakDown == 'day'" at-title="{{ 'REPORT.DATE' | translate }}" at-sortable at-attribute="date">
