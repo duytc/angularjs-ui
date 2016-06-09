@@ -95,7 +95,7 @@
         $scope.adSlotContext = $scope.isNew ? AD_SLOT_CONTEXTS.standalone : AD_SLOT_CONTEXTS.normal.notUseStandalone;
 
         if(!$scope.isNew) {
-            enabledModules = adSlot.site.enabledModules;
+            enabledModules = adSlot.site.publisher.enabledModules;
 
             if(adSlot.libraryAdSlot.visible) {
                 $scope.pickFromLibrary = true;

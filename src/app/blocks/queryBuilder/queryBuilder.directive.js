@@ -15,7 +15,7 @@
                 tags: '=',
                 native: '=',
                 disabledDirective: '=',
-                isEnabledModuleHeaderBidding: '='
+                notHeaderBidding: '='
             },
             restrict: 'AE',
             templateUrl: 'blocks/queryBuilder/queryBuilder.tpl.html',

@@ -198,10 +198,10 @@
                     <label class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.EXPRESSION_BUILDER' | translate }}</label>
                     <div class="col-sm-10">
                         <div class="expressions-group" ng-if="!isNormalAdSlotNotUseStandalone()">
-                            <library-query-builder is-enabled-module-header-bidding="isEnabledModuleHeaderBidding() && (isStandaloneAdSlot() || isNormalAdSlotUseStandalone())" disabled-directive="isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary" expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native"></library-query-builder>
+                            <library-query-builder not-header-bidding="!isEnabledModuleHeaderBidding() || (isStandaloneAdSlot() || isNormalAdSlotUseStandalone())" disabled-directive="isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary" expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native"></library-query-builder>
                         </div>
                         <div class="expressions-group" ng-if="isNormalAdSlotNotUseStandalone()">
-                            <query-builder is-enabled-module-header-bidding="isEnabledModuleHeaderBidding() && (isStandaloneAdSlot() || isNormalAdSlotUseStandalone())" disabled-directive="isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary" expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native"></query-builder>
+                            <query-builder not-header-bidding="!isEnabledModuleHeaderBidding() || (isStandaloneAdSlot() || isNormalAdSlotUseStandalone())" disabled-directive="isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary" expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native"></query-builder>
                         </div>
                     </div>
                 </div>
