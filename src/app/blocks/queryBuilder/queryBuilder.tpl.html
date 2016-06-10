@@ -34,7 +34,7 @@
         <div class="form-group expect-adSlot" ng-if="!notHeaderBidding && expectAdSlotIsDisplay(expressionRoot.expressions[0].expectAdSlot)">
             <label for="inputHbBidPrice">{{ 'AD_SLOT_MODULE.HEADER_BID_PRICE' | translate }}</label>
             <div>
-                <input server-error name="hbBidPrice" ng-model="expressionRoot.expressions[0].hbBidPrice" type="text" ng-pattern="/^\-?\d+((\.|\,)\d+)?$/" class="form-control" id="inputHbBidPrice" placeholder="{{ 'AD_SLOT_MODULE.HEADER_BID_PRICE' | translate }}">
+                <input server-error name="hbBidPrice" ng-model="expressionRoot.expressions[0].hbBidPriceCopy" ng-change="changeHeaderBidPrice(expressionRoot.expressions[0])" type="text" ng-pattern="/^\-?\d+((\.|\,)\d+)?$/" class="form-control" id="inputHbBidPrice" placeholder="{{ 'AD_SLOT_MODULE.HEADER_BID_PRICE' | translate }}">
 
                 <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_HEADER_BIDDING_PRICE' | translate }}</span>
             </div>

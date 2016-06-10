@@ -37,6 +37,7 @@
                     scope.formatPositionLabel = formatPositionLabel;
                     scope.filterEntityType = filterEntityType;
                     scope.expectAdSlotIsDisplay = expectAdSlotIsDisplay;
+                    scope.changeHeaderBidPrice = changeHeaderBidPrice;
 
                     scope.sortableOptions = {
                         disabled: true,
@@ -171,6 +172,10 @@
                         }
 
                         return adSlot.libType == scope.typesList.display || adSlot.type == scope.typesList.display
+                    }
+
+                    function changeHeaderBidPrice(expression) {
+                        expression.hbBidPrice = expression.hbBidPriceCopy
                     }
 
                     function enableDragDropQueryBuilder(enable) {
