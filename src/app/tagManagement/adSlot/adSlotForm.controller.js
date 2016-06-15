@@ -67,7 +67,8 @@
 
         $scope.adSlot.rtbStatus = $scope.isNew ? RTB_STATUS_TYPES.inherit : adSlot.rtbStatus;
         $scope.adSlot.floorPrice = $scope.isNew ? null : adSlot.floorPrice;
-        $scope.adSlot.hbBidPrice = $scope.isNew ? null : _convertHeaderBiddingPriceToString(adSlot.hbBidPrice);
+        $scope.adSlot.hbBidPrice = $scope.isNew ? null : adSlot.hbBidPrice;
+        $scope.adSlot.hbBidPriceCopy = $scope.isNew ? null : _convertHeaderBiddingPriceToString(adSlot.hbBidPrice);
 
         $scope.selected = {
             type: angular.isObject(adSlot) ? adSlot.type : $scope.typesList.display,
@@ -95,12 +96,16 @@
         $scope.adSlotContext = $scope.isNew ? AD_SLOT_CONTEXTS.standalone : AD_SLOT_CONTEXTS.normal.notUseStandalone;
 
         if(!$scope.isNew) {
-            enabledModules = adSlot.site.enabledModules;
+            enabledModules = adSlot.site.publisher.enabledModules;
 
             if(adSlot.libraryAdSlot.visible) {
                 $scope.pickFromLibrary = true;
                 $scope.selected.adSlotLibrary = adSlot.libraryAdSlot.id;
                 getAdSlotLibrary();
+            }
+
+            if(!!adSlot.libraryAdSlot.libraryExpressions) {
+                convertHeaderBidding(adSlot.libraryAdSlot.libraryExpressions);
             }
         }
 
@@ -144,6 +149,7 @@
         $scope.getAdSlotLibrary = getAdSlotLibrary;
         $scope.selectAdSlotLibrary = selectAdSlotLibrary;
         $scope.filterAdSlotForSite = filterAdSlotForSite;
+        $scope.changeHeaderBidPrice = changeHeaderBidPrice;
 
         function selectDeployment(deployment) {
             if(deployment == 'channels') {
@@ -463,6 +469,10 @@
             return false
         }
 
+        function changeHeaderBidPrice(adSlot) {
+            adSlot.hbBidPrice = adSlot.hbBidPriceCopy
+        }
+
         function backToAdSlotList() {
             if((isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) && !$scope.pickFromLibrary) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlotLibrary, '^.^.^.tagLibrary.adSlot.list');
@@ -502,6 +512,14 @@
             return _.find($scope.adSlotTypeOptions, function(typeOption)
             {
                 return typeOption.key == type;
+            });
+        }
+
+        function convertHeaderBidding(libraryExpressions) {
+            angular.forEach(libraryExpressions, function(expressionRoot) {
+                if(angular.isObject(expressionRoot.expressions)) {
+                    expressionRoot.expressions[0].hbBidPriceCopy = _convertHeaderBiddingPriceToString(expressionRoot.expressions[0].hbBidPrice);
+                }
             });
         }
 
@@ -928,6 +946,7 @@
             delete adSlot.libraryAdSlot.floorPrice;
             delete adSlot.libraryAdSlot.expressions;
             delete adSlot.libraryAdSlot.hbBidPrice;
+            delete adSlot.libraryAdSlot.hbBidPriceCopy;
 
             delete adSlot.libraryAdSlot.libType;
 
@@ -941,6 +960,7 @@
         function _refactorExpressions(libraryExpressions) {
             angular.forEach(libraryExpressions, function(libraryExpression) {
                 angular.forEach(libraryExpression.expressions, function(expression) {
+                    delete expression.hbBidPriceCopy;
                     delete expression.dynamicAdSlot;
                     delete expression.expressionInJs
                 });
@@ -954,15 +974,11 @@
         }
 
         function _convertHeaderBiddingPriceToString(price) {
-            if(!price) {
+            if(typeof price != 'number') {
                 return null
             }
 
-            if((price*10) % 1 == 0 && (price*10) % 10 != 0) {
-                return price.toString() + '0'
-            }
-
-            return price.toString()
+            return price.toFixed(2).toString()
         }
 
         /* watch the changing of sites selected in deployment method */

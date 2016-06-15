@@ -291,6 +291,8 @@
                 "UPDATE_STATUS_FAIL": "Could not change demand partner status",
                 "PAUSE_STATUS_SUCCESS": "The demand partner has been paused. There may be a short delay before the associated ad tags are paused.",
                 "ACTIVE_STATUS_SUCCESS": "The demand partner has been activated",
+                "REFRESH_UNIFIED_REPORT_SUCCESS": " The Unified Report Email Token has been refreshed",
+                "REFRESH_UNIFIED_REPORT_FAIL": "The Unified Report Email Token could not be refreshed",
                 "CURRENTLY_NO_AD_NETWORK": "There is currently no demand partners",
                 "CURRENTLY_NO_SITES_AD_NETWORK": "Demand Partner : ' {{ ad_network_name }} ' does not have sites",
                 "CONFIRM_PAUSE_AD_NETWORK": "Are you sure you want to pause this demand partner?",
@@ -310,6 +312,8 @@
                 "DROPDOWN_PAUSE": "Pause Demand Partner",
                 "DROPDOWN_VISIT_AS_NETWORK": "Visit Demand Partner",
                 "ADD_NEW_AD_NETWORK": "+ Add New Demand Partner",
+                "GET_UNIFIED_REPORT_EMAIL_TOKEN": "Get Unified Report Email",
+                "REFRESH_UNIFIED_REPORT_EMAIL_TOKEN": "Refresh Unified Report Email Token",
 
                 "BACK_TO_AD_NETWORK_LIST": "Back to Demand Partner List",
                 "ACTIVE_AD_TAGS_COUNT": "Active Ad Tags",
@@ -376,7 +380,7 @@
                 "HELP_BLOCK_AUTO_FIT": "When Auto Fit is enabled, the ad slot will dynamically resize if the ad served is different from the size defined above.",
                 "HELP_BLOCK_FLOOR_PRICE": "If the RTB bid price is lower than this amount, the ad tag waterfall will serve instead.",
                 "HELP_BLOCK_RTB": "Enable RTB for this ad slot or inherit the RTB config from the associated site.",
-                "HELP_BLOCK_HEADER_BIDDING_PRICE": "Set the Bid price to the Tagcade bidder will always bid at"
+                "HELP_BLOCK_HEADER_BIDDING_PRICE": "Set the bid price for the Tagcade bidder"
             },
             "RON_AD_SLOT_MODULE": {
                 "CURRENTLY_NO_RON_AD_SLOT": "There is currently no RON ad slots",

@@ -31,10 +31,10 @@
             <span class="help-block">{{ 'QUERY_BUILDER.HELP_BLOCK_STARTING_POSITION' | translate }}</span>
         </div>
 
-        <div class="form-group expect-adSlot" ng-if="!isEnabledModuleHeaderBidding && expectAdSlotIsDisplay(expressionRoot.expectLibraryAdSlot)">
+        <div class="form-group expect-adSlot" ng-if="!notHeaderBidding && expectAdSlotIsDisplay(expressionRoot.expectLibraryAdSlot)">
             <label for="inputHbBidPrice">{{ 'AD_SLOT_MODULE.HEADER_BID_PRICE' | translate }}</label>
             <div>
-                <input server-error name="hbBidPrice" ng-model="expressionRoot.hbBidPrice" type="text" ng-pattern="/^\-?\d+((\.|\,)\d+)?$/" class="form-control" id="inputHbBidPrice" placeholder="{{ 'AD_SLOT_MODULE.HEADER_BID_PRICE' | translate }}">
+                <input server-error name="hbBidPrice" ng-model="expressionRoot.hbBidPriceCopy" ng-change="changeHeaderBidPrice(expressionRoot.expressions[0])"type="text" ng-pattern="/^\-?\d+((\.|\,)\d+)?$/" class="form-control" id="inputHbBidPrice" placeholder="{{ 'AD_SLOT_MODULE.HEADER_BID_PRICE' | translate }}">
 
                 <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_HEADER_BIDDING_PRICE' | translate }}</span>
             </div>

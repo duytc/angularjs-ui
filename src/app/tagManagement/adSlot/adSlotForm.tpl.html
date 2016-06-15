@@ -198,10 +198,10 @@
                     <label class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.EXPRESSION_BUILDER' | translate }}</label>
                     <div class="col-sm-10">
                         <div class="expressions-group" ng-if="!isNormalAdSlotNotUseStandalone()">
-                            <library-query-builder is-enabled-module-header-bidding="isEnabledModuleHeaderBidding() && (isStandaloneAdSlot() || isNormalAdSlotUseStandalone())" disabled-directive="isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary" expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native"></library-query-builder>
+                            <library-query-builder not-header-bidding="!isEnabledModuleHeaderBidding() || (isStandaloneAdSlot() || isNormalAdSlotUseStandalone())" disabled-directive="isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary" expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native"></library-query-builder>
                         </div>
                         <div class="expressions-group" ng-if="isNormalAdSlotNotUseStandalone()">
-                            <query-builder is-enabled-module-header-bidding="isEnabledModuleHeaderBidding() && (isStandaloneAdSlot() || isNormalAdSlotUseStandalone())" disabled-directive="isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary" expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native"></query-builder>
+                            <query-builder not-header-bidding="!isEnabledModuleHeaderBidding() || (isStandaloneAdSlot() || isNormalAdSlotUseStandalone())" disabled-directive="isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary" expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native"></query-builder>
                         </div>
                     </div>
                 </div>
@@ -237,7 +237,7 @@
                 <div class="form-group" ng-if="isEnabledModuleHeaderBidding() && isNormalAdSlotNotUseStandalone() && showForDisplayAdSlot()">
                     <label for="inputHbBidPrice" class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.HEADER_BID_PRICE' | translate }}</label>
                     <div class="col-sm-5">
-                        <input server-error name="hbBidPrice" ng-model="adSlot.hbBidPrice" type="text" ng-pattern="/^\-?\d+((\.|\,)\d+)?$/" class="form-control" id="inputHbBidPrice" placeholder="{{ 'AD_SLOT_MODULE.HEADER_BID_PRICE' | translate }}">
+                        <input server-error name="hbBidPrice" ng-change="changeHeaderBidPrice(adSlot)" ng-model="adSlot.hbBidPriceCopy" type="text" ng-pattern="/^\-?\d+((\.|\,)\d+)?$/" class="form-control" id="inputHbBidPrice" placeholder="{{ 'AD_SLOT_MODULE.HEADER_BID_PRICE' | translate }}">
 
                         <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_HEADER_BIDDING_PRICE' | translate }}</span>
                     </div>

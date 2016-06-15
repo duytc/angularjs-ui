@@ -15,7 +15,7 @@
                 tags: '=',
                 native: '=',
                 disabledDirective: '=',
-                isEnabledModuleHeaderBidding: '='
+                notHeaderBidding: '='
             },
             restrict: 'AE',
             templateUrl: 'blocks/queryBuilder/queryBuilder.tpl.html',
@@ -37,6 +37,7 @@
                     scope.formatPositionLabel = formatPositionLabel;
                     scope.filterEntityType = filterEntityType;
                     scope.expectAdSlotIsDisplay = expectAdSlotIsDisplay;
+                    scope.changeHeaderBidPrice = changeHeaderBidPrice;
 
                     scope.sortableOptions = {
                         disabled: true,
@@ -154,6 +155,10 @@
                         return false;
                     }
 
+                    function changeHeaderBidPrice(expression) {
+                        expression.hbBidPrice = expression.hbBidPriceCopy
+                    }
+
                     function expectAdSlotIsDisplay(expectAdSlot) {
                         if(angular.isObject(expectAdSlot) && expectAdSlot.type == scope.typesList.display) {
                             return true
@@ -186,18 +191,6 @@
                         return showString;
                     }
 
-                    function _convertHeaderBiddingPriceToString(price) {
-                        if(!price) {
-                            return null
-                        }
-
-                        if((price*10) % 1 == 0 && (price*10) % 10 != 0) {
-                            return price.toString() + '0'
-                        }
-
-                        return price.toString()
-                    }
-
                     scope.$watch(function() { return scope.adSlots }, function () {
                         if(!scope.adSlots && !scope.groups) {
                             return;
@@ -209,8 +202,6 @@
                             }
 
                             if(angular.isObject(expressionRoot.expressions)) {
-                                expressionRoot.expressions[0].hbBidPrice = _convertHeaderBiddingPriceToString(expressionRoot.expressions[0].hbBidPrice);
-
                                 if(angular.isObject(expressionRoot.expressions[0].expectAdSlot)) {
                                     expressionRoot.expressions[0].expectAdSlot = expressionRoot.expressions[0].expectAdSlot.id
                                 }
