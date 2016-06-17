@@ -314,6 +314,8 @@
                 "ADD_NEW_AD_NETWORK": "+ Add New Demand Partner",
                 "GET_UNIFIED_REPORT_EMAIL_TOKEN": "Get Unified Report Email",
                 "REFRESH_UNIFIED_REPORT_EMAIL_TOKEN": "Refresh Unified Report Email Token",
+                "GENERATE_UNIFIED_REPORT_EMAIL_TOKEN": "Generate Unified Report Email Token",
+                "ALERT_WARNING_UNIFIED_REPORT_EMAIL_TOKEN": "This demand partner currently does not have Unified Report Email , Click the button bellow to create one.",
 
                 "BACK_TO_AD_NETWORK_LIST": "Back to Demand Partner List",
                 "ACTIVE_AD_TAGS_COUNT": "Active Ad Tags",

@@ -3,9 +3,10 @@
     <h4 class="modal-title">Unified report Email for - {{ adNetwork.name }}</h4>
 </div>
 <div class="modal-body">
-    <pre select-on-click>{{ email }}</pre>
+    <pre select-on-click ng-if="!!email">{{ email }}</pre>
+    <div class="alert alert-warning" ng-if="!email" role="alert">{{ ('AD_NETWORK_MODULE.ALERT_WARNING_UNIFIED_REPORT_EMAIL_TOKEN' | translate) }}</div>
 </div>
 <div class="modal-footer">
-    <button auto-hide-on-no-flash="true" class="btn btn-primary" clip-copy="email">{{ 'COPY_TO_CLIPBOARD' | translate }}</button>
-    <button class="btn btn-primary" ng-click="refreshUnifiedReportEmail(adNetwork)">{{ 'AD_NETWORK_MODULE.REFRESH_UNIFIED_REPORT_EMAIL_TOKEN' | translate }}</button>
+    <button auto-hide-on-no-flash="true" ng-if="!!email" class="btn btn-primary" clip-copy="email">{{ 'COPY_TO_CLIPBOARD' | translate }}</button>
+    <button class="btn btn-primary" ng-click="refreshUnifiedReportEmail(adNetwork)">{{ !!email ? ('AD_NETWORK_MODULE.REFRESH_UNIFIED_REPORT_EMAIL_TOKEN' | translate) : ('AD_NETWORK_MODULE.GENERATE_UNIFIED_REPORT_EMAIL_TOKEN' | translate) }}</button>
 </div>
