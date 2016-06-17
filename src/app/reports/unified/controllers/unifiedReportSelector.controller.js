@@ -38,9 +38,8 @@
         };
 
         $scope.datePickerOpts = {
-            maxDate:  moment().subtract(1, 'days'),
+            maxDate:  moment().subtract(1, 'days').endOf('day'),
             ranges: {
-                'Today': [moment().startOf('day'), moment().endOf('day')],
                 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                 'Last 7 Days': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
                 'Last 30 Days': [moment().subtract(30, 'days'), moment().subtract(1, 'days')],
