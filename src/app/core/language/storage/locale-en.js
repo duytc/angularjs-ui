@@ -473,6 +473,7 @@
                 "EDIT_AD_TAG_IN_LIBRARY": "Edit Ad Tag in The Standalone",
                 "SPLIT_GROUP": "Split Group",
                 "LIBRARY_AD_SLOT": "Standalone Ad Slot",
+                "CREATE_LINKED_AD_TAGS": "Link this Ad Tag",
 
                 "HELP_BLOCK_FROM_LIBRARY": "You can select an existing ad tag from your standalone ad tags. If you choose this option some of the fields below will not be editable. If you would like to change these fields, you may do so the the standalone ad tags section.",
                 "HELP_BLOCK_FREQUENCY_CAP": "Maximum number of network opportunities per day per user for this ad tag, leave blank for no cap.",
@@ -518,11 +519,15 @@
                 "CURRENTLY_NO_AD_TAG_ASSOCIATED": "This ad tag is currently not linked to any other ad tag",
                 "WARNING_EDIT_LIBRARY": "This ad tag is linked to multiple ad slots. Modifying this ad tag will result in the changes being propagated to all ad slots that run this ad tag.",
 
+                "TITLE_CREATE_LINKED_AD_TAGS": "Link standalone Ad Tag",
                 "LIBRARY_AD_SLOT": "Standalone Ad Slot",
 
                 "GO_TO_AD_SLOT": "Go To Ad Slot",
                 "VIEW_LINKED_AD_TAGS": "View Linked Ad Tags",
-                "LINKED_AD_TAGS": "Linked Ad Tags"
+                "LINKED_AD_TAGS": "Linked Ad Tags",
+
+                "AD_TAG_FOR_AD_SLOT_SUCCESS": "This ad tag has been linked to the selected ad slots",
+                "AD_TAG_FOR_AD_SLOT_FAIL": "Could not link the ad tag"
             },
             "REPORT": {
                 "DATE_RANGE": "Date Range",

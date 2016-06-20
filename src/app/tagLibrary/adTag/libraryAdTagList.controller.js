@@ -5,7 +5,7 @@
         .controller('LibraryAdTagList', LibraryAdTagList)
     ;
 
-    function LibraryAdTagList($scope, $translate, $modal, adTags, AlertService, AdTagLibrariesManager, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT, AtSortableService) {
+    function LibraryAdTagList($scope, $translate, $modal, adTags, AlertService, AdTagLibrariesManager, SiteManager, historyStorage, adminUserManager, HISTORY_TYPE_PATH, TYPE_AD_SLOT, AtSortableService) {
         $scope.adTags = adTags;
 
         $scope.hasData = function () {
@@ -29,6 +29,7 @@
         $scope.showPagination = showPagination;
         $scope.removeMoveToLibrary = removeMoveToLibrary;
         $scope.updateAdTag = updateAdTag;
+        $scope.createLinkedAdAdTag = createLinkedAdAdTag;
 
         function showPagination() {
             return angular.isArray($scope.adTags) && $scope.adTags.length > $scope.tableConfig.itemsPerPage;
@@ -103,6 +104,40 @@
                         message: $translate.instant('AD_TAG_MODULE.UPDATE_FAIL')
                     });
                 });
+        }
+
+        function createLinkedAdAdTag(adTag) {
+            var sites = null;
+
+            if($scope.isAdmin()) {
+                sites = adminUserManager.one(adTag.adNetwork.publisher.id).one('sites').getList();
+            } else {
+                sites = SiteManager.getList()
+            }
+
+            sites.then(function(sites) {
+                if(!!sites.length) {
+                    $modal.open({
+                        templateUrl: 'tagLibrary/adTag/createLinkedAdTags.tpl.html',
+                        size: 'lg',
+                        controller: 'CreateLinkedAdTags',
+                        resolve: {
+                            adTag: function () {
+                                return adTag;
+                            },
+                            sites: function() {
+                                return sites
+                            }
+                        }
+                    });
+                }
+                else {
+                    AlertService.replaceAlerts({
+                        type: 'warning',
+                        message: $translate.instant('AD_SLOT_LIBRARY_MODULE.ALERT_CREATE_LINKED_AD_SLOTS_FULL_SITE')
+                    });
+                }
+            });
         }
 
         $scope.$on('$locationChangeSuccess', function() {
