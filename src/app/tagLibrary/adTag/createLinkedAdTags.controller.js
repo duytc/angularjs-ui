@@ -5,41 +5,66 @@
         .controller('CreateLinkedAdTags', CreateLinkedAdTags)
     ;
 
-    function CreateLinkedAdTags($scope, $translate, $state, $modalInstance, adTag, sites, SiteManager, AdTagLibrariesManager, AlertService, historyStorage, HISTORY_TYPE_PATH) {
+    function CreateLinkedAdTags($scope, $translate, $state, $modalInstance, adTag, AdTagLibrariesManager, AdSlotManager, AlertService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.adTag = adTag;
-        $scope.sites = sites;
         $scope.adSlots = [];
 
         $scope.selectData = {
             adSlots: []
         };
 
+        var totalRecord = null;
+        var params = {
+            query: ''
+        };
+
         $scope.isFormValid = isFormValid;
+        $scope.searchItem = searchItem;
+        $scope.addMoreItems = addMoreItems;
         $scope.submit = submit;
-        $scope.selectSite = selectSite;
 
         function isFormValid() {
             return $scope.selectData.adSlots.length;
         }
 
-        function selectSite(site) {
-            SiteManager.one(site.id).getList('adslots')
-                .then(function(adSlots) {
-                    $scope.adSlots = [];
+        function searchItem(query) {
+            if(query == params.query) {
+                return;
+            }
 
-                    angular.forEach(adSlots.plain(), function(adSlot) {
-                        if(adSlot.type != 'dynamic') {
-                            $scope.adSlots.push({id: adSlot.id, name: adSlot.libraryAdSlot.name});
-                        }
+            params.page = 1;
+            params.query = query;
+            params.searchKey = query;
+
+            AdSlotManager.one('reportable').one('publisher', adTag.adNetwork.publisher.id).get(params)
+                .then(function(data) {
+                    totalRecord = data.totalRecord;
+                    $scope.adSlots = data.records;
+                });
+        }
+
+        function addMoreItems() {
+            var page = Math.ceil(($scope.adSlots.length/10) + 1);
+
+            if(params.page === page || (page > Math.ceil(totalRecord/10) && page != 1)) {
+                return
+            }
+
+            params.page = page;
+
+            AdSlotManager.one('reportable').one('publisher', adTag.adNetwork.publisher.id).get(params)
+                .then(function(data) {
+                    totalRecord = data.totalRecord;
+                    angular.forEach(data.records, function(item) {
+                        $scope.adSlots.push(item);
                     })
-                })
+                });
         }
 
         function submit() {
             $modalInstance.close();
 
-            var selectData = _refactorData();
-            AdTagLibrariesManager.one($scope.adTag.id).customPOST(selectData, 'createlinks')
+            AdTagLibrariesManager.one($scope.adTag.id).customPOST($scope.selectData, 'createlinks')
                 .then(function() {
                     historyStorage.getLocationPath(HISTORY_TYPE_PATH.adTagLibrary, $state.current);
 
@@ -57,16 +82,13 @@
             );
         }
 
-        function _refactorData() {
-            var selectData = {
-                adSlots: []
-            };
-
-            angular.forEach($scope.selectData.adSlots, function(adSlot) {
-                selectData.adSlots.push(adSlot.id)
-            });
-
-            return selectData;
-        }
+        $scope.$watch(function() {
+            return $scope.selectData.adSlots
+        }, function() {
+            var condition = $scope.adSlots.length - $scope.selectData.adSlots.length;
+            if(0 < condition && condition < 7 ) {
+                addMoreItems();
+            }
+        })
     }
 })();

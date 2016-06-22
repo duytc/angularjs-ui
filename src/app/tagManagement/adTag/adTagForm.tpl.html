@@ -49,30 +49,19 @@
                     </div>
                 </div>
                 <div class="form-group" ng-if="allowAdSlotSelection">
-                    <label for="inputSite" class="col-sm-2 control-label">{{ 'SITE' | translate }}</label>
-                    <div class="col-sm-10">
-                        <ui-select ng-model="selected.site" id="inputSite" on-select="selectSite($item, $model)" ng-disabled="isAdmin() && !selected.publisher" reset-search-input="'false'">
-                            <ui-select-match placeholder="{{ 'SITE_MODULE.SELECT_A_SITE' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices infinite-scroll="addMoreItems()" infinite-scroll-container="'#reload'" id="reload" infinite-scroll-distance="200" refresh="searchItem($select.search)" refresh-delay="500" repeat="site.id as site in siteList | filter: { name: $select.search } | selectedPublisher:selected.publisher">
-                                {{ site.name }}
-                            </ui-select-choices>
-                        </ui-select>
-                    </div>
-                </div>
-                <div class="form-group" ng-if="allowAdSlotSelection">
                     <label for="inputAdSlot" class="col-sm-2 control-label">{{ 'AD_SLOT' | translate }}</label>
                     <div class="col-sm-10">
-                        <ui-select name="adSlot" ng-model="adTag.adSlot" on-select="selectAdSlot($item)" id="inputAdSlot" ng-required="true" server-error ng-disabled="!adSlotList.length" reset-search-input="'false'">
-                            <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_AD_SLOT' | translate }}">{{ $select.selected.libraryAdSlot.name }}</ui-select-match>
-                            <ui-select-choices repeat="adSlot.id as adSlot in adSlotList | filter: $select.search | filter:filterEntityType:adSlot">
-                                {{ adSlot.libraryAdSlot.name }}
+                        <ui-select id="inputAdSlot" multiple ng-model="adTag.adSlots" ng-required="true" on-select="selectAdSlot($item)"  close-on-select="false" server-error reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_A_AD_SLOT' | translate }}">{{ $item.id + ': ' + $item.libraryAdSlot.name + ' (' + $item.site.id + ': ' + $item.site.name + ')' }}</ui-select-match>
+                            <ui-select-choices infinite-scroll="addMoreItems()" infinite-scroll-container="'#reload'" id="reload" infinite-scroll-distance="200" refresh="searchItem($select.search)" refresh-delay="500" repeat="adSlot.id as adSlot in adSlotList">
+                                {{ adSlot.id + ': ' + adSlot.libraryAdSlot.name + ' (' + adSlot.site.id + ': ' + adSlot.site.name + ')' }}
                             </ui-select-choices>
                         </ui-select>
                     </div>
                 </div>
 
                 <!--demo-->
-                <div class="row" ng-if="showInputPosition">
+                <div class="row" ng-if="showInputPosition && !hasMultipleDeployAdSlot">
                     <div class="col-sm-offset-2 col-sm-10">
                         <div style="background-color: #e6e6e6; height: 85px; margin-bottom: 15px; clear: both" ng-repeat="adTagList in adTagGroup">
                             <span style="text-align: center; float: left; height: 100%" ng-repeat="adTag in adTagList" ng-style="{width: 100/adTagList.length+'%', 'border-left': ($index != 0 ? '1px solid #000000' : '')}">
@@ -171,14 +160,14 @@
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="showInputPosition">
+                <div class="form-group" ng-if="showInputPosition && !hasMultipleDeployAdSlot">
                     <label for="inputPosition" class="col-sm-2 control-label">{{ 'AD_TAG_MODULE.POSITION' | translate }}</label>
                     <div class="col-sm-10">
                         <input name="height" ng-model="adTag.position" server-error min="1" type="number" class="form-control" id="inputPosition" placeholder="{{ 'AD_TAG_MODULE.PLACEHOLDER_POSITION' | translate }}">
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="showInputPosition && !!adTag.position">
+                <div class="form-group" ng-if="showInputPosition && !!adTag.position && !hasMultipleDeployAdSlot">
                     <label for="inputAutoIncreasePosition" class="col-sm-2 control-label">{{ 'AD_TAG_MODULE.SHIFT_DOWN' | translate }}</label>
                     <div class="col-sm-10">
                         <label class="ui-checkbox">

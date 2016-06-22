@@ -135,16 +135,6 @@
                         return site.publisher;
                     },
 
-                    adSlotList: /* @ngInject */ function (SiteManager, site) {
-                        if (!site) {
-                            return null;
-                        }
-
-                        return SiteManager.one(site.id).getList('adslots').then(function (adSlots) {
-                            return adSlots.plain();
-                        });
-                    },
-
                     adNetworkList: /* @ngInject */ function (AdNetworkCache) {
                         return AdNetworkCache.getAllAdNetworks();
                     }
@@ -199,16 +189,6 @@
                         }
 
                         return site.publisher;
-                    },
-
-                    adSlotList: /* @ngInject */ function (SiteManager, site) {
-                        if (!site) {
-                            return null;
-                        }
-
-                        return SiteManager.one(site.id).getList('adslots').then(function (adSlots) {
-                            return adSlots.plain();
-                        });
                     },
 
                     adNetworkList: /* @ngInject */ function (AdNetworkCache) {
@@ -270,10 +250,6 @@
                     },
 
                     siteList: function () {
-                        return null;
-                    },
-
-                    adSlotList: function () {
                         return null;
                     },
 
