@@ -851,6 +851,7 @@
             delete adSlot.rtbStatus;
             delete adSlot.site;
             delete adSlot.floorPrice;
+            delete adSlot.hbBidPriceCopy;
 
             if($scope.selected.type == $scope.typesList.dynamic) {
                 if(!$scope.isNew) {
