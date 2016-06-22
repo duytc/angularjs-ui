@@ -1,4 +1,4 @@
-.col-sm-1quarter {
+.col-sm-1quarter, .col-sm-11quarter {
   position: relative;
   min-height: 1px;
   padding-right: 15px;
@@ -6,7 +6,7 @@
 }
 
 @media (min-width: 768px) {
-  .col-sm-1quarter {
+  .col-sm-1quarter, .col-sm-11quarter {
     float: left;
   }
   .col-sm-1quarter {
@@ -14,5 +14,9 @@
   }
   .col-sm-offset-1quarter {
     margin-left: 9.58333333%;
+  }
+
+  .col-sm-11quarter {
+    width: 90.41666667%;
   }
 }

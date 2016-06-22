@@ -63,7 +63,7 @@
         $scope.adTypes = AD_TYPES;
 
         $scope.publisherList = publisherList;
-        $scope.adSlotList = [adSlot];
+        $scope.adSlotList = !!$stateParams.adSlotId ? [adSlot] : [];
         $scope.adNetworkList = adNetworkList;
         var adSlotSelecting = !!$stateParams.adSlotId ? [adSlot] : [];
 
