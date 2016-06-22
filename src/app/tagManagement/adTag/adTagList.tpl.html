@@ -57,9 +57,9 @@
                                         <li ng-if="!!adSlot.libType && !isSubPublisher()"><a ui-sref="^.editForAdSlot({ id: adTag.id })">{{ 'AD_TAG_MODULE.EDIT_AD_TAG' | translate }}</a></li>
                                         <li ng-if="!isSubPublisher()"><a ng-click="toggleAdTagStatus(adTag)">{{ adTag.active ? ('AD_TAG_MODULE.PAUSE_AD_TAG' | translate) : ('AD_TAG_MODULE.ACTIVATE_AD_TAG' | translate) }}</a></li>
                                         <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(adTag)">{{ 'AD_TAG_MODULE.DELETE_AD_TAG' | translate }}</a></li>
-                                        <li ng-if="!isSubPublisher() && (!adTag.libraryAdTag.visible || (adTag.libraryAdTag.visible && !adSlot.libraryAdSlot.visible))" class="divider"></li>
+                                        <li ng-if="!isSubPublisher() && (!adTag.libraryAdTag.visible || (adTag.libraryAdTag.visible && !adSlot.libraryAdSlot.visible && !!adSlot.libraryAdSlot))" class="divider"></li>
                                         <li ng-if="!adTag.libraryAdTag.visible && !isSubPublisher()" ng-click="shareAdTag(adTag)"><a>{{ 'AD_TAG_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>
-                                        <li ng-if="adTag.libraryAdTag.visible && !adSlot.libraryAdSlot.visible && !isSubPublisher()" ng-click="unLinkAdTag(adTag)"><a>{{ 'AD_TAG_MODULE.UNLINK' | translate }}</a></li>
+                                        <li ng-if="adTag.libraryAdTag.visible && !adSlot.libraryAdSlot.visible && !!adSlot.libraryAdSlot && !isSubPublisher()" ng-click="unLinkAdTag(adTag)"><a>{{ 'AD_TAG_MODULE.UNLINK' | translate }}</a></li>
                                         <!--<li ng-if="adTag.libraryAdTag.visible && !isSubPublisher()"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: adTag.libraryAdTag.id})">{{ 'AD_TAG_MODULE.EDIT_AD_TAG_IN_LIBRARY' | translate }}</a></li>-->
                                         <li ng-if="adTags.length > 1 && !isSubPublisher()" class="divider"></li>
                                         <li ng-if="adTags.length > 1 && !isSubPublisher()"><a ng-click="splitFromGroup(adTags, adTag)">{{ 'AD_TAG_MODULE.SPLIT_GROUP' | translate }}</a></li>
