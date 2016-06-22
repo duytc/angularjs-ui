@@ -175,7 +175,7 @@
                     }
 
                     function changeHeaderBidPrice(expression) {
-                        expression.hbBidPrice = expression.hbBidPriceCopy
+                        expression.hbBidPrice = expression.hbBidPriceClone
                     }
 
                     function enableDragDropQueryBuilder(enable) {

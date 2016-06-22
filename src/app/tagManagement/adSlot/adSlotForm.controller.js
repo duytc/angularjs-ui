@@ -68,7 +68,7 @@
         $scope.adSlot.rtbStatus = $scope.isNew ? RTB_STATUS_TYPES.inherit : adSlot.rtbStatus;
         $scope.adSlot.floorPrice = $scope.isNew ? null : adSlot.floorPrice;
         $scope.adSlot.hbBidPrice = $scope.isNew ? null : adSlot.hbBidPrice;
-        $scope.adSlot.hbBidPriceCopy = $scope.isNew ? null : _convertHeaderBiddingPriceToString(adSlot.hbBidPrice);
+        $scope.adSlot.hbBidPriceClone = $scope.isNew ? null : _convertHeaderBiddingPriceToString(adSlot.hbBidPrice);
 
         $scope.selected = {
             type: angular.isObject(adSlot) ? adSlot.type : $scope.typesList.display,
@@ -470,7 +470,7 @@
         }
 
         function changeHeaderBidPrice(adSlot) {
-            adSlot.hbBidPrice = adSlot.hbBidPriceCopy
+            adSlot.hbBidPrice = adSlot.hbBidPriceClone
         }
 
         function backToAdSlotList() {
@@ -518,7 +518,7 @@
         function convertHeaderBidding(libraryExpressions) {
             angular.forEach(libraryExpressions, function(expressionRoot) {
                 if(angular.isObject(expressionRoot.expressions)) {
-                    expressionRoot.expressions[0].hbBidPriceCopy = _convertHeaderBiddingPriceToString(expressionRoot.expressions[0].hbBidPrice);
+                    expressionRoot.expressions[0].hbBidPriceClone = _convertHeaderBiddingPriceToString(expressionRoot.expressions[0].hbBidPrice);
                 }
             });
         }
@@ -851,7 +851,7 @@
             delete adSlot.rtbStatus;
             delete adSlot.site;
             delete adSlot.floorPrice;
-            delete adSlot.hbBidPriceCopy;
+            delete adSlot.hbBidPriceClone;
 
             if($scope.selected.type == $scope.typesList.dynamic) {
                 if(!$scope.isNew) {
@@ -947,7 +947,7 @@
             delete adSlot.libraryAdSlot.floorPrice;
             delete adSlot.libraryAdSlot.expressions;
             delete adSlot.libraryAdSlot.hbBidPrice;
-            delete adSlot.libraryAdSlot.hbBidPriceCopy;
+            delete adSlot.libraryAdSlot.hbBidPriceClone;
 
             delete adSlot.libraryAdSlot.libType;
 
@@ -961,7 +961,7 @@
         function _refactorExpressions(libraryExpressions) {
             angular.forEach(libraryExpressions, function(libraryExpression) {
                 angular.forEach(libraryExpression.expressions, function(expression) {
-                    delete expression.hbBidPriceCopy;
+                    delete expression.hbBidPriceClone;
                     delete expression.dynamicAdSlot;
                     delete expression.expressionInJs
                 });
