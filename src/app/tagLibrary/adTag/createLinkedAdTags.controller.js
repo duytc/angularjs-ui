@@ -5,7 +5,7 @@
         .controller('CreateLinkedAdTags', CreateLinkedAdTags)
     ;
 
-    function CreateLinkedAdTags($scope, $translate, $state, $modalInstance, adTag, AdTagLibrariesManager, AdSlotManager, AlertService, historyStorage, HISTORY_TYPE_PATH) {
+    function CreateLinkedAdTags($scope, _, $translate, $state, $modalInstance, adTag, AdTagLibrariesManager, AdSlotManager, AlertService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.adTag = adTag;
         $scope.adSlots = [];
 
@@ -13,6 +13,7 @@
             adSlots: []
         };
 
+        var adSlotSelecting = [];
         var totalRecord = null;
         var params = {
             query: ''
@@ -22,6 +23,10 @@
         $scope.searchItem = searchItem;
         $scope.addMoreItems = addMoreItems;
         $scope.submit = submit;
+
+        $scope.selectAdSlot = function(item) {
+            adSlotSelecting.push(item);
+        };
 
         function isFormValid() {
             return $scope.selectData.adSlots.length;
@@ -35,11 +40,29 @@
             params.page = 1;
             params.query = query;
             params.searchKey = query;
+            var listAdSlotsSelectCurrent = angular.copy($scope.selectData.adSlots);
+
+            // set again adSlotList
+            $scope.adSlots = [];
+            angular.forEach(listAdSlotsSelectCurrent, function(adSlotId) {
+                var adSlot = _.find(adSlotSelecting, function(adSlot) {return adSlot.id == adSlotId; });
+
+                if(!!adSlot) {
+                    $scope.adSlots.push(adSlot);
+                }
+            });
 
             AdSlotManager.one('reportable').one('publisher', adTag.adNetwork.publisher.id).get(params)
                 .then(function(data) {
                     totalRecord = data.totalRecord;
-                    $scope.adSlots = data.records;
+
+                    angular.forEach(data.records, function(adSlot) {
+                        var index = listAdSlotsSelectCurrent.indexOf(adSlot.id);
+
+                        if(index == -1) {
+                            $scope.adSlots.push(adSlot);
+                        }
+                    })
                 });
         }
 
@@ -55,7 +78,12 @@
             AdSlotManager.one('reportable').one('publisher', adTag.adNetwork.publisher.id).get(params)
                 .then(function(data) {
                     totalRecord = data.totalRecord;
+
                     angular.forEach(data.records, function(item) {
+                        if($scope.selectData.adSlots.indexOf(item.id) > -1) {
+                            return
+                        }
+
                         $scope.adSlots.push(item);
                     })
                 });

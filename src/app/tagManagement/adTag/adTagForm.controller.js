@@ -415,7 +415,7 @@
                     totalRecord = data.totalRecord;
 
                     angular.forEach(data.records, function(item) {
-                        if(!!$stateParams.adSlotId && $stateParams.adSlotId == item.id) {
+                        if(!!$stateParams.adSlotId && $stateParams.adSlotId == item.id || $scope.adTag.adSlots.indexOf(item.id) > -1) {
                             return
                         }
 
