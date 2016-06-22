@@ -202,6 +202,10 @@
         };
 
         $scope.isFormValid = function() {
+            if($scope.isNew) {
+                return $scope.adTagForm.$valid && $scope.adTag.adSlots.length > 0
+            }
+
             return $scope.adTagForm.$valid;
         };
 
