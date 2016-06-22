@@ -22,7 +22,6 @@
 
         $scope.isBuildInType = isBuildInType;
         $scope.isCustomType = isCustomType;
-        $scope.isEnabledUnifiedReport = isEnabledUnifiedReport;
         $scope.backToListAdNetwork = backToListAdNetwork;
         $scope.selectPublisher = selectPublisher;
         $scope.selectPartner = selectPartner;
@@ -45,7 +44,6 @@
 
         $scope.selectData = {
             inputType: $scope.DEMAND_PARTNER_TYPE.CUSTOM, // init default is custom type
-            enabledUnifiedReport: $scope.isNew ? false : !!$scope.adNetwork.username,// init default = false,
             networkPartner: $scope.isNew ? null : $scope.adNetwork.networkPartner // selected partner, using for updating ad network cache
         };
 
@@ -91,14 +89,6 @@
          */
         function isCustomType() {
             return $scope.selectData.inputType == $scope.DEMAND_PARTNER_TYPE.CUSTOM;
-        }
-
-        /**
-         * check if enabled unified report
-         * @return {boolean}
-         */
-        function isEnabledUnifiedReport() {
-            return !!$scope.selectData.enabledUnifiedReport;
         }
 
         /**
@@ -154,11 +144,6 @@
             } else { // is CustomType: clear network partner selected from drop down
                 $scope.selectData.networkPartner = null;
                 $scope.adNetwork.networkPartner = null;
-            }
-
-            if (!isEnabledUnifiedReport()) {
-                $scope.adNetwork.username = null;
-                $scope.adNetwork.password = null;
             }
 
             $scope.formProcessing = true;

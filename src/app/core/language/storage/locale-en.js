@@ -325,7 +325,7 @@
                 "SELECT_A_AD_NETWORK": "Select a Demand Partner",
 
                 "HELP_BLOCK_URL": "You can use this field to add the login url for your demand partner.",
-                "HELP_BLOCK_ENABLE_UNIFIED": "Check to enable unified report for this demand partner",
+                "HELP_BLOCK_ENABLE_UNIFIED": "This account use to login demand partner system.",
                 "BLANK_FOR_NO_CHANGE":  "Leave it blank for no change"
             },
             "AD_SLOT_MODULE": {

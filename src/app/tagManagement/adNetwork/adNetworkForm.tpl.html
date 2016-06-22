@@ -97,29 +97,21 @@
                     </div>
                 </div>
 
-                <!-- choose option enable unified report (that will enabled modifying username/password fields) for demand partner if has Unified module -->
-                <div class="form-group" ng-if="hasUnifiedModule">
-                    <label for="inputEnabled" class="col-sm-2 control-label">{{ 'AD_NETWORK_MODULE.ENABLE_UNIFIED_REPORT' | translate }}</label>
-                    <div class="col-sm-10">
-                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="selectData.enabledUnifiedReport" id="inputEnabled"><span></span></label>
-
-                        <span class="help-block">{{ 'AD_NETWORK_MODULE.HELP_BLOCK_ENABLE_UNIFIED' | translate }}</span>
-                    </div>
-                </div>
-
                 <!-- allow custom the username and password for this demand partner if has Unified module and enabled unified report -->
-                <div ng-if="hasUnifiedModule && isEnabledUnifiedReport()">
+                <div ng-if="hasUnifiedModule">
                     <div class="form-group">
+                        <span class="col-sm-offset-2 col-sm-10 help-block">{{ 'AD_NETWORK_MODULE.HELP_BLOCK_ENABLE_UNIFIED' | translate }}</span>
+
                         <label for="inputUsername" class="col-sm-2 control-label">{{ 'USERNAME' | translate }}</label>
                         <div class="col-sm-10">
-                            <input server-error autocomplete="off" ng-required="true" name="username" ng-model="adNetwork.username" ng-minlength="2" type="text" class="form-control" id="inputUsername" placeholder="{{ 'USERNAME' | translate }}">
+                            <input server-error autocomplete="off" name="username" ng-model="adNetwork.username" ng-minlength="2" type="text" class="form-control" id="inputUsername" placeholder="{{ 'USERNAME' | translate }}">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="inputPassword" class="col-sm-2 control-label">{{ 'PASSWORD' | translate }}</label>
                         <div class="col-sm-10">
-                            <input server-error autocomplete="off" ng-required="true" name="password" ng-model="adNetwork.password" ng-minlength="2" type="password" class="form-control" id="inputPassword" placeholder="{{ 'PASSWORD' | translate }}">
+                            <input server-error autocomplete="off" name="password" ng-model="adNetwork.password" ng-minlength="2" type="password" class="form-control" id="inputPassword" placeholder="{{ 'PASSWORD' | translate }}">
                             <span  ng-if="!isNew" class="help-block">{{ 'AD_NETWORK_MODULE.BLANK_FOR_NO_CHANGE' | translate }}</span>
                         </div>
                     </div>
