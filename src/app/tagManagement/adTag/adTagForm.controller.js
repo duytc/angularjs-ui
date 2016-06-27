@@ -297,6 +297,11 @@
 
             var adTag = angular.copy($scope.adTag);
 
+            if($scope.isNew) {
+                adTag.adSlot = adTag.adSlots;
+                delete adTag.adSlots;
+            }
+
             var saveAdTag = $scope.isNew ? AdTagManager.post(adTag) : $scope.adTag.patch();
             saveAdTag
                 .catch(
