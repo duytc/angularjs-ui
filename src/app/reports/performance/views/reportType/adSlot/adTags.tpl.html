@@ -27,7 +27,7 @@
             <table class="table" at-table at-paginated at-list="reports" at-config="tableConfig">
                 <thead>
                 <tr>
-                    <th at-attribute="position" ng-show="isNotNativeAdSlot">{{ 'REPORT.POSITION' | translate }}</th>
+                    <th at-attribute="reports[0].position" ng-show="isNotNativeAdSlot">{{ 'REPORT.POSITION' | translate }}</th>
                     <th at-attribute="totalOpportunities" ng-show="showConfigForPerformanceByAdTag('totalOpportunities')">{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}</th>
                     <th at-attribute="firstOpportunities" ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('firstOpportunities')">{{ 'REPORT.FIRST_OPPORTUNITIES' | translate }}</th>
                     <th at-attribute="impressions" ng-show="showConfigForPerformanceByAdTag('impressions')">Impressions</th>
@@ -58,7 +58,7 @@
                     <td class="name" at-title="{{ 'AD_TAG' | translate }}" at-attribute="name" at-sortable>
                         {{ item.name }}
                     </td>
-                    <td ng-show="isNotNativeAdSlot" at-title="{{ 'REPORT.POSITION' | translate }}" class="position" at-attribute="position" at-sortable at-initial-sorting="asc">
+                    <td ng-show="isNotNativeAdSlot" at-title="{{ 'REPORT.POSITION' | translate }}" class="position" at-attribute="reports[0].position" at-sortable at-initial-sorting="asc">
                         {{ item.reports[0].position }}
                     </td>
                     <td ng-show="showConfigForPerformanceByAdTag('totalOpportunities')" at-title="{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}" at-attribute="totalOpportunities" at-sortable>
