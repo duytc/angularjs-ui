@@ -370,11 +370,7 @@
                 delete adSlot.passbackMode;
 
                 angular.forEach(adSlot.libraryExpressions, function(libraryExpression) {
-                    angular.forEach(libraryExpression.expressionDescriptor.groupVal, function(group) {
-                        if(angular.isObject(group.val)) {
-                            group.val = group.val.toString();
-                        }
-                    });
+                    _formatGroupVal(libraryExpression.expressionDescriptor.groupVal);
                 });
             }
             else {
@@ -397,6 +393,18 @@
             }
 
             return adSlot;
+        }
+
+        function _formatGroupVal(groupVal) {
+            angular.forEach(groupVal, function(group) {
+                if(angular.isObject(group.val)) {
+                    group.val = group.val.toString();
+                }
+
+                if(angular.isObject(group.groupVal)) {
+                    _formatGroupVal(group.groupVal);
+                }
+            });
         }
     }
 })();

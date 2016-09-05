@@ -5,7 +5,7 @@
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
             {{ 'REPORT.AD_TAG_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" report-fields="getReportFields([{key: 'startDate', label: 'Start Date'}, {key: 'endDate', label: 'End Date'}, {key: 'name', label: 'Ad Tag'}])" file-name="getExportExcelFileName"></export-excel>
+                <export-excel data="reports" report-fields="getReportFields([{key: 'startDate', label: 'Start Date'}, {key: 'endDate', label: 'End Date'}, {key: 'name', label: 'Ad Tag'}], 'adTag')" file-name="getExportExcelFileName"></export-excel>
                 <div ng-show="!isAdmin" class="pull-right" ng-dropdown-multiselect="" checkboxes="true" events="eventSettings" options="dataSelect" selected-model="modelSelect" extra-settings="settingsSelect" translation-texts="translationTexts"></div>
             </div>
 
@@ -14,7 +14,7 @@
                 <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><a>
-                        <export-excel css-class="''" data="reports" report-fields="getReportFields([{key: 'startDate', label: 'Start Date'}, {key: 'endDate', label: 'End Date'}, {key: 'name', label: 'Ad Tag'}])" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel css-class="''" data="reports" report-fields="getReportFields([{key: 'startDate', label: 'Start Date'}, {key: 'endDate', label: 'End Date'}, {key: 'name', label: 'Ad Tag'}], 'adTag')" file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
             </div>

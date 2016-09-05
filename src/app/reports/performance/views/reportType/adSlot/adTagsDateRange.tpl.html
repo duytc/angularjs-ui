@@ -7,7 +7,7 @@
             <div class="button-bar">
                 <button ng-click="backToAdTagList()" class="btn btn-sm btn-primary btn-manage-ad-tag" type="button">Manage Ad Tags</button>
                 <div ng-show="!isAdmin" class="pull-right" ng-dropdown-multiselect="" checkboxes="true" events="eventSettings" options="dataSelect" selected-model="modelSelect" extra-settings="settingsSelect" translation-texts="translationTexts"></div>
-                <export-excel data="reports" report-fields="getReportFields([{key: 'startDate', label: 'Start Date'}, {key: 'endDate', label: 'End Date'}, {key: 'name', label: 'Ad Tag'}])" file-name="getExportExcelFileName"></export-excel>
+                <export-excel data="reports" report-fields="getReportFields([{key: 'startDate', label: 'Start Date'}, {key: 'endDate', label: 'End Date'}, {key: 'name', label: 'Ad Tag'}], 'adTag')" file-name="getExportExcelFileName"></export-excel>
             </div>
 
             <div class="btn-group btnGrouped" dropdown>
@@ -16,7 +16,7 @@
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li ng-click="backToAdTagList()"><a>Manage Ad Tags</a></li>
                     <li><a>
-                        <export-excel css-class="''" data="reports" report-fields="getReportFields([{key: 'startDate', label: 'Start Date'}, {key: 'endDate', label: 'End Date'}, {key: 'name', label: 'Ad Tag'}])" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel css-class="''" data="reports" report-fields="getReportFields([{key: 'startDate', label: 'Start Date'}, {key: 'endDate', label: 'End Date'}, {key: 'name', label: 'Ad Tag'}], 'adTag')" file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
             </div>

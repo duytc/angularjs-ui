@@ -142,13 +142,13 @@
             return !!setting.show;
         }
 
-        function getReportFields(reportFilesNew) {
+        function getReportFields(reportFilesNew, type) {
             var fields = [];
             if(isAdmin) {
                 fields = _getReportFieldsForAdmin();
             }
             else {
-                fields = _getReportFieldsForPublisher();
+                fields = _getReportFieldsForPublisher(type);
             }
 
             angular.forEach(fields, function(field) {
@@ -294,7 +294,7 @@
             return angular.copy(fields);
         }
 
-        function _getReportFieldsForPublisher() {
+        function _getReportFieldsForPublisher(type) {
             var fields = [];
 
             if (isAdmin
@@ -308,11 +308,11 @@
 
             angular.forEach(settings.view.report.performance[reportType], function(setting) {
                 if(setting.hideForNativeAdSlot) {
-                    if(setting.show && $scope.isNotNativeAdSlot && !setting.hideForAdmin) {
+                    if((setting.show || type != reportType) && $scope.isNotNativeAdSlot && !setting.hideForAdmin) {
                         return fields.push(setting);
                     }
                 }
-                else if(setting.show && !setting.hideForAdmin) {
+                else if((setting.show || type != reportType) && !setting.hideForAdmin) {
                     return fields.push(setting);
                 }
 
