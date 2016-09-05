@@ -31,7 +31,13 @@
             getRonAdSlotReport: getRonAdSlotReport,
             getRonAdSlotSitesReport: getRonAdSlotSitesReport,
             getRonAdSlotSegmentsReport: getRonAdSlotSegmentsReport,
-            getRonAdSlotAdTagsReport: getRonAdSlotAdTagsReport
+            getRonAdSlotAdTagsReport: getRonAdSlotAdTagsReport,
+
+            getPublisherAdNetworksByDayReport: getPublisherAdNetworksByDayReport,
+            getPublisherSitesByDayReport: getPublisherSitesByDayReport,
+            getPublisherAdNetworksByAdTagsReport: getPublisherAdNetworksByAdTagsReport,
+            getPublisherAdNetworksBySubPublishersReport: getPublisherAdNetworksBySubPublishersReport,
+            getAdNetworkSiteSubPublisherReport: getAdNetworkSiteSubPublisherReport
         };
 
         var _$initialParams = null;
@@ -100,7 +106,7 @@
                 return $q.reject(new Error('Invalid initial params supplied'));
             }
 
-            params = _.omit(params, ['reportType', 'uniqueRequestCacheBuster', 'adSlotBreakdown', 'ronAdSlotBreakdown', 'siteBreakdown', 'adNetworkBreakdown']); 
+            params = _.omit(params, ['reportType', 'uniqueRequestCacheBuster', 'breakDown', 'subBreakDown','adSlotBreakdown', 'ronAdSlotBreakdown', 'siteBreakdown', 'adNetworkBreakdown']);
 
             return $q.when(fetcher(params)).catch(function(response) {
                 if (response.status == 404) {
@@ -212,6 +218,26 @@
 
         function getRonAdSlotAdTagsReport(params, additionalParams) {
             return getReport(ReportFetcher.getRonAdSlotAdTagsReport, params, additionalParams);
+        }
+
+        function getPublisherAdNetworksByDayReport(params, additionalParams) {
+            return getReport(ReportFetcher.getPublisherAdNetworksByDayReport, params, additionalParams);
+        }
+
+        function getPublisherSitesByDayReport(params, additionalParams) {
+            return getReport(ReportFetcher.getPublisherSitesByDayReport, params, additionalParams);
+        }
+
+        function getPublisherAdNetworksByAdTagsReport(params, additionalParams) {
+            return getReport(ReportFetcher.getPublisherAdNetworksByAdTagsReport, params, additionalParams);
+        }
+
+        function getPublisherAdNetworksBySubPublishersReport(params, additionalParams) {
+            return getReport(ReportFetcher.getPublisherAdNetworksBySubPublishersReport, params, additionalParams);
+        }
+
+        function getAdNetworkSiteSubPublisherReport(params, additionalParams) {
+            return getReport(ReportFetcher.getAdNetworkSiteSubPublisherReport, params, additionalParams);
         }
     }
 })(angular);

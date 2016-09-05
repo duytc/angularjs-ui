@@ -1,0 +1,25 @@
+<form name="createLinkedAdTags" role="form" ng-submit="submit()" novalidate>
+    <div class="modal-header">
+        <h4 class="modal-title">{{ 'AD_TAG_LIBRARY_MODULE.TITLE_CREATE_LINKED_AD_TAGS' | translate }} : <strong>{{ adTag.name }}</strong></h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-validation form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-1quarter control-label">{{ 'AD_SLOTS' | translate }}</label>
+                <div class="col-sm-11quarter">
+                    <ui-select multiple ng-model="selectData.adSlots" ng-required="true" close-on-select="false" on-select="selectAdSlot($item)" server-error reset-search-input="'false'">
+                        <ui-select-match placeholder="Select Ad Slots">{{ $item.id + ': ' + $item.libraryAdSlot.name + ' (' + $item.site.id + ': ' + $item.site.name + ')' }}</ui-select-match>
+                        <ui-select-choices infinite-scroll="addMoreItems()" infinite-scroll-container="'#reload'" id="reload" infinite-scroll-distance="200" refresh="searchItem($select.search)" refresh-delay="500" repeat="adSlot.id as adSlot in adSlots">
+                            {{ adSlot.id + ': ' + adSlot.libraryAdSlot.name + ' (' + adSlot.site.id + ': ' + adSlot.site.name + ')' }}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="$dismiss()" type="button">{{ 'CANCEL' | translate }}</button>
+        <button class="btn btn-danger" ng-disabled="!isFormValid()" type="submit">{{ 'SUBMIT' | translate }}</button>
+    </div>
+</form>

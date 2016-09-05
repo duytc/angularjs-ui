@@ -5,14 +5,15 @@
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
             {{ 'UNIFIED_REPORT_MODULE.DETAILS' | translate }}
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" fields="['name', 'totalOpportunities', 'impressions', 'passbacks', 'estRevenue', 'estCpm', 'fillRate']" header="['Ad Tag', 'Partner Requests', 'Impressions', 'Passbacks', 'Revenue', 'cpm', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                <div class="btn btn-sm btn-primary" ng-click="downloadExportExcel()">{{ 'EXPORT_EXCEL' | translate }}</div>
             </div>
 
             <div class="btn-group btnGrouped" dropdown>
                 <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><a>
-                        <export-excel data="reports" fields="['name', 'totalOpportunities', 'impressions', 'passbacks', 'estRevenue', 'estCpm', 'fillRate']" header="['Ad Tag', 'Partner Requests', 'Impressions', 'Passbacks', 'Revenue', 'cpm', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel ng-show="subBreakDown != 'day'" data="reports" fields="['name', 'totalOpportunities', 'impressions', 'passbacks', 'estRevenue', 'estCpm', 'fillRate']" header="['Ad Tag', 'Partner Requests', 'Impressions', 'Passbacks', 'Revenue', 'CPM', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel ng-show="subBreakDown == 'day'" data="reports" fields="['name', 'date', 'totalOpportunities', 'impressions', 'passbacks', 'estRevenue', 'estCpm', 'fillRate']" header="['Ad Tag', 'Date', 'Partner Requests', 'Impressions', 'Passbacks', 'Revenue', 'CPM', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
             </div>
@@ -26,7 +27,11 @@
 
         <div class="table-responsive">
             <table class="table" at-action-sortable-query at-table at-paginated at-list="reports" at-config="tableConfig">
-                <thead></thead>
+                <thead>
+                <tr>
+                    <th ng-show="subBreakDown == 'day'" at-attribute="date">{{ 'REPORT.DATE' | translate }}</th>
+                </tr>
+                </thead>
                 <tbody>
                 <tr>
                     <!--<td at-title="{{ 'REPORT.START_DATE' | translate }}" at-attribute="startDate">-->
@@ -37,6 +42,9 @@
                     <!--</td>-->
                     <td at-title="{{ 'AD_TAG' | translate }}" at-sortable at-initial-sorting="asc" at-attribute="name">
                         {{ item.name }}
+                    </td>
+                    <td ng-show="subBreakDown == 'day'" at-title="{{ 'REPORT.DATE' | translate }}" at-sortable at-attribute="date">
+                        {{ item.date | date }}
                     </td>
                     <td at-title="{{ 'UNIFIED_REPORT_MODULE.PARTNER_REQUESTS' | translate }}" at-sortable at-attribute="totalOpportunities">
                         {{ item.totalOpportunities | number }}

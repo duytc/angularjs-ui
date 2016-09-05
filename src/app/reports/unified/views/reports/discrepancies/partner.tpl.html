@@ -6,14 +6,15 @@
             {{ 'UNIFIED_REPORT_MODULE.DETAILS' | translate }}
 
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" fields="['name', 'partnerTotalOpportunities', 'tagcadeTotalOpportunities', 'totalOpportunityComparison', 'partnerPassbacks', 'tagcadePassbacks', 'passbacksComparison', 'partnerEstCPM', 'tagcadeECPM', 'eCPMComparison', 'revenueOpportunity']" header="['Ad Tag', 'Partner Requests', 'Tagcade Opportunities', 'Opportunity Comparison', 'Partner Passbacks', 'Tagcade Passbacks', 'Passback Comparison', 'Partner ECPM', 'Tagcade ECPM', 'ECPM Comparison', 'Revenue Opportunity']" file-name="getExportExcelFileName"></export-excel>
+                <div class="btn btn-sm btn-primary" ng-click="downloadExportExcel()">{{ 'EXPORT_EXCEL' | translate }}</div>
             </div>
 
             <div class="btn-group btnGrouped" dropdown>
                 <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><a>
-                        <export-excel data="reports" fields="['name', 'partnerTotalOpportunities', 'tagcadeTotalOpportunities', 'totalOpportunityComparison', 'partnerPassbacks', 'tagcadePassbacks', 'passbacksComparison', 'partnerEstCPM', 'tagcadeECPM', 'eCPMComparison', 'revenueOpportunity']" header="['Ad Tag', 'Partner Requests', 'Tagcade Opportunities', 'Opportunity Comparison', 'Partner Passbacks', 'Tagcade Passbacks', 'Passback Comparison', 'Partner ECPM', 'Tagcade ECPM', 'ECPM Comparison', 'Revenue Opportunity']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel ng-show="subBreakDown != 'day'" data="reports" fields="['name', 'partnerTotalOpportunities', 'tagcadeTotalOpportunities', 'totalOpportunityComparison', 'partnerPassbacks', 'tagcadePassbacks', 'passbacksComparison', 'partnerEstCPM', 'tagcadeECPM', 'eCPMComparison', 'revenueOpportunity']" header="['Demand Partner', 'Partner Requests', 'Tagcade Opportunities', 'Opportunity Comparison', 'Partner Passbacks', 'Tagcade Passbacks', 'Passback Comparison', 'Partner ECPM', 'Tagcade ECPM', 'ECPM Comparison', 'Revenue Opportunity']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel ng-show="subBreakDown == 'day'" data="reports" fields="['name', 'date', 'partnerTotalOpportunities', 'tagcadeTotalOpportunities', 'totalOpportunityComparison', 'partnerPassbacks', 'tagcadePassbacks', 'passbacksComparison', 'partnerEstCPM', 'tagcadeECPM', 'eCPMComparison', 'revenueOpportunity']" header="['Demand Partner', 'Date', 'Partner Requests', 'Tagcade Opportunities', 'Opportunity Comparison', 'Partner Passbacks', 'Tagcade Passbacks', 'Passback Comparison', 'Partner ECPM', 'Tagcade ECPM', 'ECPM Comparison', 'Revenue Opportunity']" file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
             </div>
@@ -27,11 +28,18 @@
 
         <div class="table-responsive">
             <table class="table" at-table at-paginated at-list="reports" at-config="tableConfig">
-                <thead></thead>
+                <thead>
+                <tr>
+                    <th ng-show="subBreakDown == 'day'" at-attribute="date">{{ 'REPORT.DATE' | translate }}</th>
+                </tr>
+                </thead>
                 <tbody>
                 <tr>
                     <td at-title="{{ 'AD_NETWORK' | translate }}" at-sortable at-initial-sorting="asc" at-attribute="name">
                         {{ item.name }}
+                    </td>
+                    <td ng-show="subBreakDown == 'day'" at-title="{{ 'REPORT.DATE' | translate }}" at-sortable at-attribute="date">
+                        {{ item.date | date }}
                     </td>
                     <td at-title="{{ 'UNIFIED_REPORT_MODULE.TAGCADE_OPPORTUNITIES' | translate }}" at-sortable at-attribute="tagcadeTotalOpportunities">
                         {{ item.tagcadeTotalOpportunities | number }}

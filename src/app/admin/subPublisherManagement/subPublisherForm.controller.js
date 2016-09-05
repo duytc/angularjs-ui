@@ -168,7 +168,7 @@
                 $scope.subPublisher.sites.push(site.id);
             });
 
-            var saveUser = $scope.isNew ? subPublisherRestangular.one('subpublishers').post(null, $scope.subPublisher) : $scope.subPublisher.patch();
+            var saveUser = $scope.isNew ? subPublisherRestangular.one('subpublishers').post(null, $scope.subPublisher) : subPublisherRestangular.one('subpublishers', $scope.subPublisher.id).patch($scope.subPublisher);
 
             saveUser
                 .catch(

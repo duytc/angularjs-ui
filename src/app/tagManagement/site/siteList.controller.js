@@ -5,7 +5,7 @@
         .controller('SiteList', SiteList)
     ;
 
-    function SiteList($scope, $rootScope, $modal, $translate, AlertService, SiteManager, sites, historyStorage, HISTORY_TYPE_PATH, EVENT_SEARCH_AGAIN, RTB_STATUS_LABELS, EVENT_ACTION_SORTABLE) {
+    function SiteList($scope, $rootScope, $stateParams, $modal, $translate, AlertService, SiteManager, sites, historyStorage, AtSortableService, HISTORY_TYPE_PATH, EVENT_SEARCH_AGAIN, RTB_STATUS_LABELS, EVENT_ACTION_SORTABLE) {
         $scope.sites = sites;
         var typeOption = $scope.typeOption = {
             allSite: 0,
@@ -50,12 +50,12 @@
         };
 
         $scope.availableOptions = {
-            currentPage: 1,
+            currentPage: $stateParams.page || 1,
             pageSize: 10
         };
 
         $scope.selectData = {
-            query: null
+            query: $stateParams.searchKey || null
         };
 
         $scope.confirmDeletion = function (site) {
@@ -116,7 +116,7 @@
         });
 
         function searchData() {
-            var query = {searchKey: $scope.selectData.query || null};
+            var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
             _getSite(params);
         }
@@ -138,6 +138,7 @@
                 params = query;
                 return SiteManager.one().get(query)
                     .then(function(sites) {
+                        AtSortableService.insertParamForUrl(query);
                         $scope.sites = sites;
                         $scope.tableConfig.totalItems = Number(sites.totalRecord);
                         $scope.availableOptions.currentPage = Number(query.page);

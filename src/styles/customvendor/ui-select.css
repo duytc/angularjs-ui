@@ -155,6 +155,10 @@
     background-color: #fff;
 }
 
+.ui-select-bootstrap .ui-select-choices-row.active.disabled label {
+    cursor: not-allowed;
+}
+
 /* fix hide/show angular animation */
 .ui-select-match.ng-hide-add,
 .ui-select-search.ng-hide-add {

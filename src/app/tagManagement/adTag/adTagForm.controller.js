@@ -5,7 +5,7 @@
         .controller('AdTagForm', AdTagForm)
     ;
 
-    function AdTagForm($scope, _, $state, $modal, $translate, $stateParams, SiteManager, AdNetworkCache, AdTagManager, AlertService, ServerErrorProcessor, DisplayAdSlotManager, historyStorage, adTag, adSlot, site, publisher, publisherList, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, HISTORY_TYPE_PATH) {
+    function AdTagForm($scope, _, $state, $modal, $translate, $stateParams, AdSlotManager, AdNetworkCache, AdTagManager, AlertService, AdTagLibrariesManager, userSession, ServerErrorProcessor, DisplayAdSlotManager, historyStorage, adTag, adSlot, site, publisher, publisherList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
             name: 'Name',
@@ -20,6 +20,18 @@
             mode : "htmlmixed"
         };
 
+
+        $scope.isNew = adTag === null;
+        $scope.formProcessing = false;
+        $scope.hasMultipleDeployAdSlot = false;
+
+        if((!!adSlot && !!adSlot.libraryAdSlot && adSlot.libraryAdSlot.visible) || (!$scope.isNew && !!adTag && !!adTag.libraryAdTag && adTag.libraryAdTag.visible)) {
+            AlertService.addAlert({
+                type: 'warning',
+                message: $translate.instant('AD_TAG_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
+            });
+        }
+
         if($scope.isAdmin()) {
             if(!!publisher) {
                 $scope.hasUnifiedModule = publisher.enabledModules.indexOf('MODULE_UNIFIED_REPORT') !== -1
@@ -27,9 +39,6 @@
                 $scope.hasUnifiedModule = null;
             }
         }
-
-        $scope.isNew = adTag === null;
-        $scope.formProcessing = false;
 
         // !! converts a variable to a boolean
         // we are saying, if we don't have a predefined ad slot but we have a list of all ad slots, allow the user to choose
@@ -41,23 +50,33 @@
             site: site
         };
 
+        var gettingAdTagGroup = false;
+        var totalRecord = null;
+        var params = {
+            query: '',
+            publisherId: $scope.isAdmin() ? (!!$stateParams.adSlotId ? publisher.id : null) || null : userSession.id
+        };
+
         $scope.adSlotTypes = TYPE_AD_SLOT;
         $scope.showInputPosition = adSlot && adSlot.type == $scope.adSlotTypes.display ? true : false;
 
         $scope.adTypes = AD_TYPES;
 
         $scope.publisherList = publisherList;
-        $scope.siteList = [];
-        $scope.adSlotList = adSlotList;
+        $scope.adSlotList = !!$stateParams.adSlotId ? [adSlot] : [];
         $scope.adNetworkList = adNetworkList;
+        var adSlotSelecting = !!$stateParams.adSlotId ? [adSlot] : [];
 
         // delete file unnecessary
         if(!$scope.isNew) {
+            $scope.disabledCheckPickFromLibrary = adTag.libraryAdTag.visible;
+
             // set pickFromLibrary when edit
             $scope.pickFromLibrary = adTag.libraryAdTag.visible;
 
             // set ad tag library
             if(adTag.libraryAdTag.visible) {
+                getAdTagLibrary();
                 $scope.libraryAdTag = adTag.libraryAdTag.id;
             }
 
@@ -68,7 +87,7 @@
 
         $scope.adTagGroup = [];
         $scope.adTag = adTag || {
-            adSlot: adSlot,
+            adSlots: [],
             libraryAdTag: {
                 name: null,
                 html: null,
@@ -89,12 +108,16 @@
             }
         }
 
-        //if(!$scope.isNew && adTag.libraryAdTag.visible) {
-        //    // disabled form input html when select ad tag library
-        //    $scope.editorOptions.readOnly = 'nocursor';
-        //}
+        if(!!$stateParams.adSlotId) {
+            $scope.adTag.adSlots.push(adSlot.id);
+        }
 
-        $scope.backToAdTagList = function() {
+        $scope.getAdTagLibrary = getAdTagLibrary;
+        $scope.searchItem = searchItem;
+        $scope.addMoreItems = addMoreItems;
+        $scope.backToAdTagList = backToAdTagList;
+
+        function backToAdTagList() {
             if(!!$stateParams.adSlotType && !!$stateParams.adSlotId) {
                 var stateAdTagForAdSlotLibraryList;
 
@@ -113,10 +136,15 @@
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adTagAdNetwork, '^.listByAdNetwork');
             }
 
-            var state = $scope.adTag.adSlot.type == $scope.adSlotTypes.native ? '^.nativeList' : '^.list';
+            if($scope.hasMultipleDeployAdSlot) {
+                return $state.go('^.^.^.tagLibrary.adTag.list');
+            }
 
-            return $state.go(state, {adSlotId: $scope.adTag.adSlot.id});
-        };
+            var state = !$scope.showInputPosition ? '^.nativeList' : '^.list';
+            var adSlotId = !$scope.isNew ? (adSlot.id || adSlot) : ($scope.adTag.adSlots[0].id || $scope.adTag.adSlots[0]);
+
+            return $state.go(state, {adSlotId: adSlotId});
+        }
 
         $scope.filterEntityType = function (adSlot) {
             if(adSlot.type != $scope.adSlotTypes.dynamic) {
@@ -127,11 +155,7 @@
         };
 
         $scope.selectAdSlot = function(item) {
-            $scope.showInputPosition = item.type == $scope.adSlotTypes.display;
-
-            if($scope.showInputPosition) {
-                _getAdTagGroup(item)
-            }
+            adSlotSelecting.push(item);
         };
 
         $scope.resetSelection = function () {
@@ -141,6 +165,7 @@
 
         $scope.selectPublisher = function (publisher, publisherId) {
             $scope.selected.site = null;
+            $scope.adTag.adSlots = [];
             $scope.resetSelection();
 
             $scope.hasUnifiedModule = publisher.enabledModules.indexOf('MODULE_UNIFIED_REPORT') !== -1;
@@ -176,15 +201,11 @@
             $scope.adTag.libraryAdTag.name = adNetwork.name;
         };
 
-        $scope.selectSite = function (site, siteId) {
-            $scope.resetSelection();
-
-            SiteManager.one(siteId).getList('adslots').then(function (adSlots) {
-                $scope.adSlotList = adSlots.plain();
-            });
-        };
-
         $scope.isFormValid = function() {
+            if($scope.isNew) {
+                return $scope.adTagForm.$valid && $scope.adTag.adSlots.length > 0
+            }
+
             return $scope.adTagForm.$valid;
         };
 
@@ -214,6 +235,55 @@
             })
         };
 
+        function getAdTagLibrary() {
+            if($scope.pickFromLibrary) {
+                AdTagLibrariesManager.getList()
+                    .then(function(libraryAdTag) {
+                        $scope.adTagLibraryList = libraryAdTag.plain();
+                    }
+                );
+
+                // disabled form input html when select ad tag library
+                return $scope.editorOptions.readOnly = 'nocursor';
+            } else {
+                if(angular.isObject($scope.adTag)) {
+                    $scope.adTag.libraryAdTag = {
+                        name: null,
+                        html: null,
+                        adNetwork: null,
+                        adType: $scope.adTypes.customAd,
+                        descriptor: null
+                    }
+                } else {
+                    $scope.adTag = {
+                        libraryAdTag: {
+                            name: null,
+                            html: null,
+                            adNetwork: null,
+                            adType: $scope.adTypes.customAd,
+                            descriptor: null
+                        }
+                    };
+                }
+            }
+
+            if(!$scope.isNew) {
+                angular.extend($scope.adTag.libraryAdTag, adTagCopy.libraryAdTag);
+            }
+
+            if(!!$scope.adTag) {
+                delete $scope.adTag.libraryAdTag.id;
+                delete $scope.adTag.libraryAdTag.visible;
+            }
+
+            // enable form input html when select ad tag library
+            return $scope.editorOptions.readOnly = false;
+        }
+
+        $scope.selectAdTagLibrary = function(libraryAdTag) {
+            angular.extend($scope.adTag.libraryAdTag, libraryAdTag);
+        };
+
         $scope.submit = function() {
             if ($scope.formProcessing) {
                 // already running, prevent duplicates
@@ -223,8 +293,14 @@
             $scope.formProcessing = true;
 
             $scope.adTag.libraryAdTag.adNetwork = $scope.adTag.libraryAdTag.adNetwork.id ? $scope.adTag.libraryAdTag.adNetwork.id : $scope.adTag.libraryAdTag.adNetwork;
+            delete $scope.adTag.libraryAdTag.associatedTagCount;
 
             var adTag = angular.copy($scope.adTag);
+
+            if($scope.isNew) {
+                adTag.adSlot = adTag.adSlots;
+                delete adTag.adSlots;
+            }
 
             var saveAdTag = $scope.isNew ? AdTagManager.post(adTag) : $scope.adTag.patch();
             saveAdTag
@@ -241,39 +317,12 @@
                         AlertService.addFlash({
                             type: 'success',
                             message: $scope.isNew ? $translate.instant('AD_TAG_MODULE.ADD_NEW_SUCCESS') : $translate.instant('AD_TAG_MODULE.UPDATE_SUCCESS')
-                        });
+                        })
                     }
                 )
                 .then(
                     function () {
-                        if(!!$stateParams.adSlotType && !!$stateParams.adSlotId) {
-                            var stateAdTagForAdSlotLibraryList;
-
-                            if($stateParams.adSlotType == $scope.adSlotTypes.display) {
-                                stateAdTagForAdSlotLibraryList = '^.displayList'
-                            }
-                            if($stateParams.adSlotType == $scope.adSlotTypes.native) {
-                                stateAdTagForAdSlotLibraryList = '^.nativeList'
-                            }
-
-                            // back to ad tag for ad slot library
-                            return $state.go(stateAdTagForAdSlotLibraryList, {adSlotId: $stateParams.adSlotId});
-                        }
-
-                        if(!!$stateParams.adNetworkId) {
-                            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adTagAdNetwork, '^.listByAdNetwork');
-                        }
-
-                        var adSlotId = $scope.adTag.adSlot;
-
-                        if (angular.isObject(adSlotId)) {
-                            adSlotId = adSlotId.id;
-                        }
-
-                        var state = $scope.showInputPosition ? '^.list' : '^.nativeList';
-                        return $state.go(state, {
-                            adSlotId: adSlotId
-                        });
+                        backToAdTagList()
                     }
                 )
             ;
@@ -317,68 +366,97 @@
         }
 
         function _getAdTagGroup(adSlot) {
-            if(adSlot.type == $scope.adSlotTypes.display) {
+            if(adSlot.type == $scope.adSlotTypes.display && !gettingAdTagGroup) {
+                gettingAdTagGroup = true;
+
                 DisplayAdSlotManager.one(adSlot.id).getList('adtags').then(function (adTags) {
+                    gettingAdTagGroup = false;
                     $scope.adTagGroup = _setupGroup(adTags.plain());
                 });
             }
-
-            //if(adSlot.type == $scope.adSlotTypes.native) {
-            //    NativeAdSlotManager.one(adSlot.id).getList('adtags').then(function (adTags) {
-            //        $scope.adTagGroup = adTags.plain();
-            //    });
-            //}
         }
-
-        update();
-
-        function update() {
-            if(!!$stateParams.adSlotId) {
-                var adSlot = _findAdSlot($stateParams.adSlotId);
-
-                _getAdTagGroup(adSlot);
-            }
-        }
-
-
-
-        var params = {
-            query: '',
-            publisherId: adSlot && adSlot.site.publisher.id
-        };
-
-        $scope.searchItem = searchItem;
-        $scope.addMoreItems = addMoreItems;
 
         function searchItem(query) {
-            if(query == params.query) {
+            if(!params.publisherId) {
                 return;
             }
 
             params.page = 1;
+            params.query = query;
             params.searchKey = query;
+            var listAdSlotsSelectCurrent = angular.copy($scope.adTag.adSlots);
 
-            SiteManager.one().get(params)
+            // set again adSlotList
+            $scope.adSlotList = [];
+            angular.forEach($scope.adTag.adSlots, function(adSlotId) {
+                var adSlot = _.find(adSlotSelecting, function(adSlot) {return adSlot.id == adSlotId; });
+
+                if(!!adSlot) {
+                    $scope.adSlotList.push(adSlot);
+                }
+            });
+
+            AdSlotManager.one('reportable').one('publisher', params.publisherId).get(params)
                 .then(function(data) {
-                    $scope.siteList = data.records;
+                    totalRecord = data.totalRecord;
+
+                    angular.forEach(data.records, function(adSlot) {
+                        var index = listAdSlotsSelectCurrent.indexOf(adSlot.id);
+
+                        if(index == -1) {
+                            $scope.adSlotList.push(adSlot);
+                        }
+                    })
                 });
         }
 
         function addMoreItems() {
-            var page = Math.ceil(($scope.siteList.length/10) + 1);
+            var page = Math.ceil(($scope.adSlotList.length/10) + 1);
 
-            if(params.page === page) {
+            if(params.page === page || !params.publisherId || !totalRecord || (page > Math.ceil(totalRecord/10) && page != 1)) {
                 return
             }
 
             params.page = page;
 
-            SiteManager.one().get(params)
+            AdSlotManager.one('reportable').one('publisher', params.publisherId).get(params)
                 .then(function(data) {
+                    totalRecord = data.totalRecord;
+
                     angular.forEach(data.records, function(item) {
-                        $scope.siteList.push(item);
+                        if(!!$stateParams.adSlotId && $stateParams.adSlotId == item.id || $scope.adTag.adSlots.indexOf(item.id) > -1) {
+                            return
+                        }
+
+                        $scope.adSlotList.push(item);
                     })
                 });
         }
+
+        $scope.$watch(function() {
+            return $scope.adTag.adSlots
+        }, function() {
+            if(!$scope.adTag.adSlots) {
+                return
+            }
+
+            var adSlotsSelect = $scope.adTag.adSlots.length;
+
+            $scope.hasMultipleDeployAdSlot = adSlotsSelect > 1;
+
+            if(adSlotsSelect == 1) {
+                var item = _findAdSlot($scope.adTag.adSlots[0]);
+                $scope.showInputPosition = item.type == $scope.adSlotTypes.display;
+
+                if($scope.showInputPosition) {
+                    _getAdTagGroup(item)
+                }
+            }
+
+            var condition = $scope.adSlotList.length - adSlotsSelect;
+            if(0 < condition && condition < 7 ) {
+                addMoreItems();
+            }
+        })
     }
 })();

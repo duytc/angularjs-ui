@@ -91,7 +91,7 @@
             })
 
             .state('reports.unified.site', {
-                url: '/site?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}',
+                url: '/site?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -99,7 +99,7 @@
                 views: {
                     unified: {
                         controller: 'UnifiedReport',
-                        templateUrl: 'reports/unified/views/reports/unified/site.tpl.html'
+                        templateUrl:  'reports/unified/views/reports/unified/site.tpl.html'
                     }
                 },
                 resolve: {
@@ -114,7 +114,7 @@
                 }
             })
             .state('reports.unified.tagcadeSite', {
-                url: '/tagcadeSite?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}',
+                url: '/tagcadeSite?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -137,7 +137,7 @@
                 }
             })
             .state('reports.unified.discrepanciesSite', {
-                url: '/discrepanciesSite?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}',
+                url: '/discrepanciesSite?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -161,7 +161,7 @@
             })
 
             .state('reports.unified.adtag', {
-                url: '/adtag?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}',
+                url: '/adtag?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -184,7 +184,7 @@
                 }
             })
             .state('reports.unified.tagcadeAdtag', {
-                url: '/tagcadeAdtag?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}',
+                url: '/tagcadeAdtag?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -207,7 +207,7 @@
                 }
             })
             .state('reports.unified.discrepanciesAdtag', {
-                url: '/discrepanciesAdtag?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}',
+                url: '/discrepanciesAdtag?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -231,7 +231,7 @@
             })
 
             .state('reports.unified.partner', {
-                url: '/partner?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}',
+                url: '/partner?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -254,7 +254,7 @@
                 }
             })
             .state('reports.unified.tagcadePartner', {
-                url: '/tagcadePartner?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}',
+                url: '/tagcadePartner?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -277,7 +277,7 @@
                 }
             })
             .state('reports.unified.discrepanciesPartner', {
-                url: '/discrepanciesPartner?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}',
+                url: '/discrepanciesPartner?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}&{subBreakDown}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -293,6 +293,76 @@
                         $stateParams.publisher = !!$stateParams.publisher ? $stateParams.publisher : userSession.id;
 
                         return unifiedReport.getPulsePointDiscrepancies($stateParams, {breakDown: 'partners'});
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Unified reports'
+                }
+            })
+
+            .state('reports.unified.subpublisher', {
+                url: '/subpublisher?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}&{subBreakDown}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    unified: {
+                        controller: 'UnifiedReport',
+                        templateUrl: 'reports/unified/views/reports/unified/subpublisher.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, unifiedReport, userSession) {
+                        $stateParams.publisher = !!$stateParams.publisher ? $stateParams.publisher : userSession.id;
+
+                        return unifiedReport.getPulsePoint($stateParams, {breakDown: 'subpublishers'});
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Unified reports'
+                }
+            })
+            .state('reports.unified.tagcadeSubpublisher', {
+                url: '/tagcadeSubpublisher?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}&{subBreakDown}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    unified: {
+                        controller: 'UnifiedReport',
+                        templateUrl: 'reports/unified/views/reports/tagcade/subpublisher.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, unifiedReport, userSession) {
+                        $stateParams.publisher = !!$stateParams.publisher ? $stateParams.publisher : userSession.id;
+
+                        return unifiedReport.getAdNetworkReport($stateParams, {breakDown: 'subpublishers'});
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Unified reports'
+                }
+            })
+            .state('reports.unified.discrepanciesSubpublisher', {
+                url: '/discrepanciesSubpublisher?{startDate:date}&{endDate:date}&{reportType}&{adNetwork}&{site:int}&{publisher:int}&{subBreakDown}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    unified: {
+                        controller: 'UnifiedReport',
+                        templateUrl: 'reports/unified/views/reports/discrepancies/subpublisher.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, unifiedReport, userSession) {
+                        $stateParams.publisher = !!$stateParams.publisher ? $stateParams.publisher : userSession.id;
+
+                        return unifiedReport.getPulsePointDiscrepancies($stateParams, {breakDown: 'subpublishers'});
                     }
                 },
                 ncyBreadcrumb: {

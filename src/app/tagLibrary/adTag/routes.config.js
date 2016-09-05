@@ -31,7 +31,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Ad Tag Library'
+                    label: 'Standalone Ad Tags'
                 }
             })
             .state('tagLibrary.adTag.new', {
@@ -103,7 +103,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Associated Ad Tags'
+                    label: 'Linked Ad Tags'
                 }
             })
             .state('tagLibrary.adTag.nativeList', {

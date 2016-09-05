@@ -18,7 +18,7 @@
                 }
             })
             .state('tagManagement.ronAdSlot.list', {
-                url: '/list?page&sortField&orderBy&search',
+                url: '/list?page&sortField&orderBy&searchKey',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -29,8 +29,9 @@
                     }
                 },
                 resolve: {
-                    ronAdSlots: /* @ngInject */ function(RonAdSlotManager) {
-                        return RonAdSlotManager.one().get({page: 1});
+                    ronAdSlots: /* @ngInject */ function(RonAdSlotManager, $stateParams) {
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        return RonAdSlotManager.one().get($stateParams);
                     }
                 },
                 ncyBreadcrumb: {

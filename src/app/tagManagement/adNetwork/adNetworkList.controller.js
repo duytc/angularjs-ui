@@ -20,11 +20,13 @@
         }
 
         $scope.today = new Date();
-        $scope.showPagination = showPagination;
         $scope.tableConfig = {
             itemsPerPage: 10,
             maxPages: 10
         };
+
+        $scope.showPagination = showPagination;
+        $scope.getUnifiedReportEmail = getUnifiedReportEmail;
 
         $scope.toggleAdNetworkStatus = function (adNetwork, newStatus) {
             //var newStatus = !adNetwork.active;
@@ -87,11 +89,11 @@
         };
 
         $scope.openListSitesForAdNetwork = function (adNetwork) {
-            AdNetworkManager.one(adNetwork.id).one('sites').getList()
+            AdNetworkManager.one(adNetwork.id).one('sites').get({page: 1})
                 .then(function(data) {
                     var sitesForAdNetwork = data.plain();
 
-                    if(!sitesForAdNetwork.length) {
+                    if(!sitesForAdNetwork.records.length) {
                         AlertService.addAlert({
                             type: 'warning',
                             message: $translate.instant('AD_NETWORK_MODULE.CURRENTLY_NO_SITES_AD_NETWORK', {ad_network_name: adNetwork.name})
@@ -119,6 +121,37 @@
 
         function showPagination() {
             return angular.isArray($scope.adNetworks) && $scope.adNetworks.length > $scope.tableConfig.itemsPerPage;
+        }
+
+        function getUnifiedReportEmail(adNetwork) {
+            AdNetworkManager.one(adNetwork.id).one('emailtoken').get()
+                .then(function(email) {
+                    $modal.open({
+                        templateUrl: 'tagManagement/adNetwork/EmailForUnifiedReport.tpl.html',
+                        controller: function($scope) {
+                            $scope.email = email;
+                            $scope.adNetwork = adNetwork;
+
+                            $scope.refreshUnifiedReportEmail = function (adNetwork) {
+                                AdNetworkManager.one(adNetwork.id).one('emailtoken').get({resetToken: true})
+                                    .then(function(email) {
+                                        $scope.email = email;
+
+                                        AlertService.replaceAlerts({
+                                            type: 'success',
+                                            message: $translate.instant('AD_NETWORK_MODULE.REFRESH_UNIFIED_REPORT_SUCCESS')
+                                        });
+                                    })
+                                    .catch(function() {
+                                        AlertService.replaceAlerts({
+                                            type: 'error',
+                                            message: $translate.instant('AD_NETWORK_MODULE.REFRESH_UNIFIED_REPORT_FAIL')
+                                        });
+                                    })
+                            }
+                        }
+                    });
+                });
         }
 
         $scope.$on('$locationChangeSuccess', function() {

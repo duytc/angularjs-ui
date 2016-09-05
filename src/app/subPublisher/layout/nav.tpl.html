@@ -54,23 +54,11 @@
             </a>
 
             <ul class="submenu">
-                <li ng-show="hasDisplayAdsModule" ui-sref-active="active">
+                <li ng-show="hasDisplayAdsModule && currentUser.enableViewTagcadeReport" ui-sref-active="active">
                     <a ui-sref=".reports.performance.sites">
                         <span class="menu-text"> {{ 'NAVBAR.PERFORMANCE_REPORTS' | translate }} </span>
                     </a>
                 </li>
-
-                <!--<li ng-show="hasAnalyticsModule" ui-sref-active="active">-->
-                <!--<a ui-sref=".reports.source">-->
-                <!--<span class="menu-text"> {{ 'NAVBAR.SOURCE_REPORTS' | translate }} </span>-->
-                <!--</a>-->
-                <!--</li>-->
-
-                <!--<li ng-show="hasDisplayAdsModule" ui-sref-active="active">-->
-                <!--<a ui-sref=".reports.projectedBill">-->
-                <!--<span class="menu-text"> {{ 'NAVBAR.PROJECTED_BILL' | translate }} </span>-->
-                <!--</a>-->
-                <!--</li>-->
                 <li ng-show="hasUnifiedModule" ui-sref-active="active">
                     <a ui-sref=".reports.unified.day">
                         <span class="menu-text"> {{ 'NAVBAR.UNIFIED_REPORTS' | translate }} </span>

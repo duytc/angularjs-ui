@@ -23,8 +23,9 @@
                 ;
         }
 
-        function getSites() {
-            return SiteManager.getList()
+        function getSites(params) {
+            params = params || {};
+            return SiteManager.getList(params)
                 .then(function (sites) {
                     return sites.plain();
                 })

@@ -7,6 +7,7 @@
             "LOGOUT": "Log Out",
             "EDIT_PROFILE": "Edit Profile",
             "RETURN_TO_ADMIN": "Return to admin account",
+            "RETURN_TO_PUBLISHER": "Return to publisher account",
             "PASSWORD": "Password",
             "USERNAME": "Username",
             "FORGOT_PASSWORD": "Forgot your password?",
@@ -19,6 +20,7 @@
             "ACTIONS": "Actions",
             "CLOSE": "Close",
             "ALERTS": "Alerts",
+            "EXPORT_EXCEL": "Export Excel",
 
             "NAME": "Name",
             "PUBLISHER": "Publisher",
@@ -76,6 +78,7 @@
                 "MY_SITES": "My Sites",
                 "AD_SLOTS": "Ad Slots",
                 "MY_AD_SLOTS": "My Ad Slots",
+                "MY_AD_TAGS": "My Ad Tags",
                 "MY_RON_AD_SLOTS": "My RON Ad Slots",
                 "RON_AD_SLOTS": "RON Ad Slots",
                 "AD_NETWORKS": "Demand Partners",
@@ -89,7 +92,7 @@
                 "NEW_AD_TAG": "New Ad Tag",
                 "EXCHANGE_MANAGEMENT": "Exchange Management",
                 "NEW_EXCHANGE": "New Exchange",
-                "TAG_LIBRARY": "Tag Library",
+                "TAG_LIBRARY": "Tag Standalone",
                 "REPORTS": "Reports",
                 "RTB_REPORTS": "RTB Reports",
                 "PERFORMANCE_REPORTS": "Performance Reports",
@@ -163,11 +166,15 @@
                 "SELECT_A_PUBLISHER": "Select a publisher",
                 "NEW_PUBLISHER": "New Publisher",
                 "LOGIN_AS_THIS_PUBLISHER": "Login as this publisher",
+                "LOGIN_AS_THIS_SUB_PUBLISHER": "Login as this Sub Publisher",
                 "LAST_LOGIN": "Last Login",
                 "STATUS": "Status",
                 "EDIT_PUBLISHER": "Edit Publisher",
+                "EDIT_SUB_PUBLISHER": "Edit Sub Publisher",
                 "DEACTIVATE_PUBLISHER": "Deactivate Publisher",
+                "DEACTIVATE_SUB_PUBLISHER": "Deactivate Sub Publisher",
                 "ACTIVATE_PUBLISHER": "Activate Publisher",
+                "ACTIVATE_SUB_PUBLISHER": "Activate Sub Publisher",
                 "ADD_NEW_SITE": "+ Add New Site",
 
                 "HELP_BLOCK_REPEAT_PASSWORD": "Leave it blank for no change",
@@ -284,6 +291,8 @@
                 "UPDATE_STATUS_FAIL": "Could not change demand partner status",
                 "PAUSE_STATUS_SUCCESS": "The demand partner has been paused. There may be a short delay before the associated ad tags are paused.",
                 "ACTIVE_STATUS_SUCCESS": "The demand partner has been activated",
+                "REFRESH_UNIFIED_REPORT_SUCCESS": "The unified report email token has been refreshed",
+                "REFRESH_UNIFIED_REPORT_FAIL": "The unified report email token could not be refreshed",
                 "CURRENTLY_NO_AD_NETWORK": "There is currently no demand partners",
                 "CURRENTLY_NO_SITES_AD_NETWORK": "Demand Partner : ' {{ ad_network_name }} ' does not have sites",
                 "CONFIRM_PAUSE_AD_NETWORK": "Are you sure you want to pause this demand partner?",
@@ -303,6 +312,10 @@
                 "DROPDOWN_PAUSE": "Pause Demand Partner",
                 "DROPDOWN_VISIT_AS_NETWORK": "Visit Demand Partner",
                 "ADD_NEW_AD_NETWORK": "+ Add New Demand Partner",
+                "GET_UNIFIED_REPORT_EMAIL_TOKEN": "Get Unified Report Email",
+                "REFRESH_UNIFIED_REPORT_EMAIL_TOKEN": "Refresh Unified Report Email Token",
+                "GENERATE_UNIFIED_REPORT_EMAIL_TOKEN": "Generate Unified Report Email Token",
+                "ALERT_WARNING_UNIFIED_REPORT_EMAIL_TOKEN": "This demand partner does not currently have a unified report email. Click the button below to create one.",
 
                 "BACK_TO_AD_NETWORK_LIST": "Back to Demand Partner List",
                 "ACTIVE_AD_TAGS_COUNT": "Active Ad Tags",
@@ -312,7 +325,7 @@
                 "SELECT_A_AD_NETWORK": "Select a Demand Partner",
 
                 "HELP_BLOCK_URL": "You can use this field to add the login url for your demand partner.",
-                "HELP_BLOCK_ENABLE_UNIFIED": "Check to enable unified report for this demand partner",
+                "HELP_BLOCK_ENABLE_UNIFIED": "This credentials to use to login demand partner.",
                 "BLANK_FOR_NO_CHANGE":  "Leave it blank for no change"
             },
             "AD_SLOT_MODULE": {
@@ -328,6 +341,7 @@
                 "AUTO_FIT": "Auto Fit",
                 "PASSBACK_MODE": "Passback Mode",
                 "FLOOR_PRICE": "Floor Price",
+                "HEADER_BID_PRICE": "Header Bid Price",
 
                 "ADD_NEW_SUCCESS": "The ad slot has been created",
                 "ADD_NEW_FAIL": "An error occurred. The ad slot could not be created",
@@ -339,6 +353,8 @@
                 "DELETE_FAIL": "The ad slot could not be deleted",
                 "CONFIRM_DELETE_AD_SLOT": "Are you sure you want to delete this ad slot?",
                 "CURRENTLY_NO_AD_SLOT": "There is currently no ad slots",
+                "UNLINK_SUCCESS": "The ad slot has been unlinked",
+                "UNLINK_FAIL": "An error occurred. The ad slot could not be unlinked",
 
                 "BACK_TO_AD_SLOT_LIST": "Back to Ad Slot List",
                 "SELECT_A_TYPE": "Select a type",
@@ -353,6 +369,7 @@
                 "CLONE_AD_SLOT": "Clone Ad Slot",
                 "DELETE_AD_SLOT": "Delete Ad Slot",
                 "MOVE_TO_LIBRARY": "Make Standalone",
+                "UNLINK": "Unlink Ad Slot",
                 "EDIT_AD_SLOT_IN_LIBRARY": "Edit Ad Slot",
                 "NEW_AD_SLOT": "New Ad Slot",
                 "MOVED_TO_LIBRARY_SUCCESS": "The ad slot has been moved to the Standalone Ad Slot",
@@ -360,11 +377,12 @@
 
                 "PLACEHOLDER_AD_SLOT_NAME": "Ad Slot name",
                 "HELP_BLOCK_COPY_TAG": "Copy and paste the following ad tag into the <body> section of your website.",
-                "HELP_BLOCK_FROM_LIBRARY": "You can select an existing ad slot from your library. If you choose this option, all of the fields below will not be editable. If you would like to change these fields, you may do so the the Tag Library section.",
+                "HELP_BLOCK_FROM_LIBRARY": "You can select an existing ad slot from your standalone ad slots. If you choose this option, all of the fields below will not be editable. If you would like to change these fields, you may do so the the standalone ad slots section.",
                 "HELP_BLOCK_DEFAULT_AD_SLOT": "If no default ad slot is selected and no expressions match, the ad slot will not be shown on the page.",
                 "HELP_BLOCK_AUTO_FIT": "When Auto Fit is enabled, the ad slot will dynamically resize if the ad served is different from the size defined above.",
                 "HELP_BLOCK_FLOOR_PRICE": "If the RTB bid price is lower than this amount, the ad tag waterfall will serve instead.",
-                "HELP_BLOCK_RTB": "Enable RTB for this ad slot or inherit the RTB config from the associated site."
+                "HELP_BLOCK_RTB": "Enable RTB for this ad slot or inherit the RTB config from the associated site.",
+                "HELP_BLOCK_HEADER_BIDDING_PRICE": "Set the bid price for the Tagcade bidder"
             },
             "RON_AD_SLOT_MODULE": {
                 "CURRENTLY_NO_RON_AD_SLOT": "There is currently no RON ad slots",
@@ -376,14 +394,14 @@
                 "DELETE_FAIL": "The RON ad slot could not be deleted",
                 "CONFIRM_DELETE_RON_AD_SLOT": "Are you sure you want to delete this RON ad slot?",
 
-                "REFERENCE_LIBRARY_AD_SLOT": "Reference Library",
+                "REFERENCE_LIBRARY_AD_SLOT": "Reference Standalone",
                 "LIBRARY_AD_SLOT": "Library Ad Slot",
                 "BACK_TO_AD_SLOT_LIST": "Back to RON Ad Slot List",
                 "SELECT_A_STANDALONE_AD_SLOT": "Select a standalone ad slot",
                 "SELECT_SEGMENTS": "Custom Report Segments",
                 "SELECT_PUBLISHER_SEGMENTS": "Sub Publisher",
 
-                "PICK_FROM_LIBRARY": "Pick from library",
+                "PICK_FROM_LIBRARY": "Pick from standalone",
                 "NEW_RON_AD_SLOT": "New RON Ad Slot",
                 "EDIT_RON_AD_SLOT": "Edit RON Ad Slot",
                 "DELETE_RON_AD_SLOT": "Delete Ad Slot",
@@ -398,7 +416,7 @@
                 "HELP_BLOCK_SELECT_SUB_PUBLISHER_SEGMENT": "Select to enable publisher's report"
             },
             "SEGMENT_MODULE": {
-                "CURRENTLY_SEGMENT": "There is currently no report segments in the library",
+                "CURRENTLY_SEGMENT": "There is currently no report segments in the standalone",
                 "DELETE_SUCCESS": "The report segment was deleted",
                 "DELETE_FAIL": "The report segment could not be deleted",
                 "CONFIRM_DELETE_SEGMENT": "Are you sure you want to delete this report segment?",
@@ -418,11 +436,15 @@
                 "REORDERED_AD_TAG_SUCCESS": "The ad tags have been reordered",
                 "CONFIRM_DELETE_AD_TAG": "Are you sure you want to delete this ad tag?",
                 "CURRENTLY_NO_AD_TAG": "There is currently no ad tags in this ad slot",
+                "MOVED_TO_LIBRARY_SUCCESS": "The ad tag has been moved to standalone",
+                "UNLINK_SUCCESS": "The ad tag has been unlinked",
+                "UNLINK_FAIL": "An error occurred. The ad tag could not be unlinked",
+                "UNLINK": "Unlink Ad Tag",
 
                 "BACK_TO_AD_TAG_LIST": "Back to Ad Tag List",
                 "FROM_LIBRARY": "From Library",
                 "LIBRARY_AD_TAG": "Library Ad Tag",
-                "SELECT_AN_AD_TAG_FROM_LIBRARY": "Select an ad tag from library",
+                "SELECT_AN_AD_TAG_FROM_LIBRARY": "Select a standalone ad tag",
                 "SELECT_A_AD_TAG": "Select a ad tag",
                 "AD_TYPE": "Ad Type",
                 "CUSTOM_AD": "Custom Ad",
@@ -447,12 +469,13 @@
                 "PAUSE_AD_TAG" : "Pause Ad Tag",
                 "ACTIVATE_AD_TAG" : "Activate Ad Tag",
                 "DELETE_AD_TAG": "Delete Ad Tag",
-                "MOVE_TO_LIBRARY": "Move To Library",
-                "EDIT_AD_TAG_IN_LIBRARY": "Edit Ad Tag in The Library",
+                "MOVE_TO_LIBRARY": "Move Standalone",
+                "EDIT_AD_TAG_IN_LIBRARY": "Edit Ad Tag in The Standalone",
                 "SPLIT_GROUP": "Split Group",
                 "LIBRARY_AD_SLOT": "Standalone Ad Slot",
+                "CREATE_LINKED_AD_TAGS": "Link this Ad Tag",
 
-                "HELP_BLOCK_FROM_LIBRARY": "You can select an existing ad tag from your library. If you choose this option some of the fields below will not be editable. If you would like to change these fields, you may do so the the Tag Library section.",
+                "HELP_BLOCK_FROM_LIBRARY": "You can select an existing ad tag from your standalone ad tags. If you choose this option some of the fields below will not be editable. If you would like to change these fields, you may do so the the standalone ad tags section.",
                 "HELP_BLOCK_FREQUENCY_CAP": "Maximum number of network opportunities per day per user for this ad tag, leave blank for no cap.",
                 "HELP_BLOCK_HTML": "You can use the following macros in your ad tag",
                 "HELP_BLOCK_TARGET_URL": "You can use the following macros in your target url",
@@ -472,28 +495,46 @@
             "AD_SLOT_LIBRARY_MODULE": {
                 "REMOVE_SUCCESS": "The ad slot was removed successfully",
                 "REMOVE_FAIL": "Could not remove the standalone ad slot",
-                "AD_SLOT_FOR_SITE_SUCCESS": "This ad slot has been deployed to the selected sites",
-                "AD_SLOT_FOR_SITE_FAIL": "Could not deploy the ad slot",
+                "AD_SLOT_FOR_SITE_SUCCESS": "This ad slot has been linked to the selected sites",
+                "AD_SLOT_FOR_SITE_FAIL": "Could not link the ad slot",
                 "CURRENTLY_NO_AD_SLOT": "There is currently no standalone ad slots",
-                "CURRENTLY_NO_AD_SLOT_ASSOCIATED": "This standalone ad slot is currently not deployed to any sites",
-                "ALERT_CREATE_LINKED_AD_SLOTS_FULL_SITE": "This ad slot is already deployed on every site",
+                "CURRENTLY_NO_AD_SLOT_ASSOCIATED": "This standalone ad slot is currently not linked to any sites",
+                "ALERT_CREATE_LINKED_AD_SLOTS_FULL_SITE": "This ad slot is already linked on every site",
 
-                "TITLE_CREATE_LINKED_AD_SLOTS": "Deploy standalone Ad Slot",
+                "TITLE_CREATE_LINKED_AD_SLOTS": "Link standalone Ad Slot",
                 "CREATE_RON_AD_SLOT": "Create RON Ad Slot",
                 "EDIT_RON_AD_SLOT": "Edit RON Ad Slot",
                 "GO_TO_SITE": "Go To Site",
                 "IN_RON_AD_SLOT": "RON Ad Slot",
 
-                "CREATE_LINKED_AD_SLOTS": "Deploy This Ad Slot",
-                "VIEW_LINKED_AD_SLOTS": "View Deployments",
-                "LINKED_AD_SLOTS": "Deployments",
-                "WARNING_EDIT_LIBRARY": "This ad slot is deployed to multiple sites. Modifying this ad slot will result in the changes being propagated to all sites that run this ad slot."
+                "CREATE_LINKED_AD_SLOTS": "Link this Ad Slot",
+                "VIEW_LINKED_AD_SLOTS": "View linked Ad Slots",
+                "LINKED_AD_SLOTS": "Linked Ad Slots",
+                "WARNING_EDIT_LIBRARY": "This ad slot is linked to multiple sites. Modifying this ad slot will result in the changes being propagated to all sites that run this ad slot."
+            },
+            "AD_TAG_LIBRARY_MODULE": {
+                "REMOVE_SUCCESS": "The ad tag was removed from the standalone successfully",
+                "REMOVE_FAIL": "Could not remove ad tag from standalone",
+                "CURRENTLY_NO_AD_TAG": "There is currently no ad tags in the standalone",
+                "CURRENTLY_NO_AD_TAG_ASSOCIATED": "This ad tag is currently not linked to any other ad tag",
+                "WARNING_EDIT_LIBRARY": "This ad tag is linked to multiple ad slots. Modifying this ad tag will result in the changes being propagated to all ad slots that run this ad tag.",
+
+                "TITLE_CREATE_LINKED_AD_TAGS": "Link standalone Ad Tag",
+                "LIBRARY_AD_SLOT": "Standalone Ad Slot",
+
+                "GO_TO_AD_SLOT": "Go To Ad Slot",
+                "VIEW_LINKED_AD_TAGS": "View Linked Ad Tags",
+                "LINKED_AD_TAGS": "Linked Ad Tags",
+
+                "AD_TAG_FOR_AD_SLOT_SUCCESS": "This ad tag has been linked to the selected ad slots",
+                "AD_TAG_FOR_AD_SLOT_FAIL": "Could not link the ad tag"
             },
             "REPORT": {
                 "DATE_RANGE": "Date Range",
                 "REPORT_TYPE": "Report Type",
                 "SELECT_A_REPORT_TYPE": "Select a report type",
                 "BREAKDOWN": "Breakdown",
+                "SUB_BREAKDOWN": "Sub Breakdown",
                 "SELECT_AN_OPTION": "Select an option",
                 "GET_REPORTS": "Get Reports",
                 "DAILY_ACCOUNT_BREAKDOWN": "Daily Account Breakdown",

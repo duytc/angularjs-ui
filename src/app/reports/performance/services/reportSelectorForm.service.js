@@ -60,11 +60,13 @@
                 });
         }
 
-        function getSiteForAdNetwork(adNetworkId) {
-            return AdNetworkManager.one(adNetworkId).one('sites').getList()
+        function getSiteForAdNetwork(adNetworkId, params) {
+            params = params || {};
+
+            return AdNetworkManager.one(adNetworkId).one('sites').get(params)
                 .then(function(datas) {
                     var sites = [];
-                    angular.forEach(datas.plain(), function(data) {
+                    angular.forEach(datas.records, function(data) {
                         sites.push(data.site);
                     });
 

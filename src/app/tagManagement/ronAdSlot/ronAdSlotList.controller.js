@@ -5,7 +5,7 @@
         .controller('RonAdSlotList', RonAdSlotList)
     ;
 
-    function RonAdSlotList($scope, $modal, $translate, Auth, AlertService, ronAdSlots, historyStorage, HISTORY_TYPE_PATH, RTB_STATUS_LABELS, EVENT_ACTION_SORTABLE, TYPE_AD_SLOT, RonAdSlotManager) {
+    function RonAdSlotList($scope, $modal, $stateParams, $translate, Auth, AlertService, ronAdSlots, historyStorage, AtSortableService, HISTORY_TYPE_PATH, RTB_STATUS_LABELS, EVENT_ACTION_SORTABLE, TYPE_AD_SLOT, RonAdSlotManager) {
         $scope.ronAdSlots = ronAdSlots;
         $scope.hasData = function () {
             return !!ronAdSlots.totalRecord;
@@ -34,12 +34,12 @@
         };
 
         $scope.availableOptions = {
-            currentPage: 1,
+            currentPage: $stateParams.page || 1,
             pageSize: 10
         };
 
         $scope.selectData = {
-            query: null
+            query: $stateParams.searchKey || null
         };
 
         var getAdSlot;
@@ -121,7 +121,7 @@
         }
 
         function searchData() {
-            var query = {searchKey: $scope.selectData.query || null};
+            var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
             _getAdSlot(params);
         }
@@ -140,6 +140,7 @@
                 params = query;
                 return RonAdSlotManager.one().get(query)
                     .then(function(ronAdSlots) {
+                        AtSortableService.insertParamForUrl(query);
                         $scope.ronAdSlots = ronAdSlots;
                         $scope.tableConfig.totalItems = Number(ronAdSlots.totalRecord);
                         $scope.availableOptions.currentPage = Number(query.page);

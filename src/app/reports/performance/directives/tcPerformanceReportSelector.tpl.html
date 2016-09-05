@@ -22,12 +22,12 @@
                             </ui-select-choices>
                         </ui-select>
                     </div>
-                    <div class="form-group" ng-if="selectedReportTypeis(reportTypes.platform)">
+                    <div class="form-group select-breakdown" ng-if="selectedReportTypeis(reportTypes.platform)">
                         <label>{{ 'REPORT.BREAKDOWN' | translate }}</label>
-                        <ui-select ng-model="selectedData.platformBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
-                            <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                        <ui-select ng-model="selectedData.labelBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ selectedData.labelBreakdown }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
-                                <div ng-bind-html="option.label"></div>
+                                <label stop-event class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="selectedData.breakDowns[option.key]" ng-click="clickBreakdown(option.key)"><span> {{ option.label }}</span></label>
                             </ui-select-choices>
                         </ui-select>
                     </div>
@@ -60,18 +60,18 @@
                         <label>{{ 'SITE' | translate }}</label>
                         <ui-select name="adNetworkSites" ng-model="selectedData.siteId" ng-disabled="!optionData.adNetworkSites.length" on-select="selectSiteForAdNetwork($model)" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'SITE_MODULE.SELECT_A_SITE' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices group-by="groupEntities" repeat="site.id as site in optionData.adNetworkSites | filter: $select.search | filter:filterNonEntityValues($select.search)">
+                            <ui-select-choices infinite-scroll="addMoreItems()" infinite-scroll-container="'#reload'" id="reload" infinite-scroll-distance="200" refresh="searchItem($select.search)" refresh-delay="500" group-by="groupEntities" repeat="site.id as site in optionData.adNetworkSites | filter: $select.search | filter:filterNonEntityValues($select.search)">
                                 <div ng-bind-html="site.name | highlight: $select.search"></div>
                             </ui-select-choices>
                         </ui-select>
                     </div>
 
-                    <div class="form-group" ng-if="selectedData.adNetworkId && optionData.adNetworkSites.length">
+                    <div class="form-group select-breakdown" ng-if="(selectedData.adNetworkId && optionData.adNetworkSites.length) || selectedReportTypeis(reportTypes.adNetwork)">
                         <label>{{ 'REPORT.BREAKDOWN' | translate }}</label>
-                        <ui-select ng-model="selectedData.adNetworkBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
-                            <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ $select.selected.label }}</ui-select-match>
-                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
-                                <div ng-bind-html="option.label"></div>
+                        <ui-select ng-model="selectedData.labelBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ selectedData.labelBreakdown }}</ui-select-match>
+                            <ui-select-choices ui-disable-choice="disabledOption(option.key)" group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
+                                <label stop-event class="ui-checkbox"><input server-error ng-disabled="disabledOption(option.key)" name="active" type="checkbox" ng-model="selectedData.breakDowns[option.key]" ng-click="clickBreakdown(option.key)"><span> {{ option.label }}</span></label>
                             </ui-select-choices>
                         </ui-select>
                     </div>
@@ -97,12 +97,12 @@
                             </ui-select-choices>
                         </ui-select>
                     </div>
-                    <div class="site form-group" ng-if="selectedReportTypeis(reportTypes.site) && selectedData.siteId">
+                    <div class="site form-group select-breakdown" ng-if="selectedReportTypeis(reportTypes.site)">
                         <label>{{ 'REPORT.BREAKDOWN' | translate }}</label>
-                        <ui-select ng-model="selectedData.siteBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
-                            <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ $select.selected.label }}</ui-select-match>
-                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions | filter:filterForDemandSourceReport:option">
-                                <div ng-bind-html="option.label"></div>
+                        <ui-select ng-model="selectedData.labelBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ selectedData.labelBreakdown }}</ui-select-match>
+                            <ui-select-choices ui-disable-choice="disabledOption(option.key)" group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions | filter:filterForDemandSourceReport:option">
+                                <label stop-event class="ui-checkbox"><input server-error ng-disabled="disabledOption(option.key)" name="active" type="checkbox" ng-model="selectedData.breakDowns[option.key]" ng-click="clickBreakdown(option.key)"><span> {{ option.label }}</span></label>
                             </ui-select-choices>
                         </ui-select>
                     </div>
@@ -121,12 +121,12 @@
                             </ui-select-choices>
                         </ui-select>
                     </div>
-                    <div class="ad-slot form-group" ng-if="selectedReportTypeis(reportTypes.adSlot) && selectedData.adSlotId">
+                    <div class="ad-slot form-group select-breakdown" ng-if="selectedReportTypeis(reportTypes.adSlot) && selectedData.adSlotId">
                         <label>{{ 'REPORT.BREAKDOWN' | translate }}</label>
-                        <ui-select ng-model="selectedData.adSlotBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
-                            <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                        <ui-select ng-model="selectedData.labelBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ selectedData.labelBreakdown }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions | filter:filterForDemandSourceReport:option">
-                                <div ng-bind-html="option.label"></div>
+                                <label stop-event class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="selectedData.breakDowns[option.key]" ng-click="clickBreakdown(option.key)"><span> {{ option.label }}</span></label>
                             </ui-select-choices>
                         </ui-select>
                     </div>
@@ -144,12 +144,12 @@
                             </ui-select-choices>
                         </ui-select>
                     </div>
-                    <div class="ron-ad-slot form-group" ng-if="selectedReportTypeis(reportTypes.ronAdSlot) && selectedData.ronAdSlotId">
+                    <div class="ron-ad-slot form-group select-breakdown" ng-if="selectedReportTypeis(reportTypes.ronAdSlot) && selectedData.ronAdSlotId">
                         <label>{{ 'REPORT.BREAKDOWN' | translate }}</label>
-                        <ui-select ng-model="selectedData.ronAdSlotBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
-                            <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                        <ui-select ng-model="selectedData.labelBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ selectedData.labelBreakdown }}</ui-select-match>
                             <ui-select-choices group-by="groupEntities" repeat="option.key as option in selectedData.reportType.breakdownOptions">
-                                <div ng-bind-html="option.label"></div>
+                                <label stop-event class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="selectedData.breakDowns[option.key]" ng-click="clickBreakdown(option.key)" id="inputEnabled"><span> {{ option.label }}</span></label>
                             </ui-select-choices>
                         </ui-select>
                     </div>

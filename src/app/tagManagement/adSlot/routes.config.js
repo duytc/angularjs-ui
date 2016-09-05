@@ -21,7 +21,7 @@
                 }
             })
             .state('tagManagement.adSlot.list', {
-                url: '/list/site/{siteId:[0-9]+}?page&sortField&orderBy&search',
+                url: '/list/site/{siteId:[0-9]+}?page&sortField&orderBy&searchKey',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -48,7 +48,7 @@
                 }
             })
             .state('tagManagement.adSlot.listAll', {
-                url: '/list?page&sortField&orderBy&search',
+                url: '/list?page&sortField&orderBy&searchKey',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -61,8 +61,9 @@
                 resolve: {
                     // AdSlotManager is provided as a parameter to make sure the service is invoked
                     // because during init it attaches additional behaviour to the adslots resource
-                    adSlots: /* @ngInject */ function(AdSlotManager) {
-                        return AdSlotManager.one().get({page: 1});
+                    adSlots: /* @ngInject */ function(AdSlotManager, $stateParams) {
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        return AdSlotManager.one().get($stateParams);
                     },
 
                     site: function () {
@@ -74,7 +75,7 @@
                 }
             })
             .state('tagManagement.adSlot.listByChannel', {
-                url: '/listByChannel?page&sortField&orderBy&search',
+                url: '/listByChannel?page&sortField&orderBy&searchKey',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -102,7 +103,7 @@
                 }
             })
             .state('tagManagement.adSlot.new', {
-                url: '/new?siteId',
+                url: '/new?siteId&deployment',
                 views: {
                     'content@app': {
                         controller: 'AdSlotForm',

@@ -18,7 +18,7 @@
                 }
             })
             .state('tagManagement.sites.list', {
-                url: '/list?page&sortField&orderBy&search',
+                url: '/list?page&sortField&orderBy&searchKey',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -29,8 +29,9 @@
                     }
                 },
                 resolve: {
-                    sites: /* @ngInject */ function(SiteManager) {
-                        return SiteManager.one().get({page: 1});
+                    sites: /* @ngInject */ function(SiteManager, $stateParams) {
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        return SiteManager.one().get($stateParams);
                     }
                 },
                 ncyBreadcrumb: {

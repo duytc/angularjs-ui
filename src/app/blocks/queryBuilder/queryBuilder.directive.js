@@ -5,7 +5,7 @@
         .directive('queryBuilder', queryBuilder)
     ;
 
-    function queryBuilder($compile, CONDITIONS_STRING, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, TYPE_AD_SLOT, queryBuilderService, DisplayAdSlotManager) {
+    function queryBuilder($compile, _, CONDITIONS_STRING, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, TYPE_AD_SLOT, queryBuilderService, DisplayAdSlotManager) {
         'use strict';
 
         return {
@@ -14,7 +14,8 @@
                 adSlots: '=',
                 tags: '=',
                 native: '=',
-                disabledDirective: '='
+                disabledDirective: '=',
+                notHeaderBidding: '='
             },
             restrict: 'AE',
             templateUrl: 'blocks/queryBuilder/queryBuilder.tpl.html',
@@ -35,6 +36,8 @@
                     scope.selectExpectAdSlot = selectExpectAdSlot;
                     scope.formatPositionLabel = formatPositionLabel;
                     scope.filterEntityType = filterEntityType;
+                    scope.expectAdSlotIsDisplay = expectAdSlotIsDisplay;
+                    scope.changeHeaderBidPrice = changeHeaderBidPrice;
 
                     scope.sortableOptions = {
                         disabled: true,
@@ -150,6 +153,26 @@
                         }
 
                         return false;
+                    }
+
+                    function changeHeaderBidPrice(expression) {
+                        expression.hbBidPrice = expression.hbBidPriceClone
+                    }
+
+                    function expectAdSlotIsDisplay(expectAdSlot) {
+                        if(angular.isObject(expectAdSlot) && expectAdSlot.type == scope.typesList.display) {
+                            return true
+                        }
+
+                        var adSlot = _.find(scope.adSlots, function(adSlot) {
+                            return adSlot.id == expectAdSlot;
+                        });
+
+                        if(!adSlot) {
+                            return false
+                        }
+
+                        return adSlot.type == scope.typesList.display
                     }
 
                     function enableDragDropQueryBuilder(enable) {

@@ -36,9 +36,9 @@
         function _bodyData(data, fields) {
             var body = "";
             angular.forEach(data, function(dataItem) {
-                dataItem.date = '"' + $filter('date')(dataItem.date, 'longDate') + '"';
-                dataItem.startDate = '"' + $filter('date')(dataItem.startDate, 'longDate') + '"';
-                dataItem.endDate = '"' + $filter('date')(dataItem.endDate, 'longDate') + '"';
+                dataItem.date = $filter('date')(dataItem.date, 'longDate');
+                dataItem.startDate = $filter('date')(dataItem.startDate, 'longDate');
+                dataItem.endDate = $filter('date')(dataItem.endDate, 'longDate');
 
                 var rowItems = [];
 
@@ -66,7 +66,11 @@
                         fieldValue = _objectToString(fieldValue);
                     }
 
-                    rowItems.push(fieldValue);
+                    if(typeof fieldValue == 'string') {
+                        rowItems.push('"' + fieldValue.replace(/"/g, '""') + '"');
+                    } else {
+                        rowItems.push(fieldValue);
+                    }
                 });
 
                 body += rowItems.toString() + '\n';

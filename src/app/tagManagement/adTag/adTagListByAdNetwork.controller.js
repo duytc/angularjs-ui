@@ -5,7 +5,7 @@
         .controller('AdTagListByAdNetwork', AdTagListByAdNetwork)
     ;
 
-    function AdTagListByAdNetwork($scope, $translate, $state, $modal, adTags, adNetwork, AdTagManager, AlertService, historyStorage, HISTORY_TYPE_PATH) {
+    function AdTagListByAdNetwork($scope, $translate, $state, $modal, adTags, adNetwork, AdTagManager, AlertService, AdTagLibrariesManager, historyStorage, HISTORY_TYPE_PATH) {
         $scope.adNetwork = adNetwork;
         $scope.adTags = adTags;
 
@@ -16,6 +16,7 @@
         $scope.showPagination = showPagination;
         $scope.backToListAdNetwork = backToListAdNetwork;
         $scope.updateAdTag = updateAdTag;
+        $scope.shareAdTag = shareAdTag;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -50,6 +51,26 @@
                         if(adTagChange.libraryAdTag.id == adTag.libraryAdTag.id && adTagChange.adSlot.libraryAdSlot.id == adTag.adSlot.libraryAdSlot.id && adTagChange.adSlot.site.id != adTag.adSlot.site.id) {
                             adTagChange.active = newTagStatus;
                         }
+                    });
+                })
+            ;
+        };
+
+        $scope.unLinkAdTag = function (adTag) {
+            var Manager = AdTagManager.one(adTag.id).one('unlink').patch();
+            Manager
+                .then(function () {
+                    adTag.libraryAdTag.visible = false;
+
+                    AlertService.addAlert({
+                        type: 'success',
+                        message: $translate.instant('AD_TAG_MODULE.UNLINK_SUCCESS')
+                    });
+                })
+                .catch(function () {
+                    AlertService.addAlert({
+                        type: 'error',
+                        message: $translate.instant('AD_TAG_MODULE.UNLINK_FAIL')
                     });
                 })
             ;
@@ -115,6 +136,29 @@
                         message: $translate.instant('AD_TAG_MODULE.UPDATE_FAIL')
                     });
                 });
+        }
+
+        function shareAdTag(adTag) {
+            var libraryAdTag = {
+                visible: true
+            };
+
+            AdTagLibrariesManager.one(adTag.libraryAdTag.id).patch(libraryAdTag)
+                .then(function () {
+                    adTag.libraryAdTag.visible = true;
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: $translate.instant('AD_TAG_MODULE.MOVED_TO_LIBRARY_SUCCESS')
+                    });
+                })
+                .catch(function () {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: $translate.instant('AD_TAG_MODULE.MOVED_TO_LIBRARY_FAIL')
+                    });
+                })
+            ;
         }
 
         $scope.$on('$locationChangeSuccess', function() {

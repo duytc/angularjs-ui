@@ -5,7 +5,7 @@
         .controller('TagGenerator', TagGenerator)
     ;
 
-    function TagGenerator($scope, $translate, $location, $q, channelList, site, channel, jstags, publishers, SiteManager, adminUserManager, accountManager, Auth, USER_MODULES) {
+    function TagGenerator($scope, $translate, $location, $q, channelList, site, channel, jstags, publishers, SiteManager, ChannelManager, adminUserManager, accountManager, Auth, USER_MODULES) {
         $scope.formProcessing = false;
         $scope.jstagCopy = angular.copy(jstags);
         var totalRecord = null;
@@ -190,7 +190,7 @@
             var lastNameFile = '-tags.txt';
 
             if($scope.typeSelected == $scope.typeKey.adSlot) {
-                lastNameFile = '-tags.csv';
+                lastNameFile = '-tags.txt';
 
                 if($scope.selected.generatorFor == 'site') {
                     name = 'site-' + $scope.selected.site.domain;
@@ -205,7 +205,7 @@
                 name = 'Universal Passback';
             }
             else {
-                lastNameFile = '-tags.csv';
+                lastNameFile = '-tags.txt';
                 name = 'RON ad slot';
             }
 
@@ -217,11 +217,10 @@
                 if($scope.selected.generatorFor == 'channel') {
                     var channel = $scope.selected.channel;
 
-                    return channel.customGET('jstags');
+                    return ChannelManager.one(channel.id).customGET('jstags');
                 }
 
                 var site = $scope.selected.site;
-
                 return SiteManager.one(site.id).customGET('jstags');
             }
 
@@ -245,48 +244,19 @@
         }
 
         function _tagsAdSlotString(jstags) {
+            var tags = '';
+
             if(!!jstags.header && $scope.typeSelected == $scope.typeKey.header) {
-                return 'HEADER' + '\n#' + $scope.keywordGuide.header + _downLine('=') + jstags.header + _downLine();
+                tags = 'HEADER' + '\n#' + $scope.keywordGuide.header + _downLine('=') + jstags.header + _downLine();
             }
 
-            var header = '', body = '';
-
-            if($scope.selected.generatorFor == 'site' && $scope.typeSelected == $scope.typeKey.adSlot) {
-                header = 'AdSlot Name, Type, Tag \n';
-            }
-            else if($scope.selected.generatorFor == 'channel' && $scope.typeSelected == $scope.typeKey.adSlot) {
-                header = 'AdSlot Name, Type, Site, Tag \n';
-            }
-            else if($scope.typeSelected == $scope.selected.type) {
-                header = 'AdSlot Name, Type, Segment, Tag \n';
-            }
-
-            angular.forEach(jstags, function(adSlotTags, type) {
-                if(!angular.isObject(adSlotTags)) {
-                    return;
+            angular.forEach(jstags, function(adSlotTags, name) {
+                if(angular.isObject(adSlotTags)) {
+                    tags = tags + _downLine('=') + name.toUpperCase() + '\n#' + $scope.keywordGuide.adSlot + _printTags(adSlotTags);
                 }
-
-                angular.forEach(adSlotTags.ad_slots, function(adSlotTag, id) {
-                    var row = '';
-                    if($scope.selected.generatorFor == 'channel' && $scope.typeSelected == $scope.typeKey.adSlot) {
-                        row = '"' + adSlotTag.name + '"' + ',' + type + ',' + adSlotTag.site + ',' + '"' + adSlotTag.jstag + '"' + '\n'
-                    }
-                    else if($scope.selected.generatorFor == 'site' && $scope.typeSelected == $scope.typeKey.adSlot) {
-                        row = '"' + adSlotTag.name + '"' + ',' + type + ',' + '"' + adSlotTag.jstag + '"' + '\n'
-                    }
-                    else if($scope.typeSelected == $scope.selected.type) {
-                        row = '"' + adSlotTag.name + '"' + ',' + type + ', <Global>, ' + '"' + adSlotTag.jstag + '"' + '\n';
-
-                        angular.forEach(adSlotTag.segments, function(segmentTag, segmentName) {
-                            row += '"' + adSlotTag.name + '"' + ',' + type + ', ' + segmentName + ', ' + '"' + segmentTag + '"' + '\n';
-                        })
-                    }
-
-                    body += row;
-                })
             });
 
-            return header + body;
+            return tags;
         }
 
         function _tagsPassbackString(jstags) {
@@ -305,6 +275,23 @@
             return '\n' + dividers + '\n';
         }
 
+        function _printTags(adSlotTags) {
+            var adTags = _downLine('=');
+
+            angular.forEach(adSlotTags.ad_slots, function(tag) {
+                adTags = adTags + tag.name + _downLine() + tag.jstag + _downLine();
+
+                if(!!tag.segments) {
+                    adTags = adTags + 'For Report Segment ' + tag.name + _downLine('=');
+
+                    angular.forEach(tag.segments, function(segment, name) {
+                        adTags = adTags + name + _downLine() + segment + _downLine();
+                    })
+                }
+            });
+
+            return adTags;
+        }
 
         var params = {
             query: '',
@@ -341,6 +328,7 @@
             SiteManager.one().get(params)
                 .then(function(data) {
                     angular.forEach(data.records, function(item) {
+                        totalRecord = data.totalRecord;
                         $scope.siteList.push(item);
                     })
             });

@@ -9,7 +9,16 @@
         reportGroup = reportGroup || {};
 
         $scope.reportGroup = reportGroup;
-        $scope.reports = $scope.reportGroup.reports || [];
+        $scope.reports = [];
+        $scope.subBreakDown = $stateParams.subBreakDown;
+
+        if(!!$scope.subBreakDown && $scope.subBreakDown == 'day') {
+            angular.forEach($scope.reportGroup.reports, function(rootReport) {
+                $scope.reports = $scope.reports.concat(rootReport.reports.reverse());
+            })
+        } else {
+            $scope.reports = $scope.reportGroup.reports || [];
+        }
 
         $scope.params = $stateParams;
         $scope.enableViewTagcadeReport = Auth.getSession().enableViewTagcadeReport;
@@ -22,6 +31,7 @@
         $scope.showPagination = showPagination;
         $scope.drillDownReport = drillDownReport;
         $scope.getExportExcelFileName = getExportExcelFileName();
+        $scope.downloadExportExcel = downloadExportExcel;
 
         function drillDownReport(state, drillParams) {
             if (!angular.isString(state)) {
@@ -55,6 +65,16 @@
                     });
                 })
             ;
+        }
+
+        function downloadExportExcel() {
+            var params = ReportParams.getStateParams(unifiedReport.getInitialParams());
+
+            unifiedReport.getLinkDownloadExcel(params)
+                .then(function(data) {
+                    var file = new Blob([data], { type: 'text/csv' });
+                    saveAs(file, getExportExcelFileName() + '.csv');
+                });
         }
 
         function showPagination() {

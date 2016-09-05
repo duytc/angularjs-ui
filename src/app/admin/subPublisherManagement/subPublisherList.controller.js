@@ -6,11 +6,12 @@
         .controller('SubPublisherList', SubPublisherList)
     ;
 
-    function SubPublisherList($scope, $translate, subPublishers, subPublisherRestangular, AlertService, historyStorage, HISTORY_TYPE_PATH) {
+    function SubPublisherList($scope, $translate, subPublishers, subPublisherRestangular, AlertService, publisherRestangular, autoLogin, historyStorage, HISTORY_TYPE_PATH) {
         $scope.subPublishers = subPublishers;
 
         $scope.today = new Date();
         $scope.showPagination = showPagination;
+        $scope.visitPublisher = visitPublisher;
         $scope.togglePublisherStatus = togglePublisherStatus;
 
         $scope.tableConfig = {
@@ -46,6 +47,13 @@
                     });
                 })
                 ;
+        }
+
+        function visitPublisher(publisherId) {
+            publisherRestangular.one('subpublishers').one(publisherId.toString()).one('token').get()
+                .then(function(tokenPublisher) {
+                    autoLogin.switchToUser(tokenPublisher.plain(), 'app.subPublisher.reports.unified.day');
+                });
         }
 
         function showPagination() {

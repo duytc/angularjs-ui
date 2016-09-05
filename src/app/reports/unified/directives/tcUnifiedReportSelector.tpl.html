@@ -53,12 +53,12 @@
                         </ui-select>
                     </div>
 
-                    <div class="report-type form-group">
+                    <div class="report-type form-group select-breakdown">
                         <label>{{ 'REPORT.BREAKDOWN' | translate }}</label>
-                        <ui-select ng-model="selectedData.breakDown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
-                            <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ $select.selected.label }}</ui-select-match>
-                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in breakdownOptions | filter:filterBreakdown:option">
-                                <div ng-bind-html="option.label"></div>
+                        <ui-select ng-model="selectedData.labelBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ selectedData.labelBreakdown }}</ui-select-match>
+                            <ui-select-choices stop-event group-by="groupEntities" repeat="option.key as option in breakdownOptions | filter:filterBreakdown:option">
+                                <label stop-event class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="selectedData.breakDowns[option.key]" ng-click="clickBreakdown(option.key)" id="inputEnabled"><span> {{ option.label }}</span></label>
                             </ui-select-choices>
                         </ui-select>
                     </div>

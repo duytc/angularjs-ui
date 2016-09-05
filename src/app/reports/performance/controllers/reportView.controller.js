@@ -8,7 +8,7 @@
     /**
      * @param {Array} reportGroup.reports
      */
-    function ReportView($scope, $translate, $timeout, _, accountManager, sessionStorage, $state, Auth, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES, TYPE_AD_SLOT, REPORT_SETTINGS) {
+    function ReportView($scope, $translate, $stateParams, $timeout, _, accountManager, sessionStorage, $state, Auth, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES, TYPE_AD_SLOT, REPORT_SETTINGS) {
         var isAdmin = Auth.isAdmin();
         var isSubPublisher = Auth.isSubPublisher();
         $scope.isAdmin = isAdmin;
@@ -16,7 +16,18 @@
         $scope.hasResult = reportGroup !== false;
         reportGroup = reportGroup || {};
         $scope.reportGroup = reportGroup;
-        $scope.reports = $state.current.params.expanded ? ($scope.reportGroup.expandedReports || []) : ($scope.reportGroup.reports || []);
+        $scope.reports = [];
+        $scope.subBreakDown = $stateParams.subBreakDown;
+        var dataGroupReport = $state.current.params.expanded ? ($scope.reportGroup.expandedReports || []) : ($scope.reportGroup.reports || []);
+
+        if(!!$scope.subBreakDown && $scope.subBreakDown == 'day') {
+            angular.forEach(dataGroupReport, function(rootReport) {
+                $scope.reports = $scope.reports.concat(rootReport.reports.reverse());
+            })
+        } else {
+            $scope.reports = dataGroupReport;
+        }
+
         $scope.demandSourceTransparency = Auth.getSession().demandSourceTransparency;
 
         var reportType = 'adTag';

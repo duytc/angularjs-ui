@@ -39,6 +39,10 @@
     cursor: pointer;
 }
 
+[at-attribute="date"] {
+  min-width: 100px;
+}
+
 [ng-click].click-disabled,
 [data-ng-click].click-disabled,
 [x-ng-click].click-disabled {
@@ -296,4 +300,23 @@ body {
 
 .main-container:before {
   content: none !important;
+}
+
+.select-breakdown {
+  .ui-select-bootstrap .ui-select-choices-row>a {
+    padding: 0 !important;
+  }
+
+  a label {
+    width: 100%;
+    margin-bottom: 0;
+    height: 40px;
+    padding: 10px 10px 10px 30px;
+    margin-left: 0;
+    text-transform: none !important;
+
+    span:after {
+      margin: 10px 10px 10px 30px;
+    }
+  }
 }

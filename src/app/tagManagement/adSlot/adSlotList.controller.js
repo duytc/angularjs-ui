@@ -44,6 +44,7 @@
         $scope.backToListSite = backToListSite;
         $scope.exist = exist;
         $scope.shareAdSlot = shareAdSlot;
+        $scope.unLinkAdSlot = unLinkAdSlot;
         $scope.changePage = changePage;
         $scope.searchData = searchData;
 
@@ -54,12 +55,12 @@
         };
 
         $scope.availableOptions = {
-            currentPage: 1,
+            currentPage: $stateParams.page || 1,
             pageSize: 10
         };
 
         $scope.selectData = {
-            query: null
+            query: $stateParams.searchKey || null
         };
 
         var getAdSlot;
@@ -196,13 +197,33 @@
             ;
         }
 
+        function unLinkAdSlot(adSlot) {
+            var Manager = AdSlotManager.one(adSlot.id).one('unlink').patch();
+            Manager
+                .then(function () {
+                    adSlot.libraryAdSlot.visible = false;
+
+                    AlertService.addAlert({
+                        type: 'success',
+                        message: $translate.instant('AD_SLOT_MODULE.UNLINK_SUCCESS')
+                    });
+                })
+                .catch(function () {
+                    AlertService.addAlert({
+                        type: 'error',
+                        message: $translate.instant('AD_SLOT_MODULE.UNLINK_FAIL')
+                    });
+                })
+            ;
+        }
+
         function changePage(currentPage) {
             params = angular.extend(params, {page: currentPage});
             _getAdSlot(params);
         }
 
         function searchData() {
-            var query = {searchKey: $scope.selectData.query || null};
+            var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
             _getAdSlot(params);
         }
@@ -223,6 +244,7 @@
                 params = query;
                 return Manager
                     .then(function(adSlots) {
+                        AtSortableService.insertParamForUrl(query);
                         $scope.adSlots = adSlots;
                         $scope.tableConfig.totalItems = Number(adSlots.totalRecord);
                         $scope.availableOptions.currentPage = Number(query.page);

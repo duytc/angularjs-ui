@@ -118,10 +118,11 @@
                             defaultGroupLabel = defaultGroupLabel + _getJSStringFromPattern(cmpConfig.jsPattern, variable, item) + typeForValueObject + ' ';
                         })
                     } else {
-                        value = value.replace(/[/]/g, '\\/');
-                        value = value.replace(/[&]/g, '\\&');
-                        value = value.replace(/[-]/g, '\\-');
-                        value = value.replace(/[?]/g, '\\?');
+                        value = value.replace(/[/]/g, '\/');
+                        value = value.replace(/[&]/g, '\&');
+                        value = value.replace(/[-]/g, '\-');
+                        value = value.replace(/[?]/g, '\?');
+                        value = value.replace(/[$]/g, '$$$$');
 
                         defaultGroupLabel = _getJSStringFromPattern(cmpConfig.jsPattern, variable, value);
                     }

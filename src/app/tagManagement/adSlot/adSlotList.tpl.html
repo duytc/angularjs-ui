@@ -77,17 +77,20 @@
                                 <li ng-if="!exist(item.type, adSlotTypes.dynamic) && demandSourceTransparency"><a ui-sref="^.^.^.reports.performance.adSlotAdTags({ adSlotId: item.id, startDate: today})">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
 
                                 <li ng-if="!exist(item.type, adSlotTypes.dynamic) && !isSubPublisher()" class="divider"></li>
-                                <li ng-if="!item.libraryAdSlot.visible && !isSubPublisher()"><a ui-sref="^.edit({ id: item.id })">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT' | translate }}</a></li>
-                                <li ng-if="item.libraryAdSlot.visible && !isSubPublisher()"><a  ui-sref="^.^.^.tagLibrary.adSlot.edit({ id: item.libraryAdSlot.id, from: isChannel ? 'channel' : 'site'})">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ui-sref="^.edit({ id: item.id })">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT' | translate }}</a></li>
+                                <!--<li ng-if="item.libraryAdSlot.visible && !isSubPublisher()"><a  ui-sref="^.^.^.tagLibrary.adSlot.edit({ id: item.libraryAdSlot.id, from: isChannel ? 'channel' : 'site'})">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT' | translate }}</a></li>-->
 
                                 <li ng-if="!exist(item.type, adSlotTypes.dynamic) && !isSubPublisher()"><a ng-click="cloneAdSlot(item)">{{ 'AD_SLOT_MODULE.CLONE_AD_SLOT' | translate }}</a></li>
                                 <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item)">{{ 'AD_SLOT_MODULE.DELETE_AD_SLOT' | translate }}</a></li>
-                                <li ng-if="!item.libraryAdSlot.visible && !isSubPublisher()" class="divider"></li>
+                                <li ng-if="!isSubPublisher()" class="divider"></li>
                                 <li ng-if="!item.libraryAdSlot.visible && !isSubPublisher()" ng-click="shareAdSlot(item)"><a>{{ 'AD_SLOT_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>
+                                <li ng-if="item.libraryAdSlot.visible && !isSubPublisher()" ng-click="unLinkAdSlot(item)"><a>{{ 'AD_SLOT_MODULE.UNLINK' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>
-                    <td at-implicit at-title="{{ 'AD_SLOT' | translate }}" at-sortable at-attribute="libraryAdSlot.name" at-initial-sorting="asc"></td>
+                    <td at-title="{{ 'AD_SLOT' | translate }}" at-sortable at-attribute="libraryAdSlot.name" at-initial-sorting="asc">
+                        {{ item.libraryAdSlot.name }} <span ng-if="item.libraryAdSlot.visible" class="glyphicon glyphicon-link"></span>
+                    </td>
                     <td ng-show="allAdSlot && !isChannel" at-title="{{ 'SITE' | translate }}" at-implicit at-sortable at-attribute="site.name"></td>
                     <td at-title="{{ 'AD_SLOT_MODULE.SIZE' | translate }}" at-attribute="width">
                         {{ !!item.libraryAdSlot.width ? item.libraryAdSlot.width + 'x' + item.libraryAdSlot.height : ''}}

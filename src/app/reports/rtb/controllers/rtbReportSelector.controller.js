@@ -5,7 +5,7 @@
         .controller('RtbReportSelector', RtbReportSelector)
     ;
 
-    function RtbReportSelector($scope, $translate, $q, $state, _, PERFORMANCE_REPORT_TYPES, Auth, UserStateHelper, AlertService, rtbReport, reportSelectorForm, ReportParams) {
+    function RtbReportSelector($scope, $translate, $q, $state, _, PERFORMANCE_REPORT_TYPES, Auth, UserStateHelper, adminUserManager, AlertService, rtbReport, reportSelectorForm, ReportParams) {
         // important init code at the bottom
 
         var toState = null;
@@ -282,8 +282,10 @@
             };
         }
 
-        function selectPublisher() {
+        function selectPublisher(publisher) {
             resetForm();
+
+            _getSitesForPublisher(publisher.id);
         }
 
         /**
@@ -302,6 +304,8 @@
             }
 
             toState = reportType.toState;
+            $scope.selectedData.reportType = reportType;
+            _getSitesForPublisher($scope.selectedData.publisherId);
 
         }
 
@@ -410,6 +414,19 @@
 
         /////
 
+        function _getSitesForPublisher(publisherId) {
+            if(!isAdmin || (!!$scope.selectedData.reportType && $scope.selectedData.reportType.key != PERFORMANCE_REPORT_TYPES.site && $scope.selectedData.reportType.key != PERFORMANCE_REPORT_TYPES.adSlot) || !publisherId) {
+                return
+            }
+
+            adminUserManager.one(publisherId).one('sites').getList()
+                .then(function (data) {
+                    addAllOption(data, 'All Sites');
+                    $scope.optionData.sites = data;
+                })
+            ;
+        }
+
         function init() {
             if (isAdmin) {
                 reportSelectorForm.getPublishers()
@@ -419,21 +436,15 @@
                 ;
             }
 
-            reportSelectorForm.getAdNetworks()
-                .then(function (data) {
-                    addAllOption(data, 'All Ad Networks');
+            if (!isAdmin) {
+                reportSelectorForm.getSites()
+                    .then(function (data) {
 
-                    $scope.optionData.adNetworks = data;
-                })
-            ;
-
-            reportSelectorForm.getSites()
-                .then(function (data) {
-
-                    addAllOption(data, 'All Sites');
-                    $scope.optionData.sites = data;
-                })
-            ;
+                        addAllOption(data, 'All Sites');
+                        $scope.optionData.sites = data;
+                    })
+                ;
+            }
 
             update();
 
@@ -443,6 +454,10 @@
 
             if (!$scope.selectedData.date.endDate) {
                 $scope.selectedData.date.endDate = $scope.selectedData.date.startDate
+            }
+
+            if(!!$scope.optionData.sites && $scope.optionData.sites.length == 0) {
+                _getSitesForPublisher($scope.selectedData.publisherId)
             }
         }
 
@@ -462,10 +477,6 @@
 
                     var breakdownValue = calculatedParams[reportType.breakdownKey];
                     if (breakdownValue != undefined && breakdownValue != null) {
-                        if (calculatedParams.adNetworkId != null) {
-                            selectSiteForAdNetwork(calculatedParams.siteId);
-                        }
-
                         var breakdownOption = _.findWhere(reportType.breakdownOptions, { key: breakdownValue });
                         selectBreakdownOption(breakdownOption);
                     }
@@ -477,11 +488,6 @@
 
                     if (calculatedParams.siteId != null) {
                         selectEntity(calculatedParams.siteId);
-                    }
-
-                    if (calculatedParams.adNetworkId != null) {
-                        selectAdNetwork(calculatedParams.adNetworkId);
-                        selectSiteForAdNetwork(calculatedParams.siteId);
                     }
 
                     angular.extend($scope.selectedData, _.omit(calculatedParams, ['reportType']));

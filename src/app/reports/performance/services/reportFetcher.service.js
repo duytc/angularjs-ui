@@ -28,7 +28,13 @@
             getRonAdSlotReport: getRonAdSlotReport,
             getRonAdSlotSitesReport: getRonAdSlotSitesReport,
             getRonAdSlotSegmentsReport: getRonAdSlotSegmentsReport,
-            getRonAdSlotAdTagsReport: getRonAdSlotAdTagsReport
+            getRonAdSlotAdTagsReport: getRonAdSlotAdTagsReport,
+
+            getPublisherAdNetworksByDayReport: getPublisherAdNetworksByDayReport,
+            getPublisherSitesByDayReport: getPublisherSitesByDayReport,
+            getPublisherAdNetworksByAdTagsReport: getPublisherAdNetworksByAdTagsReport,
+            getPublisherAdNetworksBySubPublishersReport: getPublisherAdNetworksBySubPublishersReport,
+            getAdNetworkSiteSubPublisherReport: getAdNetworkSiteSubPublisherReport
         };
 
         return api;
@@ -99,7 +105,7 @@
          * @param {int} params.publisherId
          */
         function getPublisherAdNetworksReport(params) {
-            return getReports('/accounts/:publisherId/adnetworks', params);
+            return getReports('/accounts/:publisherId/adnetworks/all/adnetworks', params);
         }
 
         /**
@@ -155,7 +161,7 @@
          * @param {int} params.publisherId
          */
         function getPublisherSitesReport(params) {
-            return getReports('/accounts/:publisherId/sites', params);
+            return getReports('/accounts/:publisherId/sites/all/sites', params);
         }
 
         /**
@@ -241,6 +247,51 @@
          */
         function getRonAdSlotAdTagsReport(params) {
             return getReports('/ronadslots/:ronAdSlotId/adtags', params);
+        }
+
+        /**
+         *
+         * @param params
+         * @returns {Promise}
+         */
+        function getPublisherAdNetworksByDayReport(params) {
+            return getReports('/accounts/:publisherId/adnetworks/all', params);
+        }
+
+        /**
+         *
+         * @param params
+         * @returns {Promise}
+         */
+        function getPublisherSitesByDayReport(params) {
+            return getReports('/accounts/:publisherId/sites/all', params);
+        }
+
+        /**
+         *
+         * @param params
+         * @returns {Promise}
+         */
+        function getPublisherAdNetworksByAdTagsReport(params) {
+            return getReports('/accounts/:publisherId/adnetworks/all/adtags', params);
+        }
+
+        /**
+         *
+         * @param params
+         * @returns {Promise}
+         */
+        function getPublisherAdNetworksBySubPublishersReport(params) {
+            return getReports('/accounts/:publisherId/partners/all/subpublishers', params);
+        }
+
+        /**
+         *
+         * @param params
+         * @returns {Promise}
+         */
+        function getAdNetworkSiteSubPublisherReport(params) {
+            return getReports('/accounts/:publisherId/partners/:adNetworkId/sites/all/subpublishers', params);
         }
     }
 })(angular);
