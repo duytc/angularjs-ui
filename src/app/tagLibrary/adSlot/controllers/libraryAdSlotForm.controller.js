@@ -299,12 +299,7 @@
             if(!$scope.isNew) {
                 if(adSlotType == $scope.typesList.dynamic) {
                     angular.forEach(adSlot.libraryExpressions, function(libraryExpression) {
-                        angular.forEach(libraryExpression.expressionDescriptor.groupVal, function(group) {
-                            if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}')) {
-                                group.val = group.val.split(',');
-                                group.cmp = group.cmp == '==' ||  group.cmp == 'is' ? 'is' : 'isNot';
-                            }
-                        });
+                        _convertGroupVal(libraryExpression.expressionDescriptor.groupVal);
                     });
 
                     _getAdSlots(adSlotType)
@@ -403,6 +398,19 @@
 
                 if(angular.isObject(group.groupVal)) {
                     _formatGroupVal(group.groupVal);
+                }
+            });
+        }
+
+        function _convertGroupVal(groupVal) {
+            angular.forEach(groupVal, function(group) {
+                if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}')) {
+                    group.val = group.val.split(',');
+                    group.cmp = group.cmp == '==' ||  group.cmp == 'is' ? 'is' : 'isNot';
+                }
+
+                if(angular.isObject(group.groupVal)) {
+                    _convertGroupVal(group.groupVal);
                 }
             });
         }
