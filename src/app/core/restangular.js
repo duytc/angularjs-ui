@@ -24,7 +24,7 @@
                 // the entity id is provided in the url
                 delete element.id;
 
-                if (!Auth.isAdmin() && ['sites', 'adnetworks'].indexOf(what) > -1) {
+                if (!Auth.isAdmin() && ['sites', 'adnetworks', 'videodemandpartners', 'videoadtags'].indexOf(what) > -1) {
                     // the publisher field is determined server side based on the JWT
                     // trying to send it manually for non-admin users will result in an error
                     delete element.publisher;

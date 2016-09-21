@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()">×</button>
+    <form class="form-inline">
+        <h4 class="form-group">{{ ('DOMAIN_LIST_MODULE.VIEW_DOMAINS' | translate) }}</h4>
+        <search-box style ='padding: 60px' show-query="true" sb-list="domains" search-fields="['id', 'name']"> </search-box>
+    </form>
+
+</div>
+<div class="modal-body">
+    <div class="row">
+        <ul class="list-group">
+            <li ng-repeat="domain in domains" class="list-group-item">{{ domain.name }}</li>
+        </ul>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="$close()">{{ 'CLOSE' | translate }}</button>
+</div>

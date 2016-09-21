@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{ 'VIDEO_AD_TAG_MODULE.WARNING_BUY_PRICE' | translate }}</h4>
+</div>
+<!--<div class="modal-body" ng-if="!!waterfallTags">-->
+    <!--<ul class="list-unstyled report list-info">-->
+        <!--<li ng-repeat="waterfall in waterfallTags">-->
+            <!--<label>{{ waterfall.name }}</label>-->
+            <!--<span class="pull-right">{{ waterfall.buyPrice | currency:'$':2 }}</span>-->
+        <!--</li>-->
+    <!--</ul>-->
+<!--</div>-->
+<!--<div ng-class="{'modal-footer': !!waterfallTags, 'modal-dialog-footer': !waterfallTags}">-->
+<div class="modal-dialog-footer">
+    <button class="btn btn-primary" ng-click="$dismiss()">{{ 'NO_CANCEL' | translate }}</button>
+    <button class="btn btn-success" ng-click="$close()">{{ 'YES_SUBMIT' | translate }}</button>
+</div>

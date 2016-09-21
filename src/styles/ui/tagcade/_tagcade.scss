@@ -11,7 +11,8 @@
     "tagsManagement/adTags",
     "tagsManagement/adTagForm",
     "tagsManagement/adSlotForm",
-    "tagsManagement/tagGenerator"
+    "tagsManagement/tagGenerator",
+    "videoManagment/videoAdTagForm"
 ;
 // custom
 
@@ -291,6 +292,7 @@ table {
 body {
   background-color: #F9F9F9;
   min-width: 100%;
+  color: #3d3d3d; //pubvantage null
 }
 
 #app {
@@ -319,4 +321,13 @@ body {
       margin: 10px 10px 10px 30px;
     }
   }
+}
+
+.page-sidebar.menu-compact {
+  width: 0 !important;
+}
+
+.highlightedText {
+  color: #A45E5D;
+  font-weight: bold;
 }

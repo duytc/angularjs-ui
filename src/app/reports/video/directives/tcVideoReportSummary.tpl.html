@@ -1,0 +1,124 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> {{ 'REPORT.TOTALS' | translate }}</div>
+            <div class="panel-body">
+                <ul class="list-unstyled report list-info">
+                    <li ng-if="hasKeyObject('requests', 'requests')">
+                        <label>Requests</label>
+                        <span class="pull-right">{{ reportGroup.requests | number }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('bids', 'bids')">
+                        <label>Bids</label>
+                        <span class="pull-right">{{ reportGroup.bids | number }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('bidRate', 'bidRate')">
+                        <label>Bid Rate</label>
+                        <span class="pull-right">{{ reportGroup.bidRate | percentage }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('errors', 'errors')">
+                        <label>Errors</label>
+                        <span class="pull-right">{{ reportGroup.errors | number }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('errorRate', 'errorRate')">
+                        <label>Error Rate</label>
+                        <span class="pull-right">{{ reportGroup.errorRate | percentage }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('impressions', 'impressions')">
+                        <label>Impressions</label>
+                        <span class="pull-right">{{ reportGroup.impressions | number }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('fillRate', 'fillRate')">
+                        <label>Fill Rate</label>
+                        <span class="pull-right">{{ reportGroup.fillRate | percentage }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('clicks', 'clicks')">
+                        <label>Clicks</label>
+                        <span class="pull-right">{{ reportGroup.clicks | number }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('clickThroughRate', 'clickThroughRate')">
+                        <label>Click Through Rate</label>
+                        <span class="pull-right">{{ reportGroup.clickThroughRate | percentage }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('blocks', 'blocks')">
+                        <label>Blocks</label>
+                        <span class="pull-right">{{ reportGroup.blocks | number }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('adTagRequests', 'adTagRequests')">
+                        <label>Ad Tag Requests</label>
+                        <span class="pull-right">{{ (reportGroup.adTagRequests != null) ? (reportGroup.adTagRequests | number) : '-' }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('adTagBids', 'adTagBids')">
+                        <label>Ad Tag Bids</label>
+                        <span class="pull-right">{{ (reportGroup.adTagBids != null) ? (reportGroup.adTagBids | number) : '-' }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('adTagErrors', 'adTagErrors')">
+                        <label>Ad Tag Errors</label>
+                        <span class="pull-right">{{ (reportGroup.adTagErrors != null) ? (reportGroup.adTagErrors | number) : '-' }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> {{ 'REPORT.DAILY_AVERAGES' | translate }}</div>
+            <div class="panel-body">
+                <ul class="list-unstyled report list-info">
+                    <li ng-if="hasKeyObject('requests', 'averageRequests')">
+                        <label>Requests</label>
+                        <span class="pull-right">{{ reportGroup.averageRequests | number  }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('bids', 'averageBids')">
+                        <label>Bids</label>
+                        <span class="pull-right">{{ reportGroup.averageBids | number }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('bidRate', 'averageBidRate')">
+                        <label>Bid Rate</label>
+                        <span class="pull-right">{{ reportGroup.averageBidRate | percentage }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('errors', 'averageErrors')">
+                        <label>Errors</label>
+                        <span class="pull-right">{{ reportGroup.averageErrors | number }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('errorRate', 'averageErrorRate')">
+                        <label>Error Rate</label>
+                        <span class="pull-right">{{ reportGroup.averageErrorRate | percentage }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('impressions', 'averageImpressions')">
+                        <label>Impressions</label>
+                        <span class="pull-right">{{ reportGroup.averageImpressions | number }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('fillRate', 'averageFillRate')">
+                        <label>Fill Rate</label>
+                        <span class="pull-right">{{ reportGroup.averageFillRate | percentage }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('clicks', 'averageClicks')">
+                        <label>Clicks</label>
+                        <span class="pull-right">{{ reportGroup.averageClicks | number }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('clickThroughRate', 'averageClickThroughRate')">
+                        <label>Click Through Rate</label>
+                        <span class="pull-right">{{ reportGroup.averageClickThroughRate | percentage }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('blocks', 'averageBlocks')">
+                        <label>Blocks</label>
+                        <span class="pull-right">{{ reportGroup.blocks | number }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('adTagRequests', 'averageAdTagRequest')">
+                        <label>Ad Tag Requests</label>
+                        <span class="pull-right">{{ (reportGroup.averageAdTagRequest != null) ? (reportGroup.averageAdTagRequest | number) : '-' }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('adTagBids', 'averageAdTagBid')">
+                        <label>Ad Tag Bids</label>
+                        <span class="pull-right">{{ (reportGroup.averageAdTagBid != null) ? (reportGroup.averageAdTagBid | number) : '-' }}</span>
+                    </li>
+                    <li ng-if="hasKeyObject('adTagErrors', 'averageAdTagError')">
+                        <label>Ad Tag Errors</label>
+                        <span class="pull-right">{{ (reportGroup.averageAdTagError != null) ? (reportGroup.averageAdTagError | number) : '-' }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

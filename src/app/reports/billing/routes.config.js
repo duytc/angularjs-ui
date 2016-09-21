@@ -47,5 +47,45 @@
                 }
             })
         ;
+
+        UserStateHelperProvider
+            .state('reports.billing.video', {
+                url: '/video?{product}{startDate:date}&{endDate:date}&{breakdown}&{reportTypeClone}&{publisherId}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    billing: {
+                        controller: 'BillingReport',
+                        templateUrl: function($stateParams) {
+                            if($stateParams.breakdown != 'day') {
+                                return 'reports/billing/views/video/reportAccount.tpl.html';
+                            }
+
+                            return 'reports/billing/views/video/report.tpl.html';
+                        }
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, videoReportService, dateUtil) {
+                        var params = {
+                            breakdowns: angular.toJson([!$stateParams.breakdown ? 'day' : $stateParams.breakdown]),
+                            metrics: angular.toJson([]),
+                            filters: angular.toJson({
+                                publisher: !!$stateParams.publisherId ? [$stateParams.publisherId] : [],
+                                startDate: dateUtil.getFormattedDate($stateParams.startDate),
+                                endDate: dateUtil.getFormattedDate($stateParams.endDate)
+                            })
+                        };
+
+                        return videoReportService.getPulsePoint(params)
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Billing reports'
+                }
+            })
+        ;
     }
 })();

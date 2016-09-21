@@ -1,0 +1,34 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{ 'VIDEO_DEMAND_PARTNER_MODULE.WATERFALLS_FOR_DEMAND_PARTNER' | translate }} : <strong>{{ demandPartner.name }}</strong></h4>
+</div>
+<div class="modal-body">
+
+    <div class="table-responsive">
+        <table class="table" at-table at-paginated at-list="waterfalls" at-config="tableConfig">
+            <thead></thead>
+            <tbody>
+            <tr>
+                <td at-title="#" at-implicit at-attribute="waterfallTag.id"></td>
+                <td at-title="{{ 'ACTIONS' | translate }}">
+                    <div class="btn-group" dropdown>
+                        <button type="button" class="btn" dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                        <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                            <li ng-if="item.pausedAdTagsCount > 0"><a ng-click="toggleStatus(item.waterfallTag, true)">{{ 'VIDEO_DEMAND_PARTNER_MODULE.DROPDOWN_ACTIVE' | translate }}</a></li>
+                            <li ng-if="item.activeAdTagsCount > 0"><a ng-click="toggleStatus(item.waterfallTag, false)">{{ 'VIDEO_DEMAND_PARTNER_MODULE.DROPDOWN_PAUSE' | translate }}</a></li>
+                        </ul>
+                    </div>
+                </td>
+                <td at-title="{{ 'WATERFALL_TAG' | translate }}" at-implicit at-attribute="waterfallTag.name"></td>
+                <td at-implicit at-attribute="activeAdTagsCount" at-title="{{ 'VIDEO_DEMAND_PARTNER_MODULE.ACTIVE_DEMAND_AD_TAGS_COUNT' | translate }}"></td>
+                <td at-implicit at-attribute="pausedAdTagsCount" at-title="{{ 'VIDEO_DEMAND_PARTNER_MODULE.PAUSE_DEMAND_AD_TAGS_COUNT' | translate }}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <at-pagination at-pagination-query ng-if="showPagination()" at-list="waterfalls" at-config="tableConfig"></at-pagination>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="$close()">{{ 'CLOSE' | translate }}</button>
+</div>

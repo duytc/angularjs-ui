@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    angular.module('tagcade.reports.rtb')
+    angular.module('tagcade.reports.unified')
         .controller('UnifiedReportSummary', UnifiedReportSummary)
     ;
 

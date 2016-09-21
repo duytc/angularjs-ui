@@ -5,7 +5,7 @@
         .controller('BillingReportSelector', BillingReportSelector)
     ;
 
-    function BillingReportSelector($scope, $translate, $q, $state, _, Auth, UserStateHelper, AlertService, ReportParams, billingService, performanceReport, adminUserManager, REPORT_TYPES, reportSelectorForm, selectorFormCalculator, UISelectMethod) {
+    function BillingReportSelector($scope, $stateParams, $translate, $q, $state, _, Auth, UserStateHelper, AlertService, ReportParams, billingService, performanceReport, adminUserManager, REPORT_TYPES, reportSelectorForm, selectorFormCalculator, UISelectMethod) {
         var toState;
 
         var isAdmin = Auth.isAdmin();
@@ -16,11 +16,12 @@
                 startDate: null,
                 endDate: null
             },
-            product: 'display',
+            product: (!$stateParams.product || $stateParams.product == 'display') ? 'display' : 'video',
             publisherId: null,
             reportType: null,
             siteId: null,
-            siteBreakdown: null
+            siteBreakdown: null,
+            breakdown: null
         };
 
         $scope.selectedData = selectedData;
@@ -67,36 +68,31 @@
                 key: 'display',
                 label: 'Display'
             },
-            //{
-            //    key: 'source',
-            //    label: 'Source'
-            //}
+            {
+                key: 'video',
+                label: 'Video'
+            }
         ];
 
-        var reportTypeOptions = [
+        var reportTypeForDisplayOptions = [
             {
                 key: REPORT_TYPES.account,
                 breakdownKey: 'accountBreakdown',
                 label: 'Account',
                 toState: 'reports.billing.account'
-            },
+            }
+        ];
+
+        var reportTypeForVideoOptions = [
             {
-                key: REPORT_TYPES.site,
-                breakdownKey: 'siteBreakdown',
-                label: 'Site',
-                toState: 'reports.billing.sites',
-                breakdownOptions: [
-                    {
-                        key: 'day',
-                        label: 'By Day',
-                        toState: 'reports.billing.site'
-                    }
-                ]
+                key: REPORT_TYPES.account,
+                label: 'Account',
+                toState: 'reports.billing.video'
             }
         ];
 
         if (isAdmin) {
-            reportTypeOptions.unshift({
+            reportTypeForDisplayOptions.unshift({
                 key: REPORT_TYPES.platform,
                 breakdownKey: 'platformBreakdown',
                 label: 'Platform',
@@ -111,23 +107,42 @@
                         key: 'account',
                         label: 'By Account',
                         toState: 'reports.billing.platformAccounts'
+                    }
+                ]
+            });
+
+            reportTypeForVideoOptions.unshift({
+                key: REPORT_TYPES.platform,
+                label: 'Platform',
+                toState: 'reports.billing.video',
+                breakdownOptions: [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.billing.video'
                     },
                     {
-                        key: 'site',
-                        label: 'By Site',
-                        toState: 'reports.billing.platformSites'
+                        key: 'publisher',
+                        label: 'By Account',
+                        toState: 'reports.billing.video'
                     }
                 ]
             });
         }
 
-        $scope.reportTypeOptions = reportTypeOptions;
+        // set default report for display
+        $scope.reportTypeOptions = reportTypeForDisplayOptions;
 
         /**
          *
          * @param {Object} reportType
          */
         function selectReportType(reportType) {
+            if($scope.selectedData.product == 'video') {
+                $scope.selectedData.publisherId = null;
+                $scope.selectedData.breakdown = null;
+            }
+
             if (!angular.isObject(reportType) || !reportType.toState) {
                 throw new Error('report type is missing a target state');
             }
@@ -151,7 +166,7 @@
          * @return {Object|Boolean}
          */
         function findReportType(reportTypeKey) {
-            return _.findWhere(reportTypeOptions, { key: reportTypeKey });
+            return _.findWhere($scope.reportTypeOptions, { key: reportTypeKey });
         }
 
         function init() {
@@ -234,6 +249,18 @@
         }
 
         function selectProduct(product) {
+            if(product.key == 'display') {
+                $scope.reportTypeOptions = reportTypeForDisplayOptions;
+            }
+
+            if(product.key == 'video') {
+                $scope.reportTypeOptions = reportTypeForVideoOptions;
+            }
+
+            $scope.selectedData.reportType = null;
+            $scope.selectedData.publisherId = null;
+            $scope.selectedData.breakdown = null;
+            $scope.selectedData.platformBreakdown = null;
         }
 
         function selectEntity(entityId) {
@@ -272,6 +299,25 @@
             reportSelectorForm.getCalculatedParams(params).then(
                 function (calculatedParams) {
                     var reportType = findReportType(calculatedParams.reportType) || null;
+                    calculatedParams.product = (!$stateParams.product || $stateParams.product == 'display') ? 'display' : 'video';
+
+                    // update params when refresh for product is video
+                    if($stateParams.product == 'video') {
+                        calculatedParams.breakdown = $stateParams.breakdown;
+                        calculatedParams.publisherId = $stateParams.publisherId;
+                        calculatedParams.date = {
+                            endDate: $stateParams.endDate,
+                            startDate: $stateParams.startDate
+                        };
+
+                        $scope.reportTypeOptions = reportTypeForVideoOptions;
+                        reportType =  _.find(reportTypeForVideoOptions, function(rpt) {
+                            return $stateParams.reportTypeClone == rpt.key;
+                        });
+                    } else {
+                        $scope.reportTypeOptions = reportTypeForDisplayOptions;
+                    }
+
                     $scope.selectedData.reportType = reportType;
 
                     var breakdownValue = calculatedParams[reportType.breakdownKey];
@@ -304,6 +350,7 @@
 
             var reportType = params.reportType;
             var breakdownValue = params[params.breakdownKey];
+            params.reportTypeClone = params.reportType.key;
 
             if (breakdownValue != undefined && breakdownValue != null) {
                 var breakdownOption = _.findWhere(reportType.breakdownOptions, { key: breakdownValue });

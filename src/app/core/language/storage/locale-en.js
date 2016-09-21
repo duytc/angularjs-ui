@@ -13,8 +13,10 @@
             "FORGOT_PASSWORD": "Forgot your password?",
             "CANCEL": "Cancel",
             "NO_CANCEL": "No, cancel",
+            "YES_CANCEL": "Yes, cancel",
             "OK_CANCEL": "Ok, cancel",
             "YES_DELETE": "Yes, delete",
+            "YES_SUBMIT": "Yes, submit",
             "SUBMIT": "Submit",
             "VALID_FORM": "Submit button will be active only when all fields are valid.",
             "ACTIONS": "Actions",
@@ -23,7 +25,10 @@
             "EXPORT_EXCEL": "Export Excel",
 
             "NAME": "Name",
+            "PUBLISHERS": "Publishers",
             "PUBLISHER": "Publisher",
+            "VIDEO_PUBLISHER": "Video Publisher",
+            "VIDEO_PUBLISHERS": "Video Publishers",
             "SUB_PUBLISHER": "Sub Publisher",
             "ACCOUNT": "Account",
             "CHANNEL": "Channel",
@@ -48,6 +53,12 @@
             "SEGMENT": "Report Segment",
             "SEGMENTS": "Report Segments",
 
+            "VIDEO_DEMAND_PARTNER": "Demand Partner",
+            "AD_SOURCES": "Demand Ad Tags",
+            "AD_SOURCE": "Demand Ad Tag",
+            "WATERFALL_TAGS": "Waterfall Tags",
+            "WATERFALL_TAG": "Waterfall Tag",
+
             "RTB_STATUS": "RTB",
             "RTB_STATUS_INHERIT": "Inherit",
             "RTB_STATUS_ENABLE": "Enable",
@@ -69,8 +80,10 @@
                 "NEW_PUBLISHER": "New Publisher",
                 "SUB_PUBLISHERS": "Sub Publishers",
                 "NEW_SUB_PUBLISHER": "New Sub Publisher",
-                "TAG_MANAGEMENT": "Account Management",
+                "TAG_MANAGEMENT": "Tag Management",
+                "DISPLAY_ADS": "Display Ads",
                 "GENERATE_TAGS": "Generate Tags",
+                "GENERATE_VAST_TAGS": "Generate Vast Tags",
                 "CHANNELS": "Channels",
                 "MY_CHANNELS": "My Channels",
                 "MY_SEGMENTS": "My Report Segments",
@@ -99,13 +112,30 @@
                 "SOURCE_REPORTS": "Source Reports",
                 "BILLING_REPORTS": "Billing Reports",
                 "UNIFIED_REPORTS": "Unified Reports",
+                "VIDEO_REPORTS": "Video Reports",
                 "PROJECTED_BILL": "Projected Bill",
                 "TOOLS": "Tools",
                 "CPM_EDITOR": "Cpm Editor",
                 "CASCADE_MANAGER": "Cascade Manager",
                 "SOURCE_REPORT_CONFIG": "Source Report Config",
                 "ACTIVITY_LOG": "Activity Log",
-                "EXCHANGES": "Exchanges"
+                "EXCHANGES": "Exchanges",
+
+                "VIDEO_ADS": "Video Ads",
+                "VIDEO_AD_TAGS": "Waterfall Tags",
+                "MY_VIDEO_AD_TAGS": "My Waterfall Tags",
+                "DEMAND_PARTNERS": "Demand Partners",
+                "MY_DEMAND_PARTNERS": "My Demand Partners",
+                "NEW_DEMAND_PARTNER": "New Demand Partner",
+                "NEW_VIDEO_AD_TAG": "New Waterfall Tag",
+
+                "VIDEO_AD_SOURCES": "Demand Ad Tags",
+                "MY_VIDEO_AD_SOURCES": "My Demand Ad Tags",
+                "NEW_VIDEO_AD_SOURCE": "New Demand Ad Tag",
+
+                "VIDEO_PUBLISHER": "Publishers",
+                "MY_VIDEO_PUBLISHERS": "My Publishers",
+                "NEW_VIDEO_PUBLISHER": "New Publisher"
             },
             "DASHBOARD_MODULE": {
                 "DATE_RANGE": "Date Range",
@@ -189,8 +219,15 @@
 
                 "CONFIRM_DEMAND_SOURCE_REPORT_ON": "The sub publisher will see demand sources that are associated to their account through the unified reporting data.",
                 "HELP_BLOCK_DEMAND_SOURCE_REPORT": "If checked, the sub publisher will see demand sources that are associated to their account through the unified reporting data.",
-                "ENABLE_VIEW_TAGCADE_REPORT": "View Tagcade Report",
+                "ENABLE_VIEW_TAGCADE_REPORT": "View Pubvantage Report",
                 "HELP_BLOCK_ENABLE_VIEW_TAGCADE_REPORT": 'If checked, the sub publisher will be able to see tagcade and comparison report in unified report.'
+            },
+            "VIDEO_PUBLISHER_MODULE": {
+                "SELECT_A_VIDEO_PUBLISHER": "Select a video publisher",
+                "GENERATE_VATS_TAGS": "Generate Vats Tags",
+
+                "EDIT_VIDEO_PUBLISHER": "Edit Publisher",
+                "MANAGE_WATERFALL_TAGS": "Manage Waterfall Tags"
             },
             "TAG_GENERATOR_MODULE": {
                 "GUIDE_COPY_HEADER": "To enable source reports, copy and paste the following tag into the <head> section of your website.",
@@ -207,6 +244,11 @@
                 "AD_SLOT_TYPE": "Ad Slot Type",
                 "SELECT_A_AD_SLOT_TYPE": "Select a ad slot type",
                 "GENERATE_FOR": "Generate for"
+            },
+            "VAST_GENERATOR_MODULE": {
+                "GUIDE_COPY": "Copy and paste the following vast tags into the vast client plugin config section of video player of your website. ",
+                "EXPORT_VAST_TAGS": "Export Vast Tags",
+                "VAST_TAGS": "Vast Tags"
             },
             "CHANNEL_MODULE": {
                 "SELECT_A_CHANNEL": "Select a channel",
@@ -328,6 +370,190 @@
                 "HELP_BLOCK_ENABLE_UNIFIED": "This credentials to use to login demand partner.",
                 "BLANK_FOR_NO_CHANGE":  "Leave it blank for no change"
             },
+            "VIDEO_DEMAND_PARTNER_MODULE": {
+                "DEFAULT_TAG_URL": "Default Tag URL",
+                "NEW_DEMAND_PARTNER": "New Demand Partner",
+                "SELECT_A_VIDEO_DEMAND_PARTNER": "Select a demand partner",
+                "PAUSE_DEMAND_AD_TAG_FOR_WATERFALL": "Pause Demand Partner by Waterfall",
+                "CURRENTLY_NO_WATERFALLS_DEMAND_PARTNER": "Demand Partner : ' {{ demand_partner_name }} ' does not have waterfall tags",
+                "ACTIVE_DEMAND_AD_TAGS_COUNT": "Active Demand Ad Tags",
+                "PAUSE_DEMAND_AD_TAGS_COUNT": "Paused Demand Ad Tags",
+                "WATERFALLS_FOR_DEMAND_PARTNER": "Waterfalls for Demand Partner",
+
+                "YES_PAUSE": "Yes, pause",
+                "NOTE_CONFIRM_PAUSE_WATERFALL": "Every demand ad tag associated with this demand partner and waterfall tag will be also paused.",
+                "CONFIRM_PAUSE_WATERFALL": "Are you sure you want to pause this waterfall tag?",
+
+                "BACK_TO_DEMAND_PARTNER_LIST": "Back to Demand Partner List",
+                "ADD_NEW_SUCCESS": "The demand partner has been created",
+                "UPDATE_SUCCESS": "The demand partner has been updated",
+                "CURRENTLY_NO_DEMAND_PARTNER": "There is currently no demand partners",
+                "DELETE_SUCCESS": "The demand partner was deleted",
+                "DELETE_FAIL": "The demand partner could not be deleted",
+                "CONFIRM_DELETE_DEMAND_PARTNER": "Are you sure you want to delete this demand partner?",
+                "EDIT_DEMAND_PARTNER": "Edit Demand Partner",
+                "DELETE_DEMAND_PARTNER": "Delete Demand Partner",
+                "MANAGE_DEMAND_AD_TAG": "Manage Demand Ad Tags",
+
+                "ADD_NEW_VIDEO_DEMAND_PARTNER": "+ Add New Demand Partner",
+                "ADD_NEW_VIDEO_DEMAND_AD_TAG": " New Demand Ad Tag",
+
+                "UPDATE_STATUS_FAIL": "Could not change demand partner status",
+                "PAUSE_STATUS_SUCCESS": "The demand partner has been paused. There may be a short delay before the associated ad tags are paused.",
+                "ACTIVE_STATUS_SUCCESS": "The demand partner has been activated",
+
+                "DROPDOWN_ACTIVE": "Activate Demand Partner",
+                "DROPDOWN_PAUSE": "Pause Demand Partner",
+
+                "CONFIRM_PAUSE_DEMAND_PARTNER": "Are you sure you want to pause this demand partner?",
+                "NOTE_CONFIRM_PAUSE_DEMAND_PARTNER": "Every ad tag associated with this demand partner will be also paused."
+            },
+            "VIDEO_AD_TAG_MODULE": {
+                "BUY_PRICE": "Buy Price",
+                "PLATFORM": "Platform",
+                "SELECT_PLATFORM": "Select Platform",
+                "SELECT_WATERFALL_TAG": "Select Waterfall Tag",
+                "WATERFALL": "Waterfall",
+                "STRATEGY": "Strategy",
+                "POSITION": "Position",
+                "TARGETING": "Targeting",
+                "PLAYER_WIDTH": "Player Width",
+                "PLAYER_HEIGHT": "Player Height",
+                "PLAYER_SIZE": "Player Size",
+
+                "CREATE_DEMAND_AD_TAG": "Create a Demand Ad Tag",
+                "EDIT_VIDEO_AD_TAG": "Edit Waterfall Tag",
+                "DELETE_VIDEO_AD_TAG": "Delete Waterfall Tag",
+                "UPDATE_SUCCESS": "The waterfall tag has been updated",
+                "UPDATE_FAIL": "An error occurred. The waterfall tag could not be updated",
+                "GENERATE_A_VAST": "Generate a Vast Tag",
+                "VAST_FOR_NAME": "Vast Tag for: {{ name }}",
+
+                "ADD_NEW_POSITION": "Add New Position",
+                "ADD_NEW_SUCCESS": "The waterfall tag has been created",
+                "ADD_NEW_FAIL": "An error occurred. The waterfall tag could not be created",
+                "NEW_VIDEO_AD_TAG_PARTNER": "New Waterfall Tag",
+                "BACK_TO_VIDEO_AD_TAG_LIST": "Back to Waterfall Tag List",
+                "BACK_TO_VIDEO_PUBLISHER": "Back to Publisher List",
+                "DELETE_SUCCESS": "The waterfall tag was deleted",
+                "DELETE_FAIL": "The waterfall tag could not be deleted",
+                "BACK_TO_AD_TAG_LIST": "Back to Waterfall Tag List",
+                "CONFIRM_DELETE_VIDEO_AD_TAG": "Are you sure you want to delete this waterfall tag?",
+                "UPDATE_PLATFORM_FAIL_WHEN_REMOVE_JS": "There're some ad sources belong to this waterfall tag still have platform 'javascript'",
+                "UPDATE_PLATFORM_FAIL_WHEN_REMOVE_FLASH": "There're some ad sources belong to this waterfall tag still have platform 'flash'",
+
+                "CURRENTLY_NO_VIDEO_AD_TAG": "There is currently no waterfall tag",
+                "SELECT_A_STRATEGY": "Select a Strategy",
+                "SELECT_A_PLAYER_SIZE": "Select a Player Size",
+                "MANAGEMENT_POSITIONS": "Manage Demand Ad Tags",
+                "SELECT_A_POSITION": "Select a position",
+                "TITLE_CREATE_LINKED_DEMAND_AD_TAG": "Link Demand Ad Tag",
+
+                "HELP_BLOCK_SELECT_DEFAULT": "Select <strong>Add New</strong> to generate new position for this demand ad tag",
+                "WARNING_BUY_PRICE": "One of the waterfall tags has a buy price that is higher than the sell price. Do you want to proceed?"
+            },
+            "AD_SOURCE_MODULE": {
+                "PLATFORM": "Platform",
+                "SELECT_PLATFORM": "Select Platform",
+                "VIEW_IN_WATERFALL": "View in Waterfall",
+                "PLAYER_SIZE": "Player Size",
+                "SELECT_A_PLAYER_SIZE": "Select a Player Size",
+                "REQUIRED_MACROS": "Required Macros",
+                "SELECT_A_REQUIRED_MACROS": "Select a Required Macros",
+
+                "TAG_URL": "Tag URL",
+                "PRIORITY": "Priority",
+                "TIMEOUT": "Timeout",
+                "WEIGHT": "Rotation Weight",
+                "TARGETING": "Targeting",
+                "COUNTRIES": "Countries",
+                "EXCLUDE_COUNTRIES": "Exclude Countries",
+                "SELECT_A_COUNTRIES": " Select a country",
+                "DOMAINS": "White List Domains",
+                "EXCLUDE_DOMAINS": "Black List Domains",
+                "STATUS": "Status",
+                "ACTIVATE_AD_SOURCE": "Activate Demand Ad Tag",
+                "PAUSE_AD_SOURCE": "Pause Demand Ad Tag",
+                "ACTIVE": "Active",
+                "SHIFT_DOWN": "Shift Down",
+                "SELL_PRICE": "Sell Price",
+
+                "LINKED_DEMAND_AD_TAGS": "Linked Demand Ad Tags",
+                "DELETE_SUCCESS": "The demand ad tag was deleted",
+                "DELETE_FAIL": "The demand ad tag could not be deleted",
+                "CURRENTLY_NO_AD_SOURCE": "There is currently no demand ad tags",
+                "CONFIRM_DELETE_AD_SOURCE": "Are you sure you want to delete this demand ad tag?",
+                "UPDATE_SUCCESS": "The demand ad tag has been updated",
+                "UPDATE_FAIL": "An error occurred. The demand ad tag could not be updated",
+                "CHANGE_STATUS_FAIL": "Could not change demand ad tag status",
+                "ADD_NEW_SUCCESS": "The demand ad tag has been created",
+
+                "PLACEHOLDER_PRIORITY": "Leave blank for default",
+                "PLACEHOLDER_WEIGHT": "Leave blank for default",
+                "NEW_AD_SOURCE": "New Demand Ad Tag",
+                "EDIT_AD_SOURCE": "Edit Demand Ad Tag",
+                "DELETE_AD_SOURCE": "Delete Demand Ad Tag",
+                "BACK_TO_AD_SOURCE_LIST": "Back to Demand Ad Tag List",
+                "BACK_TO_LIBRARY_DEMAND_AD_TAG_LIST": "Back to Demand Ad Tag List",
+                "SELECT_A_AD_SOURCE": "Select a demand ad tag",
+                "CREATE_WHITE_LIST": "+ Create white list",
+                "CREATE_BLACK_LIST": "+ Create black list",
+                "TARGETING_OVERRIDE": "Targeting Override",
+
+                "VIEW_BLACK_LIST": "View Black List",
+                "VIEW_WHITE_LIST": "View White List",
+                "CONFIRM_SUBMIT_FOR_PLATFORM": "One of the waterfall tags has a platform that does not support this platform of demand ad tag.",
+
+                "HELP_BLOCK_TIMEOUT": "The timeout in seconds",
+                "HELP_BLOCK_AUTO_POSITION": "If Shift down is checked, all demand ad tags at the same or higher position will be shifted down.",
+                "HELP_BLOCK_FROM_LIBRARY": "You can select an existing demand ad tag, not linked demand ad tag, from which created before. If you choose this option, when you change some of the fields belows, the existing demand ad tag will be changed on these fields too.",
+                "CONFIRM_REPLACE_MACROS": "Third party macros are detected. Would you like to automatically replace them with our macros?",
+                "YES_REPLACE": "Yes, replace"
+            },
+            "AD_SOURCE_LIBRARY_MODULE": {
+                "CREATE_LINKED_DEMAND_AD_TAGS": "Link this Demand Ad Tag",
+                "LINK_DEMAND_AD_TAG_SUCCESS": "This demand ad tag has been linked to the selected waterfalls",
+                "LINK_DEMAND_AD_TAG_FAIL": "Could not link the demand ad tag",
+                "DEPLOYMENT": "Link to Waterfall Tags",
+
+                "LIBRARY_DEMAND_AD_TAG": "Demand Ad Tag",
+                "SELECT_A_LIBRARY_DEMAND_AD_TAG": "Select a demand ad tag",
+                "VIEW_LINKED_DEMAND_AD_TAGS": "View linked Demand Ad Tags",
+                "WARNING_EDIT_LIBRARY": "This demand ad tag is linked to multiple waterfall tags. If you modify this demand ad tag, every waterfall tag that links to it will be updated."
+            },
+            "DOMAIN_LIST_MODULE": {
+                "FROM": "From",
+                "BUILTIN": "Builtin",
+                "VIEW_DOMAINS": "View Domains",
+
+                "CURRENTLY_NO_BLACK_LIST": "There is currently no black list",
+                "CURRENTLY_NO_WHITE_LIST": "There is currently no white list",
+
+                "DELETE_BLACK_LIST_SUCCESS": "The black list was deleted",
+                "DELETE_WHITE_LIST_SUCCESS": "The white list was deleted",
+                "DELETE_BLACK_LIST_FAIL": "The black list could not be deleted",
+                "DELETE_WHITE_LIST_FAIL": "The white list could not be deleted",
+
+                "NEW_BLACK_LIST": "New Black List",
+                "NEW_WHITE_LIST": "New White List",
+                "EDIT_BLACK_LIST": "Edit Black List",
+                "EDIT_WHITE_LIST": "Edit White List",
+                "DELETE_BLACK_LIST": "Delete Black List",
+                "DELETE_WHITE_LIST": "Delete White List",
+
+                "ADD_NEW_BLACK_LIST_SUCCESS": "The black list has been created",
+                "ADD_NEW_WHITE_LIST_SUCCESS": "The white list has been created",
+                "UPDATE_BLACK_LIST_SUCCESS": "The black list has been updated",
+                "UPDATE_WHITE_LIST_SUCCESS": "The white list has been updated",
+
+                "CONFIRM_DELETE_DOMAIN_LIST": "Are you sure you want to delete this domain list?",
+                "DOMAINS": "Domains",
+                "DOMAIN": "Domain",
+
+                "CUSTOM": "Custom",
+                "BUILT_IN": "Built In",
+                "SELECT_A_BUILT_IN": "Select a built in"
+            },
             "AD_SLOT_MODULE": {
                 "NATIVE": "Native",
                 "DEFAULT_AD_SLOT": "Default Ad Slot",
@@ -382,7 +608,7 @@
                 "HELP_BLOCK_AUTO_FIT": "When Auto Fit is enabled, the ad slot will dynamically resize if the ad served is different from the size defined above.",
                 "HELP_BLOCK_FLOOR_PRICE": "If the RTB bid price is lower than this amount, the ad tag waterfall will serve instead.",
                 "HELP_BLOCK_RTB": "Enable RTB for this ad slot or inherit the RTB config from the associated site.",
-                "HELP_BLOCK_HEADER_BIDDING_PRICE": "Set the bid price for the Tagcade bidder"
+                "HELP_BLOCK_HEADER_BIDDING_PRICE": "Set the bid price for the Pubvantage bidder"
             },
             "RON_AD_SLOT_MODULE": {
                 "CURRENTLY_NO_RON_AD_SLOT": "There is currently no RON ad slots",
@@ -534,6 +760,8 @@
                 "REPORT_TYPE": "Report Type",
                 "SELECT_A_REPORT_TYPE": "Select a report type",
                 "BREAKDOWN": "Breakdown",
+                "METRICS": "Metrics",
+                "FILTERS": "Filters",
                 "SUB_BREAKDOWN": "Sub Breakdown",
                 "SELECT_AN_OPTION": "Select an option",
                 "GET_REPORTS": "Get Reports",
@@ -656,13 +884,13 @@
             },
             "UNIFIED_REPORT_MODULE": {
                 "PARTNER_REQUESTS":         "Requests",
-                "TAGCADE_OPPORTUNITIES":    "Tagcade Opportunities",
+                "TAGCADE_OPPORTUNITIES":    "Pubvantage Opportunities",
                 "OPPORTUNITY_COMPARISON":   "Opportunity Comparison",
                 "PARTNER_PASSBACKS":        "Partner Passbacks",
-                "TAGCADE_PASSBACKS":        "Tagcade Passbacks",
+                "TAGCADE_PASSBACKS":        "Pubvantage Passbacks",
                 "PASSBACK_COMPARISON":      "Passback Comparison",
                 "PARTNER_ECPM":             "Partner ECPM",
-                "TAGCADE_ECPM":             "Tagcade ECPM",
+                "TAGCADE_ECPM":             "Pubvantage ECPM",
                 "ECPM_COMPARISON":          "ECPM Comparison",
                 "REVENUE_OPPORTUNITY":      "Revenue Opportunity",
                 "IMPRESSION_COMPARISON":    "Impression Comparison",
@@ -675,7 +903,7 @@
                 "CPM": "CPM",
 
                 "UNIFIED": "Unified",
-                "TAGCADE": "Tagcade",
+                "TAGCADE": "Pubvantage",
                 "DISCREPANCIES": "Comparison"
             },
             "RTB_REPORT_MODULE": {

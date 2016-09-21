@@ -1,0 +1,124 @@
+<br>
+
+<div ng-if="reportGroup.reports.length > 0">
+    <div class="panel panel-default daily-reports">
+        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
+            {{ 'UNIFIED_REPORT_MODULE.DETAILS' | translate }}
+
+            <div class="button-bar">
+                <export-excel data="reportGroup.reports" fields="arrayFieldExport" header="arrayHeaderExport" file-name="getExportExcelFileName"></export-excel>
+            </div>
+
+            <div class="btn-group btnGrouped" dropdown>
+                <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li><a>
+                        <export-excel css-class="''" data="reportGroup.reports" fields="arrayFieldExport" header="arrayHeaderExport" file-name="getExportExcelFileName"></export-excel>
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table" at-table at-paginated at-list="reportGroup.reports" at-config="tableConfig">
+                <thead>
+                <tr>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'date')" at-attribute="date">{{ titleForReport['date'] }}</th>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'publisher')" at-attribute="publisher.company">{{ titleForReport['publisher'] }}</th>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'videoPublisher')" at-attribute="videoPublisher.name">{{ titleForReport['videoPublisher'] }}</th>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'videoDemandPartner')" at-attribute="videoDemandPartner.name">{{ titleForReport['videoDemandPartner'] }}</th>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'videoWaterfallTag')" at-attribute="videoWaterfallTag.name">{{ titleForReport['videoWaterfallTag'] }}</th>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'videoDemandAdTag')" at-attribute="videoDemandAdTag.name">{{ titleForReport['videoDemandAdTag'] }}</th>
+                    <!--<th ng-show="hasKeyObject(reportGroup.reports[0], 'name')" at-attribute="name">{{ titleForReport['name'] }}</th>-->
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'requests')" at-attribute="requests">{{ titleForReport['requests'] }}</th>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'bids')" at-attribute="bids">{{ titleForReport['bids'] }}</th>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'bidRate')" at-attribute="bidRate">{{ titleForReport['bidRate'] }}</th>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'errors')" at-attribute="errors">{{ titleForReport['errors'] }}</th>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'errorRate')" at-attribute="errorRate">{{ titleForReport['errorRate'] }}</th>
+                    <!--<th ng-show="hasKeyObject(reportGroup.reports[0], 'wonOpportunities')" at-attribute="wonOpportunities">{{ titleForReport['wonOpportunities'] }}</th>-->
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'impressions')" at-attribute="impressions">{{ titleForReport['impressions'] }}</th>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'fillRate')" at-attribute="fillRate">{{ titleForReport['fillRate'] }}</th>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'clicks')" at-attribute="clicks">{{ titleForReport['clicks'] }}</th>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'clickThroughRate')" at-attribute="clickThroughRate">{{ titleForReport['clickThroughRate'] }}</th>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'blocks')" at-attribute="blocks">{{ titleForReport['blocks'] }}</th>
+
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'adTagRequests')" at-attribute="adTagRequests">{{ titleForReport['adTagRequests'] }}</th>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'adTagBids')" at-attribute="adTagBids">{{ titleForReport['adTagBids'] }}</th>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'adTagErrors')" at-attribute="adTagErrors">{{ titleForReport['adTagErrors'] }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td ng-show="hasKeyObject(item, 'date')" at-title="{{ titleForReport['date'] }}" at-initial-sorting="desc" at-sortable at-attribute="date">
+                        {{ item.date | date }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'publisher')" at-title="{{ titleForReport['publisher'] }}" at-sortable at-attribute="publisher.company">
+                        {{ item.publisher.company || item.reports[0].publisher.company }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'videoPublisher')" at-title="{{ titleForReport['videoPublisher'] }}" at-sortable at-attribute="videoPublisher.name">
+                        {{ item.videoPublisher.name }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'videoDemandPartner')" at-title="{{ titleForReport['videoDemandPartner'] }}" at-sortable at-attribute="videoDemandPartner.name">
+                        {{ item.videoDemandPartner.name || item.reports[0].videoDemandPartner.name }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'videoWaterfallTag')" at-title="{{ titleForReport['videoWaterfallTag'] }}" at-sortable at-attribute="videoWaterfallTag.name">
+                        {{ item.videoWaterfallTag.name || item.reports[0].videoWaterfallTag.name }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'videoDemandAdTag')" at-title="{{ titleForReport['videoDemandAdTag'] }}" at-sortable at-attribute="videoDemandAdTag.name">
+                        {{ item.videoDemandAdTag.libraryVideoDemandAdTag.name || item.reports[0].videoDemandAdTag.libraryVideoDemandAdTag.name }}
+                    </td>
+                    <!--<td ng-show="hasKeyObject(item, 'name')" at-title="{{ titleForReport['name'] }}" at-sortable at-attribute="name">-->
+                    <!--{{ item.name || item.reports[0].name }}-->
+                    <!--</td>-->
+                    <td ng-show="hasKeyObject(item, 'requests')" at-title="{{ titleForReport['requests'] }}" at-sortable at-attribute="requests">
+                        {{ item.requests | number }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'bids')" at-title="{{ titleForReport['bids'] }}" at-sortable at-attribute="bids">
+                        {{ item.bids | number }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'bidRate')" at-title="{{ titleForReport['bidRate'] }}" at-sortable at-attribute="bidRate">
+                        {{ item.bidRate | percentage }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'errors')" at-title="{{ titleForReport['errors'] }}" at-sortable at-attribute="errors">
+                        {{ item.errors | number }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'errorRate')" at-title="{{ titleForReport['errorRate'] }}" at-sortable at-attribute="errorRate">
+                        {{ item.errorRate | percentage }}
+                    </td>
+                    <!--<td ng-show="hasKeyObject(item, 'wonOpportunities')" at-title="{{ titleForReport['wonOpportunities'] }}" at-sortable at-attribute="wonOpportunities">-->
+                    <!--{{ !!item.wonOpportunities ? (item.wonOpportunities | number ) : '-' }}-->
+                    <!--</td>-->
+                    <td ng-show="hasKeyObject(item, 'impressions')" at-title="{{ titleForReport['impressions'] }}" at-sortable at-attribute="impressions">
+                        {{ item.impressions | number }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'fillRate')" at-title="{{ titleForReport['fillRate'] }}" at-sortable at-attribute="fillRate">
+                        {{ item.fillRate | percentage }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'clicks')" at-title="{{ titleForReport['clicks'] }}" at-sortable at-attribute="clicks">
+                        {{ item.clicks | number }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'clickThroughRate')" at-title="{{ titleForReport['clickThroughRate'] }}" at-sortable at-attribute="clickThroughRate">
+                        {{ item.clickThroughRate | percentage }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'blocks')" at-title="{{ titleForReport['blocks'] }}" at-sortable at-attribute="blocks">
+                        {{ (item.blocks != null) ? (item.blocks | number) : '-' }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'adTagErrors')" at-title="{{ titleForReport['adTagErrors'] }}" at-sortable at-attribute="adTagErrors">
+                        {{ (item.adTagErrors != null) ? (item.adTagErrors | number) : '-' }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'adTagBids')" at-title="{{ titleForReport['adTagBids'] }}" at-sortable at-attribute="adTagBids">
+                        {{ (item.adTagBids != null) ? (item.adTagBids | number) : '-' }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'adTagRequests')" at-title="{{ titleForReport['adTagRequests'] }}" at-sortable at-attribute="adTagRequests">
+                        {{ (item.adTagRequests != null) ? (item.adTagRequests | number) : '-' }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <at-pagination ng-if="showPagination()" class="table-footer" at-list="reportGroup.reports" at-config="tableConfig"></at-pagination>
+    </div>
+
+    <tc-video-report-summary report-group="reportGroup"></tc-video-report-summary>
+</div>

@@ -6,7 +6,7 @@
         .controller('PublisherForm', PublisherForm)
     ;
 
-    function PublisherForm($scope, $translate, _, exchanges, headerBiddings, adminUserManager, AlertService, ServerErrorProcessor, publisher, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST, USER_MODULES) {
+    function PublisherForm($scope, $translate, _, exchanges, headerBiddings, adminUserManager, AlertService, ServerErrorProcessor, publisher, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST, USER_MODULES){
         $scope.fieldNameTranslations = {
             username: 'Username',
             plainPassword: 'Password',
@@ -85,6 +85,7 @@
 
         $scope.modules = [
             { label: 'Display', role: 'MODULE_DISPLAY' },
+            { label: 'Video', role: 'MODULE_VIDEO' },
             { label: 'Source Report', role: 'MODULE_SOURCE_REPORT' },
             { label: 'Unified Report', role: 'MODULE_UNIFIED_REPORT' },
             { label: 'RTB (Real Time Bidding)', role: 'MODULE_RTB' },

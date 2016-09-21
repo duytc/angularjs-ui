@@ -90,7 +90,7 @@
         vertical-align: middle;
         margin-right: 10px;
         margin-left: -20px;
-        background-color: transparent;
+        background-color: #4A9AAB; // pubvantage
         border-radius: $border-radius-small;
         border: 1px solid #ccc;         
     }
@@ -102,8 +102,8 @@
     }
 
     input[type="checkbox"]:checked + span:before {
-        background-color: $brand-primary;
-        border: 1px solid $brand-primary;         
+        background-color: #4A9AAB; // pubvantage
+        border: 1px solid #4A9AAB; // pubvantage;
     }
     input[type="checkbox"]:checked + span:after {
         content: "";
