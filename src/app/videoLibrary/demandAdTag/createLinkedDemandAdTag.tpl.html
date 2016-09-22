@@ -5,6 +5,7 @@
     <div class="modal-body">
         <div class="row">
             <div class="col-lg-12 form-validation form-horizontal">
+
                 <div class="form-group">
                     <label for="inputVideoPublisher" class="col-sm-2 control-label">{{ 'VIDEO_PUBLISHER' | translate }}</label>
                     <div class="col-sm-10">
@@ -18,13 +19,42 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">Filter Waterfall Tags</label>
+                    <label class="col-sm-2 control-label">{{'AD_SOURCE_MODULE.SELL_PRICE'|translate}} </label>
+                    <div class="col-sm-10 form-control-static">
+                        {{ demandAdTag.sellPrice | currency }}
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="demandAdTag.sellPrice != null">
+                    <label class="col-sm-2 control-label">{{ 'AD_SOURCE_MODULE.WATERFALL_SELECTION' | translate }}</label>
                     <div class="col-sm-10">
-                        <div ng-repeat="filter in filterOptions" class="check_exchange">
-                            <label class="ui-checkbox"><input name="filterConfigs[]" type="checkbox" ng-disabled="disabledFilter(filter.key)" ng-click="toggleFilter(filter.key)" ng-checked="hasFilter(filter.key)">
-                                <span>{{ filter.label }}</span>
-                            </label>
-                        </div>
+                        <ui-select name="waterfallSelection"  id="inputWaterfallSelection" ng-model="selectFilterData.waterfallSelection" on-select="selectWaterfallSelection($item)" ng-required="true" server-error>
+                            <ui-select-match placeholder="Select">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in waterfallSelectionOptions | filter:$select.search">
+                                {{ option.label }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="selectFilterData.waterfallSelection == 'fixedProfit'">
+                    <label  class="col-sm-2 control-label">{{ 'AD_SOURCE_MODULE.FIXED_PROFIT' | translate }}</label>
+                    <div class="col-sm-10">
+                         <input name="fixedProfit" class="form-control" type="number" ng-model="selectFilterData.fixedProfit" ng-change="setRequiredBuyPrice(selectFilterData.fixedProfit)" server-error id="fixedProfit" placeholder="{{ 'AD_SOURCE_MODULE.FIXED_PROFIT' | translate }}">
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="selectFilterData.waterfallSelection == 'profitMargin'">
+                    <label  class="col-sm-2 control-label">{{ 'AD_SOURCE_MODULE.PROFIT_MARGIN' | translate }}</label>
+                    <div class="col-sm-10">
+                        <input name="profitMargin" class="form-control" type="number" ng-model="selectFilterData.profitMargin" ng-change="setRequiredBuyPrice(selectFilterData.profitMargin)" server-error id="profitMargin" placeholder="{{ 'AD_SOURCE_MODULE.PROFIT_MARGIN' | translate }}">
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="(selectFilterData.waterfallSelection != 'manual') && (demandAdTag.sellPrice !=null)">
+                    <label class="col-sm-2 control-label">{{'AD_SOURCE_MODULE.REQUIRED_BUY_PRICE'|translate}} </label>
+                    <div class="col-sm-10 form-control-static">
+                        {{ selectFilterData.requiredBuyPrice | currency }}
                     </div>
                 </div>
 

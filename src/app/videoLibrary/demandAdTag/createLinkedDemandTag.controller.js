@@ -21,16 +21,23 @@
             filters: ['all']
         };
 
+        $scope.selectFilterData = {
+            waterfallSelection: null,
+            requiredBuyPrice: demandAdTag.sellPrice
+        };
+
+        $scope.waterfallSelectionOptions = [
+            {label: '---Waterfall Selection---', key: null},
+            {label: 'Profit Margin', key: 'profitMargin'},
+            {label: 'Fixed Profit', key: 'fixedProfit'},
+            {label: 'Manual', key: 'manual'}
+        ];
+
+
         $scope.videoPublishers = UISelectMethod.addAllOption(videoPublishers, 'All Publishers');
         $scope.waterfallTags = waterfallTagsRefactor;
         $scope.waterfallTagsHaveBuyPriceHigherSellPriceLibraryDemandAdTag = [];
         $scope.demandAdTag = demandAdTag;
-
-        $scope.filterOptions = [
-            {label: 'All', key: 'all'},
-            {label: 'Unset Buy Price', key: 'unsetBuyPrice'},
-            {label: 'Smaller Buy Price', key: 'smallerBuyPrice'}
-        ];
 
         $scope.groupEntities = UISelectMethod.groupEntities;
         $scope.isFormValid = isFormValid;
@@ -38,6 +45,23 @@
         $scope.toggleFilter =  toggleFilter;
         $scope.hasFilter =  hasFilter;
         $scope.disabledFilter = disabledFilter;
+        $scope.selectWaterfallSelection = selectWaterfallSelection;
+        $scope.setRequiredBuyPrice = setRequiredBuyPrice;
+
+        function selectWaterfallSelection(option) {
+            $scope.selectFilterData.requiredBuyPrice = demandAdTag.sellPrice;
+        }
+
+        function setRequiredBuyPrice(value) {
+            if($scope.selectFilterData.waterfallSelection =='profitMargin'){
+                $scope.selectFilterData.requiredBuyPrice = $scope.demandAdTag.sellPrice - ((value/100) * $scope.demandAdTag.sellPrice);
+            } else if($scope.selectFilterData.waterfallSelection == 'fixedProfit') {
+                $scope.selectFilterData.requiredBuyPrice = $scope.demandAdTag.sellPrice - value;
+            }
+
+            var videoPublisher = _.find(videoPublishers, function(vPub) { return vPub.id == $scope.selectData.videoPublisher});
+            _filterWaterfallByVideoPublisherAndBuyPrice(videoPublisher, $scope.selectFilterData.requiredBuyPrice);
+        }
         
         function disabledFilter(filter) {
             if($scope.selectData.filters.indexOf('all') > -1) {
@@ -182,16 +206,10 @@
             });
         }
 
-        function _filterWaterfallByVideoPublisherAndBuyPrice(videoPublisher) {
+        function _filterWaterfallByVideoPublisherAndBuyPrice(videoPublisher, requiredBuyPrice) {
             $scope.waterfallTags = $filter('filter')(waterfallTagsRefactor, function(waterfall) {
                 if(videoPublisher.id == null || waterfall.videoPublisher.id == videoPublisher.id) {
-                    if($scope.selectData.filters.indexOf('all') > -1 || $scope.selectData.filters.length == 0) {
-                        return true;
-                    } else if($scope.selectData.filters.indexOf('unsetBuyPrice') > -1 && waterfall.buyPrice == null) {
-                        return true;
-                    } else if($scope.selectData.filters.indexOf('smallerBuyPrice') > -1 && waterfall.buyPrice != null && waterfall.buyPrice <= demandAdTag.sellPrice) {
-                        return true;
-                    }
+                    return requiredBuyPrice <= waterfall.buyPrice
                 }
 
                 return false
