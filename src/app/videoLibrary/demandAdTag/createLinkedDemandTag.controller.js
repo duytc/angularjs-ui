@@ -104,7 +104,7 @@
         function selectVideoPublisher(videoPublisher) {
 
             _setNameAgainForWaterfallWhenSelectAllVideoPublisher(videoPublisher);
-            _filterWaterfallByVideoPublisherAndBuyPrice(videoPublisher, $scope.selectFilterData.requiredBuyPrice);
+            _filterWaterfallByVideoPublisherAndBuyPrice(videoPublisher, null);
 
         }
 
@@ -210,7 +210,7 @@
             $scope.waterfallTags = $filter('filter')(waterfallTagsRefactor, function(waterfall) {
 
                 if(videoPublisher.id == null || waterfall.videoPublisher.id == videoPublisher.id){
-                    return requiredBuyPrice <= waterfall.buyPrice
+                    return requiredBuyPrice? (requiredBuyPrice <= waterfall.buyPrice) : true;
                 }
 
                 return false
