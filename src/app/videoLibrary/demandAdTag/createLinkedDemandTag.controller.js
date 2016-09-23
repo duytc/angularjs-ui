@@ -102,9 +102,10 @@
         }
 
         function selectVideoPublisher(videoPublisher) {
-            _setNameAgainForWaterfallWhenSelectAllVideoPublisher(videoPublisher);
 
-            _filterWaterfallByVideoPublisherAndBuyPrice(videoPublisher);
+            _setNameAgainForWaterfallWhenSelectAllVideoPublisher(videoPublisher);
+            _filterWaterfallByVideoPublisherAndBuyPrice(videoPublisher, $scope.selectFilterData.requiredBuyPrice);
+
         }
 
         function isFormValid() {
@@ -194,19 +195,21 @@
         }
 
         function _setNameAgainForWaterfallWhenSelectAllVideoPublisher(videoPublisher) {
+
             waterfallTagsRefactor =  [];
             var showNameVideoPublisher = !videoPublisher || !videoPublisher.id;
 
             angular.forEach(angular.copy(waterfallTags), function(waterfallTag) {
                 waterfallTag.name = (waterfallTag.name + (showNameVideoPublisher ? ' (' + waterfallTag.videoPublisher.name + ')' : ''));
-
                 waterfallTagsRefactor.push(waterfallTag);
             });
         }
 
         function _filterWaterfallByVideoPublisherAndBuyPrice(videoPublisher, requiredBuyPrice) {
+
             $scope.waterfallTags = $filter('filter')(waterfallTagsRefactor, function(waterfall) {
-                if(videoPublisher.id == null || waterfall.videoPublisher.id == videoPublisher.id) {
+
+                if(videoPublisher.id == null || waterfall.videoPublisher.id == videoPublisher.id){
                     return requiredBuyPrice <= waterfall.buyPrice
                 }
 
