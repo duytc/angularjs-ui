@@ -511,8 +511,8 @@
                 "YES_REPLACE": "Yes, insert",
 
                 "WATERFALL_SELECTION": "Waterfall Selection",
-                "FIXED_PROFIT":"Fixed Profit",
-                "PROFIT_MARGIN":"Profit Margin",
+                "FIXED_PROFIT":"Fixed Profit ($)",
+                "PROFIT_MARGIN":"Profit Margin (%)",
                 "REQUIRED_BUY_PRICE":"Required Buy Price"
 
             },
