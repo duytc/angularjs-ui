@@ -22,17 +22,15 @@
         };
 
         $scope.selectFilterData = {
-            waterfallSelection: null,
+            waterfallSelection: 'manual',
             requiredBuyPrice: demandAdTag.sellPrice
         };
 
         $scope.waterfallSelectionOptions = [
-            {label: '---Waterfall Selection---', key: null},
+            {label: 'Manual', key: 'manual'},
             {label: 'Profit Margin', key: 'profitMargin'},
-            {label: 'Fixed Profit', key: 'fixedProfit'},
-            {label: 'Manual', key: 'manual'}
+            {label: 'Fixed Profit', key: 'fixedProfit'}
         ];
-
 
         $scope.videoPublishers = UISelectMethod.addAllOption(videoPublishers, 'All Publishers');
         $scope.waterfallTags = waterfallTagsRefactor;
