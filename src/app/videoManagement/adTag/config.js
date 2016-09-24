@@ -7,8 +7,8 @@
             {key: 'linear', label: 'Linear'}
         ])
         .constant('PLATFORM_OPTION', [
-            {key: 'flash', label: 'Flash'},
-            {key: 'js', label: 'Javascript'}
+            {key: 'flash', label: 'Flash VPAID'},
+            {key: 'js', label: 'HTML/JS VPAID'}
         ])
     ;
 })();

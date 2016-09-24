@@ -513,7 +513,7 @@
                 "WATERFALL_SELECTION": "Waterfall Selection",
                 "FIXED_PROFIT":"Fixed Profit ($)",
                 "PROFIT_MARGIN":"Profit Margin (%)",
-                "REQUIRED_BUY_PRICE":"Required Buy Price"
+                "REQUIRED_BUY_PRICE":"Maximum Buy Price"
 
             },
             "AD_SOURCE_LIBRARY_MODULE": {

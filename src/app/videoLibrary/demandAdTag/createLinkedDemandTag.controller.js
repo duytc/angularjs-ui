@@ -23,7 +23,7 @@
 
         $scope.selectFilterData = {
             waterfallSelection: 'manual',
-            requiredBuyPrice: demandAdTag.sellPrice
+            requiredBuyPrice: null
         };
 
         $scope.waterfallSelectionOptions = [
@@ -47,7 +47,10 @@
         $scope.setRequiredBuyPrice = setRequiredBuyPrice;
 
         function selectWaterfallSelection(option) {
-            $scope.selectFilterData.requiredBuyPrice = demandAdTag.sellPrice;
+            $scope.selectFilterData.requiredBuyPrice =  (option.key != 'manual')? demandAdTag.sellPrice: null;
+
+            var videoPublisher = _.find(videoPublishers, function(vPub) { return vPub.id == $scope.selectData.videoPublisher});
+            _filterWaterfallByVideoPublisherAndBuyPrice(videoPublisher, $scope.selectFilterData.requiredBuyPrice);
         }
 
         function setRequiredBuyPrice(value) {
@@ -208,9 +211,8 @@
         function _filterWaterfallByVideoPublisherAndBuyPrice(videoPublisher, requiredBuyPrice) {
 
             $scope.waterfallTags = $filter('filter')(waterfallTagsRefactor, function(waterfall) {
-
                 if(videoPublisher.id == null || waterfall.videoPublisher.id == videoPublisher.id){
-                    return requiredBuyPrice? (requiredBuyPrice <= waterfall.buyPrice) : true;
+                    return requiredBuyPrice? (requiredBuyPrice >= waterfall.buyPrice) : true;
                 }
 
                 return false
