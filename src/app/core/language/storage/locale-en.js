@@ -83,7 +83,7 @@
                 "TAG_MANAGEMENT": "Tag Management",
                 "DISPLAY_ADS": "Display Ads",
                 "GENERATE_TAGS": "Generate Tags",
-                "GENERATE_VAST_TAGS": "Generate Vast Tags",
+                "GENERATE_VAST_TAGS": "Generate Vast/VPAID Tags",
                 "CHANNELS": "Channels",
                 "MY_CHANNELS": "My Channels",
                 "MY_SEGMENTS": "My Report Segments",
@@ -426,7 +426,7 @@
                 "DELETE_VIDEO_AD_TAG": "Delete Waterfall Tag",
                 "UPDATE_SUCCESS": "The waterfall tag has been updated",
                 "UPDATE_FAIL": "An error occurred. The waterfall tag could not be updated",
-                "GENERATE_A_VAST": "Generate a Vast Tag",
+                "GENERATE_A_VAST": "Generate Vast/VPAID Tags",
                 "VAST_FOR_NAME": "Vast Tag for: {{ name }}",
 
                 "ADD_NEW_POSITION": "Add New Position",
