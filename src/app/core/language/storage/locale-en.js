@@ -375,6 +375,7 @@
                 "NEW_DEMAND_PARTNER": "New Demand Partner",
                 "SELECT_A_VIDEO_DEMAND_PARTNER": "Select a demand partner",
                 "PAUSE_DEMAND_AD_TAG_FOR_WATERFALL": "Bulk Pause",
+                "ACTIVE_DEMAND_AD_TAG_FOR_WATERFALL": "Bulk Active",
                 "CURRENTLY_NO_WATERFALLS_DEMAND_PARTNER": "Demand Partner : ' {{ demand_partner_name }} ' does not have waterfall tags",
                 "ACTIVE_DEMAND_AD_TAGS_COUNT": "Active Demand Ad Tags",
                 "PAUSE_DEMAND_AD_TAGS_COUNT": "Paused Demand Ad Tags",
