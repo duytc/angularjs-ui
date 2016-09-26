@@ -39,8 +39,11 @@
                                 <li class="divider" ng-if="item.pausedAdTagsCount > 0 && !isSubPublisher() || item.activeAdTagsCount > 0 && !isSubPublisher()"></li>
                                 <li ng-if="item.pausedAdTagsCount > 0 && !isSubPublisher()"><a ng-click="toggleDemandPartnerStatus(item, true)">{{ 'VIDEO_DEMAND_PARTNER_MODULE.DROPDOWN_ACTIVE' | translate }}</a></li>
                                 <li ng-if="item.activeAdTagsCount > 0 && !isSubPublisher()"><a ng-click="toggleDemandPartnerStatus(item, false)">{{ 'VIDEO_DEMAND_PARTNER_MODULE.DROPDOWN_PAUSE' | translate }}</a></li>
-                                <li class="divider" ng-if="item.activeAdTagsCount > 0"></li>
-                                <li><a ng-if="item.activeAdTagsCount > 0" ng-click="openListWaterfallForDemandAdTag(item)">{{ 'VIDEO_DEMAND_PARTNER_MODULE.PAUSE_DEMAND_AD_TAG_FOR_WATERFALL' | translate }}</a></li>
+
+                                <li class="divider" ng-if="(item.activeAdTagsCount > 0) || (item.pausedAdTagsCount > 0 && item.activeAdTagsCount == 0)"  ></li>
+                                <li><a ng-if="(item.activeAdTagsCount > 0)" ng-click="openListWaterfallForDemandAdTag(item)">{{ 'VIDEO_DEMAND_PARTNER_MODULE.PAUSE_DEMAND_AD_TAG_FOR_WATERFALL' | translate }}</a></li>
+                                <li><a ng-if="item.pausedAdTagsCount > 0 && item.activeAdTagsCount == 0" ng-click="openListWaterfallForDemandAdTag(item)">{{ 'VIDEO_DEMAND_PARTNER_MODULE.ACTIVE_DEMAND_AD_TAG_FOR_WATERFALL' | translate }}</a></li>
+
                                 <li class="divider"></li>
                                 <li><a ui-sref="^.^.^.reports.video.report(paramsReport(item))">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
                                 <li class="divider"></li>

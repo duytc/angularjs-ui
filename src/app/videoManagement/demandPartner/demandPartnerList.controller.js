@@ -57,6 +57,7 @@
         }
 
         function openListWaterfallForDemandAdTag(demandPartner) {
+
             VideoDemandPartnerManager.one(demandPartner.id).one('waterfalltags').get()
                 .then(function(data) {
                     var waterfalls = data.plain();
