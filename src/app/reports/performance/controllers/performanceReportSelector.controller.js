@@ -652,6 +652,7 @@
         }
 
         function getReports() {
+
             var transition;
             var params = ReportParams.getStateParams($scope.selectedData);
 
@@ -796,7 +797,12 @@
                         key: 'site',
                         label: 'By Site',
                         toState: 'reports.performance.sites'
-                    }
+                    },
+                    {
+                        key: 'adslot',
+                        label: 'By Ad Slot',
+                        toState: 'reports.performance.siteAdSlots'
+                    },
                 ];
             }
         }
@@ -923,13 +929,17 @@
             }
 
             reportSelectorForm.getCalculatedParams(params).then(
+
                 function (calculatedParams) {
+
                     var reportType = findReportType(calculatedParams.reportType) || null;
+
                     _setBreakdownOptionsDefaultForReportType(reportType, calculatedParams);
 
                     $scope.selectedData.reportType = reportType;
 
                     var breakdownValue = calculatedParams[reportType.breakdownKey];
+
                     if (breakdownValue != undefined && breakdownValue != null) {
                         if (calculatedParams.adNetworkId != null) {
                             selectSiteForAdNetwork(calculatedParams.siteId);
@@ -937,8 +947,7 @@
 
                         var breakdownOption = _.findWhere(reportType.breakdownOptions, { key: breakdownValue });
                         selectBreakdownOption(breakdownOption);
-                    }
-                    else{
+                    } else {
                         toState = reportType.toState;
                     }
 
