@@ -27,6 +27,7 @@
                     <th ng-show="isAdmin()" at-attribute="publisher.company" >{{ 'PUBLISHER' | translate }}</th>
                 </tr>
                 </thead>
+
                 <tbody>
                 <tr>
                     <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
@@ -35,11 +36,11 @@
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
                                 <li><a ui-sref="^.^.^.videoLibrary.demandAdTag.listByDemandPartner({id: item.id})">{{ 'VIDEO_DEMAND_PARTNER_MODULE.MANAGE_DEMAND_AD_TAG' | translate }}</a></li>
-                                <li class="divider"></li>
+                                <li class="divider" ng-if="item.pausedAdTagsCount > 0 && !isSubPublisher() || item.activeAdTagsCount > 0 && !isSubPublisher()"></li>
                                 <li ng-if="item.pausedAdTagsCount > 0 && !isSubPublisher()"><a ng-click="toggleDemandPartnerStatus(item, true)">{{ 'VIDEO_DEMAND_PARTNER_MODULE.DROPDOWN_ACTIVE' | translate }}</a></li>
                                 <li ng-if="item.activeAdTagsCount > 0 && !isSubPublisher()"><a ng-click="toggleDemandPartnerStatus(item, false)">{{ 'VIDEO_DEMAND_PARTNER_MODULE.DROPDOWN_PAUSE' | translate }}</a></li>
-                                <li class="divider"></li>
-                                <li><a ng-click="openListWaterfallForDemandAdTag(item)">{{ 'VIDEO_DEMAND_PARTNER_MODULE.PAUSE_DEMAND_AD_TAG_FOR_WATERFALL' | translate }}</a></li>
+                                <li class="divider" ng-if="item.activeAdTagsCount > 0"></li>
+                                <li><a ng-if="item.activeAdTagsCount > 0" ng-click="openListWaterfallForDemandAdTag(item)">{{ 'VIDEO_DEMAND_PARTNER_MODULE.PAUSE_DEMAND_AD_TAG_FOR_WATERFALL' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li><a ui-sref="^.^.^.reports.video.report(paramsReport(item))">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
                                 <li class="divider"></li>
@@ -55,6 +56,7 @@
                     <td at-implicit at-sortable at-attribute="pausedAdTagsCount" at-title="{{ 'VIDEO_DEMAND_PARTNER_MODULE.PAUSE_DEMAND_AD_TAGS_COUNT' | translate }}"></td>
                 </tr>
                 </tbody>
+
             </table>
 
             <at-pagination at-pagination-query ng-if="showPagination()" at-list="demandPartners" at-config="tableConfig"></at-pagination>
