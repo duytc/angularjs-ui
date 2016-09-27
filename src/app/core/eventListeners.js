@@ -35,6 +35,7 @@
         });
 
         $rootScope.$on(AUTH_EVENTS.sessionTimeout, function() {
+            Auth.logout();
             $state.go(ENTRY_STATE).then(function() {
                 AlertService.replaceAlerts({
                     type: 'error',

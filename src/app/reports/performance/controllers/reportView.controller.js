@@ -9,15 +9,17 @@
      * @param {Array} reportGroup.reports
      */
     function ReportView($scope, $translate, $stateParams, $timeout, _, accountManager, sessionStorage, $state, Auth, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES, TYPE_AD_SLOT, REPORT_SETTINGS) {
+
         var isAdmin = Auth.isAdmin();
         var isSubPublisher = Auth.isSubPublisher();
-        $scope.isAdmin = isAdmin;
 
+        $scope.isAdmin = isAdmin;
         $scope.hasResult = reportGroup !== false;
         reportGroup = reportGroup || {};
         $scope.reportGroup = reportGroup;
         $scope.reports = [];
         $scope.subBreakDown = $stateParams.subBreakDown;
+
         var dataGroupReport = $state.current.params.expanded ? ($scope.reportGroup.expandedReports || []) : ($scope.reportGroup.reports || []);
 
         if(!!$scope.subBreakDown && $scope.subBreakDown == 'day') {
@@ -64,9 +66,7 @@
         if(!!$scope.reportGroup && !!$scope.reportGroup.reportType) {
             if(!!$scope.reportGroup.reportType.adSlotType) {
                 $scope.isNotNativeAdSlot = $scope.reportGroup.reportType.adSlotType != TYPE_AD_SLOT.native ? true : false;
-            }
-
-            else {
+            } else {
                 $scope.isNotNativeAdSlot = $scope.reportGroup.reportType.ronAdSlotType != TYPE_AD_SLOT.native ? true : false;
             }
 
