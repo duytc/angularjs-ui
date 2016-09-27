@@ -31,7 +31,11 @@
         $scope.demandSourceTransparency = Auth.getSession().demandSourceTransparency;
 
         var reportType = 'adTag';
-        var settings = isAdmin || isSubPublisher ? [] : angular.fromJson(sessionStorage.getCurrentSettings());
+
+        var currentSetting = sessionStorage.getCurrentSettings();
+        var oldSetting = (!_.isUndefined(currentSetting) &&  _.isNull(currentSetting)) ? angular.fromJson(currentSetting) : [];
+
+        var settings = (isAdmin || isSubPublisher) ? [] : oldSetting;
 
         $scope.dataSelect = dataSelect();
         $scope.modelSelect = modelSelect();
