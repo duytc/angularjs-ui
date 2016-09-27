@@ -920,6 +920,7 @@
         }
 
         function update() {
+
             var params = ReportParams.getFormParams(performanceReport.getInitialParams());
 
             params = params || {};
@@ -933,6 +934,9 @@
                 function (calculatedParams) {
 
                     var reportType = findReportType(calculatedParams.reportType) || null;
+                    if (_.isNull(reportType)) {
+                        return;
+                    }
 
                     _setBreakdownOptionsDefaultForReportType(reportType, calculatedParams);
 

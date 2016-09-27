@@ -122,7 +122,8 @@
          * @param role
          */
         function toggleModuleRole(role) {
-            if(role == USER_MODULES.source) {
+
+            if(role == USER_MODULES.source) { // Note: These code support for API. Replace Video Source Module by video and analytic module
                 if($scope.publisher.enabledModules.indexOf(USER_MODULES.video) == -1 || $scope.publisher.enabledModules.indexOf(USER_MODULES.analytics) == -1) {
                     $scope.publisher.enabledModules.push(USER_MODULES.video);
                     $scope.publisher.enabledModules.push(USER_MODULES.analytics);
