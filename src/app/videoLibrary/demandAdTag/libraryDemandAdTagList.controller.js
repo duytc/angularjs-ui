@@ -23,6 +23,7 @@
         $scope.showPagination = showPagination;
         $scope.confirmDeletion = confirmDeletion;
         $scope.createLinkedDemandAdTag = createLinkedDemandAdTag;
+        $scope.backToDemandPartnerList = backToDemandPartnerList;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -116,6 +117,11 @@
 
         function showPagination() {
             return angular.isArray($scope.demandAdTags) && $scope.demandAdTags.length > $scope.tableConfig.itemsPerPage;
+        }
+
+        function backToDemandPartnerList()
+        {
+            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.demandPartner, '^.^.^.videoManagement.demandPartner.list');
         }
 
         $scope.$on('$locationChangeSuccess', function() {
