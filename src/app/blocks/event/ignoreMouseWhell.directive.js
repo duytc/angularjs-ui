@@ -1,16 +1,15 @@
 (function () {
     'use strict';
 
-    angular.module('tagcade.blocks.ignoreMouseWhell')
-        .directive('ignoreMouseWheel', ignoreMouseWheel)
+    angular.module('tagcade.blocks.event')
+        .directive('input', ignoreMouseWheel)
     ;
 
     function ignoreMouseWheel() {
         return {
-            restrict: 'A',
+            restrict: 'ACE',
             link: function( scope, element, attrs ){
                 element.bind('mousewheel', function ( event ) {
-                    console.log('Test ');
                     element.blur();
                 } );
             }
