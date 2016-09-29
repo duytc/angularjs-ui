@@ -508,7 +508,7 @@
                 "HELP_BLOCK_TIMEOUT": "The timeout in seconds",
                 "HELP_BLOCK_AUTO_POSITION": "If Shift down is checked, all demand ad tags at the same or higher position will be shifted down.",
                 "HELP_BLOCK_FROM_LIBRARY": "You can select an existing demand ad tag, not linked demand ad tag, from which created before. If you choose this option, when you change some of the fields belows, the existing demand ad tag will be changed on these fields too.",
-                "CONFIRM_REPLACE_MACROS": "We have identified this tag URL belong to none demand partner. Would you like to automatically insert our macros?",
+                "CONFIRM_REPLACE_MACROS": "We have identified that this tag URL belongs to a know demand partner. Would you like to automatically insert our macros?",
                 "YES_REPLACE": "Yes, insert",
 
                 "WATERFALL_SELECTION": "Waterfall Selection",

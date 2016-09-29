@@ -6,6 +6,9 @@
     ;
 
     function LibraryDemandAdTagForm($scope, $q, _, $filter, $stateParams, $modal, $translate, UISelectMethod, videoPublishers, waterfallTags, whiteList, blackList, demandPartner, demandAdTag, demandPartners, publishers, AlertService, NumberConvertUtil, ReplaceMacros, LibraryDemandAdTagManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST, PLATFORM_OPTION, PLAYER_SIZE_OPTIONS, REQUIRED_MACROS_OPTIONS) {
+
+        var isChangeTagURLValue = false;
+
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
@@ -78,12 +81,24 @@
         $scope.viewQuicklyWhiteLink = viewQuicklyWhiteLink;
         $scope.viewQuicklyBlackLink = viewQuicklyBlackLink;
         $scope.replaceMacros = replaceMacros;
+        $scope.isChangeTagURL = isChangeTagURL;
+
+        function isChangeTagURL() {
+            isChangeTagURLValue = true;
+        }
 
         function replaceMacros() {
+
+            if (false == isChangeTagURLValue) {
+                return;
+            }
+
             ReplaceMacros.replaceVideoMacros($scope.demandAdTag.tagURL)
                 .then(function () {
                     $scope.demandAdTag.tagURL = ReplaceMacros.getVideoUrl();
                 })
+
+            isChangeTagURLValue = false;
         }
 
         function selectVideoPublisher(videoPublisher) {
