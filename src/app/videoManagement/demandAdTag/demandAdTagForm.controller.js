@@ -89,11 +89,25 @@
         $scope.viewQuicklyBlackLink = viewQuicklyBlackLink;
         $scope.replaceMacros = replaceMacros;
 
+        var isChangeTagURLValue = false;
+        $scope.isChangeTagURL = isChangeTagURL;
+
+        function isChangeTagURL() {
+            isChangeTagURLValue = true;
+        }
+
         function replaceMacros() {
+
+            if (false == isChangeTagURLValue) {
+                return;
+            }
+
             ReplaceMacros.replaceVideoMacros($scope.demandAdTag.libraryVideoDemandAdTag.tagURL)
                 .then(function () {
                     $scope.demandAdTag.libraryVideoDemandAdTag.tagURL = ReplaceMacros.getVideoUrl();
                 })
+
+            isChangeTagURLValue = false;
         }
 
         function createQuicklyWhiteLink() {

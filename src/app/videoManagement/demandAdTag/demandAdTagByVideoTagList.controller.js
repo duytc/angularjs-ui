@@ -292,16 +292,27 @@
         }
 
         function updateDemandAdTag(data, field, videoDemandAdTag) {
+
             if(videoDemandAdTag[field] == data) {
                 return;
             }
 
             var item = {};
-            item[field] = data;
+
+            if ('timeout' == field) {
+                item.libraryVideoDemandAdTag = {};
+                item.libraryVideoDemandAdTag[field] = data
+            } else {
+                item[field] = data;
+            }
 
             VideoDemandAdTagManager.one(videoDemandAdTag.id).patch(item)
                 .then(function() {
-                    videoDemandAdTag[field] = data;
+                    if ('timeout' == field) {
+                        videoDemandAdTag.libraryVideoDemandAdTag[field] = data;
+                    } else {
+                        videoDemandAdTag[field] = data;
+                    }
 
                     AlertService.replaceAlerts({
                         type: 'success',

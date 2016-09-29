@@ -41,8 +41,10 @@
                 <li class="col-md-2">{{ 'AD_SOURCE_MODULE.WEIGHT' | translate }}</li>
                 <li class="col-md-1">{{ 'AD_SOURCE_MODULE.STATUS' | translate }}</li>
             </ul>
+
             <ul ui-sortable="sortableGroupOptions" ng-model="videoWaterfallTagItems">
                 <li class="group-ad-tag" ng-repeat="videoWaterfallTagItem in videoWaterfallTagItems" ng-class="{'moveable': !sortableGroupOptions['disabled']}">
+
                     <div class="position form-inline">
                         <strong>
                         {{ 'VIDEO_AD_TAG_MODULE.POSITION' | translate }} : {{ $index + 1 }} -
@@ -58,6 +60,7 @@
                             </ui-select>
                         </div>
                     </div>
+
                     <ul class="itemAdTag" ui-sortable="sortableItemOption" ng-model="videoWaterfallTagItem.videoDemandAdTags">
                         <li class="item" ng-repeat="videoDemandAdTag in videoWaterfallTagItem.videoDemandAdTags">
                             <div class="col-md-1">{{ videoDemandAdTag.id }}</div>
@@ -77,6 +80,7 @@
                                     </ul>
                                 </div>
                             </div>
+
                             <div class="col-md-2" ng-dblclick="nameForm.$show()">
                                 <!--<div ng-show="!isSubPublisher()">-->
                                     <!--<span class="fa fa-pencil" ng-hide="nameForm.$visible"></span>-->
@@ -85,34 +89,33 @@
                                 <!--<div ng-show="isSubPublisher()">{{ videoDemandAdTag.name }}</div>-->
                                 <div>{{ videoDemandAdTag.libraryVideoDemandAdTag.name }}</div>
                             </div>
+
                             <div class="col-md-2" ng-dblclick="priorityForm.$show()">
-                                <!--<div ng-show="!isSubPublisher()">-->
-                                    <!--<span class="fa fa-pencil" ng-hide="priorityForm.$visible"></span>-->
-                                    <!--<div e-form="priorityForm" buttons="no" oncancel="updateDemandAdTag($data, 'priority', videoDemandAdTag)" onbeforesave="updateDemandAdTag($data, 'priority', videoDemandAdTag)" editable-number="videoDemandAdTag.priority">{{ videoDemandAdTag.priority }}</div>-->
-                                <!--</div>-->
-                                <!--<div ng-show="isSubPublisher()">{{ videoDemandAdTag.priority }}</div>-->
-                                <div>{{ videoDemandAdTag.priority }}</div>
+                                <div ng-show="!isSubPublisher()">
+                                    <span class="fa fa-pencil" ng-hide="priorityForm.$visible"></span>
+                                    <div e-form="priorityForm" buttons="no" oncancel="updateDemandAdTag($data, 'priority', videoDemandAdTag)" onbeforesave="updateDemandAdTag($data, 'priority', videoDemandAdTag)" editable-number="videoDemandAdTag.priority">{{ videoDemandAdTag.priority }}</div>
+                                </div>
                             </div>
+
                             <div class="col-md-2" ng-dblclick="timeoutForm.$show()">
-                                <!--<div ng-show="!isSubPublisher()">-->
-                                    <!--<span class="fa fa-pencil" ng-hide="timeoutForm.$visible"></span>-->
-                                    <!--<div e-form="timeoutForm" buttons="no" oncancel="updateDemandAdTag($data, 'timeout', videoDemandAdTag)" onbeforesave="updateDemandAdTag($data, 'timeout', videoDemandAdTag)" editable-number="videoDemandAdTag.timeout">{{ videoDemandAdTag.timeout }}</div>-->
-                                <!--</div>-->
-                                <!--<div ng-show="isSubPublisher()">{{ videoDemandAdTag.timeout }}</div>-->
-                                <div>{{ videoDemandAdTag.libraryVideoDemandAdTag.timeout }}</div>
+                                <div ng-show="!isSubPublisher()">
+                                    <span class="fa fa-pencil" ng-hide="timeoutForm.$visible"></span>
+                                    <div e-form="timeoutForm" buttons="no" oncancel="updateDemandAdTag($data, 'timeout', videoDemandAdTag)" onbeforesave="updateDemandAdTag($data, 'timeout', videoDemandAdTag)" editable-number="videoDemandAdTag.libraryVideoDemandAdTag.timeout">{{videoDemandAdTag.libraryVideoDemandAdTag.timeout}}</div>
+                                </div>
                             </div>
+
                             <div class="col-md-2" ng-dblclick="rotationForm.$show()">
-                                <!--<div ng-show="!isSubPublisher()">-->
-                                    <!--<span class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>-->
-                                    <!--<div e-form="rotationForm" buttons="no" oncancel="updateDemandAdTag($data, 'rotationWeight', videoDemandAdTag)" onbeforesave="updateDemandAdTag($data, 'rotationWeight', videoDemandAdTag)" editable-number="videoDemandAdTag.rotationWeight">{{ videoDemandAdTag.rotationWeight }}</div>-->
-                                <!--</div>-->
-                                <!--<div ng-show="isSubPublisher()">{{ videoDemandAdTag.rotationWeight }}</div>-->
-                                <div>{{ videoDemandAdTag.rotationWeight }}</div>
+                                <div ng-show="!isSubPublisher()">
+                                    <span class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>
+                                    <div e-form="rotationForm" buttons="no" oncancel="updateDemandAdTag($data, 'rotationWeight', videoDemandAdTag)" onbeforesave="updateDemandAdTag($data, 'rotationWeight', videoDemandAdTag)" editable-number="videoDemandAdTag.rotationWeight">{{ videoDemandAdTag.rotationWeight }}</div>
+                                </div>
                             </div>
 
                             <div class="col-md-1"><span class="label" ng-class="videoDemandAdTag.active == true ? 'label-success' : 'label-danger'">{{ videoDemandAdTag.active == true ? 'Active' : 'Paused' }}</span></div>
                         </li>
                     </ul>
+
+
                 </li>
             </ul>
         </div>
