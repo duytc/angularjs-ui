@@ -206,8 +206,8 @@
 
                 // update dateRange
                 params.date = {endDate: null, startDate: null};
-                params.date.endDate = !$scope.queryParams.filters || !$scope.queryParams.filters.endDate ? moment().subtract(1, 'days').startOf('day') : new Date($scope.queryParams.filters.endDate);
-                params.date.startDate = !$scope.queryParams.filters || !$scope.queryParams.filters.startDate ? moment().subtract(6, 'days').startOf('day') : new Date($scope.queryParams.filters.startDate);
+                params.date.endDate = !$scope.queryParams.filters || !$scope.queryParams.filters.endDate ? moment().subtract(1, 'days').startOf('day') : $scope.queryParams.filters.endDate;
+                params.date.startDate = !$scope.queryParams.filters || !$scope.queryParams.filters.startDate ? moment().subtract(6, 'days').startOf('day') : $scope.queryParams.filters.startDate;
 
                 // extend params
                 angular.extend($scope.selectedData, params);
