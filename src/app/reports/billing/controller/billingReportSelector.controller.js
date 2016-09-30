@@ -5,10 +5,11 @@
         .controller('BillingReportSelector', BillingReportSelector)
     ;
 
-    function BillingReportSelector($scope, $stateParams, $translate, $q, $state, _, Auth, UserStateHelper, AlertService, ReportParams, billingService, performanceReport, adminUserManager, REPORT_TYPES, reportSelectorForm, selectorFormCalculator, UISelectMethod) {
+    function BillingReportSelector($scope, $stateParams, $translate, $q, $state, _, Auth, UserStateHelper, AlertService, ReportParams, billingService, performanceReport, adminUserManager, REPORT_TYPES, USER_MODULES, reportSelectorForm, selectorFormCalculator, UISelectMethod) {
         var toState;
 
         var isAdmin = Auth.isAdmin();
+        var userSession = Auth.getSession();
         $scope.isAdmin = isAdmin;
 
         var selectedData = {
@@ -67,12 +68,17 @@
             {
                 key: 'display',
                 label: 'Display'
-            },
-            {
-                key: 'video',
-                label: 'Video'
             }
         ];
+
+        if(userSession.hasModuleEnabled(USER_MODULES.videoAds)) {
+            $scope.productOptions.push(
+                {
+                    key: 'video',
+                    label: 'Video'
+                }
+            )
+        }
 
         var reportTypeForDisplayOptions = [
             {
