@@ -45,6 +45,9 @@
 
             $scope.formProcessing = true;
 
+            delete $scope.demandPartner.activeAdTagsCount;
+            delete $scope.demandPartner.pausedAdTagsCount;
+
             var saveDemandPartner = $scope.isNew
                 ? VideoDemandPartnerManager.post($scope.demandPartner)
                 : $scope.demandPartner.patch();
