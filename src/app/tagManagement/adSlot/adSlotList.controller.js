@@ -72,15 +72,26 @@
                 templateUrl: 'tagManagement/adSlot/generateAdTag.tpl.html',
                 resolve: {
                     javascriptTag: function () {
-                        return Manager.one(adSlot.id).customGET('jstag');
+                        return Manager.one(adSlot.id).customGET('jstag', {forceSecure: true});
                     }
                 },
                 controller: function ($scope, javascriptTag) {
+                    $scope.selected = {
+                        secure: true
+                    };
+
                     $scope.adSlotName = adSlot.libraryAdSlot.name;
                     $scope.javascriptTag = javascriptTag;
                     $scope.getTextToCopy = function(string) {
                         return string.replace(/\n/g, '\r\n');
                     };
+
+                    $scope.secureChange = function(secure) {
+                        Manager.one(adSlot.id).customGET('jstag', {forceSecure: secure})
+                            .then(function(javascriptTag) {
+                                $scope.javascriptTag = javascriptTag;
+                            });
+                    }
                 }
             });
         };

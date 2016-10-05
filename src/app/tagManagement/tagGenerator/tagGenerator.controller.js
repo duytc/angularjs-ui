@@ -56,7 +56,8 @@
             generatorFor: !!channel ? 'channel' : 'site',
             site: site,
             channel: channel,
-            adSlotType: null
+            adSlotType: null,
+            forceSecure: true
         };
 
         $scope.typeSelected = !!site || !!channel ? $scope.typeKey.adSlot : $scope.typeKey.passback;
@@ -217,29 +218,29 @@
                 if($scope.selected.generatorFor == 'channel') {
                     var channel = $scope.selected.channel;
 
-                    return ChannelManager.one(channel.id).customGET('jstags');
+                    return ChannelManager.one(channel.id).customGET('jstags', {forceSecure: $scope.selected.forceSecure});
                 }
 
                 var site = $scope.selected.site;
-                return SiteManager.one(site.id).customGET('jstags');
+                return SiteManager.one(site.id).customGET('jstags', {forceSecure: $scope.selected.forceSecure});
             }
 
             if ($scope.selected.type == $scope.typeKey.passback) {
                 if($scope.isAdmin()) {
-                    return adminUserManager.one($scope.selected.publisher.id).customGET('jspassback');
+                    return adminUserManager.one($scope.selected.publisher.id).customGET('jspassback', {forceSecure: $scope.selected.forceSecure});
                 } else {
-                    return accountManager.one().customGET('jspassback')
+                    return accountManager.one().customGET('jspassback', {forceSecure: $scope.selected.forceSecure})
                 }
             }
 
             if ($scope.selected.type == $scope.typeKey.header) {
-                return SiteManager.one($scope.selected.site.id).customGET('jsheadertag');
+                return SiteManager.one($scope.selected.site.id).customGET('jsheadertag', {forceSecure: $scope.selected.forceSecure});
             }
 
             if($scope.isAdmin()) {
-                return adminUserManager.one($scope.selected.publisher.id).customGET('ronjstags');
+                return adminUserManager.one($scope.selected.publisher.id).customGET('ronjstags', {forceSecure: $scope.selected.forceSecure});
             } else {
-                return accountManager.one().customGET('ronjstags')
+                return accountManager.one().customGET('ronjstags', {forceSecure: $scope.selected.forceSecure})
             }
         }
 

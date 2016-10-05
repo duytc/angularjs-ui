@@ -243,7 +243,8 @@
                 "HEADER": "Header",
                 "AD_SLOT_TYPE": "Ad Slot Type",
                 "SELECT_A_AD_SLOT_TYPE": "Select a ad slot type",
-                "GENERATE_FOR": "Generate for"
+                "GENERATE_FOR": "Generate for",
+                "FORCE_HTTPS": "Force HTTPS"
             },
             "VAST_GENERATOR_MODULE": {
                 "GUIDE_COPY": "Copy and paste the following vast tags into the vast client plugin config section of video player of your website. ",
