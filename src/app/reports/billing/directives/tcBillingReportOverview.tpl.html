@@ -1,28 +1,59 @@
-<div class="row">
-    <div class="col-md-6" ng-if="reportGroup.slotOpportunities ">
-        <section class="panel panel-box info-box">
-            <div class="panel-item bg-reverse">
-                <p class="size-h1 no-margin">{{ reportGroup.slotOpportunities | number }}</p>
-                <p class="text-muted no-margin">{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}</p>
-            </div>
-        </section>
+<div>
+    <div class="row" ng-if="product != 'headerBidding'">
+        <div class="col-md-6" ng-if="reportGroup.slotOpportunities != null">
+            <section class="panel panel-box info-box">
+                <div class="panel-item bg-reverse">
+                    <p class="size-h1 no-margin">{{ reportGroup.slotOpportunities | number }}</p>
+                    <p class="text-muted no-margin">{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-md-6" ng-if="reportGroup.impressions != null && reportGroup.slotOpportunities == null">
+            <section class="panel panel-box info-box">
+                <div class="panel-item bg-reverse">
+                    <p class="size-h1 no-margin">{{ reportGroup.impressions | number }}</p>
+                    <p class="text-muted no-margin">{{ 'REPORT.IMPRESSIONS' | translate }}</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-md-6">
+            <section class="panel panel-box info-box">
+                <div class="panel-item bg-reverse">
+                    <p class="size-h1 no-margin">{{ reportGroup.billedAmount | currency }}</p>
+                    <p class="text-muted no-margin">{{ 'REPORT.BILLED_AMOUNT' | translate }}</p>
+                </div>
+            </section>
+        </div>
     </div>
 
-    <div class="col-md-6" ng-if="reportGroup.impressions ">
-        <section class="panel panel-box info-box">
-            <div class="panel-item bg-reverse">
-                <p class="size-h1 no-margin">{{ reportGroup.impressions | number }}</p>
-                <p class="text-muted no-margin">{{ 'REPORT.IMPRESSIONS' | translate }}</p>
-            </div>
-        </section>
-    </div>
+    <div class="row" ng-if="product == 'headerBidding'">
+        <div class="col-md-4">
+            <section class="panel panel-box info-box">
+                <div class="panel-item bg-reverse">
+                    <p class="size-h1 no-margin">{{ reportGroup.hbRequests | number }}</p>
+                    <p class="text-muted no-margin">{{ 'REPORT.HEADER_BIDDING_REQUESTS' | translate }}</p>
+                </div>
+            </section>
+        </div>
 
-    <div class="col-md-6">
-        <section class="panel panel-box info-box">
-            <div class="panel-item bg-reverse">
-                <p class="size-h1 no-margin">{{ reportGroup.billedAmount | currency }}</p>
-                <p class="text-muted no-margin">{{ 'REPORT.BILLED_AMOUNT' | translate }}</p>
-            </div>
-        </section>
+        <div class="col-md-4">
+            <section class="panel panel-box info-box">
+                <div class="panel-item bg-reverse">
+                    <p class="size-h1 no-margin">{{ reportGroup.hbBilledAmount | currency:'$':4 }}</p>
+                    <p class="text-muted no-margin">{{ 'REPORT.HEADER_BIDDING_BILLED_AMOUNT' | translate }}</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-md-4">
+            <section class="panel panel-box info-box">
+                <div class="panel-item bg-reverse">
+                    <p class="size-h1 no-margin">{{ reportGroup.hbBilledRate | number }}</p>
+                    <p class="text-muted no-margin">{{ 'REPORT.HEADER_BIDDING_BILLED_RATE' | translate }}</p>
+                </div>
+            </section>
+        </div>
     </div>
 </div>

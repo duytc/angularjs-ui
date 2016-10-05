@@ -104,7 +104,7 @@
                     <label class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.MODULES' | translate }}</label>
                     <div class="col-sm-10">
                         <div ng-repeat="module in modules">
-                            <label class="ui-checkbox"><input name="enabledModules[]" type="checkbox" ng-click="toggleModuleRole(module.role)" ng-checked="hasModuleEnabled(module.role)">
+                            <label class="ui-checkbox"><input name="enabledModules[]" type="checkbox" ng-click="toggleModuleRole(module.role)" ng-disabled="disabledModule(module.role)" ng-checked="hasModuleEnabled(module.role)">
                                 <span>{{ module.label }}</span>
                             </label>
                         </div>

@@ -5,8 +5,9 @@
         .controller('BillingReport', BillingReport)
     ;
 
-    function BillingReport($scope, $translate, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES) {
+    function BillingReport($scope, $translate, $stateParams, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES) {
         $scope.hasResult = reportGroup !== false;
+        $scope.product = $stateParams.product;
 
         reportGroup = reportGroup || {};
 
@@ -36,6 +37,8 @@
         }
 
         function drillDownReport(relativeToState, report) {
+            report.product = $scope.product;
+
             performanceReportHelper.drillDownReport(relativeToState, report, reportGroup);
         }
 

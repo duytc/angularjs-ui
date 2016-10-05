@@ -52,6 +52,7 @@
             }
         };
 
+        $scope.reportTypes = REPORT_TYPES;
         $scope.groupEntities = UISelectMethod.groupEntities;
         $scope.isFormValid = isFormValid;
         $scope.showPublisherSelect = showPublisherSelect;
@@ -60,7 +61,6 @@
         $scope.selectReportType = selectReportType;
         $scope.selectBreakdownOption = selectBreakdownOption;
         $scope.getReports = getReports;
-        $scope.reportTypes = REPORT_TYPES;
         $scope.selectEntity = selectEntity;
         $scope.selectProduct = selectProduct;
 
@@ -80,6 +80,15 @@
             )
         }
 
+        if(userSession.hasModuleEnabled(USER_MODULES.headerBidding)) {
+            $scope.productOptions.push(
+                {
+                    key: 'headerBidding',
+                    label: 'Header Bidding'
+                }
+            )
+        }
+
         var reportTypeForDisplayOptions = [
             {
                 key: REPORT_TYPES.account,
@@ -94,6 +103,28 @@
                 key: REPORT_TYPES.account,
                 label: 'Account',
                 toState: 'reports.billing.video'
+            }
+        ];
+
+        var reportTypeForHeaderBiddingOptions = [
+            {
+                key: REPORT_TYPES.account,
+                label: 'Account',
+                breakdownKey: 'accountBreakdown',
+                toState: 'reports.billing.account'
+            },
+            {
+                key: REPORT_TYPES.site,
+                label: 'Site',
+                toState: 'reports.billing.sites',
+                breakdownKey: 'siteBreakdown',
+                breakdownOptions: [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.billing.site'
+                    }
+                ]
             }
         ];
 
@@ -134,10 +165,34 @@
                     }
                 ]
             });
+
+            reportTypeForHeaderBiddingOptions.unshift({
+                key: REPORT_TYPES.platform,
+                label: 'Platform',
+                toState: 'reports.billing.platform',
+                breakdownOptions: [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.billing.platform'
+                    },
+                    {
+                        key: 'publisher',
+                        label: 'By Account',
+                        toState: 'reports.billing.account'
+                    }
+                ]
+            })
         }
 
-        // set default report for display
-        $scope.reportTypeOptions = reportTypeForDisplayOptions;
+        if($stateParams.product == 'video') {
+            $scope.reportTypeOptions = reportTypeForVideoOptions;
+        } else if($stateParams.product == 'headerBidding') {
+            $scope.reportTypeOptions = reportTypeForHeaderBiddingOptions;
+        } else {
+            // set default report for display
+            $scope.reportTypeOptions = reportTypeForDisplayOptions;
+        }
 
         /**
          *
@@ -263,6 +318,11 @@
                 $scope.reportTypeOptions = reportTypeForVideoOptions;
             }
 
+            if(product.key == 'headerBidding') {
+                $scope.reportTypeOptions = reportTypeForHeaderBiddingOptions;
+            }
+
+
             $scope.selectedData.reportType = null;
             $scope.selectedData.publisherId = null;
             $scope.selectedData.breakdown = null;
@@ -305,7 +365,7 @@
             reportSelectorForm.getCalculatedParams(params).then(
                 function (calculatedParams) {
                     var reportType = findReportType(calculatedParams.reportType) || null;
-                    calculatedParams.product = (!$stateParams.product || $stateParams.product == 'display') ? 'display' : 'video';
+                    calculatedParams.product = !!$stateParams.product ? $stateParams.product : 'display';
 
                     // update params when refresh for product is video
                     if($stateParams.product == 'video') {
@@ -320,8 +380,10 @@
                         reportType =  _.find(reportTypeForVideoOptions, function(rpt) {
                             return $stateParams.reportTypeClone == rpt.key;
                         });
-                    } else {
+                    } else if($stateParams.product == 'display') {
                         $scope.reportTypeOptions = reportTypeForDisplayOptions;
+                    } if($stateParams.product == 'headerBidding') {
+                        $scope.reportTypeOptions = reportTypeForHeaderBiddingOptions;
                     }
 
                     $scope.selectedData.reportType = reportType;

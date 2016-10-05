@@ -8,7 +8,7 @@
     function addStates($stateProvider) {
         $stateProvider
             .state('app.admin.reports.billing.platform', {
-                url: '/platform?{startDate:date}&{endDate:date}',
+                url: '/platform?{product}{startDate:date}&{endDate:date}',
                 params: {
                     startDate: null,
                     endDate: null,
@@ -17,7 +17,13 @@
                 views: {
                     billing: {
                         controller: 'BillingReport',
-                        templateUrl: 'reports/billing/views/reportType/platform.tpl.html'
+                        templateUrl: function ($stateParams) {
+                            if($stateParams.product == 'headerBidding') {
+                                return 'reports/billing/views/headerBidding/platform.tpl.html'
+                            }
+
+                            return 'reports/billing/views/reportType/platform.tpl.html'
+                        }
                     }
                 },
                 resolve: {
@@ -36,7 +42,7 @@
 
         $stateProvider
             .state('app.admin.reports.billing.platformAccounts', {
-                url: '/platform/accounts?{startDate:date}&{endDate:date}',
+                url: '/platform/accounts?{product}{startDate:date}&{endDate:date}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -44,7 +50,13 @@
                 views: {
                     billing: {
                         controller: 'BillingReport',
-                        templateUrl: 'reports/billing/views/reportType/accounts.tpl.html'
+                        templateUrl: function ($stateParams) {
+                            if($stateParams.product == 'headerBidding') {
+                                return 'reports/billing/views/headerBidding/accounts.tpl.html'
+                            }
+
+                            return 'reports/billing/views/reportType/accounts.tpl.html'
+                        }
                     }
                 },
                 resolve: {
@@ -63,7 +75,7 @@
 
         $stateProvider
             .state('app.admin.reports.billing.platformSites', {
-                url: '/platform/sites?{startDate:date}&{endDate:date}',
+                url: '/platform/sites?{product}{startDate:date}&{endDate:date}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -71,7 +83,13 @@
                 views: {
                     billing: {
                         controller: 'BillingReport',
-                        templateUrl: 'reports/billing/views/reportType/site/sites.tpl.html'
+                        templateUrl: function ($stateParams) {
+                            if($stateParams.product == 'headerBidding') {
+                                return 'reports/billing/views/headerBidding/site/sites.tpl.html'
+                            }
+
+                            return 'reports/billing/views/reportType/site/sites.tpl.html'
+                        }
                     }
                 },
                 resolve: {
@@ -90,7 +108,7 @@
 
         $stateProvider
             .state('app.admin.reports.billing.account', {
-                url: '/account/{publisherId:int}?{startDate:date}&{endDate:date}',
+                url: '/account/{publisherId:int}?{product}{startDate:date}&{endDate:date}',
                 params: {
                     startDate: null,
                     endDate: null,
@@ -99,7 +117,13 @@
                 views: {
                     billing: {
                         controller: 'BillingReport',
-                        templateUrl: 'reports/billing/views/reportType/account.tpl.html'
+                        templateUrl: function ($stateParams) {
+                            if($stateParams.product == 'headerBidding') {
+                                return 'reports/billing/views/headerBidding/account.tpl.html'
+                            }
+
+                            return 'reports/billing/views/reportType/account.tpl.html'
+                        }
                     }
                 },
                 resolve: {
@@ -117,7 +141,7 @@
 
         $stateProvider
             .state('app.admin.reports.billing.sites', {
-                url: '/accounts/{publisherId:int}/sites?{startDate:date}&{endDate:date}',
+                url: '/accounts/{publisherId:int}/sites?{product}{startDate:date}&{endDate:date}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -125,7 +149,13 @@
                 views: {
                     billing: {
                         controller: 'BillingReport',
-                        templateUrl: 'reports/billing/views/reportType/site/sites.tpl.html'
+                        templateUrl: function ($stateParams) {
+                            if($stateParams.product == 'headerBidding') {
+                                return 'reports/billing/views/headerBidding/site/sites.tpl.html'
+                            }
+
+                            return 'reports/billing/views/reportType/site/sites.tpl.html'
+                        }
                     }
                 },
                 resolve: {

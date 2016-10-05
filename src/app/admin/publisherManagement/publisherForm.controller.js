@@ -105,6 +105,7 @@
         $scope.hasBidder = hasBidder;
         $scope.toggleExchange = toggleExchange;
         $scope.toggleHeaderBidding = toggleHeaderBidding;
+        $scope.disabledModule = disabledModule;
 
         /**
          * check if current Publisher has a module enabled
@@ -122,7 +123,6 @@
          * @param role
          */
         function toggleModuleRole(role) {
-
             if(role == USER_MODULES.source) { // Note: These code support for API. Replace Video Source Module by video and analytic module
                 if($scope.publisher.enabledModules.indexOf(USER_MODULES.video) == -1 || $scope.publisher.enabledModules.indexOf(USER_MODULES.analytics) == -1) {
                     $scope.publisher.enabledModules.push(USER_MODULES.video);
@@ -139,6 +139,33 @@
                 $scope.publisher.enabledModules.splice(idx, 1);
             } else {
                 $scope.publisher.enabledModules.push(role);
+            }
+
+            // remove module do not display module
+            if(role == USER_MODULES.displayAds && $scope.publisher.enabledModules.indexOf(USER_MODULES.displayAds) == -1) {
+                if($scope.publisher.enabledModules.indexOf(USER_MODULES.video) > -1) {
+                    $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.video), 1);
+                }
+
+                if($scope.publisher.enabledModules.indexOf(USER_MODULES.analytics) > -1) {
+                    $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.analytics), 1);
+                }
+
+                if($scope.publisher.enabledModules.indexOf(USER_MODULES.headerBidding) > -1) {
+                    $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.headerBidding), 1);
+                }
+
+                if($scope.publisher.enabledModules.indexOf(USER_MODULES.rtb) > -1) {
+                    $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.rtb), 1);
+                }
+
+                if($scope.publisher.enabledModules.indexOf(USER_MODULES.source) > -1) {
+                    $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.source), 1);
+                }
+
+                if($scope.publisher.enabledModules.indexOf(USER_MODULES.subPublisher) > -1) {
+                    $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.subPublisher), 1);
+                }
             }
         }
 
@@ -251,6 +278,14 @@
             } else {
                 $scope.publisher.bidders.push(bidder.abbreviation);
             }
+        }
+
+        function disabledModule(module) {
+            if((module == USER_MODULES.subPublisher || module == USER_MODULES.source || module == USER_MODULES.rtb || module == USER_MODULES.headerBidding || module == USER_MODULES.analytics || module == USER_MODULES.video) && !hasModuleEnabled(USER_MODULES.displayAds)) {
+                return true;
+            }
+
+            return false;
         }
 
         $scope.submit = function() {

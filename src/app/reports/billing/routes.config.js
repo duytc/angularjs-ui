@@ -23,7 +23,7 @@
 
         UserStateHelperProvider
             .state('reports.billing.site', {
-                url: '/sites/{siteId:int}?{startDate:date}&{endDate:date}',
+                url: '/sites/{siteId:int}?{product}{startDate:date}&{endDate:date}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -31,7 +31,13 @@
                 views: {
                     billing: {
                         controller: 'BillingReport',
-                        templateUrl: 'reports/billing/views/reportType/site/site.tpl.html'
+                        templateUrl: function ($stateParams) {
+                            if($stateParams.product == 'headerBidding') {
+                                return 'reports/billing/views/headerBidding/site/site.tpl.html'
+                            }
+
+                            return 'reports/billing/views/reportType/site/site.tpl.html'
+                        }
                     }
                 },
                 resolve: {

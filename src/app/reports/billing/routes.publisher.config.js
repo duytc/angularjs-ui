@@ -8,7 +8,7 @@
     function addStates($stateProvider) {
         $stateProvider
             .state('app.publisher.reports.billing.account', {
-                url: '/account?{startDate:date}&{endDate:date}',
+                url: '/account?{product}{startDate:date}&{endDate:date}',
                 params: {
                     startDate: null,
                     endDate: null,
@@ -17,7 +17,13 @@
                 views: {
                     billing: {
                         controller: 'BillingReport',
-                        templateUrl: 'reports/billing/views/reportType/account.tpl.html'
+                        templateUrl: function ($stateParams) {
+                            if($stateParams.product == 'headerBidding') {
+                                return 'reports/billing/views/headerBidding/account.tpl.html'
+                            }
+
+                            return 'reports/billing/views/reportType/account.tpl.html'
+                        }
                     }
                 },
                 resolve: {
@@ -36,7 +42,7 @@
 
         $stateProvider
             .state('app.publisher.reports.billing.sites', {
-                url: '/sites?{startDate:date}&{endDate:date}',
+                url: '/sites?{product}{startDate:date}&{endDate:date}',
                 params: {
                     endDate: null,
                     uniqueRequestCacheBuster: null
@@ -44,7 +50,13 @@
                 views: {
                     billing: {
                         controller: 'BillingReport',
-                        templateUrl: 'reports/billing/views/reportType/site/sites.tpl.html'
+                        templateUrl: function ($stateParams) {
+                            if($stateParams.product == 'headerBidding') {
+                                return 'reports/billing/views/headerBidding/site/sites.tpl.html'
+                            }
+
+                            return 'reports/billing/views/reportType/site/sites.tpl.html'
+                        }
                     }
                 },
                 resolve: {

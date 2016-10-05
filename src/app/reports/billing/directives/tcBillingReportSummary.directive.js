@@ -12,7 +12,8 @@
             },
             restrict: 'AE',
             replace: 'true',
-            templateUrl: 'reports/billing/directives/tcBillingReportSummary.tpl.html'
+            templateUrl: 'reports/billing/directives/tcBillingReportSummary.tpl.html',
+            controller: 'BillingReportSummary'
         }
     }
 })();

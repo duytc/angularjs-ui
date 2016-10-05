@@ -809,6 +809,10 @@
                 "TIER_FILL_RATE": "Tier Fill Rate",
                 "POSITION": "Position",
 
+                "HEADER_BIDDING_REQUESTS": "Header Bidding Requests",
+                "HEADER_BIDDING_BILLED_AMOUNT": "Header Bidding Billed Amount",
+                "HEADER_BIDDING_BILLED_RATE": "Header Bidding Billed Rate",
+
                 "PROJECTED_BILL": "Projected Bill",
                 "PRODUCT": "Product",
 
