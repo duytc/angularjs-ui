@@ -38,7 +38,7 @@
             'videoPublisher' : 'Video Publisher',
             'videoDemandPartner' : 'Demand Partner',
             'videoDemandAdTag' : 'Demand Ad Tag',
-            'videoWaterfallTag' : 'Waterfall Ad Tag',
+            'videoWaterfallTag' : 'Waterfall',
             'requests': 'Requests',
             'bids': 'Bids',
             'bidRate': 'Bid Rate',

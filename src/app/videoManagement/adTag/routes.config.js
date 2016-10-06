@@ -39,7 +39,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Waterfall Tags'
+                    label: 'Waterfalls'
                 }
             })
             .state('videoManagement.adTag.listForVideoPublisher', {
@@ -64,7 +64,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Waterfall Tags For Video Publisher - {{ videoPublisher.name }}'
+                    label: 'Waterfalls For Video Publisher - {{ videoPublisher.name }}'
                 }
             })
             .state('videoManagement.adTag.new', {
@@ -93,7 +93,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'New Waterfall Tag'
+                    label: 'New Waterfall'
                 }
             })
             .state('videoManagement.adTag.edit', {
@@ -116,7 +116,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Edit Waterfall Tag - {{ adTag.name }}'
+                    label: 'Edit Waterfall - {{ adTag.name }}'
                 }
             })
         ;

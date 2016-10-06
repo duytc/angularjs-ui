@@ -20,7 +20,7 @@
                 key: 'demandPartner'
             },
             {
-                label: 'By Waterfall Tag',
+                label: 'By Waterfall',
                 key: 'waterfallTag'
             },
             {

@@ -56,8 +56,8 @@
             "VIDEO_DEMAND_PARTNER": "Demand Partner",
             "AD_SOURCES": "Demand Ad Tags",
             "AD_SOURCE": "Demand Ad Tag",
-            "WATERFALL_TAGS": "Waterfall Tags",
-            "WATERFALL_TAG": "Waterfall Tag",
+            "WATERFALL_TAGS": "Waterfalls",
+            "WATERFALL_TAG": "Waterfall",
 
             "RTB_STATUS": "RTB",
             "RTB_STATUS_INHERIT": "Inherit",
@@ -122,12 +122,12 @@
                 "EXCHANGES": "Exchanges",
 
                 "VIDEO_ADS": "Video Ads",
-                "VIDEO_AD_TAGS": "Waterfall Tags",
-                "MY_VIDEO_AD_TAGS": "My Waterfall Tags",
+                "VIDEO_AD_TAGS": "Waterfalls",
+                "MY_VIDEO_AD_TAGS": "My Waterfalls",
                 "DEMAND_PARTNERS": "Demand Partners",
                 "MY_DEMAND_PARTNERS": "My Demand Partners",
                 "NEW_DEMAND_PARTNER": "New Demand Partner",
-                "NEW_VIDEO_AD_TAG": "New Waterfall Tag",
+                "NEW_VIDEO_AD_TAG": "New Waterfall",
 
                 "VIDEO_AD_SOURCES": "Demand Ad Tags",
                 "MY_VIDEO_AD_SOURCES": "My Demand Ad Tags",
@@ -227,7 +227,7 @@
                 "GENERATE_VATS_TAGS": "Generate Vats Tags",
 
                 "EDIT_VIDEO_PUBLISHER": "Edit Publisher",
-                "MANAGE_WATERFALL_TAGS": "Manage Waterfall Tags"
+                "MANAGE_WATERFALL_TAGS": "Manage Waterfalls"
             },
             "TAG_GENERATOR_MODULE": {
                 "GUIDE_COPY_HEADER": "To enable source reports, copy and paste the following tag into the <head> section of your website.",
@@ -377,14 +377,14 @@
                 "SELECT_A_VIDEO_DEMAND_PARTNER": "Select a demand partner",
                 "PAUSE_DEMAND_AD_TAG_FOR_WATERFALL": "Bulk Pause",
                 "ACTIVE_DEMAND_AD_TAG_FOR_WATERFALL": "Bulk Activate",
-                "CURRENTLY_NO_WATERFALLS_DEMAND_PARTNER": "Demand Partner : ' {{ demand_partner_name }} ' does not have waterfall tags",
+                "CURRENTLY_NO_WATERFALLS_DEMAND_PARTNER": "Demand Partner : ' {{ demand_partner_name }} ' does not have waterfalls",
                 "ACTIVE_DEMAND_AD_TAGS_COUNT": "Active Demand Ad Tags",
                 "PAUSE_DEMAND_AD_TAGS_COUNT": "Paused Demand Ad Tags",
                 "WATERFALLS_FOR_DEMAND_PARTNER": "Waterfalls for Demand Partner",
 
                 "YES_PAUSE": "Yes, pause",
-                "NOTE_CONFIRM_PAUSE_WATERFALL": "Every demand ad tag associated with this demand partner and waterfall tag will be also paused.",
-                "CONFIRM_PAUSE_WATERFALL": "Are you sure you want to pause this waterfall tag?",
+                "NOTE_CONFIRM_PAUSE_WATERFALL": "Every demand ad tag associated with this demand partner and waterfall will be also paused.",
+                "CONFIRM_PAUSE_WATERFALL": "Are you sure you want to pause this waterfall?",
 
                 "BACK_TO_DEMAND_PARTNER_LIST": "Back to Demand Partner List",
                 "ADD_NEW_SUCCESS": "The demand partner has been created",
@@ -414,7 +414,7 @@
                 "BUY_PRICE": "Buy Price",
                 "PLATFORM": "Platform",
                 "SELECT_PLATFORM": "Select Platform",
-                "SELECT_WATERFALL_TAG": "Select Waterfall Tag",
+                "SELECT_WATERFALL_TAG": "Select Waterfall",
                 "WATERFALL": "Waterfall",
                 "STRATEGY": "Strategy",
                 "POSITION": "Position",
@@ -424,27 +424,27 @@
                 "PLAYER_SIZE": "Player Size",
 
                 "CREATE_DEMAND_AD_TAG": "Create a Demand Ad Tag",
-                "EDIT_VIDEO_AD_TAG": "Edit Waterfall Tag",
-                "DELETE_VIDEO_AD_TAG": "Delete Waterfall Tag",
-                "UPDATE_SUCCESS": "The waterfall tag has been updated",
-                "UPDATE_FAIL": "An error occurred. The waterfall tag could not be updated",
+                "EDIT_VIDEO_AD_TAG": "Edit Waterfall",
+                "DELETE_VIDEO_AD_TAG": "Delete Waterfall",
+                "UPDATE_SUCCESS": "The waterfall has been updated",
+                "UPDATE_FAIL": "An error occurred. The waterfall could not be updated",
                 "GENERATE_A_VAST": "Generate Vast/VPAID Tag",
                 "VAST_FOR_NAME": "Vast Tag for: {{ name }}",
 
                 "ADD_NEW_POSITION": "Add New Position",
-                "ADD_NEW_SUCCESS": "The waterfall tag has been created",
-                "ADD_NEW_FAIL": "An error occurred. The waterfall tag could not be created",
-                "NEW_VIDEO_AD_TAG_PARTNER": "New Waterfall Tag",
-                "BACK_TO_VIDEO_AD_TAG_LIST": "Back to Waterfall Tag List",
+                "ADD_NEW_SUCCESS": "The waterfall has been created",
+                "ADD_NEW_FAIL": "An error occurred. The waterfall could not be created",
+                "NEW_VIDEO_AD_TAG_PARTNER": "New Waterfall",
+                "BACK_TO_VIDEO_AD_TAG_LIST": "Back to Waterfall List",
                 "BACK_TO_VIDEO_PUBLISHER": "Back to Publisher List",
-                "DELETE_SUCCESS": "The waterfall tag was deleted",
-                "DELETE_FAIL": "The waterfall tag could not be deleted",
-                "BACK_TO_AD_TAG_LIST": "Back to Waterfall Tag List",
-                "CONFIRM_DELETE_VIDEO_AD_TAG": "Are you sure you want to delete this waterfall tag?",
-                "UPDATE_PLATFORM_FAIL_WHEN_REMOVE_JS": "There're some ad sources belong to this waterfall tag still have platform 'javascript'",
-                "UPDATE_PLATFORM_FAIL_WHEN_REMOVE_FLASH": "There're some ad sources belong to this waterfall tag still have platform 'flash'",
+                "DELETE_SUCCESS": "The waterfall was deleted",
+                "DELETE_FAIL": "The waterfall could not be deleted",
+                "BACK_TO_AD_TAG_LIST": "Back to Waterfall List",
+                "CONFIRM_DELETE_VIDEO_AD_TAG": "Are you sure you want to delete this waterfall?",
+                "UPDATE_PLATFORM_FAIL_WHEN_REMOVE_JS": "There're some ad sources belong to this waterfall still have platform 'javascript'",
+                "UPDATE_PLATFORM_FAIL_WHEN_REMOVE_FLASH": "There're some ad sources belong to this waterfall still have platform 'flash'",
 
-                "CURRENTLY_NO_VIDEO_AD_TAG": "There is currently no waterfall tag",
+                "CURRENTLY_NO_VIDEO_AD_TAG": "There is currently no waterfall",
                 "SELECT_A_STRATEGY": "Select a Strategy",
                 "SELECT_A_PLAYER_SIZE": "Select a Player Size",
                 "MANAGEMENT_POSITIONS": "Manage Demand Ad Tags",
@@ -452,7 +452,7 @@
                 "TITLE_CREATE_LINKED_DEMAND_AD_TAG": "Link Demand Ad Tag",
 
                 "HELP_BLOCK_SELECT_DEFAULT": "Select <strong>Add New</strong> to generate new position for this demand ad tag",
-                "WARNING_BUY_PRICE": "One of the waterfall tags has a buy price that is higher than the sell price. Do you want to proceed?"
+                "WARNING_BUY_PRICE": "One of the waterfalls has a buy price that is higher than the sell price. Do you want to proceed?"
             },
             "AD_SOURCE_MODULE": {
                 "PLATFORM": "Platform",
@@ -504,7 +504,7 @@
 
                 "VIEW_BLACK_LIST": "View Black List",
                 "VIEW_WHITE_LIST": "View White List",
-                "CONFIRM_SUBMIT_FOR_PLATFORM": "One of the waterfall tags has a platform that does not support this platform of demand ad tag.",
+                "CONFIRM_SUBMIT_FOR_PLATFORM": "One of the waterfalls has a platform that does not support this platform of demand ad tag.",
 
                 "HELP_BLOCK_TIMEOUT": "The timeout in seconds",
                 "HELP_BLOCK_AUTO_POSITION": "If Shift down is checked, all demand ad tags at the same or higher position will be shifted down.",
@@ -522,12 +522,12 @@
                 "CREATE_LINKED_DEMAND_AD_TAGS": "Link this Demand Ad Tag",
                 "LINK_DEMAND_AD_TAG_SUCCESS": "This demand ad tag has been linked to the selected waterfalls",
                 "LINK_DEMAND_AD_TAG_FAIL": "Could not link the demand ad tag",
-                "DEPLOYMENT": "Link to Waterfall Tags",
+                "DEPLOYMENT": "Link to Waterfalls",
 
                 "LIBRARY_DEMAND_AD_TAG": "Demand Ad Tag",
                 "SELECT_A_LIBRARY_DEMAND_AD_TAG": "Select a demand ad tag",
                 "VIEW_LINKED_DEMAND_AD_TAGS": "View linked Demand Ad Tags",
-                "WARNING_EDIT_LIBRARY": "This demand ad tag is linked to multiple waterfall tags. If you modify this demand ad tag, every waterfall tag that links to it will be updated."
+                "WARNING_EDIT_LIBRARY": "This demand ad tag is linked to multiple waterfalls. If you modify this demand ad tag, every waterfall that links to it will be updated."
             },
             "DOMAIN_LIST_MODULE": {
                 "FROM": "From",
@@ -809,9 +809,9 @@
                 "TIER_FILL_RATE": "Tier Fill Rate",
                 "POSITION": "Position",
 
-                "HEADER_BIDDING_REQUESTS": "Header Bidding Requests",
-                "HEADER_BIDDING_BILLED_AMOUNT": "Header Bidding Billed Amount",
-                "HEADER_BIDDING_BILLED_RATE": "Header Bidding Billed Rate",
+                "HEADER_BIDDING_REQUESTS": "Requests",
+                "HEADER_BIDDING_BILLED_AMOUNT": "Billed Amount",
+                "HEADER_BIDDING_BILLED_RATE": "Billed Rate",
 
                 "PROJECTED_BILL": "Projected Bill",
                 "PRODUCT": "Product",
