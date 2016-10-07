@@ -18,6 +18,7 @@
             }
 
             params.group = true;
+            params.uniqueRequestCacheBuster = Math.random();
 
             return dataService.makeHttpGetRequest('', params, API_VIDEO_REPORTS_BASE_URL)
                 .catch(function() {
