@@ -26,7 +26,7 @@
                         {{ item.hbRequests | number }}
                     </td>
                     <td at-title="{{ 'REPORT.HEADER_BIDDING_BILLED_AMOUNT' | translate }}" at-attribute="hbBilledAmount" at-sortable>
-                        {{ item.hbBilledAmount | currency:'$':4 }}
+                        {{ item.hbBilledAmount | currency }}
                     </td>
                     <td at-title="{{ 'REPORT.HEADER_BIDDING_BILLED_RATE' | translate }}">
                         {{ item.hbBilledRate | number }}
