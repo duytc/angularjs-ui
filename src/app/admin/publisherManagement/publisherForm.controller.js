@@ -6,7 +6,7 @@
         .controller('PublisherForm', PublisherForm)
     ;
 
-    function PublisherForm($scope, $translate, _, exchanges, headerBiddings, adminUserManager, AlertService, ServerErrorProcessor, publisher, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST, USER_MODULES){
+    function PublisherForm($scope, $translate, _, exchanges, headerBiddings, defaultThresholds, adminUserManager, AlertService, ServerErrorProcessor, publisher, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST, USER_MODULES){
         $scope.fieldNameTranslations = {
             username: 'Username',
             plainPassword: 'Password',
@@ -59,19 +59,7 @@
             if(publisher.billingConfigs.length > 0) {
                 angular.forEach(publisher.billingConfigs, function(billingConfig) {
                     if(billingConfig.tiers.length > 0) {
-                        angular.forEach(billingConfig.tiers, function(tier) {
-                            if(1000000000 <= tier.threshold) {
-                                tier.threshold = tier.threshold/1000000000;
-                                tier.number = 1000000000;
-                            }
-                            else if(1000000 <= tier.threshold && tier.threshold < 1000000000) {
-                                tier.threshold = tier.threshold/1000000;
-                                tier.number = 1000000;
-                            } else {
-                                tier.threshold = tier.threshold/1000;
-                                tier.number = 1000;
-                            }
-                        })
+                        _formatTiers(billingConfig.tiers);
                     }
                 })
             }
@@ -94,8 +82,12 @@
 //            { label: 'Fraud Detection', role: 'MODULE_FRAUD_DETECTION' }
         ];
 
+        _formatTiers(defaultThresholds.video);
+        _formatTiers(defaultThresholds.display);
+
         $scope.exchanges = exchanges;
         $scope.headerBiddings = headerBiddings;
+        $scope.defaultThresholds = defaultThresholds;
 
         $scope.hasModuleEnabled = hasModuleEnabled;
         $scope.toggleModuleRole = toggleModuleRole;
@@ -286,6 +278,22 @@
             }
 
             return false;
+        }
+
+        function  _formatTiers(tiers) {
+            angular.forEach(tiers, function(tier) {
+                if(1000000000 <= tier.threshold) {
+                    tier.threshold = tier.threshold/1000000000;
+                    tier.number = 1000000000;
+                }
+                else if(1000000 <= tier.threshold && tier.threshold < 1000000000) {
+                    tier.threshold = tier.threshold/1000000;
+                    tier.number = 1000000;
+                } else {
+                    tier.threshold = tier.threshold/1000;
+                    tier.number = 1000;
+                }
+            })
         }
 
         $scope.submit = function() {

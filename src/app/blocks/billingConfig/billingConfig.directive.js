@@ -11,7 +11,8 @@
         return {
             scope: {
                 billingConfigs: '=',
-                publisher: '='
+                publisher: '=',
+                defaultThresholds: '='
             },
             restrict: 'AE',
             templateUrl: 'blocks/billingConfig/billingConfig.tpl.html',
@@ -27,7 +28,7 @@
                             scope.billingConfigs.push({
                                 module: module.role,
                                 defaultConfig: true,
-                                tiers: [],
+                                tiers: _setDefaultTiers(module.role),
                                 billingFactor: module.role == 'MODULE_DISPLAY' ? 'SLOT_OPPORTUNITY' : 'VIDEO_IMPRESSION' //set default billing factor
                             });
                         })
@@ -41,7 +42,7 @@
                                 scope.billingConfigs.push({
                                     module: module.role,
                                     defaultConfig: true,
-                                    tiers: [],
+                                    tiers: _setDefaultTiers(module.role),
                                     billingFactor: module.role == 'MODULE_DISPLAY' ? 'SLOT_OPPORTUNITY' : 'VIDEO_IMPRESSION' //set default billing factor
                                 });
                             }
@@ -64,6 +65,16 @@
                             delete billingConfig.publisher;
                             delete billingConfig.publisherId;
                         })
+                    }
+
+                    function _setDefaultTiers(module) {
+                        if(module == 'MODULE_DISPLAY') {
+                            return scope.defaultThresholds.display;
+                        } else if(module == 'MODULE_VIDEO') {
+                            return scope.defaultThresholds.video;
+                        }
+
+                        return [];
                     }
 
                     scope.getLabelModuleConfig = function(role) {

@@ -60,6 +60,9 @@
                     },
                     headerBiddings: /* @ngInject */ function(HeaderBiddingManager) {
                         return HeaderBiddingManager.getList()
+                    },
+                    defaultThresholds: function (adminRestangular) {
+                        return adminRestangular.one('configurations').one('billing').get()
                     }
                 },
                 ncyBreadcrumb: {
@@ -85,6 +88,9 @@
                     },
                     headerBiddings: /* @ngInject */ function(HeaderBiddingManager) {
                         return HeaderBiddingManager.getList()
+                    },
+                    defaultThresholds: function (adminRestangular) {
+                        return adminRestangular.one('configurations').one('billing').get()
                     }
                 },
                 ncyBreadcrumb: {
