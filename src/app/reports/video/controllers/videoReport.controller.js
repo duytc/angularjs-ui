@@ -49,9 +49,9 @@
             'fillRate': 'Fill Rate',
             'clicks': 'Clicks',
             'clickThroughRate': 'Click Through Rate',
-            'adTagRequests': 'Ad Tag Requests',
-            'adTagBids': 'Ad Tag Bids',
-            'adTagErrors': 'Ad Tag Errors',
+            'adTagRequests': 'Waterfall Requests',
+            'adTagBids': 'Waterfall Bids',
+            'adTagErrors': 'Waterfall Errors',
             'blocks': 'Blocks'
         };
 

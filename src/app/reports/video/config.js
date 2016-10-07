@@ -76,15 +76,15 @@
             // for adtag
             {
                 key: 'adTagRequests',
-                label: 'Ad Tag Requests'
+                label: 'Waterfall Requests'
             },
-            {
-                key: 'adTagBids',
-                label: 'Ad Tag Bids'
-            },
+            // {
+            //     key: 'adTagBids',
+            //     label: 'Ad Tag Bids'
+            // },
             {
                 key: 'adTagErrors',
-                label: 'Ad Tag Errors'
+                label: 'Waterfall Errors'
             }
         ])
         .provider('API_VIDEO_REPORTS_BASE_URL', {

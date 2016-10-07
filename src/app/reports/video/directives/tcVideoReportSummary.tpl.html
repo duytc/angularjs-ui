@@ -45,15 +45,15 @@
                         <span class="pull-right">{{ reportGroup.blocks | number }}</span>
                     </li>
                     <li ng-if="hasKeyObject('adTagRequests', 'adTagRequests')">
-                        <label>Ad Tag Requests</label>
+                        <label>Waterfall Requests</label>
                         <span class="pull-right">{{ (reportGroup.adTagRequests != null) ? (reportGroup.adTagRequests | number) : '-' }}</span>
                     </li>
-                    <li ng-if="hasKeyObject('adTagBids', 'adTagBids')">
-                        <label>Ad Tag Bids</label>
-                        <span class="pull-right">{{ (reportGroup.adTagBids != null) ? (reportGroup.adTagBids | number) : '-' }}</span>
-                    </li>
+                    <!--<li ng-if="hasKeyObject('adTagBids', 'adTagBids')">-->
+                        <!--<label>Waterfall Bids</label>-->
+                        <!--<span class="pull-right">{{ (reportGroup.adTagBids != null) ? (reportGroup.adTagBids | number) : '-' }}</span>-->
+                    <!--</li>-->
                     <li ng-if="hasKeyObject('adTagErrors', 'adTagErrors')">
-                        <label>Ad Tag Errors</label>
+                        <label>Waterfall Errors</label>
                         <span class="pull-right">{{ (reportGroup.adTagErrors != null) ? (reportGroup.adTagErrors | number) : '-' }}</span>
                     </li>
                 </ul>
@@ -106,15 +106,15 @@
                         <span class="pull-right">{{ reportGroup.blocks | number }}</span>
                     </li>
                     <li ng-if="hasKeyObject('adTagRequests', 'averageAdTagRequest')">
-                        <label>Ad Tag Requests</label>
+                        <label>Waterfall Requests</label>
                         <span class="pull-right">{{ (reportGroup.averageAdTagRequest != null) ? (reportGroup.averageAdTagRequest | number) : '-' }}</span>
                     </li>
-                    <li ng-if="hasKeyObject('adTagBids', 'averageAdTagBid')">
-                        <label>Ad Tag Bids</label>
-                        <span class="pull-right">{{ (reportGroup.averageAdTagBid != null) ? (reportGroup.averageAdTagBid | number) : '-' }}</span>
-                    </li>
+                    <!--<li ng-if="hasKeyObject('adTagBids', 'averageAdTagBid')">-->
+                        <!--<label>Waterfall Bids</label>-->
+                        <!--<span class="pull-right">{{ (reportGroup.averageAdTagBid != null) ? (reportGroup.averageAdTagBid | number) : '-' }}</span>-->
+                    <!--</li>-->
                     <li ng-if="hasKeyObject('adTagErrors', 'averageAdTagError')">
-                        <label>Ad Tag Errors</label>
+                        <label>Waterfall Errors</label>
                         <span class="pull-right">{{ (reportGroup.averageAdTagError != null) ? (reportGroup.averageAdTagError | number) : '-' }}</span>
                     </li>
                 </ul>
