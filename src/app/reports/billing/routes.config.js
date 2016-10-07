@@ -81,7 +81,7 @@
                             filters: angular.toJson({
                                 publisher: !!$stateParams.publisherId ? [$stateParams.publisherId] : [],
                                 startDate: dateUtil.getFormattedDate($stateParams.startDate),
-                                endDate: dateUtil.getFormattedDate($stateParams.endDate)
+                                endDate: dateUtil.getFormattedDate($stateParams.endDate || $stateParams.startDate)
                             })
                         };
 
