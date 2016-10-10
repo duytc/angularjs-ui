@@ -41,6 +41,34 @@
         ;
 
         $stateProvider
+            .state('app.admin.reports.billing.hbPlatform', {
+                url: '/hbPlatform?{product}{startDate:date}&{endDate:date}',
+                params: {
+                    startDate: null,
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    billing: {
+                        controller: 'BillingReport',
+                        templateUrl: 'reports/billing/views/headerBidding/platform.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, HeaderBiddingReport, REPORT_TYPES) {
+                        return HeaderBiddingReport.getPlatformReport($stateParams, {
+                            reportType: REPORT_TYPES.platform,
+                            platformBreakdown: 'day'
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Billing Reports'
+                }
+            })
+        ;
+
+        $stateProvider
             .state('app.admin.reports.billing.platformAccounts', {
                 url: '/platform/accounts?{product}{startDate:date}&{endDate:date}',
                 params: {
@@ -64,6 +92,60 @@
                         return performanceReport.getPlatformAccountsReport($stateParams, {
                             reportType: REPORT_TYPES.platform,
                             platformBreakdown: 'account'
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Billing Reports'
+                }
+            })
+        ;
+
+        $stateProvider
+            .state('app.admin.reports.billing.hbPlatformAccounts', {
+                url: '/hbPlatform/accounts?{product}{startDate:date}&{endDate:date}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    billing: {
+                        controller: 'BillingReport',
+                        templateUrl: 'reports/billing/views/headerBidding/accounts.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, REPORT_TYPES, HeaderBiddingReport) {
+                        return HeaderBiddingReport.getPlatformAccountsReport($stateParams, {
+                            reportType: REPORT_TYPES.platform,
+                            platformBreakdown: 'account'
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Billing Reports'
+                }
+            })
+        ;
+
+        $stateProvider
+            .state('app.admin.reports.billing.hbAccount', {
+                url: '/hbAccount/{publisherId:int}?{product}{startDate:date}&{endDate:date}',
+                params: {
+                    startDate: null,
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    billing: {
+                        controller: 'BillingReport',
+                        templateUrl: 'reports/billing/views/headerBidding/account.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, HeaderBiddingReport, REPORT_TYPES) {
+                        return HeaderBiddingReport.getAccountReport($stateParams, {
+                            reportType: REPORT_TYPES.account
                         });
                     }
                 },
@@ -161,6 +243,32 @@
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, REPORT_TYPES, performanceReport) {
                         return performanceReport.getPublisherSitesReport($stateParams, {
+                            reportType: REPORT_TYPES.site
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Billing reports'
+                }
+            })
+        ;
+
+        $stateProvider
+            .state('app.admin.reports.billing.hbSites', {
+                url: '/hbAccounts/{publisherId:int}/sites?{product}{startDate:date}&{endDate:date}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    billing: {
+                        controller: 'BillingReport',
+                        templateUrl: 'reports/billing/views/headerBidding/site/sites.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, REPORT_TYPES, HeaderBiddingReport) {
+                        return HeaderBiddingReport.getPublisherSitesReport($stateParams, {
                             reportType: REPORT_TYPES.site
                         });
                     }

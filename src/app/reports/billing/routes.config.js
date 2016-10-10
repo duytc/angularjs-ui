@@ -55,6 +55,34 @@
         ;
 
         UserStateHelperProvider
+            .state('reports.billing.hbSite', {
+                url: '/hbSites/{siteId:int}?{product}{startDate:date}&{endDate:date}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    billing: {
+                        controller: 'BillingReport',
+                        templateUrl: 'reports/billing/views/headerBidding/site/site.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, REPORT_TYPES, HeaderBiddingReport) {
+                        return HeaderBiddingReport.getSiteReport($stateParams, {
+                            reportType: REPORT_TYPES.site,
+                            siteBreakdown: 'day'
+                        });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Billing reports'
+                }
+            })
+        ;
+
+
+        UserStateHelperProvider
             .state('reports.billing.video', {
                 url: '/video?{product}{startDate:date}&{endDate:date}&{breakdown}&{reportTypeClone}&{publisherId}',
                 params: {

@@ -5,7 +5,7 @@
         .controller('BillingReportSelector', BillingReportSelector)
     ;
 
-    function BillingReportSelector($scope, $stateParams, $translate, $q, $state, _, Auth, UserStateHelper, AlertService, ReportParams, billingService, performanceReport, adminUserManager, REPORT_TYPES, USER_MODULES, reportSelectorForm, selectorFormCalculator, UISelectMethod) {
+    function BillingReportSelector($scope, $stateParams, $translate, $q, $state, _, Auth, UserStateHelper, AlertService, ReportParams, billingService, HeaderBiddingReport, performanceReport, adminUserManager, REPORT_TYPES, USER_MODULES, reportSelectorForm, selectorFormCalculator, UISelectMethod) {
         var toState;
 
         var isAdmin = Auth.isAdmin();
@@ -111,18 +111,18 @@
                 key: REPORT_TYPES.account,
                 label: 'Account',
                 breakdownKey: 'accountBreakdown',
-                toState: 'reports.billing.account'
+                toState: 'reports.billing.hbAccount'
             },
             {
                 key: REPORT_TYPES.site,
                 label: 'Site',
-                toState: 'reports.billing.sites',
+                toState: 'reports.billing.hbSites',
                 breakdownKey: 'siteBreakdown',
                 breakdownOptions: [
                     {
                         key: 'day',
                         label: 'By Day',
-                        toState: 'reports.billing.site'
+                        toState: 'reports.billing.hbSite'
                     }
                 ]
             }
@@ -169,17 +169,17 @@
             reportTypeForHeaderBiddingOptions.unshift({
                 key: REPORT_TYPES.platform,
                 label: 'Platform',
-                toState: 'reports.billing.platform',
+                toState: 'reports.billing.hbPlatform',
                 breakdownOptions: [
                     {
                         key: 'day',
                         label: 'By Day',
-                        toState: 'reports.billing.platform'
+                        toState: 'reports.billing.hbPlatform'
                     },
                     {
-                        key: 'publisher',
+                        key: 'account',
                         label: 'By Account',
-                        toState: 'reports.billing.account'
+                        toState: 'reports.billing.hbPlatformAccounts'
                     }
                 ]
             })
@@ -354,7 +354,7 @@
         }
 
         function update() {
-            var params = ReportParams.getFormParams(performanceReport.getInitialParams());
+            var params = ReportParams.getFormParams($stateParams.product == 'display' || !$stateParams.product ? performanceReport.getInitialParams() : HeaderBiddingReport.getInitialParams());
 
             params = params || {};
 

@@ -12,7 +12,7 @@
             <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
                 <thead></thead>
                 <tbody>
-                <tr ng-click="drillDownReport(reportStates.site, item)">
+                <tr ng-click="drillDownReport(hbReportStates.site, item)">
                     <td at-title="{{ 'REPORT.START_DATE' | translate }}" at-attribute="startDate">
                         {{ item.startDate | date }}
                     </td>
@@ -22,14 +22,14 @@
                     <td class="name" at-title="{{ 'NAME' | translate }}" at-attribute="name" at-sortable>
                         {{ item.name }}
                     </td>
-                    <td at-title="{{ 'REPORT.HEADER_BIDDING_REQUESTS' | translate }}" at-attribute="hbRequests" at-sortable>
-                        {{ item.hbRequests | number }}
+                    <td at-title="{{ 'REPORT.HEADER_BIDDING_REQUESTS' | translate }}" at-attribute="requests" at-sortable>
+                        {{ item.requests | number }}
                     </td>
-                    <td at-title="{{ 'REPORT.HEADER_BIDDING_BILLED_AMOUNT' | translate }}" at-attribute="hbBilledAmount" at-sortable>
-                        {{ item.hbBilledAmount | currency }}
+                    <td at-title="{{ 'REPORT.HEADER_BIDDING_BILLED_AMOUNT' | translate }}" at-attribute="billedAmount" at-sortable>
+                        {{ item.billedAmount | currency }}
                     </td>
-                    <td at-title="{{ 'REPORT.HEADER_BIDDING_BILLED_RATE' | translate }}">
-                        {{ item.hbBilledRate | number }}
+                    <td at-title="{{ 'REPORT.HEADER_BIDDING_BILLED_RATE' | translate }}" at-attribute="billedRate" at-sortable>
+                        {{ item.billedRate | number }}
                     </td>
                 </tr>
                 </tbody>

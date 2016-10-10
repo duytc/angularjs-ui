@@ -32,7 +32,7 @@
                             </ui-select-choices>
                         </ui-select>
                     </div>
-                    <div class="form-group" ng-if="selectedReportTypeis(reportTypes.platform) && selectedData.product == 'display'">
+                    <div class="form-group" ng-if="selectedReportTypeis(reportTypes.platform) && selectedData.product != 'video'">
                         <label>{{ 'REPORT.BREAKDOWN' | translate }}</label>
                         <ui-select ng-model="selectedData.platformBreakdown" ng-required="true" on-select="selectBreakdownOption($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'REPORT.SELECT_AN_OPTION' | translate }}">{{ $select.selected.label }}</ui-select-match>

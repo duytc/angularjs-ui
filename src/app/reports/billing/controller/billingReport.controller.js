@@ -5,7 +5,7 @@
         .controller('BillingReport', BillingReport)
     ;
 
-    function BillingReport($scope, $translate, $stateParams, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES) {
+    function BillingReport($scope, $translate, $stateParams, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES, HEADER_BIDDING_REPORT_STATES) {
         $scope.hasResult = reportGroup !== false;
         $scope.product = $stateParams.product;
 
@@ -21,6 +21,7 @@
 
         $scope.drillDownReport = drillDownReport;
         $scope.reportStates = PERFORMANCE_REPORT_STATES;
+        $scope.hbReportStates = HEADER_BIDDING_REPORT_STATES;
 
         $scope.showPagination = showPagination;
         $scope.getExportExcelFileName = getExportExcelFileName();
