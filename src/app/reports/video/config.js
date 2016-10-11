@@ -78,10 +78,10 @@
                 key: 'adTagRequests',
                 label: 'Waterfall Requests'
             },
-            // {
-            //     key: 'adTagBids',
-            //     label: 'Ad Tag Bids'
-            // },
+            {
+                key: 'adTagBids',
+                label: 'Waterfall Bids'
+            },
             {
                 key: 'adTagErrors',
                 label: 'Waterfall Errors'

@@ -49,10 +49,10 @@
             'fillRate': 'Fill Rate',
             'clicks': 'Clicks',
             'clickThroughRate': 'Click Through Rate',
+            'blocks': 'Blocks',
             'adTagRequests': 'Waterfall Requests',
             'adTagBids': 'Waterfall Bids',
-            'adTagErrors': 'Waterfall Errors',
-            'blocks': 'Blocks'
+            'adTagErrors': 'Waterfall Errors'
         };
 
         // merger data in object root
