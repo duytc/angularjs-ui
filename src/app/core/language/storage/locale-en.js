@@ -515,8 +515,14 @@
                 "WATERFALL_SELECTION": "Waterfall Selection",
                 "FIXED_PROFIT":"Fixed Profit ($)",
                 "PROFIT_MARGIN":"Profit Margin (%)",
-                "REQUIRED_BUY_PRICE":"Maximum Buy Price"
-
+                "REQUIRED_BUY_PRICE":"Maximum Buy Price",
+                "PLACEMENT_RULES": "Placement Rules",
+                "ADD_PLACEMENT_RULES": "Add Placement Rules",
+                "RULE_TYPE":"Profit Type",
+                "RULE_VALUE_FIXED":"Profit Value($)",
+                "RULE_VALUE_MARGIN":"Profit Value(%)",
+                "RULE_VALUE_MANUAL":"Profit Value",
+                "VIDEO_PUBLISHERS":"Publishers"
             },
             "AD_SOURCE_LIBRARY_MODULE": {
                 "CREATE_LINKED_DEMAND_AD_TAGS": "Link this Demand Ad Tag",

@@ -13,6 +13,12 @@
             name: 'Name'
         };
 
+        $scope.ruleTypes = [
+            {key: 1, value: "Fixed Profit"},
+            {key: 2, value: "Profit Margin"},
+            {key: 3, value: "Manual"}
+        ]
+
         $scope.whiteList = whiteList;
         $scope.blackList = blackList;
         $scope.demandPartner = demandPartner;
@@ -27,6 +33,7 @@
         $scope.videoPublishers = UISelectMethod.addAllOption(videoPublishers, 'All Publishers');
         $scope.waterfallTags = $scope.isAdmin() ? [] : waterfallTags;
         $scope.demandPartners = demandPartners;
+
 
         if(!$scope.isNew) {
             AlertService.addAlert({
@@ -49,7 +56,8 @@
                 platform: [],
                 player_size: [],
                 required_macros: []
-            }
+            },
+            placementRules: [{profitType:null, profitValue: null, publishers:[{}]}]
         };
 
         $scope.selectedData = {
@@ -82,6 +90,8 @@
         $scope.viewQuicklyBlackLink = viewQuicklyBlackLink;
         $scope.replaceMacros = replaceMacros;
         $scope.isChangeTagURL = isChangeTagURL;
+        $scope.addNewPlacementRule = addNewPlacementRule;
+        $scope.removePlacementRule = removePlacementRule;
 
         function isChangeTagURL() {
             isChangeTagURLValue = true;
@@ -413,6 +423,14 @@
             $scope.waterfallTags = $filter('filter')(waterfallTags, function(waterfallTag) {
                 return waterfallTag.videoPublisher.publisher.id == publisher.id
             });
+        }
+
+        function addNewPlacementRule() {
+            $scope.demandAdTag.placementRules.push({profitType:null, profitValue: null, publishers:[]});
+        }
+
+        function removePlacementRule(index) {
+            $scope.demandAdTag.placementRules.splice(index,1);
         }
     }
 })();

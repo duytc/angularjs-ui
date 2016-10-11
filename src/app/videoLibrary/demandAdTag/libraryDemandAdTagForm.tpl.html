@@ -209,7 +209,65 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-offset-1 col-sm-5">
+                    <label for="addPlacementRules" class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.PLACEMENT_RULES' | translate }}</label>
+                    <div class="col-sm-5">
+                        <button id="addPlacementRules" ng-click="addNewPlacementRule()" class="btn btn-success" type="button">
+                            <span class="glyphicon glyphicon-plus"></span> {{ 'AD_SOURCE_MODULE.ADD_PLACEMENT_RULES' | translate }}
+                        </button>
+                    </div>
+                </div>
+
+                <fieldset class="col-sm-5 expressions-group" ng-if="demandAdTag.placementRules.length > 0" style="margin-left: 130px">
+                    <div class="form-group" data-ng-repeat="placementRule in demandAdTag.placementRules track by $index">
+                        <fieldset class="expressions-group" >
+
+                            <div class="form-group" >
+                                <label class=" col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.RULE_TYPE' | translate }}</label>
+                                <div class="col-sm-9">
+                                    <ui-select name="ruleType" id="ruleType" ng-model="placemenRule.profitType" ng-required="true" server-error reset-search-input="'false'">
+                                        <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.RULE_TYPE' | translate }}">{{ $select.selected.value }}</ui-select-match>
+                                        <ui-select-choices  repeat="ruleType.key as ruleType in ruleTypes | filter: { value: $select.search }">
+                                            {{ ruleType.value }}
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.RULE_VALUE_MANUAL' | translate }}</label>
+                                <div class="col-sm-9">
+                                    <input server-error name="profitValue" ng-model="placemenRule.profitValue"  type="number" class="form-control" id="profitValue" placeholder="{{ 'AD_SOURCE_MODULE.RULE_VALUE_MANUAL' | translate }}">
+                                </div>
+                            </div>
+                            <br>
+
+                            <div class="form-group" >
+                                <label class=" col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.VIDEO_PUBLISHERS' | translate }}</label>
+                                <div class="col-sm-9">
+                                    <ui-select multiple name="publishers" close-on-select="false" id="publisher" ng-model="placemenRule.publishers" ng-required="true" server-error reset-search-input="'false'">
+                                        <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.VIDEO_PUBLISHERS' | translate }}">{{ $item.name }}</ui-select-match>
+                                        <ui-select-choices repeat="publisher.id as publisher in videoPublishers | filter: { name: $select.search }">
+                                            {{ publisher.name}}
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group ">
+                                <div class=" col-sm-offset-10 ">
+                                    <button type="button" style="margin-left: -5px" class="btn btn-danger" ng-click="removePlacementRule($index)">
+                                        <span class="glyphicon glyphicon-minus "></span> Remove
+                                    </button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </fieldset>
+
+                <br>
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-5" style="padding-top: 10px">
                         <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">
                             <p>{{ 'VALID_FORM' | translate }}</p>
