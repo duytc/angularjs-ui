@@ -32,6 +32,8 @@
                 $scope.platformOption.push(platform);
             });
 
+            demandAdTag.activeClone = demandAdTag.active > 0;
+
             if(demandAdTag.libraryVideoDemandAdTag.linkedCount > 1) {
                 AlertService.addAlert({
                     type: 'warning',
@@ -58,7 +60,7 @@
                 }
             },
             priority: null,
-            active: true,
+            activeClone: true,
             rotationWeight: null
         };
 
@@ -105,7 +107,7 @@
             ReplaceMacros.replaceVideoMacros($scope.demandAdTag.libraryVideoDemandAdTag.tagURL)
                 .then(function () {
                     $scope.demandAdTag.libraryVideoDemandAdTag.tagURL = ReplaceMacros.getVideoUrl();
-                })
+                });
 
             isChangeTagURLValue = false;
         }
@@ -284,6 +286,11 @@
                 demandAdTag.libraryVideoDemandAdTag.sellPrice = NumberConvertUtil.convertPriceToString(demandAdTag.libraryVideoDemandAdTag.sellPrice);
                 delete demandAdTag.libraryVideoDemandAdTag.id;
                 delete demandAdTag.libraryVideoDemandAdTag.linkedCount;
+                delete demandAdTag.profit;
+                if(typeof demandAdTag.activeClone != 'number') {
+                    demandAdTag.active = demandAdTag.activeClone ? 1: 0
+                }
+                delete demandAdTag.activeClone;
                 demandAdTag.libraryVideoDemandAdTag.videoDemandPartner = $scope.demandAdTag.libraryVideoDemandAdTag.videoDemandPartner.id || $scope.demandAdTag.libraryVideoDemandAdTag.videoDemandPartner;
 
                 if(demandAdTag.targetingOverride) {

@@ -41,7 +41,8 @@
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
                                 <li ng-if="!isSubPublisher()"><a ui-sref="^.^.demandAdTag.listByVideoTag({videoTagId: item.videoWaterfallTagItem.videoWaterfallTag.id})">{{ 'AD_SOURCE_MODULE.VIEW_IN_WATERFALL' | translate }}</a></li>
                                 <li class="divider"></li>
-                                <li ng-if="!isSubPublisher()"><a ng-click="toggleDemandAdTagStatus(item)">{{ item.active ? ('AD_SOURCE_MODULE.PAUSE_AD_SOURCE' | translate) : ('AD_SOURCE_MODULE.ACTIVATE_AD_SOURCE' | translate) }}</a></li>
+                                <li ng-if="!isSubPublisher() && item.active != 1"><a ng-click="toggleDemandAdTagStatus(item, 1)">{{ 'AD_SOURCE_MODULE.ACTIVATE_AD_SOURCE' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher() && item.active == 1"><a ng-click="toggleDemandAdTagStatus(item, 0)">{{ 'AD_SOURCE_MODULE.PAUSE_AD_SOURCE' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li><a ui-sref="^.^.^.reports.video.report(paramsReport(item))">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
                                 <li class="divider"></li>
@@ -55,9 +56,12 @@
                     <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="libraryVideoDemandAdTag.videoDemandPartner.publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
                     <td at-implicit at-sortable at-attribute="priority" at-title="{{ 'AD_SOURCE_MODULE.PRIORITY' | translate }}"></td>
                     <td at-implicit at-sortable at-attribute="libraryVideoDemandAdTag.timeout" at-title="{{ 'AD_SOURCE_MODULE.TIMEOUT' | translate }}"></td>
-                    <td at-implicit at-sortable at-attribute="rotationWeight" at-title="{{ 'AD_SOURCE_MODULE.WEIGHT' | translate }}"></td>
+                    <td at-sortable at-attribute="rotationWeight" at-title="{{ 'AD_SOURCE_MODULE.WEIGHT' | translate }}"></td>
+                    <td at-implicit at-sortable at-attribute="profit" at-title="{{ 'AD_SOURCE_MODULE.PROFIT' | translate }}">
+                        {{ item.profit | currency }}
+                    </td>
                     <td at-implicit at-sortable at-attribute="videoDemandPartner.active" at-title="{{ 'AD_SOURCE_MODULE.STATUS' | translate }}">
-                        <span class="label" ng-class="item.active == true ? 'label-success' : 'label-danger'">{{ item.active == true ? 'Active' : 'Paused' }}</span>
+                        <span class="label" ng-class="item.active == 1 ? 'label-success' : (item.active == 0 ?'label-danger' : 'label-warning')">{{ item.active == 1 ? 'Active' : (item.active == 0 ? 'Paused' : 'Auto Paused') }}</span>
                     </td>
                 </tr>
                 </tbody>

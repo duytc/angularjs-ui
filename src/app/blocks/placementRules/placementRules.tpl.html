@@ -1,0 +1,47 @@
+<button class="btn btn-success" type="button" ng-click="addNewPlacementRule()">
+    <span class="glyphicon glyphicon-plus"></span>
+    {{ 'AD_SOURCE_MODULE.ADD_PLACEMENT_RULES' | translate }}
+</button>
+
+<div ng-model="expressions">
+    <div class="expressions-group" ng-repeat="rule in rules">
+        <div class="form-group" >
+            <label class=" col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.RULE_TYPE' | translate }}</label>
+            <div class="col-sm-9">
+                <ui-select name="ruleType" id="ruleType" ng-model="rule.profitType" ng-required="true" server-error reset-search-input="'false'">
+                    <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.RULE_TYPE' | translate }}">{{ $select.selected.value }}</ui-select-match>
+                    <ui-select-choices  repeat="ruleType.key as ruleType in ruleTypes">
+                        {{ ruleType.value }}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <br>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.RULE_VALUE_MANUAL' | translate }}</label>
+            <div class="col-sm-9">
+                <input server-error name="profitValue" ng-model="rule.profitValue" ng-disabled="rule.profitType == 3" type="number" class="form-control" id="profitValue" placeholder="{{ 'AD_SOURCE_MODULE.RULE_VALUE_MANUAL' | translate }}">
+            </div>
+        </div>
+        <br>
+        <div class="form-group">
+            <label class=" col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.VIDEO_PUBLISHERS' | translate }}</label>
+            <div class="col-sm-9">
+                <ui-select multiple name="publishers" close-on-select="false" id="publisher" ng-model="rule.publishers" ng-required="true" server-error reset-search-input="'false'">
+                    <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.VIDEO_PUBLISHERS' | translate }}">{{ $item.name }}</ui-select-match>
+                    <ui-select-choices repeat="publisher.id as publisher in videoPublishers | filter: { name: $select.search, id: ''}">
+                        {{ publisher.name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <br>
+        <div class="form-group">
+            <div class=" col-sm-offset-10 ">
+                <button type="button" style="margin-left: -5px" class="btn btn-danger" ng-click="removePlacementRule($index)">
+                    <span class="glyphicon glyphicon-minus "></span> Remove
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

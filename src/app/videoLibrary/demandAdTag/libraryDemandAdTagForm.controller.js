@@ -6,7 +6,6 @@
     ;
 
     function LibraryDemandAdTagForm($scope, $q, _, $filter, $stateParams, $modal, $translate, UISelectMethod, videoPublishers, waterfallTags, whiteList, blackList, demandPartner, demandAdTag, demandPartners, publishers, AlertService, NumberConvertUtil, ReplaceMacros, LibraryDemandAdTagManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST, PLATFORM_OPTION, PLAYER_SIZE_OPTIONS, REQUIRED_MACROS_OPTIONS) {
-
         var isChangeTagURLValue = false;
 
         $scope.fieldNameTranslations = {
@@ -27,6 +26,7 @@
         $scope.videoPublishers = UISelectMethod.addAllOption(videoPublishers, 'All Publishers');
         $scope.waterfallTags = $scope.isAdmin() ? [] : waterfallTags;
         $scope.demandPartners = demandPartners;
+
 
         if(!$scope.isNew) {
             AlertService.addAlert({
@@ -49,7 +49,10 @@
                 platform: [],
                 player_size: [],
                 required_macros: []
-            }
+            },
+            waterfallPlacementRules: [
+                {profitType: null, profitValue: null, publishers: []}
+            ]
         };
 
         $scope.selectedData = {
@@ -88,7 +91,6 @@
         }
 
         function replaceMacros() {
-
             if (false == isChangeTagURLValue) {
                 return;
             }
@@ -96,7 +98,7 @@
             ReplaceMacros.replaceVideoMacros($scope.demandAdTag.tagURL)
                 .then(function () {
                     $scope.demandAdTag.tagURL = ReplaceMacros.getVideoUrl();
-                })
+                });
 
             isChangeTagURLValue = false;
         }
@@ -377,7 +379,10 @@
         function _refactorJson() {
             var demandAdTag = angular.copy($scope.demandAdTag);
             var domains = [], excludeDomains = [];
-            demandAdTag.sellPrice = NumberConvertUtil.convertPriceToString(demandAdTag.sellPrice);
+
+            if(!!demandAdTag.sellPrice) {
+                demandAdTag.sellPrice = NumberConvertUtil.convertPriceToString(demandAdTag.sellPrice);
+            }
 
             angular.forEach(demandAdTag.targeting.domains, function(item) {
                 if(!!item.suffixKey) {
@@ -402,6 +407,10 @@
                 });
 
                 demandAdTag.waterfalls = waterfallTags;
+            }
+
+            if(!demandAdTag.sellPrice) {
+                demandAdTag.waterfallPlacementRules = [];
             }
 
             delete demandAdTag.linkedCount;

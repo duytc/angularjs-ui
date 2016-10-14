@@ -140,8 +140,8 @@
                     waterfallTags: function() {
                         return []
                     },
-                    videoPublishers: function() {
-                        return []
+                    videoPublishers: function(VideoPublisherManager) {
+                        return VideoPublisherManager.getList();
                     },
                     blackList: function(BlackListManager) {
                         return BlackListManager.getList()

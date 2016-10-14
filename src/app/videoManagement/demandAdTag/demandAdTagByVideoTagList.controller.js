@@ -191,8 +191,8 @@
                 })
         }
 
-        function toggleDemandAdTagStatus(videoDemandAdTag) {
-            var newTagStatus = !videoDemandAdTag.active;
+        function toggleDemandAdTagStatus(videoDemandAdTag, active) {
+            var newTagStatus = active;
 
             VideoDemandAdTagManager.one(videoDemandAdTag.id).patch({'active': newTagStatus})
                 .catch(function () {
