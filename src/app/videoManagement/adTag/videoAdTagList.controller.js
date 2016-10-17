@@ -162,12 +162,12 @@
                 templateUrl: 'videoManagement/adTag/generateVast.tpl.html',
                 resolve: {
                     vastTag: function () {
-                        return VideoAdTagManager.one(adTag.id).customGET('vasttag', {secure: true});
+                        return VideoAdTagManager.one(adTag.id).customGET('vasttag', {secure: false});
                     }
                 },
                 controller: function ($scope, vastTag, VideoAdTagManager) {
                     $scope.selected = {
-                        secure: true
+                        secure: false
                     };
 
                     $scope.adTag = adTag;

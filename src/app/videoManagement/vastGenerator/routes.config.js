@@ -33,7 +33,7 @@
                             return null;
                         }
 
-                        return videoPublisher.customGET('vasttags', {secure: true})
+                        return videoPublisher.customGET('vasttags', {secure: false})
                             .then(function(vastTags) {
                                 return vastTags.plain()
                             });

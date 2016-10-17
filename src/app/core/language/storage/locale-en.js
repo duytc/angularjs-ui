@@ -181,6 +181,8 @@
                 "HEADER_BIDDING": "Header Bidding",
                 "ENABLED": "Enabled",
                 "DISPLAY_BILLING_RATE": "Display billing Rate",
+                "CREATE_SECURE_TAGS": "Create secure tags",
+                "CREATE_SECURE_TAG": "Create secure tag",
                 "ENABLE_HTTPS": "Enable Https",
                 "BILLING_CONFIG": "Billing Config",
                 "DEMAND_SOURCE_TRANSPARENCY": 'Demand Source Transparency',
