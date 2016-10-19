@@ -5,7 +5,7 @@
         .controller('BillingReport', BillingReport)
     ;
 
-    function BillingReport($scope, $translate, $stateParams, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES, HEADER_BIDDING_REPORT_STATES) {
+    function BillingReport($scope, $state, $translate, $stateParams, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES, HEADER_BIDDING_REPORT_STATES) {
         $scope.hasResult = reportGroup !== false;
         $scope.product = $stateParams.product;
 
@@ -19,9 +19,11 @@
             itemsPerPage: 10
         };
 
-        $scope.drillDownReport = drillDownReport;
         $scope.reportStates = PERFORMANCE_REPORT_STATES;
         $scope.hbReportStates = HEADER_BIDDING_REPORT_STATES;
+
+        $scope.drillDownReport = drillDownReport;
+        $scope.drillDownForVideo = drillDownForVideo;
 
         $scope.showPagination = showPagination;
         $scope.getExportExcelFileName = getExportExcelFileName();
@@ -41,6 +43,15 @@
             report.product = $scope.product;
 
             performanceReportHelper.drillDownReport(relativeToState, report, reportGroup);
+        }
+
+        function drillDownForVideo(params) {
+            params = angular.extend($stateParams, params);
+
+            $state.transitionTo(
+                $state.$current,
+                params, {reload: true}
+            );
         }
 
         function showPagination() {

@@ -89,7 +89,25 @@
             )
         }
 
+        if(userSession.hasModuleEnabled(USER_MODULES.inBanner)) {
+            $scope.productOptions.push(
+                {
+                    key: 'inBanner',
+                    label: 'In Banner'
+                }
+            )
+        }
+
         var reportTypeForDisplayOptions = [
+            {
+                key: REPORT_TYPES.account,
+                breakdownKey: 'accountBreakdown',
+                label: 'Account',
+                toState: 'reports.billing.account'
+            }
+        ];
+
+        var reportTypeForInBannerOptions = [
             {
                 key: REPORT_TYPES.account,
                 breakdownKey: 'accountBreakdown',
@@ -130,6 +148,25 @@
 
         if (isAdmin) {
             reportTypeForDisplayOptions.unshift({
+                key: REPORT_TYPES.platform,
+                breakdownKey: 'platformBreakdown',
+                label: 'Platform',
+                toState: 'reports.billing.platform',
+                breakdownOptions: [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.billing.platform'
+                    },
+                    {
+                        key: 'account',
+                        label: 'By Account',
+                        toState: 'reports.billing.platformAccounts'
+                    }
+                ]
+            });
+
+            reportTypeForInBannerOptions.unshift({
                 key: REPORT_TYPES.platform,
                 breakdownKey: 'platformBreakdown',
                 label: 'Platform',
@@ -189,6 +226,8 @@
             $scope.reportTypeOptions = reportTypeForVideoOptions;
         } else if($stateParams.product == 'headerBidding') {
             $scope.reportTypeOptions = reportTypeForHeaderBiddingOptions;
+        } else if($stateParams.product == 'inBanner') {
+            $scope.reportTypeOptions = reportTypeForInBannerOptions;
         } else {
             // set default report for display
             $scope.reportTypeOptions = reportTypeForDisplayOptions;
@@ -324,6 +363,10 @@
                 $scope.reportTypeOptions = reportTypeForHeaderBiddingOptions;
             }
 
+            if(product.key == 'inBanner') {
+                $scope.reportTypeOptions = reportTypeForInBannerOptions;
+            }
+
 
             $scope.selectedData.reportType = null;
             $scope.selectedData.publisherId = null;
@@ -356,7 +399,7 @@
         }
 
         function update() {
-            var params = ReportParams.getFormParams($stateParams.product == 'display' || !$stateParams.product ? performanceReport.getInitialParams() : HeaderBiddingReport.getInitialParams());
+            var params = ReportParams.getFormParams($stateParams.product == 'display' || $stateParams.product == 'inBanner' || !$stateParams.product ? performanceReport.getInitialParams() : HeaderBiddingReport.getInitialParams());
 
             params = params || {};
 
@@ -384,6 +427,8 @@
                         });
                     } else if($stateParams.product == 'display') {
                         $scope.reportTypeOptions = reportTypeForDisplayOptions;
+                    } else if($stateParams.product == 'inBanner') {
+                        $scope.reportTypeOptions = reportTypeForInBannerOptions;
                     } if($stateParams.product == 'headerBidding') {
                         $scope.reportTypeOptions = reportTypeForHeaderBiddingOptions;
                     }

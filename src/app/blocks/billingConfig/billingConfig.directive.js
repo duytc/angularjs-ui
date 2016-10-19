@@ -5,7 +5,7 @@
         .directive('billingConfig', billingConfig)
     ;
 
-    function billingConfig($compile, _, MODULES_BILLING_CONFIG, BILLING_FACTORS) {
+    function billingConfig($compile, _, MODULES_BILLING_CONFIG, BILLING_FACTORS, USER_MODULES) {
         'use strict';
 
         return {
@@ -29,7 +29,7 @@
                                 module: module.role,
                                 defaultConfig: true,
                                 tiers: _setDefaultTiers(module.role),
-                                billingFactor: module.role == 'MODULE_DISPLAY' ? 'SLOT_OPPORTUNITY' : 'VIDEO_IMPRESSION' //set default billing factor
+                                billingFactor: module.role == USER_MODULES.displayAds ? 'SLOT_OPPORTUNITY' : 'VIDEO_IMPRESSION' //set default billing factor
                             });
                         })
                     } else {
@@ -43,7 +43,7 @@
                                     module: module.role,
                                     defaultConfig: true,
                                     tiers: _setDefaultTiers(module.role),
-                                    billingFactor: module.role == 'MODULE_DISPLAY' ? 'SLOT_OPPORTUNITY' : 'VIDEO_IMPRESSION' //set default billing factor
+                                    billingFactor: module.role == USER_MODULES.displayAds ? 'SLOT_OPPORTUNITY' : 'VIDEO_IMPRESSION' //set default billing factor
                                 });
                             }
                         });
@@ -68,9 +68,9 @@
                     }
 
                     function _setDefaultTiers(module) {
-                        if(module == 'MODULE_DISPLAY') {
+                        if(module == USER_MODULES.displayAds || module == USER_MODULES.inBanner) {
                             return scope.defaultThresholds.display;
-                        } else if(module == 'MODULE_VIDEO') {
+                        } else if(module == USER_MODULES.videoAds) {
                             return scope.defaultThresholds.video;
                         }
 
@@ -107,7 +107,7 @@
                         if(!billingConfig.defaultConfig && (billingConfig.tiers.length == 0 || thresholdIZero == -1)) {
                             billingConfig.tiers.unshift({
                                 threshold: 0,
-                                cpmRate: billingConfig.module == 'MODULE_HEADER_BIDDING' ? 0 : null,
+                                cpmRate: billingConfig.module == USER_MODULES.headerBidding ? 0 : null,
                                 number: 1000
                             })
                         }

@@ -74,6 +74,7 @@
         $scope.modules = [
             { label: 'Display', role: 'MODULE_DISPLAY' },
             { label: 'Video', role: 'MODULE_VIDEO' },
+            { label: 'In-Banner Video', role: 'MODULE_IN_BANNER' },
             { label: 'Source Report', role: 'MODULE_SOURCE_REPORT' },
             { label: 'Unified Report', role: 'MODULE_UNIFIED_REPORT' },
             { label: 'RTB (Real Time Bidding)', role: 'MODULE_RTB' },
@@ -157,6 +158,10 @@
 
                 if($scope.publisher.enabledModules.indexOf(USER_MODULES.subPublisher) > -1) {
                     $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.subPublisher), 1);
+                }
+
+                if($scope.publisher.enabledModules.indexOf(USER_MODULES.inBanner) > -1) {
+                    $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.inBanner), 1);
                 }
             }
         }
@@ -273,7 +278,7 @@
         }
 
         function disabledModule(module) {
-            if((module == USER_MODULES.subPublisher || module == USER_MODULES.source || module == USER_MODULES.rtb || module == USER_MODULES.headerBidding || module == USER_MODULES.analytics || module == USER_MODULES.video) && !hasModuleEnabled(USER_MODULES.displayAds)) {
+            if((module == USER_MODULES.subPublisher || module == USER_MODULES.source || module == USER_MODULES.rtb || module == USER_MODULES.headerBidding || module == USER_MODULES.analytics || module == USER_MODULES.video || module == USER_MODULES.inBanner) && !hasModuleEnabled(USER_MODULES.displayAds)) {
                 return true;
             }
 

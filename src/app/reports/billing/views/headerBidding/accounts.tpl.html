@@ -29,7 +29,7 @@
                         {{ item.billedAmount | currency }}
                     </td>
                     <td at-title="{{ 'REPORT.HEADER_BIDDING_BILLED_RATE' | translate }}" at-attribute="billedRate" at-sortable>
-                        {{ item.billedRate | number }}
+                        {{ item.billedRate | currency:'$':4 }}
                     </td>
                 </tr>
                 </tbody>

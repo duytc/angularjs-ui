@@ -104,13 +104,13 @@
                         {{ (item.blocks != null) ? (item.blocks | number) : '-' }}
                     </td>
                     <td ng-show="hasKeyObject(item, 'adTagErrors')" at-title="{{ titleForReport['adTagErrors'] }}" at-sortable at-attribute="adTagErrors">
-                        {{ (item.adTagErrors != null) ? (item.adTagErrors | number) : '-' }}
+                        {{ (item.adTagErrors != '-') ? (item.adTagErrors | number) : '-' }}
                     </td>
                     <td ng-show="hasKeyObject(item, 'adTagBids')" at-title="{{ titleForReport['adTagBids'] }}" at-sortable at-attribute="adTagBids">
-                        {{ (item.adTagBids != null) ? (item.adTagBids | number) : '-' }}
+                        {{ (item.adTagBids != '-') ? (item.adTagBids | number) : '-' }}
                     </td>
                     <td ng-show="hasKeyObject(item, 'adTagRequests')" at-title="{{ titleForReport['adTagRequests'] }}" at-sortable at-attribute="adTagRequests">
-                        {{ (item.adTagRequests != null) ? (item.adTagRequests | number) : '-' }}
+                        {{ (item.adTagRequests != '-') ? (item.adTagRequests | number) : '-' }}
                     </td>
                 </tr>
                 </tbody>

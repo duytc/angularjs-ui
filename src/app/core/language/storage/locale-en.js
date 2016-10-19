@@ -690,8 +690,9 @@
                 "SELECT_AN_AD_TAG_FROM_LIBRARY": "Select a standalone ad tag",
                 "SELECT_A_AD_TAG": "Select a ad tag",
                 "AD_TYPE": "Ad Type",
-                "CUSTOM_AD": "Custom Ad",
+                "CUSTOM_AD": "Third-Party Ad",
                 "IMAGE_AD": "Image Ad",
+                "IN_BANNER": "In-Banner Video",
                 "IMAGE_URL": "Image Url",
                 "TARGET_URL": "Target Url",
                 "HTML": "Html",
@@ -717,6 +718,14 @@
                 "SPLIT_GROUP": "Split Group",
                 "LIBRARY_AD_SLOT": "Standalone Ad Slot",
                 "CREATE_LINKED_AD_TAGS": "Link this Ad Tag",
+
+                "TIMEOUT": "Timeout",
+                "PLAYER_WIDTH": "Player Width",
+                "PLAYER_HEIGHT": "Player Height",
+                "ADD_VAST": "Add",
+                "VAST_TAGS": "Vast/VPAID Tags",
+                "PLACEHOLDER_TAG": "Vast Tag URL",
+                "PLATFORM": "Platform",
 
                 "HELP_BLOCK_FROM_LIBRARY": "You can select an existing ad tag from your standalone ad tags. If you choose this option some of the fields below will not be editable. If you would like to change these fields, you may do so the the standalone ad tags section.",
                 "HELP_BLOCK_FREQUENCY_CAP": "Maximum number of network opportunities per day per user for this ad tag, leave blank for no cap.",
@@ -821,6 +830,7 @@
                 "HEADER_BIDDING_REQUESTS": "Requests",
                 "HEADER_BIDDING_BILLED_AMOUNT": "Billed Amount",
                 "HEADER_BIDDING_BILLED_RATE": "Billed Rate",
+                "BILLED_RATE": "Billed Rate",
 
                 "PROJECTED_BILL": "Projected Bill",
                 "PRODUCT": "Product",

@@ -9,14 +9,14 @@
             </div>
         </div>
         <div class="table-responsive">
-            <table class="table" at-table at-paginated at-list="reports" at-config="tableConfig">
+            <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
                 <thead>
                 <tr>
                     <th ng-show="isAdmin()" at-attribute="publisher">{{ 'PUBLISHER' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr ng-click="drillDownForVideo({reportTypeClone: 'account', breakdown: null, publisherId: item.publisher.id || item.reportType.publisher.id })">
                     <td ng-show="isAdmin()" at-title="{{ 'PUBLISHER' | translate }}" at-attribute="publisher" at-sortable at-initial-sorting="desc">
                         {{ item.publisher.company || item.reportType.publisher.company}}
                     </td>
@@ -27,7 +27,7 @@
                         {{ item.billedAmount | currency }}
                     </td>
                     <td at-title="{{ 'REPORT.BILLED_CPM_RATE' | translate }}">
-                        {{ item.billedRate | currency }}
+                        {{ item.billedRate | currency:'$':4 }}
                     </td>
                 </tr>
                 </tbody>

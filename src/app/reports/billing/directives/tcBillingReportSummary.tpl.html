@@ -1,5 +1,5 @@
 <div>
-    <div class="row" ng-if="product != 'headerBidding'">
+    <div class="row" ng-if="product != 'headerBidding' && product != 'inBanner'">
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Totals</div>
@@ -38,6 +38,51 @@
                             <label>{{ 'REPORT.BILLED_AMOUNT' | translate }}</label>
                             <span class="pull-right">{{ reportGroup.averageBilledAmount | currency }}</span>
                         </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="product == 'inBanner'">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Totals</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled report list-info">
+                        <li>
+                            <label>{{ 'REPORT.IMPRESSIONS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.inBannerImpressions | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'REPORT.BILLED_AMOUNT' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.inBannerBilledAmount | currency }}</span>
+                        </li>
+                        <!--<li>-->
+                            <!--<label>{{ 'REPORT.BILLED_RATE' | translate }}</label>-->
+                            <!--<span class="pull-right">{{ reportGroup.inBannerBilledRate | number:4 }}</span>-->
+                        <!--</li>-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Daily Averages</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled report list-info">
+                        <li>
+                            <label>{{ 'REPORT.IMPRESSIONS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageInBannerImpressions | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'REPORT.BILLED_AMOUNT' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageInBannerBilledAmount | currency }}</span>
+                        </li>
+                        <!--<li>-->
+                            <!--<label>{{ 'REPORT.BILLED_RATE' | translate }}</label>-->
+                            <!--<span class="pull-right">{{ reportGroup.averageInBannerBilledRate | number:4 }}</span>-->
+                        <!--</li>-->
                     </ul>
                 </div>
             </div>

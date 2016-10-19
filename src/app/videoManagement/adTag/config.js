@@ -10,5 +10,9 @@
             {key: 'flash', label: 'Flash VPAID'},
             {key: 'js', label: 'HTML/JS VPAID'}
         ])
+        .constant('PLATFORM_VAST_TAG', [
+            {key: 'flash', label: 'Flash VPAID'},
+            {key: 'auto', label: 'Auto-Detect'}
+        ])
     ;
 })();

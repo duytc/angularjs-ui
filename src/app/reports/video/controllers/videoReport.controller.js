@@ -60,6 +60,12 @@
             //var objectClone = angular.isArray(object.reports) && angular.isObject(object.reports[0]) && breakdowns.indexOf('date') == -1 ? object.reports[0] : object;
             var objectClone = object;
 
+            // valid object
+            object.clickThroughRate = object.clickThroughRate || 0;
+            object.adTagRequests = object.adTagRequests || '-';
+            object.adTagBids = object.adTagBids || '-';
+            object.adTagErrors = object.adTagErrors || '-';
+
             // 'keys' is list object key, it be merge in objectRoot, support for export excel and show report
             var keys = ['videoWaterfallTag', 'videoDemandAdTag', 'videoDemandPartner', 'publisher', 'videoPublisher'];
             angular.forEach(keys, function(key) {
@@ -75,7 +81,7 @@
                 } else if(key == 'publisher') {
                     $scope.arrayFieldExport.push(key + '.company');
                 } else if(key == 'videoDemandAdTag') {
-                    $scope.arrayFieldExport.push(key + 'libraryVideoDemandAdTag.name');
+                    $scope.arrayFieldExport.push(key + '.libraryVideoDemandAdTag.name');
                 }
                 else {
                     $scope.arrayFieldExport.push(key);
