@@ -291,6 +291,8 @@
 
         function selectPublisher(publisher) {
             $scope.selectedData.siteId = null;
+            $scope.selectedData.siteBreakdown = null;
+            toState = $scope.selectedData.reportType.toState;
 
             _getSitesForPublisher(publisher.id);
         }

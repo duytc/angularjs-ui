@@ -2,7 +2,7 @@
     <h4 class="modal-title" translate="AD_SLOT_MODULE.TAG_FOR_NAME" translate-values='{name: adSlotName}'></h4>
 </div>
 <div class="modal-body">
-    <label class="ui-checkbox"><input ng-click="secureChange(selected.secure)" server-error name="active" type="checkbox" ng-model="selected.secure" id="inputSecure"><span>{{ 'TAG_GENERATOR_MODULE.FORCE_HTTPS' | translate }}</span></label>
+    <label ng-if="hasDisplayAdsModuleAndSecure()" class="ui-checkbox"><input ng-click="secureChange(selected.secure)" server-error name="active" type="checkbox" ng-model="selected.secure" id="inputSecure"><span>{{ 'TAG_GENERATOR_MODULE.FORCE_HTTPS' | translate }}</span></label>
 
     <p><strong>{{ 'AD_SLOT_MODULE.HELP_BLOCK_COPY_TAG' | translate }}</strong></p>
     <div hljs source="javascriptTag" select-on-click class="highlight-js"></div>

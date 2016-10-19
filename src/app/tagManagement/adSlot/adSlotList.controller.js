@@ -75,7 +75,7 @@
                         return Manager.one(adSlot.id).customGET('jstag', {forceSecure: true});
                     }
                 },
-                controller: function ($scope, javascriptTag) {
+                controller: function ($scope, javascriptTag, USER_MODULES) {
                     $scope.selected = {
                         secure: true
                     };
@@ -84,6 +84,10 @@
                     $scope.javascriptTag = javascriptTag;
                     $scope.getTextToCopy = function(string) {
                         return string.replace(/\n/g, '\r\n');
+                    };
+
+                    $scope.hasDisplayAdsModuleAndSecure = function () {
+                        return adSlot.site.publisher.enabledModules.indexOf(USER_MODULES.displayAds) > -1 && (adSlot.site.publisher.tagDomain.length == 0 || !adSlot.site.publisher.tagDomain || !!adSlot.site.publisher.tagDomain.secure)
                     };
 
                     $scope.secureChange = function(secure) {

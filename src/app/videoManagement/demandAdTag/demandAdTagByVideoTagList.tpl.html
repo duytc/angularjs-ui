@@ -34,11 +34,12 @@
         <div class="row">
             <ul class="header-list-ad-tag item">
                 <li class="col-md-1">#</li>
-                <li class="col-md-2">{{ 'ACTIONS' | translate }}</li>
+                <li class="col-md-1">{{ 'ACTIONS' | translate }}</li>
                 <li class="col-md-2">{{ 'NAME' | translate }}</li>
                 <li class="col-md-2">{{ 'AD_SOURCE_MODULE.PRIORITY' | translate }}</li>
                 <li class="col-md-2">{{ 'AD_SOURCE_MODULE.TIMEOUT' | translate }}</li>
                 <li class="col-md-2">{{ 'AD_SOURCE_MODULE.WEIGHT' | translate }}</li>
+                <li class="col-md-1">{{ 'AD_SOURCE_MODULE.PROFIT' | translate }}</li>
                 <li class="col-md-1">{{ 'AD_SOURCE_MODULE.STATUS' | translate }}</li>
             </ul>
 
@@ -64,11 +65,12 @@
                     <ul class="itemAdTag" ui-sortable="sortableItemOption" ng-model="videoWaterfallTagItem.videoDemandAdTags">
                         <li class="item" ng-repeat="videoDemandAdTag in videoWaterfallTagItem.videoDemandAdTags">
                             <div class="col-md-1">{{ videoDemandAdTag.id }}</div>
-                            <div class="col-md-2">
+                            <div class="col-md-1">
                                 <div class="btn-group" dropdown on-toggle="actionDropdownToggled(open)">
                                     <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li ng-if="!isSubPublisher()"><a ng-click="toggleDemandAdTagStatus(videoDemandAdTag)">{{ videoDemandAdTag.active ? ('AD_SOURCE_MODULE.PAUSE_AD_SOURCE' | translate) : ('AD_SOURCE_MODULE.ACTIVATE_AD_SOURCE' | translate) }}</a></li>
+                                        <li ng-if="!isSubPublisher() && videoDemandAdTag.active != 1"><a ng-click="toggleDemandAdTagStatus(videoDemandAdTag, 1)">{{ 'AD_SOURCE_MODULE.ACTIVATE_AD_SOURCE' | translate }}</a></li>
+                                        <li ng-if="!isSubPublisher() && videoDemandAdTag.active == 1"><a ng-click="toggleDemandAdTagStatus(videoDemandAdTag, 0)">{{ 'AD_SOURCE_MODULE.PAUSE_AD_SOURCE' | translate }}</a></li>
                                         <li class="divider"></li>
                                         <li><a ui-sref="^.^.^.reports.video.report(paramsReport(videoDemandAdTag))">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
                                         <li class="divider"></li>
@@ -110,12 +112,10 @@
                                     <div e-form="rotationForm" buttons="no" oncancel="updateDemandAdTag($data, 'rotationWeight', videoDemandAdTag)" onbeforesave="updateDemandAdTag($data, 'rotationWeight', videoDemandAdTag)" editable-number="videoDemandAdTag.rotationWeight">{{ videoDemandAdTag.rotationWeight }}</div>
                                 </div>
                             </div>
-
-                            <div class="col-md-1"><span class="label" ng-class="videoDemandAdTag.active == true ? 'label-success' : 'label-danger'">{{ videoDemandAdTag.active == true ? 'Active' : 'Paused' }}</span></div>
+                            <div class="col-md-1">{{ videoDemandAdTag.profit | currency }}</div>
+                            <div class="col-md-1"><span class="label" ng-class="videoDemandAdTag.active == 1 ? 'label-success' : (videoDemandAdTag.active == 0 ?'label-danger' : 'label-warning')">{{ videoDemandAdTag.active == 1 ? 'Active' : (videoDemandAdTag.active == 0 ? 'Paused' : 'Auto Paused') }}</span></span></div>
                         </li>
                     </ul>
-
-
                 </li>
             </ul>
         </div>

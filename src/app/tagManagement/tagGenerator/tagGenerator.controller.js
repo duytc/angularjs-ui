@@ -5,7 +5,7 @@
         .controller('TagGenerator', TagGenerator)
     ;
 
-    function TagGenerator($scope, $translate, $location, $q, channelList, site, channel, jstags, publishers, SiteManager, ChannelManager, adminUserManager, accountManager, Auth, USER_MODULES) {
+    function TagGenerator($scope, $translate, $location, $q, channelList, site, channel, jstags, publishers, SiteManager, ChannelManager, adminUserManager, accountManager, userSession, Auth, USER_MODULES) {
         $scope.formProcessing = false;
         $scope.jstagCopy = angular.copy(jstags);
         var totalRecord = null;
@@ -167,6 +167,20 @@
                     $scope.formProcessing = false;
                 })
             ;
+        };
+
+        $scope.hasDisplayAdsModuleAndSecure = function () {
+            if(!$scope.selected.publisher && $scope.isAdmin()) {
+                return false;
+            }
+
+            if($scope.isAdmin()) {
+                return $scope.selected.publisher.enabledModules.indexOf(USER_MODULES.displayAds) > -1 && ($scope.selected.publisher.tagDomain.length == 0 || !$scope.selected.publisher.tagDomain || !!$scope.selected.publisher.tagDomain.secure)
+            } else {
+                return userSession.enabledModules.indexOf(USER_MODULES.displayAds) > -1 && (userSession.tagDomain.length == 0 || !userSession.tagDomain || !!userSession.tagDomain.secure)
+            }
+
+            return false;
         };
 
         $scope.filterByAnalytics = function(type) {

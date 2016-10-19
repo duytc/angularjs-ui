@@ -1,0 +1,106 @@
+<button class="btn btn-success" type="button" ng-click="addNewPlacementRule()">
+    <span class="glyphicon glyphicon-plus"></span>
+    {{ 'AD_SOURCE_MODULE.ADD_PLACEMENT_RULES' | translate }}
+</button>
+
+<div ng-model="expressions">
+    <div class="expressions-group" ng-repeat="rule in rules">
+
+        <div class="form-group">
+            <label class=" col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.VIDEO_PUBLISHERS' | translate }}</label>
+            <div class="col-sm-9">
+                <ui-select multiple name="publishers" close-on-select="false" id="publisher" ng-model="rule.publishers" on-select="changeWaterfallTags(rule.publishers)"  ng-required="true" server-error reset-search-input="'false'">
+                    <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.VIDEO_PUBLISHERS' | translate }}">{{ $item.name }}</ui-select-match>
+                    <ui-select-choices repeat="publisher.id as publisher in videoPublishers | filter: { name: $select.search, id: ''}">
+                        {{ publisher.name }}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <br>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">{{'AD_SOURCE_MODULE.SELL_PRICE'|translate}} </label>
+            <div class="col-sm-9 form-control-static"> {{ sellPrice}} </div>
+        </div>
+        <br>
+
+        <div class="form-group" >
+            <label class=" col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.RULE_TYPE' | translate }}</label>
+            <div class="col-sm-9">
+                <ui-select name="ruleType" id="ruleType" ng-model="rule.profitType" on-select="changeProfitValueLabel($item)" ng-required="true" server-error reset-search-input="'false'">
+                    <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.RULE_TYPE' | translate }}">{{ $select.selected.value }}</ui-select-match>
+                    <ui-select-choices  repeat="ruleType.key as ruleType in ruleTypes">
+                        {{ ruleType.value }}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <br>
+
+        <div class="form-group" ng-if="rule.profitType != 3">
+            <label class="col-sm-3 control-label">{{ profiltValueLabel }}</label>
+            <div class="col-sm-9">
+                <input server-error name="profitValue" ng-model="rule.profitValue"  ng-blur="changeRequireBuyPrice(rule.profitValue, rule.profitType)" type="number" class="form-control" id="profitValue" placeholder="{{ profiltValueLabel }}">
+            </div>
+        </div>
+        <br ng-if="rule.profitType != 3">
+
+        <div class="form-group" ng-if="(rule.profitType != 3)">
+            <label class="col-sm-3 control-label">{{'AD_SOURCE_MODULE.REQUIRED_BUY_PRICE'|translate}} </label>
+            <div class="col-sm-9 form-control-static">
+                {{ requiredBuyPrice }}
+            </div>
+        </div>
+        <br ng-if="(rule.profitType != 3)">
+
+        <div class="form-group" ng-if="rule.profitType ==3">
+            <label for="inputWaterfall" class="col-sm-3 control-label">{{ 'WATERFALL_TAGS' | translate }}</label>
+            <div class="col-sm-9">
+                <ui-select name="ruleType" id="inputWaterfall" ng-model="rule.waterfalls" ng-required="true" server-error reset-search-input="'false'">
+                    <ui-select-match placeholder="{{ 'WATERFALL_TAGS' | translate }}">{{ $select.selected.name }}</ui-select-match>
+                    <ui-select-choices  repeat="waterfall.id as waterfall in waterfallTags">
+                        {{ waterfall.name }}
+                    </ui-select-choices>
+                </ui-select>
+                <!--<isteven-multi-select id="inputWaterfall" input-model="waterfallTags" output-model="rule.waterfalls" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>-->
+
+            </div>
+        </div>
+        <br ng-if="rule.profitType ==3">
+
+        <div class="form-group">
+            <label for="inputPosition" class="col-sm-3 control-label">{{ 'VIDEO_AD_TAG_MODULE.POSITION' | translate }}</label>
+            <div class="col-sm-9">
+                <input name="position" id="inputPosition" ng-model="rule.position" server-error type="number" class="form-control" placeholder="{{ 'VIDEO_AD_TAG_MODULE.POSITION' | translate }}">
+            </div>
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="inputPriority" class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.PRIORITY' | translate }}</label>
+            <div class="col-sm-9">
+                <input name="priority" id="inputPriority" ng-model="rule.priority" server-error type="number" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_PRIORITY' | translate }}">
+            </div>
+        </div>
+        <br>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.WEIGHT' | translate }}</label>
+            <div class="col-sm-9">
+                <input name="weight" ng-model="rule.rotationWeight" server-error type="number" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_WEIGHT' | translate }}">
+            </div>
+        </div>
+        <br>
+
+
+
+
+        <div class="form-group">
+            <div class=" col-sm-offset-10 ">
+                <button type="button" style="margin-left: -5px" class="btn btn-danger" ng-click="removePlacementRule($index)">
+                    <span class="glyphicon glyphicon-minus "></span> Remove
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

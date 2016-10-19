@@ -137,11 +137,11 @@
 
                         return VideoDemandPartnerManager.one($stateParams.demandPartnerId).get();
                     },
-                    waterfallTags: function() {
-                        return []
+                    waterfallTags: function(VideoAdTagManager) {
+                        return VideoAdTagManager.getList();
                     },
-                    videoPublishers: function() {
-                        return []
+                    videoPublishers: function(VideoPublisherManager) {
+                        return VideoPublisherManager.getList();
                     },
                     blackList: function(BlackListManager) {
                         return BlackListManager.getList()

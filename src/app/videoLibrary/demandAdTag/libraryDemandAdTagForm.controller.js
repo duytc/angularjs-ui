@@ -6,18 +6,11 @@
     ;
 
     function LibraryDemandAdTagForm($scope, $q, _, $filter, $stateParams, $modal, $translate, UISelectMethod, videoPublishers, waterfallTags, whiteList, blackList, demandPartner, demandAdTag, demandPartners, publishers, AlertService, NumberConvertUtil, ReplaceMacros, LibraryDemandAdTagManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST, PLATFORM_OPTION, PLAYER_SIZE_OPTIONS, REQUIRED_MACROS_OPTIONS) {
-
         var isChangeTagURLValue = false;
 
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
-
-        $scope.ruleTypes = [
-            {key: 1, value: "Fixed Profit"},
-            {key: 2, value: "Profit Margin"},
-            {key: 3, value: "Manual"}
-        ]
 
         $scope.whiteList = whiteList;
         $scope.blackList = blackList;
@@ -27,11 +20,13 @@
         $scope.playerSizeOptions = PLAYER_SIZE_OPTIONS;
         $scope.requiredMacrosOptions = REQUIRED_MACROS_OPTIONS;
 
+
         $scope.isNew = demandAdTag === null;
         $scope.formProcessing = false;
         $scope.publishers = publishers;
         $scope.videoPublishers = UISelectMethod.addAllOption(videoPublishers, 'All Publishers');
-        $scope.waterfallTags = $scope.isAdmin() ? [] : waterfallTags;
+        //$scope.waterfallTags = $scope.isAdmin() ? [] : waterfallTags;
+        $scope.waterfallTags = waterfallTags;
         $scope.demandPartners = demandPartners;
 
 
@@ -41,6 +36,8 @@
                 message: $translate.instant('AD_SOURCE_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
             });
         }
+
+        console.log("Waterfall Tag in maincontroler:", $scope.waterfallTags);
 
         $scope.demandAdTag = demandAdTag || {
             name: null,
@@ -57,7 +54,9 @@
                 player_size: [],
                 required_macros: []
             },
-            placementRules: [{profitType:null, profitValue: null, publishers:[{}]}]
+            waterfallPlacementRules: [
+                {profitType: null, profitValue: null, publishers: []}
+            ]
         };
 
         $scope.selectedData = {
@@ -90,15 +89,12 @@
         $scope.viewQuicklyBlackLink = viewQuicklyBlackLink;
         $scope.replaceMacros = replaceMacros;
         $scope.isChangeTagURL = isChangeTagURL;
-        $scope.addNewPlacementRule = addNewPlacementRule;
-        $scope.removePlacementRule = removePlacementRule;
 
         function isChangeTagURL() {
             isChangeTagURLValue = true;
         }
 
         function replaceMacros() {
-
             if (false == isChangeTagURLValue) {
                 return;
             }
@@ -106,7 +102,7 @@
             ReplaceMacros.replaceVideoMacros($scope.demandAdTag.tagURL)
                 .then(function () {
                     $scope.demandAdTag.tagURL = ReplaceMacros.getVideoUrl();
-                })
+                });
 
             isChangeTagURLValue = false;
         }
@@ -387,7 +383,10 @@
         function _refactorJson() {
             var demandAdTag = angular.copy($scope.demandAdTag);
             var domains = [], excludeDomains = [];
-            demandAdTag.sellPrice = NumberConvertUtil.convertPriceToString(demandAdTag.sellPrice);
+
+            if(!!demandAdTag.sellPrice) {
+                demandAdTag.sellPrice = NumberConvertUtil.convertPriceToString(demandAdTag.sellPrice);
+            }
 
             angular.forEach(demandAdTag.targeting.domains, function(item) {
                 if(!!item.suffixKey) {
@@ -414,6 +413,10 @@
                 demandAdTag.waterfalls = waterfallTags;
             }
 
+            if(!demandAdTag.sellPrice) {
+                demandAdTag.waterfallPlacementRules = [];
+            }
+
             delete demandAdTag.linkedCount;
 
             return demandAdTag;
@@ -423,14 +426,6 @@
             $scope.waterfallTags = $filter('filter')(waterfallTags, function(waterfallTag) {
                 return waterfallTag.videoPublisher.publisher.id == publisher.id
             });
-        }
-
-        function addNewPlacementRule() {
-            $scope.demandAdTag.placementRules.push({profitType:null, profitValue: null, publishers:[]});
-        }
-
-        function removePlacementRule(index) {
-            $scope.demandAdTag.placementRules.splice(index,1);
         }
     }
 })();

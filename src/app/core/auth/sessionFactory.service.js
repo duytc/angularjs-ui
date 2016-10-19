@@ -17,8 +17,8 @@
              * @param {Array} [enabledModules]
              * @param {Array} [exchanges]
              */
-            createNew: function(token, id, username, userRoles, enabledModules, exchanges, demandSourceTransparency, enableViewTagcadeReport) {
-                return new Session(token, id, username, userRoles, enabledModules, exchanges, demandSourceTransparency, enableViewTagcadeReport);
+            createNew: function(token, id, username, userRoles, enabledModules, exchanges, demandSourceTransparency, enableViewTagcadeReport, tagDomain) {
+                return new Session(token, id, username, userRoles, enabledModules, exchanges, demandSourceTransparency, enableViewTagcadeReport, tagDomain);
             },
 
             /**
@@ -37,7 +37,7 @@
                     throw new Error('missing username');
                 }
 
-                return this.createNew(data.token, data.id, data.username, data.userRoles, data.enabledModules, data.exchanges, data.demandSourceTransparency, data.enableViewTagcadeReport);
+                return this.createNew(data.token, data.id, data.username, data.userRoles, data.enabledModules, data.exchanges, data.demandSourceTransparency, data.enableViewTagcadeReport, data.tagDomain);
             },
 
             isSession: function(session) {
@@ -45,11 +45,12 @@
             }
         };
 
-        function Session(token, id, username, userRoles, enabledModules, exchanges, demandSourceTransparency, enableViewTagcadeReport) {
+        function Session(token, id, username, userRoles, enabledModules, exchanges, demandSourceTransparency, enableViewTagcadeReport, tagDomain) {
             this.token = token;
             this.id = parseInt(id, 10) || null;
             this.username = username;
             this.exchanges = exchanges;
+            this.tagDomain = tagDomain;
 
             // demandSourceTransparency is enabled if current user is not sub publisher
             this.demandSourceTransparency = userRoles.indexOf(USER_ROLES.subPublisher) > - 1 ? demandSourceTransparency : true;

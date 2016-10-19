@@ -16,7 +16,7 @@
         $scope.selected = {
             publisher: videoPublisher && videoPublisher.publisher,
             videoPublisher: videoPublisher,
-            secure: true
+            secure: false
         };
 
         $scope.selectPublisher = function(publisher) {

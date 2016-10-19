@@ -61,7 +61,7 @@
                 }
             },
             priority: null,
-            active: true,
+            activeClone: true,
             rotationWeight: null,
             targetingOverride: false
         };
@@ -72,6 +72,8 @@
             if($scope.videoDemandAdTag.targetingOverride) {
                 $scope.videoDemandAdTag.libraryVideoDemandAdTag.targeting = $scope.videoDemandAdTag.targeting;
             }
+
+            $scope.videoDemandAdTag.activeClone = $scope.videoDemandAdTag.active > 0;
         }
 
         $scope.selectedData = {
@@ -114,7 +116,7 @@
             ReplaceMacros.replaceVideoMacros($scope.videoDemandAdTag.libraryVideoDemandAdTag.tagURL)
                 .then(function () {
                     $scope.videoDemandAdTag.libraryVideoDemandAdTag.tagURL = ReplaceMacros.getVideoUrl();
-                })
+                });
 
             isChangeTagURLValue = false;
         }
@@ -540,7 +542,14 @@
             if(!$scope.pickFromLibrary) {
                 delete demandAdTag.libraryVideoDemandAdTag.id;
             }
+
+            if(typeof demandAdTag.activeClone != 'number') {
+                demandAdTag.active = demandAdTag.activeClone ? 1: 0
+            }
+            delete demandAdTag.activeClone;
+
             delete demandAdTag.libraryVideoDemandAdTag.linkedCount;
+            delete demandAdTag.profit;
 
             return demandAdTag;
         }
