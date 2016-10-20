@@ -54,6 +54,8 @@
                 'w'   : '${player_width}',
                 'h'   : '${player_height}',
                 'url' : '${page_url}',
+                'desc': '${video_description}',
+                'dur':  '${video_duration}',
                 'ip'  : '${ip_address}',
                 'ua'  : '${user_agent}',
                 'cb'  : '${cache_buster}'
@@ -64,6 +66,7 @@
                 'player_height'    : '${player_height}',
                 'content_page_url' : '${page_url}',
                 'vid_duration'     : '${video_duration}',
+                'video_duration'   : '${video_duration}',
                 'cb'               : '${cache_buster}'
             },
 
@@ -80,6 +83,7 @@
             },
 
             'https?://c.adforgeinc.com/w.php' : {
+                'ip' : '${ip_address}',
                 'ua' : '${user_agent}',
                 'u'  : '${page_url}',
                 'cb' : '${cache_buster}',
@@ -89,6 +93,40 @@
                 'mi' : '${video_id}',
                 'wi' : '${player_width}',
                 'he' : '${player_height}'
+            },
+
+            'https?://vast.yashi.com' : {
+                'vid_id'        : '${video_id}',
+                'vid_title'     : '${video_title}',
+                'vid_url'       : '${video_url}',
+                'player_width'  : '${player_width}',
+                'player_height' : '${player_height}',
+                'page_url'      : '${page_url}'
+            },
+
+            'https?://go.aniview.com/api/adserver/vast/' : {
+                'AV_URL'  : '${page_url}',
+                'cb'      : '${cache_buster}'
+            },
+
+            'https?://arena.altitude-arena.com' : {
+                'page_url'          : '${page_url}',
+                'cb'                : '${cache_buster}',
+                'player_width'      : '${player_width}',
+                'player_height'     : '${player_height}',
+                'media_description' : '${video_description}',
+                'video_duration'    : '${video_duration}',
+                'media_file_id'     : '${video_id}'
+            },
+
+            'https?://ssp.streamrail.net/ssp/vpaid' : {
+                'page_url'           : '${page_url}',
+                'cb'                 : '${cache_buster}',
+                'width'              : '${player_width}',
+                'height'             : '${player_height}',
+                'video_description'  : '${video_description}',
+                'video_duration'     : '${video_duration}',
+                'video_id'           : '${video_id}'
             }
 
         })
