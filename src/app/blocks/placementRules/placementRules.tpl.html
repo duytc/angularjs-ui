@@ -9,19 +9,13 @@
         <div class="form-group">
             <label class=" col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.VIDEO_PUBLISHERS' | translate }}</label>
             <div class="col-sm-9">
-                <ui-select multiple name="publishers" close-on-select="false" id="publisher" ng-model="rule.publishers" on-select="changeWaterfallTags(rule.publishers)"  ng-required="true" server-error reset-search-input="'false'">
+                <ui-select multiple name="publishers" close-on-select="false" id="publisher" ng-model="rule.publishers" on-select="changeWaterfallTags($item)"  ng-required="true" server-error reset-search-input="'false'">
                     <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.VIDEO_PUBLISHERS' | translate }}">{{ $item.name }}</ui-select-match>
                     <ui-select-choices repeat="publisher.id as publisher in videoPublishers | filter: { name: $select.search, id: ''}">
                         {{ publisher.name }}
                     </ui-select-choices>
                 </ui-select>
             </div>
-        </div>
-        <br>
-
-        <div class="form-group">
-            <label class="col-sm-3 control-label">{{'AD_SOURCE_MODULE.SELL_PRICE'|translate}} </label>
-            <div class="col-sm-9 form-control-static"> {{ sellPrice}} </div>
         </div>
         <br>
 
@@ -37,6 +31,19 @@
             </div>
         </div>
         <br>
+
+        <div class="form-group" ng-if="(rule.profitType != 3) && (sellPrice == null)">
+            <label class="col-sm-3 control-label">{{ }} </label>
+            <div class="col-sm-9 form-control-static" style="color: #ff400e">
+                {{ 'AD_SOURCE_MODULE.WATERFALL_PLACEMENT_RULE_WARNING' | translate }}
+            </div>
+        </div>
+
+        <div class="form-group" ng-if="rule.profitType != 3">
+            <label class="col-sm-3 control-label">{{'AD_SOURCE_MODULE.SELL_PRICE'|translate}} </label>
+            <div class="col-sm-9 form-control-static"> {{ sellPrice}} </div>
+        </div>
+        <br ng-if="rule.profitType != 3">
 
         <div class="form-group" ng-if="rule.profitType != 3">
             <label class="col-sm-3 control-label">{{ profiltValueLabel }}</label>
@@ -57,9 +64,9 @@
         <div class="form-group" ng-if="rule.profitType ==3">
             <label for="inputWaterfall" class="col-sm-3 control-label">{{ 'WATERFALL_TAGS' | translate }}</label>
             <div class="col-sm-9">
-                <ui-select name="ruleType" id="inputWaterfall" ng-model="rule.waterfalls" ng-required="true" server-error reset-search-input="'false'">
-                    <ui-select-match placeholder="{{ 'WATERFALL_TAGS' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                    <ui-select-choices  repeat="waterfall.id as waterfall in waterfallTags">
+                <ui-select multiple name="waterfall" id="inputWaterfall" ng-model="rule.waterfalls" ng-required="true" server-error reset-search-input="'false'">
+                    <ui-select-match placeholder="{{ 'WATERFALL_TAGS' | translate }}">{{ $item.name }}</ui-select-match>
+                    <ui-select-choices  repeat="waterfall.id as waterfall in waterfallTags | filter: { name: $select.search, id: ''}">
                         {{ waterfall.name }}
                     </ui-select-choices>
                 </ui-select>
@@ -76,6 +83,7 @@
             </div>
         </div>
         <br>
+
         <div class="form-group">
             <label for="inputPriority" class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.PRIORITY' | translate }}</label>
             <div class="col-sm-9">

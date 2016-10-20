@@ -54,9 +54,7 @@
                 player_size: [],
                 required_macros: []
             },
-            waterfallPlacementRules: [
-                {profitType: null, profitValue: null, publishers: []}
-            ]
+            waterfallPlacementRules: [{}]
         };
 
         $scope.selectedData = {
@@ -89,6 +87,18 @@
         $scope.viewQuicklyBlackLink = viewQuicklyBlackLink;
         $scope.replaceMacros = replaceMacros;
         $scope.isChangeTagURL = isChangeTagURL;
+        $scope.addNewPlacementRule = addNewPlacementRule;
+        $scope.removePlacementRule = removePlacementRule;
+
+
+
+        function addNewPlacementRule() {
+            $scope.demandAdTag.waterfallPlacementRules.push({profitType: 3, profitValue: null, position:null, priority: null, rotationWeight:null, waterfalls: null, publishers: []});
+        }
+
+        function removePlacementRule(index) {
+            $scope.demandAdTag.waterfallPlacementRules.splice(index, 1);
+        }
 
         function isChangeTagURL() {
             isChangeTagURLValue = true;

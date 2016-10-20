@@ -525,7 +525,9 @@
                 "RULE_VALUE_MARGIN":"Profit Value(%)",
                 "RULE_VALUE_MANUAL":"Profit Value",
                 "VIDEO_PUBLISHERS":"Publishers",
-                "PROFIT": "Profit"
+                "PROFIT": "Profit",
+                "WATERFALL_PLACEMENT_RULE_WARNING": "*The sell price for this demand ad tag has not been set. The placement rule cannot be added.",
+                "WARNING": "Warning"
             },
             "AD_SOURCE_LIBRARY_MODULE": {
                 "CREATE_LINKED_DEMAND_AD_TAGS": "Link this Demand Ad Tag",

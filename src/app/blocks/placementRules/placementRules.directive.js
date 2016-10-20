@@ -12,7 +12,7 @@
             scope: {
                 rules: '=',
                 videoPublishers: '=',
-                sellPrice: '@',
+                sellPrice: '=',
                 waterfallTags: '='
             },
             restrict: 'AE',
@@ -23,10 +23,13 @@
 
                 return function (scope, element, attrs) {
 
+                    console.log('value in directive:',scope.sellPrice);
+                    console.log('Video Publisher in Directive:', scope.videoPublishers);
+
                     scope.profiltValueLabel = 'Profit Value';
                     scope.requiredBuyPrice = scope.sellPrice;
                     var waterfallTags = angular.copy(scope.waterfallTags);
-                    console.log(waterfallTags);
+                    console.log("Waterfall tag in compiler", waterfallTags);
                     scope.ruleTypes = [
                         {key: 1, value: "Fixed Profit"},
                         {key: 2, value: "Profit Margin"},
@@ -64,10 +67,12 @@
                     function changeRequireBuyPrice(inputValue, inputType) {
                         switch (inputType) {
                             case 1:
-                                scope.requiredBuyPrice = scope.sellPrice - inputValue;
+                                var requireBuyPriceByFixProfit = scope.sellPrice - inputValue;
+                                scope.requiredBuyPrice = requireBuyPriceByFixProfit > 0 ? requireBuyPriceByFixProfit : 0;
                                 break;
                             case 2:
-                                scope.requiredBuyPrice = scope.sellPrice - inputValue*scope.sellPrice/100;
+                                var requireBuyPriceByMarginProfit = scope.sellPrice - inputValue*scope.sellPrice/100;
+                                scope.requiredBuyPrice = requireBuyPriceByMarginProfit > 0 ? requireBuyPriceByMarginProfit : 0;
                                 break;
                             default:
                                 scope.requiredBuyPrice = scope.sellPrice;
@@ -76,8 +81,8 @@
                     }
 
                     function changeWaterfallTags(publishers) {
-                        /*console.log("Publisher after filter", publishers);
-                        scope.waterfallTags = _.filter(waterfallTags , function(waterfallTag){
+                        console.log("Publisher after filter", publishers);
+                       /* scope.waterfallTags = _.filter(waterfallTags , function(waterfallTag){
                             return _.contains(publishers, waterfallTag.videoPublisher.id);
                         });
 
