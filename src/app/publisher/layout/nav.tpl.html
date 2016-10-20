@@ -238,7 +238,7 @@
                         <span class="menu-text"> {{ 'NAVBAR.RTB_REPORTS' | translate }} </span>
                     </a>
                 </li>
-                <li ng-show="hasAnalyticsModule" ui-sref-active="active">
+                <li ng-show="hasAnalyticsModule || hasVideoModule" ui-sref-active="active">
                     <a ui-sref=".reports.source">
                         <span class="menu-text"> {{ 'NAVBAR.SOURCE_REPORTS' | translate }} </span>
                     </a>

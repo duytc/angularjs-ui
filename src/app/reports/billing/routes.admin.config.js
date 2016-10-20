@@ -18,8 +18,8 @@
                     billing: {
                         controller: 'BillingReport',
                         templateUrl: function ($stateParams) {
-                            if($stateParams.product == 'headerBidding') {
-                                return 'reports/billing/views/headerBidding/platform.tpl.html'
+                            if($stateParams.product == 'inBanner') {
+                                return 'reports/billing/views/inBanner/platform.tpl.html'
                             }
 
                             return 'reports/billing/views/reportType/platform.tpl.html'
@@ -79,8 +79,8 @@
                     billing: {
                         controller: 'BillingReport',
                         templateUrl: function ($stateParams) {
-                            if($stateParams.product == 'headerBidding') {
-                                return 'reports/billing/views/headerBidding/accounts.tpl.html'
+                            if($stateParams.product == 'inBanner') {
+                                return 'reports/billing/views/inBanner/accounts.tpl.html'
                             }
 
                             return 'reports/billing/views/reportType/accounts.tpl.html'
@@ -166,8 +166,8 @@
                     billing: {
                         controller: 'BillingReport',
                         templateUrl: function ($stateParams) {
-                            if($stateParams.product == 'headerBidding') {
-                                return 'reports/billing/views/headerBidding/site/sites.tpl.html'
+                            if($stateParams.product == 'inBanner') {
+                                return 'reports/billing/views/inBanner/site/sites.tpl.html'
                             }
 
                             return 'reports/billing/views/reportType/site/sites.tpl.html'
@@ -200,8 +200,8 @@
                     billing: {
                         controller: 'BillingReport',
                         templateUrl: function ($stateParams) {
-                            if($stateParams.product == 'headerBidding') {
-                                return 'reports/billing/views/headerBidding/account.tpl.html'
+                            if($stateParams.product == 'inBanner') {
+                                return 'reports/billing/views/inBanner/account.tpl.html'
                             }
 
                             return 'reports/billing/views/reportType/account.tpl.html'
@@ -232,8 +232,8 @@
                     billing: {
                         controller: 'BillingReport',
                         templateUrl: function ($stateParams) {
-                            if($stateParams.product == 'headerBidding') {
-                                return 'reports/billing/views/headerBidding/site/sites.tpl.html'
+                            if($stateParams.product == 'inBanner') {
+                                return 'reports/billing/views/inBanner/site/sites.tpl.html'
                             }
 
                             return 'reports/billing/views/reportType/site/sites.tpl.html'

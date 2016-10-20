@@ -5,7 +5,7 @@
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
             {{ 'REPORT.DAILY_SITE_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" fields="['date', 'hbRequests', 'hbBilledAmount', 'hbBilledRate']" header="['Date', 'Header Bidding Requests', 'Header Bidding Billed Amount', 'Header Bidding Billed Rate']" file-name="getExportExcelFileName"></export-excel>
+                <export-excel data="reports" fields="['date', 'inBannerImpressions', 'inBannerBilledAmount', 'inBannerBilledRate']" header="['Date', 'Impressions', 'Billed Amount', 'Billed Rate']" file-name="getExportExcelFileName"></export-excel>
             </div>
         </div>
         <div class="table-responsive">
@@ -16,14 +16,14 @@
                     <td at-title="{{ 'REPORT.DATE' | translate }}" at-attribute="date" at-sortable at-initial-sorting="desc">
                         {{ item.date | date }}
                     </td>
-                    <td at-title="{{ 'REPORT.HEADER_BIDDING_REQUESTS' | translate }}" at-attribute="requests" at-sortable>
-                        {{ item.requests | number }}
+                    <td at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="inBannerImpressions" at-sortable>
+                        {{ (item.inBannerImpressions != null ? item.inBannerImpressions : 0) | number }}
                     </td>
-                    <td at-title="{{ 'REPORT.HEADER_BIDDING_BILLED_AMOUNT' | translate }}" at-attribute="billedAmount" at-sortable>
-                        {{ item.billedAmount | currency }}
+                    <td at-title="{{ 'REPORT.BILLED_AMOUNT' | translate }}" at-attribute="inBannerBilledAmount" at-sortable>
+                        {{ (item.inBannerBilledAmount != null ? item.inBannerBilledAmount : 0) | currency }}
                     </td>
-                    <td at-title="{{ 'REPORT.HEADER_BIDDING_BILLED_RATE' | translate }}" at-attribute="billedRate" at-sortable>
-                        {{ item.billedRate | currency:'$':4 }}
+                    <td at-title="{{ 'REPORT.BILLED_RATE' | translate }}" at-attribute="inBannerBilledRate" at-sortable>
+                        {{ (item.inBannerBilledRate != null ? item.inBannerBilledRate : 0) | currency:'$':4 }}
                     </td>
                 </tr>
                 </tbody>

@@ -5,7 +5,7 @@
         .controller('AdTagForm', AdTagForm)
     ;
 
-    function AdTagForm($scope, _, $state, $modal, $translate, $stateParams, AdSlotManager, AdNetworkCache, AdTagManager, AlertService, AdTagLibrariesManager, userSession, ServerErrorProcessor, DisplayAdSlotManager, historyStorage, adTag, adSlot, site, publisher, publisherList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, HISTORY_TYPE_PATH) {
+    function AdTagForm($scope, Auth, _, $state, $modal, $translate, $stateParams, AdSlotManager, AdNetworkCache, AdTagManager, AlertService, AdTagLibrariesManager, userSession, ServerErrorProcessor, DisplayAdSlotManager, historyStorage, adTag, adSlot, site, publisher, publisherList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, USER_MODULES, PLATFORM_VAST_TAG, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
             name: 'Name',
@@ -61,6 +61,7 @@
         $scope.showInputPosition = adSlot && adSlot.type == $scope.adSlotTypes.display ? true : false;
 
         $scope.adTypes = AD_TYPES;
+        $scope.platforms = PLATFORM_VAST_TAG;
 
         $scope.publisherList = publisherList;
         $scope.adSlotList = !!$stateParams.adSlotId ? [adSlot] : [];
@@ -94,7 +95,12 @@
                 adNetwork: null,
                 adType: $scope.adTypes.customAd,
                 partnerTagId: null,
-                descriptor: null
+                descriptor: null,
+                platform: null,
+                timeout: null,
+                playerWidth: null,
+                playerHeight: null,
+                vastTags: [{tag: null}]
             },
             position: null,
             impressionCap: null,
@@ -111,6 +117,12 @@
         if(!!$stateParams.adSlotId) {
             $scope.adTag.adSlots.push(adSlot.id);
         }
+
+        $scope.sortableOptions = {
+            disabled: true,
+            forcePlaceholderSize: true,
+            placeholder: 'sortable-placeholder'
+        };
 
         $scope.getAdTagLibrary = getAdTagLibrary;
         $scope.searchItem = searchItem;
@@ -282,6 +294,32 @@
 
         $scope.selectAdTagLibrary = function(libraryAdTag) {
             angular.extend($scope.adTag.libraryAdTag, libraryAdTag);
+        };
+
+        $scope.addVast = function () {
+            $scope.adTag.libraryAdTag.vastTags.push({
+                tag: null
+            })
+        };
+
+        $scope.removeTag = function (index) {
+            if(index > -1) {
+                $scope.adTag.libraryAdTag.vastTags.splice(index, 1)
+            }
+        };
+
+        $scope.enableDragDropVastTag = function(enable) {
+            $scope.sortableOptions['disabled'] = enable;
+        };
+
+        $scope.hasInBanner = function () {
+            if($scope.isAdmin() && !$scope.selected.publisher) {
+                return false
+            } else if($scope.isAdmin() && !!$scope.selected.publisher) {
+                return $scope.selected.publisher.enabledModules.indexOf(USER_MODULES.inBanner) > -1
+            }
+
+            return Auth.getSession().hasModuleEnabled(USER_MODULES.inBanner);
         };
 
         $scope.submit = function() {

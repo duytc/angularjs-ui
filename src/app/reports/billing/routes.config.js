@@ -32,8 +32,8 @@
                     billing: {
                         controller: 'BillingReport',
                         templateUrl: function ($stateParams) {
-                            if($stateParams.product == 'headerBidding') {
-                                return 'reports/billing/views/headerBidding/site/site.tpl.html'
+                            if($stateParams.product == 'inBanner') {
+                                return 'reports/billing/views/inBanner/site/site.tpl.html'
                             }
 
                             return 'reports/billing/views/reportType/site/site.tpl.html'
@@ -93,11 +93,15 @@
                     billing: {
                         controller: 'BillingReport',
                         templateUrl: function($stateParams) {
-                            if($stateParams.breakdown != 'day') {
-                                return 'reports/billing/views/video/reportAccount.tpl.html';
+                            if($stateParams.breakdown == 'day') {
+                                return 'reports/billing/views/video/platform.tpl.html';
                             }
 
-                            return 'reports/billing/views/video/report.tpl.html';
+                            if($stateParams.breakdown == 'publisher') {
+                                return 'reports/billing/views/video/accounts.tpl.html';
+                            }
+
+                            return 'reports/billing/views/video/account.tpl.html';
                         }
                     }
                 },

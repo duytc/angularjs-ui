@@ -15,6 +15,7 @@
         .constant('USER_MODULES', {
             displayAds: 'MODULE_DISPLAY',
             videoAds: 'MODULE_VIDEO',
+            inBanner: 'MODULE_IN_BANNER',
             video: 'MODULE_VIDEO_ANALYTICS',
             analytics: 'MODULE_ANALYTICS',
             source: 'MODULE_SOURCE_REPORT',

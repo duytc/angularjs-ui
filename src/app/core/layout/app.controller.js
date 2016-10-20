@@ -16,6 +16,7 @@
         $scope.hasVideoModule = userSession.hasModuleEnabled(USER_MODULES.video);
         $scope.hasRtbModule = userSession.hasModuleEnabled(USER_MODULES.rtb);
         $scope.hasHeaderBidding = userSession.hasModuleEnabled(USER_MODULES.headerBidding);
+        $scope.hasInBannerModule = userSession.hasModuleEnabled(USER_MODULES.inBanner);
 
         $scope.onlyDisplayAdsModule = userSession.enabledModules.length == 1 && userSession.enabledModules.indexOf(USER_MODULES.displayAds) > -1;
         $scope.onlyVideoAdsModule = userSession.enabledModules.length == 1 && userSession.enabledModules.indexOf(USER_MODULES.videoAds) > -1;

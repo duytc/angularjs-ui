@@ -58,8 +58,8 @@
                 label: 'Impressions'
             },
             {
-                key: 'fillRate',
-                label: 'Fill Rate'
+                key: 'requestFillRate',
+                label: 'Request Fill Rate'
             },
             {
                 key: 'clicks',

@@ -23,7 +23,7 @@
                         {{ item.billedAmount | currency }}
                     </td>
                     <td at-title="{{ 'REPORT.BILLED_CPM_RATE' | translate }}">
-                        {{ item.billedRate | currency }}
+                        {{ item.billedRate | currency:'$':4 }}
                     </td>
                 </tr>
                 </tbody>
