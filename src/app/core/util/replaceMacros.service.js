@@ -28,6 +28,11 @@
                                     if(indexOfKey > -1) {
                                         var regex = new RegExp(key + '=[^&]+');
                                         var stringNeedToReplace = regex.exec(tagUrl);
+
+                                        if (!stringNeedToReplace) {
+                                            return;
+                                        }
+
                                         var valueToReplace = key + '=' + value;
 
                                         $_url = tagUrl.replace(stringNeedToReplace[0], valueToReplace);
