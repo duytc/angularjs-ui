@@ -20,11 +20,13 @@
         $scope.playerSizeOptions = PLAYER_SIZE_OPTIONS;
         $scope.requiredMacrosOptions = REQUIRED_MACROS_OPTIONS;
 
+
         $scope.isNew = demandAdTag === null;
         $scope.formProcessing = false;
         $scope.publishers = publishers;
         $scope.videoPublishers = UISelectMethod.addAllOption(videoPublishers, 'All Publishers');
-        $scope.waterfallTags = $scope.isAdmin() ? [] : waterfallTags;
+        //$scope.waterfallTags = $scope.isAdmin() ? [] : waterfallTags;
+        $scope.waterfallTags = waterfallTags;
         $scope.demandPartners = demandPartners;
 
 
@@ -34,6 +36,8 @@
                 message: $translate.instant('AD_SOURCE_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
             });
         }
+
+        console.log("Waterfall Tag in maincontroler:", $scope.waterfallTags);
 
         $scope.demandAdTag = demandAdTag || {
             name: null,

@@ -71,7 +71,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group">`
                     <label class="col-sm-1 control-label">{{ 'VIDEO_DEMAND_PARTNER' | translate }}</label>
                     <div class="col-sm-5">
                         <ui-select name="publisher" id="inputVideoDemandPartner" ng-model="demandAdTag.videoDemandPartner" ng-required="true" server-error on-select="selectVideoDemandPartner($item)">
@@ -208,17 +208,18 @@
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="!!demandAdTag.sellPrice">
+                <div class="form-group">
                     <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.PLACEMENT_RULES' | translate }}</label>
                     <div class="col-sm-5">
                         <div class="expressions-group">
-                            <placement-rules rules="demandAdTag.waterfallPlacementRules" video-publishers="videoPublishers"></placement-rules>
+                            <placement-rules rules="demandAdTag.waterfallPlacementRules" waterfall-tags="waterfallTags" sell-price="{{ demandAdTag.sellPrice }}" video-publishers="videoPublishers"></placement-rules>
                         </div>
                     </div>
                 </div>
 
+                <br>
                 <div class="form-group">
-                    <div class="col-sm-offset-1 col-sm-5">
+                    <div class="col-sm-offset-1 col-sm-5" style="padding-top: 10px">
                         <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">
                             <p>{{ 'VALID_FORM' | translate }}</p>
