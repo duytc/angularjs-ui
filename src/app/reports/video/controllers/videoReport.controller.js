@@ -46,7 +46,7 @@
             'errorRate': 'Error Rate',
             //'wonOpportunities': 'Won Opportunities',
             'impressions': 'Impressions',
-            'fillRate': 'Request Fill Rate',
+            'requestFillRate': 'Request Fill Rate',
             'clicks': 'Clicks',
             'clickThroughRate': 'Click Through Rate',
             'blocks': 'Blocks',

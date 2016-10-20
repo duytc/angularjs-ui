@@ -28,9 +28,9 @@
                         <label>Impressions</label>
                         <span class="pull-right">{{ reportGroup.impressions | number }}</span>
                     </li>
-                    <li ng-if="hasKeyObject('fillRate', 'fillRate')">
+                    <li ng-if="hasKeyObject('requestFillRate', 'requestFillRate')">
                         <label>Request Fill Rate</label>
-                        <span class="pull-right">{{ reportGroup.fillRate | percentage }}</span>
+                        <span class="pull-right">{{ reportGroup.requestFillRate | percentage }}</span>
                     </li>
                     <li ng-if="hasKeyObject('clicks', 'clicks')">
                         <label>Clicks</label>
@@ -89,9 +89,9 @@
                         <label>Impressions</label>
                         <span class="pull-right">{{ reportGroup.averageImpressions | number }}</span>
                     </li>
-                    <li ng-if="hasKeyObject('fillRate', 'averageFillRate')">
+                    <li ng-if="hasKeyObject('requestFillRate', 'averageRequestFillRate')">
                         <label>Request Fill Rate</label>
-                        <span class="pull-right">{{ reportGroup.averageFillRate | percentage }}</span>
+                        <span class="pull-right">{{ reportGroup.averageRequestFillRate | percentage }}</span>
                     </li>
                     <li ng-if="hasKeyObject('clicks', 'averageClicks')">
                         <label>Clicks</label>

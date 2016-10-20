@@ -58,7 +58,7 @@
                 label: 'Impressions'
             },
             {
-                key: 'fillRate',
+                key: 'requestFillRate',
                 label: 'Request Fill Rate'
             },
             {

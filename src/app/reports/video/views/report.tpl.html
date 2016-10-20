@@ -37,7 +37,7 @@
                     <th ng-show="hasKeyObject(reportGroup.reports[0], 'errorRate')" at-attribute="errorRate">{{ titleForReport['errorRate'] }}</th>
                     <!--<th ng-show="hasKeyObject(reportGroup.reports[0], 'wonOpportunities')" at-attribute="wonOpportunities">{{ titleForReport['wonOpportunities'] }}</th>-->
                     <th ng-show="hasKeyObject(reportGroup.reports[0], 'impressions')" at-attribute="impressions">{{ titleForReport['impressions'] }}</th>
-                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'fillRate')" at-attribute="fillRate">{{ titleForReport['fillRate'] }}</th>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'requestFillRate')" at-attribute="requestFillRate">{{ titleForReport['requestFillRate'] }}</th>
                     <th ng-show="hasKeyObject(reportGroup.reports[0], 'clicks')" at-attribute="clicks">{{ titleForReport['clicks'] }}</th>
                     <th ng-show="hasKeyObject(reportGroup.reports[0], 'clickThroughRate')" at-attribute="clickThroughRate">{{ titleForReport['clickThroughRate'] }}</th>
                     <th ng-show="hasKeyObject(reportGroup.reports[0], 'blocks')" at-attribute="blocks">{{ titleForReport['blocks'] }}</th>
@@ -91,8 +91,8 @@
                     <td ng-show="hasKeyObject(item, 'impressions')" at-title="{{ titleForReport['impressions'] }}" at-sortable at-attribute="impressions">
                         {{ item.impressions | number }}
                     </td>
-                    <td ng-show="hasKeyObject(item, 'fillRate')" at-title="{{ titleForReport['fillRate'] }}" at-sortable at-attribute="fillRate">
-                        {{ item.fillRate | percentage }}
+                    <td ng-show="hasKeyObject(item, 'requestFillRate')" at-title="{{ titleForReport['requestFillRate'] }}" at-sortable at-attribute="requestFillRate">
+                        {{ item.requestFillRate | percentage }}
                     </td>
                     <td ng-show="hasKeyObject(item, 'clicks')" at-title="{{ titleForReport['clicks'] }}" at-sortable at-attribute="clicks">
                         {{ item.clicks | number }}
