@@ -11,6 +11,7 @@
             {key: 'js', label: 'HTML/JS VPAID'}
         ])
         .constant('PLATFORM_VAST_TAG', [
+            {key: 'html5', label: 'HTML/JS VPAID'},
             {key: 'flash', label: 'Flash VPAID'},
             {key: 'auto', label: 'Auto-Detect'}
         ])

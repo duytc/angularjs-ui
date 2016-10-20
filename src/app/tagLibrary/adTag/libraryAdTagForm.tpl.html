@@ -153,11 +153,11 @@
                                     <div class="moveable col-sm-12" ng-repeat="vastTag in adTag.vastTags">
                                         <div class="form-group">
                                             <div ng-if="adTag.vastTags.length > 1" class="input-group">
-                                                <input name="vastTag" ng-model="vastTag.tag" type="url" server-error ng-required="true" type="text" class="form-control" id="inputVast" placeholder="{{ 'AD_TAG_MODULE.PLACEHOLDER_TAG' | translate }}">
+                                                <input name="vastTag" ng-model="vastTag.tag" type="url" server-error ng-required="true" class="form-control" id="inputVast" placeholder="{{ 'AD_TAG_MODULE.PLACEHOLDER_TAG' | translate }}">
                                                 <span class="input-group-addon" ng-click="removeTag($index)"><i class="fa fa-remove"></i></span>
                                             </div>
                                             <div ng-if="adTag.vastTags.length == 1">
-                                                <input name="vastTag" ng-model="vastTag.tag" type="url" server-error ng-required="true" type="text" class="form-control" id="inputVast" placeholder="{{ 'AD_TAG_MODULE.PLACEHOLDER_TAG' | translate }}">
+                                                <input name="vastTag" ng-model="vastTag.tag" type="url" server-error ng-required="true" class="form-control" id="inputVast" placeholder="{{ 'AD_TAG_MODULE.PLACEHOLDER_TAG' | translate }}">
                                             </div>
                                         </div>
                                     </div>

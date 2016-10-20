@@ -443,8 +443,8 @@
                 "DELETE_FAIL": "The waterfall could not be deleted",
                 "BACK_TO_AD_TAG_LIST": "Back to Waterfall List",
                 "CONFIRM_DELETE_VIDEO_AD_TAG": "Are you sure you want to delete this waterfall?",
-                "UPDATE_PLATFORM_FAIL_WHEN_REMOVE_JS": "There're some ad sources belong to this waterfall still have platform 'javascript'",
-                "UPDATE_PLATFORM_FAIL_WHEN_REMOVE_FLASH": "There're some ad sources belong to this waterfall still have platform 'flash'",
+                "UPDATE_PLATFORM_FAIL_WHEN_REMOVE_JS": "There're some demand tags belong to this waterfall still have platform 'javascript'",
+                "UPDATE_PLATFORM_FAIL_WHEN_REMOVE_FLASH": "There're some demand tags belong to this waterfall still have platform 'flash'",
 
                 "CURRENTLY_NO_VIDEO_AD_TAG": "There is currently no waterfall",
                 "SELECT_A_STRATEGY": "Select a Strategy",
