@@ -26,10 +26,9 @@
 
                                     var indexOfKey = tagUrl.indexOf(key);
                                     if(indexOfKey > -1) {
-
-                                        var regex = new RegExp( key + '=' + '(' +'.'+'*'+'?'+'&'+')');
+                                        var regex = new RegExp(key + '=[^&]+');
                                         var stringNeedToReplace = regex.exec(tagUrl);
-                                        var valueToReplace = key + '=' + value + '&';
+                                        var valueToReplace = key + '=' + value;
 
                                         $_url = tagUrl.replace(stringNeedToReplace[0], valueToReplace);
                                         tagUrl = $_url;
