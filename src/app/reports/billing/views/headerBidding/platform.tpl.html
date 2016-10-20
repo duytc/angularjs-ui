@@ -3,7 +3,7 @@
 
     <div class="panel panel-default daily-reports">
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
-            {{ 'REPORT.DAILY_ACCOUNT_BREAKDOWN' | translate }}
+            {{ 'REPORT.DAILY_BREAKDOWN' | translate }}
             <div class="button-bar">
                 <export-excel data="reports" fields="['date', 'hbRequests', 'hbBilledAmount', 'hbBilledRate']" header="['Date', 'Header Bidding Requests', 'Header Bidding Billed Amount', 'Header Bidding Billed Rate']" file-name="getExportExcelFileName"></export-excel>
             </div>
