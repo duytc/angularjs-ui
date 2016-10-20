@@ -59,7 +59,7 @@
             },
             {
                 key: 'fillRate',
-                label: 'Fill Rate'
+                label: 'Request Fill Rate'
             },
             {
                 key: 'clicks',
