@@ -29,11 +29,13 @@
             adNetwork: null,
             adType: $scope.adTypes.customAd,
             descriptor: null,
-            platform: null,
-            timeout: null,
-            playerWidth: null,
-            playerHeight: null,
-            vastTags: [{tag: null}]
+            inBannerDescriptor: {
+                platform: null,
+                timeout: null,
+                playerWidth: null,
+                playerHeight: null,
+                vastTags: [{tag: null}]
+            }
         };
 
         $scope.selected = {
@@ -95,14 +97,14 @@
         };
 
         $scope.addVast = function () {
-            $scope.adTag.vastTags.push({
+            $scope.adTag.inBannerDescriptor.vastTags.push({
                 tag: null
             })
         };
 
         $scope.removeTag = function (index) {
             if(index > -1) {
-                $scope.adTag.vastTags.splice(index, 1)
+                $scope.adTag.inBannerDescriptor.vastTags.splice(index, 1)
             }
         };
 
@@ -118,6 +120,10 @@
             }
 
             return Auth.getSession().hasModuleEnabled(USER_MODULES.inBanner);
+        };
+
+        $scope.moveVastTag = function(array, from, to) {
+            array.splice(to, 0, array.splice(from, 1)[0]);
         };
 
         $scope.submit = function() {
