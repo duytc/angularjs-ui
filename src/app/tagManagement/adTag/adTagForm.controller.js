@@ -96,11 +96,13 @@
                 adType: $scope.adTypes.customAd,
                 partnerTagId: null,
                 descriptor: null,
-                platform: null,
-                timeout: null,
-                playerWidth: null,
-                playerHeight: null,
-                vastTags: [{tag: null}]
+                inBannerDescriptor: {
+                    platform: null,
+                    timeout: null,
+                    playerWidth: null,
+                    playerHeight: null,
+                    vastTags: [{tag: null}]
+                }
             },
             position: null,
             impressionCap: null,
@@ -128,6 +130,7 @@
         $scope.searchItem = searchItem;
         $scope.addMoreItems = addMoreItems;
         $scope.backToAdTagList = backToAdTagList;
+        $scope.moveVastTag = moveVastTag;
 
         function backToAdTagList() {
             if(!!$stateParams.adSlotType && !!$stateParams.adSlotId) {
@@ -297,14 +300,14 @@
         };
 
         $scope.addVast = function () {
-            $scope.adTag.libraryAdTag.vastTags.push({
+            $scope.adTag.libraryAdTag.inBannerDescriptor.vastTags.push({
                 tag: null
             })
         };
 
         $scope.removeTag = function (index) {
             if(index > -1) {
-                $scope.adTag.libraryAdTag.vastTags.splice(index, 1)
+                $scope.adTag.libraryAdTag.inBannerDescriptor.vastTags.splice(index, 1)
             }
         };
 
@@ -365,6 +368,10 @@
                 )
             ;
         };
+
+        function moveVastTag(array, from, to) {
+            array.splice(to, 0, array.splice(from, 1)[0]);
+        }
 
         function _findAdSlot(adSlotId) {
             return _.find($scope.adSlotList, function(adSlot)
