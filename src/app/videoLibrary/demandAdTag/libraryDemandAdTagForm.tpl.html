@@ -224,14 +224,12 @@
                             <span class="glyphicon glyphicon-plus"></span>
                             {{ 'AD_SOURCE_MODULE.ADD_PLACEMENT_RULES' | translate }}
                         </button>
-                    </div>
-                </div>
 
-                <fieldset class=" expressions-group col-sm-offset-1 col-sm-5" ng-if="demandAdTag.waterfallPlacementRules.length >0">
-                    <div class="form-group" ng-repeat="rule in demandAdTag.waterfallPlacementRules">
-                        <!--<div class="">-->
-                            <div class="expressions-group">
-                                <!--<div class="row">-->
+                        <div class=" expressions-group" ng-if="demandAdTag.waterfallPlacementRules.length >0">
+                            <div class="form-group" ng-repeat="rule in demandAdTag.waterfallPlacementRules">
+                                <!--<div class="">-->
+                                <div class="expressions-group">
+                                    <!--<div class="row">-->
                                     <div class="form-group">
                                         <label class=" col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.VIDEO_PUBLISHERS' | translate }}</label>
                                         <div class="col-sm-9">
@@ -272,16 +270,16 @@
                                     <br ng-if="rule.profitType != 3">
 
                                     <div class="form-group" ng-if="rule.profitType != 3">
-                                        <label class="col-sm-3 control-label">{{ profiltValueLabel }}</label>
+                                        <label class="col-sm-3 control-label" data-ng-init="initProfitValueLabel(rule)">{{ profiltValueLabel }}</label>
                                         <div class="col-sm-9">
-                                            <input server-error name="profitValue" ng-model="rule.profitValue"  ng-blur="changeRequireBuyPrice(rule.profitValue, rule.profitType)" type="number" class="form-control" id="profitValue" placeholder="{{ profiltValueLabel }}">
+                                            <input server-error name="profitValue" ng-model="rule.profitValue" ng-change="changeRequireBuyPrice(rule.profitValue, rule.profitType)" type="number" class="form-control" id="profitValue" placeholder="{{ profiltValueLabel }}">
                                         </div>
                                     </div>
                                     <br ng-if="rule.profitType != 3">
 
                                     <div class="form-group" ng-if="(rule.profitType != 3)">
                                         <label class="col-sm-3 control-label">{{'AD_SOURCE_MODULE.REQUIRED_BUY_PRICE'|translate}} </label>
-                                        <div class="col-sm-9 form-control-static">
+                                        <div class="col-sm-9 form-control-static" data-ng-init="initRequiredBuyPrice(rule)">
                                             {{ requiredBuyPrice }}
                                         </div>
                                     </div>
@@ -333,15 +331,25 @@
                                             </button>
                                         </div>
                                     </div>
-                               <!-- </div>-->
+                                    <!-- </div>-->
+                                </div>
+                                <!--</div>-->
                             </div>
-                        <!--</div>-->
-                    </div>
 
-                </fieldset>
+                        </div>
+                    </div>
+                </div>
+
 
                 <div class="form-group">
-                    <div class="col-sm-offset-1 col-sm-10"  style="padding-top: 10px">
+                    <div class=" col-sm-10"  style="padding-top: 15px; padding-left: -130px" ng-if="demandAdTag.waterfallPlacementRules.length == 0">
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
+                        <div ng-show="!isFormValid()" class="callout callout-info">
+                            <p>{{ 'VALID_FORM' | translate }}</p>
+                        </div>
+                    </div>
+
+                    <div class=" col-sm-offset-1 col-sm-10"  style="padding-top: 15px" ng-if="demandAdTag.waterfallPlacementRules.length > 0">
                         <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">
                             <p>{{ 'VALID_FORM' | translate }}</p>

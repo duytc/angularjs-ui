@@ -102,9 +102,40 @@
         $scope.removePlacementRule = removePlacementRule;
         $scope.changeProfitValueLabel = changeProfitValueLabel;
         $scope.changeRequireBuyPrice = changeRequireBuyPrice;
+        $scope.initRequiredBuyPrice = initRequiredBuyPrice;
+        $scope.initProfitValueLabel = initProfitValueLabel;
         $scope.changeWaterfallTags = changeWaterfallTags;
         $scope.removeWaterfallTags = removeWaterfallTags;
 
+
+
+        function initRequiredBuyPrice (rule) {
+
+            $scope.requiredBuyPrice = $scope.demandAdTag.sellPrice;
+
+            if (rule.profitType == 1) {
+                $scope.requiredBuyPrice = $scope.requiredBuyPrice - rule.profitValue;
+            } else if (rule.profitType ==2) {
+                $scope.requiredBuyPrice = $scope.requiredBuyPrice - rule.profitValue*$scope.requiredBuyPrice/100;
+            } else {
+                $scope.requiredBuyPrice = $scope.demandAdTag.sellPrice;
+            }
+        }
+
+
+        function initProfitValueLabel(rule) {
+            switch (rule.profitType) {
+                case 1:
+                    $scope.profiltValueLabel = 'Profit Value ($)';
+                    break;
+                case 2:
+                    $scope.profiltValueLabel = 'Profit Value (%)';
+                    break;
+                default:
+                    $scope.profiltValueLabel = 'Profit Value';
+                    break;
+            }
+        }
 
         function addNewPlacementRule() {
             $scope.demandAdTag.waterfallPlacementRules.push({profitType: 3, profitValue: null, position:null, priority: null, rotationWeight:null, waterfalls: null, publishers: []});
