@@ -22,6 +22,7 @@
                         });
 
                         modalInstance.result.then(function () {
+
                             angular.forEach(videoMacros, function(value, key) {
 
                                     var indexOfKey = tagUrl.indexOf(key);
@@ -37,12 +38,10 @@
 
                                         $_url = tagUrl.replace(stringNeedToReplace[0], valueToReplace);
                                         tagUrl = $_url;
-
-                                        deferred.resolve($_url);
                                     }
-
                                 }
                             );
+                            deferred.resolve($_url);
                         });
                     }
                 });
