@@ -121,7 +121,7 @@
                     <label for="inputPosition" class="col-sm-2 control-label">{{ 'AD_TAG_MODULE.AD_TYPE' | translate }}</label>
                     <div class="col-sm-10">
                         <label class="ui-radio"><input ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.adType" type="radio" ng-value="adTypes.customAd"><span>{{ 'AD_TAG_MODULE.CUSTOM_AD' | translate }}</span></label>
-                        <label ng-if="hasInBanner()" ng-disabled="pickFromLibrary" class="ui-radio"><input ng-model="adTag.libraryAdTag.adType" type="radio" ng-value="adTypes.inBanner"><span>{{ 'AD_TAG_MODULE.IN_BANNER' | translate }}</span></label>
+                        <label ng-if="hasInBanner()" class="ui-radio"><input ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.adType" type="radio" ng-value="adTypes.inBanner"><span>{{ 'AD_TAG_MODULE.IN_BANNER' | translate }}</span></label>
                         <label class="ui-radio"><input ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.adType" type="radio" ng-value="adTypes.imageAd"><span>{{ 'AD_TAG_MODULE.IMAGE_AD' | translate }}</span></label>
                     </div>
                 </div>

@@ -5,7 +5,7 @@
         .controller('AdTagForAdSlotLibraryForm', AdTagForAdSlotLibraryForm)
     ;
 
-    function AdTagForAdSlotLibraryForm($scope, $modal, _, $stateParams, $translate, $state, AlertService, AdNetworkCache, ServerErrorProcessor, publisherList, adTag, adSlot, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, NativeAdSlotLibrariesManager, DisplayAdSlotLibrariesManager, AdTagLibrariesManager) {
+    function AdTagForAdSlotLibraryForm($scope, $modal, _, Auth, $stateParams, $translate, $state, AlertService, AdNetworkCache, ServerErrorProcessor, publisherList, adTag, adSlot, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, PLATFORM_VAST_TAG, NativeAdSlotLibrariesManager, DisplayAdSlotLibrariesManager, AdTagLibrariesManager, USER_MODULES) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
             name: 'Name',
@@ -18,6 +18,12 @@
             lineWrapping : true,
             indentUnit: 0,
             mode : "htmlmixed"
+        };
+
+        $scope.sortableOptions = {
+            disabled: true,
+            forcePlaceholderSize: true,
+            placeholder: 'sortable-placeholder'
         };
 
         $scope.selected = {
@@ -36,6 +42,7 @@
         $scope.publisherList = publisherList;
         $scope.adSlotTypes = TYPE_AD_SLOT;
         $scope.adTypes = AD_TYPES;
+        $scope.platforms = PLATFORM_VAST_TAG;
 
         $scope.adSlotList = adSlotList;
         $scope.adNetworkList = adNetworkList;
@@ -47,7 +54,14 @@
                 adNetwork: null,
                 adType: $scope.adTypes.customAd,
                 descriptor: null,
-                partnerTagId: null
+                partnerTagId: null,
+                inBannerDescriptor: {
+                    platform: null,
+                    timeout: null,
+                    playerWidth: null,
+                    playerHeight: null,
+                    vastTags: [{tag: null}]
+                }
             },
             position: null,
             impressionCap: null,
@@ -98,10 +112,42 @@
         $scope.selectPublisher = selectPublisher;
         $scope.filterByPublisher = filterByPublisher;
         $scope.selectAdNetwork = selectAdNetwork;
+        $scope.moveVastTag = moveVastTag;
 
         function isFormValid() {
             return $scope.adTagForm.$valid;
         }
+
+        function moveVastTag(array, from, to) {
+            array.splice(to, 0, array.splice(from, 1)[0]);
+        }
+
+        $scope.removeTag = function (index) {
+            if(index > -1) {
+                $scope.adTag.libraryAdTag.inBannerDescriptor.vastTags.splice(index, 1)
+            }
+        };
+
+        $scope.hasInBanner = function () {
+            if($scope.isAdmin() && !$scope.selected.publisher) {
+                return false
+            } else if($scope.isAdmin() && !!$scope.selected.publisher) {
+                return $scope.selected.publisher.enabledModules.indexOf(USER_MODULES.inBanner) > -1
+            }
+
+            return Auth.getSession().hasModuleEnabled(USER_MODULES.inBanner);
+        };
+
+        $scope.addVast = function () {
+            $scope.adTag.libraryAdTag.inBannerDescriptor.vastTags.push({
+                tag: null
+            })
+        };
+
+
+        $scope.enableDragDropVastTag = function(enable) {
+            $scope.sortableOptions['disabled'] = enable;
+        };
 
         function selectAdNetwork(adNetwork) {
             $scope.adTag.libraryAdTag.name = adNetwork.name;
