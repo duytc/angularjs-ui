@@ -5,7 +5,7 @@
         .controller('AdTagForAdSlotLibraryForm', AdTagForAdSlotLibraryForm)
     ;
 
-    function AdTagForAdSlotLibraryForm($scope, $modal, _, Auth, $stateParams, $translate, $state, AlertService, AdNetworkCache, ServerErrorProcessor, publisherList, adTag, adSlot, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, NativeAdSlotLibrariesManager, DisplayAdSlotLibrariesManager, AdTagLibrariesManager, USER_MODULES) {
+    function AdTagForAdSlotLibraryForm($scope, $modal, _, Auth, $stateParams, $translate, $state, AlertService, AdNetworkCache, ServerErrorProcessor, publisherList, adTag, adSlot, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, PLATFORM_VAST_TAG, NativeAdSlotLibrariesManager, DisplayAdSlotLibrariesManager, AdTagLibrariesManager, USER_MODULES) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
             name: 'Name',
@@ -18,6 +18,12 @@
             lineWrapping : true,
             indentUnit: 0,
             mode : "htmlmixed"
+        };
+
+        $scope.sortableOptions = {
+            disabled: true,
+            forcePlaceholderSize: true,
+            placeholder: 'sortable-placeholder'
         };
 
         $scope.selected = {
@@ -36,6 +42,7 @@
         $scope.publisherList = publisherList;
         $scope.adSlotTypes = TYPE_AD_SLOT;
         $scope.adTypes = AD_TYPES;
+        $scope.platforms = PLATFORM_VAST_TAG;
 
         $scope.adSlotList = adSlotList;
         $scope.adNetworkList = adNetworkList;
@@ -129,6 +136,17 @@
             }
 
             return Auth.getSession().hasModuleEnabled(USER_MODULES.inBanner);
+        };
+
+        $scope.addVast = function () {
+            $scope.adTag.libraryAdTag.inBannerDescriptor.vastTags.push({
+                tag: null
+            })
+        };
+
+
+        $scope.enableDragDropVastTag = function(enable) {
+            $scope.sortableOptions['disabled'] = enable;
         };
 
         function selectAdNetwork(adNetwork) {
