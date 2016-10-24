@@ -69,6 +69,36 @@
         ;
 
         $stateProvider
+            .state('app.admin.reports.billing.sourcePlatform', {
+                url: '/sourcePlatform?{product}{startDate:date}&{endDate:date}',
+                params: {
+                    startDate: null,
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    billing: {
+                        controller: 'BillingReport',
+                        templateUrl: 'reports/billing/views/source/platform.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, sourceReport, REPORT_TYPES) {
+                        var params = angular.extend($stateParams, {
+                            reportType: REPORT_TYPES.platform,
+                            platformBreakdown: 'day'
+                        });
+
+                        return sourceReport.getPlatformReport(params);
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Billing Reports'
+                }
+            })
+        ;
+
+        $stateProvider
             .state('app.admin.reports.billing.platformAccounts', {
                 url: '/platform/accounts?{product}{startDate:date}&{endDate:date}',
                 params: {
@@ -120,6 +150,35 @@
                             reportType: REPORT_TYPES.platform,
                             platformBreakdown: 'account'
                         });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Billing Reports'
+                }
+            })
+        ;
+
+        $stateProvider
+            .state('app.admin.reports.billing.sourcePlatformAccounts', {
+                url: '/sourcePlatform/accounts?{product}{startDate:date}&{endDate:date}',
+                params: {
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    billing: {
+                        controller: 'BillingReport',
+                        templateUrl: 'reports/billing/views/source/accounts.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, REPORT_TYPES, sourceReport) {
+                        var params = angular.extend($stateParams, {
+                            reportType: REPORT_TYPES.platform,
+                            platformBreakdown: 'account'
+                        });
+
+                        return sourceReport.getPlatformAccountsReport(params);
                     }
                 },
                 ncyBreadcrumb: {
@@ -213,6 +272,36 @@
                         return performanceReport.getAccountReport($stateParams, {
                             reportType: REPORT_TYPES.account
                         });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Billing Reports'
+                }
+            })
+        ;
+
+        $stateProvider
+            .state('app.admin.reports.billing.sourceAccount', {
+                url: '/sourceAccount/{publisherId:int}?{product}{startDate:date}&{endDate:date}',
+                params: {
+                    startDate: null,
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    billing: {
+                        controller: 'BillingReport',
+                        templateUrl: 'reports/billing/views/source/account.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, sourceReport, REPORT_TYPES) {
+                        var params = angular.extend($stateParams, {
+                            reportType: REPORT_TYPES.account,
+                            platformBreakdown: 'account'
+                        });
+
+                        return sourceReport.getAccountReport(params);
                     }
                 },
                 ncyBreadcrumb: {

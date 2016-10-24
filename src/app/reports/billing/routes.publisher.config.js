@@ -41,6 +41,36 @@
         ;
 
         $stateProvider
+            .state('app.publisher.reports.billing.sourceAccount', {
+                url: '/sourceAccount?{product}{startDate:date}&{endDate:date}',
+                params: {
+                    startDate: null,
+                    endDate: null,
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    billing: {
+                        controller: 'BillingReport',
+                        templateUrl: 'reports/billing/views/source/account.tpl.html'
+                    }
+                },
+                resolve: {
+                    reportGroup: /* @ngInject */ function ($stateParams, REPORT_TYPES, sourceReport, userSession) {
+                        var params = angular.extend($stateParams, {
+                            reportType: REPORT_TYPES.account,
+                            publisherId: userSession.id
+                        });
+
+                        return sourceReport.getAccountReport(params);
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Billing Reports'
+                }
+            })
+        ;
+
+        $stateProvider
             .state('app.publisher.reports.billing.hbAccount', {
                 url: '/hbAccount?{product}{startDate:date}&{endDate:date}',
                 params: {
