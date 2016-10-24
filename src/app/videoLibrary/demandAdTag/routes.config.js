@@ -91,7 +91,9 @@
                         return VideoAdTagManager.getList();
                     },
                     videoPublishers: function(VideoPublisherManager) {
-                        return VideoPublisherManager.getList();
+                        return VideoPublisherManager.getList().then(function (videoPublishers){
+                                return videoPublishers.plain();
+                        });
                     },
                     blackList: function(BlackListManager) {
                         return BlackListManager.getList()

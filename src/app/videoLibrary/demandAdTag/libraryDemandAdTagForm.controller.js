@@ -7,6 +7,7 @@
 
     function LibraryDemandAdTagForm($scope, $q, _, $filter, $stateParams, $modal, $translate, UISelectMethod, videoPublishers, waterfallTags, whiteList, blackList, demandPartner, demandAdTag, demandPartners, publishers, AlertService, NumberConvertUtil, ReplaceMacros, LibraryDemandAdTagManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST, PLATFORM_OPTION, PLAYER_SIZE_OPTIONS, REQUIRED_MACROS_OPTIONS) {
         var isChangeTagURLValue = false;
+        var waterfallTagsThatNamehasVideoPublisherName = [];
 
         $scope.fieldNameTranslations = {
             name: 'Name'
@@ -18,7 +19,6 @@
             {key: 2, value: "Profit Margin"},
             {key: 3, value: "Manual"}
         ];
-
 
 
         $scope.whiteList = whiteList;
@@ -104,10 +104,12 @@
         $scope.changeRequireBuyPrice = changeRequireBuyPrice;
         $scope.initRequiredBuyPrice = initRequiredBuyPrice;
         $scope.initProfitValueLabel = initProfitValueLabel;
-        $scope.changeWaterfallTags = changeWaterfallTags;
-        $scope.removeWaterfallTags = removeWaterfallTags;
+        $scope.filterWaterfallTags = filterWaterfallTags;
+        $scope.updateMaximumRequirePrice = updateMaximumRequirePrice;
 
-
+        function updateMaximumRequirePrice () {
+            $scope.requiredBuyPrice = $scope.demandAdTag.sellPrice;
+        }
 
         function initRequiredBuyPrice (rule) {
 
@@ -121,7 +123,6 @@
                 $scope.requiredBuyPrice = $scope.demandAdTag.sellPrice;
             }
         }
-
 
         function initProfitValueLabel(rule) {
             switch (rule.profitType) {
@@ -138,7 +139,7 @@
         }
 
         function addNewPlacementRule() {
-            $scope.demandAdTag.waterfallPlacementRules.push({profitType: 3, profitValue: null, position:null, priority: null, rotationWeight:null, waterfalls: null, publishers: []});
+            $scope.demandAdTag.waterfallPlacementRules.push({profitType: 3, profitValue: null, position:null, priority: null, rotationWeight:null, waterfalls: [], publishers: null});
         }
 
         function removePlacementRule(index) {
@@ -160,6 +161,7 @@
 
             rule.profitValue = null;
             $scope.requiredBuyPrice = $scope.demandAdTag.sellPrice;
+            console.log('Require price update:', $scope.requiredBuyPrice);
         }
 
         function changeRequireBuyPrice(inputValue, inputType) {
@@ -172,6 +174,7 @@
                 case 2:
                     var requireBuyPriceByMarginProfit = $scope.demandAdTag.sellPrice - inputValue*$scope.demandAdTag.sellPrice/100;
                     $scope.requiredBuyPrice = requireBuyPriceByMarginProfit > 0 ? requireBuyPriceByMarginProfit : 0;
+                    console.log('Update:', $scope.requiredBuyPrice);
                     break;
                 default:
                     $scope.requiredBuyPrice = $scope.demandAdTag.sellPrice;
@@ -179,34 +182,27 @@
             }
         }
 
-        var items= [];
-        function changeWaterfallTags($selectedItem) {
+        function filterWaterfallTags($selectedItem) {
 
-            items = items.length >0 ?  items : [];
-            items.push($selectedItem.id);
+            if (null ==  $selectedItem.id) {
+                _appendVideoPublisherNameToWaterfallTagName();
+                 $scope.waterfallTags = waterfallTagsThatNamehasVideoPublisherName;
+                return;
+            }
 
             $scope.waterfallTags = _.filter(waterfallTagsCopy , function(waterfallTag){
-                return _.contains(items, waterfallTag.videoPublisher.id);
+                return _.contains([$selectedItem.id], waterfallTag.videoPublisher.id);
              });
 
             console.log("Value after filter", $scope.waterfallTags);
         }
 
-        function removeWaterfallTags($selectedItem, rule) {
-
-            items = items.length >0 ?  items : [];
-            var indexOfThisItem = items.indexOf($selectedItem.id);
-            items.splice(indexOfThisItem, 1);
-
-            $scope.waterfallTags = _.filter(waterfallTagsCopy , function(waterfallTag){
-                return _.contains(items, waterfallTag.videoPublisher.id);
+        function _appendVideoPublisherNameToWaterfallTagName() {
+            waterfallTagsThatNamehasVideoPublisherName= [];
+            angular.forEach( angular.copy(waterfallTags), function (waterfallTag, key){
+                waterfallTag.name = waterfallTag.name + ' (' + waterfallTag.videoPublisher.name +')';
+                waterfallTagsThatNamehasVideoPublisherName.push(waterfallTag)
             });
-
-            if($scope.waterfallTags.length == 0) {
-                $scope.waterfallTags = waterfallTagsCopy;
-            }
-
-            rule.waterfalls =  [];
         }
 
         function isChangeTagURL() {
@@ -227,7 +223,7 @@
         }
 
         function selectVideoPublisher(videoPublisher) {
-            $scope.selectedData.waterfallTags = [];
+           /* $scope.selectedData.waterfallTags = [];
 
             $scope.waterfallTags = $filter('filter')(waterfallTags, function(waterfall) {
                 if(videoPublisher.id == null) {
@@ -239,7 +235,7 @@
                 }
 
                 return false
-            })
+            })*/
         }
 
         function createQuicklyWhiteLink() {
@@ -412,6 +408,7 @@
             dfd.promise.then(function () {
                 $scope.formProcessing = true;
 
+                _changeWaterfallTags();
                 var demandAdTag = _refactorJson();
 
                 var saveDemandAdTag = $scope.isNew ? LibraryDemandAdTagManager.post(demandAdTag) : LibraryDemandAdTagManager.one(demandAdTag.id).patch(demandAdTag);
@@ -438,6 +435,21 @@
                 )
                 ;
             });
+
+            function _changeWaterfallTags() {
+                var waterfallIds = [];
+                if($scope.demandAdTag.waterfallPlacementRules !=null){
+                    angular.forEach($scope.demandAdTag.waterfallPlacementRules, function(waterfallPlacementRule) {
+                        waterfallIds = [];
+                        angular.forEach(waterfallPlacementRule.waterfalls, function(waterfall) {
+                            waterfallIds.push(waterfall.id)
+                        });
+
+                        waterfallPlacementRule.waterfalls = waterfallIds;
+                    });
+
+                }
+            }
 
             if (_confirmSubmitForPlatform()) {
                 $modal.open({

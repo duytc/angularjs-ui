@@ -67,7 +67,7 @@
                 'content_page_url' : '${page_url}',
                 'vid_duration'     : '${video_duration}',
                 'video_duration'   : '${video_duration}',
-                'cb'               : '${cache_buster}'
+                'cb'                  : '${cache_buster}'
             },
 
             'https?://vast.ssp.optimatic.com/vast/getVast.aspx' : {
