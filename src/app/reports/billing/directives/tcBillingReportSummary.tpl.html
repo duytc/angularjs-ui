@@ -1,5 +1,5 @@
 <div>
-    <div class="row" ng-if="product != 'headerBidding' && product != 'inBanner'">
+    <div class="row" ng-if="product != 'headerBidding' && product != 'inBanner' && product != 'source'">
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Totals</div>
@@ -128,6 +128,51 @@
                             <!--<label>{{ 'REPORT.HEADER_BIDDING_BILLED_RATE' | translate }}</label>-->
                             <!--<span class="pull-right">{{ reportGroup.averageHbBilledRate | number }}</span>-->
                         <!--</li>-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="product == 'source'">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Totals</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled report list-info">
+                        <li>
+                            <label>{{ 'SOURCE_REPORT_MODULE.VISITS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.visits | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'SOURCE_REPORT_MODULE.AD_IMPRESSIONS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.videoAdImpressions | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'REPORT.HEADER_BIDDING_BILLED_AMOUNT' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.billedAmount | currency }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Daily Averages</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled report list-info">
+                        <li>
+                            <label>{{ 'SOURCE_REPORT_MODULE.VISITS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageVisits | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'SOURCE_REPORT_MODULE.AD_IMPRESSIONS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageVideoAdImpressions | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'REPORT.HEADER_BIDDING_BILLED_AMOUNT' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageBilledAmount | currency }}</span>
+                        </li>
                     </ul>
                 </div>
             </div>

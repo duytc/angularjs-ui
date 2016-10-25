@@ -8,8 +8,12 @@
     function sourceReport($q, dataService, DateFormatter, API_REPORTS_BASE_URL, SiteManager)
     {
         var api = {
+            getPlatformReport: getPlatformReport,
+            getPlatformAccountsReport: getPlatformAccountsReport,
+            getAccountReport: getAccountReport,
             getSiteReport: getSiteReport,
             getSiteReportDetail: getSiteReportDetail,
+
             getInitialParams: getInitialParams,
             resetParams: resetParams
         };
@@ -20,8 +24,7 @@
 
         /////
 
-        function makeHttpGetRequest(url, params)
-        {
+        function makeHttpGetRequest(url, params) {
             params.startDate = DateFormatter.getFormattedDate(params.startDate);
             params.endDate = DateFormatter.getFormattedDate(params.endDate);
 
@@ -37,6 +40,37 @@
                     }
                 )
             ;
+        }
+
+        function getPlatformReport(unfilteredParams) {
+            var serverParams = {
+                startDate: unfilteredParams.startDate,
+                endDate: unfilteredParams.endDate,
+                rowLimit: 0
+            };
+
+            return getReport('/sourcereports/platform', unfilteredParams, serverParams);
+        }
+
+        function getPlatformAccountsReport(unfilteredParams) {
+            var serverParams = {
+                startDate: unfilteredParams.startDate,
+                endDate: unfilteredParams.endDate,
+                rowLimit: 0
+            };
+
+            return getReport('/sourcereports/platform/accounts', unfilteredParams, serverParams);
+        }
+
+        function getAccountReport(unfilteredParams) {
+            var serverParams = {
+                startDate: unfilteredParams.startDate,
+                endDate: unfilteredParams.endDate,
+                publisherId: unfilteredParams.publisherId,
+                rowLimit: 0
+            };
+
+            return getReport('/sourcereports/accounts/:publisherId', unfilteredParams, serverParams);
         }
 
         /**
@@ -55,7 +89,7 @@
                 rowLimit: 0
             };
 
-            return getReport(unfilteredParams, serverParams);
+            return getReport('/sourcereports/:siteId', unfilteredParams, serverParams);
         }
 
         /**
@@ -72,14 +106,14 @@
                 rowLimit: 5000
             };
 
-            return getReport(unfilteredParams, serverParams);
+            return getReport('/sourcereports/:siteId', unfilteredParams, serverParams);
         }
 
-        function getReport(unfilteredParams, serverParams) {
+        function getReport(router, unfilteredParams, serverParams) {
             return setInitialParams(unfilteredParams)
                 .then(
                     function() {
-                        return makeHttpGetRequest('/sourcereports/:siteId', serverParams);
+                        return makeHttpGetRequest(router, serverParams);
                     }
                 )
             ;
@@ -91,33 +125,37 @@
          * @return {Promise}
          */
         function setInitialParams(params) {
-            if (!_.isObject(params) || !params.siteId) {
+            if (!_.isObject(params)) {
                 return $q.reject(new Error('invalid initial params'));
             }
 
             var dfd = $q.defer();
 
-            var sitePromise = SiteManager.one(params.siteId).get();
+            if(params.siteId) {
+                var sitePromise = SiteManager.one(params.siteId).get();
+                sitePromise.then(function(siteData) {
+                    var site = siteData.plain();
 
-            sitePromise.then(function(siteData) {
-                var site = siteData.plain();
+                    var publisherId;
 
-                var publisherId;
+                    try {
+                        publisherId = site.publisher.id;
+                    }
+                    catch (e) {
+                        publisherId = null;
+                    }
 
-                try {
-                    publisherId = site.publisher.id;
-                }
-                catch (e) {
-                    publisherId = null;
-                }
+                    _$initialParams = angular.copy(params);
+                    _$initialParams.publisherId = publisherId;
 
+                    dfd.resolve();
+
+                    return _$initialParams;
+                });
+            } else {
                 _$initialParams = angular.copy(params);
-                _$initialParams.publisherId = publisherId;
-
                 dfd.resolve();
-
-                return _$initialParams;
-            });
+            }
 
             return dfd.promise;
         }

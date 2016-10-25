@@ -81,7 +81,6 @@
             })
         ;
 
-
         UserStateHelperProvider
             .state('reports.billing.video', {
                 url: '/video?{product}{startDate:date}&{endDate:date}&{breakdown}&{reportTypeClone}&{publisherId}',
