@@ -480,7 +480,7 @@
                 "PAUSE_AD_SOURCE": "Pause Demand Ad Tag",
                 "ACTIVE": "Active",
                 "SHIFT_DOWN": "Shift Down",
-                "SELL_PRICE": "Sell Price",
+                "SELL_PRICE": "Sell Price ($)",
 
                 "LINKED_DEMAND_AD_TAGS": "Linked Demand Ad Tags",
                 "DELETE_SUCCESS": "The demand ad tag was deleted",

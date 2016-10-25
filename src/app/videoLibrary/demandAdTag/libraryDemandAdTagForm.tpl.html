@@ -225,12 +225,7 @@
                                     <div class="form-group">
                                         <label for="inputVideoPublisher" class="col-sm-3 control-label">{{ 'VIDEO_PUBLISHER' | translate }}</label>
                                         <div class="col-sm-9">
-                                            <ui-select name="videoPublisher" id="inputVideoPublisher1" ng-model="rule.publishers" on-select="filterWaterfallTags($item)" ng-required="true" server-error>
-                                                <ui-select-match placeholder="{{ 'VIDEO_PUBLISHER_MODULE.SELECT_A_VIDEO_PUBLISHER' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                                                <ui-select-choices group-by="groupEntities" repeat="videoPublisher.id as videoPublisher in videoPublishers | filter:$select.search">
-                                                    {{ videoPublisher.name }}
-                                                </ui-select-choices>
-                                            </ui-select>
+                                            <isteven-multi-select id="videoPublisher" translation="localLang" output-properties="id" on-item-click="filterWaterfallTags(rule.publishers)" on-select-all="filterWaterfallTagsBySelectAll()" input-model="videoPublishers" output-model="rule.publishers" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
                                         </div>
                                     </div>
 
@@ -283,7 +278,7 @@
                                     <div class="form-group" ng-if="rule.profitType ==3">
                                         <label for="inputWaterfall" class="col-sm-3 control-label">{{ 'WATERFALL_TAGS' | translate }}</label>
                                         <div class="col-sm-9">
-                                            <isteven-multi-select id="inputWaterfall" input-model="waterfallTags" output-model="rule.waterfalls" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
+                                            <isteven-multi-select id="inputWaterfall" output-properties="id" input-model="waterfallTags" output-model="rule.waterfalls" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
                                         </div>
                                     </div>
                                     <br ng-if="rule.profitType ==3">
