@@ -203,16 +203,16 @@
                                     <span class="glyphicon glyphicon-plus"></span>
                                     {{ 'AD_TAG_MODULE.ADD_VAST' | translate }}
                                 </button>
-                                <label class="ui-checkbox enable-drag-drop-query-builder">
-                                    <input ng-disabled="pickFromLibrary" type="checkbox" ng-model="enableDragDrop" ng-click="enableDragDropVastTag(!enableDragDrop)">
-                                    <span>{{ 'AD_TAG_MODULE.ENABLE_DRAG_DROP' | translate }}</span>
-                                </label>
+                                <!--<label class="ui-checkbox enable-drag-drop-query-builder">-->
+                                    <!--<input ng-disabled="pickFromLibrary" type="checkbox" ng-model="enableDragDrop" ng-click="enableDragDropVastTag(!enableDragDrop)">-->
+                                    <!--<span>{{ 'AD_TAG_MODULE.ENABLE_DRAG_DROP' | translate }}</span>-->
+                                <!--</label>-->
 
                                 <div ui-sortable="sortableOptions" ng-model="adTag.libraryAdTag.inBannerDescriptor.vastTags" style="padding-top: 10px">
                                     <div class="moveable col-sm-12" ng-repeat="vastTag in adTag.libraryAdTag.inBannerDescriptor.vastTags">
                                         <div class="form-group">
                                             <div class="input-group" ng-if="adTag.libraryAdTag.inBannerDescriptor.vastTags.length > 1">
-                                                <input ng-disabled="pickFromLibrary" name="vastTag" ng-model="vastTag.tag" type="url" server-error ng-required="true" class="form-control" placeholder="{{ 'AD_TAG_MODULE.PLACEHOLDER_TAG' | translate }}">
+                                                <textarea ng-disabled="pickFromLibrary" name="vastTag" ng-model="vastTag.tag" type="url" server-error ng-required="true" class="form-control" placeholder="{{ 'AD_TAG_MODULE.PLACEHOLDER_TAG' | translate }}"></textarea>
                                                 <span class="input-group-addon" ng-click="removeTag($index)"><i class="fa fa-remove"></i></span>
                                                 <span class="input-group-addon button-move-vas-tag">
                                                     <button type="button" ng-click="moveVastTag(adTag.libraryAdTag.inBannerDescriptor.vastTags, $index, $index-1)" ng-disabled="$first" class="btn"><i class="glyphicon glyphicon-chevron-up"></i></button>
@@ -220,7 +220,7 @@
                                                 </span>
                                             </div>
                                             <div ng-if="adTag.libraryAdTag.inBannerDescriptor.vastTags.length == 1">
-                                                <input ng-disabled="pickFromLibrary" name="vastTag" ng-model="vastTag.tag" type="url" server-error ng-required="true" class="form-control" placeholder="{{ 'AD_TAG_MODULE.PLACEHOLDER_TAG' | translate }}">
+                                                <textarea ng-disabled="pickFromLibrary" name="vastTag" ng-model="vastTag.tag" type="url" server-error ng-required="true" class="form-control" placeholder="{{ 'AD_TAG_MODULE.PLACEHOLDER_TAG' | translate }}"></textarea>
                                             </div>
                                         </div>
                                     </div>

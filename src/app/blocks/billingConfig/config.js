@@ -10,7 +10,8 @@
             { label: 'In-Banner', role: 'MODULE_IN_BANNER' }
         ])
         .constant('BILLING_FACTORS', [
-            { label: 'Slot opportunity', key: 'SLOT_OPPORTUNITY', supportForModule: ['MODULE_DISPLAY', 'MODULE_IN_BANNER']},
+            { label: 'Slot opportunity', key: 'SLOT_OPPORTUNITY', supportForModule: ['MODULE_DISPLAY']},
+            { label: 'In-Banner Impression', key: 'VIDEO_AD_IMPRESSION', supportForModule: ['MODULE_IN_BANNER']},
             { label: 'Video impression', key: 'VIDEO_IMPRESSION', supportForModule: ['MODULE_VIDEO_ANALYTICS', 'MODULE_VIDEO']},
             { label: 'Visit', key: 'VISIT', supportForModule: ['MODULE_VIDEO_ANALYTICS']},
             { label: 'Bid Request', key: 'BID_REQUEST', supportForModule: ['MODULE_HEADER_BIDDING']}

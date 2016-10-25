@@ -68,10 +68,14 @@
                     }
 
                     function _setDefaultTiers(module) {
-                        if(module == USER_MODULES.displayAds || module == USER_MODULES.inBanner) {
+                        if(module == USER_MODULES.displayAds) {
                             return scope.defaultThresholds.display;
+                        } else if(module == USER_MODULES.inBanner) {
+                            return scope.defaultThresholds['in-banner'];
                         } else if(module == USER_MODULES.videoAds) {
                             return scope.defaultThresholds.video;
+                        } else if(module == USER_MODULES.headerBidding) {
+                            return scope.defaultThresholds['header-bidding'];
                         }
 
                         return [];
