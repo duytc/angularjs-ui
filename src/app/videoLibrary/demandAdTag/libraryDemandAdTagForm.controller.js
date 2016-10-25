@@ -4,7 +4,7 @@
     angular.module('tagcade.videoLibrary.demandAdTag')
         .controller('LibraryDemandAdTagForm', LibraryDemandAdTagForm);
 
-    function LibraryDemandAdTagForm($scope, $q, _, $filter, $stateParams, $modal, $translate, UISelectMethod, videoPublishers, waterfallTags, whiteList, blackList, demandPartner, demandAdTag, demandPartners, publishers, AlertService, NumberConvertUtil, ReplaceMacros, LibraryDemandAdTagManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST, PLATFORM_OPTION, PLAYER_SIZE_OPTIONS, REQUIRED_MACROS_OPTIONS) {
+    function LibraryDemandAdTagForm($scope, $q, _, $filter, $stateParams, $modal, $translate, videoPublishers, waterfallTags, whiteList, blackList, demandPartner, demandAdTag, demandPartners, publishers, AlertService, NumberConvertUtil, ReplaceMacros, LibraryDemandAdTagManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST, PLATFORM_OPTION, PLAYER_SIZE_OPTIONS, REQUIRED_MACROS_OPTIONS) {
         var isChangeTagURLValue = false;
         var waterfallTagsThatNameHasVideoPublisherName = [];
 
@@ -136,7 +136,6 @@
 
         $scope.backToListDemandAdTag = backToListDemandAdTag;
         $scope.selectVideoDemandPartner = selectVideoDemandPartner;
-        $scope.selectVideoPublisher = selectVideoPublisher;
         $scope.selectPublisher = selectPublisher;
         $scope.isFormValid = isFormValid;
         $scope.submit = submit;
@@ -181,10 +180,12 @@
         function updateMaximumRequirePrice() {
             $scope.requiredBuyPrice = parseFloat($scope.demandAdTag.sellPrice);
 
-            if(demandAdTag.waterfallPlacementRules.length > 0) {
-                angular.forEach(demandAdTag.waterfallPlacementRules, function(waterfallPlacementRule) {
-                    waterfallPlacementRule.profitValue = null;
-                });
+            if ((!$scope.isNew)) {
+                if ((demandAdTag.waterfallPlacementRules.length > 0)) {
+                    angular.forEach(demandAdTag.waterfallPlacementRules, function(waterfallPlacementRule) {
+                        waterfallPlacementRule.profitValue = null;
+                    });
+                }
             }
         }
 
@@ -317,6 +318,9 @@
         }
 
         function replaceMacros() {
+
+            $scope.demandAdTag.tagURL = _replaceSpaceByUTF8Code($scope.demandAdTag.tagURL);
+
             if (false == isChangeTagURLValue) {
                 return;
             }
@@ -329,20 +333,10 @@
             isChangeTagURLValue = false;
         }
 
-        function selectVideoPublisher(videoPublisher) {
-            /* $scope.selectedData.waterfallTags = [];
-
-             $scope.waterfallTags = $filter('filter')(waterfallTags, function(waterfall) {
-             if(videoPublisher.id == null) {
-             return true;
-             }
-
-             if(waterfall.videoPublisher.id == videoPublisher.id) {
-             return true;
-             }
-
-             return false
-             })*/
+        function _replaceSpaceByUTF8Code(inputString) {
+            if(null != inputString){
+                return inputString.replace(/\s/g,"%20");
+            }
         }
 
         function createQuicklyWhiteLink() {
@@ -542,21 +536,6 @@
                 );
             });
 
-            function _changeWaterfallTags() {
-                var waterfallIds = [];
-                if ($scope.demandAdTag.waterfallPlacementRules != null) {
-                    angular.forEach($scope.demandAdTag.waterfallPlacementRules, function(waterfallPlacementRule) {
-                        waterfallIds = [];
-                        angular.forEach(waterfallPlacementRule.waterfalls, function(waterfall) {
-                            waterfallIds.push(waterfall.id)
-                        });
-
-                        waterfallPlacementRule.waterfalls = waterfallIds;
-                        waterfallPlacementRule.publishers = [waterfallPlacementRule.publishers]
-                    });
-
-                }
-            }
 
             if (_confirmSubmitForPlatform()) {
                 $modal.open({

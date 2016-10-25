@@ -2,8 +2,7 @@
     'use strict';
 
     angular.module('tagcade.videoManagement.demandAdTag')
-        .controller('DemandAdTagFormQuickly', DemandAdTagFormQuickly)
-    ;
+        .controller('DemandAdTagFormQuickly', DemandAdTagFormQuickly);
 
     function DemandAdTagFormQuickly($scope, _, $state, $q, $modal, $translate, AlertService, NumberConvertUtil, ReplaceMacros, $modalInstance, Auth, publisher, position, whiteList, blackList, videoWaterfallTag, videoWaterfallTagItems, videoDemandAdTag, LibraryDemandAdTagManager, demandPartners, publishers, VideoDemandAdTagManager, ServerErrorProcessor, STRATEGY_OPTION, PLATFORM_OPTION, PLAYER_SIZE_OPTIONS, REQUIRED_MACROS_OPTIONS, COUNTRY_LIST) {
         $scope.fieldNameTranslations = {
@@ -41,7 +40,7 @@
         $scope.videoWaterfallTag = videoWaterfallTag;
         $scope.demandPartners = demandPartners;
         $scope.videoWaterfallTagItems = videoWaterfallTagItems;
-        $scope.videoWaterfallTagItemsClone = angular.isArray(videoWaterfallTagItems) ? ($scope.isNew ? addAllOption(angular.copy(videoWaterfallTagItems)) :angular.copy(videoWaterfallTagItems)) : [];
+        $scope.videoWaterfallTagItemsClone = angular.isArray(videoWaterfallTagItems) ? ($scope.isNew ? addAllOption(angular.copy(videoWaterfallTagItems)) : angular.copy(videoWaterfallTagItems)) : [];
 
         $scope.videoDemandAdTag = angular.copy(videoDemandAdTag) || {
             libraryVideoDemandAdTag: {
@@ -66,10 +65,10 @@
             targetingOverride: false
         };
 
-        if(!$scope.isNew) {
+        if (!$scope.isNew) {
             $scope.videoDemandAdTag.libraryVideoDemandAdTag.sellPrice = NumberConvertUtil.convertPriceToString($scope.videoDemandAdTag.libraryVideoDemandAdTag.sellPrice);
 
-            if($scope.videoDemandAdTag.targetingOverride) {
+            if ($scope.videoDemandAdTag.targetingOverride) {
                 $scope.videoDemandAdTag.libraryVideoDemandAdTag.targeting = $scope.videoDemandAdTag.targeting;
             }
 
@@ -114,7 +113,7 @@
             }
 
             ReplaceMacros.replaceVideoMacros($scope.videoDemandAdTag.libraryVideoDemandAdTag.tagURL)
-                .then(function () {
+                .then(function() {
                     $scope.videoDemandAdTag.libraryVideoDemandAdTag.tagURL = ReplaceMacros.getVideoUrl();
                 });
 
@@ -132,7 +131,7 @@
                 controller: 'DomainListQuicklyForm',
                 size: 'lg',
                 resolve: {
-                    publishers: function(){
+                    publishers: function() {
                         return publishers;
                     },
                     publisher: function() {
@@ -147,7 +146,7 @@
                 }
             });
 
-            modalInstance.result.then(function () {
+            modalInstance.result.then(function() {
                 $scope.whiteList.push(newDomain);
                 //$scope.demandAdTag.targeting.domains.push(newDomain);
             })
@@ -164,7 +163,7 @@
                 controller: 'DomainListQuicklyForm',
                 size: 'lg',
                 resolve: {
-                    publishers: function(){
+                    publishers: function() {
                         return publishers;
                     },
                     publisher: function() {
@@ -179,7 +178,7 @@
                 }
             });
 
-            modalInstance.result.then(function () {
+            modalInstance.result.then(function() {
                 $scope.blackList.push(newDomain);
                 //$scope.demandAdTag.targeting.exclude_domains.push(newDomain);
             })
@@ -218,12 +217,12 @@
         }
 
         function filterByPublisher(libraryDemandAdTag) {
-            if(!$scope.selectedData.publisher) {
+            if (!$scope.selectedData.publisher) {
                 return false;
             }
 
             var publisher = !!$scope.selectedData.publisher.id ? $scope.selectedData.publisher.id : $scope.selectedData.publisher;
-            if(!publisher || libraryDemandAdTag.videoDemandPartner.publisher.id != publisher) {
+            if (!publisher || libraryDemandAdTag.videoDemandPartner.publisher.id != publisher) {
                 return false;
             }
 
@@ -235,16 +234,15 @@
         }
 
         function getDemandAdTagLibrary() {
-            if($scope.pickFromLibrary && $scope.demandAdTagLibraryList.length == 0) {
+            if ($scope.pickFromLibrary && $scope.demandAdTagLibraryList.length == 0) {
                 LibraryDemandAdTagManager.getList()
                     .then(function(libraryDemandAdTag) {
                         $scope.demandAdTagLibraryList = libraryDemandAdTag.plain();
-                    }
-                );
+                    });
             }
 
             // reset form when pickFromLibrary = false
-            if(!$scope.pickFromLibrary) {
+            if (!$scope.pickFromLibrary) {
                 $scope.videoDemandAdTag = angular.copy(videoDemandAdTag) || {
                     libraryVideoDemandAdTag: {
                         name: null,
@@ -278,7 +276,7 @@
         }
 
         function addDomain(query) {
-            if($scope.videoDemandAdTag.libraryVideoDemandAdTag.targeting.exclude_domains.indexOf(query) > -1 || $scope.videoDemandAdTag.libraryVideoDemandAdTag.targeting.domains.indexOf(query) > -1) {
+            if ($scope.videoDemandAdTag.libraryVideoDemandAdTag.targeting.exclude_domains.indexOf(query) > -1 || $scope.videoDemandAdTag.libraryVideoDemandAdTag.targeting.domains.indexOf(query) > -1) {
                 return;
             }
 
@@ -301,8 +299,7 @@
          * @param {String} [label]
          * @returns {Array}
          */
-        function addAllOption(data, label)
-        {
+        function addAllOption(data, label) {
             if (!angular.isArray(data)) {
                 throw new Error('Expected an array of data');
             }
@@ -324,7 +321,7 @@
                 return option.key == strategyKey;
             });
 
-            if(!!strategy) {
+            if (!!strategy) {
                 return strategy.label
             }
 
@@ -350,7 +347,7 @@
                     demandPartners: function() {
                         return demandPartners
                     },
-                    publishers: function(){
+                    publishers: function() {
                         return publishers;
                     },
                     publisher: function() {
@@ -359,8 +356,8 @@
                 }
             });
 
-            modalInstance.result.then(function () {
-                if(angular.isObject(demandPartners[0])) {
+            modalInstance.result.then(function() {
+                if (angular.isObject(demandPartners[0])) {
                     var videoDemandPartner = demandPartners[0];
                     $scope.demandPartners.push(videoDemandPartner);
                     $scope.videoDemandAdTag.libraryVideoDemandAdTag.videoDemandPartner = videoDemandPartner.id;
@@ -378,17 +375,17 @@
 
             var dfd = $q.defer();
 
-            dfd.promise.then(function () {
+            dfd.promise.then(function() {
                 $scope.formProcessing = true;
                 var demandAdTag = _refactorJson($scope.videoDemandAdTag);
 
                 var saveDemandAdTag = $scope.isNew ? VideoDemandAdTagManager.post(demandAdTag) : VideoDemandAdTagManager.one(demandAdTag.id).patch(demandAdTag);
                 saveDemandAdTag
                     .catch(
-                    function (response) {
+                    function(response) {
                         $modalInstance.close();
 
-                        if(!response.data.errors) {
+                        if (!response.data.errors) {
                             AlertService.replaceAlerts({
                                 type: 'error',
                                 message: response.data.message
@@ -401,7 +398,7 @@
                         return errorCheck;
                     })
                     .then(
-                    function (videoDemandAdTagResponse) {
+                    function(videoDemandAdTagResponse) {
                         //if($scope.isNew) {
                         //    if(!!videoWaterfallTagItems) {
                         //        if(hasNewVideoWaterfallTagItem()) {
@@ -479,7 +476,7 @@
                     templateUrl: 'videoManagement/demandAdTag/confirmSubmit.tpl.html'
                 });
 
-                modalInstance.result.then(function () {
+                modalInstance.result.then(function() {
                     dfd.resolve();
                 });
             } else {
@@ -490,12 +487,11 @@
 
         function _refactorJson(videoDemandAdTag) {
             var demandAdTag = angular.copy(videoDemandAdTag);
-            delete demandAdTag.profit; // hot fix: server validation fails because of extra fields
             demandAdTag.libraryVideoDemandAdTag.videoDemandPartner = demandAdTag.libraryVideoDemandAdTag.videoDemandPartner.id || demandAdTag.libraryVideoDemandAdTag.videoDemandPartner;
             demandAdTag.libraryVideoDemandAdTag.sellPrice = NumberConvertUtil.convertPriceToString(demandAdTag.libraryVideoDemandAdTag.sellPrice);
 
             // add new demand ad tag and videoWaterfallTagItem
-            if(hasNewVideoWaterfallTagItem()) {
+            if (hasNewVideoWaterfallTagItem()) {
                 demandAdTag.videoWaterfallTagItem = {
                     strategy: $scope.selectedData.strategy,
                     position: $scope.selectedData.position,
@@ -503,7 +499,7 @@
                 };
             } else {
                 // shiftdown
-                if($scope.selectedData.autoIncreasePosition) {
+                if ($scope.selectedData.autoIncreasePosition) {
                     demandAdTag.videoWaterfallTagItem = {
                         strategy: 'linear',
                         position: $scope.selectedData.position,
@@ -530,22 +526,22 @@
             //demandAdTag.libraryVideoDemandAdTag.targeting.domains = domains;
             //demandAdTag.libraryVideoDemandAdTag.targeting.exclude_domains = excludeDomains;
 
-            if(demandAdTag.targetingOverride) {
+            if (demandAdTag.targetingOverride) {
                 demandAdTag.targeting = demandAdTag.libraryVideoDemandAdTag.targeting;
                 // targeting root
                 delete demandAdTag.libraryVideoDemandAdTag.targeting;
             } else {
-                if(!$scope.isNew && demandAdTag.libraryVideoDemandAdTag.linkedCount > 1) {
+                if (!$scope.isNew && demandAdTag.libraryVideoDemandAdTag.linkedCount > 1) {
                     delete demandAdTag.libraryVideoDemandAdTag.targeting;
                 }
             }
 
-            if(!$scope.pickFromLibrary) {
+            if (!$scope.pickFromLibrary) {
                 delete demandAdTag.libraryVideoDemandAdTag.id;
             }
 
-            if(typeof demandAdTag.activeClone != 'number') {
-                demandAdTag.active = demandAdTag.activeClone ? 1: 0
+            if (typeof demandAdTag.activeClone != 'number') {
+                demandAdTag.active = demandAdTag.activeClone ? 1 : 0
             }
             delete demandAdTag.activeClone;
 
