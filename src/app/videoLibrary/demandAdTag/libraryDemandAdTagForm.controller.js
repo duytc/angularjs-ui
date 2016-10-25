@@ -147,6 +147,7 @@
         $scope.viewQuicklyWhiteLink = viewQuicklyWhiteLink;
         $scope.viewQuicklyBlackLink = viewQuicklyBlackLink;
         $scope.replaceMacros = replaceMacros;
+        $scope._validateURL = _validateURL;
         $scope.isChangeTagURL = isChangeTagURL;
         $scope.addNewPlacementRule = addNewPlacementRule;
         $scope.removePlacementRule = removePlacementRule;
@@ -159,6 +160,7 @@
         $scope.filterWaterfallBySelectNone = filterWaterfallBySelectNone;
         $scope.updateMaximumRequirePrice = updateMaximumRequirePrice;
         $scope.returnSellPrice = returnSellPrice;
+        $scope.hasReplaceMacros = hasReplaceMacros;
 
         function returnSellPrice(sellPrice) {
             if(sellPrice.indexOf('.') > -1) {
@@ -317,11 +319,26 @@
             isChangeTagURLValue = true;
         }
 
-        function replaceMacros() {
+        function hasReplaceMacros() {
+            var isValidURL = _validateURL($scope.demandAdTag.tagURL);
+
+            if(isValidURL == false){
+                return isValidURL;
+            }
 
             $scope.demandAdTag.tagURL = _replaceSpaceByUTF8Code($scope.demandAdTag.tagURL);
 
             if (false == isChangeTagURLValue) {
+                return true;
+            }
+
+            isChangeTagURLValue = false;
+
+            return isValidURL;
+        }
+
+        function replaceMacros() {
+            if(!hasReplaceMacros()) {
                 return;
             }
 
@@ -330,13 +347,19 @@
                     $scope.demandAdTag.tagURL = ReplaceMacros.getVideoUrl();
                 });
 
-            isChangeTagURLValue = false;
         }
 
         function _replaceSpaceByUTF8Code(inputString) {
             if(null != inputString){
                 return inputString.replace(/\s/g,"%20");
             }
+        }
+
+        function _validateURL(inputURL){
+
+            var urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
+            return urlPattern.test((inputURL));
+
         }
 
         function createQuicklyWhiteLink() {

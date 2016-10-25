@@ -82,7 +82,7 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.TAG_URL' | translate }}</label>
                     <div class="col-sm-5">
-                        <textarea name="tagUrl" spellcheck="false" rows="5" ng-model="demandAdTag.tagURL" ng-change="isChangeTagURL()" ng-blur="replaceMacros()" server-error ng-required="true" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.TAG_URL' | translate }}"> </textarea>
+                        <textarea name="tagUrl" ng-class="{ 'highlightedBorder': !hasReplaceMacros() }" spellcheck="false" rows="5" ng-model="demandAdTag.tagURL" ng-change="isChangeTagURL()" ng-blur="replaceMacros()" server-error ng-required="true" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.TAG_URL' | translate }}"> </textarea>
                     </div>
                 </div>
 
@@ -295,7 +295,6 @@
                                         </div>
                                     </div>
                                     <br>
-
 
                                     <div class="form-group" ng-if="!!rule.position">
                                         <label for="inputShiftDown" class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.SHIFT_DOWN' | translate }}</label>
