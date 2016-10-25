@@ -85,6 +85,8 @@
 
         _formatTiers(defaultThresholds.video);
         _formatTiers(defaultThresholds.display);
+        _formatTiers(defaultThresholds['in-banner']);
+        _formatTiers(defaultThresholds['header-bidding']);
 
         $scope.exchanges = exchanges;
         $scope.headerBiddings = headerBiddings;

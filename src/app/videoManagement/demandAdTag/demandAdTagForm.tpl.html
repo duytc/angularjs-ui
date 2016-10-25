@@ -130,7 +130,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.DOMAINS' | translate }}</label>
                                     <div class="col-sm-9">
-                                        <oi-select ng-disabled="!demandAdTag.targetingOverride && (pickFromLibrary || demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" oi-options="item.name for item in whiteList | selectedPublisher:selectedData.publisher" ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.domains" multiple oi-select-options="{newItem: false, newItemFn: 'addDomain($query)'}" placeholder="{{ 'AD_SOURCE_MODULE.DOMAINS' | translate }}"></oi-select>
+                                        <oi-select ng-disabled="!demandAdTag.targetingOverride && (pickFromLibrary || demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" oi-options="item.name for item in whiteList track by item.id| selectedPublisher:selectedData.publisher" ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.domains" multiple oi-select-options="{newItem: false, newItemFn: 'addDomain($query)'}" placeholder="{{ 'AD_SOURCE_MODULE.DOMAINS' | translate }}"></oi-select>
 
                                         <div class="inline">
                                             <a ng-click="createQuicklyWhiteLink()" class="help-block pull-left">{{ 'AD_SOURCE_MODULE.CREATE_WHITE_LIST' | translate }}</a>
@@ -142,7 +142,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.EXCLUDE_DOMAINS' | translate }}</label>
                                     <div class="col-sm-9">
-                                        <oi-select ng-disabled="!demandAdTag.targetingOverride && (pickFromLibrary || demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" oi-options="item.name for item in blackList" ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.exclude_domains" multiple oi-select-options="{newItem: false, newItemFn: 'addDomain($query)'}" placeholder="{{ 'AD_SOURCE_MODULE.EXCLUDE_DOMAINS' | translate }}"></oi-select>
+                                        <oi-select ng-disabled="!demandAdTag.targetingOverride && (pickFromLibrary || demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" oi-options="item.name for item in blackList track by item.id" ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.exclude_domains" multiple oi-select-options="{newItem: false, newItemFn: 'addDomain($query)'}" placeholder="{{ 'AD_SOURCE_MODULE.EXCLUDE_DOMAINS' | translate }}"></oi-select>
 
                                         <div class="inline">
                                             <a ng-click="createQuicklyBlackLink()" class="help-block pull-left">{{ 'AD_SOURCE_MODULE.CREATE_BLACK_LIST' | translate }}</a>
