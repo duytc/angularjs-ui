@@ -487,7 +487,6 @@
 
         function _refactorJson(videoDemandAdTag) {
             var demandAdTag = angular.copy(videoDemandAdTag);
-            //  delete demandAdTag.profit; // hot fix: server validation fails because of extra fields
             demandAdTag.libraryVideoDemandAdTag.videoDemandPartner = demandAdTag.libraryVideoDemandAdTag.videoDemandPartner.id || demandAdTag.libraryVideoDemandAdTag.videoDemandPartner;
             demandAdTag.libraryVideoDemandAdTag.sellPrice = NumberConvertUtil.convertPriceToString(demandAdTag.libraryVideoDemandAdTag.sellPrice);
 
