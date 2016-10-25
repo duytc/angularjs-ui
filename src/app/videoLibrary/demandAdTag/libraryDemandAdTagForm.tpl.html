@@ -4,8 +4,7 @@
 
         <div class="button-bar">
             <button ng-if="!isNew" ng-click="backToListDemandAdTag()" class="btn btn-sm btn-primary" type="button">
-                <span class="glyphicon glyphicon-arrow-left"></span>
-                {{ 'AD_SOURCE_MODULE.BACK_TO_AD_SOURCE_LIST' | translate }}
+                <span class="glyphicon glyphicon-arrow-left"></span> {{ 'AD_SOURCE_MODULE.BACK_TO_AD_SOURCE_LIST' | translate }}
             </button>
         </div>
         <div class="btn-group btnGrouped" dropdown ng-if="!isNew">
@@ -39,16 +38,16 @@
                 </div>
 
                 <!--<div class="form-group" ng-if="isNew">-->
-                    <!--<label for="inputDeploy" class="col-sm-1 control-label"> {{ 'AD_SOURCE_LIBRARY_MODULE.DEPLOYMENT' | translate }}</label>-->
-                    <!--<div class="col-sm-5">-->
-                        <!--<div>-->
-                            <!--<label class="ui-checkbox">-->
-                                <!--<input name="pickFromLibrary" type="checkbox" ng-model="selectedData.isDeployment" server-error id="inputDeploy">-->
-                                <!--<span></span>-->
-                            <!--</label>-->
-                        <!--</div>-->
-                        <!--&lt;!&ndash;<span class="help-block">{{ 'AD_TAG_MODULE.HELP_BLOCK_FROM_LIBRARY' | translate }}</span>&ndash;&gt;-->
-                    <!--</div>-->
+                <!--<label for="inputDeploy" class="col-sm-1 control-label"> {{ 'AD_SOURCE_LIBRARY_MODULE.DEPLOYMENT' | translate }}</label>-->
+                <!--<div class="col-sm-5">-->
+                <!--<div>-->
+                <!--<label class="ui-checkbox">-->
+                <!--<input name="pickFromLibrary" type="checkbox" ng-model="selectedData.isDeployment" server-error id="inputDeploy">-->
+                <!--<span></span>-->
+                <!--</label>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;<span class="help-block">{{ 'AD_TAG_MODULE.HELP_BLOCK_FROM_LIBRARY' | translate }}</span>&ndash;&gt;-->
+                <!--</div>-->
                 <!--</div>-->
 
                 <div class="form-group" ng-if="isNew && selectedData.isDeployment">
@@ -96,14 +95,14 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.TAG_URL' | translate }}</label>
                     <div class="col-sm-5">
-                        <textarea name="tagUrl" spellcheck="false" rows="5" ng-model="demandAdTag.tagURL" ng-change ="isChangeTagURL()"  ng-blur="replaceMacros()" server-error ng-required="true" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.TAG_URL' | translate }}"> </textarea>
+                        <textarea name="tagUrl" spellcheck="false" rows="5" ng-model="demandAdTag.tagURL" ng-change="isChangeTagURL()" ng-blur="replaceMacros()" server-error ng-required="true" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.TAG_URL' | translate }}"> </textarea>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.SELL_PRICE' | translate }}</label>
                     <div class="col-sm-5">
-                        <input name="sellPrice" ng-change="updateMaximumRequirePrice()" ng-model="demandAdTag.sellPrice" min="0" type="number" server-error class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_WEIGHT' | translate }}">
+                        <input name="sellPrice" ng-change="updateMaximumRequirePrice()" ng-model="demandAdTag.sellPrice" min="0" type="text" server-error class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_WEIGHT' | translate }}">
                     </div>
                 </div>
 
@@ -214,29 +213,40 @@
                     <label for="placementRule" class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.PLACEMENT_RULES' | translate }}</label>
                     <div class="col-sm-5">
                         <button id="placementRule" class="btn btn-success" type="button" ng-click="addNewPlacementRule()">
-                            <span class="glyphicon glyphicon-plus"></span>
-                            {{ 'AD_SOURCE_MODULE.ADD_PLACEMENT_RULES' | translate }}
+                            <span class="glyphicon glyphicon-plus"></span> {{ 'AD_SOURCE_MODULE.ADD_PLACEMENT_RULES' | translate }}
                         </button>
 
                         <div class=" expressions-group" ng-if="demandAdTag.waterfallPlacementRules.length >0">
-                            <div class="form-group" ng-repeat="rule in demandAdTag.waterfallPlacementRules">
+                            <div class="form-group" ng-repeat="rule in demandAdTag.waterfallPlacementRules track by $index">
                                 <!--<div class="">-->
                                 <div class="expressions-group">
                                     <div class="form-group">
                                         <label for="inputVideoPublisher" class="col-sm-3 control-label">{{ 'VIDEO_PUBLISHER' | translate }}</label>
                                         <div class="col-sm-9">
-                                            <isteven-multi-select id="videoPublisher" translation="localLang" output-properties="id" on-item-click="filterWaterfallTags(rule.publishers)" on-select-all="filterWaterfallTagsBySelectAll()" input-model="videoPublishers" output-model="rule.publishers" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
+                                            <isteven-multi-select id="videoPublisher"
+                                                                  translation="localLang"
+                                                                  output-properties="id"
+                                                                  on-item-click="filterWaterfallTags(rule)"
+                                                                  on-select-all="filterWaterfallTagsBySelectAll(rule)"
+                                                                  on-select-none = "filterWaterfallBySelectNone(rule)"
+                                                                  input-model="rule.videoPublishers"
+                                                                  output-model="rule.publishers"
+                                                                  button-label="name"
+                                                                  item-label="name"
+                                                                  tick-property="ticked">
+
+                                            </isteven-multi-select>
                                         </div>
                                     </div>
 
                                     <br>
 
-                                    <div class="form-group" >
+                                    <div class="form-group">
                                         <label class=" col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.RULE_TYPE' | translate }}</label>
                                         <div class="col-sm-9">
-                                            <ui-select name="ruleType" id="ruleType" ng-model="rule.profitType" on-select = "changeProfitValueLabel($item, rule)" ng-required="true" server-error reset-search-input="'false'">
+                                            <ui-select name="ruleType" id="ruleType" ng-model="rule.profitType" on-select="changeProfitValueLabel($item, rule)" ng-required="true" server-error reset-search-input="'false'">
                                                 <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.RULE_TYPE' | translate }}">{{ $select.selected.value }}</ui-select-match>
-                                                <ui-select-choices  repeat="ruleType.key as ruleType in ruleTypes">
+                                                <ui-select-choices repeat="ruleType.key as ruleType in ruleTypes">
                                                     {{ ruleType.value }}
                                                 </ui-select-choices>
                                             </ui-select>
@@ -246,15 +256,15 @@
 
                                     <div class="form-group" ng-if="(rule.profitType != 3) && (!(demandAdTag.sellPrice))">
                                         <label class="col-sm-3">{{ }} </label>
-                                        <div class="col-sm-9" style="color: #ff400e">
+                                        <div class="col-sm-9" style="color: #ff400e; margin-top: -13px">
                                             {{ 'AD_SOURCE_MODULE.WATERFALL_PLACEMENT_RULE_WARNING' | translate }}
                                         </div>
                                     </div>
 
-                                    <div class="form-group" ng-if="(rule.profitType != 3)">
-                                        <label class="col-sm-3 control-label" >{{'AD_SOURCE_MODULE.SELL_PRICE'| translate}} </label>
+                                    <div class="form-group" ng-if="((rule.profitType != 3)&&(!!demandAdTag.sellPrice))">
+                                        <label class="col-sm-3 control-label">{{'AD_SOURCE_MODULE.SELL_PRICE'| translate}} </label>
                                         <div class="col-sm-9">
-                                            {{ demandAdTag.sellPrice | currency }}
+                                            {{ returnSellPrice(demandAdTag.sellPrice) }}
                                         </div>
                                     </div>
                                     <br ng-if="(rule.profitType != 3)">
@@ -262,12 +272,12 @@
                                     <div class="form-group" ng-if="rule.profitType != 3">
                                         <label class="col-sm-3 control-label" data-ng-init="initProfitValueLabel(rule)">{{ profiltValueLabel }}</label>
                                         <div class="col-sm-9">
-                                            <input server-error name="profitValue" ng-model="rule.profitValue" ng-change="changeRequireBuyPrice(rule.profitValue, rule.profitType)" type="number" class="form-control" id="profitValue" placeholder="{{ profiltValueLabel }}">
+                                            <input server-error name="profitValue" ng-model="rule.profitValue" ng-change="changeRequireBuyPrice(rule.profitValue, rule.profitType)" type="text" class="form-control" id="profitValue" placeholder="{{ profiltValueLabel }}">
                                         </div>
                                     </div>
                                     <br ng-if="rule.profitType != 3">
 
-                                    <div class="form-group" ng-if="(rule.profitType != 3)">
+                                    <div class="form-group" ng-if="((rule.profitType != 3)&&(!!demandAdTag.sellPrice))">
                                         <label class="col-sm-3 control-label">{{'AD_SOURCE_MODULE.REQUIRED_BUY_PRICE'|translate}} </label>
                                         <div class="col-sm-9 form-control-static" data-ng-init="initRequiredBuyPrice(rule)">
                                             {{ requiredBuyPrice | currency}}
@@ -278,7 +288,15 @@
                                     <div class="form-group" ng-if="rule.profitType ==3">
                                         <label for="inputWaterfall" class="col-sm-3 control-label">{{ 'WATERFALL_TAGS' | translate }}</label>
                                         <div class="col-sm-9">
-                                            <isteven-multi-select id="inputWaterfall" output-properties="id" input-model="waterfallTags" output-model="rule.waterfalls" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
+                                            <isteven-multi-select id="inputWaterfall"
+                                                                  output-properties="id"
+                                                                  input-model="rule.waterfallTags"
+                                                                  output-model="rule.waterfalls"
+                                                                  button-label="name"
+                                                                  item-label="name"
+                                                                  tick-property="ticked">
+
+                                            </isteven-multi-select>
                                         </div>
                                     </div>
                                     <br ng-if="rule.profitType ==3">
@@ -338,14 +356,14 @@
 
 
                 <div class="form-group">
-                    <div class=" col-sm-10"  style="padding-top: 15px; padding-left: -130px" ng-if="demandAdTag.waterfallPlacementRules.length == 0">
+                    <div class=" col-sm-10" style="padding-top: 15px; padding-left: -130px" ng-if="demandAdTag.waterfallPlacementRules.length == 0">
                         <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">
                             <p>{{ 'VALID_FORM' | translate }}</p>
                         </div>
                     </div>
 
-                    <div class=" col-sm-offset-1 col-sm-10"  style="padding-top: 15px" ng-if="demandAdTag.waterfallPlacementRules.length > 0">
+                    <div class=" col-sm-offset-1 col-sm-10" style="padding-top: 15px" ng-if="demandAdTag.waterfallPlacementRules.length > 0">
                         <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">
                             <p>{{ 'VALID_FORM' | translate }}</p>

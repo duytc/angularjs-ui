@@ -2,8 +2,7 @@
     'use strict';
 
     angular.module('tagcade.videoLibrary.demandAdTag')
-        .controller('LibraryDemandAdTagForm', LibraryDemandAdTagForm)
-    ;
+        .controller('LibraryDemandAdTagForm', LibraryDemandAdTagForm);
 
     function LibraryDemandAdTagForm($scope, $q, _, $filter, $stateParams, $modal, $translate, UISelectMethod, videoPublishers, waterfallTags, whiteList, blackList, demandPartner, demandAdTag, demandPartners, publishers, AlertService, NumberConvertUtil, ReplaceMacros, LibraryDemandAdTagManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST, PLATFORM_OPTION, PLAYER_SIZE_OPTIONS, REQUIRED_MACROS_OPTIONS) {
         var isChangeTagURLValue = false;
@@ -14,11 +13,16 @@
         };
 
         $scope.profiltValueLabel = 'Profit Value';
-        $scope.ruleTypes = [
-            {key: 1, value: "Fixed Profit"},
-            {key: 2, value: "Profit Margin"},
-            {key: 3, value: "Manual"}
-        ];
+        $scope.ruleTypes = [{
+            key: 1,
+            value: "Fixed Profit"
+        }, {
+            key: 2,
+            value: "Profit Margin"
+        }, {
+            key: 3,
+            value: "Manual"
+        }];
 
 
         $scope.whiteList = whiteList;
@@ -41,14 +45,14 @@
         var waterfallTagsCopy = angular.copy($scope.waterfallTags);
 
 
-        if(!$scope.isNew) {
+        if (!$scope.isNew) {
             AlertService.addAlert({
                 type: 'warning',
                 message: $translate.instant('AD_SOURCE_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
             });
         }
 
-        $scope.demandAdTag = setTicketForVideoPublisherAndWaterfallTagInDemandAdTags(demandAdTag,videoPublishers, waterfallTags) || {
+        $scope.demandAdTag = setTicketForVideoPublisherAndWaterfallTagInDemandAdTags(demandAdTag, videoPublishers, waterfallTags) || {
             name: null,
             tagURL: null,
             timeout: 3,
@@ -66,38 +70,46 @@
             waterfallPlacementRules: []
         };
 
-        function setTicketForVideoPublisherAndWaterfallTagInDemandAdTags(demandAdTag, videoPublishers, waterfallTags){
+        function setTicketForVideoPublisherAndWaterfallTagInDemandAdTags(demandAdTag, videoPublishers, waterfallTags) {
 
-            var videoPublisherIds = [], waterfallTagIds = [];
-            var videoPublisherObjectInDemandAdTag = [], waterfallTagsInDemandAdTag = [];
+            var videoPublisherIds = [],
+                waterfallTagIds = [];
+            var videoPublisherObjectInDemandAdTag = [],
+                waterfallTagsInDemandAdTag = [];
 
             if (demandAdTag == null) {
                 return;
             }
 
             angular.forEach(demandAdTag.waterfallPlacementRules, function(waterfallPlacementRule) {
+                waterfallPlacementRule['videoPublishers'] = angular.copy(videoPublishers);
+                waterfallPlacementRule['waterfallTags'] = angular.copy(waterfallTags);
+
                 videoPublisherIds = waterfallPlacementRule.publishers;
                 waterfallTagIds = waterfallPlacementRule.waterfalls;
 
-                videoPublisherObjectInDemandAdTag = _.filter(videoPublishers, function(videoPublisher) {
-                    return _.contains(videoPublisherIds,videoPublisher.id);
+                videoPublisherObjectInDemandAdTag = _.filter(waterfallPlacementRule['videoPublishers'], function(videoPublisher) {
+                    return _.contains(videoPublisherIds, videoPublisher.id);
                 });
 
-                waterfallTagsInDemandAdTag = _.filter(waterfallTags, function(waterfallTag) {
+                waterfallTagsInDemandAdTag = _.filter(waterfallPlacementRule['waterfallTags'], function(waterfallTag) {
                     return _.contains(waterfallTagIds, waterfallTag.id);
                 });
 
-                angular.forEach(videoPublisherObjectInDemandAdTag, function(videoPublisherObject){
-                    videoPublisherObject['ticked'] =  true;
+                angular.forEach(videoPublisherObjectInDemandAdTag, function(videoPublisherObject) {
+                    videoPublisherObject['ticked'] = true;
                 });
 
-                angular.forEach(waterfallTagsInDemandAdTag, function(waterfallTag){
-                    waterfallTag['ticked'] =  true;
+                angular.forEach(waterfallTagsInDemandAdTag, function(waterfallTag) {
+                    waterfallTag['ticked'] = true;
                 });
 
                 waterfallPlacementRule.publishers = videoPublisherObjectInDemandAdTag;
                 waterfallPlacementRule.waterfalls = waterfallTagsInDemandAdTag;
+                waterfallPlacementRule.profitValue = NumberConvertUtil.convertPriceToString(waterfallPlacementRule.profitValue);
             });
+
+
 
             return demandAdTag;
         }
@@ -109,13 +121,16 @@
             waterfallTags: []
         };
 
-        if(!$scope.isNew) {
-            //$scope.demandAdTag.sellPrice = NumberConvertUtil.convertPriceToString($scope.demandAdTag.sellPrice);
+        if (!$scope.isNew) {
+            $scope.demandAdTag.sellPrice = NumberConvertUtil.convertPriceToString(parseFloat($scope.demandAdTag.sellPrice));
         }
 
-        $scope.requiredBuyPrice = $scope.demandAdTag.sellPrice;
+        if (!$scope.isNew) {
+            $scope.requiredBuyPrice = parseFloat($scope.demandAdTag.sellPrice);
+        }
 
-        if($scope.isNew && !!demandPartner) {
+
+        if ($scope.isNew && !!demandPartner) {
             _filterWaterfallsForPublisher(demandPartner.publisher);
         }
 
@@ -142,30 +157,47 @@
         $scope.initProfitValueLabel = initProfitValueLabel;
         $scope.filterWaterfallTags = filterWaterfallTags;
         $scope.filterWaterfallTagsBySelectAll = filterWaterfallTagsBySelectAll;
+        $scope.filterWaterfallBySelectNone = filterWaterfallBySelectNone;
         $scope.updateMaximumRequirePrice = updateMaximumRequirePrice;
+        $scope.returnSellPrice = returnSellPrice;
 
-        $scope.localLang = {
-            selectAll       : "Select All",
-            selectNone      : "Select None",
-            reset           : "Reset",
-            search          : "Type here to search...",
-            nothingSelected : "None Selected"
-        };
-
-        function updateMaximumRequirePrice () {
-            $scope.requiredBuyPrice = $scope.demandAdTag.sellPrice;
+        function returnSellPrice(sellPrice) {
+            if(sellPrice.indexOf('.') > -1) {
+                return '$' + sellPrice;
+            } else {
+                var num = Number(sellPrice);
+                return $filter('currency')(num)
+            }
         }
 
-        function initRequiredBuyPrice (rule) {
+        $scope.localLang = {
+            selectAll: "Select All",
+            selectNone: "Select None",
+            reset: "Reset",
+            search: "Type here to search...",
+            nothingSelected: "None Selected"
+        };
 
-            $scope.requiredBuyPrice = $scope.demandAdTag.sellPrice;
+        function updateMaximumRequirePrice() {
+            $scope.requiredBuyPrice = parseFloat($scope.demandAdTag.sellPrice);
+
+            if(demandAdTag.waterfallPlacementRules.length > 0) {
+                angular.forEach(demandAdTag.waterfallPlacementRules, function(waterfallPlacementRule) {
+                    waterfallPlacementRule.profitValue = null;
+                });
+            }
+        }
+
+        function initRequiredBuyPrice(rule) {
+
+            $scope.requiredBuyPrice = parseFloat($scope.demandAdTag.sellPrice);
 
             if (rule.profitType == 1) {
                 $scope.requiredBuyPrice = $scope.requiredBuyPrice - rule.profitValue;
-            } else if (rule.profitType ==2) {
-                $scope.requiredBuyPrice = $scope.requiredBuyPrice - rule.profitValue*$scope.requiredBuyPrice/100;
+            } else if (rule.profitType == 2) {
+                $scope.requiredBuyPrice = $scope.requiredBuyPrice - rule.profitValue * $scope.requiredBuyPrice / 100;
             } else {
-                $scope.requiredBuyPrice = $scope.demandAdTag.sellPrice;
+                $scope.requiredBuyPrice = parseFloat($scope.demandAdTag.sellPrice);
             }
         }
 
@@ -184,7 +216,17 @@
         }
 
         function addNewPlacementRule() {
-            $scope.demandAdTag.waterfallPlacementRules.push({profitType: 3, profitValue: null, position:null, priority: null, rotationWeight:null, waterfalls: [null], publishers: [null]});
+            $scope.demandAdTag.waterfallPlacementRules.push({
+                videoPublishers: angular.copy(videoPublishers),
+                waterfallTags: angular.copy(waterfallTags),
+                profitType: 3,
+                profitValue: null,
+                position: null,
+                priority: null,
+                rotationWeight: null,
+                waterfalls: [null],
+                publishers: [null]
+            });
 
             console.log("After push to waterfall tags", $scope.demandAdTag.waterfallPlacementRules);
         }
@@ -193,7 +235,7 @@
             $scope.demandAdTag.waterfallPlacementRules.splice(index, 1);
         }
 
-        function changeProfitValueLabel($item, rule ) {
+        function changeProfitValueLabel($item, rule) {
             switch ($item.key) {
                 case 1:
                     $scope.profiltValueLabel = 'Profit Value ($)';
@@ -207,74 +249,67 @@
             }
 
             rule.profitValue = null;
-            $scope.requiredBuyPrice = $scope.demandAdTag.sellPrice;
-            console.log('Require price update:', $scope.requiredBuyPrice);
+            $scope.requiredBuyPrice = parseFloat(parseFloat($scope.demandAdTag.sellPrice));
         }
 
         function changeRequireBuyPrice(inputValue, inputType) {
             switch (inputType) {
                 case 1:
-                    var requireBuyPriceByFixProfit = $scope.demandAdTag.sellPrice - inputValue;
+                    var requireBuyPriceByFixProfit = parseFloat($scope.demandAdTag.sellPrice) - inputValue;
                     $scope.requiredBuyPrice = requireBuyPriceByFixProfit > 0 ? requireBuyPriceByFixProfit : 0;
-                    console.log('Update:', $scope.requiredBuyPrice);
+
                     break;
                 case 2:
-                    var requireBuyPriceByMarginProfit = $scope.demandAdTag.sellPrice - inputValue*$scope.demandAdTag.sellPrice/100;
+                    var requireBuyPriceByMarginProfit = parseFloat($scope.demandAdTag.sellPrice) - inputValue * parseFloat($scope.demandAdTag.sellPrice) / 100;
                     $scope.requiredBuyPrice = requireBuyPriceByMarginProfit > 0 ? requireBuyPriceByMarginProfit : 0;
-                    console.log('Update:', $scope.requiredBuyPrice);
+
                     break;
                 default:
-                    $scope.requiredBuyPrice = $scope.demandAdTag.sellPrice;
+                    $scope.requiredBuyPrice = parseFloat($scope.demandAdTag.sellPrice);
                     break;
             }
         }
 
-        function filterWaterfallTags(selectedPublishers) {
-
-            console.log('Selected Publisher Id', selectedPublishers);
-
+        function filterWaterfallTags(rule) {
             var selectedPublisherId = [];
-            angular.forEach(selectedPublishers, function(selectedPublisher) {
+            angular.forEach(rule.publishers, function(selectedPublisher) {
                 selectedPublisherId.push(selectedPublisher.id);
             });
 
 
-            $scope.waterfallTags = _.filter(waterfallTagsCopy , function(waterfallTag) {
+            rule.waterfallTags = _.filter(waterfallTagsCopy, function(waterfallTag) {
                 return _.contains(selectedPublisherId, waterfallTag.videoPublisher.id);
-             });
+            });
 
-            console.log('waterfall Tags', $scope.waterfallTags);
+            if (selectedPublisherId.length > 1) {
+                waterfallTagsThatNameHasVideoPublisherName = [];
+                angular.forEach(angular.copy($scope.waterfallTags), function(waterfallTag, key) {
 
-            if(selectedPublisherId.length > 1) {
-                waterfallTagsThatNameHasVideoPublisherName= [];
-                angular.forEach( angular.copy($scope.waterfallTags), function (waterfallTag, key){
-                    waterfallTag.name = waterfallTag.name + ' (' + waterfallTag.videoPublisher.name +')';
-                    waterfallTagsThatNameHasVideoPublisherName.push(waterfallTag)
+                    if (waterfallTag.name.indexOf(waterfallTag.videoPublisher.name) == -1) {
+                        waterfallTag.name = waterfallTag.name + ' (' + waterfallTag.videoPublisher.name + ')';
+                        waterfallTagsThatNameHasVideoPublisherName.push(waterfallTag)
+                    }
                 });
-
-                $scope.waterfallTags = waterfallTagsThatNameHasVideoPublisherName;
+                rule.waterfallTags = waterfallTagsThatNameHasVideoPublisherName;
             }
         }
 
-        function filterWaterfallTagsBySelectAll() {
+        function filterWaterfallTagsBySelectAll(rule) {
 
-            waterfallTagsThatNameHasVideoPublisherName= [];
-            angular.forEach( angular.copy(waterfallTags), function (waterfallTag, key){
+            waterfallTagsThatNameHasVideoPublisherName = [];
+
+            angular.forEach(angular.copy($scope.waterfallTags), function(waterfallTag, key) {
                 if (waterfallTag.name.indexOf(waterfallTag.videoPublisher.name) == -1) {
-                    waterfallTag.name = waterfallTag.name + ' (' + waterfallTag.videoPublisher.name +')';
+                    waterfallTag.name = waterfallTag.name + ' (' + waterfallTag.videoPublisher.name + ')';
                 }
-                waterfallTagsThatNameHasVideoPublisherName.push(waterfallTag)
+                waterfallTagsThatNameHasVideoPublisherName.push(waterfallTag);
             });
 
-            $scope.waterfallTags = waterfallTagsThatNameHasVideoPublisherName;
+            rule.waterfallTags = waterfallTagsThatNameHasVideoPublisherName;
         }
 
-        function _appendVideoPublisherNameToWaterfallTagName() {
-            waterfallTagsThatNameHasVideoPublisherName= [];
-            angular.forEach( angular.copy(waterfallTags), function (waterfallTag, key){
-                waterfallTag.name = waterfallTag.name + ' (' + waterfallTag.videoPublisher.name +')';
-                waterfallTagsThatNameHasVideoPublisherName.push(waterfallTag)
-            });
+        function filterWaterfallBySelectNone(rule) {
+            rule.waterfallTags = [];
         }
 
         function isChangeTagURL() {
@@ -287,7 +322,7 @@
             }
 
             ReplaceMacros.replaceVideoMacros($scope.demandAdTag.tagURL)
-                .then(function () {
+                .then(function() {
                     $scope.demandAdTag.tagURL = ReplaceMacros.getVideoUrl();
                 });
 
@@ -295,19 +330,19 @@
         }
 
         function selectVideoPublisher(videoPublisher) {
-           /* $scope.selectedData.waterfallTags = [];
+            /* $scope.selectedData.waterfallTags = [];
 
-            $scope.waterfallTags = $filter('filter')(waterfallTags, function(waterfall) {
-                if(videoPublisher.id == null) {
-                    return true;
-                }
+             $scope.waterfallTags = $filter('filter')(waterfallTags, function(waterfall) {
+             if(videoPublisher.id == null) {
+             return true;
+             }
 
-                if(waterfall.videoPublisher.id == videoPublisher.id) {
-                    return true;
-                }
+             if(waterfall.videoPublisher.id == videoPublisher.id) {
+             return true;
+             }
 
-                return false
-            })*/
+             return false
+             })*/
         }
 
         function createQuicklyWhiteLink() {
@@ -321,7 +356,7 @@
                 controller: 'DomainListQuicklyForm',
                 size: 'lg',
                 resolve: {
-                    publishers: function(){
+                    publishers: function() {
                         return publishers;
                     },
                     publisher: function() {
@@ -336,7 +371,7 @@
                 }
             });
 
-            modalInstance.result.then(function () {
+            modalInstance.result.then(function() {
                 $scope.whiteList.push(newDomain);
                 //$scope.demandAdTag.targeting.domains.push(newDomain);
             })
@@ -353,7 +388,7 @@
                 controller: 'DomainListQuicklyForm',
                 size: 'lg',
                 resolve: {
-                    publishers: function(){
+                    publishers: function() {
                         return publishers;
                     },
                     publisher: function() {
@@ -368,7 +403,7 @@
                 }
             });
 
-            modalInstance.result.then(function () {
+            modalInstance.result.then(function() {
                 $scope.blackList.push(newDomain);
                 //$scope.demandAdTag.targeting.exclude_domains.push(newDomain);
             })
@@ -407,7 +442,7 @@
         }
 
         function backToListDemandAdTag() {
-            if(!!$stateParams.demandPartnerId) {
+            if (!!$stateParams.demandPartnerId) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.libraryDemandAdTag, '^.listByDemandPartner');
             }
 
@@ -445,7 +480,7 @@
                     demandPartners: function() {
                         return demandPartners
                     },
-                    publishers: function(){
+                    publishers: function() {
                         return publishers;
                     },
                     publisher: function() {
@@ -454,8 +489,8 @@
                 }
             });
 
-            modalInstance.result.then(function () {
-                if(angular.isObject(demandPartners[0])) {
+            modalInstance.result.then(function() {
+                if (angular.isObject(demandPartners[0])) {
                     var videoDemandPartner = demandPartners[0];
                     $scope.demandPartners.push(videoDemandPartner);
                     $scope.demandAdTag.videoDemandPartner = videoDemandPartner.id;
@@ -477,40 +512,39 @@
 
             var dfd = $q.defer();
 
-            dfd.promise.then(function () {
+            dfd.promise.then(function() {
                 $scope.formProcessing = true;
 
-               // _changeWaterfallTags();
+                // _changeWaterfallTags();
                 var demandAdTag = _refactorJson();
 
                 var saveDemandAdTag = $scope.isNew ? LibraryDemandAdTagManager.post(demandAdTag) : LibraryDemandAdTagManager.one(demandAdTag.id).patch(demandAdTag);
 
                 saveDemandAdTag
                     .catch(
-                    function (response) {
+                    function(response) {
                         var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.demandAdTagForm, $scope.fieldNameTranslations);
                         $scope.formProcessing = false;
 
                         return errorCheck;
                     })
                     .then(
-                    function () {
+                    function() {
                         AlertService.addFlash({
                             type: 'success',
                             message: $scope.isNew ? $translate.instant('AD_SOURCE_MODULE.ADD_NEW_SUCCESS') : $translate.instant('AD_SOURCE_MODULE.UPDATE_SUCCESS')
                         });
                     })
                     .then(
-                    function () {
+                    function() {
                         return backToListDemandAdTag();
                     }
-                )
-                ;
+                );
             });
 
             function _changeWaterfallTags() {
                 var waterfallIds = [];
-                if($scope.demandAdTag.waterfallPlacementRules !=null){
+                if ($scope.demandAdTag.waterfallPlacementRules != null) {
                     angular.forEach($scope.demandAdTag.waterfallPlacementRules, function(waterfallPlacementRule) {
                         waterfallIds = [];
                         angular.forEach(waterfallPlacementRule.waterfalls, function(waterfall) {
@@ -533,7 +567,7 @@
                     templateUrl: 'videoManagement/demandAdTag/confirmSubmit.tpl.html'
                 });
 
-                modalInstance.result.then(function () {
+                modalInstance.result.then(function() {
                     dfd.resolve();
                 });
             } else {
@@ -546,15 +580,15 @@
             var confirmSubmit = false;
 
             angular.forEach($scope.selectedData.waterfallTags, function(waterfall) {
-                if(confirmSubmit) {
+                if (confirmSubmit) {
                     return
                 }
 
-                if($scope.demandAdTag.sellPrice == null || waterfall.buyPrice == null) {
+                if (parseFloat($scope.demandAdTag.sellPrice) == null || waterfall.buyPrice == null) {
                     return confirmSubmit = false;
                 }
 
-                if(waterfall.buyPrice > $scope.demandAdTag.sellPrice) {
+                if (waterfall.buyPrice > parseFloat($scope.demandAdTag.sellPrice)) {
                     return confirmSubmit = true;
                 }
             });
@@ -565,17 +599,17 @@
         function _confirmSubmitForPlatform() {
             var confirm = false;
 
-            if($scope.demandAdTag.targeting.platform.length > 0) {
+            if ($scope.demandAdTag.targeting.platform.length > 0) {
                 angular.forEach($scope.selectedData.waterfallTags, function(waterfallTag) {
-                    if(confirm) {
+                    if (confirm) {
                         return
                     }
 
-                    if(waterfallTag.platform.length < $scope.demandAdTag.targeting.platform.length) {
+                    if (waterfallTag.platform.length < $scope.demandAdTag.targeting.platform.length) {
                         return confirm = true;
                     }
 
-                    if(_.intersection(waterfallTag.platform, $scope.demandAdTag.targeting.platform).length == 0) {
+                    if (_.intersection(waterfallTag.platform, $scope.demandAdTag.targeting.platform).length == 0) {
                         return confirm = true;
                     }
                 });
@@ -586,20 +620,21 @@
 
         function _refactorJson() {
             var demandAdTag = angular.copy($scope.demandAdTag);
-            var domains = [], excludeDomains = [];
+            var domains = [],
+                excludeDomains = [];
 
-            if(!!demandAdTag.sellPrice) {
+            if (!!demandAdTag.sellPrice) {
                 demandAdTag.sellPrice = NumberConvertUtil.convertPriceToString(demandAdTag.sellPrice);
             }
 
             angular.forEach(demandAdTag.targeting.domains, function(item) {
-                if(!!item.suffixKey) {
+                if (!!item.suffixKey) {
                     domains.push(item.suffixKey);
                 }
             });
 
             angular.forEach(demandAdTag.targeting.exclude_domains, function(item) {
-                if(!!item.suffixKey) {
+                if (!!item.suffixKey) {
                     excludeDomains.push(item.suffixKey);
                 }
             });
@@ -607,7 +642,7 @@
             demandAdTag.targeting.domains = domains;
             demandAdTag.targeting.exclude_domains = excludeDomains;
 
-            if($scope.selectedData.isDeployment && $scope.selectedData.waterfallTags.length > 0) {
+            if ($scope.selectedData.isDeployment && $scope.selectedData.waterfallTags.length > 0) {
                 var waterfallTags = [];
 
                 angular.forEach($scope.selectedData.waterfallTags, function(waterfallTag) {
@@ -617,28 +652,31 @@
                 demandAdTag.waterfalls = waterfallTags;
             }
 
-            var waterfallTagsId = [], publishersId = [];
+            var waterfallTagsId = [],
+                publishersId = [];
 
-            angular.forEach(demandAdTag.waterfallPlacementRules, function(waterfallPlacementRule){
+            angular.forEach(demandAdTag.waterfallPlacementRules, function(waterfallPlacementRule) {
                 waterfallTagsId = [];
-                publishersId =[];
+                publishersId = [];
 
-                angular.forEach(waterfallPlacementRule.waterfalls,function(waterfall){
+                angular.forEach(waterfallPlacementRule.waterfalls, function(waterfall) {
                     waterfallTagsId.push(waterfall.id);
                 });
 
-                angular.forEach(waterfallPlacementRule.publishers,function(publisher){
+                angular.forEach(waterfallPlacementRule.publishers, function(publisher) {
                     publishersId.push(publisher.id);
                 });
 
                 waterfallPlacementRule.waterfalls = waterfallTagsId;
                 waterfallPlacementRule.publishers = publishersId;
 
+                delete waterfallPlacementRule.videoPublishers;
+                delete waterfallPlacementRule.waterfallTags;
 
             });
 
 
-            if(!demandAdTag.sellPrice) {
+            if (!demandAdTag.sellPrice) {
                 demandAdTag.waterfallPlacementRules = [];
             }
 
