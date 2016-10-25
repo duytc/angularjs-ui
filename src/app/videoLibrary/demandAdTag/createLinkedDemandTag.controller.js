@@ -5,7 +5,7 @@
         .controller('CreateLinkedDemandAdTag', CreateLinkedDemandAdTag)
     ;
 
-    function CreateLinkedDemandAdTag($scope, _, $modal, $q, $filter, $translate, AlertService, UISelectMethod, videoPublishers, $modalInstance, waterfallTags, demandAdTag, LibraryDemandAdTagManager) {
+    function CreateLinkedDemandAdTag($scope, _, $modal, $q, $filter, $translate, AlertService, videoPublishers, $modalInstance, waterfallTags, demandAdTag, LibraryDemandAdTagManager) {
         var waterfallTagsRefactor =  [];
 
         // default is select all video publisher
@@ -13,6 +13,7 @@
 
         $scope.selectData = {
             waterfalls: [],
+            videoPublishers: [],
             position: null,
             shiftDown: null,
             priority: null,
@@ -32,14 +33,12 @@
             {label: 'Fixed Profit', key: 'fixedProfit'}
         ];
 
-        $scope.videoPublishers = UISelectMethod.addAllOption(videoPublishers, 'All Publishers');
+        $scope.videoPublishers = videoPublishers;
         $scope.waterfallTags = waterfallTagsRefactor;
         $scope.waterfallTagsHaveBuyPriceHigherSellPriceLibraryDemandAdTag = [];
         $scope.demandAdTag = demandAdTag;
 
-        $scope.groupEntities = UISelectMethod.groupEntities;
         $scope.isFormValid = isFormValid;
-        $scope.selectVideoPublisher = selectVideoPublisher;
         $scope.toggleFilter =  toggleFilter;
         $scope.hasFilter =  hasFilter;
         $scope.disabledFilter = disabledFilter;
@@ -102,13 +101,6 @@
             var videoPublisher = _.find(videoPublishers, function(vPub) { return vPub.id == $scope.selectData.videoPublisher});
 
             _filterWaterfallByVideoPublisherAndBuyPrice(videoPublisher);
-        }
-
-        function selectVideoPublisher(videoPublisher) {
-
-            _setNameAgainForWaterfallWhenSelectAllVideoPublisher(videoPublisher);
-            _filterWaterfallByVideoPublisherAndBuyPrice(videoPublisher, null);
-
         }
 
         function isFormValid() {
@@ -209,7 +201,6 @@
         }
 
         function _filterWaterfallByVideoPublisherAndBuyPrice(videoPublisher, requiredBuyPrice) {
-
             $scope.waterfallTags = $filter('filter')(waterfallTagsRefactor, function(waterfall) {
                 if(videoPublisher.id == null || waterfall.videoPublisher.id == videoPublisher.id){
                     return requiredBuyPrice? (requiredBuyPrice >= waterfall.buyPrice) : true;
@@ -218,5 +209,17 @@
                 return false
             })
         }
+
+        $scope.$watch('selectData.videoPublishers', function () {
+            var videoPublisherIds = [];
+
+            angular.forEach($scope.selectData.videoPublishers, function (videoPublisher) {
+                videoPublisherIds.push(videoPublisher.id)
+            });
+
+            $scope.waterfallTags = _.filter(waterfallTags, function (waterfallTag) {
+                return _.contains(videoPublisherIds, waterfallTag.videoPublisher.id)
+            });
+        })
     }
 })();
