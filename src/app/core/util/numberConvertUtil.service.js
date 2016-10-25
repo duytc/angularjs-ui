@@ -13,7 +13,7 @@
         function convertPriceToString(price, toFixed) {
             var toFixed = toFixed || 2;
 
-            if(price == null) {
+            if(!price && price != 0) {
                 return null;
             }
 
