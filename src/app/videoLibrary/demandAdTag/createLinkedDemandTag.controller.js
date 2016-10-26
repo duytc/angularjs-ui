@@ -6,11 +6,6 @@
     ;
 
     function CreateLinkedDemandAdTag($scope, _, $modal, $q, $filter, $translate, AlertService, videoPublishers, $modalInstance, waterfallTags, demandAdTag, LibraryDemandAdTagManager) {
-        var waterfallTagsRefactor =  [];
-
-        // default is select all video publisher
-        _setNameAgainForWaterfallWhenSelectAllVideoPublisher();
-
         $scope.selectData = {
             waterfalls: [],
             videoPublishers: [],
@@ -34,7 +29,7 @@
         ];
 
         $scope.videoPublishers = videoPublishers;
-        $scope.waterfallTags = waterfallTagsRefactor;
+        $scope.waterfallTags = [];
         $scope.waterfallTagsHaveBuyPriceHigherSellPriceLibraryDemandAdTag = [];
         $scope.demandAdTag = demandAdTag;
 
@@ -48,8 +43,7 @@
         function selectWaterfallSelection(option) {
             $scope.selectFilterData.requiredBuyPrice =  (option.key != 'manual')? demandAdTag.sellPrice: null;
 
-            var videoPublisher = _.find(videoPublishers, function(vPub) { return vPub.id == $scope.selectData.videoPublisher});
-            _filterWaterfallByVideoPublisherAndBuyPrice(videoPublisher, $scope.selectFilterData.requiredBuyPrice);
+            _filterWaterfallByVideoPublisherAndBuyPrice($scope.selectFilterData.requiredBuyPrice);
         }
 
         function setRequiredBuyPrice(value) {
@@ -59,8 +53,7 @@
                 $scope.selectFilterData.requiredBuyPrice = $scope.demandAdTag.sellPrice - value;
             }
 
-            var videoPublisher = _.find(videoPublishers, function(vPub) { return vPub.id == $scope.selectData.videoPublisher});
-            _filterWaterfallByVideoPublisherAndBuyPrice(videoPublisher, $scope.selectFilterData.requiredBuyPrice);
+            _filterWaterfallByVideoPublisherAndBuyPrice($scope.selectFilterData.requiredBuyPrice);
         }
         
         function disabledFilter(filter) {
@@ -189,21 +182,16 @@
             $scope.selectData.waterfalls = waterfalls;
         }
 
-        function _setNameAgainForWaterfallWhenSelectAllVideoPublisher(videoPublisher) {
+        function _filterWaterfallByVideoPublisherAndBuyPrice(requiredBuyPrice) {
+            var videoPublisherIds = [];
 
-            waterfallTagsRefactor =  [];
-            var showNameVideoPublisher = !videoPublisher || !videoPublisher.id;
-
-            angular.forEach(angular.copy(waterfallTags), function(waterfallTag) {
-                waterfallTag.name = (waterfallTag.name + (showNameVideoPublisher ? ' (' + waterfallTag.videoPublisher.name + ')' : ''));
-                waterfallTagsRefactor.push(waterfallTag);
+            angular.forEach($scope.selectData.videoPublishers, function (videoPublisher) {
+                videoPublisherIds.push(videoPublisher.id)
             });
-        }
 
-        function _filterWaterfallByVideoPublisherAndBuyPrice(videoPublisher, requiredBuyPrice) {
-            $scope.waterfallTags = $filter('filter')(waterfallTagsRefactor, function(waterfall) {
-                if(videoPublisher.id == null || waterfall.videoPublisher.id == videoPublisher.id){
-                    return requiredBuyPrice? (requiredBuyPrice >= waterfall.buyPrice) : true;
+            $scope.waterfallTags = $filter('filter')(angular.copy(waterfallTags), function(waterfall) {
+                if(_.contains(videoPublisherIds, waterfall.videoPublisher.id)){
+                    return requiredBuyPrice ? (requiredBuyPrice >= waterfall.buyPrice) : true;
                 }
 
                 return false
@@ -211,15 +199,7 @@
         }
 
         $scope.$watch('selectData.videoPublishers', function () {
-            var videoPublisherIds = [];
-
-            angular.forEach($scope.selectData.videoPublishers, function (videoPublisher) {
-                videoPublisherIds.push(videoPublisher.id)
-            });
-
-            $scope.waterfallTags = _.filter(waterfallTags, function (waterfallTag) {
-                return _.contains(videoPublisherIds, waterfallTag.videoPublisher.id)
-            });
+            _filterWaterfallByVideoPublisherAndBuyPrice($scope.selectFilterData.requiredBuyPrice);
         })
     }
 })();

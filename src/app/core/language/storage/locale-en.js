@@ -480,7 +480,7 @@
                 "PAUSE_AD_SOURCE": "Pause Demand Ad Tag",
                 "ACTIVE": "Active",
                 "SHIFT_DOWN": "Shift Down",
-                "SELL_PRICE": "Sell Price ($)",
+                "SELL_PRICE": "Sell Price",
 
                 "LINKED_DEMAND_AD_TAGS": "Linked Demand Ad Tags",
                 "DELETE_SUCCESS": "The demand ad tag was deleted",
@@ -526,7 +526,7 @@
                 "RULE_VALUE_MANUAL":"Profit Value",
                 "VIDEO_PUBLISHERS":"Publishers",
                 "PROFIT": "Profit",
-                "WATERFALL_PLACEMENT_RULE_WARNING": "The sell price for this demand ad tag has not been set. The placement rule cannot be added.",
+                "WATERFALL_PLACEMENT_RULE_TYPE_HELP_BLOCK": "Waterfall selection will be able if sell price is set",
                 "WARNING": "Warning"
             },
             "AD_SOURCE_LIBRARY_MODULE": {

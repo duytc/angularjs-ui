@@ -65,7 +65,6 @@
         };
 
         function setTicketForVideoPublisherAndWaterfallTagInDemandAdTags(demandAdTag, videoPublishers, waterfallTags) {
-
             var videoPublisherIds = [],
                 waterfallTagIds = [];
             var videoPublisherObjectInDemandAdTag = [],
@@ -75,15 +74,19 @@
                 return;
             }
 
+            $scope.waterfallTags = _.filter(angular.copy(waterfallTags), function(waterfallTag) {
+                return demandAdTag.videoDemandPartner.publisher.id == waterfallTag.videoPublisher.publisher.id
+            });
+
             angular.forEach(demandAdTag.waterfallPlacementRules, function(waterfallPlacementRule) {
                 videoPublisherIds = waterfallPlacementRule.publishers;
                 waterfallTagIds = waterfallPlacementRule.waterfalls;
 
-                waterfallPlacementRule['videoPublishers'] = _.filter(videoPublishers, function(videoPublisher) {
+                waterfallPlacementRule['videoPublishers'] = _.filter(angular.copy(videoPublishers), function(videoPublisher) {
                     return videoPublisher.publisher.id == demandAdTag.videoDemandPartner.publisher.id;
                 });
 
-                waterfallPlacementRule['waterfallTags'] = _.filter(waterfallTags, function(waterfallTag) {
+                waterfallPlacementRule['waterfallTags'] = _.filter(angular.copy(waterfallTags), function(waterfallTag) {
                     return _.contains(videoPublisherIds, waterfallTag.videoPublisher.id);
                 });
 
@@ -106,6 +109,7 @@
                 waterfallPlacementRule.publishers = videoPublisherObjectInDemandAdTag;
                 waterfallPlacementRule.waterfalls = waterfallTagsInDemandAdTag;
                 waterfallPlacementRule.profitValue = NumberConvertUtil.convertPriceToString(waterfallPlacementRule.profitValue);
+                changeRequireBuyPrice(waterfallPlacementRule, demandAdTag.sellPrice);
             });
 
             return demandAdTag;
@@ -119,11 +123,7 @@
         };
 
         if (!$scope.isNew) {
-            $scope.demandAdTag.sellPrice = NumberConvertUtil.convertPriceToString(parseFloat($scope.demandAdTag.sellPrice));
-        }
-
-        if (!$scope.isNew) {
-            $scope.requiredBuyPrice = parseFloat($scope.demandAdTag.sellPrice);
+            $scope.demandAdTag.sellPrice = NumberConvertUtil.convertPriceToString($scope.demandAdTag.sellPrice);
         }
 
         $scope.localLang = {
@@ -147,20 +147,17 @@
         $scope.viewQuicklyWhiteLink = viewQuicklyWhiteLink;
         $scope.viewQuicklyBlackLink = viewQuicklyBlackLink;
         $scope.replaceMacros = replaceMacros;
-        $scope._validateURL = _validateURL;
         $scope.isChangeTagURL = isChangeTagURL;
         $scope.addNewPlacementRule = addNewPlacementRule;
         $scope.removePlacementRule = removePlacementRule;
         $scope.changeProfitValueLabel = changeProfitValueLabel;
         $scope.changeRequireBuyPrice = changeRequireBuyPrice;
-        $scope.initRequiredBuyPrice = initRequiredBuyPrice;
         $scope.initProfitValueLabel = initProfitValueLabel;
         $scope.filterWaterfallTags = filterWaterfallTags;
         $scope.filterWaterfallTagsBySelectAll = filterWaterfallTagsBySelectAll;
         $scope.filterWaterfallBySelectNone = filterWaterfallBySelectNone;
         $scope.updateMaximumRequirePrice = updateMaximumRequirePrice;
         $scope.returnSellPrice = returnSellPrice;
-        $scope.hasReplaceMacros = hasReplaceMacros;
 
         function returnSellPrice(sellPrice) {
             if(sellPrice.indexOf('.') > -1) {
@@ -172,8 +169,6 @@
         }
 
         function updateMaximumRequirePrice() {
-            $scope.requiredBuyPrice = parseFloat($scope.demandAdTag.sellPrice);
-
             if($scope.demandAdTag.waterfallPlacementRules.length > 0) {
                 angular.forEach($scope.demandAdTag.waterfallPlacementRules, function(waterfallPlacementRule) {
                     if(!$scope.demandAdTag.sellPrice) {
@@ -182,18 +177,6 @@
 
                     changeRequireBuyPrice(waterfallPlacementRule);
                 });
-            }
-        }
-
-        function initRequiredBuyPrice(rule) {
-            $scope.requiredBuyPrice = parseFloat($scope.demandAdTag.sellPrice);
-
-            if (rule.profitType == 1) {
-                $scope.requiredBuyPrice = $scope.requiredBuyPrice - rule.profitValue;
-            } else if (rule.profitType == 2) {
-                $scope.requiredBuyPrice = $scope.requiredBuyPrice - rule.profitValue * $scope.requiredBuyPrice / 100;
-            } else {
-                $scope.requiredBuyPrice = parseFloat($scope.demandAdTag.sellPrice);
             }
         }
 
@@ -212,7 +195,7 @@
         }
 
         function addNewPlacementRule() {
-            var videoPublishersFilter = _.filter(videoPublishers, function(videoPublisher) {
+            var videoPublishersFilter = _.filter(angular.copy(videoPublishers), function(videoPublisher) {
                 if(!!$scope.selectedData.publisher) {
                     return videoPublisher.publisher.id == $scope.selectedData.publisher || videoPublisher.publisher.id == $scope.selectedData.publisher.id;
                 }
@@ -233,7 +216,8 @@
                 priority: null,
                 rotationWeight: null,
                 waterfalls: [null],
-                publishers: [null]
+                publishers: [null],
+                active: true
             });
         }
 
@@ -255,25 +239,26 @@
             }
 
             rule.profitValue = null;
-            $scope.requiredBuyPrice = parseFloat(parseFloat($scope.demandAdTag.sellPrice));
+            changeRequireBuyPrice(rule);
         }
 
-        function changeRequireBuyPrice(rule) {
+        function changeRequireBuyPrice(rule, sellPrice) {
             rule['requiredBuyPrice'] = null;
+            sellPrice = sellPrice || (!!$scope.demandAdTag ? $scope.demandAdTag.sellPrice : null);
 
             switch (rule.profitType) {
                 case 1:
-                    var requireBuyPriceByFixProfit = parseFloat($scope.demandAdTag.sellPrice) - rule.profitValue;
+                    var requireBuyPriceByFixProfit = parseFloat(sellPrice) - rule.profitValue;
                     rule.requiredBuyPrice = requireBuyPriceByFixProfit > 0 ? requireBuyPriceByFixProfit : 0;
 
                     break;
                 case 2:
-                    var requireBuyPriceByMarginProfit = parseFloat($scope.demandAdTag.sellPrice) - rule.profitValue * parseFloat($scope.demandAdTag.sellPrice) / 100;
+                    var requireBuyPriceByMarginProfit = parseFloat(sellPrice) - rule.profitValue * parseFloat(sellPrice) / 100;
                     rule.requiredBuyPrice = requireBuyPriceByMarginProfit > 0 ? requireBuyPriceByMarginProfit : 0;
 
                     break;
                 default:
-                    rule.requiredBuyPrice = parseFloat($scope.demandAdTag.sellPrice);
+                    rule.requiredBuyPrice = parseFloat(sellPrice);
                     break;
             }
         }
@@ -284,35 +269,17 @@
                 selectedPublisherId.push(selectedPublisher.id);
             });
 
-            rule.waterfallTags = _.filter(waterfallTags, function(waterfallTag) {
+            rule.waterfallTags = _.filter(angular.copy($scope.waterfallTags), function(waterfallTag) {
                 return _.contains(selectedPublisherId, waterfallTag.videoPublisher.id);
             });
 
-            // if (selectedPublisherId.length > 1) {
-            //     waterfallTagsThatNameHasVideoPublisherName = [];
-            //
-            //     angular.forEach(angular.copy(waterfallTags), function(waterfallTag) {
-            //         if (waterfallTag.name.indexOf(waterfallTag.videoPublisher.name) == -1) {
-            //             waterfallTag.name = waterfallTag.name + ' (' + waterfallTag.videoPublisher.name + ')';
-            //             waterfallTagsThatNameHasVideoPublisherName.push(waterfallTag)
-            //         }
-            //     });
-            //
-            //     rule.waterfallTags = waterfallTagsThatNameHasVideoPublisherName;
-            // }
+            _changeNameWaterfallTags(rule);
         }
 
         function filterWaterfallTagsBySelectAll(rule) {
-            // waterfallTagsThatNameHasVideoPublisherName = [];
-            //
-            // angular.forEach(angular.copy($scope.waterfallTags), function(waterfallTag) {
-            //     if (waterfallTag.name.indexOf(waterfallTag.videoPublisher.name) == -1) {
-            //         waterfallTag.name = waterfallTag.name + ' (' + waterfallTag.videoPublisher.name + ')';
-            //     }
-            //     waterfallTagsThatNameHasVideoPublisherName.push(waterfallTag);
-            // });
+            rule.waterfallTags = angular.copy($scope.waterfallTags);
 
-            rule.waterfallTags = $scope.waterfallTags;
+            _changeNameWaterfallTags(rule, rule.videoPublishers.length);
         }
 
         function filterWaterfallBySelectNone(rule) {
@@ -323,26 +290,12 @@
             isChangeTagURLValue = true;
         }
 
-        function hasReplaceMacros() {
-            var isValidURL = _validateURL($scope.demandAdTag.tagURL);
-
-            if(isValidURL == false){
-                return isValidURL;
-            }
-
-            if (false == isChangeTagURLValue) {
-                return true;
-            }
-
-            isChangeTagURLValue = false;
-
-            return isValidURL;
-        }
 
         function replaceMacros() {
-            // if(!hasReplaceMacros()) {
-            //     return;
-            // }
+
+            if (false == isChangeTagURLValue) {
+                return;
+            }
 
             $scope.demandAdTag.tagURL = _replaceSpaceByUTF8Code($scope.demandAdTag.tagURL);
 
@@ -351,18 +304,13 @@
                     $scope.demandAdTag.tagURL = ReplaceMacros.getVideoUrl();
                 });
 
+            isChangeTagURLValue = false;
         }
 
         function _replaceSpaceByUTF8Code(inputString) {
             if(null != inputString){
                 return inputString.replace(/\s/g,"%20");
             }
-        }
-
-        function _validateURL(inputURL){
-            var urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
-
-            return urlPattern.test((inputURL));
         }
 
         function createQuicklyWhiteLink() {
@@ -632,6 +580,14 @@
 
             $scope.waterfallTags = _.filter(waterfallTags, function(waterfallTag) {
                 return publisher.id == waterfallTag.videoPublisher.publisher.id;
+            });
+        }
+        
+        function _changeNameWaterfallTags(rule, countVideoPublisher) {
+            angular.forEach(rule.waterfallTags, function(waterfallTag) {
+                if (rule.publishers.length > 1 || countVideoPublisher > 1) {
+                    waterfallTag.name = waterfallTag.name + ' (' + waterfallTag.videoPublisher.name + ')';
+                }
             });
         }
 

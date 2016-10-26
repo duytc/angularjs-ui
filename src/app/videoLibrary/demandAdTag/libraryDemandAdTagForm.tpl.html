@@ -82,8 +82,7 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.TAG_URL' | translate }}</label>
                     <div class="col-sm-5">
-                        <!--<textarea name="tagUrl" ng-class="{ 'highlightedBorder': !hasReplaceMacros() }" spellcheck="false" rows="5" ng-model="demandAdTag.tagURL" ng-change="isChangeTagURL()" ng-blur="replaceMacros()" server-error ng-required="true" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.TAG_URL' | translate }}"> </textarea>-->
-                        <textarea name="tagUrl" spellcheck="false" rows="5" ng-model="demandAdTag.tagURL" ng-change="isChangeTagURL()" ng-blur="replaceMacros()" server-error ng-required="true" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.TAG_URL' | translate }}"> </textarea>
+                        <textarea name="tagUrl" ng-pattern="/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/" spellcheck="false" rows="5" ng-model="demandAdTag.tagURL" ng-change="isChangeTagURL()" ng-blur="replaceMacros()" server-error ng-required="true" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.TAG_URL' | translate }}"> </textarea>
                     </div>
                 </div>
 
@@ -218,6 +217,7 @@
                                                                   on-select-none = "filterWaterfallBySelectNone(rule)"
                                                                   input-model="rule.videoPublishers"
                                                                   output-model="rule.publishers"
+                                                                  search-property="id name"
                                                                   button-label="name"
                                                                   item-label="name"
                                                                   tick-property="ticked">
@@ -237,31 +237,16 @@
                                                     {{ ruleType.value }}
                                                 </ui-select-choices>
                                             </ui-select>
+
+                                            <span class="help-block">{{ 'AD_SOURCE_MODULE.WATERFALL_PLACEMENT_RULE_TYPE_HELP_BLOCK' | translate }}</span>
                                         </div>
                                     </div>
                                     <br>
 
-                                    <!--<div class="form-group" ng-if="(rule.profitType != 3) && (!(demandAdTag.sellPrice))">-->
-                                        <!--<label class="col-sm-3">{{ }} </label>-->
-                                        <!--<div class="col-sm-9" style="color: #ff400e; margin-top: -13px">-->
-                                            <!--{{ 'AD_SOURCE_MODULE.WATERFALL_PLACEMENT_RULE_WARNING' | translate }}-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-
-                                    <!--<div class="form-group" ng-if="((rule.profitType != 3)&&(!!demandAdTag.sellPrice))">-->
-                                        <!--<label class="col-sm-3 control-label">{{'AD_SOURCE_MODULE.SELL_PRICE'| translate}} </label>-->
-                                        <!--<div class="col-sm-9">-->
-                                            <!--{{ returnSellPrice(demandAdTag.sellPrice) }}-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-
                                     <div class="form-group" ng-if="rule.profitType != 3">
                                         <label class="col-sm-3 control-label">{{'AD_SOURCE_MODULE.SELL_PRICE'| translate}} </label>
-                                        <div class="col-sm-9 form-control-static" ng-if="!!demandAdTag.sellPrice">
+                                        <div class="col-sm-9 form-control-static">
                                             {{ returnSellPrice(demandAdTag.sellPrice) }}
-                                        </div>
-                                        <div class="col-sm-9 form-control-static" ng-if="!demandAdTag.sellPrice" style="color: #ff400e; margin-top: -13px">
-                                            {{ 'AD_SOURCE_MODULE.WATERFALL_PLACEMENT_RULE_WARNING' | translate }}
                                         </div>
                                     </div>
 
@@ -278,7 +263,7 @@
 
                                     <div class="form-group" ng-if="((rule.profitType != 3)&&(!!demandAdTag.sellPrice))">
                                         <label class="col-sm-3 control-label">{{'AD_SOURCE_MODULE.REQUIRED_BUY_PRICE'|translate}} </label>
-                                        <div class="col-sm-9 form-control-static" data-ng-init="initRequiredBuyPrice(rule)">
+                                        <div class="col-sm-9 form-control-static">
                                             {{ rule.requiredBuyPrice | currency }}
                                         </div>
                                     </div>
@@ -291,6 +276,7 @@
                                                                   output-properties="id"
                                                                   input-model="rule.waterfallTags"
                                                                   output-model="rule.waterfalls"
+                                                                  search-property="id name"
                                                                   button-label="name"
                                                                   item-label="name"
                                                                   tick-property="ticked">
@@ -335,6 +321,13 @@
                                         </div>
                                     </div>
                                     <br>
+
+                                    <div class="form-group">
+                                        <label for="inputSecure" class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.ACTIVE' | translate }}</label>
+                                        <div class="col-sm-9">
+                                            <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="rule.active" id="inputSecure"><span></span></label>
+                                        </div>
+                                    </div>
 
                                     <div class="form-group">
                                         <div class=" col-sm-offset-10 ">
