@@ -103,6 +103,8 @@
                         angular.extend($scope.domain, domainOld);
                     }
 
+                    $modalInstance.dismiss();
+
                     return errorCheck;
                 })
                 .then(
@@ -111,7 +113,7 @@
                         angular.extend($scope.domain, domainResponse);
                     }
 
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'success',
                         message: blackList ? ($scope.isNew ? $translate.instant('DOMAIN_LIST_MODULE.ADD_NEW_BLACK_LIST_SUCCESS') : $translate.instant('DOMAIN_LIST_MODULE.UPDATE_BLACK_LIST_SUCCESS')) : ($scope.isNew ? $translate.instant('DOMAIN_LIST_MODULE.UPDATE_BLACK_LIST_SUCCESS') : $translate.instant('DOMAIN_LIST_MODULE.UPDATE_WHITE_LIST_SUCCESS'))
                     });

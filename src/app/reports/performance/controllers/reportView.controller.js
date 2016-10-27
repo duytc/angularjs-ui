@@ -24,6 +24,11 @@
 
         if(!!$scope.subBreakDown && $scope.subBreakDown == 'day') {
             angular.forEach(dataGroupReport, function(rootReport) {
+                // set report type for item by day
+                angular.forEach($scope.reports, function (report) {
+                    report.reportType = rootReport.reportType
+                });
+
                 $scope.reports = $scope.reports.concat(rootReport.reports.reverse());
             })
         } else {

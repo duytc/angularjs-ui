@@ -131,7 +131,13 @@
                 controller: 'DomainListQuicklyForm',
                 size: 'lg',
                 resolve: {
-                    publishers: function() {
+                    publishers: function(adminUserManager) {
+                        if($scope.isAdmin && !publishers) {
+                            return adminUserManager.getList({ filter: 'publisher' }).then(function (users) {
+                                return users.plain();
+                            });
+                        }
+
                         return publishers;
                     },
                     publisher: function() {
@@ -163,7 +169,13 @@
                 controller: 'DomainListQuicklyForm',
                 size: 'lg',
                 resolve: {
-                    publishers: function() {
+                    publishers: function(adminUserManager) {
+                        if($scope.isAdmin && !publishers) {
+                            return adminUserManager.getList({ filter: 'publisher' }).then(function (users) {
+                                return users.plain();
+                            });
+                        }
+
                         return publishers;
                     },
                     publisher: function() {

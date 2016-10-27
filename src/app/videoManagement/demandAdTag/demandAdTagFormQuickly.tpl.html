@@ -201,7 +201,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.EXCLUDE_DOMAINS' | translate }}</label>
                                     <div class="col-sm-9">
-                                        <oi-select ng-disabled="!videoDemandAdTag.targetingOverride && (pickFromLibrary || videoDemandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" oi-options="item.name for item in blackList" ng-model="videoDemandAdTag.libraryVideoDemandAdTag.targeting.exclude_domains" multiple oi-select-options="{newItem: false, newItemFn: 'addDomain($query)'}" placeholder="{{ 'AD_SOURCE_MODULE.EXCLUDE_DOMAINS' | translate }}"></oi-select>
+                                        <oi-select ng-disabled="!videoDemandAdTag.targetingOverride && (pickFromLibrary || videoDemandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" oi-options="item.name for item in blackList | selectedPublisher:selectedData.publisher" ng-model="videoDemandAdTag.libraryVideoDemandAdTag.targeting.exclude_domains" multiple oi-select-options="{newItem: false, newItemFn: 'addDomain($query)'}" placeholder="{{ 'AD_SOURCE_MODULE.EXCLUDE_DOMAINS' | translate }}"></oi-select>
 
                                         <div class="inline">
                                             <a ng-click="createQuicklyBlackLink()" class="help-block pull-left">{{ 'AD_SOURCE_MODULE.CREATE_BLACK_LIST' | translate }}</a>
