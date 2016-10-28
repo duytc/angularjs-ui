@@ -503,6 +503,17 @@
                 saveDemandAdTag
                     .catch(
                     function(response) {
+                        if(!response.data.errors) {
+                            AlertService.replaceAlerts({
+                                type: 'error',
+                                message: response.data.message
+                            });
+
+                            $scope.formProcessing = false;
+
+                            return $q.reject();
+                        }
+
                         var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.demandAdTagForm, $scope.fieldNameTranslations);
                         $scope.formProcessing = false;
 
@@ -514,12 +525,9 @@
                             type: 'success',
                             message: $scope.isNew ? $translate.instant('AD_SOURCE_MODULE.ADD_NEW_SUCCESS') : $translate.instant('AD_SOURCE_MODULE.UPDATE_SUCCESS')
                         });
-                    })
-                    .then(
-                    function() {
+
                         return backToListDemandAdTag();
-                    }
-                );
+                    });
             });
 
 

@@ -43,10 +43,10 @@
                         }
 
                         if(!!site) {
-                            return site.customGET('jstags', {forceSecure: true});
+                            return site.customGET('jstags');
                         }
 
-                        return channel.customGET('jstags', {forceSecure: true});
+                        return channel.customGET('jstags');
                     }
                 },
                 customResolve: {

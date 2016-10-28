@@ -72,12 +72,12 @@
                 templateUrl: 'tagManagement/adSlot/generateAdTag.tpl.html',
                 resolve: {
                     javascriptTag: function () {
-                        return Manager.one(adSlot.id).customGET('jstag', {forceSecure: true});
+                        return Manager.one(adSlot.id).customGET('jstag');
                     }
                 },
                 controller: function ($scope, javascriptTag, USER_MODULES) {
                     $scope.selected = {
-                        secure: true
+                        secure: false
                     };
 
                     $scope.adSlotName = adSlot.libraryAdSlot.name;

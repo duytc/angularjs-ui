@@ -57,7 +57,7 @@
             site: site,
             channel: channel,
             adSlotType: null,
-            forceSecure: true
+            forceSecure: false
         };
 
         $scope.typeSelected = !!site || !!channel ? $scope.typeKey.adSlot : $scope.typeKey.passback;

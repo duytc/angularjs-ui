@@ -320,6 +320,17 @@
                 saveDemandAdTag
                     .catch(
                     function (response) {
+                        if(!response.data.errors) {
+                            AlertService.replaceAlerts({
+                                type: 'error',
+                                message: response.data.message
+                            });
+
+                            $scope.formProcessing = false;
+
+                            return $q.reject();
+                        }
+
                         var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.demandAdTagForm, $scope.fieldNameTranslations);
                         $scope.formProcessing = false;
 
