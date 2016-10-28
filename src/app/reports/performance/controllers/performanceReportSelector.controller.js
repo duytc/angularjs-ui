@@ -797,12 +797,27 @@
                         key: 'site',
                         label: 'By Site',
                         toState: 'reports.performance.sites'
+                    }
+                ];
+            }
+
+            if(reportType.key == 'site' && reportType.toState == 'reports.performance.sites' && !!selectedData.siteId) {
+                reportType.breakdownOptions = [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.performance.site'
                     },
                     {
                         key: 'adslot',
                         label: 'By Ad Slot',
                         toState: 'reports.performance.siteAdSlots'
                     },
+                    {
+                        key: 'adtag',
+                        label: 'By Ad Tag',
+                        toState: 'reports.performance.siteAdTags'
+                    }
                 ];
             }
         }
