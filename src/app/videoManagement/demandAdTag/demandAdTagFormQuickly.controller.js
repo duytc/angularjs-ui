@@ -111,6 +111,7 @@
             if (false == isChangeTagURLValue) {
                 return;
             }
+            $scope.videoDemandAdTag.libraryVideoDemandAdTag.tagURL = _replaceSpaceByUTF8Code($scope.videoDemandAdTag.libraryVideoDemandAdTag.tagURL);
 
             ReplaceMacros.replaceVideoMacros($scope.videoDemandAdTag.libraryVideoDemandAdTag.tagURL)
                 .then(function() {
@@ -118,6 +119,12 @@
                 });
 
             isChangeTagURLValue = false;
+        }
+
+        function _replaceSpaceByUTF8Code(inputString) {
+            if (null != inputString) {
+                return inputString.replace(/\s/g, "%20");
+            }
         }
 
         function createQuicklyWhiteLink() {

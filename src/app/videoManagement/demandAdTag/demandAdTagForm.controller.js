@@ -104,12 +104,20 @@
                 return;
             }
 
+            $scope.demandAdTag.libraryVideoDemandAdTag.tagURL = _replaceSpaceByUTF8Code($scope.demandAdTag.libraryVideoDemandAdTag.tagURL);
+
             ReplaceMacros.replaceVideoMacros($scope.demandAdTag.libraryVideoDemandAdTag.tagURL)
                 .then(function () {
                     $scope.demandAdTag.libraryVideoDemandAdTag.tagURL = ReplaceMacros.getVideoUrl();
                 });
 
             isChangeTagURLValue = false;
+        }
+
+        function _replaceSpaceByUTF8Code(inputString) {
+            if (null != inputString) {
+                return inputString.replace(/\s/g,"%20");
+            }
         }
 
         function createQuicklyWhiteLink() {
