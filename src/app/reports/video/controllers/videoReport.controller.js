@@ -52,7 +52,10 @@
             'blocks': 'Blocks',
             'adTagRequests': 'Waterfall Requests',
             'adTagBids': 'Waterfall Bids',
-            'adTagErrors': 'Waterfall Errors'
+            'adTagErrors': 'Waterfall Errors',
+            'estDemandRevenue': 'Demand Revenue',
+            'estSupplyCost': 'Supply Cost',
+            'netRevenue': 'Net Revenue'
         };
 
         // merger data in object root

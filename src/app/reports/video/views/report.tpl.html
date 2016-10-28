@@ -45,6 +45,10 @@
                     <th ng-show="hasKeyObject(reportGroup.reports[0], 'adTagRequests')" at-attribute="adTagRequests">{{ titleForReport['adTagRequests'] }}</th>
                     <th ng-show="hasKeyObject(reportGroup.reports[0], 'adTagBids')" at-attribute="adTagBids">{{ titleForReport['adTagBids'] }}</th>
                     <th ng-show="hasKeyObject(reportGroup.reports[0], 'adTagErrors')" at-attribute="adTagErrors">{{ titleForReport['adTagErrors'] }}</th>
+
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'estDemandRevenue')" at-attribute="estDemandRevenue">{{ titleForReport['estDemandRevenue'] }}</th>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'estSupplyCost')" at-attribute="estSupplyCost">{{ titleForReport['estSupplyCost'] }}</th>
+                    <th ng-show="hasKeyObject(reportGroup.reports[0], 'netRevenue')" at-attribute="netRevenue">{{ titleForReport['netRevenue'] }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -111,6 +115,16 @@
                     </td>
                     <td ng-show="hasKeyObject(item, 'adTagRequests')" at-title="{{ titleForReport['adTagRequests'] }}" at-sortable at-attribute="adTagRequests">
                         {{ (item.adTagRequests != '-') ? (item.adTagRequests | number) : '-' }}
+                    </td>
+
+                    <td ng-show="hasKeyObject(item, 'estDemandRevenue')" at-title="{{ titleForReport['estDemandRevenue'] }}" at-sortable at-attribute="estDemandRevenue">
+                        {{ (item.estDemandRevenue != null) ? (item.estDemandRevenue | currency) : '-' }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'estSupplyCost')" at-title="{{ titleForReport['estSupplyCost'] }}" at-sortable at-attribute="estSupplyCost">
+                        {{ (item.estSupplyCost != null) ? (item.estSupplyCost | currency) : '-' }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'netRevenue')" at-title="{{ titleForReport['netRevenue'] }}" at-sortable at-attribute="netRevenue">
+                        {{ (item.netRevenue != null) ? (item.netRevenue | currency) : '-' }}
                     </td>
                 </tr>
                 </tbody>

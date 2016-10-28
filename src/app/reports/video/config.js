@@ -85,6 +85,18 @@
             {
                 key: 'adTagErrors',
                 label: 'Waterfall Errors'
+            },
+            {
+                key: 'estDemandRevenue',
+                label: 'Demand Revenue'
+            },
+            {
+                key: 'estSupplyCost',
+                label: 'Supply Cost'
+            },
+            {
+                key: 'netRevenue',
+                label: 'Net Revenue'
             }
         ])
         .provider('API_VIDEO_REPORTS_BASE_URL', {
