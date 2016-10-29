@@ -59,15 +59,15 @@
                     };
 
                     function selectExpectAdSlot(adSlot, expressionRoot, index) {
-                        if(!scope.hideStartingPositionAdTag) {
+                        if (!scope.hideStartingPositionAdTag) {
                             scope.hideStartingPositionAdTag = [];
                         }
 
-                        if(!scope.groups) {
+                        if (!scope.groups) {
                             scope.groups = [];
                         }
 
-                        if(!!expressionRoot) {
+                        if (!!expressionRoot) {
                             if(!!expressionRoot.startingPosition) {
                                 expressionRoot.startingPosition = null;
                             }
@@ -79,10 +79,10 @@
 
                         var adSlotId = !!adSlot.id ? adSlot.id : adSlot;
 
-                        if(adSlot.libType == scope.typesList.native) {
+                        if (adSlot.libType == scope.typesList.native) {
                             scope.hideStartingPositionAdTag[index] = true;
                         }
-                        if(adSlot.libType == scope.typesList.display) {
+                        if (adSlot.libType == scope.typesList.display) {
                             scope.hideStartingPositionAdTag[index] = false;
 
                             if(!scope.groups[adSlotId]) {
@@ -193,10 +193,16 @@
 
                     function getHeaderName(ruleName) {
 
-                        console.log("Rule Name:", ruleName);
-
                         if (!ruleName.name && !ruleName.expectLibraryAdSlot) {
                             return null;
+                        }
+
+                        if (!ruleName.name) {
+                            ruleName.name = '';
+                        }
+
+                        if (!ruleName.expectLibraryAdSlot) {
+                            return '';
                         }
 
                         var expectLibraryAdSlotObject = _.find(scope.adSlots,function(adSlot){
