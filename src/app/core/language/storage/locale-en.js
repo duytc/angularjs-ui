@@ -1054,7 +1054,7 @@
             "QUERY_BUILDER": {
                 "ADD_RULE": "Add Rule",
                 "EXPRESSION": "Expression",
-                "SHOW_GENERATED_EXPRESSION": "Show generated expression",
+                "SHOW_GENERATED_EXPRESSION": "Show generated rule",
                 "ENABLE_DRAG_DROP": "Enable Drag/Drop",
                 "STARTING_POSITION": "Starting Position",
                 "SELECT_A_POSITION": "Select a position",

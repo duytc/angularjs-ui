@@ -193,6 +193,8 @@
 
                     function getHeaderName(ruleName) {
 
+                        ruleName = angular.copy(ruleName);
+
                         if (!ruleName.name && !ruleName.expectLibraryAdSlot) {
                             return null;
                         }
@@ -202,7 +204,7 @@
                         }
 
                         if (!ruleName.expectLibraryAdSlot) {
-                            return '';
+                            return ruleName.name;
                         }
 
                         var expectLibraryAdSlotObject = _.find(scope.adSlots,function(adSlot){

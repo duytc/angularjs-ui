@@ -955,10 +955,12 @@
 
         function _refactorExpressions(libraryExpressions) {
             angular.forEach(libraryExpressions, function(libraryExpression) {
+                delete libraryExpression.openStatus;
+
                 angular.forEach(libraryExpression.expressions, function(expression) {
                     delete expression.hbBidPriceClone;
                     delete expression.dynamicAdSlot;
-                    delete expression.expressionInJs
+                    delete expression.expressionInJs;
                 });
 
                 _formatGroupVal(libraryExpression.expressionDescriptor.groupVal);
