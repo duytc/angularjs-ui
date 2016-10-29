@@ -335,3 +335,9 @@ body {
 .highlightedBorder {
     border: #ff4e28 1px solid !important;
 }
+
+.notUpperCase {
+  span{
+    text-transform: capitalize !important;
+  }
+}

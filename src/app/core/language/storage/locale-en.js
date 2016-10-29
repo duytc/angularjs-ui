@@ -581,7 +581,7 @@
                 "FROM_LIBRARY": "From Standalone",
                 "WIDTH": "Width",
                 "HEIGHT": "Height",
-                "EXPRESSION_BUILDER": "Expression Builder",
+                "TARGETING": "Targeting",
                 "SIZE": "Size",
                 "AUTO_FIT": "Auto Fit",
                 "PASSBACK_MODE": "Passback Mode",
@@ -1052,14 +1052,15 @@
                 "HELP_BLOCK_CHECK_EMAIL": "Enter your username or email address that you used to register. We'll send you an email with your username and a link to reset your password."
             },
             "QUERY_BUILDER": {
-                "ADD_EXPRESSION": "Add Expression",
+                "ADD_RULE": "Add Rule",
                 "EXPRESSION": "Expression",
-                "SHOW_GENERATED_EXPRESSION": "Show generated expression",
+                "SHOW_GENERATED_EXPRESSION": "Show generated rule",
                 "ENABLE_DRAG_DROP": "Enable Drag/Drop",
                 "STARTING_POSITION": "Starting Position",
                 "SELECT_A_POSITION": "Select a position",
                 "ADD_CONDITION": "Add Condition",
                 "ADD_GROUP": "Add Group",
+                "RULE_NAME": "Rule name",
 
                 "HELP_BLOCK_STARTING_POSITION": "Default position is the position of first ad tag found in this ad slot"
             }

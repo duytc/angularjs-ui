@@ -365,6 +365,7 @@
                 delete adSlot.passbackMode;
 
                 angular.forEach(adSlot.libraryExpressions, function(libraryExpression) {
+                    delete libraryExpression.openStatus;
                     _formatGroupVal(libraryExpression.expressionDescriptor.groupVal);
                 });
             }
