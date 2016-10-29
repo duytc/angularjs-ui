@@ -235,7 +235,9 @@
                 );
 
                 // disabled form input html when select ad tag library
-                return $scope.editorOptions.readOnly = 'nocursor';
+                // return $scope.editorOptions.readOnly = 'nocursor';
+
+                return;
             }
 
             if(!!$scope.adTag) {
@@ -278,6 +280,7 @@
 
             $scope.adTag.libraryAdTag.adNetwork = $scope.adTag.libraryAdTag.adNetwork.id ? $scope.adTag.libraryAdTag.adNetwork.id : $scope.adTag.libraryAdTag.adNetwork;
             delete $scope.adTag.libraryAdTag.associatedTagCount; // remove associatedTagCount
+            delete $scope.adTag.libraryAdTag.id; // remove associatedTagCount
 
             var Manager = $scope.selected.adSlot && $scope.selected.adSlot.libType == $scope.adSlotTypes.display ? DisplayAdSlotLibrariesManager : NativeAdSlotLibrariesManager;
 
