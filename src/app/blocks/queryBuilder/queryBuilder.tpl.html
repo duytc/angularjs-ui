@@ -14,7 +14,9 @@
             <accordion-group class="notUpperCase" is-open="expressionRoot.openStatus">
 
                 <accordion-heading>
-                    {{getHeaderName(expressionRoot)}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': expressionRoot.openStatus, 'glyphicon-chevron-right': !expressionRoot.openStatus}"></i>
+                    <div>
+                        {{getHeaderName(expressionRoot)}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': expressionRoot.openStatus, 'glyphicon-chevron-right': !expressionRoot.openStatus}"></i>
+                    </div>
                 </accordion-heading>
 
                 <div class="form-group expect-adSlot">

@@ -170,7 +170,7 @@
                         ruleName = angular.copy(ruleName);
 
                         if (!ruleName.name && !ruleName.expectLibraryAdSlot) {
-                            return null;
+                            return 'New Rule';
                         }
 
                         if (!ruleName.name) {
