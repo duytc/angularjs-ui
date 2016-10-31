@@ -13,12 +13,14 @@
         <accordion close-others="true">
             <accordion-group class="notUpperCase" is-open="expressionRoot.openStatus">
                 <accordion-heading>
-                    {{getHeaderName(expressionRoot)}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': expressionRoot.openStatus, 'glyphicon-chevron-right': !expressionRoot.openStatus}"></i>
+                    <div>
+                        {{getHeaderName(expressionRoot)}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': expressionRoot.openStatus, 'glyphicon-chevron-right': !expressionRoot.openStatus}"></i>
+                    </div>
                 </accordion-heading>
 
                 <div class="form-group expect-adSlot">
                     <label for="inputName">{{ 'NAME' | translate }}</label>
-                    <input server-error name="name" ng-model="expressionRoot.name" ng-required="false" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="{{ 'QUERY_BUILDER.RULE_NAME' | translate }}">
+                    <input server-error name="name" ng-model="expressionRoot.name" type="text" class="form-control" id="inputName" placeholder="{{ 'QUERY_BUILDER.RULE_NAME' | translate }}">
                 </div>
 
                 <div class="form-group expect-adSlot">
