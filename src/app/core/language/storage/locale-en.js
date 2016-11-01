@@ -1053,7 +1053,7 @@
             },
             "QUERY_BUILDER": {
                 "ADD_RULE": "Add Rule",
-                "EXPRESSION": "Expression",
+                "RULE": "Rule",
                 "SHOW_GENERATED_EXPRESSION": "Show generated rule",
                 "ENABLE_DRAG_DROP": "Enable Drag/Drop",
                 "STARTING_POSITION": "Starting Position",
