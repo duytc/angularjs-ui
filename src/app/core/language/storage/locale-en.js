@@ -623,7 +623,7 @@
                 "PLACEHOLDER_AD_SLOT_NAME": "Ad Slot name",
                 "HELP_BLOCK_COPY_TAG": "Copy and paste the following ad tag into the <body> section of your website.",
                 "HELP_BLOCK_FROM_LIBRARY": "You can select an existing ad slot from your standalone ad slots. If you choose this option, all of the fields below will not be editable. If you would like to change these fields, you may do so the the standalone ad slots section.",
-                "HELP_BLOCK_DEFAULT_AD_SLOT": "If no default ad slot is selected and no expressions match, the ad slot will not be shown on the page.",
+                "HELP_BLOCK_DEFAULT_AD_SLOT": "If no default ad slot is selected and no rules match, the ad slot will not be shown on the page.",
                 "HELP_BLOCK_AUTO_FIT": "When Auto Fit is enabled, the ad slot will dynamically resize if the ad served is different from the size defined above.",
                 "HELP_BLOCK_FLOOR_PRICE": "If the RTB bid price is lower than this amount, the ad tag waterfall will serve instead.",
                 "HELP_BLOCK_RTB": "Enable RTB for this ad slot or inherit the RTB config from the associated site.",
