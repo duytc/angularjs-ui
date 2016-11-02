@@ -181,9 +181,14 @@
                             return ruleName.name;
                         }
 
-                        var expectLibraryAdSlotObject = _.find(scope.adSlots,function(adSlot){
-                            return adSlot.libraryAdSlot.id == ruleName.expectLibraryAdSlot.id || adSlot.libraryAdSlot.id == ruleName.expectLibraryAdSlot;
-                        });
+                        var expectLibraryAdSlotObject = null;
+                        if(angular.isObject(ruleName.expectLibraryAdSlot)) {
+                            expectLibraryAdSlotObject = {libraryAdSlot: ruleName.expectLibraryAdSlot};
+                        } else {
+                            expectLibraryAdSlotObject = _.find(scope.adSlots,function(adSlot){
+                                return adSlot.libraryAdSlot.id == ruleName.expectLibraryAdSlot.id || adSlot.libraryAdSlot.id == ruleName.expectLibraryAdSlot;
+                            });
+                        }
 
                         headerName =   expectLibraryAdSlotObject ? (ruleName.name + ' (' + expectLibraryAdSlotObject.libraryAdSlot.name  +')'): ruleName.name;
 

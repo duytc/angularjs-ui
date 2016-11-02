@@ -207,9 +207,14 @@
                             return ruleName.name;
                         }
 
-                        var expectLibraryAdSlotObject = _.find(scope.adSlots,function(adSlot){
-                            return adSlot.id == ruleName.expectLibraryAdSlot.id || adSlot.id == ruleName.expectLibraryAdSlot;
-                        });
+                        var expectLibraryAdSlotObject = null;
+                        if(angular.isObject(ruleName.expectLibraryAdSlot)) {
+                            expectLibraryAdSlotObject = ruleName.expectLibraryAdSlot;
+                        } else {
+                            expectLibraryAdSlotObject = _.find(scope.adSlots,function(adSlot){
+                                return adSlot.id == ruleName.expectLibraryAdSlot.id || adSlot.id == ruleName.expectLibraryAdSlot;
+                            });
+                        }
 
                         headerName =   expectLibraryAdSlotObject ? (ruleName.name + ' (' + expectLibraryAdSlotObject.name  +')'): ruleName.name;
                         return headerName;
