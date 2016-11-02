@@ -5,7 +5,7 @@
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
             {{ 'REPORT.DAILY_SITE_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" fields="['date', 'inBannerImpressions', 'inBannerBilledAmount', 'inBannerBilledRate']" header="['Date', 'Impressions', 'Billed Amount', 'Billed Rate']" file-name="getExportExcelFileName"></export-excel>
+                <export-excel data="reports" fields="['date', 'visits', 'videoAdImpressions', 'billedAmount', 'billedRate']" header="['Date', 'Visits', 'Ad Impressions', 'Billed Amount', 'Billed Rate']" file-name="getExportExcelFileName"></export-excel>
             </div>
         </div>
         <div class="table-responsive">
@@ -22,10 +22,10 @@
                     <td at-title="{{ 'SOURCE_REPORT_MODULE.AD_IMPRESSIONS' | translate }}" at-attribute="videoAdImpressions" at-sortable>
                         {{ (item.videoAdImpressions != null ? item.videoAdImpressions : 0) | number }}
                     </td>
-                    <td at-title="{{ 'REPORT.BILLED_AMOUNT' | translate }}" at-attribute="inBannerBilledAmount" at-sortable>
+                    <td at-title="{{ 'REPORT.BILLED_AMOUNT' | translate }}" at-attribute="billedAmount" at-sortable>
                         {{ (item.billedAmount != null ? item.billedAmount : 0) | currency }}
                     </td>
-                    <td at-title="{{ 'REPORT.BILLED_RATE' | translate }}" at-attribute="inBannerBilledRate" at-sortable>
+                    <td at-title="{{ 'REPORT.BILLED_RATE' | translate }}" at-attribute="billedRate" at-sortable>
                         {{ (item.billedRate != null ? item.billedRate : 0) | number:4 }}
                     </td>
                 </tr>
