@@ -56,7 +56,7 @@
                 descriptor: null,
                 partnerTagId: null,
                 inBannerDescriptor: {
-                    platform: null,
+                    platform: 'auto',
                     timeout: null,
                     playerWidth: null,
                     playerHeight: null,

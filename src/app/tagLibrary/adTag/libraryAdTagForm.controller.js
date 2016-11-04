@@ -30,7 +30,7 @@
             adType: $scope.adTypes.customAd,
             descriptor: null,
             inBannerDescriptor: {
-                platform: null,
+                platform: 'auto',
                 timeout: null,
                 playerWidth: null,
                 playerHeight: null,
