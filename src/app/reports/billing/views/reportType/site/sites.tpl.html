@@ -26,7 +26,7 @@
                         {{ item.slotOpportunities | number }}
                     </td>
                     <td at-title="{{ 'REPORT.BILLED_AMOUNT' | translate }}" at-attribute="billedAmount" at-sortable>
-                        {{ item.billedAmount | currency }}
+                        {{ item.billedAmount | currency:'$':4 }}
                     </td>
                 </tr>
                 </tbody>

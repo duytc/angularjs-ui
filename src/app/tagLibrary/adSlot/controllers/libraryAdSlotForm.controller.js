@@ -299,12 +299,7 @@
             if(!$scope.isNew) {
                 if(adSlotType == $scope.typesList.dynamic) {
                     angular.forEach(adSlot.libraryExpressions, function(libraryExpression) {
-                        angular.forEach(libraryExpression.expressionDescriptor.groupVal, function(group) {
-                            if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}')) {
-                                group.val = group.val.split(',');
-                                group.cmp = group.cmp == '==' ||  group.cmp == 'is' ? 'is' : 'isNot';
-                            }
-                        });
+                        _convertGroupVal(libraryExpression.expressionDescriptor.groupVal);
                     });
 
                     _getAdSlots(adSlotType)
@@ -370,11 +365,8 @@
                 delete adSlot.passbackMode;
 
                 angular.forEach(adSlot.libraryExpressions, function(libraryExpression) {
-                    angular.forEach(libraryExpression.expressionDescriptor.groupVal, function(group) {
-                        if(angular.isObject(group.val)) {
-                            group.val = group.val.toString();
-                        }
-                    });
+                    delete libraryExpression.openStatus;
+                    _formatGroupVal(libraryExpression.expressionDescriptor.groupVal);
                 });
             }
             else {
@@ -397,6 +389,31 @@
             }
 
             return adSlot;
+        }
+
+        function _formatGroupVal(groupVal) {
+            angular.forEach(groupVal, function(group) {
+                if(angular.isObject(group.val)) {
+                    group.val = group.val.toString();
+                }
+
+                if(angular.isObject(group.groupVal)) {
+                    _formatGroupVal(group.groupVal);
+                }
+            });
+        }
+
+        function _convertGroupVal(groupVal) {
+            angular.forEach(groupVal, function(group) {
+                if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}')) {
+                    group.val = group.val.split(',');
+                    group.cmp = group.cmp == '==' ||  group.cmp == 'is' ? 'is' : 'isNot';
+                }
+
+                if(angular.isObject(group.groupVal)) {
+                    _convertGroupVal(group.groupVal);
+                }
+            });
         }
     }
 })();

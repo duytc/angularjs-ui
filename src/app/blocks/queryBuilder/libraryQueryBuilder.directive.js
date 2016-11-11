@@ -20,7 +20,10 @@
             restrict: 'AE',
             templateUrl: 'blocks/queryBuilder/libraryQueryBuilder.tpl.html',
             compile: function (element, attrs) {
-                var content, directive;
+                var content,
+                    directive,
+                    headerName;
+
                 content = element.contents().remove();
                 return function (scope, element, attrs) {
                     scope.operators = OPERATORS;
@@ -30,6 +33,10 @@
 
                     var groupKey = GROUP_KEY;
                     var groupTYPE = GROUP_TYPE;
+                    var headerName =  null;
+                    scope.status = {
+                        isFirstOpen: false
+                    };
 
                     scope.addExpression = addExpression;
                     scope.enableDragDropQueryBuilder = enableDragDropQueryBuilder;
@@ -38,6 +45,8 @@
                     scope.filterEntityType = filterEntityType;
                     scope.expectAdSlotIsDisplay = expectAdSlotIsDisplay;
                     scope.changeHeaderBidPrice = changeHeaderBidPrice;
+                    scope.getHeaderName = getHeaderName;
+                    scope.isCollapsedRule = isCollapsedRule;
 
                     scope.sortableOptions = {
                         disabled: true,
@@ -50,15 +59,15 @@
                     };
 
                     function selectExpectAdSlot(adSlot, expressionRoot, index) {
-                        if(!scope.hideStartingPositionAdTag) {
+                        if (!scope.hideStartingPositionAdTag) {
                             scope.hideStartingPositionAdTag = [];
                         }
 
-                        if(!scope.groups) {
+                        if (!scope.groups) {
                             scope.groups = [];
                         }
 
-                        if(!!expressionRoot) {
+                        if (!!expressionRoot) {
                             if(!!expressionRoot.startingPosition) {
                                 expressionRoot.startingPosition = null;
                             }
@@ -70,10 +79,10 @@
 
                         var adSlotId = !!adSlot.id ? adSlot.id : adSlot;
 
-                        if(adSlot.libType == scope.typesList.native) {
+                        if (adSlot.libType == scope.typesList.native) {
                             scope.hideStartingPositionAdTag[index] = true;
                         }
-                        if(adSlot.libType == scope.typesList.display) {
+                        if (adSlot.libType == scope.typesList.display) {
                             scope.hideStartingPositionAdTag[index] = false;
 
                             if(!scope.groups[adSlotId]) {
@@ -128,8 +137,12 @@
 
                         // default condition
                         scope.expressions.push({
-                            expressionDescriptor: expressionDescriptor
+                            expressionDescriptor: expressionDescriptor,
+                            name: null,
+                            expectLibraryAdSlot: null,
+                            openStatus: true
                         });
+
                     }
 
                     function filterEntityType(adSlot) {
@@ -178,6 +191,40 @@
                         expression.hbBidPrice = expression.hbBidPriceClone
                     }
 
+                    function getHeaderName(ruleName) {
+
+                        ruleName = angular.copy(ruleName);
+
+                        if (!ruleName.name && !ruleName.expectLibraryAdSlot) {
+                            return 'New Rule';
+                        }
+
+                        if (!ruleName.name) {
+                            ruleName.name = '';
+                        }
+
+                        if (!ruleName.expectLibraryAdSlot) {
+                            return ruleName.name;
+                        }
+
+                        var expectLibraryAdSlotObject = null;
+                        if(angular.isObject(ruleName.expectLibraryAdSlot)) {
+                            expectLibraryAdSlotObject = ruleName.expectLibraryAdSlot;
+                        } else {
+                            expectLibraryAdSlotObject = _.find(scope.adSlots,function(adSlot){
+                                return adSlot.id == ruleName.expectLibraryAdSlot.id || adSlot.id == ruleName.expectLibraryAdSlot;
+                            });
+                        }
+
+                        headerName =   expectLibraryAdSlotObject ? (ruleName.name + ' (' + expectLibraryAdSlotObject.name  +')'): ruleName.name;
+                        return headerName;
+                    }
+
+                    function isCollapsedRule(expression) {
+                        console.log("test");
+                        return (expression.name ==  null && expression.expectLibraryAdSlot == null);
+                    }
+
                     function enableDragDropQueryBuilder(enable) {
                         scope.sortableOptions['disabled'] = enable;
                     }
@@ -194,13 +241,15 @@
                         return showString;
                     }
 
-                    scope.$watch(function() { return scope.adSlots }, function () {
-                        if(!scope.adSlots && !scope.groups) {
+                    scope.$watch(function() {
+                        return scope.adSlots
+                    }, function() {
+                        if (!scope.adSlots && !scope.groups) {
                             return;
                         }
 
                         angular.forEach(scope.expressions, function(expressionRoot) {
-                            if(angular.isObject(expressionRoot.expectLibraryAdSlot)) {
+                            if (angular.isObject(expressionRoot.expectLibraryAdSlot)) {
                                 expressionRoot.expectLibraryAdSlot = expressionRoot.expectLibraryAdSlot.id;
                             }
                         })

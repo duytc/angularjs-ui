@@ -255,6 +255,7 @@
                     report: {
                         controller: 'ReportView',
                         templateUrl: function($stateParams) {
+
                             if($stateParams.subBreakDown == 'day') {
                                 return 'reports/performance/views/reportType/site/adSlotsByDay.tpl.html'
                             }

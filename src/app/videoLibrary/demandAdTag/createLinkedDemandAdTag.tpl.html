@@ -1,0 +1,114 @@
+<form name="createLinkedAdSlots" role="form" ng-submit="submit()" novalidate>
+    <div class="modal-header">
+        <h4 class="modal-title">{{ 'VIDEO_AD_TAG_MODULE.TITLE_CREATE_LINKED_DEMAND_AD_TAG' | translate }} : <strong>{{ demandAdTag.name }}</strong></h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-12 form-validation form-horizontal">
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ 'VIDEO_PUBLISHER' | translate }}</label>
+                    <div class="col-sm-10">
+                        <isteven-multi-select id="videoPublisher" output-properties="id" input-model="videoPublishers" output-model="selectData.videoPublishers" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{'AD_SOURCE_MODULE.SELL_PRICE'|translate}} </label>
+                    <div class="col-sm-10 form-control-static">
+                        {{ demandAdTag.sellPrice | currency }}
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="demandAdTag.sellPrice != null">
+                    <label class="col-sm-2 control-label">{{ 'AD_SOURCE_MODULE.WATERFALL_SELECTION' | translate }}</label>
+                    <div class="col-sm-10">
+                        <ui-select name="waterfallSelection" id="inputWaterfallSelection" ng-model="selectFilterData.waterfallSelection" on-select="selectWaterfallSelection($item)" ng-required="true" server-error>
+                            <ui-select-match placeholder="Select">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="option.key as option in waterfallSelectionOptions | filter:$select.search">
+                                {{ option.label }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="selectFilterData.waterfallSelection == 'fixedProfit'">
+                    <label  class="col-sm-2 control-label">{{ 'AD_SOURCE_MODULE.FIXED_PROFIT' | translate }}</label>
+                    <div class="col-sm-10">
+                         <input name="fixedProfit" class="form-control" type="number" ng-model="selectFilterData.fixedProfit" ng-change="setRequiredBuyPrice(selectFilterData.fixedProfit)" server-error id="fixedProfit" placeholder="{{ 'AD_SOURCE_MODULE.FIXED_PROFIT' | translate }}">
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="selectFilterData.waterfallSelection == 'profitMargin'">
+                    <label  class="col-sm-2 control-label">{{ 'AD_SOURCE_MODULE.PROFIT_MARGIN' | translate }}</label>
+                    <div class="col-sm-10">
+                        <input name="profitMargin" class="form-control" type="number" ng-model="selectFilterData.profitMargin" ng-change="setRequiredBuyPrice(selectFilterData.profitMargin)" server-error id="profitMargin" placeholder="{{ 'AD_SOURCE_MODULE.PROFIT_MARGIN' | translate }}">
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="(selectFilterData.waterfallSelection != 'manual') && (demandAdTag.sellPrice !=null)">
+                    <label class="col-sm-2 control-label">{{'AD_SOURCE_MODULE.REQUIRED_BUY_PRICE'|translate}} </label>
+                    <div class="col-sm-10 form-control-static">
+                        {{ selectFilterData.requiredBuyPrice | currency }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputWaterfall" class="col-sm-2 control-label">{{ 'WATERFALL_TAGS' | translate }}</label>
+                    <div class="col-sm-10">
+                        <isteven-multi-select id="inputWaterfall" input-model="waterfallTags" output-model="selectData.waterfalls" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputPosition" class="col-sm-2 control-label">{{ 'VIDEO_AD_TAG_MODULE.POSITION' | translate }}</label>
+                    <div class="col-sm-10">
+                        <input name="position" id="inputPosition" ng-model="selectData.position" server-error type="number" class="form-control" placeholder="{{ 'VIDEO_AD_TAG_MODULE.POSITION' | translate }}">
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="!!selectData.position">
+                    <label for="inputShiftDown" class="col-sm-2 control-label">{{ 'AD_SOURCE_MODULE.SHIFT_DOWN' | translate }}</label>
+                    <div class="col-sm-10">
+                        <label class="ui-checkbox">
+                            <input name="active" type="checkbox" ng-model="selectData.shiftDown" server-error id="inputShiftDown"><span></span>
+                        </label>
+
+                        <span class="help-block">{{ 'AD_SOURCE_MODULE.HELP_BLOCK_AUTO_POSITION' | translate }}</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputPriority" class="col-sm-2 control-label">{{ 'AD_SOURCE_MODULE.PRIORITY' | translate }}</label>
+                    <div class="col-sm-10">
+                        <input name="priority" id="inputPriority" ng-model="selectData.priority" server-error type="number" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_PRIORITY' | translate }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ 'AD_SOURCE_MODULE.WEIGHT' | translate }}</label>
+                    <div class="col-sm-10">
+                        <input name="weight" ng-model="selectData.rotationWeight" server-error type="number" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_WEIGHT' | translate }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputActive" class="col-sm-2 control-label">{{ 'AD_SOURCE_MODULE.ACTIVE' | translate }}</label>
+                    <div class="col-sm-10">
+                        <div>
+                            <label class="ui-checkbox">
+                                <input name="active" type="checkbox" ng-model="selectData.active" server-error id="inputActive">
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="$dismiss()" type="button">{{ 'CANCEL' | translate }}</button>
+        <button class="btn btn-danger" ng-disabled="!isFormValid()" type="submit">{{ 'SUBMIT' | translate }}</button>
+    </div>
+</form>

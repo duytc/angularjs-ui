@@ -5,7 +5,7 @@
         .controller('TagGenerator', TagGenerator)
     ;
 
-    function TagGenerator($scope, $translate, $location, $q, channelList, site, channel, jstags, publishers, SiteManager, ChannelManager, adminUserManager, accountManager, Auth, USER_MODULES) {
+    function TagGenerator($scope, $translate, $location, $q, channelList, site, channel, jstags, publishers, SiteManager, ChannelManager, adminUserManager, accountManager, userSession, Auth, USER_MODULES) {
         $scope.formProcessing = false;
         $scope.jstagCopy = angular.copy(jstags);
         var totalRecord = null;
@@ -56,7 +56,8 @@
             generatorFor: !!channel ? 'channel' : 'site',
             site: site,
             channel: channel,
-            adSlotType: null
+            adSlotType: null,
+            forceSecure: false
         };
 
         $scope.typeSelected = !!site || !!channel ? $scope.typeKey.adSlot : $scope.typeKey.passback;
@@ -168,6 +169,20 @@
             ;
         };
 
+        $scope.hasDisplayAdsModuleAndSecure = function () {
+            if(!$scope.selected.publisher && $scope.isAdmin()) {
+                return false;
+            }
+
+            if($scope.isAdmin()) {
+                return $scope.selected.publisher.enabledModules.indexOf(USER_MODULES.displayAds) > -1 && ($scope.selected.publisher.tagDomain.length == 0 || !$scope.selected.publisher.tagDomain || !!$scope.selected.publisher.tagDomain.secure)
+            } else {
+                return userSession.enabledModules.indexOf(USER_MODULES.displayAds) > -1 && (userSession.tagDomain.length == 0 || !userSession.tagDomain || !!userSession.tagDomain.secure)
+            }
+
+            return false;
+        };
+
         $scope.filterByAnalytics = function(type) {
             if(!$scope.isAdmin() && type.key == $scope.typeKey.header && Auth.getSession().enabledModules.indexOf(USER_MODULES.analytics) == -1) {
                 return false
@@ -217,29 +232,29 @@
                 if($scope.selected.generatorFor == 'channel') {
                     var channel = $scope.selected.channel;
 
-                    return ChannelManager.one(channel.id).customGET('jstags');
+                    return ChannelManager.one(channel.id).customGET('jstags', {forceSecure: $scope.selected.forceSecure});
                 }
 
                 var site = $scope.selected.site;
-                return SiteManager.one(site.id).customGET('jstags');
+                return SiteManager.one(site.id).customGET('jstags', {forceSecure: $scope.selected.forceSecure});
             }
 
             if ($scope.selected.type == $scope.typeKey.passback) {
                 if($scope.isAdmin()) {
-                    return adminUserManager.one($scope.selected.publisher.id).customGET('jspassback');
+                    return adminUserManager.one($scope.selected.publisher.id).customGET('jspassback', {forceSecure: $scope.selected.forceSecure});
                 } else {
-                    return accountManager.one().customGET('jspassback')
+                    return accountManager.one().customGET('jspassback', {forceSecure: $scope.selected.forceSecure})
                 }
             }
 
             if ($scope.selected.type == $scope.typeKey.header) {
-                return SiteManager.one($scope.selected.site.id).customGET('jsheadertag');
+                return SiteManager.one($scope.selected.site.id).customGET('jsheadertag', {forceSecure: $scope.selected.forceSecure});
             }
 
             if($scope.isAdmin()) {
-                return adminUserManager.one($scope.selected.publisher.id).customGET('ronjstags');
+                return adminUserManager.one($scope.selected.publisher.id).customGET('ronjstags', {forceSecure: $scope.selected.forceSecure});
             } else {
-                return accountManager.one().customGET('ronjstags')
+                return accountManager.one().customGET('ronjstags', {forceSecure: $scope.selected.forceSecure})
             }
         }
 

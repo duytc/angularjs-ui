@@ -5,7 +5,7 @@
         .controller('LibraryAdTagForm', LibraryAdTagForm)
     ;
 
-    function LibraryAdTagForm($scope, $modal, $translate, AlertService, ServerErrorProcessor, AdNetworkCache, adTag, publisherList, adNetworkList, AdTagLibrariesManager, historyStorage, AD_TYPES, HISTORY_TYPE_PATH) {
+    function LibraryAdTagForm($scope, Auth, $modal, $translate, AlertService, ServerErrorProcessor, AdNetworkCache, adTag, publisherList, adNetworkList, AdTagLibrariesManager, historyStorage, AD_TYPES, USER_MODULES, PLATFORM_VAST_TAG, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             adNetwork: 'adNetwork',
             html: 'html'
@@ -19,6 +19,7 @@
 
         $scope.isNew = adTag === null;
         $scope.adTypes = AD_TYPES;
+        $scope.platforms = PLATFORM_VAST_TAG;
         $scope.formProcessing = false;
         $scope.adNetworkList = adNetworkList;
         $scope.publisherList = publisherList;
@@ -27,7 +28,14 @@
             html: null,
             adNetwork: null,
             adType: $scope.adTypes.customAd,
-            descriptor: null
+            descriptor: null,
+            inBannerDescriptor: {
+                platform: 'auto',
+                timeout: null,
+                playerWidth: null,
+                playerHeight: null,
+                vastTags: [{tag: null}]
+            }
         };
 
         $scope.selected = {
@@ -39,6 +47,12 @@
                 $scope.adTag.descriptor = null;
             }
         }
+
+        $scope.sortableOptions = {
+            disabled: true,
+            forcePlaceholderSize: true,
+            placeholder: 'sortable-placeholder'
+        };
 
         $scope.isFormValid = function() {
             return $scope.adTagLibraryForm.$valid;
@@ -80,6 +94,36 @@
                         $scope.adNetworkList = adNetworks;
                     });
             })
+        };
+
+        $scope.addVast = function () {
+            $scope.adTag.inBannerDescriptor.vastTags.push({
+                tag: null
+            })
+        };
+
+        $scope.removeTag = function (index) {
+            if(index > -1) {
+                $scope.adTag.inBannerDescriptor.vastTags.splice(index, 1)
+            }
+        };
+
+        $scope.enableDragDropVastTag = function(enable) {
+            $scope.sortableOptions['disabled'] = enable;
+        };
+
+        $scope.hasInBanner = function () {
+            if($scope.isAdmin() && !$scope.selected.publisher) {
+                return false
+            } else if($scope.isAdmin() && !!$scope.selected.publisher) {
+                return $scope.selected.publisher.enabledModules.indexOf(USER_MODULES.inBanner) > -1
+            }
+
+            return Auth.getSession().hasModuleEnabled(USER_MODULES.inBanner);
+        };
+
+        $scope.moveVastTag = function(array, from, to) {
+            array.splice(to, 0, array.splice(from, 1)[0]);
         };
 
         $scope.submit = function() {

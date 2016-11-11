@@ -1,0 +1,219 @@
+<section class="panel panel-default">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
+
+        <div class="button-bar">
+            <button ng-if="!isNew" ng-click="backToListDemandAdTag()" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                {{ 'AD_SOURCE_MODULE.BACK_TO_AD_SOURCE_LIST' | translate }}
+            </button>
+        </div>
+        <div class="btn-group btnGrouped" dropdown ng-if="!isNew">
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ng-click="backToListDemandAdTag()">{{ 'AD_SOURCE_MODULE.BACK_TO_AD_SOURCE_LIST' | translate }}</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <form name="demandAdTagForm" class="col-lg-12 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
+                <div class="form-group" ng-if="!isNew && isAdmin()">
+                    <label class="col-sm-1 control-label">{{ 'PUBLISHER' | translate }}</label>
+                    <div class="col-sm-5 form-control-static">
+                        {{ demandAdTag.libraryVideoDemandAdTag.videoDemandPartner.publisher.company }}
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="isNew && isAdmin()">
+                    <label for="inputPublisher" class="col-sm-1 control-label">{{ 'PUBLISHER' | translate }}</label>
+                    <div class="col-sm-5">
+                        <ui-select name="publisher" id="inputPublisher" ng-model="selectedData.publisher" ng-required="true" server-error on-select="selectPublisher($item)">
+                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
+                            <ui-select-choices repeat="publisher.id as publisher in publishers | filter:$select.search">
+                                {{ publisher.company }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">{{ 'VIDEO_DEMAND_PARTNER' | translate }}</label>
+                    <div class="col-sm-5">
+                        <ui-select name="publisher" id="inputVideoDemandPartner" ng-disabled="!selectedData.publisher && isAdmin() && isNew" ng-model="demandAdTag.libraryVideoDemandAdTag.videoDemandPartner" ng-required="true" server-error on-select="selectVideoDemandPartner($item)">
+                            <ui-select-match placeholder="{{ 'VIDEO_DEMAND_PARTNER_MODULE.SELECT_A_VIDEO_DEMAND_PARTNER' | translate }}">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices repeat="partner.id as partner in demandPartners | filter:$select.search | selectedPublisher:selectedData.publisher">
+                                {{ partner.name }}
+                            </ui-select-choices>
+                        </ui-select>
+
+                        <a ng-click="createVideoDemandPartner()" class="help-block">{{ 'VIDEO_DEMAND_PARTNER_MODULE.ADD_NEW_VIDEO_DEMAND_PARTNER' | translate }}</a>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">{{ 'NAME' | translate }}</label>
+                    <div class="col-sm-5">
+                        <input name="tagUrl" ng-model="demandAdTag.libraryVideoDemandAdTag.name" server-error ng-required="true" type="text" class="form-control" placeholder="{{ 'NAME' | translate }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.TAG_URL' | translate }}</label>
+                    <div class="col-sm-5">
+                        <textarea name="tagUrl" spellcheck="false" rows="5" ng-pattern="/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/" ng-change = "isChangeTagURL()" ng-blur="replaceMacros()" ng-model="demandAdTag.libraryVideoDemandAdTag.tagURL" server-error ng-required="true" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.TAG_URL' | translate }}"> </textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.SELL_PRICE' | translate }}</label>
+                    <div class="col-sm-5">
+                        <input name="sellPrice" ng-model="demandAdTag.libraryVideoDemandAdTag.sellPrice" min="0" type="text" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_WEIGHT' | translate }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.PRIORITY' | translate }}</label>
+                    <div class="col-sm-5">
+                        <input name="priority" ignore-mouse-wheel  ng-model="demandAdTag.priority" server-error type="number" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_PRIORITY' | translate }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.WEIGHT' | translate }}</label>
+                    <div class="col-sm-5">
+                        <input name="weight" ignore-mouse-wheel ng-model="demandAdTag.rotationWeight" server-error type="number" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_WEIGHT' | translate }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.TIMEOUT' | translate }}</label>
+                    <div class="col-sm-5">
+                        <input name="timeout" ignore-mouse-wheel ng-model="demandAdTag.libraryVideoDemandAdTag.timeout" server-error type="number" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.TIMEOUT' | translate }}">
+
+                        <span class="help-block">{{ 'AD_SOURCE_MODULE.HELP_BLOCK_TIMEOUT' | translate }}</span>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="pickFromLibrary || (!isNew && demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)">
+                    <label for="inputTargetingOverride" class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.TARGETING_OVERRIDE' | translate }}</label>
+                    <div class="col-sm-5">
+                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="demandAdTag.targetingOverride" id="inputTargetingOverride"><span></span></label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.TARGETING' | translate }}</label>
+                    <div class="col-sm-5">
+                        <div class="expressions-group">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.COUNTRIES' | translate }}</label>
+                                    <div class="col-sm-9">
+                                        <ui-select multiple ng-disabled="!demandAdTag.targetingOverride && (pickFromLibrary || demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.countries" ng-required="true" close-on-select="false" server-error reset-search-input="'false'">
+                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_COUNTRIES' | translate }}">{{ $item.name }}</ui-select-match>
+                                            <ui-select-choices group-by="groupEntities" repeat="country.code as country in countries | filter:filterExcludeCountriesSelected | filter:$select.search">
+                                                {{ country.name }}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.EXCLUDE_COUNTRIES' | translate }}</label>
+                                    <div class="col-sm-9">
+                                        <ui-select multiple ng-disabled="!demandAdTag.targetingOverride && (pickFromLibrary || demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.exclude_countries" ng-required="true" close-on-select="false" server-error reset-search-input="'false'">
+                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_COUNTRIES' | translate }}">{{ $item.name }}</ui-select-match>
+                                            <ui-select-choices group-by="groupEntities" repeat="country.code as country in countries | filter:filterCountriesSelected | filter:$select.search">
+                                                {{ country.name }}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.DOMAINS' | translate }}</label>
+                                    <div class="col-sm-9">
+                                        <oi-select ng-disabled="!demandAdTag.targetingOverride && (pickFromLibrary || demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" oi-options="item.name for item in whiteList | selectedPublisher:selectedData.publisher" ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.domains" multiple oi-select-options="{newItem: false, newItemFn: 'addDomain($query)'}" placeholder="{{ 'AD_SOURCE_MODULE.DOMAINS' | translate }}"></oi-select>
+
+                                        <div class="inline">
+                                            <a ng-click="createQuicklyWhiteLink()" class="help-block pull-left">{{ 'AD_SOURCE_MODULE.CREATE_WHITE_LIST' | translate }}</a>
+                                            <a ng-click="viewQuicklyWhiteLink()" class="help-block pull-right">{{ 'AD_SOURCE_MODULE.VIEW_WHITE_LIST' | translate }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.EXCLUDE_DOMAINS' | translate }}</label>
+                                    <div class="col-sm-9">
+                                        <oi-select ng-disabled="!demandAdTag.targetingOverride && (pickFromLibrary || demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" oi-options="item.name for item in blackList | selectedPublisher:selectedData.publisher" ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.exclude_domains" multiple oi-select-options="{newItem: false, newItemFn: 'addDomain($query)'}" placeholder="{{ 'AD_SOURCE_MODULE.EXCLUDE_DOMAINS' | translate }}"></oi-select>
+
+                                        <div class="inline">
+                                            <a ng-click="createQuicklyBlackLink()" class="help-block pull-left">{{ 'AD_SOURCE_MODULE.CREATE_BLACK_LIST' | translate }}</a>
+                                            <a ng-click="viewQuicklyBlackLink()" class="help-block pull-right">{{ 'AD_SOURCE_MODULE.VIEW_BLACK_LIST' | translate }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.PLATFORM' | translate }}</label>
+                                    <div class="col-sm-9">
+                                        <ui-select ng-disabled="!demandAdTag.targetingOverride && (pickFromLibrary || demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" multiple name="platform" id="inputPlatform" ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.platform" ng-required="true" server-error>
+                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_PLATFORM' | translate }}">{{ $item.label }}</ui-select-match>
+                                            <ui-select-choices repeat="platform.key as platform in platformOption | filter:$select.search">
+                                                {{ platform.label }}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.PLAYER_SIZE' | translate }}</label>
+                                    <div class="col-sm-9">
+                                        <ui-select ng-disabled="!demandAdTag.targetingOverride && (pickFromLibrary || demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" multiple name="playerSize" close-on-select="false" ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.player_size" ng-required="true" server-error>
+                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_PLAYER_SIZE' | translate }}">{{ $item.label }}</ui-select-match>
+                                            <ui-select-choices repeat="player.key as player in playerSizeOptions | filter:$select.search">
+                                                {{ player.label }}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.REQUIRED_MACROS' | translate }}</label>
+                                    <div class="col-sm-9">
+                                        <ui-select ng-disabled="!demandAdTag.targetingOverride && (pickFromLibrary || demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" multiple name="requiredMacros" close-on-select="false" ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.required_macros" ng-required="true" server-error>
+                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_REQUIRED_MACROS' | translate }}">{{ $item }}</ui-select-match>
+                                            <ui-select-choices repeat="require in requiredMacrosOptions | filter:$select.search">
+                                                {{ require }}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputActive" class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.ACTIVE' | translate }}</label>
+                    <div class="col-sm-5">
+                        <div>
+                            <label class="ui-checkbox">
+                                <input name="active" type="checkbox" ng-model="demandAdTag.activeClone" server-error id="inputActive">
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-5">
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
+                        <div ng-show="!isFormValid()" class="callout callout-info">
+                            <p>{{ 'VALID_FORM' | translate }}</p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

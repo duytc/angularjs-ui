@@ -5,13 +5,14 @@
         .directive('billingConfig', billingConfig)
     ;
 
-    function billingConfig($compile, _, MODULES_BILLING_CONFIG, BILLING_FACTORS) {
+    function billingConfig($compile, _, MODULES_BILLING_CONFIG, BILLING_FACTORS, USER_MODULES) {
         'use strict';
 
         return {
             scope: {
                 billingConfigs: '=',
-                publisher: '='
+                publisher: '=',
+                defaultThresholds: '='
             },
             restrict: 'AE',
             templateUrl: 'blocks/billingConfig/billingConfig.tpl.html',
@@ -27,8 +28,8 @@
                             scope.billingConfigs.push({
                                 module: module.role,
                                 defaultConfig: true,
-                                tiers: [],
-                                billingFactor: module.role == 'MODULE_DISPLAY' ? 'SLOT_OPPORTUNITY' : 'VIDEO_IMPRESSION' //set default billing factor
+                                tiers: _setDefaultTiers(module.role),
+                                billingFactor: module.role == USER_MODULES.displayAds ? 'SLOT_OPPORTUNITY' : 'VIDEO_IMPRESSION' //set default billing factor
                             });
                         })
                     } else {
@@ -41,8 +42,8 @@
                                 scope.billingConfigs.push({
                                     module: module.role,
                                     defaultConfig: true,
-                                    tiers: [],
-                                    billingFactor: module.role == 'MODULE_DISPLAY' ? 'SLOT_OPPORTUNITY' : 'VIDEO_IMPRESSION' //set default billing factor
+                                    tiers: _setDefaultTiers(module.role),
+                                    billingFactor: module.role == USER_MODULES.displayAds ? 'SLOT_OPPORTUNITY' : 'VIDEO_IMPRESSION' //set default billing factor
                                 });
                             }
                         });
@@ -64,6 +65,20 @@
                             delete billingConfig.publisher;
                             delete billingConfig.publisherId;
                         })
+                    }
+
+                    function _setDefaultTiers(module) {
+                        if(module == USER_MODULES.displayAds) {
+                            return scope.defaultThresholds.display;
+                        } else if(module == USER_MODULES.inBanner) {
+                            return scope.defaultThresholds['in-banner'];
+                        } else if(module == USER_MODULES.videoAds) {
+                            return scope.defaultThresholds.video;
+                        } else if(module == USER_MODULES.headerBidding) {
+                            return scope.defaultThresholds['header-bidding'];
+                        }
+
+                        return [];
                     }
 
                     scope.getLabelModuleConfig = function(role) {
@@ -96,7 +111,7 @@
                         if(!billingConfig.defaultConfig && (billingConfig.tiers.length == 0 || thresholdIZero == -1)) {
                             billingConfig.tiers.unshift({
                                 threshold: 0,
-                                cpmRate: billingConfig.module == 'MODULE_HEADER_BIDDING' ? 0 : null,
+                                cpmRate: billingConfig.module == USER_MODULES.headerBidding ? 0 : null,
                                 number: 1000
                             })
                         }

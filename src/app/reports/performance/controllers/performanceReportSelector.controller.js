@@ -652,6 +652,7 @@
         }
 
         function getReports() {
+
             var transition;
             var params = ReportParams.getStateParams($scope.selectedData);
 
@@ -799,6 +800,26 @@
                     }
                 ];
             }
+
+            if(reportType.key == 'site' && reportType.toState == 'reports.performance.sites' && !!selectedData.siteId) {
+                reportType.breakdownOptions = [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.performance.site'
+                    },
+                    {
+                        key: 'adslot',
+                        label: 'By Ad Slot',
+                        toState: 'reports.performance.siteAdSlots'
+                    },
+                    {
+                        key: 'adtag',
+                        label: 'By Ad Tag',
+                        toState: 'reports.performance.siteAdTags'
+                    }
+                ];
+            }
         }
 
         /**
@@ -914,6 +935,7 @@
         }
 
         function update() {
+
             var params = ReportParams.getFormParams(performanceReport.getInitialParams());
 
             params = params || {};
@@ -923,13 +945,20 @@
             }
 
             reportSelectorForm.getCalculatedParams(params).then(
+
                 function (calculatedParams) {
+
                     var reportType = findReportType(calculatedParams.reportType) || null;
+                    if (_.isNull(reportType)) {
+                        return;
+                    }
+
                     _setBreakdownOptionsDefaultForReportType(reportType, calculatedParams);
 
                     $scope.selectedData.reportType = reportType;
 
                     var breakdownValue = calculatedParams[reportType.breakdownKey];
+
                     if (breakdownValue != undefined && breakdownValue != null) {
                         if (calculatedParams.adNetworkId != null) {
                             selectSiteForAdNetwork(calculatedParams.siteId);
@@ -937,8 +966,7 @@
 
                         var breakdownOption = _.findWhere(reportType.breakdownOptions, { key: breakdownValue });
                         selectBreakdownOption(breakdownOption);
-                    }
-                    else{
+                    } else {
                         toState = reportType.toState;
                     }
 

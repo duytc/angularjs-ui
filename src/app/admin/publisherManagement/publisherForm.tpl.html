@@ -104,17 +104,17 @@
                     <label class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.MODULES' | translate }}</label>
                     <div class="col-sm-10">
                         <div ng-repeat="module in modules">
-                            <label class="ui-checkbox"><input name="enabledModules[]" type="checkbox" ng-click="toggleModuleRole(module.role)" ng-checked="hasModuleEnabled(module.role)">
+                            <label class="ui-checkbox"><input name="enabledModules[]" type="checkbox" ng-click="toggleModuleRole(module.role)" ng-disabled="disabledModule(module.role)" ng-checked="hasModuleEnabled(module.role)">
                                 <span>{{ module.label }}</span>
                             </label>
                         </div>
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="hasModuleEnabled('MODULE_DISPLAY') || hasModuleEnabled('MODULE_ANALYTICS') || hasModuleEnabled('MODULE_HEADER_BIDDING')">
+                <div class="form-group" ng-if="hasModuleEnabled('MODULE_DISPLAY') || hasModuleEnabled('MODULE_VIDEO') || hasModuleEnabled('MODULE_ANALYTICS') || hasModuleEnabled('MODULE_HEADER_BIDDING')">
                     <label for="inputRate" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.BILLING_CONFIG' | translate }}</label>
                     <div class="col-sm-10">
-                        <billing-config billing-configs="publisher.billingConfigs" publisher="publisher"></billing-config>
+                        <billing-config billing-configs="publisher.billingConfigs" publisher="publisher" default_thresholds="defaultThresholds"></billing-config>
                     </div>
                 </div>
 
@@ -156,7 +156,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" ng-if="hasModuleEnabled('MODULE_DISPLAY') && !!publisher.tagDomain.domain">
                     <label for="inputSecure" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.ENABLE_HTTPS' | translate }}</label>
                     <div class="col-sm-10">
                         <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="publisher.tagDomain.secure" id="inputSecure"><span></span></label>

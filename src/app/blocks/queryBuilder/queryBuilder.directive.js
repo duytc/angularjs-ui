@@ -20,7 +20,10 @@
             restrict: 'AE',
             templateUrl: 'blocks/queryBuilder/queryBuilder.tpl.html',
             compile: function (element, attrs) {
-                var content, directive;
+                var content,
+                    directive,
+                    headerName;
+
                 content = element.contents().remove();
                 return function (scope, element, attrs) {
                     scope.operators = OPERATORS;
@@ -38,6 +41,7 @@
                     scope.filterEntityType = filterEntityType;
                     scope.expectAdSlotIsDisplay = expectAdSlotIsDisplay;
                     scope.changeHeaderBidPrice = changeHeaderBidPrice;
+                    scope.getHeaderName = getHeaderName;
 
                     scope.sortableOptions = {
                         disabled: true,
@@ -132,7 +136,9 @@
 
                         // default condition
                         scope.expressions.push({
-                            expressionDescriptor: expressionDescriptor
+                            expressionDescriptor: expressionDescriptor,
+                            name: null,
+                            openStatus: true
                         });
                     }
 
@@ -157,6 +163,36 @@
 
                     function changeHeaderBidPrice(expression) {
                         expression.hbBidPrice = expression.hbBidPriceClone
+                    }
+
+
+                    function getHeaderName(ruleName) {
+                        ruleName = angular.copy(ruleName);
+
+                        if (!ruleName.name && !ruleName.expectLibraryAdSlot) {
+                            return 'New Rule';
+                        }
+
+                        if (!ruleName.name) {
+                            ruleName.name = '';
+                        }
+
+                        if (!ruleName.expectLibraryAdSlot) {
+                            return ruleName.name;
+                        }
+
+                        var expectLibraryAdSlotObject = null;
+                        if(angular.isObject(ruleName.expectLibraryAdSlot)) {
+                            expectLibraryAdSlotObject = {libraryAdSlot: ruleName.expectLibraryAdSlot};
+                        } else {
+                            expectLibraryAdSlotObject = _.find(scope.adSlots,function(adSlot){
+                                return adSlot.libraryAdSlot.id == ruleName.expectLibraryAdSlot.id || adSlot.libraryAdSlot.id == ruleName.expectLibraryAdSlot;
+                            });
+                        }
+
+                        headerName =   expectLibraryAdSlotObject ? (ruleName.name + ' (' + expectLibraryAdSlotObject.libraryAdSlot.name  +')'): ruleName.name;
+
+                        return headerName;
                     }
 
                     function expectAdSlotIsDisplay(expectAdSlot) {

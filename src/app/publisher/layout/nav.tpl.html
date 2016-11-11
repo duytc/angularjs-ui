@@ -31,7 +31,7 @@
         <li >
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-location-arrow"></i>
-                <span class="menu-text"> {{ 'NAVBAR.TAG_MANAGEMENT' | translate }} </span>
+                <span class="menu-text"> {{ 'NAVBAR.DISPLAY_ADS' | translate }} </span>
                 <i class="menu-expand"></i>
             </a>
 
@@ -141,6 +141,85 @@
 
             </ul>
         </li>
+
+        <li ng-show="hasVideoAdsModule">
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-video-camera"></i>
+                <span class="menu-text"> {{ 'NAVBAR.VIDEO_ADS' | translate }} </span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li >
+                    <a href="#" class="menu-dropdown">
+                        <span class="menu-text">{{ 'NAVBAR.VIDEO_PUBLISHER' | translate }}</span>
+                        <i class="menu-expand"></i>
+                    </a>
+
+                    <ul class="submenu">
+                        <li ui-sref-active="active">
+                            <a ui-sref=".videoManagement.videoPublisher.list">
+                                <span class="menu-text">{{ 'NAVBAR.MY_VIDEO_PUBLISHERS' | translate }}</span>
+                            </a>
+                        </li>
+
+                        <li ui-sref-active="active">
+                            <a ui-sref=".videoManagement.videoPublisher.new">
+                                <span class="menu-text">{{ 'NAVBAR.NEW_VIDEO_PUBLISHER' | translate }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li >
+                    <a href="#" class="menu-dropdown">
+                        <span class="menu-text">{{ 'NAVBAR.DEMAND_PARTNERS' | translate }}</span>
+                        <i class="menu-expand"></i>
+                    </a>
+
+                    <ul class="submenu">
+                        <li ui-sref-active="active">
+                            <a ui-sref=".videoManagement.demandPartner.list">
+                                <span class="menu-text"> {{ 'NAVBAR.MY_DEMAND_PARTNERS' | translate }} </span>
+                            </a>
+                        </li>
+
+                        <li ui-sref-active="active">
+                            <a ui-sref=".videoManagement.demandPartner.new">
+                                <span class="menu-text">{{ 'NAVBAR.NEW_DEMAND_PARTNER' | translate }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li >
+                    <a href="#" class="menu-dropdown">
+                        <span class="menu-text">{{ 'NAVBAR.VIDEO_AD_TAGS' | translate }}</span>
+                        <i class="menu-expand"></i>
+                    </a>
+
+                    <ul class="submenu">
+                        <li ui-sref-active="active">
+                            <a ui-sref=".videoManagement.adTag.list">
+                                <span class="menu-text">{{ 'NAVBAR.MY_VIDEO_AD_TAGS' | translate }}</span>
+                            </a>
+                        </li>
+
+                        <li ui-sref-active="active">
+                            <a ui-sref=".videoManagement.adTag.new">
+                                <span class="menu-text">{{ 'NAVBAR.NEW_VIDEO_AD_TAG' | translate }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li ui-sref-active="active">
+                    <a ui-sref=".videoManagement.vastGenerator">
+                        <span class="menu-text"> {{ 'NAVBAR.GENERATE_VAST_TAGS' | translate }} </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
         <li >
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-tachometer"></i>
@@ -159,7 +238,7 @@
                         <span class="menu-text"> {{ 'NAVBAR.RTB_REPORTS' | translate }} </span>
                     </a>
                 </li>
-                <li ng-show="hasAnalyticsModule" ui-sref-active="active">
+                <li ng-show="hasAnalyticsModule || hasVideoModule" ui-sref-active="active">
                     <a ui-sref=".reports.source">
                         <span class="menu-text"> {{ 'NAVBAR.SOURCE_REPORTS' | translate }} </span>
                     </a>
@@ -178,6 +257,11 @@
                 <li ng-show="hasUnifiedModule" ui-sref-active="active">
                     <a ui-sref=".reports.unified.day">
                         <span class="menu-text"> {{ 'NAVBAR.UNIFIED_REPORTS' | translate }} </span>
+                    </a>
+                </li>
+                <li ng-show="hasVideoAdsModule" ui-sref-active="active">
+                    <a ui-sref=".reports.video">
+                        <span class="menu-text"> {{ 'NAVBAR.VIDEO_REPORTS' | translate }} </span>
                     </a>
                 </li>
             </ul>

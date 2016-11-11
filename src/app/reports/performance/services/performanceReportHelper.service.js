@@ -37,6 +37,7 @@
         }
 
         function drillDownReport(relativeToState, report, reportGroup) {
+
             if (!angular.isString(relativeToState)) {
                 return;
             }

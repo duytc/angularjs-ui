@@ -36,6 +36,10 @@
             color: $bright;
             line-height: $header_height;
             text-align: center;
+            img {
+              width: 200px;
+            }
+
             @media (min-width: $screen-sm) {
                 display: inline-block;
                 width: 220px;

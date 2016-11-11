@@ -1,35 +1,180 @@
-<div class="row">
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Totals</div>
-            <div class="panel-body">
-                <ul class="list-unstyled report list-info">
-                    <li>
-                        <label>{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}</label>
-                        <span class="pull-right">{{ reportGroup.slotOpportunities | number }}</span>
-                    </li>
-                    <li>
-                        <label>{{ 'REPORT.BILLED_AMOUNT' | translate }}</label>
-                        <span class="pull-right">{{ reportGroup.billedAmount | currency }}</span>
-                    </li>
-                </ul>
+<div>
+    <div class="row" ng-if="product != 'headerBidding' && product != 'inBanner' && product != 'source'">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Totals</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled report list-info">
+                        <li ng-if="reportGroup.slotOpportunities">
+                            <label>{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.slotOpportunities | number }}</span>
+                        </li>
+                        <li ng-if="reportGroup.impressions">
+                            <label>{{ 'REPORT.IMPRESSIONS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.impressions | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'REPORT.BILLED_AMOUNT' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.billedAmount | currency }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Daily Averages</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled report list-info">
+                        <li  ng-if="reportGroup.averageSlotOpportunities">
+                            <label>{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageSlotOpportunities | number }}</span>
+                        </li>
+                        <li ng-if="reportGroup.averageImpressions">
+                            <label>{{ 'REPORT.IMPRESSIONS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageImpressions | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'REPORT.BILLED_AMOUNT' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageBilledAmount | currency }}</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Daily Averages</div>
-            <div class="panel-body">
-                <ul class="list-unstyled report list-info">
-                    <li>
-                        <label>{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}</label>
-                        <span class="pull-right">{{ reportGroup.averageSlotOpportunities | number }}</span>
-                    </li>
-                    <li>
-                        <label>{{ 'REPORT.BILLED_AMOUNT' | translate }}</label>
-                        <span class="pull-right">{{ reportGroup.averageBilledAmount | currency }}</span>
-                    </li>
-                </ul>
+
+    <div class="row" ng-if="product == 'inBanner'">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Totals</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled report list-info">
+                        <li>
+                            <label>{{ 'REPORT.IMPRESSIONS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.inBannerImpressions | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'REPORT.BILLED_AMOUNT' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.inBannerBilledAmount | currency }}</span>
+                        </li>
+                        <!--<li>-->
+                            <!--<label>{{ 'REPORT.BILLED_RATE' | translate }}</label>-->
+                            <!--<span class="pull-right">{{ reportGroup.inBannerBilledRate | number:4 }}</span>-->
+                        <!--</li>-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Daily Averages</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled report list-info">
+                        <li>
+                            <label>{{ 'REPORT.IMPRESSIONS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageInBannerImpressions | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'REPORT.BILLED_AMOUNT' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageInBannerBilledAmount | currency }}</span>
+                        </li>
+                        <!--<li>-->
+                            <!--<label>{{ 'REPORT.BILLED_RATE' | translate }}</label>-->
+                            <!--<span class="pull-right">{{ reportGroup.averageInBannerBilledRate | number:4 }}</span>-->
+                        <!--</li>-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="product == 'headerBidding'">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Totals</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled report list-info">
+                        <li>
+                            <label>{{ 'REPORT.HEADER_BIDDING_REQUESTS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.requests | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'REPORT.HEADER_BIDDING_BILLED_AMOUNT' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.billedAmount | currency }}</span>
+                        </li>
+                        <!--<li>-->
+                            <!--<label>{{ 'REPORT.HEADER_BIDDING_BILLED_RATE' | translate }}</label>-->
+                            <!--<span class="pull-right">{{ reportGroup.hbBilledRate | number }}</span>-->
+                        <!--</li>-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Daily Averages</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled report list-info">
+                        <li>
+                            <label>{{ 'REPORT.HEADER_BIDDING_REQUESTS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageRequests | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'REPORT.HEADER_BIDDING_BILLED_AMOUNT' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageBilledAmount | currency }}</span>
+                        </li>
+                        <!--<li>-->
+                            <!--<label>{{ 'REPORT.HEADER_BIDDING_BILLED_RATE' | translate }}</label>-->
+                            <!--<span class="pull-right">{{ reportGroup.averageHbBilledRate | number }}</span>-->
+                        <!--</li>-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="product == 'source'">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Totals</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled report list-info">
+                        <li>
+                            <label>{{ 'SOURCE_REPORT_MODULE.VISITS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.visits | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'SOURCE_REPORT_MODULE.AD_IMPRESSIONS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.videoAdImpressions | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'REPORT.HEADER_BIDDING_BILLED_AMOUNT' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.billedAmount | currency }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Daily Averages</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled report list-info">
+                        <li>
+                            <label>{{ 'SOURCE_REPORT_MODULE.VISITS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageVisits | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'SOURCE_REPORT_MODULE.AD_IMPRESSIONS' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageVideoAdImpressions | number }}</span>
+                        </li>
+                        <li>
+                            <label>{{ 'REPORT.HEADER_BIDDING_BILLED_AMOUNT' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageBilledAmount | currency }}</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

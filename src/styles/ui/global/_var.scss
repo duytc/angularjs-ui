@@ -24,7 +24,7 @@ $gray:                   lighten(#000, 33.5%) !default; // #555
 $gray-light:             lighten(#000, 60%) !default;   // #999
 $gray-lighter:           lighten(#000, 93.5%) !default; // #eee
 
-$brand-primary:         darken(#6b7074, 20%) !default;
+$brand-primary:         #4A9AAB !default; // pubvantage
 $brand-success:         #94B758 !default;
 $brand-info:            #56BDF1 !default;
 $brand-info-alt:        #7F6EC7 !default;
@@ -45,7 +45,7 @@ $dark:                  #242633;
 $bright:                #fafafa;
 $reverse:               #fff;
 
-$state-default-bg:              #f6f6f6; // also: pagination bg
+$state-default-bg:              #e7e7e7; //pubvantage // also: pagination bg
 $state-default-border:          darken(adjust-hue($state-default-bg, -10), 5%);
 $state-default-border-light:    #f3f3f3;
 

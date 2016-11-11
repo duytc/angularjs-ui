@@ -9,5 +9,7 @@ angular.module('tagcade', [
     'tagcade.supportTools',
     'tagcade.tagLibrary',
     'tagcade.exchangeManagement',
-    'tagcade.subPublisher'
+    'tagcade.subPublisher',
+    'tagcade.videoManagement',
+    'tagcade.videoLibrary'
 ]);

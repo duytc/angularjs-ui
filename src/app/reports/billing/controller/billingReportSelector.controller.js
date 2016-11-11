@@ -5,10 +5,11 @@
         .controller('BillingReportSelector', BillingReportSelector)
     ;
 
-    function BillingReportSelector($scope, $translate, $q, $state, _, Auth, UserStateHelper, AlertService, ReportParams, billingService, performanceReport, adminUserManager, REPORT_TYPES, reportSelectorForm, selectorFormCalculator, UISelectMethod) {
+    function BillingReportSelector($scope, $stateParams, $translate, $q, $state, _, Auth, UserStateHelper, AlertService, ReportParams, billingService, sourceReport, HeaderBiddingReport, performanceReport, adminUserManager, REPORT_TYPES, USER_MODULES, reportSelectorForm, selectorFormCalculator, UISelectMethod) {
         var toState;
 
         var isAdmin = Auth.isAdmin();
+        var userSession = Auth.getSession();
         $scope.isAdmin = isAdmin;
 
         var selectedData = {
@@ -16,11 +17,12 @@
                 startDate: null,
                 endDate: null
             },
-            product: 'display',
+            product: (!$stateParams.product || $stateParams.product == 'display') ? 'display' : 'video',
             publisherId: null,
             reportType: null,
             siteId: null,
-            siteBreakdown: null
+            siteBreakdown: null,
+            breakdown: null
         };
 
         $scope.selectedData = selectedData;
@@ -50,6 +52,7 @@
             }
         };
 
+        $scope.reportTypes = REPORT_TYPES;
         $scope.groupEntities = UISelectMethod.groupEntities;
         $scope.isFormValid = isFormValid;
         $scope.showPublisherSelect = showPublisherSelect;
@@ -58,7 +61,6 @@
         $scope.selectReportType = selectReportType;
         $scope.selectBreakdownOption = selectBreakdownOption;
         $scope.getReports = getReports;
-        $scope.reportTypes = REPORT_TYPES;
         $scope.selectEntity = selectEntity;
         $scope.selectProduct = selectProduct;
 
@@ -66,37 +68,104 @@
             {
                 key: 'display',
                 label: 'Display'
-            },
-            //{
-            //    key: 'source',
-            //    label: 'Source'
-            //}
+            }
         ];
 
-        var reportTypeOptions = [
+        if(userSession.hasModuleEnabled(USER_MODULES.videoAds)) {
+            $scope.productOptions.push(
+                {
+                    key: 'video',
+                    label: 'Video'
+                }
+            )
+        }
+
+        if(userSession.hasModuleEnabled(USER_MODULES.headerBidding)) {
+            $scope.productOptions.push(
+                {
+                    key: 'headerBidding',
+                    label: 'Header Bidding'
+                }
+            )
+        }
+
+        if(userSession.hasModuleEnabled(USER_MODULES.inBanner)) {
+            $scope.productOptions.push(
+                {
+                    key: 'inBanner',
+                    label: 'In Banner'
+                }
+            )
+        }
+
+        if(userSession.hasModuleEnabled(USER_MODULES.video)) {
+            $scope.productOptions.push(
+                {
+                    key: 'source',
+                    label: 'Source'
+                }
+            )
+        }
+
+        var reportTypeForDisplayOptions = [
             {
                 key: REPORT_TYPES.account,
                 breakdownKey: 'accountBreakdown',
                 label: 'Account',
                 toState: 'reports.billing.account'
+            }
+        ];
+
+        var reportTypeForInBannerOptions = [
+            {
+                key: REPORT_TYPES.account,
+                breakdownKey: 'accountBreakdown',
+                label: 'Account',
+                toState: 'reports.billing.account'
+            }
+        ];
+
+        var reportTypeForSourceOptions = [
+            {
+                key: REPORT_TYPES.account,
+                breakdownKey: 'accountBreakdown',
+                label: 'Account',
+                toState: 'reports.billing.sourceAccount'
+            }
+        ];
+
+        var reportTypeForVideoOptions = [
+            {
+                key: REPORT_TYPES.account,
+                label: 'Account',
+                toState: 'reports.billing.video'
+            }
+        ];
+
+        var reportTypeForHeaderBiddingOptions = [
+            {
+                key: REPORT_TYPES.account,
+                label: 'Account',
+                breakdownKey: 'accountBreakdown',
+                toState: 'reports.billing.hbAccount'
             },
             {
                 key: REPORT_TYPES.site,
-                breakdownKey: 'siteBreakdown',
                 label: 'Site',
-                toState: 'reports.billing.sites',
+                toState: 'reports.billing.hbSites',
+                breakdownKey: 'siteBreakdown',
                 breakdownOptions: [
                     {
                         key: 'day',
                         label: 'By Day',
-                        toState: 'reports.billing.site'
+                        toState: 'reports.billing.hbSite'
                     }
                 ]
             }
         ];
 
         if (isAdmin) {
-            reportTypeOptions.unshift({
+            reportTypeForDisplayOptions.unshift({
                 key: REPORT_TYPES.platform,
                 breakdownKey: 'platformBreakdown',
                 label: 'Platform',
@@ -111,23 +180,97 @@
                         key: 'account',
                         label: 'By Account',
                         toState: 'reports.billing.platformAccounts'
-                    },
-                    {
-                        key: 'site',
-                        label: 'By Site',
-                        toState: 'reports.billing.platformSites'
                     }
                 ]
             });
+
+            reportTypeForSourceOptions.unshift({
+                key: REPORT_TYPES.platform,
+                breakdownKey: 'platformBreakdown',
+                label: 'Platform',
+                toState: 'reports.billing.sourcePlatform',
+                breakdownOptions: [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.billing.sourcePlatform'
+                    },
+                    {
+                        key: 'account',
+                        label: 'By Account',
+                        toState: 'reports.billing.sourcePlatformAccounts'
+                    }
+                ]
+            });
+
+            reportTypeForInBannerOptions.unshift({
+                key: REPORT_TYPES.platform,
+                breakdownKey: 'platformBreakdown',
+                label: 'Platform',
+                toState: 'reports.billing.platform',
+                breakdownOptions: [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.billing.platform'
+                    },
+                    {
+                        key: 'account',
+                        label: 'By Account',
+                        toState: 'reports.billing.platformAccounts'
+                    }
+                ]
+            });
+
+            reportTypeForVideoOptions.unshift({
+                key: REPORT_TYPES.platform,
+                label: 'Platform',
+                toState: 'reports.billing.video',
+                breakdownOptions: [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.billing.video'
+                    },
+                    {
+                        key: 'publisher',
+                        label: 'By Account',
+                        toState: 'reports.billing.video'
+                    }
+                ]
+            });
+
+            reportTypeForHeaderBiddingOptions.unshift({
+                key: REPORT_TYPES.platform,
+                label: 'Platform',
+                toState: 'reports.billing.hbPlatform',
+                breakdownOptions: [
+                    {
+                        key: 'day',
+                        label: 'By Day',
+                        toState: 'reports.billing.hbPlatform'
+                    },
+                    {
+                        key: 'account',
+                        label: 'By Account',
+                        toState: 'reports.billing.hbPlatformAccounts'
+                    }
+                ]
+            })
         }
 
-        $scope.reportTypeOptions = reportTypeOptions;
+        _setDefaultReportTypeOption();
 
         /**
          *
          * @param {Object} reportType
          */
         function selectReportType(reportType) {
+            if($scope.selectedData.product == 'video') {
+                $scope.selectedData.publisherId = null;
+                $scope.selectedData.breakdown = null;
+            }
+
             if (!angular.isObject(reportType) || !reportType.toState) {
                 throw new Error('report type is missing a target state');
             }
@@ -151,7 +294,7 @@
          * @return {Object|Boolean}
          */
         function findReportType(reportTypeKey) {
-            return _.findWhere(reportTypeOptions, { key: reportTypeKey });
+            return _.findWhere($scope.reportTypeOptions, { key: reportTypeKey });
         }
 
         function init() {
@@ -215,6 +358,8 @@
 
         function selectPublisher(publisher) {
             $scope.selectedData.siteId = null;
+            $scope.selectedData.siteBreakdown = null;
+            toState = $scope.selectedData.reportType.toState;
 
             _getSitesForPublisher(publisher.id);
         }
@@ -234,12 +379,55 @@
         }
 
         function selectProduct(product) {
+            _setReportTypeOption(product);
+
+            $scope.selectedData.reportType = null;
+            $scope.selectedData.publisherId = null;
+            $scope.selectedData.breakdown = null;
+            $scope.selectedData.platformBreakdown = null;
         }
 
         function selectEntity(entityId) {
             if (entityId === null) {
                 $scope.selectedData.siteBreakdown = null;
                 toState = $scope.selectedData.reportType.toState;
+            }
+        }
+
+        function _setDefaultReportTypeOption() {
+            if($stateParams.product == 'video') {
+                $scope.reportTypeOptions = reportTypeForVideoOptions;
+            } else if($stateParams.product == 'headerBidding') {
+                $scope.reportTypeOptions = reportTypeForHeaderBiddingOptions;
+            } else if($stateParams.product == 'inBanner') {
+                $scope.reportTypeOptions = reportTypeForInBannerOptions;
+            } else if($stateParams.product == 'source') {
+                $scope.reportTypeOptions = reportTypeForSourceOptions;
+            } else {
+                // set default report for display
+                $scope.reportTypeOptions = reportTypeForDisplayOptions;
+            }
+        }
+
+        function _setReportTypeOption(product) {
+            if(product.key == 'display') {
+                $scope.reportTypeOptions = reportTypeForDisplayOptions;
+            }
+
+            if(product.key == 'video') {
+                $scope.reportTypeOptions = reportTypeForVideoOptions;
+            }
+
+            if(product.key == 'headerBidding') {
+                $scope.reportTypeOptions = reportTypeForHeaderBiddingOptions;
+            }
+
+            if(product.key == 'inBanner') {
+                $scope.reportTypeOptions = reportTypeForInBannerOptions;
+            }
+
+            if(product.key == 'source') {
+                $scope.reportTypeOptions = reportTypeForSourceOptions;
             }
         }
 
@@ -256,12 +444,26 @@
             ;
         }
 
+        function _getReportParams() {
+            var params = {};
+
+            if($stateParams.product == 'display' || $stateParams.product == 'inBanner' || !$stateParams.product) {
+                params = performanceReport.getInitialParams();
+            } else if($stateParams.product == 'source') {
+                params = sourceReport.getInitialParams()
+            } else {
+                params = HeaderBiddingReport.getInitialParams()
+            }
+
+            return ReportParams.getFormParams(params);
+        }
+
         function isFormValid() {
             return $scope.reportSelectorForm.$valid;
         }
 
         function update() {
-            var params = ReportParams.getFormParams(performanceReport.getInitialParams());
+            var params = _getReportParams();
 
             params = params || {};
 
@@ -272,6 +474,31 @@
             reportSelectorForm.getCalculatedParams(params).then(
                 function (calculatedParams) {
                     var reportType = findReportType(calculatedParams.reportType) || null;
+                    calculatedParams.product = !!$stateParams.product ? $stateParams.product : 'display';
+
+                    // update params when refresh for product is video
+                    if($stateParams.product == 'video') {
+                        calculatedParams.breakdown = $stateParams.breakdown;
+                        calculatedParams.publisherId = $stateParams.publisherId;
+                        calculatedParams.date = {
+                            endDate: $stateParams.endDate,
+                            startDate: $stateParams.startDate
+                        };
+
+                        $scope.reportTypeOptions = reportTypeForVideoOptions;
+                        reportType =  _.find(reportTypeForVideoOptions, function(rpt) {
+                            return $stateParams.reportTypeClone == rpt.key;
+                        });
+                    } else if($stateParams.product == 'display') {
+                        $scope.reportTypeOptions = reportTypeForDisplayOptions;
+                    } else if($stateParams.product == 'inBanner') {
+                        $scope.reportTypeOptions = reportTypeForInBannerOptions;
+                    } else if($stateParams.product == 'source') {
+                        $scope.reportTypeOptions = reportTypeForSourceOptions;
+                    } if($stateParams.product == 'headerBidding') {
+                        $scope.reportTypeOptions = reportTypeForHeaderBiddingOptions;
+                    }
+
                     $scope.selectedData.reportType = reportType;
 
                     var breakdownValue = calculatedParams[reportType.breakdownKey];
@@ -304,6 +531,7 @@
 
             var reportType = params.reportType;
             var breakdownValue = params[params.breakdownKey];
+            params.reportTypeClone = params.reportType.key;
 
             if (breakdownValue != undefined && breakdownValue != null) {
                 var breakdownOption = _.findWhere(reportType.breakdownOptions, { key: breakdownValue });

@@ -26,6 +26,7 @@
         'tagcade.blocks.queryBuilder',
         'tagcade.blocks.atSortableQuery',
         'tagcade.blocks.billingConfig',
+        'tagcade.blocks.placementRules',
 
         'tagcade.core.bootstrap',
         'tagcade.core.auth',

@@ -22,12 +22,12 @@
             controller: function ($scope, exportExcelService) {
                 $scope.class = $scope.cssClass !== undefined ? $scope.cssClass : 'btn btn-sm btn-primary';
 
-                var data = angular.copy($scope.data);
+                //var data = angular.copy($scope.data);
                 update();
 
                 $scope.click = function() {
                     update();
-                    exportExcelService.exportExcel(data, $scope.fields, $scope.header, $scope.filename);
+                    exportExcelService.exportExcel($scope.data, $scope.fields, $scope.header, $scope.filename);
                 };
 
                 function update() {

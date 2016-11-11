@@ -24,6 +24,8 @@
 
             $scope.formProcessing = true;
 
+            Auth.logout();
+
             Auth.login(credentials, true)
                 .then(
                     function () {

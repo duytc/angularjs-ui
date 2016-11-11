@@ -1,0 +1,27 @@
+.ad-source-video-tag {
+  .form-group {
+    @include ui-select-width(200px);
+  }
+
+  .position {
+    height: 40px;
+    line-height: 40px
+  }
+
+  .strategy {
+    margin-left: 5px;
+    margin-bottom: 3px;
+  }
+
+  .add-new-ad-source {
+    float: right;
+    height: 30px;
+    margin: 5px
+  }
+}
+
+.waterfall {
+  .remove-waterfall {
+    margin-top: -5px;
+  }
+}

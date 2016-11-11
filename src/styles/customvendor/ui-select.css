@@ -145,7 +145,7 @@
     color: #fff;
     text-decoration: none;
     outline: 0;
-    background-color: #26282a;
+    background-color: #4A9AAB; /*pubvantage*/
 }
 
 .ui-select-bootstrap .ui-select-choices-row.disabled>a,
@@ -153,6 +153,11 @@
     color: #777;
     cursor: not-allowed;
     background-color: #fff;
+}
+
+.ui-select-multiple.ui-select-bootstrap > div > input.ui-select-search[disabled] {
+    display: initial !important;
+    cursor: not-allowed;
 }
 
 .ui-select-bootstrap .ui-select-choices-row.active.disabled label {

@@ -1,0 +1,119 @@
+<form name="reportSelectorForm" class="form-validation form-col form-horizontal form-col form-report-unified" role="form" ng-submit="getReports()" novalidate>
+    <section class="panel panel-default">
+        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> {{ 'REPORT.FILTERS' | translate }}</div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div ng-class="isAdmin ? 'col-sm-4' : 'col-sm-6'">
+                    <div class="form-group">
+                        <label for="inputDateRange">{{ 'REPORT.DATE_RANGE' | translate }}</label>
+                        <div>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                <input date-range-picker options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="selectedData.date" ng-required="true">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4" ng-if="isAdmin">
+                    <div class="form-group">
+                        <label>{{ 'PUBLISHERS' | translate }}</label>
+                        <ui-select multiple name="publisher" ng-model="queryParams.filters.publisher" ng-required="true" on-select="selectPublisher($item)" ng-disabled="!optionData.publishers.length" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $item.company }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="publisher.id as publisher in optionData.publishers | filter: $select.search">
+                                <div ng-bind-html="publisher.company | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div ng-class="isAdmin ? 'col-sm-4' : 'col-sm-6'">
+                    <div class="form-group">
+                        <label>{{ 'AD_NETWORKS' | translate }}</label>
+                        <ui-select multiple close-on-select="false" name="adNetwork" ng-model="queryParams.filters.demandPartner" on-select="selectAdNetwork($item)" ng-required="true" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'AD_NETWORK_MODULE.SELECT_A_AD_NETWORK' | translate }}">{{ $item.name }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="demand.id as demand in optionData.demandPartners | filter: $select.search">
+                                <div ng-bind-html="demand.name  | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>{{ 'VIDEO_PUBLISHERS' | translate }}</label>
+                        <ui-select multiple close-on-select="false" name="site" ng-model="queryParams.filters.videoPublisher" on-remove="removeVideoPublisher($item)" on-select="selectVideoPublisher($item)" ng-required="true" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'VIDEO_PUBLISHER_MODULE.SELECT_A_VIDEO_PUBLISHER' | translate }}">{{ $item.name }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="videoPublisher.id as videoPublisher in optionData.videoPublishers">
+                                <div ng-bind-html="videoPublisher.name"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>{{ 'WATERFALL_TAGS' | translate }}</label>
+                        <ui-select multiple close-on-select="false" name="site" ng-model="queryParams.filters.waterfallTag" on-remove="removeAdTag($item)" on-select="selectAdTag($item)" ng-required="true" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'VIDEO_AD_TAG_MODULE.SELECT_WATERFALL_TAG' | translate }}">{{ $item.name }}</ui-select-match>
+                            <ui-select-choices infinite-scroll="addMoreAdTags()" infinite-scroll-container="'#reloadAdTag'" id="reloadAdTag" infinite-scroll-distance="200" refresh="searchAdTag($select.search)" refresh-delay="500" group-by="groupEntities" repeat="adTag.id as adTag in optionData.adTags">
+                                <div ng-bind-html="adTag.name"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>{{ 'AD_SOURCES' | translate }}</label>
+                        <ui-select multiple close-on-select="false" name="demandAdTag" ng-model="queryParams.filters.videoDemandAdTag" on-remove="removeAdSlot($item)" on-select="selectAdSlot($item)" ng-required="true" reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_AD_SOURCE' | translate }}">{{ $item.libraryVideoDemandAdTag.name }}</ui-select-match>
+                            <ui-select-choices infinite-scroll="addMoreAdSlots()" infinite-scroll-container="'#reloadAdSlot'" id="reloadAdSlot" infinite-scroll-distance="200" refresh="searchAdSlot($select.search)" refresh-delay="500" group-by="groupEntities" repeat="adSource.id as adSource in optionData.adSources">
+                                <div ng-bind-html="adSource.libraryVideoDemandAdTag.name"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel panel-default">
+        <div class="panel-heading">
+            <span class="glyphicon glyphicon-th"></span> {{ 'REPORT.METRICS' | translate }}
+        </div>
+        <div class="panel-body select-dimensions">
+            <label class="ui-checkbox"><input type="checkbox" ng-model="selectedData.selectMetricsAll" ng-click="selectMetricsAll(selectedData.selectMetricsAll)">
+                <span>Select All</span>
+            </label>
+            <hr>
+            <div ng-repeat="metrics in metricsOptions" class="check_dimensions">
+                <label class="ui-checkbox"><input name="metrics[]" type="checkbox" ng-click="selectMetrics(metrics)" ng-checked="checkedMetrics(metrics)">
+                    <span>{{ metrics.label }}</span>
+                </label>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel panel-default">
+        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> {{ 'REPORT.BREAKDOWN' | translate }}</div>
+
+        <div class="panel-body">
+            <div ng-repeat="breakdown in breakdownOption" class="check_dimensions" ng-if="showBreakdown(breakdown)">
+                <label class="ui-checkbox"><input name="breakdown[]" type="checkbox" ng-click="selectBreakdown(breakdown)" ng-checked="checkedBreakdown(breakdown)">
+                    <span>{{ breakdown.label }}</span>
+                </label>
+            </div>
+        </div>
+    </section>
+
+    <button ng-disabled="!isFormValid()" type="submit" class="btn btn-primary" style="margin-right: 10px">{{ 'REPORT.GET_REPORTS' | translate }}</button>
+
+    <div class="btn-group" dropdown stop-event ng-if="!isAdmin">
+        <button ng-disabled="!isFormValid()" type="button" class="btn btn-primary" dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+        <ul class="dropdown-menu pull-right-dropdown" role="menu">
+            <li><a ng-click="saveOption()">Save Options</a></li>
+            <!--<li><a> {{ 'EXPORT_EXCEL' | translate }}</a></li>-->
+        </ul>
+    </div>
+</form>

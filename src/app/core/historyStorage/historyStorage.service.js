@@ -6,6 +6,7 @@
     ;
 
     function historyStorage($window, $stateParams, $location, $state, HISTORY_TYPE_PATH, HISTORY, Auth) {
+
         var api = {
             getLocationPath: getLocationPath,
             setParamsHistoryCurrent: setParamsHistoryCurrent,

@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('tagcade.core')
-        .constant('APP_NAME', 'Tagcade Platform')
+        .constant('APP_NAME', 'Pubvantage Platform')
         .constant('ENTRY_STATE', 'login')
         .constant('COUNTRY_LIST', [
         {name: 'Afghanistan', code: 'AF'},

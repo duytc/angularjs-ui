@@ -1,0 +1,46 @@
+<div ng-if="hasResult">
+    <tc-billing-report-overview report-group="reportGroup"></tc-billing-report-overview>
+
+    <div class="panel panel-default daily-reports">
+        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
+            {{ 'REPORT.SITE_BREAKDOWN' | translate }}
+            <div class="button-bar hidden-xs">
+                <export-excel data="reports" fields="['startDate', 'endDate', 'name', 'visits', 'videoAdImpressions', 'billedAmount', 'billedRate']" header="['Start Date', 'End Date', 'Site', 'Visits', 'Ad Impressions', 'Billed Amount', 'Billed Rate']" file-name="getExportExcelFileName"></export-excel>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
+                <thead></thead>
+                <tbody>
+                <tr ng-click="drillDownReport(reportStates.site, item)">
+                    <td at-title="{{ 'REPORT.START_DATE' | translate }}" at-attribute="startDate">
+                        {{ item.startDate | date }}
+                    </td>
+                    <td at-title="{{ 'REPORT.END_DATE' | translate }}" at-attribute="endDate">
+                        {{ item.endDate | date }}
+                    </td>
+                    <td class="name" at-title="{{ 'NAME' | translate }}" at-attribute="name" at-sortable>
+                        {{ item.name }}
+                    </td>
+                    <td at-title="{{ 'SOURCE_REPORT_MODULE.VISITS' | translate }}" at-attribute="visits" at-sortable>
+                        {{ (item.visits != null ? item.visits : 0) | number }}
+                    </td>
+                    <td at-title="{{ 'SOURCE_REPORT_MODULE.AD_IMPRESSIONS' | translate }}" at-attribute="videoAdImpressions" at-sortable>
+                        {{ (item.videoAdImpressions != null ? item.videoAdImpressions : 0) | number }}
+                    </td>
+                    <td at-title="{{ 'REPORT.BILLED_AMOUNT' | translate }}" at-attribute="billedAmount" at-sortable>
+                        {{ (item.billedAmount != null ? item.billedAmount : 0) | currency }}
+                    </td>
+                    <td at-title="{{ 'REPORT.BILLED_RATE' | translate }}" at-attribute="billedRate" at-sortable>
+                        {{ (item.billedRate != null ? item.billedRate : 0) | number:4 }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <at-pagination ng-if="showPagination()" class="table-footer" at-list="reports" at-config="tableConfig"></at-pagination>
+    </div>
+
+    <tc-billing-report-summary report-group="reportGroup"></tc-billing-report-summary>
+</div>

@@ -76,6 +76,17 @@
                                     show: true
                                 }
                             ]
+                        },
+                        videoReport: {
+                            metrics: [],
+                            filters: {
+                                publisher: [],
+                                waterfallTag: [],
+                                demandPartner: [],
+                                videoDemandAdTag: [],
+                                videoPublisher: []
+                            },
+                            breakdowns: ['day']
                         }
                     }
                 }

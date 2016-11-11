@@ -9,19 +9,26 @@
      * @param {Array} reportGroup.reports
      */
     function ReportView($scope, $translate, $stateParams, $timeout, _, accountManager, sessionStorage, $state, Auth, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES, TYPE_AD_SLOT, REPORT_SETTINGS) {
+
         var isAdmin = Auth.isAdmin();
         var isSubPublisher = Auth.isSubPublisher();
-        $scope.isAdmin = isAdmin;
 
+        $scope.isAdmin = isAdmin;
         $scope.hasResult = reportGroup !== false;
         reportGroup = reportGroup || {};
         $scope.reportGroup = reportGroup;
         $scope.reports = [];
         $scope.subBreakDown = $stateParams.subBreakDown;
+
         var dataGroupReport = $state.current.params.expanded ? ($scope.reportGroup.expandedReports || []) : ($scope.reportGroup.reports || []);
 
         if(!!$scope.subBreakDown && $scope.subBreakDown == 'day') {
             angular.forEach(dataGroupReport, function(rootReport) {
+                // set report type for item by day
+                angular.forEach(rootReport.reports, function (report) {
+                    report.reportType = rootReport.reportType
+                });
+
                 $scope.reports = $scope.reports.concat(rootReport.reports.reverse());
             })
         } else {
@@ -31,7 +38,11 @@
         $scope.demandSourceTransparency = Auth.getSession().demandSourceTransparency;
 
         var reportType = 'adTag';
-        var settings = isAdmin || isSubPublisher ? [] : angular.fromJson(sessionStorage.getCurrentSettings());
+
+        var currentSetting = sessionStorage.getCurrentSettings();
+        var oldSetting = (!_.isUndefined(currentSetting) &&  _.isNull(currentSetting)) ? angular.fromJson(currentSetting) : [];
+
+        var settings = (isAdmin || isSubPublisher) ? [] : oldSetting;
 
         $scope.dataSelect = dataSelect();
         $scope.modelSelect = modelSelect();
@@ -60,9 +71,7 @@
         if(!!$scope.reportGroup && !!$scope.reportGroup.reportType) {
             if(!!$scope.reportGroup.reportType.adSlotType) {
                 $scope.isNotNativeAdSlot = $scope.reportGroup.reportType.adSlotType != TYPE_AD_SLOT.native ? true : false;
-            }
-
-            else {
+            } else {
                 $scope.isNotNativeAdSlot = $scope.reportGroup.reportType.ronAdSlotType != TYPE_AD_SLOT.native ? true : false;
             }
 
@@ -142,13 +151,13 @@
             return !!setting.show;
         }
 
-        function getReportFields(reportFilesNew) {
+        function getReportFields(reportFilesNew, type) {
             var fields = [];
             if(isAdmin) {
                 fields = _getReportFieldsForAdmin();
             }
             else {
-                fields = _getReportFieldsForPublisher();
+                fields = _getReportFieldsForPublisher(type);
             }
 
             angular.forEach(fields, function(field) {
@@ -294,7 +303,7 @@
             return angular.copy(fields);
         }
 
-        function _getReportFieldsForPublisher() {
+        function _getReportFieldsForPublisher(type) {
             var fields = [];
 
             if (isAdmin
@@ -308,11 +317,11 @@
 
             angular.forEach(settings.view.report.performance[reportType], function(setting) {
                 if(setting.hideForNativeAdSlot) {
-                    if(setting.show && $scope.isNotNativeAdSlot && !setting.hideForAdmin) {
+                    if((setting.show || type != reportType) && $scope.isNotNativeAdSlot && !setting.hideForAdmin) {
                         return fields.push(setting);
                     }
                 }
-                else if(setting.show && !setting.hideForAdmin) {
+                else if((setting.show || type != reportType) && !setting.hideForAdmin) {
                     return fields.push(setting);
                 }
 

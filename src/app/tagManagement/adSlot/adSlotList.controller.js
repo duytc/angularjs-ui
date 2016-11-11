@@ -75,12 +75,27 @@
                         return Manager.one(adSlot.id).customGET('jstag');
                     }
                 },
-                controller: function ($scope, javascriptTag) {
+                controller: function ($scope, javascriptTag, USER_MODULES) {
+                    $scope.selected = {
+                        secure: false
+                    };
+
                     $scope.adSlotName = adSlot.libraryAdSlot.name;
                     $scope.javascriptTag = javascriptTag;
                     $scope.getTextToCopy = function(string) {
                         return string.replace(/\n/g, '\r\n');
                     };
+
+                    $scope.hasDisplayAdsModuleAndSecure = function () {
+                        return adSlot.site.publisher.enabledModules.indexOf(USER_MODULES.displayAds) > -1 && (adSlot.site.publisher.tagDomain.length == 0 || !adSlot.site.publisher.tagDomain || !!adSlot.site.publisher.tagDomain.secure)
+                    };
+
+                    $scope.secureChange = function(secure) {
+                        Manager.one(adSlot.id).customGET('jstag', {forceSecure: secure})
+                            .then(function(javascriptTag) {
+                                $scope.javascriptTag = javascriptTag;
+                            });
+                    }
                 }
             });
         };

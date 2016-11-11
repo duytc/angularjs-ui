@@ -1,0 +1,37 @@
+<div ng-if="hasResult">
+    <tc-billing-report-overview report-group="reportGroup"></tc-billing-report-overview>
+
+    <div class="panel panel-default daily-reports">
+        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
+            {{ 'REPORT.DAILY_BREAKDOWN' | translate }}
+            <div class="button-bar">
+                <export-excel data="reports" fields="['date', 'inBannerImpressions', 'inBannerBilledAmount', 'inBannerBilledRate']" header="['Date', 'Impressions', 'Billed Amount', 'Billed Rate']" file-name="getExportExcelFileName"></export-excel>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
+                <thead></thead>
+                <tbody>
+                <tr ng-click="drillDownReport(reportStates.platformAccounts, item)">
+                    <td at-title="Date" at-attribute="date" at-sortable at-initial-sorting="desc">
+                        {{ item.date | date }}
+                    </td>
+                    <td at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="inBannerImpressions" at-sortable>
+                        {{ (item.inBannerImpressions != null ? item.inBannerImpressions : 0) | number }}
+                    </td>
+                    <td at-title="{{ 'REPORT.BILLED_AMOUNT' | translate }}" at-attribute="inBannerBilledAmount" at-sortable>
+                        {{ (item.inBannerBilledAmount != null ? item.inBannerBilledAmount : 0) | currency }}
+                    </td>
+                    <td at-title="{{ 'REPORT.BILLED_RATE' | translate }}" at-attribute="inBannerBilledRate" at-sortable>
+                        {{ (item.inBannerBilledRate != null ? item.inBannerBilledRate : 0) | currency:'$':4 }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <at-pagination ng-if="showPagination()" class="table-footer" at-list="reports" at-config="tableConfig"></at-pagination>
+    </div>
+
+    <tc-billing-report-summary report-group="reportGroup"></tc-billing-report-summary>
+</div>

@@ -6,7 +6,7 @@
         .controller('PublisherForm', PublisherForm)
     ;
 
-    function PublisherForm($scope, $translate, _, exchanges, headerBiddings, adminUserManager, AlertService, ServerErrorProcessor, publisher, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST, USER_MODULES) {
+    function PublisherForm($scope, $translate, _, exchanges, headerBiddings, defaultThresholds, adminUserManager, AlertService, ServerErrorProcessor, publisher, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST, USER_MODULES){
         $scope.fieldNameTranslations = {
             username: 'Username',
             plainPassword: 'Password',
@@ -59,19 +59,7 @@
             if(publisher.billingConfigs.length > 0) {
                 angular.forEach(publisher.billingConfigs, function(billingConfig) {
                     if(billingConfig.tiers.length > 0) {
-                        angular.forEach(billingConfig.tiers, function(tier) {
-                            if(1000000000 <= tier.threshold) {
-                                tier.threshold = tier.threshold/1000000000;
-                                tier.number = 1000000000;
-                            }
-                            else if(1000000 <= tier.threshold && tier.threshold < 1000000000) {
-                                tier.threshold = tier.threshold/1000000;
-                                tier.number = 1000000;
-                            } else {
-                                tier.threshold = tier.threshold/1000;
-                                tier.number = 1000;
-                            }
-                        })
+                        _formatTiers(billingConfig.tiers);
                     }
                 })
             }
@@ -85,6 +73,8 @@
 
         $scope.modules = [
             { label: 'Display', role: 'MODULE_DISPLAY' },
+            { label: 'Video', role: 'MODULE_VIDEO' },
+            { label: 'In-Banner Video', role: 'MODULE_IN_BANNER' },
             { label: 'Source Report', role: 'MODULE_SOURCE_REPORT' },
             { label: 'Unified Report', role: 'MODULE_UNIFIED_REPORT' },
             { label: 'RTB (Real Time Bidding)', role: 'MODULE_RTB' },
@@ -93,8 +83,14 @@
 //            { label: 'Fraud Detection', role: 'MODULE_FRAUD_DETECTION' }
         ];
 
+        _formatTiers(defaultThresholds.video);
+        _formatTiers(defaultThresholds.display);
+        _formatTiers(defaultThresholds['in-banner']);
+        _formatTiers(defaultThresholds['header-bidding']);
+
         $scope.exchanges = exchanges;
         $scope.headerBiddings = headerBiddings;
+        $scope.defaultThresholds = defaultThresholds;
 
         $scope.hasModuleEnabled = hasModuleEnabled;
         $scope.toggleModuleRole = toggleModuleRole;
@@ -104,6 +100,7 @@
         $scope.hasBidder = hasBidder;
         $scope.toggleExchange = toggleExchange;
         $scope.toggleHeaderBidding = toggleHeaderBidding;
+        $scope.disabledModule = disabledModule;
 
         /**
          * check if current Publisher has a module enabled
@@ -121,7 +118,7 @@
          * @param role
          */
         function toggleModuleRole(role) {
-            if(role == USER_MODULES.source) {
+            if(role == USER_MODULES.source) { // Note: These code support for API. Replace Video Source Module by video and analytic module
                 if($scope.publisher.enabledModules.indexOf(USER_MODULES.video) == -1 || $scope.publisher.enabledModules.indexOf(USER_MODULES.analytics) == -1) {
                     $scope.publisher.enabledModules.push(USER_MODULES.video);
                     $scope.publisher.enabledModules.push(USER_MODULES.analytics);
@@ -137,6 +134,37 @@
                 $scope.publisher.enabledModules.splice(idx, 1);
             } else {
                 $scope.publisher.enabledModules.push(role);
+            }
+
+            // remove module do not display module
+            if(role == USER_MODULES.displayAds && $scope.publisher.enabledModules.indexOf(USER_MODULES.displayAds) == -1) {
+                if($scope.publisher.enabledModules.indexOf(USER_MODULES.video) > -1) {
+                    $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.video), 1);
+                }
+
+                if($scope.publisher.enabledModules.indexOf(USER_MODULES.analytics) > -1) {
+                    $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.analytics), 1);
+                }
+
+                if($scope.publisher.enabledModules.indexOf(USER_MODULES.headerBidding) > -1) {
+                    $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.headerBidding), 1);
+                }
+
+                if($scope.publisher.enabledModules.indexOf(USER_MODULES.rtb) > -1) {
+                    $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.rtb), 1);
+                }
+
+                // if($scope.publisher.enabledModules.indexOf(USER_MODULES.source) > -1) {
+                //     $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.source), 1);
+                // }
+
+                if($scope.publisher.enabledModules.indexOf(USER_MODULES.subPublisher) > -1) {
+                    $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.subPublisher), 1);
+                }
+
+                if($scope.publisher.enabledModules.indexOf(USER_MODULES.inBanner) > -1) {
+                    $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.inBanner), 1);
+                }
             }
         }
 
@@ -249,6 +277,30 @@
             } else {
                 $scope.publisher.bidders.push(bidder.abbreviation);
             }
+        }
+
+        function disabledModule(module) {
+            if((module == USER_MODULES.subPublisher || module == USER_MODULES.rtb || module == USER_MODULES.headerBidding || module == USER_MODULES.inBanner) && !hasModuleEnabled(USER_MODULES.displayAds)) {
+                return true;
+            }
+
+            return false;
+        }
+
+        function  _formatTiers(tiers) {
+            angular.forEach(tiers, function(tier) {
+                if(1000000000 <= tier.threshold) {
+                    tier.threshold = tier.threshold/1000000000;
+                    tier.number = 1000000000;
+                }
+                else if(1000000 <= tier.threshold && tier.threshold < 1000000000) {
+                    tier.threshold = tier.threshold/1000000;
+                    tier.number = 1000000;
+                } else {
+                    tier.threshold = tier.threshold/1000;
+                    tier.number = 1000;
+                }
+            })
         }
 
         $scope.submit = function() {

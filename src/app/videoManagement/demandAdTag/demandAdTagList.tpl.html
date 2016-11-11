@@ -1,0 +1,73 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span>
+        <strong current-page-title></strong>
+
+        <div class="button-bar" ng-if="!isSubPublisher() && listByLibrary">
+            <button ng-click="backToListLibraryDemandAdTag()" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                {{ 'AD_SOURCE_MODULE.BACK_TO_LIBRARY_DEMAND_AD_TAG_LIST' | translate }}
+            </button>
+            <!--<button ui-sref="^.new" class="btn btn-primary btn-sm" type="button">-->
+                <!--<span class="glyphicon glyphicon-plus"></span>-->
+                <!--{{ 'AD_SOURCE_MODULE.NEW_AD_SOURCE' | translate }}-->
+            <!--</button>-->
+        </div>
+        <div class="btn-group btnGrouped" ng-if="!isSubPublisher() && listByLibrary" dropdown>
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li ng-click="backToListLibraryDemandAdTag()"><a>{{ 'AD_SOURCE_MODULE.BACK_TO_LIBRARY_DEMAND_AD_TAG_LIST' | translate }}</a></li>
+                <!--<li><a ui-sref="^.new">{{ 'AD_SOURCE_MODULE.NEW_AD_SOURCE' | translate }}</a></li>-->
+            </ul>
+        </div>
+    </div>
+
+    <search-box show-query="true" sb-list="demandAdTags" search-fields="['id', 'name', 'videoDemandPartner.publisher.company', 'videoDemandPartner.publisher.username']"></search-box>
+
+    <div class="panel-body" ng-if="hasData()">
+        <div class="table-responsive">
+            <table class="table" at-sortable-query at-table at-paginated at-list="demandAdTags" at-config="tableConfig">
+                <thead>
+                <tr>
+                    <th ng-show="isAdmin()" at-attribute="libraryVideoDemandAdTag.videoDemandPartner.publisher.company" >{{ 'PUBLISHER' | translate }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
+                    <td at-title="{{ 'ACTIONS' | translate }}">
+                        <div class="btn-group" dropdown>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                            <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <li ng-if="!isSubPublisher()"><a ui-sref="^.^.demandAdTag.listByVideoTag({videoTagId: item.videoWaterfallTagItem.videoWaterfallTag.id})">{{ 'AD_SOURCE_MODULE.VIEW_IN_WATERFALL' | translate }}</a></li>
+                                <li class="divider"></li>
+                                <li ng-if="!isSubPublisher() && item.active != 1"><a ng-click="toggleDemandAdTagStatus(item, 1)">{{ 'AD_SOURCE_MODULE.ACTIVATE_AD_SOURCE' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher() && item.active == 1"><a ng-click="toggleDemandAdTagStatus(item, 0)">{{ 'AD_SOURCE_MODULE.PAUSE_AD_SOURCE' | translate }}</a></li>
+                                <li class="divider"></li>
+                                <li><a ui-sref="^.^.^.reports.video.report(paramsReport(item))">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
+                                <li class="divider"></li>
+                                <li ng-if="!isSubPublisher()"><a ui-sref="^.edit({ id: item.id, libraryDemandAdTagId: item.libraryVideoDemandAdTag.id })">{{ 'AD_SOURCE_MODULE.EDIT_AD_SOURCE' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item, $index)">{{ 'AD_SOURCE_MODULE.DELETE_AD_SOURCE' | translate }}</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td at-implicit at-sortable at-attribute="libraryVideoDemandAdTag.name" at-initial-sorting="asc" at-title="{{ 'NAME' | translate }}"></td>
+                    <td at-implicit at-sortable at-attribute="videoWaterfallTagItem.videoWaterfallTag.name" at-title="{{ 'WATERFALL_TAG' | translate }}"></td>
+                    <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="libraryVideoDemandAdTag.videoDemandPartner.publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
+                    <td at-implicit at-sortable at-attribute="priority" at-title="{{ 'AD_SOURCE_MODULE.PRIORITY' | translate }}"></td>
+                    <td at-implicit at-sortable at-attribute="libraryVideoDemandAdTag.timeout" at-title="{{ 'AD_SOURCE_MODULE.TIMEOUT' | translate }}"></td>
+                    <td at-sortable at-attribute="rotationWeight" at-title="{{ 'AD_SOURCE_MODULE.WEIGHT' | translate }}"></td>
+                    <td at-implicit at-sortable at-attribute="profit" at-title="{{ 'AD_SOURCE_MODULE.PROFIT' | translate }}">
+                        {{ item.profit | currency }}
+                    </td>
+                    <td at-implicit at-sortable at-attribute="videoDemandPartner.active" at-title="{{ 'AD_SOURCE_MODULE.STATUS' | translate }}">
+                        <span class="label" ng-class="item.active == 1 ? 'label-success' : (item.active == 0 ?'label-danger' : 'label-warning')">{{ item.active == 1 ? 'Active' : (item.active == 0 ? 'Paused' : 'Auto Paused') }}</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <at-pagination at-pagination-query ng-if="showPagination()" at-list="demandAdTags" at-config="tableConfig"></at-pagination>
+        </div>
+    </div>
+</div>

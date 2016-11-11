@@ -26,6 +26,7 @@
                 </thead>
                 <tbody>
                 <tr ng-click="demandSourceTransparency ? drillDownReport(reportStates.adSlotAdTags, item) : null">
+
                     <td at-title="{{ 'ACTIONS' | translate }}">
                         <div class="btn-group" dropdown stop-event>
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
@@ -35,6 +36,7 @@
                             </ul>
                         </div>
                     </td>
+
                     <td at-title="{{ 'REPORT.DATE' | translate }}" at-attribute="startDate">
                         {{ item.startDate | date }}
                     </td>
