@@ -81,7 +81,9 @@
 
         function selectBreakdown(breakdown) {
             if(breakdown.key == 'videoDemandAdTag') {
-                $scope.queryParams.metrics.splice($scope.queryParams.metrics.indexOf('adTagRequests'), 1)
+                if($scope.queryParams.metrics.indexOf('adTagRequests') > -1) {
+                    $scope.queryParams.metrics.splice($scope.queryParams.metrics.indexOf('adTagRequests'), 1)
+                }
             }
 
             var index = $scope.queryParams.breakdowns.indexOf(breakdown.key);
@@ -97,6 +99,10 @@
             if(selectedAll) {
                 $scope.queryParams.metrics = [];
                 angular.forEach($scope.metricsOptions, function(metrics) {
+                    if(metrics.key == 'adTagRequests' && $scope.queryParams.breakdowns.indexOf('videoDemandAdTag') == 1) {
+                        return;
+                    }
+
                     $scope.queryParams.metrics.push(metrics.key)
                 });
             } else {
