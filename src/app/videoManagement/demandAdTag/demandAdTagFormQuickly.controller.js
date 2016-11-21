@@ -46,7 +46,7 @@
             libraryVideoDemandAdTag: {
                 name: null,
                 videoDemandPartner: null,
-                timeout: 3,
+                timeout: null,
                 tagURL: null,
                 sellPrice: null,
                 targeting: {
@@ -62,6 +62,7 @@
             priority: null,
             activeClone: true,
             rotationWeight: null,
+            requestCap: null,
             targetingOverride: false
         };
 
@@ -479,12 +480,20 @@
                         //
                         //}
 
-                        $state.reload();
+                        if(angular.isArray(videoWaterfallTagItems)) {
+                            $state.reload();
+                            AlertService.addFlash({
+                                type: 'success',
+                                message: $translate.instant('VIDEO_AD_TAG_MODULE.UPDATE_SUCCESS')
+                            });
+                        }else {
+                            AlertService.replaceAlerts({
+                                type: 'success',
+                                message: $translate.instant('AD_SOURCE_MODULE.UPDATE_SUCCESS')
+                            });
+                        }
 
-                        AlertService.addFlash({
-                            type: 'success',
-                            message: $translate.instant('VIDEO_AD_TAG_MODULE.UPDATE_SUCCESS')
-                        });
+
 
                         $modalInstance.close();
                     });
@@ -529,7 +538,7 @@
                         return item.position == $scope.selectedData.position;
                     });
 
-                    demandAdTag.videoWaterfallTagItem = videoWaterfallTagItem.id
+                    demandAdTag.videoWaterfallTagItem = angular.isObject(videoWaterfallTagItem) ? videoWaterfallTagItem.id : demandAdTag.videoWaterfallTagItem;
                 }
             }
 

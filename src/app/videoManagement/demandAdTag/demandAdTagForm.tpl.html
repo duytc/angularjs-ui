@@ -73,19 +73,25 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.PRIORITY' | translate }}</label>
                     <div class="col-sm-5">
-                        <input name="priority" ignore-mouse-wheel  ng-model="demandAdTag.priority" server-error type="number" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_PRIORITY' | translate }}">
+                        <input name="priority" ng-model="demandAdTag.priority" server-error type="number" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_PRIORITY' | translate }}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.WEIGHT' | translate }}</label>
                     <div class="col-sm-5">
-                        <input name="weight" ignore-mouse-wheel ng-model="demandAdTag.rotationWeight" server-error type="number" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_WEIGHT' | translate }}">
+                        <input name="weight" ng-model="demandAdTag.rotationWeight" server-error type="number" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_WEIGHT' | translate }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.REQUEST_CAP' | translate }}</label>
+                    <div class="col-sm-5">
+                        <input name="requestCap" ng-model="demandAdTag.requestCap" server-error type="number" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.REQUEST_CAP' | translate }}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.TIMEOUT' | translate }}</label>
                     <div class="col-sm-5">
-                        <input name="timeout" ignore-mouse-wheel ng-model="demandAdTag.libraryVideoDemandAdTag.timeout" server-error type="number" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.TIMEOUT' | translate }}">
+                        <input name="timeout" ng-model="demandAdTag.libraryVideoDemandAdTag.timeout" server-error type="number" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.TIMEOUT' | translate }}">
 
                         <span class="help-block">{{ 'AD_SOURCE_MODULE.HELP_BLOCK_TIMEOUT' | translate }}</span>
                     </div>

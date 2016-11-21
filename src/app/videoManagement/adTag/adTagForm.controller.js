@@ -98,6 +98,7 @@
             $scope.formProcessing = true;
 
             delete $scope.adTag.videoAdTagItems;
+            delete $scope.adTag.uuid;
             $scope.adTag.buyPrice = NumberConvertUtil.convertPriceToString($scope.adTag.buyPrice);
 
             var saveWaterfall = $scope.isNew ? VideoAdTagManager.post($scope.adTag) : $scope.adTag.patch();

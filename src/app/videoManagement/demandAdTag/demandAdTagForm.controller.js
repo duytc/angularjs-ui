@@ -46,7 +46,7 @@
             libraryVideoDemandAdTag: {
                 name: null,
                 videoDemandPartner: null,
-                timeout: 3,
+                timeout: null,
                 tagURL: null,
                 sellPrice: null,
                 targeting: {
@@ -61,7 +61,8 @@
             },
             priority: null,
             activeClone: true,
-            rotationWeight: null
+            rotationWeight: null,
+            requestCap: null
         };
 
         $scope.selectedData = {

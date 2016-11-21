@@ -5,7 +5,7 @@
         .controller('VideoReport', VideoReport)
     ;
 
-    function VideoReport($scope, $stateParams, reportGroup, dateUtil) {
+    function VideoReport($scope, _, $modal, $stateParams, reportGroup, dateUtil) {
         reportGroup = reportGroup || {};
         $scope.reportGroup = reportGroup;
         $scope.reportGroup.reports = reportGroup.reports || {};
@@ -15,12 +15,22 @@
         var breakdowns = angular.fromJson($stateParams.breakdowns);
         var filters = angular.fromJson($stateParams.filters);
 
-        // set again when data is null
-        filters.videoDemandAdTag = filters.videoDemandAdTag || {};
-        filters.waterfallTag = filters.waterfallTag || {};
-        filters.demandPartner = filters.demandPartner || {};
-        filters.publisher = filters.publisher || {};
-        filters.videoPublisher = filters.videoPublisher || {};
+        if(angular.isObject(filters)) {
+            // set again when data is null
+            filters.videoDemandAdTag = filters.videoDemandAdTag || {};
+            filters.waterfallTag = filters.waterfallTag || {};
+            filters.demandPartner = filters.demandPartner || {};
+            filters.publisher = filters.publisher || {};
+            filters.videoPublisher = filters.videoPublisher || {};
+        } else {
+            filters = {
+                videoDemandAdTag: {},
+                waterfallTag: {},
+                demandPartner: {},
+                publisher: {},
+                videoPublisher: {}
+            }
+        }
 
         $scope.params = $stateParams;
         $scope.arrayFieldExport = [];
@@ -49,10 +59,10 @@
             'requestFillRate': 'Request Fill Rate',
             'clicks': 'Clicks',
             'clickThroughRate': 'Click Through Rate',
-            'blocks': 'Blocks',
+            'blocks': 'Blocked Requests',
             'adTagRequests': 'Waterfall Requests',
-            'adTagBids': 'Waterfall Bids',
-            'adTagErrors': 'Waterfall Errors',
+            // 'adTagBids': 'Waterfall Bids',
+            // 'adTagErrors': 'Waterfall Errors',
             'estDemandRevenue': 'Demand Revenue',
             'estSupplyCost': 'Supply Cost',
             'netRevenue': 'Net Revenue'
@@ -94,9 +104,75 @@
             }
         });
 
+        $scope.getExportExcelFileName = getExportExcelFileName();
         $scope.showPagination = showPagination;
         $scope.hasKeyObject = hasKeyObject;
-        $scope.getExportExcelFileName = getExportExcelFileName();
+        $scope.showActionForBreakDown = showActionForBreakDown;
+        $scope.editDemandAdTag = editDemandAdTag;
+
+        function editDemandAdTag(videoWaterfallTagItems, position, videoDemandAdTag) {
+            var modalInstance = $modal.open({
+                templateUrl: 'videoManagement/demandAdTag/demandAdTagFormQuickly.tpl.html',
+                size: 'lg',
+                resolve: {
+                    videoDemandAdTag: function() {
+                        return videoDemandAdTag;
+                    },
+                    demandPartners: /* @ngInject */ function(VideoDemandPartnerManager) {
+                        return VideoDemandPartnerManager.getList().then(function (demandPartners) {
+                            return demandPartners.plain();
+                        });
+                    },
+                    publishers: /* @ngInject */ function(adminUserManager, Auth) {
+                        if(Auth.isAdmin()) {
+                            return adminUserManager.getList({ filter: 'publisher' }).then(function (users) {
+                                return users.plain();
+                            });
+                        }
+
+                        return [];
+                    },
+                    videoWaterfallTagItems: function() {
+                        return videoWaterfallTagItems;
+                    },
+                    publisher: function() {
+                        return videoDemandAdTag.videoWaterfallTagItem.videoWaterfallTag.videoPublisher.publisher;
+                    },
+                    position: function() {
+                        return position;
+                    },
+                    videoWaterfallTag: function() {
+                        return videoDemandAdTag.videoWaterfallTagItem.videoWaterfallTag;
+                    },
+                    blackList: function(BlackListManager) {
+                        return BlackListManager.getList()
+                    },
+                    whiteList: function(WhiteListManager) {
+                        return WhiteListManager.getList()
+                    }
+                },
+                controller: 'DemandAdTagFormQuickly'
+            });
+
+            modalInstance.result
+                .then(function () {
+                    // update position for video adtag item
+                    updatePositionForVideoAdTagItem();
+                    findWaterfallTagItems();
+                })
+        }
+
+        function showActionForBreakDown(breakDown) {
+            if(angular.isArray(breakDown)) {
+                return _.intersection(breakdowns, breakDown).length > 0;
+            }
+
+            if(breakdowns.indexOf(breakDown) > -1) {
+                return true;
+            }
+
+            return false
+        }
 
         function showPagination() {
             return angular.isArray($scope.reportGroup.reports) && $scope.reportGroup.reports.length > $scope.tableConfig.itemsPerPage;
