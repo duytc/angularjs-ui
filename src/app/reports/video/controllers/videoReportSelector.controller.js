@@ -99,7 +99,7 @@
             if(selectedAll) {
                 $scope.queryParams.metrics = [];
                 angular.forEach($scope.metricsOptions, function(metrics) {
-                    if(metrics.key == 'adTagRequests' && $scope.queryParams.breakdowns.indexOf('videoDemandAdTag') == 1) {
+                    if(metrics.key == 'adTagRequests' && $scope.queryParams.breakdowns.indexOf('videoDemandAdTag') > -1) {
                         return;
                     }
 
