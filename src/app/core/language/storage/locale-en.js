@@ -495,6 +495,7 @@
 
                 "PLACEHOLDER_PRIORITY": "Leave blank for default",
                 "PLACEHOLDER_WEIGHT": "Leave blank for default",
+                "PLACEHOLDER_DEFAULT": "Leave blank to use default",
                 "NEW_AD_SOURCE": "New Demand Ad Tag",
                 "EDIT_AD_SOURCE": "Edit Demand Ad Tag",
                 "DELETE_AD_SOURCE": "Delete Demand Ad Tag",
@@ -510,6 +511,7 @@
                 "CONFIRM_SUBMIT_FOR_PLATFORM": "One of the waterfalls has a platform that does not support this platform of demand ad tag.",
 
                 "HELP_BLOCK_TIMEOUT": "The request timeout in milliseconds. Leave it blank to use the default value",
+                "HELP_BLOCK_REQUEST_CAP": "You can cap the amount of requests per day. Leave it blank to use no cap",
                 "HELP_BLOCK_AUTO_POSITION": "If Shift down is checked, all demand ad tags at the same or higher position will be shifted down.",
                 "HELP_BLOCK_FROM_LIBRARY": "You can select an existing demand ad tag, not linked demand ad tag, from which created before. If you choose this option, when you change some of the fields belows, the existing demand ad tag will be changed on these fields too.",
                 "CONFIRM_REPLACE_MACROS": "We have identified that this tag URL belongs to a known demand partner. Would you like to automatically insert our macros?",
