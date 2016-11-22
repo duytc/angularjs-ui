@@ -12,7 +12,7 @@
         UserStateHelperProvider
             .state('videoManagement.adTag', {
                 abstract: true,
-                url: '/adTags',
+                url: '/waterfalls',
                 ncyBreadcrumb: {
                     skip: true
                 }
