@@ -34,10 +34,10 @@
         <div class="row">
             <ul class="header-list-ad-tag item">
                 <li class="col-md-1">#</li>
-                <li class="col-md-1">{{ 'ACTIONS' | translate }}</li>
-                <li class="col-md-2">{{ 'NAME' | translate }}</li>
+                <li class="col-md-2">{{ 'ACTIONS' | translate }}</li>
+                <li class="col-md-3">{{ 'NAME' | translate }}</li>
                 <li class="col-md-2">{{ 'AD_SOURCE_MODULE.PRIORITY' | translate }}</li>
-                <li class="col-md-2">{{ 'AD_SOURCE_MODULE.TIMEOUT' | translate }}</li>
+                <!--<li class="col-md-2">{{ 'AD_SOURCE_MODULE.TIMEOUT' | translate }}</li>-->
                 <li class="col-md-2">{{ 'AD_SOURCE_MODULE.WEIGHT' | translate }}</li>
                 <li class="col-md-1">{{ 'AD_SOURCE_MODULE.PROFIT' | translate }}</li>
                 <li class="col-md-1">{{ 'AD_SOURCE_MODULE.STATUS' | translate }}</li>
@@ -65,7 +65,7 @@
                     <ul class="itemAdTag" ui-sortable="sortableItemOption" ng-model="videoWaterfallTagItem.videoDemandAdTags">
                         <li class="item" ng-repeat="videoDemandAdTag in videoWaterfallTagItem.videoDemandAdTags">
                             <div class="col-md-1">{{ videoDemandAdTag.id }}</div>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <div class="btn-group" dropdown on-toggle="actionDropdownToggled(open)">
                                     <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                                     <ul class="dropdown-menu" role="menu">
@@ -83,7 +83,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-2" ng-dblclick="nameForm.$show()">
+                            <div class="col-md-3" ng-dblclick="nameForm.$show()">
                                 <!--<div ng-show="!isSubPublisher()">-->
                                     <!--<span class="fa fa-pencil" ng-hide="nameForm.$visible"></span>-->
                                     <!--<div e-form="nameForm" buttons="no" oncancel="updateDemandAdTag($data, 'name', videoDemandAdTag)" onbeforesave="updateDemandAdTag($data, 'name', videoDemandAdTag)" editable-text="videoDemandAdTag.name">{{ videoDemandAdTag.name }}</div>-->
@@ -99,12 +99,12 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-2" ng-dblclick="timeoutForm.$show()">
-                                <div ng-show="!isSubPublisher()">
-                                    <span class="fa fa-pencil" ng-hide="timeoutForm.$visible"></span>
-                                    <div e-form="timeoutForm" buttons="no" oncancel="updateDemandAdTag($data, 'timeout', videoDemandAdTag)" onbeforesave="updateDemandAdTag($data, 'timeout', videoDemandAdTag)" editable-number="videoDemandAdTag.libraryVideoDemandAdTag.timeout">{{videoDemandAdTag.libraryVideoDemandAdTag.timeout}}</div>
-                                </div>
-                            </div>
+                            <!--<div class="col-md-2" ng-dblclick="timeoutForm.$show()">-->
+                                <!--<div ng-show="!isSubPublisher()">-->
+                                    <!--<span class="fa fa-pencil" ng-hide="timeoutForm.$visible"></span>-->
+                                    <!--<div e-form="timeoutForm" buttons="no" oncancel="updateDemandAdTag($data, 'timeout', videoDemandAdTag)" onbeforesave="updateDemandAdTag($data, 'timeout', videoDemandAdTag)" editable-number="videoDemandAdTag.libraryVideoDemandAdTag.timeout">{{videoDemandAdTag.libraryVideoDemandAdTag.timeout}}</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
 
                             <div class="col-md-2" ng-dblclick="rotationForm.$show()">
                                 <div ng-show="!isSubPublisher()">
