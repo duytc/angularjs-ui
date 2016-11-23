@@ -110,9 +110,9 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.COUNTRIES' | translate }}</label>
                                     <div class="col-sm-9">
-                                        <ui-select multiple ng-model="demandAdTag.targeting.countries" ng-required="true" close-on-select="false" server-error reset-search-input="'false'">
+                                        <ui-select multiple ng-model="demandAdTag.targeting.countries" ng-required="true" on-select="$item.search = $select.search; $select.search = '';" close-on-select="false" reset-search-input ="true" >
                                             <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_COUNTRIES' | translate }}">{{ $item.name }}</ui-select-match>
-                                            <ui-select-choices group-by="groupEntities" repeat="country.code as country in countries | filter:filterExcludeCountriesSelected | filter:$select.search">
+                                            <ui-select-choices repeat="country.code as country in countries | filter:filterExcludeCountriesSelected | filter:$select.search">
                                                 {{ country.name }}
                                             </ui-select-choices>
                                         </ui-select>
@@ -122,9 +122,9 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.EXCLUDE_COUNTRIES' | translate }}</label>
                                     <div class="col-sm-9">
-                                        <ui-select multiple ng-model="demandAdTag.targeting.exclude_countries" ng-required="true" close-on-select="false" server-error reset-search-input="'false'">
+                                        <ui-select multiple ng-model="demandAdTag.targeting.exclude_countries" on-select="$item.search = $select.search; $select.search = '';" ng-required="true" close-on-select="false" server-error reset-search-input ="true">
                                             <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_COUNTRIES' | translate }}">{{ $item.name }}</ui-select-match>
-                                            <ui-select-choices group-by="groupEntities" repeat="country.code as country in countries | filter:filterCountriesSelected | filter:$select.search">
+                                            <ui-select-choices repeat="country.code as country in countries | filter:filterCountriesSelected | filter:$select.search">
                                                 {{ country.name }}
                                             </ui-select-choices>
                                         </ui-select>
