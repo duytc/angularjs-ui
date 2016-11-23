@@ -162,7 +162,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.PLATFORM' | translate }}</label>
                                     <div class="col-sm-9">
-                                        <ui-select ng-disabled="!demandAdTag.targetingOverride && (pickFromLibrary || demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" multiple name="platform" id="inputPlatform" ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.platform" ng-required="true" server-error>
+                                        <ui-select on-select="$item.search = $select.search; $select.search = '';" ng-disabled="!demandAdTag.targetingOverride && (pickFromLibrary || demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" multiple name="platform" id="inputPlatform" ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.platform" ng-required="true" server-error>
                                             <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_PLATFORM' | translate }}">{{ $item.label }}</ui-select-match>
                                             <ui-select-choices repeat="platform.key as platform in platformOption | filter:$select.search">
                                                 {{ platform.label }}
@@ -174,7 +174,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.PLAYER_SIZE' | translate }}</label>
                                     <div class="col-sm-9">
-                                        <ui-select ng-disabled="!demandAdTag.targetingOverride && (pickFromLibrary || demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" multiple name="playerSize" close-on-select="false" ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.player_size" ng-required="true" server-error>
+                                        <ui-select on-select="$item.search = $select.search; $select.search = '';" ng-disabled="!demandAdTag.targetingOverride && (pickFromLibrary || demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" multiple name="playerSize" close-on-select="false" ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.player_size" ng-required="true" server-error>
                                             <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_PLAYER_SIZE' | translate }}">{{ $item.label }}</ui-select-match>
                                             <ui-select-choices repeat="player.key as player in playerSizeOptions | filter:$select.search">
                                                 {{ player.label }}
@@ -185,14 +185,12 @@
                                 <br>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.REQUIRED_MACROS' | translate }}</label>
-                                    <div class="col-sm-9">
-                                        <ui-select ng-disabled="!demandAdTag.targetingOverride && (pickFromLibrary || demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" multiple name="requiredMacros" close-on-select="false" ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.required_macros" ng-required="true" server-error>
-                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_REQUIRED_MACROS' | translate }}">{{ $item }}</ui-select-match>
-                                            <ui-select-choices repeat="require in requiredMacrosOptions | filter:$select.search">
-                                                {{ require }}
-                                            </ui-select-choices>
-                                        </ui-select>
-                                    </div>
+                                    <ui-select on-select="$item.search = $select.search; $select.search = '';" multiple name="requiredMacros" close-on-select="false" ng-model="demandAdTag.targeting.required_macros" ng-required="true" server-error>
+                                        <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_REQUIRED_MACROS' | translate }}">{{ $item.label }}</ui-select-match>
+                                        <ui-select-choices repeat="require.key as require in requiredMacrosOptions | filter:$select.search">
+                                            {{ require.label }}
+                                        </ui-select-choices>
+                                    </ui-select>
                                 </div>
                             </div>
                         </div>
