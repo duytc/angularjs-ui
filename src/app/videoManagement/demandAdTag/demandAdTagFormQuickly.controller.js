@@ -493,8 +493,6 @@
                             });
                         }
 
-
-
                         $modalInstance.close();
                     });
             });
