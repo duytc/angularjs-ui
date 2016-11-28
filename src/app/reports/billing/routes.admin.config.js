@@ -28,7 +28,13 @@
                 },
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, performanceReport, REPORT_TYPES) {
-                        return performanceReport.getPlatformReport($stateParams, {
+                        var params = $stateParams;
+
+                        if($stateParams.product == 'inBanner') {
+                            params.inBanner = true
+                        }
+
+                        return performanceReport.getPlatformReport(params, {
                             reportType: REPORT_TYPES.platform,
                             platformBreakdown: 'day'
                         });
@@ -119,7 +125,13 @@
                 },
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, REPORT_TYPES, performanceReport) {
-                        return performanceReport.getPlatformAccountsReport($stateParams, {
+                        var params = $stateParams;
+
+                        if($stateParams.product == 'inBanner') {
+                            params.inBanner = true
+                        }
+
+                        return performanceReport.getPlatformAccountsReport(params, {
                             reportType: REPORT_TYPES.platform,
                             platformBreakdown: 'account'
                         });
@@ -235,7 +247,13 @@
                 },
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, REPORT_TYPES, performanceReport) {
-                        return performanceReport.getPlatformSitesReport($stateParams, {
+                        var params = $stateParams;
+
+                        if($stateParams.product == 'inBanner') {
+                            params.inBanner = true
+                        }
+
+                        return performanceReport.getPlatformSitesReport(params, {
                             reportType: REPORT_TYPES.platform,
                             platformBreakdown: 'site'
                         });
@@ -269,7 +287,13 @@
                 },
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, performanceReport, REPORT_TYPES) {
-                        return performanceReport.getAccountReport($stateParams, {
+                        var params = $stateParams;
+
+                        if($stateParams.product == 'inBanner') {
+                            params.inBanner = true
+                        }
+
+                        return performanceReport.getAccountReport(params, {
                             reportType: REPORT_TYPES.account
                         });
                     }
@@ -331,7 +355,13 @@
                 },
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, REPORT_TYPES, performanceReport) {
-                        return performanceReport.getPublisherSitesReport($stateParams, {
+                        var params = $stateParams;
+
+                        if($stateParams.product == 'inBanner') {
+                            params.inBanner = true
+                        }
+
+                        return performanceReport.getPublisherSitesReport(params, {
                             reportType: REPORT_TYPES.site
                         });
                     }
