@@ -67,7 +67,7 @@
                 'content_page_url' : '${page_url}',
                 'vid_duration'     : '${video_duration}',
                 'video_duration'   : '${video_duration}',
-                'cb'                  : '${cache_buster}'
+                'cb'               : '${cache_buster}'
             },
 
             'https?://vast.ssp.optimatic.com/vast/getVast.aspx' : {
@@ -127,6 +127,19 @@
                 'video_description'  : '${video_description}',
                 'video_duration'     : '${video_duration}',
                 'video_id'           : '${video_id}'
+            },
+
+            'https?://ssp.lkqd.net' : {
+                'width'         : '${player_width}',
+                'height'        : '${player_height}',
+                'dnt'           : '${do_not_track}',
+                'pageurl'       : '${page_url}',
+                'ip'            : '${ip_address}',
+                'ua'            : '${user_agent}',
+                'contentid'     : '${video_id}',
+                'contenttitle'  : '${video_title}',
+                'contenturl'    : '${video_url}',
+                'rnd'           : '${cache_buster}'
             }
 
         })
