@@ -30,9 +30,11 @@
             <div class="form-group" ng-if="itemGroup.type != dataTypes[2].key && itemGroup.var != '${COUNTRY}' && itemGroup.var != '${DEVICE}'">
                 <input ng-disabled="disabledDirective" server-error ng-required="valIsNull(itemGroup.cmp)" type="text" class="form-control" ng-minlength="1" pattern="{{ itemGroup.type == dataTypes[1].key ? '\\d*' : '[a-zA-Z0-9?=/&\\-_$.,;:@?+!*()#\\[\\]\']+$'}}" required ng-model="itemGroup.val" ng-init="itemGroup.val == null ? itemGroup.val = '' : itemGroup.val " placeholder="Value">
             </div>
+
             <div class="form-group" ng-if="itemGroup.type == dataTypes[2].key && itemGroup.var != '${COUNTRY}' && itemGroup.var != '${DEVICE}'">
                 <select ng-disabled="disabledDirective" class="form-control" ng-options="value for value in values" ng-model="itemGroup.val" ng-init="values = ['true', 'false']; itemGroup.val == null ? itemGroup.val = 'true' : '' "></select>
             </div>
+
             <div class="form-group select-county" ng-if="itemGroup.var == '${COUNTRY}'">
                 <ui-select multiple ng-model="itemGroup.val" ng-required="true" close-on-select="false" on-select="$item.search = $select.search; $select.search = '';" server-error reset-search-input="'false'" ng-disabled="disabledDirective" style="min-width: 180px;">
                     <ui-select-match placeholder="Select a country">{{ $item.name }}</ui-select-match>

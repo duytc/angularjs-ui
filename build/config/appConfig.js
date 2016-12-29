@@ -10,11 +10,22 @@ module.exports = {
     deployment: {
         origin: {
             dev: {
-                match: /api\.tagcade\.dev/g,
-                val: 'api.tagade.dev'
+                tagcade: {
+                    match: /api\.tagcade\.dev/g,
+                    val: 'api.tagade.dev'
+                },
+                unified: {
+                    match: /api\.unified-reports\.dev/g,
+                    val: 'api.unified-reports.dev'
+                }
             },
             prod: {
-                val: 'api.tagcade.com'
+                tagcade: {
+                    val: 'api.tagcade.com'
+                },
+                unified: {
+                    val: 'api.unified-reports.com'
+                }
             },
             prodWhiteLabel: {
                 title: {
@@ -89,7 +100,9 @@ module.exports = {
             'vendor/angular-cache/dist/angular-cache.js',
             'vendor/angular-translate/angular-translate.js',
             'vendor/oi.select/dist/select-tpls.min.js',
-            'vendor/ngInfiniteScroll/build/ng-infinite-scroll.min.js'
+            'vendor/ngInfiniteScroll/build/ng-infinite-scroll.min.js',
+            'vendor/angular-file-upload/dist/angular-file-upload.min.js',
+            'vendor/ment.io/dist/mentio.min.js'
         ],
         css: [
             'src/styles/customvendor/**/*.css'

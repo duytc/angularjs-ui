@@ -11,5 +11,7 @@ angular.module('tagcade', [
     'tagcade.exchangeManagement',
     'tagcade.subPublisher',
     'tagcade.videoManagement',
-    'tagcade.videoLibrary'
+    'tagcade.videoLibrary',
+    'tagcade.unifiedReport',
+    'tagcade.public'
 ]);

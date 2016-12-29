@@ -1,0 +1,36 @@
+.pagination {
+  position: relative;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 10px;
+  display: inline-block;
+  min-height: 1px;
+
+  dir-pagination-controls {
+    float:left;
+  }
+}
+
+.itemsPerPage {
+  display: inline-block;
+  margin-top: 20px;
+  margin-left: 20px;
+  width: 260px;
+
+  label {
+    margin-top: 7.5px;
+    position: relative;
+  }
+
+  .itemNumber {
+    position: absolute;
+    display: inline-block;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    width: 70px;
+
+    .dropdown-menu {
+      min-width: inherit;
+    }
+  }
+}

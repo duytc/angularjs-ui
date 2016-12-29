@@ -30,7 +30,9 @@
         $scope.selectPublisher = function(publisher) {
         };
 
+
         $scope.submit = function() {
+
             if ($scope.formProcessing) {
                 // already running, prevent duplicates
                 return;

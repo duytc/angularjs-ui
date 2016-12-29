@@ -1,0 +1,12 @@
+<div id="app" class="app body-wide">
+    <div class="main-container">
+        <section ng-show="hasAlerts" class="panel panel-default panel-alerts">
+            <div class="panel-heading">{{ 'ALERTS' | translate }}</div>
+            <div class="panel-body">
+                <alert-box has-alerts="hasAlerts"></alert-box>
+            </div>
+        </section>
+        
+        <section ui-view id="content" class="content-container content-public"></section>
+    </div>
+</div>

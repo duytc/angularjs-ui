@@ -1,5 +1,6 @@
 module.exports = {
     //apiEndPoint: '//api.tagcade.com/app_dev.php/api',
+    //apiUnifiedEndPoint: '//api.unified-reports.dev/app_dev.php/api',
 
     hostname: '127.0.0.1',
     port: 9000,

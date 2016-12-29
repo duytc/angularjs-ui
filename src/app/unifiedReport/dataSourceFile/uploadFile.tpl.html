@@ -1,0 +1,146 @@
+<section class="panel panel-default">
+
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
+    </div>
+
+    <div class="panel-body">
+        <div class="row">
+            <form name="userForm" nv-file-drop="" uploader="uploader" filters="queueLimit, customFilter" class="col-lg-6 form-validation form-horizontal userForm" role="form" novalidate>
+
+                <div class="form-group">
+                    <label for="dataSources" class="col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DATA_SOURCES' | translate }}</label>
+                    <div class="col-sm-10">
+                        <ui-select name="dataSources" id="dataSources" on-select="selectDataSource($item)" ng-model="dataSourceEntry.dataSource" ng-required="true" server-error reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DATA_SOURCES' | translate }}">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices repeat="dataSource.id as dataSource in dataSources | filter: { name: $select.search }">
+                                {{ dataSource.name }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+
+                <div class="form-group" ng-if="!!dataSourceEntry.dataSource">
+                    <label class="col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.FILE_UPLOAD' | translate }}</label>
+                    <div class="col-sm-10">
+                        <div class="well" style="height: 300px; " nv-file-over filters="customFilter" uploader="uploader">
+                            <span class="col-sm-offset-1" style="margin-left: 5%" > {{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.INSTRUCTION_MESSAGE' | translate }} </span>
+                            <input class="col-sm-offset-1" style="margin-left: 5%" id="chooseFile" type="file" style="padding-top: 15px}" nv-file-select filters="customFilter" uploader="uploader" multiple  /><br/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="uploader.queue.length > 0">
+                    <label class="col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.UPLOAD_INFO' | translate }}</label>
+                    <div class="col-sm-10">
+
+                        <table class="table">
+
+                            <thead>
+                                <tr>
+                                    <th width="50%">Name</th>
+                                    <th ng-show="uploader.isHTML5">Size</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr ng-repeat="item in uploader.queue">
+                                    <td><strong>{{ item.file.name }}</strong></td>
+                                    <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+
+                                    <td class="text-center">
+                                        <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                        <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                        <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                    </td>
+
+                                    <td nowrap>
+                                        <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                            <span class="glyphicon glyphicon-trash"></span> Remove
+                                        </button>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div>
+                            <div>
+                                Queue progress:
+                                <div class="progress" style="">
+                                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAllDataSource()" ng-disabled="!isFormValid() && (uploader.queue.length>0)">
+                                <span class="glyphicon glyphicon-upload"></span> Upload all
+                            </button>
+
+                            <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()">
+                                <span class="glyphicon glyphicon-trash"></span> Remove all
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!--<div class="form-group" ng-if="dropUploader.queue.length > 0 && uploader.queue.length === 0">-->
+                    <!--<label class="col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.UPLOAD_INFO' | translate }}</label>-->
+                    <!--<div class="col-sm-10">-->
+
+                        <!--<table class="table">-->
+
+                            <!--<thead>-->
+                            <!--<tr>-->
+                                <!--<th width="50%">Name</th>-->
+                                <!--<th ng-show="dropUploader.isHTML5">Size</th>-->
+                                <!--<th>Status</th>-->
+                                <!--<th>Actions</th>-->
+                            <!--</tr>-->
+                            <!--</thead>-->
+
+                            <!--<tbody>-->
+                            <!--<tr ng-repeat="item in dropUploader.queue">-->
+                                <!--<td><strong>{{ item.file.name }}</strong></td>-->
+                                <!--<td ng-show="dropUploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>-->
+
+                                <!--<td class="text-center">-->
+                                    <!--<span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>-->
+                                    <!--<span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>-->
+                                    <!--<span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>-->
+                                <!--</td>-->
+
+                                <!--<td nowrap>-->
+                                    <!--<button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">-->
+                                        <!--<span class="glyphicon glyphicon-trash"></span> Remove-->
+                                    <!--</button>-->
+                                <!--</td>-->
+
+                            <!--</tr>-->
+                            <!--</tbody>-->
+                        <!--</table>-->
+
+                        <!--<div>-->
+                            <!--<div>-->
+                                <!--Queue progress:-->
+                                <!--<div class="progress" style="">-->
+                                    <!--<div class="progress-bar" role="progressbar" ng-style="{ 'width': dropUploader.progress + '%' }"></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<button type="button" class="btn btn-success btn-s" ng-click="dropUploader.uploadAllDataSource()" ng-disabled="!isFormValid() && (dropUploader.queue.length>0)">-->
+                                <!--<span class="glyphicon glyphicon-upload"></span> Upload all-->
+                            <!--</button>-->
+
+                            <!--<button type="button" class="btn btn-danger btn-s" ng-click="dropUploader.clearQueue()">-->
+                                <!--<span class="glyphicon glyphicon-trash"></span> Remove all-->
+                            <!--</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </form>
+        </div>
+    </div>
+</section>
