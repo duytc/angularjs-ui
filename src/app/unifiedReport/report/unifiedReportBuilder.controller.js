@@ -719,6 +719,10 @@
                                 return;
                             }
 
+                            if(dm.label == dm.key) {
+                                return
+                            }
+
                             field.expression = field.expression.replace(dm.label, dm.key);
 
                             if (field.expression.indexOf(dm.label) > -1) {
