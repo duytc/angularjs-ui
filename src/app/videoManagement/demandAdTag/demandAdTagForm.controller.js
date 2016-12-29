@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('tagcade.videoManagement.demandAdTag')
@@ -23,9 +23,9 @@
         $scope.blackList = blackList;
 
         $scope.platformOption = [];
-        if(!$scope.isNew) {
-            angular.forEach(demandAdTag.videoWaterfallTagItem.videoWaterfallTag.platform, function(platformItem) {
-                var platform = _.find(PLATFORM_OPTION, function(value) {
+        if (!$scope.isNew) {
+            angular.forEach(demandAdTag.videoWaterfallTagItem.videoWaterfallTag.platform, function (platformItem) {
+                var platform = _.find(PLATFORM_OPTION, function (value) {
                     return platformItem == value.key
                 });
 
@@ -34,7 +34,7 @@
 
             demandAdTag.activeClone = demandAdTag.active > 0;
 
-            if(demandAdTag.libraryVideoDemandAdTag.linkedCount > 1) {
+            if (demandAdTag.libraryVideoDemandAdTag.linkedCount > 1) {
                 AlertService.addAlert({
                     type: 'warning',
                     message: $translate.instant('AD_SOURCE_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
@@ -69,10 +69,10 @@
             publisher: !$scope.isNew ? $scope.demandAdTag.libraryVideoDemandAdTag.videoDemandPartner.publisher : null
         };
 
-        if(!$scope.isNew) {
+        if (!$scope.isNew) {
             $scope.demandAdTag.libraryVideoDemandAdTag.sellPrice = NumberConvertUtil.convertPriceToString($scope.demandAdTag.libraryVideoDemandAdTag.sellPrice);
 
-            if($scope.demandAdTag.targetingOverride) {
+            if ($scope.demandAdTag.targetingOverride) {
                 $scope.demandAdTag.libraryVideoDemandAdTag.targeting = $scope.demandAdTag.targeting;
             }
         }
@@ -117,7 +117,7 @@
 
         function _replaceSpaceByUTF8Code(inputString) {
             if (null != inputString) {
-                return inputString.replace(/\s/g,"%20");
+                return inputString.replace(/\s/g, "%20");
             }
         }
 
@@ -132,22 +132,22 @@
                 controller: 'DomainListQuicklyForm',
                 size: 'lg',
                 resolve: {
-                    publishers: function(adminUserManager){
-                        if($scope.isAdmin() && !publishers) {
-                            return adminUserManager.getList({ filter: 'publisher' }).then(function (users) {
+                    publishers: function (adminUserManager) {
+                        if ($scope.isAdmin() && !publishers) {
+                            return adminUserManager.getList({filter: 'publisher'}).then(function (users) {
                                 return users.plain();
                             });
                         }
 
                         return publishers;
                     },
-                    publisher: function() {
+                    publisher: function () {
                         return $scope.selectedData.publisher
                     },
-                    blackList: function() {
+                    blackList: function () {
                         return false;
                     },
-                    domain: function() {
+                    domain: function () {
                         return newDomain
                     }
                 }
@@ -170,22 +170,22 @@
                 controller: 'DomainListQuicklyForm',
                 size: 'lg',
                 resolve: {
-                    publishers: function(adminUserManager){
-                        if($scope.isAdmin() && !publishers) {
-                            return adminUserManager.getList({ filter: 'publisher' }).then(function (users) {
+                    publishers: function (adminUserManager) {
+                        if ($scope.isAdmin() && !publishers) {
+                            return adminUserManager.getList({filter: 'publisher'}).then(function (users) {
                                 return users.plain();
                             });
                         }
 
                         return publishers;
                     },
-                    publisher: function() {
+                    publisher: function () {
                         return $scope.selectedData.publisher
                     },
-                    blackList: function() {
+                    blackList: function () {
                         return true;
                     },
-                    domain: function() {
+                    domain: function () {
                         return newDomain
                     }
                 }
@@ -203,10 +203,10 @@
                 controller: 'ViewQuicklyDomainList',
                 size: 'lg',
                 resolve: {
-                    isBlackList: function() {
+                    isBlackList: function () {
                         return true;
                     },
-                    domainList: function() {
+                    domainList: function () {
                         return $scope.blackList
                     }
                 }
@@ -219,10 +219,10 @@
                 controller: 'ViewQuicklyDomainList',
                 size: 'lg',
                 resolve: {
-                    isBlackList: function() {
+                    isBlackList: function () {
                         return false;
                     },
-                    domainList: function() {
+                    domainList: function () {
                         return $scope.whiteList
                     }
                 }
@@ -230,7 +230,7 @@
         }
 
         function backToListDemandAdTag() {
-            if(!!$stateParams.libraryDemandAdTagId) {
+            if (!!$stateParams.libraryDemandAdTagId) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.videoDemandAdTag, '^.listByLibrary');
             }
 
@@ -265,20 +265,20 @@
                 controller: 'VideoDemandPartnerQuicklyForm',
                 size: 'lg',
                 resolve: {
-                    demandPartners: function() {
+                    demandPartners: function () {
                         return demandPartners
                     },
-                    publishers: function(){
+                    publishers: function () {
                         return publishers;
                     },
-                    publisher: function() {
+                    publisher: function () {
                         return $scope.selectedData.publisher
                     }
                 }
             });
 
             modalInstance.result.then(function () {
-                if(angular.isObject(demandPartners[0])) {
+                if (angular.isObject(demandPartners[0])) {
                     var videoDemandPartner = demandPartners[0];
                     $scope.demandPartners.push(videoDemandPartner);
                     $scope.demandAdTag.libraryVideoDemandAdTag.videoDemandPartner = videoDemandPartner.id;
@@ -308,18 +308,18 @@
                 delete demandAdTag.libraryVideoDemandAdTag.id;
                 delete demandAdTag.libraryVideoDemandAdTag.linkedCount;
                 delete demandAdTag.profit;
-                if(typeof demandAdTag.activeClone != 'number') {
-                    demandAdTag.active = demandAdTag.activeClone ? 1: 0
+                if (typeof demandAdTag.activeClone != 'number') {
+                    demandAdTag.active = demandAdTag.activeClone ? 1 : 0
                 }
                 delete demandAdTag.activeClone;
                 demandAdTag.libraryVideoDemandAdTag.videoDemandPartner = $scope.demandAdTag.libraryVideoDemandAdTag.videoDemandPartner.id || $scope.demandAdTag.libraryVideoDemandAdTag.videoDemandPartner;
 
-                if(demandAdTag.targetingOverride) {
+                if (demandAdTag.targetingOverride) {
                     demandAdTag.targeting = demandAdTag.libraryVideoDemandAdTag.targeting;
                     // targeting root
                     delete demandAdTag.libraryVideoDemandAdTag.targeting;
                 } else {
-                    if(!$scope.isNew && demandAdTag.libraryVideoDemandAdTag.linkedCount > 1) {
+                    if (!$scope.isNew && demandAdTag.libraryVideoDemandAdTag.linkedCount > 1) {
                         delete demandAdTag.libraryVideoDemandAdTag.targeting;
                     }
                 }
@@ -329,7 +329,7 @@
                 saveDemandAdTag
                     .catch(
                     function (response) {
-                        if(!response.data.errors) {
+                        if (!response.data.errors) {
                             AlertService.replaceAlerts({
                                 type: 'error',
                                 message: response.data.message

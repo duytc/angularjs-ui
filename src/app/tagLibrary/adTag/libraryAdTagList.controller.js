@@ -5,17 +5,25 @@
         .controller('LibraryAdTagList', LibraryAdTagList)
     ;
 
-    function LibraryAdTagList($scope, $translate, $modal, adTags, AlertService, AdTagLibrariesManager, AdSlotManager, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT, AtSortableService) {
-        $scope.adTags = adTags;
+    function LibraryAdTagList($scope, $translate, $stateParams, EVENT_ACTION_SORTABLE ,$modal, adTags, AlertService, AdTagLibrariesManager, AdSlotManager, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT, AtSortableService) {
+        $scope.adTags = adTags.records;
 
         $scope.hasData = function () {
-            return !!adTags.length;
+            return !!adTags.records.length;
         };
 
+        var params = {
+            page: 1
+        };
+
+        $scope.selectData = {
+            query: $stateParams.searchKey || null
+        };
         $scope.adSlotTypes = TYPE_AD_SLOT;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
+            totalItems: Number(adTags.totalRecord),
             maxPages: 10
         };
 
@@ -30,10 +38,17 @@
         $scope.removeMoveToLibrary = removeMoveToLibrary;
         $scope.updateAdTag = updateAdTag;
         $scope.createLinkedAdAdTag = createLinkedAdAdTag;
+        $scope.changePage = changePage;
+        $scope.searchData = searchData;
 
         function showPagination() {
-            return angular.isArray($scope.adTags) && $scope.adTags.length > $scope.tableConfig.itemsPerPage;
+            return adTags.totalRecord >= $scope.tableConfig.itemsPerPage;
         }
+
+        $scope.availableOptions = {
+            currentPage: $stateParams.page || 1,
+            pageSize: 10
+        };
 
         function removeMoveToLibrary(adTag) {
             var modalInstance = $modal.open({
@@ -122,5 +137,41 @@
         $scope.$on('$locationChangeSuccess', function() {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.adTagLibrary)
         });
+
+
+        function changePage(currentPage) {
+            params = angular.extend(params, {page: currentPage});
+            _getAdTags(params);
+        }
+
+        function searchData() {
+            var query = {searchKey: $scope.selectData.query || ''};
+            params = angular.extend(params, query);
+            _getAdTags(params);
+        }
+
+        $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
+            params = angular.extend(params, query);
+            _getAdTags(params);
+        });
+
+        var getAdTag;
+        function _getAdTags(query) {
+            params = query;
+
+            clearTimeout(getAdTag);
+
+            getAdTag = setTimeout(function() {
+                params = query;
+                return AdTagLibrariesManager.one().get(query)
+                    .then(function(adTags) {
+                        AtSortableService.insertParamForUrl(query);
+                        $scope.adTags = adTags.records;
+                        $scope.tableConfig.totalItems = Number(adTags.totalRecord);
+                        $scope.availableOptions.currentPage = Number(query.page);
+                    });
+            }, 500);
+        }
+
     }
 })();

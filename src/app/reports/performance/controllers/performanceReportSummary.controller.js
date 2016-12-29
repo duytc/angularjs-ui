@@ -5,7 +5,7 @@
         .controller('PerformanceReportSummary', PerformanceReportSummary)
     ;
 
-    function PerformanceReportSummary($scope, Auth, TYPE_AD_SLOT, USER_MODULES) {
+    function PerformanceReportSummary($scope, $state, Auth, TYPE_AD_SLOT, USER_MODULES) {
         $scope.isAdmin = Auth.isAdmin();
 
         $scope.hasSlotOpportunities = hasSlotOpportunities;
@@ -29,7 +29,7 @@
         }
 
         function hideRTB() {
-            if(!Auth.getSession().hasModuleEnabled(USER_MODULES.rtb) || $scope.reportGroup.rtbImpressions == undefined) {
+            if(!Auth.getSession().hasModuleEnabled(USER_MODULES.rtb) || $scope.reportGroup.rtbImpressions == undefined || $state.current.name.indexOf('reports.performance.ronAdSlotAdTags') > -1) {
                 return false;
             }
 

@@ -64,7 +64,7 @@
                 <div class="form-group">
                     <label for="inputPlatform" class="col-sm-1 control-label">{{ 'VIDEO_AD_TAG_MODULE.PLATFORM' | translate }}</label>
                     <div class="col-sm-5">
-                        <ui-select multiple name="platform" id="inputPlatform" ng-model="adTag.platform" ng-required="true" server-error>
+                        <ui-select multiple name="platform" id="inputPlatform" ng-model="adTag.platform" ng-required="true" server-error on-select="$item.search = $select.search; $select.search = '';">
                             <ui-select-match placeholder="{{ 'VIDEO_AD_TAG_MODULE.SELECT_PLATFORM' | translate }}">{{ $item.label }}</ui-select-match>
                             <ui-select-choices repeat="platform.key as platform in platformOption | filter:$select.search">
                                 {{ platform.label }}
