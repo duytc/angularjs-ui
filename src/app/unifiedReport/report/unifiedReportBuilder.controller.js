@@ -50,8 +50,8 @@
             formats: [],
             showInTotal: [],
             multiView: false,
-            subReportsIncluded: false,
-            showDataSetName: false
+            subReportsIncluded: false
+          //  showDataSetName: false
         };
 
         $scope.$watch(function () {
@@ -348,7 +348,7 @@
                 fieldTypes: angular.toJson(reportBuilder.fieldTypes),
                 multiView: reportBuilder.multiView,
                 subReportsIncluded: reportBuilder.subReportsIncluded,
-                showDataSetName: reportBuilder.showDataSetName
+               // showDataSetName: reportBuilder.showDataSetName
             };
 
             if ($scope.isAdmin()) {
@@ -769,7 +769,7 @@
             $scope.reportBuilder.weightedCalculations = [];
             $scope.reportBuilder.showInTotal = [];
             $scope.reportBuilder.subReportsIncluded = false;
-            $scope.reportBuilder.showDataSetName = false;
+          //  $scope.reportBuilder.showDataSetName = false;
         }
 
         /**

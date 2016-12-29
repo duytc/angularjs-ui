@@ -106,7 +106,7 @@
                                         id: reportView.id,
                                         multiView: !!$stateParams.multiView ? ($stateParams.multiView == 'true') : reportView.multiView,
                                         subReportsIncluded: !!$stateParams.subReportsIncluded ? ($stateParams.subReportsIncluded == 'true') : reportView.subReportsIncluded,
-                                        showDataSetName: !!$stateParams.showDataSetName ? ($stateParams.showDataSetName == 'true') : reportView.showDataSetName,
+                                      //  showDataSetName: !!$stateParams.showDataSetName ? ($stateParams.showDataSetName == 'true') : reportView.showDataSetName,
                                         publisher: reportView.publisher.id || reportView.publisher
                                     }
                                 })
@@ -124,8 +124,8 @@
                             alias: $stateParams.alias,
                             publisher: $stateParams.publisher,
                             multiView: $stateParams.multiView == 'true',
-                            subReportsIncluded: $stateParams.subReportsIncluded == 'true',
-                            showDataSetName: $stateParams.showDataSetName == 'true'
+                            subReportsIncluded: $stateParams.subReportsIncluded == 'true'
+                           // showDataSetName: $stateParams.showDataSetName == 'true'
 
                         };
                     },
@@ -164,8 +164,8 @@
                                         id: reportView.id,
                                         publisher: reportView.publisher.id || reportView.publisher,
                                         multiView: !!$stateParams.multiView ? ($stateParams.multiView == 'true') : reportView.multiView,
-                                        subReportsIncluded: !!$stateParams.subReportsIncluded ? ($stateParams.subReportsIncluded == 'true') : reportView.subReportsIncluded,
-                                        showDataSetName: !!$stateParams.showDataSetName ? ($stateParams.showDataSetName == 'true') : reportView.showDataSetName
+                                        subReportsIncluded: !!$stateParams.subReportsIncluded ? ($stateParams.subReportsIncluded == 'true') : reportView.subReportsIncluded
+                                      //  showDataSetName: !!$stateParams.showDataSetName ? ($stateParams.showDataSetName == 'true') : reportView.showDataSetName
 
                                     }
                                 })
@@ -184,8 +184,8 @@
                             alias: $stateParams.alias,
                             publisher: $stateParams.publisher,
                             multiView: $stateParams.multiView == 'true',
-                            subReportsIncluded: $stateParams.subReportsIncluded == 'true',
-                            showDataSetName: $stateParams.showDataSetName == 'true'
+                            subReportsIncluded: $stateParams.subReportsIncluded == 'true'
+                           // showDataSetName: $stateParams.showDataSetName == 'true'
                         };
                     },
                     reportGroup: /* @ngInject */ function(unifiedReportBuilder, reportView) {
@@ -201,8 +201,8 @@
                             name: reportView.name,
                             alias: reportView.alias,
                             multiView: !!reportView.multiView || reportView.multiView == 'true',
-                            subReportsIncluded: !!reportView.subReportsIncluded || reportView.subReportsIncluded == 'true',
-                            showDataSetName: !!reportView.showDataSetName || reportView.showDataSetName == 'true'
+                            subReportsIncluded: !!reportView.subReportsIncluded || reportView.subReportsIncluded == 'true'
+                           // showDataSetName: !!reportView.showDataSetName || reportView.showDataSetName == 'true'
                         };
 
                         return unifiedReportBuilder.getPlatformReport(params);
