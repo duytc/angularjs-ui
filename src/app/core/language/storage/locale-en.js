@@ -59,6 +59,8 @@
             "WATERFALL_TAGS": "Waterfalls",
             "WATERFALL_TAG": "Waterfall",
 
+            "DATA_SOURCE":"Data Source",
+
             "RTB_STATUS": "RTB",
             "RTB_STATUS_INHERIT": "Inherit",
             "RTB_STATUS_ENABLE": "Enable",
@@ -135,7 +137,30 @@
 
                 "VIDEO_PUBLISHER": "Publishers",
                 "MY_VIDEO_PUBLISHERS": "My Publishers",
-                "NEW_VIDEO_PUBLISHER": "New Publisher"
+                "NEW_VIDEO_PUBLISHER": "New Publisher",
+
+                "DATA_SOURCES": "Data Sources",
+                "MANAGE_DATA_SOURCES": "Manage Data Sources",
+                "MANAGE_DATA_SOURCE_FILE": "Manage Received Data",
+                "MY_DATA_SOURCE_FILE": "My Received Data",
+                "UPLOAD_FILE": "Upload Files",
+                "MY_DATA_SOURCES": "My Data Sources",
+                "CREATE_DATA_SOURCE": "New Data Source",
+                "UPLOAD_DATA": "Upload Data",
+
+                "DATA_SOURCES_ALERTS": "Alerts",
+                "VIEW_ALERTS": "View Alerts",
+
+                "UNIFIED_REPORT":'Unified Report',
+                "DATA_SET":"Data Set",
+                "MANAGE_DATA_SET":"Manage Data Sets",
+                "MY_DATA_SET":"My Data Sets",
+                "CREATE_DATA_SET":"New Data Set",
+
+                "MANAGE_CONNECTED_DATA_SOURCE": "Manage Connected Data Source",
+                "MY_CONNECTED_DATA_SOURCE":"My Connected Data Source",
+                "CREATE_CONNECTED_DATA_SOURCE":"Create Connected Data Source"
+
             },
             "DASHBOARD_MODULE": {
                 "DATE_RANGE": "Date Range",
@@ -226,7 +251,7 @@
             },
             "VIDEO_PUBLISHER_MODULE": {
                 "SELECT_A_VIDEO_PUBLISHER": "Select a video publisher",
-                "GENERATE_VATS_TAGS": "Generate Vats Tags",
+                "GENERATE_VAST_TAGS": "Generate Vast Tags",
 
                 "EDIT_VIDEO_PUBLISHER": "Edit Publisher",
                 "MANAGE_WATERFALL_TAGS": "Manage Waterfalls"
@@ -1054,6 +1079,7 @@
 
                 "HELP_BLOCK_CHECK_EMAIL": "Enter your username or email address that you used to register. We'll send you an email with your username and a link to reset your password."
             },
+
             "QUERY_BUILDER": {
                 "ADD_RULE": "Add Rule",
                 "RULE": "Rule",
@@ -1066,6 +1092,138 @@
                 "RULE_NAME": "Rule name",
 
                 "HELP_BLOCK_STARTING_POSITION": "Default position is the position of first ad tag found in this ad slot"
+            },
+            "UNIFIED_REPORT_DATA_SOURCE_MODULE": {
+                "PUBLISHER": "Publisher",
+                "BACK_TO_PUBLISHER_LIST": "Back To Publisher List",
+                "DATA_SOURCE_FORMAT": "Data Source Format",
+                "INTEGRATION": "Integration",
+                "ADD_3RD_PARTY_INTEGRATIONS": "Add 3rd Party Integration",
+                "USERNAME":'Username',
+                "PASSWORD":'Password',
+                "FREQUENCY": 'Frequency',
+                "ENABLE": 'Enabled',
+                "ADD_NEW_SUCCESS": "The data source has been added",
+                "DELETE_SUCCESS": "The data source has been deleted",
+                "UPDATE_SUCCESS": "The data source has been updated",
+                "ADD_NEW_DATA_SOURCE": "New Data Source",
+                "GET_UNIFIED_REPORT_EMAIL":"Get Unified Report Email",
+                "GET_API_KEY": "Get API Key",
+                "UPLOAD_DATA": "Upload Data",
+                "MANAGE_RECEIVED_DATA": "Manage Received Data",
+                "EDIT": "Edit",
+                "DELETE": "Delete",
+                "CONFIRM_DELETE_DATA_SOURCE": "Are you sure that you want to delete this data source?",
+                "ALERT_RECEIVED_DATA_WRONG_FORMAT": "Alert me when received data is in the wrong format",
+                "ALERT_WHEN_RECEIVED_DATA": "Alert me when data is received",
+                "ALERT_IF_DATA_NOT_RECEIVED": "Alert me if data is not received daily",
+                "GET_API_KEY_HEADER":'API Key Of Data Source:',
+                "BACK_TO_DATA_SOURCE_LIST": "Back To Data Source List",
+                "BACK_TO_DATA_SET_LIST": "Back To Data Set List",
+                "BACK_TO_CONNECT_DATA_SOURCE_LIST": "Back To Connected Data Source List",
+
+                "SELECT_A_DATA_SOURCE": "Select a Data Source"
+            },
+            "UNIFIED_REPORT_ALERT_MODULE": {
+                "VIEW_DETAIL": "View Detail",
+                "VIEW_SHORT": "View Short",
+                "MARK_AS_READ": "Mark as Read",
+                "MARK_AS_UNREAD": "Mark as Unread",
+                "DATE_CREATE": "Date Created",
+                "EDIT": "Edit",
+                "DELETE": "Delete",
+                "SUMMARY": 'Summary',
+                "MESSAGE": 'Message',
+                "ACTIONS":"Actions",
+                "DATE_CREATED": "Date Created",
+                "MARK_ALERT_AS_READ_SUCCESS":"The alerts have been marked as read",
+                "MARK_ALERT_AS_READ_FAIL":"The alerts could not be marked as read",
+                "MARK_ALERT_AS_UNREAD_SUCCESS":"The alerts have been marked as unread",
+                "MARK_ALERT_AS_UNREAD_FAIL":"The alerts could not be marked as unread",
+                "DELETE_SUCCESS":"The alerts have been deleted",
+                "DELETE_FAIL": "The alerts could not be deleted"
+            },
+            "UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE": {
+                "DATA_SOURCES": "Data Sources",
+                "DATA_SOURCE_NAME":"Data Source",
+                "FILE_UPLOAD": "File Upload",
+                "UPLOAD_NEW_FILE": "Upload New File",
+                "UPLOAD_INFO": "Upload Info",
+                "INSTRUCTION_MESSAGE": "Drag or Drop your files here or click the button to select files",
+                "UPLOAD_FILES_SUCCESS": "The files were successfully uploaded",
+                "DOWNLOAD_DATA": "Download Data",
+                "REPLAY_DATA": "Replay Data",
+                "VIEW_DETAILS": "View Details",
+                "RECEIVED_DATE": "Date Received",
+                "FILENAME": "File Name",
+                "RESOURCE_NAME": "Resource Name",
+                "DELETE": "Delete",
+                "FORMAT": "Format",
+                "VALID": "Valid",
+                "NAME": "Name",
+                "RECEIVED_VIA": "Received Via",
+                "DELETE_FILE_SUCCESS":"The data source file has been deleted",
+                "DOWNLOAD_FILE_SUCCESS":"The data source file has been downloaded",
+                "NOT_FOUND_FILE": "The file was not found or you do not have access",
+
+                "BACK_TO_DATA_SOURCE_LIST": "Back to Data Source List",
+                "DELETE_SUCCESS": "The data source entry was deleted",
+                "DELETE_FAIL": "The data source entry could not be deleted",
+                "CONFIRM_DELETE_DATA_SOURCE_ENTRY": "Are you sure you want to delete this data source entry?"
+            },
+            "UNIFIED_REPORT_DATA_SET_MODULE": {
+                "DATA_SET": "Data Set",
+                "DATA_SET_NAME": "Data Set Name",
+                "DIMENSION": "Dimension",
+                "ADD_DIMENSIONS": "Add Dimension",
+                "TYPE": "Type",
+                "DIMENSION_NAME": "Name",
+                "METRIC":"Metric",
+                "ADD_METRIC":"Add Metric",
+                "METRIC_TYPE":"Type",
+                "METRIC_NAME":"Name",
+                "CONNECTED_DATA_SOURCE":"Connected Data Source",
+                "ADD_DATA_SOURCE":"Add Data Source",
+                "DATA_SOURCE":"Data Source",
+                "DATA_SOURCE_NAME":"Data Source Name",
+                "MANAGE":"Manage",
+                "ADD_NEW_DATA_SET": "New Data Set",
+                "MANAGE_CONNECTED_DATA_SOURCES": "Manage Connected Data Sources",
+                "VIEW_DATA_IMPORT_HISTORY": "View Data Import History",
+                "EDIT": "Edit",
+                "DELETE": "Delete",
+                "DATE_CREATED":"Date Created",
+                "BACK_TO_DATA_SET_LIST": "Back to Data Set List",
+                "DELETE_DATA_SET_SUCCESS":"The data set has been deleted",
+                "ADD_NEW_SUCCESS": "The data set has been added",
+                "UPDATE_SUCCESS": "The data set has been updated",
+                "DIMENSION_NAME_INSTRUCTION_BLOCK": "Dimension name must begin with a letter. It may contain text, numbers or spaces",
+                "METRIC_NAME_INSTRUCTION_BLOCK":"Metric name must begin with a letter. It may contain text, numbers or spaces"
+            },
+            "UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE": {
+                "FIELDS": "Fields",
+                "DETECTED_FIELDS": "Detected Fields",
+                "MAP_FIELDS": "Map Fields",
+                "REQUIRES": "Requires",
+                "FILTERS": "Filters",
+                "TRANSFORMATIONS": "Transformations",
+
+                "NEW_CONNECTED_DATA_SOURCE": "New Connected Data Source",
+                "EDIT": "Edit Connected Data Source",
+                "DELETE": "Delete Connected Data Source",
+                "CONFIRM_DELETE": "Are you sure you want to delete this connected data source?",
+
+                "DETECT_FIELDS_FROM_FILE": "Detect fields from file",
+                "SELECT_A_FILE_FOR_DETECTING_FIELD": "Select a File"
+            },
+            "REPORT_BUILDER_MODULE": {
+                "ENTER_ONE_OR_MULTIPLE_VALUE": "Enter one or multiple values",
+                "HELP_TEXT_FOR_ENTER_VALUES": "If the comparison value has multiple values then an 'OR' condition is automatically applied",
+                "HELP_TEXT_FOR_COLUMN_POSITION": "You can change the order of the columns in the report by specifying a custom order here",
+                "HELP_TEXT_FOR_SHOW_DIMENSIONS": "Show dimensions of sub views",
+                "HELP_TEXT_FOR_SHOW_DATA_SET_NAME": "Show data set name in each report field",
+                "SAVE_REPORT_VIEW_FAIL": "There is a error when save report"
+
             }
         });
 })();

@@ -6,6 +6,7 @@
     ;
 
     function userStateHelper($stateProvider, BASE_USER_STATES) {
+
         function getCustomResolve(customResolves, baseName, resolveKey) {
             var resolve;
 
@@ -38,6 +39,7 @@
          * @return userStateHelper
          */
         this.state = function (name, definition) {
+
             if (angular.isObject(name)) {
                 definition = name;
             }

@@ -1,0 +1,81 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span>
+        <strong current-page-title></strong>
+
+        <div class="button-bar">
+            <button ui-sref="^.new({dataSourceId: dataSourceId})" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-plus"></span>
+                {{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.UPLOAD_NEW_FILE' | translate }}
+            </button>
+            <button ng-click="backToListDataSource()" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                {{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.BACK_TO_DATA_SOURCE_LIST' | translate }}
+            </button>
+        </div>
+
+        <div class="btn-group btnGrouped" dropdown>
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ui-sref="^.new({dataSourceId: dataSourceId})">{{'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.UPLOAD_NEW_FILE' | translate }}</a></li>
+                <li><a ng-click="backToListDataSource()">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.BACK_TO_DATA_SOURCE_LIST' | translate }}</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <form class="input-group col-sm-6 search-box">
+        <input class="form-control" ng-model="selectData.query" ng-change="searchData()" placeholder="{{ 'UNIFIED_REPORT_MODULE.SEARCH' | translate }}" type="text"/>
+            <span class="input-group-addon">
+                {{ tableConfig.totalItems }} records found
+            </span>
+    </form>
+
+    <div class="panel-body">
+        <div class="mail-options">
+            <label class="ui-checkbox"><input name="checkbox1" type="checkbox" value="option1" ng-model="checkAllItem" ng-click="selectAll()"><span>Toggle All</span></label>
+
+            <div class="btn-group" dropdown>
+                <button type="button" class="btn" ng-disabled="selectedDataSourceFiles.length == 0" dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                    <li ng-class="dataSource.enable == false ? 'disabled' : ''"><a ng-click="replayMultiData()">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.REPLAY_DATA' | translate }}</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="dataSourceFiles.records" at-config="tableConfig">
+            <thead>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td at-title="#" at-attribute="id"><label class="ui-checkbox"><input type="checkbox" ng-checked="checkedDataSourceFile(item)" ng-click="selectEntity(item)"><span></span></label></td>
+                    <td at-title="{{ 'ACTIONS' | translate }}">
+                        <div class="btn-group" dropdown>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                            <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <li><a href="{{ downloadDataSourceFile(item.id) }}"  download="true">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DOWNLOAD_DATA' | translate }}</a></li>
+                                <li class="divider"></li>
+                                <li ng-class="dataSource.enable == false ? 'disabled' : ''"><a ng-click="replayData(item)">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.REPLAY_DATA' | translate }}</a></li>
+                                <li class="divider" ng-if="item.receivedVia == 'email'"></li>
+                                <li ng-if="item.receivedVia == 'email'"><a >{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.VIEW_DETAILS' | translate }}</a></li>
+                                <li class="divider"></li>
+                                <li><a ng-click="confirmDeletion(item)"> {{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DELETE' | translate }}</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.FILENAME' | translate }}" at-implicit at-sortable at-attribute="fileName"></td>
+                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.RECEIVED_DATE' | translate }}" at-sortable at-attribute="receivedDate">{{ item.receivedDate | date }}</td>
+                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.RESOURCE_NAME' | translate }}" at-implicit at-attribute="dataSource.name"></td>
+                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.FORMAT' | translate }}" at-implicit at-attribute="dataSource.format"></td>
+                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.VALID' | translate }}" at-attribute="isValid">
+                        <i class="fa" ng-class="item.isValid? 'fa-check-square' : 'fa-square'"></i>
+                    </td>
+                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.RECEIVED_VIA' | translate }}" >{{ item.receivedVia }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+    </div>
+</div>

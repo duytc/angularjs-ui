@@ -15,13 +15,15 @@
         /**
          *
          * @param data
+         * @param fields
          * @param header
          * @param fileName
+         * @param notFilter
          * @returns {*}
          */
-        function exportExcel(data, fields, header, fileName) {
+        function exportExcel(data, fields, header, fileName, notFilter) {
             var data = angular.copy(data);
-            var bodyData = _bodyData(data, fields);
+            var bodyData = _bodyData(data, fields, notFilter);
             var strData = _convertToExcel(header, bodyData);
 
             var blob = new Blob([strData], {type: "text/plain;charset=utf-8"});
@@ -33,12 +35,14 @@
             return header + '\n' + body;
         }
 
-        function _bodyData(data, fields) {
+        function _bodyData(data, fields, notFilter) {
             var body = "";
             angular.forEach(data, function(dataItem) {
-                dataItem.date = $filter('date')(dataItem.date, 'longDate');
-                dataItem.startDate = $filter('date')(dataItem.startDate, 'longDate');
-                dataItem.endDate = $filter('date')(dataItem.endDate, 'longDate');
+                if(!notFilter) {
+                    dataItem.date = $filter('date')(dataItem.date, 'longDate');
+                    dataItem.startDate = $filter('date')(dataItem.startDate, 'longDate');
+                    dataItem.endDate = $filter('date')(dataItem.endDate, 'longDate');
+                }
 
                 var rowItems = [];
 

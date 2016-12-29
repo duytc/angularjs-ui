@@ -30,6 +30,14 @@
                     skip: true
                 }
             })
+
+            .state('public', {
+                abstract: true,
+                templateUrl: 'core/layout/public.tpl.html',
+                ncyBreadcrumb: {
+                    skip: true
+                }
+            })
         ;
     }
 })();

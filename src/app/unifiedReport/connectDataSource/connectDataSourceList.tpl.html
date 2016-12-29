@@ -1,0 +1,51 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span>
+        <strong current-page-title></strong>
+
+        <div class="button-bar" ng-if="!isSubPublisher()">
+            <button ui-sref="^.new({dataSetId: dataSet.id})" class="btn btn-primary btn-sm" type="button">
+                <span class="glyphicon glyphicon-plus"></span>
+                {{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.NEW_CONNECTED_DATA_SOURCE' | translate }}
+            </button>
+            <button ng-click="backToDataSetList()" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                {{ 'UNIFIED_REPORT_DATA_SET_MODULE.BACK_TO_DATA_SET_LIST' | translate }}
+            </button>
+        </div>
+        <div class="btn-group btnGrouped" ng-if="!isSubPublisher()" dropdown>
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ui-sref="^.new({dataSetId: dataSet.id})">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.NEW_CONNECTED_DATA_SOURCE' | translate }}</a></li>
+                <li><a ng-click="backToDataSetList()">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.BACK_TO_DATA_SET_LIST' | translate }}</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <search-box show-query="true" sb-list="connectDataSources" search-fields="['id', 'dataSource.name']"></search-box>
+
+    <div class="panel-body" ng-if="hasData()">
+        <div class="table-responsive">
+            <table class="table" at-sortable-query at-table at-paginated at-list="connectDataSources" at-config="tableConfig">
+                <thead></thead>
+                <tbody>
+                <tr>
+                    <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
+                    <td at-title="{{ 'ACTIONS' | translate }}">
+                        <div class="btn-group" dropdown>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                            <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <li ng-if="!isSubPublisher()"><a ui-sref="^.edit({ id: item.id })">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.EDIT' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item, $index)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.DELETE' | translate }}</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td at-implicit at-sortable at-attribute="dataSource.name" at-initial-sorting="asc" at-title="{{ 'DATA_SOURCE' | translate }}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <at-pagination at-pagination-query ng-if="showPagination()" at-list="connectDataSources" at-config="tableConfig"></at-pagination>
+        </div>
+    </div>
+</div>

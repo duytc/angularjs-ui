@@ -1,0 +1,128 @@
+<button class="btn btn-success" type="button" ng-click="addFilter()">
+    <span class="glyphicon glyphicon-plus"></span>
+    Add Filter
+</button>
+
+<div class="expressions-group" ng-repeat="filter in filters">
+    <div class="form-group select-connect-data-source">
+        <button type="button" class="btn btn-danger btn-close-ur" ng-click="removeFilter($index)">
+            <span class="glyphicon glyphicon-minus "></span>
+        </button>
+    </div>
+
+   <div class="row">
+       <div class="form-group select-connect-data-source">
+           <label class="col-sm-2 control-label">Field Name</label>
+
+           <div class="col-sm-10">
+               <ui-select ng-model="filter.field" ng-required="true" server-error on-select="selectField($item, filter)" reset-search-input="'false'">
+                   <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
+                   <ui-select-choices repeat="field in getFieldNames(filter.field) | orderBy | filter:$select.search">
+                       {{ field }}
+                   </ui-select-choices>
+               </ui-select>
+           </div>
+       </div>
+
+       <div ng-if="filter.type == 'date'">
+           <div class="form-group select-connect-data-source">
+               <label class="col-sm-2 control-label">Date Type</label>
+
+               <div class="col-sm-10">
+                   <ui-select ng-model="filter.dateType" ng-required="true" server-error on-select="selectDateType($item, filter)" reset-search-input="'false'">
+                       <ui-select-match placeholder="Select a date type">{{ $select.selected.key }}</ui-select-match>
+                       <ui-select-choices repeat="type.value as type in dateTypes | filter:$select.search">
+                           {{ type.key}}
+                       </ui-select-choices>
+                   </ui-select>
+               </div>
+           </div>
+
+           <div class="form-group select-connect-data-source" ng-if="filter.dateType == 'customRange'">
+               <label class="col-sm-2 control-label" for="inputDateRange">Date Range</label>
+
+               <div class="col-sm-10">
+                   <div class="input-group">
+                       <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                       <input date-range-picker autocomplete="off" options="datePickerOpts" class="form-control date-picker" autocomplete="false" type="text" id="inputDateRange" ng-model="filter.dateValue" ng-required="true">
+                   </div>
+               </div>
+           </div>
+
+           <div class="form-group select-connect-data-source" ng-if="filter.dateType == 'dynamic'">
+               <label class="col-sm-2 control-label">Date Range</label>
+
+               <div class="col-sm-10">
+                   <ui-select ng-model="filter.dateValue" ng-required="true" server-error reset-search-input="'false'">
+                       <ui-select-match placeholder="Select a date range">{{ $select.selected.key }}</ui-select-match>
+                       <ui-select-choices repeat="range.value as range in dynamicDatePickerOpts | filter:$select.search">
+                           {{ range.key}}
+                       </ui-select-choices>
+                   </ui-select>
+               </div>
+
+           </div>
+       </div>
+
+       <div ng-if="filter.type == 'text'">
+           <div class="form-group select-connect-data-source" ng-if="!!filter.field">
+               <label class="col-sm-2 control-label">Comparison</label>
+               <div class="col-sm-10">
+                   <ui-select ng-model="filter.comparison" ng-required="true" server-error on-select='selectedComparison(filter)' reset-search-input="'false'">
+                       <ui-select-match placeholder="Select a comparison operator">{{ $select.selected.label }}</ui-select-match>
+                       <ui-select-choices repeat="type.key as type in getComparisonTypes(filter) | filter:$select.search">
+                           {{ type.label }}
+                       </ui-select-choices>
+                   </ui-select>
+               </div>
+           </div>
+
+           <div class="form-group select-connect-data-source">
+               <label class="col-sm-2 control-label">Comparison Value</label>
+
+               <div class="col-sm-10">
+                   <oi-select ng-model="filter.compareValue" multiple ng-required="true" oi-select-options="{newItem: true}" placeholder="{{ 'REPORT_BUILDER_MODULE.ENTER_ONE_OR_MULTIPLE_VALUE' | translate }}"></oi-select>
+
+                   <span class="help-block" ng-if="!!filter.comparison && filter.comparison !='in' && filter.comparison !='not in'">
+                    {{ 'REPORT_BUILDER_MODULE.HELP_TEXT_FOR_ENTER_VALUES' | translate }}
+                </span>
+
+               </div>
+           </div>
+
+       </div>
+
+       <div ng-if="filter.type == 'number'">
+           <div class="form-group select-connect-data-source" ng-if="!!filter.field">
+               <label class="col-sm-2 control-label">Comparison</label>
+               <div class="col-sm-10">
+                   <ui-select ng-model="filter.comparison" ng-required="true" server-error on-select='selectedComparison(filter)' reset-search-input="'false'">
+                       <ui-select-match placeholder="Select a comparison operator">{{ $select.selected.label }}</ui-select-match>
+                       <ui-select-choices repeat="type.key as type in getComparisonTypes(filter) | filter:$select.search">
+                           {{ type.label }}
+                       </ui-select-choices>
+                   </ui-select>
+               </div>
+           </div>
+
+           <div class="form-group select-connect-data-source" ng-if="(filter.comparison =='in' || filter.comparison =='not in')">
+               <label class="col-sm-2 control-label">Comparison Value</label>
+
+               <div class="col-sm-10">
+                   <oi-select ng-model="filter.compareValue" ng-required="true" multiple oi-select-options="{newItem: true, newItemFn: 'addCompareValue($query)'}" placeholder="{{ 'REPORT_BUILDER_MODULE.ENTER_ONE_OR_MULTIPLE_VALUE' | translate }}"></oi-select>
+                   <span class="help-block" ng-if="!!filter.comparison && filter.comparison !='in' && filter.comparison !='not in'">
+                    {{ 'REPORT_BUILDER_MODULE.HELP_TEXT_FOR_ENTER_VALUES' | translate }}
+                </span>
+
+               </div>
+           </div>
+
+           <div class="form-group select-connect-data-source" ng-if="filter.comparison !='in' && filter.comparison !='not in'">
+               <label class="col-sm-2 control-label" for="inputDateRange">Comparison Value</label>
+               <div class="col-sm-10">
+                   <input class="form-control" autocomplete="false" type="number" id="inputComparisonValue" ng-model="filter.compareValue" ng-required="true" placeholder="Comparison Value">
+               </div>
+           </div>
+       </div>
+   </div>
+</div>

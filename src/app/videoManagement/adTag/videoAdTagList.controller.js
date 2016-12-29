@@ -172,6 +172,7 @@
 
                     $scope.adTag = adTag;
                     $scope.vastTag = vastTag;
+
                     $scope.getTextToCopy = function(string) {
                         return string.replace(/\n/g, '\r\n');
                     };

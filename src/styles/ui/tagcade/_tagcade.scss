@@ -12,7 +12,11 @@
     "tagsManagement/adTagForm",
     "tagsManagement/adSlotForm",
     "tagsManagement/tagGenerator",
-    "videoManagment/videoAdTagForm"
+    "videoManagment/videoAdTagForm",
+    "unifiedReport/dataSet",
+    "unifiedReport/connectDataSource",
+    "unifiedReport/report",
+    "unifiedReport/unifiedReportDetail"
 ;
 // custom
 
@@ -330,6 +334,63 @@ body {
 .highlightedText {
   color: #368697;
   font-weight: bold;
+}
+
+.field_set{
+  border-color: #F00;
+  border: 1px
+}
+
+.tacade-fa-border{
+  padding:10px 10px 10px 30px;
+  border:solid .08em #eee;
+  border-radius:.1emd
+}
+
+.highlightedRow {
+  background-color: #F0FBE3;
+}
+
+legend {
+  display: block;
+  font-size: 14px;
+  font-family: inherit;
+  text-align: left;
+  width: auto;
+  height: 25px;
+  border: transparent;
+}
+
+.content-public {
+  position: inherit !important;
+}
+
+//.redColor {
+//  color: #FF0000;
+//}
+//
+//.rightAlign {
+//  float: right;
+//  border: 2px transparent;
+//  border-radius: 5px;
+//}
+
+.btn-close-ur {
+  float: right;
+  width: 25px !important;
+  height: 25px !important;
+  font-size: 10px;
+  padding-right: 12px;
+
+  .glyphicon {
+    margin-left: -5px;
+  }
+}
+
+.sortable-placeholder-ui-select {
+  width: 150px;
+  padding-left: 50px;
+  padding-right: 50px;
 }
 
 .highlightedBorder {

@@ -1,0 +1,11 @@
+<div class="itemsPerPage">
+    <label for="inputItemPerPage">Items per page</label>
+    <div class="itemNumber" ng-if="isVisible">
+        <ui-select name="itemPerPage" id="inputItemPerPage" ng-model="init" on-select="selectItemPerPages($item)" reset-search-input="'false'">
+            <ui-select-match placeholder="10">{{ $select.selected.label }}</ui-select-match>
+            <ui-select-choices repeat="itemPerPage.key as itemPerPage in range | filter: { label: $select.search }">
+                {{ itemPerPage.label }}
+            </ui-select-choices>
+        </ui-select>
+    </div>
+</div>
