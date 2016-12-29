@@ -468,7 +468,7 @@
                 "TAG_URL": "Tag URL",
                 "PRIORITY": "Priority",
                 "TIMEOUT": "Request Timeout",
-                "WEIGHT": "Weight",
+                "WEIGHT": "Rotation Weight",
                 "TARGETING": "Targeting",
                 "COUNTRIES": "Countries",
                 "EXCLUDE_COUNTRIES": "Exclude Countries",
