@@ -24,7 +24,7 @@ module.exports = {
                     val: 'api.tagcade.com'
                 },
                 unified: {
-                    val: 'api.unified-reports.com'
+                    val: 'ur-api.pubvantage.com'
                 }
             },
             prodWhiteLabel: {
