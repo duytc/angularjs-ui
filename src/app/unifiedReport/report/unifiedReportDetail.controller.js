@@ -27,8 +27,8 @@
         $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);
 
 
-        //$scope.titleColumns = reportGroup.columns;
-        $scope.titleColumns = changeColumnName(reportGroup.columns, reportView.showDataSetName);
+        $scope.titleColumns = reportGroup.columns;
+        // $scope.titleColumns = changeColumnName(reportGroup.columns, reportView.showDataSetName);
         $scope.columnReportDetailForExportExcel = [];
         $scope.titleReportDetailForExportExcel = [];
         $scope.hasSort = false;
