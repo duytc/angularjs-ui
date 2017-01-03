@@ -27,27 +27,40 @@
         $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);
 
 
-        //$scope.titleColumns = reportGroup.columns;
-        $scope.titleColumns = changeColumnName(reportGroup.columns, reportView.showDataSetName);
+        // $scope.titleColumns = reportGroup.columns;
+        $scope.titleColumns = changeColumnName(reportGroup.columns);
         $scope.columnReportDetailForExportExcel = [];
         $scope.titleReportDetailForExportExcel = [];
         $scope.hasSort = false;
 
-        function changeColumnName(columns, isShowDataSetName) {
+        function changeColumnName(columns) {
 
-            if (isShowDataSetName) {
+            var dataSetName = null,
+                regexGetDataSetName = /\(([^)]+)\)/,
+                dataSetNames = [];
+
+            _.each(columns, function (value, key) {
+                dataSetName = columns[key].match(regexGetDataSetName);
+                if (_.isNull(dataSetName)) {
+                    return;
+                }
+
+                if (!_.contains(dataSetNames, dataSetName[0])) {
+                    dataSetNames.push(dataSetName[0]);
+                }
+            });
+
+            if (dataSetNames.length >= 2) {
                 return columns;
             }
 
-            var dataSetName = null,
-                regexGetDataSetName = /\(([^)]+)\)/;
-
-            Object.keys(columns).map(function(key) {
-                dataSetName= columns[key].match(regexGetDataSetName);
+            // Remove data set name in title of column
+            Object.keys(columns).map(function (key) {
+                dataSetName = columns[key].match(regexGetDataSetName);
                 if (_.isNull(dataSetName)) {
                     return columns[key];
                 }
-                return columns[key] = columns[key].replace(dataSetName[0],"");
+                return columns[key] = columns[key].replace(dataSetName[0], "");
             });
 
             return columns;
@@ -58,7 +71,7 @@
             angular.forEach(reportView.formats, function (format) {
                 if (format.type == 'columnPosition') {
                     $scope.columnPositions = angular.copy(format.fields);
-                    if($scope.columnPositions.indexOf('report_view_alias') == -1 && reportView.multiView) {
+                    if ($scope.columnPositions.indexOf('report_view_alias') == -1 && reportView.multiView) {
                         $scope.columnPositions.unshift('report_view_alias');
                     }
                 }
@@ -82,7 +95,7 @@
         if (!$scope.columnPositions.length && $scope.reports.length > 0) {
             $scope.columnPositions = _.keys($scope.reports[0]);
             var indexReportViewAlias = $scope.columnPositions.indexOf('report_view_alias');
-            if(indexReportViewAlias > -1 && reportView.multiView) {
+            if (indexReportViewAlias > -1 && reportView.multiView) {
                 $scope.columnPositions.splice(indexReportViewAlias, 1);
                 $scope.columnPositions.unshift('report_view_alias');
             }
@@ -159,7 +172,7 @@
         }
 
         function sort(keyname) {
-            $scope.sortBy = '\u0022'+keyname+'\u0022'; //set the sortBy to the param passed
+            $scope.sortBy = '\u0022' + keyname + '\u0022'; //set the sortBy to the param passed
             $scope.reverse = !$scope.reverse; //if true make it false and vice versa
 
             $scope.hasSort = true;
@@ -197,9 +210,9 @@
                     message: $scope.isNew ? 'The report view has been created' : 'The report view has been updated'
                 });
             })
-            .catch(function () {
-                $scope.hasSaveRepoerView = false;
-            });
+                .catch(function () {
+                    $scope.hasSaveRepoerView = false;
+                });
         }
 
         function showPagination() {

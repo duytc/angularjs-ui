@@ -51,7 +51,6 @@
             showInTotal: [],
             multiView: false,
             subReportsIncluded: false
-          //  showDataSetName: false
         };
 
         $scope.$watch(function () {
@@ -87,7 +86,6 @@
         $scope.clickMultiView = clickMultiView;
         $scope.selectedJoinBy = selectedJoinBy;
         $scope.clickSubReportsIncluded = clickSubReportsIncluded;
-        $scope.checkOnShowDataSetName = checkOnShowDataSetName;
 
         function clickSubReportsIncluded(subReportsIncluded) {
             angular.forEach($scope.reportBuilder.reportViews, function (reportView) {
@@ -109,57 +107,6 @@
                     }
                 })
             });
-        }
-
-        function checkOnShowDataSetName(isShowDataSetName) {
-            var firstElement = null;
-
-            _.each($scope.reportBuilder.reportViews, function (reportView) {
-                firstElement = _.first(reportView.tempDimensions);
-
-                if (!isShowDataSetName) {
-                    if (!firstElement.hasDataSetName) {
-                        return reportView;
-                    }
-
-                    _.each(reportView.tempDimensions, function (dimentsion){
-                        if (!!dimentsion.dataSetName) {
-                            dimentsion.label = dimentsion.label.replace('(' + dimentsion.dataSetName + ')', "") ;
-                        }
-
-                        dimentsion.hasDataSetName = false;
-                    });
-                    _.each(reportView.tempMetrics, function (metric){
-                        if (!!metric.dataSetName) {
-                            metric.label = metric.label.replace('(' + metric.dataSetName + ')', "") ;
-                        }
-                        metric.hasDataSetName = false;
-                    });
-
-                    return reportView;
-                }
-
-                if (firstElement.hasDataSetName) {
-                    return reportView;
-                }
-
-                _.each(reportView.tempDimensions, function (dimentsion){
-                    if (!!dimentsion.dataSetName) {
-                        dimentsion.label = dimentsion.label + ' (' + dimentsion.dataSetName + ')';
-                    }
-                    dimentsion.hasDataSetName = true;
-                });
-                _.each(reportView.tempMetrics, function (metric){
-                    if (!!metric.dataSetName) {
-                        metric.label = metric.label + ' (' + metric.dataSetName + ')';
-                    }
-
-                    metric.hasDataSetName = true;
-                });
-
-                return reportView;
-
-            })
         }
 
         function hasFieldForTotal(filed) {

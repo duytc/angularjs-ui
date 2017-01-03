@@ -89,8 +89,8 @@
                         reportView.metrics = [];
                         reportView.filters = [];
 
-                        _setTempDimensions(item, reportView, scope.reportBuilder.showDataSetName);
-                        _setTempMetrics(item, reportView, scope.reportBuilder.showDataSetName);
+                        _setTempDimensions(item, reportView);
+                        _setTempMetrics(item, reportView);
 
                         reportView.dimensionsMetrics = reportView.tempDimensions.concat(angular.copy(reportView.tempMetrics));
                     }
@@ -111,7 +111,7 @@
                         })
                     }
 
-                    function _setTempDimensions(item, reportView, showDataSetName) {
+                    function _setTempDimensions(item, reportView) {
 
                         reportView.tempDimensions = [];
                         angular.forEach(item.dimensions, function (dimension) {
@@ -122,27 +122,26 @@
                                 return !!dataSet.dimensions[key] && dataSet.id == id;
                             });
 
-                            if(!!dataSet && showDataSetName){
+                            if(!!dataSet){
                                 reportView.tempDimensions.push({
                                     key: dimension,
                                     label: key + ' ('+ dataSet.name +')',
                                     type: dataSet.dimensions[key],
-                                    dataSetName: !!dataSet ? dataSet.name : null,
-                                    hasDataSetName: true
+                                    dataSetName: !!dataSet ? dataSet.name : null
                                 })
                             } else {
                                 reportView.tempDimensions.push({
                                     key: dimension,
                                     label: key,
                                     type: item.fieldTypes[dimension],
-                                    dataSetName: !!dataSet ? dataSet.name : null,
-                                    hasDataSetName: false
+                                    dataSetName: !!dataSet ? dataSet.name : null
+
                                 })
                             }
                         });
                     }
 
-                    function _setTempMetrics(item, reportView, showDataSetName) {
+                    function _setTempMetrics(item, reportView) {
                         reportView.tempMetrics = [];
                         angular.forEach(item.metrics, function (metric) {
                             var key = metric.slice(0, metric.lastIndexOf('_'));
@@ -152,21 +151,20 @@
                                 return !!dataSet.metrics[key] && dataSet.id == id;
                             });
 
-                            if(!!dataSet && showDataSetName) {
+                            if(!!dataSet) {
                                 reportView.tempMetrics.push({
                                     key: metric,
                                     label: key + ' ('+ dataSet.name +')',
                                     type: dataSet.metrics[key],
-                                    dataSetName: !!dataSet ? dataSet.name : null,
-                                    hasDataSetName: true
+                                    dataSetName: !!dataSet ? dataSet.name : null
+
                                 })
                             } else {
                                 reportView.tempMetrics.push({
                                     key: metric,
                                     label: key,
                                     type: item.fieldTypes[metric],
-                                    dataSetName: !!dataSet ? dataSet.name : null,
-                                    hasDataSetName: false
+                                    dataSetName: !!dataSet ? dataSet.name : null
                                 })
                             }
                         });
