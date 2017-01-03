@@ -115,8 +115,15 @@
 
                         reportView.tempDimensions = [];
                         angular.forEach(item.dimensions, function (dimension) {
-                            var key = dimension.slice(0, dimension.lastIndexOf('_'));
-                            var id = dimension.slice(dimension.lastIndexOf('_') + 1, dimension.length);
+                            var key = null;
+                            var id = null;
+
+                            if(dimension.lastIndexOf('_') > -1) {
+                                key = dimension.slice(0, dimension.lastIndexOf('_'));
+                                id = dimension.slice(dimension.lastIndexOf('_') + 1, dimension.length);
+                            } else {
+                                key = dimension;
+                            }
 
                             var dataSet = _.find(scope.dataSets, function (dataSet) {
                                 return !!dataSet.dimensions[key] && dataSet.id == id;
@@ -144,8 +151,15 @@
                     function _setTempMetrics(item, reportView) {
                         reportView.tempMetrics = [];
                         angular.forEach(item.metrics, function (metric) {
-                            var key = metric.slice(0, metric.lastIndexOf('_'));
-                            var id = metric.slice(metric.lastIndexOf('_') + 1, metric.length);
+                            var key = null;
+                            var id = null;
+
+                            if(metric.lastIndexOf('_') > -1) {
+                                key = metric.slice(0, metric.lastIndexOf('_'));
+                                id = metric.slice(metric.lastIndexOf('_') + 1, metric.length);
+                            } else {
+                                key = metric;
+                            }
 
                             var dataSet = _.find(scope.dataSets, function (dataSet) {
                                 return !!dataSet.metrics[key] && dataSet.id == id;

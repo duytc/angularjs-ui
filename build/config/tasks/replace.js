@@ -67,7 +67,7 @@ module.exports = function(grunt, options) {
         options: {
             patterns: [
                 getPattern('https://api.tagcade.com/api'),
-                getUnifiedPattern('https://api.unified-reports.com/api'),
+                getUnifiedPattern('https://ur-api.pubvantage.com/api'),
                 {
                     match: '<%= appConfig.deployment.origin.dev.tagcade.match %>',
                     replacement:  '<%= appConfig.deployment.origin.prod.tagcade.val %>'
