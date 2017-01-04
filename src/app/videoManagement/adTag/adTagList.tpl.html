@@ -23,11 +23,18 @@
         </div>
     </div>
 
-    <search-box show-query="true" sb-list="adTags" search-fields="['id', 'name', 'publisher.company', 'publisher.username', 'uuid']"></search-box>
+   <!-- <search-box show-query="true" sb-list="adTags" search-fields="['id', 'name', 'publisher.company', 'publisher.username', 'uuid']"></search-box>-->
+
+    <form class="input-group col-sm-6 search-box">
+        <input class="form-control" ng-model="selectData.query" ng-change="searchData()" placeholder="{{ 'UNIFIED_REPORT_MODULE.SEARCH' | translate }}" type="text"/>
+            <span class="input-group-addon">
+                {{ tableConfig.totalItems }} records found
+            </span>
+    </form>
 
     <div class="panel-body" ng-if="hasData()">
         <div class="table-responsive">
-            <table class="table" at-sortable-query at-table at-paginated at-list="adTags" at-config="tableConfig">
+            <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="adTags" at-config="tableConfig">
                 <thead>
                 <tr>
                     <th ng-show="isAdmin()" at-attribute="videoPublisher.publisher.company" >{{ 'PUBLISHER' | translate }}</th>
@@ -53,8 +60,8 @@
                         </div>
                     </td>
                     <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="{{ 'NAME' | translate }}"></td>
-                    <td at-implicit at-sortable at-attribute="videoPublisher.name" at-title="{{ 'VIDEO_PUBLISHER' | translate }}"></td>
-                    <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="videoPublisher.publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
+                    <td at-implicit at-attribute="videoPublisher.name" at-title="{{ 'VIDEO_PUBLISHER' | translate }}"></td>
+                    <td ng-show="isAdmin()" at-implicit at-attribute="videoPublisher.publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
                     <td at-sortable at-attribute="buyPrice" at-title="{{ 'VIDEO_AD_TAG_MODULE.BUY_PRICE' | translate }}">
                         {{ item.buyPrice | currency:'$':2  }}
                     </td>
@@ -62,7 +69,8 @@
                 </tbody>
             </table>
 
-            <at-pagination at-pagination-query ng-if="showPagination()" at-list="adTags" at-config="tableConfig"></at-pagination>
+            <!--<at-pagination at-pagination-query ng-if="showPagination()" at-list="adTags" at-config="tableConfig"></at-pagination>-->
+            <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
         </div>
     </div>
 </div>

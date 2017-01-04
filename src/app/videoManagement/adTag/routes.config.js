@@ -29,10 +29,9 @@
                     }
                 },
                 resolve: {
-                    adTags: /* @ngInject */ function(VideoAdTagManager) {
-                        return VideoAdTagManager.getList().then(function (adTags) {
-                            return adTags.plain();
-                        });
+                    adTags: /* @ngInject */ function(VideoAdTagManager, $stateParams ) {
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        return VideoAdTagManager.one().get($stateParams);
                     },
                     videoPublisher: function() {
                         return null
@@ -55,9 +54,8 @@
                 },
                 resolve: {
                     adTags: /* @ngInject */ function(VideoPublisherManager, $stateParams) {
-                        return VideoPublisherManager.one($stateParams.videoPublisherId).one('videowaterfalltags').getList().then(function (adTags) {
-                            return adTags.plain();
-                        });
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        return VideoPublisherManager.one($stateParams.videoPublisherId).one('videowaterfalltags').get($stateParams);
                     },
                     videoPublisher: function(VideoPublisherManager, $stateParams) {
                         return VideoPublisherManager.one($stateParams.videoPublisherId).get();

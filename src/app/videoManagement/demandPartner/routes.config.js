@@ -29,10 +29,9 @@
                     }
                 },
                 resolve: {
-                    demandPartners: /* @ngInject */ function(VideoDemandPartnerManager) {
-                        return VideoDemandPartnerManager.getList().then(function (demandPartners) {
-                            return demandPartners.plain();
-                        });
+                    demandPartners: /* @ngInject */ function(VideoDemandPartnerManager, $stateParams) {
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        return VideoDemandPartnerManager.one().get($stateParams);
                     }
                 },
                 ncyBreadcrumb: {

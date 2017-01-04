@@ -53,7 +53,8 @@
                 },
                 resolve: {
                     demandAdTags: /* @ngInject */ function(VideoDemandPartnerManager, $stateParams) {
-                        return VideoDemandPartnerManager.one($stateParams.id).one('libraryvideodemandadtags').getList();
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        return VideoDemandPartnerManager.one($stateParams.id).one('libraryvideodemandadtags').get($stateParams);
                     },
                     demandPartner: function($stateParams, VideoDemandPartnerManager) {
                         return VideoDemandPartnerManager.one($stateParams.id).get();

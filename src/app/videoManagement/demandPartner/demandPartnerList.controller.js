@@ -5,11 +5,11 @@
         .controller('DemandPartnerList', DemandPartnerList)
     ;
 
-    function DemandPartnerList($scope, $q, $translate, $modal, AlertService, demandPartners, VideoDemandPartnerManager, AtSortableService, dateUtil, DIMENSIONS_OPTIONS_VIDEO_REPORT, HISTORY_TYPE_PATH, historyStorage) {
-        $scope.demandPartners = demandPartners;
+    function DemandPartnerList($scope, $q, $stateParams ,$translate, $modal, AlertService, demandPartners, VideoDemandPartnerManager, AtSortableService, dateUtil, DIMENSIONS_OPTIONS_VIDEO_REPORT, HISTORY_TYPE_PATH, historyStorage, EVENT_ACTION_SORTABLE) {
+        $scope.demandPartners = demandPartners.records;
 
         $scope.hasData = function () {
-            return !!demandPartners.length;
+            return !!$scope.demandPartners.length;
         };
 
         if (!$scope.hasData()) {
@@ -19,6 +19,14 @@
             });
         }
 
+        var params = {
+            page: 1
+        };
+
+        $scope.selectData = {
+            query: $stateParams.searchKey || null
+        };
+
         $scope.showPagination = showPagination;
         $scope.confirmDeletion = confirmDeletion;
         $scope.toggleDemandPartnerStatus = toggleDemandPartnerStatus;
@@ -27,8 +35,51 @@
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10
+            maxPages: 10,
+            totalItems: Number(demandPartners.totalRecord)
         };
+
+        $scope.availableOptions = {
+            currentPage: $stateParams.page || 1,
+            pageSize: 10
+        };
+
+        $scope.changePage = changePage;
+        $scope.searchData = searchData;
+
+        $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
+            params = angular.extend(params, query);
+            _getDemandPartners(params);
+        });
+
+        function changePage(currentPage) {
+            params = angular.extend(params, {page: currentPage});
+            _getDemandPartners(params);
+        }
+
+        function searchData() {
+            var query = {searchKey: $scope.selectData.query || ''};
+            params = angular.extend(params, query);
+            _getDemandPartners(params);
+        }
+
+        var getDemandPartners;
+        function _getDemandPartners(query) {
+            params = query;
+
+            clearTimeout(getDemandPartners);
+
+            getDemandPartners = setTimeout(function() {
+                params = query;
+                return VideoDemandPartnerManager.one().get(query)
+                    .then(function(demandPartners) {
+                        AtSortableService.insertParamForUrl(query);
+                        $scope.demandPartners = demandPartners.records;
+                        $scope.tableConfig.totalItems = Number(demandPartners.totalRecord);
+                        $scope.availableOptions.currentPage = Number(query.page);
+                    });
+            }, 500);
+        }
 
         function paramsReport(item) {
             var paramsReport = {
@@ -125,7 +176,7 @@
         }
 
         function showPagination() {
-            return angular.isArray($scope.demandPartners) && $scope.demandPartners.length > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.demandPartners) && $scope.tableConfig.totalItems > $scope.tableConfig.itemsPerPage;
         }
 
         function  toggleDemandPartnerStatus(demandPartner, newStatus) {

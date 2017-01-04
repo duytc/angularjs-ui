@@ -17,11 +17,16 @@
         </div>
     </div>
 
-    <search-box show-query="true" sb-list="videoPublishers" search-fields="['id', 'name']"></search-box>
+    <form class="input-group col-sm-6 search-box">
+        <input class="form-control" ng-model="selectData.query" ng-change="searchData()" placeholder="{{ 'UNIFIED_REPORT_MODULE.SEARCH' | translate }}" type="text"/>
+            <span class="input-group-addon">
+                {{ tableConfig.totalItems }} records found
+            </span>
+    </form>
 
     <div class="panel-body">
         <div class="table-responsive">
-            <table class="table" at-sortable-query at-table at-paginated at-list="videoPublishers" at-config="tableConfig" id="publishers">
+            <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="videoPublishers" at-config="tableConfig" id="publishers">
                 <thead>
                 <tr>
                     <th ng-show="isAdmin()" at-attribute="publisher.company" >{{ 'PUBLISHER' | translate }}</th>
@@ -44,12 +49,13 @@
                         </div>
                     </td>
                     <td at-title="{{ 'NAME' | translate }}" at-implicit at-sortable at-attribute="name"></td>
-                    <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
+                    <td ng-show="isAdmin()" at-implicit at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
                 </tr>
                 </tbody>
             </table>
 
-            <at-pagination at-pagination-query ng-if="showPagination()" at-list="videoPublishers" at-config="tableConfig"></at-pagination>
+           <!-- <at-pagination at-pagination-query ng-if="showPagination()" at-list="videoPublishers" at-config="tableConfig"></at-pagination>-->
+        <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
         </div>
     </div>
 </div>

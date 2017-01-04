@@ -27,8 +27,9 @@
                     }
                 },
                 resolve: {
-                    videoPublishers: function(VideoPublisherManager) {
-                        return VideoPublisherManager.getList();
+                    videoPublishers: function(VideoPublisherManager, $stateParams ) {
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        return VideoPublisherManager.one().get($stateParams);
                     }
                 },
                 ncyBreadcrumb: {
