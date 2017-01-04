@@ -8,6 +8,9 @@
         $scope.reportViews = reportViews;
         $scope.dataSets = dataSets;
         $scope.publishers = publishers;
+
+        $scope.formProcessing = false;
+
         $scope.listDimensions = [];
         $scope.totalDimensionsMetrics = [];
         $scope.dimensionsMetrics = {};
@@ -230,6 +233,13 @@
         }
 
         function saveReport() {
+            if ($scope.formProcessing) {
+                // already running, prevent duplicates
+                return;
+            }
+
+            $scope.formProcessing = true;
+
             var reportBuilder = _refactorJson($scope.reportBuilder);
             delete reportBuilder.publisher;
 
@@ -249,6 +259,13 @@
         }
 
         function getReports(save) {
+            if ($scope.formProcessing) {
+                // already running, prevent duplicates
+                return;
+            }
+
+            $scope.formProcessing = true;
+
             var reportBuilder = _refactorJson($scope.reportBuilder);
 
             var params = {
@@ -694,6 +711,10 @@
 
             angular.forEach(reportBuilder.joinBy, function (join) {
                 angular.forEach(join.joinFields, function (field) {
+                    if(!reportBuilder.fieldTypes[join.outputField]) {
+                        reportBuilder.fieldTypes[join.outputField] = reportBuilder.fieldTypes[field.field + '_' + field.dataSet];
+                    }
+
                     delete field.allFields
                 });
             });

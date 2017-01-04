@@ -64,6 +64,19 @@
 
                         if (_.has(columnPositionObject, 'fields')) {
                             columnPosition = columnPositionObject.fields;
+
+                            if(columnPosition.indexOf('report_view_alias') == -1 && reportView.multiView) {
+                                columnPosition.unshift('report_view_alias');
+                            }
+                        }
+
+                        if (!columnPosition.length && reports.length > 0) {
+                            columnPosition = _.keys(reports[0]);
+                            var indexReportViewAlias = columnPosition.indexOf('report_view_alias');
+                            if(indexReportViewAlias > -1 && reportView.multiView) {
+                                columnPosition.splice(indexReportViewAlias, 1);
+                                columnPosition.unshift('report_view_alias');
+                            }
                         }
 
                         //Rearrange the order of the report column and title before export excel
