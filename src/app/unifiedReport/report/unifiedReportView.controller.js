@@ -35,7 +35,7 @@
                 transforms: angular.toJson(reportView.transforms),
                 formats: angular.toJson(reportView.formats),
                 weightedCalculations: angular.toJson(reportView.weightedCalculations),
-                joinBy: reportView.joinBy || null,
+                joinBy: angular.toJson(reportView.joinBy) || null,
 
                 fieldTypes: angular.toJson(reportView.fieldTypes),
                 reportViews: angular.toJson(reportView.reportViews),
@@ -166,8 +166,36 @@
                             var formatFields = [];
 
                             angular.forEach(fields, function (field) {
-                                var key = field.slice(0, field.lastIndexOf('_'));
-                                var id = field.slice(field.lastIndexOf('_') + 1, field.length);
+                                var key = null;
+                                var id = null;
+
+                                if(field.lastIndexOf('_') > -1) {
+                                    key = field.slice(0, field.lastIndexOf('_'));
+                                    id = field.slice(field.lastIndexOf('_') + 1, field.length);
+                                }
+
+                                if(reportView.joinBy.length > 0) {
+                                    for(var index in reportView.joinBy) {
+                                        var join = _.find(reportView.joinBy[index].joinFields, function (item) {
+                                            return item.dataSet == id && item.field == key
+                                        });
+
+                                        if(!!join) {
+                                            var indexFormatField = _.findIndex(formatFields, function (field) {
+                                                return field.key == reportView.joinBy[index].outputField
+                                            });
+
+                                            if(indexFormatField == -1) {
+                                                formatFields.push({
+                                                    key: reportView.joinBy[index].outputField,
+                                                    label: reportView.joinBy[index].outputField
+                                                });
+                                            }
+
+                                            return
+                                        }
+                                    }
+                                }
 
                                 var dataSet = _.find(dataSets, function (dataSet) {
                                     return (!!dataSet.dimensions[key] || !!dataSet.metrics[key]) && dataSet.id == id;
@@ -176,14 +204,12 @@
                                 if(!!dataSet){
                                     formatFields.push({
                                         key: field,
-                                        label: key + ' ('+ dataSet.name +')',
-                                        type: dataSet.dimensions[key] || dataSet.metrics[key]
+                                        label: key + ' ('+ dataSet.name +')'
                                     })
                                 } else {
                                     formatFields.push({
                                         key: field,
-                                        label: field,
-                                        // type: item.fieldTypes[field]
+                                        label: field
                                     })
                                 }
                             });

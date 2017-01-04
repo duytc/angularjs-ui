@@ -1221,7 +1221,6 @@
                 "HELP_TEXT_FOR_ENTER_VALUES": "If the comparison value has multiple values then an 'OR' condition is automatically applied",
                 "HELP_TEXT_FOR_COLUMN_POSITION": "You can change the order of the columns in the report by specifying a custom order here",
                 "HELP_TEXT_FOR_SHOW_DIMENSIONS": "Show dimensions of sub views",
-                "HELP_TEXT_FOR_SHOW_DATA_SET_NAME": "Show data set name in each report field",
                 "SAVE_REPORT_VIEW_FAIL": "There is a error when save report"
 
             }

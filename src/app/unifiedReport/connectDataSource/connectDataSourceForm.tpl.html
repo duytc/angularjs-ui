@@ -4,10 +4,8 @@
         <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
 
         <div class="button-bar">
-            <button ng-if="!isNew" ng-click="backToConnectDataSourceList()" class="btn btn-sm btn-primary"
-                    type="button">
-                <span class="glyphicon glyphicon-arrow-left"></span> {{
-                'UNIFIED_REPORT_DATA_SOURCE_MODULE.BACK_TO_CONNECT_DATA_SOURCE_LIST' | translate }}
+            <button ng-if="!isNew" ng-click="backToConnectDataSourceList()" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-arrow-left"></span> {{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.BACK_TO_CONNECT_DATA_SOURCE_LIST' | translate }}
             </button>
         </div>
 
@@ -15,8 +13,7 @@
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify"
                                                                      aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ng-click="backToConnectDataSourceList()">{{
-                    'UNIFIED_REPORT_DATA_SOURCE_MODULE.BACK_TO_CONNECT_DATA_SOURCE_LIST' | translate }}</a></li>
+                <li><a ng-click="backToConnectDataSourceList()">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.BACK_TO_CONNECT_DATA_SOURCE_LIST' | translate }}</a></li>
             </ul>
         </div>
     </div>
@@ -28,23 +25,16 @@
                 <div class="form-group" ng-if="!isNew">
                     <label class="col-sm-1 control-label">{{ 'DATA_SOURCE' | translate }}</label>
 
-                    <div class="col-sm-7 form-control-static">
-                        {{ connectDataSource.dataSource.name }}
-                    </div>
+                    <div class="col-sm-7 form-control-static">{{ connectDataSource.dataSource.name }}</div>
                 </div>
 
                 <div class="form-group" ng-if="isNew">
                     <label for="inputDataSource" class="col-sm-1 control-label">{{ 'DATA_SOURCE' | translate }}</label>
 
                     <div class="col-sm-7">
-                        <ui-select name="dataSource" id="inputDataSource" ng-model="connectDataSource.dataSource"
-                                   ng-required="true" server-error on-select="selectDataSource($item)">
-                            <ui-select-match
-                                    placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.SELECT_A_DATA_SOURCE' | translate }}">
-                                {{ $select.selected.name }}
-                            </ui-select-match>
-                            <ui-select-choices
-                                    repeat="dataSource.id as dataSource in dataSources | filter:$select.search">
+                        <ui-select name="dataSource" id="inputDataSource" ng-model="connectDataSource.dataSource" ng-required="true" server-error on-select="selectDataSource($item)">
+                            <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.SELECT_A_DATA_SOURCE' | translate }}">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices repeat="dataSource.id as dataSource in dataSources | filter:$select.search">
                                 {{ dataSource.name }}
                             </ui-select-choices>
                         </ui-select>
@@ -52,8 +42,7 @@
                 </div>
 
                 <div class="form-group" ng-if="!!connectDataSource.dataSource">
-                    <label for="inputSelectFile" class="col-sm-1 control-label">{{
-                        'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.DETECT_FIELDS_FROM_FILE' | translate }}</label>
+                    <label for="inputSelectFile" class="col-sm-1 control-label">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.DETECT_FIELDS_FROM_FILE' | translate }}</label>
 
                     <div class="col-sm-7">
                         <div class="fileUpload btn btn-w-md btn-success" id="inputSelectFile">
@@ -64,14 +53,11 @@
                 </div>
 
                 <div class="form-group" ng-if="dataSourceFields.length > 0">
-                    <label class="col-sm-1 control-label">{{
-                        'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.DETECTED_FIELDS' | translate }}</label>
+                    <label class="col-sm-1 control-label">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.DETECTED_FIELDS' | translate }}</label>
 
                     <div class="col-sm-7">
                         <div ng-repeat="field in dataSourceFields" class="check_exchange">
-                            <label class="ui-checkbox"><input name="field[]" type="checkbox"
-                                                              ng-click="toggleField(field)"
-                                                              ng-checked="hasField(field)">
+                            <label class="ui-checkbox"><input name="field[]" type="checkbox" ng-click="toggleField(field)" ng-checked="hasField(field)">
                                 <span>{{ field }}</span>
                             </label>
                         </div>
@@ -79,20 +65,17 @@
                 </div>
 
                 <div class="form-group" ng-if="!isEmpty(connectDataSource.mapFields)">
-                    <label class="col-sm-1 control-label">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.MAP_FIELDS' |
-                        translate }}</label>
+                    <label class="col-sm-1 control-label">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.MAP_FIELDS' | translate }}</label>
 
                     <div class="col-sm-7">
                         <div class="form-group" ng-repeat="(key, value) in connectDataSource.mapFields">
                             <label class="col-sm-3 form-control-static">{{ key }}:</label>
 
                             <div class="col-sm-4">
-                                <ui-select name="dataSource" ng-model="connectDataSource.mapFields[key]"
-                                           ng-required="true" server-error on-select="selectMapField($item)">
+                                <ui-select name="dataSource" ng-model="connectDataSource.mapFields[key]" ng-required="true" server-error on-select="selectMapField($item)">
                                     <ui-select-match placeholder="Select a field">{{ $select.selected }}
                                     </ui-select-match>
-                                    <ui-select-choices
-                                            repeat="dm in totalDimensionsMetrics | orderBy | filter:$select.search">
+                                    <ui-select-choices repeat="dm in totalDimensionsMetrics | orderBy | filter:$select.search">
                                         {{ dm }}
                                     </ui-select-choices>
                                 </ui-select>
@@ -102,15 +85,12 @@
                 </div>
 
                 <div class="form-group" ng-if="!isEmpty(connectDataSource.mapFields)">
-                    <label class="col-sm-1 control-label">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.REQUIRES' |
-                        translate }}</label>
+                    <label class="col-sm-1 control-label">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.REQUIRES' | translate }}</label>
 
                     <div class="col-sm-7">
-                        <ui-select multiple name="dataSource" ng-model="connectDataSource.requires"
-                                   on-select="$select.search = '';" server-error>
+                        <ui-select multiple name="dataSource" ng-model="connectDataSource.requires" on-select="$select.search = '';" server-error>
                             <ui-select-match placeholder="Select a field">{{ $item }}</ui-select-match>
-                            <ui-select-choices
-                                    repeat="field in getMapFieldValues(connectDataSource.mapFields) | orderBy | filter:$select.search">
+                            <ui-select-choices repeat="field in getMapFieldValues(connectDataSource.mapFields) | orderBy | filter:$select.search">
                                 {{ field }}
                             </ui-select-choices>
                         </ui-select>
@@ -118,30 +98,21 @@
                 </div>
 
                 <div class="form-group" ng-if="!isEmpty(connectDataSource.mapFields)">
-                    <label class="col-sm-1 control-label">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.FILTERS' |
-                        translate }}</label>
+                    <label class="col-sm-1 control-label">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.FILTERS' | translate }}</label>
 
                     <div class="col-sm-7">
                         <div class="expressions-group">
-                            <filter-connect filters="connectDataSource.filters" map-fields="connectDataSource.mapFields"
-                                            dimensions-metrics="dimensionsMetrics"
-                                            list-data-source-fields="dataSourceFields"></filter-connect>
+                            <filter-connect filters="connectDataSource.filters" map-fields="connectDataSource.mapFields" dimensions-metrics="dimensionsMetrics" list-data-source-fields="dataSourceFields"></filter-connect>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="!isEmpty(connectDataSource.mapFields)">
-                    <label class="col-sm-1 control-label">{{
-                        'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.TRANSFORMATIONS' | translate }}</label>
+                    <label class="col-sm-1 control-label">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.TRANSFORMATIONS' | translate }}</label>
 
                     <div class="col-sm-7">
                         <div class="expressions-group">
-                            <transform-connect transforms="connectDataSource.transforms"
-                                               map-fields="connectDataSource.mapFields"
-                                               total-dimensions-metrics="totalDimensionsMetrics"
-                                               dimensions-metrics="dimensionsMetrics"
-                                               list-data-source-fields="dataSourceFields">
-                            </transform-connect>
+                            <transform-connect transforms="connectDataSource.transforms" map-fields="connectDataSource.mapFields" total-dimensions-metrics="totalDimensionsMetrics" dimensions-metrics="dimensionsMetrics" list-data-source-fields="dataSourceFields"></transform-connect>
                         </div>
                     </div>
                 </div>
@@ -149,9 +120,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-7">
                         <div ng-repeat="alertSetting in alertSettings">
-                            <label class="ui-checkbox"><input name="alertSetting[]" type="checkbox"
-                                                              ng-click="toggleAlertSetting(alertSetting)"
-                                                              ng-checked="hasAlertSetting(alertSetting)">
+                            <label class="ui-checkbox"><input name="alertSetting[]" type="checkbox" ng-click="toggleAlertSetting(alertSetting)" ng-checked="hasAlertSetting(alertSetting)">
                                 <span>{{ alertSetting.label }}</span>
                             </label>
                         </div>
@@ -160,9 +129,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-7">
-                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit"
-                                class="btn btn-success mce-i-indent">{{ 'SUBMIT' | translate }}
-                        </button>
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success mce-i-indent">{{ 'SUBMIT' | translate }}</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">
                             <p>{{ 'VALID_FORM' | translate }}</p>
                         </div>

@@ -43,16 +43,6 @@
                     </div>
                 </div>
 
- <!--               <div class="form-group" ng-if="((isAdmin() && !!reportBuilder.publisher) || !isAdmin()) && !!reportBuilder.multiView">
-                    <label for="showDataSetName" class="col-sm-1 control-label">Show Data Set Name</label>
-                    <div class="col-sm-7">
-                        <label class="ui-checkbox"><input server-error name="showDataSetName" ng-click="checkOnShowDataSetName(reportBuilder.showDataSetName)" type="checkbox" ng-model="reportBuilder.showDataSetName" id="showDataSetName"><span></span></label>
-                        <span class="help-block">
-                            {{ 'REPORT_BUILDER_MODULE.HELP_TEXT_FOR_SHOW_DATA_SET_NAME' | translate }}
-                        </span>
-                    </div>
-                </div>-->
-
                 <div class="form-group" ng-if="!reportBuilder.multiView">
                     <label class="col-sm-1 control-label">View Alias</label>
                     <div class="col-sm-7">
@@ -78,15 +68,23 @@
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="reportBuilder.dataSets.length > 1">
+                <div class="form-group" ng-if="reportBuilder.dataSets.length > 1 && !reportBuilder.multiView">
                     <label class="col-sm-1 control-label">Join By</label>
                     <div class="col-sm-7">
-                        <ui-select name="joinBy" ng-model="reportBuilder.joinBy" on-select="selectedJoinBy($item)" server-error >
-                            <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
-                            <ui-select-choices repeat="field in listIntersectionDimensions | orderBy | filter:$select.search">
-                                {{ field }}
-                            </ui-select-choices>
-                        </ui-select>
+                        <div class="form-group" ng-repeat="field in reportBuilder.joinBy[0].joinFields">
+                            <label class="col-sm-3 form-control-static">{{ getNameDataSet(field.dataSet) }}:</label>
+
+                            <div class="col-sm-4">
+                                <ui-select name="field" ng-model="field.field" ng-required="true" server-error>
+                                    <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
+                                    <ui-select-choices repeat="dm in field.allFields | orderBy | filter:$select.search">
+                                        {{ dm }}
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                        <input server-error name="outputField" ng-model="reportBuilder.joinBy[0].outputField" ng-required="true" type="text" class="form-control" id="inputOutputField" placeholder="Output Field">
                     </div>
                 </div>
 
