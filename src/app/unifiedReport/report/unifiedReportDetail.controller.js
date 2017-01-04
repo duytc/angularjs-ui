@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $stateParams, _, SortReportByColumnType ,reportView, $translate, reportGroup, AlertService, unifiedReportFormatReport, UnifiedReportViewManager) {
+    function UnifiedReportDetail($scope, $stateParams, _, SortReportByColumnType, reportView, $translate, reportGroup, AlertService, unifiedReportFormatReport, UnifiedReportViewManager) {
         $scope.reportView = reportView;
         $scope.reportGroup = reportGroup;
         $scope.hasResult = reportGroup !== false;
@@ -26,8 +26,7 @@
         // user tempReports to orderBy and reports to view
         $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);
 
-
-      //  $scope.titleColumns = reportGroup.columns;
+        // $scope.titleColumns = reportGroup.columns;
         $scope.titleColumns = SortReportByColumnType.changeColumnName(reportGroup.columns);
         $scope.columnReportDetailForExportExcel = [];
         $scope.titleReportDetailForExportExcel = [];

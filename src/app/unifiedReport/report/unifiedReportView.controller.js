@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportView', UnifiedReportView);
 
-    function UnifiedReportView($scope, _, $q, $translate, $modal, AlertService, reportViewList, UnifiedReportViewManager, unifiedReportBuilder, UserStateHelper, AtSortableService, exportExcelService, historyStorage, HISTORY_TYPE_PATH) {
+    function UnifiedReportView($scope, _, $q, $translate, SortReportByColumnType,$modal, AlertService, reportViewList, UnifiedReportViewManager, unifiedReportBuilder, UserStateHelper, AtSortableService, exportExcelService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.reportViewList = reportViewList;
 
         $scope.hasData = function () {
@@ -81,6 +81,8 @@
                         _.each(newMapColumns, function (mapColumn) {
                             titleReportDetailForExportExcel.push(reportGroup.columns[mapColumn]);
                         });
+
+                        titleReportDetailForExportExcel= SortReportByColumnType.changeColumnName(titleReportDetailForExportExcel);
 
                         var reportName = !!reportView.name ? reportView.name : 'report-detail';
                         exportExcelService.exportExcel(reports, newMapColumns, titleReportDetailForExportExcel, reportName, true);
