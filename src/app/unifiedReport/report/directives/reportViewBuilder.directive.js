@@ -112,7 +112,6 @@
                     }
 
                     function _setTempDimensions(item, reportView) {
-
                         reportView.tempDimensions = [];
                         angular.forEach(item.dimensions, function (dimension) {
                             var key = null;
@@ -133,16 +132,13 @@
                                 reportView.tempDimensions.push({
                                     key: dimension,
                                     label: key + ' ('+ dataSet.name +')',
-                                    type: dataSet.dimensions[key],
-                                    dataSetName: !!dataSet ? dataSet.name : null
+                                    type: dataSet.dimensions[key]
                                 })
                             } else {
                                 reportView.tempDimensions.push({
                                     key: dimension,
-                                    label: key,
-                                    type: item.fieldTypes[dimension],
-                                    dataSetName: !!dataSet ? dataSet.name : null
-
+                                    label: dimension,
+                                    type: item.fieldTypes[dimension]
                                 })
                             }
                         });
@@ -169,16 +165,13 @@
                                 reportView.tempMetrics.push({
                                     key: metric,
                                     label: key + ' ('+ dataSet.name +')',
-                                    type: dataSet.metrics[key],
-                                    dataSetName: !!dataSet ? dataSet.name : null
-
+                                    type: dataSet.metrics[key]
                                 })
                             } else {
                                 reportView.tempMetrics.push({
                                     key: metric,
-                                    label: key,
-                                    type: item.fieldTypes[metric],
-                                    dataSetName: !!dataSet ? dataSet.name : null
+                                    label: metric,
+                                    type: item.fieldTypes[metric]
                                 })
                             }
                         });

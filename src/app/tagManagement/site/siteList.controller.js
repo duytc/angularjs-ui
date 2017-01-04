@@ -45,7 +45,7 @@
         $scope.searchData = searchData;
 
         $scope.tableConfig = {
-            itemsPerPage: 10,
+            itemsPerPage: 3,
             maxPages: 10,
             totalItems: Number(sites.totalRecord)
         };
