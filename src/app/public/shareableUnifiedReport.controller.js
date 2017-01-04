@@ -4,7 +4,7 @@
     angular.module('tagcade.public')
         .controller('shareableUnifiedReport', shareableUnifiedReport);
 
-    function shareableUnifiedReport($scope, $translate, reports, unifiedReportFormatReport, AlertService) {
+    function shareableUnifiedReport($scope, $translate, SortReportByColumnType, reports, unifiedReportFormatReport, AlertService) {
         $scope.reportView = reports.reportView;
         $scope.hasResult = reports !== false;
         $scope.reports = reports.reports || [];
@@ -20,7 +20,8 @@
 
         $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);
 
-        $scope.titleColumns = reports.columns;
+        // $scope.titleColumns = reports.columns;
+        $scope.titleColumns = SortReportByColumnType.changeColumnName(reports.columns);
         $scope.columnReportDetailForExportExcel = [];
         $scope.titleReportDetailForExportExcel = [];
 
@@ -29,7 +30,7 @@
             angular.forEach($scope.reportView.formats, function (format) {
                 if (format.type == 'columnPosition') {
                     $scope.columnPositions = format.fields;
-                    if($scope.columnPositions.indexOf('report_view_alias') == -1 && $scope.reportView.multiView) {
+                    if ($scope.columnPositions.indexOf('report_view_alias') == -1 && $scope.reportView.multiView) {
                         $scope.columnPositions.unshift('report_view_alias');
                     }
                 }
@@ -40,7 +41,7 @@
         if (!$scope.columnPositions.length) {
             $scope.columnPositions = _.keys($scope.titleColumns);
             var indexReportViewAlias = $scope.columnPositions.indexOf('report_view_alias');
-            if(indexReportViewAlias > -1 && $scope.reportView.multiView) {
+            if (indexReportViewAlias > -1 && $scope.reportView.multiView) {
                 $scope.columnPositions.splice(indexReportViewAlias, 1);
                 $scope.columnPositions.unshift('report_view_alias');
             }

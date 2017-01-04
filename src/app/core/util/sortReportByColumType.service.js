@@ -8,7 +8,8 @@
 
         return {
             sortByColumnType: sortReportByColumnType,
-            getDateFormat: getDateFormat
+            getDateFormat: getDateFormat,
+            changeColumnName: changeColumnName
         }
     }
 
@@ -211,5 +212,37 @@
         return dateFormat;
     }
 
+    function changeColumnName(columns) {
+
+        var dataSetName = null,
+            regexGetDataSetName = /\(([^)]+)\)/,
+            dataSetNames = [];
+
+        _.each(columns, function (value, key) {
+            dataSetName = columns[key].match(regexGetDataSetName);
+            if (_.isNull(dataSetName)) {
+                return;
+            }
+
+            if (!_.contains(dataSetNames, dataSetName[0])) {
+                dataSetNames.push(dataSetName[0]);
+            }
+        });
+
+        if (dataSetNames.length >= 2) {
+            return columns;
+        }
+
+        // Remove data set name in title of column
+        Object.keys(columns).map(function (key) {
+            dataSetName = columns[key].match(regexGetDataSetName);
+            if (_.isNull(dataSetName)) {
+                return columns[key];
+            }
+            return columns[key] = columns[key].replace(dataSetName[0], "");
+        });
+
+        return columns;
+    }
 
 })();
