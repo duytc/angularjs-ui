@@ -74,7 +74,15 @@
                 return enabledModules.indexOf(module) > -1;
             }
 
-            return $scope.site.publisher != null ? $scope.site.publisher.enabledModules.indexOf(module) > -1 : false;
+            if(!$scope.site.publisher) {
+                return false
+            }
+
+            var publisher = _.find(publishers, function (publisher) {
+                return publisher.id == $scope.site.publisher || publisher.id == $scope.site.publisher.id
+            });
+
+            return !!publisher ? publisher.enabledModules.indexOf(module) > -1 : false;
         }
 
         function backToListSite() {

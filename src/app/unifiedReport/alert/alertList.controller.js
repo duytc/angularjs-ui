@@ -73,11 +73,12 @@
 
                             if (index > -1) {
                                 alerts.splice(index, 1);
+                                $scope.selectedAlert.splice($scope.selectedAlert.indexOf(alert.id), 1)
                             }
 
                             $scope.alerts = alerts;
 
-                            if($scope.tableConfig.currentPage > 0 && alerts.length == $scope.tableConfig.currentPage) {
+                            if($scope.tableConfig.currentPage > 0 && alerts.length/10 == $scope.tableConfig.currentPage) {
                                 $scope.tableConfig.currentPage = $scope.tableConfig.currentPage - 1;
                             }
 
