@@ -1,0 +1,16 @@
+.select-connect-data-source {
+  margin-bottom: 10px !important;
+}
+
+.expressions-transform {
+  background-color: rgba(148, 183, 88, 0.24) !important;
+  min-height: 40px;
+  line-height: 40px;
+  padding-left: 10px;
+  display: flex;
+  font-weight: bold;
+
+  .color-danger {
+    display: flex;
+  }
+}

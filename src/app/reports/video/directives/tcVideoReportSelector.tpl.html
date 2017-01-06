@@ -88,7 +88,7 @@
             </label>
             <hr>
             <div ng-repeat="metrics in metricsOptions" class="check_dimensions">
-                <label class="ui-checkbox"><input name="metrics[]" type="checkbox" ng-click="selectMetrics(metrics)" ng-checked="checkedMetrics(metrics)">
+                <label class="ui-checkbox"><input name="metrics[]" type="checkbox" ng-disabled="disabledMetric(metrics)" ng-click="selectMetrics(metrics)" ng-checked="checkedMetrics(metrics)">
                     <span>{{ metrics.label }}</span>
                 </label>
             </div>

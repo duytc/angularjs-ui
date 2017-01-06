@@ -17,7 +17,8 @@
                 cssClass: '=?',
                 header: '=?',
                 fields: '=?',
-                reportFields: '&?'
+                reportFields: '&?',
+                notFilter: '=?'
             },
             controller: function ($scope, exportExcelService) {
                 $scope.class = $scope.cssClass !== undefined ? $scope.cssClass : 'btn btn-sm btn-primary';
@@ -27,7 +28,7 @@
 
                 $scope.click = function() {
                     update();
-                    exportExcelService.exportExcel($scope.data, $scope.fields, $scope.header, $scope.filename);
+                    exportExcelService.exportExcel($scope.data, $scope.fields, $scope.header, $scope.filename, $scope.notFilter);
                 };
 
                 function update() {

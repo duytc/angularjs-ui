@@ -150,11 +150,11 @@
                             return true;
                         }
                         else if(!scope.native) {
-                            if(adSlot.type == scope.typesList.display) {
+                            if (adSlot.type == scope.typesList.display) {
                                 return true;
                             }
 
-                            if(adSlot.libType == scope.typesList.display) {
+                            if (adSlot.libType == scope.typesList.display) {
                                 return true;
                             }
 

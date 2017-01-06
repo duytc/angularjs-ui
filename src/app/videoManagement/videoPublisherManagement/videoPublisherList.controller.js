@@ -6,9 +6,9 @@
         .controller('VideoPublisherList', VideoPublisherList)
     ;
 
-    function VideoPublisherList($scope, $translate, videoPublishers, VideoPublisherManager, AlertService, publisherRestangular, autoLogin, dateUtil, historyStorage, DIMENSIONS_OPTIONS_VIDEO_REPORT, HISTORY_TYPE_PATH) {
-        $scope.videoPublishers = videoPublishers;
+    function VideoPublisherList($scope, $translate, $stateParams, AtSortableService, videoPublishers, VideoPublisherManager, AlertService, publisherRestangular, autoLogin, dateUtil, historyStorage, DIMENSIONS_OPTIONS_VIDEO_REPORT, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE) {
 
+        $scope.videoPublishers = videoPublishers.records;
         $scope.today = new Date();
         $scope.showPagination = showPagination;
         $scope.visitPublisher = visitPublisher;
@@ -17,8 +17,59 @@
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10
+            maxPages: 10,
+            totalItems: Number(videoPublishers.totalRecord)
         };
+
+        $scope.availableOptions = {
+            currentPage: $stateParams.page || 1,
+            pageSize: 10
+        };
+
+        var params = {
+            page: 1
+        };
+
+        $scope.selectData = {
+            query: $stateParams.searchKey || null
+        };
+
+        $scope.changePage = changePage;
+        $scope.searchData = searchData;
+
+        $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
+            params = angular.extend(params, query);
+            _getVideoPublishers(params);
+        });
+
+        function changePage(currentPage) {
+            params = angular.extend(params, {page: currentPage});
+            _getVideoPublishers(params);
+        }
+
+        function searchData() {
+            var query = {searchKey: $scope.selectData.query || ''};
+            params = angular.extend(params, query);
+            _getVideoPublishers(params);
+        }
+
+        var getVideoPublishers;
+        function _getVideoPublishers(query) {
+            params = query;
+
+            clearTimeout(getVideoPublishers);
+
+            getVideoPublishers = setTimeout(function() {
+                params = query;
+                return VideoPublisherManager.one().get(query)
+                    .then(function(videoPublishers) {
+                        AtSortableService.insertParamForUrl(query);
+                        $scope.videoPublishers = videoPublishers.records;
+                        $scope.tableConfig.totalItems = Number(videoPublishers.totalRecord);
+                        $scope.availableOptions.currentPage = Number(query.page);
+                    });
+            }, 500);
+        }
 
         function paramsReport(item) {
             var paramsReport = {
@@ -84,11 +135,11 @@
         }
 
         function showPagination() {
-            return angular.isArray($scope.videoPublishers) && $scope.videoPublishers.length > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.videoPublishers) && $scope.tableConfig.totalItems > $scope.tableConfig.itemsPerPage;
         }
 
         $scope.$on('$locationChangeSuccess', function() {
-            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.videoPublishers)
+            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.videoPublisher)
         });
     }
 })();

@@ -49,7 +49,7 @@
                         {{ item.totalOpportunities | number }}
                     </td>
                     <td ng-show="hasRtbModule" at-title="{{ 'REPORT.RTB_IMPRESSIONS' | translate }}" at-attribute="rtbImpressions" at-sortable>
-                        {{ item.rtbImpressions | number }}
+                        {{ (item.rtbImpressions || 0) | number }}
                     </td>
                     <td at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="impressions" at-sortable>
                         {{ item.impressions | number }}

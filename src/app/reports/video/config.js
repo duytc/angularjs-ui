@@ -34,6 +34,14 @@
                 label: 'Requests'
             },
             {
+                key: 'impressions',
+                label: 'Impressions'
+            },
+            {
+                key: 'requestFillRate',
+                label: 'Request Fill Rate'
+            },
+            {
                 key: 'bids',
                 label: 'Bids'
             },
@@ -49,42 +57,13 @@
                 key: 'errorRate',
                 label: 'Error Rate'
             },
-            //{
-            //    key: 'wonOpportunities',
-            //    label: 'Won Opportunities'
-            //},
-            {
-                key: 'impressions',
-                label: 'Impressions'
-            },
-            {
-                key: 'requestFillRate',
-                label: 'Request Fill Rate'
-            },
-            {
-                key: 'clicks',
-                label: 'Clicks'
-            },
-            {
-                key: 'clickThroughRate',
-                label: 'Click Through Rate'
-            },
             {
                 key: 'blocks',
-                label: 'Blocks'
+                label: 'Blocked Requests'
             },
-            // for adtag
             {
                 key: 'adTagRequests',
                 label: 'Waterfall Requests'
-            },
-            {
-                key: 'adTagBids',
-                label: 'Waterfall Bids'
-            },
-            {
-                key: 'adTagErrors',
-                label: 'Waterfall Errors'
             },
             {
                 key: 'estDemandRevenue',
@@ -97,7 +76,24 @@
             {
                 key: 'netRevenue',
                 label: 'Net Revenue'
+            },
+            {
+                key: 'clicks',
+                label: 'Clicks'
+            },
+            {
+                key: 'clickThroughRate',
+                label: 'Click Through Rate'
             }
+            // for adtag
+            // {
+            //     key: 'adTagBids',
+            //     label: 'Waterfall Bids'
+            // },
+            // {
+            //     key: 'adTagErrors',
+            //     label: 'Waterfall Errors'
+            // }
         ])
         .provider('API_VIDEO_REPORTS_BASE_URL', {
             $get: function(API_REPORTS_BASE_URL) {

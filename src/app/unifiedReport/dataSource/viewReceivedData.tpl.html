@@ -1,0 +1,47 @@
+<!--
+<form name = 'viewReceivedDataForm'>
+    <div class="modal-header" style="background-color: #368697 ">
+        <h4 class="modal-title" style="color: #ffffff" > Recieved Data: {{dataSource.name | translate}} </h4>
+        </div>
+            <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="dataSourceFileList" at-config="tableConfig">
+                <thead>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
+                        <td at-title="{{ 'ACTIONS' | translate }}">
+                            <div class="btn-group" dropdown>
+                                <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                                <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                    <li><a>{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DOWNLOAD_DATA' | translate }}</a></li>
+                                    <li class="divider"></li>
+                                    <li><a >{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.REPLAY_DATA' | translate }}</a></li>
+                                    <li class="divider" ng-if="item.receivedVia == 'email'"></li>
+                                    <li ng-if="item.receivedVia == 'email'"><a >{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.VIEW_DETAILS' | translate }}</a></li>
+                                    <li class="divider"></li>
+                                    <li><a ng-click="confirmClick('Are you sure want to delete this data source entry?') && deleteDataSourceFile(item.id)" confirm-click > {{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DELETE' | translate }}</a></li>
+                                </ul>
+                            </div>
+                        </td>
+
+                        <td at-title="Received Date"  >{{item.receivedDate|date:'yyyy/MM/dd'}}</td>
+                        <td at-title="Resource Name"  >{{dataSource.name}}</td>
+                        <td at-title="Format" >{{dataSource.format}}</td>
+                        <td at-title="Valid" > <input type="checkbox" ng-model="item.valid" disabled></td>
+                        <td at-title="Received Via" >{{item.receivedVia}}</td>
+
+                    </tr>
+                </tbody>
+
+            </table>
+            <at-pagination at-pagination-query ng-if="showPagination()" at-list="dataSourceFileList" at-config="tableConfig"></at-pagination>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="$dismiss()">{{ 'CLOSE' | translate }}</button>
+    </div>
+</form>
+
+-->

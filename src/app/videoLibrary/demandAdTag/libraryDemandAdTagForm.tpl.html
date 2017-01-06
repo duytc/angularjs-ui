@@ -110,9 +110,9 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.COUNTRIES' | translate }}</label>
                                     <div class="col-sm-9">
-                                        <ui-select multiple ng-model="demandAdTag.targeting.countries" ng-required="true" close-on-select="false" server-error reset-search-input="'false'">
+                                        <ui-select multiple ng-model="demandAdTag.targeting.countries" ng-required="true" on-select="$item.search = $select.search; $select.search = '';" close-on-select="false" reset-search-input ="true" >
                                             <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_COUNTRIES' | translate }}">{{ $item.name }}</ui-select-match>
-                                            <ui-select-choices group-by="groupEntities" repeat="country.code as country in countries | filter:filterExcludeCountriesSelected | filter:$select.search">
+                                            <ui-select-choices repeat="country.code as country in countries | filter:filterExcludeCountriesSelected | filter:$select.search">
                                                 {{ country.name }}
                                             </ui-select-choices>
                                         </ui-select>
@@ -122,9 +122,9 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.EXCLUDE_COUNTRIES' | translate }}</label>
                                     <div class="col-sm-9">
-                                        <ui-select multiple ng-model="demandAdTag.targeting.exclude_countries" ng-required="true" close-on-select="false" server-error reset-search-input="'false'">
+                                        <ui-select multiple ng-model="demandAdTag.targeting.exclude_countries" on-select="$item.search = $select.search; $select.search = '';" ng-required="true" close-on-select="false" server-error reset-search-input ="true">
                                             <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_COUNTRIES' | translate }}">{{ $item.name }}</ui-select-match>
-                                            <ui-select-choices group-by="groupEntities" repeat="country.code as country in countries | filter:filterCountriesSelected | filter:$select.search">
+                                            <ui-select-choices repeat="country.code as country in countries | filter:filterCountriesSelected | filter:$select.search">
                                                 {{ country.name }}
                                             </ui-select-choices>
                                         </ui-select>
@@ -158,7 +158,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.PLATFORM' | translate }}</label>
                                     <div class="col-sm-9">
-                                        <ui-select multiple name="platform" close-on-select="false" id="inputPlatform" ng-model="demandAdTag.targeting.platform" ng-required="true" server-error>
+                                        <ui-select multiple on-select="$item.search = $select.search; $select.search = '';" name="platform" close-on-select="false" id="inputPlatform" ng-model="demandAdTag.targeting.platform" ng-required="true" server-error>
                                             <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_PLATFORM' | translate }}">{{ $item.label }}</ui-select-match>
                                             <ui-select-choices repeat="platform.key as platform in platformOption | filter:$select.search">
                                                 {{ platform.label }}
@@ -170,7 +170,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.PLAYER_SIZE' | translate }}</label>
                                     <div class="col-sm-9">
-                                        <ui-select multiple name="playerSize" close-on-select="false" ng-model="demandAdTag.targeting.player_size" ng-required="true" server-error>
+                                        <ui-select multiple on-select="$item.search = $select.search; $select.search = '';" name="playerSize" close-on-select="false" ng-model="demandAdTag.targeting.player_size" ng-required="true" server-error>
                                             <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_PLAYER_SIZE' | translate }}">{{ $item.label }}</ui-select-match>
                                             <ui-select-choices repeat="player.key as player in playerSizeOptions | filter:$select.search">
                                                 {{ player.label }}
@@ -182,10 +182,10 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.REQUIRED_MACROS' | translate }}</label>
                                     <div class="col-sm-9">
-                                        <ui-select multiple name="requiredMacros" close-on-select="false" ng-model="demandAdTag.targeting.required_macros" ng-required="true" server-error>
-                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_REQUIRED_MACROS' | translate }}">{{ $item }}</ui-select-match>
-                                            <ui-select-choices repeat="require in requiredMacrosOptions | filter:$select.search">
-                                                {{ require }}
+                                        <ui-select on-select="$item.search = $select.search; $select.search = '';" multiple name="requiredMacros" close-on-select="false" ng-model="demandAdTag.targeting.required_macros" ng-required="true" server-error>
+                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_REQUIRED_MACROS' | translate }}">{{ $item.label }}</ui-select-match>
+                                            <ui-select-choices repeat="require.key as require in requiredMacrosOptions | filter:$select.search">
+                                                {{ require.label }}
                                             </ui-select-choices>
                                         </ui-select>
                                     </div>

@@ -57,6 +57,15 @@
         $scope.selectMetrics = selectMetrics;
         $scope.checkedMetrics = checkedMetrics;
         $scope.showBreakdown = showBreakdown;
+        $scope.disabledMetric = disabledMetric;
+        
+        function disabledMetric(metrics) {
+            if(metrics.key == 'adTagRequests' && $scope.queryParams.breakdowns.indexOf('videoDemandAdTag') > -1) {
+                return true
+            }
+
+            return false
+        }
 
         function groupEntities(item){
             if (item.id === null) {
@@ -71,6 +80,12 @@
         }
 
         function selectBreakdown(breakdown) {
+            if(breakdown.key == 'videoDemandAdTag') {
+                if($scope.queryParams.metrics.indexOf('adTagRequests') > -1) {
+                    $scope.queryParams.metrics.splice($scope.queryParams.metrics.indexOf('adTagRequests'), 1)
+                }
+            }
+
             var index = $scope.queryParams.breakdowns.indexOf(breakdown.key);
 
             if(index > -1) {
@@ -84,6 +99,10 @@
             if(selectedAll) {
                 $scope.queryParams.metrics = [];
                 angular.forEach($scope.metricsOptions, function(metrics) {
+                    if(metrics.key == 'adTagRequests' && $scope.queryParams.breakdowns.indexOf('videoDemandAdTag') > -1) {
+                        return;
+                    }
+
                     $scope.queryParams.metrics.push(metrics.key)
                 });
             } else {
@@ -100,7 +119,7 @@
                 $scope.queryParams.metrics.push(metrics.key);
             }
 
-            _setVarSelectMetricsAll();
+            _setVarSelectMetricsDefault();
         }
 
         function checkedMetrics(metrics) {
@@ -212,15 +231,16 @@
                 // extend params
                 angular.extend($scope.selectedData, params);
 
-                _setVarSelectMetricsAll($scope.queryParams.metrics);
+                _setVarSelectMetricsDefault($scope.queryParams.metrics);
             }, 0);
         }
 
-        function _setVarSelectMetricsAll(metrics) {
+        function _setVarSelectMetricsDefault(metrics) {
             // default select all metrics
             if(!$stateParams.metrics && angular.isArray(metrics) && metrics.length == 0) {
-                $scope.selectedData.selectMetricsAll = true;
-                selectMetricsAll($scope.selectedData.selectMetricsAll);
+                // $scope.selectedData.selectMetricsAll = true;
+                // selectMetricsAll($scope.selectedData.selectMetricsAll);
+                $scope.queryParams.metrics = ['requests', 'bids', 'errors', 'impressions', 'blocks', 'requestFillRate'];
 
                 return;
             }

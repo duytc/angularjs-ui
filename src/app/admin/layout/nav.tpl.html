@@ -38,27 +38,6 @@
                 <!--</li>-->
             </ul>
         </li>
-        <!-- temporarily disable for admin because using config at tagcade-api -->
-        <!--<li >-->
-        <!--<a href="#" class="menu-dropdown">-->
-        <!--<i class="menu-icon fa fa-exchange"></i>-->
-        <!--<span class="menu-text"> {{ 'NAVBAR.EXCHANGE_MANAGEMENT' | translate }} </span>-->
-        <!--<i class="menu-expand"></i>-->
-        <!--</a>-->
-
-        <!--<ul class="submenu">-->
-        <!--<li ui-sref-active="active">-->
-        <!--<a ui-sref=".exchangeManagement.list">-->
-        <!--<span class="menu-text"> {{ 'NAVBAR.EXCHANGES' | translate }} </span>-->
-        <!--</a>-->
-        <!--</li>-->
-        <!--<li ui-sref-active="active">-->
-        <!--<a ui-sref=".exchangeManagement.new">-->
-        <!--<span class="menu-text"> {{ 'NAVBAR.NEW_EXCHANGE' | translate }} </span>-->
-        <!--</a>-->
-        <!--</li>-->
-        <!--</ul>-->
-        <!--</li>-->
         <li >
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-location-arrow"></i>
@@ -172,6 +151,7 @@
 
             </ul>
         </li>
+
         <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-video-camera"></i>
@@ -209,7 +189,7 @@
                     <ul class="submenu">
                         <li ui-sref-active="active">
                             <a ui-sref=".videoManagement.demandPartner.list">
-                                <span class="menu-text"> {{ 'NAVBAR.MY_DEMAND_PARTNERS' | translate }} </span>
+                                <span class="menu-text"> {{ 'NAVBAR.DEMAND_PARTNERS' | translate }} </span>
                             </a>
                         </li>
 
@@ -229,7 +209,7 @@
                     <ul class="submenu">
                         <li ui-sref-active="active">
                             <a ui-sref=".videoManagement.adTag.list">
-                                <span class="menu-text">{{ 'NAVBAR.MY_VIDEO_AD_TAGS' | translate }}</span>
+                                <span class="menu-text">{{ 'NAVBAR.VIDEO_AD_TAGS' | translate }}</span>
                             </a>
                         </li>
 
@@ -248,6 +228,106 @@
                 </li>
             </ul>
         </li>
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-bar-chart"></i>
+                <span class="menu-text"> {{ 'NAVBAR.UNIFIED_REPORT' | translate }}</span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li >
+                    <a href="#" class="menu-dropdown">
+                        <span class="menu-text"> Report</span>
+                        <i class="menu-expand"></i>
+                    </a>
+
+                    <ul class="submenu">
+                        <li ui-sref-active="active">
+                            <a ui-sref=".unifiedReport.report.listReportView">
+                                <span class="menu-text">Report Views</span>
+                            </a>
+                        </li>
+
+                        <li ui-sref-active="active">
+                            <a ui-sref=".unifiedReport.report.builder">
+                                <span class="menu-text">Report Builder</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li >
+                    <a href="#" class="menu-dropdown">
+                        <span class="menu-text"> {{ 'NAVBAR.DATA_SET' | translate }}</span>
+                        <i class="menu-expand"></i>
+                    </a>
+
+                    <ul class="submenu">
+                        <li ui-sref-active="active">
+                            <a ui-sref=".unifiedReport.dataSet.list">
+                                <span class="menu-text">{{ 'NAVBAR.MY_DATA_SET' | translate }}</span>
+                            </a>
+                        </li>
+
+                        <li ui-sref-active="active">
+                            <a ui-sref=".unifiedReport.dataSet.new">
+                                <span class="menu-text">{{ 'NAVBAR.CREATE_DATA_SET' | translate }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li >
+                    <a href="#" class="menu-dropdown">
+                        <span class="menu-text"> {{ 'NAVBAR.DATA_SOURCES' | translate }}</span>
+                        <i class="menu-expand"></i>
+                    </a>
+
+                    <ul class="submenu">
+                        <li ui-sref-active="active">
+                            <a ui-sref=".unifiedReport.dataSource.list">
+                                <span class="menu-text">{{ 'NAVBAR.MY_DATA_SOURCES' | translate }}</span>
+                            </a>
+                        </li>
+
+                        <li ui-sref-active="active">
+                            <a ui-sref=".unifiedReport.dataSource.new">
+                                <span class="menu-text">{{ 'NAVBAR.CREATE_DATA_SOURCE' | translate }}</span>
+                            </a>
+                        </li>
+
+                        <!--<li ui-sref-active="active">-->
+                            <!--<a ui-sref=".unifiedReport.dataSourceFile.list">-->
+                                <!--<span class="menu-text">{{ 'NAVBAR.MY_DATA_SOURCE_FILE' | translate }}</span>-->
+                            <!--</a>-->
+                        <!--</li>-->
+
+                        <li ui-sref-active="active">
+                            <a ui-sref=".unifiedReport.dataSourceFile.new">
+                                <span class="menu-text">{{ 'NAVBAR.UPLOAD_FILE' | translate }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li >
+                    <a href="#" class="menu-dropdown">
+                        <span class="menu-text">{{ 'NAVBAR.DATA_SOURCES_ALERTS' | translate }}</span>
+                        <i class="menu-expand"></i>
+                    </a>
+
+                    <ul class="submenu">
+                        <li ui-sref-active="active">
+                            <a ui-sref=".unifiedReport.alert.list">
+                                <span class="menu-text"> {{ 'NAVBAR.VIEW_ALERTS' | translate }} </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+
         <li >
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-tachometer"></i>

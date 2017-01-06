@@ -8,23 +8,23 @@
             {label: "Large", key: "large"}
         ])
         .constant('REQUIRED_MACROS_OPTIONS', [
-            'ip_address',
-            'user_agent',
-            'page_url',
-            'domain',
-            'page_title',
-            'player_width',
-            'player_height',
-            'player_dimensions',
-            'player_size',
-            'video_duration',
-            'video_url',
-            'video_id',
-            'video_title',
-            'video_description',
-            'app_name',
-            'user_lat',
-            'user_lon'
+            {label: "ip_address", key: "ip_address"},
+            {label: "user_agent", key: "user_agent"},
+            {label: "page_url", key: "page_url"},
+            {label: "domain", key: "domain"},
+            {label: "page_title", key: "page_title"},
+            {label: "player_width", key: "player_width"},
+            {label: "player_height", key: "player_height"},
+            {label: "player_dimensions", key: "player_dimensions"},
+            {label: "player_size", key: "player_size"},
+            {label: "video_duration", key: "video_duration"},
+            {label: "video_url", key: "video_url"},
+            {label: "video_id", key: "video_id"},
+            {label: "video_title", key: "video_title"},
+            {label: "video_description", key: "video_description"},
+            {label: "app_name", key: "app_name"},
+            {label: "user_lat", key: "user_lat"},
+            {label: "user_lon", key: "user_lon"}
         ])
         .constant('VIDEO_MACROS_REFERENCE', {
 
@@ -67,7 +67,7 @@
                 'content_page_url' : '${page_url}',
                 'vid_duration'     : '${video_duration}',
                 'video_duration'   : '${video_duration}',
-                'cb'                  : '${cache_buster}'
+                'cb'               : '${cache_buster}'
             },
 
             'https?://vast.ssp.optimatic.com/vast/getVast.aspx' : {
@@ -127,6 +127,19 @@
                 'video_description'  : '${video_description}',
                 'video_duration'     : '${video_duration}',
                 'video_id'           : '${video_id}'
+            },
+
+            'https?://ssp.lkqd.net' : {
+                'width'         : '${player_width}',
+                'height'        : '${player_height}',
+                'dnt'           : '${do_not_track}',
+                'pageurl'       : '${page_url}',
+                'ip'            : '${ip_address}',
+                'ua'            : '${user_agent}',
+                'contentid'     : '${video_id}',
+                'contenttitle'  : '${video_title}',
+                'contenturl'    : '${video_url}',
+                'rnd'           : '${cache_buster}'
             }
 
         })

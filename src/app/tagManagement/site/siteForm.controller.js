@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('tagcade.tagManagement.site')
@@ -25,9 +25,9 @@
         $scope.isEnabledModule = isEnabledModule;
         $scope.isFormValid = isFormValid;
         $scope.backToListSite = backToListSite;
-        $scope.toggleVideoPlayer =  toggleVideoPlayer;
-        $scope.hasVideoPlayer =  hasVideoPlayer;
-        $scope.submit =  submit;
+        $scope.toggleVideoPlayer = toggleVideoPlayer;
+        $scope.hasVideoPlayer = hasVideoPlayer;
+        $scope.submit = submit;
 
         $scope.site = site || {
             name: null,
@@ -39,18 +39,18 @@
         };
 
         $scope.videoPlayers = [
-            { label: '5min', name: '5min'},
-            { label: 'Defy', name: 'defy' },
-            { label: 'JwPlayer5', name: 'jwplayer5' },
-            { label: 'JwPlayer6', name: 'jwplayer6' },
-            { label: 'Limelight', name: 'limelight' },
-            { label: 'Ooyala', name: 'ooyala' },
-            { label: 'Scripps', name: 'scripps' },
-            { label: 'ULive', name: 'ulive' }
+            {label: '5min', name: '5min'},
+            {label: 'Defy', name: 'defy'},
+            {label: 'JwPlayer5', name: 'jwplayer5'},
+            {label: 'JwPlayer6', name: 'jwplayer6'},
+            {label: 'Limelight', name: 'limelight'},
+            {label: 'Ooyala', name: 'ooyala'},
+            {label: 'Scripps', name: 'scripps'},
+            {label: 'ULive', name: 'ulive'}
         ];
 
         $scope.data = {
-          channels: []
+            channels: []
         };
 
         function isFormValid() {
@@ -69,15 +69,20 @@
         }
 
         function isEnabledModule(module) {
-            if(!$scope.isAdmin()) {
-                enabledModules = userSession.enabledModules
+            if (!$scope.isAdmin()) {
+                enabledModules = userSession.enabledModules;
+                return enabledModules.indexOf(module) > -1;
             }
 
-            if($scope.isNew) {
-                return enabledModules != null ? enabledModules.indexOf(module) > -1 : false;
+            if(!$scope.site.publisher) {
+                return false
             }
 
-            return $scope.site.publisher != null ? $scope.site.publisher.enabledModules.indexOf(module) > -1 : false;
+            var publisher = _.find(publishers, function (publisher) {
+                return publisher.id == $scope.site.publisher || publisher.id == $scope.site.publisher.id
+            });
+
+            return !!publisher ? publisher.enabledModules.indexOf(module) > -1 : false;
         }
 
         function backToListSite() {
@@ -85,7 +90,7 @@
         }
 
         function hasVideoPlayer(player) {
-            if(!$scope.site.players) {
+            if (!$scope.site.players) {
                 return false;
             }
 
@@ -111,8 +116,8 @@
             $scope.formProcessing = true;
 
             // refactor json site
-            if($scope.isNew) {
-                angular.forEach($scope.data.channels, function(channel) {
+            if ($scope.isNew) {
+                angular.forEach($scope.data.channels, function (channel) {
                     $scope.site.channelSites.push({channel: channel.id})
                 });
             } else {
@@ -126,7 +131,7 @@
                 delete $scope.site.rtbStatus;
             }
 
-            if(!isEnabledModule('MODULE_VIDEO_ANALYTICS')) {
+            if (!isEnabledModule('MODULE_VIDEO_ANALYTICS')) {
                 $scope.site.players = null;
             }
 
@@ -134,26 +139,26 @@
 
             saveSite
                 .catch(
-                    function (response) {
-                        var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.siteForm, $scope.fieldNameTranslations);
-                        $scope.formProcessing = false;
+                function (response) {
+                    var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.siteForm, $scope.fieldNameTranslations);
+                    $scope.formProcessing = false;
 
-                        return errorCheck;
-                    }
-                )
+                    return errorCheck;
+                }
+            )
                 .then(
-                    function () {
-                        AlertService.addFlash({
-                            type: 'success',
-                            message: $scope.isNew ? $translate.instant('SITE_MODULE.ADD_NEW_SUCCESS') : $translate.instant('SITE_MODULE.UPDATE_SUCCESS')
-                        });
-                    }
-                )
+                function () {
+                    AlertService.addFlash({
+                        type: 'success',
+                        message: $scope.isNew ? $translate.instant('SITE_MODULE.ADD_NEW_SUCCESS') : $translate.instant('SITE_MODULE.UPDATE_SUCCESS')
+                    });
+                }
+            )
                 .then(
-                    function () {
-                        return historyStorage.getLocationPath(HISTORY_TYPE_PATH.site, '^.list');
-                    }
-                )
+                function () {
+                    return historyStorage.getLocationPath(HISTORY_TYPE_PATH.site, '^.list');
+                }
+            )
             ;
         }
     }

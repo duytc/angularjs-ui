@@ -38,6 +38,7 @@
         //$scope.waterfallTags = $scope.isAdmin() ? [] : waterfallTags;
         $scope.waterfallTags = waterfallTags;
         $scope.demandPartners = demandPartners;
+        $scope.clearInputSearchValue  = clearInputSearchValue;
 
         if (!$scope.isNew) {
             AlertService.addAlert({
@@ -63,6 +64,13 @@
             },
             waterfallPlacementRules: []
         };
+
+        function clearInputSearchValue ($searchValue)
+        {
+            setTimeout(function(){
+                $searchValue = null;
+            }, 0)
+        }
 
         function setTicketForVideoPublisherAndWaterfallTagInDemandAdTags(demandAdTag, videoPublishers, waterfallTags) {
             var videoPublisherIds = [],

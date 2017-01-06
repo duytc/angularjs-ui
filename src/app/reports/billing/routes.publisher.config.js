@@ -28,7 +28,13 @@
                 },
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, REPORT_TYPES, performanceReport, userSession) {
-                        return performanceReport.getAccountReport($stateParams, {
+                        var params = $stateParams;
+
+                        if($stateParams.product == 'inBanner') {
+                            params.inBanner = true
+                        }
+
+                        return performanceReport.getAccountReport(params, {
                             reportType: REPORT_TYPES.account,
                             publisherId: userSession.id
                         });
@@ -119,7 +125,13 @@
                 },
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, REPORT_TYPES, performanceReport, userSession) {
-                        return performanceReport.getPublisherSitesReport($stateParams, {
+                        var params = $stateParams;
+
+                        if($stateParams.product == 'inBanner') {
+                            params.inBanner = true
+                        }
+
+                        return performanceReport.getPublisherSitesReport(params, {
                             reportType: REPORT_TYPES.site,
                             publisherId: userSession.id
                         });

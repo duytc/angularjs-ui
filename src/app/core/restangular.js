@@ -12,6 +12,7 @@
             //Restangular.setDefaultRequestParams('post', {XDEBUG_SESSION_START: 1});
 
             Restangular.addRequestInterceptor(function(element, operation, what) {
+
                 if (['put', 'patch', 'post'].indexOf(operation) === -1) {
                     // skip if operation does not match put, patch or post
                     return;
@@ -37,6 +38,11 @@
                     //}
 
                     if (!angular.isObject(value)) {
+                        return;
+                    }
+
+                    // use when detect file have field is id
+                    if(key == 'mapFields') {
                         return;
                     }
 

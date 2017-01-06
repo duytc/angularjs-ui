@@ -26,8 +26,10 @@
                     }
                 },
                 resolve: {
-                    adTags: function(AdTagLibrariesManager) {
-                        return AdTagLibrariesManager.getList();
+                    adTags: function(AdTagLibrariesManager, $stateParams) {
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        return AdTagLibrariesManager.one().get($stateParams)
+
                     }
                 },
                 ncyBreadcrumb: {

@@ -43,10 +43,10 @@ $border_color: #f1f1f1;
 
     .table {
         margin-bottom: 0;
-        border-top: 1px solid $table-border-color;
+        //border-top: 1px solid $table-border-color; // hide
         tr {
             &:hover {
-                cursor: pointer;
+                //cursor: pointer;
             }
 
             > td {

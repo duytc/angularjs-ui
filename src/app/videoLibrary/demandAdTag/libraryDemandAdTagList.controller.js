@@ -5,12 +5,66 @@
         .controller('LibraryDemandAdTagList', LibraryDemandAdTagList)
     ;
 
-    function LibraryDemandAdTagList($scope, _, $translate, $modal, AlertService, demandAdTags, demandPartner, VideoAdTagManager, LibraryDemandAdTagManager, AtSortableService, HISTORY_TYPE_PATH, historyStorage) {
-        $scope.demandAdTags = demandAdTags;
+    function LibraryDemandAdTagList($scope, _, $stateParams ,$translate, $modal, AlertService, demandAdTags, demandPartner, VideoAdTagManager, LibraryDemandAdTagManager, VideoDemandPartnerManager, AtSortableService, HISTORY_TYPE_PATH, historyStorage) {
+
+        $scope.demandAdTags = demandAdTags.records;
         $scope.demandPartner = demandPartner;
 
+        var params = {
+            page: 1
+        };
+
+        $scope.selectData = {
+            query: $stateParams.searchKey || null
+        };
+
+        $scope.tableConfig = {
+            itemsPerPage: 10,
+            maxPages: 10,
+            totalItems: Number(demandAdTags.totalRecord)
+        };
+
+        $scope.availableOptions = {
+            currentPage: $stateParams.page || 1,
+            pageSize: 10
+        };
+
+        $scope.changePage = changePage;
+        $scope.searchData = searchData;
+
+
+        function changePage(currentPage) {
+            params = angular.extend(params, {page: currentPage});
+            _getDemandAdTags(params);
+        }
+
+        function searchData() {
+            var query = {searchKey: $scope.selectData.query || ''};
+            params = angular.extend(params, query);
+            _getDemandAdTags(params);
+        }
+
+        var libraryDemandAdTags;
+        function _getDemandAdTags(query) {
+            params = query;
+
+            clearTimeout(libraryDemandAdTags);
+
+            libraryDemandAdTags = setTimeout(function() {
+                params = query;
+                var getPage = !!demandPartner ? VideoDemandPartnerManager.one(demandPartner.id).one('libraryvideodemandadtags').get(query) : LibraryDemandAdTagManager.one().get(query);
+                return getPage
+                    .then(function(demandAdTags) {
+                        AtSortableService.insertParamForUrl(query);
+                        $scope.demandAdTags = demandAdTags.records;
+                        $scope.tableConfig.totalItems = Number(demandAdTags.totalRecord);
+                        $scope.availableOptions.currentPage = Number(query.page);
+                    });
+            }, 500);
+        }
+
         $scope.hasData = function () {
-            return !!demandAdTags.length;
+            return demandAdTags.totalRecord;
         };
 
         if (!$scope.hasData()) {
@@ -24,11 +78,6 @@
         $scope.confirmDeletion = confirmDeletion;
         $scope.createLinkedDemandAdTag = createLinkedDemandAdTag;
         $scope.backToDemandPartnerList = backToDemandPartnerList;
-
-        $scope.tableConfig = {
-            itemsPerPage: 10,
-            maxPages: 10
-        };
 
         function createLinkedDemandAdTag(demandAdTag) {
             var waterfalls = VideoAdTagManager.one('notlinktolibrary').getList(null, {libraryVideoDemandAdTag: demandAdTag.id});
@@ -116,7 +165,7 @@
         }
 
         function showPagination() {
-            return angular.isArray($scope.demandAdTags) && $scope.demandAdTags.length > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.demandAdTags) && $scope.tableConfig.totalItems > $scope.tableConfig.itemsPerPage;
         }
 
         function backToDemandPartnerList()

@@ -12,7 +12,19 @@ module.exports = function(grunt, options) {
         }
     }
 
+    function getUnifiedPattern(apiUnifiedEndPoint) {
+        if (typeof apiUnifiedEndPoint !== 'string') {
+            grunt.fail.warn('apiEndPoint should be a string');
+        }
+
+        return {
+            match: /\.constant\(['"]API_UNIFIED_END_POINT['"],\s?['"].*?['"]\)/,
+            replacement: '.constant("API_UNIFIED_END_POINT","' + apiUnifiedEndPoint + '")' // matching quote style to uglifyjs
+        }
+    }
+
     var devApiEndPoint;
+    var devApiUnifiedEndPoint;
 
     try {
         devApiEndPoint = options.userConfig.apiEndPoint;
@@ -20,14 +32,25 @@ module.exports = function(grunt, options) {
         devApiEndPoint = null;
     }
 
+    try {
+        devApiUnifiedEndPoint = options.userConfig.apiUnifiedEndPoint;
+    } catch (e) {
+        devApiUnifiedEndPoint = null;
+    }
+
     if (typeof devApiEndPoint !== 'string') {
         devApiEndPoint = 'http://api.tagcade.dev/app_dev.php/api';
+    }
+
+    if (typeof devApiUnifiedEndPoint !== 'string') {
+        devApiUnifiedEndPoint = 'http://api.unified-reports.dev/app_dev.php/api';
     }
 
     config.dev = {
         options: {
             patterns: [
-                getPattern(devApiEndPoint)
+                getPattern(devApiEndPoint),
+                getUnifiedPattern(devApiUnifiedEndPoint)
             ]
         },
         files: [
@@ -44,9 +67,14 @@ module.exports = function(grunt, options) {
         options: {
             patterns: [
                 getPattern('https://api.tagcade.com/api'),
+                getUnifiedPattern('https://ur-api.pubvantage.com/api'),
                 {
-                    match: '<%= appConfig.deployment.origin.dev.match %>',
-                    replacement:  '<%= appConfig.deployment.origin.prod.val %>'
+                    match: '<%= appConfig.deployment.origin.dev.tagcade.match %>',
+                    replacement:  '<%= appConfig.deployment.origin.prod.tagcade.val %>'
+                },
+                {
+                    match: '<%= appConfig.deployment.origin.dev.unified.match %>',
+                    replacement:  '<%= appConfig.deployment.origin.prod.unified.val %>'
                 }
             ]
         },

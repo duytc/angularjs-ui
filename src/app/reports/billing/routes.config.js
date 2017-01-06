@@ -42,7 +42,13 @@
                 },
                 resolve: {
                     reportGroup: /* @ngInject */ function ($stateParams, REPORT_TYPES, performanceReport) {
-                        return performanceReport.getSiteReport($stateParams, {
+                        var params = $stateParams;
+
+                        if($stateParams.product == 'inBanner') {
+                            params.inBanner = true
+                        }
+
+                        return performanceReport.getSiteReport(params, {
                             reportType: REPORT_TYPES.site,
                             siteBreakdown: 'day'
                         });

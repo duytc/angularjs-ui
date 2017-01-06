@@ -90,9 +90,14 @@
         vertical-align: middle;
         margin-right: 10px;
         margin-left: -20px;
-        background-color: #4A9AAB; // pubvantage
+        background-color: #eee; // pubvantage
         border-radius: $border-radius-small;
         border: 1px solid #ccc;         
+    }
+
+    // pubvantage disabled text
+    input[type="checkbox"]:disabled + span {
+        color: #ddd;
     }
 
     input[type="checkbox"]:disabled + span:before {

@@ -5,12 +5,20 @@
         .controller('VideoAdTagList', VideoAdTagList)
     ;
 
-    function VideoAdTagList($scope, $translate, $modal, AlertService, adTags, videoPublisher, VideoAdTagManager, AtSortableService, HISTORY_TYPE_PATH, historyStorage, dateUtil, DIMENSIONS_OPTIONS_VIDEO_REPORT) {
-        $scope.adTags = adTags;
+    function VideoAdTagList($scope, $translate, $stateParams ,$modal, AlertService, adTags, videoPublisher, VideoAdTagManager, AtSortableService, VideoPublisherManager, HISTORY_TYPE_PATH, historyStorage, dateUtil, DIMENSIONS_OPTIONS_VIDEO_REPORT, EVENT_ACTION_SORTABLE) {
+        $scope.adTags = adTags.records;
         $scope.videoPublisher = videoPublisher;
 
         $scope.hasData = function () {
-            return !!adTags.length;
+            return !!$scope.adTags.length;
+        };
+
+        var params = {
+            page: 1
+        };
+
+        $scope.selectData = {
+            query: $stateParams.searchKey || null
         };
 
         if (!$scope.hasData()) {
@@ -22,7 +30,13 @@
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10
+            maxPages: 10,
+            totalItems: Number(adTags.totalRecord)
+        };
+
+        $scope.availableOptions = {
+            currentPage: $stateParams.page || 1,
+            pageSize: 10
         };
 
         $scope.showPagination = showPagination;
@@ -31,6 +45,44 @@
         $scope.createDemandAdTag = createDemandAdTag;
         $scope.backToListVideoPublisher = backToListVideoPublisher;
         $scope.paramsReport = paramsReport;
+
+        $scope.changePage = changePage;
+        $scope.searchData = searchData;
+
+        $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
+            params = angular.extend(params, query);
+            _getAdTags(params);
+        });
+
+        function changePage(currentPage) {
+            params = angular.extend(params, {page: currentPage});
+            _getAdTags(params);
+        }
+
+        function searchData() {
+            var query = {searchKey: $scope.selectData.query || ''};
+            params = angular.extend(params, query);
+            _getAdTags(params);
+        }
+
+        var getAdTag;
+        function _getAdTags(query) {
+            params = query;
+
+            clearTimeout(getAdTag);
+
+            getAdTag = setTimeout(function() {
+                params = query;
+                var getPage = !!videoPublisher ? VideoPublisherManager.one(videoPublisher.id).one('videowaterfalltags').get(query) : VideoAdTagManager.one().get(query);
+                return getPage
+                    .then(function(adTags) {
+                        AtSortableService.insertParamForUrl(query);
+                        $scope.adTags = adTags.records;
+                        $scope.tableConfig.totalItems = Number(adTags.totalRecord);
+                        $scope.availableOptions.currentPage = Number(query.page);
+                    });
+            }, 500);
+        }
 
         function paramsReport(item) {
             var paramsReport = {
@@ -172,6 +224,7 @@
 
                     $scope.adTag = adTag;
                     $scope.vastTag = vastTag;
+
                     $scope.getTextToCopy = function(string) {
                         return string.replace(/\n/g, '\r\n');
                     };
@@ -193,7 +246,7 @@
         }
 
         function showPagination() {
-            return angular.isArray($scope.adTags) && $scope.adTags.length > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.adTags) && $scope.tableConfig.totalItems > $scope.tableConfig.itemsPerPage;
         }
 
         $scope.$on('$locationChangeSuccess', function() {

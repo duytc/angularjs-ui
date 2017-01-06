@@ -27,6 +27,8 @@
         'tagcade.blocks.atSortableQuery',
         'tagcade.blocks.billingConfig',
         'tagcade.blocks.placementRules',
+        'tagcade.blocks.confirmClick',
+        'tagcade.blocks.pagination',
 
         'tagcade.core.bootstrap',
         'tagcade.core.auth',
@@ -61,7 +63,8 @@
         'isteven-multi-select',
         'angular-cache',
         'oi.select',
-        'infinite-scroll'
+        'infinite-scroll',
+        'angularFileUpload'
     ]);
 
     core.run(appRun);

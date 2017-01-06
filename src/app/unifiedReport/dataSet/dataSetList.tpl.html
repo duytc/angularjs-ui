@@ -1,0 +1,74 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span>
+        <strong current-page-title></strong>
+
+        <div class="button-bar">
+            <button ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-plus"></span>
+                {{ 'UNIFIED_REPORT_DATA_SET_MODULE.ADD_NEW_DATA_SET' | translate }}
+            </button>
+        </div>
+
+        <div class="btn-group btnGrouped" dropdown>
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ui-sref="^.new">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.ADD_NEW_DATA_SET' | translate }}</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!--<search-box show-query="true" sb-list="dataSets.records" search-fields="['id', 'name']"></search-box>-->
+
+    <div>
+        <form class="input-group col-sm-6 search-box">
+            <input class="form-control" ng-model="selectData.query" ng-change="searchData()" placeholder="{{ 'UNIFIED_REPORT_MODULE.SEARCH' | translate }}" type="text"/>
+            <span class="input-group-addon">
+                {{ tableConfig.totalItems }} records found
+            </span>
+        </form>
+
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="dataSets.records" at-config="tableConfig" id="dataSets">
+                    <thead>
+                    <tr>
+                        <th ng-show="isAdmin()" at-attribute="publisher.company" >{{ 'PUBLISHER' | translate }}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
+                        <td at-title="{{ 'ACTIONS' | translate }}">
+                            <div class="btn-group" dropdown>
+                                <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                                <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                    <li><a ui-sref="^.^.connect.list({dataSetId: item.id})">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.MANAGE_CONNECTED_DATA_SOURCES' | translate }}</a></li>
+                                    <li><a ui-sref="^.^.connect.new({dataSetId: item.id})">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.NEW_CONNECTED_DATA_SOURCE' | translate }}</a></li>
+                                    <li class="divider"></li>
+
+                                    <li><a ui-sref="^.^.importHistory.list({ dataSetId: item.id })">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.VIEW_DATA_IMPORT_HISTORY' | translate }}</a></li>
+                                    <li class="divider"></li>
+
+                                    <li><a ui-sref="^.edit({ id: item.id })">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.EDIT' | translate }}</a></li>
+                                    <li class="divider"></li>
+
+                                    <li><a ng-click="confirmClick('Are you sure want to delete this data set?') && deleteDataSet(item.id)" confirm-click > {{ 'UNIFIED_REPORT_DATA_SET_MODULE.DELETE' | translate }}</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td at-title="{{ 'NAME' | translate }}" at-implicit at-sortable at-attribute="name"></td>
+                        <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
+                        <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.DATE_CREATED' | translate }}" at-sortable  at-attribute="createdDate">
+                            {{ item.createdDate | date }}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+            </div>
+        </div>
+    </div>
+</div>

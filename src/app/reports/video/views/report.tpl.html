@@ -23,6 +23,7 @@
             <table class="table" at-table at-paginated at-list="reportGroup.reports" at-config="tableConfig">
                 <thead>
                 <tr>
+                    <th ng-show="showActionForBreakDown(['waterfallTag', 'demandPartner', 'videoDemandAdTag'])" at-attribute="action">Action</th>
                     <th ng-show="hasKeyObject(reportGroup.reports[0], 'date')" at-attribute="date">{{ titleForReport['date'] }}</th>
                     <th ng-show="hasKeyObject(reportGroup.reports[0], 'publisher')" at-attribute="publisher.company">{{ titleForReport['publisher'] }}</th>
                     <th ng-show="hasKeyObject(reportGroup.reports[0], 'videoPublisher')" at-attribute="videoPublisher.name">{{ titleForReport['videoPublisher'] }}</th>
@@ -53,6 +54,21 @@
                 </thead>
                 <tbody>
                 <tr>
+                    <td ng-show="showActionForBreakDown(['waterfallTag', 'demandPartner', 'videoDemandAdTag'])" at-attribute="action" at-title="{{ 'ACTIONS' | translate }}">
+                        <div class="btn-group" dropdown stop-event>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                            <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <li ng-if="showActionForBreakDown('waterfallTag')"><a ui-sref="^.^.^.videoManagement.demandAdTag.listByVideoTag({ videoTagId: item.videoWaterfallTag.id })">{{ 'VIDEO_AD_TAG_MODULE.MANAGEMENT_POSITIONS' | translate}} For Waterfall</a></li>
+                                <li ng-if="showActionForBreakDown('demandPartner')"><a ui-sref="^.^.^.videoLibrary.demandAdTag.listByDemandPartner({id: item.videoDemandPartner.id})">{{ 'VIDEO_DEMAND_PARTNER_MODULE.MANAGE_DEMAND_AD_TAG' | translate }} For Demand Partner</a></li>
+                                <li ng-if="showActionForBreakDown(['waterfallTag', 'demandPartner'])" class="divider"><a></a></li>
+
+                                <li ng-if="showActionForBreakDown('videoDemandAdTag')" ng-click="editDemandAdTag(null, item.videoDemandAdTag.videoWaterfallTagItem.position, item.videoDemandAdTag)"><a>{{ 'AD_SOURCE_MODULE.EDIT_AD_SOURCE' | translate }}</a></li>
+                                <!--<li ng-if="showActionForBreakDown('videoDemandAdTag')"><a ui-sref="^.^.^.videoManagement.demandAdTag.edit({ id: item.videoDemandAdTag.id })">{{ 'AD_SOURCE_MODULE.EDIT_AD_SOURCE' | translate }}</a></li>-->
+                                <li ng-if="showActionForBreakDown('waterfallTag')"><a ui-sref="^.^.^.videoManagement.adTag.edit({ id: item.videoWaterfallTag.id })">{{ 'VIDEO_AD_TAG_MODULE.EDIT_VIDEO_AD_TAG' | translate }}</a></li>
+                                <li ng-if="showActionForBreakDown('demandPartner')"><a ui-sref="^.^.^.videoManagement.demandPartner.edit({ id: item.videoDemandPartner.id })">{{ 'VIDEO_DEMAND_PARTNER_MODULE.EDIT_DEMAND_PARTNER' | translate }}</a></li>
+                            </ul>
+                        </div>
+                    </td>
                     <td ng-show="hasKeyObject(item, 'date')" at-title="{{ titleForReport['date'] }}" at-initial-sorting="desc" at-sortable at-attribute="date">
                         {{ item.date | date }}
                     </td>
@@ -77,6 +93,12 @@
                     <td ng-show="hasKeyObject(item, 'requests')" at-title="{{ titleForReport['requests'] }}" at-sortable at-attribute="requests">
                         {{ item.requests | number }}
                     </td>
+                    <td ng-show="hasKeyObject(item, 'impressions')" at-title="{{ titleForReport['impressions'] }}" at-sortable at-attribute="impressions">
+                        {{ item.impressions | number }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'requestFillRate')" at-title="{{ titleForReport['requestFillRate'] }}" at-sortable at-attribute="requestFillRate">
+                        {{ item.requestFillRate | percentage }}
+                    </td>
                     <td ng-show="hasKeyObject(item, 'bids')" at-title="{{ titleForReport['bids'] }}" at-sortable at-attribute="bids">
                         {{ item.bids | number }}
                     </td>
@@ -89,34 +111,12 @@
                     <td ng-show="hasKeyObject(item, 'errorRate')" at-title="{{ titleForReport['errorRate'] }}" at-sortable at-attribute="errorRate">
                         {{ item.errorRate | percentage }}
                     </td>
-                    <!--<td ng-show="hasKeyObject(item, 'wonOpportunities')" at-title="{{ titleForReport['wonOpportunities'] }}" at-sortable at-attribute="wonOpportunities">-->
-                    <!--{{ !!item.wonOpportunities ? (item.wonOpportunities | number ) : '-' }}-->
-                    <!--</td>-->
-                    <td ng-show="hasKeyObject(item, 'impressions')" at-title="{{ titleForReport['impressions'] }}" at-sortable at-attribute="impressions">
-                        {{ item.impressions | number }}
-                    </td>
-                    <td ng-show="hasKeyObject(item, 'requestFillRate')" at-title="{{ titleForReport['requestFillRate'] }}" at-sortable at-attribute="requestFillRate">
-                        {{ item.requestFillRate | percentage }}
-                    </td>
-                    <td ng-show="hasKeyObject(item, 'clicks')" at-title="{{ titleForReport['clicks'] }}" at-sortable at-attribute="clicks">
-                        {{ item.clicks | number }}
-                    </td>
-                    <td ng-show="hasKeyObject(item, 'clickThroughRate')" at-title="{{ titleForReport['clickThroughRate'] }}" at-sortable at-attribute="clickThroughRate">
-                        {{ item.clickThroughRate | percentage }}
-                    </td>
                     <td ng-show="hasKeyObject(item, 'blocks')" at-title="{{ titleForReport['blocks'] }}" at-sortable at-attribute="blocks">
                         {{ (item.blocks != null) ? (item.blocks | number) : '-' }}
-                    </td>
-                    <td ng-show="hasKeyObject(item, 'adTagErrors')" at-title="{{ titleForReport['adTagErrors'] }}" at-sortable at-attribute="adTagErrors">
-                        {{ (item.adTagErrors != '-') ? (item.adTagErrors | number) : '-' }}
-                    </td>
-                    <td ng-show="hasKeyObject(item, 'adTagBids')" at-title="{{ titleForReport['adTagBids'] }}" at-sortable at-attribute="adTagBids">
-                        {{ (item.adTagBids != '-') ? (item.adTagBids | number) : '-' }}
                     </td>
                     <td ng-show="hasKeyObject(item, 'adTagRequests')" at-title="{{ titleForReport['adTagRequests'] }}" at-sortable at-attribute="adTagRequests">
                         {{ (item.adTagRequests != '-') ? (item.adTagRequests | number) : '-' }}
                     </td>
-
                     <td ng-show="hasKeyObject(item, 'estDemandRevenue')" at-title="{{ titleForReport['estDemandRevenue'] }}" at-sortable at-attribute="estDemandRevenue">
                         {{ (item.estDemandRevenue != null) ? (item.estDemandRevenue | currency) : '-' }}
                     </td>
@@ -126,6 +126,22 @@
                     <td ng-show="hasKeyObject(item, 'netRevenue')" at-title="{{ titleForReport['netRevenue'] }}" at-sortable at-attribute="netRevenue">
                         {{ (item.netRevenue != null) ? (item.netRevenue | currency) : '-' }}
                     </td>
+                    <td ng-show="hasKeyObject(item, 'clicks')" at-title="{{ titleForReport['clicks'] }}" at-sortable at-attribute="clicks">
+                        {{ item.clicks | number }}
+                    </td>
+                    <td ng-show="hasKeyObject(item, 'clickThroughRate')" at-title="{{ titleForReport['clickThroughRate'] }}" at-sortable at-attribute="clickThroughRate">
+                        {{ item.clickThroughRate | percentage }}
+                    </td>
+                    <!--<td ng-show="hasKeyObject(item, 'wonOpportunities')" at-title="{{ titleForReport['wonOpportunities'] }}" at-sortable at-attribute="wonOpportunities">-->
+                    <!--{{ !!item.wonOpportunities ? (item.wonOpportunities | number ) : '-' }}-->
+                    <!--</td>-->
+
+                    <!--<td ng-show="hasKeyObject(item, 'adTagErrors')" at-title="{{ titleForReport['adTagErrors'] }}" at-sortable at-attribute="adTagErrors">-->
+                        <!--{{ (item.adTagErrors != '-') ? (item.adTagErrors | number) : '-' }}-->
+                    <!--</td>-->
+                    <!--<td ng-show="hasKeyObject(item, 'adTagBids')" at-title="{{ titleForReport['adTagBids'] }}" at-sortable at-attribute="adTagBids">-->
+                        <!--{{ (item.adTagBids != '-') ? (item.adTagBids | number) : '-' }}-->
+                    <!--</td>-->
                 </tr>
                 </tbody>
             </table>

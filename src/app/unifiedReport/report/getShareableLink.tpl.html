@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <h4 class="modal-title"> Shareable Link: {{reportView.name | translate}} </h4>
+</div>
+
+<div class="modal-body">
+    <p><strong> Select fields to share in report </strong></p>
+
+    <form class="form-validation form-horizontal userForm" role="form" novalidate>
+        <div class="form-group col-sm-12">
+            <label class="ui-checkbox"><input name="all" type="checkbox" ng-model="selected.selectAll" ng-click="selectAll()"><span>Select All</span></label>
+        </div>
+
+        <div class="form-group col-sm-12">
+            <div ng-repeat="field in fieldsReportView" class="check_exchange">
+                <label class="ui-checkbox"><input name="field[]" type="checkbox" ng-click="toggleField(field)" ng-checked="hasField(field)"><span>{{ field.label }}</span></label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success mce-i-indent" ng-click="getShareableLink()">Get Shareable Link</button>
+    </form>
+
+
+    <div select-on-click class="highlight-js" ng-if="shareableLink" style="margin-top: 30px">
+        <pre><code class="hljs vim" ng-bind-html="highlightText(shareableLink)"></code></pre>
+    </div>
+</div>
+
+<div class="modal-footer" style="clear: both">
+    <button ng-if="shareableLink" auto-hide-on-no-flash="true" class="btn btn-primary" clip-copy="getTextToCopy(shareableLink)"> {{ 'COPY_TO_CLIPBOARD' | translate }}</button>
+    <button class="btn btn-primary" ng-click="$dismiss()">{{ 'CLOSE' | translate }}</button>
+</div>

@@ -42,7 +42,7 @@
             }
 
             if(!!HISTORY_TYPE_PATH[type]) {
-                return $state.go(state, _getHistoryParams(type));
+                return $state.go(state, angular.extend(_getHistoryParams(type), paramDefault));
             }
 
             console.log('not support type ' + type);

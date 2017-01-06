@@ -1,0 +1,189 @@
+<section class="panel panel-default">
+
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
+
+        <div class="button-bar">
+            <button ng-if="!isNew" ng-click="backToDataSourceList()" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-arrow-left"></span> {{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.BACK_TO_DATA_SOURCE_LIST' | translate }}
+            </button>
+        </div>
+
+        <div class="btn-group btnGrouped" dropdown ng-if="!isNew">
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ng-click="backToDataSourceList()">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.BACK_TO_DATA_SOURCE_LIST' | translate }}</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="row">
+            <form name="userForm" class="col-lg-6 form-validation form-horizontal userForm" role="form" ng-submit="submit()" novalidate>
+
+                <div class="form-group" ng-if="!isNew && isAdmin()">
+                    <label class="col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.PUBLISHER' | translate }}</label>
+                    <div class="col-sm-10 form-control-static">
+                        {{ dataSource.publisher.company }}
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="isNew && isAdmin()">
+                    <label for="inputPublisher" class="col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.PUBLISHER' | translate }}</label>
+                    <div class="col-sm-10">
+                        <ui-select name="publisher" id="inputPublisher" ng-model="dataSource.publisher" ng-required="true" on-select="selectPublisher($item)" server-error reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
+                            <ui-select-choices repeat="publisher.id as publisher in publishers | filter: { company: $select.search }">
+                                {{ publisher.company }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">{{ 'NAME' | translate }}</label>
+                    <div class="col-sm-10">
+                        <input server-error name="name" ng-model="dataSource.name" ng-required="true" type="text" class="form-control" id="inputName" placeholder="{{ 'NAME' | translate }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputFileFormat" class="col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.DATA_SOURCE_FORMAT' | translate }}</label>
+                    <div class="col-sm-10">
+                        <ui-select name="fileFormat" id="inputFileFormat" ng-model="dataSource.format" ng-disabled="!isNew" ng-required="true" server-error reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.DATA_SOURCE_FORMAT' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices repeat="fileFormat.key as fileFormat in fileFormats | filter: { label: $select.search }">
+                                {{ fileFormat.label}}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputPublisher" class="col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.INTEGRATION' | translate }}</label>
+                    <div class="col-sm-10">
+                        <button ng-click="addNewIntegration()" class="btn btn-success" type="button">
+                            <span class="glyphicon glyphicon-plus"></span> {{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ADD_3RD_PARTY_INTEGRATIONS' | translate }}
+                        </button>
+
+                        <div class="expressions-group" ng-if="dataSource.dataSourceIntegrations.length > 0">
+
+                            <div class="form-group" data-ng-repeat="integration in dataSource.dataSourceIntegrations track by $index">
+
+                                <div class="expressions-group">
+
+                                    <div class="form-group">
+                                        <label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.INTEGRATION' | translate }}</label>
+
+                                        <div class="col-sm-10">
+                                            <ui-select name="integration" id="integration" ng-model="integration.integration" ng-required="true" server-error reset-search-input="'false'">
+                                                <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.INTEGRATION' | translate }}">{{ $select.selected.name }}</ui-select-match>
+                                                <ui-select-choices group-by="groupByIntegrationGroup" repeat="integration.id as integration in integrations | filter: { name: $select.search }">
+                                                    {{ integration.name }}
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="form-group">
+                                        <label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.USERNAME' | translate }}</label>
+                                        <div class="col-sm-10">
+                                            <input server-error name="integrationUsername" ng-model="integration.username" type="text" class="form-control" id="integration.username" placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.USERNAME' | translate }}">
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="form-group">
+                                        <label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.PASSWORD' | translate }}</label>
+                                        <div class="col-sm-10">
+                                            <input server-error name="integrationPassword" ng-model="integration.password" type="password" class="form-control" id="integration.password" placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.PASSWORD' | translate }}">
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="form-group">
+                                        <label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.FREQUENCY' | translate }}</label>
+                                        <div class="col-sm-10">
+                                            <ui-select name="frequency" id="integration.frequency" ng-model="integration.schedule" ng-required="true" server-error reset-search-input="'false'">
+                                                <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.FREQUENCY' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                                                <ui-select-choices repeat="frequency.key as frequency in frequencies | filter: { label: $select.search }">
+                                                    {{ frequency.label}}
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="form-group">
+                                        <label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ENABLE' | translate }}</label>
+                                        <div class="col-sm-10">
+                                            <div>
+                                                <label class="ui-checkbox">
+                                                    <input server-error name="integrationActive" ng-model="integration.active" type="checkbox" id="integrationEnable">
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="form-group ">
+                                        <div class=" col-sm-offset-10 ">
+                                            <button type="button" style="margin-left: -5px" class="btn btn-danger" ng-click="removeIntegration($index)">
+                                                <span class="glyphicon glyphicon-minus "></span> Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <label class="ui-checkbox">
+                            <input server-error name="dataSourceEnableWhenWrongData" ng-model="alertSetting.wrongFormat" type="checkbox" id="dataSourceEnableWhenWrongData">
+                            <span>{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ALERT_RECEIVED_DATA_WRONG_FORMAT' | translate }}</span>
+                        </label>
+                    </div>
+
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <label class="ui-checkbox">
+                            <input server-error name="dataSourceEnableWhenDataIsReceived" ng-model="alertSetting.dataReceived" type="checkbox" id="dataSourceEnableWhenDataIsReceived">
+                            <span>{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ALERT_WHEN_RECEIVED_DATA' | translate }}</span>
+                        </label>
+                    </div>
+
+                    <div class="col-sm-offset-2 col-sm-10" ng-if="dataSource.dataSourceIntegrations.length > 0">
+                        <label class="ui-checkbox">
+                            <input server-error name="dataSourceEnableWhenDataIsNotReceived" ng-model="alertSetting.notReceived" type="checkbox" id="dataSourceEnableWhenDataIsNotReceived">
+                            <span>{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ALERT_IF_DATA_NOT_RECEIVED' | translate }}</span>
+                        </label>
+                    </div>
+
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <label class="ui-checkbox">
+                            <input server-error name="dataSourceEnable" ng-model="dataSource.enable" type="checkbox" id="dataSourceEnable">
+                            <span>{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ENABLE' | translate }}</span>
+                        </label>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success mce-i-indent">{{ 'SUBMIT' | translate }}</button>
+                        <div ng-show="!isFormValid()" class="callout callout-info">
+                            <p>{{ 'VALID_FORM' | translate }}</p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
