@@ -87,7 +87,8 @@
                     },
 
                     adTags: /* @ngInject */ function($stateParams, AdNetworkManager) {
-                        return AdNetworkManager.one($stateParams.adNetworkId).getList('adtags').then(function (adTags) {
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        return AdNetworkManager.one($stateParams.adNetworkId).one('adtags').get($stateParams).then(function (adTags) {
                             return adTags.plain();
                         });
                     }

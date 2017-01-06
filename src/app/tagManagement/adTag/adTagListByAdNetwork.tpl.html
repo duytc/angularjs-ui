@@ -17,10 +17,16 @@
 
     </div>
 
-    <search-box show-query="true" sb-list="adTags" search-fields="['id', 'libraryAdTag.name', 'rotation', 'frequencyCap', 'adSlot.name', 'adSlot.site.name']"></search-box>
+    <form class="input-group col-sm-6 search-box">
+        <input class="form-control" ng-model="selectData.query" ng-change="searchData()" placeholder="{{ 'UNIFIED_REPORT_MODULE.SEARCH' | translate }}" type="text"/>
+        <span class="input-group-addon">
+                {{ tableConfig.totalItems }} records found
+            </span>
+    </form>
+
     <div class="panel-body" ng-if="hasAdTags()">
         <div class="table-responsive">
-            <table class="table" at-sortable-query at-table at-paginated at-list="adTags" at-config="tableConfig">
+            <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="adTags.records" at-config="tableConfig">
                 <thead></thead>
                 <tbody>
                 <tr>
@@ -39,7 +45,7 @@
                             </ul>
                         </div>
                     </td>
-                    <td at-title="{{ 'NAME' | translate }}" at-sortable at-attribute="libraryAdTag.name" at-initial-sorting="asc">
+                    <td at-title="{{ 'NAME' | translate }}" at-sortable at-attribute="name" at-initial-sorting="asc">
                         {{ item.libraryAdTag.name }}  <span ng-if="item.libraryAdTag.visible" class="glyphicon glyphicon-link"></span>
                     </td>
                     <td at-title="{{ 'AD_TAG_MODULE.ROTATION_WEIGHT' | translate }}" ng-dblclick="rotationForm.$show()" at-sortable at-attribute="rotation">
@@ -56,16 +62,16 @@
                         </div>
                         <div ng-show="isSubPublisher()">{{ item.frequencyCap }}</div>
                     </td>
-                    <td at-title="{{ 'AD_SLOT' | translate }}" at-implicit at-sortable at-attribute="adSlot.libraryAdSlot.name"></td>
-                    <td at-title="{{ 'SITE' | translate }}" at-implicit at-sortable at-attribute="adSlot.site.name" ></td>
-                    <td at-title="{{ 'AD_TAG_MODULE.STATUS' | translate }}" at-attribute="active" at-sortable>
+                    <td at-title="{{ 'AD_SLOT' | translate }}" at-implicit at-attribute="adSlot.libraryAdSlot.name"></td>
+                    <td at-title="{{ 'SITE' | translate }}" at-implicit at-attribute="adSlot.site.name" ></td>
+                    <td at-title="{{ 'AD_TAG_MODULE.STATUS' | translate }}" at-attribute="active">
                         <span class="label" ng-class="item.active == 1 ? 'label-success' : (item.active == -1 ? 'label-warning' : 'label-danger')">{{ item.active == 1 ? 'Active' : (item.active == -1 ? 'Auto Paused' : 'Paused') }}</span>
                     </td>
                 </tr>
                 </tbody>
             </table>
 
-            <at-pagination at-pagination-query ng-if="showPagination()" at-list="adTags" at-config="tableConfig"></at-pagination>
+            <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
         </div>
     </div>
 </div>

@@ -35,7 +35,8 @@
                     // AdSlotManager is provided as a parameter to make sure the service is invoked
                     // because during init it attaches additional behaviour to the adslots resource
                     adSlots: /* @ngInject */ function($stateParams, SiteManager) {
-                        return SiteManager.one($stateParams.siteId).getList('adslots').then(function (adSlots) {
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        return SiteManager.one($stateParams.siteId).one('adslots').get($stateParams).then(function (adSlots) {
                             return adSlots.plain();
                         });
                     },

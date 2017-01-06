@@ -5,23 +5,41 @@
         .controller('AdTagListByAdNetwork', AdTagListByAdNetwork)
     ;
 
-    function AdTagListByAdNetwork($scope, $translate, $state, $modal, adTags, adNetwork, AdTagManager, AlertService, AdTagLibrariesManager, historyStorage, HISTORY_TYPE_PATH) {
+    function AdTagListByAdNetwork($scope, $translate, $stateParams, $state, $modal, adTags, adNetwork, AdTagManager, AlertService, AdTagLibrariesManager, AtSortableService, AdNetworkManager, historyStorage, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE) {
         $scope.adNetwork = adNetwork;
         $scope.adTags = adTags;
 
         $scope.hasAdTags = function () {
-            return !!adTags.length;
+            return !!adTags.totalRecord;
         };
 
         $scope.showPagination = showPagination;
         $scope.backToListAdNetwork = backToListAdNetwork;
         $scope.updateAdTag = updateAdTag;
         $scope.shareAdTag = shareAdTag;
+        $scope.changePage = changePage;
+        $scope.searchData = searchData;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10
+            maxPages: 10,
+            totalItems: Number(adTags.totalRecord)
         };
+
+        $scope.availableOptions = {
+            currentPage: $stateParams.page || 1,
+            pageSize: 10
+        };
+
+        $scope.selectData = {
+            query: $stateParams.searchKey || null
+        };
+
+        var params = {
+            page: 1
+        };
+
+        var getAdTag;
 
         if (!$scope.hasAdTags()) {
             AlertService.replaceAlerts({
@@ -104,7 +122,7 @@
         };
 
         function showPagination() {
-            return angular.isArray($scope.adTags) && $scope.adTags.length > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.adTags.records) && $scope.adTags.totalRecord > $scope.tableConfig.itemsPerPage;
         }
 
         function backToListAdNetwork() {
@@ -159,6 +177,41 @@
                     });
                 })
             ;
+        }
+
+        function changePage(currentPage) {
+            params = angular.extend(params, {page: currentPage});
+            _getAdTag(params);
+        }
+
+        function searchData() {
+            var query = {searchKey: $scope.selectData.query || ''};
+            params = angular.extend(params, query);
+            _getAdTag(params);
+        }
+
+        $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
+            params = angular.extend(params, query);
+            _getAdTag(params);
+        });
+
+        function _getAdTag(query) {
+            params = query;
+
+            clearTimeout(getAdTag);
+
+            getAdTag = setTimeout(function() {
+                var Manager = AdNetworkManager.one(adNetwork.id).one('adtags').get(query);
+
+                params = query;
+                return Manager
+                    .then(function(adTags) {
+                        AtSortableService.insertParamForUrl(query);
+                        $scope.adTags = adTags;
+                        $scope.tableConfig.totalItems = Number(adTags.totalRecord);
+                        $scope.availableOptions.currentPage = Number(query.page);
+                    });
+            }, 500);
         }
 
         $scope.$on('$locationChangeSuccess', function() {
