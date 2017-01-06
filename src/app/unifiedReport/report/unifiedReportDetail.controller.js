@@ -125,7 +125,7 @@
         $scope.isNullValue = isNullValue;
 
         function isNullValue(report, column) {
-            return _.isNull(report[column]);
+            return !report[column];
         }
 
         function isEmptyObject(object) {

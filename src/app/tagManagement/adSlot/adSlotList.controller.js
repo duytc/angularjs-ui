@@ -5,7 +5,7 @@
         .controller('AdSlotList', AdSlotList)
     ;
 
-    function AdSlotList($scope, $translate, $state, $stateParams, $modal, Auth, AlertService, adSlotService, adSlots, site, AdSlotManager, AtSortableService, libraryAdSlotService, historyStorage, HISTORY_TYPE_PATH, RTB_STATUS_LABELS, TYPE_AD_SLOT, EVENT_ACTION_SORTABLE) {
+    function AdSlotList($scope, $translate, $state, $stateParams, $modal, Auth, AlertService, adSlotService, SiteManager, adSlots, site, AdSlotManager, AtSortableService, libraryAdSlotService, historyStorage, HISTORY_TYPE_PATH, RTB_STATUS_LABELS, TYPE_AD_SLOT, EVENT_ACTION_SORTABLE) {
         $scope.site = site;
 
         $scope.adSlots = adSlots;
@@ -254,7 +254,13 @@
             clearTimeout(getAdSlot);
 
             getAdSlot = setTimeout(function() {
-                var Manager = $scope.isChannel ? AdSlotManager.one('relatedchannel').get(query) : AdSlotManager.one().get(query);
+                var Manager = null;
+
+                if(!!$scope.site) {
+                    Manager = SiteManager.one($stateParams.siteId).one('adslots').get(query)
+                } else {
+                    Manager = $scope.isChannel ? AdSlotManager.one('relatedchannel').get(query) : AdSlotManager.one().get(query)
+                }
 
                 params = query;
                 return Manager
