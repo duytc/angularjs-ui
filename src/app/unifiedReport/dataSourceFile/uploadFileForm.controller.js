@@ -59,17 +59,19 @@
                 });
             } else {
                 AlertService.addFlash({
-                    type: 'error',
+                    type: '',
                     message: response.message || "'" + fileItem.file.name + "' isn't uploaded because of wrong format"
                 });
             }
         };
 
         uploader.onSuccessItem = function(fileItem, response, status, headers) {
-            AlertService.addFlash({
-                type: 'success',
-                message: "'" + fileItem.file.name + "'  is uploaded successfully"
-            });
+            angular.forEach(response, function (re) {
+                AlertService.addFlash({
+                    type: re.status ? 'success' : 'error',
+                    message: re.message
+                });
+            })
         };
 
         uploader.uploadAllDataSource = function() {
