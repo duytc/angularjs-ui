@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{ 'VIDEO_AD_TAG_MODULE.VAST_TAGS' | translate }} : <strong>{{ videoWaterfallTag.name }}</strong></h4>
+</div>
+<div class="modal-body" style="overflow: auto">
+
+    <div class="table-responsive">
+        <table class="table" at-table at-paginated at-list="vastTags.records" at-config="tableConfig">
+            <thead></thead>
+            <tbody>
+            <tr>
+                <td at-title="{{ 'VIDEO_AD_TAG_MODULE.WIDTH' | translate }}" at-implicit at-attribute="width"></td>
+                <td at-title="{{ 'VIDEO_AD_TAG_MODULE.HEIGHT' | translate }}" at-implicit at-attribute="height"></td>
+                <td at-title="{{ 'VIDEO_AD_TAG_MODULE.PAGE_URL' | translate }}" at-implicit at-attribute="pageUrl"></td>
+                <td at-title="{{ 'VIDEO_AD_TAG_MODULE.COUNTRY_CODE' | translate }}" at-implicit at-attribute="countryCode"></td>
+                <td at-title="{{ 'VIDEO_AD_TAG_MODULE.BROWSER_NAME' | translate }}" at-implicit at-attribute="browserName"></td>
+                <td at-title="{{ 'VIDEO_AD_TAG_MODULE.BROWSER_OS' | translate }}" at-implicit at-attribute="browserOs"></td>
+                <td at-title="{{ 'VIDEO_AD_TAG_MODULE.BROWSER_MAJOR' | translate }}" at-implicit at-attribute="browserMajor"></td>
+                <td at-title="{{ 'VIDEO_AD_TAG_MODULE.TIME' | translate }}" at-attribute="time.date">
+                    <p style="min-width: 180px">{{ item.time.date | date:'medium' }}</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="$close()">{{ 'CLOSE' | translate }}</button>
+</div>

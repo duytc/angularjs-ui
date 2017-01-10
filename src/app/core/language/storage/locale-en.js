@@ -458,6 +458,17 @@
                 "GENERATE_A_VAST": "Generate Vast/VPAID Tag",
                 "VAST_FOR_NAME": "Vast Tag for: {{ name }}",
 
+                "VAST_TAGS": "Vast Tag",
+                "WIDTH": "Width",
+                "HEIGHT": "Height",
+                "PAGE_URL": "Page Url",
+                "COUNTRY_CODE": "Country Code",
+                "BROWSER_NAME": "Browser Name",
+                "BROWSER_OS": "Browser Os",
+                "BROWSER_MAJOR": "Browser Major",
+                "TIME": "Time",
+                "SHOW_VAST_TAG_REQUEST": "Show Vast Tag Request",
+
                 "ADD_NEW_POSITION": "Add New Position",
                 "ADD_NEW_SUCCESS": "The waterfall has been created",
                 "ADD_NEW_FAIL": "An error occurred. The waterfall could not be created",

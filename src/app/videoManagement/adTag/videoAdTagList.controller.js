@@ -45,6 +45,23 @@
         $scope.createDemandAdTag = createDemandAdTag;
         $scope.backToListVideoPublisher = backToListVideoPublisher;
         $scope.paramsReport = paramsReport;
+        $scope.showVastTagVast = showVastTagVast;
+        
+        function showVastTagVast(videoWaterfallTag) {
+            $modal.open({
+                templateUrl: 'videoManagement/adTag/showVastTag.tpl.html',
+                size: 'lg',
+                resolve: {
+                    vastTags: function(VastTagRequestManager) {
+                        return VastTagRequestManager.one().get({uuid: videoWaterfallTag.uuid})
+                    },
+                    videoWaterfallTag: function () {
+                        return videoWaterfallTag
+                    }
+                },
+                controller: 'ShowVastTag'
+            });
+        }
 
         $scope.changePage = changePage;
         $scope.searchData = searchData;
