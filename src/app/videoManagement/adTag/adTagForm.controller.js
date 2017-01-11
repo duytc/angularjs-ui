@@ -26,6 +26,8 @@
             buyPrice: null,
             platform: null,
             companionAds: [],
+            isVastOnly: false,
+            isServerToServer: false,
             targeting: {
                 player_size: []
             }

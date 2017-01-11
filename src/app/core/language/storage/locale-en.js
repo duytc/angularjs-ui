@@ -469,6 +469,9 @@
                 "TIME": "Time",
                 "SHOW_VAST_TAG_REQUEST": "Show Vast Tag Request",
 
+                "SERVER_TO_SERVER": "Server to Server",
+                "VAST_ONLY": "Vast Only",
+
                 "ADD_NEW_POSITION": "Add New Position",
                 "ADD_NEW_SUCCESS": "The waterfall has been created",
                 "ADD_NEW_FAIL": "An error occurred. The waterfall could not be created",
