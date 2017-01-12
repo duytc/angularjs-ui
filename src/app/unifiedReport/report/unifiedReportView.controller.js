@@ -30,15 +30,23 @@
         $scope.getShareableLink = getShareableLink;
 
         function downloadReport(reportView) {
+            angular.forEach(reportView.reportViewDataSets, function (reportViewDataSet) {
+                reportViewDataSet.dataSet = angular.isObject(reportViewDataSet.dataSet) ? reportViewDataSet.dataSet.id : reportViewDataSet.dataSet
+            });
+
+            angular.forEach(reportView.reportViewMultiViews, function (reportViewMultiView) {
+                reportViewMultiView.subView = angular.isObject(reportViewMultiView.subView) ? reportViewMultiView.subView.id : reportViewMultiView.subView
+            });
+
             var params = {
-                dataSets: angular.toJson(reportView.dataSets),
+                reportViewDataSets: angular.toJson(reportView.reportViewDataSets),
                 transforms: angular.toJson(reportView.transforms),
                 formats: angular.toJson(reportView.formats),
                 weightedCalculations: angular.toJson(reportView.weightedCalculations),
                 joinBy: angular.toJson(reportView.joinBy) || null,
 
                 fieldTypes: angular.toJson(reportView.fieldTypes),
-                reportViews: angular.toJson(reportView.reportViews),
+                reportViewMultiViews: angular.toJson(reportView.reportViewMultiViews),
                 showInTotal: angular.toJson(reportView.showInTotal),
                 name: reportView.name,
                 multiView: !!reportView.multiView || reportView.multiView,

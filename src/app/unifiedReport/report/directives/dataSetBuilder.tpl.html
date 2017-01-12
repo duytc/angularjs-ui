@@ -3,7 +3,7 @@
     Add Data Set
 </button>
 
-<div class="expressions-group" ng-repeat="dataSet in reportBuilder.dataSets">
+<div class="expressions-group" ng-repeat="dataSet in reportBuilder.reportViewDataSets">
     <div class="form-group select-connect-data-source">
         <button type="button" class="btn btn-danger btn-close-ur" ng-click="removeDataSet($index)">
             <span class="glyphicon glyphicon-minus "></span>
@@ -14,9 +14,9 @@
         <label class="control-label">Data Set</label>
 
         <div>
-            <ui-select ng-model="dataSet.dataSetId" ng-required="true" server-error on-select="selectDataSet($item, dataSet)" reset-search-input="'false'">
+            <ui-select ng-model="dataSet.dataSet" ng-required="true" server-error on-select="selectDataSet($item, dataSet)" reset-search-input="'false'">
                 <ui-select-match placeholder="Select a data set">{{ $select.selected.name }}</ui-select-match>
-                <ui-select-choices repeat="dataSet.id as dataSet in getDataSets(dataSet.dataSetId) | selectedPublisher:reportBuilder.publisher | filter:$select.search">
+                <ui-select-choices repeat="dataSet.id as dataSet in getDataSets(dataSet.dataSet) | selectedPublisher:reportBuilder.publisher | filter:$select.search">
                     {{ dataSet.name }}
                 </ui-select-choices>
             </ui-select>

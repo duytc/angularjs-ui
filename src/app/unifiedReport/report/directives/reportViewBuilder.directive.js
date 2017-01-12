@@ -41,8 +41,19 @@
                                 toggleField(field, reportView.metrics, reportView, true);
                             })
                         } else {
-                            reportView.dimensions = [];
-                            reportView.metrics = [];
+                            angular.forEach(reportView.tempDimensions, function (field) {
+                                var index = reportView.dimensions.indexOf(field);
+
+                                reportView.dimensions.splice(index, 1);
+                            });
+
+                            angular.forEach(reportView.tempMetrics, function (field) {
+                                var index = reportView.metrics.indexOf(field);
+
+                                reportView.metrics.splice(index, 1);
+                            });
+
+                            _setReportViewField(reportView);
                         }
                     }
 
@@ -52,11 +63,11 @@
                                 return true;
                             }
 
-                            for(var index in scope.reportBuilder.reportViews) {
-                                var reportBuilderItemReportView = scope.reportBuilder.reportViews[index];
+                            for(var index in scope.reportBuilder.reportViewMultiViews) {
+                                var reportBuilderItemReportView = scope.reportBuilder.reportViewMultiViews[index];
 
-                                if(reportBuilderItemReportView.reportViewId == reportView.id ||
-                                    (angular.isObject(reportBuilderItemReportView.reportViewId)) && reportBuilderItemReportView.reportViewId.id == reportView.id)
+                                if(reportBuilderItemReportView.subView == reportView.id ||
+                                    (angular.isObject(reportBuilderItemReportView.subView)) && reportBuilderItemReportView.subView.id == reportView.id)
                                 {
                                     return false
                                 }
@@ -96,11 +107,11 @@
                     }
                     
                     function removeReportView(index) {
-                        scope.reportBuilder.reportViews.splice(index, 1);
+                        scope.reportBuilder.reportViewMultiViews.splice(index, 1);
                     }
                     
                     function addReportView() {
-                        scope.reportBuilder.reportViews.push({
+                        scope.reportBuilder.reportViewMultiViews.push({
                             filters: [],
                             dimensions: [],
                             metrics: [],

@@ -3,7 +3,7 @@
     Add Report View
 </button>
 
-<div class="expressions-group" ng-repeat="reportView in reportBuilder.reportViews">
+<div class="expressions-group" ng-repeat="reportView in reportBuilder.reportViewMultiViews">
     <div class="form-group select-connect-data-source">
         <button type="button" class="btn btn-danger btn-close-ur" ng-click="removeReportView($index)">
             <span class="glyphicon glyphicon-minus "></span>
@@ -13,9 +13,9 @@
     <div class="form-group select-connect-data-source">
         <label class="control-label">Report View</label>
         <div>
-            <ui-select ng-model="reportView.reportViewId" ng-required="true" server-error on-select="selectReportView($item, reportView)" reset-search-input="'false'">
+            <ui-select ng-model="reportView.subView" ng-required="true" server-error on-select="selectReportView($item, reportView)" reset-search-input="'false'">
                 <ui-select-match placeholder="Select a report view">{{ $select.selected.name }}</ui-select-match>
-                <ui-select-choices repeat="reportView.id as reportView in getReportView(reportView.reportViewId) | selectedPublisher:reportBuilder.publisher | filter:$select.search">
+                <ui-select-choices repeat="reportView.id as reportView in getReportView(reportView.subView) | selectedPublisher:reportBuilder.publisher | filter:$select.search">
                     {{ reportView.name }}
                 </ui-select-choices>
             </ui-select>

@@ -55,6 +55,12 @@
                     $scope.columnPositions.push(remainField);
                 })
             }
+
+            var indexReportViewAliasFormat = $scope.columnPositions.indexOf('report_view_alias');
+            if(indexReportViewAliasFormat > -1 && reportView.multiView) {
+                $scope.columnPositions.splice(indexReportViewAliasFormat, 1);
+                $scope.columnPositions.unshift('report_view_alias');
+            }
         }
 
 
@@ -77,8 +83,8 @@
         }
 
         $scope.reportViewForEdit = {
-            dataSets: angular.toJson(reportView.dataSets),
-            reportViews: angular.toJson(reportView.reportViews),
+            reportViewDataSets: angular.toJson(reportView.reportViewDataSets),
+            reportViewMultiViews: angular.toJson(reportView.reportViewMultiViews),
             filter: angular.toJson(reportView.filter),
             transforms: angular.toJson(reportView.transforms),
             showInTotal: angular.toJson(reportView.showInTotal),

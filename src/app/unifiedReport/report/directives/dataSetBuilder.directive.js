@@ -37,8 +37,19 @@
                                 toggleField(field, dataSet.metrics, dataSet, true);
                             })
                         } else {
-                            dataSet.dimensions = [];
-                            dataSet.metrics = [];
+                            angular.forEach(dataSet.tempDimensions, function (field) {
+                                var index = dataSet.dimensions.indexOf(field);
+
+                                dataSet.dimensions.splice(index, 1);
+                            });
+
+                            angular.forEach(dataSet.tempMetrics, function (field) {
+                                var index = dataSet.metrics.indexOf(field);
+
+                                dataSet.metrics.splice(index, 1);
+                            });
+
+                            dataSet.fields = dataSet.dimensions.concat(dataSet.metrics);
                         }
                     }
                     
@@ -48,11 +59,11 @@
                                 return true;
                             }
 
-                            for(var index in scope.reportBuilder.dataSets) {
-                                var reportBuilderItemDataSet = scope.reportBuilder.dataSets[index];
+                            for(var index in scope.reportBuilder.reportViewDataSets) {
+                                var reportBuilderItemDataSet = scope.reportBuilder.reportViewDataSets[index];
 
-                                if(reportBuilderItemDataSet.dataSetId == dataSet.id ||
-                                    (angular.isObject(reportBuilderItemDataSet.dataSetId)) && reportBuilderItemDataSet.dataSetId.id == dataSet.id)
+                                if(reportBuilderItemDataSet.dataSet == dataSet.id ||
+                                    (angular.isObject(reportBuilderItemDataSet.dataSet)) && reportBuilderItemDataSet.dataSet.id == dataSet.id)
                                 {
                                     return false
                                 }
@@ -92,13 +103,13 @@
                     }
                     
                     function removeDataSet(index) {
-                        scope.reportBuilder.dataSets.splice(index, 1);
+                        scope.reportBuilder.reportViewDataSets.splice(index, 1);
 
                         scope.reportBuilder.formats = [];
                     }
                     
                     function addDataSet() {
-                        scope.reportBuilder.dataSets.push({
+                        scope.reportBuilder.reportViewDataSets.push({
                             filters: [],
                             dimensions: [],
                             metrics: [],
