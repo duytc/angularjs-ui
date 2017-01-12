@@ -165,7 +165,8 @@
                         var typesField = [];
 
                         angular.forEach(scope.typesField, function (type) {
-                            if (type.key == 'decimal' || type.key == 'number' || type.key ==  'text' || type.key == 'multiLineText') {
+                            // if (type.key == 'decimal' || type.key == 'number' || type.key ==  'text' || type.key == 'multiLineText') {
+                            if (type.key == 'decimal' || type.key == 'number') {
                                 typesField.push(type)
                             }
                         });
