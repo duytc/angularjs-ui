@@ -32,7 +32,8 @@
                     tempDimensions: [],
                     tempMetrics: [],
                     dimensionsMetrics: [],
-                    fields: []
+                    fields: [],
+                    dataSet: null
                 }
             ],
             reportViewMultiViews: [
@@ -348,7 +349,7 @@
                 _setTotalDimensionsSelected(item);
 
                 var dataSet = _.find($scope.dataSets, function (dataSet) {
-                    return dataSet.id == item.dataSet || dataSet.id == item.dataSet.id;
+                    return angular.isObject(item.dataSet) ? dataSet.id == item.dataSet.id : dataSet.id == item.dataSet;
                 });
 
                 if (!!dataSet) {
@@ -494,7 +495,7 @@
             if (!$scope.reportBuilder.multiView) {
                 angular.forEach($scope.reportBuilder.reportViewDataSets, function (item) {
                     var dataSet = _.find($scope.dataSets, function (dataSet) {
-                        return dataSet.id == item.dataSet || dataSet.id == item.dataSet.id;
+                        return angular.isObject(item.dataSet) ? dataSet.id == item.dataSet.id : dataSet.id == item.dataSet;
                     });
 
                     angular.forEach(item.dimensions, function (dimension) {
