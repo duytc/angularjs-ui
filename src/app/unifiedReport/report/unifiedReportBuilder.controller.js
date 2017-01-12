@@ -467,7 +467,7 @@
                 });
 
                 var reportView = _.find($scope.reportViews, function (reportView) {
-                    return reportView.id == item.subView || reportView.id == item.subView.id;
+                    return angular.isObject(item.subView) ? reportView.id == item.subView.id : reportView.id == item.subView;
                 });
 
                 if (!!reportView) {
