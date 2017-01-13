@@ -16,8 +16,8 @@
                 }
             },
             resolve: {
-                dataDashboard: function($stateParams, dashboard) {
-                    return dashboard.getPlatformDashboard($stateParams);
+                dataDashboard: function($stateParams, dashboard, userSession) {
+                    return dashboard.getPlatformDashboard($stateParams, userSession);
                 }
             },
             ncyBreadcrumb: {
