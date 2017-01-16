@@ -1056,16 +1056,18 @@
 
                         reportView.fields = [];
 
-                        var fields = reportView.dimensions.concat(reportView.metrics);
-                        angular.forEach(fields, function (field) {
-                            var findField = _.find(reportView.dimensionsMetrics, function (dm) {
-                                return dm.key == field;
-                            });
+                        if (reportView.dimensions instanceof  Array) {
+	                        var fields = reportView.dimensions.concat(reportView.metrics);
+	                        angular.forEach(fields, function (field) {
+		                        var findField = _.find(reportView.dimensionsMetrics, function (dm) {
+			                        return dm.key == field;
+		                        });
 
-                            if (!!findField) {
-                                reportView.fields.push(findField)
-                            }
-                        });
+		                        if (!!findField) {
+			                        reportView.fields.push(findField)
+		                        }
+	                        });
+                        }
                     });
                 }
             }

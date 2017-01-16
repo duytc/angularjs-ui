@@ -78,21 +78,26 @@
                     }
 
                     function hasField(filed, data) {
-                        return data.indexOf(filed.key) > -1;
+                        if (data instanceof Array ) {
+	                        return data.indexOf(filed.key) > -1;
+                        }
                     }
 
                     function toggleField(filed, data, reportView, notRemove) {
-                        var index = data.indexOf(filed.key);
 
-                        if (index == -1) {
-                            data.push(filed.key);
-                        } else {
-                            if(!notRemove) {
-                                data.splice(index, 1);
-                            }
+                        if (data instanceof Array) {
+	                        var index = data.indexOf(filed.key);
+
+	                        if (index == -1) {
+		                        data.push(filed.key);
+	                        } else {
+		                        if(!notRemove) {
+			                        data.splice(index, 1);
+		                        }
+	                        }
+
+	                        _setReportViewField(reportView);
                         }
-
-                        _setReportViewField(reportView);
                     }
 
                     function selectReportView(item, reportView) {
