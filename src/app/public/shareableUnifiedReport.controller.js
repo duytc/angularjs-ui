@@ -76,10 +76,10 @@
         $scope.isEmptyObject = isEmptyObject;
         $scope.isShow = isShow;
         $scope.sort = sort;
-
         $scope.isNullValue = isNullValue;
+
         function isNullValue(report, column) {
-            return !report[column];
+            return !report[column] && report[column] != 0;
         }
 
         function sort(keyname) {
