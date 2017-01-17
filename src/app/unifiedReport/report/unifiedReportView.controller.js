@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportView', UnifiedReportView);
 
-    function UnifiedReportView($scope, _, $q, $translate, SortReportByColumnType,$modal, AlertService, reportViewList, UnifiedReportViewManager, unifiedReportBuilder, UserStateHelper, AtSortableService, exportExcelService, historyStorage, HISTORY_TYPE_PATH) {
+    function UnifiedReportView($scope, _, $q, $translate, SortReportByColumnType, $modal, AlertService, reportViewList, UnifiedReportViewManager, unifiedReportBuilder, UserStateHelper, AtSortableService, exportExcelService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.reportViewList = reportViewList;
 
         $scope.hasData = function () {
@@ -28,6 +28,58 @@
         $scope.runReport = runReport;
         $scope.downloadReport = downloadReport;
         $scope.getShareableLink = getShareableLink;
+        $scope.cloneReportView = cloneReportView;
+
+        function cloneReportView(reportView) {
+            $modal.open({
+                templateUrl: 'unifiedReport/report/cloneReportView.tpl.html',
+                size: 'lg',
+                resolve: {
+                    reportView: function () {
+                        return reportView;
+                    }
+                },
+                controller: function ($scope, $state, $modalInstance, reportView) {
+                    $scope.reportView = reportView;
+
+                    $scope.cloneReportView = {
+                        name: null,
+                        alias: null
+                    };
+                    
+                    $scope.submit = submit;
+                    $scope.isFormValid = isFormValid;
+
+                    function isFormValid() {
+                        return $scope.cloneReportViewForm.$valid;
+                    }
+                    
+                    function submit() {
+                        $modalInstance.close();
+
+                        var params = {
+                            cloneSettings: [$scope.cloneReportView]
+                        };
+
+                        UnifiedReportViewManager.one(reportView.id).post('clone', params)
+                            .catch(function () {
+                                AlertService.replaceAlerts({
+                                    type: 'error',
+                                    message: "Could not clone the report view"
+                                });
+                            })
+                            .then(function () {
+                                $state.reload();
+
+                                AlertService.addFlash({
+                                    type: 'success',
+                                    message: "The report view has been cloned successfully"
+                                });
+                            })
+                    }
+                }
+            });
+        }
 
         function downloadReport(reportView) {
             angular.forEach(reportView.reportViewDataSets, function (reportViewDataSet) {
