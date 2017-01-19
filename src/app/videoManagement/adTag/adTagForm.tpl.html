@@ -61,17 +61,7 @@
                         <input name="buyPrice" ng-model="adTag.buyPrice" min="0" type="text" class="form-control" placeholder="{{ 'VIDEO_AD_TAG_MODULE.BUY_PRICE' | translate }}">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputPlatform" class="col-sm-1 control-label">{{ 'VIDEO_AD_TAG_MODULE.PLATFORM' | translate }}</label>
-                    <div class="col-sm-5">
-                        <ui-select multiple name="platform" id="inputPlatform" ng-model="adTag.platform" ng-required="true" server-error on-select="$item.search = $select.search; $select.search = '';">
-                            <ui-select-match placeholder="{{ 'VIDEO_AD_TAG_MODULE.SELECT_PLATFORM' | translate }}">{{ $item.label }}</ui-select-match>
-                            <ui-select-choices repeat="platform.key as platform in platformOption | filter:$select.search">
-                                {{ platform.label }}
-                            </ui-select-choices>
-                        </ui-select>
-                    </div>
-                </div>
+
 
                 <!--<div class="form-group">-->
                     <!--<label class="col-sm-1 control-label">{{ 'VIDEO_AD_TAG_MODULE.PLAYER_SIZE' | translate }}</label>-->
@@ -95,6 +85,18 @@
                     <label for="isVastOnly" class="col-sm-1 control-label">{{ 'VIDEO_AD_TAG_MODULE.VAST_ONLY' | translate }}</label>
                     <div class="col-sm-5">
                         <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="adTag.isVastOnly" id="isVastOnly"><span></span></label>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="!adTag.isServerToServer || !adTag.isVastOnly">
+                    <label for="inputPlatform" class="col-sm-1 control-label">{{ 'VIDEO_AD_TAG_MODULE.PLATFORM' | translate }}</label>
+                    <div class="col-sm-5">
+                        <ui-select multiple name="platform" id="inputPlatform" ng-model="adTag.platform" ng-required="true" server-error on-select="$item.search = $select.search; $select.search = '';">
+                            <ui-select-match placeholder="{{ 'VIDEO_AD_TAG_MODULE.SELECT_PLATFORM' | translate }}">{{ $item.label }}</ui-select-match>
+                            <ui-select-choices repeat="platform.key as platform in platformOption | filter:$select.search">
+                                {{ platform.label }}
+                            </ui-select-choices>
+                        </ui-select>
                     </div>
                 </div>
 

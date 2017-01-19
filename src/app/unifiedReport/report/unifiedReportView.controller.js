@@ -209,10 +209,9 @@
 
                         $scope.reportViewList = reportViewList;
 
-                        if ($scope.tableConfig.currentPage > 0 && reportViewList.length / 10 == $scope.tableConfig.currentPage) {
-                            AtSortableService.insertParamForUrl({
-                                page: $scope.tableConfig.currentPage
-                            });
+                        if ($scope.tableConfig.currentPage > 0 && reportViewList.length/10 == $scope.tableConfig.currentPage) {
+                            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
+                            $scope.tableConfig.currentPage =- 1;
                         }
 
                         AlertService.replaceAlerts({
