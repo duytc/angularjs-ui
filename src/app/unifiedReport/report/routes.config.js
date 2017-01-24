@@ -132,7 +132,6 @@
                             publisher: $stateParams.publisher,
                             multiView: $stateParams.multiView == 'true',
                             subReportsIncluded: $stateParams.subReportsIncluded == 'true'
-
                         };
                     },
                     publishers: function () {
@@ -144,7 +143,7 @@
                 }
             })
             .state('unifiedReport.report.detail', {
-                url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&saveReportView',
+                url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&saveReportView&startDate&endDate',
                 views: {
                     'content@app': {
                         controller: 'UnifiedReportDetail',
@@ -178,8 +177,7 @@
                                         id: reportView.id,
                                         publisher: reportView.publisher.id || reportView.publisher,
                                         multiView: !!$stateParams.multiView ? ($stateParams.multiView == 'true') : reportView.multiView,
-                                        subReportsIncluded: !!$stateParams.subReportsIncluded ? ($stateParams.subReportsIncluded == 'true') : reportView.subReportsIncluded,
-
+                                        subReportsIncluded: !!$stateParams.subReportsIncluded ? ($stateParams.subReportsIncluded == 'true') : reportView.subReportsIncluded
                                     }
                                 })
                         }
@@ -200,7 +198,7 @@
                             subReportsIncluded: $stateParams.subReportsIncluded == 'true'
                         };
                     },
-                    reportGroup: /* @ngInject */ function(unifiedReportBuilder, reportView) {
+                    reportGroup: /* @ngInject */ function(unifiedReportBuilder, reportView, $stateParams) {
                         var params = {
                             reportViewDataSets: angular.toJson(reportView.reportViewDataSets),
                             fieldTypes: angular.toJson(reportView.fieldTypes),
@@ -213,8 +211,11 @@
                             name: reportView.name,
                             alias: reportView.alias,
                             multiView: !!reportView.multiView || reportView.multiView == 'true',
-                            subReportsIncluded: !!reportView.subReportsIncluded || reportView.subReportsIncluded == 'true',
+                            subReportsIncluded: !!reportView.subReportsIncluded || reportView.subReportsIncluded == 'true'
                         };
+
+                        params.startDate = $stateParams.startDate;
+                        params.endDate = $stateParams.endDate;
 
                         return unifiedReportBuilder.getPlatformReport(params);
                     }

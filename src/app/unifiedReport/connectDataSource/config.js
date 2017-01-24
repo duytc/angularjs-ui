@@ -29,7 +29,9 @@
             {label: moment().format('MMM-DD-YYYY') + ' (MON-DD-YYYY)', key: 'M-d-Y'},   //Jan-15-2016
             {label: moment().format('MMM/DD/YYYY') + ' (MON/DD/YYYY)', key: 'M/d/Y'},   //Jan/15/2016
             {label: moment().format('DD-MMM-YYYY') + ' (DD-MON-YYYY)', key: 'd-M-Y'},   //15-Jan-2016
-            {label: moment().format('DD/MMM/YYYY') + ' (DD/MON/YYYY)', key: 'd/M/Y'}    //15/Jan/2016
+            {label: moment().format('DD/MMM/YYYY') + ' (DD/MON/YYYY)', key: 'd/M/Y'},    //15/Jan/2016
+            {label: moment().format('MMM DD, YYYY') + ' (MON DD, YYYY)', key: 'M d, Y'},    //Jan 15, 2016
+            {label: moment().format('YYYY, MMM DD') + ' (YYYY, MON DD)', key: 'Y, M d'}    //2016, Jan 15
         ])
         .constant('COMPARISON_TYPES_FILTER_CONNECT_NUMBER', [
             {key: 'in', label: 'In'},

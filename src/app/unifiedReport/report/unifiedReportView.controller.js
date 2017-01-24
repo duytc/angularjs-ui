@@ -316,7 +316,7 @@
                         });
                     }
                 },
-                controller: function ($scope, fieldsReportView, UnifiedReportViewManager) {
+                controller: function ($scope, fieldsReportView, UnifiedReportViewManager, DateFormatter) {
                     $scope.reportView = reportView;
                     $scope.fieldsReportView = fieldsReportView;
                     var fieldsToShare = [];
@@ -325,10 +325,30 @@
                         selectAll: true
                     };
 
+                    $scope.date = {
+                        startDate: null,
+                        endDate: null
+                    };
+
+                    $scope.datePickerOpts = {
+                        maxDate:  moment().endOf('day'),
+                        ranges: {
+                            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                            'This Month': [moment().startOf('month'), moment().endOf('month')],
+                            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                        }
+                    };
+
                     // default select all
                     selectAll();
 
                     $scope.selectAll = selectAll;
+                    $scope.changeDate = changeDate;
+
+                    function changeDate() {
+                        $scope.shareableLink = null;
+                    }
 
                     $scope.getTextToCopy = function (string) {
                         return string.replace(/\n/g, '\r\n');
@@ -356,7 +376,15 @@
                     };
 
                     $scope.getShareableLink = function () {
-                        UnifiedReportViewManager.one(reportView.id).customGET('shareablelink', {fields: angular.toJson(fieldsToShare)})
+                        var params = {
+                            fields: angular.toJson(fieldsToShare),
+                            dateRange: {
+                                startDate: DateFormatter.getFormattedDate($scope.date.startDate),
+                                endDate: DateFormatter.getFormattedDate($scope.date.endDate)
+                            }
+                        };
+
+                        UnifiedReportViewManager.one(reportView.id).customGET('shareablelink', params)
                             .then(function (shareableLink) {
                                 $scope.shareableLink = shareableLink
                             });

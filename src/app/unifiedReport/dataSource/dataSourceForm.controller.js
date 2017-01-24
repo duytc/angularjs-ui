@@ -1,170 +1,167 @@
-(function() {
-    'use strict';
+(function (){
+	'use strict';
 
-    angular.module('tagcade.unifiedReport.dataSource')
-        .controller('DataSourceForm', DataSourceForm);
+	angular.module('tagcade.unifiedReport.dataSource')
+		.controller('DataSourceForm', DataSourceForm);
 
-    function DataSourceForm($scope, UnifiedReportDataSourceManager, $translate, dataSource, integrations, publishers, AlertService, NumberConvertUtil, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH) {
-        $scope.publishers = publishers;
-        $scope.integrations = integrations;
+	function DataSourceForm($scope, UnifiedReportDataSourceManager, $translate, dataSource, integrations, publishers, AlertService, NumberConvertUtil, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH){
+		$scope.publishers = publishers;
+		$scope.integrations = integrations;
 
-        $scope.isNew = (dataSource === null);
-        $scope.formProcessing = false;
-        $scope.integrations.active = false;
+		$scope.isNew = (dataSource === null);
+		$scope.formProcessing = false;
+		$scope.integrations.active = false;
 
-        $scope.groupByIntegrationGroup = groupByIntegrationGroup;
-        $scope.addNewIntegration = addNewIntegration;
-        $scope.removeIntegration = removeIntegration;
-        $scope.isFormValid = isFormValid;
-        $scope.submit = submit;
-        $scope.deleteDataSource = deleteDataSource;
-        $scope.backToDataSourceList = backToDataSourceList;
-        $scope.change = false;
+		$scope.addNewIntegration = addNewIntegration;
+		$scope.removeIntegration = removeIntegration;
+		$scope.isFormValid = isFormValid;
+		$scope.submit = submit;
+		$scope.deleteDataSource = deleteDataSource;
+		$scope.backToDataSourceList = backToDataSourceList;
+        $scope.addNewParams = addNewParams;
+        $scope.removeParams = removeParams;
+        
+		$scope.change = false;
+		$scope.dataSource = dataSource || {
+				dataSourceIntegrations: [],
+				alertSetting: [],
+				enable: true
+			};
 
-        $scope.dataSource = dataSource || {
-            dataSourceIntegrations: [],
-            alertSetting: [],
-            enable: true
-        };
+		$scope.alertSetting = {
+			wrongFormat: _.contains($scope.dataSource.alertSetting, "wrongFormat"),
+			dataReceived: _.contains($scope.dataSource.alertSetting, "dataReceived"),
+			notReceived: _.contains($scope.dataSource.alertSetting, "notReceived")
+		};
 
-        $scope.alertSetting = {
-            wrongFormat: _.contains($scope.dataSource.alertSetting, "wrongFormat"),
-            dataReceived: _.contains($scope.dataSource.alertSetting, "dataReceived"),
-            notReceived: _.contains($scope.dataSource.alertSetting, "notReceived")
-        };
+		$scope.fileFormats = [{
+			label: 'CSV',
+			key: 'csv'
+		}, {
+			label: 'Excel',
+			key: 'excel'
+		}, {
+			label: 'Json',
+			key: 'json'
+		}];
 
-        $scope.fileFormats = [{
-            label: 'CSV',
-            key: 'csv'
-        }, {
-            label: 'Excel',
-            key: 'excel'
-        }, {
-            label: 'Json',
-            key: 'json'
-        }];
+		$scope.frequencies = [
+		    {label: '3 hours', key: 3},
+            {label: '6 hours', key: 6},
+            {label: '12 hours', key: 12},
+            {label: 'Day', key: 24},
+            {label: '2 Day', key: 48}
+        ];
 
-        $scope.frequencies = [{
-            label: '3 hours',
-            key: 3
-        }, {
-            label: '6 hours',
-            key: 6
-        }, {
-            label: '12 hours',
-            key: 12
-        }, {
-            label: 'Day',
-            key: 24
-        }, {
-            label: '2 Day',
-            key: 48
-        }];
-
-        function addNewIntegration() {
-            $scope.dataSource.dataSourceIntegrations.push({
-                integration: null,
-                username: null,
-                password: null,
-                active: true
-            });
+        function removeParams(integration, index) {
+            integration.params.splice(index, 1)
         }
 
-        function removeIntegration(index) {
-            $scope.dataSource.dataSourceIntegrations.splice(index, 1);
+        function addNewParams(integration) {
+            integration.params.push({key: null, value: null})
         }
 
-        function groupByIntegrationGroup(item) {
-            return item.integrationGroup.name;
-        }
+		function addNewIntegration(){
+			$scope.dataSource.dataSourceIntegrations.push({
+				integration: null,
+				// username: null,
+				// password: null,
+				active: true,
+				params: []
+			});
+		}
 
-        function isFormValid() {
-            return $scope.userForm.$valid;
-        }
+		function removeIntegration(index){
+			$scope.dataSource.dataSourceIntegrations.splice(index, 1);
+		}
 
-        function submit() {
+		function isFormValid(){
+			return $scope.userForm.$valid;
+		}
 
-            if ($scope.formProcessing) {
-                // already running, prevent duplicates
-                return;
-            }
+		function submit(){
 
-            $scope.formProcessing = true;
+			if ($scope.formProcessing) {
+				// already running, prevent duplicates
+				return;
+			}
 
-            if (!$scope.isAdmin()) {
-                delete $scope.dataSource.publisher;
-            }
+			$scope.formProcessing = true;
 
-            _setAlertSettingForDataSource($scope.alertSetting);
+			if (!$scope.isAdmin()) {
+				delete $scope.dataSource.publisher;
+			}
 
-            var saveDataSource = $scope.isNew ? UnifiedReportDataSourceManager.post($scope.dataSource) : UnifiedReportDataSourceManager.one($scope.dataSource.id).patch($scope.dataSource);
+			_setAlertSettingForDataSource($scope.alertSetting);
 
-            saveDataSource.catch(function(response) {
-                var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.userForm, $scope.fieldNameTranslations);
-                $scope.formProcessing = false;
+			var saveDataSource = $scope.isNew ? UnifiedReportDataSourceManager.post($scope.dataSource) : UnifiedReportDataSourceManager.one($scope.dataSource.id).patch($scope.dataSource);
 
-                return errorCheck;
-            }).then(function() {
-                AlertService.addFlash({
-                    type: 'success',
-                    message: $scope.isNew ? $translate.instant('UNIFIED_REPORT_DATA_SOURCE_MODULE.ADD_NEW_SUCCESS') : $translate.instant('UNIFIED_REPORT_DATA_SOURCE_MODULE.UPDATE_SUCCESS')
-                });
-            }).then(function() {
-                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSource, '^.list');
-            });
-        }
+			saveDataSource.catch(function (response){
+				var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.userForm, $scope.fieldNameTranslations);
+				$scope.formProcessing = false;
 
-        function deleteDataSource() {
+				return errorCheck;
+			}).then(function (){
+				AlertService.addFlash({
+					type: 'success',
+					message: $scope.isNew ? $translate.instant('UNIFIED_REPORT_DATA_SOURCE_MODULE.ADD_NEW_SUCCESS') : $translate.instant('UNIFIED_REPORT_DATA_SOURCE_MODULE.UPDATE_SUCCESS')
+				});
+			}).then(function (){
+				return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSource, '^.list');
+			});
+		}
 
-            if ($scope.formProcessing) {
-                // already running, prevent duplicates
-                return;
-            }
+		function deleteDataSource(){
 
-            $scope.formProcessing = true;
+			if ($scope.formProcessing) {
+				// already running, prevent duplicates
+				return;
+			}
 
-            if (!$scope.isAdmin()) {
-                delete $scope.dataSource.publisher;
-            }
+			$scope.formProcessing = true;
 
-            var saveDataSource = UnifiedReportDataSourceManager.one($scope.dataSource.id).delete($scope.dataSource);
+			if (!$scope.isAdmin()) {
+				delete $scope.dataSource.publisher;
+			}
 
-            saveDataSource.catch(function(response) {
-                var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.userForm, $scope.fieldNameTranslations);
-                $scope.formProcessing = false;
+			var saveDataSource = UnifiedReportDataSourceManager.one($scope.dataSource.id).delete($scope.dataSource);
 
-                return errorCheck;
-            }).then(function() {
-                AlertService.addFlash({
-                    type: 'success',
-                    message: $scope.isNew ? $translate.instant('UNIFIED_REPORT_DATA_SOURCE_MODULE.DELETE_SUCCESS') : $translate.instant('UNIFIED_REPORT_DATA_SOURCE_MODULE.UPDATE_SUCCESS')
-                });
-            }).then(function() {
-                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.videoPublisher, '^.list');
-            });
-        }
+			saveDataSource.catch(function (response){
+				var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.userForm, $scope.fieldNameTranslations);
+				$scope.formProcessing = false;
 
-        function backToDataSourceList() {
-            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSource, '^.list');
-        }
+				return errorCheck;
+			}).then(function (){
+				AlertService.addFlash({
+					type: 'success',
+					message: $scope.isNew ? $translate.instant('UNIFIED_REPORT_DATA_SOURCE_MODULE.DELETE_SUCCESS') : $translate.instant('UNIFIED_REPORT_DATA_SOURCE_MODULE.UPDATE_SUCCESS')
+				});
+			}).then(function (){
+				return historyStorage.getLocationPath(HISTORY_TYPE_PATH.videoPublisher, '^.list');
+			});
+		}
 
-        function _setAlertSettingForDataSource(alertSetting) {
+		function backToDataSourceList(){
+			return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSource, '^.list');
+		}
 
-            $scope.dataSource.alertSetting = [];
+		function _setAlertSettingForDataSource(alertSetting){
 
-            if (alertSetting.wrongFormat) {
-                $scope.dataSource.alertSetting.push('wrongFormat');
-            }
+			$scope.dataSource.alertSetting = [];
 
-            if (alertSetting.dataReceived) {
-                $scope.dataSource.alertSetting.push('dataReceived');
-            }
+			if (alertSetting.wrongFormat) {
+				$scope.dataSource.alertSetting.push('wrongFormat');
+			}
 
-            if (alertSetting.notReceived) {
-                $scope.dataSource.alertSetting.push('notReceived');
-            }
+			if (alertSetting.dataReceived) {
+				$scope.dataSource.alertSetting.push('dataReceived');
+			}
 
-            return $scope.dataSource;
-        }
-    }
+			if (alertSetting.notReceived) {
+				$scope.dataSource.alertSetting.push('notReceived');
+			}
+
+			return $scope.dataSource;
+		}
+	}
 })();

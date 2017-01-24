@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $stateParams, _, SortReportByColumnType, reportView, $translate, reportGroup, AlertService, unifiedReportFormatReport, UnifiedReportViewManager) {
+    function UnifiedReportDetail($scope, $stateParams, _, SortReportByColumnType, reportView, $translate, reportGroup, AlertService, unifiedReportFormatReport, UnifiedReportViewManager, UserStateHelper, DateFormatter) {
         $scope.reportView = reportView;
         $scope.reportGroup = reportGroup;
         $scope.hasResult = reportGroup !== false;
@@ -121,6 +121,21 @@
 
         $scope.itemsPerPage.selected = $scope.tableConfig.itemsPerPage;
 
+        $scope.date = {
+            startDate: $stateParams.startDate || null,
+            endDate : $stateParams.endDate || null
+        };
+
+        $scope.datePickerOpts = {
+            maxDate:  moment().endOf('day'),
+            ranges: {
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        };
+
         $scope.showPagination = showPagination;
         $scope.saveReportView = saveReportView;
         $scope.getExportExcelFileName = getExportExcelFileName;
@@ -129,6 +144,33 @@
         $scope.isShow = isShow;
         $scope.isEmptyObject = isEmptyObject;
         $scope.isNullValue = isNullValue;
+        
+        $scope.generateReport = generateReport;
+        
+        function generateReport(date) {
+            var reportViewClone = angular.copy(reportView);
+
+            var params = {
+                reportView: $stateParams.reportView,
+                reportViewDataSets: angular.toJson(reportViewClone.reportViewDataSets),
+                fieldTypes: angular.toJson(reportViewClone.fieldTypes),
+                reportViewMultiViews: angular.toJson(reportViewClone.reportViewMultiViews),
+                transforms: angular.toJson(reportViewClone.transforms),
+                showInTotal: angular.toJson(reportViewClone.showInTotal),
+                weightedCalculations: angular.toJson(reportViewClone.weightedCalculations),
+                formats: angular.toJson(reportViewClone.formats),
+                joinBy: angular.toJson(reportViewClone.joinBy) || null,
+                name: reportViewClone.name,
+                alias: reportViewClone.alias,
+                multiView: !!reportViewClone.multiView || reportViewClone.multiView == 'true',
+                subReportsIncluded: !!reportViewClone.subReportsIncluded || reportViewClone.subReportsIncluded == 'true'
+            };
+
+            params.startDate = DateFormatter.getFormattedDate(date.startDate);
+            params.endDate = DateFormatter.getFormattedDate(date.endDate);
+
+            UserStateHelper.transitionRelativeToBaseState('unifiedReport.report.detail', params);
+        }
 
         function isNullValue(report, column) {
             return !report[column] && report[column] != 0;

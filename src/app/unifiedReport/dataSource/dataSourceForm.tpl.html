@@ -67,41 +67,35 @@
                         </button>
 
                         <div class="expressions-group" ng-if="dataSource.dataSourceIntegrations.length > 0">
-
                             <div class="form-group" data-ng-repeat="integration in dataSource.dataSourceIntegrations track by $index">
-
                                 <div class="expressions-group">
-
                                     <div class="form-group">
                                         <label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.INTEGRATION' | translate }}</label>
 
                                         <div class="col-sm-10">
                                             <ui-select name="integration" id="integration" ng-model="integration.integration" ng-required="true" server-error reset-search-input="'false'">
                                                 <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.INTEGRATION' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                                                <ui-select-choices group-by="groupByIntegrationGroup" repeat="integration.id as integration in integrations | filter: { name: $select.search }">
+                                                <ui-select-choices repeat="integration.id as integration in integrations | filter: { name: $select.search }">
                                                     {{ integration.name }}
                                                 </ui-select-choices>
                                             </ui-select>
                                         </div>
                                     </div>
                                     <br>
-
-                                    <div class="form-group">
-                                        <label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.USERNAME' | translate }}</label>
-                                        <div class="col-sm-10">
-                                            <input server-error name="integrationUsername" ng-model="integration.username" type="text" class="form-control" id="integration.username" placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.USERNAME' | translate }}">
-                                        </div>
-                                    </div>
-                                    <br>
-
-                                    <div class="form-group">
-                                        <label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.PASSWORD' | translate }}</label>
-                                        <div class="col-sm-10">
-                                            <input server-error name="integrationPassword" ng-model="integration.password" type="password" class="form-control" id="integration.password" placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.PASSWORD' | translate }}">
-                                        </div>
-                                    </div>
-                                    <br>
-
+                                    <!--<div class="form-group">-->
+                                        <!--<label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.USERNAME' | translate }}</label>-->
+                                        <!--<div class="col-sm-10">-->
+                                            <!--<input server-error name="integrationUsername" ng-model="integration.username" type="text" class="form-control" id="integration.username" placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.USERNAME' | translate }}">-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<br>-->
+                                    <!--<div class="form-group">-->
+                                        <!--<label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.PASSWORD' | translate }}</label>-->
+                                        <!--<div class="col-sm-10">-->
+                                            <!--<input server-error name="integrationPassword" ng-model="integration.password" type="password" class="form-control" id="integration.password" placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.PASSWORD' | translate }}">-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<br>-->
                                     <div class="form-group">
                                         <label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.FREQUENCY' | translate }}</label>
                                         <div class="col-sm-10">
@@ -116,6 +110,35 @@
                                     <br>
 
                                     <div class="form-group">
+                                        <label for="inputPublisher" class="col-sm-2 control-label">Params</label>
+                                        <div class="col-sm-10">
+                                            <button ng-click="addNewParams(integration)" class="btn btn-success" type="button">
+                                                <span class="glyphicon glyphicon-plus"></span> Add New Params
+                                            </button>
+
+                                            <div class="form-inline row" ng-repeat="param in integration.params">
+                                                <div class="form-group">
+                                                    <div class="col-sm-5">
+                                                        <input server-error name="key" ng-model="param.key" type="text" class="form-control" placeholder="Key">
+                                                    </div>
+
+                                                    <div class="col-sm-5">
+                                                        <input server-error name="value" ng-model="param.value" ng-required="true" type="text" class="form-control" placeholder="Value">
+                                                    </div>
+
+                                                    <div class="col-sm-2">
+                                                        <button type="button" class="btn btn-danger" ng-click="removeParams(integration, $index)">
+                                                            <span class="glyphicon glyphicon-minus"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <br>
+                                    <div class="form-group">
                                         <label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ENABLE' | translate }}</label>
                                         <div class="col-sm-10">
                                             <div>
@@ -127,7 +150,6 @@
                                         </div>
                                     </div>
                                     <br>
-
                                     <div class="form-group ">
                                         <div class=" col-sm-offset-10 ">
                                             <button type="button" style="margin-left: -5px" class="btn btn-danger" ng-click="removeIntegration($index)">
@@ -136,7 +158,6 @@
                                         </div>
                                     </div>
                                     <br>
-
                                 </div>
                             </div>
                         </div>

@@ -53,7 +53,7 @@
 
     <div class="panel-body" ng-if="hasData()">
         <div class="table-responsive">
-            <table class="table" at-sortable-query at-table at-paginated at-list="adSlots.records" at-config="tableConfig">
+            <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="adSlots.records" at-config="tableConfig">
                 <thead>
                 <tr>
                     <th ng-show="allAdSlot && !isChannel" at-attribute="domain">{{ 'SITE' | translate }}</th>
@@ -86,7 +86,7 @@
                             </ul>
                         </div>
                     </td>
-                    <td at-title="{{ 'AD_SLOT' | translate }}" at-attribute="libraryAdSlot.name" at-initial-sorting="asc">
+                    <td at-title="{{ 'AD_SLOT' | translate }}" at-sortable at-attribute="name" at-initial-sorting="asc">
                         {{ item.libraryAdSlot.name }} <span ng-if="item.libraryAdSlot.visible" class="glyphicon glyphicon-link"></span>
                     </td>
                     <td ng-show="allAdSlot && !isChannel" at-title="{{ 'SITE' | translate }}" at-implicit at-sortable at-attribute="domain"></td>

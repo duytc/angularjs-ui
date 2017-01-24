@@ -22,7 +22,9 @@
             {label: 'MON-DD-YYYY', key: 'M-d-Y', formatForJs: 'MMM-DD-YYYY'}, // Mar-01-2016
             {label: 'MON/DD/YYYY', key: 'M/d/Y', formatForJs: 'MMM/DD/YYYY'}, // Mar/01/2016
             {label: 'DD-MON-YYYY', key: 'd-M-Y', formatForJs: 'DD-MMM-YYYY'}, // 01-Mar-2016
-            {label: 'DD/MON/YYYY', key: 'd/M/Y', formatForJs: 'DD/MMM/YYYY'}  // 01/Mar/2016
+            {label: 'DD/MON/YYYY', key: 'd/M/Y', formatForJs: 'DD/MMM/YYYY'},  // 01/Mar/2016
+            {label: 'MON DD, YYYY', key: 'M d, Y', formatForJs: 'MMM DD, YYYY'},  // Jan 15, 2016
+            {label: 'YYYY, MON DD', key: 'Y, M d', formatForJs: 'YYYY, MMM DD'} //2016, Jan 15
         ];
 
         return api;

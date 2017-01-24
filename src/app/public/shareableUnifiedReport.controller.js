@@ -71,7 +71,7 @@
             {label: '40', key: '40'},
             {label: '50', key: '50'}
         ];
-
+        
         $scope.getExportExcelFileName = getExportExcelFileName;
         $scope.isEmptyObject = isEmptyObject;
         $scope.isShow = isShow;

@@ -3,9 +3,18 @@
 </div>
 
 <div class="modal-body">
-    <p><strong> Select fields to share in report </strong></p>
-
     <form class="form-validation form-horizontal userForm" role="form" novalidate>
+        <div class="form-group col-sm-12">
+            <label for="inputDateRange">{{ 'DASHBOARD_MODULE.DATE_RANGE' | translate }}</label>
+            <div>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input date-range-picker options="datePickerOpts" class="form-control date-picker" ng-change="changeDate()" type="text" id="inputDateRange" ng-model="date" ng-required="true">
+                </div>
+            </div>
+        </div>
+
+        <p><strong> Select fields to share in report </strong></p>
         <div class="form-group col-sm-12">
             <label class="ui-checkbox"><input name="all" type="checkbox" ng-model="selected.selectAll" ng-click="selectAll()"><span>Select All</span></label>
         </div>

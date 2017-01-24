@@ -1,3 +1,20 @@
+<div id="form-date-range-selector" class="panel panel-default">
+    <div class="panel-body">
+        <form name="reportSelectorForm" class="form-inline" role="form" ng-submit="generateReport(date)" novalidate>
+            <div class="form-group">
+                <label for="inputDateRange">{{ 'DASHBOARD_MODULE.DATE_RANGE' | translate }}</label>
+                <div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input date-range-picker options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="date" ng-required="true">
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Run Report</button>
+        </form>
+    </div>
+</div>
+
 <section class="panel panel-default">
     <div class="panel-heading">
         <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
