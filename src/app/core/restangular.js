@@ -8,8 +8,8 @@
             Restangular.setBaseUrl(API_BASE_URL);
 
             // for debugging
-            //Restangular.setDefaultRequestParams('patch', {XDEBUG_SESSION_START: 1});
-            //Restangular.setDefaultRequestParams('post', {XDEBUG_SESSION_START: 1});
+ //           Restangular.setDefaultRequestParams('patch', {XDEBUG_SESSION_START: 1});
+ //            Restangular.setDefaultRequestParams('post', {XDEBUG_SESSION_START: 1});
 
             Restangular.addRequestInterceptor(function(element, operation, what) {
 

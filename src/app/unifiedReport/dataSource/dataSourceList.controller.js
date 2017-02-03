@@ -1,10 +1,10 @@
-(function() {
+(function (){
     'use strict';
 
     angular.module('tagcade.unifiedReport.dataSource')
         .controller('DataSourceList', DataSourceList);
 
-    function DataSourceList($scope, $translate, $modal, $stateParams, dataSources, EVENT_ACTION_SORTABLE, UnifiedReportDataSourceManager, AlertService, AtSortableService, HISTORY_TYPE_PATH, historyStorage) {
+    function DataSourceList($scope, $translate, $modal, $stateParams, dataSources, EVENT_ACTION_SORTABLE, UnifiedReportDataSourceManager, AlertService, AtSortableService, HISTORY_TYPE_PATH, historyStorage){
 
         var params = {
             page: 1
@@ -33,19 +33,18 @@
         $scope.getAPIKey = getAPIKey;
         $scope.getUnifiedReportEmail = getUnifiedReportEmail;
 
-
-        function showPagination() {
+        function showPagination(){
             return angular.isArray($scope.dataSources.records) && $scope.dataSources.totalRecord > $scope.tableConfig.itemsPerPage;
         }
 
-        function changePage(currentPage) {
+        function changePage(currentPage){
             params = angular.extend(params, {
                 page: currentPage
             });
             _getDataSources(params);
         }
 
-        function deleteDataSource($dataSourceId) {
+        function deleteDataSource($dataSourceId){
             if ($scope.formProcessing) {
                 return; // already running, prevent duplicates
             }
@@ -54,33 +53,33 @@
 
             var deleteDataSource = UnifiedReportDataSourceManager.one($dataSourceId).remove();
 
-            deleteDataSource.catch(function(response) {
+            deleteDataSource.catch(function (response){
                 var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.userForm, $scope.fieldNameTranslations);
                 $scope.formProcessing = false;
 
                 return errorCheck;
-            }).then(function() {
+            }).then(function (){
                 AlertService.addFlash({
                     type: 'success',
                     message: $translate.instant('UNIFIED_REPORT_DATA_SOURCE_MODULE.DELETE_SUCCESS')
                 });
-            }).then(function() {
+            }).then(function (){
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSource, '^.list');
             });
         }
 
-        function getAPIKey(dataSource) {
+        function getAPIKey(dataSource){
 
             $modal.open({
                 templateUrl: 'unifiedReport/dataSource/apiKey.tpl.html',
                 resolve: {
-                    apiKey: function() {
+                    apiKey: function (){
                         return UnifiedReportDataSourceManager.one(dataSource.id).customGET('apikey', {
                             secure: true
                         });
                     }
                 },
-                controller: function($scope, apiKey) {
+                controller: function ($scope, apiKey){
 
                     $scope.selected = {
                         secure: true
@@ -89,28 +88,44 @@
                     $scope.dataSource = dataSource;
                     $scope.apiKey = apiKey;
 
-                    $scope.getTextToCopy = function(string) {
+                    $scope.getTextToCopy = function (string){
                         return string.replace(/\n/g, '\r\n');
                     };
 
-                    $scope.highlightText = function(apiKey) {
-                        return apiKey;
-                    };
+                    $scope.regenerateApiKey = function (){
+                        var updateApiKey = UnifiedReportDataSourceManager.one(dataSource.id).one('regenerateurapikeys').post();
+
+                        setTimeout(function (){
+                            var newApiKey = UnifiedReportDataSourceManager.one(dataSource.id).customGET('apikey', {
+                                secure: true
+                            });
+
+                            newApiKey.catch(function (response){
+                                var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.userForm, $scope.fieldNameTranslations);
+                                $scope.formProcessing = false;
+
+                                return errorCheck;
+                            }).then(function (response){
+                                $scope.apiKey = response;
+                            });
+
+                        }, 2000);
+                    }
                 }
             });
         }
 
-        function getUnifiedReportEmail(dataSource) {
+        function getUnifiedReportEmail(dataSource){
             $modal.open({
                 templateUrl: 'unifiedReport/dataSource/unifiedReportEmail.tpl.html',
                 resolve: {
-                    unifiedReportEmail: function() {
+                    unifiedReportEmail: function (){
                         return UnifiedReportDataSourceManager.one(dataSource.id).customGET('uremail', {
                             secure: true
                         });
                     }
                 },
-                controller: function($scope, unifiedReportEmail) {
+                controller: function ($scope, unifiedReportEmail){
 
                     $scope.selected = {
                         secure: true
@@ -119,41 +134,58 @@
                     $scope.dataSource = dataSource;
                     $scope.unifiedReportEmail = unifiedReportEmail;
 
-                    $scope.getTextToCopy = function(string) {
+                    $scope.getTextToCopy = function (string){
                         return string.replace(/\n/g, '\r\n');
                     };
 
-                    $scope.highlightText = function(unifiedReportEmail) {
-                        return unifiedReportEmail;
+                    $scope.regenerateUnifiedReportEmail = function (){
+                        var updateUREmail = UnifiedReportDataSourceManager.one(dataSource.id).one('regenerateuremails').post();
+
+                        setTimeout(function (){
+                            var newUrEmail = UnifiedReportDataSourceManager.one(dataSource.id).customGET('uremail', {
+                                secure: true
+                            });
+
+                            newUrEmail.catch(function (response){
+                                var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.userForm, $scope.fieldNameTranslations);
+                                $scope.formProcessing = false;
+
+                                return errorCheck;
+                            }).then(function (response){
+                                $scope.unifiedReportEmail = response;
+                            });
+
+                        }, 2000);
+
                     };
                 }
             });
         }
 
-        $scope.$on('$locationChangeSuccess', function() {
+        $scope.$on('$locationChangeSuccess', function (){
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.dataSource)
         });
 
-        $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
+        $scope.$on(EVENT_ACTION_SORTABLE, function (event, query){
             params = angular.extend(params, query);
             _getDataSources(params);
         });
 
-        function searchData() {
+        function searchData(){
             var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
             _getDataSources(params);
         }
 
-        function _getDataSources(query) {
+        function _getDataSources(query){
             clearTimeout(getSite);
 
-            getSite = setTimeout(function() {
+            getSite = setTimeout(function (){
                 return UnifiedReportDataSourceManager.one().get(query)
-                    .then(function(dataSources) {
+                    .then(function (dataSources){
                         AtSortableService.insertParamForUrl(query);
 
-                        setTimeout(function() {
+                        setTimeout(function (){
                             $scope.dataSources = dataSources;
                             $scope.tableConfig.totalItems = Number(dataSources.totalRecord);
                             $scope.availableOptions.currentPage = Number(query.page);
