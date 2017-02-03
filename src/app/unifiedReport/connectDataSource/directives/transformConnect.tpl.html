@@ -283,9 +283,9 @@
                                         <label class="col-sm-2 control-label">Expression</label>
 
                                         <div class="col-sm-10">
-                                            <textarea id="addConcatenatedFieldExpression" mentio mentio-select="getPeopleText(item)"
+                                            <textarea id="concatenated-{{$index}}" mentio mentio-select="getPeopleText(item)"
                                                       type="text"
-                                                      ng-change="removeAutoSpaceAfterField(field)"
+                                                      ng-change="removeAutoSpaceAfterField(field, $index)"
                                                       mentio-trigger-char="'['" mentio-macros="macros"
                                                       mentio-typed-text="typedTerm" mentio class="form-control"
                                                       mentio-items="fieldForExpression | filter:label:typedTerm"

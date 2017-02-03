@@ -102,9 +102,8 @@
                         filter.value = null
                     }
 
-                    function removeAutoSpaceAfterField(field) {
-                        var elemId = 'addConcatenatedFieldExpression';
-
+                    function removeAutoSpaceAfterField(field, id) {
+                        var elemId = 'concatenated-'.concat(id) ;
                         if (!'expression' in field) {
                             return field;
                         }
