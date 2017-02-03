@@ -68,6 +68,7 @@
 
             "VIEW_TODAY_REPORT": "View Today's Report",
             "COPY_TO_CLIPBOARD": "Copy to Clipboard",
+            "REFRESH": 'Refresh',
 
             "EVENT_LISTENER": {
                 "LOGIN_FAIL": "Login failed, did you provide an invalid username and/or password?",
@@ -1120,8 +1121,10 @@
                 "ADD_NEW_SUCCESS": "The data source has been added",
                 "DELETE_SUCCESS": "The data source has been deleted",
                 "UPDATE_SUCCESS": "The data source has been updated",
+                "UPDATE_UNIFIED_REPORT_SUCCESS": "Regenerate unified report email successful",
                 "ADD_NEW_DATA_SOURCE": "New Data Source",
                 "GET_UNIFIED_REPORT_EMAIL":"Get Unified Report Email",
+	            "REGENERATE_UNIFIED_REPORT_EMAIL":"Regenerate Unified Report Email",
                 "GET_API_KEY": "Get API Key",
                 "UPLOAD_DATA": "Upload Data",
                 "MANAGE_RECEIVED_DATA": "Manage Received Data",
