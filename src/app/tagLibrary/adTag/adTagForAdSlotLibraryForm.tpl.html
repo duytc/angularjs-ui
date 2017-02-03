@@ -124,7 +124,7 @@
                 <div class="form-group" ng-if="adTag.libraryAdTag.adType == adTypes.customAd">
                     <label for="inputHtml" class="col-sm-2 control-label">{{ 'AD_TAG_MODULE.HTML' | translate }}</label>
                     <div class="col-sm-10">
-                        <ui-codemirror select-on-click ng-required="true" id="inputHtml" ng-model="adTag.libraryAdTag.html" ui-codemirror-opts="editorOptions"></ui-codemirror>
+                        <ui-codemirror ng-required="true" id="inputHtml" ng-model="adTag.libraryAdTag.html" ui-codemirror-opts="editorOptions"></ui-codemirror>
                         <span class="help-block">{{ 'AD_TAG_MODULE.HELP_BLOCK_HTML' | translate }}:<br/>
                         <strong>${CACHEBUSTER}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_CACHE_BUSTER' | translate }}<br/>
                         <strong>${PAGE_URL}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_PAGE_URL' | translate }}<br/>

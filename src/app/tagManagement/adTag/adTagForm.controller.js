@@ -259,7 +259,7 @@
                 );
 
                 // disabled form input html when select ad tag library
-                return $scope.editorOptions.readOnly = 'nocursor';
+                return $scope.editorOptions.readOnly = true;
             } else {
                 if(angular.isObject($scope.adTag)) {
                     $scope.adTag.libraryAdTag = {
