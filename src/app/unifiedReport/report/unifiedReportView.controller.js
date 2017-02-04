@@ -395,6 +395,8 @@
                     };
                     
                     function selectAll() {
+                        $scope.shareableLink = null;
+
                         if(!$scope.selected.selectAll) {
                             fieldsToShare = []
                         } else {

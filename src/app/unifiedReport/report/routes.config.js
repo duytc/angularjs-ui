@@ -224,6 +224,33 @@
                     label: '{{ reportView.name }}'
                 }
             })
+            .state('unifiedReport.report.listShare', {
+                url: '/reportView/{reportViewId:[0-9]+}/listShare?page&sortField&orderBy&searchKey',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    'content@app': {
+                        controller: 'ReportViewShareList',
+                        templateUrl: 'unifiedReport/report/listShareable.tpl.html'
+                    }
+                },
+                resolve: {
+                    listShare: /* @ngInject */ function(UnifiedReportViewManager, $stateParams) {
+                        return UnifiedReportViewManager.one($stateParams.reportViewId).one('sharekeyconfigs').getList();
+                    },
+                    reportView: function (UnifiedReportViewManager, $stateParams) {
+                        return UnifiedReportViewManager.one($stateParams.reportViewId).get()
+                    },
+                    dataSetsFromReportView: function (reportView, unifiedReportBuilder) {
+                        console.log(reportView);
+                        return unifiedReportBuilder.getDataSetsFromReportView(reportView)
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'View Shareable link'
+                }
+            })
         ;
     }
 })();
