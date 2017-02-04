@@ -38,7 +38,7 @@
                </div>
            </div>
 
-           <div class="form-group select-connect-data-source" ng-if="filter.dateType == 'customRange'">
+           <div class="form-group select-connect-data-source" ng-if="filter.dateType == 'customRange' || filter.dateType == 'userProvided'">
                <label class="col-sm-2 control-label" for="inputDateRange">Date Range</label>
 
                <div class="col-sm-10">
@@ -60,7 +60,6 @@
                        </ui-select-choices>
                    </ui-select>
                </div>
-
            </div>
        </div>
 

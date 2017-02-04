@@ -6,11 +6,11 @@
                 <div>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                        <input date-range-picker options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="date" ng-required="true">
+                        <input date-range-picker ng-disabled="!hasFilterDate()" options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="date" ng-required="true">
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Run Report</button>
+            <button type="submit" class="btn btn-primary" ng-disabled="!hasFilterDate()">Run Report</button>
         </form>
     </div>
 </div>

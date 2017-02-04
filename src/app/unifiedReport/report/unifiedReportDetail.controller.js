@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $stateParams, _, SortReportByColumnType, reportView, $translate, reportGroup, AlertService, unifiedReportFormatReport, UnifiedReportViewManager, UserStateHelper, DateFormatter) {
+    function UnifiedReportDetail($scope, $stateParams, _, SortReportByColumnType, reportView, $translate, reportGroup, getDateReportView, AlertService, unifiedReportFormatReport, UnifiedReportViewManager, UserStateHelper, DateFormatter) {
         $scope.reportView = reportView;
         $scope.reportGroup = reportGroup;
         $scope.hasResult = reportGroup !== false;
@@ -122,8 +122,8 @@
         $scope.itemsPerPage.selected = $scope.tableConfig.itemsPerPage;
 
         $scope.date = {
-            startDate: $stateParams.startDate || null,
-            endDate : $stateParams.endDate || null
+            startDate: $stateParams.startDate || getDateReportView.getMinStartDateInFilterReportView(reportView),
+            endDate : $stateParams.endDate || getDateReportView.getMaxEndDateInFilterReportView(reportView)
         };
 
         $scope.datePickerOpts = {
@@ -146,7 +146,25 @@
         $scope.isNullValue = isNullValue;
         
         $scope.generateReport = generateReport;
-        
+        $scope.hasFilterDate = hasFilterDate;
+
+        function hasFilterDate() {
+            var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
+            for (var reportViewIndex in reportViews) {
+                var reportView = reportViews[reportViewIndex];
+
+                for (var filterIndex in reportView.filters) {
+                    var filter = reportView.filters[filterIndex];
+
+                    if((filter.type == 'date' || filter.type == 'datetime') && filter.dateType == 'userProvided') {
+                        return true
+                    }
+                }
+            }
+
+            return false;
+        }
+
         function generateReport(date) {
             var reportViewClone = angular.copy(reportView);
 

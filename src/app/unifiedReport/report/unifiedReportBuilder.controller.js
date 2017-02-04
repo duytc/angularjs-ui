@@ -641,7 +641,7 @@
             angular.forEach(builders, function (item) {
                 angular.forEach(item.filters, function (filter) {
                     if (filter.type == 'date') {
-                        if (filter.dateType == 'customRange') {
+                        if (filter.dateType == 'customRange' || filter.dateType == 'userProvided') {
                             filter.dateValue.startDate = dateUtil.getFormattedDate(filter.dateValue.startDate);
                             filter.dateValue.endDate = dateUtil.getFormattedDate(filter.dateValue.endDate);
                         }

@@ -316,7 +316,7 @@
                         });
                     }
                 },
-                controller: function ($scope, fieldsReportView, UnifiedReportViewManager, DateFormatter) {
+                controller: function ($scope, fieldsReportView, UnifiedReportViewManager, DateFormatter, getDateReportView) {
                     $scope.reportView = reportView;
                     $scope.fieldsReportView = fieldsReportView;
                     var fieldsToShare = [];
@@ -326,8 +326,8 @@
                     };
 
                     $scope.date = {
-                        startDate: null,
-                        endDate: null
+                        startDate: getDateReportView.getMinStartDateInFilterReportView(reportView),
+                        endDate : getDateReportView.getMaxEndDateInFilterReportView(reportView)
                     };
 
                     $scope.datePickerOpts = {
@@ -345,6 +345,7 @@
 
                     $scope.selectAll = selectAll;
                     $scope.changeDate = changeDate;
+                    $scope.hasFilterDate = hasFilterDate;
 
                     function changeDate() {
                         $scope.shareableLink = null;
@@ -408,6 +409,23 @@
                                 }
                             })
                         }
+                    }
+
+                    function hasFilterDate() {
+                        var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
+                        for (var reportViewIndex in reportViews) {
+                            var reportView = reportViews[reportViewIndex];
+
+                            for (var filterIndex in reportView.filters) {
+                                var filter = reportView.filters[filterIndex];
+
+                                if((filter.type == 'date' || filter.type == 'datetime') && filter.dateType == 'userProvided') {
+                                    return true
+                                }
+                            }
+                        }
+
+                        return false;
                     }
                 }
             });
