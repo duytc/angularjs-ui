@@ -51,6 +51,10 @@
 
                             $scope.listShare = listShare;
 
+                            if($scope.tableConfig.currentPage > 0 && listShare.length/10 == $scope.tableConfig.currentPage) {
+                                $scope.tableConfig.currentPage =- 1;
+                            }
+
                             AlertService.replaceAlerts({
                                 type: 'success',
                                 message: 'The shareable link was revoked'

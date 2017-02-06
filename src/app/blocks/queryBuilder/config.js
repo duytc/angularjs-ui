@@ -42,7 +42,7 @@
             {code: 'Android', name: 'Android'},
             {code: 'Windows Phone 10.0', name: 'Windows 10 Mobile'},
             {code: 'BB10', name: 'BlackBerry 10'},
-            {code: 'Mobile', name: 'Firefox OS'},
+            {code: 'Firefox', name: 'Firefox OS'},
             {code: 'Sailfish', name: 'Sailfish OS'},
             {code: 'Tizen', name: 'Tizen'},
             {code: 'Ubuntu', name: 'Ubuntu Touch OS'}

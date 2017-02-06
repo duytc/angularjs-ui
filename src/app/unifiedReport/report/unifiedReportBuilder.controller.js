@@ -65,6 +65,10 @@
         }, watchReportView, true);
 
         $scope.$watch(function () {
+            return $scope.reportBuilder.subReportsIncluded;
+        }, watchReportView, true);
+
+        $scope.$watch(function () {
             return $scope.reportBuilder;
         }, summaryFieldForTotal, true);
 
