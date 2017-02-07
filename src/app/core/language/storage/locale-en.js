@@ -1129,6 +1129,7 @@
                 "UPLOAD_DATA": "Upload Data",
                 "MANAGE_RECEIVED_DATA": "Manage Received Data",
                 "EDIT": "Edit",
+                "KEY": "Key",
                 "DELETE": "Delete",
                 "CONFIRM_DELETE_DATA_SOURCE": "Are you sure that you want to delete this data source?",
                 "ALERT_RECEIVED_DATA_WRONG_FORMAT": "Alert me when received data is in the wrong format",
