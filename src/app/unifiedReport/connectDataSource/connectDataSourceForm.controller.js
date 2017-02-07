@@ -437,6 +437,18 @@
                     });
                 }
 
+                if(transform.type == 'replaceText') {
+                    angular.forEach(transform.fields, function (field) {
+                        if(Object.keys($scope.connectDataSource.mapFields).indexOf(field.field) == -1
+                            || ($scope.dimensionsMetrics[$scope.connectDataSource.mapFields[field.field]] != 'text'
+                            && $scope.dimensionsMetrics[$scope.connectDataSource.mapFields[field.field]] != 'multiLineText')) {
+                            $timeout(function () {
+                                field.field = null
+                            }, 0, true);
+                        }
+                    });
+                }
+
                 if(transform.type == 'addField' || transform.type == 'comparisonPercent' || transform.type == 'addCalculatedField' || transform.type == 'addConcatenatedField') {
                     angular.forEach(transform.fields, function (field) {
                         if(_.values($scope.connectDataSource.mapFields).indexOf(field.field) > -1) {

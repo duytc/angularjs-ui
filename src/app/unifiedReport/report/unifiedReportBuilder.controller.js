@@ -900,6 +900,16 @@
                     });
                 }
 
+                if(transform.type == 'replaceText') {
+                    angular.forEach(transform.fields, function (field) {
+                        if(_.values(selectedFields).indexOf(field.field) == -1) {
+                            $timeout(function () {
+                                field.field = null
+                            }, 0, true);
+                        }
+                    });
+                }
+
                 if (transform.type == 'comparisonPercent') {
                     angular.forEach(transform.fields, function (field) {
                         if (_.values(selectedFields).indexOf(field.denominator) == -1) {

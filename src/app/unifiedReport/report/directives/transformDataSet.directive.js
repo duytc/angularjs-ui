@@ -73,6 +73,7 @@
                     scope.getTypesFieldForCalculatedField = getTypesFieldForCalculatedField;
                     scope.selectTypeCalculatedField = selectTypeCalculatedField;
                     scope.formatExpressionToHighlight = formatExpressionToHighlight;
+                    scope.filterFieldByText = filterFieldByText;
 
                     function formatExpressionToHighlight(field) {
                         var expression = (!!field.field ? ('<strong>' + field.field + '</strong>' + ' = ') : '') + (angular.copy(field.expression) || '');
@@ -282,6 +283,28 @@
                         return data;
                     }
                     
+                    function getDimensionsMetricsForReplaceText(fields, fieldCurrent) {
+                        var data = [];
+
+                        angular.forEach(scope.selectedFields, function (field) {
+                            if(scope.dimensionsMetrics[field.key] == 'text' || scope.dimensionsMetrics[field.key] == 'multiLineText') {
+                                var hasField = _.find(fields, function (item) {
+                                    return item.field == field.key;
+                                });
+
+                                if (!hasField) {
+                                    data.push(field);
+                                }
+                            }
+                        });
+
+                        return data;
+                    }
+
+                    function filterFieldByText(field) {
+                        return scope.dimensionsMetrics[field.key] == 'text' || scope.dimensionsMetrics[field.key] == 'multiLineText';
+                    }
+
                     function getDimensionsMetricsForReplaceText(fields, fieldCurrent) {
                         var data = [];
 

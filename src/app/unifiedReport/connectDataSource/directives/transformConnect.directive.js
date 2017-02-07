@@ -49,6 +49,7 @@
                     scope.addComparisonPercent = addComparisonPercent;
                     scope.notInMapField = notInMapField;
                     scope.filterFieldByType = filterFieldByType;
+                    scope.filterFieldByText= filterFieldByText;
                     scope.selectType = selectType;
                     scope.selectTransformType = selectTransformType;
                     scope.filerFieldNamesForComparisonPercent = filerFieldNamesForComparisonPercent;
@@ -358,6 +359,10 @@
 
                             return false
                         };
+                    }
+                    
+                    function filterFieldByText(field) {
+                        return scope.dimensionsMetrics[scope.mapFields[field]] == 'text' || scope.dimensionsMetrics[scope.mapFields[field]] == 'multiLineText';
                     }
 
                     function notInMapField(field) {
