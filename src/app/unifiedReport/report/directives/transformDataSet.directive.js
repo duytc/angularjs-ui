@@ -5,7 +5,7 @@
         .directive('transformDataSet', transformDataSet)
     ;
 
-    function transformDataSet($compile, _, AddCalculatedField, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES, METRICS_SET) {
+    function transformDataSet($compile, _, AddCalculatedField, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES, METRICS_SET) {
         'use strict';
 
         return {
@@ -29,6 +29,7 @@
                     scope.allFiledFormatTypeKeys = CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY;
                     scope.dateFormatTypes = DATE_FORMAT_TYPES;
                     scope.typesField = METRICS_SET;
+                    scope.positionsForReplaceText = POSITIONS_FOR_REPLACE_TEXT;
                     scope.separatorType = [
                         {key: ',', label: 'Comma'},
                         {key: 'none', label: 'None'}
@@ -49,6 +50,7 @@
                     scope.removeTransform = removeTransform;
                     scope.addTransform = addTransform;
                     scope.addField = addField;
+                    scope.addReplaceText = addReplaceText;
                     scope.removeAddValue = removeAddValue;
                     scope.addComparisonPercent = addComparisonPercent;
                     scope.notInMapField = notInMapField;
@@ -59,6 +61,7 @@
                     scope.getFieldNames = getFieldNames;
                     scope.getDimensionsMetricsForComparison = getDimensionsMetricsForComparison;
                     scope.getDimensionsMetricsForAddField = getDimensionsMetricsForAddField;
+                    scope.getDimensionsMetricsForReplaceText = getDimensionsMetricsForReplaceText;
                     scope.getFieldForGroupList = getFieldForGroupList;
                     scope.getFiledFormatTypes = getFiledFormatTypes;
                     scope.filterFieldNameForSortBy = filterFieldNameForSortBy;
@@ -278,6 +281,24 @@
 
                         return data;
                     }
+                    
+                    function getDimensionsMetricsForReplaceText(fields, fieldCurrent) {
+                        var data = [];
+
+                        angular.forEach(scope.selectedFields, function (field) {
+                            if(scope.dimensionsMetrics[field.key] == 'text' || scope.dimensionsMetrics[field.key] == 'multiLineText') {
+                                var hasField = _.find(fields, function (item) {
+                                    return item.field == field.key;
+                                });
+
+                                if (!hasField) {
+                                    data.push(field);
+                                }
+                            }
+                        });
+
+                        return data;
+                    }
 
                     function getDimensionsMetricsForComparison(fields, fieldCurrent) {
                         var data = [fieldCurrent];
@@ -392,6 +413,15 @@
                         fields.push({
                             field: null,
                             value: null
+                        });
+                    }
+
+                    function addReplaceText(fields) {
+                        fields.push({
+                            field: null,
+                            searchFor: null,
+                            position: null,
+                            replaceWith: null
                         });
                     }
 

@@ -61,7 +61,8 @@
             addCalculatedField: 'addCalculatedField',
             comparisonPercent: 'comparisonPercent',
             addConcatenatedField: 'addConcatenatedField',
-            currency: 'currency'
+            currency: 'currency',
+            replaceText: 'replaceText'
         })
         .provider('CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD', {
             $get: function (CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY) {
@@ -73,9 +74,15 @@
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addField, label: 'Add Field'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addCalculatedField, label: 'Add Calculated Field'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.comparisonPercent, label: 'Comparison Percent'},
-                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addConcatenatedField, label: 'Concatenated Field'}
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addConcatenatedField, label: 'Concatenated Field'},
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.replaceText, label: 'Replace Text'}
                 ];
             }
         })
+        .constant('POSITIONS_FOR_REPLACE_TEXT', [
+            {key: 'anywhere', label: 'Anywhere'},
+            {key: 'at the beginning', label: 'At the Beginning'},
+            {key: 'at the end', label: 'At the End'}
+        ])
     ;
 })();

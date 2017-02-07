@@ -5,7 +5,7 @@
         .directive('transformConnect', transformConnect)
     ;
 
-    function transformConnect($compile, AddCalculatedField, _, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES) {
+    function transformConnect($compile, AddCalculatedField, _, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES) {
         'use strict';
 
         return {
@@ -26,6 +26,7 @@
                     scope.allFiledFormatTypeKeys = CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY;
                     scope.dateFormatTypes = DATE_FORMAT_TYPES;
                     scope.fieldForExpression = [];
+                    scope.positionsForReplaceText = POSITIONS_FOR_REPLACE_TEXT;
 
                     scope.separatorType = [
                         {key: ',', label: 'Comma'},
@@ -43,6 +44,7 @@
                     scope.removeTransform = removeTransform;
                     scope.addTransform = addTransform;
                     scope.addField = addField;
+                    scope.addReplaceText = addReplaceText;
                     scope.removeAddValue = removeAddValue;
                     scope.addComparisonPercent = addComparisonPercent;
                     scope.notInMapField = notInMapField;
@@ -54,6 +56,7 @@
                     scope.getDimensionsMetricsForComparison = getDimensionsMetricsForComparison;
                     scope.getDimensionsMetricsForAddField = getDimensionsMetricsForAddField;
                     scope.getDimensionsMetricsForTextAddField = getDimensionsMetricsForTextAddField;
+                    scope.getDimensionsMetricsForTextAddReplace = getDimensionsMetricsForTextAddReplace;
                     scope.getDimensionsMetricsForNumberAddField = getDimensionsMetricsForNumberAddField;
                     scope.getFiledFormatTypes = getFiledFormatTypes;
                     scope.filterFieldNameForSortBy = filterFieldNameForSortBy;
@@ -245,6 +248,22 @@
                         });
                     }
 
+                    function getDimensionsMetricsForTextAddReplace(fieldCurrent, transformFields) {
+                        return _.filter(scope.totalDimensionsMetrics, function (dm) {
+                            if (dm == fieldCurrent) {
+                                return true;
+                            }
+
+                            for (var index in transformFields) {
+                                if(transformFields[index].field == dm) {
+                                    return false
+                                }
+                            }
+
+                            return scope.dimensionsMetrics[dm] == 'text' || scope.dimensionsMetrics[dm] == 'multiLineText';
+                        });
+                    }
+
                     function getDimensionsMetricsForNumberAddField(fieldCurrent, transforms) {
                         var fields = _getAllFieldInTransform(transforms);
 
@@ -353,9 +372,9 @@
                         return ((scope.dimensionsMetrics[field] == 'number') || (scope.dimensionsMetrics[field] == 'decimal'));
                     }
 
-                    function textTypeFieldsAndNotInMapField(field) {
-                        return _.values(scope.mapFields).indexOf(field) == -1;
-                    }
+                    // function textTypeFieldsAndNotInMapField(field) {
+                    //     return _.values(scope.mapFields).indexOf(field) == -1;
+                    // }
 
                     function removeTransform(index) {
                         scope.transforms.splice(index, 1);
@@ -379,6 +398,15 @@
                         fields.push({
                             field: null,
                             value: null
+                        });
+                    }
+
+                    function addReplaceText(fields) {
+                        fields.push({
+                            field: null,
+                            searchFor: null,
+                            position: null,
+                            replaceWith: null
                         });
                     }
 
