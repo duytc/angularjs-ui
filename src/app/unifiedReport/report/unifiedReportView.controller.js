@@ -346,6 +346,7 @@
                     $scope.selectAll = selectAll;
                     $scope.changeDate = changeDate;
                     $scope.hasFilterDate = hasFilterDate;
+                    $scope.hideDaterange = hideDaterange;
 
                     function changeDate() {
                         $scope.shareableLink = null;
@@ -409,6 +410,23 @@
                                 }
                             })
                         }
+                    }
+
+                    function hideDaterange() {
+                        var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
+                        for (var reportViewIndex in reportViews) {
+                            var reportView = reportViews[reportViewIndex];
+
+                            for (var filterIndex in reportView.filters) {
+                                var filter = reportView.filters[filterIndex];
+
+                                if(filter.type == 'date' || filter.type == 'datetime') {
+                                    return true
+                                }
+                            }
+                        }
+
+                        return false;
                     }
 
                     function hasFilterDate() {

@@ -147,6 +147,24 @@
         
         $scope.generateReport = generateReport;
         $scope.hasFilterDate = hasFilterDate;
+        $scope.hideDaterange = hideDaterange;
+        
+        function hideDaterange() {
+            var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
+            for (var reportViewIndex in reportViews) {
+                var reportView = reportViews[reportViewIndex];
+
+                for (var filterIndex in reportView.filters) {
+                    var filter = reportView.filters[filterIndex];
+
+                    if(filter.type == 'date' || filter.type == 'datetime') {
+                        return true
+                    }
+                }
+            }
+
+            return false;
+        }
 
         function hasFilterDate() {
             var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;

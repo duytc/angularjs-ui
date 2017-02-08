@@ -4,7 +4,7 @@
 
 <div class="modal-body">
     <form class="form-validation form-horizontal userForm" role="form" novalidate>
-        <div class="form-group col-sm-12">
+        <div class="form-group col-sm-12" ng-if="hideDaterange()">
             <label for="inputDateRange">{{ 'DASHBOARD_MODULE.DATE_RANGE' | translate }}</label>
             <div>
                 <div class="input-group">
