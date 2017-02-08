@@ -631,6 +631,22 @@
                         }
                     })
                 }
+
+                if (transform.type == 'replaceText') {
+                    angular.forEach(transform.fields, function (field) {
+                        if (!field.isOverride) {
+                            $scope.fieldInTransforms[field.targetField] = $scope.dimensionsMetrics[field.field];
+
+                            fieldsTransForm.push({
+                                label: field.targetField,
+                                key: field.targetField,
+                                root: field.targetField,
+                                type: $scope.dimensionsMetrics[field.field],
+                                transformType: transform.type
+                            });
+                        }
+                    })
+                }
             });
 
             return fieldsTransForm;

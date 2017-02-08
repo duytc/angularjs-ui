@@ -33,6 +33,10 @@
                         {key: 'none', label: 'None'}
                     ];
 
+                    scope.datePickerOpts = {
+                        singleDatePicker: true
+                    };
+
                     scope.fieldNames = _.isArray(scope.mapFields) ? scope.mapFields : _.union(_.values(scope.mapFields));
 
                     scope.$watch(function () {
@@ -63,13 +67,12 @@
                     scope.filterFieldNameForSortBy = filterFieldNameForSortBy;
                     scope.addSpaceBeforeAndAfterOperator = addSpaceBeforeAndAfterOperator;
                     scope.selectTypeCalculatedField = selectTypeCalculatedField;
-                    scope.selectFieldForAddField = selectFieldForAddField;
                     scope.getFieldForGroupBy = getFieldForGroupBy;
                     scope.removeAutoSpaceAfterField = removeAutoSpaceAfterField;
                     scope.formatExpressionToHighlight = formatExpressionToHighlight;
                     
                     function formatExpressionToHighlight(field) {
-                        var expression = (!!field.field ? ('<strong>' + field.field + '</strong>' + ' = ') : '') + (angular.copy(field.expression) || '');
+                        var expression = (!!field.field ? ('<strong>' + field.field + '</strong>' + ' = ') : '') + (angular.copy(field.expression) || angular.copy(field.value) || '');
 
                         if(!expression) {
                             return null;
@@ -102,16 +105,12 @@
                     scope.filterTextFields = filterTextFields;
                     scope.filterNumberFields = filterNumberFields;
 
-                    function selectFieldForAddField(filter) {
-                        filter.value = null
-                    }
-
                     function removeAutoSpaceAfterField(field, id) {
                         var elemId = 'concatenated-'.concat(id) ;
                         if (!'expression' in field) {
                             return field;
                         }
-                        setCaretPosition(elemId, field.expression.length);
+                        setCaretPosition(elemId, !!field.expression ? field.expression.length : field.value.length);
 
                         return field;
                     }
@@ -409,6 +408,8 @@
                     function addReplaceText(fields) {
                         fields.push({
                             field: null,
+                            isOverride: false,
+                            targetField: null,
                             searchFor: null,
                             position: null,
                             replaceWith: null

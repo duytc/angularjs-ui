@@ -61,7 +61,6 @@
                     scope.getFieldNames = getFieldNames;
                     scope.getDimensionsMetricsForComparison = getDimensionsMetricsForComparison;
                     scope.getDimensionsMetricsForAddField = getDimensionsMetricsForAddField;
-                    scope.getDimensionsMetricsForReplaceText = getDimensionsMetricsForReplaceText;
                     scope.getFieldForGroupList = getFieldForGroupList;
                     scope.getFiledFormatTypes = getFiledFormatTypes;
                     scope.filterFieldNameForSortBy = filterFieldNameForSortBy;
@@ -282,45 +281,9 @@
 
                         return data;
                     }
-                    
-                    function getDimensionsMetricsForReplaceText(fields, fieldCurrent) {
-                        var data = [];
-
-                        angular.forEach(scope.selectedFields, function (field) {
-                            if(scope.dimensionsMetrics[field.key] == 'text' || scope.dimensionsMetrics[field.key] == 'multiLineText') {
-                                var hasField = _.find(fields, function (item) {
-                                    return item.field == field.key;
-                                });
-
-                                if (!hasField) {
-                                    data.push(field);
-                                }
-                            }
-                        });
-
-                        return data;
-                    }
 
                     function filterFieldByText(field) {
-                        return scope.dimensionsMetrics[field.key] == 'text' || scope.dimensionsMetrics[field.key] == 'multiLineText';
-                    }
-
-                    function getDimensionsMetricsForReplaceText(fields, fieldCurrent) {
-                        var data = [];
-
-                        angular.forEach(scope.selectedFields, function (field) {
-                            if(scope.dimensionsMetrics[field.key] == 'text' || scope.dimensionsMetrics[field.key] == 'multiLineText') {
-                                var hasField = _.find(fields, function (item) {
-                                    return item.field == field.key;
-                                });
-
-                                if (!hasField) {
-                                    data.push(field);
-                                }
-                            }
-                        });
-
-                        return data;
+                        return field.type == 'text' || field.type == 'multiLineText';
                     }
 
                     function getDimensionsMetricsForComparison(fields, fieldCurrent) {
@@ -442,6 +405,8 @@
                     function addReplaceText(fields) {
                         fields.push({
                             field: null,
+                            isOverride: false,
+                            targetField: null,
                             searchFor: null,
                             position: null,
                             replaceWith: null
