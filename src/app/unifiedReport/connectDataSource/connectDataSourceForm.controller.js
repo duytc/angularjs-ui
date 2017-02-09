@@ -437,19 +437,19 @@
                     //}
                 }
 
-                if(transform.type == 'sortBy') {
-                    angular.forEach(transform.fields, function (field) {
-                       var difference = _.difference(field.names, _.values($scope.connectDataSource.mapFields));
-
-                       if(difference.length > 0) {
-                           angular.forEach(difference, function (item) {
-                               if(field.names.indexOf(item) > -1) {
-                                   field.names.splice(field.names.indexOf(item), 1)
-                               }
-                           });
-                       }
-                    });
-                }
+                // if(transform.type == 'sortBy') {
+                //     angular.forEach(transform.fields, function (field) {
+                //        var difference = _.difference(field.names, _.values($scope.connectDataSource.mapFields));
+                //
+                //        if(difference.length > 0) {
+                //            angular.forEach(difference, function (item) {
+                //                if(field.names.indexOf(item) > -1) {
+                //                    field.names.splice(field.names.indexOf(item), 1)
+                //                }
+                //            });
+                //        }
+                //     });
+                // }
 
                 if(transform.type == 'replaceText') {
                     angular.forEach(transform.fields, function (field) {
