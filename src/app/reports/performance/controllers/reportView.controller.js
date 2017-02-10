@@ -22,6 +22,14 @@
 
         var dataGroupReport = $state.current.params.expanded ? ($scope.reportGroup.expandedReports || []) : ($scope.reportGroup.reports || []);
 
+        if($scope.hasResult && !!reportGroup.expandedResult) {
+            reportGroup = reportGroup.expandedResult || {};
+            $scope.reportGroup = reportGroup;
+            dataGroupReport = $scope.reportGroup.reports || [];
+        }
+
+        // var dataGroupReport = $state.current.params.expanded ? ($scope.reportGroup.expandedReports || []) : ($scope.reportGroup.reports || []);
+
         if(!!$scope.subBreakDown && $scope.subBreakDown == 'day') {
             angular.forEach(dataGroupReport, function(rootReport) {
                 // set report type for item by day

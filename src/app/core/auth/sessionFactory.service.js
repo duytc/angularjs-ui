@@ -16,9 +16,11 @@
              * @param {Array} [userRoles]
              * @param {Array} [enabledModules]
              * @param {Array} [exchanges]
+             * @param {Array} [tagDomain]
+             * @param {string} [serveTime]
              */
-            createNew: function(token, id, username, userRoles, enabledModules, exchanges, demandSourceTransparency, enableViewTagcadeReport, tagDomain) {
-                return new Session(token, id, username, userRoles, enabledModules, exchanges, demandSourceTransparency, enableViewTagcadeReport, tagDomain);
+            createNew: function(token, id, username, userRoles, enabledModules, exchanges, demandSourceTransparency, enableViewTagcadeReport, tagDomain,  serveTime) {
+                return new Session(token, id, username, userRoles, enabledModules, exchanges, demandSourceTransparency, enableViewTagcadeReport, tagDomain, serveTime);
             },
 
             /**
@@ -37,7 +39,7 @@
                     throw new Error('missing username');
                 }
 
-                return this.createNew(data.token, data.id, data.username, data.userRoles, data.enabledModules, data.exchanges, data.demandSourceTransparency, data.enableViewTagcadeReport, data.tagDomain);
+                return this.createNew(data.token, data.id, data.username, data.userRoles, data.enabledModules, data.exchanges, data.demandSourceTransparency, data.enableViewTagcadeReport, data.tagDomain, data.serveTime);
             },
 
             isSession: function(session) {
@@ -45,12 +47,13 @@
             }
         };
 
-        function Session(token, id, username, userRoles, enabledModules, exchanges, demandSourceTransparency, enableViewTagcadeReport, tagDomain) {
+        function Session(token, id, username, userRoles, enabledModules, exchanges, demandSourceTransparency, enableViewTagcadeReport, tagDomain, serveTime) {
             this.token = token;
             this.id = parseInt(id, 10) || null;
             this.username = username;
             this.exchanges = exchanges;
             this.tagDomain = tagDomain;
+            this.serveTime = serveTime;
 
             // demandSourceTransparency is enabled if current user is not sub publisher
             this.demandSourceTransparency = userRoles.indexOf(USER_ROLES.subPublisher) > - 1 ? demandSourceTransparency : true;

@@ -15,9 +15,7 @@
             <label class="col-sm-2 control-label">Type</label>
 
             <div class="col-sm-10">
-                <ui-select ng-model="transform.type" ng-disabled="transform.type == 'date' && !!transform.field"
-                           ng-required="true" on-select="selectTransformType(transform, $item)" server-error
-                           reset-search-input="'false'">
+                <ui-select ng-model="transform.type" ng-disabled="transform.type == 'date' && !!transform.field" ng-required="true" on-select="selectTransformType(transform, $item)" server-error reset-search-input="'false'">
                     <ui-select-match placeholder="Select a transformation">{{ $select.selected.label }}
                     </ui-select-match>
                     <ui-select-choices
@@ -127,8 +125,7 @@
                             <div>
                                 <ui-select multiple ng-model="field.names" reset-search-input="'false'">
                                     <ui-select-match placeholder="Select a field">{{ $item }}</ui-select-match>
-                                    <ui-select-choices
-                                            repeat="field in fieldNames | filter:filterFieldNameForSortBy(transform.fields, field) | orderBy | filter:$select.search">
+                                    <ui-select-choices repeat="field in getFieldForGroupBy(transforms) | filter:filterFieldNameForSortBy(transform.fields, field) | orderBy | filter:$select.search">
                                         {{ field }}
                                     </ui-select-choices>
                                 </ui-select>
@@ -163,10 +160,9 @@
                                 <div class="row">
                                     <div class="form-group select-connect-data-source">
                                         <label class="col-sm-2 control-label">Field Name</label>
-
                                         <div class="col-sm-10">
                                             <div class="form-group select-data-type">
-                                                <ui-select ng-model="field.field" ng-required="true" server-error reset-search-input="'false'" on-select="selectFieldForAddField(field)">
+                                                <ui-select ng-model="field.field" ng-required="true" server-error reset-search-input="'false'" on-select="selectTypeCalculatedField($item, field)" ng-init="selectTypeCalculatedField(field.type)">
                                                     <ui-select-match placeholder="Select a field">{{ $select.selected}}</ui-select-match>
                                                     <ui-select-choices repeat="dm in getDimensionsMetricsForAddField(field.field, transforms) | filter:notInMapField | orderBy | filter:$select.search">
                                                         {{ dm }}
@@ -176,13 +172,37 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group select-connect-data-source" ng-if="dimensionsMetrics[field.field] == 'number' || dimensionsMetrics[field.field] == 'decimal'">
                                         <label class="col-sm-2 control-label">Value</label>
-
                                         <div class="col-sm-10">
-                                            <input server-error ng-required="true"
-                                                   type="{{ dimensionsMetrics[field.field] == 'number' || dimensionsMetrics[field.field] == 'decimal' ? 'number' : 'text'}}"
-                                                   class="form-control" ng-model="field.value" placeholder="Value">
+                                            <input server-error ng-required="true" type="number" class="form-control" ng-model="field.value" placeholder="Value">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-if="dimensionsMetrics[field.field] == 'text' || dimensionsMetrics[field.field] == 'multiLineText'">
+                                        <label class="col-sm-2 control-label">Expression</label>
+                                        <div class="col-sm-10">
+                                            <textarea id="concatenated-{{$index}}" mentio mentio-select="getPeopleText(item)"
+                                                      type="text"
+                                                      ng-change="removeAutoSpaceAfterField(field, $index)"
+                                                      mentio-trigger-char="'['" mentio-macros="macros"
+                                                      mentio-typed-text="typedTerm" mentio class="form-control"
+                                                      mentio-items="fieldForExpression | filter:label:typedTerm"
+                                                      ng-model="field.value" placeholder="Expression">
+                                            </textarea>
+
+                                            <span class="help-block">Use character <strong>[</strong> to show list of available variables. Each variable should be inside square bracket.</span>
+                                            <div class="callout-success expressions-transform" ng-bind-html="formatExpressionToHighlight(field)"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group select-connect-data-source" ng-if="dimensionsMetrics[field.field] == 'date' || dimensionsMetrics[field.field] == 'datetime'">
+                                        <label class="col-sm-2 control-label">Date</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                <input date-range-picker ng-required="true" options="datePickerOpts" class="form-control date-picker" type="text" id="inputStartDate" ng-model="field.value">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -245,64 +265,64 @@
             </div>
         </div>
 
-        <div ng-if="transform.type == allFiledFormatTypeKeys.addConcatenatedField">
-            <div class="form-group select-connect-data-source">
-                <label class="col-sm-2 control-label">Add Concatenated Field</label>
+        <!--<div ng-if="transform.type == allFiledFormatTypeKeys.addConcatenatedField">-->
+            <!--<div class="form-group select-connect-data-source">-->
+                <!--<label class="col-sm-2 control-label">Concatenated Field</label>-->
 
-                <div class="col-sm-10">
-                    <div class="expressions-group">
-                        <button class="btn btn-success" type="button" ng-click="addField(transform.fields)">
-                            <span class="glyphicon glyphicon-plus"></span>
-                            Add Concatenation Field
-                        </button>
+                <!--<div class="col-sm-10">-->
+                    <!--<div class="expressions-group">-->
+                        <!--<button class="btn btn-success" type="button" ng-click="addField(transform.fields)">-->
+                            <!--<span class="glyphicon glyphicon-plus"></span>-->
+                            <!--Add Concatenation Field-->
+                        <!--</button>-->
 
-                        <div ng-repeat="field in transform.fields">
-                            <div class="expressions-group condition">
-                                <div class="form-group select-connect-data-source">
-                                    <button type="button" class="btn btn-danger btn-close-ur"
-                                            ng-click="removeAddValue(transform.fields, $index)">
-                                        <span class="glyphicon glyphicon-minus "></span>
-                                    </button>
-                                </div>
+                        <!--<div ng-repeat="field in transform.fields">-->
+                            <!--<div class="expressions-group condition">-->
+                                <!--<div class="form-group select-connect-data-source">-->
+                                    <!--<button type="button" class="btn btn-danger btn-close-ur"-->
+                                            <!--ng-click="removeAddValue(transform.fields, $index)">-->
+                                        <!--<span class="glyphicon glyphicon-minus "></span>-->
+                                    <!--</button>-->
+                                <!--</div>-->
 
-                                <div class="row">
-                                    <div class="form-group select-connect-data-source">
-                                        <label class="col-sm-2 control-label">Field Name</label>
+                                <!--<div class="row">-->
+                                    <!--<div class="form-group select-connect-data-source">-->
+                                        <!--<label class="col-sm-2 control-label">Field Name</label>-->
 
-                                        <div class="col-sm-10">
-                                            <ui-select ng-model="field.field" ng-required="true" server-error reset-search-input="'false'" on-select="selectTypeCalculatedField($item, field)" ng-init="selectTypeCalculatedField(field.type)">
-                                                <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
-                                                <ui-select-choices repeat="dm in getDimensionsMetricsForTextAddField(field.field, transforms) | filter:notInMapField | orderBy | filter:$select.search">
-                                                    {{ dm }}
-                                                </ui-select-choices>
-                                            </ui-select>
-                                        </div>
-                                    </div>
+                                        <!--<div class="col-sm-10">-->
+                                            <!--<ui-select ng-model="field.field" ng-required="true" server-error reset-search-input="'false'" on-select="selectTypeCalculatedField($item, field)" ng-init="selectTypeCalculatedField(field.type)">-->
+                                                <!--<ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>-->
+                                                <!--<ui-select-choices repeat="dm in getDimensionsMetricsForTextAddField(field.field, transforms) | filter:notInMapField | orderBy | filter:$select.search">-->
+                                                    <!--{{ dm }}-->
+                                                <!--</ui-select-choices>-->
+                                            <!--</ui-select>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
 
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Expression</label>
+                                    <!--<div class="form-group">-->
+                                        <!--<label class="col-sm-2 control-label">Expression</label>-->
 
-                                        <div class="col-sm-10">
-                                            <textarea mentio mentio-select="getPeopleText(item)"
-                                                      type="text"
-                                                      ng-change="removeAutoSpaceAfterField(field)"
-                                                      mentio-trigger-char="'['" mentio-macros="macros"
-                                                      mentio-typed-text="typedTerm" mentio class="form-control"
-                                                      mentio-items="fieldForExpression | filter:label:typedTerm"
-                                                      ng-model="field.expression" placeholder="Expression">
-                                            </textarea>
+                                        <!--<div class="col-sm-10">-->
+                                            <!--<textarea id="concatenated-{{$index}}" mentio mentio-select="getPeopleText(item)"-->
+                                                      <!--type="text"-->
+                                                      <!--ng-change="removeAutoSpaceAfterField(field, $index)"-->
+                                                      <!--mentio-trigger-char="'['" mentio-macros="macros"-->
+                                                      <!--mentio-typed-text="typedTerm" mentio class="form-control"-->
+                                                      <!--mentio-items="fieldForExpression | filter:label:typedTerm"-->
+                                                      <!--ng-model="field.expression" placeholder="Expression">-->
+                                            <!--</textarea>-->
 
-                                            <span class="help-block">Use character <strong>[</strong> to show list of available variables. Each variable should be inside square bracket.</span>
-                                            <div class="callout-success expressions-transform" ng-bind-html="formatExpressionToHighlight(field)"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                                            <!--<span class="help-block">Use character <strong>[</strong> to show list of available variables. Each variable should be inside square bracket.</span>-->
+                                            <!--<div class="callout-success expressions-transform" ng-bind-html="formatExpressionToHighlight(field)"></div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <div ng-if="transform.type == allFiledFormatTypeKeys.comparisonPercent">
             <div class="form-group select-connect-data-source">
@@ -359,6 +379,86 @@
                                                 {{ dm }}
                                             </ui-select-choices>
                                         </ui-select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="transform.type == allFiledFormatTypeKeys.replaceText">
+            <div class="form-group select-connect-data-source">
+                <label class="col-sm-2 control-label">Replace Text</label>
+
+                <div class="col-sm-10">
+                    <div class="expressions-group">
+                        <button class="btn btn-success" type="button" ng-click="addReplaceText(transform.fields)">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            Add Replace Text
+                        </button>
+
+                        <div class="expressions-group" ng-repeat="replaceText in transform.fields">
+                            <div class="form-group select-connect-data-source">
+                                <button type="button" class="btn btn-danger btn-close-ur"
+                                        ng-click="removeAddValue(transform.fields, $index)">
+                                    <span class="glyphicon glyphicon-minus "></span>
+                                </button>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group select-connect-data-source">
+                                    <label class="col-sm-2 control-label">Field Name</label>
+                                    <div class="col-sm-10">
+                                        <ui-select ng-model="replaceText.field" ng-required="true" server-error reset-search-input="'false'">
+                                            <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
+                                            <ui-select-choices repeat="dm in dataSourceFields | filter:filterFieldByText | orderBy | filter:$select.search">
+                                                {{ dm }}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                                <div class="form-group select-connect-data-source">
+                                    <label for="isOverride" class="col-sm-2 control-label">Override Value</label>
+                                    <div class="col-sm-10">
+                                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="replaceText.isOverride" id="isOverride"><span></span></label>
+                                    </div>
+                                </div>
+                                <div class="form-group select-connect-data-source" ng-if="!replaceText.isOverride">
+                                    <label class="col-sm-2 control-label">Target Field</label>
+                                    <div class="col-sm-10">
+                                        <div class="form-group select-data-type">
+                                            <ui-select ng-model="replaceText.targetField" ng-required="true" server-error reset-search-input="'false'">
+                                                <ui-select-match placeholder="Select a field">{{ $select.selected}}</ui-select-match>
+                                                <ui-select-choices repeat="dm in totalDimensionsMetrics | filter:notInMapField | orderBy | filter:$select.search">
+                                                    {{ dm }}
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group select-connect-data-source">
+                                    <label class="col-sm-2 control-label">Search For</label>
+                                    <div class="col-sm-10">
+                                        <input server-error name="searchFor" ng-model="replaceText.searchFor" ng-required="true" type="text" class="form-control" placeholder="Search For">
+                                    </div>
+                                </div>
+                                <div class="form-group select-connect-data-source">
+                                    <label class="col-sm-2 control-label">Position</label>
+                                    <div class="col-sm-10">
+                                        <ui-select ng-model="replaceText.position" ng-required="true" server-error reset-search-input="'false'">
+                                            <ui-select-match placeholder="Select a position">{{ $select.selected.label }}</ui-select-match>
+                                            <ui-select-choices repeat="position.key as position in positionsForReplaceText">
+                                                {{ position.label }}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                                <div class="form-group select-connect-data-source">
+                                    <label class="col-sm-2 control-label">Replace With</label>
+                                    <div class="col-sm-10">
+                                        <input server-error name="replaceWith" ng-model="replaceText.replaceWith" type="text" class="form-control" placeholder="Replace With">
                                     </div>
                                 </div>
                             </div>

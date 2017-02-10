@@ -18,15 +18,20 @@
 
         /////
 
-        function makeHttpGetRequest(url, params)
+        function makeHttpGetRequest(url, params, userSession)
         {
             if(!params) {
                 params = null;
             }
             else {
                 if (!params.startDate) {
-                    params.startDate = moment().subtract(7, 'days').startOf('day');
-                    params.endDate = moment().subtract(1, 'days').endOf('day');
+                    if(!!userSession) {
+                        params.startDate = moment(userSession.serverTime).subtract(7, 'days').startOf('day');
+                        params.endDate = moment(userSession.serverTime).subtract(1, 'days').endOf('day');
+                    } else {
+                        params.startDate = moment().subtract(7, 'days').startOf('day');
+                        params.endDate = moment().subtract(1, 'days').endOf('day');
+                    }
                 }
 
                 params.startDate = DateFormatter.getFormattedDate(params.startDate);
@@ -36,16 +41,16 @@
             return dataService.makeHttpGetRequest(url, params, API_STATS_BASE_URL);
         }
 
-        function getPlatformDashboard(params) {
-            return makeHttpGetRequest('/platform', params);
+        function getPlatformDashboard(params, userSession) {
+            return makeHttpGetRequest('/platform', params, userSession);
         }
 
-        function getPublisherDashboard(params) {
+        function getPublisherDashboard(params, userSession) {
             if (!angular.isNumber(params.id)) {
                 return $q.reject(new Error('account id should be a number'));
             }
 
-            return makeHttpGetRequest('/accounts/:id', params);
+            return makeHttpGetRequest('/accounts/:id', params, userSession);
         }
 
         function getPublisherProjectedBill(params) {

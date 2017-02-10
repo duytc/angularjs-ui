@@ -10,6 +10,7 @@
         $scope.dataSources = dataSources;
 
         $scope.dataSet = dataSet || {
+            allowOverwriteExistingData: true,
             dimensions: [{type: null, name: null}],
             metrics: [{type: null, name: null}],
             actions: {

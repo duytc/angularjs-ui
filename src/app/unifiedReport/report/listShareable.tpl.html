@@ -1,0 +1,54 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th"></span>
+        <strong current-page-title></strong>
+
+        <div class="button-bar">
+            <button ng-click="backToListReportView()" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                Back to Report View List
+            </button>
+        </div>
+        <div class="btn-group btnGrouped" dropdown>
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ng-click="backToListReportView()">  Back to Report View List</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <search-box show-query="true" sb-list="listShare" search-fields="['token']"></search-box>
+
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table" at-sortable-query at-table at-paginated at-list="listShare" at-config="tableConfig">
+                <thead></thead>
+                <tbody>
+                <tr>
+                    <td at-title="{{ 'ACTIONS' | translate }}">
+                        <div class="btn-group" dropdown>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                            <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <li><a ng-click="revokeShare(item)">Revoke</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td at-title="Token" at-implicit at-sortable at-attribute="token"></td>
+                    <td at-attribute="fields" at-title="Share Fields">
+                        <ul>
+                            <li ng-repeat="field in item.fields.fields">
+                                {{ getFullNameField(field) }}
+                            </li>
+                        </ul>
+                    </td>
+                    <td at-title="Date Created" at-sortable at-attribute="fields.dateCreated">
+                        {{ item.fields.dateCreated | date:'MMM d, y H:mm:ss' }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <at-pagination at-pagination-query ng-if="showPagination()" at-list="listShare" at-config="tableConfig"></at-pagination>
+        </div>
+    </div>
+</div>

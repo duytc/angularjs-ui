@@ -26,6 +26,8 @@
             buyPrice: null,
             platform: null,
             companionAds: [],
+            isVastOnly: false,
+            isServerToServer: false,
             targeting: {
                 player_size: []
             }
@@ -86,6 +88,10 @@
         }
 
         function isFormValid() {
+            if($scope.adTag.isServerToServer && $scope.adTag.isVastOnly) {
+                return $scope.videoAdTagForm.$valid;
+            }
+
             return $scope.videoAdTagForm.$valid && angular.isArray($scope.adTag.platform) && $scope.adTag.platform.length > 0;
         }
 

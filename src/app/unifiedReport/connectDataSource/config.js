@@ -29,7 +29,17 @@
             {label: moment().format('MMM-DD-YYYY') + ' (MON-DD-YYYY)', key: 'M-d-Y'},   //Jan-15-2016
             {label: moment().format('MMM/DD/YYYY') + ' (MON/DD/YYYY)', key: 'M/d/Y'},   //Jan/15/2016
             {label: moment().format('DD-MMM-YYYY') + ' (DD-MON-YYYY)', key: 'd-M-Y'},   //15-Jan-2016
-            {label: moment().format('DD/MMM/YYYY') + ' (DD/MON/YYYY)', key: 'd/M/Y'}    //15/Jan/2016
+            {label: moment().format('DD/MMM/YYYY') + ' (DD/MON/YYYY)', key: 'd/M/Y'},    //15/Jan/2016
+            {label: moment().format('MMM DD, YYYY') + ' (MON DD, YYYY)', key: 'M d, Y'},    //Jan 15, 2016
+            {label: moment().format('YYYY, MMM DD') + ' (YYYY, MON DD)', key: 'Y, M d'},    //2016, Jan 15
+
+            /** Support 2 digit years*/
+            {label: moment().format('MM/DD/YY') + ' (MM/DD/YY)', key: 'm/d/y'},   //01/15/99
+            {label: moment().format('MM-DD-YY') + ' (MM-DD-YY)', key: 'm-d-y'},   //01-15-99
+            {label: moment().format('DD/MM/YY') + ' (DD/MM/YY)', key: 'd/m/y'},   //15/01/99
+            {label: moment().format('DD-MM-YY') + ' (DD-MM-YY)', key: 'd-m-y'},   //15-01-99
+            {label: moment().format('YY/MM/DD') + ' (YY/MM/DD)', key: 'y/m/d'},   //99/01/15
+            {label: moment().format('YY-MM-DD') + ' (YY-MM-DD)', key: 'y-m-d'}   //99-01-15
         ])
         .constant('COMPARISON_TYPES_FILTER_CONNECT_NUMBER', [
             {key: 'in', label: 'In'},
@@ -58,8 +68,9 @@
             addField: 'addField',
             addCalculatedField: 'addCalculatedField',
             comparisonPercent: 'comparisonPercent',
-            addConcatenatedField: 'addConcatenatedField',
-            currency: 'currency'
+            // addConcatenatedField: 'addConcatenatedField',
+            currency: 'currency',
+            replaceText: 'replaceText'
         })
         .provider('CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD', {
             $get: function (CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY) {
@@ -71,9 +82,15 @@
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addField, label: 'Add Field'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addCalculatedField, label: 'Add Calculated Field'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.comparisonPercent, label: 'Comparison Percent'},
-                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addConcatenatedField, label: 'Add Concatenated Field'}
+                    // {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addConcatenatedField, label: 'Concatenated Field'},
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.replaceText, label: 'Replace Text'}
                 ];
             }
         })
+        .constant('POSITIONS_FOR_REPLACE_TEXT', [
+            {key: 'anywhere', label: 'Anywhere'},
+            {key: 'at the beginning', label: 'At the Beginning'},
+            {key: 'at the end', label: 'At the End'}
+        ])
     ;
 })();

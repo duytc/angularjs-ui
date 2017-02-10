@@ -45,7 +45,8 @@
 
                     scope.dateTypes = [
                         {key: 'Fixed Date Range', value: 'customRange'},
-                        {key: 'Dynamic', value: 'dynamic'}
+                        {key: 'Dynamic', value: 'dynamic'},
+                        {key: 'User Provided', value: 'userProvided'}
                     ];
 
                     scope.dynamicDatePickerOpts = [
@@ -68,7 +69,7 @@
                     scope.selectDateType = selectDateType;
 
                     function selectDateType(dateType, filter) {
-                        if(dateType.value == 'customRange') {
+                        if(dateType.value == 'customRange' || dateType.value == 'userProvided') {
                             filter.dateValue = {
                                 startDate: moment().startOf('day'),
                                 endDate: moment().endOf('day')

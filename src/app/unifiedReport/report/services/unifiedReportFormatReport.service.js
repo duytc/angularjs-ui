@@ -22,7 +22,17 @@
             {label: 'MON-DD-YYYY', key: 'M-d-Y', formatForJs: 'MMM-DD-YYYY'}, // Mar-01-2016
             {label: 'MON/DD/YYYY', key: 'M/d/Y', formatForJs: 'MMM/DD/YYYY'}, // Mar/01/2016
             {label: 'DD-MON-YYYY', key: 'd-M-Y', formatForJs: 'DD-MMM-YYYY'}, // 01-Mar-2016
-            {label: 'DD/MON/YYYY', key: 'd/M/Y', formatForJs: 'DD/MMM/YYYY'}  // 01/Mar/2016
+            {label: 'DD/MON/YYYY', key: 'd/M/Y', formatForJs: 'DD/MMM/YYYY'},  // 01/Mar/2016
+            {label: 'MON DD, YYYY', key: 'M d, Y', formatForJs: 'MMM DD, YYYY'},  // Jan 15, 2016
+            {label: 'YYYY, MON DD', key: 'Y, M d', formatForJs: 'YYYY, MMM DD'}, //2016, Jan 15
+
+            /** Support 2 digit years*/
+            {label: 'MM/DD/YY', key: 'm/d/y', formatForJs:'MM/DD/YY'},   //01/15/99
+            {label: 'MM-DD-YY', key: 'm-d-y', formatForJs:'MM-DD-YY'},   //01-15-99
+            {label: 'DD/MM/YY', key: 'd/m/y', formatForJs:'DD/MM/YY'},   //15/01/99
+            {label: 'DD-MM-YY', key: 'd-m-y', formatForJs:'DD-MM-YY'},   //15-01-99
+            {label: 'YY/MM/DD', key: 'y/m/d', formatForJs:'YY/MM/DD'},   //99/01/15
+            {label: 'YY-MM-DD', key: 'y-m-d', formatForJs:'YY-MM-DD'}   //99-01-15
         ];
 
         return api;

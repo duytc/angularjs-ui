@@ -68,6 +68,7 @@
 
             "VIEW_TODAY_REPORT": "View Today's Report",
             "COPY_TO_CLIPBOARD": "Copy to Clipboard",
+            "REFRESH": 'Refresh',
 
             "EVENT_LISTENER": {
                 "LOGIN_FAIL": "Login failed, did you provide an invalid username and/or password?",
@@ -457,6 +458,20 @@
                 "UPDATE_FAIL": "An error occurred. The waterfall could not be updated",
                 "GENERATE_A_VAST": "Generate Vast/VPAID Tag",
                 "VAST_FOR_NAME": "Vast Tag for: {{ name }}",
+
+                "VAST_TAGS": "Vast Tag",
+                "WIDTH": "Width",
+                "HEIGHT": "Height",
+                "PAGE_URL": "Page Url",
+                "COUNTRY_CODE": "Country Code",
+                "BROWSER_NAME": "Browser Name",
+                "BROWSER_OS": "Browser Os",
+                "BROWSER_MAJOR": "Browser Major",
+                "TIME": "Time",
+                "SHOW_VAST_TAG_REQUEST": "Show Vast Tag Request",
+
+                "SERVER_TO_SERVER": "Server to Server",
+                "VAST_ONLY": "Vast Only",
 
                 "ADD_NEW_POSITION": "Add New Position",
                 "ADD_NEW_SUCCESS": "The waterfall has been created",
@@ -1106,12 +1121,15 @@
                 "ADD_NEW_SUCCESS": "The data source has been added",
                 "DELETE_SUCCESS": "The data source has been deleted",
                 "UPDATE_SUCCESS": "The data source has been updated",
+                "UPDATE_UNIFIED_REPORT_SUCCESS": "Regenerate unified report email successful",
                 "ADD_NEW_DATA_SOURCE": "New Data Source",
                 "GET_UNIFIED_REPORT_EMAIL":"Get Unified Report Email",
+	            "REGENERATE_UNIFIED_REPORT_EMAIL":"Regenerate Unified Report Email",
                 "GET_API_KEY": "Get API Key",
                 "UPLOAD_DATA": "Upload Data",
                 "MANAGE_RECEIVED_DATA": "Manage Received Data",
                 "EDIT": "Edit",
+                "KEY": "Key",
                 "DELETE": "Delete",
                 "CONFIRM_DELETE_DATA_SOURCE": "Are you sure that you want to delete this data source?",
                 "ALERT_RECEIVED_DATA_WRONG_FORMAT": "Alert me when received data is in the wrong format",

@@ -19,7 +19,7 @@
                 resolve: {
                     dataDashboard: function(dashboard, userSession, $stateParams) {
                         var params = $.extend($stateParams, {id : userSession.id});
-                        return dashboard.getPublisherDashboard(params);
+                        return dashboard.getPublisherDashboard(params, userSession);
                     }
                 },
                 ncyBreadcrumb: {

@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.connect')
         .controller('ConnectDataSourceForm', ConnectDataSourceForm);
 
-    function ConnectDataSourceForm($scope, $timeout, _, dataSources, connectDataSource, AlertService, sessionStorage, FileUploader, UnifiedReportConnectDataSourceManager, UnifiedReportDataSourceManager, ServerErrorProcessor, dataSet, dateUtil, historyStorage, HISTORY_TYPE_PATH) {
+    function ConnectDataSourceForm($scope, $timeout, _, dataSources, connectDataSource, AlertService, sessionStorage, FileUploader, UnifiedReportConnectDataSourceManager, UnifiedReportDataSourceManager, ServerErrorProcessor, dataSet, dateUtil, historyStorage, HISTORY_TYPE_PATH, DateFormatter) {
         $scope.fieldNameTranslations = {
             dataSet: 'Data Set',
             dataSource: 'Data Source',
@@ -331,6 +331,10 @@
                         if ($scope.dimensionsMetrics[field.field] == 'decimal' || $scope.dimensionsMetrics[field.field] == 'number') {
                             field.value = Number(field.value);
                         }
+
+                        if ($scope.dimensionsMetrics[field.field] == 'date' || $scope.dimensionsMetrics[field.field] == 'datetime') {
+                            field.value = DateFormatter.getFormattedDate(field.value.endDate);
+                        }
                     })
 
                 }
@@ -356,6 +360,16 @@
                 });
 
                 $scope.dataSourceFields = Object.keys(connectDataSource.dataSource.detectedFields);
+
+                angular.forEach($scope.connectDataSource.transforms, function (transform) {
+                    if(transform.type == 'addField') {
+                        angular.forEach(transform.fields, function (field) {
+                            if($scope.dimensionsMetrics[field.field] == 'datetime' || $scope.dimensionsMetrics[field.field] == 'date') {
+                                field.value = {endDate: field.value}
+                            }
+                        });
+                    }
+                });
             }
         }
 
@@ -423,17 +437,35 @@
                     //}
                 }
 
-                if(transform.type == 'sortBy') {
-                    angular.forEach(transform.fields, function (field) {
-                       var difference = _.difference(field.names, _.values($scope.connectDataSource.mapFields));
+                // if(transform.type == 'sortBy') {
+                //     angular.forEach(transform.fields, function (field) {
+                //        var difference = _.difference(field.names, _.values($scope.connectDataSource.mapFields));
+                //
+                //        if(difference.length > 0) {
+                //            angular.forEach(difference, function (item) {
+                //                if(field.names.indexOf(item) > -1) {
+                //                    field.names.splice(field.names.indexOf(item), 1)
+                //                }
+                //            });
+                //        }
+                //     });
+                // }
 
-                       if(difference.length > 0) {
-                           angular.forEach(difference, function (item) {
-                               if(field.names.indexOf(item) > -1) {
-                                   field.names.splice(field.names.indexOf(item), 1)
-                               }
-                           });
-                       }
+                if(transform.type == 'replaceText') {
+                    angular.forEach(transform.fields, function (field) {
+                        if(Object.keys($scope.connectDataSource.mapFields).indexOf(field.field) == -1
+                            || ($scope.dimensionsMetrics[$scope.connectDataSource.mapFields[field.field]] != 'text'
+                            && $scope.dimensionsMetrics[$scope.connectDataSource.mapFields[field.field]] != 'multiLineText')) {
+                            $timeout(function () {
+                                field.field = null
+                            }, 0, true);
+                        }
+
+                        if(Object.keys($scope.connectDataSource.mapFields).indexOf(field.targetField) > -1) {
+                            $timeout(function () {
+                                field.targetField = null
+                            }, 0, true);
+                        }
                     });
                 }
 

@@ -71,7 +71,7 @@
                 }
             })
             .state('unifiedReport.report.editBuilder', {
-                url: '/edit/?reportView&reportViews&dataSets&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&subReportsIncluded',
+                url: '/edit/?reportView&reportViewMultiViews&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&subReportsIncluded',
                 views: {
                     'content@app': {
                         controller: 'UnifiedReportBuilder',
@@ -93,9 +93,17 @@
                         if(!!$stateParams.reportView) {
                             return UnifiedReportViewManager.one($stateParams.reportView).get()
                                 .then(function (reportView) {
+                                    angular.forEach(reportView.reportViewDataSets, function (reportViewDataSet) {
+                                        reportViewDataSet.dataSet = angular.isObject(reportViewDataSet.dataSet) ? reportViewDataSet.dataSet.id : reportViewDataSet.dataSet
+                                    });
+
+                                    angular.forEach(reportView.reportViewMultiViews, function (reportViewMultiView) {
+                                        reportViewMultiView.subView = angular.isObject(reportViewMultiView.subView) ? reportViewMultiView.subView.id : reportViewMultiView.subView
+                                    });
+
                                     return {
-                                        dataSets: !!$stateParams.dataSets ? angular.fromJson($stateParams.dataSets) : reportView.dataSets,
-                                        reportViews: !!$stateParams.reportViews ? angular.fromJson($stateParams.reportViews) : reportView.reportViews,
+                                        reportViewDataSets: !!$stateParams.reportViewDataSets ? angular.fromJson($stateParams.reportViewDataSets) : reportView.reportViewDataSets,
+                                        reportViewMultiViews: !!$stateParams.reportViewMultiViews ? angular.fromJson($stateParams.reportViewMultiViews) : reportView.reportViewMultiViews,
                                         transforms: !!$stateParams.transforms ? angular.fromJson($stateParams.transforms) : reportView.transforms,
                                         showInTotal: !!$stateParams.showInTotal ? angular.fromJson($stateParams.showInTotal) : reportView.showInTotal,
                                         formats: !!$stateParams.formats ? angular.fromJson($stateParams.formats) : reportView.formats,
@@ -112,8 +120,8 @@
                         }
 
                         return {
-                            dataSets: angular.fromJson($stateParams.dataSets),
-                            reportViews: angular.fromJson($stateParams.reportViews),
+                            reportViewDataSets: angular.fromJson($stateParams.reportViewDataSets),
+                            reportViewMultiViews: angular.fromJson($stateParams.reportViewMultiViews),
                             transforms: angular.fromJson($stateParams.transforms),
                             showInTotal: angular.fromJson($stateParams.showInTotal),
                             formats: angular.fromJson($stateParams.formats),
@@ -123,8 +131,7 @@
                             alias: $stateParams.alias,
                             publisher: $stateParams.publisher,
                             multiView: $stateParams.multiView == 'true',
-                            subReportsIncluded: $stateParams.subReportsIncluded == 'true',
-
+                            subReportsIncluded: $stateParams.subReportsIncluded == 'true'
                         };
                     },
                     publishers: function () {
@@ -136,7 +143,7 @@
                 }
             })
             .state('unifiedReport.report.detail', {
-                url: '/detail?reportView&reportViews&dataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&saveReportView',
+                url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&saveReportView&startDate&endDate',
                 views: {
                     'content@app': {
                         controller: 'UnifiedReportDetail',
@@ -148,9 +155,17 @@
                         if(!!$stateParams.reportView) {
                             return UnifiedReportViewManager.one($stateParams.reportView).get()
                                 .then(function (reportView) {
+                                    angular.forEach(reportView.reportViewDataSets, function (reportViewDataSet) {
+                                        reportViewDataSet.dataSet = angular.isObject(reportViewDataSet.dataSet) ? reportViewDataSet.dataSet.id : reportViewDataSet.dataSet
+                                    });
+
+                                    angular.forEach(reportView.reportViewMultiViews, function (reportViewMultiView) {
+                                        reportViewMultiView.subView = angular.isObject(reportViewMultiView.subView) ? reportViewMultiView.subView.id : reportViewMultiView.subView
+                                    });
+
                                     return {
-                                        dataSets: !!$stateParams.dataSets ? angular.fromJson($stateParams.dataSets) : reportView.dataSets,
-                                        reportViews: !!$stateParams.reportViews ? angular.fromJson($stateParams.reportViews) : reportView.reportViews,
+                                        reportViewDataSets: !!$stateParams.reportViewDataSets ? angular.fromJson($stateParams.reportViewDataSets) : reportView.reportViewDataSets,
+                                        reportViewMultiViews: !!$stateParams.reportViewMultiViews ? angular.fromJson($stateParams.reportViewMultiViews) : reportView.reportViewMultiViews,
                                         transforms: !!$stateParams.transforms ? angular.fromJson($stateParams.transforms) : reportView.transforms,
                                         showInTotal: !!$stateParams.showInTotal ? angular.fromJson($stateParams.showInTotal) : reportView.showInTotal,
                                         formats: !!$stateParams.formats ? angular.fromJson($stateParams.formats) : reportView.formats,
@@ -162,16 +177,15 @@
                                         id: reportView.id,
                                         publisher: reportView.publisher.id || reportView.publisher,
                                         multiView: !!$stateParams.multiView ? ($stateParams.multiView == 'true') : reportView.multiView,
-                                        subReportsIncluded: !!$stateParams.subReportsIncluded ? ($stateParams.subReportsIncluded == 'true') : reportView.subReportsIncluded,
-
+                                        subReportsIncluded: !!$stateParams.subReportsIncluded ? ($stateParams.subReportsIncluded == 'true') : reportView.subReportsIncluded
                                     }
                                 })
                         }
 
                         return {
-                            dataSets: angular.fromJson($stateParams.dataSets),
+                            reportViewDataSets: angular.fromJson($stateParams.reportViewDataSets),
                             fieldTypes: angular.fromJson($stateParams.fieldTypes),
-                            reportViews: angular.fromJson($stateParams.reportViews),
+                            reportViewMultiViews: angular.fromJson($stateParams.reportViewMultiViews),
                             transforms: angular.fromJson($stateParams.transforms),
                             showInTotal: angular.fromJson($stateParams.showInTotal),
                             weightedCalculations: angular.fromJson($stateParams.weightedCalculations),
@@ -181,14 +195,14 @@
                             alias: $stateParams.alias,
                             publisher: $stateParams.publisher,
                             multiView: $stateParams.multiView == 'true',
-                            subReportsIncluded: $stateParams.subReportsIncluded == 'true',
+                            subReportsIncluded: $stateParams.subReportsIncluded == 'true'
                         };
                     },
-                    reportGroup: /* @ngInject */ function(unifiedReportBuilder, reportView) {
+                    reportGroup: /* @ngInject */ function(unifiedReportBuilder, reportView, $stateParams) {
                         var params = {
-                            dataSets: angular.toJson(reportView.dataSets),
+                            reportViewDataSets: angular.toJson(reportView.reportViewDataSets),
                             fieldTypes: angular.toJson(reportView.fieldTypes),
-                            reportViews: angular.toJson(reportView.reportViews),
+                            reportViewMultiViews: angular.toJson(reportView.reportViewMultiViews),
                             transforms: angular.toJson(reportView.transforms),
                             showInTotal: angular.toJson(reportView.showInTotal),
                             weightedCalculations: angular.toJson(reportView.weightedCalculations),
@@ -197,14 +211,44 @@
                             name: reportView.name,
                             alias: reportView.alias,
                             multiView: !!reportView.multiView || reportView.multiView == 'true',
-                            subReportsIncluded: !!reportView.subReportsIncluded || reportView.subReportsIncluded == 'true',
+                            subReportsIncluded: !!reportView.subReportsIncluded || reportView.subReportsIncluded == 'true'
                         };
+
+                        params.startDate = $stateParams.startDate;
+                        params.endDate = $stateParams.endDate;
 
                         return unifiedReportBuilder.getPlatformReport(params);
                     }
                 },
                 ncyBreadcrumb: {
                     label: '{{ reportView.name }}'
+                }
+            })
+            .state('unifiedReport.report.listShare', {
+                url: '/reportView/{reportViewId:[0-9]+}/listShare?page&sortField&orderBy&searchKey',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    'content@app': {
+                        controller: 'ReportViewShareList',
+                        templateUrl: 'unifiedReport/report/listShareable.tpl.html'
+                    }
+                },
+                resolve: {
+                    listShare: /* @ngInject */ function(UnifiedReportViewManager, $stateParams) {
+                        return UnifiedReportViewManager.one($stateParams.reportViewId).one('sharekeyconfigs').getList();
+                    },
+                    reportView: function (UnifiedReportViewManager, $stateParams) {
+                        return UnifiedReportViewManager.one($stateParams.reportViewId).get()
+                    },
+                    dataSetsFromReportView: function (reportView, unifiedReportBuilder) {
+                        console.log(reportView);
+                        return unifiedReportBuilder.getDataSetsFromReportView(reportView)
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'View Shareable link'
                 }
             })
         ;

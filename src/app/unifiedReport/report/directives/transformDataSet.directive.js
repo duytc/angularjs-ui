@@ -5,7 +5,7 @@
         .directive('transformDataSet', transformDataSet)
     ;
 
-    function transformDataSet($compile, _, AddCalculatedField, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES, METRICS_SET) {
+    function transformDataSet($compile, _, AddCalculatedField, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES, METRICS_SET) {
         'use strict';
 
         return {
@@ -29,6 +29,7 @@
                     scope.allFiledFormatTypeKeys = CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY;
                     scope.dateFormatTypes = DATE_FORMAT_TYPES;
                     scope.typesField = METRICS_SET;
+                    scope.positionsForReplaceText = POSITIONS_FOR_REPLACE_TEXT;
                     scope.separatorType = [
                         {key: ',', label: 'Comma'},
                         {key: 'none', label: 'None'}
@@ -49,6 +50,7 @@
                     scope.removeTransform = removeTransform;
                     scope.addTransform = addTransform;
                     scope.addField = addField;
+                    scope.addReplaceText = addReplaceText;
                     scope.removeAddValue = removeAddValue;
                     scope.addComparisonPercent = addComparisonPercent;
                     scope.notInMapField = notInMapField;
@@ -70,6 +72,7 @@
                     scope.getTypesFieldForCalculatedField = getTypesFieldForCalculatedField;
                     scope.selectTypeCalculatedField = selectTypeCalculatedField;
                     scope.formatExpressionToHighlight = formatExpressionToHighlight;
+                    scope.filterFieldByText = filterFieldByText;
 
                     function formatExpressionToHighlight(field) {
                         var expression = (!!field.field ? ('<strong>' + field.field + '</strong>' + ' = ') : '') + (angular.copy(field.expression) || '');
@@ -165,7 +168,8 @@
                         var typesField = [];
 
                         angular.forEach(scope.typesField, function (type) {
-                            if (type.key == 'decimal' || type.key == 'number' || type.key ==  'text' || type.key == 'multiLineText') {
+                            // if (type.key == 'decimal' || type.key == 'number' || type.key ==  'text' || type.key == 'multiLineText') {
+                            if (type.key == 'decimal' || type.key == 'number') {
                                 typesField.push(type)
                             }
                         });
@@ -276,6 +280,10 @@
                         });
 
                         return data;
+                    }
+
+                    function filterFieldByText(field) {
+                        return field.type == 'text' || field.type == 'multiLineText';
                     }
 
                     function getDimensionsMetricsForComparison(fields, fieldCurrent) {
@@ -391,6 +399,17 @@
                         fields.push({
                             field: null,
                             value: null
+                        });
+                    }
+
+                    function addReplaceText(fields) {
+                        fields.push({
+                            field: null,
+                            isOverride: false,
+                            targetField: null,
+                            searchFor: null,
+                            position: null,
+                            replaceWith: null
                         });
                     }
 

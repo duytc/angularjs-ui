@@ -77,6 +77,10 @@
                 adSlot = !!adSlot.libraryAdSlot ? adSlot.libraryAdSlot : adSlot;
 
                 angular.forEach(adSlot.libraryExpressions, function(expression) {
+                    if(!angular.isObject(expression) || !angular.isObject(expression.expressionDescriptor)) {
+                        return;
+                    }
+
                     if(!expression.expressionDescriptor.groupType) {
                         tags.push({name: expression.expressionDescriptor.var});
                     }

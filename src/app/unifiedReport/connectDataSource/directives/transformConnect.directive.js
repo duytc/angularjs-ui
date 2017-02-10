@@ -5,7 +5,7 @@
         .directive('transformConnect', transformConnect)
     ;
 
-    function transformConnect($compile, AddCalculatedField, _, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES) {
+    function transformConnect($compile, AddCalculatedField, _, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES) {
         'use strict';
 
         return {
@@ -26,11 +26,16 @@
                     scope.allFiledFormatTypeKeys = CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY;
                     scope.dateFormatTypes = DATE_FORMAT_TYPES;
                     scope.fieldForExpression = [];
+                    scope.positionsForReplaceText = POSITIONS_FOR_REPLACE_TEXT;
 
                     scope.separatorType = [
                         {key: ',', label: 'Comma'},
                         {key: 'none', label: 'None'}
                     ];
+
+                    scope.datePickerOpts = {
+                        singleDatePicker: true
+                    };
 
                     scope.fieldNames = _.isArray(scope.mapFields) ? scope.mapFields : _.union(_.values(scope.mapFields));
 
@@ -43,10 +48,12 @@
                     scope.removeTransform = removeTransform;
                     scope.addTransform = addTransform;
                     scope.addField = addField;
+                    scope.addReplaceText = addReplaceText;
                     scope.removeAddValue = removeAddValue;
                     scope.addComparisonPercent = addComparisonPercent;
                     scope.notInMapField = notInMapField;
                     scope.filterFieldByType = filterFieldByType;
+                    scope.filterFieldByText= filterFieldByText;
                     scope.selectType = selectType;
                     scope.selectTransformType = selectTransformType;
                     scope.filerFieldNamesForComparisonPercent = filerFieldNamesForComparisonPercent;
@@ -54,18 +61,18 @@
                     scope.getDimensionsMetricsForComparison = getDimensionsMetricsForComparison;
                     scope.getDimensionsMetricsForAddField = getDimensionsMetricsForAddField;
                     scope.getDimensionsMetricsForTextAddField = getDimensionsMetricsForTextAddField;
+                    scope.getDimensionsMetricsForTextAddReplace = getDimensionsMetricsForTextAddReplace;
                     scope.getDimensionsMetricsForNumberAddField = getDimensionsMetricsForNumberAddField;
                     scope.getFiledFormatTypes = getFiledFormatTypes;
                     scope.filterFieldNameForSortBy = filterFieldNameForSortBy;
                     scope.addSpaceBeforeAndAfterOperator = addSpaceBeforeAndAfterOperator;
                     scope.selectTypeCalculatedField = selectTypeCalculatedField;
-                    scope.selectFieldForAddField = selectFieldForAddField;
                     scope.getFieldForGroupBy = getFieldForGroupBy;
                     scope.removeAutoSpaceAfterField = removeAutoSpaceAfterField;
                     scope.formatExpressionToHighlight = formatExpressionToHighlight;
                     
                     function formatExpressionToHighlight(field) {
-                        var expression = (!!field.field ? ('<strong>' + field.field + '</strong>' + ' = ') : '') + (angular.copy(field.expression) || '');
+                        var expression = (!!field.field ? ('<strong>' + field.field + '</strong>' + ' = ') : '') + (angular.copy(field.expression) || angular.copy(field.value) || '');
 
                         if(!expression) {
                             return null;
@@ -98,17 +105,12 @@
                     scope.filterTextFields = filterTextFields;
                     scope.filterNumberFields = filterNumberFields;
 
-                    function selectFieldForAddField(filter) {
-                        filter.value = null
-                    }
-
-                    function removeAutoSpaceAfterField(field) {
-                        var elemId = 'addConcatenatedFieldExpression';
-
+                    function removeAutoSpaceAfterField(field, id) {
+                        var elemId = 'concatenated-'.concat(id) ;
                         if (!'expression' in field) {
                             return field;
                         }
-                        setCaretPosition(elemId, field.expression.length);
+                        setCaretPosition(elemId, !!field.expression ? field.expression.length : field.value.length);
 
                         return field;
                     }
@@ -246,6 +248,22 @@
                         });
                     }
 
+                    function getDimensionsMetricsForTextAddReplace(fieldCurrent, transformFields) {
+                        return _.filter(scope.totalDimensionsMetrics, function (dm) {
+                            if (dm == fieldCurrent) {
+                                return true;
+                            }
+
+                            for (var index in transformFields) {
+                                if(transformFields[index].field == dm) {
+                                    return false
+                                }
+                            }
+
+                            return scope.dimensionsMetrics[dm] == 'text' || scope.dimensionsMetrics[dm] == 'multiLineText';
+                        });
+                    }
+
                     function getDimensionsMetricsForNumberAddField(fieldCurrent, transforms) {
                         var fields = _getAllFieldInTransform(transforms);
 
@@ -341,6 +359,10 @@
                             return false
                         };
                     }
+                    
+                    function filterFieldByText(field) {
+                        return scope.dimensionsMetrics[scope.mapFields[field]] == 'text' || scope.dimensionsMetrics[scope.mapFields[field]] == 'multiLineText';
+                    }
 
                     function notInMapField(field) {
                         return _.values(scope.mapFields).indexOf(field) == -1;
@@ -354,9 +376,9 @@
                         return ((scope.dimensionsMetrics[field] == 'number') || (scope.dimensionsMetrics[field] == 'decimal'));
                     }
 
-                    function textTypeFieldsAndNotInMapField(field) {
-                        return _.values(scope.mapFields).indexOf(field) == -1;
-                    }
+                    // function textTypeFieldsAndNotInMapField(field) {
+                    //     return _.values(scope.mapFields).indexOf(field) == -1;
+                    // }
 
                     function removeTransform(index) {
                         scope.transforms.splice(index, 1);
@@ -380,6 +402,17 @@
                         fields.push({
                             field: null,
                             value: null
+                        });
+                    }
+
+                    function addReplaceText(fields) {
+                        fields.push({
+                            field: null,
+                            isOverride: false,
+                            targetField: null,
+                            searchFor: null,
+                            position: null,
+                            replaceWith: null
                         });
                     }
 

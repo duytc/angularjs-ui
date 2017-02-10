@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportView', UnifiedReportView);
 
-    function UnifiedReportView($scope, _, $q, $translate, SortReportByColumnType,$modal, AlertService, reportViewList, UnifiedReportViewManager, unifiedReportBuilder, UserStateHelper, AtSortableService, exportExcelService, historyStorage, HISTORY_TYPE_PATH) {
+    function UnifiedReportView($scope, _, $q, $translate, SortReportByColumnType, $modal, AlertService, reportViewList, UnifiedReportViewManager, unifiedReportBuilder, UserStateHelper, AtSortableService, exportExcelService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.reportViewList = reportViewList;
 
         $scope.hasData = function () {
@@ -28,17 +28,77 @@
         $scope.runReport = runReport;
         $scope.downloadReport = downloadReport;
         $scope.getShareableLink = getShareableLink;
+        $scope.cloneReportView = cloneReportView;
+
+        function cloneReportView(reportView) {
+            $modal.open({
+                templateUrl: 'unifiedReport/report/cloneReportView.tpl.html',
+                size: 'lg',
+                resolve: {
+                    reportView: function () {
+                        return reportView;
+                    }
+                },
+                controller: function ($scope, $state, $modalInstance, reportView) {
+                    $scope.reportView = reportView;
+
+                    $scope.cloneReportView = {
+                        name: null,
+                        alias: null
+                    };
+                    
+                    $scope.submit = submit;
+                    $scope.isFormValid = isFormValid;
+
+                    function isFormValid() {
+                        return $scope.cloneReportViewForm.$valid;
+                    }
+                    
+                    function submit() {
+                        $modalInstance.close();
+
+                        var params = {
+                            cloneSettings: [$scope.cloneReportView]
+                        };
+
+                        UnifiedReportViewManager.one(reportView.id).post('clone', params)
+                            .catch(function () {
+                                AlertService.replaceAlerts({
+                                    type: 'error',
+                                    message: "Could not clone the report view"
+                                });
+                            })
+                            .then(function () {
+                                $state.reload();
+
+                                AlertService.addFlash({
+                                    type: 'success',
+                                    message: "The report view has been cloned successfully"
+                                });
+                            })
+                    }
+                }
+            });
+        }
 
         function downloadReport(reportView) {
+            angular.forEach(reportView.reportViewDataSets, function (reportViewDataSet) {
+                reportViewDataSet.dataSet = angular.isObject(reportViewDataSet.dataSet) ? reportViewDataSet.dataSet.id : reportViewDataSet.dataSet
+            });
+
+            angular.forEach(reportView.reportViewMultiViews, function (reportViewMultiView) {
+                reportViewMultiView.subView = angular.isObject(reportViewMultiView.subView) ? reportViewMultiView.subView.id : reportViewMultiView.subView
+            });
+
             var params = {
-                dataSets: angular.toJson(reportView.dataSets),
+                reportViewDataSets: angular.toJson(reportView.reportViewDataSets),
                 transforms: angular.toJson(reportView.transforms),
                 formats: angular.toJson(reportView.formats),
                 weightedCalculations: angular.toJson(reportView.weightedCalculations),
                 joinBy: angular.toJson(reportView.joinBy) || null,
 
                 fieldTypes: angular.toJson(reportView.fieldTypes),
-                reportViews: angular.toJson(reportView.reportViews),
+                reportViewMultiViews: angular.toJson(reportView.reportViewMultiViews),
                 showInTotal: angular.toJson(reportView.showInTotal),
                 name: reportView.name,
                 multiView: !!reportView.multiView || reportView.multiView,
@@ -149,10 +209,9 @@
 
                         $scope.reportViewList = reportViewList;
 
-                        if ($scope.tableConfig.currentPage > 0 && reportViewList.length / 10 == $scope.tableConfig.currentPage) {
-                            AtSortableService.insertParamForUrl({
-                                page: $scope.tableConfig.currentPage
-                            });
+                        if ($scope.tableConfig.currentPage > 0 && reportViewList.length/10 == $scope.tableConfig.currentPage) {
+                            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
+                            $scope.tableConfig.currentPage =- 1;
                         }
 
                         AlertService.replaceAlerts({
@@ -257,19 +316,40 @@
                         });
                     }
                 },
-                controller: function ($scope, fieldsReportView, UnifiedReportViewManager) {
+                controller: function ($scope, fieldsReportView, UnifiedReportViewManager, DateFormatter, getDateReportView) {
                     $scope.reportView = reportView;
                     $scope.fieldsReportView = fieldsReportView;
                     var fieldsToShare = [];
                     $scope.shareableLink = null;
                     $scope.selected = {
-                        selectAll: true
+                        selectAll: true,
+                        date: {
+                            startDate: getDateReportView.getMinStartDateInFilterReportView(reportView),
+                            endDate : getDateReportView.getMaxEndDateInFilterReportView(reportView)
+                        }
+                    };
+
+                    $scope.datePickerOpts = {
+                        maxDate:  moment().endOf('day'),
+                        ranges: {
+                            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                            'This Month': [moment().startOf('month'), moment().endOf('month')],
+                            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                        }
                     };
 
                     // default select all
                     selectAll();
 
                     $scope.selectAll = selectAll;
+                    $scope.changeDate = changeDate;
+                    $scope.hasFilterDate = hasFilterDate;
+                    $scope.hideDaterange = hideDaterange;
+
+                    function changeDate() {
+                        $scope.shareableLink = null;
+                    }
 
                     $scope.getTextToCopy = function (string) {
                         return string.replace(/\n/g, '\r\n');
@@ -297,7 +377,15 @@
                     };
 
                     $scope.getShareableLink = function () {
-                        UnifiedReportViewManager.one(reportView.id).customGET('shareablelink', {fields: angular.toJson(fieldsToShare)})
+                        var params = {
+                            fields: angular.toJson(fieldsToShare),
+                            dateRange: {
+                                startDate: DateFormatter.getFormattedDate($scope.selected.date.startDate),
+                                endDate: DateFormatter.getFormattedDate($scope.selected.date.endDate)
+                            }
+                        };
+
+                        UnifiedReportViewManager.one(reportView.id).customGET('shareablelink', params)
                             .then(function (shareableLink) {
                                 $scope.shareableLink = shareableLink
                             });
@@ -308,6 +396,8 @@
                     };
                     
                     function selectAll() {
+                        $scope.shareableLink = null;
+
                         if(!$scope.selected.selectAll) {
                             fieldsToShare = []
                         } else {
@@ -319,6 +409,40 @@
                                 }
                             })
                         }
+                    }
+
+                    function hideDaterange() {
+                        var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
+                        for (var reportViewIndex in reportViews) {
+                            var reportView = reportViews[reportViewIndex];
+
+                            for (var filterIndex in reportView.filters) {
+                                var filter = reportView.filters[filterIndex];
+
+                                if(filter.type == 'date' || filter.type == 'datetime') {
+                                    return true
+                                }
+                            }
+                        }
+
+                        return false;
+                    }
+
+                    function hasFilterDate() {
+                        var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
+                        for (var reportViewIndex in reportViews) {
+                            var reportView = reportViews[reportViewIndex];
+
+                            for (var filterIndex in reportView.filters) {
+                                var filter = reportView.filters[filterIndex];
+
+                                if((filter.type == 'date' || filter.type == 'datetime') && filter.dateType == 'userProvided') {
+                                    return true
+                                }
+                            }
+                        }
+
+                        return false;
                     }
                 }
             });

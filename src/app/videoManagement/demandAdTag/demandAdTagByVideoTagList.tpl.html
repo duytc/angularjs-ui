@@ -72,6 +72,8 @@
                                         <li ng-if="!isSubPublisher() && videoDemandAdTag.active != 1"><a ng-click="toggleDemandAdTagStatus(videoDemandAdTag, 1)">{{ 'AD_SOURCE_MODULE.ACTIVATE_AD_SOURCE' | translate }}</a></li>
                                         <li ng-if="!isSubPublisher() && videoDemandAdTag.active == 1"><a ng-click="toggleDemandAdTagStatus(videoDemandAdTag, 0)">{{ 'AD_SOURCE_MODULE.PAUSE_AD_SOURCE' | translate }}</a></li>
                                         <li class="divider"></li>
+                                        <li><a ng-click="showVastTagVast()">{{ 'VIDEO_AD_TAG_MODULE.SHOW_VAST_TAG_REQUEST' | translate }}</a></li>
+                                        <li class="divider"></li>
                                         <li><a ui-sref="^.^.^.reports.video.report(paramsReport(videoDemandAdTag))">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
                                         <li class="divider"></li>
                                         <li ng-if="!isSubPublisher()"><a ng-click="createDemandAdTag(videoWaterfallTagItems, videoWaterfallTagItem.position, videoDemandAdTag)">{{ 'AD_SOURCE_MODULE.EDIT_AD_SOURCE' | translate }}</a></li>

@@ -1,10 +1,10 @@
-(function() {
+(function (){
     'use strict';
 
     angular.module('tagcade.unifiedReport.dataSource')
         .controller('DataSourceForm', DataSourceForm);
 
-    function DataSourceForm($scope, UnifiedReportDataSourceManager, $translate, dataSource, integrations, publishers, AlertService, NumberConvertUtil, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH) {
+    function DataSourceForm($scope, UnifiedReportDataSourceManager, $translate, dataSource, integrations, publishers, AlertService, NumberConvertUtil, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH){
         $scope.publishers = publishers;
         $scope.integrations = integrations;
 
@@ -12,20 +12,37 @@
         $scope.formProcessing = false;
         $scope.integrations.active = false;
 
-        $scope.groupByIntegrationGroup = groupByIntegrationGroup;
         $scope.addNewIntegration = addNewIntegration;
         $scope.removeIntegration = removeIntegration;
         $scope.isFormValid = isFormValid;
         $scope.submit = submit;
         $scope.deleteDataSource = deleteDataSource;
         $scope.backToDataSourceList = backToDataSourceList;
-        $scope.change = false;
+        $scope.removeParams = removeParams;
+        $scope.createNewParams = createNewParams;
 
+        function createNewParams(integration, item) {
+            var allParamObjects = [];
+            var allParams = item.params;
+            if (_.isEmpty(allParams)) {
+                integration.params = [];
+                return;
+            }
+            _.each(allParams, function (value){
+                var newObject = {'key':value, 'value':null};
+                allParamObjects.push(newObject);
+            });
+            integration.params = allParamObjects;
+
+            return integration.params;
+        }
+
+        $scope.change = false;
         $scope.dataSource = dataSource || {
-            dataSourceIntegrations: [],
-            alertSetting: [],
-            enable: true
-        };
+                dataSourceIntegrations: [],
+                alertSetting: [],
+                enable: true
+            };
 
         $scope.alertSetting = {
             wrongFormat: _.contains($scope.dataSource.alertSetting, "wrongFormat"),
@@ -44,45 +61,35 @@
             key: 'json'
         }];
 
-        $scope.frequencies = [{
-            label: '3 hours',
-            key: 3
-        }, {
-            label: '6 hours',
-            key: 6
-        }, {
-            label: '12 hours',
-            key: 12
-        }, {
-            label: 'Day',
-            key: 24
-        }, {
-            label: '2 Day',
-            key: 48
-        }];
+        $scope.frequencies = [
+            {label: '3 hours', key: 3},
+            {label: '6 hours', key: 6},
+            {label: '12 hours', key: 12},
+            {label: 'Day', key: 24},
+            {label: '2 Day', key: 48}
+        ];
 
-        function addNewIntegration() {
+        function removeParams(integration, index){
+            integration.params.splice(index, 1);
+        }
+
+        function addNewIntegration(){
             $scope.dataSource.dataSourceIntegrations.push({
                 integration: null,
-                username: null,
-                password: null,
-                active: true
+                active: true,
+                params: []
             });
         }
 
-        function removeIntegration(index) {
+        function removeIntegration(index){
             $scope.dataSource.dataSourceIntegrations.splice(index, 1);
         }
 
-        function groupByIntegrationGroup(item) {
-            return item.integrationGroup.name;
-        }
-
-        function isFormValid() {
+        function isFormValid(){
             return $scope.userForm.$valid;
         }
 
-        function submit() {
+        function submit(){
 
             if ($scope.formProcessing) {
                 // already running, prevent duplicates
@@ -99,22 +106,22 @@
 
             var saveDataSource = $scope.isNew ? UnifiedReportDataSourceManager.post($scope.dataSource) : UnifiedReportDataSourceManager.one($scope.dataSource.id).patch($scope.dataSource);
 
-            saveDataSource.catch(function(response) {
+            saveDataSource.catch(function (response){
                 var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.userForm, $scope.fieldNameTranslations);
                 $scope.formProcessing = false;
 
                 return errorCheck;
-            }).then(function() {
+            }).then(function (){
                 AlertService.addFlash({
                     type: 'success',
                     message: $scope.isNew ? $translate.instant('UNIFIED_REPORT_DATA_SOURCE_MODULE.ADD_NEW_SUCCESS') : $translate.instant('UNIFIED_REPORT_DATA_SOURCE_MODULE.UPDATE_SUCCESS')
                 });
-            }).then(function() {
+            }).then(function (){
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSource, '^.list');
             });
         }
 
-        function deleteDataSource() {
+        function deleteDataSource(){
 
             if ($scope.formProcessing) {
                 // already running, prevent duplicates
@@ -129,26 +136,26 @@
 
             var saveDataSource = UnifiedReportDataSourceManager.one($scope.dataSource.id).delete($scope.dataSource);
 
-            saveDataSource.catch(function(response) {
+            saveDataSource.catch(function (response){
                 var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.userForm, $scope.fieldNameTranslations);
                 $scope.formProcessing = false;
 
                 return errorCheck;
-            }).then(function() {
+            }).then(function (){
                 AlertService.addFlash({
                     type: 'success',
                     message: $scope.isNew ? $translate.instant('UNIFIED_REPORT_DATA_SOURCE_MODULE.DELETE_SUCCESS') : $translate.instant('UNIFIED_REPORT_DATA_SOURCE_MODULE.UPDATE_SUCCESS')
                 });
-            }).then(function() {
+            }).then(function (){
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.videoPublisher, '^.list');
             });
         }
 
-        function backToDataSourceList() {
+        function backToDataSourceList(){
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSource, '^.list');
         }
 
-        function _setAlertSettingForDataSource(alertSetting) {
+        function _setAlertSettingForDataSource(alertSetting){
 
             $scope.dataSource.alertSetting = [];
 

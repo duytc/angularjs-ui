@@ -31,17 +31,6 @@
             });
         }
 
-        $scope.actionDropdownToggled = actionDropdownToggled;
-        $scope.enableDragDropAdTag = enableDragDropAdTag;
-        $scope.backToListVideoTag = backToListVideoTag;
-        $scope.createDemandAdTag = createDemandAdTag;
-        $scope.updateDemandAdTag = updateDemandAdTag;
-        $scope.selectStrategy = selectStrategy;
-        $scope.confirmDeletionDemandAdTag = confirmDeletionDemandAdTag;
-        $scope.toggleDemandAdTagStatus = toggleDemandAdTagStatus;
-        $scope.splitFromGroup = splitFromGroup;
-        $scope.paramsReport = paramsReport;
-
         $scope.sortableGroupOptions = {
             disabled: true,
             forcePlaceholderSize: true,
@@ -58,6 +47,34 @@
             stop: _stop,
             start: _start
         };
+
+        $scope.actionDropdownToggled = actionDropdownToggled;
+        $scope.enableDragDropAdTag = enableDragDropAdTag;
+        $scope.backToListVideoTag = backToListVideoTag;
+        $scope.createDemandAdTag = createDemandAdTag;
+        $scope.updateDemandAdTag = updateDemandAdTag;
+        $scope.selectStrategy = selectStrategy;
+        $scope.confirmDeletionDemandAdTag = confirmDeletionDemandAdTag;
+        $scope.toggleDemandAdTagStatus = toggleDemandAdTagStatus;
+        $scope.splitFromGroup = splitFromGroup;
+        $scope.paramsReport = paramsReport;
+        $scope.showVastTagVast = showVastTagVast;
+
+        function showVastTagVast() {
+            $modal.open({
+                templateUrl: 'videoManagement/adTag/showVastTag.tpl.html',
+                size: 'lg',
+                resolve: {
+                    vastTags: function(VastTagRequestManager) {
+                        return VastTagRequestManager.one().get({uuid: videoWaterfallTag.uuid})
+                    },
+                    videoWaterfallTag: function () {
+                        return videoWaterfallTag
+                    }
+                },
+                controller: 'ShowVastTag'
+            });
+        }
 
         function paramsReport(item) {
             var paramsReport = {

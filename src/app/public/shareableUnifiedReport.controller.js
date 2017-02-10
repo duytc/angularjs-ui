@@ -71,15 +71,15 @@
             {label: '40', key: '40'},
             {label: '50', key: '50'}
         ];
-
+        
         $scope.getExportExcelFileName = getExportExcelFileName;
         $scope.isEmptyObject = isEmptyObject;
         $scope.isShow = isShow;
         $scope.sort = sort;
-
         $scope.isNullValue = isNullValue;
+
         function isNullValue(report, column) {
-            return !report[column];
+            return !report[column] && report[column] != 0;
         }
 
         function sort(keyname) {
