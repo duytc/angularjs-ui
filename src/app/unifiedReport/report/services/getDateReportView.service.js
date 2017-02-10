@@ -28,12 +28,14 @@
 
             angular.forEach(reportViews, function (reportView) {
                 angular.forEach(reportView.filters, function (filter) {
-                    if(filter.dateType == 'dynamic') {
-                        filter.dateValue = _getDateByDynamicKey(filter.dateValue);
-                    }
+                    if(filter.type == 'date' || filter.type == 'datetime') {
+                        if(filter.dateType == 'dynamic') {
+                            filter.dateValue = _getDateByDynamicKey(filter.dateValue);
+                        }
 
-                    if(!minStartDate || (new Date(filter.dateValue.startDate).getTime() < new Date(minStartDate).getTime())) {
-                        minStartDate = filter.dateValue.startDate;
+                        if(!minStartDate || (new Date(filter.dateValue.startDate).getTime() < new Date(minStartDate).getTime())) {
+                            minStartDate = filter.dateValue.startDate;
+                        }
                     }
                 });
             });
@@ -47,12 +49,14 @@
 
             angular.forEach(reportViews, function (reportView) {
                 angular.forEach(reportView.filters, function (filter) {
-                    if(filter.dateType == 'dynamic') {
-                        filter.dateValue = _getDateByDynamicKey(filter.dateValue);
-                    }
+                    if(filter.type == 'date' || filter.type == 'datetime') {
+                        if(filter.dateType == 'dynamic') {
+                            filter.dateValue = _getDateByDynamicKey(filter.dateValue);
+                        }
 
-                    if(!maxEndDate || (new Date(filter.dateValue.endDate).getTime() > new Date(maxEndDate).getTime())) {
-                        maxEndDate = filter.dateValue.endDate;
+                        if(!maxEndDate || (new Date(filter.dateValue.endDate).getTime() > new Date(maxEndDate).getTime())) {
+                            maxEndDate = filter.dateValue.endDate;
+                        }
                     }
                 });
             });

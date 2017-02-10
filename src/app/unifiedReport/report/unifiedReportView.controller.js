@@ -322,12 +322,11 @@
                     var fieldsToShare = [];
                     $scope.shareableLink = null;
                     $scope.selected = {
-                        selectAll: true
-                    };
-
-                    $scope.date = {
-                        startDate: getDateReportView.getMinStartDateInFilterReportView(reportView),
-                        endDate : getDateReportView.getMaxEndDateInFilterReportView(reportView)
+                        selectAll: true,
+                        date: {
+                            startDate: getDateReportView.getMinStartDateInFilterReportView(reportView),
+                            endDate : getDateReportView.getMaxEndDateInFilterReportView(reportView)
+                        }
                     };
 
                     $scope.datePickerOpts = {
@@ -381,8 +380,8 @@
                         var params = {
                             fields: angular.toJson(fieldsToShare),
                             dateRange: {
-                                startDate: DateFormatter.getFormattedDate($scope.date.startDate),
-                                endDate: DateFormatter.getFormattedDate($scope.date.endDate)
+                                startDate: DateFormatter.getFormattedDate($scope.selected.date.startDate),
+                                endDate: DateFormatter.getFormattedDate($scope.selected.date.endDate)
                             }
                         };
 

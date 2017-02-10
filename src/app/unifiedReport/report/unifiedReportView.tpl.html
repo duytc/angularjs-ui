@@ -38,6 +38,7 @@
                                 <li><a ng-click="runReport(item)">Run Report</a></li>
                                 <li class="divider"></li>
                                 <li><a ui-sref="^.listShare({ reportViewId: item.id })">View Shareable Link</a></li>
+                                <li><a ng-click="getShareableLink(item)">Get Shareable Link</a></li>
                                 <li class="divider"></li>
                                 <li><a ng-click="downloadReport(item)">Export Excel</a></li>
                                 <li class="divider"></li>
@@ -46,8 +47,6 @@
                                 <li><a ng-click="confirmDeletion(item, $index)">Delete Report View</a></li>
                                 <li class="divider"></li>
                                 <li><a ng-click="cloneReportView(item)">Clone Report View</a></li>
-                                <li class="divider"></li>
-                                <li><a ng-click="getShareableLink(item)">Get Shareable Link</a></li>
                             </ul>
                         </div>
                     </td>
