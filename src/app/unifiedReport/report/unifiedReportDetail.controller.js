@@ -5,6 +5,10 @@
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
     function UnifiedReportDetail($scope, $stateParams, _, SortReportByColumnType, reportView, $translate, reportGroup, getDateReportView, AlertService, unifiedReportFormatReport, UnifiedReportViewManager, UserStateHelper, DateFormatter) {
+        // reset css for id app
+        var app = angular.element('#app');
+        app.css({position: 'inherit'});
+
         $scope.reportView = reportView;
         $scope.reportGroup = reportGroup;
         $scope.hasResult = reportGroup !== false;
