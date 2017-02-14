@@ -218,7 +218,7 @@
                 }
 
                 if (angular.isArray($scope.reportBuilder.reportViewDataSets) && $scope.reportBuilder.reportViewDataSets.length > 1) {
-                    return !!$scope.reportBuilder.joinBy && $scope.unifiedBuilderForm.$valid;
+                    return !!$scope.reportBuilder.joinBy && $scope.unifiedBuilderForm.$valid
                 }
             } else {
                 if (!!$scope.reportBuilder.reportViewMultiViews && $scope.reportBuilder.reportViewMultiViews.length == 0) {
@@ -373,37 +373,39 @@
                     if(!$scope.reportBuilder.joinBy || $scope.reportBuilder.joinBy.length == 0) {
                         $scope.reportBuilder.joinBy = [
                             {
-                                joinFields: [],
+                                joinFields: [
+                                    {dataSet: null, field: null, allFields: []},
+                                    {dataSet: null, field: null, allFields: []}
+                                ],
                                 outputField: null
                             }
                         ]
-                    } else {
-                        var index = _.findIndex($scope.reportBuilder.joinBy[0].joinFields, function (field) {
-                            return field.dataSet == item.dataSet
-                        });
-
-                        if(index == -1) {
-                            $scope.reportBuilder.joinBy[0].joinFields.push({dataSet: item.dataSet, field: null, allFields: item.dimensions.concat(item.metrics)});
-                        }
                     }
                 } else {
                     $scope.reportBuilder.joinBy = [];
                 }
             });
 
+            // set dataset in joinBy is null when dataset in reportBuilder is null
             if($scope.reportBuilder.reportViewDataSets.length > 1) {
-                angular.forEach(angular.copy($scope.reportBuilder.joinBy[0].joinFields), function (field, index) {
-                    var itemDataSet = _.find($scope.reportBuilder.reportViewDataSets, function (dataSet) {
-                        return dataSet.dataSet == field.dataSet || dataSet.dataSet.id == field.dataSet
+                angular.forEach($scope.reportBuilder.joinBy, function (itemJoinBy) {
+                    angular.forEach(itemJoinBy.joinFields, function (joinField) {
+                        var itemDataSet = _.find($scope.reportBuilder.reportViewDataSets, function (reportViewDataSet) {
+                            return reportViewDataSet.dataSet == joinField.dataSet
+                        });
+
+                        if(!itemDataSet) {
+                            joinField.dataSet = null;
+                        } else {
+                            var reportViewDataSet = _.find($scope.reportBuilder.reportViewDataSets, function (reportViewDataSet) {
+                                return reportViewDataSet.dataSet == joinField.dataSet;
+                            });
+
+                            if(!!reportViewDataSet) {
+                                joinField.allFields = reportViewDataSet.dimensions.concat(reportViewDataSet.metrics);;
+                            }
+                        }
                     });
-
-                    if(!field.dataSet || !itemDataSet) {
-                        $scope.reportBuilder.joinBy[0].joinFields.splice(index, 1);
-                    }
-
-                    if(!!itemDataSet && !!$scope.reportBuilder.joinBy[0].joinFields[index]) {
-                        $scope.reportBuilder.joinBy[0].joinFields[index].allFields = itemDataSet.dimensions.concat(itemDataSet.metrics);
-                    }
                 });
 
                 _removeFieldNotSelectInJoinBy();
@@ -419,22 +421,24 @@
 
         function updateFieldWhenSelectJoinBy() {
             if(!!$scope.reportBuilder.joinBy && $scope.reportBuilder.joinBy.length > 0) {
-                angular.forEach($scope.reportBuilder.joinBy[0].joinFields, function (field) {
-                    var index = _.findIndex($scope.selectedFields, function (item) {
-                        return item.key == field.field + '_' + field.dataSet
-                    });
-
-                    if(index > -1) {
-                        $scope.selectedFields.push({
-                            root: $scope.reportBuilder.joinBy[0].outputField,
-                            key: $scope.reportBuilder.joinBy[0].outputField,
-                            label: $scope.reportBuilder.joinBy[0].outputField,
-                            type: $scope.selectedFields[index].type
+                angular.forEach($scope.reportBuilder.joinBy, function (itemJoinBy) {
+                    angular.forEach(itemJoinBy.joinFields, function (field) {
+                        var index = _.findIndex($scope.selectedFields, function (item) {
+                            return item.key == field.field + '_' + field.dataSet
                         });
 
-                        $scope.selectedFields.splice(index, 1);
-                    }
-                })
+                        if(index > -1) {
+                            $scope.selectedFields.push({
+                                root: itemJoinBy.outputField,
+                                key: itemJoinBy.outputField,
+                                label: itemJoinBy.outputField,
+                                type: $scope.selectedFields[index].type
+                            });
+
+                            $scope.selectedFields.splice(index, 1);
+                        }
+                    })
+                });
             }
         }
 

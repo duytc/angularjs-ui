@@ -71,20 +71,7 @@
                 <div class="form-group" ng-if="reportBuilder.reportViewDataSets.length > 1 && !reportBuilder.multiView">
                     <label class="col-sm-1 control-label">Join By</label>
                     <div class="col-sm-7">
-                        <div class="form-group" ng-repeat="field in reportBuilder.joinBy[0].joinFields">
-                            <label class="col-sm-3 form-control-static">{{ getNameDataSet(field.dataSet) }}:</label>
-
-                            <div class="col-sm-4">
-                                <ui-select name="field" ng-model="field.field" ng-required="true" server-error>
-                                    <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
-                                    <ui-select-choices repeat="dm in field.allFields | orderBy | filter:$select.search">
-                                        {{ dm }}
-                                    </ui-select-choices>
-                                </ui-select>
-                            </div>
-                        </div>
-
-                        <input server-error name="outputField" ng-model="reportBuilder.joinBy[0].outputField" ng-required="true" type="text" class="form-control" id="inputOutputField" placeholder="Output Field">
+                        <report-view-many-join report-builder="reportBuilder" list-data-sets="dataSets"></report-view-many-join>
                     </div>
                 </div>
 
