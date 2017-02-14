@@ -70,7 +70,8 @@
             comparisonPercent: 'comparisonPercent',
             // addConcatenatedField: 'addConcatenatedField',
             currency: 'currency',
-            replaceText: 'replaceText'
+            replaceText: 'replaceText',
+            replacePattern: 'replacePattern'
         })
         .provider('CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD', {
             $get: function (CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY) {
@@ -83,7 +84,8 @@
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addCalculatedField, label: 'Add Calculated Field'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.comparisonPercent, label: 'Comparison Percent'},
                     // {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addConcatenatedField, label: 'Concatenated Field'},
-                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.replaceText, label: 'Replace Text'}
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.replaceText, label: 'Replace Text'},
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.replacePattern, label: 'Replace Pattern'}
                 ];
             }
         })
@@ -92,5 +94,6 @@
             {key: 'at the beginning', label: 'At the Beginning'},
             {key: 'at the end', label: 'At the End'}
         ])
+        .constant('REPORT_VIEW_INTERNAL_FIELD_VARIABLE', ['__filename', '__email_subject'])
     ;
 })();
