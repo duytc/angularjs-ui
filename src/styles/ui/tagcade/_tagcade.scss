@@ -402,3 +402,11 @@ legend {
     text-transform: capitalize !important;
   }
 }
+
+.select-alert-timezone.form-group {
+  @include ui-select-width(180px);
+}
+
+.select-alert-date.form-group {
+  @include ui-select-width(120px);
+}

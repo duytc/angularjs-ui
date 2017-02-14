@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.dataSource')
         .controller('DataSourceForm', DataSourceForm);
 
-    function DataSourceForm($scope, UnifiedReportDataSourceManager, $translate, dataSource, integrations, publishers, AlertService, NumberConvertUtil, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH){
+    function DataSourceForm($scope, _, UnifiedReportDataSourceManager, $translate, dataSource, integrations, publishers, AlertService, TIMEZONES, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH){
         $scope.publishers = publishers;
         $scope.integrations = integrations;
 
@@ -20,6 +20,20 @@
         $scope.backToDataSourceList = backToDataSourceList;
         $scope.removeParams = removeParams;
         $scope.createNewParams = createNewParams;
+        $scope.groupEntities = groupEntities;
+        $scope.reStringDate = reStringDate;
+
+        function reStringDate(date) {
+            return date < 10 ? ('0' + date) : date
+        }
+
+        function groupEntities(item){
+            if (item == 'EST' || item == 'UTC' || item == 'CST' || item == 'PST') {
+                return undefined; // no group
+            }
+
+            return ''; // separate group with no name
+        }
 
         function createNewParams(integration, item) {
             var allParamObjects = [];
@@ -40,26 +54,39 @@
         $scope.change = false;
         $scope.dataSource = dataSource || {
                 dataSourceIntegrations: [],
-                alertSetting: [],
+                alertSetting: [
+                    {
+                        type: "wrongFormat",
+                        alertTimeZone: null,
+                        alertHour: 1,
+                        alertMinutes: 0,
+                        active: false
+                    }, {
+                        type:"dataReceived",
+                        alertTimeZone: null,
+                        alertHour: 1,
+                        alertMinutes: 0,
+                        active: false
+                    }, {
+                        type:"notReceived",
+                        alertTimeZone: null,
+                        alertHour: 1,
+                        alertMinutes: 0,
+                        active: false
+                    }
+                ],
                 enable: true
-            };
-
-        $scope.alertSetting = {
-            wrongFormat: _.contains($scope.dataSource.alertSetting, "wrongFormat"),
-            dataReceived: _.contains($scope.dataSource.alertSetting, "dataReceived"),
-            notReceived: _.contains($scope.dataSource.alertSetting, "notReceived")
         };
 
-        $scope.fileFormats = [{
-            label: 'CSV',
-            key: 'csv'
-        }, {
-            label: 'Excel',
-            key: 'excel'
-        }, {
-            label: 'Json',
-            key: 'json'
-        }];
+        $scope.hours = _.range(0, 24);
+        $scope.minutes = _.range(0, 60);
+        $scope.timezones = TIMEZONES;
+
+        $scope.fileFormats = [
+            {label: 'CSV', key: 'csv'},
+            {label: 'Excel', key: 'excel'},
+            {label: 'Json', key: 'json'}
+        ];
 
         $scope.frequencies = [
             {label: '3 hours', key: 3},
@@ -90,7 +117,6 @@
         }
 
         function submit(){
-
             if ($scope.formProcessing) {
                 // already running, prevent duplicates
                 return;
@@ -101,8 +127,6 @@
             if (!$scope.isAdmin()) {
                 delete $scope.dataSource.publisher;
             }
-
-            _setAlertSettingForDataSource($scope.alertSetting);
 
             var saveDataSource = $scope.isNew ? UnifiedReportDataSourceManager.post($scope.dataSource) : UnifiedReportDataSourceManager.one($scope.dataSource.id).patch($scope.dataSource);
 
@@ -122,7 +146,6 @@
         }
 
         function deleteDataSource(){
-
             if ($scope.formProcessing) {
                 // already running, prevent duplicates
                 return;
@@ -153,25 +176,6 @@
 
         function backToDataSourceList(){
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSource, '^.list');
-        }
-
-        function _setAlertSettingForDataSource(alertSetting){
-
-            $scope.dataSource.alertSetting = [];
-
-            if (alertSetting.wrongFormat) {
-                $scope.dataSource.alertSetting.push('wrongFormat');
-            }
-
-            if (alertSetting.dataReceived) {
-                $scope.dataSource.alertSetting.push('dataReceived');
-            }
-
-            if (alertSetting.notReceived) {
-                $scope.dataSource.alertSetting.push('notReceived');
-            }
-
-            return $scope.dataSource;
         }
     }
 })();
