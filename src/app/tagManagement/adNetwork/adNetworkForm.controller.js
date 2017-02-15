@@ -14,7 +14,7 @@
 
         $scope.isNew = adNetwork === null;
         $scope.formProcessing = false;
-        $scope.usernameAdNetwork = $scope.isNew ? null : adNetwork.username;
+       // $scope.usernameAdNetwork = $scope.isNew ? null : adNetwork.username;
 
         $scope.allowSelectPublisher = $scope.isAdmin();
         $scope.publishers = publishers;
@@ -30,8 +30,8 @@
             name: null,
             defaultCpmRate: null,
             url: null,
-            username: null,
-            password: null,
+         /*   username: null,
+            password: null,*/
             networkPartner: null,
             impressionCap: null,
             networkOpportunityCap: null

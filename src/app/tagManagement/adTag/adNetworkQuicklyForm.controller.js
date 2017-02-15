@@ -23,8 +23,6 @@
             name: null,
             defaultCpmRate: null,
             url: null,
-            username: null,
-            password: null,
             networkPartner: null,
             impressionCap: null,
             networkOpportunityCap: null
