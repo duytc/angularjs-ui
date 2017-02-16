@@ -6,16 +6,28 @@
 
     function shareableUnifiedReport($scope, $translate, SortReportByColumnType, reports, unifiedReportFormatReport, AlertService) {
         $scope.reportView = reports.reportView;
-        $scope.hasResult = reports !== false;
+        $scope.hasResult = !angular.isNumber(reports.status);
         $scope.reports = reports.reports || [];
         $scope.total = reports.total;
         $scope.average = reports.average;
 
-        if (!$scope.hasResult) {
-            AlertService.replaceAlerts({
-                type: 'warning',
-                message: $translate.instant('REPORT.REPORTS_EMPTY')
-            });
+        if(!$scope.hasResult) {
+            if(reports.status == 400) {
+                AlertService.replaceAlerts({
+                    type: 'error',
+                    message: reports.message
+                });
+            } else if (reports.status == 500){
+                AlertService.replaceAlerts({
+                    type: 'error',
+                    message:  $translate.instant('REPORT.REPORT_FAIL')
+                });
+            } else {
+                AlertService.replaceAlerts({
+                    type: 'warning',
+                    message: $translate.instant('REPORT.REPORTS_EMPTY')
+                });
+            }
         }
 
         $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);

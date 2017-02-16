@@ -12,7 +12,7 @@
         $scope.dataSet = dataSet || {
             allowOverwriteExistingData: true,
             dimensions: [{type: null, name: null}],
-            metrics: [{type: null, name: null}],
+            metrics: [],
             actions: {
                 rename: [
                 ]
@@ -205,7 +205,7 @@
         }
 
         function isFormValid() {
-            var allField = $scope.dataSet.dimensions.concat($scope.dataSet.metrics);
+            var allField = $scope.dataSet.dimensions;
             for(var index in allField) {
                 if(unValidNameDimensionsMetrics(allField[index].name)) {
                     return false

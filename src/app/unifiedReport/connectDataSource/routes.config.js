@@ -37,7 +37,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Connected Data Source'
+                    label: 'Connected Data Source - {{ dataSet.name }}'
                 }
             })
             .state('unifiedReport.connect.new', {

@@ -27,7 +27,7 @@
             </div>
 
             <div class="form-group select-join-field">
-                <ui-select name="field" ng-model="joinField.field" ng-required="true" server-error>
+                <ui-select name="field" ng-model="joinField.field" on-select="selectJoinField(joinItem)" ng-required="true" server-error>
                     <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
                     <ui-select-choices repeat="dm in joinField.allFields | orderBy | filter:$select.search">
                         {{ dm }}

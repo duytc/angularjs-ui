@@ -109,7 +109,7 @@
                 .then(function (reportGroup) {
                     var reports = reportGroup.reports;
 
-                    if (reports.length > 0) {
+                    if (!!reports && reports.length > 0) {
                         var columnReportDetailForExportExcel = [],
                             titleReportDetailForExportExcel = [],
                             columnPositionObject = null,

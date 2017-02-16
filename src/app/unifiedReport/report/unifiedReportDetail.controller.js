@@ -11,21 +11,13 @@
 
         $scope.reportView = reportView;
         $scope.reportGroup = reportGroup;
-        $scope.hasResult = reportGroup !== false;
+        $scope.hasResult = !angular.isNumber(reportGroup.status);
 
         $scope.reports = reportGroup.reports || [];
         $scope.types = reportGroup.types;
         $scope.isNew = !$scope.reportView.id;
         $scope.hasSaveRepoerView = !!$stateParams.saveReportView;
         $scope.formProcessing = false;
-
-
-        if (!$scope.hasResult) {
-            AlertService.replaceAlerts({
-                type: 'warning',
-                message: $translate.instant('REPORT.REPORTS_EMPTY')
-            });
-        }
 
         // user tempReports to orderBy and reports to view
         $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);
@@ -67,7 +59,6 @@
             }
         }
 
-
         if (!$scope.columnPositions.length && $scope.reports.length > 0) {
             $scope.columnPositions = _.keys($scope.reports[0]);
             var indexReportViewAlias = $scope.columnPositions.indexOf('report_view_alias');
@@ -103,11 +94,23 @@
             publisher: angular.isObject(reportView.publisher) ? reportView.publisher.id : reportView.publisher
         };
 
-        if (!$scope.reports || $scope.reports.length == 0) {
-            AlertService.replaceAlerts({
-                type: 'warning',
-                message: $translate.instant('REPORT.REPORTS_EMPTY')
-            });
+        if(!$scope.hasResult) {
+            if(reportGroup.status == 400) {
+                AlertService.replaceAlerts({
+                    type: 'error',
+                    message: reportGroup.message
+                });
+            } else if (reportGroup.status == 500){
+                AlertService.replaceAlerts({
+                    type: 'error',
+                    message:  $translate.instant('REPORT.REPORT_FAIL')
+                });
+            } else {
+                AlertService.replaceAlerts({
+                    type: 'warning',
+                    message: $translate.instant('REPORT.REPORTS_EMPTY')
+                });
+            }
         }
 
         $scope.tableConfig = {

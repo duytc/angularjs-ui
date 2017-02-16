@@ -310,6 +310,11 @@
                         type: 'success',
                         message: $scope.isNew ? 'The report view has been created' : 'The report view has been updated'
                     });
+                }).catch(function () {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: $scope.isNew ? "An error occurred. The report view could not be created" : "An error occurred. The report view could not be updated"
+                    });
                 });
 
                 params.saveReportView = true;

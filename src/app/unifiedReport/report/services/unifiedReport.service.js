@@ -20,8 +20,11 @@
             }
 
             return dataService.makeHttpGetRequest('', params, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL + extentUrl)
-                .catch(function() {
-                    return false
+                .catch(function(response) {
+                    return {
+                        status: response.status,
+                        message: response.data.message
+                    }
                 });
         }
 
