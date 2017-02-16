@@ -219,11 +219,13 @@
                             message: 'The report view was deleted'
                         });
                     },
-                    function () {
-                        AlertService.replaceAlerts({
-                            type: 'danger',
-                            message: 'The report view could not be deleted'
-                        });
+                    function (response) {
+                        if(!!response && !!response.data && !!response.data.message) {
+                            AlertService.replaceAlerts({
+                                type: 'danger',
+                                message: response.data.message
+                            });
+                        }
                     }
                 );
             });

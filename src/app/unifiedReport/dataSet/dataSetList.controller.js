@@ -41,18 +41,20 @@
 
             var deleteDataSource = UnifiedReportDataSetManager.one($dataSetId).remove();
 
-            deleteDataSource.catch(function(response) {
-                var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.userForm, $scope.fieldNameTranslations);
-                $scope.formProcessing = false;
-
-                return errorCheck;
-            }).then(function() {
+            deleteDataSource.then(function() {
                 AlertService.addFlash({
                     type: 'success',
                     message: $translate.instant('UNIFIED_REPORT_DATA_SET_MODULE.DELETE_DATA_SET_SUCCESS')
                 });
             }).then(function() {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSet, '^.list');
+            }).catch(function(response) {
+                if(!!response && !!response.data && !!response.data.message) {
+                    AlertService.replaceAlerts({
+                        type: 'danger',
+                        message: response.data.message
+                    });
+                }
             });
         }
 
