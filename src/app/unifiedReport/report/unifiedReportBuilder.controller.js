@@ -259,6 +259,7 @@
                     return historyStorage.getLocationPath(HISTORY_TYPE_PATH.unifiedReportView, '^.listReportView');
                 })
                 .catch(function (response) {
+                    $scope.formProcessing = false;
                     var message = _setMessageForSave(response);
 
                     AlertService.replaceAlerts({
@@ -316,6 +317,7 @@
                         message: $scope.isNew ? 'The report view has been created' : 'The report view has been updated'
                     });
                 }).catch(function (response) {
+                    $scope.formProcessing = false;
                     var message = _setMessageForSave(response);
 
                     AlertService.replaceAlerts({
