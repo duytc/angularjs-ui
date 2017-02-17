@@ -429,25 +429,27 @@
             );
 
             angular.forEach(transforms, function (transform) {
-                if((transform.type == 'number' || transform.type == 'date') && !!transform.field) {
-                    if(_.values($scope.connectDataSource.mapFields).indexOf(transform.field) == -1 && allTargetField.indexOf(transform.field) == -1) {
-                        var index = _.findIndex($scope.connectDataSource.transforms, function (item) {
-                            if(item.type == 'extractPattern') {
-                                for (var indexField in item.fields) {
-                                    if(!item.fields[indexField].isOverride) {
-                                        return item.fields[indexField].targetField == transform.field
+                setTimeout(function () {
+                    if((transform.type == 'number' || transform.type == 'date') && !!transform.field) {
+                        if(_.values($scope.connectDataSource.mapFields).indexOf(transform.field) == -1 && allTargetField.indexOf(transform.field) == -1) {
+                            var index = _.findIndex($scope.connectDataSource.transforms, function (item) {
+                                if(item.type == 'extractPattern') {
+                                    for (var indexField in item.fields) {
+                                        if(!item.fields[indexField].isOverride) {
+                                            return item.fields[indexField].targetField == transform.field
+                                        }
                                     }
                                 }
+
+                                return item.field == transform.field;
+                            });
+
+                            if(index > -1) {
+                                $scope.connectDataSource.transforms.splice(index, 1)
                             }
-
-                            return item.field == transform.field;
-                        });
-
-                        if(index > -1) {
-                            $scope.connectDataSource.transforms.splice(index, 1)
                         }
                     }
-                }
+                }, 0);
             });
 
             angular.forEach($scope.connectDataSource.transforms, function (transform) {
