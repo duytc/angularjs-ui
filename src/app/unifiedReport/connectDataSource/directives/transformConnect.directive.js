@@ -71,13 +71,13 @@
                     scope.getFieldForGroupBy = getFieldForGroupBy;
                     scope.removeAutoSpaceAfterField = removeAutoSpaceAfterField;
                     scope.formatExpressionToHighlight = formatExpressionToHighlight;
-                    scope.addReplacePattern = addReplacePattern;
+                    scope.addExtractPattern = addExtractPattern;
                     scope.filterFieldsForInputField = filterFieldsForInputField;
                     // scope.isDateType =  isDateType;
-                    scope.filterFieldInTransformReplacePattern = filterFieldInTransformReplacePattern;
+                    scope.filterFieldInTransformExtractPattern = filterFieldInTransformExtractPattern;
                     scope.filterFieldInTransformReplaceText = filterFieldInTransformReplaceText;
                     scope.getDataSourceFieldsForReplace = getDataSourceFieldsForReplace;
-                    scope.getDataSourceFieldsForReplacePattern = getDataSourceFieldsForReplacePattern;
+                    scope.getDataSourceFieldsForExtractPattern = getDataSourceFieldsForExtractPattern;
                     scope.disabledOverrideValue = disabledOverrideValue;
                     scope.filterTextFields = filterTextFields;
                     scope.filterNumberFields = filterNumberFields;
@@ -90,15 +90,15 @@
                         return angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms));
                     }
 
-                    function getDataSourceFieldsForReplacePattern() {
+                    function getDataSourceFieldsForExtractPattern() {
                         return angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms)).concat(REPORT_VIEW_INTERNAL_FIELD_VARIABLE);
                     }
 
-                    function filterFieldInTransformReplacePattern(field) {
+                    function filterFieldInTransformExtractPattern(field) {
                         for (var index in scope.transforms) {
                             var transform = scope.transforms[index];
 
-                            if(transform.type == 'addField' || transform.type == 'replaceText' || transform.type == 'replacePattern') {
+                            if(transform.type == 'addField' || transform.type == 'replaceText' || transform.type == 'extractPattern') {
                                 for(var indexField in transform.fields) {
                                     var fieldTransform = transform.fields[indexField];
 
@@ -120,7 +120,7 @@
                         for (var index in scope.transforms) {
                             var transform = scope.transforms[index];
 
-                            if(transform.type == 'addField' || transform.type == 'replaceText' || transform.type == 'replacePattern') {
+                            if(transform.type == 'addField' || transform.type == 'replaceText' || transform.type == 'extractPattern') {
                                 for(var indexField in transform.fields) {
                                     var fieldTransform = transform.fields[indexField];
 
@@ -303,7 +303,7 @@
                             for (var index in transforms) {
                                 var transform = transforms[index];
 
-                                if(transform.type == 'replacePattern' || transform.type == 'replaceText') {
+                                if(transform.type == 'extractPattern' || transform.type == 'replaceText') {
                                     for(var indexField in transform.fields) {
                                         var field = transform.fields[indexField];
 
@@ -503,7 +503,7 @@
                         });
                     }
 
-                    function addReplacePattern(fields){
+                    function addExtractPattern(fields){
                         fields.push({
                             field: null,
                             isOverride: false,
@@ -512,7 +512,7 @@
                         });
                     }
 
-                    function filterFieldsForInputField(checkBoxValue, replacePattern){
+                    function filterFieldsForInputField(checkBoxValue, extractPattern){
                         var allMappedFiels = [];
                         _.each(scope.mapFields, function (value, key){
                             if (value) {
@@ -527,7 +527,7 @@
                                 }
                                 return false;
                             });
-                            replacePattern.targetField = null;
+                            extractPattern.targetField = null;
 
                         } else {
                             scope.dataSourceFieldsCopy = angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms));
