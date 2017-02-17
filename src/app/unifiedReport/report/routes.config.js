@@ -31,7 +31,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Unified Report View'
+                    label: 'Report Views'
                 }
             })
             .state('unifiedReport.report.builder', {
@@ -67,7 +67,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Unified Report Builder'
+                    label: 'Report Builder'
                 }
             })
             .state('unifiedReport.report.editBuilder', {
@@ -139,7 +139,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Unified Report Builder'
+                    label: 'Report Builder'
                 }
             })
             .state('unifiedReport.report.detail', {

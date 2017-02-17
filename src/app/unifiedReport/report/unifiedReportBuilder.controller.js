@@ -254,13 +254,18 @@
                     AlertService.addFlash({
                         type: 'success',
                         message: 'The report view has been updated'
-                    })
+                    });
+
+                    return historyStorage.getLocationPath(HISTORY_TYPE_PATH.unifiedReportView, '^.listReportView');
                 })
-                .then(
-                    function () {
-                        return historyStorage.getLocationPath(HISTORY_TYPE_PATH.unifiedReportView, '^.listReportView');
-                    }
-                );
+                .catch(function (response) {
+                    var message = _setMessageForSave(response);
+
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: message
+                    });
+                });
         }
 
         function getReports(save) {
@@ -310,16 +315,26 @@
                         type: 'success',
                         message: $scope.isNew ? 'The report view has been created' : 'The report view has been updated'
                     });
-                }).catch(function () {
+                }).catch(function (response) {
+                    var message = _setMessageForSave(response);
+
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: $scope.isNew ? "An error occurred. The report view could not be created" : "An error occurred. The report view could not be updated"
+                        message: message
                     });
                 });
 
                 params.saveReportView = true;
             } else {
                 _viewDetail(params);
+            }
+        }
+
+        function _setMessageForSave(response) {
+            if(response.status == 500) {
+                return $scope.isNew ? "An error occurred. The report view could not be created" : "An error occurred. The report view could not be updated"
+            } else {
+                return response.data.message
             }
         }
 
