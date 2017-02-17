@@ -80,33 +80,53 @@
                     scope.getDataSourceFieldsForReplacePattern = getDataSourceFieldsForReplacePattern;
                     scope.disabledOverrideValue = disabledOverrideValue;
                     scope.filterTextFields = filterTextFields;
-                    scope.filterNumberFields = filterNumberFields;
+                    scope.resetFieldNameInReplaceTextTransform = resetFieldNameInReplaceTextTransform;
+                    scope.disableOverride = disableOverride;
 
-                    function disabledOverrideValue(field) {
+
+                    function disabledOverrideValue(field){
                         return REPORT_VIEW_INTERNAL_FIELD_VARIABLE.indexOf(field) > -1
                     }
 
-                    function getDataSourceFieldsForReplace() {
-                        return angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms));
+                    function getDataSourceFieldsForReplace(checkBoxValue){
+                        if (!(checkBoxValue)) {
+                            return angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms)).concat(REPORT_VIEW_INTERNAL_FIELD_VARIABLE);
+                        } else  {
+                            return angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms))
+                        }
                     }
 
-                    function getDataSourceFieldsForReplacePattern() {
+                    function resetFieldNameInReplaceTextTransform(checkBoxValue, replaceText){
+                        if (checkBoxValue) {
+                            if (_.contains(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, replaceText.field)) {
+                                replaceText.fieldValue =  undefined;
+                            }
+                        }
+
+                        return replaceText;
+                    }
+
+                    function disableOverride(field) {
+                        return _.contains(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, field);
+                    }
+
+                    function getDataSourceFieldsForReplacePattern(){
                         return angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms)).concat(REPORT_VIEW_INTERNAL_FIELD_VARIABLE);
                     }
 
-                    function filterFieldInTransformReplacePattern(field) {
+                    function filterFieldInTransformReplacePattern(field){
                         for (var index in scope.transforms) {
                             var transform = scope.transforms[index];
 
-                            if(transform.type == 'addField' || transform.type == 'replaceText' || transform.type == 'replacePattern') {
-                                for(var indexField in transform.fields) {
+                            if (transform.type == 'addField' || transform.type == 'replaceText' || transform.type == 'replacePattern') {
+                                for (var indexField in transform.fields) {
                                     var fieldTransform = transform.fields[indexField];
 
-                                    if(field == fieldTransform.field) {
+                                    if (field == fieldTransform.field) {
                                         return false
                                     }
 
-                                    if(field == fieldTransform.targetField) {
+                                    if (field == fieldTransform.targetField) {
                                         return false
                                     }
                                 }
@@ -116,19 +136,19 @@
                         return true;
                     }
 
-                    function filterFieldInTransformReplaceText(field) {
+                    function filterFieldInTransformReplaceText(field){
                         for (var index in scope.transforms) {
                             var transform = scope.transforms[index];
 
-                            if(transform.type == 'addField' || transform.type == 'replaceText' || transform.type == 'replacePattern') {
-                                for(var indexField in transform.fields) {
+                            if (transform.type == 'addField' || transform.type == 'replaceText' || transform.type == 'replacePattern') {
+                                for (var indexField in transform.fields) {
                                     var fieldTransform = transform.fields[indexField];
 
-                                    if(field == fieldTransform.field) {
+                                    if (field == fieldTransform.field) {
                                         return false
                                     }
 
-                                    if(field == fieldTransform.targetField) {
+                                    if (field == fieldTransform.targetField) {
                                         // TODO return false
                                     }
                                 }
@@ -202,9 +222,9 @@
                     function selectTypeCalculatedField(field, calculatedField){
                         scope.fieldForExpression = [];
 
-                        angular.forEach(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, function (field) {
+                       /* angular.forEach(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, function (field){
                             scope.fieldForExpression.push({label: field});
-                        });
+                        });*/
 
                         angular.forEach(scope.dataSourceFields, function (item){
                             if (!item || item == '') {
@@ -303,16 +323,16 @@
                             for (var index in transforms) {
                                 var transform = transforms[index];
 
-                                if(transform.type == 'replacePattern' || transform.type == 'replaceText') {
-                                    for(var indexField in transform.fields) {
+                                if (transform.type == 'replacePattern' || transform.type == 'replaceText') {
+                                    for (var indexField in transform.fields) {
                                         var field = transform.fields[indexField];
 
-                                        if(field.isOverride) {
-                                            if(dm == field.field) {
+                                        if (field.isOverride) {
+                                            if (dm == field.field) {
                                                 return false
                                             }
                                         } else {
-                                            if(dm == field.targetField) {
+                                            if (dm == field.targetField) {
                                                 return false
                                             }
                                         }
