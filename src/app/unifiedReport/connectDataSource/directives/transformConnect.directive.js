@@ -84,6 +84,7 @@
                     scope.resetFieldNameInReplaceTextTransform = resetFieldNameInReplaceTextTransform;
                     scope.disableOverride = disableOverride;
                     scope.getFieldsForAddCalculatedField = getFieldsForAddCalculatedField;
+                    scope.fieldForExpressionInCalculated = [];
 
 
                     function disabledOverrideValue(field) {
@@ -262,7 +263,7 @@
                     }
 
                     function getFieldsForAddCalculatedField(field, calculatedField){
-                        scope.fieldForExpression = [];
+                        scope.fieldForExpressionInCalculated = [];
 
                         /*angular.forEach(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, function (field){
                             scope.fieldForExpression.push({label: field});
@@ -273,7 +274,7 @@
                                 return;
                             }
 
-                            scope.fieldForExpression.push({label: item});
+                            scope.fieldForExpressionInCalculated.push({label: item});
                         });
 
                         // if (scope.dimensionsMetrics[field] == 'number' || scope.dimensionsMetrics[field] == 'decimal') {
