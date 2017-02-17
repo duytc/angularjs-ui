@@ -36,7 +36,8 @@
             requires: [],
             filters: [],
             transforms: [],
-            alertSetting: []
+            alertSetting: [],
+            replayData: false
         };
 
         $scope.selected = {
@@ -418,9 +419,9 @@
             var transforms = angular.copy($scope.connectDataSource.transforms);
             var allTargetField = [];
 
-            // total field in targetField replacePattern
+            // total field in targetField extractPattern
             angular.forEach(transforms, function (transform) {
-                if(transform.type == 'replacePattern') {
+                if(transform.type == 'extractPattern') {
                     angular.forEach(transform.fields, function (field) {
                         allTargetField.push(field.targetField)
                     });
@@ -431,7 +432,7 @@
                 if((transform.type == 'number' || transform.type == 'date') && !!transform.field) {
                     if(_.values($scope.connectDataSource.mapFields).indexOf(transform.field) == -1 && allTargetField.indexOf(transform.field) == -1) {
                         var index = _.findIndex($scope.connectDataSource.transforms, function (item) {
-                            if(item.type == 'replacePattern') {
+                            if(item.type == 'extractPattern') {
                                 for (var indexField in item.fields) {
                                     if(!item.fields[indexField].isOverride) {
                                         return item.fields[indexField].targetField == transform.field
@@ -476,7 +477,7 @@
                 //     });
                 // }
 
-                if(transform.type == 'replacePattern' || transform.type == 'replaceText') {
+                if(transform.type == 'extractPattern' || transform.type == 'replaceText') {
                     angular.forEach(transform.fields, function (transformField) {
                         if(!transformField.isOverride) {
                             if(_.values($scope.connectDataSource.mapFields).indexOf(transformField.targetField) > -1) {
@@ -530,7 +531,7 @@
         
         function _listenTransform() {
             angular.forEach($scope.connectDataSource.transforms, function (transform) {
-                if(transform.type == 'replacePattern') {
+                if(transform.type == 'extractPattern') {
                     angular.forEach(transform.fields, function (field) {
                         if(!field.isOverride && ($scope.dimensionsMetrics[field.targetField] == 'date' || $scope.dimensionsMetrics[field.targetField] == 'datetime')) {
                             var indexTransformDate = _.findIndex($scope.connectDataSource.transforms, function (transform) {

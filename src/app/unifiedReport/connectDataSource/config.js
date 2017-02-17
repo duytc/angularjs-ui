@@ -71,7 +71,7 @@
             // addConcatenatedField: 'addConcatenatedField',
             currency: 'currency',
             replaceText: 'replaceText',
-            replacePattern: 'replacePattern'
+            extractPattern: 'extractPattern'
         })
         .provider('CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD', {
             $get: function (CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY) {
@@ -85,7 +85,7 @@
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.comparisonPercent, label: 'Comparison Percent'},
                     // {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addConcatenatedField, label: 'Concatenated Field'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.replaceText, label: 'Replace Text'},
-                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.replacePattern, label: 'Replace Pattern'}
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.extractPattern, label: 'Extract Pattern'}
                 ];
             }
         })
