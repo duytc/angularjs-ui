@@ -128,6 +128,13 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="replayData" class="col-sm-1 control-label">Replay Data</label>
+                    <div class="col-sm-7">
+                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="connectDataSource.replayData" id="replayData"><span></span></label>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-7">
                         <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success mce-i-indent">{{ 'SUBMIT' | translate }}</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">

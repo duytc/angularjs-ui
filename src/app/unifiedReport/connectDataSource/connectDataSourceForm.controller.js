@@ -36,7 +36,8 @@
             requires: [],
             filters: [],
             transforms: [],
-            alertSetting: []
+            alertSetting: [],
+            replayData: false
         };
 
         $scope.selected = {
