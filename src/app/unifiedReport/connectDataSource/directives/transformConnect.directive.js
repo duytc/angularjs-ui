@@ -26,6 +26,7 @@
                     scope.allFiledFormatTypeKeys = CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY;
                     scope.dateFormatTypes = DATE_FORMAT_TYPES;
                     scope.fieldForExpression = [];
+                    scope.fieldForExpressionInCalculatedField = [];
                     scope.positionsForReplaceText = POSITIONS_FOR_REPLACE_TEXT;
                     scope.dataSourceFieldsCopy = angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms));
 
@@ -82,6 +83,7 @@
                     scope.filterTextFields = filterTextFields;
                     scope.resetFieldNameInReplaceTextTransform = resetFieldNameInReplaceTextTransform;
                     scope.disableOverride = disableOverride;
+                    scope.getFieldsForAddCalculatedField = getFieldsForAddCalculatedField;
 
 
                     function disabledOverrideValue(field) {
@@ -222,7 +224,47 @@
                     function selectTypeCalculatedField(field, calculatedField){
                         scope.fieldForExpression = [];
 
-                       /* angular.forEach(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, function (field){
+                        angular.forEach(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, function (field){
+                            scope.fieldForExpression.push({label: field});
+                        });
+
+                        angular.forEach(scope.dataSourceFields, function (item){
+                            if (!item || item == '') {
+                                return;
+                            }
+
+                            scope.fieldForExpression.push({label: item});
+                        });
+
+                        // if (scope.dimensionsMetrics[field] == 'number' || scope.dimensionsMetrics[field] == 'decimal') {
+                        //     angular.forEach(scope.dataSourceFields, function (item) {
+                        //         if (!item || item == '') {
+                        //             return;
+                        //         }
+                        //
+                        //         if (scope.dimensionsMetrics[item] == 'number' || scope.dimensionsMetrics[item] == 'decimal') {
+                        //             scope.fieldForExpression.push({label: item});
+                        //         }
+                        //     });
+                        // } else {
+                        //     angular.forEach(scope.dataSourceFields, function (item) {
+                        //         if (!item || item == '') {
+                        //             return;
+                        //         }
+                        //
+                        //         scope.fieldForExpression.push({label: item});
+                        //     });
+                        // }
+
+                        if (!!field && !!calculatedField) {
+                            calculatedField.expression = null
+                        }
+                    }
+
+                    function getFieldsForAddCalculatedField(field, calculatedField){
+                        scope.fieldForExpression = [];
+
+                        /*angular.forEach(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, function (field){
                             scope.fieldForExpression.push({label: field});
                         });*/
 
