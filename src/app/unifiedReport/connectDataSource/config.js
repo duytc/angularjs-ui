@@ -94,6 +94,6 @@
             {key: 'at the beginning', label: 'At the Beginning'},
             {key: 'at the end', label: 'At the End'}
         ])
-        .constant('REPORT_VIEW_INTERNAL_FIELD_VARIABLE', ['__filename', '__email_subject'])
+        .constant('REPORT_VIEW_INTERNAL_FIELD_VARIABLE', ['__filename', '__email_subject', '__email_body', '__email_date_time'])
     ;
 })();

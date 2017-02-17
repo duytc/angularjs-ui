@@ -73,13 +73,25 @@
                     scope.formatExpressionToHighlight = formatExpressionToHighlight;
                     scope.addReplacePattern = addReplacePattern;
                     scope.filterFieldsForInputField = filterFieldsForInputField;
-                    scope.isDateType =  isDateType;
+                    // scope.isDateType =  isDateType;
                     scope.filterFieldInTransformReplacePattern = filterFieldInTransformReplacePattern;
                     scope.filterFieldInTransformReplaceText = filterFieldInTransformReplaceText;
                     scope.getDataSourceFieldsForReplace = getDataSourceFieldsForReplace;
-                    
+                    scope.getDataSourceFieldsForReplacePattern = getDataSourceFieldsForReplacePattern;
+                    scope.disabledOverrideValue = disabledOverrideValue;
+                    scope.filterTextFields = filterTextFields;
+                    scope.filterNumberFields = filterNumberFields;
+
+                    function disabledOverrideValue(field) {
+                        return REPORT_VIEW_INTERNAL_FIELD_VARIABLE.indexOf(field) > -1
+                    }
+
                     function getDataSourceFieldsForReplace() {
                         return angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms));
+                    }
+
+                    function getDataSourceFieldsForReplacePattern() {
+                        return angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms)).concat(REPORT_VIEW_INTERNAL_FIELD_VARIABLE);
                     }
 
                     function filterFieldInTransformReplacePattern(field) {
@@ -156,9 +168,6 @@
 
                         return _.union(scope.dataSourceFields.concat(fieldInConcat));
                     }
-
-                    scope.filterTextFields = filterTextFields;
-                    scope.filterNumberFields = filterNumberFields;
 
                     function removeAutoSpaceAfterField(field, id){
                         var elemId = 'concatenated-'.concat(id);
@@ -438,7 +447,8 @@
                         return scope.dimensionsMetrics[scope.mapFields[field]] == 'text'
                             || scope.dimensionsMetrics[scope.mapFields[field]] == 'multiLineText'
                             || scope.dimensionsMetrics[field] == 'text'
-                            || scope.dimensionsMetrics[field] == 'multiLineText';
+                            || scope.dimensionsMetrics[field] == 'multiLineText'
+                            || REPORT_VIEW_INTERNAL_FIELD_VARIABLE.indexOf(field) > -1;
                     }
 
                     function notInMapField(field){
@@ -525,9 +535,9 @@
 
                     }
 
-                    function isDateType(targetField) {
-                        return (scope.dimensionsMetrics[targetField] == 'date' || scope.dimensionsMetrics[targetField] == 'datetime' )
-                    }
+                    // function isDateType(targetField) {
+                    //     return (scope.dimensionsMetrics[targetField] == 'date' || scope.dimensionsMetrics[targetField] == 'datetime' )
+                    // }
 
                     function removeAddValue(fields, index){
                         fields.splice(index, 1);
