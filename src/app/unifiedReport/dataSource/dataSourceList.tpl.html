@@ -46,6 +46,8 @@
                                 <li class="divider"></li>
                                 <li><a ng-click="getAPIKey(item)">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.GET_API_KEY' | translate }}</a></li>
                                 <li class="divider"></li>
+                                <li><a ui-sref="^.^.importHistory.listForDataSource({ dataSourceId: item.id })">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.VIEW_DATA_IMPORT_HISTORY' | translate }}</a></li>
+                                <li class="divider"></li>
                                 <li><a ui-sref="^.^.dataSourceFile.new({ dataSourceId: item.id })">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.UPLOAD_DATA' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li><a ui-sref="^.^.dataSourceFile.listForDataSource({dataSourceId: item.id })">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.MANAGE_RECEIVED_DATA' | translate }}</a></li>

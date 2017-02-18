@@ -4,16 +4,16 @@
         <strong current-page-title></strong>
 
         <div class="button-bar">
-            <button ng-click="backToDataSetList()" class="btn btn-sm btn-primary" type="button">
+            <button ng-click="backToList()" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-arrow-left"></span>
-                {{ 'UNIFIED_REPORT_DATA_SET_MODULE.BACK_TO_DATA_SET_LIST' | translate }}
+                {{ (!!dataSet ? 'UNIFIED_REPORT_DATA_SET_MODULE.BACK_TO_DATA_SET_LIST' : 'UNIFIED_REPORT_DATA_SOURCE_MODULE.BACK_TO_DATA_SOURCE_LIST') | translate }}
             </button>
         </div>
 
         <div class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ng-click="backToDataSetList()">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.BACK_TO_DATA_SET_LIST' | translate }}</a></li>
+                <li><a ng-click="backToList()">{{ (!!dataSet ? 'UNIFIED_REPORT_DATA_SET_MODULE.BACK_TO_DATA_SET_LIST' : 'UNIFIED_REPORT_DATA_SOURCE_MODULE.BACK_TO_DATA_SOURCE_LIST') | translate }}</a></li>
             </ul>
         </div>
     </div>
@@ -24,6 +24,10 @@
         <div class="table-responsive">
             <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="importHistoryList" at-config="tableConfig">
                 <thead>
+                <tr>
+                    <th ng-show="!!dataSet" at-attribute="dataSourceEntry.dataSource.name">{{ 'DATA_SOURCE' | translate }}</th>
+                    <th ng-show="!dataSet" at-attribute="dataSet.name">{{ 'DATA_SET' | translate }}</th>
+                </tr>
                 </thead>
                 <tbody>
                 <tr>
@@ -42,7 +46,8 @@
                         {{ item.createdDate | date:'MMM d, y H:mm:ss' }}
                     </td>
                     <td at-implicit at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.FILENAME' | translate }}" at-sortable at-attribute="dataSourceEntry.fileName"></td>
-                    <td at-implicit at-title="{{ 'DATA_SOURCE' | translate }}" at-sortable at-attribute="dataSourceEntry.dataSource.name"></td>
+                    <td ng-show="!!dataSet" at-implicit at-title="{{ 'DATA_SOURCE' | translate }}" at-sortable at-attribute="dataSourceEntry.dataSource.name"></td>
+                    <td ng-show="!dataSet" at-implicit at-title="{{ 'DATA_SET' | translate }}" at-sortable at-attribute="dataSet.name"></td>
                 </tr>
                 </tbody>
             </table>
