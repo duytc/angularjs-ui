@@ -74,7 +74,6 @@
                     scope.formatExpressionToHighlight = formatExpressionToHighlight;
                     scope.addExtractPattern = addExtractPattern;
                     scope.filterFieldsForInputField = filterFieldsForInputField;
-                    // scope.isDateType =  isDateType;
                     scope.filterFieldInTransformExtractPattern = filterFieldInTransformExtractPattern;
                     scope.filterFieldInTransformReplaceText = filterFieldInTransformReplaceText;
                     scope.getDataSourceFieldsForReplace = getDataSourceFieldsForReplace;
@@ -597,10 +596,6 @@
                         }
 
                     }
-
-                    // function isDateType(targetField) {
-                    //     return (scope.dimensionsMetrics[targetField] == 'date' || scope.dimensionsMetrics[targetField] == 'datetime' )
-                    // }
 
                     function removeAddValue(fields, index){
                         fields.splice(index, 1);

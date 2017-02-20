@@ -501,7 +501,7 @@
                                 </div>
 
                                 <div class="form-group select-connect-data-source">
-                                    <label for="isOverride" class="col-sm-2 control-label">Override Value</label>
+                                    <label for="isOverride" class="col-sm-2 control-label">Replace value</label>
                                     <div class="col-sm-10">
                                         <label class="ui-checkbox"><input server-error name="active" ng-disabled="disabledOverrideValue(extractPattern.field)" type="checkbox" ng-change="filterFieldsForInputField(extractPattern.isOverride, extractPattern)" ng-model="extractPattern.isOverride"><span></span></label>
                                     </div>
@@ -521,20 +521,6 @@
                                     </div>
                                 </div>
 
-                                <!--<div class="form-group select-connect-data-source" ng-if="isDateType(extractPattern.targetField)">-->
-                                    <!--<label for="isOverride" class="col-sm-2 control-label">Date Format</label>-->
-                                    <!--<div class="col-sm-10">-->
-                                        <!--<ui-select ng-model="extractPattern.dateFormat" ng-required="true" server-error reset-search-input="'false'">-->
-                                            <!--<ui-select-match placeholder="Select a date format">{{ $select.selected.label }}-->
-                                            <!--</ui-select-match>-->
-                                             <!--<ui-select-choices repeat="type.key as type in dateFormatTypes | filter:$select.search">-->
-                                            <!--{{ type.label }}-->
-                                        <!--</ui-select-choices>-->
-                                        <!--</ui-select>-->
-                                     <!--</div>-->
-
-                                <!--</div>-->
-
                                 <div class="form-group select-connect-data-source">
                                     <label for="isOverride" class="col-sm-2 control-label">Case Insensitive</label>
                                     <div class="col-sm-10">
@@ -553,6 +539,13 @@
                                     <label class="col-sm-2 control-label">Search Pattern</label>
                                     <div class="col-sm-10">
                                         <input server-error name="searchFor" ng-model="extractPattern.searchPattern" ng-required="true" type="text" class="form-control" placeholder="Enter regular expression">
+                                    </div>
+                                </div>
+
+                                <div class="form-group select-connect-data-source">
+                                    <label for="matchedPosition" class="col-sm-2 control-label">Replacement Value</label>
+                                    <div class="col-sm-10">
+                                        <input server-error name="matchedPosition" type="number" class="form-control" min="1" pattern="[1-9]" ng-model="extractPattern.matchedPosition" id="matchedPosition" placeholder="Replacement Value">
                                     </div>
                                 </div>
                             </div>

@@ -60,6 +60,7 @@
             "WATERFALL_TAG": "Waterfall",
 
             "DATA_SOURCE":"Data Source",
+            "DATA_SET":"Data Set",
 
             "RTB_STATUS": "RTB",
             "RTB_STATUS_INHERIT": "Inherit",
