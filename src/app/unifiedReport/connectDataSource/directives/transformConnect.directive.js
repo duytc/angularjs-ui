@@ -97,9 +97,9 @@
 
                     function getDataSourceFieldsForReplace(checkBoxValue){
                         if (!(checkBoxValue)) {
-                            return angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms)).concat(REPORT_VIEW_INTERNAL_FIELD_VARIABLE);
+                            return _.uniq(angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms)).concat(REPORT_VIEW_INTERNAL_FIELD_VARIABLE));
                         } else  {
-                            return angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms))
+                            return _.uniq(angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms)))
                         }
                     }
 
@@ -118,7 +118,7 @@
                     }
 
                     function getDataSourceFieldsForExtractPattern() {
-                        return angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms)).concat(REPORT_VIEW_INTERNAL_FIELD_VARIABLE);
+                        return _.uniq(angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms)).concat(REPORT_VIEW_INTERNAL_FIELD_VARIABLE));
                     }
 
                     function filterFieldInTransformExtractPattern(field) {
