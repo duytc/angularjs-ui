@@ -26,7 +26,7 @@
                     scope.allFiledFormatTypeKeys = CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY;
                     scope.dateFormatTypes = DATE_FORMAT_TYPES;
                     scope.fieldForExpression = [];
-                    scope.fieldForExpressionInCalculatedField = [];
+                    scope.fieldForExpressionInCalculated = [];
                     scope.positionsForReplaceText = POSITIONS_FOR_REPLACE_TEXT;
                     scope.dataSourceFieldsCopy = angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms));
 
@@ -83,7 +83,12 @@
                     scope.resetFieldNameInReplaceTextTransform = resetFieldNameInReplaceTextTransform;
                     scope.disableOverride = disableOverride;
                     scope.getFieldsForAddCalculatedField = getFieldsForAddCalculatedField;
-                    scope.fieldForExpressionInCalculated = [];
+                    scope.filterNumberFields = filterNumberFields;
+                    scope.selectCustomFormatDate = selectCustomFormatDate;
+
+                    function selectCustomFormatDate(transform) {
+                        transform.from = null;
+                    }
 
 
                     function disabledOverrideValue(field) {

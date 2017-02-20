@@ -181,7 +181,12 @@
             uploader.url = baseUploadURL.replace('%dataSourceId%', dataSource.id).replace('%autoImport%', $scope.selected.autoImport);
             $scope.dataSourceFields = Object.keys(dataSource.detectedFields);
 
-            $scope.connectDataSource.mapFields = {};
+            angular.forEach(angular.copy($scope.connectDataSource.mapFields), function (value, key) {
+                if($scope.dataSourceFields.indexOf(key) == -1) {
+                    delete $scope.connectDataSource.mapFields[key]
+                }
+            });
+            // $scope.connectDataSource.mapFields = {};
         }
 
         function isEmpty(object) {
@@ -429,7 +434,7 @@
             );
 
             angular.forEach(transforms, function (transform) {
-                setTimeout(function () {
+                $timeout(function () {
                     if((transform.type == 'number' || transform.type == 'date') && !!transform.field) {
                         if(_.values($scope.connectDataSource.mapFields).indexOf(transform.field) == -1 && allTargetField.indexOf(transform.field) == -1) {
                             var index = _.findIndex($scope.connectDataSource.transforms, function (item) {
@@ -449,7 +454,7 @@
                             }
                         }
                     }
-                }, 0);
+                }, 0, true);
             });
 
             angular.forEach($scope.connectDataSource.transforms, function (transform) {
