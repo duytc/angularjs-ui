@@ -3,14 +3,30 @@
     Add Transformation
 </button>
 
-<div class="expressions-group" ng-repeat="transform in transforms">
-    <div class="form-group select-connect-data-source">
+<label ng-if="getLengthTransform()"  class="ui-checkbox enable-drag-drop-query-builder">
+    <input type="checkbox" ng-model="reorderTransformsAllowed" ng-click="enableDragDropQueryBuilder(reorderTransformsAllowed)">
+    <span>{{ 'REPORT_BUILDER_MODULE.ENABLE_DRAG_AND_DROP' | translate }}</span>
+</label>
+
+<div ui-sortable="sortableOptions" ng-model="transforms" style="margin-top: 10px">
+
+    <div class="moveable" ng-repeat="transform in transforms">
+        <accordion close-others="true">
+            <accordion-group class="notUpperCase" is-open="transform.openStatus">
+
+                <accordion-heading>
+                    <div>
+                        {{transform.type}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': transform.openStatus, 'glyphicon-chevron-right': !transform.openStatus}"></i>
+                    </div>
+                </accordion-heading>
+
+                <div class="form-group select-connect-data-source">
         <button type="button" class="btn btn-danger btn-close-ur" ng-click="removeTransform($index)">
             <span class="glyphicon glyphicon-minus "></span>
         </button>
     </div>
 
-    <div class="row">
+                <div class="row">
         <div class="form-group select-connect-data-source">
             <label class="col-sm-2 control-label">Type</label>
             <div class="col-sm-10">
@@ -140,7 +156,7 @@
                                <div class="form-group select-connect-data-source">
                                    <label class="col-sm-2 control-label">Field Name</label>
                                    <div class="col-sm-10">
-                                       <input server-error ng-required="true" type="text"  class="form-control" ng-model="field.field" placeholder="Field Name">
+                                       <input server-error ng-required="true" ng-pattern="notOnlyNumberPattern" type="text"  class="form-control" ng-model="field.field" placeholder="Field Name">
                                    </div>
                                </div>
 
@@ -186,8 +202,384 @@
                                 </button>
 
                                 <!--<button type="button" class="close" ng-click="removeAddValue(transform.fields, $index)">-->
-                                    <!--<span class="glyphicon glyphicon-remove "></span>-->
+                                <!--<span class="glyphicon glyphicon-remove "></span>-->
                                 <!--</button>-->
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group select-connect-data-source">
+                                    <label class="col-sm-2 control-label">Field Name</label>
+                                    <div class="col-sm-10">
+                                        <input server-error ng-pattern="notOnlyNumberPattern" ng-required="true" type="text" class="form-control" ng-model="field.field" placeholder="Field Name">
+                                    </div>
+                                </div>
+
+                                <div class="form-group select-connect-data-source">
+                                    <label class="col-sm-2 control-label">Type</label>
+                                    <div class="col-sm-10">
+                                        <ui-select ng-model="field.type" ng-required="true" server-error on-select="selectTypeCalculatedField($item, field)" ng-init="selectTypeCalculatedField(field.type)" reset-search-input="'false'">
+                                            <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.TYPE' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                                            <ui-select-choices repeat="type.key as type in getTypesFieldForCalculatedField() | filter: { label: $select.search }">
+                                                {{ type.label}}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Expression</label>
+                                    <div class="col-sm-10">
+                                        <textarea mentio mentio-select="getPeopleText(item)" ng-change="addSpaceBeforeAndAfterOperator(field)" type="text" mentio-macros="macros" mentio-trigger-char="'['" mentio-typed-text="typedTerm"
+                                                  class="form-control"
+                                                  mentio-items="fieldsCalculatedField | filter:label:typedTerm"
+                                                  ng-model="field.expression" placeholder="Expression">
+                                        </textarea>
+
+                                        <span class="help-block">Use character <strong>[</strong> to show list of available variables. Each variable should be inside square bracket.</span>
+                                        <div class="callout-success expressions-transform" ng-bind-html="formatExpressionToHighlight(field)"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="transform.type == allFiledFormatTypeKeys.comparisonPercent">
+            <div class="form-group select-connect-data-source">
+                <label class="col-sm-2 control-label">Comparison Percent</label>
+                <div class="col-sm-10">
+                    <div class="expressions-group">
+                        <button class="btn btn-success" type="button" ng-click="addComparisonPercent(transform.fields)">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            Add Comparison Percent
+                        </button>
+
+                        <div class="expressions-group" ng-repeat="comparison in transform.fields">
+                            <div class="form-group select-connect-data-source">
+                                <button type="button" class="btn btn-danger btn-close-ur" ng-click="removeAddValue(transform.fields, $index)">
+                                    <span class="glyphicon glyphicon-minus "></span>
+                                </button>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group select-connect-data-source">
+                                    <label class="col-sm-2 control-label">Field Name</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" ng-pattern="notOnlyNumberPattern" server-error ng-required="true" type="text" ng-model="comparison.field" placeholder="Field Name">
+                                    </div>
+                                </div>
+
+                                <div class="form-group select-connect-data-source">
+                                    <label class="col-sm-2 control-label">Type</label>
+                                    <div class="col-sm-10">
+                                        <ui-select ng-model="comparison.type" ng-required="true" server-error  reset-search-input="'false'">
+                                            <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.TYPE' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                                            <ui-select-choices repeat="type.key as type in getTypesFieldNumber() | filter: { label: $select.search }">
+                                                {{ type.label}}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group select-connect-data-source">
+                                    <label class="col-sm-2 control-label">First Field</label>
+                                    <div class="col-sm-10">
+                                        <ui-select ng-model="comparison.numerator" ng-required="true" server-error reset-search-input="'false'">
+                                            <ui-select-match placeholder="Select a comparison operator">{{ $select.selected.label }}</ui-select-match>
+                                            <ui-select-choices repeat="dm.key as dm in filerFieldNamesForComparisonPercent() | filter:$select.search">
+                                                {{ dm.label }}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group select-connect-data-source">
+                                    <label class="col-sm-2 control-label">Second Field</label>
+                                    <div class="col-sm-10">
+                                        <ui-select ng-model="comparison.denominator" ng-required="true" server-error reset-search-input="'false'">
+                                            <ui-select-match placeholder="Select a comparison operator">{{ $select.selected.label  }}</ui-select-match>
+                                            <ui-select-choices repeat="dm.key as dm in filerFieldNamesForComparisonPercent() | filter:$select.search">
+                                                {{ dm.label }}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="transform.type == allFiledFormatTypeKeys.replaceText">
+            <div class="form-group select-connect-data-source">
+                <label class="col-sm-2 control-label">Replace Text</label>
+
+                <div class="col-sm-10">
+                    <div class="expressions-group">
+                        <button class="btn btn-success" type="button" ng-click="addReplaceText(transform.fields)">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            Add Replace Text
+                        </button>
+
+                        <div class="expressions-group" ng-repeat="replaceText in transform.fields">
+                            <div class="form-group select-connect-data-source">
+                                <button type="button" class="btn btn-danger btn-close-ur"
+                                        ng-click="removeAddValue(transform.fields, $index)">
+                                    <span class="glyphicon glyphicon-minus "></span>
+                                </button>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group select-connect-data-source">
+                                    <label class="col-sm-2 control-label">Field Name</label>
+                                    <div class="col-sm-10">
+                                        <ui-select ng-model="replaceText.field" ng-required="true" server-error reset-search-input="'false'">
+                                            <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                            <ui-select-choices repeat="dm.key as dm in selectedFields | filter:filterFieldByText | orderBy | filter:$select.search">
+                                                {{ dm.label }}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                                <div class="form-group select-connect-data-source">
+                                    <label for="isOverride" class="col-sm-2 control-label">Override Value</label>
+                                    <div class="col-sm-10">
+                                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="replaceText.isOverride" id="isOverride"><span></span></label>
+                                    </div>
+                                </div>
+                                <div class="form-group select-connect-data-source" ng-if="!replaceText.isOverride">
+                                    <label class="col-sm-2 control-label">Target Field</label>
+                                    <div class="col-sm-10">
+                                        <input server-error ng-pattern="notOnlyNumberPattern" name="targetField" ng-model="replaceText.targetField" ng-required="true" type="text" class="form-control" placeholder="Target Field">
+                                    </div>
+                                </div>
+                                <div class="form-group select-connect-data-source">
+                                    <label class="col-sm-2 control-label">Search For</label>
+                                    <div class="col-sm-10">
+                                        <input server-error name="searchFor" ng-model="replaceText.searchFor" ng-required="true" type="text" class="form-control" placeholder="Search For">
+                                    </div>
+                                </div>
+                                <div class="form-group select-connect-data-source">
+                                    <label class="col-sm-2 control-label">Position</label>
+                                    <div class="col-sm-10">
+                                        <ui-select ng-model="replaceText.position" ng-required="true" server-error reset-search-input="'false'">
+                                            <ui-select-match placeholder="Select a position">{{ $select.selected.label }}</ui-select-match>
+                                            <ui-select-choices repeat="position.key as position in positionsForReplaceText">
+                                                {{ position.label }}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                                <div class="form-group select-connect-data-source">
+                                    <label class="col-sm-2 control-label">Replace With</label>
+                                    <div class="col-sm-10">
+                                        <input server-error name="replaceWith" ng-model="replaceText.replaceWith" type="text" class="form-control" placeholder="Replace With">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+            </accordion-group>
+        </accordion>
+    </div>
+</div>
+
+
+
+<!--
+<div class="expressions-group" ng-repeat="transform in transforms">
+    <div class="form-group select-connect-data-source">
+        <button type="button" class="btn btn-danger btn-close-ur" ng-click="removeTransform($index)">
+            <span class="glyphicon glyphicon-minus "></span>
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="form-group select-connect-data-source">
+            <label class="col-sm-2 control-label">Type</label>
+            <div class="col-sm-10">
+                <ui-select ng-model="transform.type" ng-required="true" on-select="selectTransformType(transform, $item)" server-error reset-search-input="'false'">
+                    <ui-select-match placeholder="Select a transformation">{{ $select.selected.label }}</ui-select-match>
+                    <ui-select-choices repeat="type.key as type in getFiledFormatTypes(transforms, transform.type) | filter:$select.search">
+                        {{ type.label }}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+
+        <div class="form-group select-connect-data-source" ng-if="transform.type == allFiledFormatTypeKeys.date || transform.type == allFiledFormatTypeKeys.number">
+            <label class="col-sm-2 control-label">Field Name</label>
+            <div class="col-sm-10">
+                <ui-select ng-model="transform.field" ng-required="true" server-error reset-search-input="'false'">
+                    <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                    <ui-select-choices repeat="field.key as field in getFieldNames(transform.field) | filter:filterFieldByType(transform) | filter:$select.search">
+                        {{ field.label }}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+
+        <div ng-if="transform.type == allFiledFormatTypeKeys.date">
+            <div class="form-group select-connect-data-source">
+                <label class="col-sm-2 control-label">Date From Format</label>
+                <div class="col-sm-10">
+                    <ui-select ng-model="transform.from" ng-required="true" server-error reset-search-input="'false'">
+                        <ui-select-match placeholder="Select a date format">{{ $select.selected.label }}</ui-select-match>
+                        <ui-select-choices repeat="type.key as type in dateFormatTypes | filter:$select.search">
+                            {{ type.label }}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+
+            <div class="form-group select-connect-data-source">
+                <label class="col-sm-2 control-label">Date To Format</label>
+                <div class="col-sm-10">
+                    <ui-select ng-model="transform.to" ng-required="true" server-error reset-search-input="'false'">
+                        <ui-select-match placeholder="Select a date format">{{ $select.selected.label }}</ui-select-match>
+                        <ui-select-choices repeat="type.key as type in dateFormatTypes | filter:$select.search">
+                            {{ type.label }}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="transform.type == allFiledFormatTypeKeys.number">
+            <div class="form-group select-connect-data-source">
+                <label class="col-sm-2 control-label">Decimals</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="number" ng-model="transform.decimals" ng-required="true" placeholder="Decimals">
+                </div>
+            </div>
+
+            <div class="form-group select-connect-data-source">
+                <label class="col-sm-2 control-label">Thousands Separator</label>
+                <div class="col-sm-10">
+                    <ui-select ng-model="transform.thousandsSeparator" ng-required="true" server-error reset-search-input="'false'">
+                        <ui-select-match placeholder="Select a Separator">{{ $select.selected.label }}</ui-select-match>
+                        <ui-select-choices repeat="separator.key as separator in separatorType | filter:$select.search">
+                            {{ separator.label }}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="transform.type == allFiledFormatTypeKeys.groupBy">
+            <div class="form-group select-connect-data-source">
+                <label class="col-sm-2 control-label">Group By</label>
+                <div class="col-sm-10">
+                    <ui-select multiple ng-model="transform.fields" ng-required="true" server-error reset-search-input="'false'">
+                        <ui-select-match placeholder="Select a field">{{ $item.label }}</ui-select-match>
+                        <ui-select-choices repeat="field.key as field in getFieldForGroupList(transform.fields) | filter:$select.search">
+                            {{ field.label }}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="transform.type == allFiledFormatTypeKeys.sortBy">
+            <div class="form-group select-connect-data-source">
+                <label class="col-sm-2 control-label">Sort By</label>
+                <div class="col-sm-10">
+                    <div ng-repeat="field in transform.fields">
+                        <div class="form-group">
+                            <label class="control-label">{{ field.direction == 'asc' ? 'Ascending' : 'Descending' }}</label>
+                            <div ng-required="true">
+                                <ui-select multiple ng-model="field.names" reset-search-input="'false'" server-error>
+                                    <ui-select-match placeholder="Select a field">{{ $item.label }}</ui-select-match>
+                                    &lt;!&ndash;<ui-select-choices repeat="field.key as field in fieldNames | filter:filterFieldNameForSortBy(transform.fields, field) | filter:$select.search">&ndash;&gt;
+                                    <ui-select-choices repeat="field.key as field in getFieldNamesList(field.names, field.direction) | filter:filterFieldNameForSortBy(transform.fields, field) | filter:$select.search">
+                                        {{ field.label }}
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="transform.type == allFiledFormatTypeKeys.addField">
+            <div class="form-group select-connect-data-source">
+                <label class="col-sm-2 control-label">Add Field</label>
+                <div class="col-sm-10">
+                    <div class="expressions-group">
+
+                        <button class="btn btn-success" type="button" ng-click="addField(transform.fields)">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            Add Field
+                        </button>
+
+                        <div class="expressions-group" ng-repeat="field in transform.fields">
+                            <div class="form-group select-connect-data-source">
+                                <button type="button" class="btn btn-danger btn-close-ur" ng-click="removeAddValue(transform.fields, $index)">
+                                    <span class="glyphicon glyphicon-minus "></span>
+                                </button>
+                            </div>
+
+                           <div class="row">
+                               <div class="form-group select-connect-data-source">
+                                   <label class="col-sm-2 control-label">Field Name</label>
+                                   <div class="col-sm-10">
+                                       <input server-error ng-required="true" type="text"  class="form-control" ng-model="field.field" placeholder="Field Name">
+                                   </div>
+                               </div>
+
+                               <div class="form-group select-connect-data-source">
+                                   <label class="col-sm-2 control-label">Type</label>
+                                   <div class="col-sm-10">
+                                       <ui-select ng-model="field.type" ng-required="true" on-select="selectedFieldType(field)" server-error reset-search-input="'false'">
+                                           <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.TYPE' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                                           <ui-select-choices repeat="type.key as type in getTypesFieldAddField() | filter: { label: $select.search }">
+                                               {{ type.label}}
+                                           </ui-select-choices>
+                                       </ui-select>
+                                   </div>
+                               </div>
+
+                               <div class="form-group select-connect-data-source">
+                                   <label class="col-sm-2 control-label">Value</label>
+                                   <div class="col-sm-10">
+                                       <input server-error ng-required="true" type="{{ field.type == 'number' || field.type == 'decimal' ? 'number' : 'text' }}" class="form-control" ng-model="field.value" placeholder="Value">
+                                   </div>
+                               </div>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="transform.type == allFiledFormatTypeKeys.addCalculatedField">
+            <div class="form-group select-connect-data-source">
+                <label class="col-sm-2 control-label">Add Calculated Field</label>
+                <div class="col-sm-10">
+                    <div class="expressions-group">
+                        <button class="btn btn-success" type="button" ng-click="addField(transform.fields)">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            Add Calculated Field
+                        </button>
+
+                        <div class="expressions-group" ng-repeat="field in transform.fields">
+                            <div class="form-group select-connect-data-source">
+                                <button type="button" class="btn btn-danger btn-close-ur" ng-click="removeAddValue(transform.fields, $index)">
+                                    <span class="glyphicon glyphicon-minus "></span>
+                                </button>
+
+                                &lt;!&ndash;<button type="button" class="close" ng-click="removeAddValue(transform.fields, $index)">&ndash;&gt;
+                                    &lt;!&ndash;<span class="glyphicon glyphicon-remove "></span>&ndash;&gt;
+                                &lt;!&ndash;</button>&ndash;&gt;
                             </div>
 
                             <div class="row">
@@ -370,4 +762,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->

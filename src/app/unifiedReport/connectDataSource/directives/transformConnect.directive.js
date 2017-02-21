@@ -14,7 +14,8 @@
                 mapFields: '=',
                 totalDimensionsMetrics: '=',
                 dimensionsMetrics: '=',
-                dataSourceFields: '=listDataSourceFields'
+                dataSourceFields: '=listDataSourceFields',
+                reorderTransformsAllowed: '='
             },
             restrict: 'AE',
             templateUrl: 'unifiedReport/connectDataSource/directives/transformConnect.tpl.html',
@@ -83,6 +84,8 @@
                     scope.resetFieldNameInReplaceTextTransform = resetFieldNameInReplaceTextTransform;
                     scope.disableOverride = disableOverride;
                     scope.getFieldsForAddCalculatedField = getFieldsForAddCalculatedField;
+                    scope.enableDragDropQueryBuilder = enableDragDropQueryBuilder;
+                    scope.getLengthTransform = getLengthTransform;
                     scope.filterNumberFields = filterNumberFields;
                     scope.selectCustomFormatDate = selectCustomFormatDate;
 
@@ -90,6 +93,34 @@
                         transform.from = null;
                     }
 
+                    scope.sortableOptions = {
+                        disabled: false,
+                        forcePlaceholderSize: true,
+                        placeholder: 'sortable-placeholder'
+                    };
+
+                    if (scope.reorderTransformsAllowed) {
+                        scope.sortableOptions['disabled'] = false;
+                    } else {
+                        scope.sortableOptions['disabled'] = true;
+                    }
+
+                    function enableDragDropQueryBuilder(enable) {
+
+                     //   console.log('Enable Value:', enable);
+
+                        if (enable) {
+                            scope.sortableOptions['disabled'] = false;
+                        } else {
+                            scope.sortableOptions['disabled'] = true;
+                        }
+
+                        scope.reorderTransformsAllowed = enable;
+                    }
+
+                    function getLengthTransform () {
+                        return scope.transforms.length;
+                    }
 
                     function disabledOverrideValue(field) {
                         return REPORT_VIEW_INTERNAL_FIELD_VARIABLE.indexOf(field) > -1
@@ -540,7 +571,8 @@
 
                     function addTransform(){
                         scope.transforms.push({
-                            fields: []
+                            fields: [],
+                            openStatus: true
                         });
                     }
 

@@ -17,7 +17,8 @@
                 dimensionsList: '=',
                 selectedFieldsDateSet: '=',
                 multiView: '=',
-                showDimensions: '='
+                showDimensions: '=',
+                reorderTransformsAllowed: '='
             },
             restrict: 'AE',
             templateUrl: 'unifiedReport/report/directives/transformDataSet.tpl.html',
@@ -73,8 +74,37 @@
                     scope.selectTypeCalculatedField = selectTypeCalculatedField;
                     scope.formatExpressionToHighlight = formatExpressionToHighlight;
                     scope.filterFieldByText = filterFieldByText;
+                    scope.enableDragDropQueryBuilder = enableDragDropQueryBuilder;
+                    scope.getLengthTransform = getLengthTransform;
+                    scope.notOnlyNumberPattern =  '(?!^\\d+$)^.+$';
 
-                    function formatExpressionToHighlight(field) {
+                    scope.sortableOptions = {
+                        disabled: false,
+                        forcePlaceholderSize: true,
+                        placeholder: 'sortable-placeholder'
+                    };
+
+                    if (scope.reorderTransformsAllowed) {
+                        scope.sortableOptions['disabled'] = false;
+                    } else {
+                        scope.sortableOptions['disabled'] = true;
+                    }
+
+                    function enableDragDropQueryBuilder(enable) {
+                        if (enable) {
+                            scope.sortableOptions['disabled'] = false;
+                        } else {
+                            scope.sortableOptions['disabled'] = true;
+                        }
+                        scope.reorderTransformsAllowed = enable;
+                    }
+
+                    function getLengthTransform (){
+                        return scope.transforms.length;
+                    }
+
+
+                        function formatExpressionToHighlight(field) {
                         var expression = (!!field.field ? ('<strong>' + field.field + '</strong>' + ' = ') : '') + (angular.copy(field.expression) || '');
 
                         if(!expression) {
@@ -383,7 +413,8 @@
 
                     function addTransform() {
                         scope.transforms.push({
-                            fields: []
+                            fields: [],
+                            openStatus: true
                         });
                     }
 

@@ -37,7 +37,8 @@
             filters: [],
             transforms: [],
             alertSetting: [],
-            replayData: false
+            replayData: false,
+            userReorderTransformsAllowed: true
         };
 
         $scope.selected = {
@@ -148,7 +149,8 @@
                     $scope.connectDataSource.transforms.push({
                         field: field,
                         type: 'date',
-                        to: 'Y-m-d'
+                        to: 'Y-m-d',
+                        openStatus: true
                     })
 
                 }
@@ -549,7 +551,8 @@
                                 $scope.connectDataSource.transforms.push({
                                     field: field.targetField,
                                     type: 'date',
-                                    to: 'Y-m-d'
+                                    to: 'Y-m-d',
+                                    openStatus: true
                                 })
                             }
                         }
