@@ -31,6 +31,7 @@
                     scope.positionsForReplaceText = POSITIONS_FOR_REPLACE_TEXT;
                     scope.dataSourceFieldsCopy = angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms));
 
+
                     scope.separatorType = [
                         {key: ',', label: 'Comma'},
                         {key: 'none', label: 'None'}
@@ -88,6 +89,21 @@
                     scope.getLengthTransform = getLengthTransform;
                     scope.filterNumberFields = filterNumberFields;
                     scope.selectCustomFormatDate = selectCustomFormatDate;
+                    scope.getTransformName = getTransformName;
+
+                    function getTransformName(typeKey) {
+                        var element;
+                        element = _.find(scope.allFiledFormatTypes, function (type){
+                            return type.key == typeKey;
+                        });
+
+                        if(!'label' in element) {
+                            return element;
+                        }
+
+                        return element.label;
+
+                    }
 
                     function selectCustomFormatDate(transform) {
                         transform.from = null;
