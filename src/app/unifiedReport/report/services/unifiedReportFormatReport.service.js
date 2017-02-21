@@ -43,7 +43,7 @@
                 report.position = key; // position is index of report item root
 
                 angular.forEach(report, function (value, key) {
-                    value = value == null ? '' : value;
+                    // value = value == null ? '' : value;
 
                     if(!angular.isString(value)) {
                         return;
