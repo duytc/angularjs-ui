@@ -232,10 +232,6 @@
             for (x in $scope.connectDataSource.transforms) {
                 var transform = $scope.connectDataSource.transforms[x];
 
-                if (_.isEmpty(transform.fields)) {
-                    return false;
-                }
-
                 if((transform.type != 'number' && transform.type != 'date') && transform.fields.length == 0) {
                     return false;
                 }

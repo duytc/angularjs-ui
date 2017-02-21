@@ -45,6 +45,10 @@
                 angular.forEach(report, function (value, key) {
                     // value = value == null ? '' : value;
 
+                    if(reportView.fieldTypes[key] == 'number' || reportView.fieldTypes[key] == 'decimal') {
+                        value = (value == null || value == undefined) ? '-1' : value;
+                    }
+
                     if(!angular.isString(value)) {
                         return;
                     }

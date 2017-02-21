@@ -97,6 +97,10 @@
                             return type.key == typeKey;
                         });
 
+                        if(!element) {
+                            return null;
+                        }
+
                         if(!'label' in element) {
                             return element;
                         }
