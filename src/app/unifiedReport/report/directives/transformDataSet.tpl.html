@@ -213,7 +213,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Expression</label>
                                     <div class="col-sm-10">
-                                        <textarea mentio mentio-select="getPeopleText(item)" ng-change="addSpaceBeforeAndAfterOperator(field)" type="text" mentio-macros="macros" mentio-trigger-char="'['" mentio-typed-text="typedTerm"
+                                        <textarea class="addScrollToTextArea" spellcheck="false" mentio mentio-select="getPeopleText(item)" ng-change="addSpaceBeforeAndAfterOperator(field)" type="text" mentio-macros="macros" mentio-trigger-char="'['" mentio-typed-text="typedTerm"
                                                class="form-control"
                                                mentio-items="fieldsCalculatedField | filter:label:typedTerm"
                                                ng-model="field.expression" placeholder="Expression">
