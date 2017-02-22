@@ -1234,7 +1234,8 @@
 
                 "DETECT_FIELDS_FROM_FILE": "Detect fields from file",
                 "SELECT_A_FILE_FOR_DETECTING_FIELD": "Select a File",
-                "INPUT_DATE_FORMAT_HELP_TEXT": "Custom date must contain only YY, YYYY, M, MM, MMM, MMMM, D, DD, and special characters . , - _ / <space>. E.g YYYY.MMM.D is for 2017.02.1; YYYY MMMM, DD is for 2017 February, 19"
+                "INPUT_DATE_FORMAT_HELP_TEXT": "Custom date must contain only YY, YYYY, M, MM, MMM, MMMM, D, DD, and special characters . , - _ / <space>. E.g YYYY.MMM.D is for 2017.02.1; YYYY MMMM, DD is for 2017 February, 19",
+                "REPLACEMENT_VALUE_HELP_TEXT": "Use [1], [2], ... to get matched element at position 1, 2, ... e.g [1]-[3]-[2] will return <match 1>-<match 3>-<match 2>"
             },
             "REPORT_BUILDER_MODULE": {
                 "ENTER_ONE_OR_MULTIPLE_VALUE": "Enter one or multiple values",

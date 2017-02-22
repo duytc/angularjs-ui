@@ -232,8 +232,10 @@
             for (x in $scope.connectDataSource.transforms) {
                 var transform = $scope.connectDataSource.transforms[x];
 
-                if((transform.type != 'number' && transform.type != 'date') && transform.fields.length == 0) {
-                    return false;
+                if((transform.type != 'number' && transform.type != 'date')) {
+                    if (_.isUndefined(transform.fields) || transform.fields.length == 0) {
+                        return false;
+                    }
                 }
 
                 if (transform.type == 'sortBy') {
