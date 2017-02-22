@@ -92,17 +92,18 @@
                     scope.getTransformName = getTransformName;
 
                     function getTransformName(typeKey) {
-                        var element;
+                        var element,
+                            defautlName ='New Transformation';
                         element = _.find(scope.allFiledFormatTypes, function (type){
                             return type.key == typeKey;
                         });
 
-                        if(!element) {
-                            return null;
+                        if(_.isEmpty(element)) {
+                            return defautlName;
                         }
 
                         if(!'label' in element) {
-                            return element;
+                            return defautlName;
                         }
 
                         return element.label;

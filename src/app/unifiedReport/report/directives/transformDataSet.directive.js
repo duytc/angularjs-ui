@@ -77,12 +77,32 @@
                     scope.enableDragDropQueryBuilder = enableDragDropQueryBuilder;
                     scope.getLengthTransform = getLengthTransform;
                     scope.notOnlyNumberPattern =  '(?!^\\d+$)^.+$';
+                    scope.getTransformName = getTransformName;
 
                     scope.sortableOptions = {
                         disabled: false,
                         forcePlaceholderSize: true,
                         placeholder: 'sortable-placeholder'
                     };
+
+                    function getTransformName(typeKey) {
+                        var element,
+                            defautlName ='New Transformation';
+                        element = _.find(scope.allFiledFormatTypes, function (type){
+                            return type.key == typeKey;
+                        });
+
+                        if(_.isEmpty(element)) {
+                            return defautlName;
+                        }
+
+                        if(!'label' in element) {
+                            return defautlName;
+                        }
+
+                        return element.label;
+
+                    }
 
                     if (scope.reorderTransformsAllowed) {
                         scope.sortableOptions['disabled'] = false;
