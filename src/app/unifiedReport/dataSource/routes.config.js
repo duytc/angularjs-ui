@@ -18,7 +18,7 @@
                 }
             })
             .state('unifiedReport.dataSource.list', {
-                url: '/list?page&sortField&orderBy&search',
+                url: '/list?page&sortField&orderBy&searchKey',
                 params: {
                     uniqueRequestCacheBuster: null
                 },

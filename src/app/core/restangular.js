@@ -42,7 +42,7 @@
                     }
 
                     // use when detect file have field is id
-                    if(key == 'mapFields') {
+                    if(key == 'mapFields' || key == 'metrics' || key == 'dimensions') {
                         return;
                     }
 
