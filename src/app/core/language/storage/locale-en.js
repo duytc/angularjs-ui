@@ -1242,7 +1242,7 @@
                 "HELP_TEXT_FOR_COLUMN_POSITION": "You can change the order of the columns in the report by specifying a custom order here",
                 "HELP_TEXT_FOR_SHOW_DIMENSIONS": "Show dimensions of sub views",
                 "SAVE_REPORT_VIEW_FAIL": "There is a error when save report",
-                "ENABLE_DRAG_AND_DROP": "Drag/Drop transformation to reorder one"
+                "ENABLE_DRAG_AND_DROP": "Enable drag/drop to change transformation priority"
 
             }
         });
