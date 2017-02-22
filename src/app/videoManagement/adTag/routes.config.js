@@ -18,7 +18,7 @@
                 }
             })
             .state('videoManagement.adTag.list', {
-                url: '/list?page&sortField&orderBy&search',
+                url: '/list?page&sortField&orderBy&searchKey',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -42,7 +42,7 @@
                 }
             })
             .state('videoManagement.adTag.listForVideoPublisher', {
-                url: '/videoPublisher/{videoPublisherId:[0-9]+}/list?page&sortField&orderBy&search',
+                url: '/videoPublisher/{videoPublisherId:[0-9]+}/list?page&sortField&orderBy&searchKey',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
