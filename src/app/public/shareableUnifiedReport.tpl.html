@@ -7,7 +7,7 @@
     </div>
 
     <div class="panel-body" ng-if="reports.length > 0">
-        <div class="table-responsive">
+        <div class="table-responsive" style="overflow-y: auto">
             <table class="table">
                 <thead>
                 <tr>
@@ -34,11 +34,12 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
 
-            <div class="pagination">
-                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
-                <items-per-page init="tableConfig.itemsPerPage" range="itemsPerPage" sources="reports"></items-per-page>
-            </div>
+
+        <div class="pagination">
+            <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            <items-per-page init="tableConfig.itemsPerPage" range="itemsPerPage" sources="reports"></items-per-page>
         </div>
     </div>
 </section>

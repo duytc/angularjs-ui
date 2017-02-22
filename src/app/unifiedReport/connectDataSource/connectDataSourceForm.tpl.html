@@ -137,6 +137,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-7">
                         <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success mce-i-indent">{{ 'SUBMIT' | translate }}</button>
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" ng-click="previewData()" type="button" class="btn btn-success mce-i-indent">Preview Data</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">
                             <p>{{ 'VALID_FORM' | translate }}</p>
                         </div>

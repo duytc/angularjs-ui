@@ -1,0 +1,34 @@
+<div class="modal-header">
+    <h4 class="modal-title"><strong>Preview Data</strong></h4>
+</div>
+<div class="modal-body">
+    <div class="table-responsive" style="overflow-y: auto">
+        <table class="table">
+            <thead>
+            <tr>
+                <th ng-repeat="column in columns">{{ column }}
+                    <!--<span class="glyphicon glyphicon-minus" ng-show="!isShow(column)"></span>-->
+                    <!--<span class="glyphicon" ng-show="isShow(column)" ng-class="{'glyphicon-chevron-up':!reverse,'glyphicon-chevron-down':reverse}"></span>-->
+                </th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr dir-paginate="report in reportData | itemsPerPage:tableConfig.itemsPerPage">
+                <td ng-if="!hasSort" ng-repeat="column in columns">
+                    <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>
+                    <span ng-if="isNullValue(report, column)"> &ltno value&gt </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="$close()">{{ 'CLOSE' | translate }}</button>
+</div>

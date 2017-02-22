@@ -31,7 +31,6 @@
                     scope.positionsForReplaceText = POSITIONS_FOR_REPLACE_TEXT;
                     scope.dataSourceFieldsCopy = angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms));
 
-
                     scope.separatorType = [
                         {key: ',', label: 'Comma'},
                         {key: 'none', label: 'None'}
@@ -127,9 +126,6 @@
                     }
 
                     function enableDragDropQueryBuilder(enable) {
-
-                     //   console.log('Enable Value:', enable);
-
                         if (enable) {
                             scope.sortableOptions['disabled'] = false;
                         } else {
@@ -501,8 +497,8 @@
                         });
                     }
 
-                    function getFieldNames(itemField){
-                        return _.filter(scope.fieldNames, function (fieldName){
+                    function getFieldNames(itemField, transformType){
+                        var fields = _.filter(scope.fieldNames, function (fieldName){
                             if (itemField == fieldName) {
                                 return true;
                             }
@@ -516,7 +512,23 @@
                             }
 
                             return true;
-                        })
+                        });
+
+                        if(transformType == 'number') {
+                            angular.forEach(scope.transforms, function (transform){
+                                if (transform.type == 'addField' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent') {
+                                    angular.forEach(transform.fields, function (field){
+                                        if (!!field.field && transform.type != 'addField') {
+                                            fields.push(field.field);
+                                        } else if(scope.dimensionsMetrics[field.field] == 'number' || scope.dimensionsMetrics[field.field] == 'decimal') {
+                                            fields.push(field.field);
+                                        }
+                                    })
+                                }
+                            });
+                        }
+
+                        return _.uniq(fields)
                     }
 
                     function filerFieldNamesForComparisonPercent(){
@@ -544,6 +556,7 @@
 
                             if (type.key == scope.allFiledFormatTypeKeys.number) {
                                 transform.decimals = 0;
+                                transform.thousandsSeparator = ',';
                             }
                         }, 0);
                     }

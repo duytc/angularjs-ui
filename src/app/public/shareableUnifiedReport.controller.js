@@ -5,6 +5,10 @@
         .controller('shareableUnifiedReport', shareableUnifiedReport);
 
     function shareableUnifiedReport($scope, $translate, SortReportByColumnType, reports, unifiedReportFormatReport, AlertService) {
+        // reset css for id app
+        var app = angular.element('#app');
+        app.css({position: 'inherit'});
+
         $scope.reportView = reports.reportView;
         $scope.hasResult = !angular.isNumber(reports.status);
         $scope.reports = reports.reports || [];

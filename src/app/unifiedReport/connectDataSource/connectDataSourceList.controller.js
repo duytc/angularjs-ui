@@ -28,7 +28,6 @@
         $scope.showPagination = showPagination;
         $scope.confirmDeletion = confirmDeletion;
 
-
         function confirmDeletion(connectDataSource, index) {
             var modalInstance = $modal.open({
                 templateUrl: 'unifiedReport/connectDataSource/confirmDeletion.tpl.html'

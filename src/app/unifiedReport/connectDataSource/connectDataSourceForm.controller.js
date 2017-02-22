@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.connect')
         .controller('ConnectDataSourceForm', ConnectDataSourceForm);
 
-    function ConnectDataSourceForm($scope, $timeout, _, dataSources, connectDataSource, AlertService, sessionStorage, FileUploader, UnifiedReportConnectDataSourceManager, UnifiedReportDataSourceManager, ServerErrorProcessor, dataSet, dateUtil, historyStorage, HISTORY_TYPE_PATH, DateFormatter) {
+    function ConnectDataSourceForm($scope, $modal, $timeout, _, dataSources, connectDataSource, AlertService, sessionStorage, FileUploader, UnifiedReportConnectDataSourceManager, UnifiedReportDataSourceManager, ServerErrorProcessor, dataSet, dateUtil, historyStorage, HISTORY_TYPE_PATH, DateFormatter) {
         $scope.fieldNameTranslations = {
             dataSet: 'Data Set',
             dataSource: 'Data Source',
@@ -17,6 +17,7 @@
         $scope.isNew = connectDataSource === null;
         $scope.formProcessing = false;
         $scope.dataSourceFields = [];
+        var listDetectFields = [];
 
         $scope.alertSettings = [
             {label: 'Alert me when new data is added from this connected data source', key: 'dataAdded'},
@@ -82,7 +83,9 @@
                 // reset when upload file success
                 // $scope.connectDataSource.mapFields = {};
 
-                var detectedFields = response;
+                var detectedFields = response.fields;
+                listDetectFields.push(response.filePath);
+
                 if(!detectedFields || detectedFields.length == 0) {
                     AlertService.replaceAlerts({
                         type: 'warning',
@@ -138,6 +141,41 @@
         $scope.toggleAlertSetting = toggleAlertSetting;
         $scope.selectDataSource = selectDataSource;
         $scope.selectMapField = selectMapField;
+        $scope.previewData = previewData;
+        
+        function previewData() {
+            var connectDataSource = _refactorJson($scope.connectDataSource);
+            connectDataSource.isDryRun = true;
+            connectDataSource.filePaths = listDetectFields;
+            connectDataSource.connectedDataSourceId = $scope.connectDataSource.id;
+
+            UnifiedReportConnectDataSourceManager.one('dryrun').post(null, connectDataSource)
+                .then(function (reportData) {
+                    $modal.open({
+                        templateUrl: 'unifiedReport/connectDataSource/previewData.tpl.html',
+                        size: 'lg',
+                        controller: 'PreviewDataConnect',
+                        resolve: {
+                            reportData: function () {
+                                return reportData;
+                            }
+                        }
+                    });
+                })
+                .catch(function (response) {
+                    if(response.status = 400) {
+                        AlertService.replaceAlerts({
+                            type: 'error',
+                            message: response.data.message
+                        });
+                    } else {
+                        AlertService.replaceAlerts({
+                            type: 'error',
+                            message: 'Unknown error'
+                        });
+                    }
+                })
+        }
 
         function selectMapField(field) {
             if($scope.dimensionsMetrics[field] == 'date' || $scope.dimensionsMetrics[field] == 'datetime') {
@@ -261,6 +299,7 @@
             $scope.formProcessing = true;
 
             var connectDataSource = _refactorJson($scope.connectDataSource);
+            connectDataSource.filePaths = listDetectFields;
 
             var saveChannel = $scope.isNew ? UnifiedReportConnectDataSourceManager.post(connectDataSource) : UnifiedReportConnectDataSourceManager.one(connectDataSource.id).patch(connectDataSource);
 
@@ -426,21 +465,26 @@
         
         function _removeFieldInTransform() {
             var transforms = angular.copy($scope.connectDataSource.transforms);
-            var allTargetField = [];
+            var allFieldAdd = [];
 
             // total field in targetField extractPattern
             angular.forEach(transforms, function (transform) {
-                if(transform.type == 'extractPattern') {
-                    angular.forEach(transform.fields, function (field) {
-                        allTargetField.push(field.targetField)
-                    });
-                }}
+                angular.forEach(transform.fields, function (field) {
+                    if(transform.type == 'extractPattern') {
+                        allFieldAdd.push(field.targetField)
+                    }
+
+                    if(transform.type == 'addField' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent') {
+                        allFieldAdd.push(field.field)
+                    }
+                });
+                }
             );
 
             angular.forEach(transforms, function (transform) {
                 $timeout(function () {
                     if((transform.type == 'number' || transform.type == 'date') && !!transform.field) {
-                        if(_.values($scope.connectDataSource.mapFields).indexOf(transform.field) == -1 && allTargetField.indexOf(transform.field) == -1) {
+                        if(_.values($scope.connectDataSource.mapFields).indexOf(transform.field) == -1 && allFieldAdd.indexOf(transform.field) == -1) {
                             var index = _.findIndex($scope.connectDataSource.transforms, function (item) {
                                 if(item.type == 'extractPattern') {
                                     for (var indexField in item.fields) {

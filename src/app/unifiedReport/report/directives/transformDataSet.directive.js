@@ -124,7 +124,7 @@
                     }
 
 
-                        function formatExpressionToHighlight(field) {
+                    function formatExpressionToHighlight(field) {
                         var expression = (!!field.field ? ('<strong>' + field.field + '</strong>' + ' = ') : '') + (angular.copy(field.expression) || '');
 
                         if(!expression) {
