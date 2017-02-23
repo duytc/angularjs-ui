@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.connect')
         .controller('ConnectDataSourceForm', ConnectDataSourceForm);
 
-    function ConnectDataSourceForm($scope, $modal, $timeout, _, dataSources, connectDataSource, AlertService, sessionStorage, FileUploader, UnifiedReportConnectDataSourceManager, UnifiedReportDataSourceManager, ServerErrorProcessor, dataSet, dateUtil, historyStorage, HISTORY_TYPE_PATH, DateFormatter) {
+    function ConnectDataSourceForm($scope, $modal, $timeout, _, dataSources, connectDataSource, AlertService, sessionStorage, FileUploader, UnifiedReportConnectDataSourceManager, UnifiedReportDataSourceManager, ServerErrorProcessor, dataSet, dateUtil, historyStorage, HISTORY_TYPE_PATH, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, DateFormatter) {
         $scope.fieldNameTranslations = {
             dataSet: 'Data Set',
             dataSource: 'Data Source',
@@ -210,7 +210,7 @@
         }
 
         function getMapFieldValues(mapFields) {
-            return _.union(_.values(mapFields));
+            return _.union(_.values(mapFields).concat(REPORT_VIEW_INTERNAL_FIELD_VARIABLE));
         }
 
         function backToConnectDataSourceList() {
@@ -441,7 +441,7 @@
             var requires = angular.copy($scope.connectDataSource.requires);
 
             angular.forEach(requires, function (require) {
-                if(_.values($scope.connectDataSource.mapFields).indexOf(require) == -1) {
+                if(_.values($scope.connectDataSource.mapFields).indexOf(require) == -1 && REPORT_VIEW_INTERNAL_FIELD_VARIABLE.indexOf(require) == -1) {
                     delete  $scope.connectDataSource.requires[$scope.connectDataSource.requires.indexOf(require)]
                 }
             });

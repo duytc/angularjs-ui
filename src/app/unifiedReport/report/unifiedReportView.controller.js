@@ -39,45 +39,7 @@
                         return reportView;
                     }
                 },
-                controller: function ($scope, $state, $modalInstance, reportView) {
-                    $scope.reportView = reportView;
-
-                    $scope.cloneReportView = {
-                        name: null,
-                        alias: null
-                    };
-                    
-                    $scope.submit = submit;
-                    $scope.isFormValid = isFormValid;
-
-                    function isFormValid() {
-                        return $scope.cloneReportViewForm.$valid;
-                    }
-                    
-                    function submit() {
-                        $modalInstance.close();
-
-                        var params = {
-                            cloneSettings: [$scope.cloneReportView]
-                        };
-
-                        UnifiedReportViewManager.one(reportView.id).post('clone', params)
-                            .catch(function () {
-                                AlertService.replaceAlerts({
-                                    type: 'error',
-                                    message: "Could not clone the report view"
-                                });
-                            })
-                            .then(function () {
-                                $state.reload();
-
-                                AlertService.addFlash({
-                                    type: 'success',
-                                    message: "The report view has been cloned successfully"
-                                });
-                            })
-                    }
-                }
+                controller: 'CloneReportView'
             });
         }
 

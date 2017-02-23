@@ -24,14 +24,14 @@
             {label: moment().format('MM/DD/YYYY') + ' (MM/DD/YYYY)', key: 'm/d/Y'},   //01/15/2016
             {label: moment().format('DD-MM-YYYY') + ' (DD-MM-YYYY)', key: 'd-m-Y'},   //15-01-2016
             {label: moment().format('DD/MM/YYYY') + ' (DD/MM/YYYY)', key: 'd/m/Y'},   //15/01/2016
-            {label: moment().format('YYYY-MMM-DD') + ' (YYYY-MON-DD)', key: 'Y-M-d'},   //2016-Jan-15
-            {label: moment().format('YYYY/MMM/DD') + ' (YYYY/MON/DD)', key: 'Y/M/d'},   //2016-Jan-15
-            {label: moment().format('MMM-DD-YYYY') + ' (MON-DD-YYYY)', key: 'M-d-Y'},   //Jan-15-2016
-            {label: moment().format('MMM/DD/YYYY') + ' (MON/DD/YYYY)', key: 'M/d/Y'},   //Jan/15/2016
-            {label: moment().format('DD-MMM-YYYY') + ' (DD-MON-YYYY)', key: 'd-M-Y'},   //15-Jan-2016
-            {label: moment().format('DD/MMM/YYYY') + ' (DD/MON/YYYY)', key: 'd/M/Y'},    //15/Jan/2016
-            {label: moment().format('MMM DD, YYYY') + ' (MON DD, YYYY)', key: 'M d, Y'},    //Jan 15, 2016
-            {label: moment().format('YYYY, MMM DD') + ' (YYYY, MON DD)', key: 'Y, M d'},    //2016, Jan 15
+            {label: moment().format('YYYY-MMM-DD') + ' (YYYY-MMM-DD)', key: 'Y-M-d'},   //2016-Jan-15
+            {label: moment().format('YYYY/MMM/DD') + ' (YYYY/MMM/DD)', key: 'Y/M/d'},   //2016-Jan-15
+            {label: moment().format('MMM-DD-YYYY') + ' (MMM-DD-YYYY)', key: 'M-d-Y'},   //Jan-15-2016
+            {label: moment().format('MMM/DD/YYYY') + ' (MMM/DD/YYYY)', key: 'M/d/Y'},   //Jan/15/2016
+            {label: moment().format('DD-MMM-YYYY') + ' (DD-MMM-YYYY)', key: 'd-M-Y'},   //15-Jan-2016
+            {label: moment().format('DD/MMM/YYYY') + ' (DD/MMM/YYYY)', key: 'd/M/Y'},    //15/Jan/2016
+            {label: moment().format('MMM DD, YYYY') + ' (MMM DD, YYYY)', key: 'M d, Y'},    //Jan 15, 2016
+            {label: moment().format('YYYY, MMM DD') + ' (YYYY, MMM DD)', key: 'Y, M d'},    //2016, Jan 15
 
             /** Support 2 digit years*/
             {label: moment().format('MM/DD/YY') + ' (MM/DD/YY)', key: 'm/d/y'},   //01/15/99

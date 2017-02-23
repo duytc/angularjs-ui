@@ -69,7 +69,7 @@
                     scope.getFiledFormatTypes = getFiledFormatTypes;
                     scope.filterFieldNameForSortBy = filterFieldNameForSortBy;
                     scope.addSpaceBeforeAndAfterOperator = addSpaceBeforeAndAfterOperator;
-                    scope.selectTypeCalculatedField = selectTypeCalculatedField;
+                    scope.selectTypeAddField = selectTypeAddField;
                     scope.getFieldForGroupBy = getFieldForGroupBy;
                     scope.removeAutoSpaceAfterField = removeAutoSpaceAfterField;
                     scope.formatExpressionToHighlight = formatExpressionToHighlight;
@@ -83,7 +83,7 @@
                     scope.filterTextFields = filterTextFields;
                     scope.resetFieldNameInReplaceTextTransform = resetFieldNameInReplaceTextTransform;
                     scope.disableOverride = disableOverride;
-                    scope.getFieldsForAddCalculatedField = getFieldsForAddCalculatedField;
+                    scope.selectTypeAddCalculatedField = selectTypeAddCalculatedField;
                     scope.enableDragDropQueryBuilder = enableDragDropQueryBuilder;
                     scope.getLengthTransform = getLengthTransform;
                     scope.filterNumberFields = filterNumberFields;
@@ -309,7 +309,7 @@
                         }
                     }
 
-                    function selectTypeCalculatedField(field, calculatedField){
+                    function selectTypeAddField(field, calculatedField){
                         scope.fieldForExpression = [];
 
                         angular.forEach(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, function (field){
@@ -349,7 +349,7 @@
                         }
                     }
 
-                    function getFieldsForAddCalculatedField(field, calculatedField){
+                    function selectTypeAddCalculatedField(field, calculatedField){
                         scope.fieldForExpressionInCalculated = [];
 
                         /*angular.forEach(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, function (field){

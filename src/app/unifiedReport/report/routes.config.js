@@ -19,6 +19,9 @@
             })
             .state('unifiedReport.report.listReportView', {
                 url: '/reportViews?page&sortField&orderBy&search',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
                 views: {
                     'content@app': {
                         controller: 'UnifiedReportView',

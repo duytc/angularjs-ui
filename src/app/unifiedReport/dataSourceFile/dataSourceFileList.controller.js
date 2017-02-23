@@ -44,6 +44,23 @@
         $scope.downloadDataSourceFile = downloadDataSourceFile;
         $scope.backToListDataSource = backToListDataSource;
         $scope.replayData = replayData;
+        $scope.viewDetails = viewDetails;
+        
+        function viewDetails(dataSourceFile) {
+            $modal.open({
+                templateUrl: 'unifiedReport/dataSourceFile/viewDetails.tpl.html',
+                size: 'lg',
+                controller: function ($scope, dataSourceFile) {
+                    $scope.dataSourceFile = dataSourceFile;
+                    $scope.metaData = dataSourceFile.metaData;
+                },
+                resolve: {
+                    dataSourceFile: function () {
+                        return dataSourceFile;
+                    }
+                }
+            });
+        }
         
         function replayData(dataSourceFile) {
             UnifiedReportDataSourceFileManager.one(dataSourceFile.id).one('replaydata').get()
@@ -97,7 +114,6 @@
         };
 
         function selectAll () {
-            console.log($scope.dataSource);
             if($scope.selectedDataSourceFiles.length == $scope.dataSourceFiles.records.length) {
                 $scope.selectedDataSourceFiles = []
             } else {
