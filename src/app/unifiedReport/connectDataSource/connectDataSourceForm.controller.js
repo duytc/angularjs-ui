@@ -39,7 +39,7 @@
             transforms: [],
             alertSetting: [],
             replayData: false,
-            userReorderTransformsAllowed: true
+            userReorderTransformsAllowed: false
         };
 
         $scope.selected = {
