@@ -51,8 +51,20 @@
                 templateUrl: 'unifiedReport/dataSourceFile/viewDetails.tpl.html',
                 size: 'lg',
                 controller: function ($scope, dataSourceFile) {
+                    var mapLabel = {
+                        body: 'Email Body',
+                        date: 'Email Date',
+                        from: 'Email From',
+                        subject: 'Email Subject',
+                        filename: 'Filename'
+                    };
+
                     $scope.dataSourceFile = dataSourceFile;
                     $scope.metaData = dataSourceFile.metaData;
+
+                    $scope.getLabelForKeyViewDetail = function (key) {
+                        return !!mapLabel[key] ? mapLabel[key] : key
+                    }
                 },
                 resolve: {
                     dataSourceFile: function () {

@@ -3,8 +3,8 @@
 </div>
 <div class="modal-body">
     <ul class="list-unstyled report list-info">
-        <li ng-repeat="(key, value) in metaData" style="display: flex">
-            <label style="text-transform: capitalize">{{ key }}</label>
+        <li ng-repeat="(key, value) in metaData" ng-if="key != 'uuid'" style="display: flex; cursor: text">
+            <label style="text-transform: capitalize">{{ getLabelForKeyViewDetail(key) }}</label>
             <span class="pull-right" style="width: 70%">{{ value }}</span>
         </li>
     </ul>
