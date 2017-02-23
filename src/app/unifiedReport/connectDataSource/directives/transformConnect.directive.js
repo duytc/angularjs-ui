@@ -234,10 +234,45 @@
                     function getFieldForGroupBy(transforms){
                         var fieldInConcat = [];
                         angular.forEach(transforms, function (transform){
-                            if (transform.type == 'addConcatenatedField') {
-                                angular.forEach(transform.fields, function (field){
-                                    fieldInConcat.push(field.field)
-                                });
+                            switch (transform.type) {
+                                case 'addField':
+                                    angular.forEach(transform.fields, function (field){
+                                        if (!'field' in field) {
+                                            return;
+                                        }
+
+                                        if (!_.isNull(field.field)){
+                                            fieldInConcat.push(field.field)
+                                        }
+                                    });
+                                    break;
+                                case 'addCalculatedField':
+                                    angular.forEach(transform.fields, function (field){
+                                        fieldInConcat.push(field.field)
+                                    });
+                                    break;
+                                case 'extractPattern':
+                                    angular.forEach(transform.fields, function (field){
+                                        if (!'targetField' in field || !'isOverride' in field) {
+                                            return;
+                                        }
+
+                                        if (!_.isNull(field.targetField) && !field.isOverride){
+                                            fieldInConcat.push(field.targetField)
+                                        }
+                                    });
+                                    break;
+                                case 'replaceText':
+                                    angular.forEach(transform.fields, function (field){
+                                        if (!'targetField' in field || !'isOverride' in field) {
+                                            return;
+                                        }
+
+                                        if (!_.isNull(field.targetField) && !field.isOverride){
+                                            fieldInConcat.push(field.targetField)
+                                        }
+                                    });
+                                    break;
                             }
                         });
 
