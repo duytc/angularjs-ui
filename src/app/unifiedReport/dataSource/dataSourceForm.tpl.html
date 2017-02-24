@@ -177,7 +177,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10" ng-repeat="alertSetting in dataSource.alertSetting">
-                        <label class="ui-checkbox" ng-if="alertSetting.type != 'notReceived' ? true : dataSource.dataSourceIntegrations.length > 0">
+                        <label class="ui-checkbox">
                             <input server-error name="dataSourceEnableWhenWrongData" ng-model="alertSetting.active" type="checkbox" id="dataSourceEnableWhenWrongData">
                             <span ng-if="alertSetting.type == 'wrongFormat'">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ALERT_RECEIVED_DATA_WRONG_FORMAT' | translate }}</span>
                             <span ng-if="alertSetting.type == 'dataReceived'">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ALERT_WHEN_RECEIVED_DATA' | translate }}</span>
