@@ -53,7 +53,7 @@
                 controller: function ($scope, dataSourceFile) {
                     var mapLabel = {
                         body: 'Email Body',
-                        date: 'Email Date',
+                        dateTime: 'Email Date',
                         from: 'Email From',
                         subject: 'Email Subject',
                         filename: 'Filename'
