@@ -42,7 +42,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Import History - {{ dataSet.name }}'
+                    label: 'Loaded Data - {{ dataSet.name }}'
                 }
             })
             .state('unifiedReport.importHistory.listForDataSource', {
@@ -70,7 +70,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Import History - {{ dataSource.name }}'
+                    label: 'Loaded Data - {{ dataSource.name }}'
                 }
             })
         ;

@@ -65,7 +65,7 @@
                         </div>
                     </td>
                     <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.FILENAME' | translate }}" at-implicit at-sortable at-attribute="fileName"></td>
-                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.RECEIVED_DATE' | translate }}" at-sortable at-attribute="receivedDate">{{ item.receivedDate | date }}</td>
+                    <td at-title="Imported on" at-sortable at-attribute="receivedDate">{{ item.receivedDate | date:'MMM d, y H:mm:ss' }}</td>
                     <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.RESOURCE_NAME' | translate }}" at-implicit at-attribute="dataSource.name"></td>
                     <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.FORMAT' | translate }}" at-implicit at-attribute="dataSource.format"></td>
                     <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.VALID' | translate }}" at-attribute="isValid">

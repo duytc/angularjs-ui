@@ -6,10 +6,10 @@
 
     <div class="panel-body">
         <div class="row">
-            <form name="unifiedBuilderForm" class="col-lg-12 form-validation form-horizontal userForm" role="form" novalidate>
+            <form name="unifiedBuilderForm" class="col-lg-12 form-validation form-horizontal" role="form" novalidate>
                 <div class="form-group" ng-if="isNew && isAdmin()">
-                    <label for="inputPublisher" class="col-sm-1 control-label">{{ 'PUBLISHER' | translate }}</label>
-                    <div class="col-sm-7">
+                    <label for="inputPublisher" class="col-sm-1quarter control-label">{{ 'PUBLISHER' | translate }}</label>
+                    <div class="col-sm-5">
                         <ui-select name="publisher" id="inputPublisher" ng-model="reportBuilder.publisher" ng-required="true" server-error on-select="selectPublisher($item)">
                             <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
                             <ui-select-choices repeat="publisher.id as publisher in publishers | filter:$select.search">
@@ -20,22 +20,22 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-1 control-label">Name</label>
-                    <div class="col-sm-7">
+                    <label class="col-sm-1quarter control-label">Name</label>
+                    <div class="col-sm-5">
                         <input server-error name="name" ng-model="reportBuilder.name" ng-required="false" type="text" class="form-control" id="inputName" placeholder="{{ 'NAME' | translate }}">
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="(isAdmin() && !!reportBuilder.publisher) || !isAdmin()">
-                    <label for="inputEnabled" class="col-sm-1 control-label">Multiple Views</label>
-                    <div class="col-sm-7">
+                    <label for="inputEnabled" class="col-sm-1quarter control-label">Multiple Views</label>
+                    <div class="col-sm-5">
                         <label class="ui-checkbox"><input ng-click="clickMultiView()" server-error name="active" type="checkbox" ng-model="reportBuilder.multiView" id="inputEnabled"><span></span></label>
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="((isAdmin() && !!reportBuilder.publisher) || !isAdmin()) && !!reportBuilder.multiView">
-                    <label for="inputSubReport" class="col-sm-1 control-label">Show Dimensions</label>
-                    <div class="col-sm-7">
+                    <label for="inputSubReport" class="col-sm-1quarter control-label">Show Dimensions</label>
+                    <div class="col-sm-5">
                         <label class="ui-checkbox"><input server-error ng-click="clickSubReportsIncluded(reportBuilder.subReportsIncluded)" name="subReportsIncluded" type="checkbox" ng-model="reportBuilder.subReportsIncluded" id="inputSubReport"><span></span></label>
                         <span class="help-block">
                             {{ 'REPORT_BUILDER_MODULE.HELP_TEXT_FOR_SHOW_DIMENSIONS' | translate }}
@@ -44,15 +44,15 @@
                 </div>
 
                 <div class="form-group" ng-if="!reportBuilder.multiView">
-                    <label class="col-sm-1 control-label">View Alias</label>
-                    <div class="col-sm-7">
+                    <label class="col-sm-1quarter control-label">View Alias</label>
+                    <div class="col-sm-5">
                         <input server-error name="alias" ng-model="reportBuilder.alias" type="text" class="form-control" id="inputAlias" placeholder="Alias">
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="((isAdmin() && !!reportBuilder.publisher) || !isAdmin()) && !reportBuilder.multiView">
-                    <label class="col-sm-1 control-label">Data Set</label>
-                    <div class="col-sm-7">
+                    <label class="col-sm-1quarter control-label">Data Set</label>
+                    <div class="col-sm-10">
                         <div class="expressions-group">
                             <builder-data-set report-builder="reportBuilder" list-data-sets="dataSets"></builder-data-set>
                         </div>
@@ -60,8 +60,8 @@
                 </div>
 
                 <div class="form-group" ng-if="((isAdmin() && !!reportBuilder.publisher) || !isAdmin()) && !!reportBuilder.multiView">
-                    <label class="col-sm-1 control-label">Report View</label>
-                    <div class="col-sm-7">
+                    <label class="col-sm-1quarter control-label">Report View</label>
+                    <div class="col-sm-10">
                         <div class="expressions-group">
                             <builder-report-view report-builder="reportBuilder" list-report-views="reportViews" list-data-sets="dataSets" sub-reports-included="reportBuilder.subReportsIncluded"></builder-report-view>
                         </div>
@@ -69,15 +69,15 @@
                 </div>
 
                 <div class="form-group" ng-if="reportBuilder.reportViewDataSets.length > 1 && !reportBuilder.multiView">
-                    <label class="col-sm-1 control-label">Join By</label>
-                    <div class="col-sm-7">
+                    <label class="col-sm-1quarter control-label">Join By</label>
+                    <div class="col-sm-10">
                         <report-view-many-join report-builder="reportBuilder" list-data-sets="dataSets"></report-view-many-join>
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="(isAdmin() && !!reportBuilder.publisher) || !isAdmin()">
-                    <label class="col-sm-1 control-label">Transformations</label>
-                    <div class="col-sm-7">
+                    <label class="col-sm-1quarter control-label">Transformations</label>
+                    <div class="col-sm-10">
                         <div class="expressions-group">
                             <transform-data-set transforms="reportBuilder.transforms" selected-fields="selectedAndAddedFieldsInTransform" selected-fields-date-set="selectedFields" total-dimensions-metrics="totalDimensionsMetrics" dimensions-metrics="dimensionsMetrics" dimensions-list="listDimensions" multi-view="reportBuilder.multiView" show-dimensions ="reportBuilder.subReportsIncluded" reorder-transforms-allowed="reportBuilder.userReorderTransformsAllowed"></transform-data-set>
                         </div>
@@ -85,8 +85,8 @@
                 </div>
 
                 <div class="form-group" ng-if="summaryFieldTotal.length > 0">
-                    <label class="col-sm-1 control-label">Show Total</label>
-                    <div class="col-sm-7">
+                    <label class="col-sm-1quarter control-label">Show Total</label>
+                    <div class="col-sm-10">
                         <div ng-repeat="field in summaryFieldTotal" class="check_total_builder">
                             <label class="ui-checkbox"><input name="field[]" type="checkbox" ng-click="toggleFieldForTotal(field)" ng-checked="hasFieldForTotal(field)">
                                 <span>{{ field.label }}</span>
@@ -96,8 +96,8 @@
                 </div>
 
                 <div class="form-group" ng-if="(isAdmin() && !!reportBuilder.publisher) || !isAdmin()">
-                    <label class="col-sm-1 control-label">Format Output</label>
-                    <div class="col-sm-7">
+                    <label class="col-sm-1quarter control-label">Format Output</label>
+                    <div class="col-sm-10">
                         <div class="expressions-group">
                             <report-builder-format formats="reportBuilder.formats" date-fields="fieldsHaveDateType" number-fields="fieldsHaveNumberType" selected-fields ="selectedAndAddedFieldsInTransform"  multi-view="reportBuilder.multiView"></report-builder-format>
                         </div>
@@ -105,7 +105,7 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-offset-1 col-sm-7">
+                    <div class="col-sm-offset-1quarter col-sm-5">
                         <button ng-if="!reportBuilder.id" ng-disabled="!isFormValid()" type="submit" class="btn btn-success mce-i-indent" ng-click="getReports()">Run Report</button>
                         <button ng-if="reportBuilder.id" ng-disabled="!isFormValid()" type="submit" class="btn btn-success mce-i-indent" ng-click="saveReport()">Save Report</button>
                         <button ng-disabled="!isFormValid()" type="submit" class="btn btn-success mce-i-indent" ng-click="getReports(true)">Run and Save Report</button>

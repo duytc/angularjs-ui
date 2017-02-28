@@ -69,7 +69,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Received Files For Data Source - {{dataSource.name }}'
+                    label: 'Imported Data for data source - {{dataSource.name }}'
                 }
             })
             .state('unifiedReport.dataSourceFile.new', {

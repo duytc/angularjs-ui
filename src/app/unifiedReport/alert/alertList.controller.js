@@ -87,6 +87,11 @@
                             }
                         }
                     });
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The alerts selected have been deleted'
+                    });
                 });
         }
         
@@ -99,7 +104,12 @@
                         if($scope.selectedAlert.indexOf(alert.id) > -1) {
                             alert.isRead = false
                         }
-                    })
+                    });
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The alerts selected have been marked as unread'
+                    });
                 });
         }
         
@@ -112,7 +122,12 @@
                         if($scope.selectedAlert.indexOf(alert.id) > -1) {
                             alert.isRead = true
                         }
-                    })
+                    });
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The alerts selected have been marked as read'
+                    });
                 });
         }
 
