@@ -91,6 +91,7 @@
             reportView: reportView.id,
             multiView: reportView.multiView,
             subReportsIncluded: reportView.subReportsIncluded,
+            isShowDataSetName: reportView.isShowDataSetName,
             publisher: angular.isObject(reportView.publisher) ? reportView.publisher.id : reportView.publisher
         };
 
@@ -206,7 +207,8 @@
                 name: reportViewClone.name,
                 alias: reportViewClone.alias,
                 multiView: !!reportViewClone.multiView || reportViewClone.multiView == 'true',
-                subReportsIncluded: !!reportViewClone.subReportsIncluded || reportViewClone.subReportsIncluded == 'true'
+                subReportsIncluded: !!reportViewClone.subReportsIncluded || reportViewClone.subReportsIncluded == 'true',
+                isShowDataSetName: !!reportViewClone.isShowDataSetName || reportViewClone.isShowDataSetName == 'true'
             };
 
             params.startDate = DateFormatter.getFormattedDate(date.startDate);

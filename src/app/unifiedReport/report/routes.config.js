@@ -74,7 +74,7 @@
                 }
             })
             .state('unifiedReport.report.editBuilder', {
-                url: '/edit/?reportView&reportViewMultiViews&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&subReportsIncluded&userReorderTransformsAllowed',
+                url: '/edit/?reportView&reportViewMultiViews&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&subReportsIncluded&userReorderTransformsAllowed&isShowDataSetName',
                 views: {
                     'content@app': {
                         controller: 'UnifiedReportBuilder',
@@ -117,6 +117,7 @@
                                         id: reportView.id,
                                         multiView: !!$stateParams.multiView ? ($stateParams.multiView == 'true') : reportView.multiView,
                                         subReportsIncluded: !!$stateParams.subReportsIncluded ? ($stateParams.subReportsIncluded == 'true') : reportView.subReportsIncluded,
+                                        isShowDataSetName: !!$stateParams.isShowDataSetName ? ($stateParams.isShowDataSetName == 'true') : reportView.isShowDataSetName,
                                         userReorderTransformsAllowed: !!$stateParams.userReorderTransformsAllowed ? ($stateParams.userReorderTransformsAllowed == 'true') : reportView.userReorderTransformsAllowed,
                                         publisher: reportView.publisher.id || reportView.publisher
                                     }
@@ -135,7 +136,8 @@
                             alias: $stateParams.alias,
                             publisher: $stateParams.publisher,
                             multiView: $stateParams.multiView == 'true',
-                            subReportsIncluded: $stateParams.subReportsIncluded == 'true'
+                            subReportsIncluded: $stateParams.subReportsIncluded == 'true',
+                            isShowDataSetName: $stateParams.isShowDataSetName == 'true'
                         };
                     },
                     publishers: function () {
@@ -147,7 +149,7 @@
                 }
             })
             .state('unifiedReport.report.detail', {
-                url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&saveReportView&startDate&endDate',
+                url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&saveReportView&startDate&endDate&isShowDataSetName',
                 views: {
                     'content@app': {
                         controller: 'UnifiedReportDetail',
@@ -181,7 +183,8 @@
                                         id: reportView.id,
                                         publisher: reportView.publisher.id || reportView.publisher,
                                         multiView: !!$stateParams.multiView ? ($stateParams.multiView == 'true') : reportView.multiView,
-                                        subReportsIncluded: !!$stateParams.subReportsIncluded ? ($stateParams.subReportsIncluded == 'true') : reportView.subReportsIncluded
+                                        subReportsIncluded: !!$stateParams.subReportsIncluded ? ($stateParams.subReportsIncluded == 'true') : reportView.subReportsIncluded,
+                                        isShowDataSetName: !!$stateParams.isShowDataSetName ? ($stateParams.isShowDataSetName == 'true') : reportView.isShowDataSetName
                                     }
                                 })
                         }
@@ -199,7 +202,8 @@
                             alias: $stateParams.alias,
                             publisher: $stateParams.publisher,
                             multiView: $stateParams.multiView == 'true',
-                            subReportsIncluded: $stateParams.subReportsIncluded == 'true'
+                            subReportsIncluded: $stateParams.subReportsIncluded == 'true',
+                            isShowDataSetName: $stateParams.isShowDataSetName == 'true'
                         };
                     },
                     reportGroup: /* @ngInject */ function(unifiedReportBuilder, reportView, $stateParams) {
@@ -215,7 +219,8 @@
                             name: reportView.name,
                             alias: reportView.alias,
                             multiView: !!reportView.multiView || reportView.multiView == 'true',
-                            subReportsIncluded: !!reportView.subReportsIncluded || reportView.subReportsIncluded == 'true'
+                            subReportsIncluded: !!reportView.subReportsIncluded || reportView.subReportsIncluded == 'true',
+                            isShowDataSetName: !!reportView.isShowDataSetName || reportView.isShowDataSetName == 'true'
                         };
 
                         params.startDate = $stateParams.startDate;

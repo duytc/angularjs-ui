@@ -54,7 +54,8 @@
             formats: [],
             showInTotal: [],
             multiView: false,
-            subReportsIncluded: false
+            subReportsIncluded: false,
+            isShowDataSetName: false
         };
 
         $scope.$watch(function () {
@@ -294,7 +295,8 @@
                 reportView: reportBuilder.id,
                 fieldTypes: angular.toJson(reportBuilder.fieldTypes),
                 multiView: reportBuilder.multiView,
-                subReportsIncluded: reportBuilder.subReportsIncluded
+                subReportsIncluded: reportBuilder.subReportsIncluded,
+                isShowDataSetName: reportBuilder.isShowDataSetName
             };
 
             if ($scope.isAdmin()) {
@@ -814,6 +816,7 @@
             $scope.reportBuilder.weightedCalculations = [];
             $scope.reportBuilder.showInTotal = [];
             $scope.reportBuilder.subReportsIncluded = false;
+            $scope.reportBuilder.isShowDataSetName = false;
         }
 
         /**

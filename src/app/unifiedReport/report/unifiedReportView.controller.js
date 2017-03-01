@@ -64,7 +64,8 @@
                 showInTotal: angular.toJson(reportView.showInTotal),
                 name: reportView.name,
                 multiView: !!reportView.multiView || reportView.multiView,
-                subReportsIncluded: !!reportView.subReportsIncluded || reportView.subReportsIncluded
+                subReportsIncluded: !!reportView.subReportsIncluded || reportView.subReportsIncluded,
+                isShowDataSetName: !!reportView.isShowDataSetName || reportView.isShowDataSetName
             };
 
             unifiedReportBuilder.getPlatformReport(params)
