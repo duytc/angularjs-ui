@@ -67,7 +67,7 @@
 
             VideoDemandAdTagManager.one(videoDemandAdTag.id).patch({'active': newTagStatus})
                 .catch(function () {
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'error',
                         message: $translate.instant('AD_SOURCE_MODULE.CHANGE_STATUS_FAIL')
                     });

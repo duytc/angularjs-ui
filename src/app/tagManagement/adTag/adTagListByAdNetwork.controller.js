@@ -80,13 +80,13 @@
                 .then(function () {
                     adTag.libraryAdTag.visible = false;
 
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'success',
                         message: $translate.instant('AD_TAG_MODULE.UNLINK_SUCCESS')
                     });
                 })
                 .catch(function () {
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'error',
                         message: $translate.instant('AD_TAG_MODULE.UNLINK_FAIL')
                     });
@@ -141,7 +141,7 @@
                 .then(function() {
                     adtag[field] = data;
 
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'success',
                         message: $translate.instant('AD_TAG_MODULE.UPDATE_SUCCESS')
                     });

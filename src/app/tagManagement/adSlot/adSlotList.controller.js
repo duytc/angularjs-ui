@@ -218,13 +218,13 @@
                 .then(function () {
                     adSlot.libraryAdSlot.visible = false;
 
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'success',
                         message: $translate.instant('AD_SLOT_MODULE.UNLINK_SUCCESS')
                     });
                 })
                 .catch(function () {
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'error',
                         message: $translate.instant('AD_SLOT_MODULE.UNLINK_FAIL')
                     });

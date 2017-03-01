@@ -162,7 +162,7 @@
                     AlertService.clearAll();
                     angular.forEach(angular.copy($scope.dataSourceFiles.records), function (dataSourceFile) {
                         if ($scope.selectedDataSourceFiles.indexOf(dataSourceFile.id) > -1) {
-                            AlertService.addAlert({
+                            AlertService.replaceAlerts({
                                 type: 'success',
                                 message: 'The ' + dataSourceFile.fileName + ' was replayed'
                             });
@@ -173,7 +173,7 @@
                     AlertService.clearAll();
                     angular.forEach(angular.copy($scope.dataSourceFiles.records), function (dataSourceFile) {
                         if ($scope.selectedDataSourceFiles.indexOf(dataSourceFile.id) > -1) {
-                            AlertService.addAlert({
+                            AlertService.replaceAlerts({
                                 type: 'success',
                                 message: 'The ' + dataSourceFile.fileName + ' could not be replayed'
                             });

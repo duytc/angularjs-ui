@@ -80,7 +80,7 @@
                 .then(
                     function () {
                         $modalInstance.close();
-                        AlertService.addAlert({
+                        AlertService.replaceAlerts({
                             type: 'success',
                             message: $translate.instant('AD_NETWORK_MODULE.ADD_NEW_SUCCESS')
                         });

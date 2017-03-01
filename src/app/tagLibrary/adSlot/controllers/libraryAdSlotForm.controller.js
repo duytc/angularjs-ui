@@ -14,7 +14,7 @@
         $scope.publisherList = publisherList;
 
         if(!$scope.isNew) {
-            AlertService.addAlert({
+            AlertService.addAlertNotRemove({
                 type: 'warning',
                 message: $translate.instant('AD_SLOT_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
             });

@@ -26,7 +26,7 @@
         $scope.hasMultipleDeployAdSlot = false;
 
         if((!!adSlot && !!adSlot.libraryAdSlot && adSlot.libraryAdSlot.visible) || (!$scope.isNew && !!adTag && !!adTag.libraryAdTag && adTag.libraryAdTag.visible)) {
-            AlertService.addAlert({
+            AlertService.addAlertNotRemove({
                 type: 'warning',
                 message: $translate.instant('AD_TAG_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
             });

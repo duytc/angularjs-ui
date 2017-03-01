@@ -14,14 +14,14 @@
         };
 
         if(!!adSlot.libraryAdSlot && adSlot.libraryAdSlot.visible || adSlot.visible) {
-            AlertService.addAlert({
+            AlertService.addAlertNotRemove({
                 type: 'warning',
                 message: $translate.instant('AD_SLOT_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
             });
         }
 
         if (!$scope.hasAdTags()) {
-            AlertService.addAlert({
+            AlertService.addAlertNotRemove({
                 type: 'warning',
                 message: $translate.instant('AD_TAG_MODULE.CURRENTLY_NO_AD_TAG')
             });
@@ -63,13 +63,13 @@
                 .then(function () {
                     adTag.libraryAdTag.visible = false;
 
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'success',
                         message: $translate.instant('AD_TAG_MODULE.UNLINK_SUCCESS')
                     });
                 })
                 .catch(function () {
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'error',
                         message: $translate.instant('AD_TAG_MODULE.UNLINK_FAIL')
                     });
@@ -101,7 +101,7 @@
                 'active': newTagStatus
             })
                 .catch(function () {
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'error',
                         message: $translate.instant('AD_TAG_MODULE.CHANGE_STATUS_FAIL')
                     });
@@ -224,7 +224,7 @@
                     adTags = $scope.adTags;
                     $scope.adTagsGroup = _sortGroup(adTags);
 
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'success',
                         message: $translate.instant('AD_TAG_MODULE.REORDERED_AD_TAG_SUCCESS')
                     });
@@ -278,7 +278,7 @@
                 .then(function() {
                     adtag[field] = data;
 
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'success',
                         message: $translate.instant('AD_TAG_MODULE.UPDATE_SUCCESS')
                     });
@@ -286,7 +286,7 @@
                 .catch(function() {
                     adtag[field] = adtag[field];
 
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'error',
                         message: $translate.instant('AD_TAG_MODULE.UPDATE_FAIL')
                     });
@@ -335,13 +335,13 @@
                 .then(function () {
                     adTag.libraryAdTag.visible = true;
 
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'success',
                         message: $translate.instant('AD_TAG_MODULE.MOVED_TO_LIBRARY_SUCCESS')
                     });
                 })
                 .catch(function () {
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'error',
                         message: $translate.instant('AD_TAG_MODULE.MOVED_TO_LIBRARY_FAIL')
                     });

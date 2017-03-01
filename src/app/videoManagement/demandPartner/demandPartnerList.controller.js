@@ -114,7 +114,7 @@
                     var waterfalls = data.plain();
 
                     if(!waterfalls.length) {
-                        AlertService.addAlert({
+                        AlertService.replaceAlerts({
                             type: 'warning',
                             message: $translate.instant('VIDEO_DEMAND_PARTNER_MODULE.CURRENTLY_NO_WATERFALLS_DEMAND_PARTNER', {demand_partner_name: adNetwork.name})
                         });

@@ -28,7 +28,7 @@
         };
 
         if (!$scope.hasData()) {
-            AlertService.replaceAlerts({
+            AlertService.addAlertNotRemove({
                 type: 'warning',
                 message: $translate.instant('AD_TAG_LIBRARY_MODULE.CURRENTLY_NO_AD_TAG')
             });
@@ -106,7 +106,7 @@
 
             AdTagLibrariesManager.one(item.id).patch(item)
                 .then(function() {
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'success',
                         message: $translate.instant('AD_TAG_MODULE.UPDATE_SUCCESS')
                     });

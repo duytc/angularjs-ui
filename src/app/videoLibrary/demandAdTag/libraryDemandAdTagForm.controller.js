@@ -41,7 +41,7 @@
         $scope.clearInputSearchValue  = clearInputSearchValue;
 
         if (!$scope.isNew) {
-            AlertService.addAlert({
+            AlertService.addAlertNotRemove({
                 type: 'warning',
                 message: $translate.instant('AD_SOURCE_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
             });

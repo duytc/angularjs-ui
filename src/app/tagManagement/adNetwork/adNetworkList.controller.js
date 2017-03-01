@@ -94,7 +94,7 @@
                     var sitesForAdNetwork = data.plain();
 
                     if(!sitesForAdNetwork.records.length) {
-                        AlertService.addAlert({
+                        AlertService.replaceAlerts({
                             type: 'warning',
                             message: $translate.instant('AD_NETWORK_MODULE.CURRENTLY_NO_SITES_AD_NETWORK', {ad_network_name: adNetwork.name})
                         });

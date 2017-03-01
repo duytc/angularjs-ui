@@ -35,7 +35,7 @@
             demandAdTag.activeClone = demandAdTag.active > 0;
 
             if (demandAdTag.libraryVideoDemandAdTag.linkedCount > 1) {
-                AlertService.addAlert({
+                AlertService.addAlertNotRemove({
                     type: 'warning',
                     message: $translate.instant('AD_SOURCE_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
                 });
