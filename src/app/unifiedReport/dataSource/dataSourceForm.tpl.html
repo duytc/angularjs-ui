@@ -75,7 +75,7 @@
                                         <div class="col-sm-10">
                                             <ui-select name="integration" id="integration1" ng-model="integration.integration" on-select="createNewParams(integration, $item)" ng-required="true" server-error reset-search-input="'false'">
                                                 <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.INTEGRATION' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                                                <ui-select-choices repeat="integration.id as integration in integrations | filter: { name: $select.search }">
+                                                <ui-select-choices repeat="integration.id as integration in integrations | filter:selectedPublisherForIntegration | filter: { name: $select.search }">
                                                     {{ integration.name }}
                                                 </ui-select-choices>
                                             </ui-select>

@@ -22,6 +22,28 @@
         $scope.createNewParams = createNewParams;
         $scope.groupEntities = groupEntities;
         $scope.reStringDate = reStringDate;
+        $scope.selectPublisher = selectPublisher;
+        $scope.selectedPublisherForIntegration = selectedPublisherForIntegration;
+        
+        function selectedPublisherForIntegration(integration) {
+            if(!$scope.isAdmin()) {
+                return true
+            }
+
+            if(!$scope.dataSource.publisher) {
+                return false;
+            }
+            
+            var index = _.findIndex(integration.integrationPublishers, function (integrationPublisher) {
+                return integrationPublisher.publisher.id == $scope.dataSource.publisher || integrationPublisher.publisher.id == $scope.dataSource.publisher.id
+            });
+
+            return index > -1;
+        }
+
+        function selectPublisher(publisher) {
+            $scope.dataSource.dataSourceIntegrations = []
+        }
 
         function reStringDate(date) {
             return date < 10 ? ('0' + date) : date
