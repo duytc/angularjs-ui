@@ -402,7 +402,8 @@
                                     {dataSet: null, field: null, allFields: []},
                                     {dataSet: null, field: null, allFields: []}
                                 ],
-                                outputField: null
+                                outputField: null,
+                                isVisible: true
                             }
                         ]
                     }

@@ -20,7 +20,6 @@
                 content = element.contents().remove();
                 return function (scope, element, attrs) {
                     scope.joinBy = scope.reportBuilder.joinBy;
-
                     scope.addJoinBy = addJoinBy;
                     scope.removeJoinBy = removeJoinBy;
                     scope.addJoinField = addJoinField;
@@ -32,7 +31,6 @@
                     function selectJoinField(joinItem) {
                         $timeout(function () {
                             if(joinItem.joinFields[0].field == joinItem.joinFields[1].field) {
-
                                 joinItem.outputField = joinItem.joinFields[0].field;
                             } else {
                                 joinItem.outputField = null
@@ -93,7 +91,8 @@
                                 {dataSet: null, field: null, allFields: []},
                                 {dataSet: null, field: null, allFields: []}
                             ],
-                            outputField: null
+                            outputField: null,
+                            isVisible: true
                         })
                     }
 

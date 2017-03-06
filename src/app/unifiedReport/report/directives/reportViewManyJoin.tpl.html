@@ -12,8 +12,8 @@
 
     <div class="expressions-group select-connect-data-source">
         <!--<button class="btn btn-success" type="button" ng-click="addJoinField(joinItem.joinFields)">-->
-            <!--<span class="glyphicon glyphicon-plus"></span>-->
-            <!--Add Join Field-->
+        <!--<span class="glyphicon glyphicon-plus"></span>-->
+        <!--Add Join Field-->
         <!--</button>-->
 
         <div class="form-inline condition" ng-repeat="joinField in joinItem.joinFields">
@@ -34,12 +34,17 @@
                     </ui-select-choices>
                 </ui-select>
             </div>
-
-            <!--<button class="btn btn-danger" ng-disabled="joinItem.joinFields.length == 2" type="button" required ng-click="removeJoinField(joinItem.joinFields, $index)"><span class="glyphicon glyphicon-minus"></span></button>-->
+        <!--<button class="btn btn-danger" ng-disabled="joinItem.joinFields.length == 2" type="button" required ng-click="removeJoinField(joinItem.joinFields, $index)"><span class="glyphicon glyphicon-minus"></span></button>-->
         </div>
     </div>
-
-    <input server-error name="outputField" ng-model="joinItem.outputField" ng-required="true" type="text" class="form-control" id="inputOutputField" placeholder="Output Field">
-
-    <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="joinItem.isHiddenJoinColumn" id="hiddenColumn"><span>Hidden Column</span></label>
+    <br>
+     <div class="form-group">
+        <label class="col-sm-1" style="padding-top: 10px" for="inputOutputField">Field Name</label>
+        <input class="form-group col-sm-11" style="height:34px; border:1px solid #ddd;" server-error name="outputField" ng-model="joinItem.outputField" ng-required="true" type="text" id="inputOutputField" placeholder="Output Field">
+    </div>
+    <br>
+    <div class="form-group">
+        <label class="col-sm-1" for="hiddenColumn">Field Visible</label>
+        <input style="width: 18px; height: 18px" server-error name="active" type="checkbox" ng-model="joinItem.isVisible" id="hiddenColumn">
+    </div>
 </div>
