@@ -428,7 +428,7 @@
                             });
 
                             if(!!reportViewDataSet) {
-                                joinField.allFields = reportViewDataSet.dimensions.concat(reportViewDataSet.metrics);;
+                                joinField.allFields = reportViewDataSet.dimensions.concat(reportViewDataSet.metrics);
                             }
                         }
                     });
@@ -448,22 +448,24 @@
         function updateFieldWhenSelectJoinBy() {
             if(!!$scope.reportBuilder.joinBy && $scope.reportBuilder.joinBy.length > 0) {
                 angular.forEach($scope.reportBuilder.joinBy, function (itemJoinBy) {
-                    angular.forEach(itemJoinBy.joinFields, function (field) {
-                        var index = _.findIndex($scope.selectedFields, function (item) {
-                            return item.key == field.field + '_' + field.dataSet
-                        });
-
-                        if(index > -1) {
-                            $scope.selectedFields.push({
-                                root: itemJoinBy.outputField,
-                                key: itemJoinBy.outputField,
-                                label: itemJoinBy.outputField,
-                                type: $scope.selectedFields[index].type
+                    if(itemJoinBy.isVisible) {
+                        angular.forEach(itemJoinBy.joinFields, function (field) {
+                            var index = _.findIndex($scope.selectedFields, function (item) {
+                                return item.key == field.field + '_' + field.dataSet
                             });
 
-                            $scope.selectedFields.splice(index, 1);
-                        }
-                    })
+                            if(index > -1) {
+                                $scope.selectedFields.push({
+                                    root: itemJoinBy.outputField,
+                                    key: itemJoinBy.outputField,
+                                    label: itemJoinBy.outputField,
+                                    type: $scope.selectedFields[index].type
+                                });
+
+                                $scope.selectedFields.splice(index, 1);
+                            }
+                        })
+                    }
                 });
             }
         }
