@@ -40,7 +40,7 @@ module.exports = function(grunt) {
         'watch'
     ]);
 
-    grunt.registerTask('build', [
+    grunt.registerTask('__build', [
         'html2js:app',
         'html2js:common',
         'sass:dev',
@@ -48,12 +48,16 @@ module.exports = function(grunt) {
         'deleteSync:dev',
         'cleanempty:dev',
         'injector:dev',
-        'ngAnnotate:dev',
+        'ngAnnotate:dev'
+    ]);
+
+    grunt.registerTask('build', [
+        '__build',
         'replace:dev'
     ]);
 
     grunt.registerTask('build-prod', [
-        'build',
+        '__build',
         'clean:prod',
         'sync:prod',
         'useminPrepare',

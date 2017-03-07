@@ -23,41 +23,27 @@ module.exports = function(grunt, options) {
         }
     }
 
-    var devApiEndPoint;
-    var devApiUnifiedEndPoint;
-
-    try {
-        devApiEndPoint = options.userConfig.apiEndPoint;
-    } catch (e) {
-        devApiEndPoint = null;
-    }
-
-    try {
-        devApiUnifiedEndPoint = options.userConfig.apiUnifiedEndPoint;
-    } catch (e) {
-        devApiUnifiedEndPoint = null;
-    }
-
-    if (typeof devApiEndPoint !== 'string') {
-        devApiEndPoint = 'http://api.tagcade.dev/app_dev.php/api';
-    }
-
-    if (typeof devApiUnifiedEndPoint !== 'string') {
-        devApiUnifiedEndPoint = 'http://api.unified-reports.dev/app_dev.php/api';
-    }
-
     config.dev = {
         options: {
             patterns: [
-                getPattern(devApiEndPoint),
-                getUnifiedPattern(devApiUnifiedEndPoint)
+                getPattern('<%= appConfig.deployment.origin.dev.tagcade.apiEndPoint %>'),
+                getUnifiedPattern('<%= appConfig.deployment.origin.dev.unified.apiEndPoint %>'),
+                {
+                    match: '<%= appConfig.deployment.origin.dev.tagcade.match %>',
+                    replacement:  '<%= appConfig.deployment.origin.dev.tagcade.val %>'
+                },
+                {
+                    match: '<%= appConfig.deployment.origin.dev.unified.match %>',
+                    replacement:  '<%= appConfig.deployment.origin.dev.unified.val %>'
+                }
             ]
         },
         files: [
             {
                 expand: true,
                 src: [
-                    '<%= appConfig.dirs.build.dev %>/src/app/core/bootstrap/config.js'
+                    '<%= appConfig.dirs.build.dev %>/src/app/core/bootstrap/config.js',
+                    '<%= appConfig.dirs.build.dev %>/src/xdomain.config.js'
                 ]
             }
         ]
@@ -66,8 +52,8 @@ module.exports = function(grunt, options) {
     config.prod = {
         options: {
             patterns: [
-                getPattern('https://api.tagcade.com/api'),
-                getUnifiedPattern('https://ur-api.pubvantage.com/api'),
+                getPattern('<%= appConfig.deployment.origin.prod.tagcade.apiEndPoint %>'),
+                getUnifiedPattern('<%= appConfig.deployment.origin.prod.unified.apiEndPoint %>'),
                 {
                     match: '<%= appConfig.deployment.origin.dev.tagcade.match %>',
                     replacement:  '<%= appConfig.deployment.origin.prod.tagcade.val %>'
