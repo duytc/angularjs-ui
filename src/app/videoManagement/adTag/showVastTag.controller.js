@@ -5,7 +5,7 @@
         .controller('ShowVastTag', ShowVastTag)
     ;
 
-    function ShowVastTag($scope, vastTags, $stateParams, VastTagRequestManager, videoWaterfallTag) {
+    function ShowVastTag($scope, $modal, vastTags, $stateParams, VastTagRequestManager, videoWaterfallTag) {
         $scope.vastTags = formatDate(vastTags);
         $scope.videoWaterfallTag = videoWaterfallTag;
 
@@ -26,6 +26,25 @@
 
         $scope.changePage = changePage;
         $scope.showPagination = showPagination;
+        $scope.showRequest = showRequest;
+
+        function showRequest(vastTag) {
+            $modal.open({
+                templateUrl: 'videoManagement/adTag/showRequest.tpl.html',
+                resolve: {
+                    vastTag: function (){
+                        return vastTag
+                    }
+                },
+                controller: function ($scope, vastTag){
+                    $scope.vastTag = vastTag;
+
+                    $scope.getTextToCopy = function (string){
+                        return string.replace(/\n/g, '\r\n');
+                    };
+                }
+            });
+        }
 
         function showPagination() {
             return angular.isArray($scope.vastTags.records) && $scope.vastTags.totalRecord > $scope.tableConfig.itemsPerPage;
@@ -49,7 +68,7 @@
 
         function formatDate(vastTags) {
             angular.forEach(vastTags.records, function (record) {
-                record.time.date = new Date(moment.utc(record.time.date))
+                record.time.date = moment.tz(record.time.date, record.time.timezone).format();
             });
 
             return vastTags

@@ -40,7 +40,8 @@
     "ngInfiniteScroll": "1.2.1",
     "codemirror": "4.8.0",
     "angular-file-upload": "2.0.0",
-    "ment.io": "~0.9.24"
+    "ment.io": "~0.9.24",
+    "moment-timezone": "~0.5.11"
   },
   "resolutions": {
     "codemirror": "4.8.0",
