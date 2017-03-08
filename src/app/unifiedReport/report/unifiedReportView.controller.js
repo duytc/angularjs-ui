@@ -215,6 +215,10 @@
 
                                 if(reportView.joinBy.length > 0) {
                                     for(var index in reportView.joinBy) {
+                                        if(reportView.joinBy[index].outputField == field && !reportView.joinBy[index].isVisible) {
+                                            return
+                                        }
+
                                         var join = _.find(reportView.joinBy[index].joinFields, function (item) {
                                             return item.dataSet == id && item.field == key
                                         });

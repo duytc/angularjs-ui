@@ -26,25 +26,6 @@
 
         $scope.changePage = changePage;
         $scope.showPagination = showPagination;
-        $scope.showRequest = showRequest;
-
-        function showRequest(vastTag) {
-            $modal.open({
-                templateUrl: 'videoManagement/adTag/showRequest.tpl.html',
-                resolve: {
-                    vastTag: function (){
-                        return vastTag
-                    }
-                },
-                controller: function ($scope, vastTag){
-                    $scope.vastTag = vastTag;
-
-                    $scope.getTextToCopy = function (string){
-                        return string.replace(/\n/g, '\r\n');
-                    };
-                }
-            });
-        }
 
         function showPagination() {
             return angular.isArray($scope.vastTags.records) && $scope.vastTags.totalRecord > $scope.tableConfig.itemsPerPage;

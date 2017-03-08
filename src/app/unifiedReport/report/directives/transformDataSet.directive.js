@@ -46,6 +46,7 @@
                         scope.fieldNames = scope.selectedFields;
 
                         // getFieldsTypeNumber();
+                        selectTypeCalculatedField('number');
                     }, true);
 
                     scope.removeTransform = removeTransform;

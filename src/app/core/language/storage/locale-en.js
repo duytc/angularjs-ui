@@ -470,7 +470,6 @@
                 "BROWSER_MAJOR": "Browser Version",
                 "TIME": "Time",
                 "SHOW_VAST_TAG_REQUEST": "Show Tag Request History",
-                "SHOW_REQUEST": "Show Full Request",
 
                 "SERVER_TO_SERVER": "Server to Server",
                 "VAST_ONLY": "Vast Only",
