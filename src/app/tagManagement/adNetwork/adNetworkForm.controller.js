@@ -104,21 +104,23 @@
          * @param publisher
          */
         function selectPublisher(publisher) {
-            // update $scope.hasUnifiedModule
-            $scope.hasUnifiedModule = publisher.enabledModules.indexOf(USER_MODULES.unified) !== -1;
+            setTimeout(function () {
+                // update $scope.hasUnifiedModule
+                $scope.hasUnifiedModule = publisher.enabledModules.indexOf(USER_MODULES.unified) !== -1;
 
-            // get all unused partners for Publisher
-            PartnerManager.getList({all: true, publisher: publisher.id})
-                .then(function (data) {
-                    $scope.partners = $scope.adNetwork.networkPartner == null ? data : [$scope.adNetwork.networkPartner].concat(data);
-                });
+                // get all unused partners for Publisher
+                PartnerManager.getList({all: true, publisher: publisher.id})
+                    .then(function (data) {
+                        $scope.partners = $scope.adNetwork.networkPartner == null ? data : [$scope.adNetwork.networkPartner].concat(data);
+                    });
 
-            // reset selected partner
-            if(isBuildInType()) {
-                $scope.adNetwork.networkPartner = null;
+                // reset selected partner
+                if(isBuildInType()) {
+                    $scope.adNetwork.networkPartner = null;
 
-                selectPartner(null);
-            }
+                    selectPartner(null);
+                }
+            }, 0);
         }
 
         /**
