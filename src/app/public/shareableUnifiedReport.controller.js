@@ -4,7 +4,7 @@
     angular.module('tagcade.public')
         .controller('shareableUnifiedReport', shareableUnifiedReport);
 
-    function shareableUnifiedReport($scope, $translate, SortReportByColumnType, reports, unifiedReportFormatReport, AlertService) {
+    function shareableUnifiedReport($scope, $translate, reports, unifiedReportFormatReport, AlertService) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -36,8 +36,7 @@
 
         $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);
 
-        // $scope.titleColumns = reports.columns;
-        $scope.titleColumns = SortReportByColumnType.changeColumnName(reports.columns);
+        $scope.titleColumns = reports.columns;
         $scope.columnReportDetailForExportExcel = [];
         $scope.titleReportDetailForExportExcel = [];
 

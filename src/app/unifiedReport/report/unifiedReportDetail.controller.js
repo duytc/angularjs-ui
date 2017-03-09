@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $stateParams, _, SortReportByColumnType, reportView, $translate, reportGroup, getDateReportView, AlertService, unifiedReportFormatReport, UnifiedReportViewManager, UserStateHelper, DateFormatter) {
+    function UnifiedReportDetail($scope, $stateParams, _, reportView, $translate, reportGroup, getDateReportView, AlertService, unifiedReportFormatReport, UnifiedReportViewManager, UserStateHelper, DateFormatter) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -22,8 +22,7 @@
         // user tempReports to orderBy and reports to view
         $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);
 
-        // $scope.titleColumns = reportGroup.columns;
-        $scope.titleColumns = SortReportByColumnType.changeColumnName(reportGroup.columns);
+        $scope.titleColumns = reportGroup.columns;
         $scope.columnReportDetailForExportExcel = [];
         $scope.titleReportDetailForExportExcel = [];
         $scope.hasSort = false;
