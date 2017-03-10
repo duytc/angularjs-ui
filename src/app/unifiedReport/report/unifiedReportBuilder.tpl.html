@@ -87,7 +87,7 @@
                 <div class="form-group" ng-if="summaryFieldTotal.length > 0">
                     <label class="col-sm-1quarter control-label">Show Total</label>
                     <div class="col-sm-10">
-                        <div ng-repeat="field in summaryFieldTotal" class="check_total_builder">
+                        <div ng-repeat="field in summaryFieldTotal" class="col-sm-4">
                             <label class="ui-checkbox"><input name="field[]" type="checkbox" ng-click="toggleFieldForTotal(field)" ng-checked="hasFieldForTotal(field)">
                                 <span>{{ field.label }}</span>
                             </label>

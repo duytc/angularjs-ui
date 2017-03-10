@@ -56,7 +56,7 @@
                     <label class="col-sm-1quarter control-label">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.DETECTED_FIELDS' | translate }}</label>
 
                     <div class="col-sm-5">
-                        <div ng-repeat="field in dataSourceFields" class="check_exchange">
+                        <div ng-repeat="field in dataSourceFields" class="row col-sm-4">
                             <label class="ui-checkbox"><input name="field[]" type="checkbox" ng-click="toggleField(field)" ng-checked="hasField(field)">
                                 <span>{{ field }}</span>
                             </label>
