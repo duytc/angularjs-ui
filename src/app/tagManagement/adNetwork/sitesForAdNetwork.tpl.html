@@ -3,6 +3,12 @@
 </div>
 <div class="modal-body">
 
+    <div class="alert alert-{{ alert.status }}" ng-if="!!alert.message">
+        <a href="#" class="close" data-dismiss="alert" ng-click="removeAlert()" aria-label="close" title="close">×</a>
+
+        {{ alert.message }}
+    </div>
+
     <div class="table-responsive">
         <table class="table" at-table at-paginated at-list="sites.records" at-config="configPagination">
             <thead></thead>

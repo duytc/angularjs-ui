@@ -395,6 +395,9 @@
                 "PAUSE_AD_NETWORK_BY_SITE": "Pause Demand Partner by Sites",
                 "YES_PAUSE": "Yes, pause",
                 "SELECT_A_AD_NETWORK": "Select a Demand Partner",
+                "ACTIVE_SITE_AD_NETWORK": "The ad tags have been activated. Please wait a few minutes for the changes to take effect.",
+                "PAUSE_SITE_AD_NETWORK": "The ad tags have been paused. Please wait a few minutes for the changes to take effect.",
+                "UPDATE_SITE_AD_NETWORK_FAIL": "The ad tags have not been updated",
 
                 "HELP_BLOCK_URL": "You can use this field to add the login url for your demand partner.",
                 "HELP_BLOCK_ENABLE_UNIFIED": "This credentials to use to login demand partner.",

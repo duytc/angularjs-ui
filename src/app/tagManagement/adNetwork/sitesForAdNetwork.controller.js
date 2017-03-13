@@ -6,20 +6,22 @@
         .controller('SitesForAdNetwork', SitesForAdNetwork)
     ;
 
-    function SitesForAdNetwork($scope, $q, $stateParams, $modal, $state, sites, adNetwork, AdNetworkManager, AdNetworkCache, $modalInstance, historyStorage, HISTORY_TYPE_PATH) {
+    function SitesForAdNetwork($scope, $q, $stateParams, $modal, $state, $translate, sites, adNetwork, AdNetworkManager, AdNetworkCache, $modalInstance, historyStorage, HISTORY_TYPE_PATH) {
         $scope.sites = sites;
         $scope.adNetwork = adNetwork;
-
 
         $scope.tableConfig = {
             itemsPerPage: 10,
             maxPages: 10,
             totalItems: Number(sites.totalRecord)
         };
-
         $scope.availableOptions = {
             currentPage: $stateParams.page || 1,
             pageSize: 10
+        };
+        $scope.alert = {
+            status: 'success',
+            message: null
         };
 
         var params = {
@@ -30,6 +32,14 @@
         $scope.toggleStatus = toggleStatus;
         $scope.showPagination = showPagination;
         $scope.changePage = changePage;
+        $scope.removeAlert = removeAlert;
+        
+        function removeAlert() {
+            $scope.alert = {
+                status: 'success',
+                message: null
+            };
+        }
 
         function hasSites() {
             return sites.records.length > 0;
@@ -54,14 +64,31 @@
                     request
                         .catch(
                         function () {
-                            $modalInstance.close();
+                            // $modalInstance.close();
+
+                            $scope.alert = {
+                                status: 'danger',
+                                message: $translate.instant('AD_NETWORK_MODULE.UPDATE_SITE_AD_NETWORK_FAIL')
+                            };
                         })
                         .then(
                         function () {
-                            _getSite(params);
+                            // _getSite(params);
+                            if(newStatus) {
+                                siteStatus.activeAdTagsCount = siteStatus.pausedAdTagsCount;
+                                siteStatus.pausedAdTagsCount = 0;
+                            } else {
+                                siteStatus.pausedAdTagsCount = siteStatus.activeAdTagsCount;
+                                siteStatus.activeAdTagsCount = 0;
+                            }
 
-                            AdNetworkCache.removeCacheAdNetwork();
-                            historyStorage.getLocationPath(HISTORY_TYPE_PATH.adNetwork, $state.current);
+                            $scope.alert = {
+                                status: 'success',
+                                message: newStatus ? $translate.instant('AD_NETWORK_MODULE.ACTIVE_SITE_AD_NETWORK') : $translate.instant('AD_NETWORK_MODULE.PAUSE_SITE_AD_NETWORK')
+                            };
+
+                            //AdNetworkCache.removeCacheAdNetwork();
+                            //historyStorage.getLocationPath(HISTORY_TYPE_PATH.adNetwork, $state.current);
                         });
                 });
 
