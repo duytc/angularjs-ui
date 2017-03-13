@@ -89,6 +89,7 @@
                     scope.filterNumberFields = filterNumberFields;
                     scope.selectCustomFormatDate = selectCustomFormatDate;
                     scope.getTransformName = getTransformName;
+                    scope.filterFieldByTextAndDate = filterFieldByTextAndDate;
 
                     function getTransformName(typeKey) {
                         var element,
@@ -616,6 +617,14 @@
                             || scope.dimensionsMetrics[field] == 'text'
                             || scope.dimensionsMetrics[field] == 'multiLineText'
                             || REPORT_VIEW_INTERNAL_FIELD_VARIABLE.indexOf(field) > -1;
+                    }
+
+                    function filterFieldByTextAndDate(field){
+                        return scope.dimensionsMetrics[scope.mapFields[field]] == 'date'
+                            || scope.dimensionsMetrics[scope.mapFields[field]] == 'dataTime'
+                            || scope.dimensionsMetrics[field] == 'date'
+                            || scope.dimensionsMetrics[field] == 'datetime'
+                            || filterFieldByText(field);
                     }
 
                     function notInMapField(field){
