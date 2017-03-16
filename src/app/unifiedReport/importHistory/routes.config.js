@@ -12,7 +12,7 @@
         UserStateHelperProvider
             .state('unifiedReport.importHistory', {
                 abstract: true,
-                url: '/dataSets',
+                url: '/importHistory',
                 ncyBreadcrumb: {
                     skip: true
                 }
