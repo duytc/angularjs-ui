@@ -1121,6 +1121,7 @@
                 "USERNAME":'Username',
                 "PASSWORD":'Password',
                 "FREQUENCY": 'Frequency',
+                "PLACEHOLDER_FREQUENCY": 'Check every',
                 "ENABLE": 'Enabled',
                 "ADD_NEW_SUCCESS": "The data source has been added",
                 "DELETE_SUCCESS": "The data source has been deleted",
@@ -1144,7 +1145,8 @@
                 "BACK_TO_DATA_SET_LIST": "Back To Data Set List",
                 "BACK_TO_CONNECT_DATA_SOURCE_LIST": "Back To Connected Data Source List",
 
-                "SELECT_A_DATA_SOURCE": "Select a Data Source"
+                "SELECT_A_DATA_SOURCE": "Select a Data Source",
+                "USE_INTEGRATION": "Use Integration"
             },
             "UNIFIED_REPORT_ALERT_MODULE": {
                 "VIEW_DETAIL": "View Detail",

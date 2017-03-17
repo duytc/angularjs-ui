@@ -19,18 +19,17 @@
 
     <div class="panel-body">
         <div class="row">
-            <form name="userForm" class="col-lg-6 form-validation form-horizontal userForm" role="form" ng-submit="submit()" novalidate>
-
+            <form name="userForm" class="col-lg-12 form-validation form-horizontal userForm" role="form" ng-submit="submit()" novalidate>
                 <div class="form-group" ng-if="!isNew && isAdmin()">
-                    <label class="col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.PUBLISHER' | translate }}</label>
-                    <div class="col-sm-10 form-control-static">
+                    <label class="col-sm-1 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.PUBLISHER' | translate }}</label>
+                    <div class="col-sm-5 form-control-static">
                         {{ dataSource.publisher.company }}
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="isNew && isAdmin()">
-                    <label for="inputPublisher" class="col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.PUBLISHER' | translate }}</label>
-                    <div class="col-sm-10">
+                    <label for="inputPublisher" class="col-sm-1 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.PUBLISHER' | translate }}</label>
+                    <div class="col-sm-5">
                         <ui-select name="publisher" id="inputPublisher" ng-model="dataSource.publisher" ng-required="true" on-select="selectPublisher($item)" server-error reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
                             <ui-select-choices repeat="publisher.id as publisher in publishers | filter: { company: $select.search }">
@@ -41,16 +40,23 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="inputName" class="col-sm-2 control-label">{{ 'NAME' | translate }}</label>
-                    <div class="col-sm-10">
+                    <label for="inputName" class="col-sm-1 control-label">{{ 'NAME' | translate }}</label>
+                    <div class="col-sm-5">
                         <input server-error name="name" ng-model="dataSource.name" ng-required="true" type="text" class="form-control" id="inputName" placeholder="{{ 'NAME' | translate }}">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="inputFileFormat" class="col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.DATA_SOURCE_FORMAT' | translate }}</label>
-                    <div class="col-sm-10">
-                        <ui-select name="fileFormat" id="inputFileFormat" ng-model="dataSource.format" ng-disabled="!isNew" ng-required="true" server-error reset-search-input="'false'">
+                    <label for="inputEnabled" class="col-sm-1 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.USE_INTEGRATION' | translate }}</label>
+                    <div class="col-sm-5">
+                        <label class="ui-checkbox"><input server-error name="useIntegration" type="checkbox" ng-click="checkedUseIntegration(dataSource.useIntegration)" ng-model="dataSource.useIntegration" id="inputEnabled"><span></span></label>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="!dataSource.useIntegration">
+                    <label for="inputFileFormat" class="col-sm-1 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.DATA_SOURCE_FORMAT' | translate }}</label>
+                    <div class="col-sm-5">
+                        <ui-select name="fileFormat" id="inputFileFormat" ng-model="dataSource.format" ng-disabled="disabledFormat" ng-required="true" server-error reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.DATA_SOURCE_FORMAT' | translate }}">{{ $select.selected.label }}</ui-select-match>
                             <ui-select-choices repeat="fileFormat.key as fileFormat in fileFormats | filter: { label: $select.search }">
                                 {{ fileFormat.label}}
@@ -59,166 +65,229 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="inputPublisher" class="col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.INTEGRATION' | translate }}</label>
-                    <div class="col-sm-10">
-                        <button ng-click="addNewIntegration()" class="btn btn-success" type="button">
-                            <span class="glyphicon glyphicon-plus"></span> {{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ADD_3RD_PARTY_INTEGRATIONS' | translate }}
-                        </button>
+                <div class="form-group" ng-if="dataSource.dataSourceIntegrations.length > 0 && dataSource.useIntegration" data-ng-repeat="integration in dataSource.dataSourceIntegrations track by $index">
+                    <div class="col-sm-offset-1 col-sm-5">
+                        <div class="expressions-group">
+                            <div class="form-group">
+                                <label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.INTEGRATION' | translate }}</label>
 
-                        <div class="expressions-group" ng-if="dataSource.dataSourceIntegrations.length > 0">
-                            <div class="form-group" data-ng-repeat="integration in dataSource.dataSourceIntegrations track by $index">
-                                <div class="expressions-group">
-                                    <div class="form-group">
-                                        <label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.INTEGRATION' | translate }}</label>
-
-                                        <div class="col-sm-10">
-                                            <ui-select name="integration" id="integration1" ng-model="integration.integration" on-select="createNewParams(integration, $item)" ng-required="true" server-error reset-search-input="'false'">
-                                                <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.INTEGRATION' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                                                <ui-select-choices repeat="integration.id as integration in integrations | filter:selectedPublisherForIntegration | filter: { name: $select.search }">
-                                                    {{ integration.name }}
-                                                </ui-select-choices>
-                                            </ui-select>
-                                        </div>
-                                    </div>
-                                    <br>
-
-                                    <div class="form-group">
-                                        <label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.FREQUENCY' | translate }}</label>
-                                        <div class="col-sm-10">
-                                            <ui-select name="frequency" id="integration.frequency" ng-model="integration.schedule" ng-required="true" server-error reset-search-input="'false'">
-                                                <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.FREQUENCY' | translate }}">{{ $select.selected.label }}</ui-select-match>
-                                                <ui-select-choices repeat="frequency.key as frequency in frequencies | filter: { label: $select.search }">
-                                                    {{ frequency.label}}
-                                                </ui-select-choices>
-                                            </ui-select>
-                                        </div>
-                                    </div>
-                                    <br>
-
-                                    <!--<div class="form-group">
-                                        <label for="inputPublisher" class="col-sm-2 control-label">Params</label>
-                                        <div class="col-sm-10">
-                                            <button ng-click="addNewParams(integration)" class="btn btn-success" type="button">
-                                                <span class="glyphicon glyphicon-plus"></span> Add New Params
-                                            </button>
-
-                                            <div ng-repeat="param in filterParameter(integration)">
-                                                <div class="expressions-group">
-                                                    <div class="form-group select-connect-data-source">
-                                                        <button type="button" class="btn btn-danger btn-close-ur" ng-click="removeParams(integration, $index)">
-                                                        <span class="glyphicon glyphicon-minus "></span>
-                                                        </button>
-                                                    </div>
-
-                                                    <div class="form-group select-connect-data-source">
-                                                        <label class="col-sm-2 control-label">Key</label>
-                                                        <div class="col-sm-10">
-                                                        <ui-select ng-model="param.key" ng-required="true" server-error reset-search-input="'false'">
-                                                            <ui-select-match placeholder="Select a key">{{ $select.selected}}</ui-select-match>
-                                                            <ui-select-choices repeat="customParameter in filterParameter(integration) | filter:$select.search">
-                                                            {{ customParameter}}
-                                                            </ui-select-choices>
-                                                        </ui-select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group select-connect-data-source">
-                                                        <label class="col-sm-2 control-label">Value</label>
-                                                        <div class="col-sm-10">
-                                                            <input server-error name="value" ng-model="param.value" ng-required="true" type="text" class="form-control" placeholder="Value">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                        </div>
-                                    </div>-->
-
-                                    <div class="form-group">
-                                        <label for="inputPublisher" class="col-sm-2 control-label" ng-if="integration.params.length >0">Params</label>
-                                        <div class="col-sm-10" >
-                                            <div class="form-inline row" ng-repeat="param in integration.params">
-                                                <div class="col-sm-2">
-                                                    <label class="control-label">{{param.key}}</label>
-                                                </div>
-
-                                                <div class="col-sm-10">
-                                                    <input style="width:100%" server-error name="value" ng-model="param.value" ng-required="true" type="text" class="form-control" placeholder="Value">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <br>
-                                    <div class="form-group">
-                                        <label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ENABLE' | translate }}</label>
-                                        <div class="col-sm-10">
-                                            <div>
-                                                <label class="ui-checkbox">
-                                                    <input server-error name="integrationActive" ng-model="integration.active" type="checkbox" id="integrationEnable">
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="form-group ">
-                                        <div class=" col-sm-offset-10 ">
-                                            <button type="button" style="margin-left: -5px" class="btn btn-danger" ng-click="removeIntegration($index)">
-                                                <span class="glyphicon glyphicon-minus "></span> Remove
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <br>
+                                <div class="col-sm-10">
+                                    <ui-select name="integration" id="integration1" ng-model="integration.integration" on-select="createNewParams(integration, $item)" ng-required="true" server-error reset-search-input="'false'">
+                                        <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.INTEGRATION' | translate }}">{{ $select.selected.name }}</ui-select-match>
+                                        <ui-select-choices repeat="integration.id as integration in integrations | filter:selectedPublisherForIntegration | filter: { name: $select.search }">
+                                            {{ integration.name }}
+                                        </ui-select-choices>
+                                    </ui-select>
                                 </div>
                             </div>
+                            <br>
+                            <div class="form-group">
+                                <label class=" col-sm-2 control-label">Check</label>
+                                <div class="col-sm-10">
+                                    <ui-select name="frequency" id="integration.schedule.checked" ng-model="integration.schedule.checked" ng-required="true" server-error reset-search-input="'false'">
+                                        <ui-select-match placeholder="Select a Check">{{ $select.selected.label }}</ui-select-match>
+                                        <ui-select-choices repeat="check.key as check in integrationTypes | filter: { label: $select.search }">
+                                            {{ check.label}}
+                                        </ui-select-choices>
+                                    </ui-select>
+
+                                    <span class="help-block">Select 'every" for frequency and "fixed time" for exact time of execution</span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group" ng-if="integration.schedule.checked == 'checkEvery'">
+                                <label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.FREQUENCY' | translate }}</label>
+                                <div class="col-sm-10">
+                                    <ui-select name="frequency" id="integration.frequency" ng-model="integration.schedule.checkEvery.hour" ng-required="true" server-error reset-search-input="'false'">
+                                        <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.PLACEHOLDER_FREQUENCY' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                                        <ui-select-choices repeat="frequency.key as frequency in frequencies | filter: { label: $select.search }">
+                                            {{ frequency.label}}
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="integration.schedule.checked == 'checkAt'">
+                                <label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.FREQUENCY' | translate }}</label>
+                                <div class="col-sm-10">
+                                    <div class="expressions-group">
+                                        <button class="btn btn-success" type="button" ng-click="addFixedTime(integration.schedule)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                            Add Fixed Time
+                                        </button>
+
+                                        <div class="form-inline condition" ng-repeat="check in integration.schedule.checkAt">
+                                            <div class="form-group select-alert-timezone">
+                                                <ui-select ng-model="check.timeZone" ng-required="true" server-error reset-search-input="'false'">
+                                                    <ui-select-match placeholder="Select a timezone">{{ $select.selected }}</ui-select-match>
+                                                    <ui-select-choices group-by="groupEntities" repeat="timezone in timezones">
+                                                        {{ timezone }}
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+
+                                            <div class="form-group select-alert-date" style="margin-left: 20px">
+                                                <ui-select ng-model="check.hour" ng-required="true" server-error reset-search-input="'false'">
+                                                    <ui-select-match placeholder="Select a hour">{{ reStringDate($select.selected) }}</ui-select-match>
+                                                    <ui-select-choices repeat="hour in hours">
+                                                        {{ reStringDate(hour) }}
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>:</label>
+                                            </div>
+
+                                            <div class="form-group select-alert-date" style="margin-left: 3px">
+                                                <ui-select ng-model="check.minutes" ng-required="true" server-error reset-search-input="'false'">
+                                                    <ui-select-match placeholder="Select a minute">{{ reStringDate($select.selected) }}</ui-select-match>
+                                                    <ui-select-choices repeat="minute in minutes">
+                                                        {{ reStringDate(minute) }}
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+
+                                            <button ng-disabled="integration.schedule.checkAt.length == 1" class="btn btn-danger" type="button" ng-minlength="1" required ng-click="removeFixedTime($index, integration.schedule)"><span class="glyphicon glyphicon-minus"></span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="inputPublisher" class="col-sm-2 control-label" ng-if="integration.params.length >0">Params</label>
+                                <div class="col-sm-10" >
+                                    <div class="form-inline row" ng-repeat="param in integration.params">
+                                        <div class="col-sm-2" ng-init="param.value = !param.value ? null : param.value">
+                                            <label class="control-label">{{param.key}}</label>
+                                        </div>
+
+                                        <div class="col-sm-10" ng-if="param.type != 'date' && param.type != 'dynamicDateRange'">
+                                            <input style="width:100%" server-error name="value" ng-model="param.value" type="{{ mapType[param.type] }}" class="form-control" placeholder="Value">
+
+                                            <span class="help-block" ng-if="param.type == 'secure'">Leave it blank for no change</span>
+                                        </div>
+
+                                        <div class="col-sm-10" ng-if="param.type == 'date'">
+                                            <div style="width:100%" class="input-group" ng-init="!!param.value ? null : param.value = {startDate: null, endDate: null}">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                <input date-range-picker options="datePickerOpts" class="form-control date-picker" type="text" id="inputStartDate" ng-model="param.value">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-10 ui-select-width-full-width" ng-if="param.type == 'dynamicDateRange'">
+                                            <ui-select ng-model="param.value" server-error reset-search-input="'false'">
+                                                <ui-select-match placeholder="Select a date range">{{ $select.selected.label }}</ui-select-match>
+                                                <ui-select-choices repeat="range.key as range in dynamicDatePickerOpts | filter:$select.search">
+                                                    {{ range.label}}
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label class=" col-sm-2 control-label">Backfill</label>
+                                <div class="col-sm-10">
+                                    <div>
+                                        <label class="ui-checkbox">
+                                            <input server-error name="backFill" ng-model="integration.backFill" type="checkbox" id="backFill">
+                                            <span></span>
+                                        </label>
+                                    </div>
+
+                                    <span class="help-block">Enable Backfill allows to get historical reports from start date to yesterday</span>
+                                </div>
+                            </div>
+                            <br>
+                            <div ng-if="integration.backFill">
+                                <div class="form-group" ng-if="integration.backFillExecuted">
+                                    <label class=" col-sm-2 control-label">Backfill Force</label>
+                                    <div class="col-sm-10">
+                                        <div>
+                                            <label class="ui-checkbox">
+                                                <input server-error name="backFillForce" ng-model="integration.backFillForce" type="checkbox" id="backFillForce">
+                                                <span></span>
+                                            </label>
+                                        </div>
+
+                                        <span class="help-block">If checked, Backfill will be run again once time</span>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label class=" col-sm-2 control-label">Backfill Start Date</label>
+                                    <div class="col-sm-10">
+                                        <div style="width:100%" class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            <input date-range-picker ng-required="true" ng-disabled="!isNew && !integration.backFillForce && integration.backFillExecuted" options="datePickerOpts" class="form-control date-picker" type="text" ng-model="integration.backFillStartDate">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+                            <div class="form-group">
+                                <label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ENABLE' | translate }}</label>
+                                <div class="col-sm-10">
+                                    <div>
+                                        <label class="ui-checkbox">
+                                            <input server-error name="integrationActive" ng-model="integration.active" type="checkbox" id="integrationEnable">
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10" ng-repeat="alertSetting in dataSource.alertSetting">
-                        <label class="ui-checkbox">
-                            <input server-error name="dataSourceEnableWhenWrongData" ng-model="alertSetting.active" type="checkbox" id="dataSourceEnableWhenWrongData">
-                            <span ng-if="alertSetting.type == 'wrongFormat'">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ALERT_RECEIVED_DATA_WRONG_FORMAT' | translate }}</span>
-                            <span ng-if="alertSetting.type == 'dataReceived'">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ALERT_WHEN_RECEIVED_DATA' | translate }}</span>
-                            <span ng-if="alertSetting.type == 'notReceived'">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ALERT_IF_DATA_NOT_RECEIVED' | translate }}</span>
-                        </label>
+                    <div class="col-sm-offset-1 col-sm-5">
+                        <div ng-repeat="alertSetting in dataSource.alertSetting">
+                            <label class="ui-checkbox">
+                                <input server-error name="dataSourceEnableWhenWrongData" ng-model="alertSetting.active" type="checkbox" id="dataSourceEnableWhenWrongData">
+                                <span ng-if="alertSetting.type == 'wrongFormat'">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ALERT_RECEIVED_DATA_WRONG_FORMAT' | translate }}</span>
+                                <span ng-if="alertSetting.type == 'dataReceived'">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ALERT_WHEN_RECEIVED_DATA' | translate }}</span>
+                                <span ng-if="alertSetting.type == 'notReceived'">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ALERT_IF_DATA_NOT_RECEIVED' | translate }}</span>
+                            </label>
 
-                        <div class="form-inline col-sm-12" ng-if="alertSetting.type == 'notReceived' && alertSetting.active">
-                            <div class="form-group select-alert-timezone">
-                                <ui-select ng-model="alertSetting.alertTimeZone" ng-required="true" server-error reset-search-input="'false'">
-                                    <ui-select-match placeholder="Select a timezone">{{ $select.selected }}</ui-select-match>
-                                    <ui-select-choices group-by="groupEntities" repeat="timezone in timezones">
-                                        {{ timezone }}
-                                    </ui-select-choices>
-                                </ui-select>
-                            </div>
+                            <div class="form-inline col-sm-12" ng-if="alertSetting.type == 'notReceived' && alertSetting.active">
+                                <div class="form-group select-alert-timezone">
+                                    <ui-select ng-model="alertSetting.alertTimeZone" ng-required="true" server-error reset-search-input="'false'">
+                                        <ui-select-match placeholder="Select a timezone">{{ $select.selected }}</ui-select-match>
+                                        <ui-select-choices group-by="groupEntities" repeat="timezone in timezones">
+                                            {{ timezone }}
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
 
-                            <div class="form-group select-alert-date" style="margin-left: 20px">
-                                <ui-select ng-model="alertSetting.alertHour" ng-required="true" server-error reset-search-input="'false'">
-                                    <ui-select-match placeholder="Select a hour">{{ reStringDate($select.selected) }}</ui-select-match>
-                                    <ui-select-choices repeat="hour in hours">
-                                        {{ reStringDate(hour) }}
-                                    </ui-select-choices>
-                                </ui-select>
-                            </div>
+                                <div class="form-group select-alert-date" style="margin-left: 20px">
+                                    <ui-select ng-model="alertSetting.alertHour" ng-required="true" server-error reset-search-input="'false'">
+                                        <ui-select-match placeholder="Select a hour">{{ reStringDate($select.selected) }}</ui-select-match>
+                                        <ui-select-choices repeat="hour in hours">
+                                            {{ reStringDate(hour) }}
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
 
-                            <div class="form-group" style="margin-left: 20px">
-                                <label>:</label>
-                            </div>
+                                <div class="form-group" style="margin-left: 20px">
+                                    <label>:</label>
+                                </div>
 
-                            <div class="form-group select-alert-date" style="margin-left: 20px">
-                                <ui-select ng-model="alertSetting.alertMinutes" ng-required="true" server-error reset-search-input="'false'">
-                                    <ui-select-match placeholder="Select a minute">{{ reStringDate($select.selected) }}</ui-select-match>
-                                    <ui-select-choices repeat="minute in minutes">
-                                        {{ reStringDate(minute) }}
-                                    </ui-select-choices>
-                                </ui-select>
+                                <div class="form-group select-alert-date" style="margin-left: 20px">
+                                    <ui-select ng-model="alertSetting.alertMinutes" ng-required="true" server-error reset-search-input="'false'">
+                                        <ui-select-match placeholder="Select a minute">{{ reStringDate($select.selected) }}</ui-select-match>
+                                        <ui-select-choices repeat="minute in minutes">
+                                            {{ reStringDate(minute) }}
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="col-sm-offset-1 col-sm-11">
                         <label class="ui-checkbox">
                             <input server-error name="dataSourceEnable" ng-model="dataSource.enable" type="checkbox" id="dataSourceEnable">
                             <span>{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ENABLE' | translate }}</span>
@@ -227,7 +296,7 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="col-sm-offset-1 col-sm-5">
                         <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success mce-i-indent">{{ 'SUBMIT' | translate }}</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">
                             <p>{{ 'VALID_FORM' | translate }}</p>

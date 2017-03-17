@@ -410,3 +410,7 @@ legend {
 .select-alert-date.form-group {
   @include ui-select-width(60px);
 }
+
+.ui-select-width-full-width {
+  @include ui-select-width(100%);
+}
