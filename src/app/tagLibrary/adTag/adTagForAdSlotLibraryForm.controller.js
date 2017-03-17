@@ -54,7 +54,7 @@
                 adNetwork: null,
                 adType: $scope.adTypes.customAd,
                 descriptor: null,
-                partnerTagId: null,
+                // partnerTagId: null,
                 inBannerDescriptor: {
                     platform: 'auto',
                     timeout: null,

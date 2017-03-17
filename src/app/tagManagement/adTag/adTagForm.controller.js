@@ -94,7 +94,7 @@
                 html: null,
                 adNetwork: null,
                 adType: $scope.adTypes.customAd,
-                partnerTagId: null,
+                // partnerTagId: null,
                 descriptor: null,
                 inBannerDescriptor: {
                     platform: 'auto',
