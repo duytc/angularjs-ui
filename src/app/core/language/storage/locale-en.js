@@ -1239,7 +1239,7 @@
 
                 "DETECT_FIELDS_FROM_FILE": "Detect fields from file",
                 "SELECT_A_FILE_FOR_DETECTING_FIELD": "Select a File",
-                "INPUT_DATE_FORMAT_HELP_TEXT": "Custom date must contain only YY, YYYY, M, MM, MMM, MMMM, D, DD, and some special characters such as dashes and spaces",
+                "INPUT_DATE_FORMAT_HELP_TEXT": "Custom date must contain only YY, YYYY, M, MM, MMM, MMMM, D, DD, TH:i:s, H:i:s and some special characters such as dashes and spaces",
                 "REPLACEMENT_VALUE_HELP_TEXT": "Replacement value may contain match groups in the form [1] or [2] etc that will be replaced by the text captured in the search pattern"
             },
             "REPORT_BUILDER_MODULE": {

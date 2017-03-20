@@ -73,7 +73,7 @@
                                 </div>
 
                                 <div  ng-if="transform.isCustomFormatDateFrom">
-                                    <input server-error name="from" ng-model="transform.from" ng-required="true" type="text" ng-pattern="/^([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})[\-,\.,\/,_\s]*([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})[\-,\.,\/,_\s]*([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})$/" class="form-control" placeholder="Date From Format">
+                                    <input server-error name="from" ng-model="transform.from" ng-required="true" type="text" ng-pattern="/^([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})[\-,\.,\/,_\s]*([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})[\-,\.,\/,_\s]*([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})*(([T]{1}|[H]{1}|[i]{1}|[s]{1})|[\\\-,\.,\/,_:\s])*$/" class="form-control" placeholder="Date From Format">
                                     <span class="help-block"> {{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.INPUT_DATE_FORMAT_HELP_TEXT' | translate }} </span>
                                 </div>
                             </div>
