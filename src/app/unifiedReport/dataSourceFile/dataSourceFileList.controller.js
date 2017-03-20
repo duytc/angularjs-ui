@@ -205,13 +205,22 @@
 
         function changePage(currentPage) {
             params = angular.extend(params, {page: currentPage});
-            _getDataSourceFiles(params);
+
+            _getDataSourceFiles(params)
+                .then(function () {
+                    $scope.selectedDataSourceFiles = [];
+                    $scope.checkAllItem = false;
+                });
         }
 
         function searchData() {
             var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
-            _getDataSourceFiles(params);
+            _getDataSourceFiles(params)
+                .then(function () {
+                    $scope.selectedDataSourceFiles = [];
+                    $scope.checkAllItem = false;
+                });
         }
 
         function _getDataSourceFiles(query, timeOut) {
@@ -232,6 +241,8 @@
                                     $scope.availableOptions.currentPage = Number(query.page);
 
                                     resolve(dataSourceFiles);
+
+                                    _resetCheckImported($scope.dataSourceFiles)
                                 }, 0)
                             });
 
@@ -251,6 +262,20 @@
                     }
                 }, timeOut);
             });
+
+            function _resetCheckImported(dataSourceFiles) {
+                angular.forEach(angular.copy($scope.selectedDataSourceFiles), function (dataSourceFile, index) {
+                    var indexDataSourceFile = _.findIndex(dataSourceFiles.records, function (item) {
+                        return dataSourceFile == item.id
+                    });
+
+                    if(indexDataSourceFile == -1) {
+                        $scope.selectedDataSourceFiles.splice(index, 1)
+                    }
+                });
+
+                $scope.checkAllItem = $scope.selectedDataSourceFiles.length == dataSourceFiles.records.length
+            }
         }
     }
 })();
