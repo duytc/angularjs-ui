@@ -5,6 +5,17 @@
         .controller('ConnectDataSourceForm', ConnectDataSourceForm);
 
     function ConnectDataSourceForm($scope, $modal, $timeout, _, dataSources, connectDataSource, AlertService, sessionStorage, FileUploader, UnifiedReportConnectDataSourceManager, UnifiedReportDataSourceManager, ServerErrorProcessor, dataSet, dateUtil, historyStorage, HISTORY_TYPE_PATH, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, DateFormatter) {
+        const ALERT_CODE_DATA_IMPORT_MAPPING_FAIL = 1201;
+        const ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL = 1202;
+        const ALERT_CODE_FILTER_ERROR_INVALID_NUMBER = 1203;
+        const ALERT_CODE_TRANSFORM_ERROR_INVALID_DATE = 1204;
+        const ALERT_CODE_DATA_IMPORT_NO_HEADER_FOUND = 1205;
+        const ALERT_CODE_DATA_IMPORT_NO_DATA_ROW_FOUND = 1206;
+        const ALERT_CODE_WRONG_TYPE_MAPPING = 1207;
+        const ALERT_CODE_FILE_NOT_FOUND = 1208;
+        const ALERT_CODE_NO_FILE_PREVIEW = 1209;
+        const ALERT_CODE_UN_EXPECTED_ERROR = 2000;
+
         $scope.fieldNameTranslations = {
             dataSet: 'Data Set',
             dataSource: 'Data Source',
@@ -163,17 +174,10 @@
                     });
                 })
                 .catch(function (response) {
-                    if(response.status = 400) {
-                        AlertService.replaceAlerts({
-                            type: 'error',
-                            message: response.data.message
-                        });
-                    } else {
-                        AlertService.replaceAlerts({
-                            type: 'error',
-                            message: 'Unknown error'
-                        });
-                    }
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: convertMessage(response.data.message)
+                    });
                 })
         }
 
@@ -605,6 +609,48 @@
                     });
                 }
             })
+        }
+
+        function convertMessage(message) {
+            message = angular.fromJson(message);
+
+            var code = message.code;
+            var detail = message.detail;
+
+            switch (code) {
+                case ALERT_CODE_DATA_IMPORT_MAPPING_FAIL:
+                    return 'Failed to import file - no field in file is mapped to data set.';
+
+                case ALERT_CODE_WRONG_TYPE_MAPPING:
+                    return 'Failed to import file - invalid type on field ' + '"' + detail.column + '"' + '.';
+
+                case ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL:
+                    return 'Failed to import file - missing required field ' + '"' + detail.column + '"' + ' in file.';
+
+                case ALERT_CODE_FILTER_ERROR_INVALID_NUMBER:
+                    return 'Failed to import file - invalid number format on field ' + '"' + detail.column + '"' + '.';
+
+                case ALERT_CODE_TRANSFORM_ERROR_INVALID_DATE:
+                    return 'Failed to import file - invalid date format on field ' + '"' + detail.column + '"' + '.';
+
+                case ALERT_CODE_DATA_IMPORT_NO_HEADER_FOUND:
+                    return 'Failed to import file - no header found from file.';
+
+                case ALERT_CODE_DATA_IMPORT_NO_DATA_ROW_FOUND:
+                    return 'Failed to import file - no data found from file.';
+
+                case ALERT_CODE_FILE_NOT_FOUND:
+                    return 'Failed to import file - file does not exist.';
+
+                case ALERT_CODE_UN_EXPECTED_ERROR:
+                    return 'Failed to import file - unexpected error, please contact your account manager';
+
+                case ALERT_CODE_NO_FILE_PREVIEW:
+                    return 'cannot find any file in this data source for dry run';
+
+                default:
+                    return 'Unknown code (' + detail.code + ')';
+            }
         }
     }
 })();
