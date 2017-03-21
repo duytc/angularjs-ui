@@ -290,13 +290,13 @@
                     return 'Failed to receive file ' + '"' + detail.fileName + '"' + ' from api to data source ' + '"' + detail.dataSourceName + '"' + ' - wrong format error. Each Data source has only one type and file format.';
 
                 case ALERT_CODE_DATA_IMPORT_MAPPING_FAIL:
-                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - no field in file is mapped to data set.';
+                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - MAPPING ERROR: no field in file is mapped to data set.';
 
                 case ALERT_CODE_WRONG_TYPE_MAPPING:
-                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - invalid type on field ' + '"' + detail.column + '"' + '.';
+                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - MAPPING ERROR: found invalid content ' + '"' + detail.content + '"' + ' on field ' + '"' + detail.column + '"' + '.';
 
                 case ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL:
-                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - missing required field ' + '"' + detail.column + '"' + ' in file.';
+                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - REQUIRE ERROR: required field ' + '"' + detail.column + '"' + ' dose not exist.';
 
                 case ALERT_CODE_FILTER_ERROR_INVALID_NUMBER:
                     return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - invalid number format on field ' + '"' + detail.column + '"' + '.';
