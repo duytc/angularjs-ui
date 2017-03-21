@@ -264,17 +264,20 @@
             });
 
             function _resetCheckImported(dataSourceFiles) {
-                angular.forEach(angular.copy($scope.selectedDataSourceFiles), function (dataSourceFile, index) {
-                    var indexDataSourceFile = _.findIndex(dataSourceFiles.records, function (item) {
-                        return dataSourceFile == item.id
-                    });
+                // angular.forEach(angular.copy($scope.selectedDataSourceFiles), function (dataSourceFile, index) {
+                //     var indexDataSourceFile = _.findIndex(dataSourceFiles.records, function (item) {
+                //         return dataSourceFile == item.id
+                //     });
+                //
+                //     if(indexDataSourceFile == -1) {
+                //         $scope.selectedDataSourceFiles.splice(index, 1)
+                //     }
+                // });
+                //
+                // $scope.checkAllItem = $scope.selectedDataSourceFiles.length == dataSourceFiles.records.length
 
-                    if(indexDataSourceFile == -1) {
-                        $scope.selectedDataSourceFiles.splice(index, 1)
-                    }
-                });
-
-                $scope.checkAllItem = $scope.selectedDataSourceFiles.length == dataSourceFiles.records.length
+                $scope.selectedDataSourceFiles = [];
+                $scope.checkAllItem = false;
             }
         }
     }
