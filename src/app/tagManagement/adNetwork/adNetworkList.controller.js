@@ -5,8 +5,9 @@
         .controller('AdNetworkList', AdNetworkList)
     ;
 
-    function AdNetworkList($scope, $translate, $modal, $q, AlertService, AdNetworkManager, AdNetworkCache, adNetworks, historyStorage, HISTORY_TYPE_PATH) {
+    function AdNetworkList($scope, $stateParams, $translate, $modal, $q, AlertService, AdNetworkManager, AdNetworkCache, adNetworks, historyStorage, HISTORY_TYPE_PATH) {
         $scope.adNetworks = adNetworks;
+        $scope.blackList = $stateParams.id;
 
         $scope.hasData = function () {
             return !!adNetworks.length;
@@ -27,6 +28,11 @@
 
         $scope.showPagination = showPagination;
         $scope.getUnifiedReportEmail = getUnifiedReportEmail;
+        $scope.backToBlackList = backToBlackList;
+        
+        function backToBlackList() {
+            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.blockList, '^.^.domainList.blockList');
+        }
 
         $scope.toggleAdNetworkStatus = function (adNetwork, newStatus) {
             //var newStatus = !adNetwork.active;

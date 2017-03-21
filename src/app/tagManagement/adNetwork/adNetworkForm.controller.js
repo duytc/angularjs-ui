@@ -5,7 +5,7 @@
         .controller('AdNetworkForm', AdNetworkForm)
     ;
 
-    function AdNetworkForm($scope, $translate, _, AdNetworkCache, PartnerManager, AlertService, ServerErrorProcessor, adNetwork, publishers, historyStorage, USER_MODULES, HISTORY_TYPE_PATH) {
+    function AdNetworkForm($scope, $modal, $translate, _, blockList, AdNetworkCache, PartnerManager, AlertService, ServerErrorProcessor, adNetwork, publishers, historyStorage, USER_MODULES, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             defaultCpmRate: 'Default CPM Rate',
@@ -18,24 +18,19 @@
 
         $scope.allowSelectPublisher = $scope.isAdmin();
         $scope.publishers = publishers;
+        $scope.blockList = blockList;
         $scope.partners = [];
 
-        $scope.isBuildInType = isBuildInType;
-        $scope.isCustomType = isCustomType;
-        $scope.backToListAdNetwork = backToListAdNetwork;
-        $scope.selectPublisher = selectPublisher;
-        $scope.selectPartner = selectPartner;
-
         $scope.adNetwork = adNetwork || {
-            name: null,
-            defaultCpmRate: null,
-            url: null,
-         /*   username: null,
-            password: null,*/
-            networkPartner: null,
-            impressionCap: null,
-            networkOpportunityCap: null
-        };
+                name: null,
+                defaultCpmRate: null,
+                url: null,
+                /*   username: null,
+                 password: null,*/
+                networkPartner: null,
+                impressionCap: null,
+                networkOpportunityCap: null
+            };
 
         $scope.DEMAND_PARTNER_TYPE = {
             BUILD_IN: 0, // allow pick a build-in partner for demand partner
@@ -69,6 +64,74 @@
             $scope.selectData.inputType = $scope.isNew || !$scope.adNetwork.networkPartner ? $scope.DEMAND_PARTNER_TYPE.CUSTOM : $scope.DEMAND_PARTNER_TYPE.BUILD_IN;
         } else {
             $scope.selectData.inputType = $scope.DEMAND_PARTNER_TYPE.CUSTOM;
+        }
+
+        if(!$scope.isNew) {
+            var networkBlacklists = [];
+            angular.forEach(angular.copy($scope.adNetwork.networkBlacklists), function(networkBlacklist) {
+                networkBlacklists.push(networkBlacklist.displayBlacklist)
+            });
+
+            $scope.adNetwork.networkBlacklists = networkBlacklists;
+
+            angular.forEach($scope.blockList, function(block) {
+                var index = _.findIndex($scope.adNetwork.networkBlacklists, function (networkBlacklist) {
+                    return !!networkBlacklist && networkBlacklist.id == block.id
+                });
+
+                if(index > -1) {
+                    block['ticked'] = true;
+                }
+            });
+        }
+
+        $scope.isBuildInType = isBuildInType;
+        $scope.isCustomType = isCustomType;
+        $scope.backToListAdNetwork = backToListAdNetwork;
+        $scope.selectPublisher = selectPublisher;
+        $scope.selectPartner = selectPartner;
+        $scope.createQuicklyBlockLink = createQuicklyBlockLink;
+        $scope.viewQuicklyBlockLink = viewQuicklyBlockLink;
+
+        function createQuicklyBlockLink() {
+            var newDomain = {
+                name: null,
+                domains: []
+            };
+
+            var modalInstance = $modal.open({
+                templateUrl: 'tagManagement/adNetwork/domainList/blockListQuicklyForm.tpl.html',
+                controller: 'BlockListQuicklyForm',
+                size: 'lg',
+                resolve: {
+                    publishers: function () {
+                        return publishers
+                    },
+                    publisher: function () {
+                        return $scope.adNetwork.publisher
+                    },
+                    domain: function () {
+                        return newDomain
+                    }
+                }
+            });
+
+            modalInstance.result.then(function () {
+                $scope.blockList.push(newDomain);
+            })
+        }
+
+        function viewQuicklyBlockLink() {
+            $modal.open({
+                templateUrl: 'tagManagement/adNetwork/domainList/viewQuicklyBlockList.tpl.html',
+                controller: 'ViewQuicklyBlockList',
+                size: 'lg',
+                resolve: {
+                    domainList: function() {
+                        return $scope.blockList
+                    }
+                }
+            });
         }
 
         $scope.isFormValid = function() {
@@ -147,6 +210,14 @@
                 $scope.selectData.networkPartner = null;
                 $scope.adNetwork.networkPartner = null;
             }
+
+            var networkBlacklists = [];
+
+            angular.forEach($scope.adNetwork.networkBlacklists, function (networkBlacklist) {
+                networkBlacklists.push({displayBlacklist: networkBlacklist.id});
+            });
+
+            $scope.adNetwork.networkBlacklists = networkBlacklists;
 
             $scope.formProcessing = true;
 

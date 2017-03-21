@@ -161,8 +161,11 @@
 
                 "MANAGE_CONNECTED_DATA_SOURCE": "Manage Connected Data Source",
                 "MY_CONNECTED_DATA_SOURCE":"My Connected Data Source",
-                "CREATE_CONNECTED_DATA_SOURCE":"Create Connected Data Source"
+                "CREATE_CONNECTED_DATA_SOURCE":"Create Connected Data Source",
 
+                "BLACK_LIST": "Black List",
+                "MY_BLACK_LIST": "My Black List",
+                "NEW_BLACK_LIST": "New Black List"
             },
             "DASHBOARD_MODULE": {
                 "DATE_RANGE": "Date Range",
@@ -371,8 +374,10 @@
                 "NOTE_CONFIRM_PAUSE_AD_NETWORK": "Every ad tag associated with this demand partner will be also paused.",
                 "CONFIRM_PAUSE_SITE": "Are you sure you want to pause this site?",
                 "NOTE_CONFIRM_PAUSE_SITE": "Every ad tag associated with this demand partner and site will be also paused.",
+                "BLOCK_LIST_DOMAINS": "Block List Domains",
 
                 "MANAGE_AD_TAGS": "Manage Ad Tags",
+                "MANAGE_BLACk_LIST": "Manage Black List",
                 "EDIT_AD_NETWORK": "Edit Demand Partner",
                 "SITES_FOR_AD_NETWORK": "Sites for Demand Partner",
                 "PLACEHOLDER_AD_NETWORK_NAME": "Demand Partner name",
@@ -390,18 +395,30 @@
                 "ALERT_WARNING_UNIFIED_REPORT_EMAIL_TOKEN": "This demand partner does not currently have a unified report email. Click the button below to create one.",
 
                 "BACK_TO_AD_NETWORK_LIST": "Back to Demand Partner List",
+                "BACK_TO_BLACK_LIST": "Back to Black List",
                 "ACTIVE_AD_TAGS_COUNT": "Active Ad Tags",
                 "PAUSE_AD_TAGS_COUNT": "Paused Ad Tags",
                 "PAUSE_AD_NETWORK_BY_SITE": "Pause Demand Partner by Sites",
                 "YES_PAUSE": "Yes, pause",
                 "SELECT_A_AD_NETWORK": "Select a Demand Partner",
+                "CREATE_BLOCK_LIST": "+ Create block list",
+                "VIEW_BLOCK_LIST": "View Block List",
                 "ACTIVE_SITE_AD_NETWORK": "The ad tags have been activated. Please wait a few minutes for the changes to take effect.",
                 "PAUSE_SITE_AD_NETWORK": "The ad tags have been paused. Please wait a few minutes for the changes to take effect.",
                 "UPDATE_SITE_AD_NETWORK_FAIL": "The ad tags have not been updated",
 
                 "HELP_BLOCK_URL": "You can use this field to add the login url for your demand partner.",
                 "HELP_BLOCK_ENABLE_UNIFIED": "This credentials to use to login demand partner.",
-                "BLANK_FOR_NO_CHANGE":  "Leave it blank for no change"
+                "BLANK_FOR_NO_CHANGE":  "Leave it blank for no change",
+                "NEW_BLOCK_LIST": "New Block List",
+                "EDIT_BLOCK_LIST": "Edit Block List",
+                "ADD_NEW_BLACK_LIST_SUCCESS": "The black list has been created",
+                "UPDATE_BLACK_LIST_SUCCESS": "The black list has been updated",
+
+                "DELETE_BLOCK_LIST_SUCCESS": "The block list was deleted",
+                "DELETE_BLOCK_LIST_FAIL": "The block list could not be deleted",
+                "DELETE_BLOCK_LIST": "Delete Block List",
+                "CONFIRM_DELETE_BLACK_LIST": "Are you sure you want to delete this black list?"
             },
             "VIDEO_DEMAND_PARTNER_MODULE": {
                 "DEFAULT_TAG_URL": "Default Tag URL",
@@ -591,9 +608,11 @@
                 "FROM": "From",
                 "BUILTIN": "Builtin",
                 "VIEW_DOMAINS": "View Domains",
+                "BACK_TO_BLACK_LIST": "Back to Black List",
 
                 "CURRENTLY_NO_BLACK_LIST": "There is currently no black list",
                 "CURRENTLY_NO_WHITE_LIST": "There is currently no white list",
+                "MANAGE_AD_NETWORKS": "Manage Demand Partners",
 
                 "DELETE_BLACK_LIST_SUCCESS": "The black list was deleted",
                 "DELETE_WHITE_LIST_SUCCESS": "The white list was deleted",
@@ -618,7 +637,8 @@
 
                 "CUSTOM": "Custom",
                 "BUILT_IN": "Built In",
-                "SELECT_A_BUILT_IN": "Select a built in"
+                "SELECT_A_BUILT_IN": "Select a built in",
+                "HELP_TEXT_FOR_DEFAULT": "Editing this default blacklist will affect all ad networks and ad tags"
             },
             "AD_SLOT_MODULE": {
                 "NATIVE": "Native",

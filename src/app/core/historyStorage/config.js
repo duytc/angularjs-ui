@@ -22,6 +22,7 @@
             demandPartner: "demandPartner",
             libraryDemandAdTag: "libraryDemandAdTag",
             domainList: "domainList",
+            blockList: "blockList",
             dataSource: "dataSource",
             dataSourceFile: "dataSourceFile",
             dataSet: "dataSet",

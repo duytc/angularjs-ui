@@ -38,7 +38,33 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Demand Partner'
+                    label: 'Demand Partners'
+                }
+
+            })
+            .state('tagManagement.adNetwork.listByBlack', {
+                url: 'BlackList/{id:[0-9]+}/list?page&sortField&orderBy&search',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    'content@app': {
+                        controller: 'AdNetworkList',
+                        templateUrl: 'tagManagement/adNetwork/adNetworkList.tpl.html'
+                    }
+                },
+                resolve: {
+                    adNetworks: /* @ngInject */ function(BlockListManager, $stateParams) {
+                        return BlockListManager.one($stateParams.id).one('adnetworks').getList().then(function (adNetworks) {
+                            return adNetworks.plain();
+                        });
+                    },
+                    blackList: function (BlockListManager, $stateParams) {
+                        return BlockListManager.one($stateParams.id).get();
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Demand Partners - {{ blackList.name }}'
                 }
 
             })
@@ -53,6 +79,12 @@
                 resolve: {
                     adNetwork: function() {
                         return null;
+                    },
+                    blockList: function (BlockListManager) {
+                        return BlockListManager.getList()
+                            .then(function (blockList) {
+                                return blockList.plain()
+                            });
                     }
                 },
                 customResolve: {
@@ -79,6 +111,12 @@
                 resolve: {
                     adNetwork: /* @ngInject */ function($stateParams, AdNetworkCache) {
                         return AdNetworkCache.getAdNetworkById($stateParams.id);
+                    },
+                    blockList: function (BlockListManager) {
+                        return BlockListManager.getList()
+                            .then(function (blockList) {
+                                return blockList.plain()
+                            });
                     }
                 },
                 customResolve: {
