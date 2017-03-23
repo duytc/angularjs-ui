@@ -12,6 +12,7 @@
         $scope.formProcessing = false;
         $scope.integrations.active = false;
         $scope.dynamicDatePickerOpts = [
+            {key: 'yesterday', label: 'Yesterday'},
             {key: 'last 2 days', label: 'Last 2 Days'},
             {key: 'last 3 days', label: 'Last 3 Days'},
             {key: 'last 4 days', label: 'Last 4 Days'},
