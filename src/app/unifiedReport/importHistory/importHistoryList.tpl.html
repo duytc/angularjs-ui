@@ -18,9 +18,9 @@
         </div>
     </div>
 
-    <search-box show-query="true" sb-list="importHistoryList" search-fields="['id', 'description']"></search-box>
+    <search-box ng-if="hasData()" show-query="true" sb-list="importHistoryList" search-fields="['id', 'description']"></search-box>
 
-    <div class="panel-body">
+    <div class="panel-body" ng-if="hasData()">
         <div class="table-responsive">
             <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="importHistoryList" at-config="tableConfig">
                 <thead>

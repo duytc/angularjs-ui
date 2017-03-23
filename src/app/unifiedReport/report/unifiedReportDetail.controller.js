@@ -111,6 +111,13 @@
                     message: $translate.instant('REPORT.REPORTS_EMPTY')
                 });
             }
+        } else {
+            if ($scope.reports.length == 0) {
+                AlertService.replaceAlerts({
+                    type: 'warning',
+                    message: $translate.instant('REPORT.REPORTS_EMPTY')
+                });
+            }
         }
 
         $scope.tableConfig = {

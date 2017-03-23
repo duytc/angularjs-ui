@@ -19,14 +19,14 @@
 
     <!--<search-box show-query="true" sb-list="dataSources.records" search-fields="['id', 'name']"></search-box>-->
 
-    <form class="input-group col-sm-6 search-box">
+    <form ng-if="hasData()" class="input-group col-sm-6 search-box">
         <input class="form-control" ng-model="selectData.query" ng-change="searchData()" placeholder="{{ 'UNIFIED_REPORT_MODULE.SEARCH' | translate }}" type="text"/>
             <span class="input-group-addon">
                 {{ tableConfig.totalItems }} records found
             </span>
     </form>
 
-    <div class="panel-body">
+    <div ng-if="hasData()" class="panel-body">
         <div class="table-responsive">
             <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="dataSources.records" at-config="tableConfig" id="dataSources">
                 <thead>

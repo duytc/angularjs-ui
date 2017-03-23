@@ -20,7 +20,7 @@
 
     <!--<search-box show-query="true" sb-list="dataSets.records" search-fields="['id', 'name']"></search-box>-->
 
-    <div>
+    <div ng-if="hasData()">
         <form class="input-group col-sm-6 search-box">
             <input class="form-control" ng-model="selectData.query" ng-change="searchData()" placeholder="{{ 'UNIFIED_REPORT_MODULE.SEARCH' | translate }}" type="text"/>
             <span class="input-group-addon">

@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <search-box show-query="true" sb-list="reportViewList" search-fields="['id', 'name']"></search-box>
+    <search-box ng-if="hasData()" show-query="true" sb-list="reportViewList" search-fields="['id', 'name']"></search-box>
 
     <div class="panel-body" ng-if="hasData()">
         <div class="table-responsive">

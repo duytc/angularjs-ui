@@ -27,6 +27,17 @@
             query: $stateParams.searchKey || null
         };
 
+        $scope.hasData = function () {
+            return !!$scope.dataSets && $scope.dataSets.totalRecord > 0;
+        };
+
+        if (!$scope.hasData()) {
+            AlertService.replaceAlerts({
+                type: 'warning',
+                message: 'There is currently no data set'
+            });
+        }
+
         $scope.deleteDataSet = deleteDataSet;
         $scope.showPagination = showPagination;
         $scope.changePage = changePage;

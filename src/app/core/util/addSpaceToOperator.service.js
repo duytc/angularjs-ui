@@ -70,8 +70,9 @@
     }
 
     function getAllIndexOfCharacter(word, character) {
-        var positions = [],
-            index = word.indexOf(character);
+        word = _hackString(word);
+
+        var positions = [], index = word.indexOf(character);
 
         while (index >= 0) {
             positions.push(index);
@@ -79,6 +80,33 @@
         }
 
         return positions;
+    }
+
+    function _hackString(word) {
+        var string = angular.copy(word);
+        var isFieldName = true;
+
+        for (var key in word) {
+            if(string[key] == '[') {
+                isFieldName = true;
+            }
+
+            if(string[key] == ']') {
+                isFieldName = false;
+            }
+
+            if(isFieldName) {
+                string = replaceAt(string, key, 'a');
+            }
+        }
+
+        return string
+    }
+
+    function replaceAt(string, index, character) {
+        var a = string.split("");
+        a[index] = character;
+        return a.join("");
     }
 
     function getDifference(a, b) {

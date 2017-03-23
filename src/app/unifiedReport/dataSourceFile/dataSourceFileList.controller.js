@@ -34,6 +34,19 @@
         $scope.formProcessing = false;
         $scope.checkAllItem = false;
         $scope.selectedDataSourceFiles = [];
+
+        $scope.hasData = function () {
+            return !!$scope.dataSourceFiles && $scope.dataSourceFiles.totalRecord > 0;
+        };
+
+        if (!$scope.hasData()) {
+            AlertService.replaceAlerts({
+                type: 'warning',
+                message: 'There is currently no connect received files'
+            });
+        }
+
+
         $scope.selectAll = selectAll;
         $scope.checkedDataSourceFile = checkedDataSourceFile;
         $scope.selectEntity = selectEntity;

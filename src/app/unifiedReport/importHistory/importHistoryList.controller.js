@@ -8,6 +8,17 @@
         $scope.dataSet = dataSet;
         $scope.importHistoryList = importHistoryList;
 
+        $scope.hasData = function () {
+            return !!dataSet.length;
+        };
+
+        if (!$scope.hasData()) {
+            AlertService.replaceAlerts({
+                type: 'warning',
+                message: 'There is currently no loaded data'
+            });
+        }
+
         $scope.tableConfig = {
             itemsPerPage: 10,
             maxPages: 10
