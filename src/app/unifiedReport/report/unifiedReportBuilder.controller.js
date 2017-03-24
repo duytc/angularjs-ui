@@ -6,7 +6,7 @@
 
     function UnifiedReportBuilder($scope, $timeout, $q, $translate, _, dataSets, reportViews, publishers, reportView, UnifiedReportViewManager, UserStateHelper, dateUtil, AlertService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.reportViews = reportViews;
-        $scope.dataSets = dataSets;
+        $scope.dataSets = _updateDataSets(dataSets);
         $scope.publishers = publishers;
 
         $scope.formProcessing = false;
@@ -202,6 +202,10 @@
                         if (transform.fields[0].names.length == 0 && transform.fields[1].names.length == 0) {
                             return false
                         }
+                    }
+
+                    if (transform.type == 'groupBy' && transform.fields.length == 0 ) {
+                        return false
                     }
                 }
             }
@@ -536,23 +540,27 @@
 
                     angular.forEach(item.dimensions, function (dimension) {
                         if (dataSet.dimensions[dimension] == 'number' || dataSet.dimensions[dimension] == 'decimal') {
-                            $scope.summaryFieldTotal.push({
-                                label: dimension + ' (' + dataSet.name + ')',
-                                key: dimension + '_' + dataSet.id,
-                                root: dimension,
-                                type: dataSet.dimensions[dimension]
-                            });
+                            if(dimension.indexOf('__') == -1 && (dimension.indexOf('_day') == -1 || dimension.indexOf('_month') == -1 || dimension.indexOf('_year') == -1)) {
+                                $scope.summaryFieldTotal.push({
+                                    label: dimension + ' (' + dataSet.name + ')',
+                                    key: dimension + '_' + dataSet.id,
+                                    root: dimension,
+                                    type: dataSet.dimensions[dimension]
+                                });
+                            }
                         }
                     });
 
                     angular.forEach(item.metrics, function (metric) {
                         if (dataSet.metrics[metric] == 'number' || dataSet.metrics[metric] == 'decimal') {
-                            $scope.summaryFieldTotal.push({
-                                label: metric + ' (' + dataSet.name + ')',
-                                key: metric + '_' + dataSet.id,
-                                root: metric,
-                                type: dataSet.metrics[metric]
-                            });
+                            if(metric.indexOf('__') == -1 && (metric.indexOf('_day') == -1 || metric.indexOf('_month') == -1 || metric.indexOf('_year') == -1)) {
+                                $scope.summaryFieldTotal.push({
+                                    label: metric + ' (' + dataSet.name + ')',
+                                    key: metric + '_' + dataSet.id,
+                                    root: metric,
+                                    type: dataSet.metrics[metric]
+                                });
+                            }
                         }
                     })
                 });
@@ -634,12 +642,14 @@
 
             angular.forEach(fields, function (metric) {
                 if (metric.type == 'number' || metric.type == 'decimal') {
-                    var index = _.findIndex($scope.fieldsHaveNumberType, function (field) {
-                        return field.key == metric.key
-                    });
+                    if(metric.key.indexOf('__') == -1 && (metric.key.indexOf('_day') == -1 || metric.key.indexOf('_month') == -1 || metric.key.indexOf('_year') == -1)) {
+                        var index = _.findIndex($scope.fieldsHaveNumberType, function (field) {
+                            return field.key == metric.key
+                        });
 
-                    if (index == -1) {
-                        $scope.fieldsHaveNumberType.push(metric)
+                        if (index == -1) {
+                            $scope.fieldsHaveNumberType.push(metric)
+                        }
                     }
                 }
             });
@@ -832,7 +842,7 @@
             var allFields = angular.extend(angular.copy(dataSetItem.dimensions), angular.copy(dataSetItem.metrics));
 
             angular.forEach(item.fields, function (field) {
-                var dataSet = _.find(dataSets, function (dataSet) {
+                var dataSet = _.find($scope.dataSets, function (dataSet) {
                     return dataSet.id == item.dataSet || dataSet.id == item.dataSet.id;
                 });
 
@@ -841,7 +851,7 @@
                     key: field + '_' + (angular.isObject(item.dataSet) ? item.dataSet.id : item.dataSet),
                     root: field,
                     type: allFields[field]
-                })
+                });
             });
         }
 
@@ -869,7 +879,7 @@
          */
         function _setTotalDimensionsSelected(item) {
             angular.forEach(item.dimensions, function (field) {
-                var dataSet = _.find(dataSets, function (dataSet) {
+                var dataSet = _.find($scope.dataSets, function (dataSet) {
                     return dataSet.id == item.dataSet || dataSet.id == item.dataSet.id;
                 });
 
@@ -1089,6 +1099,28 @@
                     }
                 });
             });
+        }
+
+        function _updateDataSets(dataSets) {
+            angular.forEach(dataSets, function (dataSet) {
+                angular.forEach(angular.copy(dataSet.dimensions), function (type, field) {
+                    if(type == 'date' || type == 'datetime') {
+                        dataSet.dimensions['__' + field + '_year'] = 'number';
+                        dataSet.dimensions['__' + field + '_month'] = 'number';
+                        dataSet.dimensions['__' + field + '_day'] = 'number';
+                    }
+                });
+
+                angular.forEach(angular.copy(dataSet.metrics), function (type, field) {
+                    if(type == 'date' || type == 'datetime') {
+                        dataSet.metrics['__' + field + '_year'] = 'number';
+                        dataSet.metrics['__' + field + '_month'] = 'number';
+                        dataSet.metrics['__' + field + '_day'] = 'number';
+                    }
+                });
+            });
+
+            return dataSets
         }
 
         update();

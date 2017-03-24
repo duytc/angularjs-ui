@@ -9,7 +9,7 @@
         $scope.importHistoryList = importHistoryList;
 
         $scope.hasData = function () {
-            return !!dataSet.length;
+            return !!importHistoryList.length;
         };
 
         if (!$scope.hasData()) {

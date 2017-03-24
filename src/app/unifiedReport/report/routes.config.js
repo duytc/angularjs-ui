@@ -47,7 +47,7 @@
                 },
                 resolve: {
                     dataSets: /* @ngInject */ function(UnifiedReportDataSetManager) {
-                        return UnifiedReportDataSetManager.getList({hasConnectedDataSource: true}).then(function (dataSets) {
+                        return UnifiedReportDataSetManager.getList().then(function (dataSets) {
                             return dataSets.plain();
                         });
                     },
@@ -83,7 +83,7 @@
                 },
                 resolve: {
                     dataSets: /* @ngInject */ function(UnifiedReportDataSetManager) {
-                        return UnifiedReportDataSetManager.getList({hasConnectedDataSource: true}).then(function (dataSets) {
+                        return UnifiedReportDataSetManager.getList().then(function (dataSets) {
                             return dataSets.plain();
                         });
                     },

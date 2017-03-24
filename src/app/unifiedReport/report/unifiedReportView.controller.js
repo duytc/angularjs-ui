@@ -239,6 +239,10 @@
                                 }
 
                                 var dataSet = _.find(dataSets, function (dataSet) {
+                                    if(key.indexOf('__') > -1 && (key.indexOf('_day') > -1 || key.indexOf('_month') > -1 || key.indexOf('_year') > -1)) {
+                                        return dataSet.id == id
+                                    }
+
                                     return (!!dataSet.dimensions[key] || !!dataSet.metrics[key]) && dataSet.id == id;
                                 });
 
