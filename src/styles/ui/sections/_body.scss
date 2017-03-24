@@ -5,7 +5,10 @@ body {
 // fullscreen, hide header and sidebar
 .body-wide {
 
-    #header,
+    #header {
+        height: 50px !important;
+    }
+
     #nav-container {
         display: none;
     }
