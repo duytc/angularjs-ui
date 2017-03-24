@@ -34,7 +34,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no data set'
+                message: 'There is currently no data sets'
             });
         }
 
