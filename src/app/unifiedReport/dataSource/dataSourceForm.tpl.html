@@ -161,10 +161,14 @@
                                             <label class="control-label">{{param.key}}</label>
                                         </div>
 
-                                        <div class="col-sm-10" ng-if="param.type != 'date' && param.type != 'dynamicDateRange'">
+                                        <div class="col-sm-10" ng-if="param.type != 'date' && param.type != 'dynamicDateRange' && param.type != 'regex'">
                                             <input style="width:100%" server-error name="value" ng-model="param.value" type="{{ mapType[param.type] }}" class="form-control" placeholder="Value">
 
                                             <span class="help-block" ng-if="param.type == 'secure'">Leave it blank for no change</span>
+                                        </div>
+
+                                        <div class="col-sm-10" ng-if="param.type == 'regex'">
+                                            <input style="width:100%" server-error name="value" ng-model="param.value" ng-pattern="/^(?!(\/.*))(?!(.*\/[gmixsuXUAJ]*$))/" type="{{ mapType[param.type] }}" class="form-control" placeholder="Value">
                                         </div>
 
                                         <div class="col-sm-10" ng-if="param.type == 'date'">

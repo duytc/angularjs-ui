@@ -29,7 +29,8 @@
         $scope.mapType = {
             plainText: 'text',
             secure: 'password',
-            date: 'text'
+            date: 'text',
+            regex: 'text'
         };
 
         $scope.datePickerOpts = {
