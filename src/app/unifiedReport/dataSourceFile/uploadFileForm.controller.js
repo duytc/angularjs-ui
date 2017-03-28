@@ -55,12 +55,12 @@
             if (status == 413) {
                 AlertService.addFlash({
                     type: 'error',
-                    message: "'" + fileItem.file.name + "' isn't uploaded because of too large size"
+                    message: "'" + fileItem.file.name + "' could not be uploaded because the file is too large"
                 });
             } else {
                 AlertService.addFlash({
                     type: '',
-                    message: response.message || "'" + fileItem.file.name + "' isn't uploaded because of wrong format"
+                    message: response.message || "'" + fileItem.file.name + "' could not be uploaded because the file is in the wrong format"
                 });
             }
         };

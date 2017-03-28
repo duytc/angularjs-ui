@@ -50,7 +50,7 @@
                     .catch(function () {
                         AlertService.replaceAlerts({
                             type: 'error',
-                            message: "Could not undo the import history"
+                            message: "Could not unload the import"
                         });
                     })
                     .then(function () {
@@ -61,7 +61,7 @@
 
                             AlertService.replaceAlerts({
                                 type: 'success',
-                                message:  "The import history was undo successfully"
+                                message:  "The import was unloaded successfully"
                             });
                         });
                     })

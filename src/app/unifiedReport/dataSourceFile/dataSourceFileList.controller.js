@@ -92,7 +92,7 @@
                 .then(function () {
                     AlertService.replaceAlerts({
                         type: 'success',
-                        message: 'The Received Data was replayed'
+                        message: 'The data was replayed'
                     });
                 })
                 .catch(function (response) {
@@ -105,7 +105,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'The Received Data could not be replayed'
+                        message: 'The data could not be replayed'
                     });
                 })
         }
@@ -177,7 +177,7 @@
                         if ($scope.selectedDataSourceFiles.indexOf(dataSourceFile.id) > -1) {
                             AlertService.replaceAlerts({
                                 type: 'success',
-                                message: 'The ' + dataSourceFile.fileName + ' was replayed'
+                                message: 'The file ' + dataSourceFile.fileName + ' was replayed'
                             });
                         }
                     });
@@ -188,7 +188,7 @@
                         if ($scope.selectedDataSourceFiles.indexOf(dataSourceFile.id) > -1) {
                             AlertService.replaceAlerts({
                                 type: 'success',
-                                message: 'The ' + dataSourceFile.fileName + ' could not be replayed'
+                                message: 'The file ' + dataSourceFile.fileName + ' could not be replayed'
                             });
                         }
                     });

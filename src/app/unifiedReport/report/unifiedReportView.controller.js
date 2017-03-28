@@ -203,7 +203,7 @@
                             var formatFields = [];
 
                             angular.forEach(fields, function (field) {
-                                var key = null;
+                                var key = field;
                                 var id = null;
 
                                 if(field.lastIndexOf('_') > -1) {
