@@ -34,34 +34,28 @@
                     scope.dataSourceFieldsCopy = angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms));
 
                     scope.separatorTypeForString = [
-                        {key: 'contain', label: 'Contain'},
-                        {key: 'notContain', label: 'Not Contain'},
-                        {key: 'in', label: 'In'},
-                        {key: 'notIn', label: 'Not In'},
-                        {key: 'null', label: 'Null'},
-                        {key: 'notNull', label: 'Not Null'}
+                        {key: 'in', label: 'Is'},
+                        {key: 'notIn', label: 'Is not'},
+                        {key: 'contain', label: 'Contains'},
+                        {key: 'notContain', label: 'Does not contain'}
                     ];
 
                     scope.separatorTypeForDate = [
-                        {key: 'equal', label: 'Equal'},
-                        {key: 'notEqual', label: 'Not Equal'},
-                        {key: 'greaterThan', label: 'Greater Than'},
-                        {key: 'greaterThanOrEqual', label: 'Greater Than Or Equal'},
-                        {key: 'lessThan', label: 'Less Than'},
-                        {key: 'lessThanOrEqual', label: 'Less Than Or Equal'},
-                        {key: 'null', label: 'Null'},
-                        {key: 'notNull', label: 'Not Null'}
+                        {key: 'equal', label: 'Equals'},
+                        {key: 'notEqual', label: 'Does not equal'},
+                        {key: 'greaterThan', label: 'Greater than'},
+                        {key: 'greaterThanOrEqual', label: 'Greater than or equal to'},
+                        {key: 'lessThan', label: 'Less than'},
+                        {key: 'lessThanOrEqual', label: 'Less than or equal to'}
                     ];
 
                     scope.separatorTypeForNumber = [
                         {key: 'equal', label: 'Equal'},
-                        {key: 'notEqual', label: 'Not Equal'},
-                        {key: 'greaterThan', label: 'Greater Than'},
-                        {key: 'greaterThanOrEqual', label: 'Greater Than Or Equal'},
-                        {key: 'lessThan', label: 'Less Than'},
-                        {key: 'lessThanOrEqual', label: 'Less Than Or Equal'},
-                        {key: 'null', label: 'Null'},
-                        {key: 'notNull', label: 'Not Null'}
+                        {key: 'notEqual', label: 'Not equal'},
+                        {key: 'greaterThan', label: 'Greater than'},
+                        {key: 'greaterThanOrEqual', label: 'Greater than or equal to'},
+                        {key: 'lessThan', label: 'Less than'},
+                        {key: 'lessThanOrEqual', label: 'Less than or equal to'}
                     ];
 
                     scope.operatorForCustom = [
