@@ -11,6 +11,8 @@
         return {
             scope: {
                 transforms: '=',
+                listDataSets: '=',
+                itemDataSet: '=',
                 mapFields: '=',
                 totalDimensionsMetrics: '=',
                 dimensionsMetrics: '=',
@@ -31,7 +33,38 @@
                     scope.positionsForReplaceText = POSITIONS_FOR_REPLACE_TEXT;
                     scope.dataSourceFieldsCopy = angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms));
 
-                    scope.separatorType = [
+                    scope.separatorTypeForString = [
+                        {key: 'contain', label: 'Contain'},
+                        {key: 'notContain', label: 'Not Contain'},
+                        {key: 'in', label: 'In'},
+                        {key: 'notIn', label: 'Not In'},
+                        {key: 'null', label: 'Null'},
+                        {key: 'notNull', label: 'Not Null'}
+                    ];
+
+                    scope.separatorTypeForDate = [
+                        {key: 'equal', label: 'Equal'},
+                        {key: 'notEqual', label: 'Not Equal'},
+                        {key: 'greaterThan', label: 'Greater Than'},
+                        {key: 'greaterThanOrEqual', label: 'Greater Than Or Equal'},
+                        {key: 'lessThan', label: 'Less Than'},
+                        {key: 'lessThanOrEqual', label: 'Less Than Or Equal'},
+                        {key: 'null', label: 'Null'},
+                        {key: 'notNull', label: 'Not Null'}
+                    ];
+
+                    scope.separatorTypeForNumber = [
+                        {key: 'equal', label: 'Equal'},
+                        {key: 'notEqual', label: 'Not Equal'},
+                        {key: 'greaterThan', label: 'Greater Than'},
+                        {key: 'greaterThanOrEqual', label: 'Greater Than Or Equal'},
+                        {key: 'lessThan', label: 'Less Than'},
+                        {key: 'lessThanOrEqual', label: 'Less Than Or Equal'},
+                        {key: 'null', label: 'Null'},
+                        {key: 'notNull', label: 'Not Null'}
+                    ];
+
+                    scope.operatorForCustom = [
                         {key: ',', label: 'Comma'},
                         {key: 'none', label: 'None'}
                     ];
@@ -52,6 +85,8 @@
                     scope.addTransform = addTransform;
                     scope.addField = addField;
                     scope.addReplaceText = addReplaceText;
+                    scope.addMapFields = addMapFields;
+                    scope.addCustomCondition = addCustomCondition;
                     scope.removeAddValue = removeAddValue;
                     scope.addComparisonPercent = addComparisonPercent;
                     scope.notInMapField = notInMapField;
@@ -90,6 +125,109 @@
                     scope.selectCustomFormatDate = selectCustomFormatDate;
                     scope.getTransformName = getTransformName;
                     scope.filterFieldByTextAndDate = filterFieldByTextAndDate;
+                    scope.selectDataSet = selectDataSet;
+                    scope.filterDataSet = filterDataSet;
+                    scope.filterMapFieldLeftSide = filterMapFieldLeftSide;
+                    scope.filterMapFieldRightSide = filterMapFieldRightSide;
+                    scope.getSeparatorType = getSeparatorType;
+                    scope.selectCustomField = selectCustomField;
+                    scope.isValueForCustom = isValueForCustom;
+                    scope.isDateForCustom = isDateForCustom;
+                    scope._getTotalFieldDataSetInAugmentation = _getTotalFieldDataSetInAugmentation;
+
+                    function isValueForCustom(custom, transform) {
+                        var totalField = _getTotalFieldDataSetInAugmentation(transform.mapDataSet);
+
+                        return custom.operator != 'null' && custom.operator != 'notNull' && totalField[custom.field] != 'date' && totalField[custom.field] != 'datetime'
+                    }
+
+                    function isDateForCustom(custom, transform) {
+                        var totalField = _getTotalFieldDataSetInAugmentation(transform.mapDataSet);
+
+                        return custom.operator != 'null' && custom.operator != 'notNull' && (totalField[custom.field] == 'date' || totalField[custom.field] == 'datetime')
+                    }
+
+                    function selectCustomField(custom) {
+                        custom.operator = null;
+                        custom.value = null
+                    }
+
+                    function getSeparatorType(transform, field) {
+                        var totalField = _getTotalFieldDataSetInAugmentation(transform.mapDataSet);
+
+                        if(totalField[field] == 'number' ||  totalField[field] == 'decimal') {
+                            return scope.separatorTypeForNumber
+                        }
+
+                        if(totalField[field] == 'date' ||  totalField[field] == 'datetime') {
+                            return scope.separatorTypeForDate
+                        }
+
+                        return scope.separatorTypeForString
+                    }
+
+                    function filterMapFieldLeftSide(transform, mapFieldThis) {
+                        var totalField = _getTotalFieldDataSetInAugmentation(transform.mapDataSet);
+
+                        if(scope.dimensionsMetrics[mapFieldThis.leftSide] != totalField[mapFieldThis.rightSide]) {
+                            mapFieldThis.rightSide = null;
+                        }
+
+                        return function (field){
+                            for(var index in transform.mapFields) {
+                                var mapField = transform.mapFields[index];
+
+                                if(mapField.leftSide == field && mapFieldThis.leftSide != field) {
+                                    return false
+                                }
+                            }
+
+                            return true
+                        };
+                    }
+
+                    function filterMapFieldRightSide(transform, mapFieldThis) {
+                        return function (field){
+                            for(var index in transform.mapFields) {
+                                var mapField = transform.mapFields[index];
+
+                                if(!!mapField.leftSide) {
+                                    var totalField = _getTotalFieldDataSetInAugmentation(transform.mapDataSet);
+
+                                    if(scope.dimensionsMetrics[mapFieldThis.leftSide] != totalField[field]) {
+                                        return false
+                                    }
+                                }
+
+                                if(mapField.rightSide == field && mapFieldThis.rightSide != field) {
+                                    return false
+                                }
+                            }
+
+                            return true
+                        };
+                    }
+
+                    function filterDataSet(dataSet) {
+                        if(dataSet.id == scope.itemDataSet || dataSet.id == scope.itemDataSet.id) {
+                            return false
+                        }
+
+                        return true
+                    }
+
+                    function selectDataSet(dataSet, transform) {
+                        transform.mapCondition = {
+                            leftSide: null,
+                            rightSide: null
+                        };
+                        transform.mapFields = [{
+                            leftSide: null,
+                            rightSide: null
+                        }];
+
+                        transform.allFieldsDataSet = _.keys(dataSet.dimensions).concat(_.keys(dataSet.metrics));
+                    }
 
                     function getTransformName(typeKey) {
                         var element,
@@ -271,6 +409,13 @@
 
                                         if (!_.isNull(field.targetField) && !field.isOverride){
                                             fieldInConcat.push(field.targetField)
+                                        }
+                                    });
+                                    break;
+                                case 'augmentation':
+                                    angular.forEach(transform.mapFields, function (mapField){
+                                        if (!_.isNull(mapField.leftSide)){
+                                            fieldInConcat.push(mapField.leftSide)
                                         }
                                     });
                                     break;
@@ -594,6 +739,27 @@
                                 transform.decimals = 0;
                                 transform.thousandsSeparator = ',';
                             }
+
+                            if (type.key == scope.allFiledFormatTypeKeys.augmentation) {
+                                transform.mapCondition = {
+                                    leftSide: null,
+                                    rightSide: null
+                                };
+
+                                transform.mapFields = [{
+                                    leftSide: null,
+                                    rightSide: null
+                                }];
+
+                                // {
+                                //     field: null,
+                                //         operator: null,
+                                //     value: null
+                                // }
+                                transform.customCondition = [];
+
+                                transform.mapDataSet = null;
+                            }
                         }, 0);
                     }
 
@@ -680,6 +846,22 @@
                         });
                     }
 
+                    function addMapFields(fields) {
+                        fields.push({
+                            leftSide: null,
+                            rightSide: null
+                        });
+                    }
+
+                    function addCustomCondition(fields) {
+                        fields.push({
+                            field: null,
+                            operator: null,
+                            value: null,
+                            dropUnmatched: false
+                        });
+                    }
+
                     function addExtractPattern(fields){
                         fields.push({
                             field: null,
@@ -729,6 +911,14 @@
                         });
 
                         return fields;
+                    }
+
+                    function _getTotalFieldDataSetInAugmentation(dataSetId) {
+                        var dataSet = _.find(scope.listDataSets, function (dataSetItem) {
+                            return dataSetItem.id == dataSetId
+                        });
+
+                        return angular.extend(angular.copy(dataSet.dimensions), angular.copy(dataSet.metrics));
                     }
 
                     directive || (directive = $compile(content));

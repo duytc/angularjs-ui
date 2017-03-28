@@ -55,6 +55,10 @@
                     dataSet: function(UnifiedReportDataSetManager, $stateParams) {
                         return UnifiedReportDataSetManager.one($stateParams.dataSetId).get();
                     },
+                    dataSets: function(UnifiedReportDataSetManager, dataSet) {
+                        // return UnifiedReportDataSetManager.getList();
+                        return UnifiedReportDataSetManager.getList({publisher: dataSet.publisher.id || dataSet.publisher});
+                    },
                     dataSources: /* @ngInject */ function(UnifiedReportDataSetManager, $stateParams) {
                         return UnifiedReportDataSetManager.one($stateParams.dataSetId).one('datasources').getList(null, {connected: false});
                     }
@@ -77,6 +81,10 @@
                     },
                     dataSet: /* @ngInject */ function(connectDataSource) {
                         return connectDataSource.dataSet;
+                    },
+                    dataSets: function(UnifiedReportDataSetManager, dataSet) {
+                        // return UnifiedReportDataSetManager.getList();
+                        return UnifiedReportDataSetManager.getList({publisher: dataSet.publisher.id || dataSet.publisher});
                     },
                     dataSources: /* @ngInject */ function(UnifiedReportDataSetManager, $stateParams, dataSet, connectDataSource) {
                         return UnifiedReportDataSetManager.one(dataSet.id).one('datasources').getList(null, {connected: false})

@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.connect')
         .controller('ConnectDataSourceForm', ConnectDataSourceForm);
 
-    function ConnectDataSourceForm($scope, $modal, $timeout, _, dataSources, connectDataSource, AlertService, sessionStorage, FileUploader, UnifiedReportConnectDataSourceManager, UnifiedReportDataSourceManager, ServerErrorProcessor, dataSet, dateUtil, historyStorage, HISTORY_TYPE_PATH, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, DateFormatter) {
+    function ConnectDataSourceForm($scope, $modal, $timeout, _, dataSets, dataSources, connectDataSource, AlertService, sessionStorage, FileUploader, UnifiedReportConnectDataSourceManager, UnifiedReportDataSourceManager, ServerErrorProcessor, dataSet, dateUtil, historyStorage, HISTORY_TYPE_PATH, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, DateFormatter) {
         const ALERT_CODE_DATA_IMPORT_MAPPING_FAIL = 1201;
         const ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL = 1202;
         const ALERT_CODE_FILTER_ERROR_INVALID_NUMBER = 1203;
@@ -36,6 +36,7 @@
         ];
 
         $scope.dataSources = dataSources;
+        $scope.dataSets = dataSets;
         $scope.dataSet = dataSet;
 
         $scope.totalDimensionsMetrics = _.keys(angular.extend($scope.dataSet.dimensions, $scope.dataSet.metrics));
@@ -274,7 +275,7 @@
             for (x in $scope.connectDataSource.transforms) {
                 var transform = $scope.connectDataSource.transforms[x];
 
-                if((transform.type != 'number' && transform.type != 'date')) {
+                if((transform.type != 'number' && transform.type != 'date' && transform.type != 'augmentation')) {
                     if (_.isUndefined(transform.fields) || transform.fields.length == 0) {
                         return false;
                     }
@@ -391,6 +392,16 @@
                     })
 
                 }
+
+                if (transform.type == 'augmentation') {
+                    delete transform.allFieldsDataSet;
+
+                    angular.forEach(transform.customCondition, function (custom) {
+                        if (angular.isObject(custom.value)) {
+                            custom.value = DateFormatter.getFormattedDate(custom.value.endDate);
+                        }
+                    })
+                }
             });
 
             return connectDataSource;
@@ -421,6 +432,30 @@
                                 field.value = {endDate: field.value}
                             }
                         });
+                    }
+
+                    if(transform.type == 'augmentation') {
+                        var dataSetAugmentation = _.find($scope.dataSets, function (dataSet) {
+                            return dataSet.id == transform.mapDataSet
+                        });
+
+                        if (!!dataSetAugmentation) {
+                            transform.allFieldsDataSet = _.keys(dataSetAugmentation.dimensions).concat(_.keys(dataSetAugmentation.metrics));
+                        }
+
+                        if (transform.type == 'augmentation') {
+                            angular.forEach(transform.customCondition, function (custom) {
+                                var dataSet = _.find($scope.dataSets, function (dataSetItem) {
+                                    return dataSetItem.id == transform.mapDataSet
+                                });
+
+                                if(dataSet.metrics[custom.field] == 'date' ||  dataSet.metrics[custom.field] == 'datetime' || dataSet.dimensions[custom.field] == 'date' ||  dataSet.dimensions[custom.field] == 'datetime') {
+                                    custom.value = {
+                                        endDate: custom.value
+                                    };
+                                }
+                            })
+                        }
                     }
                 });
             }

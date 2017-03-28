@@ -513,6 +513,136 @@
                         </div>
                     </div>
 
+                    <div ng-if="transform.type == allFiledFormatTypeKeys.augmentation">
+                        <div class="form-group select-connect-data-source">
+                            <label for="dataSet" class="col-sm-2 control-label">Map Data Set</label>
+                            <div class="col-sm-10">
+                                <ui-select name="dataSet" id="dataSet" on-select="selectDataSet($item, transform)" ng-model="transform.mapDataSet" ng-required="true" server-error reset-search-input="'false'">
+                                    <ui-select-match placeholder="Select a Data Set">{{ $select.selected.name }}</ui-select-match>
+                                    <ui-select-choices repeat="dataSet.id as dataSet in listDataSets | filter:filterDataSet | filter: { name: $select.search }">
+                                        {{ dataSet.name }}
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                        <div class="form-group select-connect-data-source">
+                            <label for="dataSet" class="col-sm-2 control-label">Join Field</label>
+                            <div class="col-sm-10">
+                                <div class="form-inline row">
+                                    <div class="col-sm-6 ui-select-width-full-width">
+                                        <ui-select name="dataSet" ng-model="transform.mapCondition.leftSide" ng-required="true" server-error reset-search-input="'false'">
+                                            <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
+                                            <ui-select-choices repeat="field in dataSourceFields | filter:$select.search ">
+                                                {{ field }}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+
+                                    <div class="col-sm-6 ui-select-width-full-width">
+                                        <ui-select name="dataSet" ng-model="transform.mapCondition.rightSide" ng-required="true" server-error reset-search-input="'false'">
+                                            <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
+                                            <ui-select-choices repeat="field in transform.allFieldsDataSet | filter: $select.search">
+                                                {{ field }}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="transform.dropUnmatched" id="dropUnmatched"><span>Require Join</span></label>
+
+                                <span class="help-block">Data that does not have a valid join will be removed</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group select-connect-data-source">
+                            <label for="dataSet" class="col-sm-2 control-label">Join Condition</label>
+                            <div class="col-sm-10">
+                                <div class="expressions-group">
+                                    <button class="btn btn-success" type="button" ng-click="addCustomCondition(transform.customCondition)">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                        Add Join Condition
+                                    </button>
+
+                                    <div class="form-inline condition">
+                                        <div ng-repeat="custom in transform.customCondition" class="select-connect-data-source">
+                                            <div class="form-group select-data-type">
+                                                <ui-select name="leftSide" ng-model="custom.field" ng-required="true" on-select="selectCustomField(custom)" server-error reset-search-input="'false'">
+                                                    <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
+                                                    <ui-select-choices repeat="field in transform.allFieldsDataSet | filter:$select.search">
+                                                        {{ field }}
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+
+                                            <div class="form-group select-data-type">
+                                                <ui-select name="rightSide" ng-model="custom.operator" ng-required="true" server-error reset-search-input="'false'">
+                                                    <ui-select-match placeholder="Select a operator">{{ $select.selected.label }}</ui-select-match>
+                                                    <ui-select-choices repeat="separator.key as separator in getSeparatorType(transform, custom.field) | filter:$select.search">
+                                                        {{ separator.label }}
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+
+                                            <div class="form-group select-data-type" ng-if="isValueForCustom(custom, transform)">
+                                                <input server-error name="value" ng-model="custom.value" ng-required="true" type="{{ (_getTotalFieldDataSetInAugmentation(transform.mapDataSet)[custom.field] == 'number' || _getTotalFieldDataSetInAugmentation(transform.mapDataSet)[custom.field] == 'decimal') ? 'number' : 'text'}}" class="form-control" placeholder="Value">
+                                            </div>
+
+                                            <div class="form-group select-data-type" ng-if="isDateForCustom(custom, transform)">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                    <input date-range-picker ng-required="true" options="datePickerOpts" class="form-control date-picker" type="text" ng-model="custom.value">
+                                                </div>
+                                            </div>
+
+                                            <button class="btn btn-danger" style="margin-left: 5px" type="button" ng-click="removeAddValue(transform.customCondition, $index)"><span class="glyphicon glyphicon-minus"></span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group select-connect-data-source">
+                            <label for="dataSet" class="col-sm-2 control-label">Map Fields</label>
+                            <div class="col-sm-10">
+                                <div class="expressions-group">
+                                    <button class="btn btn-success" type="button" ng-click="addMapFields(transform.mapFields)">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                        Add Map Fields
+                                    </button>
+
+                                    <div class="form-inline condition">
+                                        <div ng-repeat="mapField in transform.mapFields" class="select-connect-data-source">
+                                            <div class="form-group select-data-type">
+                                                <ui-select name="leftSide" ng-model="mapField.leftSide" ng-required="true" server-error reset-search-input="'false'">
+                                                    <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
+                                                    <ui-select-choices repeat="field in totalDimensionsMetrics | filter:notInMapField | filter:filterMapFieldLeftSide(transform, mapField) | filter:$select.search">
+                                                        {{ field }}
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+
+                                            <div class="form-group select-data-type">
+                                                <ui-select name="rightSide" ng-model="mapField.rightSide" ng-required="true" server-error reset-search-input="'false'">
+                                                    <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
+                                                    <ui-select-choices repeat="field in transform.allFieldsDataSet | filter:filterMapFieldRightSide(transform, mapField) | filter:$select.search">
+                                                        {{ field }}
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+
+                                            <button ng-disabled="transform.mapFields.length == 1" class="btn btn-danger" type="button" ng-click="removeAddValue(transform.mapFields, $index)"><span class="glyphicon glyphicon-minus"></span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
             </accordion-group>
