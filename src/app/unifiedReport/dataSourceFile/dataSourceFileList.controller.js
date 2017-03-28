@@ -88,7 +88,7 @@
         }
         
         function replayData(dataSourceFile) {
-            UnifiedReportDataSourceFileManager.one(dataSourceFile.id).one('replaydata').get()
+            UnifiedReportDataSourceFileManager.one(dataSourceFile.id).one('replaydata').post()
                 .then(function () {
                     AlertService.replaceAlerts({
                         type: 'success',

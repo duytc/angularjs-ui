@@ -963,7 +963,7 @@
                             selectSiteForAdNetwork(calculatedParams.siteId);
                         }
 
-                        if (calculatedParams.siteId != null) {
+                        if (calculatedParams.siteId != null && calculatedParams.reportType == 'site') {
                             _setBreakdownOptionsForSite();
                         }
 
