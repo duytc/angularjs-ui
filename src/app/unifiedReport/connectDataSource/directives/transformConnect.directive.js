@@ -33,35 +33,11 @@
                     scope.positionsForReplaceText = POSITIONS_FOR_REPLACE_TEXT;
                     scope.dataSourceFieldsCopy = angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms));
 
-                    scope.separatorTypeForString = [
-                        {key: 'contain', label: 'Contain'},
-                        {key: 'notContain', label: 'Not Contain'},
-                        {key: 'in', label: 'In'},
-                        {key: 'notIn', label: 'Not In'},
-                        {key: 'null', label: 'Null'},
-                        {key: 'notNull', label: 'Not Null'}
-                    ];
-
-                    scope.separatorTypeForDate = [
-                        {key: 'equal', label: 'Equal'},
-                        {key: 'notEqual', label: 'Not Equal'},
-                        {key: 'greaterThan', label: 'Greater Than'},
-                        {key: 'greaterThanOrEqual', label: 'Greater Than Or Equal'},
-                        {key: 'lessThan', label: 'Less Than'},
-                        {key: 'lessThanOrEqual', label: 'Less Than Or Equal'},
-                        {key: 'null', label: 'Null'},
-                        {key: 'notNull', label: 'Not Null'}
-                    ];
-
-                    scope.separatorTypeForNumber = [
-                        {key: 'equal', label: 'Equal'},
-                        {key: 'notEqual', label: 'Not Equal'},
-                        {key: 'greaterThan', label: 'Greater Than'},
-                        {key: 'greaterThanOrEqual', label: 'Greater Than Or Equal'},
-                        {key: 'lessThan', label: 'Less Than'},
-                        {key: 'lessThanOrEqual', label: 'Less Than Or Equal'},
-                        {key: 'null', label: 'Null'},
-                        {key: 'notNull', label: 'Not Null'}
+                    scope.separatorType = [
+                        {key: 'equal', label: 'Is'},
+                        {key: 'notEqual', label: 'Is Not'},
+                        {key: 'contain', label: 'Contains'},
+                        {key: 'notContain', label: 'Does Not Contain'}
                     ];
 
                     scope.operatorForCustom = [
@@ -153,17 +129,7 @@
                     }
 
                     function getSeparatorType(transform, field) {
-                        var totalField = _getTotalFieldDataSetInAugmentation(transform.mapDataSet);
-
-                        if(totalField[field] == 'number' ||  totalField[field] == 'decimal') {
-                            return scope.separatorTypeForNumber
-                        }
-
-                        if(totalField[field] == 'date' ||  totalField[field] == 'datetime') {
-                            return scope.separatorTypeForDate
-                        }
-
-                        return scope.separatorTypeForString
+                        return scope.separatorType
                     }
 
                     function filterMapFieldLeftSide(transform, mapFieldThis) {
