@@ -42,7 +42,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no connect received files'
+                message: 'There is currently no imported data'
             });
         }
 

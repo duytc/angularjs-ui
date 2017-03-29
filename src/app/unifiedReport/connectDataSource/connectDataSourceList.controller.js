@@ -15,7 +15,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no connect data source'
+                message: 'There is currently no connected data sources'
             });
         }
 
@@ -50,13 +50,13 @@
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message:  "The connect data source was removed successfully"
+                            message:  "The connected data source was removed successfully"
                         });
                     })
                     .catch(function () {
                         AlertService.replaceAlerts({
                             type: 'error',
-                            message: "Could not remove the connect data source"
+                            message: "Could not remove the connected data source"
                         });
                     })
                     ;
