@@ -21,6 +21,10 @@
             pageSize: 10
         };
 
+        $scope.selectData = {
+            query: $stateParams.searchKey || null
+        };
+
         $scope.formProcessing = false;
 
         $scope.dataSources = dataSources;
