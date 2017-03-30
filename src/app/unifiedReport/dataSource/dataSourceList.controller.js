@@ -36,7 +36,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no data source'
+                message: 'There is currently no data sources'
             });
         }
 
