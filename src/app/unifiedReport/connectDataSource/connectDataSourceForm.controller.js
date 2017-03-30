@@ -50,7 +50,7 @@
             filters: [],
             transforms: [],
             alertSetting: [],
-            replayData: false,
+            replayData: true,
             userReorderTransformsAllowed: false
         };
 
