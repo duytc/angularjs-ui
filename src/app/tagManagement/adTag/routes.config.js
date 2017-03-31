@@ -221,7 +221,6 @@
                     adTag: /* @ngInject */ function($stateParams, AdTagManager) {
                         return AdTagManager.one($stateParams.id).get()
                             .then(function(adTag) {
-                                adTag.active = adTag.active == 1 ? true : false;
                                 return adTag;
                             });
                     },

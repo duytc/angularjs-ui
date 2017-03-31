@@ -21,6 +21,9 @@
         };
 
 
+        var adTagActive = angular.copy(adTag.active);
+        adTag.active = adTag.active == 1 ? true : false;
+
         $scope.isNew = adTag === null;
         $scope.formProcessing = false;
         $scope.hasMultipleDeployAdSlot = false;
@@ -343,7 +346,11 @@
                 delete adTag.adSlots;
             }
 
-            var saveAdTag = $scope.isNew ? AdTagManager.post(adTag) : $scope.adTag.patch();
+            if((adTagActive == -1 || adTagActive == 0) && !adTag.active) {
+                adTag.active = adTagActive
+            }
+
+            var saveAdTag = $scope.isNew ? AdTagManager.post(adTag) : AdTagManager.one(adTag.id).patch(adTag);
             saveAdTag
                 .catch(
                     function (response) {
