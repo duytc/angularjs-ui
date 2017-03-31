@@ -54,8 +54,6 @@
             userReorderTransformsAllowed: false
         };
 
-        $scope.connectDataSource.replayData = false;
-
         $scope.selected = {
         };
 
