@@ -175,10 +175,23 @@
                     });
                 })
                 .catch(function (response) {
-                    AlertService.replaceAlerts({
-                        type: 'error',
-                        message: convertMessage(response.data.message)
+                    $modal.open({
+                        templateUrl: 'unifiedReport/connectDataSource/alertErrorPreview.tpl.html',
+                        size: 'lg',
+                        resolve: {
+                            message: function () {
+                                return convertMessage(response.data.message);
+                            }
+                        },
+                        controller: function ($scope, message) {
+                            $scope.message = message;
+                        }
                     });
+
+                    // AlertService.replaceAlerts({
+                    //     type: 'error',
+                    //     message: convertMessage(response.data.message)
+                    // });
                 })
         }
 
