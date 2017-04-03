@@ -22,14 +22,12 @@
                     <tr dir-paginate="report in tempReports | orderBy:sortBy:reverse | itemsPerPage:tableConfig.itemsPerPage">
                         <td ng-if="hasSort" ng-repeat="column in columnPositions">
                             <span ng-if="!isNullValue(reports[report.position], column)"> {{ reports[report.position][column] }} </span>
-                            <span ng-if="isNullValue(reports[report.position], column)"> &ltno value&gt </span>
                         </td>
                     </tr>
 
                     <tr dir-paginate="report in reports | itemsPerPage:tableConfig.itemsPerPage">
                         <td ng-if="!hasSort" ng-repeat="column in columnPositions">
                             <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>
-                            <span ng-if="isNullValue(report, column)"> &ltno value&gt </span>
                         </td>
                     </tr>
                 </tbody>

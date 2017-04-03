@@ -17,7 +17,6 @@
             <tr dir-paginate="report in reportData | itemsPerPage:tableConfig.itemsPerPage">
                 <td ng-if="!hasSort" ng-repeat="column in columns">
                     <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>
-                    <span ng-if="isNullValue(report, column)"> &ltno value&gt </span>
                 </td>
             </tr>
             </tbody>
