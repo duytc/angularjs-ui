@@ -108,6 +108,20 @@
                         endDate: param.value
                     };
                 }
+
+                if(param.type == 'option') {
+                    var integration = _.find($scope.integrations, function (integration) {
+                        return integration.id == dataSourceIntegration.integration || integration.id == dataSourceIntegration.integration.id
+                    });
+
+                    var paramOption = _.find(integration.params, function (paramOption) {
+                        return paramOption.key == param.key
+                    });
+
+                    if(!!paramOption) {
+                        param.optionValues = paramOption.optionValues;
+                    }
+                }
             });
 
             if(!angular.isObject(dataSourceIntegration.backFillStartDate)) {
@@ -135,7 +149,20 @@
         $scope.addFixedTime = addFixedTime;
         $scope.removeFixedTime = removeFixedTime;
         $scope.checkedUseIntegration = checkedUseIntegration;
-        
+        $scope.formatParamKey = formatParamKey;
+
+        function formatParamKey(key) {
+            var keys = key.split("");
+
+            angular.forEach(angular.copy(keys), function (keyItem, index) {
+                if(keyItem.search(/[A-Z]/) == 0) {
+                    keys[index] = ' ' + keyItem
+                }
+            });
+
+            return keys.join("")
+        }
+
         function checkedUseIntegration(useIntegration) {
             if(useIntegration && $scope.dataSource.dataSourceIntegrations.length == 0) {
                $scope.dataSource.dataSourceIntegrations = [{
@@ -267,6 +294,10 @@
                     angular.forEach(dataSourceIntegration.params, function (param) {
                         if(param.type == 'date') {
                             param.value = dateUtil.getFormattedDate(param.value.startDate);
+                        }
+
+                        if(param.type == 'option') {
+                            delete param.optionValues
                         }
                     });
 

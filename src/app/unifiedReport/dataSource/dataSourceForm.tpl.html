@@ -157,32 +157,41 @@
                                 <label for="inputPublisher" class="col-sm-2 control-label" ng-if="integration.params.length >0">Params</label>
                                 <div class="col-sm-10" >
                                     <div class="form-inline row" ng-repeat="param in integration.params">
-                                        <div class="col-sm-2" ng-init="param.value = !param.value ? null : param.value">
-                                            <label class="control-label">{{param.key}}</label>
+                                        <div class="col-sm-3" ng-init="param.value = !param.value ? null : param.value">
+                                            <label class="control-label" style="text-transform: capitalize">{{ formatParamKey(param.key) }}</label>
                                         </div>
 
-                                        <div class="col-sm-10" ng-if="param.type != 'date' && param.type != 'dynamicDateRange' && param.type != 'regex'">
+                                        <div class="col-sm-9" ng-if="param.type != 'date' && param.type != 'dynamicDateRange' && param.type != 'regex' && param.type != 'option'">
                                             <input style="width:100%" server-error name="value" ng-model="param.value" type="{{ mapType[param.type] }}" class="form-control" placeholder="Value">
 
                                             <span class="help-block" ng-if="param.type == 'secure'">Leave it blank for no change</span>
                                         </div>
 
-                                        <div class="col-sm-10" ng-if="param.type == 'regex'">
+                                        <div class="col-sm-9" ng-if="param.type == 'regex'">
                                             <input style="width:100%" server-error name="value" ng-model="param.value" ng-pattern="/^(?!(\/.*))(?!(.*\/[gmixsuXUAJ]*$))/" type="{{ mapType[param.type] }}" class="form-control" placeholder="Value">
                                         </div>
 
-                                        <div class="col-sm-10" ng-if="param.type == 'date'">
+                                        <div class="col-sm-9" ng-if="param.type == 'date'">
                                             <div style="width:100%" class="input-group" ng-init="!!param.value ? null : param.value = {startDate: null, endDate: null}">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 <input date-range-picker options="datePickerOpts" class="form-control date-picker" type="text" id="inputStartDate" ng-model="param.value">
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-10 ui-select-width-full-width" ng-if="param.type == 'dynamicDateRange'">
+                                        <div class="col-sm-9 ui-select-width-full-width" ng-if="param.type == 'dynamicDateRange'">
                                             <ui-select ng-model="param.value" server-error reset-search-input="'false'">
                                                 <ui-select-match placeholder="Select a date range">{{ $select.selected.label }}</ui-select-match>
                                                 <ui-select-choices repeat="range.key as range in dynamicDatePickerOpts | filter:$select.search">
                                                     {{ range.label}}
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+
+                                        <div class="col-sm-9 ui-select-width-full-width" ng-if="param.type == 'option'">
+                                            <ui-select ng-model="param.value" server-error reset-search-input="'false'">
+                                                <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
+                                                <ui-select-choices repeat="field in param.optionValues | filter:$select.search">
+                                                    {{ field }}
                                                 </ui-select-choices>
                                             </ui-select>
                                         </div>
