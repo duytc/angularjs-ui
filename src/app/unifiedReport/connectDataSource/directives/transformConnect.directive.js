@@ -5,7 +5,7 @@
         .directive('transformConnect', transformConnect)
     ;
 
-    function transformConnect($compile, AddCalculatedField, _, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES){
+    function transformConnect($compile, AddCalculatedField, _, COMPARISON_TYPES_FILTER_CONNECT_NUMBER, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES){
         'use strict';
 
         return {
@@ -25,6 +25,7 @@
                 var content, directive;
                 content = element.contents().remove();
                 return function (scope, element, attrs){
+                    const CALCULATED_VALUE = '$$CALCULATED_VALUE$$';
                     scope.allFiledFormatTypes = CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD;
                     scope.allFiledFormatTypeKeys = CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY;
                     scope.dateFormatTypes = DATE_FORMAT_TYPES;
@@ -32,17 +33,22 @@
                     scope.fieldForExpressionInCalculated = [];
                     scope.positionsForReplaceText = POSITIONS_FOR_REPLACE_TEXT;
                     scope.dataSourceFieldsCopy = angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms));
+                    scope.reorderDefaultValueAllowed = false;
 
                     scope.separatorType = [
+                        {key: ',', label: 'Comma'},
+                        {key: 'none', label: 'None'}
+                    ];
+
+
+                    scope.conditionComparators = angular.copy(COMPARISON_TYPES_FILTER_CONNECT_NUMBER);
+                    scope.conditionComparators.push({key: 'is invalid', label: 'Is Invalid'});
+
+                    scope.operatorForCustom = [
                         {key: 'equal', label: 'Is'},
                         {key: 'notEqual', label: 'Is Not'},
                         {key: 'contain', label: 'Contains'},
                         {key: 'notContain', label: 'Does Not Contain'}
-                    ];
-
-                    scope.operatorForCustom = [
-                        {key: ',', label: 'Comma'},
-                        {key: 'none', label: 'None'}
                     ];
 
                     scope.datePickerOpts = {
@@ -57,9 +63,35 @@
                         scope.fieldNames = _.isArray(scope.mapFields) ? scope.mapFields : _.union(_.values(scope.mapFields));
                     }, true);
 
+                    scope.sortableOptions = {
+                        disabled: false,
+                        forcePlaceholderSize: true,
+                        placeholder: 'sortable-placeholder'
+                    };
+
+                    if (scope.reorderTransformsAllowed) {
+                        scope.sortableOptions['disabled'] = false;
+                    } else {
+                        scope.sortableOptions['disabled'] = true;
+                    }
+
+                    scope.sortableDefaultValueOptions = {
+                        disabled: false,
+                        forcePlaceholderSize: true,
+                        placeholder: 'sortable-placeholder'
+                    };
+
+                    if (scope.reorderDefaultValueAllowed) {
+                        scope.sortableDefaultValueOptions['disabled'] = false;
+                    } else {
+                        scope.sortableDefaultValueOptions['disabled'] = true;
+                    }
+
+                    scope._getTotalFieldDataSetInAugmentation = _getTotalFieldDataSetInAugmentation;
                     scope.removeTransform = removeTransform;
                     scope.addTransform = addTransform;
                     scope.addField = addField;
+                    scope.addCalculatedField = addCalculatedField;
                     scope.addReplaceText = addReplaceText;
                     scope.addMapFields = addMapFields;
                     scope.addCustomCondition = addCustomCondition;
@@ -77,6 +109,7 @@
                     scope.getDimensionsMetricsForTextAddReplace = getDimensionsMetricsForTextAddReplace;
                     scope.getDimensionsMetricsForTextAddReplace = getDimensionsMetricsForTextAddReplace;
                     scope.getDimensionsMetricsForNumberAddField = getDimensionsMetricsForNumberAddField;
+                    scope.getTotalDimensionsMetricsForDefaultValues = getTotalDimensionsMetricsForDefaultValues;
                     scope.getFiledFormatTypes = getFiledFormatTypes;
                     scope.filterFieldNameForSortBy = filterFieldNameForSortBy;
                     scope.addSpaceBeforeAndAfterOperator = addSpaceBeforeAndAfterOperator;
@@ -96,6 +129,7 @@
                     scope.disableOverride = disableOverride;
                     scope.selectTypeAddCalculatedField = selectTypeAddCalculatedField;
                     scope.enableDragDropQueryBuilder = enableDragDropQueryBuilder;
+                    scope.enableDragDropDefaultValue = enableDragDropDefaultValue;
                     scope.getLengthTransform = getLengthTransform;
                     scope.filterNumberFields = filterNumberFields;
                     scope.selectCustomFormatDate = selectCustomFormatDate;
@@ -109,7 +143,43 @@
                     scope.selectCustomField = selectCustomField;
                     scope.isValueForCustom = isValueForCustom;
                     scope.isDateForCustom = isDateForCustom;
-                    scope._getTotalFieldDataSetInAugmentation = _getTotalFieldDataSetInAugmentation;
+                    scope.addDefaultValue = addDefaultValue;
+                    scope.selectDefaultValueField = selectDefaultValueField;
+                    scope.addCompareValue = addCompareValue;
+                    scope.selectedComparison = selectedComparison;
+                    
+                    function selectedComparison(defaultValue) {
+                        defaultValue.conditionValue = null;
+                    }
+
+                    function addCompareValue(query) {
+                        if (!/^[+-]?\d+(\.\d+)?$/.test(query)) {
+                            return;
+                        }
+
+                        return query;
+                    }
+
+                    function selectDefaultValueField(field, defaultValue) {
+                        //defaultValue.conditionComparator= null;
+                        //
+                        //if(field != CALCULATED_VALUE) {
+                        //    scope.conditionComparators.push({key: 'is invalid', label: 'Is Invalid'});
+                        //} else {
+                        //    scope.conditionComparators = angular.copy(COMPARISON_TYPES_FILTER_CONNECT_NUMBER);
+                        //}
+                    }
+                    
+                    function addDefaultValue(field) {
+                        field.defaultValues = angular.isArray(field.defaultValues) ? field.defaultValues : [];
+
+                        field.defaultValues.push({
+                            conditionField: null,
+                            conditionComparator: null,
+                            conditionValue: null,
+                            defaultValue: null
+                        })
+                    }
 
                     function isValueForCustom(custom, transform) {
                         var totalField = _getTotalFieldDataSetInAugmentation(transform.mapDataSet);
@@ -129,7 +199,7 @@
                     }
 
                     function getSeparatorType(transform, field) {
-                        return scope.separatorType
+                        return scope.operatorForCustom
                     }
 
                     function filterMapFieldLeftSide(transform, mapFieldThis) {
@@ -218,18 +288,6 @@
                         transform.from = null;
                     }
 
-                    scope.sortableOptions = {
-                        disabled: false,
-                        forcePlaceholderSize: true,
-                        placeholder: 'sortable-placeholder'
-                    };
-
-                    if (scope.reorderTransformsAllowed) {
-                        scope.sortableOptions['disabled'] = false;
-                    } else {
-                        scope.sortableOptions['disabled'] = true;
-                    }
-
                     function enableDragDropQueryBuilder(enable) {
                         if (enable) {
                             scope.sortableOptions['disabled'] = false;
@@ -238,6 +296,16 @@
                         }
 
                         scope.reorderTransformsAllowed = enable;
+                    }
+
+                    function enableDragDropDefaultValue(enable) {
+                        if (enable) {
+                            scope.sortableDefaultValueOptions['disabled'] = false;
+                        } else {
+                            scope.sortableDefaultValueOptions['disabled'] = true;
+                        }
+
+                        scope.reorderDefaultValueAllowed = enable;
                     }
 
                     function getLengthTransform () {
@@ -351,11 +419,11 @@
                                         }
                                     });
                                     break;
-                                case 'addCalculatedField':
-                                    angular.forEach(transform.fields, function (field){
-                                        fieldInConcat.push(field.field)
-                                    });
-                                    break;
+                                // case 'addCalculatedField':
+                                //     angular.forEach(transform.fields, function (field){
+                                //         fieldInConcat.push(field.field)
+                                //     });
+                                //     break;
                                 case 'extractPattern':
                                     angular.forEach(transform.fields, function (field){
                                         if (!'targetField' in field || !'isOverride' in field) {
@@ -614,6 +682,19 @@
                         });
                     }
 
+                    function getTotalDimensionsMetricsForDefaultValues() {
+                        //var fieldsOfTransform = _getAllFieldInTransform(scope.transforms);
+                        //
+                        //var fields =  _.filter(scope.totalDimensionsMetrics, function (dm){
+                        //    return (fieldsOfTransform.indexOf(dm) > -1 || !notInMapField(dm)) && (scope.dimensionsMetrics[dm] == 'number' || scope.dimensionsMetrics[dm] == 'decimal');
+                        //});
+
+                        var fields = angular.copy(scope.dataSourceFields);
+                        fields.unshift(CALCULATED_VALUE);
+
+                        return fields;
+                    }
+
                     function getDimensionsMetricsForNumberAddField(fieldCurrent, transforms){
                         var fields = _getAllFieldInTransform(transforms);
 
@@ -798,6 +879,14 @@
                         fields.push({
                             field: null,
                             value: null
+                        });
+                    }
+
+                    function addCalculatedField(fields){
+                        fields.push({
+                            field: null,
+                            value: null,
+                            defaultValues: []
                         });
                     }
 
