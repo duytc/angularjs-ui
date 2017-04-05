@@ -1236,12 +1236,16 @@
                 "VIEW_DATA_IMPORT_HISTORY": "View Loaded Data",
                 "EDIT": "Edit",
                 "DELETE": "Delete",
-                "DATE_CREATED":"Date Created",
+                "DATE_CREATED": "Date Created",
+                "REMOVE_ALL_DATA": "Remove All Data",
+                "ROWS": "# of rows",
                 "BACK_TO_DATA_SET_LIST": "Back to Data Set List",
                 "DELETE_DATA_SET_SUCCESS":"The data set has been deleted",
                 "ADD_NEW_SUCCESS": "The data set has been added",
                 "UPDATE_SUCCESS": "The data set has been updated",
                 "DIMENSION_NAME_INSTRUCTION_BLOCK": "Dimension name must begin with a letter. It may contain text, numbers or spaces",
+                "REMOVE_ALL_DATE_SUCCESS": "The data set has been removed all data",
+                "REMOVE_ALL_DATE_FAIL": "Could not removed all data",
                 "METRIC_NAME_INSTRUCTION_BLOCK":"Metric name must begin with a letter. It may contain text, numbers or spaces"
             },
             "UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE": {

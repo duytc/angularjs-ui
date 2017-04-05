@@ -34,6 +34,9 @@
                         return UnifiedReportDataSetManager.one().get($stateParams).then(function (dataSets) {
                             return dataSets.plain();
                         });
+                    },
+                    dataSetRows: /* @ngInject */ function(UnifiedReportDataSetManager) {
+                        return UnifiedReportDataSetManager.one('rows').getList()
                     }
                 },
                 ncyBreadcrumb: {

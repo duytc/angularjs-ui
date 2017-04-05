@@ -55,6 +55,7 @@
                                     <li class="divider"></li>
 
                                     <li><a ng-click="confirmClick('Are you sure want to delete this data set?') && deleteDataSet(item.id)" confirm-click > {{ 'UNIFIED_REPORT_DATA_SET_MODULE.DELETE' | translate }}</a></li>
+                                    <li><a ng-click="confirmClick('Are you sure want to remove all data on this data set?') && removeAllData(item)" confirm-click > {{ 'UNIFIED_REPORT_DATA_SET_MODULE.REMOVE_ALL_DATA' | translate }}</a></li>
                                 </ul>
                             </div>
                         </td>
@@ -63,6 +64,8 @@
                         <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.DATE_CREATED' | translate }}" at-sortable  at-attribute="createdDate">
                             {{ item.createdDate | date }}
                         </td>
+
+                        <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.ROWS' | translate }}" at-implicit at-sortable at-attribute="row"></td>
                     </tr>
                     </tbody>
                 </table>
