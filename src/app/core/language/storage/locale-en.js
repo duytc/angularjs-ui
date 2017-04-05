@@ -1238,7 +1238,7 @@
                 "DELETE": "Delete",
                 "DATE_CREATED": "Date Created",
                 "REMOVE_ALL_DATA": "Remove All Data",
-                "ROWS": "# of rows",
+                "ROWS": "# of Rows",
                 "BACK_TO_DATA_SET_LIST": "Back to Data Set List",
                 "DELETE_DATA_SET_SUCCESS":"The data set has been deleted",
                 "ADD_NEW_SUCCESS": "The data set has been added",
