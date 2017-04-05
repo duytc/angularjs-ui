@@ -72,7 +72,8 @@
             currency: 'currency',
             replaceText: 'replaceText',
             extractPattern: 'extractPattern',
-            augmentation: 'augmentation'
+            augmentation: 'augmentation',
+            subsetGroup: 'subset-group'
         })
         .provider('CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD', {
             $get: function (CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY) {
@@ -87,7 +88,8 @@
                     // {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addConcatenatedField, label: 'Concatenated Field'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.replaceText, label: 'Replace Text'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.extractPattern, label: 'Extract Pattern'},
-                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.augmentation, label: 'Data Augmentation'}
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.augmentation, label: 'Data Augmentation'},
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.subsetGroup, label: 'Subset Group'}
                 ];
             }
         })

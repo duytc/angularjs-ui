@@ -288,7 +288,7 @@
             for (x in $scope.connectDataSource.transforms) {
                 var transform = $scope.connectDataSource.transforms[x];
 
-                if((transform.type != 'number' && transform.type != 'date' && transform.type != 'augmentation')) {
+                if((transform.type != 'number' && transform.type != 'date' && transform.type != 'augmentation' && transform.type != 'subset-group')) {
                     if (_.isUndefined(transform.fields) || transform.fields.length == 0) {
                         return false;
                     }

@@ -34,8 +34,7 @@
                             <ui-select ng-model="transform.type" ng-disabled="transform.type == 'date' && !!transform.field" ng-required="true" on-select="selectTransformType(transform, $item)" server-error reset-search-input="'false'">
                                 <ui-select-match placeholder="Select a transformation">{{ $select.selected.label }}
                                 </ui-select-match>
-                                <ui-select-choices
-                                        repeat="type.key as type in getFiledFormatTypes(transforms, transform.type) | filter:$select.search">
+                                <ui-select-choices repeat="type.key as type in getFiledFormatTypes(transforms, transform.type) | filter:$select.search">
                                     {{ type.label }}
                                 </ui-select-choices>
                             </ui-select>
@@ -590,7 +589,7 @@
                             <div class="col-sm-10">
                                 <ui-select name="dataSet" id="dataSet" on-select="selectDataSet($item, transform)" ng-model="transform.mapDataSet" ng-required="true" server-error reset-search-input="'false'">
                                     <ui-select-match placeholder="Select a Data Set">{{ $select.selected.name }}</ui-select-match>
-                                    <ui-select-choices repeat="dataSet.id as dataSet in listDataSets | filter:filterDataSet | filter: { name: $select.search }">
+                                    <ui-select-choices repeat="dataSet.id as dataSet in listDataSets | filter:filterDataSet(transform.mapDataSet) | filter: { name: $select.search }">
                                         {{ dataSet.name }}
                                     </ui-select-choices>
                                 </ui-select>
@@ -604,7 +603,7 @@
                                     <div class="col-sm-6 ui-select-width-full-width">
                                         <ui-select name="dataSet" ng-model="transform.mapCondition.leftSide" ng-required="true" server-error reset-search-input="'false'">
                                             <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
-                                            <ui-select-choices repeat="field in dataSourceFields | filter:$select.search ">
+                                            <ui-select-choices repeat="field in getFieldForLeftSideAugmentation(transform) | filter:$select.search ">
                                                 {{ field }}
                                             </ui-select-choices>
                                         </ui-select>
@@ -701,6 +700,58 @@
                                                 <ui-select name="rightSide" ng-model="mapField.rightSide" ng-required="true" server-error reset-search-input="'false'">
                                                     <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
                                                     <ui-select-choices repeat="field in transform.allFieldsDataSet | filter:filterMapFieldRightSide(transform, mapField) | filter:$select.search">
+                                                        {{ field }}
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+
+                                            <button ng-disabled="transform.mapFields.length == 1" class="btn btn-danger" type="button" ng-click="removeAddValue(transform.mapFields, $index)"><span class="glyphicon glyphicon-minus"></span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-if="transform.type == allFiledFormatTypeKeys.subsetGroup">
+                        <div class="form-group select-connect-data-source">
+                            <label class="col-sm-2 control-label">Group Fields</label>
+
+                            <div class="col-sm-10">
+                                <ui-select multiple ng-model="transform.groupFields" ng-required="true" server-error reset-search-input="'false'">
+                                    <ui-select-match placeholder="Select a field">{{ $item }} </ui-select-match>
+                                    <ui-select-choices repeat="field in getFieldForGroupBy(transforms) | orderBy | filter:$select.search">
+                                        {{ field }}
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                        <div class="form-group select-connect-data-source">
+                            <label for="dataSet" class="col-sm-2 control-label">Map Fields</label>
+                            <div class="col-sm-10">
+                                <div class="expressions-group">
+                                    <button class="btn btn-success" type="button" ng-click="addMapFieldForSubsetGroup(transform.mapFields)">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                        Add Map Field
+                                    </button>
+
+
+                                    <div ng-repeat="mapField in transform.mapFields" class="select-connect-data-source">
+                                        <div class="form-inline condition">
+                                            <div class="form-group select-data-type">
+                                                <ui-select name="defaultValueField" ng-model="mapField.leftSide" ng-required="true" server-error reset-search-input="'false'">
+                                                    <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
+                                                    <ui-select-choices repeat="field in totalDimensionsMetrics | filter:notInMapField | filter:$select.search">
+                                                        {{ field }}
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+
+                                            <div class="form-group select-data-type">
+                                                <ui-select name="rightSide" ng-model="mapField.rightSide" ng-required="true" server-error reset-search-input="'false'">
+                                                    <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
+                                                    <ui-select-choices repeat="field in dataSourceFields | filter:$select.search">
                                                         {{ field }}
                                                     </ui-select-choices>
                                                 </ui-select>

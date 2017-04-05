@@ -63,6 +63,12 @@
                         scope.fieldNames = _.isArray(scope.mapFields) ? scope.mapFields : _.union(_.values(scope.mapFields));
                     }, true);
 
+                    scope.$watch(function (){
+                        return scope.transforms;
+                    }, function (){
+                        selectTypeAddCalculatedField();
+                    }, true);
+
                     scope.sortableOptions = {
                         disabled: false,
                         forcePlaceholderSize: true,
@@ -147,6 +153,30 @@
                     scope.selectDefaultValueField = selectDefaultValueField;
                     scope.addCompareValue = addCompareValue;
                     scope.selectedComparison = selectedComparison;
+                    scope.addMapFieldForSubsetGroup = addMapFieldForSubsetGroup;
+                    scope.getFieldForLeftSideAugmentation = getFieldForLeftSideAugmentation;
+                    
+                    function getFieldForLeftSideAugmentation(transform) {
+                        var fields = angular.copy(scope.dataSourceFields);
+
+                        for (var index in scope.transforms) {
+                            var transformItem  = scope.transforms[index];
+
+                            if(transformItem.type == 'augmentation' && transformItem.mapDataSet != transform.mapDataSet) {
+                                angular.forEach(transformItem.mapFields, function (mapField) {
+                                    if(!!mapField.leftSide) {
+                                        fields.push(mapField.leftSide);
+                                    }
+                                })
+                            }
+                        }
+
+                        return _.union(fields)
+                    }
+                    
+                    function addMapFieldForSubsetGroup(mapFields) {
+                        mapFields.push({leftSide: null, rightSide: null});
+                    }
                     
                     function selectedComparison(defaultValue) {
                         defaultValue.conditionValue = null;
@@ -244,12 +274,24 @@
                         };
                     }
 
-                    function filterDataSet(dataSet) {
-                        if(dataSet.id == scope.itemDataSet || dataSet.id == scope.itemDataSet.id) {
-                            return false
-                        }
+                    function filterDataSet(dataSetCurrent) {
+                        return function (dataSet) {
+                            for(var index in scope.transforms) {
+                                var transform = scope.transforms[index];
 
-                        return true
+                                if(transform.type == 'augmentation') {
+                                    if(transform.mapDataSet == dataSet.id && dataSetCurrent != dataSet.id) {
+                                        return false
+                                    }
+                                }
+                            }
+
+                            if(dataSet.id == scope.itemDataSet || dataSet.id == scope.itemDataSet.id) {
+                                return false
+                            }
+
+                            return true
+                        }
                     }
 
                     function selectDataSet(dataSet, transform) {
@@ -453,6 +495,13 @@
                                         }
                                     });
                                     break;
+                                // case 'subset-group':
+                                //     angular.forEach(transform.mapFields, function (mapField){
+                                //         if (!_.isNull(mapField.leftSide)){
+                                //             fieldInConcat.push(mapField.leftSide)
+                                //         }
+                                //     });
+                                //     break;
                             }
                         });
 
@@ -544,6 +593,17 @@
                             scope.fieldForExpressionInCalculated.push({label: item});
                         });
 
+
+                        angular.forEach(scope.transforms, function (transform) {
+                            if(transform.type == 'subset-group' || transform.type == 'augmentation') {
+                                angular.forEach(transform.mapFields, function (mapField){
+                                    if (!_.isNull(mapField.leftSide)){
+                                        scope.fieldForExpressionInCalculated.push({label: mapField.leftSide})
+                                    }
+                                });
+                            }
+                        });
+
                         // if (scope.dimensionsMetrics[field] == 'number' || scope.dimensionsMetrics[field] == 'decimal') {
                         //     angular.forEach(scope.dataSourceFields, function (item) {
                         //         if (!item || item == '') {
@@ -605,7 +665,7 @@
                         var types = [];
 
                         angular.forEach(scope.allFiledFormatTypes, function (type){
-                            if (type.key == 'date' || type.key == 'number' || type.key == currentType) {
+                            if (type.key == 'augmentation' || type.key == 'date' || type.key == 'number' || type.key == currentType) {
                                 types.push(type);
                                 return;
                             }
@@ -782,6 +842,13 @@
                                 transform.fields.push({names: [], direction: 'asc'}, {names: [], direction: 'desc'});
                             }
 
+                            if (type.key == scope.allFiledFormatTypeKeys.subsetGroup) {
+                                transform.groupFields = [];
+                                transform.mapFields = [
+                                    {leftSide: null, rightSide: null}
+                                ];
+                            }
+
                             if (type.key == scope.allFiledFormatTypeKeys.number) {
                                 transform.decimals = 0;
                                 transform.thousandsSeparator = ',';
@@ -841,6 +908,18 @@
                     }
 
                     function notInMapField(field){
+                        for(var index in scope.transforms) {
+                            var transform = scope.transforms[index];
+
+                            if(transform.type == 'augmentation' || transform.type == 'subset-group') {
+                                for(var indexMap in transform.mapFields) {
+                                    if(transform.mapFields[indexMap].leftSide == field) {
+                                        return false
+                                    }
+                                }
+                            }
+                        }
+
                         return _.values(scope.mapFields).indexOf(field) == -1;
                     }
 
@@ -973,7 +1052,11 @@
                             return dataSetItem.id == dataSetId
                         });
 
-                        return angular.extend(angular.copy(dataSet.dimensions), angular.copy(dataSet.metrics));
+                        if(!!dataSet) {
+                            return angular.extend(angular.copy(dataSet.dimensions), angular.copy(dataSet.metrics));
+                        }
+                        
+                        return
                     }
 
                     directive || (directive = $compile(content));
