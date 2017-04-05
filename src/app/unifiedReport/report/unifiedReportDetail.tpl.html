@@ -20,6 +20,7 @@
         <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
 
         <div class="button-bar">
+            <button style="margin-right: 3px"  class="btn btn-sm btn-primary" ng-click="refreshData()" type="button">Refresh</button>
             <export-excel ng-if="reports.length > 0 && hasResult" not-filter="true" data="reports" style="margin-right: 3px" fields="columnReportDetailForExportExcel" header="titleReportDetailForExportExcel" file-name="getExportExcelFileName()"></export-excel>
             <button ng-disabled="hasSaveRepoerView" ng-click="saveReportView()" class="btn btn-sm btn-primary" type="button">Save as Report View</button>
             <button ui-sref="^.editBuilder(reportViewForEdit)" ng-disabled="formProcessing" class="btn btn-sm btn-primary" type="button">Edit Report View</button>
@@ -29,6 +30,7 @@
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify"
                                                                      aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ng-click="refreshData()">Refresh</a></li>
                 <li ng-if="reports.length > 0 && hasResult"><a><export-excel not-filter="true" css-class="''" data="reports" fields="columnReportDetailForExportExcel" header="titleReportDetailForExportExcel" file-name="getExportExcelFileName()"></export-excel></a></li>
                 <li ng-if="hasSaveRepoerView"><a ng-click="saveReportView()">Save as Report View</a></li>
                 <li><a ui-sref="^.editBuilder(reportViewForEdit)">Edit Report View</a></li>

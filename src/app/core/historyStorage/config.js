@@ -27,7 +27,9 @@
             dataSourceFile: "dataSourceFile",
             dataSet: "dataSet",
             connectDataSource: "connectDataSource",
-            unifiedReportView: "unifiedReportView"
+            unifiedReportView: "unifiedReportView",
+            unifiedReportDetail: "unifiedReportDetail",
+            public: "public"
         })
     ;
 })();

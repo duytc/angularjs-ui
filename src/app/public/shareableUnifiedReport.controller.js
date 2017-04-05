@@ -4,7 +4,7 @@
     angular.module('tagcade.public')
         .controller('shareableUnifiedReport', shareableUnifiedReport);
 
-    function shareableUnifiedReport($scope, $translate, reports, unifiedReportFormatReport, AlertService) {
+    function shareableUnifiedReport($scope, $translate, reports, unifiedReportFormatReport, AlertService, historyStorage, HISTORY_TYPE_PATH) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -99,6 +99,11 @@
         $scope.isShow = isShow;
         $scope.sort = sort;
         $scope.isNullValue = isNullValue;
+        $scope.refreshData = refreshData;
+
+        function refreshData() {
+            historyStorage.getLocationPath(HISTORY_TYPE_PATH.public, 'app.public');
+        }
 
         function isNullValue(report, column) {
             return !report[column] && report[column] != 0;
@@ -127,6 +132,10 @@
         function getExportExcelFileName() {
             return 'report-detail'
         }
+
+        $scope.$on('$locationChangeSuccess', function() {
+            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.public)
+        });
     }
 })
 ();

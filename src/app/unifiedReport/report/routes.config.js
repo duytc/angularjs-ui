@@ -39,6 +39,9 @@
             })
             .state('unifiedReport.report.builder', {
                 url: '/builder',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
                 views: {
                     'content@app': {
                         controller: 'UnifiedReportBuilder',
@@ -75,6 +78,9 @@
             })
             .state('unifiedReport.report.editBuilder', {
                 url: '/edit/?reportView&reportViewMultiViews&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&subReportsIncluded&userReorderTransformsAllowed&isShowDataSetName',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
                 views: {
                     'content@app': {
                         controller: 'UnifiedReportBuilder',
@@ -150,6 +156,9 @@
             })
             .state('unifiedReport.report.detail', {
                 url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&saveReportView&startDate&endDate&isShowDataSetName',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
                 views: {
                     'content@app': {
                         controller: 'UnifiedReportDetail',

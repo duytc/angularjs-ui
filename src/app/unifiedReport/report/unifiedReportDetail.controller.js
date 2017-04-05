@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $stateParams, _, reportView, $translate, reportGroup, getDateReportView, AlertService, unifiedReportFormatReport, UnifiedReportViewManager, UserStateHelper, DateFormatter) {
+    function UnifiedReportDetail($scope, historyStorage, $stateParams, _, reportView, $translate, reportGroup, getDateReportView, AlertService, unifiedReportFormatReport, UnifiedReportViewManager, UserStateHelper, DateFormatter, HISTORY_TYPE_PATH) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -162,7 +162,12 @@
         $scope.generateReport = generateReport;
         $scope.hasFilterDate = hasFilterDate;
         $scope.hideDaterange = hideDaterange;
-        
+        $scope.refreshData = refreshData;
+
+        function refreshData() {
+            historyStorage.getLocationPath(HISTORY_TYPE_PATH.unifiedReportDetail, '^.detail');
+        }
+
         function hideDaterange() {
             var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
             for (var reportViewIndex in reportViews) {
@@ -282,5 +287,9 @@
         function showPagination() {
             return angular.isArray($scope.reports) && $scope.reports.length > $scope.tableConfig.itemsPerPage;
         }
+
+        $scope.$on('$locationChangeSuccess', function() {
+            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.unifiedReportDetail)
+        });
     }
 })();

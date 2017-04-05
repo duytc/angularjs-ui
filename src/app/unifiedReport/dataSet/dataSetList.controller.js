@@ -71,12 +71,6 @@
         }
 
         function deleteDataSet($dataSetId) {
-            if ($scope.formProcessing) {
-                return; // already running, prevent duplicates
-            }
-
-            $scope.formProcessing = true;
-
             var deleteDataSource = UnifiedReportDataSetManager.one($dataSetId).remove();
 
             deleteDataSource.then(function() {
