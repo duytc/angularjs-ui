@@ -1196,7 +1196,7 @@
                 "INSTRUCTION_MESSAGE": "Drag or Drop your files here or click the button to select files",
                 "UPLOAD_FILES_SUCCESS": "The files were successfully uploaded",
                 "DOWNLOAD_DATA": "Download Data",
-                "REPLAY_DATA": "Replay Data",
+                "REPLAY_DATA": "Reload Data",
                 "VIEW_DETAILS": "View Details",
                 "RECEIVED_DATE": "Date Received",
                 "FILENAME": "File Name",

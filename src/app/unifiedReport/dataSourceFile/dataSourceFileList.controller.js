@@ -92,7 +92,7 @@
                 .then(function () {
                     AlertService.replaceAlerts({
                         type: 'success',
-                        message: 'The data was replayed'
+                        message: 'The data was reloaded'
                     });
                 })
                 .catch(function (response) {
@@ -105,7 +105,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'The data could not be replayed'
+                        message: 'The data could not be reloaded'
                     });
                 })
         }
@@ -126,14 +126,15 @@
                                         message: $translate.instant('UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DELETE_SUCCESS')
                                     });
                                 });
-                        },
-                        function () {
-                            AlertService.replaceAlerts({
-                                type: 'danger',
-                                message: $translate.instant('UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DELETE_FAIL')
-                            });
                         }
                     )
+                    .catch(function (response) {
+                        var message = response && response.data && !!response.data.message ? response.data.message : $translate.instant('UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DELETE_FAIL')
+                        AlertService.replaceAlerts({
+                            type: 'danger',
+                            message: message
+                        });
+                    })
                     ;
             });
         };
@@ -177,7 +178,7 @@
                         if ($scope.selectedDataSourceFiles.indexOf(dataSourceFile.id) > -1) {
                             AlertService.replaceAlerts({
                                 type: 'success',
-                                message: 'The file ' + dataSourceFile.fileName + ' was replayed'
+                                message: 'The file ' + dataSourceFile.fileName + ' was reloaded'
                             });
                         }
                     });
@@ -188,7 +189,7 @@
                         if ($scope.selectedDataSourceFiles.indexOf(dataSourceFile.id) > -1) {
                             AlertService.replaceAlerts({
                                 type: 'success',
-                                message: 'The file ' + dataSourceFile.fileName + ' could not be replayed'
+                                message: 'The file ' + dataSourceFile.fileName + ' could not be reloaded'
                             });
                         }
                     });
