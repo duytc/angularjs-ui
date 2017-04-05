@@ -155,7 +155,7 @@
                     scope.selectedComparison = selectedComparison;
                     scope.addMapFieldForSubsetGroup = addMapFieldForSubsetGroup;
                     scope.getFieldForLeftSideAugmentation = getFieldForLeftSideAugmentation;
-                    
+
                     function getFieldForLeftSideAugmentation(transform) {
                         var fields = angular.copy(scope.dataSourceFields);
 
@@ -173,11 +173,11 @@
 
                         return _.union(fields)
                     }
-                    
+
                     function addMapFieldForSubsetGroup(mapFields) {
                         mapFields.push({leftSide: null, rightSide: null});
                     }
-                    
+
                     function selectedComparison(defaultValue) {
                         defaultValue.conditionValue = null;
                     }
@@ -199,7 +199,7 @@
                         //    scope.conditionComparators = angular.copy(COMPARISON_TYPES_FILTER_CONNECT_NUMBER);
                         //}
                     }
-                    
+
                     function addDefaultValue(field) {
                         field.defaultValues = angular.isArray(field.defaultValues) ? field.defaultValues : [];
 
@@ -1055,7 +1055,7 @@
                         if(!!dataSet) {
                             return angular.extend(angular.copy(dataSet.dimensions), angular.copy(dataSet.metrics));
                         }
-                        
+
                         return
                     }
 
