@@ -21,8 +21,10 @@
         };
 
 
-        var adTagActive = angular.copy(adTag.active);
-        adTag.active = adTag.active == 1 ? true : false;
+        if (_.isObject(adTag)) {
+            var adTagActive = angular.copy(adTag.active);
+            adTag.active = adTag.active == 1 ? true : false;
+        }
 
         $scope.isNew = adTag === null;
         $scope.formProcessing = false;
