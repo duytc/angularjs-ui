@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.dataSet')
         .controller('dataSetList', dataSetList);
 
-    function dataSetList($scope, $stateParams, $translate, dataSets, dataSetRows, UnifiedReportDataSetManager, AlertService, AtSortableService, EVENT_ACTION_SORTABLE, HISTORY_TYPE_PATH, historyStorage) {
+    function dataSetList($scope, $stateParams, $modal, $translate, dataSets, dataSetRows, UnifiedReportDataSetManager, AlertService, AtSortableService, EVENT_ACTION_SORTABLE, HISTORY_TYPE_PATH, historyStorage) {
         $scope.tableConfig = {
             itemsPerPage: 10,
             maxPages: 10,
@@ -45,49 +45,61 @@
         $scope.removeAllData = removeAllData;
 
         function removeAllData(dataSet) {
-            UnifiedReportDataSetManager.one(dataSet.id).one('truncate').post()
-                .then(function() {
-                    dataSet.row = 0;
+            var modalInstance = $modal.open({
+                templateUrl: 'unifiedReport/dataSet/removeAllDataConfirm.tpl.html'
+            });
 
-                    var dataRowIndex = _.findIndex(dataSetRows, function (dataSetRow) {
-                        return dataSetRow.id == dataSet.id
-                    });
+            modalInstance.result.then(function () {
+                UnifiedReportDataSetManager.one(dataSet.id).one('truncate').post()
+                    .then(function() {
+                        dataSet.row = 0;
 
-                    if(dataRowIndex > -1) {
-                        dataSetRows[dataRowIndex] = 0
-                    }
+                        var dataRowIndex = _.findIndex(dataSetRows, function (dataSetRow) {
+                            return dataSetRow.id == dataSet.id
+                        });
 
-                    AlertService.replaceAlerts({
-                        type: 'success',
-                        message: $translate.instant('UNIFIED_REPORT_DATA_SET_MODULE.REMOVE_ALL_DATE_SUCCESS')
+                        if(dataRowIndex > -1) {
+                            dataSetRows[dataRowIndex] = 0
+                        }
+
+                        AlertService.replaceAlerts({
+                            type: 'success',
+                            message: $translate.instant('UNIFIED_REPORT_DATA_SET_MODULE.REMOVE_ALL_DATE_SUCCESS')
+                        });
+                    })
+                    .catch(function() {
+                        AlertService.replaceAlerts({
+                            type: 'error',
+                            message: $translate.instant('UNIFIED_REPORT_DATA_SET_MODULE.REMOVE_ALL_DATE_FAIL')
+                        });
                     });
-                 })
-                .catch(function() {
-                    AlertService.replaceAlerts({
-                        type: 'error',
-                        message: $translate.instant('UNIFIED_REPORT_DATA_SET_MODULE.REMOVE_ALL_DATE_FAIL')
-                    });
-                });
+            })
         }
 
         function deleteDataSet($dataSetId) {
-            var deleteDataSource = UnifiedReportDataSetManager.one($dataSetId).remove();
-
-            deleteDataSource.then(function() {
-                AlertService.addFlash({
-                    type: 'success',
-                    message: $translate.instant('UNIFIED_REPORT_DATA_SET_MODULE.DELETE_DATA_SET_SUCCESS')
-                });
-            }).then(function() {
-                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSet, '^.list');
-            }).catch(function(response) {
-                if(!!response && !!response.data && !!response.data.message) {
-                    AlertService.replaceAlerts({
-                        type: 'danger',
-                        message: response.data.message
-                    });
-                }
+            var modalInstance = $modal.open({
+                templateUrl: 'unifiedReport/dataSet/confirmDeletion.tpl.html'
             });
+
+            modalInstance.result.then(function () {
+                var deleteDataSource = UnifiedReportDataSetManager.one($dataSetId).remove();
+
+                deleteDataSource.then(function() {
+                    AlertService.addFlash({
+                        type: 'success',
+                        message: $translate.instant('UNIFIED_REPORT_DATA_SET_MODULE.DELETE_DATA_SET_SUCCESS')
+                    });
+                }).then(function() {
+                    return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSet, '^.list');
+                }).catch(function(response) {
+                    if(!!response && !!response.data && !!response.data.message) {
+                        AlertService.replaceAlerts({
+                            type: 'danger',
+                            message: response.data.message
+                        });
+                    }
+                });
+            })
         }
 
         function showPagination() {

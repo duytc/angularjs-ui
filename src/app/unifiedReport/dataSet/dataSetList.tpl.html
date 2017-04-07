@@ -54,8 +54,8 @@
                                     <li><a ui-sref="^.edit({ id: item.id })">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.EDIT' | translate }}</a></li>
                                     <li class="divider"></li>
 
-                                    <li><a ng-click="confirmClick('Are you sure want to delete this data set?') && deleteDataSet(item.id)" confirm-click > {{ 'UNIFIED_REPORT_DATA_SET_MODULE.DELETE' | translate }}</a></li>
-                                    <li><a ng-click="confirmClick('Are you sure want to remove all data from this data set?') && removeAllData(item)" confirm-click > {{ 'UNIFIED_REPORT_DATA_SET_MODULE.REMOVE_ALL_DATA' | translate }}</a></li>
+                                    <li><a ng-click="deleteDataSet(item.id)"> {{ 'UNIFIED_REPORT_DATA_SET_MODULE.DELETE' | translate }}</a></li>
+                                    <li><a ng-click="removeAllData(item)"> {{ 'UNIFIED_REPORT_DATA_SET_MODULE.REMOVE_ALL_DATA' | translate }}</a></li>
                                 </ul>
                             </div>
                         </td>
