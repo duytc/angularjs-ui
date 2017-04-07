@@ -5,7 +5,7 @@
         .directive('transformDataSet', transformDataSet)
     ;
 
-    function transformDataSet($compile, _, AddCalculatedField, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES, METRICS_SET) {
+    function transformDataSet($compile, _, AddCalculatedField, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES, METRICS_SET) {
         'use strict';
 
         return {
@@ -31,6 +31,12 @@
                     scope.dateFormatTypes = DATE_FORMAT_TYPES;
                     scope.typesField = METRICS_SET;
                     scope.positionsForReplaceText = POSITIONS_FOR_REPLACE_TEXT;
+                    scope.reorderDefaultValueAllowed = false;
+
+                    var totalDimensionsMetricsForDefaultValues = [];
+
+                    scope.conditionComparators = COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE;
+
                     scope.separatorType = [
                         {key: ',', label: 'Comma'},
                         {key: 'none', label: 'None'}
@@ -48,6 +54,31 @@
                         // getFieldsTypeNumber();
                         selectTypeCalculatedField('number');
                     }, true);
+
+                    scope.$watch(function () {
+                        return scope.selectedFieldsDateSet;
+                    }, function () {
+                        totalDimensionsMetricsForDefaultValues = angular.copy(scope.selectedFieldsDateSet);
+                        totalDimensionsMetricsForDefaultValues.unshift({key: '$$CALCULATED_VALUE$$', label: 'calculated value'});
+                    }, true);
+
+                    scope.sortableOptions = {
+                        disabled: false,
+                        forcePlaceholderSize: true,
+                        placeholder: 'sortable-placeholder'
+                    };
+
+                    scope.sortableDefaultValueOptions = {
+                        disabled: false,
+                        forcePlaceholderSize: true,
+                        placeholder: 'sortable-placeholder'
+                    };
+
+                    if (scope.reorderDefaultValueAllowed) {
+                        scope.sortableDefaultValueOptions['disabled'] = false;
+                    } else {
+                        scope.sortableDefaultValueOptions['disabled'] = true;
+                    }
 
                     scope.removeTransform = removeTransform;
                     scope.addTransform = addTransform;
@@ -79,12 +110,55 @@
                     scope.getLengthTransform = getLengthTransform;
                     scope.notOnlyNumberPattern =  '(?!^\\d+$)^.+$';
                     scope.getTransformName = getTransformName;
+                    scope.addCalculatedField = addCalculatedField;
+                    scope.addDefaultValue = addDefaultValue;
+                    scope.enableDragDropDefaultValue = enableDragDropDefaultValue;
+                    scope.addCompareValue = addCompareValue;
+                    scope.getTotalDimensionsMetricsForDefaultValues = getTotalDimensionsMetricsForDefaultValues;
+                    scope.selectedComparison = selectedComparison;
 
-                    scope.sortableOptions = {
-                        disabled: false,
-                        forcePlaceholderSize: true,
-                        placeholder: 'sortable-placeholder'
-                    };
+                    function selectedComparison(defaultValue) {
+                        defaultValue.conditionValue = null;
+                    }
+
+                    function getTotalDimensionsMetricsForDefaultValues() {
+                        var fields = [];
+
+                        angular.forEach(totalDimensionsMetricsForDefaultValues, function (field) {
+                            fields.push(field);
+                        });
+
+                        return fields
+                    }
+
+                    function addCompareValue(query) {
+                        if (!/^[+-]?\d+(\.\d+)?$/.test(query)) {
+                            return;
+                        }
+
+                        return query;
+                    }
+
+                    function addDefaultValue(field) {
+                        field.defaultValues = angular.isArray(field.defaultValues) ? field.defaultValues : [];
+
+                        field.defaultValues.push({
+                            conditionField: null,
+                            conditionComparator: null,
+                            conditionValue: null,
+                            defaultValue: null
+                        })
+                    }
+
+                    function enableDragDropDefaultValue(enable) {
+                        if (enable) {
+                            scope.sortableDefaultValueOptions['disabled'] = false;
+                        } else {
+                            scope.sortableDefaultValueOptions['disabled'] = true;
+                        }
+
+                        scope.reorderDefaultValueAllowed = enable;
+                    }
 
                     function getTransformName(typeKey) {
                         var element,
@@ -451,6 +525,14 @@
                         fields.push({
                             field: null,
                             value: null
+                        });
+                    }
+
+                    function addCalculatedField(fields){
+                        fields.push({
+                            field: null,
+                            value: null,
+                            defaultValues: []
                         });
                     }
 

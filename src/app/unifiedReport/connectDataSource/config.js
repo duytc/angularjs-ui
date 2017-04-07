@@ -59,7 +59,21 @@
             {key: 'start with', label: 'Starts With'},
             {key: 'end with', label: 'Ends With'}
         ])
-
+        .constant('COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE', [
+            {key: 'in', label: 'In'},
+            {key: 'not in', label: 'Not In'},
+            {key: 'smaller', label: 'Less Than'},
+            {key: 'smaller or equal', label: 'Less Than or Equal'},
+            {key: 'equal', label: 'Equal'},
+            {key: 'not equal', label: 'Not Equal'},
+            {key: 'greater', label: 'Greater'},
+            {key: 'greater or equal', label: 'Greater Than or Equal'},
+            // {key: 'startsWith', label: 'Starts With'},
+            // {key: 'endsWith', label: 'Ends With'},
+            // {key: 'contain', label: 'Contain'},
+            // {key: 'notContain', label: 'Not Contain'},
+            {key: 'is invalid', label: 'Is Invalid'}
+        ])
         .constant('CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY', {
             date: 'date',
             number: 'number',

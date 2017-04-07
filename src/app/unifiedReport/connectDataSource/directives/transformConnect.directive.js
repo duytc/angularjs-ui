@@ -5,7 +5,7 @@
         .directive('transformConnect', transformConnect)
     ;
 
-    function transformConnect($compile, AddCalculatedField, _, COMPARISON_TYPES_FILTER_CONNECT_NUMBER, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES){
+    function transformConnect($compile, AddCalculatedField, _, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES){
         'use strict';
 
         return {
@@ -41,8 +41,7 @@
                     ];
 
 
-                    scope.conditionComparators = angular.copy(COMPARISON_TYPES_FILTER_CONNECT_NUMBER);
-                    scope.conditionComparators.push({key: 'is invalid', label: 'Is Invalid'});
+                    scope.conditionComparators = COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE;
 
                     scope.operatorForCustom = [
                         {key: 'equal', label: 'Is'},
@@ -150,7 +149,6 @@
                     scope.isValueForCustom = isValueForCustom;
                     scope.isDateForCustom = isDateForCustom;
                     scope.addDefaultValue = addDefaultValue;
-                    scope.selectDefaultValueField = selectDefaultValueField;
                     scope.addCompareValue = addCompareValue;
                     scope.selectedComparison = selectedComparison;
                     scope.addMapFieldForSubsetGroup = addMapFieldForSubsetGroup;
@@ -189,17 +187,7 @@
 
                         return query;
                     }
-
-                    function selectDefaultValueField(field, defaultValue) {
-                        //defaultValue.conditionComparator= null;
-                        //
-                        //if(field != CALCULATED_VALUE) {
-                        //    scope.conditionComparators.push({key: 'is invalid', label: 'Is Invalid'});
-                        //} else {
-                        //    scope.conditionComparators = angular.copy(COMPARISON_TYPES_FILTER_CONNECT_NUMBER);
-                        //}
-                    }
-
+                    
                     function addDefaultValue(field) {
                         field.defaultValues = angular.isArray(field.defaultValues) ? field.defaultValues : [];
 
@@ -1056,7 +1044,7 @@
                             return angular.extend(angular.copy(dataSet.dimensions), angular.copy(dataSet.metrics));
                         }
 
-                        return
+                        return []
                     }
 
                     directive || (directive = $compile(content));

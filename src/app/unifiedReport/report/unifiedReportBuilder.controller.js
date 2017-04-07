@@ -568,24 +568,28 @@
                 angular.forEach($scope.reportBuilder.reportViewMultiViews, function (item) {
                     angular.forEach(item.dimensions, function (dimension) {
                         if ($scope.dimensionsMetrics[dimension] == 'number' || $scope.dimensionsMetrics[dimension] == 'decimal') {
-                            var field = _.find($scope.totalDimensionsMetrics, function (dm) {
-                                return dm.key == dimension;
-                            });
+                            if(dimension.indexOf('__') == -1 && (dimension.indexOf('_day') == -1 || dimension.indexOf('_month') == -1 || dimension.indexOf('_year') == -1)) {
+                                var field = _.find($scope.totalDimensionsMetrics, function (dm) {
+                                    return dm.key == dimension;
+                                });
 
-                            if (!!field) {
-                                $scope.summaryFieldTotal.push(field);
+                                if (!!field) {
+                                    $scope.summaryFieldTotal.push(field);
+                                }
                             }
                         }
                     });
 
                     angular.forEach(item.metrics, function (metric) {
                         if ($scope.dimensionsMetrics[metric] == 'number' || $scope.dimensionsMetrics[metric] == 'decimal') {
-                            var field = _.find($scope.totalDimensionsMetrics, function (dm) {
-                                return dm.key == metric;
-                            });
+                            if(metric.indexOf('__') == -1 && (metric.indexOf('_day') == -1 || metric.indexOf('_month') == -1 || metric.indexOf('_year') == -1)) {
+                                var field = _.find($scope.totalDimensionsMetrics, function (dm) {
+                                    return dm.key == metric;
+                                });
 
-                            if (!!field) {
-                                $scope.summaryFieldTotal.push(field);
+                                if (!!field) {
+                                    $scope.summaryFieldTotal.push(field);
+                                }
                             }
                         }
                     })
