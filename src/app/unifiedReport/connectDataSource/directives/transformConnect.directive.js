@@ -740,6 +740,18 @@
                         var fields = angular.copy(scope.dataSourceFields);
                         fields.unshift(CALCULATED_VALUE);
 
+                        for (var index in scope.transforms) {
+                            var transformItem  = scope.transforms[index];
+
+                            if(transformItem.type == 'subset-group') {
+                                angular.forEach(transformItem.mapFields, function (mapField) {
+                                    if(!!mapField.leftSide) {
+                                        fields.push(mapField.leftSide);
+                                    }
+                                })
+                            }
+                        }
+
                         return fields;
                     }
 
