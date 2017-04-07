@@ -151,13 +151,13 @@
                         }
 
                         if (type == 'number' || type == 'decimal' || type.key == 'number' || type.key == 'decimal') {
-                            angular.forEach(scope.selectedFieldsDateSet, function (field) {
+                            angular.forEach(scope.totalDimensionsMetrics, function (field) {
                                 if (field.type == 'number' || field.type == 'decimal') {
                                     scope.fieldsCalculatedField.push(field)
                                 }
                             });
                         } else {
-                            scope.fieldsCalculatedField = scope.selectedFieldsDateSet;
+                            scope.fieldsCalculatedField = scope.totalDimensionsMetrics;
                         }
 
                         if(!!type.key && !!calculatedField){

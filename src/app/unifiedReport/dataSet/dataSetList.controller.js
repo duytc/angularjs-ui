@@ -43,7 +43,7 @@
         $scope.changePage = changePage;
         $scope.searchData = searchData;
         $scope.removeAllData = removeAllData;
-        
+
         function removeAllData(dataSet) {
             UnifiedReportDataSetManager.one(dataSet.id).one('truncate').post()
                 .then(function() {
@@ -128,7 +128,7 @@
                     });
             }, 500);
         }
-        
+
         function _mapRowsForDataSet(dataSets) {
             angular.forEach(dataSets.records, function (dataSet) {
                 var row = _.find(dataSetRows, function (dataSetRow) {

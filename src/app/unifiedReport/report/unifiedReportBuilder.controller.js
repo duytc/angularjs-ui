@@ -755,7 +755,7 @@
 
                 if (transform.type == 'addCalculatedField') {
                     angular.forEach(transform.fields, function (field) {
-                        angular.forEach($scope.selectedFields, function replace(dm) {
+                        angular.forEach($scope.totalDimensionsMetrics, function replace(dm) {
                             if (!field.expression || !angular.isString(field.expression)) {
                                 return;
                             }
@@ -863,11 +863,12 @@
         function _setTotalDimensionsMetrics(dataSet) {
             var allFields = angular.extend(angular.copy(dataSet.dimensions), angular.copy(dataSet.metrics));
 
-            angular.forEach(allFields, function (field) {
+            angular.forEach(allFields, function (type, field) {
                 $scope.totalDimensionsMetrics.push({
                     label: field + ' (' + dataSet.name + ')',
                     key: field + '_' + dataSet.id,
-                    root: field
+                    root: field,
+                    type: type
                 })
             });
         }
@@ -1174,7 +1175,7 @@
                 angular.forEach($scope.reportBuilder.transforms, function (transform) {
                     if (transform.type == 'addCalculatedField') {
                         angular.forEach(transform.fields, function (field) {
-                            angular.forEach($scope.selectedFields, function replace(dm) {
+                            angular.forEach($scope.totalDimensionsMetrics, function replace(dm) {
                                 if (!field.expression || !angular.isString(field.expression)) {
                                     return;
                                 }
