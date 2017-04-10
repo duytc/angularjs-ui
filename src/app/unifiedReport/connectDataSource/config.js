@@ -45,11 +45,11 @@
             {key: 'in', label: 'In'},
             {key: 'not in', label: 'Not In'},
             {key: 'smaller', label: 'Less Than'},
-            {key: 'smaller or equal', label: 'Less Than or Equal'},
-            {key: 'equal', label: 'Equal'},
-            {key: 'not equal', label: 'Not Equal'},
-            {key: 'greater', label: 'Greater'},
-            {key: 'greater or equal', label: 'Greater Than or Equal'}
+            {key: 'smaller or equal', label: 'Less Than or Equals'},
+            {key: 'equal', label: 'Equals'},
+            {key: 'not equal', label: 'Not Equal To'},
+            {key: 'greater', label: 'Greater Than'},
+            {key: 'greater or equal', label: 'Greater Than or Equals'}
         ])
         .constant('COMPARISON_TYPES_FILTER_CONNECT_TEXT', [
             {key: 'in', label: 'In'},
@@ -63,11 +63,11 @@
             {key: 'in', label: 'In'},
             {key: 'not in', label: 'Not In'},
             {key: 'smaller', label: 'Less Than'},
-            {key: 'smaller or equal', label: 'Less Than or Equal'},
-            {key: 'equal', label: 'Equal'},
-            {key: 'not equal', label: 'Not Equal'},
-            {key: 'greater', label: 'Greater'},
-            {key: 'greater or equal', label: 'Greater Than or Equal'},
+            {key: 'smaller or equal', label: 'Less Than or Equals'},
+            {key: 'equal', label: 'Equals'},
+            {key: 'not equal', label: 'Not Equal To'},
+            {key: 'greater', label: 'Greater Than'},
+            {key: 'greater or equal', label: 'Greater Than or Equals'},
             // {key: 'startsWith', label: 'Starts With'},
             // {key: 'endsWith', label: 'Ends With'},
             // {key: 'contain', label: 'Contain'},
