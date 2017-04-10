@@ -26,13 +26,6 @@
             {key: 'checkAt', label: 'Check At'}
         ];
 
-        $scope.mapType = {
-            plainText: 'text',
-            secure: 'password',
-            date: 'text',
-            regex: 'text'
-        };
-
         $scope.datePickerOpts = {
             singleDatePicker: true
         };
