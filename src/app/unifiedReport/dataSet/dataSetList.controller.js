@@ -43,7 +43,7 @@
         $scope.changePage = changePage;
         $scope.searchData = searchData;
         $scope.removeAllData = removeAllData;
-
+        
         function removeAllData(dataSet) {
             var modalInstance = $modal.open({
                 templateUrl: 'unifiedReport/dataSet/removeAllDataConfirm.tpl.html'
@@ -140,7 +140,7 @@
                     });
             }, 500);
         }
-
+        
         function _mapRowsForDataSet(dataSets) {
             angular.forEach(dataSets.records, function (dataSet) {
                 var row = _.find(dataSetRows, function (dataSetRow) {
