@@ -40,7 +40,7 @@
         };
 
         if (!$scope.hasData()) {
-            AlertService.replaceAlerts({
+            AlertService.addAlert({
                 type: 'warning',
                 message: 'There is currently no imported data'
             });
