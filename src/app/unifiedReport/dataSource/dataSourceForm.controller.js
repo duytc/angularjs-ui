@@ -281,7 +281,7 @@
             }
 
             if(dataSource.useIntegration) {
-                dataSource.format = null;
+                // dataSource.format = null;
 
                 angular.forEach(dataSource.dataSourceIntegrations, function (dataSourceIntegration) {
                     angular.forEach(dataSourceIntegration.params, function (param) {
