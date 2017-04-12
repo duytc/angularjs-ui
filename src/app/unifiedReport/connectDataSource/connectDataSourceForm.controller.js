@@ -417,6 +417,8 @@
                 }
             });
 
+            delete connectDataSource.userReorderTransformsAllowed;
+
             return connectDataSource;
         }
 
@@ -673,7 +675,7 @@
                     return 'Cannot preview data - MAPPING ERROR: Found invalid content ' + '"' + detail.content + '"' + ' on field ' + '"' + detail.column + '"' + '.';
 
                 case ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL:
-                    return 'Cannot preview data - REQUIRE ERROR: Required field ' + '"' + detail.column + '"' + ' dose not exist.';
+                    return 'Cannot preview data - REQUIRE ERROR: Required field ' + '"' + detail.column + '"' + ' does not exist.';
 
                 case ALERT_CODE_FILTER_ERROR_INVALID_NUMBER:
                     return 'Cannot preview data - TRANSFORM ERROR: Invalid number format on field ' + '"' + detail.column + '"' + '.';

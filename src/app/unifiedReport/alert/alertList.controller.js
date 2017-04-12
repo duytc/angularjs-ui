@@ -296,7 +296,7 @@
                     return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - MAPPING ERROR: found invalid content ' + '"' + detail.content + '"' + ' on field ' + '"' + detail.column + '"' + '.';
 
                 case ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL:
-                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - REQUIRE ERROR: required field ' + '"' + detail.column + '"' + ' dose not exist.';
+                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - REQUIRE ERROR: required field ' + '"' + detail.column + '"' + ' does not exist.';
 
                 case ALERT_CODE_FILTER_ERROR_INVALID_NUMBER:
                     return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - invalid number format on field ' + '"' + detail.column + '"' + '.';
