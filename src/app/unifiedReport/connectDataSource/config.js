@@ -49,7 +49,9 @@
             {key: 'equal', label: 'Equals'},
             {key: 'not equal', label: 'Not Equal To'},
             {key: 'greater', label: 'Greater Than'},
-            {key: 'greater or equal', label: 'Greater Than or Equals'}
+            {key: 'greater or equal', label: 'Greater Than or Equals'},
+            {key: 'isEmpty', label: 'Is Empty'},
+            {key: 'isNotEmpty', label: 'Is Not Empty'}
         ])
         .constant('COMPARISON_TYPES_FILTER_CONNECT_TEXT', [
             {key: 'in', label: 'In'},
@@ -57,7 +59,9 @@
             {key: 'contains', label: 'Contains'},
             {key: 'not contains', label: 'Does Not Contain'},
             {key: 'start with', label: 'Starts With'},
-            {key: 'end with', label: 'Ends With'}
+            {key: 'end with', label: 'Ends With'},
+            {key: 'isEmpty', label: 'Is Empty'},
+            {key: 'isNotEmpty', label: 'Is Not Empty'}
         ])
         .constant('COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE', [
             {key: 'in', label: 'In'},
