@@ -1255,6 +1255,7 @@
                 "REQUIRES": "Requires",
                 "FILTERS": "Filters",
                 "TRANSFORMATIONS": "Transformations",
+                "RELOAD_ALL_DATA": "Reload All Data",
 
                 "NEW_CONNECTED_DATA_SOURCE": "New Connected Data Source",
                 "EDIT": "Edit Connected Data Source",

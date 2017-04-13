@@ -43,6 +43,23 @@
         $scope.changePage = changePage;
         $scope.searchData = searchData;
         $scope.removeAllData = removeAllData;
+        $scope.reloadAllData = reloadAllData;
+        
+        function reloadAllData(dataSet) {
+            UnifiedReportDataSetManager.one(dataSet.id).one('reloadalldatas').post()
+                .then(function() {
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The data was reloaded. Please wait a few minutes for the changes to take effect.'
+                    });
+                })
+                .catch(function() {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'The data could not be reloaded'
+                    });
+                });
+        }
         
         function removeAllData(dataSet) {
             var modalInstance = $modal.open({

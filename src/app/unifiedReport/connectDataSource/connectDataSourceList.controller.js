@@ -27,6 +27,23 @@
         $scope.backToDataSetList = backToDataSetList;
         $scope.showPagination = showPagination;
         $scope.confirmDeletion = confirmDeletion;
+        $scope.reloadAllData = reloadAllData;
+
+        function reloadAllData(connect) {
+            UnifiedReportConnectDataSourceManager.one(connect.id).one('reloadalldatas').post()
+                .then(function() {
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The data was reloaded. Please wait a few minutes for the changes to take effect.'
+                    });
+                })
+                .catch(function() {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'The data could not be reloaded'
+                    });
+                });
+        }
 
         function confirmDeletion(connectDataSource, index) {
             var modalInstance = $modal.open({
