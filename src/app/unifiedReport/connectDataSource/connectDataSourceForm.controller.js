@@ -662,7 +662,11 @@
         }
 
         function convertMessage(message) {
-            message = angular.fromJson(message);
+            try {
+                message = angular.fromJson(message);
+            } catch(err) {
+                return 'An unknown server error occurred'
+            }
 
             var code = message.code;
             var detail = message.detail;
