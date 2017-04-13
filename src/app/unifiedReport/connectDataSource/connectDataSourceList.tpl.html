@@ -35,9 +35,10 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <li ng-if="!isSubPublisher()"><a ui-sref="^.edit({ id: item.id })">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.EDIT' | translate }}</a></li>
+                                <li class="divider"></li>
                                 <li><a ng-click="reloadAllData(item)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.RELOAD_ALL_DATA' | translate }}</a></li>
                                 <li class="divider"></li>
-                                <li ng-if="!isSubPublisher()"><a ui-sref="^.edit({ id: item.id })">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.EDIT' | translate }}</a></li>
                                 <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item, $index)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.DELETE' | translate }}</a></li>
                             </ul>
                         </div>
