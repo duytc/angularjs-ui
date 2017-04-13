@@ -50,7 +50,6 @@
             joinBy: [],
             weightedCalculations: [],
             transforms: [],
-            userReorderTransformsAllowed: false,
             formats: [],
             showInTotal: [],
             multiView: false,
