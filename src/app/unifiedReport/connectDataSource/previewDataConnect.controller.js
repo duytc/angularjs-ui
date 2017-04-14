@@ -6,7 +6,9 @@
 
     function PreviewDataConnect($scope, reportData) {
         $scope.reportData = reportData;
-        $scope.columns = reportData.length > 0 ? Object.keys(reportData[0]) : [];
+        $scope.columns = !!reportData && angular.isObject(reportData.columns) ? _.keys(reportData.columns) : [];
+        $scope.reports = !!reportData && !!reportData.reports ? reportData.reports : [];
+        $scope.types = reportData.types;
 
         $scope.tableConfig = {
             maxPages: 10,

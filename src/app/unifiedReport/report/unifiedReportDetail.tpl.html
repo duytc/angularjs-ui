@@ -39,11 +39,11 @@
     </div>
 
     <div class="panel-body" ng-if="reports.length > 0 && hasResult">
-        <div class="table-responsive" style="overflow-y: auto">
+        <div class="table-responsive table-report-view">
             <table class="table">
                 <thead>
                 <tr>
-                    <th ng-repeat="column in columnPositions" ng-click="sort(column)">{{ titleColumns[column] }}
+                    <th ng-class="{minWidth100: (types[column] == 'date' || types[column] == 'datetime')}" ng-repeat="column in columnPositions" ng-click="sort(column)">{{ titleColumns[column] }}
                         <span class="glyphicon glyphicon-minus" ng-show="!isShow(column)"></span>
                         <span class="glyphicon" ng-show="isShow(column)" ng-class="{'glyphicon-chevron-up':!reverse,'glyphicon-chevron-down':reverse}"></span>
                     </th>
