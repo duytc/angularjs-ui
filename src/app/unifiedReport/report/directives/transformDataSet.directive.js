@@ -80,6 +80,8 @@
                         scope.sortableDefaultValueOptions['disabled'] = true;
                     }
 
+                    scope.patternForAddField =  /^[a-zA-Z_][a-zA-Z0-9_$\s]*$/;
+
                     scope.removeTransform = removeTransform;
                     scope.addTransform = addTransform;
                     scope.addField = addField;
@@ -108,7 +110,6 @@
                     scope.filterFieldByText = filterFieldByText;
                     scope.enableDragDropQueryBuilder = enableDragDropQueryBuilder;
                     scope.getLengthTransform = getLengthTransform;
-                    scope.notOnlyNumberPattern =  '(?!^\\d+$)^.+$';
                     scope.getTransformName = getTransformName;
                     scope.addCalculatedField = addCalculatedField;
                     scope.addDefaultValue = addDefaultValue;
