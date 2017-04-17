@@ -17,7 +17,8 @@
                 totalDimensionsMetrics: '=',
                 dimensionsMetrics: '=',
                 dataSourceFields: '=listDataSourceFields',
-                reorderTransformsAllowed: '='
+                reorderTransformsAllowed: '=',
+                temporaryFields: '='
             },
             restrict: 'AE',
             templateUrl: 'unifiedReport/connectDataSource/directives/transformConnect.tpl.html',
@@ -153,6 +154,11 @@
                     scope.selectedComparison = selectedComparison;
                     scope.addMapFieldForSubsetGroup = addMapFieldForSubsetGroup;
                     scope.getFieldForLeftSideAugmentation = getFieldForLeftSideAugmentation;
+                    scope.getFieldsForLeftSide = getFieldsForLeftSide;
+                    
+                    function getFieldsForLeftSide() {
+                        return angular.copy(scope.totalDimensionsMetrics).concat(scope.temporaryFields)
+                    }
 
                     function getFieldForLeftSideAugmentation(transform) {
                         var fields = angular.copy(scope.dataSourceFields);

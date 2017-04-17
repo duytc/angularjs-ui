@@ -10,8 +10,7 @@
         </div>
 
         <div class="btn-group btnGrouped" dropdown ng-if="!isNew">
-            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify"
-                                                                     aria-hidden="true"></span></button>
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
                 <li><a ng-click="backToConnectDataSourceList()">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.BACK_TO_CONNECT_DATA_SOURCE_LIST' | translate }}</a></li>
             </ul>
@@ -84,6 +83,14 @@
                     </div>
                 </div>
 
+                <div class="form-group" ng-if="!!connectDataSource.dataSource">
+                    <label class="col-sm-1quarter control-label">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.TEMPORARY_FIELDS' | translate }}</label>
+
+                    <div class="col-sm-5">
+                        <oi-select ng-model="connectDataSource.temporaryFields" multiple oi-select-options="{newItem: true, newItemFn: 'addValueTemporaryFields($query)'}" placeholder="Input temporary field"></oi-select>
+                    </div>
+                </div>
+
                 <div class="form-group" ng-if="!isEmpty(connectDataSource.mapFields)">
                     <label class="col-sm-1quarter control-label">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.REQUIRES' | translate }}</label>
 
@@ -112,7 +119,7 @@
 
                     <div class="col-sm-10">
                         <div class="expressions-group">
-                            <transform-connect transforms="connectDataSource.transforms" map-fields="connectDataSource.mapFields" total-dimensions-metrics="totalDimensionsMetrics" dimensions-metrics="dimensionsMetrics" list-data-source-fields="dataSourceFields" reorder-transforms-allowed="connectDataSource.userReorderTransformsAllowed" list-data-sets="dataSets" item-data-set="dataSet"></transform-connect>
+                            <transform-connect transforms="connectDataSource.transforms" map-fields="connectDataSource.mapFields" total-dimensions-metrics="totalDimensionsMetrics" dimensions-metrics="dimensionsMetrics" list-data-source-fields="dataSourceFields" reorder-transforms-allowed="connectDataSource.userReorderTransformsAllowed" list-data-sets="dataSets" item-data-set="dataSet" temporary-fields="connectDataSource.temporaryFields"></transform-connect>
                         </div>
                     </div>
                 </div>

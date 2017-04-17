@@ -46,6 +46,7 @@
             dataSet: dataSet,
             dataSource: null,
             mapFields: {},
+            temporaryFields: [],
             requires: [],
             filters: [],
             transforms: [],
@@ -154,6 +155,15 @@
         $scope.selectDataSource = selectDataSource;
         $scope.selectMapField = selectMapField;
         $scope.previewData = previewData;
+        $scope.addValueTemporaryFields = addValueTemporaryFields;
+        
+        function addValueTemporaryFields($query) {
+            if(!/^[a-zA-Z_][a-zA-Z0-9_$\s]*$/.test($query)) {
+                return;
+            }
+
+            return $query;
+        }
         
         function previewData() {
             var connectDataSource = _refactorJson($scope.connectDataSource);

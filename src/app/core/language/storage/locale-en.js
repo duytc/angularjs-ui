@@ -1252,6 +1252,7 @@
                 "FIELDS": "Fields",
                 "DETECTED_FIELDS": "Detected Fields",
                 "MAP_FIELDS": "Map Fields",
+                "TEMPORARY_FIELDS": "Temporary Fields",
                 "REQUIRES": "Requires",
                 "FILTERS": "Filters",
                 "TRANSFORMATIONS": "Transformations",
