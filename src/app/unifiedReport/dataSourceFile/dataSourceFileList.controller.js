@@ -65,6 +65,7 @@
                 size: 'lg',
                 controller: function ($scope, dataSourceFile) {
                     var mapLabel = {
+                        date: 'Date',
                         body: 'Email Body',
                         dateTime: 'Email Date',
                         from: 'Email From',
