@@ -94,6 +94,16 @@
         $scope.clickMultiView = clickMultiView;
         $scope.clickSubReportsIncluded = clickSubReportsIncluded;
         $scope.getNameDataSet = getNameDataSet;
+        $scope.isFormRunValid = isFormRunValid;
+        $scope.isFormSaveValid = isFormSaveValid;
+
+        function isFormRunValid() {
+            return isFormValid()
+        }
+
+        function isFormSaveValid() {
+            return isFormValid() && !!$scope.reportBuilder.name
+        }
 
         function getNameDataSet(dataSetId) {
             var dataSet = _.find($scope.dataSets, function (dataSet) {

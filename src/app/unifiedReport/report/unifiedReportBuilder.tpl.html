@@ -113,9 +113,9 @@
 
                 <div class="form-group">
                     <div class="col-sm-offset-1quarter col-sm-5">
-                        <button ng-if="!reportBuilder.id" ng-disabled="!isFormValid()" type="submit" class="btn btn-success mce-i-indent" ng-click="getReports()">Run Report</button>
-                        <button ng-if="reportBuilder.id" ng-disabled="!isFormValid()" type="submit" class="btn btn-success mce-i-indent" ng-click="saveReport()">Save Report</button>
-                        <button ng-disabled="!isFormValid()" type="submit" class="btn btn-success mce-i-indent" ng-click="getReports(true)">Run and Save Report</button>
+                        <button ng-if="!reportBuilder.id" ng-disabled="!isFormRunValid()" type="submit" class="btn btn-success mce-i-indent" ng-click="getReports()">Run Report</button>
+                        <button ng-if="reportBuilder.id" ng-disabled="!isFormSaveValid()" type="submit" class="btn btn-success mce-i-indent" ng-click="saveReport()">Save Report</button>
+                        <button ng-disabled="!isFormSaveValid()" type="submit" class="btn btn-success mce-i-indent" ng-click="getReports(true)">Run and Save Report</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">
                             <p>{{ 'VALID_FORM' | translate }}</p>
                         </div>

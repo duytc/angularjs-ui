@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, historyStorage, $stateParams, _, reportView, $translate, reportGroup, getDateReportView, AlertService, unifiedReportFormatReport, UnifiedReportViewManager, UserStateHelper, DateFormatter, HISTORY_TYPE_PATH) {
+    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, reportView, $translate, reportGroup, getDateReportView, AlertService, unifiedReportFormatReport, UnifiedReportViewManager, UserStateHelper, DateFormatter, HISTORY_TYPE_PATH) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -257,31 +257,59 @@
         }
 
         function saveReportView() {
-            $scope.hasSaveRepoerView = true;
-            $scope.formProcessing = true;
+            var dfd = $q.defer();
 
-            if (!$scope.isAdmin()) {
-                delete $scope.reportView.publisher;
-            }
+            dfd.promise
+                .then(function () {
+                    $scope.hasSaveRepoerView = true;
+                    $scope.formProcessing = true;
 
-            var save = !$scope.isNew ? UnifiedReportViewManager.one($scope.reportView.id).patch($scope.reportView) : UnifiedReportViewManager.post($scope.reportView);
+                    if (!$scope.isAdmin()) {
+                        delete $scope.reportView.publisher;
+                    }
 
-            save.then(function (data) {
-                if ($scope.isNew) {
-                    $scope.reportView.id = data.id;
-                    $scope.reportViewForEdit.reportView = data.id;
-                }
+                    var save = !$scope.isNew ? UnifiedReportViewManager.one($scope.reportView.id).patch($scope.reportView) : UnifiedReportViewManager.post($scope.reportView);
 
-                $scope.formProcessing = false;
+                    save.then(function (data) {
+                        if ($scope.isNew) {
+                            $scope.reportView.id = data.id;
+                            $scope.reportViewForEdit.reportView = data.id;
+                        }
 
-                AlertService.replaceAlerts({
-                    type: 'success',
-                    message: $scope.isNew ? 'The report view has been created' : 'The report view has been updated'
+                        $scope.formProcessing = false;
+
+                        AlertService.replaceAlerts({
+                            type: 'success',
+                            message: $scope.isNew ? 'The report view has been created' : 'The report view has been updated'
+                        });
+                    })
+                    .catch(function () {
+                        $scope.hasSaveRepoerView = false;
+                    });
                 });
-            })
-            .catch(function () {
-                $scope.hasSaveRepoerView = false;
-            });
+
+            if (!$scope.reportView.name) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'unifiedReport/report/inputName.tpl.html',
+                    resolve: {
+                        reportView: function () {
+                            return $scope.reportView
+                        }
+                    },
+                    controller: function ($scope, reportView) {
+                        $scope.reportView = reportView;
+                    }
+                });
+
+                modalInstance.result.then(function () {
+                    dfd.resolve();
+                }).catch(function () {
+                    $scope.reportView.name = null;
+                });
+            } else {
+                // if it is not a pause, proceed without a modal
+                dfd.resolve();
+            }
         }
 
         function showPagination() {
