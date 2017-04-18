@@ -35,15 +35,18 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <li><a ng-click="reloadAllData(item)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.RELOAD_ALL_DATA' | translate }}</a></li>
+                                <li class="divider"></li>
                                 <li ng-if="!isSubPublisher()"><a ui-sref="^.edit({ id: item.id })">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.EDIT' | translate }}</a></li>
                                 <li class="divider"></li>
-                                <li><a ng-click="reloadAllData(item)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.RELOAD_ALL_DATA' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ng-click="cloneConnectDataSource(item)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.CLONE_CONNECT_DATA_SOURCE' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item, $index)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.DELETE' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>
-                    <td at-implicit at-sortable at-attribute="dataSource.name" at-initial-sorting="asc" at-title="{{ 'DATA_SOURCE' | translate }}"></td>
+                    <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="{{ 'NAME' | translate }}"></td>
+                    <td at-implicit at-sortable at-attribute="dataSource.name" at-title="{{ 'DATA_SOURCE' | translate }}"></td>
                 </tr>
                 </tbody>
             </table>

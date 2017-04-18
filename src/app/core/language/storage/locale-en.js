@@ -1257,6 +1257,7 @@
                 "FILTERS": "Filters",
                 "TRANSFORMATIONS": "Transformations",
                 "RELOAD_ALL_DATA": "Reload All Data",
+                "NAME": "Name",
 
                 "NEW_CONNECTED_DATA_SOURCE": "New Connected Data Source",
                 "EDIT": "Edit Connected Data Source",
@@ -1264,6 +1265,7 @@
                 "CONFIRM_DELETE": "Are you sure you want to delete this connected data source?",
 
                 "DETECT_FIELDS_FROM_FILE": "Detect fields from file",
+                "CLONE_CONNECT_DATA_SOURCE": "Clone Connected Data Source",
                 "SELECT_A_FILE_FOR_DETECTING_FIELD": "Select a File",
                 "INPUT_DATE_FORMAT_HELP_TEXT": "Custom date must contain only YY, YYYY, M, MM, MMM, MMMM, D, DD, TH:i:s, H:i:s and some special characters such as dashes and spaces",
                 "REPLACEMENT_VALUE_HELP_TEXT": "Replacement value may contain match groups in the form [1] or [2] etc that will be replaced by the text captured in the search pattern"

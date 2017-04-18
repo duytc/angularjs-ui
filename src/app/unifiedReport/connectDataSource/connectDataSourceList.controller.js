@@ -28,6 +28,20 @@
         $scope.showPagination = showPagination;
         $scope.confirmDeletion = confirmDeletion;
         $scope.reloadAllData = reloadAllData;
+        $scope.cloneConnectDataSource = cloneConnectDataSource;
+
+        function cloneConnectDataSource(connect) {
+            $modal.open({
+                templateUrl: 'unifiedReport/connectDataSource/cloneConnectedDataSource.tpl.html',
+                size: 'lg',
+                controller: 'CloneConnectedDataSource',
+                resolve: {
+                    connect: function () {
+                        return connect;
+                    }
+                }
+            });
+        }
 
         function reloadAllData(connect) {
             UnifiedReportConnectDataSourceManager.one(connect.id).one('reloadalldatas').post()
