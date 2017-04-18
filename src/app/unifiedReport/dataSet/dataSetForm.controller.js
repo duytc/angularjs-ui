@@ -114,6 +114,15 @@
             if ($index < $scope.initialMetricSetLength) {
                 $scope.initialMetricSetLength--;
             }
+
+            var findIndexActionRename = _.findIndex($scope.dataSet.actions.rename, function (item) {
+                return  item.to == $scope.dataSet.metrics[$index].name;
+            });
+
+            if(findIndexActionRename > -1) {
+                $scope.dataSet.actions.rename.splice(findIndexActionRename, 1)
+            }
+
             return $scope.dataSet.metrics.splice($index, 1);
         }
 
