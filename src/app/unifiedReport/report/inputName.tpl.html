@@ -3,13 +3,13 @@
 </div>
 <div class="modal-body">
     <div class="form-group">
-        <label for="reportView" class="col-sm-2 control-label">Name</label>
+        <label for="reportView" class="col-sm-2 control-label" style="margin-top: 5px">Name</label>
         <div class="col-sm-10">
-            <input server-error name="reportView" ng-model="reportView.name" min="1" type="text" class="form-control" id="reportView" placeholder="name">
+            <input server-error name="reportView" ng-model="reportView.name" min="1" type="text" class="form-control" id="reportView" placeholder="Name">
         </div>
     </div>
 </div>
 <div class="modal-dialog-footer">
-    <button class="btn btn-primary" ng-click="$dismiss()">{{ 'NO_CANCEL' | translate }}</button>
-    <button class="btn btn-success" ng-click="$close()" ng-disabled="!reportView.name">{{ 'YES_SUBMIT' | translate }}</button>
+    <button class="btn btn-primary" ng-click="$dismiss()">{{ 'CANCEL' | translate }}</button>
+    <button class="btn btn-danger" ng-click="$close()" ng-disabled="!reportView.name">{{ 'SUBMIT' | translate }}</button>
 </div>
