@@ -91,7 +91,9 @@
             replaceText: 'replaceText',
             extractPattern: 'extractPattern',
             augmentation: 'augmentation',
-            subsetGroup: 'subset-group'
+            subsetGroup: 'subsetGroup',
+            convertCase: 'convertCase',
+            normalizeText: 'normalizeText'
         })
         .provider('CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD', {
             $get: function (CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY) {
@@ -107,7 +109,9 @@
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.replaceText, label: 'Replace Text'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.extractPattern, label: 'Extract Pattern'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.augmentation, label: 'Data Augmentation'},
-                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.subsetGroup, label: 'Subset Group'}
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.subsetGroup, label: 'Subset Group'},
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.convertCase, label: 'Convert Case'},
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.normalizeText, label: 'Normalize Text'}
                 ];
             }
         })
@@ -115,6 +119,10 @@
             {key: 'anywhere', label: 'Anywhere'},
             {key: 'at the beginning', label: 'At the Beginning'},
             {key: 'at the end', label: 'At the End'}
+        ])
+        .constant('CONVERT_CASE_TYPES', [
+            {key: 'lowerCase', label: 'Lower Case'},
+            {key: 'upperCase', label: 'Upper Case'}
         ])
         .constant('REPORT_VIEW_INTERNAL_FIELD_VARIABLE', ['__filename', '__email_subject', '__email_body', '__email_date_time'])
     ;

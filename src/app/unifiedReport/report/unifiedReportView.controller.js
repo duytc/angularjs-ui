@@ -198,7 +198,7 @@
                 size: 'lg',
                 resolve: {
                     fieldsReportView: function (UnifiedReportDataSetManager) {
-                        return UnifiedReportDataSetManager.getList({hasConnectedDataSource: true}).then(function (dataSets) {
+                        return UnifiedReportDataSetManager.getList().then(function (dataSets) {
                             var fields = _.union(reportView.dimensions.concat(reportView.metrics));
                             var formatFields = [];
 

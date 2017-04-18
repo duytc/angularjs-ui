@@ -5,7 +5,7 @@
         .directive('transformConnect', transformConnect)
     ;
 
-    function transformConnect($compile, AddCalculatedField, _, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES){
+    function transformConnect($compile, $timeout, AddCalculatedField, _, CONVERT_CASE_TYPES, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES){
         'use strict';
 
         return {
@@ -30,6 +30,7 @@
                     scope.allFiledFormatTypes = CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD;
                     scope.allFiledFormatTypeKeys = CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY;
                     scope.dateFormatTypes = DATE_FORMAT_TYPES;
+                    scope.ConvertCaseTypes = CONVERT_CASE_TYPES;
                     scope.fieldForExpression = [];
                     scope.fieldForExpressionInCalculated = [];
                     scope.positionsForReplaceText = POSITIONS_FOR_REPLACE_TEXT;
@@ -61,12 +62,15 @@
                         return scope.mapFields;
                     }, function (){
                         scope.fieldNames = _.isArray(scope.mapFields) ? scope.mapFields : _.union(_.values(scope.mapFields));
+
+                        _updateTransform();
                     }, true);
 
                     scope.$watch(function (){
                         return scope.transforms;
                     }, function (){
                         selectTypeAddCalculatedField();
+                        _updateTransform();
                     }, true);
 
                     scope.sortableOptions = {
@@ -97,6 +101,8 @@
                     scope.removeTransform = removeTransform;
                     scope.addTransform = addTransform;
                     scope.addField = addField;
+                    scope.addConvertCase = addConvertCase;
+                    scope.addNormalizeText = addNormalizeText;
                     scope.addCalculatedField = addCalculatedField;
                     scope.addReplaceText = addReplaceText;
                     scope.addMapFields = addMapFields;
@@ -104,6 +110,7 @@
                     scope.removeAddValue = removeAddValue;
                     scope.addComparisonPercent = addComparisonPercent;
                     scope.notInMapField = notInMapField;
+                    scope.mapDataSourceField = mapDataSourceField;
                     scope.filterFieldByType = filterFieldByType;
                     scope.filterFieldByText = filterFieldByText;
                     scope.selectTransformType = selectTransformType;
@@ -112,6 +119,8 @@
                     scope.getDimensionsMetricsForComparison = getDimensionsMetricsForComparison;
                     scope.getDimensionsMetricsForAddField = getDimensionsMetricsForAddField;
                     scope.getDimensionsMetricsForTextAddField = getDimensionsMetricsForTextAddField;
+                    scope.getDimensionsMetricsForNormalizeText = getDimensionsMetricsForNormalizeText;
+                    scope.getDimensionsMetricsForConvertCase = getDimensionsMetricsForConvertCase;
                     scope.getDimensionsMetricsForTextAddReplace = getDimensionsMetricsForTextAddReplace;
                     scope.getDimensionsMetricsForTextAddReplace = getDimensionsMetricsForTextAddReplace;
                     scope.getDimensionsMetricsForNumberAddField = getDimensionsMetricsForNumberAddField;
@@ -154,10 +163,68 @@
                     scope.selectedComparison = selectedComparison;
                     scope.addMapFieldForSubsetGroup = addMapFieldForSubsetGroup;
                     scope.getFieldForLeftSideAugmentation = getFieldForLeftSideAugmentation;
+                    scope.filterTarget = filterTarget;
+                    scope.checkOverride = checkOverride;
+                    scope.selectFieldNormalizeAndConvert = selectFieldNormalizeAndConvert;
+                    scope.disabledOverride = disabledOverride;
                     scope.getFieldsForLeftSide = getFieldsForLeftSide;
-                    
+
                     function getFieldsForLeftSide() {
                         return angular.copy(scope.totalDimensionsMetrics).concat(scope.temporaryFields)
+                    }
+
+                    function disabledOverride(field) {
+                        for(var index in scope.transforms) {
+                            var transform = scope.transforms[index];
+
+                            if (transform.type == 'convertCase' || transform.type == 'normalizeText') {
+                                var findField = _.findIndex(transform.fields, function (transformField) {
+                                    return transformField.targetField == field && !transformField.isOverride
+                                });
+
+                                if(findField > -1) {
+                                    return false
+                                }
+                            }
+                        }
+
+                        return !mapDataSourceField(field)
+                    }
+
+                    function selectFieldNormalizeAndConvert(field) {
+                        if(_.keys(scope.mapFields).indexOf(field) == -1) {
+                            field.isOverride = false
+                        } else {
+                            field.isOverride = true
+                        }
+                    }
+
+                    function checkOverride(field) {
+                        field.targetField = null
+                    }
+
+                    function filterTarget(currentField) {
+                        return function (field) {
+                            if(currentField == field) {
+                                return true
+                            }
+
+                            for(var index in scope.transforms) {
+                                var transform = scope.transforms[index];
+
+                                if (transform.type == 'convertCase' || transform.type == 'normalizeText' || transform.type == 'extractPattern' || transform.type == 'replaceText') {
+                                    var findField = _.findIndex(transform.fields, function (transformField) {
+                                        return transformField.targetField == field && !transformField.isOverride
+                                    });
+
+                                    if(findField > -1) {
+                                        return false
+                                    }
+                                }
+                            }
+
+                            return true
+                        }
                     }
 
                     function getFieldForLeftSideAugmentation(transform) {
@@ -489,7 +556,7 @@
                                         }
                                     });
                                     break;
-                                // case 'subset-group':
+                                // case 'subsetGroup':
                                 //     angular.forEach(transform.mapFields, function (mapField){
                                 //         if (!_.isNull(mapField.leftSide)){
                                 //             fieldInConcat.push(mapField.leftSide)
@@ -589,7 +656,7 @@
 
 
                         angular.forEach(scope.transforms, function (transform) {
-                            if(transform.type == 'subset-group' || transform.type == 'augmentation') {
+                            if(transform.type == 'subsetGroup' || transform.type == 'augmentation') {
                                 angular.forEach(transform.mapFields, function (mapField){
                                     if (!_.isNull(mapField.leftSide)){
                                         scope.fieldForExpressionInCalculated.push({label: mapField.leftSide})
@@ -720,6 +787,42 @@
                         });
                     }
 
+                    function getDimensionsMetricsForNormalizeText(fieldCurrent, transform){
+                        var fields = _.union(_getAllFieldInTransform(scope.transforms).concat(scope.dataSourceFields));
+
+                        return _.filter(fields, function (dm){
+                            if (dm == fieldCurrent) {
+                                return true;
+                            }
+
+                            for (var index in transform.fields) {
+                                if (transform.fields[index].field == dm || transform.fields[index].targetField == dm) {
+                                    return false
+                                }
+                            }
+
+                            return true
+                        });
+                    }
+
+                    function getDimensionsMetricsForConvertCase(fieldCurrent, transform){
+                        var fields = _.union(_getAllFieldInTransform(scope.transforms).concat(scope.dataSourceFields));
+
+                        return _.filter(fields, function (dm){
+                            if (dm == fieldCurrent) {
+                                return true;
+                            }
+
+                            for (var index in transform.fields) {
+                                if (transform.fields[index].field == dm || transform.fields[index].targetField == dm) {
+                                    return false
+                                }
+                            }
+
+                            return true
+                        });
+                    }
+
                     function getDimensionsMetricsForTextAddReplace(fieldCurrent, transformFields){
                         return _.filter(scope.totalDimensionsMetrics, function (dm){
                             if (dm == fieldCurrent) {
@@ -749,7 +852,7 @@
                         for (var index in scope.transforms) {
                             var transformItem  = scope.transforms[index];
 
-                            if(transformItem.type == 'subset-group') {
+                            if(transformItem.type == 'subsetGroup') {
                                 angular.forEach(transformItem.mapFields, function (mapField) {
                                     if(!!mapField.leftSide) {
                                         fields.push(mapField.leftSide);
@@ -917,7 +1020,7 @@
                         for(var index in scope.transforms) {
                             var transform = scope.transforms[index];
 
-                            if(transform.type == 'augmentation' || transform.type == 'subset-group') {
+                            if(transform.type == 'augmentation' || transform.type == 'subsetGroup') {
                                 for(var indexMap in transform.mapFields) {
                                     if(transform.mapFields[indexMap].leftSide == field) {
                                         return false
@@ -927,6 +1030,10 @@
                         }
 
                         return _.values(scope.mapFields).indexOf(field) == -1;
+                    }
+
+                    function mapDataSourceField(field){
+                        return _.keys(scope.mapFields).indexOf(field) > -1;
                     }
 
                     function filterTextFields(field){
@@ -964,6 +1071,26 @@
                         fields.push({
                             field: null,
                             value: null
+                        });
+                    }
+
+                    function addConvertCase(fields){
+                        fields.push({
+                            field: null,
+                            isOverride: true,
+                            targetField: null,
+                            type: null
+                        });
+                    }
+
+                    function addNormalizeText(fields){
+                        fields.push({
+                            field: null,
+                            isOverride: true,
+                            targetField: null,
+                            numberRemoved: false,
+                            dashesRemoved: false,
+                            alphabetCharacterRemoved: false
                         });
                     }
 
@@ -1048,6 +1175,14 @@
                                     }
                                 })
                             }
+
+                            if (transform.type == 'convertCase' || transform.type == 'normalizeText') {
+                                angular.forEach(transform.fields, function (field){
+                                    if (!field.isOverride) {
+                                        fields.push(field.targetField);
+                                    }
+                                })
+                            }
                         });
 
                         return fields;
@@ -1063,6 +1198,28 @@
                         }
 
                         return []
+                    }
+
+                    function _updateTransform() {
+                        angular.forEach(scope.transforms, function (transform) {
+                            if (transform.type == 'convertCase' || transform.type == 'normalizeText') {
+                                angular.forEach(transform.fields, function (field){
+                                    if(!mapDataSourceField(field.field)) {
+                                        for(var index in scope.transforms) {
+                                            var transformItem = scope.transforms[index];
+
+                                            for(var indexField in transformItem.fields) {
+                                                if(transformItem.fields[indexField].targetField == field.field && !!field.field) {
+                                                    return;
+                                                }
+                                            }
+                                        }
+
+                                        field.isOverride = false
+                                    }
+                                })
+                            }
+                        })
                     }
 
                     directive || (directive = $compile(content));

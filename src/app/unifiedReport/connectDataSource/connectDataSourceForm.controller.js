@@ -298,9 +298,15 @@
             for (x in $scope.connectDataSource.transforms) {
                 var transform = $scope.connectDataSource.transforms[x];
 
-                if((transform.type != 'number' && transform.type != 'date' && transform.type != 'augmentation' && transform.type != 'subset-group')) {
+                if((transform.type != 'number' && transform.type != 'date' && transform.type != 'augmentation' && transform.type != 'subsetGroup')) {
                     if (_.isUndefined(transform.fields) || transform.fields.length == 0) {
                         return false;
+                    }
+                }
+
+                if (transform.type == 'subsetGroup') {
+                    if(!transform.mapFields || transform.mapFields.length == 0) {
+                        return false
                     }
                 }
 
@@ -645,6 +651,33 @@
                     //    }
                     //});
                 }
+
+                var allFields = _.union(_getAllFieldInTransform($scope.connectDataSource.transforms).concat($scope.dataSourceFields));
+
+                if (transform.type == 'convertCase' || transform.type == 'normalizeText') {
+                    angular.forEach(transform.fields, function (field) {
+                        var indexTarget = _.findIndex($scope.connectDataSource.transforms, function (transformItem) {
+                            if(transformItem.type == 'convertCase' || transformItem.type == 'normalizeText') {
+                                for(var index in transformItem.fields) {
+                                    var fieldItem = transformItem.fields[index];
+
+                                    if(!fieldItem.isOverride && fieldItem.targetField == field.field) {
+                                        return true
+                                    }
+                                }
+                            }
+
+                            return false
+                        });
+
+                        if(allFields.indexOf(field.field) == -1 && indexTarget == -1) {
+                            console.log('ahihi');
+                            setTimeout(function () {
+                                field.field = null;
+                            }, 0);
+                        }
+                    });
+                }
             });
         }
         
@@ -669,6 +702,29 @@
                     });
                 }
             })
+        }
+
+        function _getAllFieldInTransform(transforms){
+            var fields = [];
+            angular.forEach(transforms, function (transform){
+                if (transform.type == 'addField' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent' || transform.type == 'addConcatenatedField') {
+                    angular.forEach(transform.fields, function (field){
+                        if (!!field.field) {
+                            fields.push(field.field);
+                        }
+                    })
+                }
+
+                if (transform.type == 'convertCase' || transform.type == 'normalizeText') {
+                    angular.forEach(transform.fields, function (field){
+                        if (!field.isOverride) {
+                            fields.push(field.targetField);
+                        }
+                    })
+                }
+            });
+
+            return fields;
         }
 
         function convertMessage(message) {
