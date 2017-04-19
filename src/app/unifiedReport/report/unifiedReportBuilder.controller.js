@@ -809,6 +809,8 @@
                 delete reportBuilder.reportViewMultiViews
             }
 
+            delete  reportBuilder.userReorderTransformsAllowed;
+
             return reportBuilder;
         }
 
