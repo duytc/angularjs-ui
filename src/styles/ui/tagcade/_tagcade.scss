@@ -408,6 +408,10 @@ legend {
   @include ui-select-width(180px);
 }
 
+.select-width-400.form-group {
+  @include ui-select-width(400px);
+}
+
 .select-alert-date.form-group {
   @include ui-select-width(60px);
 }

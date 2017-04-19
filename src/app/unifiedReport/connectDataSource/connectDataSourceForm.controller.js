@@ -155,8 +155,9 @@
         $scope.selectDataSource = selectDataSource;
         $scope.selectMapField = selectMapField;
         $scope.previewData = previewData;
+        $scope.viewOriginal = viewOriginal;
         $scope.addValueTemporaryFields = addValueTemporaryFields;
-        
+
         function addValueTemporaryFields($query) {
             if(!/^[a-zA-Z_][a-zA-Z0-9_$\s]*$/.test($query)) {
                 return;
@@ -164,7 +165,75 @@
 
             return $query;
         }
-        
+
+        function viewOriginal() {
+            $modal.open({
+                templateUrl: 'unifiedReport/connectDataSource/viewOriginal.tpl.html',
+                size: 'lg',
+                resolve: {
+                    dataSourceEntries: function (UnifiedReportDataSourceManager) {
+                        return UnifiedReportDataSourceManager.one($scope.connectDataSource.dataSource.id || $scope.connectDataSource.dataSource).one('datasourceentries').get();
+                    }
+                },
+                controller: function ($scope, $modal, dataSourceEntries, UnifiedReportDataSourceFileManager) {
+                    $scope.dataSourceEntries = dataSourceEntries;
+                    $scope.reportView = [];
+                    $scope.columns = [];
+                    $scope.reports = [];
+
+                    $scope.itemsPerPage = [
+                        {label: '10', key: '10'},
+                        {label: '20', key: '20'},
+                        {label: '30', key: '30'},
+                        {label: '40', key: '40'},
+                        {label: '50', key: '50'},
+                        {label: '100', key: '100'},
+                        {label: '200', key: '200'}
+                    ];
+
+                    $scope.tableConfig = {
+                        maxPages: 10,
+                        itemsPerPage: 10
+                    };
+
+                    $scope.selectedData = {
+                        importedDataSource: null,
+                        limit: 20
+                    };
+
+                    $scope.isNullValue = isNullValue;
+                    $scope.viewOriginalData = viewOriginalData;
+
+                    function viewOriginalData() {
+                        UnifiedReportDataSourceFileManager.one($scope.selectedData.importedDataSource).one('preview').get({limit: $scope.selectedData.limit})
+                            .then(function (reportView) {
+                                $scope.reportView = reportView;
+                                $scope.columns = reportView.columns;
+                                $scope.reports = reportView.reports;
+                            })
+                            .catch(function (response) {
+                                $modal.open({
+                                    templateUrl: 'unifiedReport/connectDataSource/alertErrorOriginal.tpl.html',
+                                    size: 'lg',
+                                    resolve: {
+                                        message: function () {
+                                            return convertMessage(response.data.message);
+                                        }
+                                    },
+                                    controller: function ($scope, message) {
+                                        $scope.message = message;
+                                    }
+                                });
+                            });
+                    }
+
+                    function isNullValue(report, column) {
+                        return !report[column] && report[column] != 0;
+                    }
+                }
+            });
+        }
+
         function previewData() {
             var connectDataSource = _refactorJson($scope.connectDataSource);
             connectDataSource.isDryRun = true;
@@ -671,7 +740,6 @@
                         });
 
                         if(allFields.indexOf(field.field) == -1 && indexTarget == -1) {
-                            console.log('ahihi');
                             setTimeout(function () {
                                 field.field = null;
                             }, 0);
