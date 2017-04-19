@@ -82,7 +82,7 @@
                 templateUrl: 'unifiedReport/dataSourceFile/viewDetails.tpl.html',
                 size: 'lg',
                 controller: function ($scope, dataSourceFile) {
-                    var mapLabel = {
+                    $scope.mapLabel = {
                         date: 'Date',
                         body: 'Email Body',
                         dateTime: 'Email Date',
@@ -93,9 +93,13 @@
 
                     $scope.dataSourceFile = dataSourceFile;
                     $scope.metaData = dataSourceFile.metaData;
+                    
+                    $scope.showAlert = function () {
+                        if(!$scope.metaData || !angular.isObject($scope.metaData) || _.difference(_.keys($scope.mapLabel), _.keys($scope.metaData)).length == 6) {
+                            return true
+                        }
 
-                    $scope.getLabelForKeyViewDetail = function (key) {
-                        return !!mapLabel[key] ? mapLabel[key] : key
+                        return false
                     }
                 },
                 resolve: {
