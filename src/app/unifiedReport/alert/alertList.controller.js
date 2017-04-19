@@ -34,7 +34,9 @@
         $scope.checkAllItem = false;
         $scope.alerts = alerts;
         $scope.selectedAlert = [];
-      
+
+        var itemsForPager = [];
+
         $scope.showPagination = showPagination;
         $scope.checkedAlert = checkedAlert;
         $scope.selectEntity = selectEntity;
@@ -51,10 +53,29 @@
 
         $scope.getTitleAlert= getTitleAlert;
         $scope.setItemForPager = setItemForPager;
+        $scope.selectAllAlertInPages = selectAllAlertInPages;
+        $scope.noneSelect = noneSelect;
 
-        var itemsForPager = [];
+        function selectAllAlertInPages() {
+            $scope.checkAllItem = true;
+
+            angular.forEach(alerts, function (alert) {
+                if($scope.selectedAlert.indexOf(alert.id) == -1) {
+                    $scope.selectedAlert.push(alert.id)
+                }
+            });
+        }
+
+        function noneSelect() {
+            $scope.selectedAlert = [];
+            $scope.checkAllItem = false
+        }
 
         function setItemForPager(item) {
+            if(itemsForPager.length > $scope.tableConfig.itemsPerPage) {
+                itemsForPager.splice(0, $scope.tableConfig.itemsPerPage);
+            }
+
             itemsForPager.push(item);
         }
 
@@ -92,7 +113,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'success',
-                        message: 'The alerts selected have been deleted'
+                        message: $scope.selectedAlert.length + ' files have been deleted'
                     });
                 });
         }
@@ -110,7 +131,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'success',
-                        message: 'The alerts selected have been marked as unread'
+                        message: $scope.selectedAlert.length + ' files have been unread'
                     });
                 });
         }
@@ -128,7 +149,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'success',
-                        message: 'The alerts selected have been marked as read'
+                        message: $scope.selectedAlert.length + ' files have been marked as read'
                     });
                 });
         }
@@ -158,8 +179,12 @@
 
         function selectAll () {
             if($scope.selectedAlert.length == itemsForPager.length) {
-                $scope.selectedAlert = []
+                $scope.selectedAlert = [];
+                $scope.checkAllItem = false;
             } else {
+                $scope.selectedAlert = [];
+                $scope.checkAllItem = true;
+
                 angular.forEach(itemsForPager, function (alert) {
                     if($scope.selectedAlert.indexOf(alert.id) == -1) {
                         $scope.selectedAlert.push(alert.id)
@@ -334,8 +359,13 @@
         $scope.$watch(function () {
             return $scope.tableConfig.currentPage
         }, function () {
-            $scope.selectedAlert = [];
             itemsForPager = [];
+
+            if($scope.checkAllItem == true && alerts.length == $scope.selectedAlert.length) {
+                return
+            }
+
+            $scope.selectedAlert = [];
             $scope.checkAllItem = false;
         });
     }

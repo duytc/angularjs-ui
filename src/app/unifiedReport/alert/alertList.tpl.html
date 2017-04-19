@@ -9,9 +9,20 @@
     <div class="panel-body">
         <div class="table-responsive mail-container">
             <div class="mail-options">
-                <label class="ui-checkbox"><input name="checkbox1" type="checkbox" value="option1" ng-model="checkAllItem" ng-click="selectAll()"><span>Toggle All</span></label>
+                <!--<label class="ui-checkbox"><input name="checkbox1" type="checkbox" value="option1" ng-model="checkAllItem" ng-click="selectAll()"><span>Toggle All</span></label>-->
 
-                <div class="btn-group" dropdown>
+                <div class="btn-group pull-left check-toggle-dropdown" dropdown>
+                    <button type="button" class="btn " dropdown-toggle>
+                        <label stop-event class="ui-checkbox check-toggle-alert"><input name="checkbox1" type="checkbox" value="option1" ng-model="checkAllItem" ng-click="selectAll()"><span></span></label>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                        <li ng-click="selectAllAlertInPages()"><a>All Pages</a></li>
+                        <li ng-click="noneSelect()"><a>None</a></li>
+                    </ul>
+                </div>
+
+                <div class="btn-group pull-left" dropdown>
                     <button type="button" class="btn" ng-disabled="selectedAlert.length == 0" dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                     <ul class="dropdown-menu pull-right-dropdown" role="menu">
                         <li><a ng-click="markAsReadMulti()">{{ 'UNIFIED_REPORT_ALERT_MODULE.MARK_AS_READ' | translate }}</a></li>
@@ -22,6 +33,10 @@
                         <li class="divider"></li>
                         <li><a ng-click="confirmClick('Are you sure want to delete this alerts?') && deleteAlertMulti()" confirm-click >{{ 'UNIFIED_REPORT_ALERT_MODULE.DELETE' | translate }}</a></li>
                     </ul>
+                </div>
+
+                <div ng-if="selectedAlert.length > 0" class="alert alert-warning alert-number">
+                    All <strong>{{ selectedAlert.length }}</strong> alerts on this page are selected.
                 </div>
             </div>
 

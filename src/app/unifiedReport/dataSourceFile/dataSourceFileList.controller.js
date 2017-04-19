@@ -5,7 +5,7 @@
         .controller('DataSourceFileList', DataSourceFileList)
     ;
 
-    function DataSourceFileList($scope, $q, $modal, AtSortableService, EVENT_ACTION_SORTABLE, $stateParams, dataSource, dataSourceFiles, UnifiedReportDataSourceManager, UnifiedReportDataSourceFileManager, $translate, AlertService, historyStorage, HISTORY_TYPE_PATH) {
+    function DataSourceFileList($scope, $q, $modal, AtSortableService, allEntryIds, EVENT_ACTION_SORTABLE, $stateParams, dataSource, dataSourceFiles, UnifiedReportDataSourceManager, UnifiedReportDataSourceFileManager, $translate, AlertService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.dataSourceFiles = (dataSourceFiles.constructor === Array) ? {
             records: dataSourceFiles,
             totalRecord: (dataSourceFiles.length)
@@ -35,6 +35,8 @@
         $scope.checkAllItem = false;
         $scope.selectedDataSourceFiles = [];
 
+        var itemsForPager = [];
+
         $scope.hasData = function () {
             return !!$scope.dataSourceFiles && $scope.dataSourceFiles.totalRecord > 0;
         };
@@ -45,7 +47,6 @@
                 message: 'There is currently no imported data'
             });
         }
-
 
         $scope.selectAll = selectAll;
         $scope.checkedDataSourceFile = checkedDataSourceFile;
@@ -58,6 +59,23 @@
         $scope.backToListDataSource = backToListDataSource;
         $scope.replayData = replayData;
         $scope.viewDetails = viewDetails;
+        $scope.setItemForPager = setItemForPager;
+        $scope.noneSelect = noneSelect;
+        $scope.selectAllInPages = selectAllInPages;
+
+        function selectAllInPages() {
+            $scope.checkAllItem = true;
+            $scope.selectedDataSourceFiles = angular.copy(allEntryIds);
+        }
+
+        function noneSelect() {
+            $scope.checkAllItem = false;
+            $scope.selectedDataSourceFiles = [];
+        }
+
+        function setItemForPager(item) {
+            itemsForPager.push(item);
+        }
         
         function viewDetails(dataSourceFile) {
             $modal.open({
@@ -141,12 +159,16 @@
         };
 
         function selectAll () {
-            if($scope.selectedDataSourceFiles.length == $scope.dataSourceFiles.records.length) {
-                $scope.selectedDataSourceFiles = []
+            if($scope.selectedDataSourceFiles.length == itemsForPager.length) {
+                $scope.selectedDataSourceFiles = [];
+                $scope.checkAllItem = false;
             } else {
-                angular.forEach($scope.dataSourceFiles.records, function (dataSourceFile) {
-                    if($scope.selectedDataSourceFiles.indexOf(dataSourceFile.id) == -1) {
-                        $scope.selectedDataSourceFiles.push(dataSourceFile.id)
+                $scope.selectedDataSourceFiles = [];
+                $scope.checkAllItem = true;
+
+                angular.forEach(itemsForPager, function (item) {
+                    if($scope.selectedDataSourceFiles.indexOf(item.id) == -1) {
+                        $scope.selectedDataSourceFiles.push(item.id)
                     }
                 });
             }
@@ -167,6 +189,11 @@
             }
 
             if($scope.selectedDataSourceFiles.length == $scope.dataSourceFiles.records.length) {
+                $scope.checkAllItem = true;
+            }
+
+
+            if( _.difference(allEntryIds, $scope.selectedDataSourceFiles).length == 0) {
                 $scope.checkAllItem = true;
             }
         }
@@ -215,7 +242,9 @@
         });
 
         $scope.$on('$locationChangeSuccess', function() {
-            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.dataSourceFile)
+            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.dataSourceFile);
+
+            itemsForPager = [];
         });
 
         function changePage(currentPage) {
@@ -223,8 +252,8 @@
 
             _getDataSourceFiles(params)
                 .then(function () {
-                    $scope.selectedDataSourceFiles = [];
-                    $scope.checkAllItem = false;
+                    // $scope.selectedDataSourceFiles = [];
+                    // $scope.checkAllItem = false;
                 });
         }
 
@@ -233,8 +262,8 @@
             params = angular.extend(params, query);
             _getDataSourceFiles(params)
                 .then(function () {
-                    $scope.selectedDataSourceFiles = [];
-                    $scope.checkAllItem = false;
+                    // $scope.selectedDataSourceFiles = [];
+                    // $scope.checkAllItem = false;
                 });
         }
 
@@ -257,7 +286,7 @@
 
                                     resolve(dataSourceFiles);
 
-                                    _resetCheckImported($scope.dataSourceFiles)
+                                    // _resetCheckImported($scope.dataSourceFiles)
                                 }, 0)
                             });
 

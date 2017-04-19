@@ -35,6 +35,18 @@
                             return dataSourceFiles.plain();
                         });
                     },
+                    allEntryIds: function(UnifiedReportDataSourceManager, $stateParams) {
+                        return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).one('datasourceentryids').getList()
+                            .then(function (data) {
+                                var ids = [];
+
+                                angular.forEach(data, function (item) {
+                                    ids.push(item.id);
+                                });
+
+                                return ids
+                            });
+                    },
                     dataSource: function(UnifiedReportDataSourceManager, $stateParams) {
                         return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).get();
                     },
@@ -63,6 +75,18 @@
                          return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).customGET('datasourceentries',{page:$stateParams.page}).then(function (dataSourceFiles) {
                             return dataSourceFiles.plain();
                         });
+                    },
+                    allEntryIds: function(UnifiedReportDataSourceManager, $stateParams) {
+                        return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).one('datasourceentryids').getList()
+                            .then(function (data) {
+                                var ids = [];
+
+                                angular.forEach(data, function (item) {
+                                    ids.push(item.id);
+                                });
+
+                                return ids
+                            });
                     },
                     dataSource: function(UnifiedReportDataSourceManager, $stateParams) {
                         return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).get();
