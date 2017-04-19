@@ -4,37 +4,65 @@
     angular.module('tagcade.unifiedReport.dataSourceFile')
         .controller('uploadFileForm', uploadFileForm);
 
-    function uploadFileForm($scope, $stateParams, dataSource, dataSources, FileUploader, sessionStorage, UnifiedReportDataSourceManager, AlertService, historyStorage, HISTORY_TYPE_PATH) {
+    function uploadFileForm($scope, dataSource, dataSources, FileUploader, sessionStorage, UnifiedReportDataSourceManager, AlertService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.dataSourceEntry = {
             dataSource: dataSource || null
         };
 
         $scope.dataSources = dataSources || null;
         $scope.formProcessing = false;
-
-        $scope.isFormValid = isFormValid;
-        $scope.selectDataSource = selectDataSource;
+        $scope.metadataKeys = [
+            {key: 'date', label: 'Date'},
+            {key: 'from', label: 'Email From'},
+            {key: 'body', label: 'Email Body'},
+            {key: 'subject', label: 'Email Subject'},
+            {key: 'filename', label: 'Email Filename '},
+            {key: 'dateTime', label: 'Email Received Date '}
+        ];
 
         var baseUploadURL = UnifiedReportDataSourceManager.one().getRestangularUrl() + '/%dataSourceId%/uploads';
 
-        // var dropUploader = $scope.dropUploader = new FileUploader({
-        //     url: dataSource ? baseUploadURL.replace('%dataSourceId%', dataSource.id) : baseUploadURL,
-        //     headers: {
-        //         Authorization: 'Bearer ' + sessionStorage.getCurrentToken()
-        //     }
-        // });
-
         var uploader = $scope.uploader = new FileUploader({
             url: dataSource ? baseUploadURL.replace('%dataSourceId%', dataSource.id) : baseUploadURL,
-            // autoUpload: true,
             headers: {
                 Authorization: 'Bearer ' + sessionStorage.getCurrentToken()
             }
         });
 
+        $scope.isFormValid = isFormValid;
+        $scope.selectDataSource = selectDataSource;
+        $scope.addMetadata = addMetadata;
+        $scope.removeParams = removeParams;
+        $scope.filterMetadataKeys = filterMetadataKeys;
+
+        function filterMetadataKeys(paramKey, itemMetadata) {
+            return function (param) {
+                if(param.key == paramKey) {
+                    return true
+                }
+
+                for(var index in itemMetadata) {
+                    if(itemMetadata[index].key == param.key) {
+                        return false
+                    }
+                }
+
+                return true
+            }
+        }
+
+        function addMetadata(item) {
+            item.metadata = item.metadata || [];
+
+            item.metadata.push({key: null, value: null});
+        }
+
+        function removeParams(item, index){
+            item.metadata.splice(index, 1);
+        }
+
         function selectDataSource(dataSource) {
             uploader.url = baseUploadURL.replace('%dataSourceId%', dataSource.id);
-            // dropUploader.url = baseUploadURL.replace('%dataSourceId%', dataSource.id);
         }
 
         function isFormValid() {
@@ -77,69 +105,20 @@
         uploader.uploadAllDataSource = function() {
             angular.forEach(uploader.queue, function (elem) {
                 elem.url = uploader.url;
+
+                var metadata = {};
+                angular.forEach(elem.metadata, function (item) {
+                    metadata[item.key] = item.value;
+                });
+
+                elem.formData = [{metadata: angular.toJson(metadata)}];
             });
 
             uploader.uploadAll();
         };
 
         uploader.onCompleteAll = function() {
-            // AlertService.addFlash({
-            //     type: 'success',
-            //     message: $translate.instant('UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.UPLOAD_FILES_SUCCESS')
-            // });
-
-            if($stateParams.dataSourceId) {
-                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSourceFile, '^.listForDataSource', {dataSourceId: $stateParams.dataSourceId});
-            }
-
-            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSourceFile, '^.list');
+            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSourceFile, '^.listForDataSource', {dataSourceId: $scope.dataSourceEntry.dataSource.id || $scope.dataSourceEntry.dataSource});
         };
-
-        /// drop
-
-        // dropUploader.filters.push({
-        //     name: 'customFilter',
-        //     fn: function(item /*{File|FileLikeObject}*/ , options) {
-        //         var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-        //         var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';
-        //
-        //         return '|vnd.ms-excel|vnd.openxmlformats-officedocument.spreadsheetml.sheet|json|csv|'.indexOf(type) !== -1 || '|xls|xlsx|json|csv|'.indexOf(extension) !== -1;
-        //     }
-        // });
-        //
-        // dropUploader.onErrorItem = function(fileItem, response, status, headers) {
-        //     AlertService.addFlash({
-        //         type: 'error',
-        //         message: "Upload file '" + fileItem.file.name + "' fail"
-        //     });
-        // };
-        //
-        // dropUploader.onSuccessItem = function(fileItem, response, status, headers) {
-        //     AlertService.addFlash({
-        //         type: 'success',
-        //         message: "Upload file '"+ fileItem.file.name + "' success"
-        //     });
-        // };
-        //
-        // dropUploader.uploadAllDataSource = function() {
-        //     angular.forEach(dropUploader.queue, function (elem) {
-        //         elem.url = dropUploader.url;
-        //     });
-        //
-        //     dropUploader.uploadAll();
-        // };
-        //
-        // dropUploader.onCompleteAll = function() {
-        //     // AlertService.addFlash({
-        //     //     type: 'success',
-        //     //     message: $translate.instant('UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.UPLOAD_FILES_SUCCESS')
-        //     // });
-        //
-        //     if($stateParams.dataSourceId) {
-        //         return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSourceFile, '^.listForDataSource', {dataSourceId: $stateParams.dataSourceId});
-        //     }
-        //
-        //     return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSourceFile, '^.list');
-        // };
     }
 })();
