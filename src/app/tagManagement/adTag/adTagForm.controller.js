@@ -21,12 +21,17 @@
         };
 
 
+        if (_.isObject(adTag)) {
+            var adTagActive = angular.copy(adTag.active);
+            adTag.active = adTag.active == 1 ? true : false;
+        }
+
         $scope.isNew = adTag === null;
         $scope.formProcessing = false;
         $scope.hasMultipleDeployAdSlot = false;
 
         if((!!adSlot && !!adSlot.libraryAdSlot && adSlot.libraryAdSlot.visible) || (!$scope.isNew && !!adTag && !!adTag.libraryAdTag && adTag.libraryAdTag.visible)) {
-            AlertService.addAlert({
+            AlertService.addAlertNotRemove({
                 type: 'warning',
                 message: $translate.instant('AD_TAG_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
             });
@@ -94,7 +99,7 @@
                 html: null,
                 adNetwork: null,
                 adType: $scope.adTypes.customAd,
-                partnerTagId: null,
+                // partnerTagId: null,
                 descriptor: null,
                 inBannerDescriptor: {
                     platform: 'auto',
@@ -343,7 +348,11 @@
                 delete adTag.adSlots;
             }
 
-            var saveAdTag = $scope.isNew ? AdTagManager.post(adTag) : $scope.adTag.patch();
+            if((adTagActive == -1 || adTagActive == 0) && !adTag.active) {
+                adTag.active = adTagActive
+            }
+
+            var saveAdTag = $scope.isNew ? AdTagManager.post(adTag) : AdTagManager.one(adTag.id).patch(adTag);
             saveAdTag
                 .catch(
                     function (response) {

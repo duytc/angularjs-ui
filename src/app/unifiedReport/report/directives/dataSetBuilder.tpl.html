@@ -31,7 +31,7 @@
         <label class="control-label">Dimensions</label>
 
         <div>
-            <div ng-repeat="field in dataSet.tempDimensions" class="check_exchange">
+            <div ng-repeat="field in dataSet.tempDimensions" class="col-sm-4">
                 <label class="ui-checkbox"><input name="field[]" type="checkbox" ng-click="toggleField(field, dataSet.dimensions, dataSet)" ng-checked="hasField(field, dataSet.dimensions)"><span>{{ field }}</span></label>
             </div>
         </div>
@@ -41,7 +41,7 @@
         <label class="control-label">Metrics</label>
 
         <div>
-            <div ng-repeat="field in dataSet.tempMetrics" class="check_exchange">
+            <div ng-repeat="field in dataSet.tempMetrics" class="col-sm-4">
                 <label class="ui-checkbox"><input name="field[]" type="checkbox" ng-click="toggleField(field, dataSet.metrics, dataSet)" ng-checked="hasField(field, dataSet.metrics)"><span>{{ field }}</span></label>
             </div>
         </div>

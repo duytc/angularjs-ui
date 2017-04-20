@@ -121,6 +121,25 @@
                                 <span class="menu-text">{{ 'NAVBAR.NEW_AD_NETWORK' | translate }}</span>
                             </a>
                         </li>
+
+                        <li>
+                            <a href="#" class="menu-dropdown">
+                                <span class="menu-text">{{ 'NAVBAR.BLACK_LIST' | translate }}</span>
+                                <i class="menu-expand"></i>
+                            </a>
+                            <ul class="submenu">
+                                <li ui-sref-active="active">
+                                    <a ui-sref=".tagManagement.domainList.blockList">
+                                        <span class="menu-text">{{ 'NAVBAR.MY_BLACK_LIST' | translate }}</span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active">
+                                    <a ui-sref=".tagManagement.domainList.newBlockList">
+                                        <span class="menu-text">{{ 'NAVBAR.NEW_BLACK_LIST' | translate }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
 
@@ -362,11 +381,11 @@
                         <span class="menu-text"> {{ 'NAVBAR.PROJECTED_BILL' | translate }} </span>
                     </a>
                 </li>
-                <li ui-sref-active="active">
-                    <a ui-sref=".reports.unified">
-                        <span class="menu-text"> {{ 'NAVBAR.UNIFIED_REPORTS' | translate }} </span>
-                    </a>
-                </li>
+                <!--<li ui-sref-active="active">-->
+                    <!--<a ui-sref=".reports.unified">-->
+                        <!--<span class="menu-text"> {{ 'NAVBAR.UNIFIED_REPORTS' | translate }} </span>-->
+                    <!--</a>-->
+                <!--</li>-->
                 <li ui-sref-active="active">
                     <a ui-sref=".reports.video">
                         <span class="menu-text"> {{ 'NAVBAR.VIDEO_REPORTS' | translate }} </span>

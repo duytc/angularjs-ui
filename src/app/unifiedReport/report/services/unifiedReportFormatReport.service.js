@@ -17,14 +17,14 @@
             {label: 'MM/DD/YYYY', key: 'm/d/Y' , formatForJs: 'MM/DD/YYYY'},  //mm/dd/yyyy
             {label: 'DD-MM-YYYY', key: 'd-m-Y' , formatForJs: 'DD-MM-YYYY'},  //DD-mm-yyyy
             {label: 'DD/MM/YYYY', key: 'd/m/Y' , formatForJs: 'DD/MM/YYYY'},  //DD/mm/yyyy
-            {label: 'YYYY-MON-DD', key: 'Y-M-d', formatForJs: 'YYYY-MMM-DD'}, // 2016-Mar-01
-            {label: 'YYYY/MON/DD', key: 'Y/M/d', formatForJs: 'YYYY/MMM/DD'}, // 2016/Mar/01
-            {label: 'MON-DD-YYYY', key: 'M-d-Y', formatForJs: 'MMM-DD-YYYY'}, // Mar-01-2016
-            {label: 'MON/DD/YYYY', key: 'M/d/Y', formatForJs: 'MMM/DD/YYYY'}, // Mar/01/2016
-            {label: 'DD-MON-YYYY', key: 'd-M-Y', formatForJs: 'DD-MMM-YYYY'}, // 01-Mar-2016
-            {label: 'DD/MON/YYYY', key: 'd/M/Y', formatForJs: 'DD/MMM/YYYY'},  // 01/Mar/2016
-            {label: 'MON DD, YYYY', key: 'M d, Y', formatForJs: 'MMM DD, YYYY'},  // Jan 15, 2016
-            {label: 'YYYY, MON DD', key: 'Y, M d', formatForJs: 'YYYY, MMM DD'}, //2016, Jan 15
+            {label: 'YYYY-MMM-DD', key: 'Y-M-d', formatForJs: 'YYYY-MMM-DD'}, // 2016-Mar-01
+            {label: 'YYYY/MMM/DD', key: 'Y/M/d', formatForJs: 'YYYY/MMM/DD'}, // 2016/Mar/01
+            {label: 'MMM-DD-YYYY', key: 'M-d-Y', formatForJs: 'MMM-DD-YYYY'}, // Mar-01-2016
+            {label: 'MMM/DD/YYYY', key: 'M/d/Y', formatForJs: 'MMM/DD/YYYY'}, // Mar/01/2016
+            {label: 'DD-MMM-YYYY', key: 'd-M-Y', formatForJs: 'DD-MMM-YYYY'}, // 01-Mar-2016
+            {label: 'DD/MMM/YYYY', key: 'd/M/Y', formatForJs: 'DD/MMM/YYYY'},  // 01/Mar/2016
+            {label: 'MMM DD, YYYY', key: 'M d, Y', formatForJs: 'MMM DD, YYYY'},  // Jan 15, 2016
+            {label: 'YYYY, MMM DD', key: 'Y, M d', formatForJs: 'YYYY, MMM DD'}, //2016, Jan 15
 
             /** Support 2 digit years*/
             {label: 'MM/DD/YY', key: 'm/d/y', formatForJs:'MM/DD/YY'},   //01/15/99
@@ -43,7 +43,11 @@
                 report.position = key; // position is index of report item root
 
                 angular.forEach(report, function (value, key) {
-                    value = value == null ? '' : value;
+                    // value = value == null ? '' : value;
+
+                    if(reportView.fieldTypes[key] == 'number' || reportView.fieldTypes[key] == 'decimal') {
+                        value = (value == null || value == undefined) ? '-1' : value;
+                    }
 
                     if(!angular.isString(value)) {
                         return;

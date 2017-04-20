@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportView', UnifiedReportView);
 
-    function UnifiedReportView($scope, _, $q, $translate, SortReportByColumnType, $modal, AlertService, reportViewList, UnifiedReportViewManager, unifiedReportBuilder, UserStateHelper, AtSortableService, exportExcelService, historyStorage, HISTORY_TYPE_PATH) {
+    function UnifiedReportView($scope, _, $q, $translate, $modal, AlertService, reportViewList, UnifiedReportViewManager, unifiedReportBuilder, UserStateHelper, AtSortableService, exportExcelService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.reportViewList = reportViewList;
 
         $scope.hasData = function () {
@@ -14,7 +14,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no report view'
+                message: 'There is currently no report views'
             });
         }
 
@@ -39,45 +39,7 @@
                         return reportView;
                     }
                 },
-                controller: function ($scope, $state, $modalInstance, reportView) {
-                    $scope.reportView = reportView;
-
-                    $scope.cloneReportView = {
-                        name: null,
-                        alias: null
-                    };
-                    
-                    $scope.submit = submit;
-                    $scope.isFormValid = isFormValid;
-
-                    function isFormValid() {
-                        return $scope.cloneReportViewForm.$valid;
-                    }
-                    
-                    function submit() {
-                        $modalInstance.close();
-
-                        var params = {
-                            cloneSettings: [$scope.cloneReportView]
-                        };
-
-                        UnifiedReportViewManager.one(reportView.id).post('clone', params)
-                            .catch(function () {
-                                AlertService.replaceAlerts({
-                                    type: 'error',
-                                    message: "Could not clone the report view"
-                                });
-                            })
-                            .then(function () {
-                                $state.reload();
-
-                                AlertService.addFlash({
-                                    type: 'success',
-                                    message: "The report view has been cloned successfully"
-                                });
-                            })
-                    }
-                }
+                controller: 'CloneReportView'
             });
         }
 
@@ -102,14 +64,15 @@
                 showInTotal: angular.toJson(reportView.showInTotal),
                 name: reportView.name,
                 multiView: !!reportView.multiView || reportView.multiView,
-                subReportsIncluded: !!reportView.subReportsIncluded || reportView.subReportsIncluded
+                subReportsIncluded: !!reportView.subReportsIncluded || reportView.subReportsIncluded,
+                isShowDataSetName: !!reportView.isShowDataSetName || reportView.isShowDataSetName
             };
 
             unifiedReportBuilder.getPlatformReport(params)
                 .then(function (reportGroup) {
                     var reports = reportGroup.reports;
 
-                    if (reports.length > 0) {
+                    if (!!reports && reports.length > 0) {
                         var columnReportDetailForExportExcel = [],
                             titleReportDetailForExportExcel = [],
                             columnPositionObject = null,
@@ -154,8 +117,6 @@
                         _.each(newMapColumns, function (mapColumn) {
                             titleReportDetailForExportExcel.push(reportGroup.columns[mapColumn]);
                         });
-
-                        titleReportDetailForExportExcel= SortReportByColumnType.changeColumnName(titleReportDetailForExportExcel);
 
                         var reportName = !!reportView.name ? reportView.name : 'report-detail';
                         exportExcelService.exportExcel(reports, newMapColumns, titleReportDetailForExportExcel, reportName, true);
@@ -219,11 +180,13 @@
                             message: 'The report view was deleted'
                         });
                     },
-                    function () {
-                        AlertService.replaceAlerts({
-                            type: 'danger',
-                            message: 'The report view could not be deleted'
-                        });
+                    function (response) {
+                        if(!!response && !!response.data && !!response.data.message) {
+                            AlertService.replaceAlerts({
+                                type: 'danger',
+                                message: response.data.message
+                            });
+                        }
                     }
                 );
             });
@@ -235,12 +198,12 @@
                 size: 'lg',
                 resolve: {
                     fieldsReportView: function (UnifiedReportDataSetManager) {
-                        return UnifiedReportDataSetManager.getList({hasConnectedDataSource: true}).then(function (dataSets) {
+                        return UnifiedReportDataSetManager.getList().then(function (dataSets) {
                             var fields = _.union(reportView.dimensions.concat(reportView.metrics));
                             var formatFields = [];
 
                             angular.forEach(fields, function (field) {
-                                var key = null;
+                                var key = field;
                                 var id = null;
 
                                 if(field.lastIndexOf('_') > -1) {
@@ -250,6 +213,10 @@
 
                                 if(reportView.joinBy.length > 0) {
                                     for(var index in reportView.joinBy) {
+                                        if(reportView.joinBy[index].outputField == field && !reportView.joinBy[index].isVisible) {
+                                            return
+                                        }
+
                                         var join = _.find(reportView.joinBy[index].joinFields, function (item) {
                                             return item.dataSet == id && item.field == key
                                         });
@@ -272,6 +239,10 @@
                                 }
 
                                 var dataSet = _.find(dataSets, function (dataSet) {
+                                    if(key.indexOf('__') > -1 && (key.indexOf('_day') > -1 || key.indexOf('_month') > -1 || key.indexOf('_year') > -1)) {
+                                        return dataSet.id == id
+                                    }
+
                                     return (!!dataSet.dimensions[key] || !!dataSet.metrics[key]) && dataSet.id == id;
                                 });
 

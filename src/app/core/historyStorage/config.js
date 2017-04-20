@@ -22,11 +22,14 @@
             demandPartner: "demandPartner",
             libraryDemandAdTag: "libraryDemandAdTag",
             domainList: "domainList",
+            blockList: "blockList",
             dataSource: "dataSource",
             dataSourceFile: "dataSourceFile",
             dataSet: "dataSet",
             connectDataSource: "connectDataSource",
-            unifiedReportView: "unifiedReportView"
+            unifiedReportView: "unifiedReportView",
+            unifiedReportDetail: "unifiedReportDetail",
+            public: "public"
         })
     ;
 })();

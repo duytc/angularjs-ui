@@ -31,7 +31,7 @@
             adSlot: adSlot
         };
 
-        AlertService.addAlert({
+        AlertService.addAlertNotRemove({
             type: 'warning',
             message: $translate.instant('AD_TAG_LIBRARY_MODULE.WARNING_EDIT_LIBRARY')
         });
@@ -54,7 +54,7 @@
                 adNetwork: null,
                 adType: $scope.adTypes.customAd,
                 descriptor: null,
-                partnerTagId: null,
+                // partnerTagId: null,
                 inBannerDescriptor: {
                     platform: 'auto',
                     timeout: null,

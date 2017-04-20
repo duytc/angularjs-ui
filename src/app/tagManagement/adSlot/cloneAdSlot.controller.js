@@ -46,7 +46,7 @@
                     });
                 })
                 .catch(function() {
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'error',
                         message: $translate.instant('AD_SLOT_MODULE.CLONE_FAIL')
                     });

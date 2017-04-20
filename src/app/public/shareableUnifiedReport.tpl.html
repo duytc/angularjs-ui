@@ -2,12 +2,21 @@
     <div class="panel-heading">
         <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
         <div class="button-bar">
+            <button style="margin-right: 3px"  class="btn btn-sm btn-primary" ng-click="refreshData()" type="button">Refresh</button>
             <export-excel ng-if="reports.length > 0" not-filter="true" data="reports" style="margin-right: 3px" fields="columnReportDetailForExportExcel" header="titleReportDetailForExportExcel" file-name="getExportExcelFileName()"></export-excel>
+        </div>
+
+        <div class="btn-group btnGrouped" dropdown>
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ng-click="refreshData()">Refresh</a></li>
+                <li ng-if="reports.length > 0"><a><export-excel not-filter="true" css-class="''" data="reports" fields="columnReportDetailForExportExcel" header="titleReportDetailForExportExcel" file-name="getExportExcelFileName()"></export-excel></a></li>
+            </ul>
         </div>
     </div>
 
     <div class="panel-body" ng-if="reports.length > 0">
-        <div class="table-responsive">
+        <div class="table-responsive" style="overflow-y: auto">
             <table class="table">
                 <thead>
                 <tr>
@@ -22,23 +31,22 @@
                     <tr dir-paginate="report in tempReports | orderBy:sortBy:reverse | itemsPerPage:tableConfig.itemsPerPage">
                         <td ng-if="hasSort" ng-repeat="column in columnPositions">
                             <span ng-if="!isNullValue(reports[report.position], column)"> {{ reports[report.position][column] }} </span>
-                            <span ng-if="isNullValue(reports[report.position], column)"> &ltno value&gt </span>
                         </td>
                     </tr>
 
                     <tr dir-paginate="report in reports | itemsPerPage:tableConfig.itemsPerPage">
                         <td ng-if="!hasSort" ng-repeat="column in columnPositions">
                             <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>
-                            <span ng-if="isNullValue(report, column)"> &ltno value&gt </span>
                         </td>
                     </tr>
                 </tbody>
             </table>
+        </div>
 
-            <div class="pagination">
-                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
-                <items-per-page init="tableConfig.itemsPerPage" range="itemsPerPage" sources="reports"></items-per-page>
-            </div>
+
+        <div class="pagination">
+            <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            <items-per-page init="tableConfig.itemsPerPage" range="itemsPerPage" sources="reports"></items-per-page>
         </div>
     </div>
 </section>
@@ -72,4 +80,6 @@
             </div>
         </div>
     </div>
+
+    <p class="text-center">Unified reports powered by Pubvantage</p>
 </section>

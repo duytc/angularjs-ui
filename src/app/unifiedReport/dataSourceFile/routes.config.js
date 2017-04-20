@@ -35,6 +35,18 @@
                             return dataSourceFiles.plain();
                         });
                     },
+                    allEntryIds: function(UnifiedReportDataSourceManager, $stateParams) {
+                        return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).one('datasourceentryids').getList()
+                            .then(function (data) {
+                                var ids = [];
+
+                                angular.forEach(data, function (item) {
+                                    ids.push(item.id);
+                                });
+
+                                return ids
+                            });
+                    },
                     dataSource: function(UnifiedReportDataSourceManager, $stateParams) {
                         return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).get();
                     },
@@ -64,12 +76,24 @@
                             return dataSourceFiles.plain();
                         });
                     },
+                    allEntryIds: function(UnifiedReportDataSourceManager, $stateParams) {
+                        return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).one('datasourceentryids').getList()
+                            .then(function (data) {
+                                var ids = [];
+
+                                angular.forEach(data, function (item) {
+                                    ids.push(item.id);
+                                });
+
+                                return ids
+                            });
+                    },
                     dataSource: function(UnifiedReportDataSourceManager, $stateParams) {
                         return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).get();
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Received Files For Data Source - {{dataSource.name }}'
+                    label: 'Imported Data for data source - {{dataSource.name }}'
                 }
             })
             .state('unifiedReport.dataSourceFile.new', {

@@ -17,9 +17,11 @@
 
 <section class="panel panel-default">
     <div class="panel-heading">
-        <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
+        <span class="glyphicon glyphicon-th"></span>
+        <strong> {{ reportView.name }} </strong>
 
         <div class="button-bar">
+            <button style="margin-right: 3px"  class="btn btn-sm btn-primary" ng-click="refreshData()" type="button">Refresh</button>
             <export-excel ng-if="reports.length > 0 && hasResult" not-filter="true" data="reports" style="margin-right: 3px" fields="columnReportDetailForExportExcel" header="titleReportDetailForExportExcel" file-name="getExportExcelFileName()"></export-excel>
             <button ng-disabled="hasSaveRepoerView" ng-click="saveReportView()" class="btn btn-sm btn-primary" type="button">Save as Report View</button>
             <button ui-sref="^.editBuilder(reportViewForEdit)" ng-disabled="formProcessing" class="btn btn-sm btn-primary" type="button">Edit Report View</button>
@@ -29,6 +31,7 @@
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify"
                                                                      aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ng-click="refreshData()">Refresh</a></li>
                 <li ng-if="reports.length > 0 && hasResult"><a><export-excel not-filter="true" css-class="''" data="reports" fields="columnReportDetailForExportExcel" header="titleReportDetailForExportExcel" file-name="getExportExcelFileName()"></export-excel></a></li>
                 <li ng-if="hasSaveRepoerView"><a ng-click="saveReportView()">Save as Report View</a></li>
                 <li><a ui-sref="^.editBuilder(reportViewForEdit)">Edit Report View</a></li>
@@ -37,11 +40,11 @@
     </div>
 
     <div class="panel-body" ng-if="reports.length > 0 && hasResult">
-        <div class="table-responsive">
+        <div class="table-responsive table-report-view">
             <table class="table">
                 <thead>
                 <tr>
-                    <th ng-repeat="column in columnPositions" ng-click="sort(column)">{{ titleColumns[column] }}
+                    <th ng-class="{minWidth100: (types[column] == 'date' || types[column] == 'datetime')}" ng-repeat="column in columnPositions" ng-click="sort(column)">{{ titleColumns[column] }}
                         <span class="glyphicon glyphicon-minus" ng-show="!isShow(column)"></span>
                         <span class="glyphicon" ng-show="isShow(column)" ng-class="{'glyphicon-chevron-up':!reverse,'glyphicon-chevron-down':reverse}"></span>
                     </th>
@@ -52,23 +55,21 @@
                 <tr dir-paginate="report in tempReports | orderBy:sortBy:reverse | itemsPerPage:tableConfig.itemsPerPage">
                     <td ng-if="hasSort" ng-repeat="column in columnPositions">
                         <span ng-if="!isNullValue(reports[report.position], column)"> {{ reports[report.position][column] }} </span>
-                        <span ng-if="isNullValue(reports[report.position], column)"> &ltno value&gt </no> </span>
                     </td>
                 </tr>
 
                 <tr dir-paginate="report in reports | itemsPerPage:tableConfig.itemsPerPage">
                     <td ng-if="!hasSort" ng-repeat="column in columnPositions">
                         <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>
-                        <span ng-if="isNullValue(report, column)"> &ltno value&gt </span>
                     </td>
                 </tr>
                 </tbody>
             </table>
+        </div>
 
-            <div class="pagination">
-                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
-                <items-per-page init="tableConfig.itemsPerPage" range="itemsPerPage" sources="reports"></items-per-page>
-            </div>
+        <div class="pagination">
+            <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            <items-per-page init="tableConfig.itemsPerPage" range="itemsPerPage" sources="reports"></items-per-page>
         </div>
     </div>
 </section>

@@ -34,3 +34,19 @@
     }
   }
 }
+
+.table-report-view {
+  overflow: auto;
+  max-height: 650px;
+  font-size: 12px;
+
+  .minWidth100 {
+    min-width: 100px;
+  }
+}
+
+@media (max-width:1400px) and (min-width:600px) {
+  .table-report-view {
+    max-height: 550px;
+  }
+}

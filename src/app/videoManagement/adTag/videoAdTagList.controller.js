@@ -198,15 +198,15 @@
                 return VideoAdTagManager.one(adTag.id).remove()
                     .then(
                     function () {
-                        var index = adTags.indexOf(adTag);
+                        var index = adTags.records.indexOf(adTag);
 
                         if (index > -1) {
-                            adTags.splice(index, 1);
+                            adTags.records.splice(index, 1);
                         }
 
-                        $scope.adTags = adTags;
+                        $scope.adTags = adTags.records;
 
-                        if($scope.tableConfig.currentPage > 0 && adTags.length/10 == $scope.tableConfig.currentPage) {
+                        if($scope.tableConfig.currentPage > 0 && $scope.adTags.length/10 == $scope.tableConfig.currentPage) {
                             AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
                         }
 

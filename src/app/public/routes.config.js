@@ -6,6 +6,9 @@
             $stateProvider
                 .state('app.public', {
                     parent: 'public',
+                    params: {
+                        uniqueRequestCacheBuster: null
+                    },
                     url: '/public/unifiedReport/report/detail?&reportView&token',
                     controller: 'shareableUnifiedReport',
                     templateUrl: 'public/shareableUnifiedReport.tpl.html',

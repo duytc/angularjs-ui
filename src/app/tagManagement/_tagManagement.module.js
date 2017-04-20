@@ -9,6 +9,7 @@
         'tagcade.tagManagement.adTag',
         'tagcade.tagManagement.channel',
         'tagcade.tagManagement.ronAdSlot',
-        'tagcade.tagManagement.segment'
+        'tagcade.tagManagement.segment',
+        'tagcade.tagManagement.domainList'
     ]);
 })();

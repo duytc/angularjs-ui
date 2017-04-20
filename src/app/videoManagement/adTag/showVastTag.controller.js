@@ -5,7 +5,7 @@
         .controller('ShowVastTag', ShowVastTag)
     ;
 
-    function ShowVastTag($scope, vastTags, $stateParams, VastTagRequestManager, videoWaterfallTag) {
+    function ShowVastTag($scope, $modal, vastTags, $stateParams, VastTagRequestManager, videoWaterfallTag) {
         $scope.vastTags = formatDate(vastTags);
         $scope.videoWaterfallTag = videoWaterfallTag;
 
@@ -49,7 +49,7 @@
 
         function formatDate(vastTags) {
             angular.forEach(vastTags.records, function (record) {
-                record.time.date = new Date(moment.utc(record.time.date))
+                record.time.date = moment.tz(record.time.date, record.time.timezone).format();
             });
 
             return vastTags

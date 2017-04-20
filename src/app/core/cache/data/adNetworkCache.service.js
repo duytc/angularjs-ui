@@ -68,7 +68,8 @@
                     password: adNetworkList[idx].password,
                     networkPartner: adNetworkList[idx].networkPartner,
                     impressionCap: adNetworkList[idx].impressionCap,
-                    networkOpportunityCap: adNetworkList[idx].networkOpportunityCap
+                    networkOpportunityCap: adNetworkList[idx].networkOpportunityCap,
+                    networkBlacklists: adNetworkList[idx].networkBlacklists
                 };
             }
 

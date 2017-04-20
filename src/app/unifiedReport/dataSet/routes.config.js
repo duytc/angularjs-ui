@@ -18,7 +18,7 @@
                 }
             })
             .state('unifiedReport.dataSet.list', {
-                url: '/list?page&sortField&orderBy&search',
+                url: '/list?page&sortField&orderBy&searchKey',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -34,6 +34,9 @@
                         return UnifiedReportDataSetManager.one().get($stateParams).then(function (dataSets) {
                             return dataSets.plain();
                         });
+                    },
+                    dataSetRows: /* @ngInject */ function(UnifiedReportDataSetManager) {
+                        return UnifiedReportDataSetManager.one('rows').getList()
                     }
                 },
                 ncyBreadcrumb: {

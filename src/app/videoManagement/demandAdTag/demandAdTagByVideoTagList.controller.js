@@ -25,7 +25,7 @@
         };
 
         if (!$scope.hasDemandAdTags()) {
-            AlertService.addAlert({
+            AlertService.addAlertNotRemove({
                 type: 'warning',
                 message: $translate.instant('AD_SOURCE_MODULE.CURRENTLY_NO_AD_SOURCE')
             });
@@ -213,7 +213,7 @@
 
             VideoDemandAdTagManager.one(videoDemandAdTag.id).patch({'active': newTagStatus})
                 .catch(function () {
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'error',
                         message: $translate.instant('AD_SOURCE_MODULE.CHANGE_STATUS_FAIL')
                     });

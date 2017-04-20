@@ -12,19 +12,23 @@ module.exports = {
             dev: {
                 tagcade: {
                     match: /api\.tagcade\.dev/g,
-                    val: 'api.tagade.dev'
+                    val: 'api.tagcade.dev',
+                    apiEndPoint: 'http://api.tagcade.dev/app_dev.php/api'
                 },
                 unified: {
                     match: /api\.unified-reports\.dev/g,
-                    val: 'api.unified-reports.dev'
+                    val: 'api.unified-reports.dev',
+                    apiEndPoint: 'http://api.unified-reports.dev/app_dev.php/api'
                 }
             },
             prod: {
                 tagcade: {
-                    val: 'api.tagcade.com'
+                    val: 'api.tagcade.com',
+                    apiEndPoint: 'https://api.tagcade.com/api'
                 },
                 unified: {
-                    val: 'ur-api.pubvantage.com'
+                    val: 'ur-api.pubvantage.com',
+                    apiEndPoint: 'https://ur-api.pubvantage.com/api'
                 }
             },
             prodWhiteLabel: {
@@ -102,7 +106,8 @@ module.exports = {
             'vendor/oi.select/dist/select-tpls.min.js',
             'vendor/ngInfiniteScroll/build/ng-infinite-scroll.min.js',
             'vendor/angular-file-upload/dist/angular-file-upload.min.js',
-            'vendor/ment.io/dist/mentio.min.js'
+            'vendor/ment.io/dist/mentio.min.js',
+            'vendor/moment-timezone/builds/moment-timezone-with-data-2010-2020.js'
         ],
         css: [
             'src/styles/customvendor/**/*.css'

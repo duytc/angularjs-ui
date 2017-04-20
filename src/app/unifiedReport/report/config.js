@@ -4,6 +4,7 @@
         .constant('REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS', {
             date: 'date',
             number: 'number',
+            percentage: 'percentage',
             groupBy: 'groupBy',
             sortBy: 'sortBy',
             addField: 'addField',
@@ -30,6 +31,7 @@
                 return [
                     {key: REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS.date, label: 'Date Format'},
                     {key: REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS.number, label: 'Number Format'},
+                    {key: REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS.percentage, label: 'Percentage Format'},
                     {key: REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS.currency, label: 'Currency Format'},
                     {key: REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS.columnPosition, label: 'Column Position'}
                 ]

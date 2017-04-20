@@ -12,7 +12,7 @@
         UserStateHelperProvider
             .state('unifiedReport.importHistory', {
                 abstract: true,
-                url: '/dataSets',
+                url: '/importHistory',
                 ncyBreadcrumb: {
                     skip: true
                 }
@@ -36,10 +36,41 @@
                     },
                     dataSet: function (UnifiedReportDataSetManager, $stateParams) {
                         return UnifiedReportDataSetManager.one($stateParams.dataSetId).get();
+                    },
+                    dataSource: function () {
+                        return null
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Import History - {{ dataSet.name }}'
+                    label: 'Loaded Data - {{ dataSet.name }}'
+                }
+            })
+            .state('unifiedReport.importHistory.listForDataSource', {
+                url: '/dataSourceId/{dataSourceId:[0-9]+}/list?page&sortField&orderBy&search',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    'content@app': {
+                        controller: 'ImportHistoryList',
+                        templateUrl: 'unifiedReport/importHistory/importHistoryList.tpl.html'
+                    }
+                },
+                resolve: {
+                    importHistoryList: /* @ngInject */ function(UnifiedReportDataSourceManager, $stateParams) {
+                        return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).one('importhistories').getList().then(function (importHistoryList) {
+                            return importHistoryList.plain();
+                        });
+                    },
+                    dataSet: function () {
+                        return null
+                    },
+                    dataSource: function (UnifiedReportDataSourceManager, $stateParams) {
+                        return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).get();
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Loaded Data - {{ dataSource.name }}'
                 }
             })
         ;

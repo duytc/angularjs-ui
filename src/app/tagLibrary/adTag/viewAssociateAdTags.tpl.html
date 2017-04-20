@@ -51,7 +51,7 @@
                     <td at-title="{{ 'AD_SLOT' | translate }}" at-sortable at-implicit at-attribute="adSlot.libraryAdSlot.name"></td>
                     <td at-title="{{ 'SITE' | translate }}" at-sortable at-implicit at-attribute="adSlot.site.name"></td>
                     <td at-title="{{ 'AD_TAG_MODULE.STATUS' | translate }}" at-attribute="active">
-                        <span class="label" ng-class="item.active ? 'label-success' : 'label-danger'">{{ item.active ? 'Active' : 'Paused' }}</span>
+                        <span class="label" ng-class="item.active == 1 ? 'label-success' : (item.active == -1 ? 'label-warning' : 'label-danger')">{{ item.active == 1 ? 'Active' : (item.active == -1 ? 'Auto Paused' : 'Paused') }}</span>
                     </td>
                 </tr>
                 </tbody>

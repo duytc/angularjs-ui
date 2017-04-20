@@ -8,9 +8,16 @@
   line-height: 40px;
   padding-left: 10px;
   display: flex;
+  flex-wrap: wrap;
   font-weight: bold;
 
   .color-danger {
     display: flex;
   }
+}
+
+.addScrollToTextArea {
+  height: 100px;
+  max-height: 100px;
+  width: 100%;
 }

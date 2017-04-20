@@ -4,8 +4,20 @@
     angular.module('tagcade.unifiedReport.importHistory')
         .controller('ImportHistoryList', ImportHistoryList);
 
-    function ImportHistoryList($scope, $modal, importHistoryList, dataSet, UnifiedReportImportHistoryManager, UnifiedReportDataSetManager, historyStorage, HISTORY_TYPE_PATH, AlertService, exportExcelService) {
+    function ImportHistoryList($scope, $modal, importHistoryList, dataSet, dataSource, UnifiedReportImportHistoryManager, UnifiedReportDataSourceManager, UnifiedReportDataSetManager, historyStorage, HISTORY_TYPE_PATH, AlertService, exportExcelService) {
+        $scope.dataSet = dataSet;
         $scope.importHistoryList = importHistoryList;
+
+        $scope.hasData = function () {
+            return !!importHistoryList.length;
+        };
+
+        if (!$scope.hasData()) {
+            AlertService.replaceAlerts({
+                type: 'warning',
+                message: 'There is currently no loaded data'
+            });
+        }
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -13,7 +25,7 @@
         };
 
         $scope.showPagination = showPagination;
-        $scope.backToDataSetList = backToDataSetList;
+        $scope.backToList = backToList;
         $scope.undo= undo;
         $scope.downloadImportedData = downloadImportedData;
         
@@ -35,28 +47,35 @@
 
             modalInstance.result.then(function(){
                 UnifiedReportImportHistoryManager.one(importHistory.id).one('undo').get()
+                    .catch(function () {
+                        AlertService.replaceAlerts({
+                            type: 'error',
+                            message: "Could not unload the import"
+                        });
+                    })
                     .then(function () {
-                        UnifiedReportDataSetManager.one(dataSet.id).one('importhistories').getList().then(function (importHistoryList) {
+                        var Manager = !!dataSet ? UnifiedReportDataSetManager.one(dataSet.id) : UnifiedReportDataSourceManager.one(dataSource.id);
+
+                        Manager.one('importhistories').getList().then(function (importHistoryList) {
                             $scope.importHistoryList = importHistoryList.plain();
 
                             AlertService.replaceAlerts({
                                 type: 'success',
-                                message:  "The import history was undo successfully"
+                                message:  "The import was unloaded successfully"
                             });
                         });
                     })
-                    .catch(function () {
-                        AlertService.replaceAlerts({
-                            type: 'error',
-                            message: "Could not undo the import history"
-                        });
-                    })
+
                 ;
             });
         }
         
-        function backToDataSetList() {
-            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSet, '^.^.dataSet.list');
+        function backToList() {
+            if(!!dataSet){
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSet, '^.^.dataSet.list');
+            }
+
+            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSource, '^.^.dataSource.list');
         }
 
         function showPagination() {

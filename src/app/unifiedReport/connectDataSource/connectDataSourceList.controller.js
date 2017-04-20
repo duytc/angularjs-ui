@@ -15,7 +15,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no connect data source'
+                message: 'There is currently no connected data sources'
             });
         }
 
@@ -27,7 +27,37 @@
         $scope.backToDataSetList = backToDataSetList;
         $scope.showPagination = showPagination;
         $scope.confirmDeletion = confirmDeletion;
+        $scope.reloadAllData = reloadAllData;
+        $scope.cloneConnectDataSource = cloneConnectDataSource;
 
+        function cloneConnectDataSource(connect) {
+            $modal.open({
+                templateUrl: 'unifiedReport/connectDataSource/cloneConnectedDataSource.tpl.html',
+                size: 'lg',
+                controller: 'CloneConnectedDataSource',
+                resolve: {
+                    connect: function () {
+                        return connect;
+                    }
+                }
+            });
+        }
+
+        function reloadAllData(connect) {
+            UnifiedReportConnectDataSourceManager.one(connect.id).one('reloadalldatas').post()
+                .then(function() {
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The data was reloaded. Please wait a few minutes for the changes to take effect.'
+                    });
+                })
+                .catch(function() {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'The data could not be reloaded'
+                    });
+                });
+        }
 
         function confirmDeletion(connectDataSource, index) {
             var modalInstance = $modal.open({
@@ -51,13 +81,13 @@
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message:  "The connect data source was removed successfully"
+                            message:  "The connected data source was removed successfully"
                         });
                     })
                     .catch(function () {
                         AlertService.replaceAlerts({
                             type: 'error',
-                            message: "Could not remove the connect data source"
+                            message: "Could not remove the connected data source"
                         });
                     })
                     ;

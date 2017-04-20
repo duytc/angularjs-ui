@@ -5,7 +5,6 @@
         .controller('DataSourceList', DataSourceList);
 
     function DataSourceList($scope, $translate, $modal, $stateParams, dataSources, EVENT_ACTION_SORTABLE, UnifiedReportDataSourceManager, AlertService, AtSortableService, HISTORY_TYPE_PATH, historyStorage){
-
         var params = {
             page: 1
         };
@@ -22,12 +21,28 @@
             pageSize: 10
         };
 
-        $scope.changePage = changePage;
-        $scope.searchData = searchData;
+        $scope.selectData = {
+            query: $stateParams.searchKey || null
+        };
 
         $scope.formProcessing = false;
 
         $scope.dataSources = dataSources;
+
+        $scope.hasData = function () {
+            return !!$scope.dataSources && $scope.dataSources.totalRecord > 0;
+        };
+
+        if (!$scope.hasData()) {
+            AlertService.replaceAlerts({
+                type: 'warning',
+                message: 'There is currently no data sources'
+            });
+        }
+
+
+        $scope.changePage = changePage;
+        $scope.searchData = searchData;
         $scope.showPagination = showPagination;
         $scope.deleteDataSource = deleteDataSource;
         $scope.getAPIKey = getAPIKey;

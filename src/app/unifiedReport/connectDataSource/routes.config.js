@@ -37,7 +37,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Connected Data Source'
+                    label: 'Connected Data Source - {{ dataSet.name }}'
                 }
             })
             .state('unifiedReport.connect.new', {
@@ -55,8 +55,11 @@
                     dataSet: function(UnifiedReportDataSetManager, $stateParams) {
                         return UnifiedReportDataSetManager.one($stateParams.dataSetId).get();
                     },
+                    dataSets: function(UnifiedReportDataSetManager, dataSet) {
+                        return UnifiedReportDataSetManager.getList({publisher: dataSet.publisher.id || dataSet.publisher});
+                    },
                     dataSources: /* @ngInject */ function(UnifiedReportDataSetManager, $stateParams) {
-                        return UnifiedReportDataSetManager.one($stateParams.dataSetId).one('datasources').getList(null, {connected: false});
+                        return UnifiedReportDataSetManager.one($stateParams.dataSetId).one('datasources').getList();
                     }
                 },
                 ncyBreadcrumb: {
@@ -78,8 +81,11 @@
                     dataSet: /* @ngInject */ function(connectDataSource) {
                         return connectDataSource.dataSet;
                     },
+                    dataSets: function(UnifiedReportDataSetManager, dataSet) {
+                        return UnifiedReportDataSetManager.getList({publisher: dataSet.publisher.id || dataSet.publisher});
+                    },
                     dataSources: /* @ngInject */ function(UnifiedReportDataSetManager, $stateParams, dataSet, connectDataSource) {
-                        return UnifiedReportDataSetManager.one(dataSet.id).one('datasources').getList(null, {connected: false})
+                        return UnifiedReportDataSetManager.one(dataSet.id).one('datasources').getList()
                             .then(function (dataSources) {
                                 return dataSources.plain().concat(connectDataSource.dataSource)
                             });

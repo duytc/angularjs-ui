@@ -6,6 +6,25 @@
     ;
 
     function AlertList($scope, _, $translate, $modal, alerts, UnifiedReportAlertManager, AlertService) {
+        const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_UPLOAD = 1100;
+        const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_EMAIL = 1101;
+        const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_API = 1102;
+        const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_UPLOAD_WRONG_FORMAT = 1103;
+        const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_EMAIL_WRONG_FORMAT = 1104;
+        const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_API_WRONG_FORMAT = 1105;
+        const ALERT_CODE_NO_DATA_RECEIVED_DAILY = 1300;
+        const ALERT_CODE_DATA_IMPORTED_SUCCESSFULLY = 1200;
+        const ALERT_CODE_DATA_IMPORT_MAPPING_FAIL = 1201;
+        const ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL = 1202;
+        const ALERT_CODE_FILTER_ERROR_INVALID_NUMBER = 1203;
+        const ALERT_CODE_TRANSFORM_ERROR_INVALID_DATE = 1204;
+        const ALERT_CODE_DATA_IMPORT_NO_HEADER_FOUND = 1205;
+        const ALERT_CODE_DATA_IMPORT_NO_DATA_ROW_FOUND = 1206;
+        const ALERT_CODE_WRONG_TYPE_MAPPING = 1207;
+        const ALERT_CODE_FILE_NOT_FOUND = 1208;
+        const ALERT_CODE_UN_EXPECTED_ERROR = 2000;
+        const ALERT_CODE_FETCHER_LOGIN_FAIL = 2001;
+
         $scope.tableConfig = {
             itemsPerPage: 10,
             maxPages: 10
@@ -15,7 +34,9 @@
         $scope.checkAllItem = false;
         $scope.alerts = alerts;
         $scope.selectedAlert = [];
-      
+
+        var itemsForPager = [];
+
         $scope.showPagination = showPagination;
         $scope.checkedAlert = checkedAlert;
         $scope.selectEntity = selectEntity;
@@ -32,34 +53,36 @@
 
         $scope.getTitleAlert= getTitleAlert;
         $scope.setItemForPager = setItemForPager;
+        $scope.selectAllAlertInPages = selectAllAlertInPages;
+        $scope.noneSelect = noneSelect;
 
-        var itemsForPager = [];
+        function selectAllAlertInPages() {
+            $scope.checkAllItem = true;
+
+            angular.forEach(alerts, function (alert) {
+                if($scope.selectedAlert.indexOf(alert.id) == -1) {
+                    $scope.selectedAlert.push(alert.id)
+                }
+            });
+        }
+
+        function noneSelect() {
+            $scope.selectedAlert = [];
+            $scope.checkAllItem = false
+        }
+
         function setItemForPager(item) {
+            if(itemsForPager.length > $scope.tableConfig.itemsPerPage) {
+                itemsForPager.splice(0, $scope.tableConfig.itemsPerPage);
+            }
+
             itemsForPager.push(item);
         }
 
         function getTitleAlert(alert) {
-            switch(alert.code) {
-                case 100:
-                    return alert.message.fileName + ' upload to ' + alert.message.dataSourceName + ' successfully';
-                    break;
-                case 103:
-                    return alert.message.fileName + ' upload to ' + alert.message.dataSourceName + ' failed';
-                    break;
-                case 200:
-                    return alert.message.fileName + ' of ' + alert.message.dataSourceName + ' import to ' + alert.message.dataSetName + ' had been successfully';
-                    break;
-                case 201:
-                case 202:
-                case 203:
-                case 204:
-                case 205:
-                case 206:
-                    return alert.message.fileName + ' of ' + alert.message.dataSourceName + ' import to ' + alert.message.dataSetName + ' had errors';
-                    break;
-            }
+            return convertMessage(alert)
         }
-        
+
         function deleteAlertMulti() {
             UnifiedReportAlertManager.one().customPUT({ids: $scope.selectedAlert}, null, {delete: true})
                 .then(function () {
@@ -87,9 +110,14 @@
                             }
                         }
                     });
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: $scope.selectedAlert.length + ' files have been deleted'
+                    });
                 });
         }
-        
+
         function markAsUnreadMulti() {
             UnifiedReportAlertManager.one().customPUT({ids: $scope.selectedAlert}, null, {status: false})
                 .then(function () {
@@ -99,10 +127,15 @@
                         if($scope.selectedAlert.indexOf(alert.id) > -1) {
                             alert.isRead = false
                         }
-                    })
+                    });
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: $scope.selectedAlert.length + ' files have been unread'
+                    });
                 });
         }
-        
+
         function markAsReadMulti() {
             UnifiedReportAlertManager.one().customPUT({ids: $scope.selectedAlert}, null, {status: true})
                 .then(function () {
@@ -112,14 +145,19 @@
                         if($scope.selectedAlert.indexOf(alert.id) > -1) {
                             alert.isRead = true
                         }
-                    })
+                    });
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: $scope.selectedAlert.length + ' files have been marked as read'
+                    });
                 });
         }
 
         function showPagination() {
             return angular.isArray($scope.alerts) && $scope.alerts.length > $scope.tableConfig.itemsPerPage;
         }
-        
+
         function checkedAlert(alert) {
             return $scope.selectedAlert.indexOf(alert.id) > -1
         }
@@ -141,8 +179,12 @@
 
         function selectAll () {
             if($scope.selectedAlert.length == itemsForPager.length) {
-                $scope.selectedAlert = []
+                $scope.selectedAlert = [];
+                $scope.checkAllItem = false;
             } else {
+                $scope.selectedAlert = [];
+                $scope.checkAllItem = true;
+
                 angular.forEach(itemsForPager, function (alert) {
                     if($scope.selectedAlert.indexOf(alert.id) == -1) {
                         $scope.selectedAlert.push(alert.id)
@@ -235,34 +277,7 @@
             $modal.open({
                 templateUrl: 'unifiedReport/alert/viewDetail.tpl.html',
                 controller: function ($scope, alert) {
-                    $scope.message = alert.detail.detail;
-
-                    // switch(alert.code) {
-                    //     case 100:
-                    //         $scope.message = alert.message.fileName + ' upload to ' + alert.message.dataSourceName + ' successfully';
-                    //         break;
-                    //     case 103:
-                    //         $scope.message = alert.message.fileName + ' upload to ' + alert.message.dataSourceName + ' has wrong format';
-                    //         break;
-                    //     case 200:
-                    //         $scope.message = alert.message.fileName + ' of ' + alert.message.dataSourceName + ' import to ' + alert.message.dataSetName + ' had been successfully';
-                    //         break;
-                    //     case 201:
-                    //         $scope.message = alert.message.fileName + ' of ' + alert.message.dataSourceName + ' import to '+ alert.message.dataSetName + ' happen error when mapping require fields';
-                    //         break;
-                    //     case 202:
-                    //         $scope.message = alert.message.fileName + ' of ' + alert.message.dataSourceName + ' import to '+ alert.message.dataSetName + ' happen error when required fields at row ' + alert.message.row;
-                    //         break;
-                    //     case 203:
-                    //         $scope.message = alert.message.fileName + ' of ' + alert.message.dataSourceName + ' import to ' + alert.message.dataSetName + ' happen error when filter file at row ' + alert.message.row + ' and column ' + alert.message.column + '';
-                    //         break;
-                    //     case 204:
-                    //         $scope.message = alert.message.fileName + ' of ' + alert.message.dataSourceName + ' import to ' + alert.message.dataSetName + ' happen error when transform file at row ' + alert.message.row + ' and column ' + alert.message.column + '';
-                    //         break;
-                    //     case 205:
-                    //         $scope.message = alert.message.fileName + ' of ' + alert.message.dataSourceName + ' import to ' + alert.message.dataSetName + ' import fail.';
-                    //         break;
-                    // }
+                    $scope.message = convertMessage(alert);
                 },
                 resolve: {
                     alert: alert
@@ -270,11 +285,87 @@
             });
         }
 
+        // importAlertBuilderService
+        function convertMessage(alert) {
+            var code = alert.code;
+            var detail = alert.detail;
+
+            if(!!detail.detail) {
+                // support old alert detail with key "detail"
+                return detail.detail;
+            }
+
+            // new alert detail without key "detail", using all keys in alert detail
+            switch (code) {
+                case ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_UPLOAD:
+                    return 'File ' + '"' + detail.fileName + '"' + ' has been successfully uploaded to data source ' + '"' + detail.dataSourceName + '"' + '.';
+
+                case ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_EMAIL:
+                    return 'File ' + '"' + detail.fileName + '"' + ' has been successfully imported to data source ' + '"' + detail.dataSourceName + '"' + ' from email.';
+
+                case ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_API:
+                    return 'File ' + '"' + detail.fileName + '"' + ' has been successfully received to data source ' + '"' + detail.dataSourceName + '"' + ' from api.';
+
+                case ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_UPLOAD_WRONG_FORMAT:
+                    return 'Failed to upload file ' + '"' + detail.fileName + '"' + ' to data source ' + '"' + detail.dataSourceName + '"' + ' - wrong file format. Each Data source has only one type and file format.';
+
+                case ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_EMAIL_WRONG_FORMAT:
+                    return 'Failed to receive file ' + '"' + detail.fileName + '"' + ' from email to data source ' + '"' + detail.dataSourceName + '"' + ' - wrong format error. Each Data source has only one type and file format.';
+
+                case ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_API_WRONG_FORMAT:
+                    return 'Failed to receive file ' + '"' + detail.fileName + '"' + ' from api to data source ' + '"' + detail.dataSourceName + '"' + ' - wrong format error. Each Data source has only one type and file format.';
+
+                case ALERT_CODE_DATA_IMPORT_MAPPING_FAIL:
+                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - MAPPING ERROR: no field in file is mapped to data set.';
+
+                case ALERT_CODE_WRONG_TYPE_MAPPING:
+                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - MAPPING ERROR: found invalid content ' + '"' + detail.content + '"' + ' on field ' + '"' + detail.column + '"' + '.';
+
+                case ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL:
+                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - REQUIRE ERROR: required field ' + '"' + detail.column + '"' + ' does not exist.';
+
+                case ALERT_CODE_FILTER_ERROR_INVALID_NUMBER:
+                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - invalid number format on field ' + '"' + detail.column + '"' + '.';
+
+                case ALERT_CODE_TRANSFORM_ERROR_INVALID_DATE:
+                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - invalid date format on field ' + '"' + detail.column + '"' + '.';
+
+                case ALERT_CODE_DATA_IMPORT_NO_HEADER_FOUND:
+                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - no header found from file.';
+
+                case ALERT_CODE_DATA_IMPORT_NO_DATA_ROW_FOUND:
+                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - no data found from file.';
+
+                case ALERT_CODE_FILE_NOT_FOUND:
+                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - file does not exist.';
+
+                case ALERT_CODE_NO_DATA_RECEIVED_DAILY:
+                    return 'Data source ' + '"' + detail.dataSourceName + '"' + ' has not received data daily (on ' + '"' + detail.date + '"' + ')';
+
+                case ALERT_CODE_UN_EXPECTED_ERROR:
+                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - unexpected error, please contact your account manager';
+
+                case ALERT_CODE_FETCHER_LOGIN_FAIL:
+                    return 'Browser automation: login failed for account of Integration "' + detail.integrationName + '" at "' + detail.executionDate + '" when getting reports from "' + detail.startDate + '" to "' + detail.endDate + '"';
+
+                case ALERT_CODE_DATA_IMPORTED_SUCCESSFULLY:
+                    return 'File ' + '"' + detail.fileName + '"' + ' from data source ' + '"' + detail.dataSourceName + '"' + ' has been successfully imported to data set ' + '"' + detail.dataSetName + '"' + '.';
+
+                default:
+                    return 'Unknown alert code (' + code + ')';
+            }
+        }
+
         $scope.$watch(function () {
             return $scope.tableConfig.currentPage
         }, function () {
-            $scope.selectedAlert = [];
             itemsForPager = [];
+
+            if($scope.checkAllItem == true && alerts.length == $scope.selectedAlert.length) {
+                return
+            }
+
+            $scope.selectedAlert = [];
             $scope.checkAllItem = false;
         });
     }

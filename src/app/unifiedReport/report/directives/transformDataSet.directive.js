@@ -5,7 +5,7 @@
         .directive('transformDataSet', transformDataSet)
     ;
 
-    function transformDataSet($compile, _, AddCalculatedField, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES, METRICS_SET) {
+    function transformDataSet($compile, _, AddCalculatedField, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES, METRICS_SET) {
         'use strict';
 
         return {
@@ -17,7 +17,8 @@
                 dimensionsList: '=',
                 selectedFieldsDateSet: '=',
                 multiView: '=',
-                showDimensions: '='
+                showDimensions: '=',
+                reorderTransformsAllowed: '='
             },
             restrict: 'AE',
             templateUrl: 'unifiedReport/report/directives/transformDataSet.tpl.html',
@@ -30,6 +31,12 @@
                     scope.dateFormatTypes = DATE_FORMAT_TYPES;
                     scope.typesField = METRICS_SET;
                     scope.positionsForReplaceText = POSITIONS_FOR_REPLACE_TEXT;
+                    scope.reorderDefaultValueAllowed = false;
+
+                    var totalDimensionsMetricsForDefaultValues = [];
+
+                    scope.conditionComparators = COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE;
+
                     scope.separatorType = [
                         {key: ',', label: 'Comma'},
                         {key: 'none', label: 'None'}
@@ -45,7 +52,35 @@
                         scope.fieldNames = scope.selectedFields;
 
                         // getFieldsTypeNumber();
+                        selectTypeCalculatedField('number');
                     }, true);
+
+                    scope.$watch(function () {
+                        return scope.selectedFieldsDateSet;
+                    }, function () {
+                        totalDimensionsMetricsForDefaultValues = angular.copy(scope.selectedFieldsDateSet);
+                        totalDimensionsMetricsForDefaultValues.unshift({key: '$$CALCULATED_VALUE$$', label: 'calculated value'});
+                    }, true);
+
+                    scope.sortableOptions = {
+                        disabled: false,
+                        forcePlaceholderSize: true,
+                        placeholder: 'sortable-placeholder'
+                    };
+
+                    scope.sortableDefaultValueOptions = {
+                        disabled: false,
+                        forcePlaceholderSize: true,
+                        placeholder: 'sortable-placeholder'
+                    };
+
+                    if (scope.reorderDefaultValueAllowed) {
+                        scope.sortableDefaultValueOptions['disabled'] = false;
+                    } else {
+                        scope.sortableDefaultValueOptions['disabled'] = true;
+                    }
+
+                    scope.patternForAddField =  /^[a-zA-Z_][a-zA-Z0-9_$\s]*$/;
 
                     scope.removeTransform = removeTransform;
                     scope.addTransform = addTransform;
@@ -73,6 +108,97 @@
                     scope.selectTypeCalculatedField = selectTypeCalculatedField;
                     scope.formatExpressionToHighlight = formatExpressionToHighlight;
                     scope.filterFieldByText = filterFieldByText;
+                    scope.enableDragDropQueryBuilder = enableDragDropQueryBuilder;
+                    scope.getLengthTransform = getLengthTransform;
+                    scope.getTransformName = getTransformName;
+                    scope.addCalculatedField = addCalculatedField;
+                    scope.addDefaultValue = addDefaultValue;
+                    scope.enableDragDropDefaultValue = enableDragDropDefaultValue;
+                    scope.addCompareValue = addCompareValue;
+                    scope.getTotalDimensionsMetricsForDefaultValues = getTotalDimensionsMetricsForDefaultValues;
+                    scope.selectedComparison = selectedComparison;
+
+                    function selectedComparison(defaultValue) {
+                        defaultValue.conditionValue = null;
+                    }
+
+                    function getTotalDimensionsMetricsForDefaultValues() {
+                        var fields = [];
+
+                        angular.forEach(totalDimensionsMetricsForDefaultValues, function (field) {
+                            fields.push(field);
+                        });
+
+                        return fields
+                    }
+
+                    function addCompareValue(query) {
+                        if (!/^[+-]?\d+(\.\d+)?$/.test(query)) {
+                            return;
+                        }
+
+                        return query;
+                    }
+
+                    function addDefaultValue(field) {
+                        field.defaultValues = angular.isArray(field.defaultValues) ? field.defaultValues : [];
+
+                        field.defaultValues.push({
+                            conditionField: null,
+                            conditionComparator: null,
+                            conditionValue: null,
+                            defaultValue: null
+                        })
+                    }
+
+                    function enableDragDropDefaultValue(enable) {
+                        if (enable) {
+                            scope.sortableDefaultValueOptions['disabled'] = false;
+                        } else {
+                            scope.sortableDefaultValueOptions['disabled'] = true;
+                        }
+
+                        scope.reorderDefaultValueAllowed = enable;
+                    }
+
+                    function getTransformName(typeKey) {
+                        var element,
+                            defautlName ='New Transformation';
+                        element = _.find(scope.allFiledFormatTypes, function (type){
+                            return type.key == typeKey;
+                        });
+
+                        if(_.isEmpty(element)) {
+                            return defautlName;
+                        }
+
+                        if(!'label' in element) {
+                            return defautlName;
+                        }
+
+                        return element.label;
+
+                    }
+
+                    if (scope.reorderTransformsAllowed) {
+                        scope.sortableOptions['disabled'] = false;
+                    } else {
+                        scope.sortableOptions['disabled'] = true;
+                    }
+
+                    function enableDragDropQueryBuilder(enable) {
+                        if (enable) {
+                            scope.sortableOptions['disabled'] = false;
+                        } else {
+                            scope.sortableOptions['disabled'] = true;
+                        }
+                        scope.reorderTransformsAllowed = enable;
+                    }
+
+                    function getLengthTransform (){
+                        return scope.transforms.length;
+                    }
+
 
                     function formatExpressionToHighlight(field) {
                         var expression = (!!field.field ? ('<strong>' + field.field + '</strong>' + ' = ') : '') + (angular.copy(field.expression) || '');
@@ -100,13 +226,13 @@
                         }
 
                         if (type == 'number' || type == 'decimal' || type.key == 'number' || type.key == 'decimal') {
-                            angular.forEach(scope.selectedFieldsDateSet, function (field) {
+                            angular.forEach(scope.totalDimensionsMetrics, function (field) {
                                 if (field.type == 'number' || field.type == 'decimal') {
                                     scope.fieldsCalculatedField.push(field)
                                 }
                             });
                         } else {
-                            scope.fieldsCalculatedField = scope.selectedFieldsDateSet;
+                            scope.fieldsCalculatedField = scope.totalDimensionsMetrics;
                         }
 
                         if(!!type.key && !!calculatedField){
@@ -383,7 +509,8 @@
 
                     function addTransform() {
                         scope.transforms.push({
-                            fields: []
+                            fields: [],
+                            openStatus: true
                         });
                     }
 
@@ -399,6 +526,14 @@
                         fields.push({
                             field: null,
                             value: null
+                        });
+                    }
+
+                    function addCalculatedField(fields){
+                        fields.push({
+                            field: null,
+                            value: null,
+                            defaultValues: []
                         });
                     }
 

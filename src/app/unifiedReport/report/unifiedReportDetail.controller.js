@@ -4,10 +4,14 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $stateParams, _, SortReportByColumnType, reportView, $translate, reportGroup, getDateReportView, AlertService, unifiedReportFormatReport, UnifiedReportViewManager, UserStateHelper, DateFormatter) {
+    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, reportView, $translate, reportGroup, getDateReportView, AlertService, unifiedReportFormatReport, UnifiedReportViewManager, UserStateHelper, DateFormatter, HISTORY_TYPE_PATH) {
+        // reset css for id app
+        var app = angular.element('#app');
+        app.css({position: 'inherit'});
+
         $scope.reportView = reportView;
         $scope.reportGroup = reportGroup;
-        $scope.hasResult = reportGroup !== false;
+        $scope.hasResult = !angular.isNumber(reportGroup.status);
 
         $scope.reports = reportGroup.reports || [];
         $scope.types = reportGroup.types;
@@ -15,19 +19,10 @@
         $scope.hasSaveRepoerView = !!$stateParams.saveReportView;
         $scope.formProcessing = false;
 
-
-        if (!$scope.hasResult) {
-            AlertService.replaceAlerts({
-                type: 'warning',
-                message: $translate.instant('REPORT.REPORTS_EMPTY')
-            });
-        }
-
         // user tempReports to orderBy and reports to view
         $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);
 
-        // $scope.titleColumns = reportGroup.columns;
-        $scope.titleColumns = SortReportByColumnType.changeColumnName(reportGroup.columns);
+        $scope.titleColumns = reportGroup.columns;
         $scope.columnReportDetailForExportExcel = [];
         $scope.titleReportDetailForExportExcel = [];
         $scope.hasSort = false;
@@ -63,7 +58,6 @@
             }
         }
 
-
         if (!$scope.columnPositions.length && $scope.reports.length > 0) {
             $scope.columnPositions = _.keys($scope.reports[0]);
             var indexReportViewAlias = $scope.columnPositions.indexOf('report_view_alias');
@@ -96,14 +90,34 @@
             reportView: reportView.id,
             multiView: reportView.multiView,
             subReportsIncluded: reportView.subReportsIncluded,
+            isShowDataSetName: reportView.isShowDataSetName,
             publisher: angular.isObject(reportView.publisher) ? reportView.publisher.id : reportView.publisher
         };
 
-        if (!$scope.reports || $scope.reports.length == 0) {
-            AlertService.replaceAlerts({
-                type: 'warning',
-                message: $translate.instant('REPORT.REPORTS_EMPTY')
-            });
+        if(!$scope.hasResult) {
+            if(reportGroup.status == 400) {
+                AlertService.replaceAlerts({
+                    type: 'error',
+                    message: reportGroup.message
+                });
+            } else if (reportGroup.status == 500){
+                AlertService.replaceAlerts({
+                    type: 'error',
+                    message:  $translate.instant('REPORT.REPORT_FAIL')
+                });
+            } else {
+                AlertService.replaceAlerts({
+                    type: 'warning',
+                    message: $translate.instant('REPORT.REPORTS_EMPTY')
+                });
+            }
+        } else {
+            if ($scope.reports.length == 0) {
+                AlertService.replaceAlerts({
+                    type: 'warning',
+                    message: $translate.instant('REPORT.REPORTS_EMPTY')
+                });
+            }
         }
 
         $scope.tableConfig = {
@@ -148,7 +162,12 @@
         $scope.generateReport = generateReport;
         $scope.hasFilterDate = hasFilterDate;
         $scope.hideDaterange = hideDaterange;
-        
+        $scope.refreshData = refreshData;
+
+        function refreshData() {
+            historyStorage.getLocationPath(HISTORY_TYPE_PATH.unifiedReportDetail, '^.detail');
+        }
+
         function hideDaterange() {
             var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
             for (var reportViewIndex in reportViews) {
@@ -199,7 +218,8 @@
                 name: reportViewClone.name,
                 alias: reportViewClone.alias,
                 multiView: !!reportViewClone.multiView || reportViewClone.multiView == 'true',
-                subReportsIncluded: !!reportViewClone.subReportsIncluded || reportViewClone.subReportsIncluded == 'true'
+                subReportsIncluded: !!reportViewClone.subReportsIncluded || reportViewClone.subReportsIncluded == 'true',
+                isShowDataSetName: !!reportViewClone.isShowDataSetName || reportViewClone.isShowDataSetName == 'true'
             };
 
             params.startDate = DateFormatter.getFormattedDate(date.startDate);
@@ -237,35 +257,67 @@
         }
 
         function saveReportView() {
-            $scope.hasSaveRepoerView = true;
-            $scope.formProcessing = true;
+            var dfd = $q.defer();
 
-            if (!$scope.isAdmin()) {
-                delete $scope.reportView.publisher;
-            }
+            dfd.promise
+                .then(function () {
+                    $scope.hasSaveRepoerView = true;
+                    $scope.formProcessing = true;
 
-            var save = !$scope.isNew ? UnifiedReportViewManager.one($scope.reportView.id).patch($scope.reportView) : UnifiedReportViewManager.post($scope.reportView);
+                    if (!$scope.isAdmin()) {
+                        delete $scope.reportView.publisher;
+                    }
 
-            save.then(function (data) {
-                if ($scope.isNew) {
-                    $scope.reportView.id = data.id;
-                    $scope.reportViewForEdit.reportView = data.id;
-                }
+                    var save = !$scope.isNew ? UnifiedReportViewManager.one($scope.reportView.id).patch($scope.reportView) : UnifiedReportViewManager.post($scope.reportView);
 
-                $scope.formProcessing = false;
+                    save.then(function (data) {
+                        if ($scope.isNew) {
+                            $scope.reportView.id = data.id;
+                            $scope.reportViewForEdit.reportView = data.id;
+                        }
 
-                AlertService.replaceAlerts({
-                    type: 'success',
-                    message: $scope.isNew ? 'The report view has been created' : 'The report view has been updated'
+                        $scope.formProcessing = false;
+
+                        AlertService.replaceAlerts({
+                            type: 'success',
+                            message: $scope.isNew ? 'The report view has been created' : 'The report view has been updated'
+                        });
+                    })
+                    .catch(function () {
+                        $scope.hasSaveRepoerView = false;
+                    });
                 });
-            })
-            .catch(function () {
-                $scope.hasSaveRepoerView = false;
-            });
+
+            if (!$scope.reportView.name) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'unifiedReport/report/inputName.tpl.html',
+                    resolve: {
+                        reportView: function () {
+                            return $scope.reportView
+                        }
+                    },
+                    controller: function ($scope, reportView) {
+                        $scope.reportView = reportView;
+                    }
+                });
+
+                modalInstance.result.then(function () {
+                    dfd.resolve();
+                }).catch(function () {
+                    $scope.reportView.name = null;
+                });
+            } else {
+                // if it is not a pause, proceed without a modal
+                dfd.resolve();
+            }
         }
 
         function showPagination() {
             return angular.isArray($scope.reports) && $scope.reports.length > $scope.tableConfig.itemsPerPage;
         }
+
+        $scope.$on('$locationChangeSuccess', function() {
+            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.unifiedReportDetail)
+        });
     }
 })();

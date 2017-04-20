@@ -60,6 +60,7 @@
             "WATERFALL_TAG": "Waterfall",
 
             "DATA_SOURCE":"Data Source",
+            "DATA_SET":"Data Set",
 
             "RTB_STATUS": "RTB",
             "RTB_STATUS_INHERIT": "Inherit",
@@ -160,8 +161,11 @@
 
                 "MANAGE_CONNECTED_DATA_SOURCE": "Manage Connected Data Source",
                 "MY_CONNECTED_DATA_SOURCE":"My Connected Data Source",
-                "CREATE_CONNECTED_DATA_SOURCE":"Create Connected Data Source"
+                "CREATE_CONNECTED_DATA_SOURCE":"Create Connected Data Source",
 
+                "BLACK_LIST": "Domain Blacklists",
+                "MY_BLACK_LIST": "My Blacklists",
+                "NEW_BLACK_LIST": "New Blacklist"
             },
             "DASHBOARD_MODULE": {
                 "DATE_RANGE": "Date Range",
@@ -370,8 +374,10 @@
                 "NOTE_CONFIRM_PAUSE_AD_NETWORK": "Every ad tag associated with this demand partner will be also paused.",
                 "CONFIRM_PAUSE_SITE": "Are you sure you want to pause this site?",
                 "NOTE_CONFIRM_PAUSE_SITE": "Every ad tag associated with this demand partner and site will be also paused.",
+                "BLOCK_LIST_DOMAINS": "Domain Blacklists",
 
                 "MANAGE_AD_TAGS": "Manage Ad Tags",
+                "MANAGE_BLACk_LIST": "Manage Blacklist",
                 "EDIT_AD_NETWORK": "Edit Demand Partner",
                 "SITES_FOR_AD_NETWORK": "Sites for Demand Partner",
                 "PLACEHOLDER_AD_NETWORK_NAME": "Demand Partner name",
@@ -389,15 +395,30 @@
                 "ALERT_WARNING_UNIFIED_REPORT_EMAIL_TOKEN": "This demand partner does not currently have a unified report email. Click the button below to create one.",
 
                 "BACK_TO_AD_NETWORK_LIST": "Back to Demand Partner List",
+                "BACK_TO_BLACK_LIST": "Back to my blacklists",
                 "ACTIVE_AD_TAGS_COUNT": "Active Ad Tags",
                 "PAUSE_AD_TAGS_COUNT": "Paused Ad Tags",
                 "PAUSE_AD_NETWORK_BY_SITE": "Pause Demand Partner by Sites",
                 "YES_PAUSE": "Yes, pause",
                 "SELECT_A_AD_NETWORK": "Select a Demand Partner",
+                "CREATE_BLOCK_LIST": "+ Create block list",
+                "VIEW_BLOCK_LIST": "View Block List",
+                "ACTIVE_SITE_AD_NETWORK": "The ad tags have been activated. Please wait a few minutes for the changes to take effect.",
+                "PAUSE_SITE_AD_NETWORK": "The ad tags have been paused. Please wait a few minutes for the changes to take effect.",
+                "UPDATE_SITE_AD_NETWORK_FAIL": "The ad tags have not been updated",
 
                 "HELP_BLOCK_URL": "You can use this field to add the login url for your demand partner.",
                 "HELP_BLOCK_ENABLE_UNIFIED": "This credentials to use to login demand partner.",
-                "BLANK_FOR_NO_CHANGE":  "Leave it blank for no change"
+                "BLANK_FOR_NO_CHANGE":  "Leave it blank for no change",
+                "NEW_BLOCK_LIST": "New Block List",
+                "EDIT_BLOCK_LIST": "Edit Block List",
+                "ADD_NEW_BLACK_LIST_SUCCESS": "The blacklist has been created",
+                "UPDATE_BLACK_LIST_SUCCESS": "The blacklist has been updated",
+
+                "DELETE_BLOCK_LIST_SUCCESS": "The block list was deleted",
+                "DELETE_BLOCK_LIST_FAIL": "The block list could not be deleted",
+                "DELETE_BLOCK_LIST": "Delete Block List",
+                "CONFIRM_DELETE_BLACK_LIST": "Are you sure you want to delete this blacklist?"
             },
             "VIDEO_DEMAND_PARTNER_MODULE": {
                 "DEFAULT_TAG_URL": "Default Tag URL",
@@ -463,12 +484,12 @@
                 "WIDTH": "Width",
                 "HEIGHT": "Height",
                 "PAGE_URL": "Page Url",
-                "COUNTRY_CODE": "Country Code",
-                "BROWSER_NAME": "Browser Name",
-                "BROWSER_OS": "Browser Os",
-                "BROWSER_MAJOR": "Browser Major",
+                "COUNTRY_CODE": "Country",
+                "BROWSER_NAME": "Browser",
+                "BROWSER_OS": "OS",
+                "BROWSER_MAJOR": "Browser Version",
                 "TIME": "Time",
-                "SHOW_VAST_TAG_REQUEST": "Show Vast Tag Request",
+                "SHOW_VAST_TAG_REQUEST": "Show Tag Request History",
 
                 "SERVER_TO_SERVER": "Server to Server",
                 "VAST_ONLY": "Vast Only",
@@ -513,8 +534,8 @@
                 "COUNTRIES": "Countries",
                 "EXCLUDE_COUNTRIES": "Exclude Countries",
                 "SELECT_A_COUNTRIES": " Select a country",
-                "DOMAINS": "White List Domains",
-                "EXCLUDE_DOMAINS": "Black List Domains",
+                "DOMAINS": "Whitelist Domains",
+                "EXCLUDE_DOMAINS": "Blacklist Domains",
                 "STATUS": "Status",
                 "ACTIVATE_AD_SOURCE": "Activate Demand Ad Tag",
                 "PAUSE_AD_SOURCE": "Pause Demand Ad Tag",
@@ -542,12 +563,12 @@
                 "BACK_TO_AD_SOURCE_LIST": "Back to Demand Ad Tag List",
                 "BACK_TO_LIBRARY_DEMAND_AD_TAG_LIST": "Back to Demand Ad Tag List",
                 "SELECT_A_AD_SOURCE": "Select a demand ad tag",
-                "CREATE_WHITE_LIST": "+ Create white list",
-                "CREATE_BLACK_LIST": "+ Create black list",
+                "CREATE_WHITE_LIST": "+ Create whitelist",
+                "CREATE_BLACK_LIST": "+ Create blacklist",
                 "TARGETING_OVERRIDE": "Targeting Override",
 
-                "VIEW_BLACK_LIST": "View Black List",
-                "VIEW_WHITE_LIST": "View White List",
+                "VIEW_BLACK_LIST": "View Blacklist",
+                "VIEW_WHITE_LIST": "View Whitelist",
                 "CONFIRM_SUBMIT_FOR_PLATFORM": "One of the waterfalls has a platform that does not support this platform of demand ad tag.",
 
                 "HELP_BLOCK_TIMEOUT": "The request timeout in milliseconds. Leave it blank to use the default value",
@@ -587,26 +608,28 @@
                 "FROM": "From",
                 "BUILTIN": "Builtin",
                 "VIEW_DOMAINS": "View Domains",
+                "BACK_TO_BLACK_LIST": "Back to My Blacklists",
 
-                "CURRENTLY_NO_BLACK_LIST": "There is currently no black list",
-                "CURRENTLY_NO_WHITE_LIST": "There is currently no white list",
+                "CURRENTLY_NO_BLACK_LIST": "There is currently no blacklist",
+                "CURRENTLY_NO_WHITE_LIST": "There is currently no whitelist",
+                "MANAGE_AD_NETWORKS": "Manage Demand Partners",
 
-                "DELETE_BLACK_LIST_SUCCESS": "The black list was deleted",
-                "DELETE_WHITE_LIST_SUCCESS": "The white list was deleted",
-                "DELETE_BLACK_LIST_FAIL": "The black list could not be deleted",
-                "DELETE_WHITE_LIST_FAIL": "The white list could not be deleted",
+                "DELETE_BLACK_LIST_SUCCESS": "The blacklist was deleted",
+                "DELETE_WHITE_LIST_SUCCESS": "The whitelist was deleted",
+                "DELETE_BLACK_LIST_FAIL": "The blacklist could not be deleted",
+                "DELETE_WHITE_LIST_FAIL": "The whitelist could not be deleted",
 
-                "NEW_BLACK_LIST": "New Black List",
-                "NEW_WHITE_LIST": "New White List",
-                "EDIT_BLACK_LIST": "Edit Black List",
-                "EDIT_WHITE_LIST": "Edit White List",
-                "DELETE_BLACK_LIST": "Delete Black List",
-                "DELETE_WHITE_LIST": "Delete White List",
+                "NEW_BLACK_LIST": "New Blacklist",
+                "NEW_WHITE_LIST": "New Whitelist",
+                "EDIT_BLACK_LIST": "Edit Blacklist",
+                "EDIT_WHITE_LIST": "Edit Whitelist",
+                "DELETE_BLACK_LIST": "Delete Blacklist",
+                "DELETE_WHITE_LIST": "Delete Whitelist",
 
-                "ADD_NEW_BLACK_LIST_SUCCESS": "The black list has been created",
-                "ADD_NEW_WHITE_LIST_SUCCESS": "The white list has been created",
-                "UPDATE_BLACK_LIST_SUCCESS": "The black list has been updated",
-                "UPDATE_WHITE_LIST_SUCCESS": "The white list has been updated",
+                "ADD_NEW_BLACK_LIST_SUCCESS": "The blacklist has been created",
+                "ADD_NEW_WHITE_LIST_SUCCESS": "The whitelist has been created",
+                "UPDATE_BLACK_LIST_SUCCESS": "The blacklist has been updated",
+                "UPDATE_WHITE_LIST_SUCCESS": "The whitelist has been updated",
 
                 "CONFIRM_DELETE_DOMAIN_LIST": "Are you sure you want to delete this domain list?",
                 "DOMAINS": "Domains",
@@ -614,7 +637,8 @@
 
                 "CUSTOM": "Custom",
                 "BUILT_IN": "Built In",
-                "SELECT_A_BUILT_IN": "Select a built in"
+                "SELECT_A_BUILT_IN": "Select a built in",
+                "HELP_TEXT_FOR_DEFAULT": "Editing this default blacklist will affect all ad networks and ad tags"
             },
             "AD_SLOT_MODULE": {
                 "NATIVE": "Native",
@@ -1117,6 +1141,7 @@
                 "USERNAME":'Username',
                 "PASSWORD":'Password',
                 "FREQUENCY": 'Frequency',
+                "PLACEHOLDER_FREQUENCY": 'Check every',
                 "ENABLE": 'Enabled',
                 "ADD_NEW_SUCCESS": "The data source has been added",
                 "DELETE_SUCCESS": "The data source has been deleted",
@@ -1127,7 +1152,7 @@
 	            "REGENERATE_UNIFIED_REPORT_EMAIL":"Regenerate Unified Report Email",
                 "GET_API_KEY": "Get API Key",
                 "UPLOAD_DATA": "Upload Data",
-                "MANAGE_RECEIVED_DATA": "Manage Received Data",
+                "MANAGE_RECEIVED_DATA": "View Imported Data",
                 "EDIT": "Edit",
                 "KEY": "Key",
                 "DELETE": "Delete",
@@ -1140,7 +1165,8 @@
                 "BACK_TO_DATA_SET_LIST": "Back To Data Set List",
                 "BACK_TO_CONNECT_DATA_SOURCE_LIST": "Back To Connected Data Source List",
 
-                "SELECT_A_DATA_SOURCE": "Select a Data Source"
+                "SELECT_A_DATA_SOURCE": "Select a Data Source",
+                "USE_INTEGRATION": "Use Integration"
             },
             "UNIFIED_REPORT_ALERT_MODULE": {
                 "VIEW_DETAIL": "View Detail",
@@ -1170,7 +1196,7 @@
                 "INSTRUCTION_MESSAGE": "Drag or Drop your files here or click the button to select files",
                 "UPLOAD_FILES_SUCCESS": "The files were successfully uploaded",
                 "DOWNLOAD_DATA": "Download Data",
-                "REPLAY_DATA": "Replay Data",
+                "REPLAY_DATA": "Reload Data",
                 "VIEW_DETAILS": "View Details",
                 "RECEIVED_DATE": "Date Received",
                 "FILENAME": "File Name",
@@ -1207,24 +1233,31 @@
                 "MANAGE":"Manage",
                 "ADD_NEW_DATA_SET": "New Data Set",
                 "MANAGE_CONNECTED_DATA_SOURCES": "Manage Connected Data Sources",
-                "VIEW_DATA_IMPORT_HISTORY": "View Data Import History",
+                "VIEW_DATA_IMPORT_HISTORY": "View Loaded Data",
                 "EDIT": "Edit",
                 "DELETE": "Delete",
-                "DATE_CREATED":"Date Created",
+                "DATE_CREATED": "Date Created",
+                "REMOVE_ALL_DATA": "Remove All Data",
+                "ROWS": "# of Rows",
                 "BACK_TO_DATA_SET_LIST": "Back to Data Set List",
                 "DELETE_DATA_SET_SUCCESS":"The data set has been deleted",
                 "ADD_NEW_SUCCESS": "The data set has been added",
                 "UPDATE_SUCCESS": "The data set has been updated",
                 "DIMENSION_NAME_INSTRUCTION_BLOCK": "Dimension name must begin with a letter. It may contain text, numbers or spaces",
+                "REMOVE_ALL_DATE_SUCCESS": "The data set has been removed all data",
+                "REMOVE_ALL_DATE_FAIL": "Could not removed all data",
                 "METRIC_NAME_INSTRUCTION_BLOCK":"Metric name must begin with a letter. It may contain text, numbers or spaces"
             },
             "UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE": {
                 "FIELDS": "Fields",
                 "DETECTED_FIELDS": "Detected Fields",
                 "MAP_FIELDS": "Map Fields",
+                "TEMPORARY_FIELDS": "Temporary Fields",
                 "REQUIRES": "Requires",
                 "FILTERS": "Filters",
                 "TRANSFORMATIONS": "Transformations",
+                "RELOAD_ALL_DATA": "Reload All Data",
+                "NAME": "Name",
 
                 "NEW_CONNECTED_DATA_SOURCE": "New Connected Data Source",
                 "EDIT": "Edit Connected Data Source",
@@ -1232,14 +1265,18 @@
                 "CONFIRM_DELETE": "Are you sure you want to delete this connected data source?",
 
                 "DETECT_FIELDS_FROM_FILE": "Detect fields from file",
-                "SELECT_A_FILE_FOR_DETECTING_FIELD": "Select a File"
+                "CLONE_CONNECT_DATA_SOURCE": "Clone Connected Data Source",
+                "SELECT_A_FILE_FOR_DETECTING_FIELD": "Select a File",
+                "INPUT_DATE_FORMAT_HELP_TEXT": "Custom date must contain only YY, YYYY, M, MM, MMM, MMMM, D, DD, TH:i:s, H:i:s and some special characters such as dashes and spaces",
+                "REPLACEMENT_VALUE_HELP_TEXT": "Replacement value may contain match groups in the form [1] or [2] etc that will be replaced by the text captured in the search pattern"
             },
             "REPORT_BUILDER_MODULE": {
                 "ENTER_ONE_OR_MULTIPLE_VALUE": "Enter one or multiple values",
                 "HELP_TEXT_FOR_ENTER_VALUES": "If the comparison value has multiple values then an 'OR' condition is automatically applied",
                 "HELP_TEXT_FOR_COLUMN_POSITION": "You can change the order of the columns in the report by specifying a custom order here",
                 "HELP_TEXT_FOR_SHOW_DIMENSIONS": "Show dimensions of sub views",
-                "SAVE_REPORT_VIEW_FAIL": "There is a error when save report"
+                "SAVE_REPORT_VIEW_FAIL": "There is a error when save report",
+                "ENABLE_DRAG_AND_DROP": "Enable drag/drop to change transformation priority"
 
             }
         });

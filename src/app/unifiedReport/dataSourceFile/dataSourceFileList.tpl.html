@@ -31,15 +31,30 @@
             </span>
     </form>
 
-    <div class="panel-body">
+    <div class="panel-body" ng-show="hasData()">
         <div class="mail-options">
-            <label class="ui-checkbox"><input name="checkbox1" type="checkbox" value="option1" ng-model="checkAllItem" ng-click="selectAll()"><span>Toggle All</span></label>
+            <div>
+                <div class="btn-group pull-left check-toggle-dropdown" dropdown>
+                    <button type="button" class="btn " dropdown-toggle>
+                        <label stop-event class="ui-checkbox check-toggle-alert"><input name="checkbox1" type="checkbox" value="option1" ng-model="checkAllItem" ng-click="selectAll()"><span></span></label>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                        <li ng-click="selectAllInPages()"><a>All Pages</a></li>
+                        <li ng-click="noneSelect()"><a>None</a></li>
+                    </ul>
+                </div>
 
-            <div class="btn-group" dropdown>
-                <button type="button" class="btn" ng-disabled="selectedDataSourceFiles.length == 0" dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
-                <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                    <li ng-class="dataSource.enable == false ? 'disabled' : ''"><a ng-click="replayMultiData()">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.REPLAY_DATA' | translate }}</a></li>
-                </ul>
+                <div class="btn-group pull-left" dropdown style="margin-bottom: 10px">
+                    <button type="button" class="btn" ng-disabled="selectedDataSourceFiles.length == 0" dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                    <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                        <li><a ng-click="replayMultiData()">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.REPLAY_DATA' | translate }}</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 10px" ng-if="selectedDataSourceFiles.length > 0" class="alert alert-warning alert-number">
+                All <strong>{{ selectedDataSourceFiles.length }}</strong> imported data on this page are selected.
             </div>
         </div>
 
@@ -48,7 +63,7 @@
             </thead>
 
             <tbody>
-                <tr>
+                <tr ng-init="setItemForPager(item)">
                     <td at-title="#" at-attribute="id"><label class="ui-checkbox"><input type="checkbox" ng-checked="checkedDataSourceFile(item)" ng-click="selectEntity(item)"><span></span></label></td>
                     <td at-title="{{ 'ACTIONS' | translate }}">
                         <div class="btn-group" dropdown>
@@ -58,14 +73,14 @@
                                 <li class="divider"></li>
                                 <li ng-class="dataSource.enable == false ? 'disabled' : ''"><a ng-click="replayData(item)">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.REPLAY_DATA' | translate }}</a></li>
                                 <li class="divider" ng-if="item.receivedVia == 'email'"></li>
-                                <li ng-if="item.receivedVia == 'email'"><a >{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.VIEW_DETAILS' | translate }}</a></li>
+                                <li><a ng-click="viewDetails(item)">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.VIEW_DETAILS' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li><a ng-click="confirmDeletion(item)"> {{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DELETE' | translate }}</a></li>
                             </ul>
                         </div>
                     </td>
                     <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.FILENAME' | translate }}" at-implicit at-sortable at-attribute="fileName"></td>
-                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.RECEIVED_DATE' | translate }}" at-sortable at-attribute="receivedDate">{{ item.receivedDate | date }}</td>
+                    <td at-title="Imported on" at-sortable at-initial-sorting="desc" at-attribute="receivedDate">{{ item.receivedDate | date:'MMM d, y H:mm:ss' }}</td>
                     <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.RESOURCE_NAME' | translate }}" at-implicit at-attribute="dataSource.name"></td>
                     <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.FORMAT' | translate }}" at-implicit at-attribute="dataSource.format"></td>
                     <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.VALID' | translate }}" at-attribute="isValid">

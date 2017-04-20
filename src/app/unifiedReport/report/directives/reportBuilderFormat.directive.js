@@ -217,6 +217,10 @@
                             format.decimals = 0;
                         }
 
+                        if (type.key == 'percentage') {
+                            format.precision = 2;
+                        }
+
                         if (type.key == 'columnPosition') {
                             filterListFormats();
                         }

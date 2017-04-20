@@ -23,8 +23,6 @@
             name: null,
             defaultCpmRate: null,
             url: null,
-            username: null,
-            password: null,
             networkPartner: null,
             impressionCap: null,
             networkOpportunityCap: null
@@ -82,7 +80,7 @@
                 .then(
                     function () {
                         $modalInstance.close();
-                        AlertService.addAlert({
+                        AlertService.replaceAlerts({
                             type: 'success',
                             message: $translate.instant('AD_NETWORK_MODULE.ADD_NEW_SUCCESS')
                         });

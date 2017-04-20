@@ -47,7 +47,7 @@
                 .then(function() {
                     adtag[field] = data;
 
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'success',
                         message: $translate.instant('AD_TAG_MODULE.UPDATE_SUCCESS')
                     });
@@ -111,7 +111,7 @@
                             $scope.tableConfig.currentPage =- 1;
                         }
 
-                        AlertService.addFlash({
+                        AlertService.replaceAlerts({
                             type: 'success',
                             message: $translate.instant('AD_TAG_MODULE.DELETE_SUCCESS')
                         });

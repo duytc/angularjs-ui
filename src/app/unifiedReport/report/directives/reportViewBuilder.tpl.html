@@ -29,7 +29,7 @@
     <div class="form-group" ng-if="reportView.tempDimensions.length > 0 && subReportsIncluded">
         <label class="control-label">Dimensions</label>
         <div>
-            <div ng-repeat="field in reportView.tempDimensions" class="check_total_builder">
+            <div ng-repeat="field in reportView.tempDimensions" class="col-sm-4">
                 <label class="ui-checkbox"><input name="field[]" type="checkbox" ng-click="toggleField(field, reportView.dimensions, reportView)" ng-checked="hasField(field, reportView.dimensions)">
                     <span>{{ field.label }}</span>
                 </label>
@@ -40,7 +40,7 @@
     <div class="form-group" ng-if="reportView.tempMetrics.length > 0">
         <label class="control-label">Metrics</label>
         <div>
-            <div ng-repeat="field in reportView.tempMetrics" class="check_total_builder">
+            <div ng-repeat="field in reportView.tempMetrics" class="col-sm-4">
                 <label class="ui-checkbox"><input name="field[]" type="checkbox" ng-click="toggleField(field, reportView.metrics, reportView)" ng-checked="hasField(field, reportView.metrics)">
                     <span>{{ field.label }}</span>
                 </label>

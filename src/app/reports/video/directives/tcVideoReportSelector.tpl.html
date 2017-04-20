@@ -87,7 +87,7 @@
                 <span>Select All</span>
             </label>
             <hr>
-            <div ng-repeat="metrics in metricsOptions" class="check_dimensions">
+            <div ng-repeat="metrics in metricsOptions" class="col-sm-3">
                 <label class="ui-checkbox"><input name="metrics[]" type="checkbox" ng-disabled="disabledMetric(metrics)" ng-click="selectMetrics(metrics)" ng-checked="checkedMetrics(metrics)">
                     <span>{{ metrics.label }}</span>
                 </label>
@@ -99,7 +99,7 @@
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> {{ 'REPORT.BREAKDOWN' | translate }}</div>
 
         <div class="panel-body">
-            <div ng-repeat="breakdown in breakdownOption" class="check_dimensions" ng-if="showBreakdown(breakdown)">
+            <div ng-repeat="breakdown in breakdownOption" class="col-sm-3" ng-if="showBreakdown(breakdown)">
                 <label class="ui-checkbox"><input name="breakdown[]" type="checkbox" ng-click="selectBreakdown(breakdown)" ng-checked="checkedBreakdown(breakdown)">
                     <span>{{ breakdown.label }}</span>
                 </label>

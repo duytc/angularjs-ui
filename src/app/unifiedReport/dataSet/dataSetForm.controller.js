@@ -12,7 +12,7 @@
         $scope.dataSet = dataSet || {
             allowOverwriteExistingData: true,
             dimensions: [{type: null, name: null}],
-            metrics: [{type: null, name: null}],
+            metrics: [],
             actions: {
                 rename: [
                 ]
@@ -114,6 +114,15 @@
             if ($index < $scope.initialMetricSetLength) {
                 $scope.initialMetricSetLength--;
             }
+
+            var findIndexActionRename = _.findIndex($scope.dataSet.actions.rename, function (item) {
+                return  item.to == $scope.dataSet.metrics[$index].name;
+            });
+
+            if(findIndexActionRename > -1) {
+                $scope.dataSet.actions.rename.splice(findIndexActionRename, 1)
+            }
+
             return $scope.dataSet.metrics.splice($index, 1);
         }
 
@@ -205,7 +214,7 @@
         }
 
         function isFormValid() {
-            var allField = $scope.dataSet.dimensions.concat($scope.dataSet.metrics);
+            var allField = $scope.dataSet.dimensions;
             for(var index in allField) {
                 if(unValidNameDimensionsMetrics(allField[index].name)) {
                     return false

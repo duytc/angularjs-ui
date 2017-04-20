@@ -24,14 +24,14 @@
             {label: moment().format('MM/DD/YYYY') + ' (MM/DD/YYYY)', key: 'm/d/Y'},   //01/15/2016
             {label: moment().format('DD-MM-YYYY') + ' (DD-MM-YYYY)', key: 'd-m-Y'},   //15-01-2016
             {label: moment().format('DD/MM/YYYY') + ' (DD/MM/YYYY)', key: 'd/m/Y'},   //15/01/2016
-            {label: moment().format('YYYY-MMM-DD') + ' (YYYY-MON-DD)', key: 'Y-M-d'},   //2016-Jan-15
-            {label: moment().format('YYYY/MMM/DD') + ' (YYYY/MON/DD)', key: 'Y/M/d'},   //2016-Jan-15
-            {label: moment().format('MMM-DD-YYYY') + ' (MON-DD-YYYY)', key: 'M-d-Y'},   //Jan-15-2016
-            {label: moment().format('MMM/DD/YYYY') + ' (MON/DD/YYYY)', key: 'M/d/Y'},   //Jan/15/2016
-            {label: moment().format('DD-MMM-YYYY') + ' (DD-MON-YYYY)', key: 'd-M-Y'},   //15-Jan-2016
-            {label: moment().format('DD/MMM/YYYY') + ' (DD/MON/YYYY)', key: 'd/M/Y'},    //15/Jan/2016
-            {label: moment().format('MMM DD, YYYY') + ' (MON DD, YYYY)', key: 'M d, Y'},    //Jan 15, 2016
-            {label: moment().format('YYYY, MMM DD') + ' (YYYY, MON DD)', key: 'Y, M d'},    //2016, Jan 15
+            {label: moment().format('YYYY-MMM-DD') + ' (YYYY-MMM-DD)', key: 'Y-M-d'},   //2016-Jan-15
+            {label: moment().format('YYYY/MMM/DD') + ' (YYYY/MMM/DD)', key: 'Y/M/d'},   //2016-Jan-15
+            {label: moment().format('MMM-DD-YYYY') + ' (MMM-DD-YYYY)', key: 'M-d-Y'},   //Jan-15-2016
+            {label: moment().format('MMM/DD/YYYY') + ' (MMM/DD/YYYY)', key: 'M/d/Y'},   //Jan/15/2016
+            {label: moment().format('DD-MMM-YYYY') + ' (DD-MMM-YYYY)', key: 'd-M-Y'},   //15-Jan-2016
+            {label: moment().format('DD/MMM/YYYY') + ' (DD/MMM/YYYY)', key: 'd/M/Y'},    //15/Jan/2016
+            {label: moment().format('MMM DD, YYYY') + ' (MMM DD, YYYY)', key: 'M d, Y'},    //Jan 15, 2016
+            {label: moment().format('YYYY, MMM DD') + ' (YYYY, MMM DD)', key: 'Y, M d'},    //2016, Jan 15
 
             /** Support 2 digit years*/
             {label: moment().format('MM/DD/YY') + ' (MM/DD/YY)', key: 'm/d/y'},   //01/15/99
@@ -45,11 +45,13 @@
             {key: 'in', label: 'In'},
             {key: 'not in', label: 'Not In'},
             {key: 'smaller', label: 'Less Than'},
-            {key: 'smaller or equal', label: 'Less Than or Equal'},
-            {key: 'equal', label: 'Equal'},
-            {key: 'not equal', label: 'Not Equal'},
-            {key: 'greater', label: 'Greater'},
-            {key: 'greater or equal', label: 'Greater Than or Equal'}
+            {key: 'smaller or equal', label: 'Less Than or Equals'},
+            {key: 'equal', label: 'Equals'},
+            {key: 'not equal', label: 'Not Equal To'},
+            {key: 'greater', label: 'Greater Than'},
+            {key: 'greater or equal', label: 'Greater Than or Equals'},
+            {key: 'isEmpty', label: 'Is Empty'},
+            {key: 'isNotEmpty', label: 'Is Not Empty'}
         ])
         .constant('COMPARISON_TYPES_FILTER_CONNECT_TEXT', [
             {key: 'in', label: 'In'},
@@ -57,9 +59,25 @@
             {key: 'contains', label: 'Contains'},
             {key: 'not contains', label: 'Does Not Contain'},
             {key: 'start with', label: 'Starts With'},
-            {key: 'end with', label: 'Ends With'}
+            {key: 'end with', label: 'Ends With'},
+            {key: 'isEmpty', label: 'Is Empty'},
+            {key: 'isNotEmpty', label: 'Is Not Empty'}
         ])
-
+        .constant('COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE', [
+            {key: 'in', label: 'In'},
+            {key: 'not in', label: 'Not In'},
+            {key: 'smaller', label: 'Less Than'},
+            {key: 'smaller or equal', label: 'Less Than or Equals'},
+            {key: 'equal', label: 'Equals'},
+            {key: 'not equal', label: 'Not Equal To'},
+            {key: 'greater', label: 'Greater Than'},
+            {key: 'greater or equal', label: 'Greater Than or Equals'},
+            // {key: 'startsWith', label: 'Starts With'},
+            // {key: 'endsWith', label: 'Ends With'},
+            // {key: 'contain', label: 'Contain'},
+            // {key: 'notContain', label: 'Not Contain'},
+            {key: 'is invalid', label: 'Is Invalid'}
+        ])
         .constant('CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY', {
             date: 'date',
             number: 'number',
@@ -70,7 +88,12 @@
             comparisonPercent: 'comparisonPercent',
             // addConcatenatedField: 'addConcatenatedField',
             currency: 'currency',
-            replaceText: 'replaceText'
+            replaceText: 'replaceText',
+            extractPattern: 'extractPattern',
+            augmentation: 'augmentation',
+            subsetGroup: 'subsetGroup',
+            convertCase: 'convertCase',
+            normalizeText: 'normalizeText'
         })
         .provider('CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD', {
             $get: function (CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY) {
@@ -83,7 +106,12 @@
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addCalculatedField, label: 'Add Calculated Field'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.comparisonPercent, label: 'Comparison Percent'},
                     // {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addConcatenatedField, label: 'Concatenated Field'},
-                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.replaceText, label: 'Replace Text'}
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.replaceText, label: 'Replace Text'},
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.extractPattern, label: 'Extract Pattern'},
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.augmentation, label: 'Data Augmentation'},
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.subsetGroup, label: 'Subset Group'},
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.convertCase, label: 'Convert Case'},
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.normalizeText, label: 'Normalize Text'}
                 ];
             }
         })
@@ -92,5 +120,10 @@
             {key: 'at the beginning', label: 'At the Beginning'},
             {key: 'at the end', label: 'At the End'}
         ])
+        .constant('CONVERT_CASE_TYPES', [
+            {key: 'lowerCase', label: 'Lower Case'},
+            {key: 'upperCase', label: 'Upper Case'}
+        ])
+        .constant('REPORT_VIEW_INTERNAL_FIELD_VARIABLE', ['__filename', '__email_subject', '__email_body', '__email_date_time'])
     ;
 })();

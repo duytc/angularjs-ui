@@ -44,7 +44,7 @@
                     });
                 })
                 .catch(function() {
-                    AlertService.addAlert({
+                    AlertService.replaceAlerts({
                         type: 'error',
                         message: $translate.instant('SITE_MODULE.UPDATE_FAIL')
                     });

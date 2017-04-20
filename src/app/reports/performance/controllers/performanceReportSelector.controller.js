@@ -935,7 +935,6 @@
         }
 
         function update() {
-
             var params = ReportParams.getFormParams(performanceReport.getInitialParams());
 
             params = params || {};
@@ -964,8 +963,14 @@
                             selectSiteForAdNetwork(calculatedParams.siteId);
                         }
 
+                        if (calculatedParams.siteId != null && calculatedParams.reportType == 'site') {
+                            _setBreakdownOptionsForSite();
+                        }
+
                         var breakdownOption = _.findWhere(reportType.breakdownOptions, { key: breakdownValue });
-                        selectBreakdownOption(breakdownOption);
+                        if(!!breakdownOption) {
+                            selectBreakdownOption(breakdownOption);
+                        }
                     } else {
                         toState = reportType.toState;
                     }

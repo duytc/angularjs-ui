@@ -1,19 +1,25 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <span class="glyphicon glyphicon-th"></span>
-        <!--<strong current-page-title></strong>-->
-        <strong>{{ 'AD_NETWORK_MODULE.PAGE_TITLE_AD_NETWORKS' | translate }}</strong>
+        <strong current-page-title></strong>
+        <!--<strong>{{ 'AD_NETWORK_MODULE.PAGE_TITLE_AD_NETWORKS' | translate }}</strong>-->
 
         <div ng-if="!isSubPublisher()" class="button-bar">
             <button ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
                 {{ 'AD_NETWORK_MODULE.NEW_AD_NETWORK' | translate }}
             </button>
+
+            <button ng-if="blackList" ng-click="backToBlackList()" class="btn btn-primary btn-sm" type="button">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                {{ 'AD_NETWORK_MODULE.BACK_TO_BLACK_LIST' | translate }}
+            </button>
         </div>
         <div ng-if="!isSubPublisher()" class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
                 <li><a ui-sref="^.new">{{ 'AD_NETWORK_MODULE.NEW_AD_NETWORK' | translate }}</a></li>
+                <li ng-if="blackList" ng-click="backToBlackList()"><a>{{ 'AD_NETWORK_MODULE.BACK_TO_BLACK_LIST' | translate }}</a></li>
             </ul>
         </div>
     </div>
@@ -38,6 +44,7 @@
                                 <li ng-if="!!item.networkPartner.id"><a ng-click="getUnifiedReportEmail(item)">{{ 'AD_NETWORK_MODULE.GET_UNIFIED_REPORT_EMAIL_TOKEN' | translate }}</a></li>
                                 <li ng-if="!!item.networkPartner.id" class="divider"></li>
                                 <li><a ui-sref="^.^.adTag.listByAdNetwork({ adNetworkId: item.id })">{{ 'AD_NETWORK_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
+                                <li><a ui-sref="^.^.domainList.listByAdNetwork({ id: item.id })">{{ 'AD_NETWORK_MODULE.MANAGE_BLACk_LIST' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li ng-if="item.pausedAdTagsCount > 0 && !isSubPublisher()"><a ng-click="toggleAdNetworkStatus(item, true)">{{ 'AD_NETWORK_MODULE.DROPDOWN_ACTIVE' | translate }}</a></li>
                                 <li ng-if="item.activeAdTagsCount > 0 && !isSubPublisher()"><a ng-click="toggleAdNetworkStatus(item, false)">{{ 'AD_NETWORK_MODULE.DROPDOWN_PAUSE' | translate }}</a></li>

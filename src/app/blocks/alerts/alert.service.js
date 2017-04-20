@@ -7,6 +7,7 @@
 
     function alertService() {
         var _$alerts = [];
+        var _$alertsNotRemove = [];
         var _$queuedAlerts = [];
 
         function addAlert(bucket, alert) {
@@ -47,7 +48,7 @@
 
         return {
             getAlerts: function () {
-                return _$alerts;
+                return _$alertsNotRemove.concat(_$alerts);
             },
 
             /**
@@ -57,6 +58,10 @@
              */
             addAlert: function (message) {
                 addAlert(_$alerts, message);
+            },
+
+            addAlertNotRemove: function (message) {
+                addAlert(_$alertsNotRemove, message);
             },
 
             /**
@@ -88,16 +93,27 @@
                 // running this check first to ensure it's valid before we clear all current messages
                 alert = getValidAlert(alert);
 
-                this.clearAll();
+                this.clearAllRemovable();
                 this.addAlert(alert);
             },
 
             removeAlert: function (index) {
-                _$alerts.splice(index, 1);
+                var totalAlertNotRemove = _$alertsNotRemove.length;
+
+                if(index < totalAlertNotRemove) {
+                    _$alertsNotRemove.splice(index, 1);
+                } else {
+                    _$alerts.splice(index - totalAlertNotRemove, 1);
+                }
+            },
+
+            clearAllRemovable: function () {
+                _$alerts = [];
             },
 
             clearAll: function () {
                 _$alerts = [];
+                _$alertsNotRemove = [];
             }
         }
     }

@@ -7,3 +7,9 @@
     }
   }
 }
+
+.condition {
+  .select-join-field.form-group {
+    @include ui-select-width(220px);
+  }
+}

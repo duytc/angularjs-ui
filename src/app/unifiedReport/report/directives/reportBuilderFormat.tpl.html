@@ -57,7 +57,7 @@
                     <div class="col-sm-10">
                         <ui-select multiple ng-model="format.fields" ng-required="true" server-error reset-search-input="'false'">
                             <ui-select-match placeholder="Select a field">{{ $item.label }}</ui-select-match>
-                            <ui-select-choices repeat="field.key as field in resetNumberFields(format.fields) | filter:filterFieldFormat(format.fields, 'number') | filter:$select.search">
+                            <ui-select-choices repeat="field.key as field in resetNumberFields(format.fields) | filter:filterFieldFormat(format.fields, 'percentage') | filter:filterFieldFormat(format.fields, 'number') | filter:$select.search">
                                 {{ field.label }}
                             </ui-select-choices>
                         </ui-select>
@@ -90,7 +90,7 @@
                     <div class="col-sm-10">
                         <ui-select multiple ng-model="format.fields" ng-required="true" server-error reset-search-input="'false'">
                             <ui-select-match placeholder="Select a field">{{ $item.label }}</ui-select-match>
-                            <ui-select-choices repeat="field.key as field in resetCurrencyFields(format.fields) | filter:filterFieldFormat(format.fields, 'currency') | filter:$select.search">
+                            <ui-select-choices repeat="field.key as field in resetCurrencyFields(format.fields) | filter:filterFieldFormat(format.fields, 'currency') | filter:filterFieldFormat(format.fields, 'percentage') | filter:$select.search">
                                 {{ field.label }}
                             </ui-select-choices>
                         </ui-select>
@@ -112,7 +112,7 @@
 
             <div ng-switch-when="columnPosition">
                 <div class="form-group select-connect-data-source">
-                    <label class="col-sm-2 control-label">Column Position</label>
+                    <label class="col-sm-2 control-label">Field Name</label>
                     <div class="col-sm-10">
                         <ui-select multiple ng-model="format.fields" ng-required="true" sortable="true" server-error reset-search-input="'false'">
                             <ui-select-match placeholder="Select fields" ui-sortable="sortableGroupOptions" ng-model="format.fields">{{ $item.label }}</ui-select-match>
@@ -121,6 +121,28 @@
                             </ui-select-choices>
                         </ui-select>
                         <span class="help-block"> {{ 'REPORT_BUILDER_MODULE.HELP_TEXT_FOR_COLUMN_POSITION' | translate }} </span>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-switch-when="percentage">
+                <div class="form-group select-connect-data-source">
+                    <label class="col-sm-2 control-label">Field Name</label>
+                    <div class="col-sm-10">
+                        <ui-select multiple ng-model="format.fields" ng-required="true" server-error reset-search-input="'false'">
+                            <ui-select-match placeholder="Select a field">{{ $item.label }}</ui-select-match>
+                            <ui-select-choices repeat="field.key as field in resetNumberFields(format.fields) | filter:filterFieldFormat(format.fields, 'percentage') | filter:filterFieldFormat(format.fields, 'number') | filter:$select.search">
+                                {{ field.label }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+
+                <div class="form-group select-connect-data-source">
+                    <label class="col-sm-2 control-label">Precision</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="number" ng-model="format.precision" ng-required="true" placeholder="Precision">
                     </div>
                 </div>
             </div>
