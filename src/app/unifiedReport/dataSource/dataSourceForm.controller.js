@@ -292,6 +292,10 @@
                         if(param.type == 'option') {
                             delete param.optionValues
                         }
+
+                        if(param.type == 'bool' && !param.value) {
+                            param.value = false
+                        }
                     });
 
                     dataSourceIntegration.backFillStartDate = dateUtil.getFormattedDate(dataSourceIntegration.backFillStartDate.startDate);
