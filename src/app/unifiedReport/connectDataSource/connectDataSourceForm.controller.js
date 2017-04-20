@@ -485,7 +485,9 @@
                         }
 
                         if ($scope.dimensionsMetrics[field.field] == 'date' || $scope.dimensionsMetrics[field.field] == 'datetime') {
-                            field.value = DateFormatter.getFormattedDate(field.value.endDate);
+                            if(field.value != '[__date]') {
+                                field.value = DateFormatter.getFormattedDate(field.value.endDate);
+                            }
                         }
                     })
 
@@ -529,7 +531,9 @@
                     if(transform.type == 'addField') {
                         angular.forEach(transform.fields, function (field) {
                             if($scope.dimensionsMetrics[field.field] == 'datetime' || $scope.dimensionsMetrics[field.field] == 'date') {
-                                field.value = {endDate: field.value}
+                                if(field.value != '[__date]') {
+                                    field.value = {endDate: field.value}
+                                }
                             }
                         });
                     }

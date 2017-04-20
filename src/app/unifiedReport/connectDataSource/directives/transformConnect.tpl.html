@@ -13,7 +13,6 @@
     <div class="moveable" ng-repeat="transform in transforms">
         <accordion close-others="true">
             <accordion-group class="notUpperCase" is-open="transform.openStatus">
-
                 <accordion-heading>
                     <div>
                         {{getTransformName(transform.type)}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': transform.openStatus, 'glyphicon-chevron-right': !transform.openStatus}"></i>
@@ -156,7 +155,6 @@
                             <label class="col-sm-2 control-label">Add Field</label>
 
                             <div class="col-sm-10">
-
                                 <div class="expressions-group">
                                     <button class="btn btn-success" type="button" ng-click="addField(transform.fields)">
                                         <span class="glyphicon glyphicon-plus"></span>
@@ -197,34 +195,38 @@
                                                 <div class="form-group" ng-if="dimensionsMetrics[field.field] == 'text' || dimensionsMetrics[field.field] == 'multiLineText'">
                                                     <label class="col-sm-2 control-label">Expression</label>
                                                     <div class="col-sm-10">
-                                            <textarea class="addScrollToTextArea" spellcheck="false" id="concatenated-{{$index}}" mentio mentio-select="getPeopleText(item)"
-                                                      type="text"
-                                                      ng-change="removeAutoSpaceAfterField(field, $index)"
-                                                      mentio-trigger-char="'['" mentio-macros="macros"
-                                                      mentio-typed-text="typedTerm" mentio class="form-control"
-                                                      mentio-items="fieldForExpression | filter:label:typedTerm"
-                                                      ng-model="field.value" placeholder="Expression">
-                                            </textarea>
+                                                    <textarea class="addScrollToTextArea" spellcheck="false" id="concatenated-{{$index}}" mentio mentio-select="getPeopleText(item)"
+                                                              type="text"
+                                                              ng-change="removeAutoSpaceAfterField(field, $index)"
+                                                              mentio-trigger-char="'['" mentio-macros="macros"
+                                                              mentio-typed-text="typedTerm" mentio class="form-control"
+                                                              mentio-items="fieldForExpression | filter:label:typedTerm"
+                                                              ng-model="field.value" placeholder="Expression">
+                                                    </textarea>
 
                                                         <span class="help-block">Use character <strong>[</strong> to show list of available variables. Each variable should be inside square bracket.</span>
                                                         <div class="callout-success expressions-transform" ng-bind-html="formatExpressionToHighlight(field)"></div>
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group select-connect-data-source" ng-if="dimensionsMetrics[field.field] == 'date' || dimensionsMetrics[field.field] == 'datetime'">
+                                                <div class="form-group select-connect-data-source"  ng-if="dimensionsMetrics[field.field] == 'date' || dimensionsMetrics[field.field] == 'datetime'">
                                                     <label class="col-sm-2 control-label">Date</label>
                                                     <div class="col-sm-10">
-                                                        <div class="input-group">
+                                                        <div class="input-group" ng-if="field.value != '[__date]'">
                                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                             <input date-range-picker ng-required="true" options="datePickerOpts" class="form-control date-picker" type="text" id="inputStartDate" ng-model="field.value">
                                                         </div>
+
+                                                        <label class="ui-checkbox">
+                                                            <input type="checkbox" ng-model="useDate" ng-checked="field.value == '[__date]'" ng-click="clickUseExternalDate(field, useDate)">
+                                                            <span>Set date from metadata</span>
+                                                        </label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -933,7 +935,6 @@
                         </div>
                     </div>
                 </div>
-
             </accordion-group>
         </accordion>
     </div>

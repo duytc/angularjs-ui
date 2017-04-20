@@ -168,6 +168,13 @@
                     scope.selectFieldNormalizeAndConvert = selectFieldNormalizeAndConvert;
                     scope.disabledOverride = disabledOverride;
                     scope.getFieldsForLeftSide = getFieldsForLeftSide;
+                    scope.clickUseExternalDate = clickUseExternalDate;
+
+                    function clickUseExternalDate(field, useDate) {
+                        $timeout(function () {
+                            field.value = useDate ? '[__date]' : null;
+                        }, 0, true)
+                    }
 
                     function getFieldsForLeftSide() {
                         return angular.copy(scope.totalDimensionsMetrics).concat(scope.temporaryFields)
@@ -614,28 +621,9 @@
                             scope.fieldForExpression.push({label: item});
                         });
 
-                        // if (scope.dimensionsMetrics[field] == 'number' || scope.dimensionsMetrics[field] == 'decimal') {
-                        //     angular.forEach(scope.dataSourceFields, function (item) {
-                        //         if (!item || item == '') {
-                        //             return;
-                        //         }
-                        //
-                        //         if (scope.dimensionsMetrics[item] == 'number' || scope.dimensionsMetrics[item] == 'decimal') {
-                        //             scope.fieldForExpression.push({label: item});
-                        //         }
-                        //     });
-                        // } else {
-                        //     angular.forEach(scope.dataSourceFields, function (item) {
-                        //         if (!item || item == '') {
-                        //             return;
-                        //         }
-                        //
-                        //         scope.fieldForExpression.push({label: item});
-                        //     });
-                        // }
-
                         if (!!field && !!calculatedField) {
-                            calculatedField.expression = null
+                            calculatedField.expression = null;
+                            calculatedField.value = null
                         }
                     }
 

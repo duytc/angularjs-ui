@@ -124,6 +124,6 @@
             {key: 'lowerCase', label: 'Lower Case'},
             {key: 'upperCase', label: 'Upper Case'}
         ])
-        .constant('REPORT_VIEW_INTERNAL_FIELD_VARIABLE', ['__filename', '__email_subject', '__email_body', '__email_date_time'])
+        .constant('REPORT_VIEW_INTERNAL_FIELD_VARIABLE', ['__filename', '__email_subject', '__email_body', '__email_date_time', '__date'])
     ;
 })();

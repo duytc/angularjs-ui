@@ -70,8 +70,15 @@
                                                 </ui-select>
                                             </div>
 
-                                            <div class="form-group">
-                                                <input server-error name="value" ng-model="param.value" type="text" class="form-control" placeholder="Value">
+                                            <div class="form-group" ng-if="param.key != 'dateTime' && param.key != 'date'">
+                                                <input server-error name="value" ng-model="param.value" type="text" class="form-control input-value" placeholder="Value">
+                                            </div>
+
+                                            <div class="form-group" ng-if="param.key == 'dateTime' || param.key == 'date'">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                    <input date-range-picker ng-required="true" options="datePickerOpts" class="form-control date-picker" type="text" id="inputStartDate" ng-model="param.value">
+                                                </div>
                                             </div>
 
                                             <button class="btn btn-danger" type="button" ng-click="removeParams(item, $index)"><span class="glyphicon glyphicon-minus"></span></button>

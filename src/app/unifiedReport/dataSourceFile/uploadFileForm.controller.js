@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.dataSourceFile')
         .controller('uploadFileForm', uploadFileForm);
 
-    function uploadFileForm($scope, dataSource, dataSources, FileUploader, sessionStorage, UnifiedReportDataSourceManager, AlertService, historyStorage, HISTORY_TYPE_PATH) {
+    function uploadFileForm($scope, dataSource, dataSources, DateFormatter, FileUploader, sessionStorage, UnifiedReportDataSourceManager, AlertService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.dataSourceEntry = {
             dataSource: dataSource || null
         };
@@ -28,6 +28,10 @@
                 Authorization: 'Bearer ' + sessionStorage.getCurrentToken()
             }
         });
+
+        $scope.datePickerOpts = {
+            singleDatePicker: true
+        };
 
         $scope.isFormValid = isFormValid;
         $scope.selectDataSource = selectDataSource;
@@ -108,6 +112,10 @@
 
                 var metadata = {};
                 angular.forEach(elem.metadata, function (item) {
+                    if(item.key == 'date' || item.key == 'dateTime') {
+                        item.value = DateFormatter.getFormattedDate(item.value.endDate);
+                    }
+
                     metadata[item.key] = item.value;
                 });
 
