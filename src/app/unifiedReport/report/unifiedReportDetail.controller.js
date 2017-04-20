@@ -12,6 +12,7 @@
         $scope.reportView = reportView;
         $scope.reportGroup = reportGroup;
         $scope.hasResult = !angular.isNumber(reportGroup.status);
+        $scope.search = {};
 
         $scope.reports = reportGroup.reports || [];
         $scope.types = reportGroup.types;
@@ -319,5 +320,13 @@
         $scope.$on('$locationChangeSuccess', function() {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.unifiedReportDetail)
         });
+
+        $scope.$watch('search', function() {
+            angular.forEach(angular.copy($scope.search), function (value, key) {
+                if((!value || value == '')) {
+                    delete $scope.search[key]
+                }
+            })
+        }, true);
     }
 })();

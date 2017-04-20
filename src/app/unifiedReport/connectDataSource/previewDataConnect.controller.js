@@ -9,6 +9,7 @@
         $scope.columns = !!reportData && angular.isObject(reportData.columns) ? _.keys(reportData.columns) : [];
         $scope.reports = !!reportData && !!reportData.reports ? reportData.reports : [];
         $scope.types = reportData.types;
+        $scope.search = {};
 
         $scope.tableConfig = {
             maxPages: 10,
@@ -20,5 +21,13 @@
         function isNullValue(report, column) {
             return !report[column] && report[column] != 0;
         }
+
+        $scope.$watch('search', function() {
+            angular.forEach(angular.copy($scope.search), function (value, key) {
+                if((!value || value == '')) {
+                    delete $scope.search[key]
+                }
+            })
+        }, true);
     }
 })();

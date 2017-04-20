@@ -52,13 +52,19 @@
                 </thead>
 
                 <tbody>
-                <tr dir-paginate="report in tempReports | orderBy:sortBy:reverse | itemsPerPage:tableConfig.itemsPerPage">
+                <tr>
+                    <td ng-repeat="column in columnPositions">
+                        <input type="text" ng-model="search[column]">
+                    </td>
+                </tr>
+
+                <tr dir-paginate="report in tempReports | filter:search | orderBy:sortBy:reverse | itemsPerPage:tableConfig.itemsPerPage">
                     <td ng-if="hasSort" ng-repeat="column in columnPositions">
                         <span ng-if="!isNullValue(reports[report.position], column)"> {{ reports[report.position][column] }} </span>
                     </td>
                 </tr>
 
-                <tr dir-paginate="report in reports | itemsPerPage:tableConfig.itemsPerPage">
+                <tr dir-paginate="report in reports | filter:search | itemsPerPage:tableConfig.itemsPerPage">
                     <td ng-if="!hasSort" ng-repeat="column in columnPositions">
                         <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>
                     </td>
