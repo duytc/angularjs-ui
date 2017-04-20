@@ -1,7 +1,7 @@
 <div class="modal-header">
     <h4 class="modal-title"><strong>View details of file:</strong> {{ dataSourceFile.fileName }}</h4>
 </div>
-<div class="modal-body">
+<div class="modal-body" style="overflow: auto">
     <div class="alert alert-warning" ng-if="showAlert()">
         There is no metadata for this file
     </div>
