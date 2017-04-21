@@ -167,7 +167,14 @@
         }
 
         function viewOriginal() {
-            $modal.open({
+            if ($scope.formProcessing) {
+                // already running, prevent duplicates
+                return;
+            }
+
+            $scope.formProcessing = true;
+
+            var modalInstance = $modal.open({
                 templateUrl: 'unifiedReport/connectDataSource/viewOriginal.tpl.html',
                 size: 'lg',
                 resolve: {
@@ -182,13 +189,11 @@
                     $scope.reports = [];
 
                     $scope.itemsPerPage = [
-                        {label: '10', key: '10'},
-                        {label: '20', key: '20'},
-                        {label: '30', key: '30'},
-                        {label: '40', key: '40'},
-                        {label: '50', key: '50'},
                         {label: '100', key: '100'},
-                        {label: '200', key: '200'}
+                        {label: '500', key: '500'},
+                        {label: '1000', key: '1000'},
+                        {label: '5000', key: '5000'},
+                        {label: '10000', key: '10000'}
                     ];
 
                     $scope.tableConfig = {
@@ -198,7 +203,7 @@
 
                     $scope.selectedData = {
                         importedDataSource: null,
-                        limit: 20
+                        limit: 500
                     };
 
                     $scope.isNullValue = isNullValue;
@@ -232,9 +237,23 @@
                     }
                 }
             });
+
+            modalInstance.result
+                .then(function () {
+                    $scope.formProcessing = false;
+                }).catch(function () {
+                $scope.formProcessing = false;
+            })
         }
 
         function previewData() {
+            if ($scope.formProcessing) {
+                // already running, prevent duplicates
+                return;
+            }
+
+            $scope.formProcessing = true;
+
             var connectDataSource = _refactorJson($scope.connectDataSource);
             connectDataSource.isDryRun = true;
             connectDataSource.filePaths = listDetectFields;
@@ -242,6 +261,8 @@
 
             UnifiedReportConnectDataSourceManager.one('dryrun').post(null, connectDataSource)
                 .then(function (reportData) {
+                    $scope.formProcessing = false;
+
                     $modal.open({
                         templateUrl: 'unifiedReport/connectDataSource/previewData.tpl.html',
                         size: 'lg',
@@ -254,6 +275,8 @@
                     });
                 })
                 .catch(function (response) {
+                    $scope.formProcessing = false;
+
                     $modal.open({
                         templateUrl: 'unifiedReport/connectDataSource/alertErrorPreview.tpl.html',
                         size: 'lg',

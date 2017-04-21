@@ -144,6 +144,22 @@
                         function () {
                             _getDataSourceFiles(params, 0)
                                 .then(function () {
+                                    if(allEntryIds.indexOf(dataSourceFile.id) > -1) {
+                                        allEntryIds.splice(allEntryIds.indexOf(dataSourceFile.id), 1);
+                                    }
+
+                                    if($scope.selectedDataSourceFiles.indexOf(dataSourceFile.id) > -1) {
+                                        $scope.selectedDataSourceFiles.splice($scope.selectedDataSourceFiles.indexOf(dataSourceFile.id), 1);
+                                    }
+
+                                    var indexItemsForPager = _.findIndex(itemsForPager, function (item) {
+                                        return item.id == dataSourceFile.id
+                                    });
+
+                                    if(indexItemsForPager > -1) {
+                                        itemsForPager.splice(indexItemsForPager, 1);
+                                    }
+
                                     AlertService.replaceAlerts({
                                         type: 'success',
                                         message: $translate.instant('UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DELETE_SUCCESS')
@@ -290,7 +306,7 @@
 
                                     resolve(dataSourceFiles);
 
-                                    // _resetCheckImported($scope.dataSourceFiles)
+                                    _resetCheckImported($scope.dataSourceFiles)
                                 }, 0)
                             });
 
@@ -312,20 +328,11 @@
             });
 
             function _resetCheckImported(dataSourceFiles) {
-                // angular.forEach(angular.copy($scope.selectedDataSourceFiles), function (dataSourceFile, index) {
-                //     var indexDataSourceFile = _.findIndex(dataSourceFiles.records, function (item) {
-                //         return dataSourceFile == item.id
-                //     });
-                //
-                //     if(indexDataSourceFile == -1) {
-                //         $scope.selectedDataSourceFiles.splice(index, 1)
-                //     }
-                // });
-                //
-                // $scope.checkAllItem = $scope.selectedDataSourceFiles.length == dataSourceFiles.records.length
-
-                $scope.selectedDataSourceFiles = [];
-                $scope.checkAllItem = false;
+                if( _.difference(allEntryIds, $scope.selectedDataSourceFiles).length == 0) {
+                    $scope.checkAllItem = true;
+                } else {
+                    $scope.checkAllItem = false
+                }
             }
         }
     }

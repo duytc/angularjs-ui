@@ -174,8 +174,12 @@
 
                                             <div class="form-group select-connect-data-source">
                                                 <label class="col-sm-2 control-label">Value</label>
-                                                <div class="col-sm-10">
-                                                    <input server-error ng-required="true" type="{{ field.type == 'number' || field.type == 'decimal' ? 'number' : 'text' }}" class="form-control" ng-model="field.value" placeholder="Value">
+                                                <div class="col-sm-10" ng-if="field.type == 'number' || field.type == 'decimal'">
+                                                    <input server-error ng-required="true" type="number" class="form-control" ng-model="field.value" placeholder="Value">
+                                                </div>
+
+                                                <div class="col-sm-10" ng-if="field.type != 'number' && field.type != 'decimal'">
+                                                    <input server-error ng-required="true" type="text" class="form-control" ng-model="field.value" placeholder="Value">
                                                 </div>
                                             </div>
                                         </div>
