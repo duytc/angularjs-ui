@@ -14,9 +14,9 @@
         <label class="control-label">Report View</label>
         <div>
             <ui-select ng-model="reportView.subView" ng-required="true" server-error on-select="selectReportView($item, reportView)" reset-search-input="'false'">
-                <ui-select-match placeholder="Select a report view">{{ $select.selected.name }}</ui-select-match>
+                <ui-select-match placeholder="Select a report view">{{ $select.selected.name + ' (ID: ' + $select.selected.id + ')' }}</ui-select-match>
                 <ui-select-choices repeat="reportView.id as reportView in getReportView(reportView.subView) | selectedPublisher:reportBuilder.publisher | filter:$select.search">
-                    {{ reportView.name }}
+                    {{ reportView.name + ' (ID: ' + reportView.id + ')' }}
                 </ui-select-choices>
             </ui-select>
         </div>

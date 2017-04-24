@@ -23,7 +23,7 @@
                 <div class="form-group" ng-if="!isNew">
                     <label class="col-sm-1quarter control-label">{{ 'DATA_SOURCE' | translate }}</label>
 
-                    <div class="col-sm-5 form-control-static">{{ connectDataSource.dataSource.name }}</div>
+                    <div class="col-sm-5 form-control-static">{{ connectDataSource.dataSource.name + ' (ID: ' + connectDataSource.dataSource.id + ')' }}</div>
                 </div>
 
                 <div class="form-group" ng-if="isNew">
@@ -31,9 +31,9 @@
 
                     <div class="col-sm-5">
                         <ui-select name="dataSource" id="inputDataSource" ng-model="connectDataSource.dataSource" ng-required="true" server-error on-select="selectDataSource($item)">
-                            <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.SELECT_A_DATA_SOURCE' | translate }}">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.SELECT_A_DATA_SOURCE' | translate }}">{{ $select.selected.name + ' (ID: ' + $select.selected.id + ')' }}</ui-select-match>
                             <ui-select-choices repeat="dataSource.id as dataSource in dataSources | filter:$select.search">
-                                {{ dataSource.name }}
+                                {{ dataSource.name + ' (ID: ' + dataSource.id + ')' }}
                             </ui-select-choices>
                         </ui-select>
                     </div>
