@@ -1134,6 +1134,7 @@
             },
             "UNIFIED_REPORT_DATA_SOURCE_MODULE": {
                 "PUBLISHER": "Publisher",
+                "LAST_ACTIVITY": "Last Activity",
                 "BACK_TO_PUBLISHER_LIST": "Back To Publisher List",
                 "DATA_SOURCE_FORMAT": "Data Source Format",
                 "INTEGRATION": "Integration",
@@ -1236,7 +1237,7 @@
                 "VIEW_DATA_IMPORT_HISTORY": "View Loaded Data",
                 "EDIT": "Edit",
                 "DELETE": "Delete",
-                "DATE_CREATED": "Date Created",
+                "LAST_ACTIVITY": "Last Activity",
                 "REMOVE_ALL_DATA": "Remove All Data",
                 "ROWS": "# of Rows",
                 "BACK_TO_DATA_SET_LIST": "Back to Data Set List",

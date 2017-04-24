@@ -58,6 +58,9 @@
                     </td>
                     <td at-title="{{ 'NAME' | translate }}" at-implicit at-sortable at-attribute="name"></td>
                     <td ng-show="isAdmin()" at-implicit at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
+                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.LAST_ACTIVITY' | translate }}" at-initial-sorting="desc" at-sortable  at-attribute="lastActivity">
+                        {{ item.lastActivity | date:'MMM d, y H:mm:ss' }}
+                    </td>
                     <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ENABLE' | translate }}" at-sortable at-attribute="enable">
                         <i class="fa" ng-class="item.enable? 'fa-check-square' : 'fa-square'"></i>
                     </td>
