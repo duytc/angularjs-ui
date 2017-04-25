@@ -114,7 +114,7 @@
                                 filter.type = 'number'
                             }
 
-                            if (scope.dimensionsMetrics[field] == 'text' || scope.dimensionsMetrics[field] == 'multiLineText') {
+                            if (scope.dimensionsMetrics[field] == 'text' || scope.dimensionsMetrics[field] == 'largeText') {
                                 filter.type = 'text'
                             }
                         }, 0);

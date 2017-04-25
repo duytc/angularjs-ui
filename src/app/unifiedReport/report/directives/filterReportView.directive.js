@@ -114,7 +114,7 @@
                             filter.type = 'number'
                         }
 
-                        if(findField.type == 'text' || findField.type == 'multiLineText') {
+                        if(findField.type == 'text' || findField.type == 'largeText') {
                             filter.type = 'text'
                         }
 

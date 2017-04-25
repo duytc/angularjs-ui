@@ -712,7 +712,7 @@
                     // angular.forEach(transform.fields, function (field) {
                     //     if(Object.keys($scope.connectDataSource.mapFields).indexOf(field.field) == -1
                     //         || ($scope.dimensionsMetrics[$scope.connectDataSource.mapFields[field.field]] != 'text'
-                    //         && $scope.dimensionsMetrics[$scope.connectDataSource.mapFields[field.field]] != 'multiLineText')) {
+                    //         && $scope.dimensionsMetrics[$scope.connectDataSource.mapFields[field.field]] != 'largeText')) {
                     //         $timeout(function () {
                     //             field.field = null
                     //         }, 0, true);

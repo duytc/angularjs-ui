@@ -3,17 +3,17 @@
 
     angular.module('tagcade.unifiedReport.dataSet')
         .constant('METRICS_SET', [
-            {label: 'Date', key: 'date'},
-            {label: 'DateTime', key: 'datetime'},
-            {label: 'Text', key: 'text'},
-            {label: 'Multi Line Text', key: 'multiLineText'},
             {label: 'Number', key: 'number'},
-            {label: 'Decimal', key: 'decimal'}
+            {label: 'Decimal', key: 'decimal'},
+            {label: 'Text', key: 'text'},
+            {label: 'Large Text', key: 'largeText'},
+            {label: 'Date', key: 'date'},
+            {label: 'Date/Time', key: 'datetime'}
         ])
 
         .constant('DIMENSIONS_SET',  [
             {label: 'Date', key: 'date'},
-            {label: 'DateTime', key: 'datetime'},
+            {label: 'Date/Time', key: 'datetime'},
             {label: 'Text', key: 'text'}
         ])
 
