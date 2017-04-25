@@ -84,6 +84,8 @@
         }
 
         function deleteAlertMulti() {
+            var selectedAlerts = angular.copy($scope.selectedAlert);
+
             UnifiedReportAlertManager.one().customPUT({ids: $scope.selectedAlert}, null, {delete: true})
                 .then(function () {
                     $scope.checkAllItem = false;
@@ -113,7 +115,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'success',
-                        message: $scope.selectedAlert.length + ' files have been deleted'
+                        message: selectedAlerts.length + ' alerts have been deleted'
                     });
                 });
         }
@@ -131,7 +133,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'success',
-                        message: $scope.selectedAlert.length + ' files have been unread'
+                        message: $scope.selectedAlert.length + ' alerts have been unread'
                     });
                 });
         }
@@ -149,7 +151,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'success',
-                        message: $scope.selectedAlert.length + ' files have been marked as read'
+                        message: $scope.selectedAlert.length + ' alerts have been marked as read'
                     });
                 });
         }
