@@ -1245,7 +1245,7 @@
                 "ADD_NEW_SUCCESS": "The data set has been added",
                 "UPDATE_SUCCESS": "The data set has been updated",
                 "DIMENSION_NAME_INSTRUCTION_BLOCK": "Dimension name must begin with a letter. It may contain text, numbers or spaces",
-                "REMOVE_ALL_DATE_SUCCESS": "The data set has been removed all data",
+                "REMOVE_ALL_DATE_SUCCESS": "All data has been removed from the data set",
                 "REMOVE_ALL_DATE_FAIL": "Could not removed all data",
                 "METRIC_NAME_INSTRUCTION_BLOCK":"Metric name must begin with a letter. It may contain text, numbers or spaces"
             },
