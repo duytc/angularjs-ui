@@ -98,9 +98,17 @@
 
                             if (index > -1) {
                                 alerts.splice(index, 1);
-                                $scope.selectedAlert.splice($scope.selectedAlert.indexOf(alert.id), 1)
                             }
 
+                            var indexItemsForPager = _.findIndex(itemsForPager, function (item) {
+                                return alert.id == item.id;
+                            });
+
+                            if (indexItemsForPager > -1) {
+                                itemsForPager.splice(indexItemsForPager, 1);
+                            }
+
+                            $scope.selectedAlert.splice($scope.selectedAlert.indexOf(alert.id), 1);
                             $scope.alerts = alerts;
 
                             if($scope.tableConfig.currentPage > 0 && alerts.length/10 == $scope.tableConfig.currentPage) {
