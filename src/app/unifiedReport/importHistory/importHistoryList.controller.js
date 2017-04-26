@@ -7,6 +7,7 @@
     function ImportHistoryList($scope, $modal, importHistoryList, dataSet, dataSource, UnifiedReportImportHistoryManager, UnifiedReportDataSourceManager, UnifiedReportDataSetManager, historyStorage, HISTORY_TYPE_PATH, AlertService, exportExcelService) {
         $scope.dataSet = dataSet;
         $scope.importHistoryList = importHistoryList;
+        $scope.formProcessing = false;
 
         $scope.hasData = function () {
             return !!importHistoryList.length;
@@ -28,7 +29,64 @@
         $scope.backToList = backToList;
         $scope.undo= undo;
         $scope.downloadImportedData = downloadImportedData;
-        
+        $scope.previewData = previewData;
+
+        function previewData(importHistory) {
+            if ($scope.formProcessing) {
+                // already running, prevent duplicates
+                return;
+            }
+
+            $scope.formProcessing = true;
+
+            UnifiedReportImportHistoryManager.one(importHistory.id).one('download').get()
+                .then(function (reportData) {
+                    $scope.formProcessing = false;
+
+                    $modal.open({
+                        templateUrl: 'unifiedReport/importHistory/previewData.tpl.html',
+                        size: 'lg',
+                        controller: function ($scope, reportData) {
+                            $scope.reports = reportData || [];
+                            $scope.columns = reportData.length > 0 ? _.keys(reportData[0]) : [];
+                            $scope.search = {};
+
+                            $scope.tableConfig = {
+                                maxPages: 10,
+                                itemsPerPage: 10
+                            };
+
+                            $scope.isNullValue = isNullValue;
+
+                            function isNullValue(report, column) {
+                                return !report[column] && report[column] != 0;
+                            }
+                        },
+                        resolve: {
+                            reportData: function () {
+                                return reportData;
+                            }
+                        }
+                    });
+                })
+                .catch(function (response) {
+                    $scope.formProcessing = false;
+
+                    $modal.open({
+                        templateUrl: 'unifiedReport/connectDataSource/alertErrorPreview.tpl.html',
+                        size: 'lg',
+                        resolve: {
+                            message: function () {
+                                return 'An unknown server error occurred'
+                            }
+                        },
+                        controller: function ($scope, message) {
+                            $scope.message = message;
+                        }
+                    });
+                })
+        }
+
         function downloadImportedData(importHistory) {
             return UnifiedReportImportHistoryManager.one(importHistory.id).one('download').get()
                 .then(function (data) {

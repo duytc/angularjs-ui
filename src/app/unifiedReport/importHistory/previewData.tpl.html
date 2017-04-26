@@ -1,0 +1,36 @@
+<div class="modal-header">
+    <h4 class="modal-title"><strong>Preview Imported Data</strong></h4>
+</div>
+<div class="modal-body">
+    <div class="table-responsive table-report-view">
+        <table class="table">
+            <thead>
+            <tr>
+                <th ng-repeat="column in columns">{{ column }}</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td ng-repeat="column in columns">
+                    <input type="text" ng-model="search[column]">
+                </td>
+            </tr>
+
+            <tr dir-paginate="report in reports | filter:search | itemsPerPage:tableConfig.itemsPerPage">
+                <td ng-repeat="column in columns">
+                    <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="$close()">{{ 'CLOSE' | translate }}</button>
+</div>
