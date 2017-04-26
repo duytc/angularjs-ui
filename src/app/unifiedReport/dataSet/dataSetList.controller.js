@@ -4,14 +4,14 @@
     angular.module('tagcade.unifiedReport.dataSet')
         .controller('dataSetList', dataSetList);
 
-    function dataSetList($scope, $stateParams, $modal, $translate, dataSets, dataSetRows, UnifiedReportDataSetManager, AlertService, AtSortableService, EVENT_ACTION_SORTABLE, HISTORY_TYPE_PATH, historyStorage) {
+    function dataSetList($scope, $stateParams, $modal, $translate, dataSets, UnifiedReportDataSetManager, AlertService, AtSortableService, EVENT_ACTION_SORTABLE, HISTORY_TYPE_PATH, historyStorage) {
         $scope.tableConfig = {
             itemsPerPage: 10,
             maxPages: 10,
             totalItems: Number(dataSets.totalRecord)
         };
 
-        $scope.dataSets = _mapRowsForDataSet(dataSets);
+        $scope.dataSets = dataSets;
 
         $scope.availableOptions = {
             currentPage: $stateParams.page || 1,
@@ -69,15 +69,7 @@
             modalInstance.result.then(function () {
                 UnifiedReportDataSetManager.one(dataSet.id).one('truncate').post()
                     .then(function() {
-                        dataSet.row = 0;
-
-                        var dataRowIndex = _.findIndex(dataSetRows, function (dataSetRow) {
-                            return dataSetRow.id == dataSet.id
-                        });
-
-                        if(dataRowIndex > -1) {
-                            dataSetRows[dataRowIndex] = 0
-                        }
+                        dataSet.totalRow = 0;
 
                         AlertService.replaceAlerts({
                             type: 'success',
@@ -151,23 +143,11 @@
                 return UnifiedReportDataSetManager.one().get(query)
                     .then(function(dataSets) {
                         AtSortableService.insertParamForUrl(query);
-                        $scope.dataSets = _mapRowsForDataSet(dataSets);
+                        $scope.dataSets = dataSets;
                         $scope.tableConfig.totalItems = Number(dataSets.totalRecord);
                         $scope.availableOptions.currentPage = Number(query.page);
                     });
             }, 500);
-        }
-        
-        function _mapRowsForDataSet(dataSets) {
-            angular.forEach(dataSets.records, function (dataSet) {
-                var row = _.find(dataSetRows, function (dataSetRow) {
-                    return dataSetRow.id == dataSet.id
-                });
-
-                dataSet.row = !!row && !!row.numberOfRows ? row.numberOfRows : 0
-            });
-
-            return dataSets
         }
     }
 })();
