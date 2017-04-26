@@ -163,10 +163,30 @@
         $scope.generateReport = generateReport;
         $scope.hasFilterDate = hasFilterDate;
         $scope.hideDaterange = hideDaterange;
+        $scope.enableSelectDaterange = enableSelectDaterange;
         $scope.refreshData = refreshData;
 
         function refreshData() {
             historyStorage.getLocationPath(HISTORY_TYPE_PATH.unifiedReportDetail, '^.detail');
+        }
+
+        function enableSelectDaterange() {
+            var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
+            for (var reportViewIndex in reportViews) {
+                var reportView = reportViews[reportViewIndex];
+
+                for (var filterIndex in reportView.filters) {
+                    var filter = reportView.filters[filterIndex];
+
+                    if(filter.type == 'date' || filter.type == 'datetime') {
+                        if(filter.userProvided) {
+                            return true
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         function hideDaterange() {

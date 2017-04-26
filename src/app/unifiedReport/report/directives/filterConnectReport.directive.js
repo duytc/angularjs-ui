@@ -54,7 +54,7 @@
                     scope.dateTypes = [
                         {key: 'Fixed Date Range', value: 'customRange'},
                         {key: 'Dynamic', value: 'dynamic'},
-                        {key: 'User Provided', value: 'userProvided'}
+                        // {key: 'User Provided', value: 'userProvided'}
                     ];
 
                     scope.addFilter = addFilter;
@@ -108,6 +108,7 @@
 
                             if (scope.dimensionsMetrics[field] == 'date' || scope.dimensionsMetrics[field] == 'datetime') {
                                 filter.type = 'date';
+                                filter.userProvided = true;
                             }
 
                             if (scope.dimensionsMetrics[field] == 'number' || scope.dimensionsMetrics[field] == 'decimal') {
