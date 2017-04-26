@@ -54,8 +54,8 @@
                     <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
                     <!--<td at-implicit at-sortable at-attribute="createdDate" at-initial-sorting="asc" at-title="Created Date"></td>-->
 
-                    <td at-title="Last Activity" at-initial-sorting="desc" at-sortable  at-attribute="lastActivity">
-                        {{ item.lastActivity | date:'MMM d, y H:mm:ss' }}
+                    <td at-title="Last Run" at-initial-sorting="desc" at-sortable  at-attribute="lastRun">
+                        {{ item.lastRun | date:'MMM d, y H:mm:ss' }}
                     </td>
                 </tr>
                 </tbody>
