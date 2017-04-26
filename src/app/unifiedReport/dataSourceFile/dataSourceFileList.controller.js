@@ -62,6 +62,76 @@
         $scope.setItemForPager = setItemForPager;
         $scope.noneSelect = noneSelect;
         $scope.selectAllInPages = selectAllInPages;
+        $scope.previewData = previewData;
+        
+        function previewData(dataSourceFile) {
+            UnifiedReportDataSourceFileManager.one(dataSourceFile.id).one('preview').get({limit: 1000})
+                .then(function (reportView) {
+                    $modal.open({
+                        templateUrl: 'unifiedReport/dataSourceFile/previewData.tpl.html',
+                        size: 'lg',
+                        resolve: {
+                            reportView: function () {
+                                return reportView
+                            }
+                        },
+                        controller: function ($scope, reportView) {
+                            $scope.reportView = reportView;
+                            $scope.columns = reportView.columns;
+                            $scope.reports = reportView.reports;
+
+                            $scope.itemsPerPage = [
+                                {label: '100', key: '100'},
+                                {label: '500', key: '500'},
+                                {label: '1000', key: '1000'},
+                                {label: '5000', key: '5000'},
+                                {label: '10000', key: '10000'}
+                            ];
+
+                            $scope.tableConfig = {
+                                maxPages: 10,
+                                itemsPerPage: 10
+                            };
+
+                            $scope.selectedData = {
+                                limit: 1000
+                            };
+
+                            $scope.isNullValue = isNullValue;
+                            $scope.viewData = viewData;
+
+                            function isNullValue(report, column) {
+                                return !report[column] && report[column] != 0;
+                            }
+
+                            function viewData() {
+                                UnifiedReportDataSourceFileManager.one(dataSourceFile.id).one('preview').get({limit: $scope.selectedData.limit})
+                                    .then(function (reportView) {
+                                        $scope.reportView = reportView;
+                                        $scope.columns = reportView.columns;
+                                        $scope.reports = reportView.reports;
+                                    })
+                            }
+                        }
+                    })
+                })
+                .catch(function (response) {
+                    $scope.formProcessing = false;
+
+                    $modal.open({
+                        templateUrl: 'unifiedReport/connectDataSource/alertErrorPreview.tpl.html',
+                        size: 'lg',
+                        resolve: {
+                            message: function () {
+                                return  'An unknown server error occurred';
+                            }
+                        },
+                        controller: function ($scope, message) {
+                            $scope.message = message;
+                        }
+                    });
+                });
+        }
 
         function selectAllInPages() {
             $scope.checkAllItem = true;

@@ -1190,6 +1190,7 @@
             },
             "UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE": {
                 "DATA_SOURCES": "Data Sources",
+                "PREVIEW_DATA": "Preview Data",
                 "DATA_SOURCE_NAME":"Data Source",
                 "FILE_UPLOAD": "File Upload",
                 "UPLOAD_NEW_FILE": "Upload New File",

@@ -71,6 +71,8 @@
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
                                 <li><a href="{{ downloadDataSourceFile(item.id) }}"  download="true">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DOWNLOAD_DATA' | translate }}</a></li>
                                 <li class="divider"></li>
+                                <li><a ng-click="previewData(item)">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.PREVIEW_DATA' | translate }}</a></li>
+                                <li class="divider"></li>
                                 <li ng-class="dataSource.enable == false ? 'disabled' : ''"><a ng-click="replayData(item)">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.REPLAY_DATA' | translate }}</a></li>
                                 <li class="divider" ng-if="item.receivedVia == 'email'"></li>
                                 <li><a ng-click="viewDetails(item)">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.VIEW_DETAILS' | translate }}</a></li>
