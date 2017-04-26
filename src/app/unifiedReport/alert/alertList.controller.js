@@ -24,6 +24,7 @@
         const ALERT_CODE_FILE_NOT_FOUND = 1208;
         const ALERT_CODE_UN_EXPECTED_ERROR = 2000;
         const ALERT_CODE_FETCHER_LOGIN_FAIL = 2001;
+        const ALERT_CODE_FETCHER_TIME_OUT = 2002;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -357,6 +358,9 @@
 
                 case ALERT_CODE_FETCHER_LOGIN_FAIL:
                     return 'Browser automation: login failed for account of Integration "' + detail.integrationName + '" at "' + detail.executionDate + '" when getting reports from "' + detail.startDate + '" to "' + detail.endDate + '"';
+
+                case ALERT_CODE_FETCHER_TIME_OUT:
+                    return 'Browser automation: timeout occur whey try download Integration "' + detail.integrationName + '" at "' + detail.executionDate + '" when getting reports from "' + detail.startDate + '" to "' + detail.endDate + '"';
 
                 case ALERT_CODE_DATA_IMPORTED_SUCCESSFULLY:
                     return 'File ' + '"' + detail.fileName + '"' + ' from data source ' + '"' + detail.dataSourceName + '"' + ' has been successfully imported to data set ' + '"' + detail.dataSetName + '"' + '.';
