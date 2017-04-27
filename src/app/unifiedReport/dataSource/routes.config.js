@@ -31,6 +31,9 @@
                 resolve: {
                     dataSources: /* @ngInject */ function(UnifiedReportDataSourceManager, $stateParams) {
                         $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
+                        $stateParams.sortField = !$stateParams.sortField ? 'lastActivity' : $stateParams.sortField;
+
                         return UnifiedReportDataSourceManager.one().get($stateParams).then(function (dataSources) {
                             return dataSources.plain();
                         });

@@ -208,6 +208,15 @@
                                                     </ui-select-choices>
                                                 </ui-select>
                                             </div>
+
+                                            <div class="col-sm-9 ui-select-width-full-width" ng-switch-when="multiOptions">
+                                                <ui-select multiple ng-model="param.value" server-error reset-search-input="'false'">
+                                                    <ui-select-match placeholder="Select a field">{{ $item }}</ui-select-match>
+                                                    <ui-select-choices repeat="field in param.optionValues | filter:$select.search">
+                                                        {{ field }}
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

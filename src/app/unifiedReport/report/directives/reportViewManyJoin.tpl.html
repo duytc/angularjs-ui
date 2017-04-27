@@ -19,9 +19,9 @@
         <div class="form-inline condition" ng-repeat="joinField in joinItem.joinFields">
             <div class="form-group select-join-field">
                 <ui-select name="field" ng-model="joinField.dataSet" ng-required="true" server-error>
-                    <ui-select-match placeholder="Select a data set">{{ $select.selected.name }}</ui-select-match>
+                    <ui-select-match placeholder="Select a data set">{{ $select.selected.name + ' (ID: ' + $select.selected.id + ')'}}</ui-select-match>
                     <ui-select-choices repeat="dataSet.id as dataSet in getDataSetForJoin(joinField, joinItem.joinFields) | filter:$select.search">
-                        {{ dataSet.name }}
+                        {{ dataSet.name + ' (ID: ' + dataSet.id + ')'}}
                     </ui-select-choices>
                 </ui-select>
             </div>

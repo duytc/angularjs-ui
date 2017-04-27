@@ -226,6 +226,7 @@
                             formats: angular.toJson(reportView.formats),
                             joinBy: angular.toJson(reportView.joinBy) || null,
                             name: reportView.name,
+                            id: reportView.id,
                             alias: reportView.alias,
                             multiView: !!reportView.multiView || reportView.multiView == 'true',
                             subReportsIncluded: !!reportView.subReportsIncluded || reportView.subReportsIncluded == 'true',

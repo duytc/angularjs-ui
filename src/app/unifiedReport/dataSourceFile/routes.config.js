@@ -31,6 +31,9 @@
                 resolve: {
                     dataSourceFiles: /* @ngInject */ function(UnifiedReportDataSourceFileManager, $stateParams) {
                         $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.page;
+                        $stateParams.sortField = !$stateParams.sortField ? 'receivedDate' : $stateParams.sortField;
+
                         return UnifiedReportDataSourceFileManager.one().get($stateParams).then(function (dataSourceFiles) {
                             return dataSourceFiles.plain();
                         });

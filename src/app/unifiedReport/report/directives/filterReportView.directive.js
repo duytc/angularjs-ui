@@ -46,7 +46,7 @@
                     scope.dateTypes = [
                         {key: 'Fixed Date Range', value: 'customRange'},
                         {key: 'Dynamic', value: 'dynamic'},
-                        {key: 'User Provided', value: 'userProvided'}
+                        // {key: 'User Provided', value: 'userProvided'}
                     ];
 
                     scope.dynamicDatePickerOpts = [
@@ -108,13 +108,14 @@
 
                         if(findField.type == 'date' || findField.type == 'datetime') {
                             filter.type = 'date';
+                            filter.userProvided = true;
                         }
 
                         if(findField.type == 'number' || findField.type == 'decimal') {
                             filter.type = 'number'
                         }
 
-                        if(findField.type == 'text' || findField.type == 'multiLineText') {
+                        if(findField.type == 'text' || findField.type == 'largeText') {
                             filter.type = 'text'
                         }
 

@@ -24,6 +24,7 @@
         const ALERT_CODE_FILE_NOT_FOUND = 1208;
         const ALERT_CODE_UN_EXPECTED_ERROR = 2000;
         const ALERT_CODE_FETCHER_LOGIN_FAIL = 2001;
+        const ALERT_CODE_FETCHER_TIME_OUT = 2002;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -84,6 +85,8 @@
         }
 
         function deleteAlertMulti() {
+            var selectedAlerts = angular.copy($scope.selectedAlert);
+
             UnifiedReportAlertManager.one().customPUT({ids: $scope.selectedAlert}, null, {delete: true})
                 .then(function () {
                     $scope.checkAllItem = false;
@@ -96,9 +99,17 @@
 
                             if (index > -1) {
                                 alerts.splice(index, 1);
-                                $scope.selectedAlert.splice($scope.selectedAlert.indexOf(alert.id), 1)
                             }
 
+                            var indexItemsForPager = _.findIndex(itemsForPager, function (item) {
+                                return alert.id == item.id;
+                            });
+
+                            if (indexItemsForPager > -1) {
+                                itemsForPager.splice(indexItemsForPager, 1);
+                            }
+
+                            $scope.selectedAlert.splice($scope.selectedAlert.indexOf(alert.id), 1);
                             $scope.alerts = alerts;
 
                             if($scope.tableConfig.currentPage > 0 && alerts.length/10 == $scope.tableConfig.currentPage) {
@@ -113,7 +124,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'success',
-                        message: $scope.selectedAlert.length + ' files have been deleted'
+                        message: selectedAlerts.length + ' alerts have been deleted'
                     });
                 });
         }
@@ -131,7 +142,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'success',
-                        message: $scope.selectedAlert.length + ' files have been unread'
+                        message: $scope.selectedAlert.length + ' alerts have been unread'
                     });
                 });
         }
@@ -149,7 +160,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'success',
-                        message: $scope.selectedAlert.length + ' files have been marked as read'
+                        message: $scope.selectedAlert.length + ' alerts have been marked as read'
                     });
                 });
         }
@@ -347,6 +358,9 @@
 
                 case ALERT_CODE_FETCHER_LOGIN_FAIL:
                     return 'Browser automation: login failed for account of Integration "' + detail.integrationName + '" at "' + detail.executionDate + '" when getting reports from "' + detail.startDate + '" to "' + detail.endDate + '"';
+
+                case ALERT_CODE_FETCHER_TIME_OUT:
+                    return 'Browser automation: timeout occur whey try download Integration "' + detail.integrationName + '" at "' + detail.executionDate + '" when getting reports from "' + detail.startDate + '" to "' + detail.endDate + '"';
 
                 case ALERT_CODE_DATA_IMPORTED_SUCCESSFULLY:
                     return 'File ' + '"' + detail.fileName + '"' + ' from data source ' + '"' + detail.dataSourceName + '"' + ' has been successfully imported to data set ' + '"' + detail.dataSetName + '"' + '.';

@@ -62,6 +62,76 @@
         $scope.setItemForPager = setItemForPager;
         $scope.noneSelect = noneSelect;
         $scope.selectAllInPages = selectAllInPages;
+        $scope.previewData = previewData;
+        
+        function previewData(dataSourceFile) {
+            UnifiedReportDataSourceFileManager.one(dataSourceFile.id).one('preview').get({limit: 1000})
+                .then(function (reportView) {
+                    $modal.open({
+                        templateUrl: 'unifiedReport/dataSourceFile/previewData.tpl.html',
+                        size: 'lg',
+                        resolve: {
+                            reportView: function () {
+                                return reportView
+                            }
+                        },
+                        controller: function ($scope, reportView) {
+                            $scope.reportView = reportView;
+                            $scope.columns = reportView.columns;
+                            $scope.reports = reportView.reports;
+
+                            $scope.itemsPerPage = [
+                                {label: '100', key: '100'},
+                                {label: '500', key: '500'},
+                                {label: '1000', key: '1000'},
+                                {label: '5000', key: '5000'},
+                                {label: '10000', key: '10000'}
+                            ];
+
+                            $scope.tableConfig = {
+                                maxPages: 10,
+                                itemsPerPage: 10
+                            };
+
+                            $scope.selectedData = {
+                                limit: 1000
+                            };
+
+                            $scope.isNullValue = isNullValue;
+                            $scope.viewData = viewData;
+
+                            function isNullValue(report, column) {
+                                return !report[column] && report[column] != 0;
+                            }
+
+                            function viewData() {
+                                UnifiedReportDataSourceFileManager.one(dataSourceFile.id).one('preview').get({limit: $scope.selectedData.limit})
+                                    .then(function (reportView) {
+                                        $scope.reportView = reportView;
+                                        $scope.columns = reportView.columns;
+                                        $scope.reports = reportView.reports;
+                                    })
+                            }
+                        }
+                    })
+                })
+                .catch(function (response) {
+                    $scope.formProcessing = false;
+
+                    $modal.open({
+                        templateUrl: 'unifiedReport/connectDataSource/alertErrorPreview.tpl.html',
+                        size: 'lg',
+                        resolve: {
+                            message: function () {
+                                return  'An unknown server error occurred';
+                            }
+                        },
+                        controller: function ($scope, message) {
+                            $scope.message = message;
+                        }
+                    });
+                });
+        }
 
         function selectAllInPages() {
             $scope.checkAllItem = true;
@@ -82,7 +152,7 @@
                 templateUrl: 'unifiedReport/dataSourceFile/viewDetails.tpl.html',
                 size: 'lg',
                 controller: function ($scope, dataSourceFile) {
-                    var mapLabel = {
+                    $scope.mapLabel = {
                         date: 'Date',
                         body: 'Email Body',
                         dateTime: 'Email Date',
@@ -93,9 +163,13 @@
 
                     $scope.dataSourceFile = dataSourceFile;
                     $scope.metaData = dataSourceFile.metaData;
+                    
+                    $scope.showAlert = function () {
+                        if(!$scope.metaData || !angular.isObject($scope.metaData) || _.difference(_.keys($scope.mapLabel), _.keys($scope.metaData)).length == 6) {
+                            return true
+                        }
 
-                    $scope.getLabelForKeyViewDetail = function (key) {
-                        return !!mapLabel[key] ? mapLabel[key] : key
+                        return false
                     }
                 },
                 resolve: {
@@ -140,6 +214,22 @@
                         function () {
                             _getDataSourceFiles(params, 0)
                                 .then(function () {
+                                    if(allEntryIds.indexOf(dataSourceFile.id) > -1) {
+                                        allEntryIds.splice(allEntryIds.indexOf(dataSourceFile.id), 1);
+                                    }
+
+                                    if($scope.selectedDataSourceFiles.indexOf(dataSourceFile.id) > -1) {
+                                        $scope.selectedDataSourceFiles.splice($scope.selectedDataSourceFiles.indexOf(dataSourceFile.id), 1);
+                                    }
+
+                                    var indexItemsForPager = _.findIndex(itemsForPager, function (item) {
+                                        return item.id == dataSourceFile.id
+                                    });
+
+                                    if(indexItemsForPager > -1) {
+                                        itemsForPager.splice(indexItemsForPager, 1);
+                                    }
+
                                     AlertService.replaceAlerts({
                                         type: 'success',
                                         message: $translate.instant('UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DELETE_SUCCESS')
@@ -286,7 +376,7 @@
 
                                     resolve(dataSourceFiles);
 
-                                    // _resetCheckImported($scope.dataSourceFiles)
+                                    _resetCheckImported($scope.dataSourceFiles)
                                 }, 0)
                             });
 
@@ -308,20 +398,11 @@
             });
 
             function _resetCheckImported(dataSourceFiles) {
-                // angular.forEach(angular.copy($scope.selectedDataSourceFiles), function (dataSourceFile, index) {
-                //     var indexDataSourceFile = _.findIndex(dataSourceFiles.records, function (item) {
-                //         return dataSourceFile == item.id
-                //     });
-                //
-                //     if(indexDataSourceFile == -1) {
-                //         $scope.selectedDataSourceFiles.splice(index, 1)
-                //     }
-                // });
-                //
-                // $scope.checkAllItem = $scope.selectedDataSourceFiles.length == dataSourceFiles.records.length
-
-                $scope.selectedDataSourceFiles = [];
-                $scope.checkAllItem = false;
+                if( _.difference(allEntryIds, $scope.selectedDataSourceFiles).length == 0) {
+                    $scope.checkAllItem = true;
+                } else {
+                    $scope.checkAllItem = false
+                }
             }
         }
     }

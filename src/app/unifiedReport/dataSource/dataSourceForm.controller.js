@@ -238,6 +238,13 @@
 
         function createNewParams(integration, item) {
             integration.params = item.params;
+
+            angular.forEach(integration.params, function (param) {
+                if(param.type == 'bool') {
+                    param.value = false
+                }
+                param.value = null
+            })
         }
 
         function removeParams(integration, index){
@@ -291,6 +298,10 @@
 
                         if(param.type == 'option') {
                             delete param.optionValues
+                        }
+
+                        if(param.type == 'bool' && !param.value) {
+                            param.value = false
                         }
                     });
 

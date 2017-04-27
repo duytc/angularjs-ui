@@ -41,6 +41,9 @@
                             </li>
                         </ul>
                     </td>
+                    <td at-title="Date Range" at-attribute="fields.dateRange">
+                        {{ !!item.fields.dateRange.startDate ? (item.fields.dateRange.startDate + ' - ' + item.fields.dateRange.endDate) : null }}
+                    </td>
                     <td at-title="Date Created" at-sortable at-attribute="fields.dateCreated">
                         {{ item.fields.dateCreated | date:'MMM d, y H:mm:ss' }}
                     </td>

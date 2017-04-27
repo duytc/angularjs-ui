@@ -37,6 +37,7 @@
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
                                 <li><a ng-click="downloadImportedData(item)">Download Imported Data</a></li>
+                                <li><a ng-click="previewData(item)">Preview Imported Data</a></li>
                                 <li class="divider"></li>
                                 <li><a ng-click="undo(item, $index)">Undo</a></li>
                             </ul>

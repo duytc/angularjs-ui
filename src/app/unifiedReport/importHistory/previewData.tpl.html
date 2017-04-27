@@ -1,15 +1,12 @@
 <div class="modal-header">
-    <h4 class="modal-title"><strong>Preview Data</strong></h4>
+    <h4 class="modal-title"><strong>Preview Imported Data</strong></h4>
 </div>
 <div class="modal-body">
     <div class="table-responsive table-report-view">
         <table class="table">
             <thead>
             <tr>
-                <th ng-repeat="column in columns">{{ reportData.columns[column] }}
-                    <!--<span class="glyphicon glyphicon-minus" ng-show="!isShow(column)"></span>-->
-                    <!--<span class="glyphicon" ng-show="isShow(column)" ng-class="{'glyphicon-chevron-up':!reverse,'glyphicon-chevron-down':reverse}"></span>-->
-                </th>
+                <th ng-repeat="column in columns">{{ column }}</th>
             </tr>
             </thead>
 
@@ -21,7 +18,7 @@
             </tr>
 
             <tr dir-paginate="report in reports | filter:search | itemsPerPage:tableConfig.itemsPerPage">
-                <td ng-class="{minWidth100: (types[column] == 'date' || types[column] == 'datetime')}" ng-repeat="column in columns">
+                <td ng-repeat="column in columns">
                     <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>
                 </td>
             </tr>

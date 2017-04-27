@@ -31,12 +31,12 @@
                 resolve: {
                     dataSets: /* @ngInject */ function(UnifiedReportDataSetManager, $stateParams) {
                         $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
+                        $stateParams.sortField = !$stateParams.sortField ? 'lastActivity' : $stateParams.sortField;
+
                         return UnifiedReportDataSetManager.one().get($stateParams).then(function (dataSets) {
                             return dataSets.plain();
                         });
-                    },
-                    dataSetRows: /* @ngInject */ function(UnifiedReportDataSetManager) {
-                        return UnifiedReportDataSetManager.one('rows').getList()
                     }
                 },
                 ncyBreadcrumb: {

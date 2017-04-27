@@ -155,8 +155,9 @@
         $scope.selectDataSource = selectDataSource;
         $scope.selectMapField = selectMapField;
         $scope.previewData = previewData;
+        $scope.viewOriginal = viewOriginal;
         $scope.addValueTemporaryFields = addValueTemporaryFields;
-        
+
         function addValueTemporaryFields($query) {
             if(!/^[a-zA-Z_][a-zA-Z0-9_$\s]*$/.test($query)) {
                 return;
@@ -164,8 +165,95 @@
 
             return $query;
         }
-        
+
+        function viewOriginal() {
+            if ($scope.formProcessing) {
+                // already running, prevent duplicates
+                return;
+            }
+
+            $scope.formProcessing = true;
+
+            var modalInstance = $modal.open({
+                templateUrl: 'unifiedReport/connectDataSource/viewOriginal.tpl.html',
+                size: 'lg',
+                resolve: {
+                    dataSourceEntries: function (UnifiedReportDataSourceManager) {
+                        return UnifiedReportDataSourceManager.one($scope.connectDataSource.dataSource.id || $scope.connectDataSource.dataSource).one('datasourceentries').get();
+                    }
+                },
+                controller: function ($scope, $modal, dataSourceEntries, UnifiedReportDataSourceFileManager) {
+                    $scope.dataSourceEntries = dataSourceEntries;
+                    $scope.reportView = [];
+                    $scope.columns = [];
+                    $scope.reports = [];
+
+                    $scope.itemsPerPage = [
+                        {label: '100', key: '100'},
+                        {label: '500', key: '500'},
+                        {label: '1000', key: '1000'},
+                        {label: '5000', key: '5000'},
+                        {label: '10000', key: '10000'}
+                    ];
+
+                    $scope.tableConfig = {
+                        maxPages: 10,
+                        itemsPerPage: 10
+                    };
+
+                    $scope.selectedData = {
+                        importedDataSource: null,
+                        limit: 500
+                    };
+
+                    $scope.isNullValue = isNullValue;
+                    $scope.viewOriginalData = viewOriginalData;
+
+                    function viewOriginalData() {
+                        UnifiedReportDataSourceFileManager.one($scope.selectedData.importedDataSource).one('preview').get({limit: $scope.selectedData.limit})
+                            .then(function (reportView) {
+                                $scope.reportView = reportView;
+                                $scope.columns = reportView.columns;
+                                $scope.reports = reportView.reports;
+                            })
+                            .catch(function (response) {
+                                $modal.open({
+                                    templateUrl: 'unifiedReport/connectDataSource/alertErrorOriginal.tpl.html',
+                                    size: 'lg',
+                                    resolve: {
+                                        message: function () {
+                                            return convertMessage(response.data.message);
+                                        }
+                                    },
+                                    controller: function ($scope, message) {
+                                        $scope.message = message;
+                                    }
+                                });
+                            });
+                    }
+
+                    function isNullValue(report, column) {
+                        return !report[column] && report[column] != 0;
+                    }
+                }
+            });
+
+            modalInstance.result
+                .then(function () {
+                    $scope.formProcessing = false;
+                }).catch(function () {
+                $scope.formProcessing = false;
+            })
+        }
+
         function previewData() {
+            if ($scope.formProcessing) {
+                // already running, prevent duplicates
+                return;
+            }
+
+            $scope.formProcessing = true;
+
             var connectDataSource = _refactorJson($scope.connectDataSource);
             connectDataSource.isDryRun = true;
             connectDataSource.filePaths = listDetectFields;
@@ -173,6 +261,8 @@
 
             UnifiedReportConnectDataSourceManager.one('dryrun').post(null, connectDataSource)
                 .then(function (reportData) {
+                    $scope.formProcessing = false;
+
                     $modal.open({
                         templateUrl: 'unifiedReport/connectDataSource/previewData.tpl.html',
                         size: 'lg',
@@ -185,6 +275,8 @@
                     });
                 })
                 .catch(function (response) {
+                    $scope.formProcessing = false;
+
                     $modal.open({
                         templateUrl: 'unifiedReport/connectDataSource/alertErrorPreview.tpl.html',
                         size: 'lg',
@@ -416,7 +508,9 @@
                         }
 
                         if ($scope.dimensionsMetrics[field.field] == 'date' || $scope.dimensionsMetrics[field.field] == 'datetime') {
-                            field.value = DateFormatter.getFormattedDate(field.value.endDate);
+                            if(field.value != '[__date]') {
+                                field.value = DateFormatter.getFormattedDate(field.value.endDate);
+                            }
                         }
                     })
 
@@ -460,7 +554,9 @@
                     if(transform.type == 'addField') {
                         angular.forEach(transform.fields, function (field) {
                             if($scope.dimensionsMetrics[field.field] == 'datetime' || $scope.dimensionsMetrics[field.field] == 'date') {
-                                field.value = {endDate: field.value}
+                                if(field.value != '[__date]') {
+                                    field.value = {endDate: field.value}
+                                }
                             }
                         });
                     }
@@ -616,7 +712,7 @@
                     // angular.forEach(transform.fields, function (field) {
                     //     if(Object.keys($scope.connectDataSource.mapFields).indexOf(field.field) == -1
                     //         || ($scope.dimensionsMetrics[$scope.connectDataSource.mapFields[field.field]] != 'text'
-                    //         && $scope.dimensionsMetrics[$scope.connectDataSource.mapFields[field.field]] != 'multiLineText')) {
+                    //         && $scope.dimensionsMetrics[$scope.connectDataSource.mapFields[field.field]] != 'largeText')) {
                     //         $timeout(function () {
                     //             field.field = null
                     //         }, 0, true);
@@ -671,7 +767,6 @@
                         });
 
                         if(allFields.indexOf(field.field) == -1 && indexTarget == -1) {
-                            console.log('ahihi');
                             setTimeout(function () {
                                 field.field = null;
                             }, 0);

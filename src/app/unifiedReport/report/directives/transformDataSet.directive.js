@@ -294,7 +294,7 @@
                         var typesField = [];
 
                         angular.forEach(scope.typesField, function (type) {
-                            // if (type.key == 'decimal' || type.key == 'number' || type.key ==  'text' || type.key == 'multiLineText') {
+                            // if (type.key == 'decimal' || type.key == 'number' || type.key ==  'text' || type.key == 'largeText') {
                             if (type.key == 'decimal' || type.key == 'number') {
                                 typesField.push(type)
                             }
@@ -409,7 +409,7 @@
                     }
 
                     function filterFieldByText(field) {
-                        return field.type == 'text' || field.type == 'multiLineText';
+                        return field.type == 'text' || field.type == 'largeText';
                     }
 
                     function getDimensionsMetricsForComparison(fields, fieldCurrent) {
