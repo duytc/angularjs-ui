@@ -308,7 +308,8 @@
                         field: field,
                         type: 'date',
                         to: 'Y-m-d',
-                        openStatus: true
+                        openStatus: true,
+                        from: [{isCustomFormatDateFrom: false, format: null}]
                     })
 
                 }
@@ -790,7 +791,8 @@
                                     field: field.targetField,
                                     type: 'date',
                                     to: 'Y-m-d',
-                                    openStatus: true
+                                    openStatus: true,
+                                    from: [{isCustomFormatDateFrom: false, format: null}]
                                 })
                             }
                         }

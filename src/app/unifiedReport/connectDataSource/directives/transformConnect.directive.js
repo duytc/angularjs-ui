@@ -169,6 +169,11 @@
                     scope.disabledOverride = disabledOverride;
                     scope.getFieldsForLeftSide = getFieldsForLeftSide;
                     scope.clickUseExternalDate = clickUseExternalDate;
+                    scope.addFromFormat = addFromFormat;
+                    
+                    function addFromFormat(from) {
+                        from.push({isCustomFormatDateFrom: false, format: null})
+                    }
 
                     function clickUseExternalDate(field, useDate) {
                         $timeout(function () {
@@ -394,8 +399,8 @@
 
                     }
 
-                    function selectCustomFormatDate(transform) {
-                        transform.from = null;
+                    function selectCustomFormatDate(from) {
+                        from.format = null;
                     }
 
                     function enableDragDropQueryBuilder(enable) {
