@@ -155,7 +155,7 @@
                 }
             })
             .state('unifiedReport.report.detail', {
-                url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&saveReportView&startDate&endDate&isShowDataSetName',
+                url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&saveReportView&startDate&endDate&isShowDataSetName&page&limit&searchs',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -235,6 +235,10 @@
 
                         params.startDate = $stateParams.startDate;
                         params.endDate = $stateParams.endDate;
+
+                        // set default page
+                        params.page = !$stateParams.page ? 1 : $stateParams.page;
+                        params.litmit = !$stateParams.litmit ? 10 : $stateParams.litmit;
 
                         return unifiedReportBuilder.getPlatformReport(params);
                     }

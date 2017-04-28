@@ -4,15 +4,31 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, reportView, $translate, reportGroup, getDateReportView, AlertService, unifiedReportFormatReport, UnifiedReportViewManager, UserStateHelper, DateFormatter, HISTORY_TYPE_PATH) {
+    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, reportView, $translate, reportGroup, AtSortableService, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
 
+        $scope.tableConfig = {
+            itemsPerPage: 10,
+            maxPages: 10,
+            totalItems: reportGroup.totalReport
+        };
+
+        $scope.availableOptions = {
+            currentPage: $stateParams.page || 1,
+            pageSize: 10
+        };
+
+        var getReportDetail;
+        var params = {
+            page: 1
+        };
+
+        $scope.search = {};
         $scope.reportView = reportView;
         $scope.reportGroup = reportGroup;
         $scope.hasResult = !angular.isNumber(reportGroup.status);
-        $scope.search = {};
 
         $scope.reports = reportGroup.reports || [];
         $scope.types = reportGroup.types;
@@ -21,12 +37,11 @@
         $scope.formProcessing = false;
 
         // user tempReports to orderBy and reports to view
-        $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);
+        // $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);
 
         $scope.titleColumns = reportGroup.columns;
         $scope.columnReportDetailForExportExcel = [];
         $scope.titleReportDetailForExportExcel = [];
-        $scope.hasSort = false;
 
         $scope.columnPositions = [];
         if (!!reportView.formats.length) {
@@ -121,11 +136,6 @@
             }
         }
 
-        $scope.tableConfig = {
-            maxPages: 10,
-            itemsPerPage: 10
-        };
-
         $scope.itemsPerPage = [
             {label: '10', key: '10'},
             {label: '20', key: '20'},
@@ -165,6 +175,37 @@
         $scope.hideDaterange = hideDaterange;
         $scope.enableSelectDaterange = enableSelectDaterange;
         $scope.refreshData = refreshData;
+        $scope.changePage = changePage;
+        $scope.selectItemPerPages = selectItemPerPages;
+        $scope.searchReportView = searchReportView;
+        
+        function searchReportView() {
+            _getReportDetail(_toJsonReportView(reportView));
+        }
+        
+        function selectItemPerPages(itemPerPage) {
+            _getReportDetail(_toJsonReportView(reportView));
+        }
+
+        function changePage(currentPage) {
+            _getReportDetail(_toJsonReportView(reportView));
+        }
+
+        function _getReportDetail(query) {
+            clearTimeout(getReportDetail);
+
+            getReportDetail = setTimeout(function() {
+                params = query;
+                return unifiedReportBuilder.getPlatformReport(query)
+                    .then(function(reportGroup) {
+                        AtSortableService.insertParamForUrl(query);
+                        $scope.reportGroup = reportGroup;
+                        $scope.reports = reportGroup.reports || [];
+                        $scope.tableConfig.totalItems = reportGroup.totalReport;
+                        $scope.availableOptions.currentPage = Number(query.page);
+                    });
+            }, 500);
+        }
 
         function refreshData() {
             historyStorage.getLocationPath(HISTORY_TYPE_PATH.unifiedReportDetail, '^.detail');
@@ -224,29 +265,12 @@
         }
 
         function generateReport(date) {
-            var reportViewClone = angular.copy(reportView);
-
-            var params = {
-                reportView: $stateParams.reportView,
-                reportViewDataSets: angular.toJson(reportViewClone.reportViewDataSets),
-                fieldTypes: angular.toJson(reportViewClone.fieldTypes),
-                reportViewMultiViews: angular.toJson(reportViewClone.reportViewMultiViews),
-                transforms: angular.toJson(reportViewClone.transforms),
-                showInTotal: angular.toJson(reportViewClone.showInTotal),
-                weightedCalculations: angular.toJson(reportViewClone.weightedCalculations),
-                formats: angular.toJson(reportViewClone.formats),
-                joinBy: angular.toJson(reportViewClone.joinBy) || null,
-                name: reportViewClone.name,
-                alias: reportViewClone.alias,
-                multiView: !!reportViewClone.multiView || reportViewClone.multiView == 'true',
-                subReportsIncluded: !!reportViewClone.subReportsIncluded || reportViewClone.subReportsIncluded == 'true',
-                isShowDataSetName: !!reportViewClone.isShowDataSetName || reportViewClone.isShowDataSetName == 'true'
-            };
+            var params = _toJsonReportView(reportView);
 
             params.startDate = DateFormatter.getFormattedDate(date.startDate);
             params.endDate = DateFormatter.getFormattedDate(date.endDate);
 
-            UserStateHelper.transitionRelativeToBaseState('unifiedReport.report.detail', params);
+            _getReportDetail(params);
         }
 
         function isNullValue(report, column) {
@@ -265,8 +289,7 @@
             $scope.sortBy = '\u0022'+keyname+'\u0022'; //set the sortBy to the param passed
             $scope.reverse = !$scope.reverse; //if true make it false and vice versa
 
-            $scope.hasSort = true;
-
+            _getReportDetail(_toJsonReportView(reportView));
         }
 
         function isShow(sortColumn) {
@@ -337,16 +360,36 @@
             return angular.isArray($scope.reports) && $scope.reports.length > $scope.tableConfig.itemsPerPage;
         }
 
+        function _toJsonReportView(reportView) {
+            var params = {
+                reportViewDataSets: angular.toJson(reportView.reportViewDataSets),
+                reportViewMultiViews: angular.toJson(reportView.reportViewMultiViews),
+                filter: angular.toJson(reportView.filter),
+                fieldTypes: angular.toJson(reportView.fieldTypes),
+                transforms: angular.toJson(reportView.transforms),
+                showInTotal: angular.toJson(reportView.showInTotal),
+                formats: angular.toJson(reportView.formats),
+                weightedCalculations: angular.toJson(reportView.weightedCalculations),
+                joinBy: angular.toJson(reportView.joinBy),
+                name: reportView.name,
+                alias: reportView.alias,
+                reportView: reportView.id,
+                multiView: reportView.multiView,
+                subReportsIncluded: reportView.subReportsIncluded,
+                isShowDataSetName: reportView.isShowDataSetName,
+                publisher: angular.isObject(reportView.publisher) ? reportView.publisher.id : reportView.publisher
+            };
+
+            params.startDate = DateFormatter.getFormattedDate($scope.date.startDate);
+            params.endDate = DateFormatter.getFormattedDate($scope.date.endDate);
+
+            params = angular.extend(params, {searches: angular.toJson($scope.search), limit: $scope.tableConfig.itemsPerPage, page: $scope.availableOptions.currentPage, orderBy: (!!$scope.reverse ? 'desc': 'acs'), sortField: $scope.sortBy});
+
+            return params;
+        }
+
         $scope.$on('$locationChangeSuccess', function() {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.unifiedReportDetail)
         });
-
-        $scope.$watch('search', function() {
-            angular.forEach(angular.copy($scope.search), function (value, key) {
-                if((!value || value == '')) {
-                    delete $scope.search[key]
-                }
-            })
-        }, true);
     }
 })();

@@ -28,8 +28,7 @@
         </div>
 
         <div class="btn-group btnGrouped" dropdown>
-            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify"
-                                                                     aria-hidden="true"></span></button>
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
                 <li><a ng-click="refreshData()">Refresh</a></li>
                 <li ng-if="reports.length > 0 && hasResult"><a><export-excel not-filter="true" css-class="''" data="reports" fields="columnReportDetailForExportExcel" header="titleReportDetailForExportExcel" file-name="getExportExcelFileName()"></export-excel></a></li>
@@ -39,7 +38,8 @@
         </div>
     </div>
 
-    <div class="panel-body" ng-if="reports.length > 0 && hasResult">
+    <div class="panel-body">
+    <!--<div class="panel-body" ng-if="reports.length > 0 && hasResult">-->
         <div class="table-responsive table-report-view">
             <table class="table">
                 <thead>
@@ -54,18 +54,12 @@
                 <tbody>
                 <tr>
                     <td ng-repeat="column in columnPositions">
-                        <input type="text" ng-model="search[column]">
+                        <input type="text" ng-model="search[column]" ng-change="searchReportView()">
                     </td>
                 </tr>
 
-                <tr dir-paginate="report in tempReports | filter:search | orderBy:sortBy:reverse | itemsPerPage:tableConfig.itemsPerPage">
-                    <td ng-if="hasSort" ng-repeat="column in columnPositions">
-                        <span ng-if="!isNullValue(reports[report.position], column)"> {{ reports[report.position][column] }} </span>
-                    </td>
-                </tr>
-
-                <tr dir-paginate="report in reports | filter:search | itemsPerPage:tableConfig.itemsPerPage">
-                    <td ng-if="!hasSort" ng-repeat="column in columnPositions">
+                <tr dir-paginate="report in reports | itemsPerPage:tableConfig.itemsPerPage">
+                    <td ng-repeat="column in columnPositions">
                         <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>
                     </td>
                 </tr>
@@ -74,13 +68,24 @@
         </div>
 
         <div class="pagination">
-            <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
-            <items-per-page init="tableConfig.itemsPerPage" range="itemsPerPage" sources="reports"></items-per-page>
+            <pagination class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+
+            <div class="itemsPerPage">
+                <label for="inputItemPerPage">Items per page</label>
+                <div class="itemNumber">
+                    <ui-select name="itemPerPage" id="inputItemPerPage" ng-model="tableConfig.itemsPerPage" on-select="selectItemPerPages($item)" reset-search-input="'false'">
+                        <ui-select-match placeholder="10">{{ $select.selected.label }}</ui-select-match>
+                        <ui-select-choices repeat="itemPerPage.key as itemPerPage in itemsPerPage">
+                            {{ itemPerPage.label }}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
-<div class="row"  ng-if="hasResult">
+<div class="row" ng-if="hasResult">
     <div class="col-md-6" ng-if="isEmptyObject(reportGroup.total)">
         <div class="panel panel-default">
             <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Totals</div>
