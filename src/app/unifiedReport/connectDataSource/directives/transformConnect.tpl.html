@@ -68,7 +68,7 @@
 
                                     <div class="expressions-group" ng-repeat="from in transform.from">
                                         <div class="form-group select-connect-data-source">
-                                            <button type="button" class="btn btn-danger btn-close-ur" ng-click="removeAddValue(transform.from, $index)">
+                                            <button type="button" class="btn btn-danger btn-close-ur" ng-disabled="transform.from.length == 1" ng-click="removeAddValue(transform.from, $index)">
                                                 <span class="glyphicon glyphicon-minus "></span>
                                             </button>
                                         </div>
