@@ -4,7 +4,7 @@
     angular.module('tagcade.public')
         .controller('shareableUnifiedReport', shareableUnifiedReport);
 
-    function shareableUnifiedReport($scope, $translate, reports, unifiedReportFormatReport, AlertService, historyStorage, HISTORY_TYPE_PATH) {
+    function shareableUnifiedReport($scope, $stateParams, $translate, reports, unifiedReportFormatReport, AlertService, AtSortableService, dataService, API_UNIFIED_PUBLIC_END_POINT, historyStorage, HISTORY_TYPE_PATH) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -12,8 +12,9 @@
         $scope.reportView = reports.reportView;
         $scope.hasResult = !angular.isNumber(reports.status);
         $scope.reports = reports.reports || [];
-        $scope.total = reports.total;
+        $scope.total = reports.totalReport;
         $scope.average = reports.average;
+        $scope.search = {};
 
         if(!$scope.hasResult) {
             if(reports.status == 400) {
@@ -82,8 +83,19 @@
         }
 
         $scope.tableConfig = {
+            itemsPerPage: $stateParams.limit || 10,
             maxPages: 10,
-            itemsPerPage: 10
+            totalItems: reports.totalReport
+        };
+
+        $scope.availableOptions = {
+            currentPage: $stateParams.page || 1,
+            pageSize: 10
+        };
+
+        var getReportDetail;
+        var params = {
+            page: 1
         };
 
         $scope.itemsPerPage = [
@@ -93,13 +105,28 @@
             {label: '40', key: '40'},
             {label: '50', key: '50'}
         ];
-        
+
         $scope.getExportExcelFileName = getExportExcelFileName;
         $scope.isEmptyObject = isEmptyObject;
         $scope.isShow = isShow;
         $scope.sort = sort;
         $scope.isNullValue = isNullValue;
         $scope.refreshData = refreshData;
+        $scope.searchReportView = searchReportView;
+        $scope.selectItemPerPages = selectItemPerPages;
+        $scope.changePage = changePage;
+
+        function changePage(currentPage) {
+            _getReportDetail();
+        }
+
+        function selectItemPerPages(itemPerPage) {
+            _getReportDetail();
+        }
+
+        function searchReportView() {
+            _getReportDetail();
+        }
 
         function refreshData() {
             historyStorage.getLocationPath(HISTORY_TYPE_PATH.public, 'app.public');
@@ -113,8 +140,7 @@
             $scope.sortBy = '\u0022' + keyname + '\u0022'; //set the sortBy to the param passed
             $scope.reverse = !$scope.reverse; //if true make it false and vice versa
 
-            $scope.hasSort = true;
-
+            _getReportDetail();
         }
 
         function isShow(sortColumn) {
@@ -131,6 +157,22 @@
 
         function getExportExcelFileName() {
             return 'report-detail'
+        }
+
+        function _getReportDetail() {
+            clearTimeout(getReportDetail);
+
+            getReportDetail = setTimeout(function() {
+                params = angular.extend(params, $stateParams, {searches: angular.toJson($scope.search), limit: $scope.tableConfig.itemsPerPage, page: $scope.availableOptions.currentPage, orderBy: (!!$scope.reverse ? 'desc': 'acs'), sortField: $scope.sortBy});
+                return dataService.makeHttpGetRequest('/v1/reportviews/:reportView/sharedReports', params, API_UNIFIED_PUBLIC_END_POINT)
+                    .then(function(reports) {
+                        AtSortableService.insertParamForUrl(params);
+                        $scope.reports = reports;
+                        $scope.reports = reports.reports || [];
+                        $scope.tableConfig.totalItems = reports.totalReport;
+                        $scope.availableOptions.currentPage = Number(params.page);
+                    });
+            }, 500);
         }
 
         $scope.$on('$locationChangeSuccess', function() {

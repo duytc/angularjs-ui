@@ -238,7 +238,7 @@
 
                         // set default page
                         params.page = !$stateParams.page ? 1 : $stateParams.page;
-                        params.litmit = !$stateParams.litmit ? 10 : $stateParams.litmit;
+                        params.limit = !$stateParams.limit ? 10 : $stateParams.limit;
 
                         return unifiedReportBuilder.getPlatformReport(params);
                     }

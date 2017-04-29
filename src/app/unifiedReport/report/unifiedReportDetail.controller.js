@@ -10,7 +10,7 @@
         app.css({position: 'inherit'});
 
         $scope.tableConfig = {
-            itemsPerPage: 10,
+            itemsPerPage: $stateParams.limit || 10,
             maxPages: 10,
             totalItems: reportGroup.totalReport
         };
