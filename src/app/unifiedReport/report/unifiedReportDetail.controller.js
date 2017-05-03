@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, reportView, $translate, reportGroup, AtSortableService, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH) {
+    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, reportView, $translate, reportGroup, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -39,58 +39,7 @@
         // user tempReports to orderBy and reports to view
         // $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);
 
-        $scope.titleColumns = reportGroup.columns;
-        $scope.columnReportDetailForExportExcel = [];
-        $scope.titleReportDetailForExportExcel = [];
-
-        $scope.columnPositions = [];
-        if (!!reportView.formats.length) {
-            angular.forEach(reportView.formats, function (format) {
-                if (format.type == 'columnPosition') {
-                    $scope.columnPositions = angular.copy(format.fields);
-                    if($scope.columnPositions.indexOf('report_view_alias') == -1 && reportView.multiView) {
-                        $scope.columnPositions.unshift('report_view_alias');
-                    }
-                }
-            });
-
-            // push remain field to columnPositions
-            var allFields,
-                remainFields;
-
-            allFields = _.keys($scope.reports[0]);
-            remainFields = _.difference(allFields, $scope.columnPositions);
-
-            if (remainFields.length > 0) {
-                angular.forEach(remainFields, function (remainField) {
-                    $scope.columnPositions.push(remainField);
-                })
-            }
-
-            var indexReportViewAliasFormat = $scope.columnPositions.indexOf('report_view_alias');
-            if(indexReportViewAliasFormat > -1 && reportView.multiView) {
-                $scope.columnPositions.splice(indexReportViewAliasFormat, 1);
-                $scope.columnPositions.unshift('report_view_alias');
-            }
-        }
-
-        if (!$scope.columnPositions.length && $scope.reports.length > 0) {
-            $scope.columnPositions = _.keys($scope.reports[0]);
-            var indexReportViewAlias = $scope.columnPositions.indexOf('report_view_alias');
-            if(indexReportViewAlias > -1 && reportView.multiView) {
-                $scope.columnPositions.splice(indexReportViewAlias, 1);
-                $scope.columnPositions.unshift('report_view_alias');
-            }
-        }
-
-        if (angular.isArray($scope.reports) && $scope.reports.length > 0) {
-            $scope.columnReportDetailForExportExcel = $scope.columnPositions;
-
-            angular.forEach($scope.columnPositions, function (key) {
-                var title = !!$scope.titleColumns[key] ? $scope.titleColumns[key] : key;
-                $scope.titleReportDetailForExportExcel.push(title)
-            })
-        }
+        _updateColumnPositions();
 
         $scope.reportViewForEdit = {
             reportViewDataSets: angular.toJson(reportView.reportViewDataSets),
@@ -146,9 +95,11 @@
 
         $scope.itemsPerPage.selected = $scope.tableConfig.itemsPerPage;
 
-        $scope.date = {
-            startDate: $stateParams.startDate || getDateReportView.getMinStartDateInFilterReportView(reportView),
-            endDate : $stateParams.endDate || getDateReportView.getMaxEndDateInFilterReportView(reportView)
+        $scope.selected = {
+            date: {
+                startDate: $stateParams.startDate || getDateReportView.getMinStartDateInFilterReportView(reportView),
+                endDate : $stateParams.endDate || getDateReportView.getMaxEndDateInFilterReportView(reportView)
+            }
         };
 
         $scope.datePickerOpts = {
@@ -195,14 +146,15 @@
             clearTimeout(getReportDetail);
 
             getReportDetail = setTimeout(function() {
-                params = query;
-                return unifiedReportBuilder.getPlatformReport(query)
+                params = angular.copy(query);
+                return unifiedReportBuilder.getPlatformReport(params)
                     .then(function(reportGroup) {
-                        AtSortableService.insertParamForUrl(query);
                         $scope.reportGroup = reportGroup;
                         $scope.reports = reportGroup.reports || [];
                         $scope.tableConfig.totalItems = reportGroup.totalReport;
-                        $scope.availableOptions.currentPage = Number(query.page);
+                        $scope.availableOptions.currentPage = Number(params.page);
+
+                        _updateColumnPositions();
                     });
             }, 500);
         }
@@ -357,18 +309,129 @@
         }
 
         function showPagination() {
-            return angular.isArray($scope.reports) && $scope.reports.length > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.reportGroup.reports) && $scope.reportGroup.totalReport > $scope.tableConfig.itemsPerPage;
         }
 
         function _toJsonReportView(reportView) {
             var params = angular.copy(reportView);
 
-            params.startDate = DateFormatter.getFormattedDate($scope.date.startDate);
-            params.endDate = DateFormatter.getFormattedDate($scope.date.endDate);
+            params.startDate = DateFormatter.getFormattedDate($scope.selected.date.startDate);
+            params.endDate = DateFormatter.getFormattedDate($scope.selected.date.endDate);
 
             params = angular.extend(params, {searches: $scope.search, limit: $scope.tableConfig.itemsPerPage, page: $scope.availableOptions.currentPage, orderBy: (!!$scope.reverse ? 'desc': 'acs'), sortField: $scope.sortBy});
 
             return params;
+        }
+
+        function _updateColumnPositions() {
+            $scope.titleColumns = $scope.reportGroup.columns;
+            $scope.columnReportDetailForExportExcel = [];
+            $scope.titleReportDetailForExportExcel = [];
+
+            $scope.columnPositions = !!$scope.columnPositions && $scope.columnPositions.length > 0 ? $scope.columnPositions : [];
+
+            if ($scope.reports.length > 0) {
+                var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
+                var totalDimensions = [];
+                var totalMetrics = [];
+                
+                angular.forEach(reportViews, function (reportView) {
+                    totalDimensions = totalDimensions.concat(reportView.dimensions);
+                    totalMetrics = totalMetrics.concat(reportView.metrics)
+                });
+                
+                var dimensions = [];
+                var metrics = [];
+                
+                angular.forEach(_.keys($scope.reports[0]), function (col) {
+                    var key = null;
+
+                    if(!$scope.reportView.multiView && col.lastIndexOf('_') > -1) {
+                        key = col.slice(0, col.lastIndexOf('_'));
+                    } else {
+                        key = col;
+                    }
+
+                    var hasJoin = _.findIndex($scope.reportView.joinBy, function (join) {
+                            return join.outputField == key
+                    });
+
+                    if(totalDimensions.indexOf(key) > -1 || hasJoin > -1) {
+                        dimensions.push(col)
+                    } else {
+                        metrics.push(col)
+                    }
+                });
+
+                dimensions = _.sortBy(dimensions, function (dimension) {
+                    var key = null;
+
+                    if(dimension.lastIndexOf('_') > -1) {
+                        key = dimension.slice(0, dimension.lastIndexOf('_'));
+                    } else {
+                        key = dimension;
+                    }
+
+                    return key
+                });
+
+                metrics = _.sortBy(metrics, function (metric) {
+                    var key = null;
+
+                    if(metric.lastIndexOf('_') > -1) {
+                        key = metric.slice(0, metric.lastIndexOf('_'));
+                    } else {
+                        key = metric;
+                    }
+
+                    return key
+                });
+
+                angular.forEach(angular.copy(dimensions).reverse(), function (dimension) {
+                    if($scope.reportView.fieldTypes[dimension] == 'date' || $scope.reportView.fieldTypes[dimension] == 'datetime') {
+                        dimensions.splice(dimensions.indexOf(dimension), 1);
+                        dimensions.unshift(dimension);
+                    }
+                });
+
+                $scope.columnPositions = dimensions.concat(metrics);
+                var indexReportViewAlias = $scope.columnPositions.indexOf('report_view_alias');
+                if(indexReportViewAlias > -1 && reportView.multiView) {
+                    $scope.columnPositions.splice(indexReportViewAlias, 1);
+                    $scope.columnPositions.unshift('report_view_alias');
+                }
+            }
+
+            if (!!reportView.formats.length) {
+                angular.forEach(reportView.formats, function (format) {
+                    if (format.type == 'columnPosition' && format.fields.length > 0) {
+                        angular.forEach(format.fields, function (field) {
+                            var index = $scope.columnPositions.indexOf(field);
+
+                            if(index > -1) {
+                                $scope.columnPositions.splice(index, 1)
+                            }
+                        });
+
+                        $scope.columnPositions = format.fields.concat($scope.columnPositions)
+                    }
+                });
+
+                var indexReportAlias = $scope.columnPositions.indexOf('report_view_alias');
+                if(indexReportAlias > -1 && reportView.multiView) {
+                    $scope.columnPositions.splice(indexReportAlias, 1);
+                    $scope.columnPositions.unshift('report_view_alias');
+                }
+            }
+
+            if (angular.isArray($scope.reports) && $scope.reports.length > 0) {
+                $scope.columnReportDetailForExportExcel = $scope.columnPositions;
+
+                angular.forEach($scope.columnPositions, function (key) {
+                    var title = !!$scope.titleColumns[key] ? $scope.titleColumns[key] : key;
+                    $scope.titleReportDetailForExportExcel.push(title)
+                })
+            }
         }
 
         $scope.$on('$locationChangeSuccess', function() {

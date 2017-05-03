@@ -48,23 +48,25 @@
         $scope.columnReportDetailForExportExcel = [];
         $scope.titleReportDetailForExportExcel = [];
 
-        $scope.columnPositions = [];
-        if (!!$scope.reportView && !!$scope.reportView.formats.length) {
+        _updateColumnPositions();
+
+        if (!!$scope.reportView.formats.length) {
             angular.forEach($scope.reportView.formats, function (format) {
-                if (format.type == 'columnPosition') {
-                    $scope.columnPositions = format.fields;
-                    if ($scope.columnPositions.indexOf('report_view_alias') == -1 && $scope.reportView.multiView) {
-                        $scope.columnPositions.unshift('report_view_alias');
-                    }
+                if (format.type == 'columnPosition' && format.fields.length > 0) {
+                    angular.forEach(format.fields, function (field) {
+                        var index = $scope.columnPositions.indexOf(field);
+
+                        if(index > -1) {
+                            $scope.columnPositions.splice(index, 1)
+                        }
+                    });
+
+                    $scope.columnPositions = format.fields.concat($scope.columnPositions)
                 }
             });
-            $scope.columnPositions = _.union($scope.columnPositions, Object.keys($scope.reports[0]));
-        }
 
-        if (!$scope.columnPositions.length) {
-            $scope.columnPositions = _.keys($scope.titleColumns);
             var indexReportViewAlias = $scope.columnPositions.indexOf('report_view_alias');
-            if (indexReportViewAlias > -1 && $scope.reportView.multiView) {
+            if(indexReportViewAlias > -1 && $scope.reportView.multiView) {
                 $scope.columnPositions.splice(indexReportViewAlias, 1);
                 $scope.columnPositions.unshift('report_view_alias');
             }
@@ -105,7 +107,7 @@
             {label: '40', key: '40'},
             {label: '50', key: '50'}
         ];
-
+        
         $scope.getExportExcelFileName = getExportExcelFileName;
         $scope.isEmptyObject = isEmptyObject;
         $scope.isShow = isShow;
@@ -157,6 +159,83 @@
 
         function getExportExcelFileName() {
             return 'report-detail'
+        }
+
+        function _updateColumnPositions() {
+            $scope.columnPositions = [];
+
+            if ($scope.reports.length > 0) {
+                var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
+                var totalDimensions = [];
+                var totalMetrics = [];
+
+                angular.forEach(reportViews, function (reportView) {
+                    totalDimensions = totalDimensions.concat(reportView.dimensions);
+                    totalMetrics = totalMetrics.concat(reportView.metrics)
+                });
+
+                var dimensions = [];
+                var metrics = [];
+
+                angular.forEach(_.keys($scope.reports[0]), function (col) {
+                    var key = null;
+
+                    if(!$scope.reportView.multiView && col.lastIndexOf('_') > -1) {
+                        key = col.slice(0, col.lastIndexOf('_'));
+                    } else {
+                        key = col;
+                    }
+
+                    var hasJoin = _.findIndex($scope.reportView.joinBy, function (join) {
+                        return join.outputField == key
+                    });
+
+                    if(totalDimensions.indexOf(key) > -1 || hasJoin > -1) {
+                        dimensions.push(col)
+                    } else {
+                        metrics.push(col)
+                    }
+                });
+
+                dimensions = _.sortBy(dimensions, function (dimension) {
+                    var key = null;
+
+                    if(dimension.lastIndexOf('_') > -1) {
+                        key = dimension.slice(0, dimension.lastIndexOf('_'));
+                    } else {
+                        key = dimension;
+                    }
+
+                    return key
+                });
+
+                metrics = _.sortBy(metrics, function (metric) {
+                    var key = null;
+
+                    if(metric.lastIndexOf('_') > -1) {
+                        key = metric.slice(0, metric.lastIndexOf('_'));
+                    } else {
+                        key = metric;
+                    }
+
+                    return key
+                });
+
+
+                angular.forEach(angular.copy(dimensions).reverse(), function (dimension) {
+                    if($scope.reportView.fieldTypes[dimension] == 'date' || $scope.reportView.fieldTypes[dimension] == 'datetime') {
+                        dimensions.splice(dimensions.indexOf(dimension), 1);
+                        dimensions.unshift(dimension);
+                    }
+                });
+
+                $scope.columnPositions = dimensions.concat(metrics);
+                var indexReportViewAlias = $scope.columnPositions.indexOf('report_view_alias');
+                if(indexReportViewAlias > -1 && $scope.reportView.multiView) {
+                    $scope.columnPositions.splice(indexReportViewAlias, 1);
+                    $scope.columnPositions.unshift('report_view_alias');
+                }
+            }
         }
 
         function _getReportDetail() {

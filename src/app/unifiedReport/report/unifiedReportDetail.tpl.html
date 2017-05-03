@@ -1,12 +1,12 @@
 <div id="form-date-range-selector" class="panel panel-default" ng-if="hideDaterange()">
     <div class="panel-body">
-        <form name="reportSelectorForm" class="form-inline" role="form" ng-submit="generateReport(date)" novalidate>
+        <form name="reportSelectorForm" class="form-inline" role="form" ng-submit="generateReport(selected.date)" novalidate>
             <div class="form-group">
                 <label for="inputDateRange">{{ 'DASHBOARD_MODULE.DATE_RANGE' | translate }}</label>
                 <div>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                        <input date-range-picker ng-disabled="!enableSelectDaterange()" options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="date" ng-required="true">
+                        <input date-range-picker ng-disabled="!enableSelectDaterange()" options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="selected.date" ng-required="true">
                     </div>
                 </div>
             </div>
@@ -38,8 +38,8 @@
         </div>
     </div>
 
-    <div class="panel-body">
-    <!--<div class="panel-body" ng-if="reports.length > 0 && hasResult">-->
+    <!--<div class="panel-body">-->
+    <div class="panel-body" ng-if="reports.length > 0 && hasResult">
         <div class="table-responsive table-report-view">
             <table class="table">
                 <thead>
@@ -68,9 +68,9 @@
         </div>
 
         <div class="pagination">
-            <pagination class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+            <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
 
-            <div class="itemsPerPage">
+            <div class="itemsPerPage" ng-if="tableConfig.totalItems < 10">
                 <label for="inputItemPerPage">Items per page</label>
                 <div class="itemNumber">
                     <ui-select name="itemPerPage" id="inputItemPerPage" ng-model="tableConfig.itemsPerPage" on-select="selectItemPerPages($item)" reset-search-input="'false'">
