@@ -828,7 +828,7 @@
             try {
                 message = angular.fromJson(message);
             } catch(err) {
-                return 'An unknown server error occurred'
+                return message || 'An unknown server error occurred'
             }
 
             var code = message.code;
