@@ -178,23 +178,9 @@
                                         reportViewMultiView.subView = angular.isObject(reportViewMultiView.subView) ? reportViewMultiView.subView.id : reportViewMultiView.subView
                                     });
 
-                                    return {
-                                        reportViewDataSets: !!$stateParams.reportViewDataSets ? angular.fromJson($stateParams.reportViewDataSets) : reportView.reportViewDataSets,
-                                        reportViewMultiViews: !!$stateParams.reportViewMultiViews ? angular.fromJson($stateParams.reportViewMultiViews) : reportView.reportViewMultiViews,
-                                        transforms: !!$stateParams.transforms ? angular.fromJson($stateParams.transforms) : reportView.transforms,
-                                        showInTotal: !!$stateParams.showInTotal ? angular.fromJson($stateParams.showInTotal) : reportView.showInTotal,
-                                        formats: !!$stateParams.formats ? angular.fromJson($stateParams.formats) : reportView.formats,
-                                        fieldTypes: !!$stateParams.fieldTypes ? angular.fromJson($stateParams.fieldTypes) : reportView.fieldTypes,
-                                        weightedCalculations: !!$stateParams.weightedCalculations ? angular.fromJson($stateParams.weightedCalculations) : reportView.weightedCalculations,
-                                        joinBy: !!$stateParams.joinBy ? angular.fromJson($stateParams.joinBy) : reportView.joinBy,
-                                        name: !!$stateParams.name ? $stateParams.name : reportView.name,
-                                        alias: !!$stateParams.alias ? $stateParams.alias : reportView.alias,
-                                        id: reportView.id,
-                                        publisher: reportView.publisher.id || reportView.publisher,
-                                        multiView: !!$stateParams.multiView ? ($stateParams.multiView == 'true') : reportView.multiView,
-                                        subReportsIncluded: !!$stateParams.subReportsIncluded ? ($stateParams.subReportsIncluded == 'true') : reportView.subReportsIncluded,
-                                        isShowDataSetName: !!$stateParams.isShowDataSetName ? ($stateParams.isShowDataSetName == 'true') : reportView.isShowDataSetName
-                                    }
+                                    reportView.publisher = reportView.publisher.id || reportView.publisher;
+
+                                    return reportView
                                 })
                         }
 
@@ -216,22 +202,7 @@
                         };
                     },
                     reportGroup: /* @ngInject */ function(unifiedReportBuilder, reportView, $stateParams) {
-                        var params = {
-                            reportViewDataSets: angular.toJson(reportView.reportViewDataSets),
-                            fieldTypes: angular.toJson(reportView.fieldTypes),
-                            reportViewMultiViews: angular.toJson(reportView.reportViewMultiViews),
-                            transforms: angular.toJson(reportView.transforms),
-                            showInTotal: angular.toJson(reportView.showInTotal),
-                            weightedCalculations: angular.toJson(reportView.weightedCalculations),
-                            formats: angular.toJson(reportView.formats),
-                            joinBy: angular.toJson(reportView.joinBy) || null,
-                            name: reportView.name,
-                            id: reportView.id,
-                            alias: reportView.alias,
-                            multiView: !!reportView.multiView || reportView.multiView == 'true',
-                            subReportsIncluded: !!reportView.subReportsIncluded || reportView.subReportsIncluded == 'true',
-                            isShowDataSetName: !!reportView.isShowDataSetName || reportView.isShowDataSetName == 'true'
-                        };
+                        var params = angular.copy(reportView);
 
                         params.startDate = $stateParams.startDate;
                         params.endDate = $stateParams.endDate;

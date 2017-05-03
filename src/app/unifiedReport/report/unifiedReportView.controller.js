@@ -52,21 +52,7 @@
                 reportViewMultiView.subView = angular.isObject(reportViewMultiView.subView) ? reportViewMultiView.subView.id : reportViewMultiView.subView
             });
 
-            var params = {
-                reportViewDataSets: angular.toJson(reportView.reportViewDataSets),
-                transforms: angular.toJson(reportView.transforms),
-                formats: angular.toJson(reportView.formats),
-                weightedCalculations: angular.toJson(reportView.weightedCalculations),
-                joinBy: angular.toJson(reportView.joinBy) || null,
-
-                fieldTypes: angular.toJson(reportView.fieldTypes),
-                reportViewMultiViews: angular.toJson(reportView.reportViewMultiViews),
-                showInTotal: angular.toJson(reportView.showInTotal),
-                name: reportView.name,
-                multiView: !!reportView.multiView || reportView.multiView,
-                subReportsIncluded: !!reportView.subReportsIncluded || reportView.subReportsIncluded,
-                isShowDataSetName: !!reportView.isShowDataSetName || reportView.isShowDataSetName
-            };
+            var params = angular.copy(reportView);
 
             unifiedReportBuilder.getPlatformReport(params)
                 .then(function (reportGroup) {

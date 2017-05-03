@@ -323,7 +323,7 @@
 
                 reportViewSave.then(function (data) {
                     if ($scope.isNew || !params.reportView) {
-                        params.reportView = data.id;
+                        params.reportView = !!data ? data.id : params.id || params.reportView;
                     }
 
                     _viewDetail(params);

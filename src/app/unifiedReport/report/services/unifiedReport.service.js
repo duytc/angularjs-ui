@@ -19,7 +19,7 @@
                 params = {};
             }
 
-            return dataService.makeHttpGetRequest('', params, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL + extentUrl)
+            return dataService.makeHttpPOSTRequest('', params, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL + extentUrl)
                 .catch(function(response) {
                     return {
                         status: response.status,
@@ -29,7 +29,7 @@
         }
 
         function getPlatformReport(params) {
-            return getReport(params, '/platform');
+            return getReport(params, '/data');
         }
 
         function parseFieldNameByDataSet(field_id, dataSets) {

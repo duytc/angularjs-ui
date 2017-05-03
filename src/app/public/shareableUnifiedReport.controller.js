@@ -12,7 +12,7 @@
         $scope.reportView = reports.reportView;
         $scope.hasResult = !angular.isNumber(reports.status);
         $scope.reports = reports.reports || [];
-        $scope.total = reports.totalReport;
+        $scope.total = reports.total;
         $scope.average = reports.average;
         $scope.search = {};
 

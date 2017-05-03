@@ -361,29 +361,12 @@
         }
 
         function _toJsonReportView(reportView) {
-            var params = {
-                reportViewDataSets: angular.toJson(reportView.reportViewDataSets),
-                reportViewMultiViews: angular.toJson(reportView.reportViewMultiViews),
-                filter: angular.toJson(reportView.filter),
-                fieldTypes: angular.toJson(reportView.fieldTypes),
-                transforms: angular.toJson(reportView.transforms),
-                showInTotal: angular.toJson(reportView.showInTotal),
-                formats: angular.toJson(reportView.formats),
-                weightedCalculations: angular.toJson(reportView.weightedCalculations),
-                joinBy: angular.toJson(reportView.joinBy),
-                name: reportView.name,
-                alias: reportView.alias,
-                reportView: reportView.id,
-                multiView: reportView.multiView,
-                subReportsIncluded: reportView.subReportsIncluded,
-                isShowDataSetName: reportView.isShowDataSetName,
-                publisher: angular.isObject(reportView.publisher) ? reportView.publisher.id : reportView.publisher
-            };
+            var params = angular.copy(reportView);
 
             params.startDate = DateFormatter.getFormattedDate($scope.date.startDate);
             params.endDate = DateFormatter.getFormattedDate($scope.date.endDate);
 
-            params = angular.extend(params, {searches: angular.toJson($scope.search), limit: $scope.tableConfig.itemsPerPage, page: $scope.availableOptions.currentPage, orderBy: (!!$scope.reverse ? 'desc': 'acs'), sortField: $scope.sortBy});
+            params = angular.extend(params, {searches: $scope.search, limit: $scope.tableConfig.itemsPerPage, page: $scope.availableOptions.currentPage, orderBy: (!!$scope.reverse ? 'desc': 'acs'), sortField: $scope.sortBy});
 
             return params;
         }
