@@ -189,10 +189,10 @@
         function searchData(){
             var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
-            _getDataSources(params);
+            _getDataSources(params, 500);
         }
 
-        function _getDataSources(query){
+        function _getDataSources(query, ms){
             clearTimeout(getSite);
 
             getSite = setTimeout(function (){
@@ -206,7 +206,7 @@
                             $scope.availableOptions.currentPage = Number(query.page);
                         }, 0)
                     });
-            }, 500)
+            }, ms || 0)
 
         }
     }

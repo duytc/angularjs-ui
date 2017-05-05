@@ -350,7 +350,7 @@
         function searchData() {
             var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
-            _getDataSourceFiles(params)
+            _getDataSourceFiles(params, 500)
                 .then(function () {
                     // $scope.selectedDataSourceFiles = [];
                     // $scope.checkAllItem = false;
@@ -358,8 +358,6 @@
         }
 
         function _getDataSourceFiles(query, timeOut) {
-            timeOut = (timeOut == undefined) ? 500 : timeOut;
-
             clearTimeout(getDataSourceEntry);
 
             return $q(function(resolve, reject) {
@@ -394,7 +392,7 @@
                                 }, 0)
                             });
                     }
-                }, timeOut);
+                }, timeOut || 0);
             });
 
             function _resetCheckImported(dataSourceFiles) {

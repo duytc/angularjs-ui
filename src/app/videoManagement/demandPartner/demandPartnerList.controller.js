@@ -60,11 +60,11 @@
         function searchData() {
             var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
-            _getDemandPartners(params);
+            _getDemandPartners(params, 500);
         }
 
         var getDemandPartners;
-        function _getDemandPartners(query) {
+        function _getDemandPartners(query, ms) {
             params = query;
 
             clearTimeout(getDemandPartners);
@@ -78,7 +78,7 @@
                         $scope.tableConfig.totalItems = Number(demandPartners.totalRecord);
                         $scope.availableOptions.currentPage = Number(query.page);
                     });
-            }, 500);
+            }, ms || 0);
         }
 
         function paramsReport(item) {

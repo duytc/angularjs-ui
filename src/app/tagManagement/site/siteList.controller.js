@@ -119,7 +119,7 @@
         function searchData() {
             var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
-            _getSite(params);
+            _getSite(params, 500);
         }
 
         $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
@@ -132,7 +132,7 @@
             _getSite(params);
         }
 
-        function _getSite(query) {
+        function _getSite(query, ms) {
             clearTimeout(getSite);
 
             getSite = setTimeout(function() {
@@ -144,7 +144,7 @@
                         $scope.tableConfig.totalItems = Number(sites.totalRecord);
                         $scope.availableOptions.currentPage = Number(query.page);
                     });
-            }, 500);
+            }, ms || 0);
         }
     }
 })();
