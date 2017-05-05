@@ -124,7 +124,8 @@
         function runReport(reportView) {
             var transition = UserStateHelper.transitionRelativeToBaseState(
                 'unifiedReport.report.detail', {
-                    reportView: reportView.id
+                    reportView: reportView.id,
+                    saveReportView: true
                 }
             );
 

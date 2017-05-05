@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, reportView, $translate, reportGroup, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH) {
+    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, reportView, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -20,7 +20,7 @@
             pageSize: 10
         };
 
-        var getReportDetail;
+        var getReportDetail, selectDimensionsMetrics;
         var params = {
             page: 1
         };
@@ -35,6 +35,9 @@
         $scope.isNew = !$scope.reportView.id;
         $scope.hasSaveRepoerView = !!$stateParams.saveReportView;
         $scope.formProcessing = false;
+
+        $scope.dimensions = [];
+        $scope.metrics = [];
 
         // user tempReports to orderBy and reports to view
         // $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);
@@ -56,6 +59,7 @@
             multiView: reportView.multiView,
             subReportsIncluded: reportView.subReportsIncluded,
             isShowDataSetName: reportView.isShowDataSetName,
+            enableCustomDimensionMetric: reportView.enableCustomDimensionMetric,
             publisher: angular.isObject(reportView.publisher) ? reportView.publisher.id : reportView.publisher
         };
 
@@ -113,6 +117,7 @@
         };
 
         $scope.showPagination = showPagination;
+        $scope.showItemPerPage = showItemPerPage;
         $scope.saveReportView = saveReportView;
         $scope.getExportExcelFileName = getExportExcelFileName;
 
@@ -129,6 +134,63 @@
         $scope.changePage = changePage;
         $scope.selectItemPerPages = selectItemPerPages;
         $scope.searchReportView = searchReportView;
+        $scope.toggleField = toggleField;
+        $scope.hasField = hasField;
+        $scope.disabledField = disabledField;
+        $scope.exportExcel = exportExcel;
+
+        function exportExcel() {
+            var params = _toJsonReportView(reportView);
+            delete params.page;
+
+            dataService.makeHttpPOSTRequest('', params, API_UNIFIED_END_POINT + '/v1/reportview/download')
+                .then(function (data) {
+                    var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
+                    var reportName = !!reportView.name ? reportView.name : 'report-detail';
+
+                    return saveAs(blob, [reportName + '.csv']);
+                });
+        }
+
+        function disabledField(field) {
+            if(reportView.multiView) {
+                return false
+            }
+
+            var numTrue = 0;
+
+            for (var key in $scope.fieldsShow) {
+                if($scope.fieldsShow[key] && $scope.dimensions.indexOf(key) > -1) {
+                    numTrue += 1;
+                }
+            }
+
+            if($scope.fieldsShow[field] && numTrue == 1) {
+                return true
+            }
+
+            return false
+        }
+
+        function toggleField(field) {
+            $scope.fieldsShow[field] = !$scope.fieldsShow[field];
+
+            clearTimeout(selectDimensionsMetrics);
+
+            selectDimensionsMetrics = setTimeout(function () {
+                _selectDimensionsMetrics();
+            }, 1000);
+        }
+
+        function _selectDimensionsMetrics() {
+            var params = _toJsonReportView(reportView);
+
+            _getReportDetail(params);
+        }
+
+        function hasField(field) {
+            return $scope.fieldsShow[field]
+        }
         
         function searchReportView() {
             _getReportDetail(_toJsonReportView(reportView));
@@ -309,7 +371,29 @@
         }
 
         function showPagination() {
+            if(!showItemPerPage()) {
+                return false
+            }
+
             return angular.isArray($scope.reportGroup.reports) && $scope.reportGroup.totalReport > $scope.tableConfig.itemsPerPage;
+        }
+
+        function showItemPerPage() {
+            var numFalse = 0;
+            var numField = 0;
+            for (var field in $scope.fieldsShow) {
+                numField += 1;
+
+                if(!$scope.fieldsShow[field]) {
+                    numFalse += 1;
+                }
+            }
+
+            if(numFalse == numField) {
+                return false
+            }
+
+            return true;
         }
 
         function _toJsonReportView(reportView) {
@@ -318,12 +402,35 @@
             params.startDate = DateFormatter.getFormattedDate($scope.selected.date.startDate);
             params.endDate = DateFormatter.getFormattedDate($scope.selected.date.endDate);
 
-            params = angular.extend(params, {searches: $scope.search, limit: $scope.tableConfig.itemsPerPage, page: $scope.availableOptions.currentPage, orderBy: (!!$scope.reverse ? 'desc': 'acs'), sortField: $scope.sortBy});
+            var newDimensions = [];
+            var newMetrics = [];
+
+            angular.forEach($scope.fieldsShow, function (value, key) {
+                if(value && !!$scope.dimensions && $scope.dimensions.indexOf(key) > -1) {
+                    newDimensions.push(key);
+                }
+
+                if(value && !!$scope.metrics && $scope.metrics.indexOf(key) > -1) {
+                    newMetrics.push(key);
+                }
+            });
+
+            params = angular.extend(params, {
+                searches: $scope.search,
+                limit: $scope.tableConfig.itemsPerPage,
+                page: $scope.availableOptions.currentPage,
+                orderBy: (!!$scope.reverse ? 'desc': 'acs'),
+                sortField: $scope.sortBy,
+                userDefineDimensions: newDimensions,
+                userDefineMetrics: newMetrics,
+                needToGroup: !!$scope.dimensions && newDimensions.length != $scope.dimensions.length
+            });
 
             return params;
         }
 
         function _updateColumnPositions() {
+            $scope.titleColumnsForSelect = !!$scope.titleColumns && Object.keys($scope.titleColumnsForSelect).length > 0 ? $scope.titleColumnsForSelect : $scope.reportGroup.columns;
             $scope.titleColumns = $scope.reportGroup.columns;
             $scope.columnReportDetailForExportExcel = [];
             $scope.titleReportDetailForExportExcel = [];
@@ -363,6 +470,7 @@
                     }
                 });
 
+                dimensions = _.sortBy(dimensions);
                 dimensions = _.sortBy(dimensions, function (dimension) {
                     var key = null;
 
@@ -375,6 +483,7 @@
                     return key
                 });
 
+                metrics = _.sortBy(metrics);
                 metrics = _.sortBy(metrics, function (metric) {
                     var key = null;
 
@@ -413,7 +522,14 @@
                             }
                         });
 
-                        $scope.columnPositions = format.fields.concat($scope.columnPositions)
+                        $scope.columnPositions = format.fields.concat($scope.columnPositions);
+                        
+                        angular.forEach(angular.copy($scope.columnPositions), function (col) {
+                            var index = $scope.columnPositions.indexOf(col);
+                            if(!!$scope.titleColumns && !$scope.titleColumns[col] && index > -1) {
+                                $scope.columnPositions.splice(index, 1);
+                            }
+                        })
                     }
                 });
 
@@ -431,6 +547,21 @@
                     var title = !!$scope.titleColumns[key] ? $scope.titleColumns[key] : key;
                     $scope.titleReportDetailForExportExcel.push(title)
                 })
+            }
+
+            $scope.fieldsShow = $scope.fieldsShow || {};
+            angular.forEach($scope.columnPositions, function (column) {
+                if(Object.keys($scope.fieldsShow).indexOf(column) == -1) {
+                    $scope.fieldsShow[column] = true
+                }
+            });
+
+            if($scope.dimensions.length == 0) {
+                $scope.dimensions = dimensions || []
+            }
+
+            if($scope.metrics.length == 0) {
+                $scope.metrics = metrics || []
             }
         }
 

@@ -21,8 +21,9 @@
         <strong> {{ reportView.name }} </strong>
 
         <div class="button-bar">
-            <button style="margin-right: 3px"  class="btn btn-sm btn-primary" ng-click="refreshData()" type="button">Refresh</button>
-            <export-excel ng-if="reports.length > 0 && hasResult" not-filter="true" data="reports" style="margin-right: 3px" fields="columnReportDetailForExportExcel" header="titleReportDetailForExportExcel" file-name="getExportExcelFileName()"></export-excel>
+            <button class="btn btn-sm btn-primary" ng-click="refreshData()" type="button">Refresh</button>
+            <button class="btn btn-sm btn-primary" ng-click="exportExcel()" type="button">Export Excel</button>
+            <!--<export-excel ng-if="reports.length > 0 && hasResult" not-filter="true" data="reports" style="margin-right: 3px" fields="columnReportDetailForExportExcel" header="titleReportDetailForExportExcel" file-name="getExportExcelFileName()"></export-excel>-->
             <button ng-disabled="hasSaveRepoerView" ng-click="saveReportView()" class="btn btn-sm btn-primary" type="button">Save as Report View</button>
             <button ui-sref="^.editBuilder(reportViewForEdit)" ng-disabled="formProcessing" class="btn btn-sm btn-primary" type="button">Edit Report View</button>
         </div>
@@ -31,16 +32,38 @@
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
                 <li><a ng-click="refreshData()">Refresh</a></li>
-                <li ng-if="reports.length > 0 && hasResult"><a><export-excel not-filter="true" css-class="''" data="reports" fields="columnReportDetailForExportExcel" header="titleReportDetailForExportExcel" file-name="getExportExcelFileName()"></export-excel></a></li>
+                <li ng-click="exportExcel()" ><a>Export Excel</a></li>
                 <li ng-if="hasSaveRepoerView"><a ng-click="saveReportView()">Save as Report View</a></li>
                 <li><a ui-sref="^.editBuilder(reportViewForEdit)">Edit Report View</a></li>
             </ul>
         </div>
     </div>
 
-    <!--<div class="panel-body">-->
-    <div class="panel-body" ng-if="reports.length > 0 && hasResult">
+    <div class="panel-body" ng-if="reports.length">
+    <!--<div class="panel-body" ng-if="reports.length > 0 && hasResult">-->
         <div class="table-responsive table-report-view">
+            <div ng-if="reportView.enableCustomDimensionMetric">
+                <div class="col-sm-12" ng-if="dimensions.length > 0">
+                    <label class="control-label">Dimensions</label>
+
+                    <div>
+                        <div ng-repeat="field in dimensions" class="col-sm-4">
+                            <label class="ui-checkbox"><input name="field[]" type="checkbox" ng-click="toggleField(field)" ng-disabled="disabledField(field)" ng-checked="hasField(field)"><span>{{ titleColumnsForSelect[field] }}</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12" ng-if="metrics.length > 0">
+                    <label class="control-label">Metrics</label>
+
+                    <div>
+                        <div ng-repeat="field in metrics" class="col-sm-4">
+                            <label class="ui-checkbox"><input name="field[]" type="checkbox" ng-click="toggleField(field)" ng-checked="hasField(field)"><span>{{ titleColumnsForSelect[field] }}</span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <table class="table">
                 <thead>
                 <tr>
@@ -67,10 +90,10 @@
             </table>
         </div>
 
-        <div class="pagination">
+        <div class="pagination" ng-if="showItemPerPage()">
             <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
 
-            <div class="itemsPerPage" ng-if="tableConfig.totalItems < 10">
+            <div class="itemsPerPage">
                 <label for="inputItemPerPage">Items per page</label>
                 <div class="itemNumber">
                     <ui-select name="itemPerPage" id="inputItemPerPage" ng-model="tableConfig.itemsPerPage" on-select="selectItemPerPages($item)" reset-search-input="'false'">

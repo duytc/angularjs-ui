@@ -112,6 +112,13 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="enableCustomDimensionMetric" class="col-sm-1quarter control-label">Enable Custom Dimension Metric</label>
+                    <div class="col-sm-5">
+                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="reportBuilder.enableCustomDimensionMetric" id="enableCustomDimensionMetric"><span></span></label>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <div class="col-sm-offset-1quarter col-sm-5">
                         <button ng-if="!reportBuilder.id" ng-disabled="!isFormRunValid()" type="submit" class="btn btn-success mce-i-indent" ng-click="getReports()">Run Report</button>
                         <button ng-if="reportBuilder.id" ng-disabled="!isFormSaveValid()" type="submit" class="btn btn-success mce-i-indent" ng-click="saveReport()">Save Report</button>

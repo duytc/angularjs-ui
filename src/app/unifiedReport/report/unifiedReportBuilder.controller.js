@@ -54,7 +54,8 @@
             showInTotal: [],
             multiView: false,
             subReportsIncluded: false,
-            isShowDataSetName: false
+            isShowDataSetName: false,
+            enableCustomDimensionMetric: true
         };
 
         $scope.$watch(function () {
@@ -309,7 +310,8 @@
                 fieldTypes: angular.toJson(reportBuilder.fieldTypes),
                 multiView: reportBuilder.multiView,
                 subReportsIncluded: reportBuilder.subReportsIncluded,
-                isShowDataSetName: reportBuilder.isShowDataSetName
+                isShowDataSetName: reportBuilder.isShowDataSetName,
+                enableCustomDimensionMetric: reportBuilder.enableCustomDimensionMetric
             };
 
             if ($scope.isAdmin()) {
@@ -907,6 +909,7 @@
             $scope.reportBuilder.showInTotal = [];
             $scope.reportBuilder.subReportsIncluded = false;
             $scope.reportBuilder.isShowDataSetName = false;
+            $scope.reportBuilder.enableCustomDimensionMetric = true;
         }
 
         /**
@@ -1217,28 +1220,6 @@
                 });
             });
         }
-
-        // function _updateDataSets(dataSets) {
-        //     angular.forEach(dataSets, function (dataSet) {
-        //         angular.forEach(angular.copy(dataSet.dimensions), function (type, field) {
-        //             if(type == 'date' || type == 'datetime') {
-        //                 dataSet.dimensions['__' + field + '_year'] = 'number';
-        //                 dataSet.dimensions['__' + field + '_month'] = 'number';
-        //                 dataSet.dimensions['__' + field + '_day'] = 'number';
-        //             }
-        //         });
-        //
-        //         angular.forEach(angular.copy(dataSet.metrics), function (type, field) {
-        //             if(type == 'date' || type == 'datetime') {
-        //                 dataSet.metrics['__' + field + '_year'] = 'number';
-        //                 dataSet.metrics['__' + field + '_month'] = 'number';
-        //                 dataSet.metrics['__' + field + '_day'] = 'number';
-        //             }
-        //         });
-        //     });
-        //
-        //     return dataSets
-        // }
 
         update();
         function update() {

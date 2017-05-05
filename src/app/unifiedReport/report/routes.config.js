@@ -77,7 +77,7 @@
                 }
             })
             .state('unifiedReport.report.editBuilder', {
-                url: '/edit/?reportView&reportViewMultiViews&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&subReportsIncluded&userReorderTransformsAllowed&isShowDataSetName',
+                url: '/edit/?reportView&reportViewMultiViews&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&subReportsIncluded&userReorderTransformsAllowed&isShowDataSetName&enableCustomDimensionMetric',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -125,6 +125,7 @@
                                         subReportsIncluded: !!$stateParams.subReportsIncluded ? ($stateParams.subReportsIncluded == 'true') : reportView.subReportsIncluded,
                                         isShowDataSetName: !!$stateParams.isShowDataSetName ? ($stateParams.isShowDataSetName == 'true') : reportView.isShowDataSetName,
                                         userReorderTransformsAllowed: !!$stateParams.userReorderTransformsAllowed ? ($stateParams.userReorderTransformsAllowed == 'true') : reportView.userReorderTransformsAllowed,
+                                        enableCustomDimensionMetric: !!$stateParams.enableCustomDimensionMetric ? ($stateParams.enableCustomDimensionMetric == 'true') : reportView.enableCustomDimensionMetric,
                                         publisher: reportView.publisher.id || reportView.publisher
                                     }
                                 })
@@ -143,7 +144,8 @@
                             publisher: $stateParams.publisher,
                             multiView: $stateParams.multiView == 'true',
                             subReportsIncluded: $stateParams.subReportsIncluded == 'true',
-                            isShowDataSetName: $stateParams.isShowDataSetName == 'true'
+                            isShowDataSetName: $stateParams.isShowDataSetName == 'true',
+                            enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true'
                         };
                     },
                     publishers: function () {
@@ -155,7 +157,7 @@
                 }
             })
             .state('unifiedReport.report.detail', {
-                url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&saveReportView&startDate&endDate&isShowDataSetName&page&limit&searchs',
+                url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&saveReportView&enableCustomDimensionMetric&startDate&endDate&isShowDataSetName&page&limit&searchs',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -198,7 +200,8 @@
                             publisher: $stateParams.publisher,
                             multiView: $stateParams.multiView == 'true',
                             subReportsIncluded: $stateParams.subReportsIncluded == 'true',
-                            isShowDataSetName: $stateParams.isShowDataSetName == 'true'
+                            isShowDataSetName: $stateParams.isShowDataSetName == 'true',
+                            enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true'
                         };
                     },
                     reportGroup: /* @ngInject */ function(unifiedReportBuilder, reportView, $stateParams) {
