@@ -5,17 +5,6 @@
         .controller('ConnectDataSourceForm', ConnectDataSourceForm);
 
     function ConnectDataSourceForm($scope, $modal, $timeout, _, dataSets, dataSources, connectDataSource, AlertService, sessionStorage, FileUploader, UnifiedReportConnectDataSourceManager, UnifiedReportDataSourceManager, ServerErrorProcessor, dataSet, dateUtil, historyStorage, HISTORY_TYPE_PATH, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, DateFormatter) {
-        const ALERT_CODE_DATA_IMPORT_MAPPING_FAIL = 1201;
-        const ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL = 1202;
-        const ALERT_CODE_FILTER_ERROR_INVALID_NUMBER = 1203;
-        const ALERT_CODE_TRANSFORM_ERROR_INVALID_DATE = 1204;
-        const ALERT_CODE_DATA_IMPORT_NO_HEADER_FOUND = 1205;
-        const ALERT_CODE_DATA_IMPORT_NO_DATA_ROW_FOUND = 1206;
-        const ALERT_CODE_WRONG_TYPE_MAPPING = 1207;
-        const ALERT_CODE_FILE_NOT_FOUND = 1208;
-        const ALERT_CODE_NO_FILE_PREVIEW = 1209;
-        const ALERT_CODE_UN_EXPECTED_ERROR = 2000;
-
         $scope.fieldNameTranslations = {
             dataSet: 'Data Set',
             dataSource: 'Data Source',
@@ -97,7 +86,7 @@
                 // $scope.connectDataSource.mapFields = {};
 
                 var detectedFields = response.fields;
-                listDetectFields.push(response.filePath);
+                listDetectFields.push(response);
 
                 if(!detectedFields || detectedFields.length == 0) {
                     AlertService.replaceAlerts({
@@ -155,7 +144,6 @@
         $scope.selectDataSource = selectDataSource;
         $scope.selectMapField = selectMapField;
         $scope.previewData = previewData;
-        $scope.viewOriginal = viewOriginal;
         $scope.addValueTemporaryFields = addValueTemporaryFields;
 
         function addValueTemporaryFields($query) {
@@ -166,135 +154,27 @@
             return $query;
         }
 
-        function viewOriginal() {
-            if ($scope.formProcessing) {
-                // already running, prevent duplicates
-                return;
-            }
-
-            $scope.formProcessing = true;
-
-            var modalInstance = $modal.open({
-                templateUrl: 'unifiedReport/connectDataSource/viewOriginal.tpl.html',
+        function previewData() {
+            $modal.open({
+                templateUrl: 'unifiedReport/connectDataSource/previewData.tpl.html',
                 size: 'lg',
+                controller: 'PreviewDataConnect',
                 resolve: {
+                    connectDataSource: function () {
+                        var connectDataSource = _refactorJson($scope.connectDataSource);
+                        connectDataSource.isDryRun = true;
+                        connectDataSource.connectedDataSourceId = $scope.connectDataSource.id;
+
+                        return  connectDataSource;
+                    },
                     dataSourceEntries: function (UnifiedReportDataSourceManager) {
-                        return UnifiedReportDataSourceManager.one($scope.connectDataSource.dataSource.id || $scope.connectDataSource.dataSource).one('datasourceentries').get();
-                    }
-                },
-                controller: function ($scope, $modal, dataSourceEntries, UnifiedReportDataSourceFileManager) {
-                    $scope.dataSourceEntries = dataSourceEntries;
-                    $scope.reportView = [];
-                    $scope.columns = [];
-                    $scope.reports = [];
-
-                    $scope.itemsPerPage = [
-                        {label: '100', key: '100'},
-                        {label: '500', key: '500'},
-                        {label: '1000', key: '1000'},
-                        {label: '5000', key: '5000'},
-                        {label: '10000', key: '10000'}
-                    ];
-
-                    $scope.tableConfig = {
-                        maxPages: 10,
-                        itemsPerPage: 10
-                    };
-
-                    $scope.selectedData = {
-                        importedDataSource: null,
-                        limit: 500
-                    };
-
-                    $scope.isNullValue = isNullValue;
-                    $scope.viewOriginalData = viewOriginalData;
-
-                    function viewOriginalData() {
-                        UnifiedReportDataSourceFileManager.one($scope.selectedData.importedDataSource).one('preview').get({limit: $scope.selectedData.limit})
-                            .then(function (reportView) {
-                                $scope.reportView = reportView;
-                                $scope.columns = reportView.columns;
-                                $scope.reports = reportView.reports;
-                            })
-                            .catch(function (response) {
-                                $modal.open({
-                                    templateUrl: 'unifiedReport/connectDataSource/alertErrorOriginal.tpl.html',
-                                    size: 'lg',
-                                    resolve: {
-                                        message: function () {
-                                            return convertMessage(response.data.message);
-                                        }
-                                    },
-                                    controller: function ($scope, message) {
-                                        $scope.message = message;
-                                    }
-                                });
-                            });
-                    }
-
-                    function isNullValue(report, column) {
-                        return !report[column] && report[column] != 0;
+                        return UnifiedReportDataSourceManager.one($scope.connectDataSource.dataSource.id || $scope.connectDataSource.dataSource).one('datasourceentries').getList(null, {orderBy: 'desc', sortField: 'receivedDate'});
+                    },
+                    listFilePaths: function () {
+                        return listDetectFields
                     }
                 }
             });
-
-            modalInstance.result
-                .then(function () {
-                    $scope.formProcessing = false;
-                }).catch(function () {
-                $scope.formProcessing = false;
-            })
-        }
-
-        function previewData() {
-            if ($scope.formProcessing) {
-                // already running, prevent duplicates
-                return;
-            }
-
-            $scope.formProcessing = true;
-
-            var connectDataSource = _refactorJson($scope.connectDataSource);
-            connectDataSource.isDryRun = true;
-            connectDataSource.filePaths = listDetectFields;
-            connectDataSource.connectedDataSourceId = $scope.connectDataSource.id;
-
-            UnifiedReportConnectDataSourceManager.one('dryrun').post(null, connectDataSource)
-                .then(function (reportData) {
-                    $scope.formProcessing = false;
-
-                    $modal.open({
-                        templateUrl: 'unifiedReport/connectDataSource/previewData.tpl.html',
-                        size: 'lg',
-                        controller: 'PreviewDataConnect',
-                        resolve: {
-                            reportData: function () {
-                                return reportData;
-                            }
-                        }
-                    });
-                })
-                .catch(function (response) {
-                    $scope.formProcessing = false;
-
-                    $modal.open({
-                        templateUrl: 'unifiedReport/connectDataSource/alertErrorPreview.tpl.html',
-                        size: 'lg',
-                        resolve: {
-                            message: function () {
-                                return convertMessage(response.data.message);
-                            }
-                        },
-                        controller: function ($scope, message) {
-                            $scope.message = message;
-                        }
-                    });
-
-                    // AlertService.replaceAlerts({
-                    //     type: 'error',
-                    //     message: convertMessage(response.data.message)
-                    // });
-                })
         }
 
         function selectMapField(field) {
@@ -426,7 +306,6 @@
             $scope.formProcessing = true;
 
             var connectDataSource = _refactorJson($scope.connectDataSource);
-            connectDataSource.filePaths = listDetectFields;
 
             var saveChannel = $scope.isNew ? UnifiedReportConnectDataSourceManager.post(connectDataSource) : UnifiedReportConnectDataSourceManager.one(connectDataSource.id).patch(connectDataSource);
 
@@ -822,52 +701,6 @@
             });
 
             return fields;
-        }
-
-        function convertMessage(message) {
-            try {
-                message = angular.fromJson(message);
-            } catch(err) {
-                return message || 'An unknown server error occurred'
-            }
-
-            var code = message.code;
-            var detail = message.detail;
-
-            switch (code) {
-                case ALERT_CODE_DATA_IMPORT_MAPPING_FAIL:
-                    return 'Cannot preview data - no field in file is mapped to data set.';
-
-                case ALERT_CODE_WRONG_TYPE_MAPPING:
-                    return 'Cannot preview data - MAPPING ERROR: Found invalid content ' + '"' + detail.content + '"' + ' on field ' + '"' + detail.column + '"' + '.';
-
-                case ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL:
-                    return 'Cannot preview data - REQUIRE ERROR: Required field ' + '"' + detail.column + '"' + ' does not exist.';
-
-                case ALERT_CODE_FILTER_ERROR_INVALID_NUMBER:
-                    return 'Cannot preview data - TRANSFORM ERROR: Invalid number format on field ' + '"' + detail.column + '"' + '.';
-
-                case ALERT_CODE_TRANSFORM_ERROR_INVALID_DATE:
-                    return 'Cannot preview data - TRANSFORM ERROR: Invalid date format on field ' + '"' + detail.column + '"' + '.';
-
-                case ALERT_CODE_DATA_IMPORT_NO_HEADER_FOUND:
-                    return 'Cannot preview data - the file in data source has no data.';
-
-                case ALERT_CODE_DATA_IMPORT_NO_DATA_ROW_FOUND:
-                    return 'Cannot preview data - the file in data source has no data.';
-
-                case ALERT_CODE_FILE_NOT_FOUND:
-                    return 'Cannot preview data - file does not exist.';
-
-                case ALERT_CODE_UN_EXPECTED_ERROR:
-                    return 'Cannot preview data - unexpected error, please contact your account manager';
-
-                case ALERT_CODE_NO_FILE_PREVIEW:
-                    return 'cannot find any file in this data source for dry run';
-
-                default:
-                    return 'Unknown code (' + detail.code + ')';
-            }
         }
     }
 })();
