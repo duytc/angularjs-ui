@@ -49,7 +49,9 @@
                         {{ item.createdDate | date:'MMM d, y H:mm:ss' }}
                     </td>
                     <td at-implicit at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.FILENAME' | translate }}" at-sortable at-attribute="dataSourceEntry.fileName"></td>
-                    <td ng-show="!!dataSet" at-implicit at-title="{{ 'DATA_SOURCE' | translate }}" at-sortable at-attribute="dataSourceEntry.dataSource.name"></td>
+                    <td ng-show="!!dataSet" at-title="{{ 'DATA_SOURCE' | translate }}" at-sortable at-attribute="dataSourceEntry.dataSource.name">
+                        {{ item.dataSourceEntry.dataSource.name + ' (ID: '+ item.dataSourceEntry.dataSource.id +')'}}
+                    </td>
                     <td ng-show="!dataSet" at-implicit at-title="{{ 'DATA_SET' | translate }}" at-sortable at-attribute="dataSet.name"></td>
                 </tr>
                 </tbody>

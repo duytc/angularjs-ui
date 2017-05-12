@@ -46,7 +46,9 @@
                         </div>
                     </td>
                     <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="{{ 'NAME' | translate }}"></td>
-                    <td at-implicit at-sortable at-attribute="dataSource.name" at-title="{{ 'DATA_SOURCE' | translate }}"></td>
+                    <td at-sortable at-attribute="dataSource.name" at-title="{{ 'DATA_SOURCE' | translate }}">
+                        {{ item.dataSource.name + ' (ID: '+ item.dataSource.id +')'}}
+                    </td>
                 </tr>
                 </tbody>
             </table>
