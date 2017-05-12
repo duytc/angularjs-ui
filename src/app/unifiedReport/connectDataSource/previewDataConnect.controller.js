@@ -101,7 +101,7 @@
                     $scope.tableConfigOriginal.currentPage = 1;
 
                     $scope.originalData = originalData;
-                    $scope.originalColumns = originalData.columns;
+                    $scope.originalColumns = _.keys(originalData.columns);
                     $scope.originalReports = originalData.reports;
                 })
                 .catch(function (response) {

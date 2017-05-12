@@ -77,7 +77,7 @@
                         },
                         controller: function ($scope, reportView) {
                             $scope.reportView = reportView;
-                            $scope.columns = reportView.columns;
+                            $scope.columns = _.keys(reportView.columns);
                             $scope.reports = reportView.reports;
 
                             $scope.itemsPerPage = [
