@@ -124,6 +124,32 @@
             {key: 'lowerCase', label: 'Lower Case'},
             {key: 'upperCase', label: 'Upper Case'}
         ])
-        .constant('REPORT_VIEW_INTERNAL_FIELD_VARIABLE', ['__filename', '__email_subject', '__email_body', '__email_date_time', '__date'])
+        .constant('REPORT_VIEW_INTERNAL_FIELD_VARIABLE', [
+            {
+                key: '__filename',
+                label: '__filename',
+                original: '__filename'
+            },
+            {
+                key: '__email_subject',
+                label: '__email_subject',
+                original: '__email_subject'
+            },
+            {
+                key: '__email_body',
+                label: '__email_body',
+                original: '__email_body'
+            },
+            {
+                key: '__email_date_time',
+                label: '__email_date_time',
+                original: '__email_date_time'
+            },
+            {
+                key: '__date',
+                label: '__date',
+                original: '__date'
+            }
+        ])
     ;
 })();

@@ -5,7 +5,7 @@
         .directive('filterConnect', filterConnect)
     ;
 
-    function filterConnect($compile, _, filterFilter, FIELD_TYPES, DATE_FORMAT_TYPES, COMPARISON_TYPES_FILTER_CONNECT_NUMBER, COMPARISON_TYPES_FILTER_CONNECT_TEXT) {
+    function filterConnect($compile, _, connectedDataSourceService, FIELD_TYPES, DATE_FORMAT_TYPES, COMPARISON_TYPES_FILTER_CONNECT_NUMBER, COMPARISON_TYPES_FILTER_CONNECT_TEXT) {
         'use strict';
 
         return {
@@ -24,13 +24,7 @@
                     scope.fieldTypes = FIELD_TYPES;
                     scope.dateFormatTypes = DATE_FORMAT_TYPES;
 
-                    scope.fieldNames = _.isArray(scope.mapFields) ? scope.mapFields : _.union(_.values(scope.mapFields));
-
-                    scope.$watch(function () {
-                        return scope.mapFields;
-                    }, function () {
-                        scope.fieldNames = _.isArray(scope.mapFields) ? scope.mapFields : _.union(_.values(scope.mapFields));
-                    }, true);
+                    scope.dataSourceFields = connectedDataSourceService.inputFormatDataSourceField(scope.dataSourceFields);
 
                     scope.datePickerOpts = {
                         maxDate: moment().endOf('day'),
@@ -48,21 +42,23 @@
                     scope.removeFilter = removeFilter;
                     scope.getComparisonTypes = getComparisonTypes;
                     scope.selectType = selectType;
-                    scope.getFieldNames = getFieldNames;
                     scope.selectedComparison = selectedComparison;
                     scope.addCompareValue = addCompareValue;
                     scope.onSelectFilterType = onSelectFilterType;
                     scope.onSelectFieldName = onSelectFieldName;
-                    scope.filterDataSourceFields = filterDataSourceFields;
                     scope.showSelectType = showSelectType;
                     
                     function showSelectType(filter) {
-                        if(!!scope.mapFields[filter.field]) {
-                            if(scope.dimensionsMetrics[scope.mapFields[filter.field]] == 'date' || scope.dimensionsMetrics[scope.mapFields[filter.field]] == 'datetime') {
+                        var item = _.find(scope.dataSourceFields, function (item) {
+                            return item.key == filter.field
+                        });
+
+                        if(!!item && !!scope.mapFields[item.original]) {
+                            if(scope.dimensionsMetrics[scope.mapFields[item.original]] == 'date' || scope.dimensionsMetrics[scope.mapFields[item.original]] == 'datetime') {
                                 filter.type = 'date'
                             }
 
-                            else if(scope.dimensionsMetrics[scope.mapFields[filter.field]] == 'number' || scope.dimensionsMetrics[scope.mapFields[filter.field]] == 'decimal') {
+                            else if(scope.dimensionsMetrics[scope.mapFields[item.original]] == 'number' || scope.dimensionsMetrics[scope.mapFields[item.original]] == 'decimal') {
                                 filter.type = 'number'
                             }
 
@@ -75,27 +71,6 @@
 
                         return true
                     }
-
-                    scope.$watch(function () {
-                        return scope.mapFields;
-                    }, function () {
-                        filterDataSourceFields();
-                    }, true);
-
-                    function filterDataSourceFields() {
-                        var dateTimeTypeMappedFields = [];
-                        for (var proper in scope.mapFields) {
-                            if (scope.dimensionsMetrics[scope.mapFields[proper]] == 'date' || scope.dimensionsMetrics[scope.mapFields[proper]] == 'datetime') {
-                                dateTimeTypeMappedFields.push(proper);
-                            }
-                        }
-
-                        return _.filter(scope.dataSourceFields, function (item) {
-                            return (_.contains(dateTimeTypeMappedFields, item) == false);
-                        });
-                    }
-
-                    filterDataSourceFields();
 
                     function onSelectFilterType(filter) {
                         if ('comparison' in filter) {
@@ -145,25 +120,6 @@
                         return query;
                     }
 
-                    function getFieldNames(itemField) {
-                        return scope.fieldNames;
-                        // return _.filter(scope.fieldNames, function (fileName) {
-                        //     if(itemField == fileName) {
-                        //         return true;
-                        //     }
-                        //
-                        //     for (var index in scope.filters) {
-                        //         var filter = scope.filters[index];
-                        //
-                        //         if(filter.field == fileName) {
-                        //             return false
-                        //         }
-                        //     }
-                        //
-                        //     return true;
-                        // })
-                    }
-
                     function getComparisonTypes(type) {
                         if (type.type == 'text') {
                             return COMPARISON_TYPES_FILTER_CONNECT_TEXT;
@@ -175,24 +131,6 @@
 
                         return []
                     }
-
-                    // function selectField(field, filter) {
-                    //     setTimeout(function () {
-                    //         filter.comparison = null;
-                    //
-                    //         if (scope.dimensionsMetrics[field] == 'date' || scope.dimensionsMetrics[field] == 'datetime') {
-                    //             filter.type = 'date'
-                    //         }
-                    //
-                    //         if (scope.dimensionsMetrics[field] == 'number' || scope.dimensionsMetrics[field] == 'decimal') {
-                    //             filter.type = 'number'
-                    //         }
-                    //
-                    //         if (scope.dimensionsMetrics[field] == 'text' || scope.dimensionsMetrics[field] == 'largeText') {
-                    //             filter.type = 'text'
-                    //         }
-                    //     }, 0);
-                    // }
 
                     function selectType(type, filter) {
                         filter.comparison = null;

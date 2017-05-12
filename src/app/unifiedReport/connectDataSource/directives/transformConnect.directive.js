@@ -5,7 +5,7 @@
         .directive('transformConnect', transformConnect)
     ;
 
-    function transformConnect($compile, $timeout, AddCalculatedField, _, CONVERT_CASE_TYPES, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES){
+    function transformConnect($compile, $timeout, AddCalculatedField, _, connectedDataSourceService, CONVERT_CASE_TYPES, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES){
         'use strict';
 
         return {
@@ -26,7 +26,15 @@
                 var content, directive;
                 content = element.contents().remove();
                 return function (scope, element, attrs){
-                    const CALCULATED_VALUE = '$$CALCULATED_VALUE$$';
+                    const CALCULATED_VALUE = {
+                        key: '$$CALCULATED_VALUE$$',
+                        label: 'Calculated Value'
+                    };
+
+                    scope.dataSourceFields = connectedDataSourceService.inputFormatDataSourceField(scope.dataSourceFields);
+                    scope.totalDimensionsMetrics = connectedDataSourceService.inputFormatFieldDataSet(scope.totalDimensionsMetrics);
+                    scope.temporaryFieldsFormat = connectedDataSourceService.inputFormatTemporaryFields(scope.temporaryFields);
+
                     scope.allFiledFormatTypes = CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD;
                     scope.allFiledFormatTypeKeys = CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY;
                     scope.dateFormatTypes = DATE_FORMAT_TYPES;
@@ -34,14 +42,13 @@
                     scope.fieldForExpression = [];
                     scope.fieldForExpressionInCalculated = [];
                     scope.positionsForReplaceText = POSITIONS_FOR_REPLACE_TEXT;
-                    scope.dataSourceFieldsCopy = angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms));
+                    scope.dataSourceFieldsCopy = angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform());
                     scope.reorderDefaultValueAllowed = false;
 
                     scope.separatorType = [
                         {key: ',', label: 'Comma'},
                         {key: 'none', label: 'None'}
                     ];
-
 
                     scope.conditionComparators = COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE;
 
@@ -56,14 +63,27 @@
                         singleDatePicker: true
                     };
 
-                    scope.fieldNames = _.isArray(scope.mapFields) ? scope.mapFields : _.union(_.values(scope.mapFields));
+                    scope.fieldNames = connectedDataSourceService.inputFormatFieldDataSet(_.isArray(scope.mapFields) ? scope.mapFields : _.union(_.values(scope.mapFields)));
+
+                    scope.totalFields = {
+                        dimensionsMetricsForDefaultValues: [],
+                        dataSourceFieldsAllFieldTransform: [],
+                        dataSourceFieldsAllFieldTransformAndFieldVariable: [],
+                        totalDimensionsMetricsAndTemporaryFields: angular.copy(scope.totalDimensionsMetrics).concat(scope.temporaryFieldsFormat),
+                        totalFieldForGroupBy: _getFieldForGroupBy(scope.transforms),
+                        totalFieldForTypeDate: [],
+                        totalFieldForTypeNumber: [],
+                        totalDimensionsMetricsForAddField: []
+                    };
 
                     scope.$watch(function (){
                         return scope.mapFields;
                     }, function (){
-                        scope.fieldNames = _.isArray(scope.mapFields) ? scope.mapFields : _.union(_.values(scope.mapFields));
+                        scope.fieldNames = connectedDataSourceService.inputFormatFieldDataSet(_.isArray(scope.mapFields) ? scope.mapFields : _.union(_.values(scope.mapFields)));
 
                         _updateTransform();
+                        _getDimensionsMetricsForDefaultValues();
+                        _removeFieldInTransform();
                     }, true);
 
                     scope.$watch(function (){
@@ -71,6 +91,20 @@
                     }, function (){
                         selectTypeAddCalculatedField();
                         _updateTransform();
+
+                        _updateTotalField();
+                        _removeFieldInTransform();
+                    }, true);
+
+                    scope.$watch(function (){
+                        return scope.temporaryFields
+                    }, function (){
+                        scope.temporaryFieldsFormat = connectedDataSourceService.inputFormatTemporaryFields(scope.temporaryFields);
+
+                        scope.totalFields.totalDimensionsMetricsAndTemporaryFields = angular.copy(scope.totalDimensionsMetrics).concat(scope.temporaryFieldsFormat);
+
+                        _updateTotalField();
+                        _removeFieldInTransform();
                     }, true);
 
                     scope.sortableOptions = {
@@ -110,26 +144,18 @@
                     scope.removeAddValue = removeAddValue;
                     scope.addComparisonPercent = addComparisonPercent;
                     scope.notInMapField = notInMapField;
+                    scope.notInMapFieldAndShowFieldCurrent = notInMapFieldAndShowFieldCurrent;
                     scope.mapDataSourceField = mapDataSourceField;
-                    scope.filterFieldByType = filterFieldByType;
                     scope.filterFieldByText = filterFieldByText;
                     scope.selectTransformType = selectTransformType;
-                    scope.filerFieldNamesForComparisonPercent = filerFieldNamesForComparisonPercent;
                     scope.getFieldNames = getFieldNames;
-                    scope.getDimensionsMetricsForComparison = getDimensionsMetricsForComparison;
-                    scope.getDimensionsMetricsForAddField = getDimensionsMetricsForAddField;
-                    scope.getDimensionsMetricsForTextAddField = getDimensionsMetricsForTextAddField;
                     scope.getDimensionsMetricsForNormalizeText = getDimensionsMetricsForNormalizeText;
                     scope.getDimensionsMetricsForConvertCase = getDimensionsMetricsForConvertCase;
-                    scope.getDimensionsMetricsForTextAddReplace = getDimensionsMetricsForTextAddReplace;
-                    scope.getDimensionsMetricsForTextAddReplace = getDimensionsMetricsForTextAddReplace;
                     scope.getDimensionsMetricsForNumberAddField = getDimensionsMetricsForNumberAddField;
-                    scope.getTotalDimensionsMetricsForDefaultValues = getTotalDimensionsMetricsForDefaultValues;
                     scope.getFiledFormatTypes = getFiledFormatTypes;
                     scope.filterFieldNameForSortBy = filterFieldNameForSortBy;
                     scope.addSpaceBeforeAndAfterOperator = addSpaceBeforeAndAfterOperator;
                     scope.selectTypeAddField = selectTypeAddField;
-                    scope.getFieldForGroupBy = getFieldForGroupBy;
                     scope.removeAutoSpaceAfterField = removeAutoSpaceAfterField;
                     scope.formatExpressionToHighlight = formatExpressionToHighlight;
                     scope.addExtractPattern = addExtractPattern;
@@ -149,7 +175,6 @@
                     scope.filterNumberFields = filterNumberFields;
                     scope.selectCustomFormatDate = selectCustomFormatDate;
                     scope.getTransformName = getTransformName;
-                    scope.filterFieldByTextAndDate = filterFieldByTextAndDate;
                     scope.selectDataSet = selectDataSet;
                     scope.filterDataSet = filterDataSet;
                     scope.filterMapFieldLeftSide = filterMapFieldLeftSide;
@@ -167,10 +192,71 @@
                     scope.checkOverride = checkOverride;
                     scope.selectFieldNormalizeAndConvert = selectFieldNormalizeAndConvert;
                     scope.disabledOverride = disabledOverride;
-                    scope.getFieldsForLeftSide = getFieldsForLeftSide;
                     scope.clickUseExternalDate = clickUseExternalDate;
                     scope.addFromFormat = addFromFormat;
-                    
+                    scope.filterFieldByType = filterFieldByType;
+                    scope.filterTargetFieldForExtractPattern = filterTargetFieldForExtractPattern;
+                    scope.showFieldCurrentAndNotShowExist = showFieldCurrentAndNotShowExist;
+                    scope.notShowCurrentField = notShowCurrentField;
+                    scope.notShowFieldExistInTransforms = notShowFieldExistInTransforms;
+                    scope.mapDataSourceFieldForMapFieldRightSide = mapDataSourceFieldForMapFieldRightSide;
+                    scope.filterFieldByTextAndNumber = filterFieldByTextAndNumber;
+                    scope.selectMapFieldLeftSideSubsetGroup = selectMapFieldLeftSideSubsetGroup;
+
+                    function selectMapFieldLeftSideSubsetGroup(mapField) {
+                        mapField.rightSide = null;
+                    }
+
+                    function mapDataSourceFieldForMapFieldRightSide(mapField) {
+                        return function (field) {
+                            if(mapDataSourceField(field.original)) {
+                                if(!scope.dimensionsMetrics[mapField.leftSide]) {
+                                    return true
+                                }
+
+                                return scope.dimensionsMetrics[mapField.leftSide] == scope.dimensionsMetrics[scope.mapFields[field.original]];
+                            }
+
+                            return false;
+                        }
+                    }
+
+                    function notShowCurrentField(currentField) {
+                        return function (field) {
+                            if(!!field && currentField == field.key) {
+                                return false
+                            }
+
+                            return true
+                        }
+                    }
+
+                    function showFieldCurrentAndNotShowExist(currentField) {
+                        return function (field) {
+                            if(field.key == currentField) {
+                                return true
+                            }
+
+                            return filterFieldInTransformReplaceText(field);
+                        }
+                    }
+
+                    function filterFieldByType(transform){
+                        return function (field){
+                            if(field.key == transform.field) {
+                                return true
+                            }
+
+                            for(var index in scope.transforms) {
+                                if(field.key == scope.transforms[index].field) {
+                                    return false
+                                }
+                            }
+
+                            return true
+                        };
+                    }
+
                     function addFromFormat(from) {
                         from.push({isCustomFormatDateFrom: false, format: null})
                     }
@@ -181,17 +267,21 @@
                         }, 0, true)
                     }
 
-                    function getFieldsForLeftSide() {
-                        return angular.copy(scope.totalDimensionsMetrics).concat(scope.temporaryFields)
-                    }
-
                     function disabledOverride(field) {
+                        var item = _.find(scope.totalFields.dataSourceFieldsAllFieldTransform, function (item) {
+                            return !!item && item.key == field
+                        });
+
+                        if(!item) {
+                            return true
+                        }
+
                         for(var index in scope.transforms) {
                             var transform = scope.transforms[index];
 
                             if (transform.type == 'convertCase' || transform.type == 'normalizeText') {
                                 var findField = _.findIndex(transform.fields, function (transformField) {
-                                    return transformField.targetField == field && !transformField.isOverride
+                                    return transformField.targetField == item.key && !transformField.isOverride
                                 });
 
                                 if(findField > -1) {
@@ -200,15 +290,21 @@
                             }
                         }
 
-                        return !mapDataSourceField(field)
+                        return !mapDataSourceField(item.original)
                     }
 
                     function selectFieldNormalizeAndConvert(field) {
-                        if(_.keys(scope.mapFields).indexOf(field) == -1) {
-                            field.isOverride = false
-                        } else {
-                            field.isOverride = true
-                        }
+                        setTimeout(function () {
+                            var item = _.find(scope.totalFields.dataSourceFieldsAllFieldTransform, function (item) {
+                                return !!item && item.key == field.field
+                            });
+
+                            if(!!item && _.keys(scope.mapFields).indexOf(item.original) == -1) {
+                                field.isOverride = false
+                            } else {
+                                field.isOverride = true
+                            }
+                        }, 0);
                     }
 
                     function checkOverride(field) {
@@ -217,7 +313,7 @@
 
                     function filterTarget(currentField) {
                         return function (field) {
-                            if(currentField == field) {
+                            if(currentField == field.key) {
                                 return true
                             }
 
@@ -226,7 +322,7 @@
 
                                 if (transform.type == 'convertCase' || transform.type == 'normalizeText' || transform.type == 'extractPattern' || transform.type == 'replaceText') {
                                     var findField = _.findIndex(transform.fields, function (transformField) {
-                                        return transformField.targetField == field && !transformField.isOverride
+                                        return transformField.targetField == field.key && !transformField.isOverride
                                     });
 
                                     if(findField > -1) {
@@ -240,7 +336,7 @@
                     }
 
                     function getFieldForLeftSideAugmentation(transform) {
-                        var fields = angular.copy(scope.dataSourceFields);
+                        var fields = scope.dataSourceFields;
 
                         for (var index in scope.transforms) {
                             var transformItem  = scope.transforms[index];
@@ -248,13 +344,13 @@
                             if(transformItem.type == 'augmentation' && transformItem.mapDataSet != transform.mapDataSet) {
                                 angular.forEach(transformItem.mapFields, function (mapField) {
                                     if(!!mapField.leftSide) {
-                                        fields.push(mapField.leftSide);
+                                        fields.push(connectedDataSourceService.findField(mapField.leftSide));
                                     }
                                 })
                             }
                         }
 
-                        return _.union(fields)
+                        return fields
                     }
 
                     function addMapFieldForSubsetGroup(mapFields) {
@@ -308,17 +404,33 @@
                     function filterMapFieldLeftSide(transform, mapFieldThis) {
                         var totalField = _getTotalFieldDataSetInAugmentation(transform.mapDataSet);
 
-                        if(scope.dimensionsMetrics[mapFieldThis.leftSide] != totalField[mapFieldThis.rightSide]) {
+                        if(!!scope.dimensionsMetrics[mapFieldThis.leftSide] && scope.dimensionsMetrics[mapFieldThis.leftSide] != totalField[mapFieldThis.rightSide]) {
                             mapFieldThis.rightSide = null;
                         }
 
                         return function (field){
+                            if(!!mapFieldThis.leftSide && mapFieldThis.leftSide == field.key) {
+                                return true
+                            }
+
+                            if(!notInMapField(field)) {
+                                return false
+                            }
+
                             for(var index in transform.mapFields) {
                                 var mapField = transform.mapFields[index];
 
-                                if(mapField.leftSide == field && mapFieldThis.leftSide != field) {
+                                if(mapField.leftSide == field.key && mapFieldThis.leftSide != field.key) {
                                     return false
                                 }
+                            }
+
+                            var item = _.find(_getAllFieldInTransform(), function (item) {
+                                return item.key == field.key
+                            });
+
+                            if(!!item) {
+                                return false
                             }
 
                             return true
@@ -327,6 +439,10 @@
 
                     function filterMapFieldRightSide(transform, mapFieldThis) {
                         return function (field){
+                            if(!scope.dimensionsMetrics[mapFieldThis.leftSide]) {
+                                return true
+                            }
+
                             for(var index in transform.mapFields) {
                                 var mapField = transform.mapFields[index];
 
@@ -428,20 +544,28 @@
                     }
 
                     function disabledOverrideValue(field) {
-                        return REPORT_VIEW_INTERNAL_FIELD_VARIABLE.indexOf(field) > -1
+                        var index = _.findIndex(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, function (variable) {
+                            return variable.key == field
+                        });
+
+                        return index > -1
                     }
 
                     function getDataSourceFieldsForReplace(checkBoxValue){
                         if (!(checkBoxValue)) {
-                            return _.uniq(angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms)).concat(REPORT_VIEW_INTERNAL_FIELD_VARIABLE));
+                            return scope.totalFields.dataSourceFieldsAllFieldTransformAndFieldVariable
                         } else  {
-                            return _.uniq(angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms)))
+                            return scope.totalFields.dataSourceFieldsAllFieldTransform
                         }
                     }
 
                     function resetFieldNameInReplaceTextTransform(checkBoxValue, replaceText){
                         if (checkBoxValue) {
-                            if (_.contains(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, replaceText.field)) {
+                            var index = _.findIndex(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, function (variable) {
+                                return variable.key == replaceText.field
+                            });
+
+                            if (index > -1) {
                                 replaceText.fieldValue =  undefined;
                             }
                         }
@@ -449,49 +573,73 @@
                         return replaceText;
                     }
 
-                    function disableOverride(field) {
-                        return _.contains(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, field);
+                    function disableOverride(replaceText) {
+                        var field = _.find(getDataSourceFieldsForReplace(replaceText.isOverride), function (item) {
+                            return item.key == replaceText.field
+                        });
+
+                        if(!field) {
+                            return false
+                        }
+
+                        var index = _.findIndex(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, function (variable) {
+                            return variable.key == field.key
+                        });
+
+                        if(!mapDataSourceField(field.original) || index > -1) {
+                            replaceText.isOverride = false;
+
+                            return true
+                        }
+
+                        return false;
                     }
 
                     function getDataSourceFieldsForExtractPattern() {
-                        return _.uniq(angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform(scope.transforms)).concat(REPORT_VIEW_INTERNAL_FIELD_VARIABLE));
+                        return scope.totalFields.dataSourceFieldsAllFieldTransformAndFieldVariable
                     }
 
-                    function filterFieldInTransformExtractPattern(field) {
-                        for (var index in scope.transforms) {
-                            var transform = scope.transforms[index];
+                    function filterFieldInTransformExtractPattern(currentField) {
+                        return function (field) {
+                            if(currentField == field.key) {
+                                return true
+                            }
 
-                            if(transform.type == 'addField' || transform.type == 'replaceText' || transform.type == 'extractPattern') {
-                                for(var indexField in transform.fields) {
-                                    var fieldTransform = transform.fields[indexField];
+                            for (var index in scope.transforms) {
+                                var transform = scope.transforms[index];
 
-                                    if(field == fieldTransform.field) {
-                                        return false
-                                    }
+                                if(transform.type == 'addField' || transform.type == 'replaceText' || transform.type == 'extractPattern') {
+                                    for(var indexField in transform.fields) {
+                                        var fieldTransform = transform.fields[indexField];
 
-                                    if(field == fieldTransform.targetField) {
-                                        return false
+                                        if(field.key == fieldTransform.field) {
+                                            return false
+                                        }
+
+                                        if(field.key == fieldTransform.targetField) {
+                                            return false
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        return true;
+                            return true;
+                        }
                     }
 
                     function filterFieldInTransformReplaceText(field) {
                         for (var index in scope.transforms) {
                             var transform = scope.transforms[index];
 
-                            if (transform.type == 'addField' || transform.type == 'replaceText' || transform.type == 'extractPattern') {
+                            if (transform.type == 'addField' || transform.type == 'replaceText' || transform.type == 'extractPattern' || transform.type == 'comparisonPercent' || transform.type == 'addCalculatedField') {
                                 for (var indexField in transform.fields) {
                                     var fieldTransform = transform.fields[indexField];
 
-                                    if(field == fieldTransform.field) {
+                                    if(field.key == fieldTransform.field) {
                                         return false
                                     }
 
-                                    if(field == fieldTransform.targetField) {
+                                    if(field.key == fieldTransform.targetField) {
                                         // TODO return false
                                     }
                                 }
@@ -502,7 +650,11 @@
                     }
 
                     function formatExpressionToHighlight(field){
-                        var expression = (!!field.field ? ('<strong>' + field.field + '</strong>' + ' = ') : '') + (angular.copy(field.expression) || angular.copy(field.value) || '');
+                        var name = _.find(scope.totalFields.totalDimensionsMetricsForAddField, function (item) {
+                            return item.key == field.field
+                        });
+
+                        var expression = (!!name ? ('<strong>' + name.label + '</strong>' + ' = ') : '') + (angular.copy(field.expression) || angular.copy(field.value) || '');
 
                         if (!expression) {
                             return null;
@@ -519,8 +671,9 @@
                         return expression;
                     }
 
-                    function getFieldForGroupBy(transforms){
+                    function _getFieldForGroupBy(transforms){
                         var fieldInConcat = [];
+
                         angular.forEach(transforms, function (transform){
                             switch (transform.type) {
                                 case 'addField':
@@ -530,7 +683,7 @@
                                         }
 
                                         if (!_.isNull(field.field)){
-                                            fieldInConcat.push(field.field)
+                                            fieldInConcat.push(connectedDataSourceService.findField(field.field))
                                         }
                                     });
                                     break;
@@ -546,7 +699,7 @@
                                         }
 
                                         if (!_.isNull(field.targetField) && !field.isOverride){
-                                            fieldInConcat.push(field.targetField)
+                                            fieldInConcat.push(connectedDataSourceService.findField(field.targetField))
                                         }
                                     });
                                     break;
@@ -557,14 +710,14 @@
                                         }
 
                                         if (!_.isNull(field.targetField) && !field.isOverride){
-                                            fieldInConcat.push(field.targetField)
+                                            fieldInConcat.push(connectedDataSourceService.findField(field.targetField))
                                         }
                                     });
                                     break;
                                 case 'augmentation':
                                     angular.forEach(transform.mapFields, function (mapField){
                                         if (!_.isNull(mapField.leftSide)){
-                                            fieldInConcat.push(mapField.leftSide)
+                                            fieldInConcat.push(connectedDataSourceService.findField(mapField.leftSide))
                                         }
                                     });
                                     break;
@@ -578,7 +731,7 @@
                             }
                         });
 
-                        return _.union(scope.dataSourceFields.concat(fieldInConcat));
+                        return scope.dataSourceFields.concat(fieldInConcat);
                     }
 
                     function removeAutoSpaceAfterField(field, id){
@@ -615,7 +768,7 @@
                         scope.fieldForExpression = [];
 
                         angular.forEach(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, function (field){
-                            scope.fieldForExpression.push({label: field});
+                            scope.fieldForExpression.push(field);
                         });
 
                         angular.forEach(scope.dataSourceFields, function (item){
@@ -623,7 +776,7 @@
                                 return;
                             }
 
-                            scope.fieldForExpression.push({label: item});
+                            scope.fieldForExpression.push(item);
                         });
 
                         if (!!field && !!calculatedField) {
@@ -635,48 +788,51 @@
                     function selectTypeAddCalculatedField(field, calculatedField){
                         scope.fieldForExpressionInCalculated = [];
 
-                        /*angular.forEach(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, function (field){
-                            scope.fieldForExpression.push({label: field});
-                        });*/
-
                         angular.forEach(scope.dataSourceFields, function (item){
                             if (!item || item == '') {
                                 return;
                             }
 
-                            scope.fieldForExpressionInCalculated.push({label: item});
+                            scope.fieldForExpressionInCalculated.push(item);
                         });
 
-
                         angular.forEach(scope.transforms, function (transform) {
-                            if(transform.type == 'subsetGroup' || transform.type == 'augmentation') {
-                                angular.forEach(transform.mapFields, function (mapField){
-                                    if (!_.isNull(mapField.leftSide)){
-                                        scope.fieldForExpressionInCalculated.push({label: mapField.leftSide})
+                            if(transform.type == 'addField' || transform.type == 'comparisonPercent') {
+                                angular.forEach(transform.fields, function (field){
+                                    if(!!field.field) {
+                                        scope.fieldForExpressionInCalculated.push(connectedDataSourceService.findField(field.field));
                                     }
                                 });
                             }
-                        });
 
-                        // if (scope.dimensionsMetrics[field] == 'number' || scope.dimensionsMetrics[field] == 'decimal') {
-                        //     angular.forEach(scope.dataSourceFields, function (item) {
-                        //         if (!item || item == '') {
-                        //             return;
-                        //         }
-                        //
-                        //         if (scope.dimensionsMetrics[item] == 'number' || scope.dimensionsMetrics[item] == 'decimal') {
-                        //             scope.fieldForExpression.push({label: item});
-                        //         }
-                        //     });
-                        // } else {
-                        //     angular.forEach(scope.dataSourceFields, function (item) {
-                        //         if (!item || item == '') {
-                        //             return;
-                        //         }
-                        //
-                        //         scope.fieldForExpression.push({label: item});
-                        //     });
-                        // }
+                            if(transform.type == 'subsetGroup' || transform.type == 'augmentation') {
+                                angular.forEach(transform.mapFields, function (mapField){
+                                    if (!_.isNull(mapField.leftSide)){
+                                        if(mapField.leftSide) {
+                                            scope.fieldForExpressionInCalculated.push(connectedDataSourceService.findField(mapField.leftSide))
+                                        }
+                                    }
+                                });
+                            }
+
+                            if (transform.type == 'extractPattern') {
+                                angular.forEach(transform.fields, function (field) {
+                                    var item = field.isOverride ? field.field : field.targetField;
+
+                                    if(!!item) {
+                                        scope.fieldForExpressionInCalculated.push(connectedDataSourceService.findField(item));
+                                    }
+                                })
+                            }
+
+                            if (transform.type == 'addCalculatedField') {
+                                angular.forEach(transform.fields, function (field) {
+                                    if(!!field.field) {
+                                        scope.fieldForExpressionInCalculated.push(connectedDataSourceService.findField(field.field));
+                                    }
+                                })
+                            }
+                        });
 
                         if (!!field && !!calculatedField) {
                             calculatedField.expression = null
@@ -694,7 +850,7 @@
                                 return true
                             }
 
-                            if (item.names.indexOf(field) > -1) {
+                            if (item.names.indexOf(field.key) > -1) {
                                 return true
                             }
 
@@ -702,7 +858,7 @@
                                 return field.direction != item.direction;
                             });
 
-                            if (findItem.names.indexOf(field) == -1) {
+                            if (findItem.names.indexOf(field.key) == -1) {
                                 return true
                             }
 
@@ -736,27 +892,21 @@
                         return types;
                     }
 
-                    function getDimensionsMetricsForAddField(fieldCurrent, transforms){
-                        var fields = _getAllFieldInTransform(transforms);
-
+                    function _getDimensionsMetricsForAddField(){
                         return _.filter(scope.totalDimensionsMetrics, function (dm){
-                            if (dm == fieldCurrent) {
-                                return true;
-                            }
-
-                            for (var index in transforms) {
-                                var transform = transforms[index];
+                            for (var index in scope.transforms) {
+                                var transform = scope.transforms[index];
 
                                 if(transform.type == 'extractPattern' || transform.type == 'replaceText') {
                                     for(var indexField in transform.fields) {
                                         var field = transform.fields[indexField];
 
                                         if(field.isOverride) {
-                                            if(dm == field.field) {
+                                            if(dm.key == field.field) {
                                                 return false
                                             }
                                         } else {
-                                            if(dm == field.targetField) {
+                                            if(dm.key == field.targetField) {
                                                 return false
                                             }
                                         }
@@ -764,32 +914,18 @@
                                 }
                             }
 
-                            return fields.indexOf(dm) == -1;
-                        });
-                    }
-
-                    function getDimensionsMetricsForTextAddField(fieldCurrent, transforms){
-                        var fields = _getAllFieldInTransform(transforms);
-
-                        return _.filter(scope.totalDimensionsMetrics, function (dm){
-                            if (dm == fieldCurrent) {
-                                return true;
-                            }
-
-                            return fields.indexOf(dm) == -1 && (scope.dimensionsMetrics[dm] == 'text' || scope.dimensionsMetrics[dm] == 'largeText');
+                            return true
                         });
                     }
 
                     function getDimensionsMetricsForNormalizeText(fieldCurrent, transform){
-                        var fields = _.union(_getAllFieldInTransform(scope.transforms).concat(scope.dataSourceFields));
-
-                        return _.filter(fields, function (dm){
-                            if (dm == fieldCurrent) {
+                        return _.filter(scope.totalFields.dataSourceFieldsAllFieldTransform, function (dm){
+                            if (!!dm && dm.key == fieldCurrent) {
                                 return true;
                             }
 
                             for (var index in transform.fields) {
-                                if (transform.fields[index].field == dm || transform.fields[index].targetField == dm) {
+                                if (!!dm && (transform.fields[index].field == dm.key || transform.fields[index].targetField == dm.key)) {
                                     return false
                                 }
                             }
@@ -799,15 +935,13 @@
                     }
 
                     function getDimensionsMetricsForConvertCase(fieldCurrent, transform){
-                        var fields = _.union(_getAllFieldInTransform(scope.transforms).concat(scope.dataSourceFields));
-
-                        return _.filter(fields, function (dm){
-                            if (dm == fieldCurrent) {
+                        return _.filter(scope.totalFields.dataSourceFieldsAllFieldTransform, function (dm){
+                            if (!!dm && dm.key == fieldCurrent) {
                                 return true;
                             }
 
                             for (var index in transform.fields) {
-                                if (transform.fields[index].field == dm || transform.fields[index].targetField == dm) {
+                                if (!!dm && (transform.fields[index].field == dm.key || transform.fields[index].targetField == dm.key)) {
                                     return false
                                 }
                             }
@@ -816,31 +950,9 @@
                         });
                     }
 
-                    function getDimensionsMetricsForTextAddReplace(fieldCurrent, transformFields){
-                        return _.filter(scope.totalDimensionsMetrics, function (dm){
-                            if (dm == fieldCurrent) {
-                                return true;
-                            }
-
-                            for (var index in transformFields) {
-                                if (transformFields[index].field == dm) {
-                                    return false
-                                }
-                            }
-
-                            return scope.dimensionsMetrics[dm] == 'text' || scope.dimensionsMetrics[dm] == 'largeText';
-                        });
-                    }
-
-                    function getTotalDimensionsMetricsForDefaultValues() {
-                        //var fieldsOfTransform = _getAllFieldInTransform(scope.transforms);
-                        //
-                        //var fields =  _.filter(scope.totalDimensionsMetrics, function (dm){
-                        //    return (fieldsOfTransform.indexOf(dm) > -1 || !notInMapField(dm)) && (scope.dimensionsMetrics[dm] == 'number' || scope.dimensionsMetrics[dm] == 'decimal');
-                        //});
-
-                        var fields = angular.copy(scope.dataSourceFields);
-                        fields.unshift(CALCULATED_VALUE);
+                    function _getDimensionsMetricsForDefaultValues() {
+                        scope.totalFields.dimensionsMetricsForDefaultValues = angular.copy(scope.dataSourceFields);
+                        scope.totalFields.dimensionsMetricsForDefaultValues.unshift(CALCULATED_VALUE);
 
                         for (var index in scope.transforms) {
                             var transformItem  = scope.transforms[index];
@@ -848,91 +960,63 @@
                             if(transformItem.type == 'subsetGroup') {
                                 angular.forEach(transformItem.mapFields, function (mapField) {
                                     if(!!mapField.leftSide) {
-                                        fields.push(mapField.leftSide);
+                                        scope.totalFields.dimensionsMetricsForDefaultValues.push(connectedDataSourceService.findField(mapField.leftSide));
                                     }
                                 })
                             }
-                        }
 
-                        return fields;
+                            if(transformItem.type == 'comparisonPercent') {
+                                angular.forEach(transformItem.fields, function (field) {
+                                    scope.totalFields.dimensionsMetricsForDefaultValues.push(connectedDataSourceService.findField(field.field));
+                                })
+                            }
+
+                            if(transformItem.type == 'augmentation') {
+                                angular.forEach(transformItem.mapFields, function (mapField) {
+                                    if(!!mapField.leftSide) {
+                                        scope.totalFields.dimensionsMetricsForDefaultValues.push(connectedDataSourceService.findField(mapField.leftSide));
+                                    }
+                                })
+                            }
+
+                            if (transformItem.type == 'extractPattern') {
+                                angular.forEach(transformItem.fields, function (field) {
+                                    var item = field.isOverride ? field.field : field.targetField;
+
+                                    scope.totalFields.dimensionsMetricsForDefaultValues.push(connectedDataSourceService.findField(item));
+                                })
+                            }
+
+                            if (transformItem.type == 'addCalculatedField') {
+                                angular.forEach(transformItem.fields, function (field) {
+                                    scope.totalFields.dimensionsMetricsForDefaultValues.push(connectedDataSourceService.findField(field.field));
+                                })
+                            }
+                        }
                     }
 
                     function getDimensionsMetricsForNumberAddField(fieldCurrent, transforms){
                         var fields = _getAllFieldInTransform(transforms);
 
                         return _.filter(scope.totalDimensionsMetrics, function (dm){
-                            if (dm == fieldCurrent) {
+                            if (!!fieldCurrent && dm.key == fieldCurrent) {
                                 return true;
                             }
 
-                            return fields.indexOf(dm) == -1 && (scope.dimensionsMetrics[dm] == 'number' || scope.dimensionsMetrics[dm] == 'decimal');
-                        });
-                    }
-
-                    function getDimensionsMetricsForComparison(fieldCurrent, transforms){
-                        var fields = _getAllFieldInTransform(transforms);
-
-                        return _.filter(scope.totalDimensionsMetrics, function (dm){
-                            if (dm == fieldCurrent) {
-                                return true;
-                            }
-
-                            if (fields.indexOf(dm) == -1) {
-                                if (scope.dimensionsMetrics[dm] == 'number' || scope.dimensionsMetrics[dm] == 'decimal') {
-                                    return true
-                                }
-                            }
-
-                            return false;
-                        });
-                    }
-
-                    function getFieldNames(itemField, transformType){
-                        var fields = _.filter(scope.fieldNames, function (fieldName){
-                            if (itemField == fieldName) {
-                                return true;
-                            }
-
-                            for (var index in scope.transforms) {
-                                var filter = scope.transforms[index];
-
-                                if (filter.field == fieldName) {
-                                    return false
-                                }
-                            }
-
-                            return true;
-                        });
-
-                        if(transformType == 'number') {
-                            angular.forEach(scope.transforms, function (transform){
-                                if (transform.type == 'addField' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent') {
-                                    angular.forEach(transform.fields, function (field){
-                                        if (!!field.field && transform.type != 'addField') {
-                                            fields.push(field.field);
-                                        } else if(scope.dimensionsMetrics[field.field] == 'number' || scope.dimensionsMetrics[field.field] == 'decimal') {
-                                            fields.push(field.field);
-                                        }
-                                    })
-                                }
+                            var index = _.findIndex(fields, function (field) {
+                                return !!field && dm.key == field.key
                             });
+
+                            return index == -1 && (scope.dimensionsMetrics[dm.original] == 'number' || scope.dimensionsMetrics[dm.original] == 'decimal');
+                        });
+                    }
+
+                    function getFieldNames(transformType){
+                        if(transformType == 'number') {
+                            return scope.totalFields.totalFieldForTypeNumber
                         }
 
-                        return _.uniq(fields)
-                    }
-
-                    function filerFieldNamesForComparisonPercent(){
-                        var fields = [];
-
-                        // angular.forEach(scope.fieldNames, function (field) {
-                        angular.forEach(scope.dataSourceFields, function (field){
-                            fields.push(field);
-                            // if (scope.dimensionsMetrics[field] == 'number' || scope.dimensionsMetrics[field] == 'decimal') {
-                            //     fields.push(field);
-                            // }
-                        });
-
-                        return fields;
+                        return scope.totalFields.totalFieldForTypeDate
                     }
 
                     function selectTransformType(transform, type){
@@ -979,34 +1063,57 @@
                         }, 0);
                     }
 
-                    function filterFieldByType(transform){
-                        return function (field){
-                            if (transform.type == 'date' && (scope.dimensionsMetrics[field] == 'date' || scope.dimensionsMetrics[field] == 'datetime')) {
-                                return true;
-                            }
-
-                            if (transform.type == 'number' && (scope.dimensionsMetrics[field] == 'number' || scope.dimensionsMetrics[field] == 'decimal')) {
-                                return true;
-                            }
-
-                            return false
-                        };
-                    }
-
                     function filterFieldByText(field){
-                        return scope.dimensionsMetrics[scope.mapFields[field]] == 'text'
-                            || scope.dimensionsMetrics[scope.mapFields[field]] == 'largeText'
-                            || scope.dimensionsMetrics[field] == 'text'
-                            || scope.dimensionsMetrics[field] == 'largeText'
-                            || REPORT_VIEW_INTERNAL_FIELD_VARIABLE.indexOf(field) > -1;
+                        if(!field || !field.original) {
+                            return false
+                        }
+
+                        var indexVariable = _.findIndex(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, function (variable) {
+                            return variable.key == field.key
+                        });
+
+                        var indexTemp = _.findIndex(scope.temporaryFieldsFormat, function (temp) {
+                            return temp.key == field.key
+                        });
+
+                        return scope.dimensionsMetrics[scope.mapFields[field.original]] == 'text'
+                            || scope.dimensionsMetrics[scope.mapFields[field.original]] == 'largeText'
+                            || scope.dimensionsMetrics[field.original] == 'text'
+                            || scope.dimensionsMetrics[field.original] == 'largeText'
+                            || indexVariable > -1
+                            || indexTemp > -1;
                     }
 
-                    function filterFieldByTextAndDate(field){
-                        return scope.dimensionsMetrics[scope.mapFields[field]] == 'date'
-                            || scope.dimensionsMetrics[scope.mapFields[field]] == 'dataTime'
-                            || scope.dimensionsMetrics[field] == 'date'
-                            || scope.dimensionsMetrics[field] == 'datetime'
+                    function filterFieldByTextAndNumber(field){
+                        if(!field || !field.original) {
+                            return false
+                        }
+
+                        return scope.dimensionsMetrics[scope.mapFields[field.original]] == 'number'
+                            || scope.dimensionsMetrics[scope.mapFields[field.original]] == 'decimal'
+                            || scope.dimensionsMetrics[field.original] == 'number'
+                            || scope.dimensionsMetrics[field.original] == 'decimal'
                             || filterFieldByText(field);
+                    }
+
+                    // function filterFieldByTextAndDate(field){
+                    //     if(!field || !field.original) {
+                    //         return false
+                    //     }
+                    //
+                    //     return scope.dimensionsMetrics[scope.mapFields[field.original]] == 'date'
+                    //         || scope.dimensionsMetrics[scope.mapFields[field.original]] == 'dataTime'
+                    //         || scope.dimensionsMetrics[field.original] == 'date'
+                    //         || scope.dimensionsMetrics[field.original] == 'datetime'
+                    //         || filterFieldByText(field);
+                    // }
+
+                    function notShowFieldExistInTransforms(field) {
+                        var item = _.find(_getAllFieldInTransform(), function (item) {
+                            return !!item && !!field && item.key == field.key
+                        });
+
+                        return !item
                     }
 
                     function notInMapField(field){
@@ -1015,14 +1122,42 @@
 
                             if(transform.type == 'augmentation' || transform.type == 'subsetGroup') {
                                 for(var indexMap in transform.mapFields) {
-                                    if(transform.mapFields[indexMap].leftSide == field) {
+                                    if(transform.mapFields[indexMap].leftSide == field.key) {
                                         return false
                                     }
                                 }
                             }
                         }
 
-                        return _.values(scope.mapFields).indexOf(field) == -1;
+                        return _.values(scope.mapFields).indexOf(field.original) == -1;
+                    }
+
+                    function filterTargetFieldForExtractPattern(fieldCurrent) {
+                        return function (field) {
+                            if(fieldCurrent == field.key) {
+                                return true;
+                            }
+
+                            var index = _.findIndex(scope.temporaryFieldsFormat, function (item) {
+                                return item.key == field.key
+                            });
+
+                            if(index > -1) {
+                                return true
+                            }
+
+                            return notInMapField(field)
+                        }
+                    }
+
+                    function notInMapFieldAndShowFieldCurrent(fieldCurrent){
+                        return function (field) {
+                            if(fieldCurrent == field.key) {
+                                return true;
+                            }
+
+                            return notInMapField(field)
+                        }
                     }
 
                     function mapDataSourceField(field){
@@ -1030,16 +1165,12 @@
                     }
 
                     function filterTextFields(field){
-                        return scope.dimensionsMetrics[field] == 'text';
+                        return scope.dimensionsMetrics[field.original] == 'text';
                     }
 
                     function filterNumberFields(field){
-                        return ((scope.dimensionsMetrics[field] == 'number') || (scope.dimensionsMetrics[field] == 'decimal'));
+                        return ((scope.dimensionsMetrics[field.original] == 'number') || (scope.dimensionsMetrics[field.original] == 'decimal'));
                     }
-
-                    // function textTypeFieldsAndNotInMapField(field) {
-                    //     return _.values(scope.mapFields).indexOf(field) == -1;
-                    // }
 
                     function removeTransform(index){
                         scope.transforms.splice(index, 1);
@@ -1158,13 +1289,14 @@
                         fields.splice(index, 1);
                     }
 
-                    function _getAllFieldInTransform(transforms){
+                    function _getAllFieldInTransform(){
                         var fields = [];
-                        angular.forEach(transforms, function (transform){
+
+                        angular.forEach(scope.transforms, function (transform){
                             if (transform.type == 'addField' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent' || transform.type == 'addConcatenatedField') {
                                 angular.forEach(transform.fields, function (field){
                                     if (!!field.field) {
-                                        fields.push(field.field);
+                                        fields.push(connectedDataSourceService.findField(field.field));
                                     }
                                 })
                             }
@@ -1172,7 +1304,7 @@
                             if (transform.type == 'convertCase' || transform.type == 'normalizeText') {
                                 angular.forEach(transform.fields, function (field){
                                     if (!field.isOverride) {
-                                        fields.push(field.targetField);
+                                        fields.push(connectedDataSourceService.findField(field.targetField));
                                     }
                                 })
                             }
@@ -1197,12 +1329,16 @@
                         angular.forEach(scope.transforms, function (transform) {
                             if (transform.type == 'convertCase' || transform.type == 'normalizeText') {
                                 angular.forEach(transform.fields, function (field){
-                                    if(!mapDataSourceField(field.field)) {
+                                    var item = _.find(scope.totalFields.dataSourceFieldsAllFieldTransform, function (item) {
+                                        return !!item && item.key == field.field
+                                    });
+
+                                    if(!!item && !mapDataSourceField(item.original)) {
                                         for(var index in scope.transforms) {
                                             var transformItem = scope.transforms[index];
 
                                             for(var indexField in transformItem.fields) {
-                                                if(transformItem.fields[indexField].targetField == field.field && !!field.field) {
+                                                if(transformItem.fields[indexField].targetField == item.key && !!field.field) {
                                                     return;
                                                 }
                                             }
@@ -1213,6 +1349,238 @@
                                 })
                             }
                         })
+                    }
+
+                    function _getFieldForTypeNumber() {
+                        var fields = _.filter(scope.fieldNames, function (fieldName){
+                            if(scope.dimensionsMetrics[fieldName.original] != 'number' && scope.dimensionsMetrics[fieldName.original] != 'decimal') {
+                                return false
+                            }
+
+                            return true;
+                        });
+
+                        angular.forEach(scope.transforms, function (transform){
+                            if (transform.type == 'addField' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent') {
+                                angular.forEach(transform.fields, function (field){
+                                    if (!!field.field && transform.type != 'addField') {
+                                        fields.push(connectedDataSourceService.findField(field.field));
+                                    } else if(scope.dimensionsMetrics[field.field] == 'number' || scope.dimensionsMetrics[field.field] == 'decimal') {
+                                        fields.push(connectedDataSourceService.findField(field.field));
+                                    }
+                                })
+                            }
+                        });
+
+                        return fields
+                    }
+
+                    function _getFieldForTypeDate() {
+                        var fields =  _.filter(scope.fieldNames, function (fieldName){
+                            if(scope.dimensionsMetrics[fieldName.original] != 'date' && scope.dimensionsMetrics[fieldName.original] != 'datetime') {
+                                return false
+                            }
+
+                            return true;
+                        });
+
+                        angular.forEach(scope.transforms, function (transform){
+                            if (transform.type == 'extractPattern') {
+                                angular.forEach(transform.fields, function (field) {
+                                    var item = field.isOverride ? field.field : field.targetField;
+
+                                    if(scope.dimensionsMetrics[item] == 'date' || scope.dimensionsMetrics[item] == 'datetime') {
+                                        fields.push(connectedDataSourceService.findField(item));
+                                    }
+                                })
+                            }
+                        });
+
+                        return fields
+                    }
+
+                    function _updateTotalField() {
+                        scope.totalFields.dataSourceFieldsAllFieldTransformAndFieldVariable = angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform()).concat(REPORT_VIEW_INTERNAL_FIELD_VARIABLE);
+                        scope.totalFields.dataSourceFieldsAllFieldTransform  = angular.copy(scope.dataSourceFields).concat(_getAllFieldInTransform());
+                        scope.totalFields.totalFieldForGroupBy = _getFieldForGroupBy(scope.transforms);
+
+                        scope.totalFields.totalFieldForTypeNumber = _getFieldForTypeNumber(scope.transforms);
+                        scope.totalFields.totalFieldForTypeDate = _getFieldForTypeDate(scope.transforms);
+                        scope.totalFields.totalDimensionsMetricsForAddField = _getDimensionsMetricsForAddField().concat(scope.temporaryFieldsFormat);
+
+                        _getDimensionsMetricsForDefaultValues();
+                    }
+
+                    function _removeFieldInTransform() {
+                        $timeout(function () {
+
+                            var transforms = angular.copy(scope.transforms);
+                            var allFieldAdd = [];
+
+                            // total field in targetField extractPattern
+                            angular.forEach(transforms, function (transform) {
+                                    angular.forEach(transform.fields, function (field) {
+                                        if(transform.type == 'extractPattern') {
+                                            allFieldAdd.push(field.targetField)
+                                        }
+
+                                        if(transform.type == 'addField' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent') {
+                                            allFieldAdd.push(field.field)
+                                        }
+                                    });
+                                }
+                            );
+
+                            angular.forEach(transforms, function (transform) {
+                                $timeout(function () {
+                                    if((transform.type == 'number' || transform.type == 'date') && !!transform.field) {
+                                        if(_.values(scope.mapFields).indexOf(transform.field) == -1 && allFieldAdd.indexOf(transform.field) == -1) {
+                                            var index = _.findIndex(scope.transforms, function (item) {
+                                                if(item.type == 'extractPattern') {
+                                                    for (var indexField in item.fields) {
+                                                        if(!item.fields[indexField].isOverride) {
+                                                            return item.fields[indexField].targetField == transform.field
+                                                        }
+                                                    }
+                                                }
+
+                                                return item.field == transform.field;
+                                            });
+
+                                            if(index > -1) {
+                                                scope.transforms.splice(index, 1)
+                                            }
+                                        }
+                                    }
+                                }, 0, true);
+                            });
+
+                            angular.forEach(scope.transforms, function (transform) {
+                                if(transform.type == 'groupBy') {
+                                    //var difference = _.difference(transform.fields, _.values($scope.connectDataSource.mapFields));
+                                    //
+                                    //if(difference.length > 0) {
+                                    //    angular.forEach(difference, function (field) {
+                                    //        if(transform.fields.indexOf(field) > -1) {
+                                    //            transform.fields.splice(transform.fields.indexOf(field), 1)
+                                    //        }
+                                    //    });
+                                    //}
+                                }
+
+                                // if(transform.type == 'sortBy') {
+                                //     angular.forEach(transform.fields, function (field) {
+                                //        var difference = _.difference(field.names, _.values($scope.connectDataSource.mapFields));
+                                //
+                                //        if(difference.length > 0) {
+                                //            angular.forEach(difference, function (item) {
+                                //                if(field.names.indexOf(item) > -1) {
+                                //                    field.names.splice(field.names.indexOf(item), 1)
+                                //                }
+                                //            });
+                                //        }
+                                //     });
+                                // }
+
+                                if(transform.type == 'extractPattern' || transform.type == 'replaceText') {
+                                    angular.forEach(transform.fields, function (transformField) {
+                                        if(!transformField.isOverride) {
+                                            var index = _.findIndex(scope.totalFields.totalDimensionsMetricsAndTemporaryFields, function (item) {
+                                                return item.key == transformField.targetField
+                                            });
+
+                                            if(index == -1) {
+                                                transformField.targetField = null
+                                            }
+                                        }
+                                    })
+                                }
+
+                                if(transform.type == 'replaceText') {
+                                    // angular.forEach(transform.fields, function (field) {
+                                    //     if(Object.keys($scope.connectDataSource.mapFields).indexOf(field.field) == -1
+                                    //         || ($scope.dimensionsMetrics[$scope.connectDataSource.mapFields[field.field]] != 'text'
+                                    //         && $scope.dimensionsMetrics[$scope.connectDataSource.mapFields[field.field]] != 'largeText')) {
+                                    //         $timeout(function () {
+                                    //             field.field = null
+                                    //         }, 0, true);
+                                    //     }
+                                    //
+                                    //     if(Object.keys($scope.connectDataSource.mapFields).indexOf(field.targetField) > -1) {
+                                    //         $timeout(function () {
+                                    //             field.targetField = null
+                                    //         }, 0, true);
+                                    //     }
+                                    // });
+                                }
+
+                                if(transform.type == 'comparisonPercent' || transform.type == 'addCalculatedField' || transform.type == 'addConcatenatedField') {
+                                    angular.forEach(transform.fields, function (field) {
+                                        if(_.values(scope.mapFields).indexOf(field.field) > -1) {
+                                            $timeout(function () {
+                                                field.field = null
+                                            }, 0, true);
+                                        }
+                                    });
+                                }
+
+                                if(transform.type == 'addCalculatedField') {
+                                    angular.forEach(transform.fields, function (field) {
+                                        angular.forEach(field.defaultValues, function (defaultValue) {
+                                            var index = _.findIndex(scope.totalFields.dimensionsMetricsForDefaultValues, function (item) {
+                                                return item.key == defaultValue.conditionField
+                                            });
+
+                                            if(index == -1) {
+                                                defaultValue.conditionField = null;
+                                            }
+                                        })
+                                    })
+                                }
+
+                                if(transform.type == 'addField') {
+                                    angular.forEach(transform.fields, function (field) {
+                                        var item = _.find(scope.totalFields.totalDimensionsMetricsForAddField, function (item) {
+                                            return item.key == field.field
+                                        });
+
+                                        if(!item || !notInMapField(item)) {
+                                            field.field = null
+                                        }
+                                    });
+                                }
+
+                                var allFields = _getAllFieldInTransform().concat(scope.dataSourceFields);
+
+                                if (transform.type == 'convertCase' || transform.type == 'normalizeText') {
+                                    angular.forEach(transform.fields, function (field) {
+                                        var indexTarget = _.findIndex(scope.transforms, function (transformItem) {
+                                            if(transformItem.type == 'convertCase' || transformItem.type == 'normalizeText') {
+                                                for(var index in transformItem.fields) {
+                                                    var fieldItem = transformItem.fields[index];
+
+                                                    if(!fieldItem.isOverride && fieldItem.targetField == field.field) {
+                                                        return true
+                                                    }
+                                                }
+                                            }
+
+                                            return false
+                                        });
+
+                                        var indexAllField = _.findIndex(allFields, function (item) {
+                                            return !!item && item.key == field.field
+                                        });
+
+                                        if(indexAllField == -1 && indexTarget == -1) {
+                                            setTimeout(function () {
+                                                field.field = null;
+                                            }, 0);
+                                        }
+                                    });
+                                }
+                            });
+                        }, 0, true)
                     }
 
                     directive || (directive = $compile(content));

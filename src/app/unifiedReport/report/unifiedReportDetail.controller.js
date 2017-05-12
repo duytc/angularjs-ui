@@ -197,7 +197,7 @@
         }
         
         function selectItemPerPages(itemPerPage) {
-            _getReportDetail(_toJsonReportView(reportView));
+            _getReportDetail(_toJsonReportView(reportView, itemPerPage));
         }
 
         function changePage(currentPage) {
@@ -396,7 +396,7 @@
             return true;
         }
 
-        function _toJsonReportView(reportView) {
+        function _toJsonReportView(reportView, itemPerPage) {
             var params = angular.copy(reportView);
 
             params.startDate = DateFormatter.getFormattedDate($scope.selected.date.startDate);
@@ -417,7 +417,7 @@
 
             params = angular.extend(params, {
                 searches: $scope.search,
-                limit: $scope.tableConfig.itemsPerPage,
+                limit: !!itemPerPage ? itemPerPage.key : $scope.tableConfig.itemsPerPage,
                 page: $scope.availableOptions.currentPage,
                 orderBy: (!!$scope.reverse ? 'desc': 'acs'),
                 sortField: $scope.sortBy,

@@ -14,6 +14,7 @@
         const ALERT_CODE_WRONG_TYPE_MAPPING = 1207;
         const ALERT_CODE_FILE_NOT_FOUND = 1208;
         const ALERT_CODE_NO_FILE_PREVIEW = 1209;
+        const ALERT_CODE_NO_DATE_FORMAT = 1210;
         const ALERT_CODE_UN_EXPECTED_ERROR = 2000;
 
         $scope.connectDataSource = connectDataSource;
@@ -174,6 +175,9 @@
 
                 case ALERT_CODE_NO_FILE_PREVIEW:
                     return 'cannot find any file in this data source for dry run';
+
+                case ALERT_CODE_NO_DATE_FORMAT:
+                    return 'FILTER ERROR: Invalid date format on field "' + detail.column +'".';
 
                 default:
                     return 'Unknown code (' + detail.code + ')';
