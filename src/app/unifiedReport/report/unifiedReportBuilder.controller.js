@@ -55,7 +55,7 @@
             multiView: false,
             subReportsIncluded: false,
             isShowDataSetName: false,
-            enableCustomDimensionMetric: true
+            enableCustomDimensionMetric: false
         };
 
         $scope.$watch(function () {
@@ -909,7 +909,7 @@
             $scope.reportBuilder.showInTotal = [];
             $scope.reportBuilder.subReportsIncluded = false;
             $scope.reportBuilder.isShowDataSetName = false;
-            $scope.reportBuilder.enableCustomDimensionMetric = true;
+            $scope.reportBuilder.enableCustomDimensionMetric = false;
         }
 
         /**
