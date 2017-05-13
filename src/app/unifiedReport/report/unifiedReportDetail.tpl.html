@@ -1,7 +1,7 @@
-<div id="form-date-range-selector" class="panel panel-default" ng-if="hideDaterange()">
+<div id="form-date-range-selector" class="panel panel-default" ng-if="hideDaterange() || reportView.enableCustomDimensionMetric">
     <div class="panel-body">
         <form name="reportSelectorForm" class="form-inline" role="form" ng-submit="generateReport(selected.date)" novalidate>
-            <div class="form-group">
+            <div class="form-group" ng-if="hideDaterange()">
                 <label for="inputDateRange">{{ 'DASHBOARD_MODULE.DATE_RANGE' | translate }}</label>
                 <div>
                     <div class="input-group">
@@ -10,6 +10,25 @@
                     </div>
                 </div>
             </div>
+
+            <div class="multi-select-class form-group" ng-if="reportView.enableCustomDimensionMetric">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label for="Dimensions" class="control-label">Dimensions</label>
+                        <div>
+                            <isteven-multi-select id="Dimensions" disable-property="disabled" helper-elements="all filter reset" input-model="dimensions" output-model="fieldsShow.dimensions" button-label="label" item-label="label" tick-property="ticked"></isteven-multi-select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="metrics" class="control-label">Metrics</label>
+                        <div>
+                            <isteven-multi-select id="metrics" input-model="metrics" output-model="fieldsShow.metrics" button-label="label" item-label="label" tick-property="ticked"></isteven-multi-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <button type="submit" class="btn btn-primary" ng-disabled="!enableSelectDaterange()">Run Report</button>
         </form>
     </div>
@@ -24,8 +43,8 @@
             <button class="btn btn-sm btn-primary" ng-click="refreshData()" type="button">Refresh</button>
             <button class="btn btn-sm btn-primary" ng-click="exportExcel()" type="button">Export Excel</button>
             <!--<export-excel ng-if="reports.length > 0 && hasResult" not-filter="true" data="reports" style="margin-right: 3px" fields="columnReportDetailForExportExcel" header="titleReportDetailForExportExcel" file-name="getExportExcelFileName()"></export-excel>-->
-            <button ng-disabled="hasSaveRepoerView" ng-click="saveReportView()" class="btn btn-sm btn-primary" type="button">Save as Report View</button>
             <button ui-sref="^.editBuilder(reportViewForEdit)" ng-disabled="formProcessing" class="btn btn-sm btn-primary" type="button">Edit Report View</button>
+            <button ng-if="!hasSaveRepoerView" ng-click="saveReportView()" class="btn btn-sm btn-primary" type="button">Save as Report View</button>
         </div>
 
         <div class="btn-group btnGrouped" dropdown>
@@ -33,8 +52,8 @@
             <ul class="dropdown-menu pull-right" role="menu">
                 <li><a ng-click="refreshData()">Refresh</a></li>
                 <li ng-click="exportExcel()" ><a>Export Excel</a></li>
-                <li ng-if="hasSaveRepoerView"><a ng-click="saveReportView()">Save as Report View</a></li>
                 <li><a ui-sref="^.editBuilder(reportViewForEdit)">Edit Report View</a></li>
+                <li ng-if="!hasSaveRepoerView"><a ng-click="saveReportView()">Save as Report View</a></li>
             </ul>
         </div>
     </div>
@@ -42,28 +61,6 @@
     <div class="panel-body" ng-if="reports.length">
     <!--<div class="panel-body" ng-if="reports.length > 0 && hasResult">-->
         <div class="table-responsive table-report-view">
-            <div ng-if="reportView.enableCustomDimensionMetric">
-                <div class="col-sm-12" ng-if="dimensions.length > 0">
-                    <label class="control-label">Dimensions</label>
-
-                    <div>
-                        <div ng-repeat="field in dimensions" class="col-sm-4">
-                            <label class="ui-checkbox"><input name="field[]" type="checkbox" ng-click="toggleField(field)" ng-disabled="disabledField(field)" ng-checked="hasField(field)"><span>{{ titleColumnsForSelect[field] }}</span></label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-12" ng-if="metrics.length > 0">
-                    <label class="control-label">Metrics</label>
-
-                    <div>
-                        <div ng-repeat="field in metrics" class="col-sm-4">
-                            <label class="ui-checkbox"><input name="field[]" type="checkbox" ng-click="toggleField(field)" ng-checked="hasField(field)"><span>{{ titleColumnsForSelect[field] }}</span></label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <table class="table">
                 <thead>
                 <tr>

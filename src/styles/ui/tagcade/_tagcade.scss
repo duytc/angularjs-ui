@@ -104,6 +104,17 @@
             @include ui-select-width(200px);
         }
 
+        .multi-select-class {
+            margin-top: 4px;
+
+            label {
+              text-transform: none !important;
+            }
+
+            .multiSelect button:first-child {
+              min-width: 180px;
+            }
+        }
     }
 }
 

@@ -343,8 +343,6 @@
                         message: message
                     });
                 });
-
-                params.saveReportView = true;
             } else {
                 _viewDetail(params);
             }
