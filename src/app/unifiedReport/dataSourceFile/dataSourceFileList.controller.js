@@ -63,6 +63,24 @@
         $scope.noneSelect = noneSelect;
         $scope.selectAllInPages = selectAllInPages;
         $scope.previewData = previewData;
+        $scope.deleteAlertMulti = deleteAlertMulti;
+        
+        function deleteAlertMulti() {
+            var selectedDataSourceFiles = angular.copy($scope.selectedDataSourceFiles);
+
+            UnifiedReportDataSourceFileManager.one('delete').post(null, {entries: $scope.selectedDataSourceFiles})
+                .then(function () {
+                    _getDataSourceFiles(params, 0)
+                        .then(function () {
+                            $scope.checkAllItem = false;
+                        });
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: selectedDataSourceFiles.length + ' imported data have been deleted'
+                    });
+                });
+        }
         
         function previewData(dataSourceFile) {
             UnifiedReportDataSourceFileManager.one(dataSourceFile.id).one('preview').get({limit: 1000})
@@ -185,7 +203,7 @@
                 .then(function () {
                     AlertService.replaceAlerts({
                         type: 'success',
-                        message: 'The data was reloaded'
+                        message: 'The file ' + dataSourceFile.fileName + ' was reloaded'
                     });
                 })
                 .catch(function (response) {
@@ -197,8 +215,8 @@
                     }
 
                     AlertService.replaceAlerts({
-                        type: 'error',
-                        message: 'The data could not be reloaded'
+                        type: 'success',
+                        message: 'The file ' + dataSourceFile.fileName + ' could not be reloaded'
                     });
                 })
         }
@@ -296,7 +314,7 @@
                         if ($scope.selectedDataSourceFiles.indexOf(dataSourceFile.id) > -1) {
                             AlertService.replaceAlerts({
                                 type: 'success',
-                                message: 'The file ' + dataSourceFile.fileName + ' was reloaded'
+                                message: 'The imported files were reloaded'
                             });
                         }
                     });
@@ -307,7 +325,7 @@
                         if ($scope.selectedDataSourceFiles.indexOf(dataSourceFile.id) > -1) {
                             AlertService.replaceAlerts({
                                 type: 'success',
-                                message: 'The file ' + dataSourceFile.fileName + ' could not be reloaded'
+                                message: 'The imported files could not be reloaded'
                             });
                         }
                     });

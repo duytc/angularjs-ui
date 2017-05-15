@@ -49,6 +49,8 @@
                     <button type="button" class="btn" ng-disabled="selectedDataSourceFiles.length == 0" dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                     <ul class="dropdown-menu pull-right-dropdown" role="menu">
                         <li><a ng-click="replayMultiData()">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.REPLAY_DATA' | translate }}</a></li>
+                        <li class="divider"></li>
+                        <li><a ng-click="confirmClick('Are you sure want to delete this imported data?') && deleteAlertMulti()" confirm-click >{{ 'UNIFIED_REPORT_ALERT_MODULE.DELETE' | translate }}</a></li>
                     </ul>
                 </div>
             </div>
