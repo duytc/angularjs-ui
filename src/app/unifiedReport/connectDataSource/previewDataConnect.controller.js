@@ -58,17 +58,14 @@
 
         var dataSourceEntriesOld = $scope.dataSourceEntries[$scope.dataSourceEntries.length - 1];
 
-        $scope.processedDataSelectedData = {
-            importedDataSource: dataSourceEntriesOld.id
-        };
-
-        $scope.originalDataSelectedData = {
+        $scope.selectedData = {
             importedDataSource: dataSourceEntriesOld.id,
             limit: 500
         };
 
         $scope.viewProcessedData = function () {
-            connectDataSource.dataSourceEntryId = $scope.processedDataSelectedData.importedDataSource;
+            connectDataSource.dataSourceEntryId = $scope.selectedData.importedDataSource;
+            connectDataSource.limit = $scope.selectedData.limit;
 
             UnifiedReportConnectDataSourceManager.one('dryrun').post(null, connectDataSource)
                 .then(function (reportData) {
@@ -96,7 +93,7 @@
         };
 
         $scope.viewOriginalData = function () {
-            UnifiedReportDataSourceFileManager.one($scope.originalDataSelectedData.importedDataSource).one('preview').get({limit: $scope.originalDataSelectedData.limit})
+            UnifiedReportDataSourceFileManager.one($scope.selectedData.importedDataSource).one('preview').get({limit: $scope.selectedData.limit})
                 .then(function (originalData) {
                     $scope.tableConfigOriginal.currentPage = 1;
 
@@ -122,6 +119,15 @@
 
         $scope.isNullValue = isNullValue;
         $scope.getTotalRowDataSourceEntry = getTotalRowDataSourceEntry;
+        $scope.selectImportedDataSource = selectImportedDataSource;
+        
+        function selectImportedDataSource() {
+            $scope.originalReports = [];
+            $scope.processedReports = [];
+
+            $scope.originalColumns = [];
+            $scope.processedColumns = [];
+        }
 
         function getTotalRowDataSourceEntry(id) {
             var dataSourceEntry = _.find($scope.dataSourceEntries, function (dataSourceEntrie) {
