@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('tagcade.tagManagement.domainList')
-        .controller('BlockListForm', BlockListForm)
+        .controller('WhiteListForm', WhiteListForm)
     ;
 
-    function BlockListForm($scope, $stateParams, $translate, domain, publishers, AlertService, adNetworks, DisplayBlackListManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, DOMAINS_LIST_SEPARATOR) {
+    function WhiteListForm($scope, $stateParams, $translate, domain, publishers, AlertService, adNetworks, DisplayWhiteListManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, DOMAINS_LIST_SEPARATOR) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             domains: 'Domain'
@@ -16,31 +16,25 @@
 
         $scope.publishers = publishers;
         $scope.adNetworks = adNetworks;
-
-        angular.forEach($scope.adNetworks, function (adNetwork) {
-            adNetwork.name = adNetwork.name + ' (ID: '+ adNetwork.id +')'
-        });
-
-
         $scope.domain = domain || {
             name: null,
             domains: [],
-            networkBlacklists: []
+            networkWhiteLists: []
         };
 
         $scope.domainList = $scope.domain.domains || [];
 
         if(!$scope.isNew) {
-            var networkBlacklists = [];
-            angular.forEach(angular.copy($scope.domain.networkBlacklists), function(networkBlacklist) {
-                networkBlacklists.push(networkBlacklist.adNetwork)
+            var networkWhiteLists = [];
+            angular.forEach(angular.copy($scope.domain.networkWhiteLists), function(networkWhiteList) {
+                networkWhiteLists.push(networkWhiteList.adNetwork)
             });
 
-            $scope.domain.networkBlacklists = networkBlacklists;
+            $scope.domain.networkWhiteLists = networkWhiteLists;
 
             angular.forEach($scope.adNetworks, function(adNetwork) {
-                var index = _.findIndex($scope.domain.networkBlacklists, function (networkBlacklist) {
-                    return !!networkBlacklist && networkBlacklist.id == adNetwork.id
+                var index = _.findIndex($scope.domain.networkWhiteLists, function (networkWhiteList) {
+                    return !!networkWhiteList && networkWhiteList.id == adNetwork.id
                 });
 
                 if(index > -1) {
@@ -96,10 +90,10 @@
 
         function backToListDomain() {
             if($stateParams.adNetworkId) {
-                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.blockList, '^.blockListByAdNetwork', {id: $stateParams.adNetworkId});
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.whiteList, '^.whiteListByAdNetwork', {id: $stateParams.adNetworkId});
             }
 
-            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.blockList, '^.blockList');
+            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.whiteList, '^.whiteList');
         }
 
         function selectPublisher(publisher) {
@@ -118,11 +112,11 @@
             $scope.formProcessing = true;
             delete $scope.domain.suffixKey;
 
-            var networkBlacklists = [];
+            var networkWhiteLists = [];
 
-            angular.forEach($scope.domain.networkBlacklists, function (networkBlacklist) {
-                if(!!networkBlacklist) {
-                    networkBlacklists.push({adNetwork: networkBlacklist.id});
+            angular.forEach($scope.domain.networkWhiteLists, function (networkWhiteList) {
+                if(!!networkWhiteList) {
+                    networkWhiteLists.push({adNetwork: networkWhiteList.id});
                 }
             });
 
@@ -136,15 +130,15 @@
                 }
             });
 
-            $scope.domain.networkBlacklists = networkBlacklists;
+            $scope.domain.networkWhiteLists = networkWhiteLists;
 
-            var saveDomain = $scope.isNew ? DisplayBlackListManager.post($scope.domain) : $scope.domain.patch();
+            var saveDomain = $scope.isNew ? DisplayWhiteListManager.post($scope.domain) : $scope.domain.patch();
             saveDomain
                 .then(
                     function () {
                         AlertService.addFlash({
                             type: 'success',
-                            message: $scope.isNew ? $translate.instant('DOMAIN_LIST_MODULE.ADD_NEW_BLACK_LIST_SUCCESS') : $translate.instant('DOMAIN_LIST_MODULE.UPDATE_BLACK_LIST_SUCCESS')
+                            message: $scope.isNew ? $translate.instant('DOMAIN_LIST_MODULE.ADD_NEW_WHITE_LIST_SUCCESS') : $translate.instant('DOMAIN_LIST_MODULE.UPDATE_WHITE_LIST_SUCCESS')
                         });
 
                         backToListDomain()

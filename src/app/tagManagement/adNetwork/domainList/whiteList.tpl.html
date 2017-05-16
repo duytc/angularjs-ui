@@ -4,9 +4,9 @@
         <strong current-page-title></strong>
 
         <div class="button-bar" ng-if="!isSubPublisher()">
-            <button ui-sref="^.newBlockList" class="btn btn-primary btn-sm" type="button">
+            <button ui-sref="^.newWhiteList" class="btn btn-primary btn-sm" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
-                {{ 'DOMAIN_LIST_MODULE.NEW_BLACK_LIST' | translate }}
+                {{ 'DOMAIN_LIST_MODULE.NEW_WHITE_LIST' | translate }}
             </button>
 
             <button ng-if="adNetwork" ng-click="backToListAdNetwork()" class="btn btn-primary btn-sm" type="button">
@@ -17,7 +17,7 @@
         <div class="btn-group btnGrouped" ng-if="!isSubPublisher()" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ui-sref="^.newBlockList({adNetworkId: !!adNetwork ? adNetwork.id : null})">{{ 'DOMAIN_LIST_MODULE.NEW_BLACK_LIST' | translate }}</a></li>
+                <li><a ui-sref="^.newWhiteList({adNetworkId: !!adNetwork ? adNetwork.id : null})">{{ 'DOMAIN_LIST_MODULE.NEW_WHITE_LIST' | translate }}</a></li>
                 <li ng-if="adNetwork" ng-click="backToListAdNetwork()"><a>{{ 'AD_NETWORK_MODULE.BACK_TO_AD_NETWORK_LIST' | translate }}</a></li>
             </ul>
         </div>
@@ -32,7 +32,7 @@
 
     <div class="panel-body" ng-if="hasData()">
         <div class="table-responsive">
-            <table class="table" at-sortable-query at-table at-paginated at-list="domainList.records" at-config="tableConfig">
+            <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="domainList.records" at-config="tableConfig">
                 <thead>
                 <tr>
                     <th ng-show="isAdmin()" at-attribute="publisher.company" >{{ 'PUBLISHER' | translate }}</th>
@@ -48,13 +48,13 @@
                                 <li ng-click="viewDomains(item)"><a>{{ 'DOMAIN_LIST_MODULE.VIEW_DOMAINS' | translate }}</a></li>
                                 <!--<li><a ui-sref="^.^.adNetwork.listByBlack({ id: item.id })">{{ 'DOMAIN_LIST_MODULE.MANAGE_AD_NETWORKS' | translate }}</a></li>-->
                                 <li class="divider"></li>
-                                <li ng-if="!isSubPublisher()"><a ui-sref="^.editBlockList({ id: item.id, adNetworkId: !!adNetwork ? adNetwork.id : null })">{{ 'DOMAIN_LIST_MODULE.EDIT_BLACK_LIST' | translate }}</a></li>
-                                <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item, $index)">{{ ('DOMAIN_LIST_MODULE.DELETE_BLACK_LIST' | translate) }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ui-sref="^.editWhiteList({ id: item.id, adNetworkId: !!adNetwork ? adNetwork.id : null })">{{ 'DOMAIN_LIST_MODULE.EDIT_WHITE_LIST' | translate }}</a></li>
+                                <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item, $index)">{{ ('DOMAIN_LIST_MODULE.DELETE_WHITE_LIST' | translate) }}</a></li>
                             </ul>
                         </div>
                     </td>
                     <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="{{ 'NAME' | translate }}"></td>
-                    <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
+                    <td ng-show="isAdmin()" at-implicit at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
                 </tr>
                 </tbody>
             </table>

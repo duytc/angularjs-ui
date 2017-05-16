@@ -140,6 +140,25 @@
                                 </li>
                             </ul>
                         </li>
+
+                        <li>
+                            <a href="#" class="menu-dropdown">
+                                <span class="menu-text">{{ 'NAVBAR.WHITE_LIST' | translate }}</span>
+                                <i class="menu-expand"></i>
+                            </a>
+                            <ul class="submenu">
+                                <li ui-sref-active="active">
+                                    <a ui-sref=".tagManagement.domainList.whiteList">
+                                        <span class="menu-text">{{ 'NAVBAR.MY_WHITE_LIST' | translate }}</span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active">
+                                    <a ui-sref=".tagManagement.domainList.newWhiteList">
+                                        <span class="menu-text">{{ 'NAVBAR.NEW_WHITE_LIST' | translate }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
 

@@ -69,7 +69,8 @@
                     networkPartner: adNetworkList[idx].networkPartner,
                     impressionCap: adNetworkList[idx].impressionCap,
                     networkOpportunityCap: adNetworkList[idx].networkOpportunityCap,
-                    networkBlacklists: adNetworkList[idx].networkBlacklists
+                    networkBlacklists: adNetworkList[idx].networkBlacklists,
+                    networkWhiteLists: adNetworkList[idx].networkWhiteLists
                 };
             }
 

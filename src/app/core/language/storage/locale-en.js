@@ -164,8 +164,11 @@
                 "CREATE_CONNECTED_DATA_SOURCE":"Create Connected Data Source",
 
                 "BLACK_LIST": "Domain Blacklists",
+                "WHITE_LIST": "Domain White Lists",
                 "MY_BLACK_LIST": "My Blacklists",
-                "NEW_BLACK_LIST": "New Blacklist"
+                "MY_WHITE_LIST": "My White Lists",
+                "NEW_BLACK_LIST": "New Blacklist",
+                "NEW_WHITE_LIST": "New White List"
             },
             "DASHBOARD_MODULE": {
                 "DATE_RANGE": "Date Range",
@@ -375,9 +378,11 @@
                 "CONFIRM_PAUSE_SITE": "Are you sure you want to pause this site?",
                 "NOTE_CONFIRM_PAUSE_SITE": "Every ad tag associated with this demand partner and site will be also paused.",
                 "BLOCK_LIST_DOMAINS": "Domain Blacklists",
+                "WHITE_LIST_DOMAINS": "Domain White Lists",
 
                 "MANAGE_AD_TAGS": "Manage Ad Tags",
                 "MANAGE_BLACk_LIST": "Manage Blacklist",
+                "MANAGE_WHITE_LIST": "Manage White Lists",
                 "EDIT_AD_NETWORK": "Edit Demand Partner",
                 "SITES_FOR_AD_NETWORK": "Sites for Demand Partner",
                 "PLACEHOLDER_AD_NETWORK_NAME": "Demand Partner name",
@@ -534,7 +539,7 @@
                 "COUNTRIES": "Countries",
                 "EXCLUDE_COUNTRIES": "Exclude Countries",
                 "SELECT_A_COUNTRIES": " Select a country",
-                "DOMAINS": "Whitelist Domains",
+                "DOMAINS": "White Lists Domains",
                 "EXCLUDE_DOMAINS": "Blacklist Domains",
                 "STATUS": "Status",
                 "ACTIVATE_AD_SOURCE": "Activate Demand Ad Tag",
@@ -563,12 +568,12 @@
                 "BACK_TO_AD_SOURCE_LIST": "Back to Demand Ad Tag List",
                 "BACK_TO_LIBRARY_DEMAND_AD_TAG_LIST": "Back to Demand Ad Tag List",
                 "SELECT_A_AD_SOURCE": "Select a demand ad tag",
-                "CREATE_WHITE_LIST": "+ Create whitelist",
+                "CREATE_WHITE_LIST": "+ Create White Lists",
                 "CREATE_BLACK_LIST": "+ Create blacklist",
                 "TARGETING_OVERRIDE": "Targeting Override",
 
                 "VIEW_BLACK_LIST": "View Blacklist",
-                "VIEW_WHITE_LIST": "View Whitelist",
+                "VIEW_WHITE_LIST": "View White Lists",
                 "CONFIRM_SUBMIT_FOR_PLATFORM": "One of the waterfalls has a platform that does not support this platform of demand ad tag.",
 
                 "HELP_BLOCK_TIMEOUT": "The request timeout in milliseconds. Leave it blank to use the default value",
@@ -609,27 +614,28 @@
                 "BUILTIN": "Builtin",
                 "VIEW_DOMAINS": "View Domains",
                 "BACK_TO_BLACK_LIST": "Back to My Blacklists",
+                "BACK_TO_WHITE_LIST": "Back to my White Lists",
 
                 "CURRENTLY_NO_BLACK_LIST": "There is currently no blacklist",
-                "CURRENTLY_NO_WHITE_LIST": "There is currently no whitelist",
+                "CURRENTLY_NO_WHITE_LIST": "There is currently no White Lists",
                 "MANAGE_AD_NETWORKS": "Manage Demand Partners",
 
                 "DELETE_BLACK_LIST_SUCCESS": "The blacklist was deleted",
-                "DELETE_WHITE_LIST_SUCCESS": "The whitelist was deleted",
+                "DELETE_WHITE_LIST_SUCCESS": "The White Lists was deleted",
                 "DELETE_BLACK_LIST_FAIL": "The blacklist could not be deleted",
-                "DELETE_WHITE_LIST_FAIL": "The whitelist could not be deleted",
+                "DELETE_WHITE_LIST_FAIL": "The White Lists could not be deleted",
 
                 "NEW_BLACK_LIST": "New Blacklist",
-                "NEW_WHITE_LIST": "New Whitelist",
+                "NEW_WHITE_LIST": "New White Lists",
                 "EDIT_BLACK_LIST": "Edit Blacklist",
-                "EDIT_WHITE_LIST": "Edit Whitelist",
+                "EDIT_WHITE_LIST": "Edit White Lists",
                 "DELETE_BLACK_LIST": "Delete Blacklist",
-                "DELETE_WHITE_LIST": "Delete Whitelist",
+                "DELETE_WHITE_LIST": "Delete White Lists",
 
                 "ADD_NEW_BLACK_LIST_SUCCESS": "The blacklist has been created",
-                "ADD_NEW_WHITE_LIST_SUCCESS": "The whitelist has been created",
+                "ADD_NEW_WHITE_LIST_SUCCESS": "The White Lists has been created",
                 "UPDATE_BLACK_LIST_SUCCESS": "The blacklist has been updated",
-                "UPDATE_WHITE_LIST_SUCCESS": "The whitelist has been updated",
+                "UPDATE_WHITE_LIST_SUCCESS": "The White Lists has been updated",
 
                 "CONFIRM_DELETE_DOMAIN_LIST": "Are you sure you want to delete this domain list?",
                 "DOMAINS": "Domains",
@@ -637,8 +643,7 @@
 
                 "CUSTOM": "Custom",
                 "BUILT_IN": "Built In",
-                "SELECT_A_BUILT_IN": "Select a built in",
-                "HELP_TEXT_FOR_DEFAULT": "Editing this default blacklist will affect all ad networks and ad tags"
+                "SELECT_A_BUILT_IN": "Select a built in"
             },
             "AD_SLOT_MODULE": {
                 "NATIVE": "Native",

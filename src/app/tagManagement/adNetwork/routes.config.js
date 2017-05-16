@@ -54,13 +54,13 @@
                     }
                 },
                 resolve: {
-                    adNetworks: /* @ngInject */ function(BlockListManager, $stateParams) {
-                        return BlockListManager.one($stateParams.id).one('adnetworks').getList().then(function (adNetworks) {
+                    adNetworks: /* @ngInject */ function(DisplayBlackListManager, $stateParams) {
+                        return DisplayBlackListManager.one($stateParams.id).one('adnetworks').getList().then(function (adNetworks) {
                             return adNetworks.plain();
                         });
                     },
-                    blackList: function (BlockListManager, $stateParams) {
-                        return BlockListManager.one($stateParams.id).get();
+                    blackList: function (DisplayBlackListManager, $stateParams) {
+                        return DisplayBlackListManager.one($stateParams.id).get();
                     }
                 },
                 ncyBreadcrumb: {
@@ -80,10 +80,16 @@
                     adNetwork: function() {
                         return null;
                     },
-                    blockList: function (BlockListManager) {
-                        return BlockListManager.getList()
+                    blockList: function (DisplayBlackListManager) {
+                        return DisplayBlackListManager.getList()
                             .then(function (blockList) {
                                 return blockList.plain()
+                            });
+                    },
+                    whiteList: function (DisplayWhiteListManager) {
+                        return DisplayWhiteListManager.getList()
+                            .then(function (whiteList) {
+                                return whiteList.plain()
                             });
                     }
                 },
@@ -112,10 +118,16 @@
                     adNetwork: /* @ngInject */ function($stateParams, AdNetworkCache) {
                         return AdNetworkCache.getAdNetworkById($stateParams.id);
                     },
-                    blockList: function (BlockListManager) {
-                        return BlockListManager.getList()
+                    blockList: function (DisplayBlackListManager) {
+                        return DisplayBlackListManager.getList()
                             .then(function (blockList) {
                                 return blockList.plain()
+                            });
+                    },
+                    whiteList: function (DisplayWhiteListManager) {
+                        return DisplayWhiteListManager.getList()
+                            .then(function (whiteList) {
+                                return whiteList.plain()
                             });
                     }
                 },

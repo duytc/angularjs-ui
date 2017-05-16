@@ -5,7 +5,7 @@
         .controller('AdNetworkForm', AdNetworkForm)
     ;
 
-    function AdNetworkForm($scope, $modal, $translate, _, blockList, AdNetworkCache, PartnerManager, AlertService, ServerErrorProcessor, adNetwork, publishers, historyStorage, USER_MODULES, HISTORY_TYPE_PATH) {
+    function AdNetworkForm($scope, $translate, _, blockList, whiteList, AdNetworkCache, PartnerManager, AlertService, ServerErrorProcessor, adNetwork, publishers, historyStorage, USER_MODULES, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             defaultCpmRate: 'Default CPM Rate',
@@ -19,6 +19,7 @@
         $scope.allowSelectPublisher = $scope.isAdmin();
         $scope.publishers = publishers;
         $scope.blockList = blockList;
+        $scope.whiteList = whiteList;
         $scope.partners = [];
 
         $scope.adNetwork = adNetwork || {
@@ -83,6 +84,23 @@
                     block['ticked'] = true;
                 }
             });
+
+            var networkWhiteLists = [];
+            angular.forEach(angular.copy($scope.adNetwork.networkWhiteLists), function(networkWhitelist) {
+                networkWhiteLists.push(networkWhitelist.displayWhitelist)
+            });
+
+            $scope.adNetwork.networkWhiteLists = networkWhiteLists;
+
+            angular.forEach($scope.whiteList, function(white) {
+                var index = _.findIndex($scope.adNetwork.networkWhiteLists, function (networkWhitelist) {
+                    return !!networkWhitelist && networkWhitelist.id == white.id
+                });
+
+                if(index > -1) {
+                    white['ticked'] = true;
+                }
+            });
         }
 
         $scope.isBuildInType = isBuildInType;
@@ -90,49 +108,6 @@
         $scope.backToListAdNetwork = backToListAdNetwork;
         $scope.selectPublisher = selectPublisher;
         $scope.selectPartner = selectPartner;
-        $scope.createQuicklyBlockLink = createQuicklyBlockLink;
-        $scope.viewQuicklyBlockLink = viewQuicklyBlockLink;
-
-        function createQuicklyBlockLink() {
-            var newDomain = {
-                name: null,
-                domains: []
-            };
-
-            var modalInstance = $modal.open({
-                templateUrl: 'tagManagement/adNetwork/domainList/blockListQuicklyForm.tpl.html',
-                controller: 'BlockListQuicklyForm',
-                size: 'lg',
-                resolve: {
-                    publishers: function () {
-                        return publishers
-                    },
-                    publisher: function () {
-                        return $scope.adNetwork.publisher
-                    },
-                    domain: function () {
-                        return newDomain
-                    }
-                }
-            });
-
-            modalInstance.result.then(function () {
-                $scope.blockList.push(newDomain);
-            })
-        }
-
-        function viewQuicklyBlockLink() {
-            $modal.open({
-                templateUrl: 'tagManagement/adNetwork/domainList/viewQuicklyBlockList.tpl.html',
-                controller: 'ViewQuicklyBlockList',
-                size: 'lg',
-                resolve: {
-                    domainList: function() {
-                        return $scope.blockList
-                    }
-                }
-            });
-        }
 
         $scope.isFormValid = function() {
             return $scope.adNetworkForm.$valid;
@@ -218,6 +193,15 @@
             });
 
             $scope.adNetwork.networkBlacklists = networkBlacklists;
+
+
+            var networkWhiteLists = [];
+
+            angular.forEach($scope.adNetwork.networkWhiteLists, function (networkWhitelist) {
+                networkWhiteLists.push({networkWhitelist: networkWhitelist.id});
+            });
+
+            $scope.adNetwork.networkWhiteLists = networkWhiteLists;
 
             $scope.formProcessing = true;
 

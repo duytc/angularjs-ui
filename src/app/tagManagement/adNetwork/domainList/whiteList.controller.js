@@ -2,12 +2,16 @@
     'use strict';
 
     angular.module('tagcade.tagManagement.domainList')
-        .controller('BlockList', BlockList)
+        .controller('WhiteList', WhiteList)
     ;
 
-    function BlockList($scope, $translate, $stateParams, $modal, AlertService, domainList, adNetwork, DisplayBlackListManager, AdNetworkManager, AtSortableService, EVENT_ACTION_SORTABLE, HISTORY_TYPE_PATH, historyStorage) {
+    function WhiteList($scope, $translate, $stateParams, $modal, AlertService, domainList, adNetwork, AdNetworkManager, DisplayWhiteListManager, AtSortableService, EVENT_ACTION_SORTABLE, HISTORY_TYPE_PATH, historyStorage) {
         $scope.domainList = domainList;
         $scope.adNetwork = adNetwork;
+
+        angular.forEach($scope.adNetworks, function (adNetwork) {
+            adNetwork.name = adNetwork.name + ' (ID: '+ adNetwork.id +')'
+        });
 
         $scope.hasData = function () {
             return !!domainList && !!domainList.records.length;
@@ -16,7 +20,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: $translate.instant('DOMAIN_LIST_MODULE.CURRENTLY_NO_BLACK_LIST')
+                message: $translate.instant('DOMAIN_LIST_MODULE.CURRENTLY_NO_WHITE_LIST')
             });
         }
 
@@ -69,7 +73,7 @@
 
             getDomainList = setTimeout(function() {
                 params = query;
-                var Manage = !!adNetwork ? AdNetworkManager.one(adNetwork.id).one('displayblacklists') : DisplayBlackListManager.one();
+                var Manage = !!adNetwork ? AdNetworkManager.one(adNetwork.id).one('displaywhitelists') : DisplayWhiteListManager.one();
 
                 return Manage.get(query)
                     .then(function(domainList) {
@@ -112,20 +116,20 @@
             });
 
             modalInstance.result.then(function () {
-                return DisplayBlackListManager.one(domain.id).remove()
+                return DisplayWhiteListManager.one(domain.id).remove()
                     .then(
                     function () {
                         _getDomainList(params);
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message:  $translate.instant('DOMAIN_LIST_MODULE.DELETE_BLACK_LIST_SUCCESS')
+                            message:  $translate.instant('DOMAIN_LIST_MODULE.DELETE_WHITE_LIST_SUCCESS')
                         });
                     },
                     function () {
                         AlertService.replaceAlerts({
                             type: 'danger',
-                            message:  $translate.instant('DOMAIN_LIST_MODULE.DELETE_BLACK_LIST_FAIL')
+                            message:  $translate.instant('DOMAIN_LIST_MODULE.DELETE_WHITE_LIST_FAIL')
                         });
                     }
                 )
@@ -138,7 +142,7 @@
         }
 
         $scope.$on('$locationChangeSuccess', function() {
-            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.blockList)
+            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.whiteList)
         });
     }
 })();

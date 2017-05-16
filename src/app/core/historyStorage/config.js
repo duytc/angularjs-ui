@@ -23,6 +23,7 @@
             libraryDemandAdTag: "libraryDemandAdTag",
             domainList: "domainList",
             blockList: "blockList",
+            whiteList: "whiteList",
             dataSource: "dataSource",
             dataSourceFile: "dataSourceFile",
             dataSet: "dataSet",
