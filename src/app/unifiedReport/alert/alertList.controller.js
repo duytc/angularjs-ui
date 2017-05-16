@@ -358,10 +358,10 @@
                     return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - unexpected error, please contact your account manager';
 
                 case ALERT_CODE_FETCHER_LOGIN_FAIL:
-                    return 'Browser automation: login failed for account of Integration "' + detail.integrationName + '" at "' + detail.executionDate + '" when getting reports from "' + detail.startDate + '" to "' + detail.endDate + '"';
+                    return 'Browser automation: login failed for account of Integration "' + detail.integrationName + '" for data source ' + detail.dataSourceId +', at "' + detail.executionDate + '" when getting reports from "' + detail.startDate + '" to "' + detail.endDate + '"';
 
                 case ALERT_CODE_FETCHER_TIME_OUT:
-                    return 'Browser automation: timeout occur whey try download Integration "' + detail.integrationName + '" at "' + detail.executionDate + '" when getting reports from "' + detail.startDate + '" to "' + detail.endDate + '"';
+                    return 'Browser automation: timeout occur whey try download Integration "' + detail.integrationName + '" for data source ' + detail.dataSourceId +', at "' + detail.executionDate + '" when getting reports from "' + detail.startDate + '" to "' + detail.endDate + '"';
 
                 case ALERT_CODE_NO_DATE_FORMAT:
                     return 'FILTER ERROR: Invalid date format on field "' + detail.column +'".';
