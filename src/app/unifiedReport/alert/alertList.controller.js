@@ -351,10 +351,10 @@
                     return 'Failed to import a file into data set "' + detail.dataSetName + '". There was an unexpected error, please contact your account manager';
 
                 case ALERT_CODE_FETCHER_LOGIN_FAIL:
-                    return 'Browser login has failed for data source "' + detail.dataSourceName + '" (ID: ' + detail.dataSourceId + '). Please check the credentials';
+                    return 'Browser login has failed for data source (ID: ' + detail.dataSourceId + '). Please check the credentials';
 
                 case ALERT_CODE_FETCHER_TIME_OUT:
-                    return 'A timeout error has occurred when downloading reports for data source "' + detail.dataSourceName + '" (ID: ' + detail.dataSourceId + ')';
+                    return 'A timeout error has occurred when downloading reports for data source (ID: ' + detail.dataSourceId + ')';
 
                 case ALERT_CODE_NO_DATE_FORMAT:
                     return 'A file failed to load. There was an invalid date format on field "' + detail.column +'"';
