@@ -379,6 +379,9 @@
                 "NOTE_CONFIRM_PAUSE_SITE": "Every ad tag associated with this demand partner and site will be also paused.",
                 "BLOCK_LIST_DOMAINS": "Domain Blacklists",
                 "WHITE_LIST_DOMAINS": "Domain Whitelists",
+                "CUSTOM_IMPRESSION_PIXELS": "Custom Impression Pixels",
+                "PLACEHOLDER_CUSTOM_IMPRESSION_PIXELS": "Custom Impression Pixel URL",
+                "ADD_CUSTOM_IMPRESSION_PIXEL": "Add",
 
                 "MANAGE_AD_TAGS": "Manage Ad Tags",
                 "MANAGE_BLACk_LIST": "Manage Blacklist",
@@ -415,6 +418,8 @@
                 "HELP_BLOCK_URL": "You can use this field to add the login url for your demand partner.",
                 "HELP_BLOCK_ENABLE_UNIFIED": "This credentials to use to login demand partner.",
                 "BLANK_FOR_NO_CHANGE":  "Leave it blank for no change",
+                "HELP_BLOCK_CUSTOM_IMPRESSION_PIXELS": "Add custom impressions pixels for all ad tags for the demand partner.",
+
                 "NEW_BLOCK_LIST": "New Block List",
                 "EDIT_BLOCK_LIST": "Edit Block List",
                 "ADD_NEW_BLACK_LIST_SUCCESS": "The blacklist has been created",

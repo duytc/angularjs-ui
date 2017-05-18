@@ -23,15 +23,16 @@
         $scope.partners = [];
 
         $scope.adNetwork = adNetwork || {
-                name: null,
-                defaultCpmRate: null,
-                url: null,
-                /*   username: null,
-                 password: null,*/
-                networkPartner: null,
-                impressionCap: null,
-                networkOpportunityCap: null
-            };
+            name: null,
+            defaultCpmRate: null,
+            url: null,
+            /*   username: null,
+             password: null,*/
+            networkPartner: null,
+            impressionCap: null,
+            networkOpportunityCap: null,
+            customImpressionPixels: []
+        };
 
         $scope.DEMAND_PARTNER_TYPE = {
             BUILD_IN: 0, // allow pick a build-in partner for demand partner
@@ -108,6 +109,8 @@
         $scope.backToListAdNetwork = backToListAdNetwork;
         $scope.selectPublisher = selectPublisher;
         $scope.selectPartner = selectPartner;
+        $scope.addCustomImpressionPixel = addCustomImpressionPixel;
+        $scope.removeCustomImpressionPixel = removeCustomImpressionPixel;
 
         $scope.isFormValid = function() {
             return $scope.adNetworkForm.$valid;
@@ -127,6 +130,32 @@
          */
         function isCustomType() {
             return $scope.selectData.inputType == $scope.DEMAND_PARTNER_TYPE.CUSTOM;
+        }
+
+        /**
+         * Add a custom impression pixel
+         */
+        function addCustomImpressionPixel() {
+            if (!$scope.adNetwork.customImpressionPixels) {
+                console.log('INIT [] before adding');
+                $scope.adNetwork.customImpressionPixels = [];
+            }
+
+            console.log('adding new [ url: null ]');
+            $scope.adNetwork.customImpressionPixels.push({
+                url: null
+            })
+        }
+
+        /**
+         * Remove a custom impression pixel
+         * @param index
+         */
+        function removeCustomImpressionPixel(index) {
+            console.log('removing [ url: null ] index ' + index);
+            if(index > -1) {
+                $scope.adNetwork.customImpressionPixels.splice(index, 1)
+            }
         }
 
         /**
