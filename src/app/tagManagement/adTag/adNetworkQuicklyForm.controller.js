@@ -5,7 +5,7 @@
         .controller('AdNetworkQuicklyForm', AdNetworkQuicklyForm)
     ;
 
-    function AdNetworkQuicklyForm($scope, $modalInstance, $translate, AdNetworkCache, AlertService, ServerErrorProcessor, publishers, PartnerManager, Auth, USER_MODULES) {
+    function AdNetworkQuicklyForm($scope, $filter, $modalInstance, $translate, whiteList, blockList, AdNetworkCache, AlertService, ServerErrorProcessor, publishers, PartnerManager, Auth, USER_MODULES) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             defaultCpmRate: 'Default CPM Rate',
@@ -37,6 +37,9 @@
             inputType: $scope.DEMAND_PARTNER_TYPE.CUSTOM // init default is custom type
         };
 
+        $scope.blockList = !Auth.isAdmin() ? blockList : [];
+        $scope.whiteList = !Auth.isAdmin() ? whiteList : [];
+
         $scope.isBuildInType = isBuildInType;
         $scope.isCustomType = isCustomType;
         $scope.selectPublisher = selectPublisher;
@@ -64,6 +67,23 @@
             }
 
             $scope.formProcessing = true;
+
+            var networkBlacklists = [];
+
+            angular.forEach($scope.adNetwork.networkBlacklists, function (networkBlacklist) {
+                networkBlacklists.push({displayBlacklist: networkBlacklist.id});
+            });
+
+            $scope.adNetwork.networkBlacklists = networkBlacklists;
+
+
+            var networkWhiteLists = [];
+
+            angular.forEach($scope.adNetwork.networkWhiteLists, function (networkWhiteList) {
+                networkWhiteLists.push({displayWhiteList: networkWhiteList.id});
+            });
+
+            $scope.adNetwork.networkWhiteLists = networkWhiteLists;
 
             var saveAdNetwork = AdNetworkCache.postAdNetwork($scope.adNetwork);
 
@@ -106,6 +126,12 @@
         }
 
         function selectPublisher (publisher) {
+            $scope.whiteList = $filter('selectedPublisher')(whiteList, publisher);
+            $scope.blockList = $filter('selectedPublisher')(blockList, publisher);
+
+            $scope.adNetwork.networkWhiteLists = [];
+            $scope.adNetwork.networkBlacklists = [];
+
             $scope.hasUnifiedModule = publisher.enabledModules.indexOf(USER_MODULES.unified) !== -1;
 
             // get all unused partners for Publisher

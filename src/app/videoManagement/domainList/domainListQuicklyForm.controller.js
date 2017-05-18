@@ -40,6 +40,8 @@
                     var domains = query.split(key);
 
                     angular.forEach(domains, function(domain, index) {
+                        domain = domain.toLowerCase();
+
                         if(!/^(?:[-A-Za-z0-9]+\.)+[A-Za-z]{2,6}$/.test(domain)) {
                             return
                         }
@@ -62,11 +64,11 @@
                 return
             }
 
-            if($scope.domainList.indexOf(query) > -1) {
+            if($scope.domainList.indexOf(query.toLowerCase()) > -1) {
                 return
             }
 
-            return query;
+            return query.toLowerCase();
         }
 
         function selectPublisher(publisher) {

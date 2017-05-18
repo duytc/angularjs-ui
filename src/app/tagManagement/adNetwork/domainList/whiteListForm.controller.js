@@ -5,7 +5,7 @@
         .controller('WhiteListForm', WhiteListForm)
     ;
 
-    function WhiteListForm($scope, $stateParams, $translate, domain, publishers, AlertService, adNetworks, DisplayWhiteListManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, DOMAINS_LIST_SEPARATOR) {
+    function WhiteListForm($scope, $stateParams, $filter, $translate, domain, publishers, AlertService, adNetworks, DisplayWhiteListManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, DOMAINS_LIST_SEPARATOR) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             domains: 'Domain'
@@ -15,16 +15,23 @@
         $scope.formProcessing = false;
 
         $scope.publishers = publishers;
-        $scope.adNetworks = adNetworks;
+        $scope.adNetworks = !$scope.isAdmin() ? adNetworks : [];
+
+        angular.forEach($scope.adNetworks, function (adNetwork) {
+            adNetwork.name = adNetwork.name + ' (ID: '+ adNetwork.id +')'
+        });
+
         $scope.domain = domain || {
             name: null,
             domains: [],
             networkWhiteLists: []
         };
 
-        $scope.domainList = $scope.domain.domains || [];
+        $scope.domainList = angular.copy($scope.domain.domains) || [];
 
         if(!$scope.isNew) {
+            $scope.adNetworks = $filter('selectedPublisher')(adNetworks, $scope.domain.publisher);
+
             var networkWhiteLists = [];
             angular.forEach(angular.copy($scope.domain.networkWhiteLists), function(networkWhiteList) {
                 networkWhiteLists.push(networkWhiteList.adNetwork)
@@ -59,6 +66,8 @@
                     var domains = query.split(key);
 
                     angular.forEach(domains, function(domain, index) {
+                        domain = domain.toLowerCase();
+
                         if(!/^(?:[-A-Za-z0-9]+\.)+[A-Za-z]{2,6}$/.test(domain)) {
                             return
                         }
@@ -81,11 +90,11 @@
                 return
             }
 
-            if($scope.domainList.indexOf(query) > -1) {
+            if($scope.domainList.indexOf(query.toLowerCase()) > -1) {
                 return
             }
 
-            return query;
+            return query.toLowerCase();
         }
 
         function backToListDomain() {
@@ -97,6 +106,7 @@
         }
 
         function selectPublisher(publisher) {
+            $scope.adNetworks = $filter('selectedPublisher')(adNetworks, publisher);
         }
 
         function isFormValid() {
@@ -110,29 +120,36 @@
             }
 
             $scope.formProcessing = true;
-            delete $scope.domain.suffixKey;
+
+            var domain = angular.copy($scope.domain);
+
+            delete domain.suffixKey;
+
+            if(!$scope.isAdmin()) {
+                delete domain.publisher;
+            }
 
             var networkWhiteLists = [];
 
-            angular.forEach($scope.domain.networkWhiteLists, function (networkWhiteList) {
+            angular.forEach(domain.networkWhiteLists, function (networkWhiteList) {
                 if(!!networkWhiteList) {
                     networkWhiteLists.push({adNetwork: networkWhiteList.id});
                 }
             });
 
-            angular.forEach(angular.copy($scope.domain.domains), function (domain) {
-                if(domain == '' && !domain) {
-                    var index = $scope.domain.domains.indexOf(domain);
+            angular.forEach(angular.copy(domain.domains), function (item) {
+                if(item == '' && !item) {
+                    var index = domain.domains.indexOf(item);
 
                     if(index > -1) {
-                        $scope.domain.domains.splice(index, 1)
+                        domain.domains.splice(index, 1)
                     }
                 }
             });
 
-            $scope.domain.networkWhiteLists = networkWhiteLists;
+            domain.networkWhiteLists = networkWhiteLists;
 
-            var saveDomain = $scope.isNew ? DisplayWhiteListManager.post($scope.domain) : $scope.domain.patch();
+            var saveDomain = $scope.isNew ? DisplayWhiteListManager.post(domain) : DisplayWhiteListManager.one(domain.id).patch(domain);
             saveDomain
                 .then(
                     function () {

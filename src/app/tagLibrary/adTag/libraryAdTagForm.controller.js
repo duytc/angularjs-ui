@@ -84,6 +84,18 @@
                         return adminUserManager.getList({ filter: 'publisher' }).then(function (users) {
                             return users.plain();
                         });
+                    },
+                    blockList: function (DisplayBlackListManager) {
+                        return DisplayBlackListManager.getList()
+                            .then(function (blockList) {
+                                return blockList.plain()
+                            });
+                    },
+                    whiteList: function (DisplayWhiteListManager) {
+                        return DisplayWhiteListManager.getList()
+                            .then(function (whiteList) {
+                                return whiteList.plain()
+                            });
                     }
                 }
             });

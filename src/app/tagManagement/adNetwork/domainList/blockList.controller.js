@@ -83,9 +83,26 @@
 
         function viewDomains(item) {
             $modal.open({
-                templateUrl: 'videoManagement/domainList/viewDomains.tpl.html',
+                templateUrl: 'tagManagement/adNetwork/domainList/viewDomains.tpl.html',
                 controller: function($scope, domains) {
                     $scope.domains = [];
+
+                    $scope.tableConfig = {
+                        itemsPerPage: 10,
+                        maxPages: 10
+                    };
+
+                    $scope.itemsPerPage = [
+                        {label: '10', key: '10'},
+                        {label: '20', key: '20'},
+                        {label: '50', key: '50'},
+                        {label: '100', key: '100'},
+                        {label: '200', key: '200'}
+                    ];
+
+                    $scope.showPagination = function() {
+                        return angular.isArray($scope.domains) && $scope.domains.length > $scope.tableConfig.itemsPerPage;
+                    };
 
                     angular.forEach(domains, function(domain) {
                         $scope.domains.push({

@@ -5,7 +5,7 @@
         .controller('AdNetworkForm', AdNetworkForm)
     ;
 
-    function AdNetworkForm($scope, $translate, _, blockList, whiteList, AdNetworkCache, PartnerManager, AlertService, ServerErrorProcessor, adNetwork, publishers, historyStorage, USER_MODULES, HISTORY_TYPE_PATH) {
+    function AdNetworkForm($scope, $translate, _, $filter, blockList, whiteList, AdNetworkCache, PartnerManager, AlertService, ServerErrorProcessor, adNetwork, publishers, historyStorage, USER_MODULES, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             defaultCpmRate: 'Default CPM Rate',
@@ -18,8 +18,8 @@
 
         $scope.allowSelectPublisher = $scope.isAdmin();
         $scope.publishers = publishers;
-        $scope.blockList = blockList;
-        $scope.whiteList = whiteList;
+        $scope.blockList = !$scope.isAdmin() ? blockList : [];
+        $scope.whiteList = !$scope.isAdmin() ? whiteList : [];
         $scope.partners = [];
 
         $scope.adNetwork = adNetwork || {
@@ -69,6 +69,9 @@
         }
 
         if(!$scope.isNew) {
+            $scope.whiteList = $filter('selectedPublisher')(whiteList, $scope.adNetwork.publisher);
+            $scope.blockList = $filter('selectedPublisher')(blockList, $scope.adNetwork.publisher);
+
             var networkBlacklists = [];
             angular.forEach(angular.copy($scope.adNetwork.networkBlacklists), function(networkBlacklist) {
                 networkBlacklists.push(networkBlacklist.displayBlacklist)
@@ -87,15 +90,15 @@
             });
 
             var networkWhiteLists = [];
-            angular.forEach(angular.copy($scope.adNetwork.networkWhiteLists), function(networkWhitelist) {
-                networkWhiteLists.push(networkWhitelist.displayWhitelist)
+            angular.forEach(angular.copy($scope.adNetwork.networkWhiteLists), function(networkWhiteList) {
+                networkWhiteLists.push(networkWhiteList.displayWhiteList)
             });
 
             $scope.adNetwork.networkWhiteLists = networkWhiteLists;
 
             angular.forEach($scope.whiteList, function(white) {
-                var index = _.findIndex($scope.adNetwork.networkWhiteLists, function (networkWhitelist) {
-                    return !!networkWhitelist && networkWhitelist.id == white.id
+                var index = _.findIndex($scope.adNetwork.networkWhiteLists, function (networkWhiteList) {
+                    return !!networkWhiteList && networkWhiteList.id == white.id
                 });
 
                 if(index > -1) {
@@ -172,6 +175,12 @@
          */
         function selectPublisher(publisher) {
             setTimeout(function () {
+                $scope.whiteList = $filter('selectedPublisher')(whiteList, publisher);
+                $scope.blockList = $filter('selectedPublisher')(blockList, publisher);
+
+                $scope.adNetwork.networkWhiteLists = [];
+                $scope.adNetwork.networkBlacklists = [];
+
                 // update $scope.hasUnifiedModule
                 $scope.hasUnifiedModule = publisher.enabledModules.indexOf(USER_MODULES.unified) !== -1;
 
@@ -226,8 +235,8 @@
 
             var networkWhiteLists = [];
 
-            angular.forEach($scope.adNetwork.networkWhiteLists, function (networkWhitelist) {
-                networkWhiteLists.push({networkWhitelist: networkWhitelist.id});
+            angular.forEach($scope.adNetwork.networkWhiteLists, function (networkWhiteList) {
+                networkWhiteLists.push({displayWhiteList: networkWhiteList.id});
             });
 
             $scope.adNetwork.networkWhiteLists = networkWhiteLists;

@@ -5,7 +5,7 @@
         .controller('BlockListForm', BlockListForm)
     ;
 
-    function BlockListForm($scope, $stateParams, $translate, domain, publishers, AlertService, adNetworks, DisplayBlackListManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, DOMAINS_LIST_SEPARATOR) {
+    function BlockListForm($scope, $stateParams, $filter, $translate, domain, publishers, AlertService, adNetworks, DisplayBlackListManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, DOMAINS_LIST_SEPARATOR) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             domains: 'Domain'
@@ -15,7 +15,7 @@
         $scope.formProcessing = false;
 
         $scope.publishers = publishers;
-        $scope.adNetworks = adNetworks;
+        $scope.adNetworks = !$scope.isAdmin() ? adNetworks : [];
 
         angular.forEach($scope.adNetworks, function (adNetwork) {
             adNetwork.name = adNetwork.name + ' (ID: '+ adNetwork.id +')'
@@ -28,9 +28,11 @@
             networkBlacklists: []
         };
 
-        $scope.domainList = $scope.domain.domains || [];
+        $scope.domainList = angular.copy($scope.domain.domains) || [];
 
         if(!$scope.isNew) {
+            $scope.adNetworks = $filter('selectedPublisher')(adNetworks, $scope.domain.publisher);
+
             var networkBlacklists = [];
             angular.forEach(angular.copy($scope.domain.networkBlacklists), function(networkBlacklist) {
                 networkBlacklists.push(networkBlacklist.adNetwork)
@@ -65,6 +67,8 @@
                     var domains = query.split(key);
 
                     angular.forEach(domains, function(domain, index) {
+                        domain = domain.toLowerCase();
+
                         if(!/^(?:[-A-Za-z0-9]+\.)+[A-Za-z]{2,6}$/.test(domain)) {
                             return
                         }
@@ -87,11 +91,11 @@
                 return
             }
 
-            if($scope.domainList.indexOf(query) > -1) {
+            if($scope.domainList.indexOf(query.toLowerCase()) > -1) {
                 return
             }
 
-            return query;
+            return query.toLowerCase();
         }
 
         function backToListDomain() {
@@ -103,6 +107,7 @@
         }
 
         function selectPublisher(publisher) {
+            $scope.adNetworks = $filter('selectedPublisher')(adNetworks, publisher);
         }
 
         function isFormValid() {
@@ -116,29 +121,36 @@
             }
 
             $scope.formProcessing = true;
-            delete $scope.domain.suffixKey;
+
+            var domain = angular.copy($scope.domain);
+
+            delete domain.suffixKey;
+
+            if(!$scope.isAdmin()) {
+                delete domain.publisher;
+            }
 
             var networkBlacklists = [];
 
-            angular.forEach($scope.domain.networkBlacklists, function (networkBlacklist) {
+            angular.forEach(domain.networkBlacklists, function (networkBlacklist) {
                 if(!!networkBlacklist) {
                     networkBlacklists.push({adNetwork: networkBlacklist.id});
                 }
             });
 
-            angular.forEach(angular.copy($scope.domain.domains), function (domain) {
-                if(domain == '' && !domain) {
-                    var index = $scope.domain.domains.indexOf(domain);
+            angular.forEach(angular.copy(domain.domains), function (item) {
+                if(item == '' && !item) {
+                    var index = domain.domains.indexOf(item);
 
                     if(index > -1) {
-                        $scope.domain.domains.splice(index, 1)
+                        domain.domains.splice(index, 1)
                     }
                 }
             });
 
-            $scope.domain.networkBlacklists = networkBlacklists;
+            domain.networkBlacklists = networkBlacklists;
 
-            var saveDomain = $scope.isNew ? DisplayBlackListManager.post($scope.domain) : $scope.domain.patch();
+            var saveDomain = $scope.isNew ? DisplayBlackListManager.post(domain) : DisplayBlackListManager.one(domain.id).patch(domain);
             saveDomain
                 .then(
                     function () {

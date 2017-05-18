@@ -111,6 +111,20 @@
                 adNetwork.url = networkPartner.url
             }
 
+            var networkWhiteLists = [];
+            angular.forEach(angular.copy(adNetwork.networkWhiteLists), function(networkWhiteList) {
+                networkWhiteLists.push({displayWhiteList: {id: networkWhiteList.displayWhiteList}})
+            });
+
+            adNetwork.networkWhiteLists = networkWhiteLists;
+
+            var networkBlacklists = [];
+            angular.forEach(angular.copy(adNetwork.networkBlacklists), function(networkBlacklist) {
+                networkBlacklists.push({displayBlacklist: {id: networkBlacklist.displayBlacklist}})
+            });
+
+            adNetwork.networkBlacklists = networkBlacklists;
+
             var adNetworkList = adNetworkCache.get('adNetworkList');
 
             if(!adNetworkList) {

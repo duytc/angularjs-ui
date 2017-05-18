@@ -617,7 +617,7 @@
             "DOMAIN_LIST_MODULE": {
                 "FROM": "From",
                 "BUILTIN": "Builtin",
-                "VIEW_DOMAINS": "View Domains",
+                "VIEW_DOMAINS": "Manage Domains",
                 "BACK_TO_BLACK_LIST": "Back to my Blacklists",
                 "BACK_TO_WHITE_LIST": "Back to my Whitelists",
 
