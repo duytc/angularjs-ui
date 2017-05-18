@@ -449,7 +449,7 @@
                     function filerFieldNamesForComparisonPercent() {
                         var fields = [];
 
-                        angular.forEach(scope.fieldNames, function (field) {
+                        angular.forEach(scope.totalDimensionsMetrics, function (field) {
                             if (scope.dimensionsMetrics[field.key] == 'number' || scope.dimensionsMetrics[field.key] == 'decimal') {
                                 fields.push(field);
                             }

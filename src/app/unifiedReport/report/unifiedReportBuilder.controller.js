@@ -1082,15 +1082,15 @@
                 }
 
                 if (transform.type == 'comparisonPercent') {
-                    angular.forEach(transform.fields, function (field) {
-                        if (_.values(selectedFields).indexOf(field.denominator) == -1) {
-                            field.denominator = null
-                        }
-
-                        if (_.values(selectedFields).indexOf(field.numerator) == -1) {
-                            field.numerator = null
-                        }
-                    });
+                    // angular.forEach(transform.fields, function (field) {
+                    //     if (_.values(selectedFields).indexOf(field.denominator) == -1) {
+                    //         field.denominator = null
+                    //     }
+                    //
+                    //     if (_.values(selectedFields).indexOf(field.numerator) == -1) {
+                    //         field.numerator = null
+                    //     }
+                    // });
                 }
             });
         }

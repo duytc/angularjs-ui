@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.importHistory')
         .controller('ImportHistoryList', ImportHistoryList);
 
-    function ImportHistoryList($scope, $modal, importHistoryList, dataSet, dataSource, UnifiedReportImportHistoryManager, UnifiedReportDataSourceManager, UnifiedReportDataSetManager, historyStorage, HISTORY_TYPE_PATH, AlertService, exportExcelService) {
+    function ImportHistoryList($scope, $modal, importHistoryList, dataSet, dataSource, UnifiedReportImportHistoryManager, UnifiedReportDataSourceManager, UnifiedReportDataSetManager, historyStorage, HISTORY_TYPE_PATH, AlertService, exportExcelService, AtSortableService) {
         $scope.dataSet = dataSet;
         $scope.importHistoryList = importHistoryList;
         $scope.formProcessing = false;
@@ -116,6 +116,10 @@
 
                         Manager.one('importhistories').getList().then(function (importHistoryList) {
                             $scope.importHistoryList = importHistoryList.plain();
+
+                            if($scope.tableConfig.currentPage > 0 && $scope.importHistoryList.length/10 == $scope.tableConfig.currentPage) {
+                                AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
+                            }
 
                             AlertService.replaceAlerts({
                                 type: 'success',
