@@ -22,6 +22,11 @@
 ;
 // custom
 
+.btn:focus,.btn:active,
+button:focus, button:active {
+    outline: none !important;
+}
+
 .panel-heading .glyphicon-th {
     font-size: 15px;
     top: 2px;
