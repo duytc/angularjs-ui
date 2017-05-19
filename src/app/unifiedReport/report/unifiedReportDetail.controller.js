@@ -386,7 +386,7 @@
                 sortField: $scope.sortBy,
                 userDefineDimensions: newDimensions,
                 userDefineMetrics: newMetrics,
-                needToGroup: !!$scope.dimensions && newDimensions.length != $scope.dimensions.length
+                needToGroup: !!$scope.dimensions && newDimensions.length != $scope.dimensions.length || !!$scope.metrics && newMetrics.length != $scope.metrics.length
             });
 
             return params;
