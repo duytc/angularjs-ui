@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportView', UnifiedReportView);
 
-    function UnifiedReportView($scope, _, $q, $translate, $modal, AlertService, reportViewList, UnifiedReportViewManager, unifiedReportBuilder, UserStateHelper, AtSortableService, exportExcelService, historyStorage, HISTORY_TYPE_PATH) {
+    function UnifiedReportView($scope, _, $q, $translate, $modal, AlertService, reportViewList, UnifiedReportViewManager, dataService, UserStateHelper, AtSortableService, API_UNIFIED_END_POINT, historyStorage, HISTORY_TYPE_PATH) {
         $scope.reportViewList = reportViewList;
 
         $scope.hasData = function () {
@@ -54,70 +54,16 @@
 
             var params = angular.copy(reportView);
 
-            unifiedReportBuilder.getPlatformReport(params)
-                .then(function (reportGroup) {
-                    var reports = reportGroup.reports;
+            params.needToGroup = false;
+            params.userDefineDimensions = params.dimensions;
+            params.userDefineMetrics = params.metrics;
 
-                    if (!!reports && reports.length > 0) {
-                        var columnReportDetailForExportExcel = [],
-                            titleReportDetailForExportExcel = [],
-                            columnPositionObject = null,
-                            columnPosition = [],
-                            newMapColumns = [];
+            dataService.makeHttpPOSTRequest('', params, API_UNIFIED_END_POINT + '/v1/reportview/download')
+                .then(function (data) {
+                    var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
+                    var reportName = !!reportView.name ? reportView.name : 'report-detail';
 
-                        var report = Object.keys(reports[0]);
-
-                        if (reportView.formats.length > 0) {
-                            columnPositionObject = _.findWhere(reportView.formats, {type: "columnPosition"});
-                        }
-
-                        if (_.has(columnPositionObject, 'fields')) {
-                            columnPosition = columnPositionObject.fields;
-
-                            if(columnPosition.indexOf('report_view_alias') == -1 && reportView.multiView) {
-                                columnPosition.unshift('report_view_alias');
-                            }
-                        }
-
-                        if (!columnPosition.length && reports.length > 0) {
-                            columnPosition = _.keys(reports[0]);
-                            var indexReportViewAlias = columnPosition.indexOf('report_view_alias');
-                            if(indexReportViewAlias > -1 && reportView.multiView) {
-                                columnPosition.splice(indexReportViewAlias, 1);
-                                columnPosition.unshift('report_view_alias');
-                            }
-                        }
-
-                        //Rearrange the order of the report column and title before export excel
-                        angular.forEach(report, function (key) {
-                            columnReportDetailForExportExcel.push(key);
-                        });
-
-                        newMapColumns = columnPosition;
-
-                        var remainColumns = _.difference(columnReportDetailForExportExcel, newMapColumns);
-                        _.each(remainColumns, function (remainColumn) {
-                            newMapColumns.push(remainColumn);
-                        });
-
-                        _.each(newMapColumns, function (mapColumn) {
-                            titleReportDetailForExportExcel.push(reportGroup.columns[mapColumn]);
-                        });
-
-                        var reportName = !!reportView.name ? reportView.name : 'report-detail';
-                        exportExcelService.exportExcel(reports, newMapColumns, titleReportDetailForExportExcel, reportName, true);
-                    } else {
-                        AlertService.replaceAlerts({
-                            type: 'warning',
-                            message: 'There are no reports for that selection'
-                        });
-                    }
-                })
-                .catch(function () {
-                    AlertService.replaceAlerts({
-                        type: 'warning',
-                        message: 'There are no reports for that selection'
-                    });
+                    return saveAs(blob, [reportName + '.csv']);
                 });
         }
 

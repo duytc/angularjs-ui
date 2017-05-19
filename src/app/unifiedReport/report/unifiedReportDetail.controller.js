@@ -426,7 +426,7 @@
                             return join.outputField == key
                     });
 
-                    if(totalDimensions.indexOf(key) > -1 || hasJoin > -1) {
+                    if(totalDimensions.indexOf(key) > -1 || hasJoin > -1 || key == 'report_view_alias') {
                         dimensions.push(col);
 
                         if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == col }) == -1) {
