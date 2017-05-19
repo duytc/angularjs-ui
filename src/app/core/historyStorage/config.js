@@ -30,7 +30,8 @@
             connectDataSource: "connectDataSource",
             unifiedReportView: "unifiedReportView",
             unifiedReportDetail: "unifiedReportDetail",
-            public: "public"
+            public: "public",
+            importHistoryList: 'importHistoryList'
         })
     ;
 })();

@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.importHistory')
         .controller('ImportHistoryList', ImportHistoryList);
 
-    function ImportHistoryList($scope, $modal, importHistoryList, dataSet, dataSource, UnifiedReportImportHistoryManager, UnifiedReportDataSourceManager, UnifiedReportDataSetManager, historyStorage, HISTORY_TYPE_PATH, AlertService, exportExcelService, AtSortableService) {
+    function ImportHistoryList($scope, $modal, importHistoryList, dataSet, dataSource, UnifiedReportImportHistoryManager, historyStorage, HISTORY_TYPE_PATH, AlertService, exportExcelService, AtSortableService) {
         $scope.dataSet = dataSet;
         $scope.importHistoryList = importHistoryList;
         $scope.formProcessing = false;
@@ -112,19 +112,15 @@
                         });
                     })
                     .then(function () {
-                        var Manager = !!dataSet ? UnifiedReportDataSetManager.one(dataSet.id) : UnifiedReportDataSourceManager.one(dataSource.id);
+                        if(!!dataSet) {
+                            historyStorage.getLocationPath(HISTORY_TYPE_PATH.importHistoryList, '^.list');
+                        } else {
+                            historyStorage.getLocationPath(HISTORY_TYPE_PATH.importHistoryList, '^.listForDataSource');
+                        }
 
-                        Manager.one('importhistories').getList().then(function (importHistoryList) {
-                            $scope.importHistoryList = importHistoryList.plain();
-
-                            if($scope.tableConfig.currentPage > 0 && $scope.importHistoryList.length/10 == $scope.tableConfig.currentPage) {
-                                AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
-                            }
-
-                            AlertService.replaceAlerts({
-                                type: 'success',
-                                message:  "The import was unloaded successfully"
-                            });
+                        AlertService.addFlash({
+                            type: 'success',
+                            message:  "The import was unloaded successfully"
                         });
                     })
 
@@ -143,5 +139,9 @@
         function showPagination() {
             return angular.isArray($scope.importHistoryList) && $scope.importHistoryList.length > $scope.tableConfig.itemsPerPage;
         }
+
+        $scope.$on('$locationChangeSuccess', function() {
+            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.importHistoryList)
+        });
     }
 })();
