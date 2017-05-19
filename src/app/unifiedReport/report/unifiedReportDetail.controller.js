@@ -474,6 +474,13 @@
                     }
                 });
 
+                angular.forEach(angular.copy(metrics).reverse(), function (metric) {
+                    if($scope.reportView.fieldTypes[metric] == 'date' || $scope.reportView.fieldTypes[metric] == 'datetime') {
+                        metrics.splice(metrics.indexOf(metric), 1);
+                        metrics.unshift(metric);
+                    }
+                });
+
                 $scope.columnPositions = dimensions.concat(metrics);
                 var indexReportViewAlias = $scope.columnPositions.indexOf('report_view_alias');
                 if(indexReportViewAlias > -1 && reportView.multiView) {

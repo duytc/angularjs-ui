@@ -173,6 +173,7 @@
                     scope.enableDragDropDefaultValue = enableDragDropDefaultValue;
                     scope.getLengthTransform = getLengthTransform;
                     scope.filterNumberFields = filterNumberFields;
+                    scope.filterForComparison = filterForComparison;
                     scope.selectCustomFormatDate = selectCustomFormatDate;
                     scope.getTransformName = getTransformName;
                     scope.selectDataSet = selectDataSet;
@@ -1170,6 +1171,10 @@
 
                     function filterNumberFields(field){
                         return ((scope.dimensionsMetrics[field.original] == 'number') || (scope.dimensionsMetrics[field.original] == 'decimal'));
+                    }
+
+                    function filterForComparison(field){
+                        return !scope.dimensionsMetrics[field.original] || (scope.dimensionsMetrics[field.original] == 'number') || (scope.dimensionsMetrics[field.original] == 'decimal');
                     }
 
                     function removeTransform(index){
