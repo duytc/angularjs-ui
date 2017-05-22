@@ -659,9 +659,12 @@
                 "FROM_LIBRARY": "From Standalone",
                 "WIDTH": "Width",
                 "HEIGHT": "Height",
+                "REFRESH_EVERY": "Refresh Every",
+                "MAXIMUM_REFRESH_TIMES": "Maximum Refresh Times",
                 "TARGETING": "Targeting",
                 "SIZE": "Size",
                 "AUTO_FIT": "Auto Fit",
+                "AUTO_REFRESH": "Auto Refresh",
                 "PASSBACK_MODE": "Passback Mode",
                 "FLOOR_PRICE": "Floor Price",
                 "HEADER_BID_PRICE": "Header Bid Price",
@@ -705,7 +708,8 @@
                 "HELP_BLOCK_AUTO_FIT": "When Auto Fit is enabled, the ad slot will dynamically resize if the ad served is different from the size defined above.",
                 "HELP_BLOCK_FLOOR_PRICE": "If the RTB bid price is lower than this amount, the ad tag waterfall will serve instead.",
                 "HELP_BLOCK_RTB": "Enable RTB for this ad slot or inherit the RTB config from the associated site.",
-                "HELP_BLOCK_HEADER_BIDDING_PRICE": "Set the bid price for the Pubvantage bidder"
+                "HELP_BLOCK_HEADER_BIDDING_PRICE": "Set the bid price for the Pubvantage bidder",
+                "HELP_BLOCK_REFRESH_EVERY": "Refresh every in seconds"
             },
             "RON_AD_SLOT_MODULE": {
                 "CURRENTLY_NO_RON_AD_SLOT": "There is currently no RON ad slots",
@@ -763,6 +767,7 @@
                 "UNLINK_SUCCESS": "The ad tag has been unlinked",
                 "UNLINK_FAIL": "An error occurred. The ad tag could not be unlinked",
                 "UNLINK": "Unlink Ad Tag",
+                "PASSBACK": "Passback",
 
                 "BACK_TO_AD_TAG_LIST": "Back to Ad Tag List",
                 "FROM_LIBRARY": "From Library",

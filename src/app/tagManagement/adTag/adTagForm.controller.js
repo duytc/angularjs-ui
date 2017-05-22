@@ -112,7 +112,8 @@
             position: null,
             impressionCap: null,
             networkOpportunityCap: null,
-            active: true
+            active: true,
+            passback: false
         };
 
         if(!!$scope.adTag.libraryAdTag.descriptor) {
