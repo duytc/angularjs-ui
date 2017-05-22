@@ -2,12 +2,14 @@
     <button type="button" class="close" ng-click="$dismiss()">×</button>
     <form class="form-inline">
         <h4 class="form-group">{{ ('DOMAIN_LIST_MODULE.VIEW_DOMAINS' | translate) }}</h4>
-        <search-box style ='padding: 60px' show-query="true" sb-list="domains" search-fields="['id', 'name']"> </search-box>
+        <search-box style='padding: 60px' sb-list="domains" search-fields="['name']"> </search-box>
     </form>
 
 </div>
 <div class="modal-body">
     <div class="row">
+        <button class="btn btn-primary" ng-click="addDomains()">{{ 'DOMAIN_LIST_MODULE.ADD_DOMAINS' | translate }}</button>
+
         <table class="table" at-table at-paginated at-list="domains" at-config="tableConfig">
             <thead>
             </thead>
@@ -18,11 +20,11 @@
             </tbody>
         </table>
 
-        <div>
-            <div class="col-sm-9">
-                <at-pagination at-pagination-query ng-if="showPagination()" at-list="domains" at-config="tableConfig"></at-pagination>
+        <div class="row">
+            <div class="col-sm-11">
+                <at-pagination ng-if="showPagination()" at-list="domains" at-config="tableConfig"></at-pagination>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-1">
                 <div class="itemsPerPage">
                     <label for="inputItemPerPage">Items per page</label>
                     <div class="itemNumber">

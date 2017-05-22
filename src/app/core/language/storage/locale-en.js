@@ -620,6 +620,7 @@
                 "VIEW_DOMAINS": "Manage Domains",
                 "BACK_TO_BLACK_LIST": "Back to my Blacklists",
                 "BACK_TO_WHITE_LIST": "Back to my Whitelists",
+                "ADD_DOMAINS": "Add Domains",
 
                 "CURRENTLY_NO_BLACK_LIST": "There is currently no blacklists",
                 "CURRENTLY_NO_WHITE_LIST": "There is currently no whitelists",
