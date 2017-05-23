@@ -59,7 +59,7 @@
         var dataSourceEntriesOld = $scope.dataSourceEntries[$scope.dataSourceEntries.length - 1];
 
         $scope.selectedData = {
-            importedDataSource: dataSourceEntriesOld.id,
+            importedDataSource: !!dataSourceEntriesOld && dataSourceEntriesOld.id,
             limit: 500
         };
 

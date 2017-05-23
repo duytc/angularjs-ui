@@ -616,7 +616,7 @@
                                     <div class="col-sm-6 ui-select-width-full-width">
                                         <ui-select name="dataSet" ng-model="transform.mapCondition.leftSide" ng-required="true" server-error reset-search-input="'false'">
                                             <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
-                                            <ui-select-choices repeat="field.key as field in getFieldForLeftSideAugmentation(transform) | filter:$select.search ">
+                                            <ui-select-choices repeat="field.key as field in totalFields.totalDataSourceFieldsAugmentationLeftSide | filter:filterLeftSideAugmentation(transform) | filter:$select.search ">
                                                 {{ field.label }}
                                             </ui-select-choices>
                                         </ui-select>

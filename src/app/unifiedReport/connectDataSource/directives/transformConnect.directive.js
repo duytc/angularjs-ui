@@ -73,7 +73,8 @@
                         totalFieldForGroupBy: _getFieldForGroupBy(scope.transforms),
                         totalFieldForTypeDate: [],
                         totalFieldForTypeNumber: [],
-                        totalDimensionsMetricsForAddField: []
+                        totalDimensionsMetricsForAddField: [],
+                        totalDataSourceFieldsAugmentationLeftSide: []
                     };
 
                     scope.$watch(function (){
@@ -188,7 +189,7 @@
                     scope.addCompareValue = addCompareValue;
                     scope.selectedComparison = selectedComparison;
                     scope.addMapFieldForSubsetGroup = addMapFieldForSubsetGroup;
-                    scope.getFieldForLeftSideAugmentation = getFieldForLeftSideAugmentation;
+                    // scope.getFieldForLeftSideAugmentation = getFieldForLeftSideAugmentation;
                     scope.filterTarget = filterTarget;
                     scope.checkOverride = checkOverride;
                     scope.selectFieldNormalizeAndConvert = selectFieldNormalizeAndConvert;
@@ -203,6 +204,17 @@
                     scope.mapDataSourceFieldForMapFieldRightSide = mapDataSourceFieldForMapFieldRightSide;
                     scope.filterFieldByTextAndNumber = filterFieldByTextAndNumber;
                     scope.selectMapFieldLeftSideSubsetGroup = selectMapFieldLeftSideSubsetGroup;
+                    scope.filterLeftSideAugmentation = filterLeftSideAugmentation;
+                    
+                    function filterLeftSideAugmentation(transform) {
+                        return function (field) {
+                            if(transform.mapFields.indexOf(field.key) > -1) {
+                                return false
+                            }
+
+                            return true
+                        }
+                    }
 
                     function selectMapFieldLeftSideSubsetGroup(mapField) {
                         mapField.rightSide = null;
@@ -336,23 +348,23 @@
                         }
                     }
 
-                    function getFieldForLeftSideAugmentation(transform) {
-                        var fields = scope.dataSourceFields;
-
-                        for (var index in scope.transforms) {
-                            var transformItem  = scope.transforms[index];
-
-                            if(transformItem.type == 'augmentation' && transformItem.mapDataSet != transform.mapDataSet) {
-                                angular.forEach(transformItem.mapFields, function (mapField) {
-                                    if(!!mapField.leftSide) {
-                                        fields.push(connectedDataSourceService.findField(mapField.leftSide));
-                                    }
-                                })
-                            }
-                        }
-
-                        return fields
-                    }
+                    // function getFieldForLeftSideAugmentation(transform) {
+                    //     var fields = scope.dataSourceFields;
+                    //
+                    //     for (var index in scope.transforms) {
+                    //         var transformItem  = scope.transforms[index];
+                    //
+                    //         if(transformItem.type == 'augmentation' && transformItem.mapDataSet != transform.mapDataSet) {
+                    //             angular.forEach(transformItem.mapFields, function (mapField) {
+                    //                 if(!!mapField.leftSide) {
+                    //                     fields.push(connectedDataSourceService.findField(mapField.leftSide));
+                    //                 }
+                    //             })
+                    //         }
+                    //     }
+                    //
+                    //     return fields
+                    // }
 
                     function addMapFieldForSubsetGroup(mapFields) {
                         mapFields.push({leftSide: null, rightSide: null});
@@ -1317,6 +1329,24 @@
 
                         return fields;
                     }
+                    
+                    function _getAllFieldInAugmentationLeftSide() {
+                        var fields = [];
+
+                        for (var index in scope.transforms) {
+                            var transformItem  = scope.transforms[index];
+
+                            if(transformItem.type == 'augmentation') {
+                                angular.forEach(transformItem.mapFields, function (mapField) {
+                                    if(!!mapField.leftSide) {
+                                        fields.push(connectedDataSourceService.findField(mapField.leftSide));
+                                    }
+                                })
+                            }
+                        }
+
+                        return fields;
+                    }
 
                     function _getTotalFieldDataSetInAugmentation(dataSetId) {
                         var dataSet = _.find(scope.listDataSets, function (dataSetItem) {
@@ -1412,6 +1442,7 @@
                         scope.totalFields.totalFieldForTypeNumber = _getFieldForTypeNumber(scope.transforms);
                         scope.totalFields.totalFieldForTypeDate = _getFieldForTypeDate(scope.transforms);
                         scope.totalFields.totalDimensionsMetricsForAddField = _getDimensionsMetricsForAddField().concat(scope.temporaryFieldsFormat);
+                        scope.totalFields.totalDataSourceFieldsAugmentationLeftSide = scope.dataSourceFields.concat(_getAllFieldInAugmentationLeftSide());
 
                         _getDimensionsMetricsForDefaultValues();
                     }

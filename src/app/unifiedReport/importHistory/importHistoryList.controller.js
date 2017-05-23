@@ -93,7 +93,7 @@
                     if(data.length > 0) {
                         var header = Object.keys(data[0]);
 
-                        exportExcelService.exportExcel(data, header, header, 'import-history ' + importHistory.dataSet.name + ' ' + importHistory.dataSourceEntry.dataSource.name, true);
+                        exportExcelService.exportExcel(data, header, header, 'import-history ' + importHistory.dataSet.name, true);
                     }
                 })
         }
@@ -105,12 +105,6 @@
 
             modalInstance.result.then(function(){
                 UnifiedReportImportHistoryManager.one(importHistory.id).one('undo').get()
-                    .catch(function () {
-                        AlertService.replaceAlerts({
-                            type: 'error',
-                            message: "Could not unload the import"
-                        });
-                    })
                     .then(function () {
                         if(!!dataSet) {
                             historyStorage.getLocationPath(HISTORY_TYPE_PATH.importHistoryList, '^.list');
@@ -123,7 +117,12 @@
                             message:  "The import was unloaded successfully"
                         });
                     })
-
+                    .catch(function () {
+                        AlertService.replaceAlerts({
+                            type: 'error',
+                            message: "Could not unload the import"
+                        });
+                    })
                 ;
             });
         }
