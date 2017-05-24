@@ -648,12 +648,12 @@
                                 for (var indexField in transform.fields) {
                                     var fieldTransform = transform.fields[indexField];
 
-                                    if(field.key == fieldTransform.field) {
+                                    if(transform.type == 'extractPattern' && field.key == fieldTransform.targetField) {
                                         return false
                                     }
 
-                                    if(field.key == fieldTransform.targetField) {
-                                        // TODO return false
+                                    if(field.key == fieldTransform.field) {
+                                        return false
                                     }
                                 }
                             }
@@ -784,7 +784,7 @@
                             scope.fieldForExpression.push(field);
                         });
 
-                        angular.forEach(scope.dataSourceFields, function (item){
+                        angular.forEach(scope.dataSourceFields.concat(_getAllFieldInTransform()), function (item){
                             if (!item || item == '') {
                                 return;
                             }
@@ -1312,7 +1312,11 @@
                         angular.forEach(scope.transforms, function (transform){
                             if (transform.type == 'addField' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent' || transform.type == 'addConcatenatedField') {
                                 angular.forEach(transform.fields, function (field){
-                                    if (!!field.field) {
+                                    var index = _.findIndex(connectedDataSourceService, function (item) {
+                                        return item.key == field.field
+                                    });
+
+                                    if (!!field.field && index == -1) {
                                         fields.push(connectedDataSourceService.findField(field.field));
                                     }
                                 })
@@ -1322,6 +1326,28 @@
                                 angular.forEach(transform.fields, function (field){
                                     if (!field.isOverride) {
                                         fields.push(connectedDataSourceService.findField(field.targetField));
+                                    }
+                                })
+                            }
+
+                            if (transform.type == 'extractPattern') {
+                                angular.forEach(transform.fields, function (field){
+                                    if (!field.isOverride) {
+                                        var index = _.findIndex(connectedDataSourceService, function (item) {
+                                            return item.key == field.targetField
+                                        });
+
+                                        if(index == -1){
+                                            fields.push(connectedDataSourceService.findField(field.targetField));
+                                        }
+                                    } else {
+                                        var indexField = _.findIndex(connectedDataSourceService, function (item) {
+                                            return item.key == field.field
+                                        });
+
+                                        if(indexField == -1){
+                                            fields.push(connectedDataSourceService.findField(field.field));
+                                        }
                                     }
                                 })
                             }
