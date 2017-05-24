@@ -67,7 +67,7 @@
                     });
 
                     $scope.alerts = [];
-                    $scope.alerts.push({ type: 'success', msg: 'The domains has been added' });
+                    $scope.alerts.push({ type: 'success', msg: 'The domains have been added' });
                 })
                 .then(function () {
                     $scope.selected.domains = [];
@@ -140,7 +140,7 @@
                     }
 
                     $scope.alerts = [];
-                    $scope.alerts.push({ type: 'success', msg: 'The domains has been deleted' });
+                    $scope.alerts.push({ type: 'success', msg: 'The domains have been deleted' });
                 });
         }
     }

@@ -8,9 +8,9 @@
                 <div>
                     <div class="form-inline">
                         <div class="select-width-400 form-group">
-                            <label>Imported Data Source</label>
+                            <label>Data Source</label>
                             <ui-select ng-model="selectedData.importedDataSource" ng-required="true" on-select="selectImportedDataSource()">
-                                <ui-select-match placeholder="Select a imported data source">{{ $select.selected.fileName }}</ui-select-match>
+                                <ui-select-match placeholder="Select a data source">{{ $select.selected.fileName }}</ui-select-match>
                                 <ui-select-choices repeat="entry.id as entry in dataSourceEntries | filter: $select.search">
                                     {{ entry.fileName }}
                                 </ui-select-choices>
@@ -18,7 +18,7 @@
                         </div>
 
                         <div class="select-alert-timezone form-group">
-                            <label>Limit</label>
+                            <label>Row Limit</label>
                             <ui-select ng-model="selectedData.limit" ng-required="true">
                                 <ui-select-match placeholder="Select a ">{{ $select.selected.label }}</ui-select-match>
                                 <ui-select-choices repeat="item.key as item in itemsPerPage | filter: $select.search">
@@ -65,9 +65,9 @@
                 <div>
                     <div class="form-inline">
                         <div class="select-width-400 form-group">
-                            <label>Imported Data Source</label>
+                            <label>Data Source</label>
                             <ui-select ng-model="selectedData.importedDataSource" ng-required="true" on-select="selectImportedDataSource()">
-                                <ui-select-match placeholder="Select a imported data source">{{ $select.selected.fileName }}</ui-select-match>
+                                <ui-select-match placeholder="Select a data source">{{ $select.selected.fileName }}</ui-select-match>
                                 <ui-select-choices repeat="entry.id as entry in dataSourceEntries | filter: $select.search">
                                     {{ entry.fileName }}
                                 </ui-select-choices>
@@ -75,7 +75,7 @@
                         </div>
 
                         <div class="select-alert-timezone form-group">
-                            <label>Limit</label>
+                            <label>Row Limit</label>
                             <ui-select ng-model="selectedData.limit" ng-required="true">
                                 <ui-select-match placeholder="Select a ">{{ $select.selected.label }}</ui-select-match>
                                 <ui-select-choices repeat="item.key as item in itemsPerPage | filter: $select.search">

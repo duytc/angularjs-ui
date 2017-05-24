@@ -77,7 +77,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'success',
-                        message: selectedDataSourceFiles.length + ' imported data have been deleted'
+                        message: selectedDataSourceFiles.length + ' imported data files have been deleted'
                     });
                 });
         }
