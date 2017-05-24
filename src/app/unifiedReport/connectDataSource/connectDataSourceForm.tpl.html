@@ -78,7 +78,7 @@
                         <div class="form-group" ng-repeat="(key, value) in connectDataSource.mapFields">
                             <label class="col-sm-3 form-control-static">{{ key }}:</label>
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-6 map-field">
                                 <ui-select name="dataSource" ng-model="connectDataSource.mapFields[key]" ng-required="true" server-error on-select="selectMapField($item)">
                                     <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
                                     <ui-select-choices repeat="dm in totalDimensionsMetrics | orderBy | filter:$select.search">

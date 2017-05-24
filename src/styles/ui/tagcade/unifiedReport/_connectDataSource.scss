@@ -21,3 +21,15 @@
   max-height: 100px;
   width: 100%;
 }
+
+.map-field {
+  .ui-select-match {
+    span.ng-binding {
+      display:inline-block;
+      width:250px;
+      white-space: nowrap;
+      overflow:hidden !important;
+      text-overflow: ellipsis;
+    }
+  }
+}
