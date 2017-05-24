@@ -91,8 +91,8 @@
                 controller: 'ViewDomains',
                 size: 'lg',
                 resolve: {
-                    domain: function(){
-                        return item;
+                    domain: function(DisplayWhiteListManager){
+                        return DisplayWhiteListManager.one(item.id).get();
                     },
                     whiteList: true
                 }

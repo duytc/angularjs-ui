@@ -86,6 +86,7 @@
                 "NEW_SUB_PUBLISHER": "New Sub Publisher",
                 "TAG_MANAGEMENT": "Tag Management",
                 "DISPLAY_ADS": "Display Ads",
+                "DOMAIN_LISTS": "Domain Lists",
                 "GENERATE_TAGS": "Generate Tags",
                 "GENERATE_VAST_TAGS": "Generate Vast/VPAID Tags",
                 "CHANNELS": "Channels",
@@ -649,7 +650,8 @@
 
                 "CUSTOM": "Custom",
                 "BUILT_IN": "Built In",
-                "SELECT_A_BUILT_IN": "Select a built in"
+                "SELECT_A_BUILT_IN": "Select a built in",
+                "SHOW_DOMAINS": "Show Domains"
             },
             "AD_SLOT_MODULE": {
                 "NATIVE": "Native",

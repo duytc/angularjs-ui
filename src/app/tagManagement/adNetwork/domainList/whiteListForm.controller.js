@@ -27,6 +27,10 @@
             networkWhiteLists: []
         };
 
+        $scope.selected = {
+            showDomains: $scope.isNew
+        };
+
         $scope.domainList = angular.copy($scope.domain.domains) || [];
 
         if(!$scope.isNew) {
