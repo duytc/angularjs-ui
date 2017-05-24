@@ -65,6 +65,9 @@
                         </td>
 
                         <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.ROWS' | translate }}" at-implicit at-sortable at-attribute="totalRow"></td>
+                        <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.PENDING_LOAD' | translate }}" at-sortable at-attribute="numOfPendingLoad">
+                            {{ item.dataSetImportJobs.length }}
+                        </td>
                     </tr>
                     </tbody>
                 </table>

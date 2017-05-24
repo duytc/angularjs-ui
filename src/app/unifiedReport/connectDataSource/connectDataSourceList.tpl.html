@@ -49,6 +49,8 @@
                     <td at-sortable at-attribute="dataSource.name" at-title="{{ 'DATA_SOURCE' | translate }}">
                         {{ item.dataSource.name + ' (ID: '+ item.dataSource.id +')'}}
                     </td>
+                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.ROWS' | translate }}" at-implicit at-sortable at-attribute="totalRow"></td>
+                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.FILES' | translate }}" at-implicit at-sortable at-attribute="dataSource.numOfFiles"></td>
                 </tr>
                 </tbody>
             </table>
