@@ -769,7 +769,7 @@
                 "UNLINK_SUCCESS": "The ad tag has been unlinked",
                 "UNLINK_FAIL": "An error occurred. The ad tag could not be unlinked",
                 "UNLINK": "Unlink Ad Tag",
-                "PASSBACK": "Passback",
+                "PASSBACK": "Mark as Passback",
 
                 "BACK_TO_AD_TAG_LIST": "Back to Ad Tag List",
                 "FROM_LIBRARY": "From Library",
