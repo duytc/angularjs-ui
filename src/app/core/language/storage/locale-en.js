@@ -711,7 +711,8 @@
                 "HELP_BLOCK_FLOOR_PRICE": "If the RTB bid price is lower than this amount, the ad tag waterfall will serve instead.",
                 "HELP_BLOCK_RTB": "Enable RTB for this ad slot or inherit the RTB config from the associated site.",
                 "HELP_BLOCK_HEADER_BIDDING_PRICE": "Set the bid price for the Pubvantage bidder",
-                "HELP_BLOCK_REFRESH_EVERY": "Refresh every in seconds"
+                "HELP_BLOCK_REFRESH_EVERY": "How many seconds after an impression before the ad slot is refreshed.",
+                "HELP_BLOCK_REFRESH_TIMES": "The maximum amount of times the ad slot will refresh after the initial load. Once this limit is exceeded, the ad slot will no longer refresh."
             },
             "RON_AD_SLOT_MODULE": {
                 "CURRENTLY_NO_RON_AD_SLOT": "There is currently no RON ad slots",
@@ -769,7 +770,7 @@
                 "UNLINK_SUCCESS": "The ad tag has been unlinked",
                 "UNLINK_FAIL": "An error occurred. The ad tag could not be unlinked",
                 "UNLINK": "Unlink Ad Tag",
-                "PASSBACK": "Mark as Passback",
+                "MARK_AS_PASSBACK": "Mark as Passback",
 
                 "BACK_TO_AD_TAG_LIST": "Back to Ad Tag List",
                 "FROM_LIBRARY": "From Library",
@@ -826,6 +827,7 @@
                 "HELP_BLOCK_SLOT_ID": "The ad slot ID of the current tag",
                 "HELP_BLOCK_PARTNER_TAG_ID": "This is the ad tag id provided by your ad network partner. You have to fill in value for this field in order to see comparison between our report and your ad network partner report",
                 "HELP_BLOCK_AUTO_POSITION": "If Shift down is checked, all ad tags at the same or higher position will be shifted down.",
+                "HELP_BLOCK_MARK_AS_PASSBACK": "Tags marked as passbacks will not count impressions, they will count passbacks only. When this feature is used with the auto refresh feature, any passback tags are ignored once the ad slot is refreshed.",
                 "SHIFT_DOWN": "Shift Down",
 
                 "GUIDE_DRAG_DROP_TITLE": "You can drag and drop to re-order your ad tags.",
