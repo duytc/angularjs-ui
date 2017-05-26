@@ -126,7 +126,7 @@
                                 UnifiedReportDataSourceFileManager.one(dataSourceFile.id).one('preview').get({limit: $scope.selectedData.limit})
                                     .then(function (reportView) {
                                         $scope.reportView = reportView;
-                                        $scope.columns = reportView.columns;
+                                        $scope.columns = _.keys(reportView.columns);
                                         $scope.reports = reportView.reports;
                                     })
                             }
