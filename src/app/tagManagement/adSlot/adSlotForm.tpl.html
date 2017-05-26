@@ -267,6 +267,8 @@
                             <label for="maximumRefreshTimes" class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.MAXIMUM_REFRESH_TIMES' | translate }}</label>
                             <div class="col-sm-5">
                                 <input server-error name="maximumRefreshTimes" ng-model="adSlot.maximumRefreshTimes" ng-required="true" min="1" type="number" class="form-control" id="maximumRefreshTimes" placeholder="{{ 'AD_SLOT_MODULE.MAXIMUM_REFRESH_TIMES' | translate }}">
+
+                                <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_REFRESH_TIMES' | translate }}</span>
                             </div>
                         </div>
                     </div>
