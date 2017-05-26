@@ -5,7 +5,7 @@
         .controller('AdTagForm', AdTagForm)
     ;
 
-    function AdTagForm($scope, Auth, _, $state, $modal, $translate, $stateParams, AdSlotManager, AdNetworkCache, AdTagManager, AlertService, AdTagLibrariesManager, userSession, ServerErrorProcessor, DisplayAdSlotManager, historyStorage, adTag, adSlot, site, publisher, publisherList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, USER_MODULES, PLATFORM_VAST_TAG, HISTORY_TYPE_PATH) {
+    function AdTagForm($scope, Auth, _, $state, $modal, $translate, $stateParams, queryBuilderService, blackList, whiteList, AdSlotManager, AdNetworkCache, AdTagManager, AlertService, AdTagLibrariesManager, userSession, ServerErrorProcessor, DisplayAdSlotManager, historyStorage, adTag, adSlot, site, publisher, publisherList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, USER_MODULES, PLATFORM_VAST_TAG, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
             name: 'Name',
@@ -95,6 +95,10 @@
         $scope.adTag = adTag || {
             adSlots: [],
             libraryAdTag: {
+                expressionDescriptor: {
+                    groupVal: [],
+                    groupType: 'AND'
+                },
                 name: null,
                 html: null,
                 adNetwork: null,
@@ -132,11 +136,26 @@
             placeholder: 'sortable-placeholder'
         };
 
+        $scope.domainList = {
+            blacklist: blackList,
+            whitelist: whiteList
+        };
+
+        if(!$scope.isNew) {
+            if(angular.isArray($scope.adTag.libraryAdTag.expressionDescriptor) || !$scope.adTag.libraryAdTag.expressionDescriptor) {
+                $scope.adTag.libraryAdTag.expressionDescriptor = {groupVal: [], groupType: 'AND'}
+            }
+        }
+
         $scope.getAdTagLibrary = getAdTagLibrary;
         $scope.searchItem = searchItem;
         $scope.addMoreItems = addMoreItems;
         $scope.backToAdTagList = backToAdTagList;
         $scope.moveVastTag = moveVastTag;
+
+        $scope.builtVariable = function(expressionDescriptor) {
+            return queryBuilderService.builtVariable(expressionDescriptor)
+        };
 
         function backToAdTagList() {
             if(!!$stateParams.adSlotType && !!$stateParams.adSlotId) {
@@ -187,6 +206,11 @@
         $scope.selectPublisher = function (publisher, publisherId) {
             $scope.selected.site = null;
             $scope.adTag.adSlots = [];
+            $scope.adTag.libraryAdTag.expressionDescriptor = {
+                groupVal: [],
+                groupType: 'AND'
+            };
+
             $scope.resetSelection();
 
             $scope.hasUnifiedModule = publisher.enabledModules.indexOf('MODULE_UNIFIED_REPORT') !== -1;
@@ -314,7 +338,11 @@
         }
 
         $scope.selectAdTagLibrary = function(libraryAdTag) {
-            angular.extend($scope.adTag.libraryAdTag, libraryAdTag);
+            var libraryAdTagClone = angular.copy(libraryAdTag);
+
+            _convertGroupVal(libraryAdTagClone.expressionDescriptor.groupVal);
+
+            angular.extend($scope.adTag.libraryAdTag, libraryAdTagClone);
         };
 
         $scope.addVast = function () {
@@ -355,6 +383,8 @@
             delete $scope.adTag.libraryAdTag.associatedTagCount;
 
             var adTag = angular.copy($scope.adTag);
+
+            _formatGroupVal(adTag.libraryAdTag.expressionDescriptor.groupVal);
 
             if($scope.isNew) {
                 adTag.adSlot = adTag.adSlots;
@@ -498,6 +528,39 @@
                         $scope.adSlotList.push(item);
                     })
                 });
+        }
+
+        _update();
+
+        function _update() {
+            if(!$scope.isNew) {
+                _convertGroupVal($scope.adTag.libraryAdTag.expressionDescriptor.groupVal);
+            }
+        }
+
+        function _convertGroupVal(groupVal) {
+            angular.forEach(groupVal, function(group) {
+                if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}')) {
+                    group.val = group.val.split(',');
+                    group.cmp = group.cmp == '==' ||  group.cmp == 'is' ? 'is' : 'isNot';
+                }
+
+                if(angular.isObject(group.groupVal)) {
+                    _convertGroupVal(group.groupVal);
+                }
+            });
+        }
+
+        function _formatGroupVal(groupVal) {
+            angular.forEach(groupVal, function(group) {
+                if(angular.isObject(group.val)) {
+                    group.val = group.val.toString();
+                }
+
+                if(angular.isObject(group.groupVal)) {
+                    _formatGroupVal(group.groupVal);
+                }
+            });
         }
 
         $scope.$watch(function() {

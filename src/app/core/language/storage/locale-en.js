@@ -770,6 +770,7 @@
                 "UNLINK_FAIL": "An error occurred. The ad tag could not be unlinked",
                 "UNLINK": "Unlink Ad Tag",
                 "PASSBACK": "Mark as Passback",
+                "TARGETING": "Targeting",
 
                 "BACK_TO_AD_TAG_LIST": "Back to Ad Tag List",
                 "FROM_LIBRARY": "From Library",
