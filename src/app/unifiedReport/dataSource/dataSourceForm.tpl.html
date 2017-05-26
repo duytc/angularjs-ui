@@ -169,7 +169,10 @@
                                             </div>
 
                                             <div class="col-sm-9" ng-switch-when="secure">
-                                                <input style="width:100%" server-error name="value" ng-model="param.value" type="password" class="form-control" placeholder="Value">
+                                                <div class="input-group" style="width:100%">
+                                                    <input style="width:100%" server-error name="value" ng-model="param.value" type="{{ showValue ? 'text' : 'password'}}" class="form-control" placeholder="Value">
+                                                    <span style="width:10%; height: 34px" class="input-group-btn"><button ng-click="viewValue(integration, param); showValue = !showValue" style="height: 34px" class="btn btn-secondary" type="button"><span class="fa fa-eye"></span></button></span>
+                                                </div>
 
                                                 <span class="help-block">Leave it blank for no change</span>
                                             </div>

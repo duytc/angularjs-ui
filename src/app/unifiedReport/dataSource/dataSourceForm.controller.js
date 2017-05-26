@@ -4,11 +4,11 @@
     angular.module('tagcade.unifiedReport.dataSource')
         .controller('DataSourceForm', DataSourceForm);
 
-    function DataSourceForm($scope, _, UnifiedReportDataSourceManager, $translate, dataSource, integrations, publishers, AlertService, dateUtil, TIMEZONES, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH){
+    function DataSourceForm($scope, _, UnifiedReportDataSourceManager, DataSourceIntegration, $translate, dataSource, integrations, publishers, AlertService, dateUtil, TIMEZONES, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH){
         $scope.publishers = publishers;
         $scope.integrations = integrations;
 
-        $scope.isNew = (dataSource === null);
+        $scope.isNew = dataSource === null;
         $scope.formProcessing = false;
         $scope.integrations.active = false;
         $scope.dynamicDatePickerOpts = [
@@ -143,6 +143,16 @@
         $scope.removeFixedTime = removeFixedTime;
         $scope.checkedUseIntegration = checkedUseIntegration;
         $scope.formatParamKey = formatParamKey;
+        $scope.viewValue = viewValue;
+
+        function viewValue(integration, param) {
+            if(!$scope.isNew && !param.value) {
+                DataSourceIntegration.one(integration.id || integration).one('showvalue').get({param: param.key})
+                    .then(function (value) {
+                        param.value = value
+                    })
+            }
+        }
 
         function formatParamKey(key) {
             var keys = key.split("");
@@ -291,6 +301,8 @@
                 // dataSource.format = null;
 
                 angular.forEach(dataSource.dataSourceIntegrations, function (dataSourceIntegration) {
+                    delete dataSourceIntegration.id;
+
                     angular.forEach(dataSourceIntegration.params, function (param) {
                         if(param.type == 'date') {
                             param.value = dateUtil.getFormattedDate(param.value.startDate);
