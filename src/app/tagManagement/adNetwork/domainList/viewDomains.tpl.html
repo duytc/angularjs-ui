@@ -2,7 +2,11 @@
     <button type="button" class="close" ng-click="$dismiss()">×</button>
     <form class="form-inline">
         <h4 class="form-group">{{ ('DOMAIN_LIST_MODULE.VIEW_DOMAINS' | translate) }}</h4>
-        <search-box style='padding: 60px' sb-list="domains" search-fields="['name']"> </search-box>
+
+        <div class="input-group col-sm-6 search-box" style='padding-left: 60px'>
+            <input class="form-control" ng-model="query" placeholder="Search" type="search" ng-change="search()"/>
+            <span class="input-group-addon">{{ domains.length }} records found</span>
+        </div>
     </form>
 
 </div>
@@ -27,9 +31,11 @@
             </thead>
             <tbody>
             <tr>
-                <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="Domain"></td>
+                <td at-sortable at-attribute="name" at-initial-sorting="asc" at-title="Domain">
+                    {{ item }}
+                </td>
                 <td at-attribute="remove" at-initial-sorting="asc" at-title="Delete">
-                    <button type="button" class="btn btn-danger btn-close-ur pull-left" ng-click="deleteDomain(item.name)">
+                    <button type="button" class="btn btn-danger btn-close-ur pull-left" ng-click="deleteDomain(item)">
                         <span class="glyphicon glyphicon-minus "></span>
                     </button>
                 </td>

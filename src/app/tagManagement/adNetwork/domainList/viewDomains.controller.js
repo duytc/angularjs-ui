@@ -5,9 +5,9 @@
         .controller('ViewDomains', ViewDomains)
     ;
 
-    function ViewDomains($scope, DisplayBlackListManager, DisplayWhiteListManager, domain, whiteList, DOMAINS_LIST_SEPARATOR) {
-        $scope.domains = [];
+    function ViewDomains($scope, $filter, DisplayBlackListManager, DisplayWhiteListManager, domain, whiteList, DOMAINS_LIST_SEPARATOR) {
         $scope.domain = domain;
+        $scope.domains = $scope.domain.domains;
 
         $scope.alerts = [];
 
@@ -21,11 +21,7 @@
             maxPages: 7
         };
 
-        angular.forEach($scope.domain.domains, function(domain) {
-            $scope.domains.push({
-                name: domain
-            })
-        });
+        $scope.query = null;
 
         $scope.itemsPerPage = [
             {label: '10', key: '10'},
@@ -34,6 +30,16 @@
             {label: '100', key: '100'},
             {label: '200', key: '200'}
         ];
+
+        $scope.search = search;
+
+        function search() {
+            if(!!$scope.query) {
+                $scope.domains = $filter("filter")($scope.domain.domains, $scope.query);
+            } else {
+                $scope.domains = $scope.domain.domains
+            }
+        }
 
         $scope.showPagination = function() {
             return angular.isArray($scope.domains) && $scope.domains.length > $scope.tableConfig.itemsPerPage;
@@ -58,13 +64,9 @@
                     $scope.alerts.push({ type: 'danger', msg: 'The domains could not be added' });
                 })
                 .then(function () {
-                    angular.extend($scope.domain.domains, $scope.selected.domains);
-
-                    angular.forEach($scope.selected.domains, function(domain) {
-                        $scope.domains.push({
-                            name: domain
-                        })
-                    });
+                    $scope.domain.domains = $scope.domain.domains.concat($scope.selected.domains);
+                    $scope.domains = $scope.domain.domains;
+                    search();
 
                     $scope.alerts = [];
                     $scope.alerts.push({ type: 'success', msg: 'The domains have been added' });
@@ -129,15 +131,12 @@
                     $scope.alerts.push({ type: 'danger', msg: 'The domains could not be deleted' });
                 })
                 .then(function () {
-                    $scope.domain.domains = _.without(domainClone.domains, null, undefined, '', domain);
-
-                    var index = _.findIndex($scope.domains, function (item) {
-                        return item.name == domain
-                    });
-
-                    if(index > -1) {
-                        $scope.domains.splice(index, 1)
+                    if($scope.domain.domains.indexOf(domain) > -1) {
+                        $scope.domain.domains.splice($scope.domain.domains.indexOf(domain), 1);
                     }
+
+                    $scope.domains = $scope.domain.domains;
+                    search();
 
                     $scope.alerts = [];
                     $scope.alerts.push({ type: 'success', msg: 'The domains have been deleted' });
