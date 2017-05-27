@@ -172,6 +172,10 @@
             var adTag = angular.copy($scope.adTag);
             _formatGroupVal(adTag.expressionDescriptor.groupVal);
 
+            if(adTag.expressionDescriptor.groupVal.length == 0) {
+                adTag.expressionDescriptor = null;
+            }
+
             var saveAdTagLibrary =  $scope.isNew ? AdTagLibrariesManager.post(adTag) : AdTagLibrariesManager.one(adTag.id).patch(adTag);
             saveAdTagLibrary
                 .catch(

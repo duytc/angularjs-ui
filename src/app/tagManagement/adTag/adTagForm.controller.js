@@ -386,6 +386,10 @@
 
             _formatGroupVal(adTag.libraryAdTag.expressionDescriptor.groupVal);
 
+            if(adTag.libraryAdTag.expressionDescriptor.groupVal.length == 0) {
+                adTag.libraryAdTag.expressionDescriptor = null;
+            }
+
             if($scope.isNew) {
                 adTag.adSlot = adTag.adSlots;
                 delete adTag.adSlots;
