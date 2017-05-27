@@ -5,7 +5,7 @@
         .directive('queryBuilderGroup', queryBuilderGroup)
     ;
 
-    function queryBuilderGroup($compile, _, CONDITIONS_STRING, CONDITIONS_BOOLEAN, CONDITIONS_NUMERIC, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, COUNTRY_LIST, DEVICES) {
+    function queryBuilderGroup($compile, _, AdSlotLibrariesManager, AdSlotManager, CONDITIONS_STRING, CONDITIONS_BOOLEAN, CONDITIONS_NUMERIC, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, COUNTRY_LIST, DEVICES) {
         'use strict';
 
         return {
@@ -14,7 +14,9 @@
                 groups: '=',
                 index: '=',
                 tags: '=',
-                disabledDirective: '='
+                disabledDirective: '=',
+                isLibrary: '=',
+                expectAdSlot: '='
             },
             restrict: 'AE',
             templateUrl: 'blocks/queryBuilder/queryBuilderGroup.tpl.html',
@@ -30,6 +32,10 @@
                     scope.dataTypeList = DATA_TYPE;
                     scope.devices = DEVICES;
                     scope.countries = COUNTRY_LIST;
+                    scope.blacklists = [];
+                    scope.whitelists = [];
+                    var itemGroupClone = {};
+
                     var mostCommonlyCountry = [
                         {name: 'Australia', code: 'AU', line: true},
                         {name: 'Canada', code: 'CA', line: true},
@@ -56,10 +62,90 @@
                     scope.isDisabledButtonRemoveCondition = isDisabledButtonRemoveCondition;
                     scope.changeCondition = changeCondition;
                     scope.selectType = selectType;
+                    scope.selectTypeDomain = selectTypeDomain;
                     scope.valIsNull = valIsNull;
                     scope.changeVarName = changeVarName;
                     scope.getDataTypeList = getDataTypeList;
                     scope.groupEntities = groupEntities;
+                    scope.getDomains = getDomains;
+                    scope.selectCondition = selectCondition;
+                    scope.findCondition = findCondition;
+
+                    function findCondition(cmp, listCondition) {
+                        return _.find(listCondition, function (condition) {
+                            return condition.key == cmp
+                        });
+                    }
+
+                    function selectCondition(group, listCondition, index) {
+                        itemGroupClone[index] = angular.copy(group);
+
+                        group.val = null;
+
+                        if(!group.cmp) {
+                            return
+                        }
+
+                        var condition = findCondition(group.cmp, listCondition);
+
+                        if(!!condition && _.has(condition, 'blacklist') && !condition.hideInputVal) {
+                            if(scope.isLibrary) {
+                                if(condition.blacklist) {
+                                    AdSlotManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displayblacklists')
+                                        .then(function (blacklists) {
+                                            scope.blacklists = blacklists;
+
+                                            if(group.val.length == 0 || !group.val) {
+                                                group.val = itemGroupClone[index].val;
+                                            }
+                                        })
+                                } else {
+                                    AdSlotManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displaywhitelists')
+                                        .then(function (whitelists) {
+                                            scope.whitelists =  whitelists;
+
+                                            if(group.val.length == 0 || !group.val) {
+                                                group.val = itemGroupClone[index].val;
+                                            }
+                                        })
+                                }
+                            } else {
+                                if(condition.blacklist) {
+                                    AdSlotLibrariesManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displayblacklists')
+                                        .then(function (blacklists) {
+                                            scope.blacklists = blacklists;
+
+                                            if(group.val.length == 0 || !group.val) {
+                                                group.val = itemGroupClone[index].val;
+                                            }
+                                        })
+                                } else {
+                                    AdSlotLibrariesManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displaywhitelists')
+                                        .then(function (whitelists) {
+                                            scope.whitelists =  whitelists;
+
+                                            if(group.val.length == 0 || !group.val) {
+                                                group.val = itemGroupClone[index].val;
+                                            }
+                                        })
+                                }
+                            }
+                        }
+                    }
+
+                    function getDomains(group, listCondition) {
+                        var condition = findCondition(group.cmp, listCondition);
+
+                        if(!condition) {
+                            return []
+                        }
+
+                        if(condition.blacklist) {
+                            return scope.blacklists
+                        }
+
+                        return scope.whitelists
+                    }
 
                     function addGroup() {
                         // set default group, including two conditions
@@ -185,6 +271,10 @@
                     function selectType(item) {
                         item.val = null;
                         item.cmp = scope.conditions[0].key;
+                    }
+
+                    function selectTypeDomain(item) {
+                        item.val = null;
                     }
 
                     function valIsNull(cmp) {

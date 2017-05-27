@@ -47,6 +47,11 @@
                     scope.changeHeaderBidPrice = changeHeaderBidPrice;
                     scope.getHeaderName = getHeaderName;
                     scope.isCollapsedRule = isCollapsedRule;
+                    scope.removeGroup = removeGroup;
+                    
+                    function removeGroup(expressions, $index) {
+                        expressions.splice($index, 1)
+                    }
 
                     scope.sortableOptions = {
                         disabled: true,
