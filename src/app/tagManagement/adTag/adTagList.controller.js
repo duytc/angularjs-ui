@@ -114,6 +114,32 @@
             ;
         };
 
+        $scope.toggleAdTagPassback = function (adTag) {
+            var newTagPassback = !adTag.passback;
+
+            var Manager = !!adTag.libraryAdSlot ? AdSlotAdTagLibrariesManager : AdTagManager;
+            Manager.one(adTag.id).patch({
+                'passback': newTagPassback
+            })
+                .catch(function () {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: !newTagPassback ? $translate.instant('AD_TAG_MODULE.UNMARK_PASSBACK_FAIL') : $translate.instant('AD_TAG_MODULE.MARK_PASSBACK_FAIL')
+                    });
+
+                    return $q.reject(!newTagPassback ? $translate.instant('AD_TAG_MODULE.UNMARK_PASSBACK_FAIL') : $translate.instant('AD_TAG_MODULE.MARK_PASSBACK_FAIL'));
+                })
+                .then(function () {
+                    adTag.passback = newTagPassback;
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: !newTagPassback ? $translate.instant('AD_TAG_MODULE.UNMARK_PASSBACK_SUCCESS') : $translate.instant('AD_TAG_MODULE.MARK_PASSBACK_SUCCESS')
+                    });
+                })
+            ;
+        };
+
         // called when an action dropdown is opened/closed
         // we disable drag and drop sorting when it is open
         function actionDropdownToggled(isOpen) {
