@@ -43,6 +43,10 @@
                         startDate: null,
                         endDate: null
                     },
+                    backFillEndDate: {
+                        startDate: null,
+                        endDate: null
+                    },
                     schedule: {
                         checked: 'checkEvery',
                         checkEvery:  { hour: null },
@@ -123,6 +127,13 @@
                     endDate: dataSourceIntegration.backFillStartDate
                 }
             }
+
+            if(!angular.isObject(dataSourceIntegration.backFillEndDate)) {
+                dataSourceIntegration.backFillEndDate = {
+                    startDate: dataSourceIntegration.backFillEndDate,
+                    endDate: dataSourceIntegration.backFillEndDate
+                }
+            }
         });
 
         $scope.disabledFormat = !!angular.copy($scope.dataSource.format);
@@ -178,6 +189,10 @@
                        startDate: null,
                        endDate: null
                    },
+                   backFillEndDate: {
+                       startDate: null,
+                       endDate: null
+                   },
                    schedule: {
                        checked: 'checkEvery',
                        checkEvery:  { hour: null },
@@ -223,6 +238,10 @@
                 backFill: false,
                 backFillForce: false,
                 backFillStartDate: {
+                    startDate: null,
+                    endDate: null
+                },
+                backFillEndDate: {
                     startDate: null,
                     endDate: null
                 },
@@ -275,8 +294,14 @@
 
         function isFormValid(){
             for (var index in $scope.dataSource.dataSourceIntegrations) {
-                if(!$scope.dataSource.dataSourceIntegrations[index].backFillStartDate.startDate && $scope.dataSource.dataSourceIntegrations[index].backFill) {
-                    return false
+                if($scope.dataSource.dataSourceIntegrations[index].backFill) {
+                    if(!$scope.dataSource.dataSourceIntegrations[index].backFillStartDate && !$scope.dataSource.dataSourceIntegrations[index].backFillStartDate.startDate) {
+                        return false
+                    }
+
+                    // if(!$scope.dataSource.dataSourceIntegrations[index].backFillEndDate && !$scope.dataSource.dataSourceIntegrations[index].backFillEndDate.startDate) {
+                    //     return false
+                    // }
                 }
             }
 
@@ -317,7 +342,17 @@
                         }
                     });
 
-                    dataSourceIntegration.backFillStartDate = dateUtil.getFormattedDate(dataSourceIntegration.backFillStartDate.startDate);
+                    if(!!dataSourceIntegration.backFillStartDate && !!dataSourceIntegration.backFillStartDate.startDate) {
+                        dataSourceIntegration.backFillStartDate = dateUtil.getFormattedDate(dataSourceIntegration.backFillStartDate.startDate);
+                    } else {
+                        dataSourceIntegration.backFillStartDate = null;
+                    }
+
+                    if(!!dataSourceIntegration.backFillEndDate && !!dataSourceIntegration.backFillEndDate.startDate) {
+                        dataSourceIntegration.backFillEndDate = dateUtil.getFormattedDate(dataSourceIntegration.backFillEndDate.startDate);
+                    } else {
+                        dataSourceIntegration.backFillEndDate = null;
+                    }
                 });
             } else {
                 dataSource.dataSourceIntegrations = []
