@@ -138,6 +138,10 @@
                     $scope.domains = $scope.domain.domains;
                     search();
 
+                    if($scope.tableConfig.currentPage > 0 && $scope.domains.length/10 == $scope.tableConfig.currentPage) {
+                        $scope.tableConfig.currentPage -= 1
+                    }
+
                     $scope.alerts = [];
                     $scope.alerts.push({ type: 'success', msg: 'The domains have been deleted' });
                 });
