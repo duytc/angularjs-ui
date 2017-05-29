@@ -5,7 +5,7 @@
         .controller('LibraryAdSlotForm', LibraryAdSlotForm)
     ;
 
-    function LibraryAdSlotForm($scope, $translate, $stateParams, $filter, _, adSlot, publisherList, adSlotType, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, historyStorage, HISTORY_TYPE_PATH) {
+    function LibraryAdSlotForm($scope, $translate, $stateParams, $filter, _, adSlot, publisherList, adSlotType, VARIABLE_FOR_AD_TAG, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
@@ -262,7 +262,7 @@
                 return true;
             }
 
-            return !!group.var;
+            return !!group.customVar || !!group.var;
         }
 
         /**
@@ -393,6 +393,12 @@
 
         function _formatGroupVal(groupVal) {
             angular.forEach(groupVal, function(group) {
+                if(!!group.customVar) {
+                    group.var = group.customVar;
+                }
+
+                delete group.customVar;
+
                 if(angular.isObject(group.val)) {
                     group.val = group.val.toString();
                 }
@@ -405,6 +411,12 @@
 
         function _convertGroupVal(groupVal) {
             angular.forEach(groupVal, function(group) {
+                var index = _.findIndex(VARIABLE_FOR_AD_TAG, {key: group.var});
+
+                if(index > -1) {
+                    group.customVar = group.var;
+                }
+
                 if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}' || group.var == '${DOMAIN}')) {
                     group.val = group.val.split(',');
 

@@ -105,11 +105,11 @@
                     groupBuild += '(' + _buildNested(group[GROUP_KEY], group[GROUP_TYPE]) + ') ' + type + ' ';
                 }
                 else {
-                    var variable = _getConvertedVariable(group.var);
+                    var variable = _getConvertedVariable(group.customVar || group.var);
 
                     var value = !group.val ? "" : group.val;
 
-                    var cmpConfig = _getComparatorConfig(group.cmp, group.type, group.var);
+                    var cmpConfig = _getComparatorConfig(group.cmp, group.type, group.customVar || group.var);
                     var defaultGroupLabel = '';
 
                     if(typeof value == 'object') {

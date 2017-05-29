@@ -86,7 +86,7 @@
                             return []
                         }
 
-                        if(!!group && !!group.val && group.val.length == 0 && itemGroupClone[index].val.length > 0) {
+                        if(!!group && !!group.val && group.val.length == 0 && !!itemGroupClone[index].val && itemGroupClone[index].val.length > 0) {
                             if(numberChangeGroupVal == 0) {
                                 numberChangeGroupVal++;
                                 group.val = itemGroupClone[index].val;

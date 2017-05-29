@@ -55,7 +55,6 @@
         'angular-table',
         'currencyFilter',
         'xeditable',
-        'angucomplete',
         'ui.codemirror',
         'hljs',
         'ngClipboard',

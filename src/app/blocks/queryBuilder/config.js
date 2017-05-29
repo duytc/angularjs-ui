@@ -55,15 +55,15 @@
         .constant('GROUP_KEY', 'groupVal')
         .constant('GROUP_TYPE', 'groupType')
         .constant('VARIABLE_FOR_AD_TAG', [
-            {key: "${PAGE_URL}", label: 'PAGE URL'},
-            {key: "${USER_AGENT}", label: 'USER AGENT'},
+            {key: "${DOMAIN}", label: 'DOMAIN'},
             {key: "${COUNTRY}", label: 'COUNTRY'},
+            {key: "${DEVICE}", label: 'DEVICE'},
+            {key: "${USER_AGENT}", label: 'USER AGENT'},
+            {key: "${PAGE_URL}", label: 'PAGE URL'},
             {key: "${SCREEN_WIDTH}", label: 'SCREEN WIDTH'},
             {key: "${SCREEN_HEIGHT}", label: 'SCREEN HEIGHT'},
             {key: "${WINDOW_WIDTH}", label: 'WINDOW WIDTH'},
-            {key: "${WINDOW_HEIGHT}", label: 'WINDOW HEIGHT'},
-            {key: "${DOMAIN}", label: 'DOMAIN'},
-            {key: "${DEVICE}", label: 'DEVICE'}]
-        )
+            {key: "${WINDOW_HEIGHT}", label: 'WINDOW HEIGHT'}
+        ])
     ;
 })();

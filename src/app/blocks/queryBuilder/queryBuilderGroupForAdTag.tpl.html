@@ -19,18 +19,16 @@
                         {{ tag.label }}
                     </ui-select-choices>
                 </ui-select>
-
-                <!--<angucomplete disabled-form="disabledDirective" ng-change="changeVarName(itemGroup, $index)" matchClass="highlight" ng-model="itemGroup.var" selectedobject="selectedCountry" pause="100" localdata="tags" searchfields="name" titlefield="name" minlength="1" inputclass="form-control" placeholder="Variable Name"></angucomplete>-->
             </div>
 
-            <div class="form-group select-data-type">
-                <ui-select ng-model="itemGroup.type" ng-required="true" server-error ng-disabled="disabledDirective"  on-select="selectType(itemGroup)" reset-search-input="'false'">
-                    <ui-select-match placeholder="Select data type">{{ $select.selected.label }}</ui-select-match>
-                    <ui-select-choices repeat="dataType.key as dataType in getDataTypeList(itemGroup)">
-                        {{ dataType.label }}
-                    </ui-select-choices>
-                </ui-select>
-            </div>
+            <!--<div class="form-group select-data-type">-->
+                <!--<ui-select ng-model="itemGroup.type" ng-required="true" server-error ng-disabled="disabledDirective"  on-select="selectType(itemGroup)" reset-search-input="'false'">-->
+                    <!--<ui-select-match placeholder="Select data type">{{ $select.selected.label }}</ui-select-match>-->
+                    <!--<ui-select-choices repeat="dataType.key as dataType in getDataTypeList(itemGroup)">-->
+                        <!--{{ dataType.label }}-->
+                    <!--</ui-select-choices>-->
+                <!--</ui-select>-->
+            <!--</div>-->
 
             <select class="form-control" ng-disabled="disabledDirective" ng-model="itemGroup.cmp" ng-change="selectCondition(itemGroup)" ng-options="condition.key as condition.label for condition in changeCondition(itemGroup)"></select>
 
@@ -61,7 +59,7 @@
 
             <div class="form-group select-data-type" ng-if="itemGroup.var == '${DOMAIN}' && !findCondition(itemGroup.cmp, changeCondition(itemGroup, $index)).hideInputVal">
                 <ui-select multiple ng-model="itemGroup.val" ng-required="true" close-on-select="false" server-error reset-search-input="'false'" ng-disabled="disabledDirective" style="min-width: 180px;">
-                    <ui-select-match placeholder="Select a domain">{{ $item.name }}</ui-select-match>
+                    <ui-select-match placeholder="{{ findCondition(itemGroup.cmp, changeCondition(itemGroup, $index)).blacklist ? 'select a blacklist' : 'select a whitelist' }}">{{ $item.name }}</ui-select-match>
                     <ui-select-choices group-by="groupEntities" repeat="domain.id as domain in getDomains(itemGroup, changeCondition(itemGroup), $index) | selectedPublisher:publisher | filter:$select.search">
                         {{ domain.name }}
                     </ui-select-choices>
