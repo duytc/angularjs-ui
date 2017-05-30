@@ -205,7 +205,16 @@
                     scope.filterFieldByTextAndNumber = filterFieldByTextAndNumber;
                     scope.selectMapFieldLeftSideSubsetGroup = selectMapFieldLeftSideSubsetGroup;
                     scope.filterLeftSideAugmentation = filterLeftSideAugmentation;
-                    
+                    scope.showDateToFormat = showDateToFormat;
+
+                    function showDateToFormat(transform, $select) {
+                        if(scope.dimensionsMetrics[transform.field] == 'datetime') {
+                            return moment().format('YYYY-MM-DD H:mm:ss') + ' ('+ transform.to +')'
+                        }
+
+                        return $select.selected.label
+                    }
+
                     function filterLeftSideAugmentation(transform) {
                         return function (field) {
                             if(transform.mapFields.indexOf(field.key) > -1) {
