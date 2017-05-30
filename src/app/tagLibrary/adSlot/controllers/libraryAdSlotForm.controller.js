@@ -262,7 +262,7 @@
                 return true;
             }
 
-            return !!group.customVar || !!group.var;
+            return (!!group.customVar && group.customVar != 'CUSTOM') || !!group.var;
         }
 
         /**
@@ -393,7 +393,7 @@
 
         function _formatGroupVal(groupVal) {
             angular.forEach(groupVal, function(group) {
-                if(!!group.customVar) {
+                if(group.customVar != 'CUSTOM') {
                     group.var = group.customVar;
                 }
 
@@ -415,6 +415,8 @@
 
                 if(index > -1) {
                     group.customVar = group.var;
+                } else {
+                    group.customVar = 'CUSTOM';
                 }
 
                 if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}' || group.var == '${DOMAIN}')) {

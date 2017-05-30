@@ -36,7 +36,7 @@
                     scope.whitelists = [];
                     scope.variableForAdTags = angular.copy(VARIABLE_FOR_AD_TAG);
 
-                    scope.variableForAdTags.push({key: null, label: 'CUSTOM'});
+                    scope.variableForAdTags.push({key: 'CUSTOM', label: 'CUSTOM'});
 
                     var itemGroupClone = {};
 
