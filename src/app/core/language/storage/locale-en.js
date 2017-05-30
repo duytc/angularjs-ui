@@ -1182,6 +1182,7 @@
                 "GET_API_KEY": "Get API Key",
                 "UPLOAD_DATA": "Upload Data",
                 "MANAGE_RECEIVED_DATA": "View Imported Data",
+                "VIEW_BACKFILL_HISTORY": "View Backfill Histories",
                 "EDIT": "Edit",
                 "KEY": "Key",
                 "DELETE": "Delete",

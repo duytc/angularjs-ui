@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <h4 class="modal-title"><strong>View Backfill history of Data Source:</strong> {{ dataSource.name }}</h4>
+</div>
+<div class="modal-body">
+    <div class="table-responsive">
+        <table class="table" at-table at-paginated at-list="backfillHistories" at-config="tableConfig" id="backfillHistories">
+            <thead></thead>
+            <tbody>
+            <tr>
+                <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
+                <td at-title="Start Date" at-implicit at-sortable at-attribute="backFillStartDate"></td>
+                <td at-title="End Date" at-implicit at-sortable at-attribute="backFillEndDate"></td>
+                <td at-title="Last Executed At" at-sortable at-attribute="lastExecutedAt">
+                    {{ item.lastExecutedAt | date:'MMM d, y H:mm:ss' }}
+                </td>
+                <td at-title="Data Source Integration" at-implicit at-sortable at-attribute="dataSourceIntegration.integration.name "></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <at-pagination ng-if="showPagination()" at-list="backfillHistories" at-config="tableConfig"></at-pagination>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="$close()">{{ 'CLOSE' | translate }}</button>
+</div>
