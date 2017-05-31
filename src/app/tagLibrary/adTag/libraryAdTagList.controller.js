@@ -58,17 +58,7 @@
             modalInstance.result.then(function () {
                 return AdTagLibrariesManager.one(adTag.id).remove()
                     .then(function () {
-                        var index = adTags.indexOf(adTag);
-
-                        if (index > -1) {
-                            adTags.splice(index, 1);
-                        }
-
-                        $scope.adTags = adTags;
-
-                        if($scope.tableConfig.currentPage > 0 && adTags.length/10 == $scope.tableConfig.currentPage) {
-                            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
-                        }
+                        _getAdTags(params);
 
                         AlertService.replaceAlerts({
                             type: 'success',
