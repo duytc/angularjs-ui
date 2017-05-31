@@ -105,11 +105,11 @@
                     groupBuild += '(' + _buildNested(group[GROUP_KEY], group[GROUP_TYPE]) + ') ' + type + ' ';
                 }
                 else {
-                    var variable = _getConvertedVariable(group.customVar == 'CUSTOM' ? group.var : group.customVar);
+                    var variable = _getConvertedVariable(group.customVar == 'CUSTOM' || !group.customVar ? group.var : group.customVar);
 
                     var value = !group.val ? "" : group.val;
 
-                    var cmpConfig = _getComparatorConfig(group.cmp, group.type, group.customVar == 'CUSTOM' ? group.var : group.customVar);
+                    var cmpConfig = _getComparatorConfig(group.cmp, group.type, group.customVar == 'CUSTOM' || !group.customVar ? group.var : group.customVar);
                     var defaultGroupLabel = '';
 
                     if(typeof value == 'object') {

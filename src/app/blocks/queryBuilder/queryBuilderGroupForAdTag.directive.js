@@ -50,8 +50,6 @@
                         })
                     });
 
-                    var numberLoad = 0;
-
                     scope.addGroup = addGroup;
                     scope.removeGroup = removeGroup;
                     scope.addCondition = addCondition;

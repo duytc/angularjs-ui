@@ -5,7 +5,7 @@
         .directive('queryBuilderGroup', queryBuilderGroup)
     ;
 
-    function queryBuilderGroup($compile, _, AdSlotLibrariesManager, AdSlotManager, VARIABLE_FOR_AD_TAG, CONDITIONS_STRING, CONDITIONS_BOOLEAN, CONDITIONS_NUMERIC, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, COUNTRY_LIST, DEVICES) {
+    function queryBuilderGroup($compile, $timeout, _, AdSlotLibrariesManager, AdSlotManager, VARIABLE_FOR_AD_TAG, CONDITIONS_STRING, CONDITIONS_BOOLEAN, CONDITIONS_NUMERIC, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, COUNTRY_LIST, DEVICES) {
         'use strict';
 
         return {
@@ -161,14 +161,20 @@
                     }
 
                     function changeVarName(group, indexValue) {
-                        numberLoad++;
+                        // numberLoad++;
+                        //
+                        // if(numberLoad > indexValue + 1) {
+                        //     // reset group
+                        //     group.type = getDataTypeList(group)[0].key;
+                        //     group.cmp = scope.conditions[0].key;
+                        //     group.val = null;
+                        // }
 
-                        if(numberLoad > indexValue + 1) {
-                            // reset group
+                        $timeout(function () {
                             group.type = getDataTypeList(group)[0].key;
                             group.cmp = scope.conditions[0].key;
                             group.val = null;
-                        }
+                        }, 0 , true)
                     }
 
                     function getDataTypeList(group) {

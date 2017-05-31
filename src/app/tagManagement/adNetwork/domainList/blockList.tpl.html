@@ -32,7 +32,7 @@
 
     <div class="panel-body" ng-if="hasData()">
         <div class="table-responsive">
-            <table class="table" at-sortable-query at-table at-paginated at-list="domainList.records" at-config="tableConfig">
+            <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="domainList.records" at-config="tableConfig">
                 <thead>
                 <tr>
                     <th ng-show="isAdmin()" at-attribute="publisher.company" >{{ 'PUBLISHER' | translate }}</th>
