@@ -862,9 +862,9 @@
                 "WARNING_EDIT_LIBRARY": "This ad slot is linked to multiple sites. Modifying this ad slot will result in the changes being propagated to all sites that run this ad slot."
             },
             "AD_TAG_LIBRARY_MODULE": {
-                "REMOVE_SUCCESS": "The ad tag was removed from the standalone successfully",
-                "REMOVE_FAIL": "Could not remove ad tag from standalone",
-                "CURRENTLY_NO_AD_TAG": "There is currently no ad tags in the standalone",
+                "REMOVE_SUCCESS": "The ad tag was removed successfully",
+                "REMOVE_FAIL": "Could not remove ad tag",
+                "CURRENTLY_NO_AD_TAG": "There is currently no ad tags",
                 "CURRENTLY_NO_AD_TAG_ASSOCIATED": "This ad tag is currently not linked to any other ad tag",
                 "WARNING_EDIT_LIBRARY": "This ad tag is linked to multiple ad slots. Modifying this ad tag will result in the changes being propagated to all ad slots that run this ad tag.",
 
@@ -1182,7 +1182,7 @@
                 "GET_API_KEY": "Get API Key",
                 "UPLOAD_DATA": "Upload Data",
                 "MANAGE_RECEIVED_DATA": "View Imported Data",
-                "VIEW_BACKFILL_HISTORY": "View Backfill Histories",
+                "VIEW_BACKFILL_HISTORY": "View Backfill History",
                 "EDIT": "Edit",
                 "KEY": "Key",
                 "DELETE": "Delete",
