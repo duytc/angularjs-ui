@@ -118,9 +118,9 @@
                                         <div class="form-inline condition" ng-repeat="check in integration.schedule.checkAt">
                                             <div class="form-group select-alert-timezone">
                                                 <ui-select ng-model="check.timeZone" ng-required="true" server-error reset-search-input="'false'">
-                                                    <ui-select-match placeholder="Select a timezone">{{ $select.selected }}</ui-select-match>
-                                                    <ui-select-choices group-by="groupEntities" repeat="timezone in timezones">
-                                                        {{ timezone }}
+                                                    <ui-select-match placeholder="Select a timezone">{{ $select.selected.label }}</ui-select-match>
+                                                    <ui-select-choices group-by="groupEntities" repeat="timezone.key as timezone in timezonesForIntegration">
+                                                        {{ timezone.label }}
                                                     </ui-select-choices>
                                                 </ui-select>
                                             </div>
@@ -304,9 +304,9 @@
                             <div class="form-inline col-sm-12" ng-if="alertSetting.type == 'notReceived' && alertSetting.active">
                                 <div class="form-group select-alert-timezone">
                                     <ui-select ng-model="alertSetting.alertTimeZone" ng-required="true" server-error reset-search-input="'false'">
-                                        <ui-select-match placeholder="Select a timezone">{{ $select.selected }}</ui-select-match>
-                                        <ui-select-choices group-by="groupEntities" repeat="timezone in timezones">
-                                            {{ timezone }}
+                                        <ui-select-match placeholder="Select a timezone">{{ $select.selected.label }}</ui-select-match>
+                                        <ui-select-choices group-by="groupEntities" repeat="timezone.key as timezone in timezonesForIntegration">
+                                            {{ timezone.label }}
                                         </ui-select-choices>
                                     </ui-select>
                                 </div>

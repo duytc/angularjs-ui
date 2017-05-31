@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.dataSource')
         .controller('DataSourceForm', DataSourceForm);
 
-    function DataSourceForm($scope, _, UnifiedReportDataSourceManager, DataSourceIntegration, $translate, dataSource, integrations, publishers, AlertService, dateUtil, TIMEZONES, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH){
+    function DataSourceForm($scope, _, UnifiedReportDataSourceManager, DataSourceIntegration, $translate, dataSource, integrations, publishers, AlertService, dateUtil, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH){
         $scope.publishers = publishers;
         $scope.integrations = integrations;
 
@@ -48,7 +48,7 @@
                         endDate: null
                     },
                     schedule: {
-                        checked: 'checkEvery',
+                        checked: 'checkAt',
                         checkEvery:  { hour: null },
                         checkAt: [{timeZone: null, hour: 1, minutes: 0}]
                     }
@@ -81,7 +81,13 @@
 
         $scope.hours = _.range(0, 24);
         $scope.minutes = _.range(0, 60);
-        $scope.timezones = TIMEZONES;
+
+        $scope.timezonesForIntegration = [
+            {key: 'UTC', label: 'UTC'},
+            {key: 'EST5EDT', label: 'EST'},
+            {key: 'CST6CDT', label: 'CST'},
+            {key: 'PST8PDT', label: ' PST'}
+        ];
 
         $scope.fileFormats = [
             {label: 'CSV', key: 'csv'},
@@ -194,7 +200,7 @@
                        endDate: null
                    },
                    schedule: {
-                       checked: 'checkEvery',
+                       checked: 'checkAt',
                        checkEvery:  { hour: null },
                        checkAt: [{timeZone: null, hour: 1, minutes: 0}]
                    }
@@ -246,7 +252,7 @@
                     endDate: null
                 },
                 schedule: {
-                    checked: 'checkEvery',
+                    checked: 'checkAt',
                     checkEvery:  { hour: null },
                     checkAt: [{timeZone: null, hour: 1, minutes: 0}]
                 }
