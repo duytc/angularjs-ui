@@ -38,8 +38,6 @@
 
                     scope.variableForAdTags.push({key: 'CUSTOM', label: 'CUSTOM'});
 
-                    var itemGroupClone = {};
-
                     var mostCommonlyCountry = [
                         {name: 'Australia', code: 'AU', line: true},
                         {name: 'Canada', code: 'CA', line: true},
@@ -56,7 +54,8 @@
                         })
                     });
 
-                    var numberLoad = 0;
+                    scope.hasGetBlacklist = false;
+                    scope.hasGetWhitelist = false;
 
                     scope.addGroup = addGroup;
                     scope.removeGroup = removeGroup;
@@ -81,10 +80,10 @@
                         });
                     }
 
-                    function selectCondition(group, listCondition, index) {
-                        itemGroupClone[index] = angular.copy(group);
-
-                        group.val = null;
+                    function selectCondition(group, listCondition, index, resetVal) {
+                        if(resetVal) {
+                            group.val = null;
+                        }
 
                         if(!group.cmp) {
                             return
@@ -95,43 +94,39 @@
                         if(!!condition && _.has(condition, 'blacklist') && !condition.hideInputVal) {
                             if(scope.isLibrary) {
                                 if(condition.blacklist) {
-                                    AdSlotManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displayblacklists')
-                                        .then(function (blacklists) {
-                                            scope.blacklists = blacklists;
-
-                                            if(group.val.length == 0 || !group.val) {
-                                                group.val = itemGroupClone[index].val;
-                                            }
-                                        })
+                                    if(scope.blacklists.length == 0) {
+                                        AdSlotManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displayblacklists')
+                                            .then(function (blacklists) {
+                                                scope.blacklists = blacklists;
+                                                scope.hasGetBlacklist = true;
+                                            })
+                                    }
                                 } else {
-                                    AdSlotManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displaywhitelists')
-                                        .then(function (whitelists) {
-                                            scope.whitelists =  whitelists;
-
-                                            if(group.val.length == 0 || !group.val) {
-                                                group.val = itemGroupClone[index].val;
-                                            }
-                                        })
+                                    if(scope.whitelists.length == 0) {
+                                        AdSlotManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displaywhitelists')
+                                            .then(function (whitelists) {
+                                                scope.whitelists =  whitelists;
+                                                scope.hasGetWhitelist = true;
+                                            })
+                                    }
                                 }
                             } else {
                                 if(condition.blacklist) {
-                                    AdSlotLibrariesManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displayblacklists')
-                                        .then(function (blacklists) {
-                                            scope.blacklists = blacklists;
-
-                                            if(group.val.length == 0 || !group.val) {
-                                                group.val = itemGroupClone[index].val;
-                                            }
-                                        })
+                                    if(scope.blacklists.length == 0) {
+                                        AdSlotLibrariesManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displayblacklists')
+                                            .then(function (blacklists) {
+                                                scope.blacklists = blacklists;
+                                                scope.hasGetBlacklist = true;
+                                            })
+                                    }
                                 } else {
-                                    AdSlotLibrariesManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displaywhitelists')
-                                        .then(function (whitelists) {
-                                            scope.whitelists =  whitelists;
-
-                                            if(group.val.length == 0 || !group.val) {
-                                                group.val = itemGroupClone[index].val;
-                                            }
-                                        })
+                                    if(scope.whitelists.length == 0) {
+                                        AdSlotLibrariesManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displaywhitelists')
+                                            .then(function (whitelists) {
+                                                scope.whitelists =  whitelists;
+                                                scope.hasGetWhitelist = true;
+                                            })
+                                    }
                                 }
                             }
                         }

@@ -8,7 +8,7 @@
 
     <div ng-repeat="itemGroup in group[groupKey]">
         <div ng-if="isGroup(itemGroup)">
-            <query-builder-group group="itemGroup" index="$index" groups="group[groupKey]" expect-ad-slot="expectAdSlot" tags="tags" disabled-directive="disabledDirective"></query-builder-group>
+            <query-builder-group group="itemGroup" index="$index" groups="group[groupKey]" expect-ad-slot="expectAdSlot" is-library="isLibrary" tags="tags" disabled-directive="disabledDirective"></query-builder-group>
         </div>
 
         <div class="form-inline condition" ng-if="!isGroup(itemGroup)">
@@ -34,7 +34,7 @@
                 </ui-select>
             </div>
 
-            <select ng-if="!!itemGroup.customVar" ng-disabled="disabledDirective" class="form-control" ng-change="selectCondition(itemGroup, changeCondition(itemGroup), $index)" ng-model="itemGroup.cmp" ng-options="condition.key as condition.label for condition in changeCondition(itemGroup)"></select>
+            <select ng-if="!!itemGroup.customVar" ng-disabled="disabledDirective" class="form-control" ng-init="selectCondition(itemGroup, changeCondition(itemGroup), $index)" ng-change="selectCondition(itemGroup, changeCondition(itemGroup), $index, true)" ng-model="itemGroup.cmp" ng-options="condition.key as condition.label for condition in changeCondition(itemGroup)"></select>
 
             <div class="form-group" ng-if="!!itemGroup.customVar && itemGroup.type != dataTypes[2].key && itemGroup.customVar != '${COUNTRY}' && itemGroup.customVar != '${DEVICE}' && itemGroup.customVar != '${DOMAIN}'">
                 <input ng-disabled="disabledDirective" server-error ng-required="valIsNull(itemGroup.cmp)" type="text" class="form-control" ng-minlength="1" pattern="{{ itemGroup.type == dataTypes[1].key ? '\\d*' : '[a-zA-Z0-9?=/&\\-_$.,;:@?+!*()#\\[\\]\']+$'}}" required ng-model="itemGroup.val" ng-init="itemGroup.val == null ? itemGroup.val = '' : itemGroup.val " placeholder="Value">
@@ -62,10 +62,19 @@
                 </ui-select>
             </div>
 
-            <div class="form-group select-data-type" ng-if="!!itemGroup.customVar && itemGroup.customVar == '${DOMAIN}' && !findCondition(itemGroup.cmp, changeCondition(itemGroup)).hideInputVal" ng-init="selectCondition(itemGroup, changeCondition(itemGroup), $index)">
+            <div class="form-group select-data-type" ng-if="hasGetBlacklist && !!itemGroup.customVar && itemGroup.customVar == '${DOMAIN}' && findCondition(itemGroup.cmp, changeCondition(itemGroup)).blacklist && !findCondition(itemGroup.cmp, changeCondition(itemGroup)).hideInputVal">
                 <ui-select multiple ng-model="itemGroup.val" ng-required="true" close-on-select="false" server-error reset-search-input="'false'" ng-disabled="disabledDirective" style="min-width: 180px;">
-                    <ui-select-match placeholder="{{ findCondition(itemGroup.cmp, changeCondition(itemGroup, $index)).blacklist ? 'select a blacklist' : 'select a whitelist' }}">{{ $item.name }}</ui-select-match>
-                    <ui-select-choices group-by="groupEntities" repeat="domain.id as domain in getDomains(itemGroup, changeCondition(itemGroup)) | filter:$select.search">
+                    <ui-select-match placeholder="select a blacklist">{{ $item.name }}</ui-select-match>
+                    <ui-select-choices group-by="groupEntities" repeat="domain.id as domain in blacklists | filter:$select.search">
+                        {{ domain.name }}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="form-group select-data-type" ng-if="hasGetWhitelist && !!itemGroup.customVar && itemGroup.customVar == '${DOMAIN}' && !findCondition(itemGroup.cmp, changeCondition(itemGroup)).blacklist && !findCondition(itemGroup.cmp, changeCondition(itemGroup)).hideInputVal">
+                <ui-select multiple ng-model="itemGroup.val" ng-required="true" close-on-select="false" server-error reset-search-input="'false'" ng-disabled="disabledDirective" style="min-width: 180px;">
+                    <ui-select-match placeholder="select a whitelist">{{ $item.name }}</ui-select-match>
+                    <ui-select-choices group-by="groupEntities" repeat="domain.id as domain in whitelists | filter:$select.search">
                         {{ domain.name }}
                     </ui-select-choices>
                 </ui-select>

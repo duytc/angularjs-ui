@@ -101,6 +101,10 @@
                                 ;
                             }
                         }
+
+                        if(!!expressionRoot) {
+                            expressionRoot.expressionDescriptor = {groupType: 'AND', groupVal: []};
+                        }
                     }
 
                     function _setupGroup(listAdTags) {

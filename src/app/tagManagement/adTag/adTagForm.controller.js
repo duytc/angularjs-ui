@@ -544,7 +544,7 @@
 
         function _convertGroupVal(groupVal) {
             angular.forEach(groupVal, function(group) {
-                if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}')) {
+                if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}' || group.var == '${DOMAIN}')) {
                     group.val = group.val.split(',');
                     group.cmp = group.cmp == '==' ||  group.cmp == 'is' ? 'is' : 'isNot';
                 }
