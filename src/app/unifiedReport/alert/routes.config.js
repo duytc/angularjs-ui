@@ -18,7 +18,7 @@
                 }
             })
             .state('unifiedReport.alert.list', {
-                url: '/list?page&sortField&orderBy&search',
+                url: '/list?page&sortField&orderBy&search&dataSourceId',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -29,11 +29,28 @@
                     }
                 },
                 resolve: {
-                    alerts: /* @ngInject */ function(UnifiedReportAlertManager) {
+                    alerts: /* @ngInject */ function(UnifiedReportAlertManager, UnifiedReportDataSourceManager, $stateParams) {
+                        if($stateParams.dataSourceId) {
+                            return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).getList('alerts');
+                        }
 
                         return UnifiedReportAlertManager.getList().then(function (alerts) {
                             return alerts.plain();
                         });
+                    },
+                    dataSources: /* @ngInject */ function(UnifiedReportDataSourceManager) {
+                        return UnifiedReportDataSourceManager.getList().then(function (dataSources) {
+                            return dataSources.plain();
+                        });
+                    }
+                },
+                customResolve: {
+                    admin: {
+                        publishers: /* @ngInject */ function(adminUserManager) {
+                            return adminUserManager.getList({ filter: 'publisher' }).then(function (users) {
+                                return users.plain();
+                            });
+                        }
                     }
                 },
                 ncyBreadcrumb: {

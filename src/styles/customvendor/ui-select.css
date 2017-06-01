@@ -90,6 +90,11 @@
     text-align: left;
 }
 
+.ui-select-bootstrap > .ui-select-match .ng-scope {
+    padding-right: 15px;
+}
+
+
 .ui-select-bootstrap > .ui-select-match > .caret {
     position: absolute;
     top: 45%;

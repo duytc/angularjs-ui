@@ -5,7 +5,7 @@
         .controller('AlertList', AlertList)
     ;
 
-    function AlertList($scope, _, $translate, $modal, alerts, UnifiedReportAlertManager, AlertService) {
+    function AlertList($scope, _, $stateParams, $translate, $modal, UISelectMethod, alerts, publishers, dataSources, UnifiedReportAlertManager, UnifiedReportDataSourceManager, AlertService) {
         const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_UPLOAD = 1100;
         const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_EMAIL = 1101;
         const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_API = 1102;
@@ -32,13 +32,21 @@
             maxPages: 10
         };
 
+        $scope.selectedData = {
+            dataSource: $stateParams.dataSourceId || null,
+            publisherId: !!$stateParams.dataSourceId ? _.find(dataSources, {id: Number($stateParams.dataSourceId)}).publisher.id : null
+        };
+
         $scope.formProcessing = false;
         $scope.checkAllItem = false;
         $scope.alerts = alerts;
+        $scope.dataSources = UISelectMethod.addAllOption(dataSources, 'All Data Sources');
+        $scope.publishers = !!publishers ? UISelectMethod.addAllOption(publishers, 'All Publisher') : [];
         $scope.selectedAlert = [];
 
         var itemsForPager = [];
 
+        $scope.groupEntities = UISelectMethod.groupEntities;
         $scope.showPagination = showPagination;
         $scope.checkedAlert = checkedAlert;
         $scope.selectEntity = selectEntity;
@@ -57,6 +65,35 @@
         $scope.setItemForPager = setItemForPager;
         $scope.selectAllAlertInPages = selectAllAlertInPages;
         $scope.noneSelect = noneSelect;
+        $scope.getAlerts = getAlerts;
+        $scope.selectPublisher = selectPublisher;
+        
+        function selectPublisher() {
+            $scope.selectedData.dataSource = null;
+        }
+        
+        function getAlerts() {
+            var manage = null;
+
+            if(!!$scope.selectedData.dataSource) {
+                manage = UnifiedReportDataSourceManager.one($scope.selectedData.dataSource).one('alerts');
+            } else {
+                manage = UnifiedReportAlertManager.one();
+            }
+
+            return manage.getList(null, {publisher: $scope.selectedData.publisherId})
+                .then(function (data) {
+                    itemsForPager = [];
+                    alerts = data.plain();
+                    $scope.alerts = alerts;
+
+                    noneSelect();
+                });
+        }
+
+        $scope.isFormValid = function() {
+            return $scope.alertForm.$valid;
+        };
 
         function selectAllAlertInPages() {
             $scope.checkAllItem = true;
@@ -145,6 +182,8 @@
                         type: 'success',
                         message: $scope.selectedAlert.length + ' alerts have been unread'
                     });
+
+                    noneSelect();
                 });
         }
 
@@ -163,6 +202,8 @@
                         type: 'success',
                         message: $scope.selectedAlert.length + ' alerts have been marked as read'
                     });
+
+                    noneSelect();
                 });
         }
 
@@ -223,6 +264,16 @@
                     }
 
                     $scope.alerts = alerts;
+
+                    var indexItemsForPager = _.findIndex(itemsForPager, function (item) {
+                        return alert.id == item.id;
+                    });
+
+                    if (indexItemsForPager > -1) {
+                        itemsForPager.splice(indexItemsForPager, 1);
+                    }
+
+                    $scope.selectedAlert.splice($scope.selectedAlert.indexOf(alert.id), 1);
 
                     if($scope.tableConfig.currentPage > 0 && alerts.length/10 == $scope.tableConfig.currentPage) {
                         $scope.tableConfig.currentPage = $scope.tableConfig.currentPage - 1;

@@ -1,3 +1,31 @@
+<section id="performance-report-selector" class="panel panel-default">
+    <div class="panel-body">
+        <form name="alertForm" class="form-inline" role="form" ng-submit="getAlerts()" novalidate>
+            <div class="publisher form-group" ng-if="isAdmin()">
+                <label>{{ 'PUBLISHER' | translate }}</label>
+                <ui-select name="publisher" ng-model="selectedData.publisherId" on-select="selectPublisher()" ng-required="true" reset-search-input="'false'">
+                    <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
+                    <ui-select-choices group-by="groupEntities" repeat="publisher.id as publisher in publishers | filter: $select.search">
+                        <div ng-bind-html="publisher.company | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="publisher form-group" ng-if="selectedData.publisherId || !isAdmin()">
+                <label>{{ 'DATA_SOURCE' | translate }}</label>
+                <ui-select name="publisher" ng-model="selectedData.dataSource" ng-required="true" reset-search-input="'false'">
+                    <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.SELECT_A_DATA_SOURCE' | translate }}">{{ $select.selected.name + ($select.selected.id ? ' (ID: '+ $select.selected.id +')' : '') }}</ui-select-match>
+                    <ui-select-choices group-by="groupEntities" repeat="dataSource.id as dataSource in dataSources | selectedPublisher:selectedData.publisherId | filter: $select.search">
+                        {{ dataSource.name + (dataSource.id ? ' (ID: '+ dataSource.id +')' : '') }}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <button  ng-disabled="!isFormValid()" type="submit" class="btn btn-primary">Get Alerts</button>
+        </form>
+    </div>
+</section>
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <span class="glyphicon glyphicon-th"></span>
