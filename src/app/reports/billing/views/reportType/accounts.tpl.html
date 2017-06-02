@@ -2,8 +2,7 @@
     <tc-billing-report-overview report-group="reportGroup"></tc-billing-report-overview>
 
     <div class="panel panel-default daily-reports">
-        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
-            {{ 'REPORT.DAILY_ACCOUNT_BREAKDOWN' | translate }}
+        <div class="panel-heading">{{ 'REPORT.DAILY_ACCOUNT_BREAKDOWN' | translate }}
             <div class="button-bar">
                 <export-excel data="reports" fields="['startDate', 'endDate', 'name', 'slotOpportunities', 'billedAmount']" header="['Start Date', 'End Date', 'Publisher','Slot Opportunities', 'Billed Amount ($)']" file-name="getExportExcelFileName"></export-excel>
             </div>

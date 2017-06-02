@@ -38,7 +38,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Black List'
+                    label: 'Black Lists'
                 }
             })
             .state('tagManagement.domainList.whiteList', {
@@ -62,7 +62,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'White List'
+                    label: 'White Lists'
                 }
             })
 

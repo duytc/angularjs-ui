@@ -2,8 +2,7 @@
 
 <div ng-if="reportGroup.reports.length > 0">
     <div class="panel panel-default daily-reports">
-        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
-            {{ 'UNIFIED_REPORT_MODULE.DETAILS' | translate }}
+        <div class="panel-heading">{{ 'UNIFIED_REPORT_MODULE.DETAILS' | translate }}
 
             <div class="button-bar">
                 <export-excel data="reportGroup.reports" fields="arrayFieldExport" header="arrayHeaderExport" file-name="getExportExcelFileName"></export-excel>

@@ -2,8 +2,7 @@
     <tc-performance-report-overview report-group="reportGroup"></tc-performance-report-overview>
 
     <div class="panel panel-default daily-reports">
-        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>
-            {{ 'REPORT.AD_SLOT_BREAKDOWN' | translate }}
+        <div class="panel-heading">{{ 'REPORT.AD_SLOT_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
                 <export-excel data="reports" fields="['startDate', 'name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Date', 'Ad Slot', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
             </div>
