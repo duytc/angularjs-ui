@@ -276,21 +276,12 @@
                                 <br>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.PLAYER_SIZE' | translate
-                                        }}</label>
+                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.PLAYER_SIZE' | translate}}</label>
 
                                     <div class="col-sm-9">
-                                        <ui-select on-select="$item.search = $select.search; $select.search = '';"
-                                                   ng-disabled="!demandAdTag.targetingOverride && (pickFromLibrary || demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)"
-                                                   multiple name="playerSize" close-on-select="false"
-                                                   ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.player_size"
-                                                   ng-required="true" server-error>
-                                            <ui-select-match
-                                                    placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_PLAYER_SIZE' | translate }}">
-                                                {{ $item.label }}
-                                            </ui-select-match>
-                                            <ui-select-choices
-                                                    repeat="player.key as player in playerSizeOptions | filter:$select.search">
+                                        <ui-select on-select="$item.search = $select.search; $select.search = '';" ng-disabled="!demandAdTag.targetingOverride && (pickFromLibrary || demandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" multiple name="playerSize" close-on-select="false" ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.player_size" ng-required="true" server-error>
+                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_PLAYER_SIZE' | translate }}">{{ $item.label }}</ui-select-match>
+                                            <ui-select-choices repeat="player.key as player in playerSizeOptions | filter:$select.search">
                                                 {{ player.label }}
                                             </ui-select-choices>
                                         </ui-select>
@@ -299,21 +290,15 @@
                                 <br>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.REQUIRED_MACROS' |
-                                        translate }}</label>
-                                    <ui-select on-select="$item.search = $select.search; $select.search = '';" multiple
-                                               name="requiredMacros" close-on-select="false"
-                                               ng-model="demandAdTag.targeting.required_macros" ng-required="true"
-                                               server-error>
-                                        <ui-select-match
-                                                placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_REQUIRED_MACROS' | translate }}">
-                                            {{ $item.label }}
-                                        </ui-select-match>
-                                        <ui-select-choices
-                                                repeat="require.key as require in requiredMacrosOptions | filter:$select.search">
-                                            {{ require.label }}
-                                        </ui-select-choices>
-                                    </ui-select>
+                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.REQUIRED_MACROS' | translate }}</label>
+                                    <div class="col-sm-9">
+                                        <ui-select on-select="$item.search = $select.search; $select.search = '';" multiple name="requiredMacros" close-on-select="false" ng-model="demandAdTag.libraryVideoDemandAdTag.targeting.required_macros" ng-required="true" server-error>
+                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_REQUIRED_MACROS' | translate }}">{{ $item.label }}</ui-select-match>
+                                            <ui-select-choices repeat="require.key as require in requiredMacrosOptions | filter:$select.search">
+                                                {{ require.label }}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -321,15 +306,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="inputActive" class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.ACTIVE' | translate
-                        }}</label>
+                    <label for="inputActive" class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.ACTIVE' | translate}}</label>
 
                     <div class="col-sm-5">
                         <div>
                             <label class="ui-checkbox">
-                                <input name="active" type="checkbox" ng-model="demandAdTag.activeClone" server-error
-                                       id="inputActive">
-                                <span></span>
+                                <input name="active" type="checkbox" ng-model="demandAdTag.activeClone" server-error id="inputActive"><span></span>
                             </label>
                         </div>
                     </div>
@@ -338,12 +320,8 @@
 
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-5">
-                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit"
-                                class="btn btn-success">{{ 'SUBMIT' | translate }}
-                        </button>
-                        <div ng-show="!isFormValid()" class="callout callout-info">
-                            <p>{{ 'VALID_FORM' | translate }}</p>
-                        </div>
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
+                        <div ng-show="!isFormValid()" class="callout callout-info"><p>{{ 'VALID_FORM' | translate }}</p></div>
                     </div>
                 </div>
             </form>

@@ -136,17 +136,7 @@
                 return LibraryDemandAdTagManager.one(demandAdTag.id).remove()
                     .then(
                     function () {
-                        var index = demandAdTags.indexOf(demandAdTag);
-
-                        if (index > -1) {
-                            demandAdTags.splice(index, 1);
-                        }
-
-                        $scope.demandAdTags = demandAdTags;
-
-                        if($scope.tableConfig.currentPage > 0 && demandAdTags.length/10 == $scope.tableConfig.currentPage) {
-                            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
-                        }
+                        _getDemandAdTags(params);
 
                         AlertService.replaceAlerts({
                             type: 'success',
