@@ -87,6 +87,10 @@
                     alerts = data.plain();
                     $scope.alerts = alerts;
 
+                    if($scope.tableConfig.currentPage > 0 && alerts.length/10 == $scope.tableConfig.currentPage) {
+                        $scope.tableConfig.currentPage = $scope.tableConfig.currentPage - 1;
+                    }
+
                     noneSelect();
                 });
         }
@@ -156,6 +160,10 @@
 
                             if($scope.alerts.length == $scope.selectedAlert.length) {
                                 $scope.checkAllItem = true;
+                            }
+
+                            if($scope.alerts.length == 0) {
+                                $scope.checkAllItem = false;
                             }
                         }
                     });

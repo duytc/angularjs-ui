@@ -120,7 +120,13 @@
             });
 
             if(findIndexActionRename > -1) {
-                $scope.dataSet.actions.rename.splice(findIndexActionRename, 1)
+                var findIndexDimension = _.findIndex($scope.dataSet.dimensions, function (item) {
+                    return  item.name == $scope.dataSet.metrics[$index].name;
+                });
+
+                if(findIndexDimension == -1) {
+                    $scope.dataSet.actions.rename.splice(findIndexActionRename, 1)
+                }
             }
 
             return $scope.dataSet.metrics.splice($index, 1);

@@ -39,7 +39,7 @@
                 <!--<label class="ui-checkbox"><input name="checkbox1" type="checkbox" value="option1" ng-model="checkAllItem" ng-click="selectAll()"><span>Toggle All</span></label>-->
 
                 <div class="btn-group pull-left check-toggle-dropdown" dropdown>
-                    <button type="button" class="btn " dropdown-toggle>
+                    <button type="button" class="btn" ng-disabled="alerts.length == 0" dropdown-toggle>
                         <label stop-event class="ui-checkbox check-toggle-alert"><input name="checkbox1" type="checkbox" value="option1" ng-model="checkAllItem" ng-click="selectAll()"><span></span></label>
                         <span class="caret"></span>
                     </button>
