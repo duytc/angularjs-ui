@@ -247,12 +247,42 @@
         };
 
         $scope.isFormValid = function() {
+            for(var i in $scope.adTag.libraryAdTag.expressionDescriptor.groupVal) {
+                var group = $scope.adTag.libraryAdTag.expressionDescriptor.groupVal[i];
+                if (!_validateGroup(group)) {
+                    return false;
+                }
+            }
+
             if($scope.isNew) {
                 return $scope.adTagForm.$valid && $scope.adTag.adSlots.length > 0
             }
 
             return $scope.adTagForm.$valid;
         };
+
+        function _validateGroup(group) {
+            if(!!group.groupVal && group.groupVal.length > 0) {
+
+                var tmpGroup;
+                for(var i in group.groupVal) {
+                    tmpGroup = group.groupVal[i];
+                    if (!_validateGroup(tmpGroup)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            if(group.var == '${DOMAIN}' || group.var == '${DEVICE}' || group.var == '${COUNTRY}') {
+                if(!group.val || group.val.length == 0) {
+                    return false
+                }
+            }
+
+            return !!group.var;
+        }
 
         $scope.createAdNetwork = function() {
             var modalInstance = $modal.open({

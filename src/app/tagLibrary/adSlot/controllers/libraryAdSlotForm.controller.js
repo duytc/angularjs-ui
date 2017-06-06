@@ -262,6 +262,12 @@
                 return true;
             }
 
+            if(group.customVar == '${DOMAIN}' || group.customVar == '${DEVICE}' || group.customVar == '${COUNTRY}') {
+                if(!group.val || group.val.length == 0) {
+                    return false
+                }
+            }
+
             return (!!group.customVar && group.customVar != 'CUSTOM') || !!group.var;
         }
 
