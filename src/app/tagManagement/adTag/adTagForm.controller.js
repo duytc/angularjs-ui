@@ -433,6 +433,13 @@
             saveAdTag
                 .catch(
                     function (response) {
+                        if(!response.data.errors) {
+                            AlertService.replaceAlerts({
+                                type: 'error',
+                                message: response.data.message
+                            });
+                        }
+
                         var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.adTagForm, $scope.fieldNameTranslations);
                         $scope.formProcessing = false;
 
