@@ -69,7 +69,9 @@
                     networkPartner: adNetworkList[idx].networkPartner,
                     impressionCap: adNetworkList[idx].impressionCap,
                     networkOpportunityCap: adNetworkList[idx].networkOpportunityCap,
-                    networkBlacklists: adNetworkList[idx].networkBlacklists
+                    networkBlacklists: adNetworkList[idx].networkBlacklists,
+                    networkWhiteLists: adNetworkList[idx].networkWhiteLists,
+                    customImpressionPixels: adNetworkList[idx].customImpressionPixels
                 };
             }
 
@@ -108,6 +110,20 @@
                 adNetwork.name = networkPartner.name;
                 adNetwork.url = networkPartner.url
             }
+
+            var networkWhiteLists = [];
+            angular.forEach(angular.copy(adNetwork.networkWhiteLists), function(networkWhiteList) {
+                networkWhiteLists.push({displayWhiteList: {id: networkWhiteList.displayWhiteList}})
+            });
+
+            adNetwork.networkWhiteLists = networkWhiteLists;
+
+            var networkBlacklists = [];
+            angular.forEach(angular.copy(adNetwork.networkBlacklists), function(networkBlacklist) {
+                networkBlacklists.push({displayBlacklist: {id: networkBlacklist.displayBlacklist}})
+            });
+
+            adNetwork.networkBlacklists = networkBlacklists;
 
             var adNetworkList = adNetworkCache.get('adNetworkList');
 

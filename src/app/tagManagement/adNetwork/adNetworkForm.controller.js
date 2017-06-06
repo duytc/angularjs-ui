@@ -5,7 +5,7 @@
         .controller('AdNetworkForm', AdNetworkForm)
     ;
 
-    function AdNetworkForm($scope, $modal, $translate, _, blockList, AdNetworkCache, PartnerManager, AlertService, ServerErrorProcessor, adNetwork, publishers, historyStorage, USER_MODULES, HISTORY_TYPE_PATH) {
+    function AdNetworkForm($scope, $translate, _, $filter, blockList, whiteList, AdNetworkCache, PartnerManager, AlertService, ServerErrorProcessor, adNetwork, publishers, historyStorage, USER_MODULES, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             defaultCpmRate: 'Default CPM Rate',
@@ -18,19 +18,21 @@
 
         $scope.allowSelectPublisher = $scope.isAdmin();
         $scope.publishers = publishers;
-        $scope.blockList = blockList;
+        $scope.blockList = !$scope.isAdmin() ? blockList : [];
+        $scope.whiteList = !$scope.isAdmin() ? whiteList : [];
         $scope.partners = [];
 
         $scope.adNetwork = adNetwork || {
-                name: null,
-                defaultCpmRate: null,
-                url: null,
-                /*   username: null,
-                 password: null,*/
-                networkPartner: null,
-                impressionCap: null,
-                networkOpportunityCap: null
-            };
+            name: null,
+            defaultCpmRate: null,
+            url: null,
+            /*   username: null,
+             password: null,*/
+            networkPartner: null,
+            impressionCap: null,
+            networkOpportunityCap: null,
+            customImpressionPixels: []
+        };
 
         $scope.DEMAND_PARTNER_TYPE = {
             BUILD_IN: 0, // allow pick a build-in partner for demand partner
@@ -67,6 +69,9 @@
         }
 
         if(!$scope.isNew) {
+            $scope.whiteList = $filter('selectedPublisher')(whiteList, $scope.adNetwork.publisher);
+            $scope.blockList = $filter('selectedPublisher')(blockList, $scope.adNetwork.publisher);
+
             var networkBlacklists = [];
             angular.forEach(angular.copy($scope.adNetwork.networkBlacklists), function(networkBlacklist) {
                 networkBlacklists.push(networkBlacklist.displayBlacklist)
@@ -83,6 +88,23 @@
                     block['ticked'] = true;
                 }
             });
+
+            var networkWhiteLists = [];
+            angular.forEach(angular.copy($scope.adNetwork.networkWhiteLists), function(networkWhiteList) {
+                networkWhiteLists.push(networkWhiteList.displayWhiteList)
+            });
+
+            $scope.adNetwork.networkWhiteLists = networkWhiteLists;
+
+            angular.forEach($scope.whiteList, function(white) {
+                var index = _.findIndex($scope.adNetwork.networkWhiteLists, function (networkWhiteList) {
+                    return !!networkWhiteList && networkWhiteList.id == white.id
+                });
+
+                if(index > -1) {
+                    white['ticked'] = true;
+                }
+            });
         }
 
         $scope.isBuildInType = isBuildInType;
@@ -90,49 +112,8 @@
         $scope.backToListAdNetwork = backToListAdNetwork;
         $scope.selectPublisher = selectPublisher;
         $scope.selectPartner = selectPartner;
-        $scope.createQuicklyBlockLink = createQuicklyBlockLink;
-        $scope.viewQuicklyBlockLink = viewQuicklyBlockLink;
-
-        function createQuicklyBlockLink() {
-            var newDomain = {
-                name: null,
-                domains: []
-            };
-
-            var modalInstance = $modal.open({
-                templateUrl: 'tagManagement/adNetwork/domainList/blockListQuicklyForm.tpl.html',
-                controller: 'BlockListQuicklyForm',
-                size: 'lg',
-                resolve: {
-                    publishers: function () {
-                        return publishers
-                    },
-                    publisher: function () {
-                        return $scope.adNetwork.publisher
-                    },
-                    domain: function () {
-                        return newDomain
-                    }
-                }
-            });
-
-            modalInstance.result.then(function () {
-                $scope.blockList.push(newDomain);
-            })
-        }
-
-        function viewQuicklyBlockLink() {
-            $modal.open({
-                templateUrl: 'tagManagement/adNetwork/domainList/viewQuicklyBlockList.tpl.html',
-                controller: 'ViewQuicklyBlockList',
-                size: 'lg',
-                resolve: {
-                    domainList: function() {
-                        return $scope.blockList
-                    }
-                }
-            });
-        }
+        $scope.addCustomImpressionPixel = addCustomImpressionPixel;
+        $scope.removeCustomImpressionPixel = removeCustomImpressionPixel;
 
         $scope.isFormValid = function() {
             return $scope.adNetworkForm.$valid;
@@ -155,6 +136,32 @@
         }
 
         /**
+         * Add a custom impression pixel
+         */
+        function addCustomImpressionPixel() {
+            if (!$scope.adNetwork.customImpressionPixels) {
+                console.log('INIT [] before adding');
+                $scope.adNetwork.customImpressionPixels = [];
+            }
+
+            console.log('adding new [ url: null ]');
+            $scope.adNetwork.customImpressionPixels.push({
+                url: null
+            })
+        }
+
+        /**
+         * Remove a custom impression pixel
+         * @param index
+         */
+        function removeCustomImpressionPixel(index) {
+            console.log('removing [ url: null ] index ' + index);
+            if(index > -1) {
+                $scope.adNetwork.customImpressionPixels.splice(index, 1)
+            }
+        }
+
+        /**
          * back to list ad networks
          * @return {*}
          */
@@ -168,6 +175,12 @@
          */
         function selectPublisher(publisher) {
             setTimeout(function () {
+                $scope.whiteList = $filter('selectedPublisher')(whiteList, publisher);
+                $scope.blockList = $filter('selectedPublisher')(blockList, publisher);
+
+                $scope.adNetwork.networkWhiteLists = [];
+                $scope.adNetwork.networkBlacklists = [];
+
                 // update $scope.hasUnifiedModule
                 $scope.hasUnifiedModule = publisher.enabledModules.indexOf(USER_MODULES.unified) !== -1;
 
@@ -218,6 +231,15 @@
             });
 
             $scope.adNetwork.networkBlacklists = networkBlacklists;
+
+
+            var networkWhiteLists = [];
+
+            angular.forEach($scope.adNetwork.networkWhiteLists, function (networkWhiteList) {
+                networkWhiteLists.push({displayWhiteList: networkWhiteList.id});
+            });
+
+            $scope.adNetwork.networkWhiteLists = networkWhiteLists;
 
             $scope.formProcessing = true;
 

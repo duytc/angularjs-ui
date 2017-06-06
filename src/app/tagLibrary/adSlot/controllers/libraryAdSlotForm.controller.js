@@ -5,7 +5,7 @@
         .controller('LibraryAdSlotForm', LibraryAdSlotForm)
     ;
 
-    function LibraryAdSlotForm($scope, $translate, $stateParams, $filter, _, adSlot, publisherList, adSlotType, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, historyStorage, HISTORY_TYPE_PATH) {
+    function LibraryAdSlotForm($scope, $translate, $stateParams, $filter, _, adSlot, publisherList, adSlotType, VARIABLE_FOR_AD_TAG, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
@@ -262,7 +262,13 @@
                 return true;
             }
 
-            return !!group.var;
+            if(group.customVar == '${DOMAIN}' || group.customVar == '${DEVICE}' || group.customVar == '${COUNTRY}') {
+                if(!group.val || group.val.length == 0) {
+                    return false
+                }
+            }
+
+            return (!!group.customVar && group.customVar != 'CUSTOM') || !!group.var;
         }
 
         /**
@@ -393,6 +399,12 @@
 
         function _formatGroupVal(groupVal) {
             angular.forEach(groupVal, function(group) {
+                if(group.customVar != 'CUSTOM') {
+                    group.var = group.customVar;
+                }
+
+                delete group.customVar;
+
                 if(angular.isObject(group.val)) {
                     group.val = group.val.toString();
                 }
@@ -405,9 +417,20 @@
 
         function _convertGroupVal(groupVal) {
             angular.forEach(groupVal, function(group) {
-                if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}')) {
+                var index = _.findIndex(VARIABLE_FOR_AD_TAG, {key: group.var});
+
+                if(index > -1) {
+                    group.customVar = group.var;
+                } else {
+                    group.customVar = 'CUSTOM';
+                }
+
+                if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}' || group.var == '${DOMAIN}')) {
                     group.val = group.val.split(',');
-                    group.cmp = group.cmp == '==' ||  group.cmp == 'is' ? 'is' : 'isNot';
+
+                    if(group.var != '${DOMAIN}') {
+                        group.cmp = group.cmp == '==' ||  group.cmp == 'is' ? 'is' : 'isNot';
+                    }
                 }
 
                 if(angular.isObject(group.groupVal)) {

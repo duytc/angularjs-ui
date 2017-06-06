@@ -5,12 +5,12 @@
         .controller('BlockList', BlockList)
     ;
 
-    function BlockList($scope, $translate, $modal, AlertService, domainList, adNetwork, BlockListManager, AtSortableService, HISTORY_TYPE_PATH, historyStorage) {
+    function BlockList($scope, $translate, $stateParams, $modal, AlertService, domainList, adNetwork, DisplayBlackListManager, AdNetworkManager, AtSortableService, EVENT_ACTION_SORTABLE, HISTORY_TYPE_PATH, historyStorage) {
         $scope.domainList = domainList;
         $scope.adNetwork = adNetwork;
 
         $scope.hasData = function () {
-            return !!domainList.length;
+            return !!domainList && !!domainList.records.length;
         };
 
         if (!$scope.hasData()) {
@@ -22,12 +22,78 @@
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10
+            maxPages: 10,
+            totalItems: Number(domainList.totalRecord)
         };
+
+        $scope.availableOptions = {
+            currentPage: $stateParams.page || 1,
+            pageSize: 10
+        };
+
+        $scope.selectData = {
+            query: $stateParams.searchKey || null
+        };
+
+        var params = {
+            page: 1
+        };
+
+        var getDomainList;
 
         $scope.showPagination = showPagination;
         $scope.confirmDeletion = confirmDeletion;
         $scope.backToListAdNetwork = backToListAdNetwork;
+        $scope.viewDomains = viewDomains;
+        $scope.changePage = changePage;
+        $scope.searchData = searchData;
+
+        function searchData() {
+            var query = {searchKey: $scope.selectData.query || ''};
+            params = angular.extend(params, query);
+            _getDomainList(params, 500);
+        }
+
+        $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
+            params = angular.extend(params, query);
+            _getDomainList(params);
+        });
+
+        function changePage(currentPage) {
+            params = angular.extend(params, {page: currentPage});
+            _getDomainList(params);
+        }
+
+        function _getDomainList(query, ms) {
+            clearTimeout(getDomainList);
+
+            getDomainList = setTimeout(function() {
+                params = query;
+                var Manage = !!adNetwork ? AdNetworkManager.one(adNetwork.id).one('displayblacklists') : DisplayBlackListManager.one();
+
+                return Manage.get(query)
+                    .then(function(domainList) {
+                        AtSortableService.insertParamForUrl(query);
+                        $scope.domainList = domainList;
+                        $scope.tableConfig.totalItems = Number(domainList.totalRecord);
+                        $scope.availableOptions.currentPage = Number(query.page);
+                    });
+            }, ms || 0);
+        }
+
+        function viewDomains(item) {
+            $modal.open({
+                templateUrl: 'tagManagement/adNetwork/domainList/viewDomains.tpl.html',
+                controller: 'ViewDomains',
+                size: 'lg',
+                resolve: {
+                    domain: function(DisplayBlackListManager){
+                        return DisplayBlackListManager.one(item.id).get();
+                    },
+                    whiteList: false
+                }
+            });
+        }
 
         function backToListAdNetwork() {
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adNetwork, '^.^.adNetwork.list');
@@ -39,20 +105,10 @@
             });
 
             modalInstance.result.then(function () {
-                return BlockListManager.one(domain.id).remove()
+                return DisplayBlackListManager.one(domain.id).remove()
                     .then(
                     function () {
-                        var index = domainList.indexOf(domain);
-
-                        if (index > -1) {
-                            domainList.splice(index, 1);
-                        }
-
-                        $scope.domainList = domainList;
-
-                        if($scope.tableConfig.currentPage > 0 && domainList.length/10 == $scope.tableConfig.currentPage) {
-                            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
-                        }
+                        _getDomainList(params);
 
                         AlertService.replaceAlerts({
                             type: 'success',
@@ -71,11 +127,11 @@
         }
 
         function showPagination() {
-            return angular.isArray($scope.domainList) && $scope.domainList.length > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.domainList.records) && $scope.domainList.totalRecord > $scope.tableConfig.itemsPerPage;
         }
 
         $scope.$on('$locationChangeSuccess', function() {
-            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.domainList)
+            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.blockList)
         });
     }
 })();

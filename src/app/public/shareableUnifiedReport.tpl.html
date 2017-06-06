@@ -1,6 +1,6 @@
 <section class="panel panel-default">
     <div class="panel-heading">
-        <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
+        <span current-page-title></span>
         <div class="button-bar">
             <button style="margin-right: 3px"  class="btn btn-sm btn-primary" ng-click="refreshData()" type="button">Refresh</button>
             <export-excel ng-if="reports.length > 0" not-filter="true" data="reports" style="margin-right: 3px" fields="columnReportDetailForExportExcel" header="titleReportDetailForExportExcel" file-name="getExportExcelFileName()"></export-excel>
@@ -15,7 +15,7 @@
         </div>
     </div>
 
-    <div class="panel-body" ng-if="reports.length > 0">
+    <div class="panel-body">
         <div class="table-responsive" style="overflow-y: auto">
             <table class="table">
                 <thead>
@@ -28,14 +28,14 @@
                 </thead>
 
                 <tbody>
-                    <tr dir-paginate="report in tempReports | orderBy:sortBy:reverse | itemsPerPage:tableConfig.itemsPerPage">
-                        <td ng-if="hasSort" ng-repeat="column in columnPositions">
-                            <span ng-if="!isNullValue(reports[report.position], column)"> {{ reports[report.position][column] }} </span>
+                    <tr>
+                        <td ng-repeat="column in columnPositions">
+                            <input type="text" ng-model="search[column]" ng-change="searchReportView()">
                         </td>
                     </tr>
 
                     <tr dir-paginate="report in reports | itemsPerPage:tableConfig.itemsPerPage">
-                        <td ng-if="!hasSort" ng-repeat="column in columnPositions">
+                        <td ng-repeat="column in columnPositions">
                             <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>
                         </td>
                     </tr>
@@ -45,8 +45,19 @@
 
 
         <div class="pagination">
-            <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
-            <items-per-page init="tableConfig.itemsPerPage" range="itemsPerPage" sources="reports"></items-per-page>
+            <pagination class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+
+            <div class="itemsPerPage">
+                <label for="inputItemPerPage">Items per page</label>
+                <div class="itemNumber">
+                    <ui-select name="itemPerPage" id="inputItemPerPage" ng-model="tableConfig.itemsPerPage" on-select="selectItemPerPages($item)" reset-search-input="'false'">
+                        <ui-select-match placeholder="10">{{ $select.selected.label }}</ui-select-match>
+                        <ui-select-choices repeat="itemPerPage.key as itemPerPage in itemsPerPage">
+                            {{ itemPerPage.label }}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -55,7 +66,7 @@
     <div class="row">
         <div class="col-md-6" ng-if="isEmptyObject(total)">
             <div class="panel panel-default">
-                <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Totals</div>
+                <div class="panel-heading">Totals</div>
                 <div class="panel-body">
                     <ul class="list-unstyled report-builder list-info">
                         <li ng-repeat="(key, value) in total">
@@ -68,7 +79,7 @@
         </div>
         <div class="col-md-6" ng-if="isEmptyObject(average)">
             <div class="panel panel-default">
-                <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Averages</div>
+                <div class="panel-heading">Averages</div>
                 <div class="panel-body">
                     <ul class="list-unstyled report-builder list-info">
                         <li ng-repeat="(key, value) in average">

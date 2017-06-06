@@ -5,7 +5,7 @@
         .controller('AlertList', AlertList)
     ;
 
-    function AlertList($scope, _, $translate, $modal, alerts, UnifiedReportAlertManager, AlertService) {
+    function AlertList($scope, _, $stateParams, $translate, $modal, UISelectMethod, alerts, publishers, dataSources, UnifiedReportAlertManager, UnifiedReportDataSourceManager, AlertService) {
         const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_UPLOAD = 1100;
         const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_EMAIL = 1101;
         const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_API = 1102;
@@ -22,6 +22,7 @@
         const ALERT_CODE_DATA_IMPORT_NO_DATA_ROW_FOUND = 1206;
         const ALERT_CODE_WRONG_TYPE_MAPPING = 1207;
         const ALERT_CODE_FILE_NOT_FOUND = 1208;
+        const ALERT_CODE_NO_DATE_FORMAT = 1210;
         const ALERT_CODE_UN_EXPECTED_ERROR = 2000;
         const ALERT_CODE_FETCHER_LOGIN_FAIL = 2001;
         const ALERT_CODE_FETCHER_TIME_OUT = 2002;
@@ -31,13 +32,21 @@
             maxPages: 10
         };
 
+        $scope.selectedData = {
+            dataSource: $stateParams.dataSourceId || null,
+            publisherId: !!$stateParams.dataSourceId ? _.find(dataSources, {id: Number($stateParams.dataSourceId)}).publisher.id : null
+        };
+
         $scope.formProcessing = false;
         $scope.checkAllItem = false;
         $scope.alerts = alerts;
+        $scope.dataSources = UISelectMethod.addAllOption(dataSources, 'All Data Sources');
+        $scope.publishers = !!publishers ? UISelectMethod.addAllOption(publishers, 'All Publisher') : [];
         $scope.selectedAlert = [];
 
         var itemsForPager = [];
 
+        $scope.groupEntities = UISelectMethod.groupEntities;
         $scope.showPagination = showPagination;
         $scope.checkedAlert = checkedAlert;
         $scope.selectEntity = selectEntity;
@@ -56,6 +65,39 @@
         $scope.setItemForPager = setItemForPager;
         $scope.selectAllAlertInPages = selectAllAlertInPages;
         $scope.noneSelect = noneSelect;
+        $scope.getAlerts = getAlerts;
+        $scope.selectPublisher = selectPublisher;
+        
+        function selectPublisher() {
+            $scope.selectedData.dataSource = null;
+        }
+        
+        function getAlerts() {
+            var manage = null;
+
+            if(!!$scope.selectedData.dataSource) {
+                manage = UnifiedReportDataSourceManager.one($scope.selectedData.dataSource).one('alerts');
+            } else {
+                manage = UnifiedReportAlertManager.one();
+            }
+
+            return manage.getList(null, {publisher: $scope.selectedData.publisherId})
+                .then(function (data) {
+                    itemsForPager = [];
+                    alerts = data.plain();
+                    $scope.alerts = alerts;
+
+                    if($scope.tableConfig.currentPage > 0 && alerts.length/10 == $scope.tableConfig.currentPage) {
+                        $scope.tableConfig.currentPage = $scope.tableConfig.currentPage - 1;
+                    }
+
+                    noneSelect();
+                });
+        }
+
+        $scope.isFormValid = function() {
+            return $scope.alertForm.$valid;
+        };
 
         function selectAllAlertInPages() {
             $scope.checkAllItem = true;
@@ -119,6 +161,10 @@
                             if($scope.alerts.length == $scope.selectedAlert.length) {
                                 $scope.checkAllItem = true;
                             }
+
+                            if($scope.alerts.length == 0) {
+                                $scope.checkAllItem = false;
+                            }
                         }
                     });
 
@@ -144,6 +190,8 @@
                         type: 'success',
                         message: $scope.selectedAlert.length + ' alerts have been unread'
                     });
+
+                    noneSelect();
                 });
         }
 
@@ -162,6 +210,8 @@
                         type: 'success',
                         message: $scope.selectedAlert.length + ' alerts have been marked as read'
                     });
+
+                    noneSelect();
                 });
         }
 
@@ -222,6 +272,16 @@
                     }
 
                     $scope.alerts = alerts;
+
+                    var indexItemsForPager = _.findIndex(itemsForPager, function (item) {
+                        return alert.id == item.id;
+                    });
+
+                    if (indexItemsForPager > -1) {
+                        itemsForPager.splice(indexItemsForPager, 1);
+                    }
+
+                    $scope.selectedAlert.splice($scope.selectedAlert.indexOf(alert.id), 1);
 
                     if($scope.tableConfig.currentPage > 0 && alerts.length/10 == $scope.tableConfig.currentPage) {
                         $scope.tableConfig.currentPage = $scope.tableConfig.currentPage - 1;
@@ -289,6 +349,7 @@
                 templateUrl: 'unifiedReport/alert/viewDetail.tpl.html',
                 controller: function ($scope, alert) {
                     $scope.message = convertMessage(alert);
+                    $scope.alertDetail = alert.detail;
                 },
                 resolve: {
                     alert: alert
@@ -309,64 +370,59 @@
             // new alert detail without key "detail", using all keys in alert detail
             switch (code) {
                 case ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_UPLOAD:
-                    return 'File ' + '"' + detail.fileName + '"' + ' has been successfully uploaded to data source ' + '"' + detail.dataSourceName + '"' + '.';
-
                 case ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_EMAIL:
-                    return 'File ' + '"' + detail.fileName + '"' + ' has been successfully imported to data source ' + '"' + detail.dataSourceName + '"' + ' from email.';
-
                 case ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_API:
-                    return 'File ' + '"' + detail.fileName + '"' + ' has been successfully received to data source ' + '"' + detail.dataSourceName + '"' + ' from api.';
+                    return 'A new file has been successfully uploaded to data source "' + detail.dataSourceName;
 
                 case ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_UPLOAD_WRONG_FORMAT:
-                    return 'Failed to upload file ' + '"' + detail.fileName + '"' + ' to data source ' + '"' + detail.dataSourceName + '"' + ' - wrong file format. Each Data source has only one type and file format.';
-
                 case ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_EMAIL_WRONG_FORMAT:
-                    return 'Failed to receive file ' + '"' + detail.fileName + '"' + ' from email to data source ' + '"' + detail.dataSourceName + '"' + ' - wrong format error. Each Data source has only one type and file format.';
-
                 case ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_API_WRONG_FORMAT:
-                    return 'Failed to receive file ' + '"' + detail.fileName + '"' + ' from api to data source ' + '"' + detail.dataSourceName + '"' + ' - wrong format error. Each Data source has only one type and file format.';
+                    return 'Failed to upload a file to data source "' + detail.dataSourceName + '" because the file is in the wrong format';
 
                 case ALERT_CODE_DATA_IMPORT_MAPPING_FAIL:
-                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - MAPPING ERROR: no field in file is mapped to data set.';
+                    return 'Failed to import a file into data set "' + detail.dataSetName + '". There was a field mapping error';
 
                 case ALERT_CODE_WRONG_TYPE_MAPPING:
-                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - MAPPING ERROR: found invalid content ' + '"' + detail.content + '"' + ' on field ' + '"' + detail.column + '"' + '.';
+                    return 'Failed to import a file into data set "' + detail.dataSetName + '". There was a mapping error due to invalid content on field "' + detail.column + '"';
 
                 case ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL:
-                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - REQUIRE ERROR: required field ' + '"' + detail.column + '"' + ' does not exist.';
+                    return 'Failed to import a file into data set "' + detail.dataSetName + '". A required field "'+ detail.column +'" is missing';
 
                 case ALERT_CODE_FILTER_ERROR_INVALID_NUMBER:
-                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - invalid number format on field ' + '"' + detail.column + '"' + '.';
+                    return 'Failed to import a file into data set "' + detail.dataSetName + '". There was an invalid number format on field "' + detail.column + '"';
 
                 case ALERT_CODE_TRANSFORM_ERROR_INVALID_DATE:
-                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - invalid date format on field ' + '"' + detail.column + '"' + '.';
+                    return 'Failed to import a file into data set "' + detail.dataSetName + '". There was an invalid date format on field "' + detail.column + '"';
 
                 case ALERT_CODE_DATA_IMPORT_NO_HEADER_FOUND:
-                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - no header found from file.';
+                    return 'Failed to import a file into data set "' + detail.dataSetName + '". No header row was found in the file. Please contact your account manager';
 
                 case ALERT_CODE_DATA_IMPORT_NO_DATA_ROW_FOUND:
-                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - no data found from file.';
+                    return 'Failed to import a file into data set "' + detail.dataSetName + '". No data was found in the file';
 
                 case ALERT_CODE_FILE_NOT_FOUND:
-                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - file does not exist.';
+                    return 'Failed to import a file into data set "' + detail.dataSetName + '". The uploaded file could not be found, please contact your account manager';
 
                 case ALERT_CODE_NO_DATA_RECEIVED_DAILY:
-                    return 'Data source ' + '"' + detail.dataSourceName + '"' + ' has not received data daily (on ' + '"' + detail.date + '"' + ')';
+                    return 'No files have been uploaded to data source "' + detail.dataSourceName + '" (ID: ' + detail.dataSourceId + '). You have an alert configured if no files are uploaded';
 
                 case ALERT_CODE_UN_EXPECTED_ERROR:
-                    return 'Failed to import file ' + '"' + detail.fileName + '"' + ' from data source  ' + '"' + detail.dataSourceName + '"' + ' to data set ' + '"' + detail.dataSetName + '"' + ' - unexpected error, please contact your account manager';
+                    return 'Failed to import a file into data set "' + detail.dataSetName + '". There was an unexpected error, please contact your account manager';
 
                 case ALERT_CODE_FETCHER_LOGIN_FAIL:
-                    return 'Browser automation: login failed for account of Integration "' + detail.integrationName + '" at "' + detail.executionDate + '" when getting reports from "' + detail.startDate + '" to "' + detail.endDate + '"';
+                    return 'Browser login has failed for data source (ID: ' + detail.dataSourceId + '). Please check the credentials';
 
                 case ALERT_CODE_FETCHER_TIME_OUT:
-                    return 'Browser automation: timeout occur whey try download Integration "' + detail.integrationName + '" at "' + detail.executionDate + '" when getting reports from "' + detail.startDate + '" to "' + detail.endDate + '"';
+                    return 'A timeout error has occurred when downloading reports for data source (ID: ' + detail.dataSourceId + ')';
+
+                case ALERT_CODE_NO_DATE_FORMAT:
+                    return 'A file failed to load. There was an invalid date format on field "' + detail.column +'"';
 
                 case ALERT_CODE_DATA_IMPORTED_SUCCESSFULLY:
-                    return 'File ' + '"' + detail.fileName + '"' + ' from data source ' + '"' + detail.dataSourceName + '"' + ' has been successfully imported to data set ' + '"' + detail.dataSetName + '"' + '.';
+                    return 'A new file has been loaded into data set "' + detail.dataSetName + '"';
 
                 default:
-                    return 'Unknown alert code (' + code + ')';
+                    return 'Unknown alert code (' + code + '). Please contact your account manager';
             }
         }
 

@@ -14,7 +14,8 @@
 
                 data.unshift({
                     id: null, // default value
-                    name: label || 'All'
+                    name: label || 'All',
+                    company: label || 'All'
                 });
 
                 return data;

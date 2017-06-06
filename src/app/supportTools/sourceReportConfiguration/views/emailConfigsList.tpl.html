@@ -1,7 +1,6 @@
 <section id="performance-report-selector" class="panel panel-default">
     <div class="panel-heading">
-        <span class="glyphicon glyphicon-th"></span>
-        <strong current-page-title></strong>
+        <span current-page-title></span>
 
         <div class="button-bar">
             <button ng-click="addNewEmailConfig()" class="btn btn-sm btn-primary" type="button">
@@ -28,7 +27,7 @@
 
 
 <div class="panel panel-default daily-reports">
-    <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> {{ 'SOURCE_CONFIG_MODULE.CONFIGURATION' | translate }}</div>
+    <div class="panel-heading">{{ 'SOURCE_CONFIG_MODULE.CONFIGURATION' | translate }}</div>
 
     <search-box sb-list="sourceReportList" place-holder="'Search by email'" search-fields="['email']"></search-box>
 

@@ -47,6 +47,36 @@
         $scope.deleteDataSource = deleteDataSource;
         $scope.getAPIKey = getAPIKey;
         $scope.getUnifiedReportEmail = getUnifiedReportEmail;
+        $scope.viewBackfillHistory = viewBackfillHistory;
+
+        function viewBackfillHistory(dataSource) {
+            $modal.open({
+                templateUrl: 'unifiedReport/dataSource/viewBackfillHistory.tpl.html',
+                size: 'lg',
+                controller: function ($scope, dataSource, backfillHistories) {
+                    $scope.dataSource = dataSource;
+                    $scope.backfillHistories = backfillHistories;
+
+                    $scope.tableConfig = {
+                        maxPages: 10,
+                        itemsPerPage: 10
+                    };
+
+                    $scope.showPagination = function () {
+                        return angular.isArray($scope.backfillHistories) && $scope.backfillHistories.length > $scope.tableConfig.itemsPerPage;
+                    }
+
+                },
+                resolve: {
+                    dataSource: function () {
+                        return dataSource;
+                    },
+                    backfillHistories: function () {
+                        return UnifiedReportDataSourceManager.one(dataSource.id).getList('backfillhistories');
+                    }
+                }
+            });
+        }
 
         function showPagination(){
             return angular.isArray($scope.dataSources.records) && $scope.dataSources.totalRecord > $scope.tableConfig.itemsPerPage;
@@ -189,10 +219,10 @@
         function searchData(){
             var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
-            _getDataSources(params);
+            _getDataSources(params, 500);
         }
 
-        function _getDataSources(query){
+        function _getDataSources(query, ms){
             clearTimeout(getSite);
 
             getSite = setTimeout(function (){
@@ -206,7 +236,7 @@
                             $scope.availableOptions.currentPage = Number(query.page);
                         }, 0)
                     });
-            }, 500)
+            }, ms || 0)
 
         }
     }

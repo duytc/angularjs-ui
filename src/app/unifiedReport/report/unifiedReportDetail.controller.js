@@ -4,78 +4,45 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, reportView, $translate, reportGroup, getDateReportView, AlertService, unifiedReportFormatReport, UnifiedReportViewManager, UserStateHelper, DateFormatter, HISTORY_TYPE_PATH) {
+    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, reportView, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
 
+        $scope.tableConfig = {
+            itemsPerPage: $stateParams.limit || 10,
+            maxPages: 10,
+            totalItems: reportGroup.totalReport
+        };
+
+        $scope.availableOptions = {
+            currentPage: $stateParams.page || 1,
+            pageSize: 10
+        };
+
+        var getReportDetail;
+        var params = {
+            page: 1
+        };
+
+        $scope.search = {};
         $scope.reportView = reportView;
         $scope.reportGroup = reportGroup;
         $scope.hasResult = !angular.isNumber(reportGroup.status);
-        $scope.search = {};
 
         $scope.reports = reportGroup.reports || [];
         $scope.types = reportGroup.types;
         $scope.isNew = !$scope.reportView.id;
-        $scope.hasSaveRepoerView = !!$stateParams.saveReportView;
+        $scope.hasSaveRepoerView = !!$stateParams.reportView;
         $scope.formProcessing = false;
 
+        $scope.dimensions = [];
+        $scope.metrics = [];
+
         // user tempReports to orderBy and reports to view
-        $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);
+        // $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);
 
-        $scope.titleColumns = reportGroup.columns;
-        $scope.columnReportDetailForExportExcel = [];
-        $scope.titleReportDetailForExportExcel = [];
-        $scope.hasSort = false;
-
-        $scope.columnPositions = [];
-        if (!!reportView.formats.length) {
-            angular.forEach(reportView.formats, function (format) {
-                if (format.type == 'columnPosition') {
-                    $scope.columnPositions = angular.copy(format.fields);
-                    if($scope.columnPositions.indexOf('report_view_alias') == -1 && reportView.multiView) {
-                        $scope.columnPositions.unshift('report_view_alias');
-                    }
-                }
-            });
-
-            // push remain field to columnPositions
-            var allFields,
-                remainFields;
-
-            allFields = _.keys($scope.reports[0]);
-            remainFields = _.difference(allFields, $scope.columnPositions);
-
-            if (remainFields.length > 0) {
-                angular.forEach(remainFields, function (remainField) {
-                    $scope.columnPositions.push(remainField);
-                })
-            }
-
-            var indexReportViewAliasFormat = $scope.columnPositions.indexOf('report_view_alias');
-            if(indexReportViewAliasFormat > -1 && reportView.multiView) {
-                $scope.columnPositions.splice(indexReportViewAliasFormat, 1);
-                $scope.columnPositions.unshift('report_view_alias');
-            }
-        }
-
-        if (!$scope.columnPositions.length && $scope.reports.length > 0) {
-            $scope.columnPositions = _.keys($scope.reports[0]);
-            var indexReportViewAlias = $scope.columnPositions.indexOf('report_view_alias');
-            if(indexReportViewAlias > -1 && reportView.multiView) {
-                $scope.columnPositions.splice(indexReportViewAlias, 1);
-                $scope.columnPositions.unshift('report_view_alias');
-            }
-        }
-
-        if (angular.isArray($scope.reports) && $scope.reports.length > 0) {
-            $scope.columnReportDetailForExportExcel = $scope.columnPositions;
-
-            angular.forEach($scope.columnPositions, function (key) {
-                var title = !!$scope.titleColumns[key] ? $scope.titleColumns[key] : key;
-                $scope.titleReportDetailForExportExcel.push(title)
-            })
-        }
+        _updateColumnPositions();
 
         $scope.reportViewForEdit = {
             reportViewDataSets: angular.toJson(reportView.reportViewDataSets),
@@ -92,6 +59,7 @@
             multiView: reportView.multiView,
             subReportsIncluded: reportView.subReportsIncluded,
             isShowDataSetName: reportView.isShowDataSetName,
+            enableCustomDimensionMetric: reportView.enableCustomDimensionMetric,
             publisher: angular.isObject(reportView.publisher) ? reportView.publisher.id : reportView.publisher
         };
 
@@ -121,11 +89,6 @@
             }
         }
 
-        $scope.tableConfig = {
-            maxPages: 10,
-            itemsPerPage: 10
-        };
-
         $scope.itemsPerPage = [
             {label: '10', key: '10'},
             {label: '20', key: '20'},
@@ -136,9 +99,11 @@
 
         $scope.itemsPerPage.selected = $scope.tableConfig.itemsPerPage;
 
-        $scope.date = {
-            startDate: $stateParams.startDate || getDateReportView.getMinStartDateInFilterReportView(reportView),
-            endDate : $stateParams.endDate || getDateReportView.getMaxEndDateInFilterReportView(reportView)
+        $scope.selected = {
+            date: {
+                startDate: $stateParams.startDate || getDateReportView.getMinStartDateInFilterReportView(reportView),
+                endDate : $stateParams.endDate || getDateReportView.getMaxEndDateInFilterReportView(reportView)
+            }
         };
 
         $scope.datePickerOpts = {
@@ -152,6 +117,7 @@
         };
 
         $scope.showPagination = showPagination;
+        $scope.showItemPerPage = showItemPerPage;
         $scope.saveReportView = saveReportView;
         $scope.getExportExcelFileName = getExportExcelFileName;
 
@@ -165,12 +131,62 @@
         $scope.hideDaterange = hideDaterange;
         $scope.enableSelectDaterange = enableSelectDaterange;
         $scope.refreshData = refreshData;
+        $scope.changePage = changePage;
+        $scope.selectItemPerPages = selectItemPerPages;
+        $scope.searchReportView = searchReportView;
+        $scope.exportExcel = exportExcel;
+
+        function exportExcel() {
+            var params = _toJsonReportView(reportView);
+            delete params.page;
+
+            dataService.makeHttpPOSTRequest('', params, API_UNIFIED_END_POINT + '/v1/reportview/download')
+                .then(function (data) {
+                    var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
+                    var reportName = !!reportView.name ? reportView.name : 'report-detail';
+
+                    return saveAs(blob, [reportName + '.csv']);
+                });
+        }
+        
+        function searchReportView() {
+            _getReportDetail(_toJsonReportView(reportView), 250);
+        }
+        
+        function selectItemPerPages(itemPerPage) {
+            _getReportDetail(_toJsonReportView(reportView, itemPerPage));
+        }
+
+        function changePage(currentPage) {
+            _getReportDetail(_toJsonReportView(reportView));
+        }
+
+        function _getReportDetail(query, timeout) {
+            clearTimeout(getReportDetail);
+
+            getReportDetail = setTimeout(function() {
+                params = angular.copy(query);
+                return unifiedReportBuilder.getPlatformReport(params)
+                    .then(function(reportGroup) {
+                        $scope.reportGroup = reportGroup;
+                        $scope.reports = reportGroup.reports || [];
+                        $scope.tableConfig.totalItems = reportGroup.totalReport;
+                        $scope.availableOptions.currentPage = Number(params.page);
+
+                        _updateColumnPositions();
+                    });
+            }, timeout || 0);
+        }
 
         function refreshData() {
             historyStorage.getLocationPath(HISTORY_TYPE_PATH.unifiedReportDetail, '^.detail');
         }
 
         function enableSelectDaterange() {
+            if(!!$scope.reportView.enableCustomDimensionMetric) {
+                return true
+            }
+
             var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
             for (var reportViewIndex in reportViews) {
                 var reportView = reportViews[reportViewIndex];
@@ -224,29 +240,12 @@
         }
 
         function generateReport(date) {
-            var reportViewClone = angular.copy(reportView);
-
-            var params = {
-                reportView: $stateParams.reportView,
-                reportViewDataSets: angular.toJson(reportViewClone.reportViewDataSets),
-                fieldTypes: angular.toJson(reportViewClone.fieldTypes),
-                reportViewMultiViews: angular.toJson(reportViewClone.reportViewMultiViews),
-                transforms: angular.toJson(reportViewClone.transforms),
-                showInTotal: angular.toJson(reportViewClone.showInTotal),
-                weightedCalculations: angular.toJson(reportViewClone.weightedCalculations),
-                formats: angular.toJson(reportViewClone.formats),
-                joinBy: angular.toJson(reportViewClone.joinBy) || null,
-                name: reportViewClone.name,
-                alias: reportViewClone.alias,
-                multiView: !!reportViewClone.multiView || reportViewClone.multiView == 'true',
-                subReportsIncluded: !!reportViewClone.subReportsIncluded || reportViewClone.subReportsIncluded == 'true',
-                isShowDataSetName: !!reportViewClone.isShowDataSetName || reportViewClone.isShowDataSetName == 'true'
-            };
+            var params = _toJsonReportView(reportView);
 
             params.startDate = DateFormatter.getFormattedDate(date.startDate);
             params.endDate = DateFormatter.getFormattedDate(date.endDate);
 
-            UserStateHelper.transitionRelativeToBaseState('unifiedReport.report.detail', params);
+            _getReportDetail(params);
         }
 
         function isNullValue(report, column) {
@@ -265,8 +264,7 @@
             $scope.sortBy = '\u0022'+keyname+'\u0022'; //set the sortBy to the param passed
             $scope.reverse = !$scope.reverse; //if true make it false and vice versa
 
-            $scope.hasSort = true;
-
+            _getReportDetail(_toJsonReportView(reportView));
         }
 
         function isShow(sortColumn) {
@@ -334,19 +332,226 @@
         }
 
         function showPagination() {
-            return angular.isArray($scope.reports) && $scope.reports.length > $scope.tableConfig.itemsPerPage;
+            if(!showItemPerPage()) {
+                return false
+            }
+
+            return angular.isArray($scope.reportGroup.reports) && $scope.reportGroup.totalReport > $scope.tableConfig.itemsPerPage;
         }
+
+        function showItemPerPage() {
+            // var numFalse = 0;
+            // var numField = 0;
+            // for (var field in $scope.fieldsShow) {
+            //     numField += 1;
+            //
+            //     if(!$scope.fieldsShow[field]) {
+            //         numFalse += 1;
+            //     }
+            // }
+            //
+            // if(numFalse == numField) {
+            //     return false
+            // }
+
+            return true;
+        }
+
+        function _toJsonReportView(reportView, itemPerPage) {
+            var params = angular.copy(reportView);
+
+            params.startDate = DateFormatter.getFormattedDate($scope.selected.date.startDate);
+            params.endDate = DateFormatter.getFormattedDate($scope.selected.date.endDate);
+
+            var newDimensions = [];
+            var newMetrics = [];
+
+            angular.forEach($scope.fieldsShow.dimensions, function (value) {
+                if(value && value.ticked && !!$scope.dimensions) {
+                    newDimensions.push(value.name);
+                }
+            });
+
+            angular.forEach($scope.fieldsShow.metrics, function (value) {
+                if(value && value.ticked && !!$scope.metrics) {
+                    newMetrics.push(value.name);
+                }
+            });
+
+            params = angular.extend(params, {
+                searches: $scope.search,
+                limit: !!itemPerPage ? itemPerPage.key : $scope.tableConfig.itemsPerPage,
+                page: $scope.availableOptions.currentPage,
+                orderBy: (!!$scope.reverse ? 'desc': 'acs'),
+                sortField: $scope.sortBy,
+                userDefineDimensions: newDimensions,
+                userDefineMetrics: newMetrics,
+                needToGroup: !!$scope.dimensions && newDimensions.length != $scope.dimensions.length || !!$scope.metrics && newMetrics.length != $scope.metrics.length
+            });
+
+            return params;
+        }
+
+        function _updateColumnPositions() {
+            $scope.titleColumnsForSelect = !!$scope.titleColumns && Object.keys($scope.titleColumnsForSelect).length > 0 ? $scope.titleColumnsForSelect : $scope.reportGroup.columns;
+            $scope.titleColumns = $scope.reportGroup.columns;
+            $scope.columnReportDetailForExportExcel = [];
+            $scope.titleReportDetailForExportExcel = [];
+
+            $scope.columnPositions = !!$scope.columnPositions && $scope.columnPositions.length > 0 ? $scope.columnPositions : [];
+
+            if ($scope.reports.length > 0) {
+                var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
+                var totalDimensions = [];
+                var totalMetrics = [];
+                
+                angular.forEach(reportViews, function (reportView) {
+                    totalDimensions = totalDimensions.concat(reportView.dimensions);
+                    totalMetrics = totalMetrics.concat(reportView.metrics)
+                });
+                
+                var dimensions = [];
+                var metrics = [];
+
+                angular.forEach(_.keys($scope.reports[0]), function (col) {
+                    var key = null;
+
+                    if(!$scope.reportView.multiView && col.lastIndexOf('_') > -1) {
+                        key = col.slice(0, col.lastIndexOf('_'));
+                    } else {
+                        key = col;
+                    }
+
+                    var hasJoin = _.findIndex($scope.reportView.joinBy, function (join) {
+                            return join.outputField == key
+                    });
+
+                    if(totalDimensions.indexOf(key) > -1 || hasJoin > -1 || key == 'report_view_alias') {
+                        dimensions.push(col);
+
+                        if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == col }) == -1) {
+                            $scope.dimensions.push({name: col, label: $scope.titleColumnsForSelect[col], ticked: true});
+                        }
+                    } else {
+                        metrics.push(col);
+
+                        if(_.findIndex($scope.metrics, function (dimension) { return dimension.name == col }) == -1) {
+                            $scope.metrics.push({name: col, label: $scope.titleColumnsForSelect[col], ticked: true});
+                        }
+                    }
+                });
+
+                dimensions = _.sortBy(dimensions);
+                dimensions = _.sortBy(dimensions, function (dimension) {
+                    var key = null;
+
+                    if(dimension.lastIndexOf('_') > -1) {
+                        key = dimension.slice(0, dimension.lastIndexOf('_'));
+                    } else {
+                        key = dimension;
+                    }
+
+                    return key
+                });
+
+                metrics = _.sortBy(metrics);
+                metrics = _.sortBy(metrics, function (metric) {
+                    var key = null;
+
+                    if(metric.lastIndexOf('_') > -1) {
+                        key = metric.slice(0, metric.lastIndexOf('_'));
+                    } else {
+                        key = metric;
+                    }
+
+                    return key
+                });
+
+                angular.forEach(angular.copy(dimensions).reverse(), function (dimension) {
+                    if($scope.reportView.fieldTypes[dimension] == 'date' || $scope.reportView.fieldTypes[dimension] == 'datetime') {
+                        dimensions.splice(dimensions.indexOf(dimension), 1);
+                        dimensions.unshift(dimension);
+                    }
+                });
+
+                angular.forEach(angular.copy(metrics).reverse(), function (metric) {
+                    if($scope.reportView.fieldTypes[metric] == 'date' || $scope.reportView.fieldTypes[metric] == 'datetime') {
+                        metrics.splice(metrics.indexOf(metric), 1);
+                        metrics.unshift(metric);
+                    }
+                });
+
+                $scope.columnPositions = dimensions.concat(metrics);
+                var indexReportViewAlias = $scope.columnPositions.indexOf('report_view_alias');
+                if(indexReportViewAlias > -1 && reportView.multiView) {
+                    $scope.columnPositions.splice(indexReportViewAlias, 1);
+                    $scope.columnPositions.unshift('report_view_alias');
+                }
+            }
+
+            if (!!reportView.formats.length) {
+                angular.forEach(reportView.formats, function (format) {
+                    if (format.type == 'columnPosition' && format.fields.length > 0) {
+                        angular.forEach(format.fields, function (field) {
+                            var index = $scope.columnPositions.indexOf(field);
+
+                            if(index > -1) {
+                                $scope.columnPositions.splice(index, 1)
+                            }
+                        });
+
+                        $scope.columnPositions = format.fields.concat($scope.columnPositions);
+                        
+                        angular.forEach(angular.copy($scope.columnPositions), function (col) {
+                            var index = $scope.columnPositions.indexOf(col);
+                            if(!!$scope.titleColumns && !$scope.titleColumns[col] && index > -1) {
+                                $scope.columnPositions.splice(index, 1);
+                            }
+                        })
+                    }
+                });
+
+                var indexReportAlias = $scope.columnPositions.indexOf('report_view_alias');
+                if(indexReportAlias > -1 && reportView.multiView) {
+                    $scope.columnPositions.splice(indexReportAlias, 1);
+                    $scope.columnPositions.unshift('report_view_alias');
+                }
+            }
+
+            if (angular.isArray($scope.reports) && $scope.reports.length > 0) {
+                $scope.columnReportDetailForExportExcel = $scope.columnPositions;
+
+                angular.forEach($scope.columnPositions, function (key) {
+                    var title = !!$scope.titleColumns[key] ? $scope.titleColumns[key] : key;
+                    $scope.titleReportDetailForExportExcel.push(title)
+                })
+            }
+
+            $scope.fieldsShow = $scope.fieldsShow || {dimensions: [], metrics: []};
+        }
+
+        $scope.$watch(function () {
+            return $scope.fieldsShow.dimensions
+        }, function () {
+            var totalSelect = 0;
+            var indexDimension;
+
+            angular.forEach($scope.dimensions, function (dimension, index) {
+                if(dimension.ticked) {
+                    totalSelect += 1;
+                    indexDimension = index;
+
+                    dimension.disabled = false;
+                }
+            });
+
+            if(totalSelect == 1) {
+                $scope.dimensions[indexDimension].disabled = true
+            }
+        });
 
         $scope.$on('$locationChangeSuccess', function() {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.unifiedReportDetail)
         });
-
-        $scope.$watch('search', function() {
-            angular.forEach(angular.copy($scope.search), function (value, key) {
-                if((!value || value == '')) {
-                    delete $scope.search[key]
-                }
-            })
-        }, true);
     }
 })();

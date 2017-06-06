@@ -1,7 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <span class="glyphicon glyphicon-th"></span>
-        <strong current-page-title></strong>
+        <span current-page-title></span>
 
         <div class="button-bar">
             <button ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
@@ -44,8 +43,12 @@
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
                                 <li><a ui-sref="^.^.dataSourceFile.new({ dataSourceId: item.id })">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.UPLOAD_DATA' | translate }}</a></li>
                                 <li class="divider"></li>
+                                <li ng-click="viewBackfillHistory(item)"><a>{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.VIEW_BACKFILL_HISTORY' | translate }}</a></li>
+                                <li class="divider"></li>
                                 <li><a ui-sref="^.^.dataSourceFile.listForDataSource({dataSourceId: item.id })">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.MANAGE_RECEIVED_DATA' | translate }}</a></li>
                                 <li><a ui-sref="^.^.importHistory.listForDataSource({ dataSourceId: item.id })">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.VIEW_DATA_IMPORT_HISTORY' | translate }}</a></li>
+                                <li class="divider"></li>
+                                <li><a ui-sref="^.^.alert.list({dataSourceId: item.id })">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.VIEW_ALERTS' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li><a ng-click="getUnifiedReportEmail(item)">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.GET_UNIFIED_REPORT_EMAIL' | translate }}</a></li>
                                 <li><a ng-click="getAPIKey(item)">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.GET_API_KEY' | translate }}</a></li>

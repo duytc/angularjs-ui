@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('tagcade.core.data.resources')
-        .factory('BlockListManager', BlockListManager)
+        .factory('DisplayBlackListManager', DisplayBlackListManager)
     ;
 
-    function BlockListManager(Restangular, Auth) {
+    function DisplayBlackListManager(Restangular, Auth) {
         var RESOURCE_NAME = 'displayblacklists';
 
         return Restangular.service(RESOURCE_NAME);

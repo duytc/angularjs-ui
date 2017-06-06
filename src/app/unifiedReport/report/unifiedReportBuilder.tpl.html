@@ -1,7 +1,7 @@
 <section class="panel panel-default">
 
     <div class="panel-heading">
-        <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
+        <span current-page-title></span>
     </div>
 
     <div class="panel-body">
@@ -108,6 +108,13 @@
                     <label for="inputEnabled" class="col-sm-1quarter control-label">Show Data Set Name</label>
                     <div class="col-sm-5">
                         <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="reportBuilder.isShowDataSetName" id="isShowDataSetName"><span></span></label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="enableCustomDimensionMetric" class="col-sm-1quarter control-label">User Provided Dimensions/Metrics</label>
+                    <div class="col-sm-5">
+                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="reportBuilder.enableCustomDimensionMetric" id="enableCustomDimensionMetric"><span></span></label>
                     </div>
                 </div>
 

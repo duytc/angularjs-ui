@@ -1,7 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <span class="glyphicon glyphicon-th"></span>
-        <strong current-page-title></strong>
+        <span current-page-title></span>
 
         <div class="button-bar">
             <label class="ui-checkbox">
@@ -56,6 +55,7 @@
                                         <li ng-if="!adSlot.libType && !isSubPublisher()"><a ui-sref="^.edit({ id: adTag.id })">{{ 'AD_TAG_MODULE.EDIT_AD_TAG' | translate }}</a></li>
                                         <li ng-if="!!adSlot.libType && !isSubPublisher()"><a ui-sref="^.editForAdSlot({ id: adTag.id })">{{ 'AD_TAG_MODULE.EDIT_AD_TAG' | translate }}</a></li>
                                         <li ng-if="!isSubPublisher()"><a ng-click="toggleAdTagStatus(adTag)">{{ adTag.active ? ('AD_TAG_MODULE.PAUSE_AD_TAG' | translate) : ('AD_TAG_MODULE.ACTIVATE_AD_TAG' | translate) }}</a></li>
+                                        <li ng-if="!isSubPublisher()"><a ng-click="toggleAdTagPassback(adTag)">{{ adTag.passback ? ('AD_TAG_MODULE.UNMARK_AS_PASSBACK' | translate) : ('AD_TAG_MODULE.MARK_AS_PASSBACK' | translate) }}</a></li>
                                         <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(adTag)">{{ 'AD_TAG_MODULE.DELETE_AD_TAG' | translate }}</a></li>
                                         <li ng-if="!isSubPublisher() && (!adTag.libraryAdTag.visible || (adTag.libraryAdTag.visible && !adSlot.libraryAdSlot.visible && !!adSlot.libraryAdSlot))" class="divider"></li>
                                         <li ng-if="!adTag.libraryAdTag.visible && !isSubPublisher()" ng-click="shareAdTag(adTag)"><a>{{ 'AD_TAG_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>

@@ -5,7 +5,7 @@
         .directive('reportBuilderFormat', reportBuilderFormat)
     ;
 
-    function reportBuilderFormat($compile, _, REPORT_BUILDER_FORMAT_ALL_FIELD_TYPES, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES) {
+    function reportBuilderFormat($compile, $filter, _, REPORT_BUILDER_FORMAT_ALL_FIELD_TYPES, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES) {
         'use strict';
 
         return {
@@ -49,10 +49,7 @@
                     scope.$watch(function () {
                         return scope.selectedFields;
                     }, function () {
-                        fieldForColumnPosition = angular.copy(scope.selectedFields);
-                        if(scope.multiView) {
-                            fieldForColumnPosition.push({key: 'report_view_alias', label: 'Report View Alias', root: 'report_view_alias'});
-                        }
+                        _updateFieldForColumnPosition();
 
                         scope.fieldNames = scope.selectedFields;
                     }, true);
@@ -60,12 +57,22 @@
                     scope.$watch(function () {
                         return scope.multiView;
                     }, function () {
-                        fieldForColumnPosition = angular.copy(scope.selectedFields);
+                        _updateFieldForColumnPosition();
+                    }, true);
+
+                    function _updateFieldForColumnPosition() {
+                        fieldForColumnPosition = $filter('filter')(scope.selectedFields, function (field) {
+                            if(!!field && !!field.key && field.key.indexOf('__') == -1 && (field.key.indexOf('_day') == -1 || field.key.indexOf('_month') == -1 || field.key.indexOf('_year') == -1)) {
+                                return true
+                            }
+
+                            return false
+                        });
+
                         if(scope.multiView) {
                             fieldForColumnPosition.push({key: 'report_view_alias', label: 'Report View Alias', root: 'report_view_alias'});
                         }
-                    }, true);
-
+                    }
 
                     scope.allFiledFormatTypesCopy = angular.copy(scope.allFiledFormatTypes);
                     scope.removeFormat = removeFormat;

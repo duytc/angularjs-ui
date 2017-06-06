@@ -1,6 +1,6 @@
 <section class="panel panel-default">
     <div class="panel-heading">
-        <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
+        <span current-page-title></span>
 
         <div class="button-bar">
             <button ng-if="!isNew" ng-click="backToListAdNetwork()" class="btn btn-sm btn-primary" type="button">
@@ -97,10 +97,40 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" ng-if="adNetwork.networkWhiteLists.length == 0 || !adNetwork.networkWhiteLists">
                     <label for="inputBlackList" class="col-sm-2 control-label">{{ 'AD_NETWORK_MODULE.BLOCK_LIST_DOMAINS' | translate }}</label>
                     <div class="col-sm-10">
                         <isteven-multi-select id="inputBlackList" input-model="blockList" output-model="adNetwork.networkBlacklists" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="adNetwork.networkBlacklists.length == 0 || !adNetwork.networkBlacklists">
+                    <label for="inputWhiteList" class="col-sm-2 control-label">{{ 'AD_NETWORK_MODULE.WHITE_LIST_DOMAINS' | translate }}</label>
+                    <div class="col-sm-10">
+                        <isteven-multi-select id="inputWhiteList" input-model="whiteList" output-model="adNetwork.networkWhiteLists" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputCustomImpressionPixels" class="col-sm-2 control-label">{{ 'AD_NETWORK_MODULE.CUSTOM_IMPRESSION_PIXELS' | translate }}</label>
+                    <div class="col-sm-10" id="inputCustomImpressionPixels">
+                        <button class="btn btn-success" type="button" ng-click="addCustomImpressionPixel()">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            {{ 'AD_NETWORK_MODULE.ADD_CUSTOM_IMPRESSION_PIXEL' | translate }}
+                        </button>
+
+                        <div class="col-sm-12" style="padding-top: 10px">
+                            <div ng-repeat="customImpressionPixel in adNetwork.customImpressionPixels">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <textarea name="customImpressionPixel" ng-model="customImpressionPixel.url" type="url" server-error ng-required="true" class="form-control" id="inputCustomImpressionPixel" placeholder="{{ 'AD_NETWORK_MODULE.PLACEHOLDER_CUSTOM_IMPRESSION_PIXELS' | translate }}"></textarea>
+                                        <span class="input-group-addon" ng-click="removeCustomImpressionPixel($index)"><i class="fa fa-remove"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <span class="help-block">{{ 'AD_NETWORK_MODULE.HELP_BLOCK_CUSTOM_IMPRESSION_PIXELS' | translate }}</span>
                     </div>
                 </div>
 

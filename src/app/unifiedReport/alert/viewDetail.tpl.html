@@ -1,6 +1,11 @@
 <div class="modal-header">
     <h4 class="modal-title">{{ message }}</h4>
 </div>
+<div class="modal-body">
+    <div ng-repeat="(key, value) in alertDetail">
+        <strong>{{ key }}</strong>: {{ value }}
+    </div>
+</div>
 <div class="modal-dialog-footer">
     <button class="btn btn-primary" ng-click="$dismiss()">{{ 'CLOSE' | translate }}</button>
 </div>

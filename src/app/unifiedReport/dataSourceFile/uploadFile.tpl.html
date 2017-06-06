@@ -1,7 +1,7 @@
 <section class="panel panel-default">
 
     <div class="panel-heading">
-        <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
+        <span current-page-title></span>
     </div>
 
     <div class="panel-body">
@@ -42,7 +42,7 @@
                             </ul>
                             <ul id="performance-report-selector">
                                 <li class="item" ng-repeat="item in uploader.queue">
-                                    <div class="col-md-5"><strong>{{ item.file.name }}</strong></div>
+                                    <div class="col-md-5 content_right_head"><strong>{{ item.file.name }}</strong></div>
                                     <div class="col-md-2" ng-show="uploader.isHTML5">{{ item.file.size/1024/1024|number:2 }} MB</div>
                                     <div class="col-md-1">
                                         <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>

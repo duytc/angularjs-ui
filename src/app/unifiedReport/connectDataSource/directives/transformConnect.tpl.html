@@ -40,15 +40,14 @@
                         </div>
                     </div>
 
-                    <div class="form-group select-connect-data-source"
-                         ng-if="transform.type == allFiledFormatTypeKeys.date || transform.type == allFiledFormatTypeKeys.number">
+                    <div class="form-group select-connect-data-source" ng-if="transform.type == allFiledFormatTypeKeys.date || transform.type == allFiledFormatTypeKeys.number">
                         <label class="col-sm-2 control-label">Field Name</label>
 
                         <div class="col-sm-10">
                             <ui-select ng-model="transform.field" ng-disabled="transform.type == 'date' && !!transform.field" ng-required="true" server-error reset-search-input="'false'">
-                                <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
-                                <ui-select-choices repeat="field in getFieldNames(transform.field, transform.type) | filter:filterFieldByType(transform) | filter:$select.search">
-                                    {{ field }}
+                                <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                <ui-select-choices repeat="field.key as field in getFieldNames(transform.type) | filter:filterFieldByType(transform) | filter:$select.search">
+                                    {{ field.label }}
                                 </ui-select-choices>
                             </ui-select>
                         </div>
@@ -59,20 +58,38 @@
                             <label class="col-sm-2 control-label">Date From Format</label>
 
                             <div class="col-sm-10">
-                                <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-change="selectCustomFormatDate(transform)" ng-model="transform.isCustomFormatDateFrom" id="isCustomFormatDateFrom"><span>Use custom format</span></label>
+                                <div class="expressions-group">
+                                    <button class="btn btn-success" type="button" ng-click="addFromFormat(transform.from)">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                        Add Date From Format
+                                    </button>
 
-                                <div ng-if="!transform.isCustomFormatDateFrom">
-                                    <ui-select ng-model="transform.from" ng-required="true" server-error reset-search-input="'false'">
-                                        <ui-select-match placeholder="Select a date format">{{ $select.selected.label }}</ui-select-match>
-                                        <ui-select-choices repeat="type.key as type in dateFormatTypes | filter:$select.search">
-                                            {{ type.label }}
-                                        </ui-select-choices>
-                                    </ui-select>
-                                </div>
 
-                                <div  ng-if="transform.isCustomFormatDateFrom">
-                                    <input server-error name="from" ng-model="transform.from" ng-required="true" type="text" ng-pattern="/^([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})[\-,\.,\/,_\s]*([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})[\-,\.,\/,_\s]*([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})*(([T]{1}|[H]{1}|[i]{1}|[s]{1})|[\\\-,\.,\/,_:\s])*$/" class="form-control" placeholder="Date From Format">
-                                    <span class="help-block"> {{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.INPUT_DATE_FORMAT_HELP_TEXT' | translate }} </span>
+                                    <div class="expressions-group" ng-repeat="from in transform.from">
+                                        <div class="form-group select-connect-data-source">
+                                            <button type="button" class="btn btn-danger btn-close-ur" ng-disabled="transform.from.length == 1" ng-click="removeAddValue(transform.from, $index)">
+                                                <span class="glyphicon glyphicon-minus "></span>
+                                            </button>
+                                        </div>
+
+                                        <div>
+                                            <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-change="selectCustomFormatDate(from)" ng-model="from.isCustomFormatDateFrom" id="isCustomFormatDateFrom"><span>Use custom format</span></label>
+
+                                            <div ng-if="!from.isCustomFormatDateFrom">
+                                                <ui-select ng-model="from.format" ng-required="true" server-error reset-search-input="'false'">
+                                                    <ui-select-match placeholder="Select a date format">{{ $select.selected.label }}</ui-select-match>
+                                                    <ui-select-choices repeat="type.key as type in dateFormatTypes | filter:$select.search">
+                                                        {{ type.label }}
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+
+                                            <div  ng-if="from.isCustomFormatDateFrom">
+                                                <input server-error name="from" ng-model="from.format" ng-required="true" type="text" ng-pattern="/^([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})[\-,\.,\/,_\s]*([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})[\-,\.,\/,_\s]*([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})*(([T]{1}|[H]{1}|[i]{1}|[s]{1})|[\\\-,\.,\/,_:\s])*$/" class="form-control" placeholder="Date From Format">
+                                                <span class="help-block"> {{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.INPUT_DATE_FORMAT_HELP_TEXT' | translate }} </span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -80,9 +97,10 @@
                         <div class="form-group select-connect-data-source">
                             <label class="col-sm-2 control-label">Date To Format</label>
 
-                            <div class="col-sm-10">
+                            <div class="col-sm-10 form-control-static">
                                 <ui-select ng-model="transform.to" ng-disabled="transform.type == 'date' && !!transform.field" ng-required="true" server-error reset-search-input="'false'">
-                                    <ui-select-match placeholder="Select a date format">{{ $select.selected.label }}</ui-select-match>
+                                    <!--<ui-select-match placeholder="Select a date format">{{ $select.selected.label }}</ui-select-match>-->
+                                    <ui-select-match placeholder="Select a date format">{{ showDateToFormat(transform, $select)  }}</ui-select-match>
                                     <ui-select-choices repeat="type.key as type in dateFormatTypes | filter:$select.search">
                                         {{ type.label }}
                                     </ui-select-choices>
@@ -118,9 +136,9 @@
 
                             <div class="col-sm-10">
                                 <ui-select multiple ng-model="transform.fields" ng-required="true" server-error reset-search-input="'false'">
-                                    <ui-select-match placeholder="Select a field">{{ $item }} </ui-select-match>
-                                    <ui-select-choices repeat="field in getFieldForGroupBy(transforms) | orderBy | filter:$select.search">
-                                        {{ field }}
+                                    <ui-select-match placeholder="Select a field">{{ $item.label }} </ui-select-match>
+                                    <ui-select-choices repeat="field.key as field in totalFields.totalFieldForGroupBy | filter:$select.search">
+                                        {{ field.label }}
                                     </ui-select-choices>
                                 </ui-select>
                             </div>
@@ -138,9 +156,9 @@
 
                                         <div>
                                             <ui-select multiple ng-model="field.names" reset-search-input="'false'">
-                                                <ui-select-match placeholder="Select a field">{{ $item }}</ui-select-match>
-                                                <ui-select-choices repeat="field in getFieldForGroupBy(transforms) | filter:filterFieldNameForSortBy(transform.fields, field) | orderBy | filter:$select.search">
-                                                    {{ field }}
+                                                <ui-select-match placeholder="Select a field">{{ $item.label }}</ui-select-match>
+                                                <ui-select-choices repeat="field.key as field in totalFields.totalFieldForGroupBy | filter:filterFieldNameForSortBy(transform.fields, field) | filter:$select.search">
+                                                    {{ field.label }}
                                                 </ui-select-choices>
                                             </ui-select>
                                         </div>
@@ -176,9 +194,9 @@
                                                     <div class="col-sm-10">
                                                         <div class="form-group select-data-type">
                                                             <ui-select ng-model="field.field" ng-required="true" server-error reset-search-input="'false'" on-select="selectTypeAddField($item, field)" ng-init="selectTypeAddField(field.type)">
-                                                                <ui-select-match placeholder="Select a field">{{ $select.selected}}</ui-select-match>
-                                                                <ui-select-choices repeat="dm in getDimensionsMetricsForAddField(field.field, transforms) | filter:notInMapField | orderBy | filter:$select.search">
-                                                                    {{ dm }}
+                                                                <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                                <ui-select-choices repeat="dm.key as dm in totalFields.totalDimensionsMetricsForAddField | filter:showFieldCurrentAndNotShowExist(field.field) | filter:notInMapField | filter:$select.search">
+                                                                    {{ dm.label }}
                                                                 </ui-select-choices>
                                                             </ui-select>
                                                         </div>
@@ -192,10 +210,10 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group" ng-if="dimensionsMetrics[field.field] == 'text' || dimensionsMetrics[field.field] == 'largeText'">
+                                                <div class="form-group" ng-if="dimensionsMetrics[field.field] == 'text' || dimensionsMetrics[field.field] == 'largeText' || !dimensionsMetrics[field.field]">
                                                     <label class="col-sm-2 control-label">Expression</label>
                                                     <div class="col-sm-10">
-                                                    <textarea class="addScrollToTextArea" spellcheck="false" id="concatenated-{{$index}}" mentio mentio-select="getPeopleText(item)"
+                                                    <textarea class="addScrollToTextArea form-control" rows="5" spellcheck="false" id="concatenated-{{$index}}" mentio mentio-select="getPeopleText(item)"
                                                               type="text"
                                                               ng-change="removeAutoSpaceAfterField(field, $index)"
                                                               mentio-trigger-char="'['" mentio-macros="macros"
@@ -256,9 +274,9 @@
 
                                                     <div class="col-sm-10">
                                                         <ui-select ng-model="field.field" ng-required="true" server-error reset-search-input="'false'" on-select="selectTypeAddCalculatedField($item, field)" ng-init="selectTypeAddCalculatedField(field.type)">
-                                                            <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
-                                                            <ui-select-choices repeat="dm in getDimensionsMetricsForNumberAddField(field.field, transforms) | filter:notInMapField | orderBy | filter:$select.search">
-                                                                {{ dm }}
+                                                            <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                            <ui-select-choices repeat="dm.key as dm in getDimensionsMetricsForNumberAddField(field.field, transforms) | filter:showFieldCurrentAndNotShowExist(field.field) | filter:notInMapField | filter:$select.search">
+                                                                {{ dm.label }}
                                                             </ui-select-choices>
                                                         </ui-select>
                                                     </div>
@@ -292,10 +310,10 @@
 
                                                                             <div class="col-sm-10 row select-connect-data-source">
                                                                                 <div class="form-group select-data-type">
-                                                                                    <ui-select name="defaultValueField" ng-model="defaultValue.conditionField" ng-required="true" on-select="selectDefaultValueField($item, defaultValue)" server-error reset-search-input="'false'">
-                                                                                        <ui-select-match placeholder="Select a field">{{ $select.selected == '$$CALCULATED_VALUE$$' ? 'Calculated Value' : ('Field: ' + $select.selected) }}</ui-select-match>
-                                                                                        <ui-select-choices repeat="field in getTotalDimensionsMetricsForDefaultValues() | filter:$select.search">
-                                                                                            {{ field == '$$CALCULATED_VALUE$$' ? 'Calculated Value' : ('Field: ' + field) }}
+                                                                                    <ui-select name="defaultValueField" ng-model="defaultValue.conditionField" ng-required="true" server-error reset-search-input="'false'">
+                                                                                        <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                                                        <ui-select-choices repeat="field.key as field in totalFields.dimensionsMetricsForDefaultValues | filter:notShowCurrentField(field.field) | filter:$select.search">
+                                                                                            {{ field.label }}
                                                                                         </ui-select-choices>
                                                                                     </ui-select>
                                                                                 </div>
@@ -339,7 +357,7 @@
                                                     <label class="col-sm-2 control-label">Expression</label>
 
                                                     <div class="col-sm-10">
-                                                        <textarea class="addScrollToTextArea" spellcheck="false" mentio mentio-select="getPeopleText(item)" ng-change="addSpaceBeforeAndAfterOperator(field)" type="text" mentio-trigger-char="'['" mentio-macros="macros" mentio-typed-text="typedTerm" mentio class="form-control" mentio-items="fieldForExpressionInCalculated | filter:label:typedTerm" ng-model="field.expression" placeholder="Expression"></textarea>
+                                                        <textarea class="addScrollToTextArea form-control" rows="5" spellcheck="false" mentio mentio-select="getPeopleText(item)" ng-change="addSpaceBeforeAndAfterOperator(field)" type="text" mentio-trigger-char="'['" mentio-macros="macros" mentio-typed-text="typedTerm" mentio class="form-control" mentio-items="fieldForExpressionInCalculated | filter:label:typedTerm" ng-model="field.expression" placeholder="Expression"></textarea>
                                                         <span class="help-block">Use character <strong>[</strong> to show list of available variables. Each variable should be inside square bracket.</span>
 
                                                         <div class="callout-success expressions-transform" ng-bind-html="formatExpressionToHighlight(field)"></div>
@@ -378,9 +396,9 @@
 
                                                 <div class="col-sm-10">
                                                     <ui-select ng-model="comparison.field" ng-required="true" server-error reset-search-input="'false'">
-                                                        <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
-                                                        <ui-select-choices repeat="dm in getDimensionsMetricsForComparison(comparison.field, transforms) | filter:notInMapField | orderBy | filter:$select.search">
-                                                            {{ dm }}
+                                                        <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                        <ui-select-choices repeat="dm.key as dm in totalFields.totalDimensionsMetricsForAddField | filter:filterNumberFields | filter:showFieldCurrentAndNotShowExist(comparison.field) | filter:notInMapField | filter:$select.search">
+                                                            {{ dm.label }}
                                                         </ui-select-choices>
                                                     </ui-select>
                                                 </div>
@@ -391,9 +409,9 @@
 
                                                 <div class="col-sm-10">
                                                     <ui-select ng-model="comparison.numerator" ng-required="true" server-error reset-search-input="'false'">
-                                                        <ui-select-match placeholder="Select a comparison operator">{{$select.selected }}</ui-select-match>
-                                                        <ui-select-choices repeat="dm in filerFieldNamesForComparisonPercent() | filter:$select.search">
-                                                            {{ dm }}
+                                                        <ui-select-match placeholder="Select a comparison operator">{{$select.selected.label }}</ui-select-match>
+                                                        <ui-select-choices repeat="dm.key as dm in totalFields.dataSourceFieldsAllFieldTransform | filter:filterForComparison | filter:$select.search">
+                                                            {{ dm.label }}
                                                         </ui-select-choices>
                                                 </div>
                                             </div>
@@ -403,9 +421,9 @@
 
                                                 <div class="col-sm-10">
                                                     <ui-select ng-model="comparison.denominator" ng-required="true" server-error reset-search-input="'false'">
-                                                        <ui-select-match placeholder="Select a comparison operator">{{ $select.selected }}</ui-select-match>
-                                                        <ui-select-choices repeat="dm in filerFieldNamesForComparisonPercent() | filter:$select.search">
-                                                            {{ dm }}
+                                                        <ui-select-match placeholder="Select a comparison operator">{{ $select.selected.label }}</ui-select-match>
+                                                        <ui-select-choices repeat="dm.key as dm in totalFields.dataSourceFieldsAllFieldTransform | filter:filterForComparison | filter:$select.search">
+                                                            {{ dm.label }}
                                                         </ui-select-choices>
                                                     </ui-select>
                                                 </div>
@@ -441,9 +459,9 @@
                                                 <label class="col-sm-2 control-label">Field Name</label>
                                                 <div class="col-sm-10">
                                                     <ui-select ng-model="replaceText.field" ng-required="true" server-error reset-search-input="'false'">
-                                                        <ui-select-match allow-clear="true" placeholder="Select a field">{{ $select.selected }}</ui-select-match>
-                                                        <ui-select-choices repeat="dm in getDataSourceFieldsForReplace(replaceText.isOverride) | filter:filterFieldByText | orderBy | filter:$select.search">
-                                                            {{ dm }}
+                                                        <ui-select-match allow-clear="true" placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                        <ui-select-choices repeat="dm.key as dm in getDataSourceFieldsForReplace(replaceText.isOverride) | filter:$select.search">
+                                                            {{ dm.label }}
                                                         </ui-select-choices>
                                                     </ui-select>
                                                 </div>
@@ -451,7 +469,7 @@
                                             <div class="form-group select-connect-data-source">
                                                 <label for="isOverride" class="col-sm-2 control-label">Override Value</label>
                                                 <div class="col-sm-10">
-                                                    <label class="ui-checkbox"><input server-error name="active" ng-disabled= "disableOverride(replaceText.field)" ng-change="resetFieldNameInReplaceTextTransform(replaceText.isOverride, replaceText)" type="checkbox" ng-model="replaceText.isOverride" id="isOverride"><span></span></label>
+                                                    <label class="ui-checkbox"><input server-error name="active" ng-disabled= "disableOverride(replaceText)" ng-change="resetFieldNameInReplaceTextTransform(replaceText.isOverride, replaceText)" type="checkbox" ng-model="replaceText.isOverride" id="isOverride"><span></span></label>
                                                 </div>
                                             </div>
                                             <div class="form-group select-connect-data-source" ng-if="!replaceText.isOverride">
@@ -459,9 +477,9 @@
                                                 <div class="col-sm-10">
                                                     <div class="form-group select-data-type">
                                                         <ui-select ng-model="replaceText.targetField" ng-required="true" server-error reset-search-input="'false'">
-                                                            <ui-select-match placeholder="Select a field">{{ $select.selected}}</ui-select-match>
-                                                            <ui-select-choices repeat="dm in totalDimensionsMetrics | filter:filterTarget(field.targetField) | filter:filterFieldByText | filter:filterFieldInTransformReplaceText | filter:notInMapField | orderBy | filter:$select.search">
-                                                                {{ dm }}
+                                                            <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                            <ui-select-choices repeat="dm.key as dm in totalFields.totalDimensionsMetricsAndTemporaryFields | filter:filterTarget(replaceText.targetField) | filter:filterFieldByText | filter:filterFieldInTransformReplaceText | filter:notInMapFieldAndShowFieldCurrent(replaceText.targetField) | filter:$select.search">
+                                                                {{ dm.label }}
                                                             </ui-select-choices>
                                                         </ui-select>
                                                     </div>
@@ -521,9 +539,11 @@
                                                 <label class="col-sm-2 control-label">Field Name</label>
                                                 <div class="col-sm-10">
                                                     <ui-select ng-model="extractPattern.field" ng-required="true" server-error reset-search-input="'false'">
-                                                        <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
-                                                        <ui-select-choices repeat="dm in getDataSourceFieldsForExtractPattern() | filter:filterFieldByTextAndDate | orderBy | filter:$select.search">
-                                                            {{ dm }}
+                                                        <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                        <!--<ui-select-choices repeat="dm.key as dm in getDataSourceFieldsForExtractPattern() | filter:filterFieldByTextAndDate | filter:$select.search">-->
+                                                        <!--<ui-select-choices repeat="dm.key as dm in getDataSourceFieldsForExtractPattern() | filter:showFieldCurrentAndNotShowExist(extractPattern.field) | filter:$select.search">-->
+                                                        <ui-select-choices repeat="dm.key as dm in getDataSourceFieldsForExtractPattern() | filter:$select.search">
+                                                            {{ dm.label }}
                                                         </ui-select-choices>
                                                     </ui-select>
                                                 </div>
@@ -541,9 +561,9 @@
                                                 <div class="col-sm-10">
                                                     <div class="form-group select-data-type">
                                                         <ui-select ng-model="extractPattern.targetField" ng-required="true" server-error reset-search-input="'false'">
-                                                            <ui-select-match placeholder="Select a field">{{ $select.selected}}</ui-select-match>
-                                                            <ui-select-choices repeat="dm in totalDimensionsMetrics | filter:filterFieldInTransformExtractPattern | filter:filterTarget(field.targetField) | filter:notInMapField | orderBy | filter:$select.search">
-                                                                {{ dm }}
+                                                            <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                            <ui-select-choices repeat="dm.key as dm in totalFields.totalDimensionsMetricsAndTemporaryFields | filter:showFieldCurrentAndNotShowExist(extractPattern.targetField) | filter:filterFieldInTransformExtractPattern(extractPattern.targetField) | filter:filterTarget(extractPattern.targetField) | filter:filterTargetFieldForExtractPattern(extractPattern.targetField) | filter:$select.search">
+                                                                {{ dm.label }}
                                                             </ui-select-choices>
                                                         </ui-select>
                                                     </div>
@@ -556,13 +576,6 @@
                                                     <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="extractPattern.isCaseInsensitive" id="isCaseInsensitive"><span></span></label>
                                                 </div>
                                             </div>
-
-                                            <!--<div class="form-group select-connect-data-source">-->
-                                            <!--<label for="isOverride" class="col-sm-2 control-label">Multi Line</label>-->
-                                            <!--<div class="col-sm-10">-->
-                                            <!--<label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="extractPattern.isMultiLine" id="isMultiLine"><span></span></label>-->
-                                            <!--</div>-->
-                                            <!--</div>-->
 
                                             <div class="form-group select-connect-data-source">
                                                 <label class="col-sm-2 control-label">Search Pattern</label>
@@ -604,9 +617,9 @@
                                 <div class="form-inline row">
                                     <div class="col-sm-6 ui-select-width-full-width">
                                         <ui-select name="dataSet" ng-model="transform.mapCondition.leftSide" ng-required="true" server-error reset-search-input="'false'">
-                                            <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
-                                            <ui-select-choices repeat="field in getFieldForLeftSideAugmentation(transform) | filter:$select.search ">
-                                                {{ field }}
+                                            <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                            <ui-select-choices repeat="field.key as field in totalFields.totalDataSourceFieldsAugmentationLeftSide | filter:filterLeftSideAugmentation(transform) | filter:$select.search ">
+                                                {{ field.label }}
                                             </ui-select-choices>
                                         </ui-select>
                                     </div>
@@ -691,9 +704,9 @@
                                         <div ng-repeat="mapField in transform.mapFields" class="select-connect-data-source">
                                             <div class="form-group select-data-type">
                                                 <ui-select name="leftSide" ng-model="mapField.leftSide" ng-required="true" server-error reset-search-input="'false'">
-                                                    <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
-                                                    <ui-select-choices repeat="field in totalDimensionsMetrics | filter:notInMapField | filter:filterMapFieldLeftSide(transform, mapField) | filter:$select.search">
-                                                        {{ field }}
+                                                    <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                    <ui-select-choices repeat="field.key as field in totalFields.totalDimensionsMetricsAndTemporaryFields | filter:filterTarget(mapField.leftSide) | filter:filterMapFieldLeftSide(transform, mapField) | filter:$select.search">
+                                                        {{ field.label }}
                                                     </ui-select-choices>
                                                 </ui-select>
                                             </div>
@@ -721,9 +734,9 @@
 
                             <div class="col-sm-10">
                                 <ui-select multiple ng-model="transform.groupFields" ng-required="true" server-error reset-search-input="'false'">
-                                    <ui-select-match placeholder="Select a field">{{ $item }} </ui-select-match>
-                                    <ui-select-choices repeat="field in getFieldForGroupBy(transforms) | orderBy | filter:$select.search">
-                                        {{ field }}
+                                    <ui-select-match placeholder="Select a field">{{ $item.label }} </ui-select-match>
+                                    <ui-select-choices repeat="field.key as field in totalFields.totalFieldForGroupBy | filter:$select.search">
+                                        {{ field.label }}
                                     </ui-select-choices>
                                 </ui-select>
                             </div>
@@ -738,23 +751,22 @@
                                         Add Map Field
                                     </button>
 
-
                                     <div ng-repeat="mapField in transform.mapFields" class="select-connect-data-source">
                                         <div class="form-inline condition">
                                             <div class="form-group select-data-type">
-                                                <ui-select name="defaultValueField" ng-model="mapField.leftSide" ng-required="true" server-error reset-search-input="'false'">
-                                                    <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
-                                                    <ui-select-choices repeat="field in getFieldsForLeftSide() | filter:notInMapField | filter:$select.search">
-                                                        {{ field }}
+                                                <ui-select name="defaultValueField" ng-model="mapField.leftSide" ng-required="true" on-select="selectMapFieldLeftSideSubsetGroup(mapField)" server-error reset-search-input="'false'">
+                                                    <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                    <ui-select-choices repeat="field.key as field in totalFields.totalDimensionsMetricsAndTemporaryFields | filter:filterFieldByTextAndNumber | filter:notInMapFieldAndShowFieldCurrent(mapField.leftSide) | filter:notShowFieldExistInTransforms | filter:$select.search">
+                                                        {{ field.label }}
                                                     </ui-select-choices>
                                                 </ui-select>
                                             </div>
 
                                             <div class="form-group select-data-type">
                                                 <ui-select name="rightSide" ng-model="mapField.rightSide" ng-required="true" server-error reset-search-input="'false'">
-                                                    <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
-                                                    <ui-select-choices repeat="field in dataSourceFields | filter:$select.search">
-                                                        {{ field }}
+                                                    <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                    <ui-select-choices repeat="field.key as field in dataSourceFields | filter:mapDataSourceFieldForMapFieldRightSide(mapField) | filter:$select.search">
+                                                        {{ field.label }}
                                                     </ui-select-choices>
                                                 </ui-select>
                                             </div>
@@ -782,8 +794,7 @@
                                     <div ng-repeat="field in transform.fields">
                                         <div class="expressions-group condition">
                                             <div class="form-group select-connect-data-source">
-                                                <button type="button" class="btn btn-danger btn-close-ur"
-                                                        ng-click="removeAddValue(transform.fields, $index)">
+                                                <button type="button" class="btn btn-danger btn-close-ur" ng-click="removeAddValue(transform.fields, $index)">
                                                     <span class="glyphicon glyphicon-minus "></span>
                                                 </button>
                                             </div>
@@ -794,9 +805,9 @@
                                                     <div class="col-sm-10">
                                                         <div class="form-group select-data-type">
                                                             <ui-select ng-model="field.field" ng-required="true" server-error reset-search-input="'false'" on-select="selectFieldNormalizeAndConvert(field)">
-                                                                <ui-select-match placeholder="Select a field">{{ $select.selected}}</ui-select-match>
-                                                                <ui-select-choices repeat="dm in getDimensionsMetricsForConvertCase(field.field, transform) | orderBy | filter:$select.search">
-                                                                    {{ dm }}
+                                                                <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                                <ui-select-choices repeat="dm.key as dm in getDimensionsMetricsForConvertCase(field.field, transform) | filter:$select.search">
+                                                                    {{ dm.label }}
                                                                 </ui-select-choices>
                                                             </ui-select>
                                                         </div>
@@ -815,9 +826,9 @@
                                                     <div class="col-sm-10">
                                                         <div class="form-group select-data-type">
                                                             <ui-select ng-model="field.targetField" ng-required="true" server-error reset-search-input="'false'">
-                                                                <ui-select-match placeholder="Select a field">{{ $select.selected}}</ui-select-match>
-                                                                <ui-select-choices repeat="dm in totalDimensionsMetrics | filter:filterTarget(field.targetField) | filter:filterTextFields | filter:notInMapField | orderBy | filter:$select.search">
-                                                                    {{ dm }}
+                                                                <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                                <ui-select-choices repeat="dm.key as dm in totalDimensionsMetrics | filter:filterTarget(field.targetField) | filter:filterTextFields | filter:notInMapFieldAndShowFieldCurrent(field.targetField) | filter:$select.search">
+                                                                    {{ dm.label }}
                                                                 </ui-select-choices>
                                                             </ui-select>
                                                         </div>
@@ -873,9 +884,9 @@
                                                     <div class="col-sm-10">
                                                         <div class="form-group select-data-type">
                                                             <ui-select ng-model="field.field" ng-required="true" server-error reset-search-input="'false'" on-select="selectFieldNormalizeAndConvert(field)">
-                                                                <ui-select-match placeholder="Select a field">{{ $select.selected}}</ui-select-match>
-                                                                <ui-select-choices repeat="dm in getDimensionsMetricsForNormalizeText(field.field, transform) | orderBy | filter:$select.search">
-                                                                    {{ dm }}
+                                                                <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                                <ui-select-choices repeat="dm.key as dm in getDimensionsMetricsForNormalizeText(field.field, transform) | filter:$select.search">
+                                                                    {{ dm.label }}
                                                                 </ui-select-choices>
                                                             </ui-select>
                                                         </div>
@@ -894,9 +905,9 @@
                                                     <div class="col-sm-10">
                                                         <div class="form-group select-data-type">
                                                             <ui-select ng-model="field.targetField" ng-required="true" server-error reset-search-input="'false'">
-                                                                <ui-select-match placeholder="Select a field">{{ $select.selected}}</ui-select-match>
-                                                                <ui-select-choices repeat="dm in totalDimensionsMetrics | filter:filterTarget(field.targetField) | filter:notInMapField | filter:filterTextFields | orderBy | filter:$select.search">
-                                                                    {{ dm }}
+                                                                <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                                <ui-select-choices repeat="dm.key as dm in totalDimensionsMetrics | filter:filterTarget(field.targetField) | filter:notInMapFieldAndShowFieldCurrent(field.targetField) | filter:filterTextFields | filter:$select.search">
+                                                                    {{ dm.label }}
                                                                 </ui-select-choices>
                                                             </ui-select>
                                                         </div>

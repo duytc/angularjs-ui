@@ -39,7 +39,7 @@
         })
         .provider('API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL', {
             $get: function (API_UNIFIED_BASE_URL) {
-                return API_UNIFIED_BASE_URL + '/report';
+                return API_UNIFIED_BASE_URL + '/reportview';
             }
         })
 })();

@@ -1,7 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <span class="glyphicon glyphicon-th"></span>
-        <strong current-page-title></strong>
+        <span current-page-title></span>
 
         <div class="button-bar">
             <button ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
@@ -65,6 +64,7 @@
                         </td>
 
                         <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.ROWS' | translate }}" at-implicit at-sortable at-attribute="totalRow"></td>
+                        <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.PENDING_LOAD' | translate }}" at-implicit at-sortable at-attribute="numOfPendingLoad"></td>
                     </tr>
                     </tbody>
                 </table>

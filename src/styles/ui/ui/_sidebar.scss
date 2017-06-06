@@ -11,7 +11,8 @@
     top: 50px;
     float: none !important;
     z-index: 90;
-
+    border-right: 1px solid #dadada !important;
+    
     &:before {
       height: 5000px;
       top: 50px;

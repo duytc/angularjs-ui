@@ -148,11 +148,14 @@
                                 reportView.tempDimensions.push({
                                     key: dimension,
                                     label: key + ' ('+ dataSet.name +')',
-                                    type: dataSet.dimensions[key]
+                                    type: dataSet.dimensions[key],
+                                    root: key,
+                                    dataSet: dataSet
                                 })
                             } else {
                                 reportView.tempDimensions.push({
                                     key: dimension,
+                                    root: key,
                                     label: dimension,
                                     type: item.fieldTypes[dimension]
                                 })
@@ -180,12 +183,15 @@
                             if(!!dataSet) {
                                 reportView.tempMetrics.push({
                                     key: metric,
+                                    root: key,
                                     label: key + ' ('+ dataSet.name +')',
-                                    type: dataSet.metrics[key]
+                                    type: dataSet.metrics[key],
+                                    dataSet: dataSet
                                 })
                             } else {
                                 reportView.tempMetrics.push({
                                     key: metric,
+                                    root: key,
                                     label: metric,
                                     type: item.fieldTypes[metric]
                                 })

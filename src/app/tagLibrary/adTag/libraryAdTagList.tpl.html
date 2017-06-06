@@ -1,7 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <span class="glyphicon glyphicon-th"></span>
-        <strong current-page-title></strong>
+        <span current-page-title></span>
 
         <div ng-if="!isSubPublisher()" class="button-bar">
             <button ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
@@ -26,7 +25,7 @@
 
     <div class="panel-body" ng-if="hasData()">
         <div class="table-responsive">
-            <table class="table" at-sortable-query at-table at-paginated at-list="adTags" at-config="tableConfig">
+            <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="adTags" at-config="tableConfig">
                 <thead>
                 <tr>
                     <th ng-show="isAdmin()" at-attribute="adNetwork.publisher.company">{{ 'PUBLISHER' | translate }}</th>

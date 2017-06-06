@@ -1,6 +1,6 @@
 <section class="panel panel-default">
     <div class="panel-heading">
-        <span class="glyphicon glyphicon-th"></span> <strong current-page-title></strong>
+        <span current-page-title></span>
 
         <div class="button-bar">
             <button ng-if="!isNew" ng-click="backToAdSlotList()" class="btn btn-sm btn-primary" type="button">
@@ -16,14 +16,14 @@
         </div>
     </div>
 
-    <div class="row" ng-if="isNew">
-        <div class="col-md-12">
-            <ul class="nav nav-tabs nav-tab-margin">
-                <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.adSlot.new">Ad Slot</a></li>
-                <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.ronAdSlot.new">RON Ad Slot</a></li>
-            </ul>
-        </div>
-    </div>
+    <!--<div class="row" ng-if="isNew">-->
+        <!--<div class="col-md-12">-->
+            <!--<ul class="nav nav-tabs nav-tab-margin">-->
+                <!--<li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.adSlot.new">Ad Slot</a></li>-->
+                <!--<li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagManagement.ronAdSlot.new">RON Ad Slot</a></li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</div>-->
 
     <div class="panel-body">
         <div class="row">
@@ -243,6 +243,34 @@
                         <input server-error name="hbBidPrice" ng-change="changeHeaderBidPrice(adSlot)" ng-model="adSlot.hbBidPriceClone" type="text" ng-pattern="/^\-?\d+((\.|\,)\d+)?$/" class="form-control" id="inputHbBidPrice" placeholder="{{ 'AD_SLOT_MODULE.HEADER_BID_PRICE' | translate }}">
 
                         <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_HEADER_BIDDING_PRICE' | translate }}</span>
+                    </div>
+                </div>
+
+                <div ng-if="!showForDynamicAdSlot() && isNormalAdSlotNotUseStandalone()">
+                    <div class="form-group">
+                        <label for="autoRefresh" class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.AUTO_REFRESH' | translate }}</label>
+                        <div class="col-sm-5">
+                            <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="adSlot.autoRefresh" id="autoRefresh"><span></span></label>
+                        </div>
+                    </div>
+
+                    <div ng-if="adSlot.autoRefresh">
+                        <div class="form-group">
+                            <label for="refreshEvery" class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.REFRESH_EVERY' | translate }}</label>
+                            <div class="col-sm-5">
+                                <input name="refreshEvery" server-error  ng-model="adSlot.refreshEvery" ng-required="true" min="1" type="number" class="form-control" id="refreshEvery" placeholder="{{ 'AD_SLOT_MODULE.REFRESH_EVERY' | translate }}">
+
+                                <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_REFRESH_EVERY' | translate }}</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="maximumRefreshTimes" class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.MAXIMUM_REFRESH_TIMES' | translate }}</label>
+                            <div class="col-sm-5">
+                                <input server-error name="maximumRefreshTimes" ng-model="adSlot.maximumRefreshTimes" ng-required="true" min="1" type="number" class="form-control" id="maximumRefreshTimes" placeholder="{{ 'AD_SLOT_MODULE.MAXIMUM_REFRESH_TIMES' | translate }}">
+
+                                <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_REFRESH_TIMES' | translate }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

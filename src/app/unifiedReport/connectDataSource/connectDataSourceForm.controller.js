@@ -4,18 +4,7 @@
     angular.module('tagcade.unifiedReport.connect')
         .controller('ConnectDataSourceForm', ConnectDataSourceForm);
 
-    function ConnectDataSourceForm($scope, $modal, $timeout, _, dataSets, dataSources, connectDataSource, AlertService, sessionStorage, FileUploader, UnifiedReportConnectDataSourceManager, UnifiedReportDataSourceManager, ServerErrorProcessor, dataSet, dateUtil, historyStorage, HISTORY_TYPE_PATH, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, DateFormatter) {
-        const ALERT_CODE_DATA_IMPORT_MAPPING_FAIL = 1201;
-        const ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL = 1202;
-        const ALERT_CODE_FILTER_ERROR_INVALID_NUMBER = 1203;
-        const ALERT_CODE_TRANSFORM_ERROR_INVALID_DATE = 1204;
-        const ALERT_CODE_DATA_IMPORT_NO_HEADER_FOUND = 1205;
-        const ALERT_CODE_DATA_IMPORT_NO_DATA_ROW_FOUND = 1206;
-        const ALERT_CODE_WRONG_TYPE_MAPPING = 1207;
-        const ALERT_CODE_FILE_NOT_FOUND = 1208;
-        const ALERT_CODE_NO_FILE_PREVIEW = 1209;
-        const ALERT_CODE_UN_EXPECTED_ERROR = 2000;
-
+    function ConnectDataSourceForm($scope, $modal, _, dataSets, dataSources, connectedDataSourceService, connectDataSource, AlertService, sessionStorage, FileUploader, UnifiedReportConnectDataSourceManager, UnifiedReportDataSourceManager, ServerErrorProcessor, dataSet, dateUtil, historyStorage, HISTORY_TYPE_PATH, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, DateFormatter) {
         $scope.fieldNameTranslations = {
             dataSet: 'Data Set',
             dataSource: 'Data Source',
@@ -54,9 +43,11 @@
             replayData: true,
             userReorderTransformsAllowed: false
         };
-
-        $scope.selected = {
+        $scope.totalFields = {
+            fieldsForRequires: []
         };
+
+        $scope.selected = {};
 
         var baseUploadURL = UnifiedReportDataSourceManager.one().getRestangularUrl() + '/%dataSourceId%/uploadfordetectedfields';
         var uploader = $scope.uploader = new FileUploader({
@@ -97,7 +88,7 @@
                 // $scope.connectDataSource.mapFields = {};
 
                 var detectedFields = response.fields;
-                listDetectFields.push(response.filePath);
+                listDetectFields.push(response);
 
                 if(!detectedFields || detectedFields.length == 0) {
                     AlertService.replaceAlerts({
@@ -142,6 +133,22 @@
             })
         };
 
+        updateConnectedDataSourceForm();
+
+        $scope.$watch(function () {
+            return $scope.connectDataSource.mapFields
+        }, function () {
+            _getFieldsForRequires();
+
+            _removeFieldInRequires();
+        }, true);
+
+        $scope.$watch(function () {
+            return $scope.connectDataSource.transforms
+        }, function () {
+            _listenTransform();
+        }, true);
+
         $scope.isFormValid = isFormValid;
         $scope.submit = submit;
         $scope.toggleField = toggleField;
@@ -149,13 +156,11 @@
         $scope.labelField = labelField;
         $scope.isEmpty = isEmpty;
         $scope.backToConnectDataSourceList = backToConnectDataSourceList;
-        $scope.getMapFieldValues = getMapFieldValues;
         $scope.hasAlertSetting = hasAlertSetting;
         $scope.toggleAlertSetting = toggleAlertSetting;
         $scope.selectDataSource = selectDataSource;
         $scope.selectMapField = selectMapField;
         $scope.previewData = previewData;
-        $scope.viewOriginal = viewOriginal;
         $scope.addValueTemporaryFields = addValueTemporaryFields;
 
         function addValueTemporaryFields($query) {
@@ -166,135 +171,27 @@
             return $query;
         }
 
-        function viewOriginal() {
-            if ($scope.formProcessing) {
-                // already running, prevent duplicates
-                return;
-            }
-
-            $scope.formProcessing = true;
-
-            var modalInstance = $modal.open({
-                templateUrl: 'unifiedReport/connectDataSource/viewOriginal.tpl.html',
+        function previewData() {
+            $modal.open({
+                templateUrl: 'unifiedReport/connectDataSource/previewData.tpl.html',
                 size: 'lg',
+                controller: 'PreviewDataConnect',
                 resolve: {
+                    connectDataSource: function () {
+                        var connectDataSource = _refactorJson($scope.connectDataSource);
+                        connectDataSource.isDryRun = true;
+                        connectDataSource.connectedDataSourceId = $scope.connectDataSource.id;
+
+                        return  connectDataSource;
+                    },
                     dataSourceEntries: function (UnifiedReportDataSourceManager) {
-                        return UnifiedReportDataSourceManager.one($scope.connectDataSource.dataSource.id || $scope.connectDataSource.dataSource).one('datasourceentries').get();
-                    }
-                },
-                controller: function ($scope, $modal, dataSourceEntries, UnifiedReportDataSourceFileManager) {
-                    $scope.dataSourceEntries = dataSourceEntries;
-                    $scope.reportView = [];
-                    $scope.columns = [];
-                    $scope.reports = [];
-
-                    $scope.itemsPerPage = [
-                        {label: '100', key: '100'},
-                        {label: '500', key: '500'},
-                        {label: '1000', key: '1000'},
-                        {label: '5000', key: '5000'},
-                        {label: '10000', key: '10000'}
-                    ];
-
-                    $scope.tableConfig = {
-                        maxPages: 10,
-                        itemsPerPage: 10
-                    };
-
-                    $scope.selectedData = {
-                        importedDataSource: null,
-                        limit: 500
-                    };
-
-                    $scope.isNullValue = isNullValue;
-                    $scope.viewOriginalData = viewOriginalData;
-
-                    function viewOriginalData() {
-                        UnifiedReportDataSourceFileManager.one($scope.selectedData.importedDataSource).one('preview').get({limit: $scope.selectedData.limit})
-                            .then(function (reportView) {
-                                $scope.reportView = reportView;
-                                $scope.columns = reportView.columns;
-                                $scope.reports = reportView.reports;
-                            })
-                            .catch(function (response) {
-                                $modal.open({
-                                    templateUrl: 'unifiedReport/connectDataSource/alertErrorOriginal.tpl.html',
-                                    size: 'lg',
-                                    resolve: {
-                                        message: function () {
-                                            return convertMessage(response.data.message);
-                                        }
-                                    },
-                                    controller: function ($scope, message) {
-                                        $scope.message = message;
-                                    }
-                                });
-                            });
-                    }
-
-                    function isNullValue(report, column) {
-                        return !report[column] && report[column] != 0;
+                        return UnifiedReportDataSourceManager.one($scope.connectDataSource.dataSource.id || $scope.connectDataSource.dataSource).one('datasourceentries').getList(null, {orderBy: 'desc', sortField: 'receivedDate'});
+                    },
+                    listFilePaths: function () {
+                        return listDetectFields
                     }
                 }
             });
-
-            modalInstance.result
-                .then(function () {
-                    $scope.formProcessing = false;
-                }).catch(function () {
-                $scope.formProcessing = false;
-            })
-        }
-
-        function previewData() {
-            if ($scope.formProcessing) {
-                // already running, prevent duplicates
-                return;
-            }
-
-            $scope.formProcessing = true;
-
-            var connectDataSource = _refactorJson($scope.connectDataSource);
-            connectDataSource.isDryRun = true;
-            connectDataSource.filePaths = listDetectFields;
-            connectDataSource.connectedDataSourceId = $scope.connectDataSource.id;
-
-            UnifiedReportConnectDataSourceManager.one('dryrun').post(null, connectDataSource)
-                .then(function (reportData) {
-                    $scope.formProcessing = false;
-
-                    $modal.open({
-                        templateUrl: 'unifiedReport/connectDataSource/previewData.tpl.html',
-                        size: 'lg',
-                        controller: 'PreviewDataConnect',
-                        resolve: {
-                            reportData: function () {
-                                return reportData;
-                            }
-                        }
-                    });
-                })
-                .catch(function (response) {
-                    $scope.formProcessing = false;
-
-                    $modal.open({
-                        templateUrl: 'unifiedReport/connectDataSource/alertErrorPreview.tpl.html',
-                        size: 'lg',
-                        resolve: {
-                            message: function () {
-                                return convertMessage(response.data.message);
-                            }
-                        },
-                        controller: function ($scope, message) {
-                            $scope.message = message;
-                        }
-                    });
-
-                    // AlertService.replaceAlerts({
-                    //     type: 'error',
-                    //     message: convertMessage(response.data.message)
-                    // });
-                })
         }
 
         function selectMapField(field) {
@@ -307,8 +204,9 @@
                     $scope.connectDataSource.transforms.push({
                         field: field,
                         type: 'date',
-                        to: 'Y-m-d',
-                        openStatus: true
+                        to: $scope.dimensionsMetrics[field] == 'date' ? 'Y-m-d': 'Y-m-d H:i:s',
+                        openStatus: true,
+                        from: [{isCustomFormatDateFrom: false, format: null}]
                     })
 
                 }
@@ -329,10 +227,6 @@
             }
         }
 
-        function getMapFieldValues(mapFields) {
-            return _.union(_.values(mapFields).concat(REPORT_VIEW_INTERNAL_FIELD_VARIABLE));
-        }
-
         function backToConnectDataSourceList() {
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.connectDataSource, '^.list');
         }
@@ -346,7 +240,6 @@
                     delete $scope.connectDataSource.mapFields[key]
                 }
             });
-            // $scope.connectDataSource.mapFields = {};
         }
 
         function isEmpty(object) {
@@ -397,7 +290,7 @@
                 }
 
                 if (transform.type == 'subsetGroup') {
-                    if(!transform.mapFields || transform.mapFields.length == 0) {
+                    if(!transform.mapFields || transform.mapFields.length == 0 || transform.groupFields.length == 0) {
                         return false
                     }
                 }
@@ -425,7 +318,6 @@
             $scope.formProcessing = true;
 
             var connectDataSource = _refactorJson($scope.connectDataSource);
-            connectDataSource.filePaths = listDetectFields;
 
             var saveChannel = $scope.isNew ? UnifiedReportConnectDataSourceManager.post(connectDataSource) : UnifiedReportConnectDataSourceManager.one(connectDataSource.id).patch(connectDataSource);
 
@@ -459,81 +351,7 @@
             ;
         }
 
-        function _refactorJson(connectDataSource) {
-            connectDataSource = angular.copy(connectDataSource);
-
-            angular.forEach(connectDataSource.filters, function (filter) {
-                if(filter.type == 'date') {
-                    filter.startDate = dateUtil.getFormattedDate(filter.date.startDate);
-                    filter.endDate = dateUtil.getFormattedDate(filter.date.endDate);
-
-                    delete filter.date;
-                    delete filter.comparison;
-                    delete filter.compareValue;
-                }
-                if(filter.type == 'number') {
-                    delete filter.date;
-                    delete filter.startDate;
-                    delete filter.endDate;
-                    delete filter.format;
-                }
-
-                if(filter.type == 'text') {
-                    delete filter.date;
-                    delete filter.startDate;
-                    delete filter.endDate;
-                    delete filter.format;
-                }
-            });
-
-            angular.forEach(connectDataSource.transforms, function (transform) {
-                if(transform.type == 'number' || transform.type == 'date') {
-                    delete transform.fields;
-
-                    if(transform.type == 'number') {
-                        delete transform.to;
-                        delete transform.from;
-                    }
-
-                    if(transform.type == 'date') {
-                        delete transform.decimals;
-                        delete transform.thousandsSeparator;
-                    }
-                }
-
-                if (transform.type == 'addField') {
-                    angular.forEach(transform.fields, function (field) {
-                        if ($scope.dimensionsMetrics[field.field] == 'decimal' || $scope.dimensionsMetrics[field.field] == 'number') {
-                            field.value = Number(field.value);
-                        }
-
-                        if ($scope.dimensionsMetrics[field.field] == 'date' || $scope.dimensionsMetrics[field.field] == 'datetime') {
-                            if(field.value != '[__date]') {
-                                field.value = DateFormatter.getFormattedDate(field.value.endDate);
-                            }
-                        }
-                    })
-
-                }
-
-                if (transform.type == 'augmentation') {
-                    delete transform.allFieldsDataSet;
-
-                    angular.forEach(transform.customCondition, function (custom) {
-                        if (angular.isObject(custom.value)) {
-                            custom.value = DateFormatter.getFormattedDate(custom.value.endDate);
-                        }
-                    })
-                }
-            });
-
-            delete connectDataSource.userReorderTransformsAllowed;
-
-            return connectDataSource;
-        }
-
-        update();
-        function update() {
+        function updateConnectedDataSourceForm() {
             if(!$scope.isNew) {
                 if(!$scope.connectDataSource.mapFields || angular.isArray($scope.connectDataSource.mapFields)) {
                     $scope.connectDataSource.mapFields = {}
@@ -549,6 +367,15 @@
                 });
 
                 $scope.dataSourceFields = Object.keys(connectDataSource.dataSource.detectedFields);
+
+                var temporaryFields = [];
+                angular.forEach(connectDataSource.temporaryFields, function (field) {
+                    temporaryFields.push(field.slice('__$$TEMP$$'.length, field.length));
+                });
+
+                connectDataSource.temporaryFields = temporaryFields;
+
+                var allFields = _getAllFieldInTransform($scope.connectDataSource.transforms).concat(connectedDataSourceService.inputFormatDataSourceField($scope.dataSourceFields)).concat(connectedDataSourceService.inputFormatTemporaryFields(connectDataSource.temporaryFields));
 
                 angular.forEach($scope.connectDataSource.transforms, function (transform) {
                     if(transform.type == 'addField') {
@@ -584,194 +411,159 @@
                             })
                         }
                     }
+
+                    if (transform.type == 'addCalculatedField') {
+                        angular.forEach(transform.fields, function (field) {
+                            angular.forEach(allFields, function (item) {
+                                item.key = angular.copy(item.key);
+                                var regExp = new RegExp(item.key.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "g");
+                                field.expression = field.expression.replace(regExp, item.label);
+                            });
+                        })
+                    }
+
+                    if (transform.type == 'addField') {
+                        angular.forEach(transform.fields, function (field) {
+                            if ($scope.dimensionsMetrics[field.field] == 'text' || $scope.dimensionsMetrics[field.field] == 'largeText') {
+                                angular.forEach(allFields, function (item) {
+                                    item.key = angular.copy(item.key);
+                                    var regExp = new RegExp(item.key.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "g");
+                                    field.value = field.value.replace(regExp, item.label);
+                                });
+                            }
+                        })
+
+                    }
                 });
+
+                var mapFields = {};
+
+                angular.forEach(connectDataSource.mapFields, function (mapField, key) {
+                    mapFields[key.slice('__$$FILE$$'.length, key.length)] = mapField
+                });
+
+                connectDataSource.mapFields = mapFields;
             }
         }
 
-        $scope.$watch(function () {
-            return $scope.connectDataSource.mapFields
-        }, function () {
-            _removeFieldInRequires();
-            _removeFieldInFilter();
-            _removeFieldInTransform();
-        }, true);
+        function _refactorJson(connectDataSource) {
+            connectDataSource = angular.copy(connectDataSource);
+            var mapFieldsClone = angular.copy(connectDataSource.mapFields);
+            connectDataSource.mapFields = {};
 
-        $scope.$watch(function () {
-            return $scope.connectDataSource.transforms
-        }, function () {
-            _listenTransform();
-            _removeFieldInTransform();
-        }, true);
+            angular.forEach(connectDataSource.filters, function (filter) {
+                if(filter.type == 'date') {
+                    filter.startDate = dateUtil.getFormattedDate(filter.date.startDate);
+                    filter.endDate = dateUtil.getFormattedDate(filter.date.endDate);
+
+                    delete filter.date;
+                    delete filter.comparison;
+                    delete filter.compareValue;
+                }
+                if(filter.type == 'number') {
+                    delete filter.date;
+                    delete filter.startDate;
+                    delete filter.endDate;
+                    delete filter.format;
+                }
+
+                if(filter.type == 'text') {
+                    delete filter.date;
+                    delete filter.startDate;
+                    delete filter.endDate;
+                    delete filter.format;
+                }
+            });
+
+            angular.forEach(mapFieldsClone, function (value, key) {
+                connectDataSource.mapFields['__$$FILE$$' + key] = value;
+            });
+
+            var allFields = _getAllFieldInTransform($scope.connectDataSource.transforms).concat(connectedDataSourceService.inputFormatDataSourceField($scope.dataSourceFields)).concat(connectedDataSourceService.inputFormatTemporaryFields($scope.connectDataSource.temporaryFields));
+
+            angular.forEach(connectDataSource.transforms, function (transform) {
+                if(transform.type == 'number' || transform.type == 'date') {
+                    delete transform.fields;
+
+                    if(transform.type == 'number') {
+                        delete transform.to;
+                        delete transform.from;
+                    }
+
+                    if(transform.type == 'date') {
+                        delete transform.decimals;
+                        delete transform.thousandsSeparator;
+                    }
+                }
+
+                if (transform.type == 'addField') {
+                    angular.forEach(transform.fields, function (field) {
+                        if ($scope.dimensionsMetrics[field.field] == 'decimal' || $scope.dimensionsMetrics[field.field] == 'number') {
+                            field.value = Number(field.value);
+                        }
+
+                        if ($scope.dimensionsMetrics[field.field] == 'date' || $scope.dimensionsMetrics[field.field] == 'datetime') {
+                            if(field.value != '[__date]') {
+                                field.value = DateFormatter.getFormattedDate(field.value.endDate);
+                            }
+                        }
+
+                        if ($scope.dimensionsMetrics[field.field] == 'text' || $scope.dimensionsMetrics[field.field] == 'largeText') {
+                            angular.forEach(allFields, function (item) {
+                                var key = angular.copy(item.key).replace(/\$/g, '$$$$');
+
+                                var regExp = new RegExp(item.label.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "g");
+                                field.value = field.value.replace(regExp, key);
+                            });
+                        }
+                    })
+
+                }
+
+                if (transform.type == 'augmentation') {
+                    delete transform.allFieldsDataSet;
+
+                    angular.forEach(transform.customCondition, function (custom) {
+                        if (angular.isObject(custom.value)) {
+                            custom.value = DateFormatter.getFormattedDate(custom.value.endDate);
+                        }
+                    })
+                }
+
+                if (transform.type == 'addCalculatedField') {
+                    angular.forEach(transform.fields, function (field) {
+                        angular.forEach(allFields, function (item) {
+                            var key = angular.copy(item.key).replace(/\$/g, '$$$$');
+
+                            var regExp = new RegExp(item.label.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "g");
+                            field.expression = field.expression.replace(regExp, key);
+                        });
+                    })
+                }
+            });
+
+            var temporaryFields = [];
+            angular.forEach(connectDataSource.temporaryFields, function (field) {
+                temporaryFields.push('__$$TEMP$$' + field);
+            });
+
+            connectDataSource.temporaryFields = temporaryFields;
+
+            delete connectDataSource.userReorderTransformsAllowed;
+
+            return connectDataSource;
+        }
 
         function _removeFieldInRequires() {
             var requires = angular.copy($scope.connectDataSource.requires);
 
             angular.forEach(requires, function (require) {
-                if(_.values($scope.connectDataSource.mapFields).indexOf(require) == -1 && REPORT_VIEW_INTERNAL_FIELD_VARIABLE.indexOf(require) == -1) {
-                    delete  $scope.connectDataSource.requires[$scope.connectDataSource.requires.indexOf(require)]
-                }
-            });
-        }
-        
-        function _removeFieldInFilter() {
-            //var filters = angular.copy($scope.connectDataSource.filters);
-            //
-            //angular.forEach(filters, function (filter) {
-            //    if(_.values($scope.connectDataSource.mapFields).indexOf(filter.field) == -1) {
-            //        var index = _.findIndex($scope.connectDataSource.filters, function (item) {
-            //            return item.field == filter.field;
-            //        });
-            //
-            //        if(index > -1) {
-            //            $scope.connectDataSource.filters.splice(index, 1)
-            //        }
-            //    }
-            //});
-        }
-        
-        function _removeFieldInTransform() {
-            var transforms = angular.copy($scope.connectDataSource.transforms);
-            var allFieldAdd = [];
-
-            // total field in targetField extractPattern
-            angular.forEach(transforms, function (transform) {
-                angular.forEach(transform.fields, function (field) {
-                    if(transform.type == 'extractPattern') {
-                        allFieldAdd.push(field.targetField)
-                    }
-
-                    if(transform.type == 'addField' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent') {
-                        allFieldAdd.push(field.field)
-                    }
+                var index = _.findIndex(REPORT_VIEW_INTERNAL_FIELD_VARIABLE, function (variable) {
+                    return variable.key == require
                 });
-                }
-            );
 
-            angular.forEach(transforms, function (transform) {
-                $timeout(function () {
-                    if((transform.type == 'number' || transform.type == 'date') && !!transform.field) {
-                        if(_.values($scope.connectDataSource.mapFields).indexOf(transform.field) == -1 && allFieldAdd.indexOf(transform.field) == -1) {
-                            var index = _.findIndex($scope.connectDataSource.transforms, function (item) {
-                                if(item.type == 'extractPattern') {
-                                    for (var indexField in item.fields) {
-                                        if(!item.fields[indexField].isOverride) {
-                                            return item.fields[indexField].targetField == transform.field
-                                        }
-                                    }
-                                }
-
-                                return item.field == transform.field;
-                            });
-
-                            if(index > -1) {
-                                $scope.connectDataSource.transforms.splice(index, 1)
-                            }
-                        }
-                    }
-                }, 0, true);
-            });
-
-            angular.forEach($scope.connectDataSource.transforms, function (transform) {
-                if(transform.type == 'groupBy') {
-                    //var difference = _.difference(transform.fields, _.values($scope.connectDataSource.mapFields));
-                    //
-                    //if(difference.length > 0) {
-                    //    angular.forEach(difference, function (field) {
-                    //        if(transform.fields.indexOf(field) > -1) {
-                    //            transform.fields.splice(transform.fields.indexOf(field), 1)
-                    //        }
-                    //    });
-                    //}
-                }
-
-                // if(transform.type == 'sortBy') {
-                //     angular.forEach(transform.fields, function (field) {
-                //        var difference = _.difference(field.names, _.values($scope.connectDataSource.mapFields));
-                //
-                //        if(difference.length > 0) {
-                //            angular.forEach(difference, function (item) {
-                //                if(field.names.indexOf(item) > -1) {
-                //                    field.names.splice(field.names.indexOf(item), 1)
-                //                }
-                //            });
-                //        }
-                //     });
-                // }
-
-                if(transform.type == 'extractPattern' || transform.type == 'replaceText') {
-                    angular.forEach(transform.fields, function (transformField) {
-                        if(!transformField.isOverride) {
-                            if(_.values($scope.connectDataSource.mapFields).indexOf(transformField.targetField) > -1) {
-                                transformField.targetField = null
-                            }
-                        }
-                    })
-                }
-
-                if(transform.type == 'replaceText') {
-                    // angular.forEach(transform.fields, function (field) {
-                    //     if(Object.keys($scope.connectDataSource.mapFields).indexOf(field.field) == -1
-                    //         || ($scope.dimensionsMetrics[$scope.connectDataSource.mapFields[field.field]] != 'text'
-                    //         && $scope.dimensionsMetrics[$scope.connectDataSource.mapFields[field.field]] != 'largeText')) {
-                    //         $timeout(function () {
-                    //             field.field = null
-                    //         }, 0, true);
-                    //     }
-                    //
-                    //     if(Object.keys($scope.connectDataSource.mapFields).indexOf(field.targetField) > -1) {
-                    //         $timeout(function () {
-                    //             field.targetField = null
-                    //         }, 0, true);
-                    //     }
-                    // });
-                }
-
-                if(transform.type == 'addField' || transform.type == 'comparisonPercent' || transform.type == 'addCalculatedField' || transform.type == 'addConcatenatedField') {
-                    angular.forEach(transform.fields, function (field) {
-                        if(_.values($scope.connectDataSource.mapFields).indexOf(field.field) > -1) {
-                            $timeout(function () {
-                                field.field = null
-                            }, 0, true);
-                        }
-                    });
-                }
-
-                if (transform.type == 'comparisonPercent') {
-                    //angular.forEach(transform.fields, function (field) {
-                    //    if(_.values($scope.connectDataSource.mapFields).indexOf(field.denominator) == -1) {
-                    //        field.denominator = null
-                    //    }
-                    //
-                    //    if(_.values($scope.connectDataSource.mapFields).indexOf(field.numerator) == -1) {
-                    //        field.numerator = null
-                    //    }
-                    //});
-                }
-
-                var allFields = _.union(_getAllFieldInTransform($scope.connectDataSource.transforms).concat($scope.dataSourceFields));
-
-                if (transform.type == 'convertCase' || transform.type == 'normalizeText') {
-                    angular.forEach(transform.fields, function (field) {
-                        var indexTarget = _.findIndex($scope.connectDataSource.transforms, function (transformItem) {
-                            if(transformItem.type == 'convertCase' || transformItem.type == 'normalizeText') {
-                                for(var index in transformItem.fields) {
-                                    var fieldItem = transformItem.fields[index];
-
-                                    if(!fieldItem.isOverride && fieldItem.targetField == field.field) {
-                                        return true
-                                    }
-                                }
-                            }
-
-                            return false
-                        });
-
-                        if(allFields.indexOf(field.field) == -1 && indexTarget == -1) {
-                            setTimeout(function () {
-                                field.field = null;
-                            }, 0);
-                        }
-                    });
+                if(_.values($scope.connectDataSource.mapFields).indexOf(require) == -1 && index == -1) {
+                    delete  $scope.connectDataSource.requires[$scope.connectDataSource.requires.indexOf(require)]
                 }
             });
         }
@@ -790,7 +582,8 @@
                                     field: field.targetField,
                                     type: 'date',
                                     to: 'Y-m-d',
-                                    openStatus: true
+                                    openStatus: true,
+                                    from: [{isCustomFormatDateFrom: false, format: null}]
                                 })
                             }
                         }
@@ -801,11 +594,12 @@
 
         function _getAllFieldInTransform(transforms){
             var fields = [];
+
             angular.forEach(transforms, function (transform){
                 if (transform.type == 'addField' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent' || transform.type == 'addConcatenatedField') {
                     angular.forEach(transform.fields, function (field){
                         if (!!field.field) {
-                            fields.push(field.field);
+                            fields.push(connectedDataSourceService.findField(field.field));
                         }
                     })
                 }
@@ -813,7 +607,7 @@
                 if (transform.type == 'convertCase' || transform.type == 'normalizeText') {
                     angular.forEach(transform.fields, function (field){
                         if (!field.isOverride) {
-                            fields.push(field.targetField);
+                            fields.push(connectedDataSourceService.findField(field.targetField));
                         }
                     })
                 }
@@ -822,50 +616,8 @@
             return fields;
         }
 
-        function convertMessage(message) {
-            try {
-                message = angular.fromJson(message);
-            } catch(err) {
-                return 'An unknown server error occurred'
-            }
-
-            var code = message.code;
-            var detail = message.detail;
-
-            switch (code) {
-                case ALERT_CODE_DATA_IMPORT_MAPPING_FAIL:
-                    return 'Cannot preview data - no field in file is mapped to data set.';
-
-                case ALERT_CODE_WRONG_TYPE_MAPPING:
-                    return 'Cannot preview data - MAPPING ERROR: Found invalid content ' + '"' + detail.content + '"' + ' on field ' + '"' + detail.column + '"' + '.';
-
-                case ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL:
-                    return 'Cannot preview data - REQUIRE ERROR: Required field ' + '"' + detail.column + '"' + ' does not exist.';
-
-                case ALERT_CODE_FILTER_ERROR_INVALID_NUMBER:
-                    return 'Cannot preview data - TRANSFORM ERROR: Invalid number format on field ' + '"' + detail.column + '"' + '.';
-
-                case ALERT_CODE_TRANSFORM_ERROR_INVALID_DATE:
-                    return 'Cannot preview data - TRANSFORM ERROR: Invalid date format on field ' + '"' + detail.column + '"' + '.';
-
-                case ALERT_CODE_DATA_IMPORT_NO_HEADER_FOUND:
-                    return 'Cannot preview data - the file in data source has no data.';
-
-                case ALERT_CODE_DATA_IMPORT_NO_DATA_ROW_FOUND:
-                    return 'Cannot preview data - the file in data source has no data.';
-
-                case ALERT_CODE_FILE_NOT_FOUND:
-                    return 'Cannot preview data - file does not exist.';
-
-                case ALERT_CODE_UN_EXPECTED_ERROR:
-                    return 'Cannot preview data - unexpected error, please contact your account manager';
-
-                case ALERT_CODE_NO_FILE_PREVIEW:
-                    return 'cannot find any file in this data source for dry run';
-
-                default:
-                    return 'Unknown code (' + detail.code + ')';
-            }
+        function _getFieldsForRequires() {
+            $scope.totalFields.fieldsForRequires = connectedDataSourceService.inputFormatFieldDataSet(_.uniq(_.values($scope.connectDataSource.mapFields))).concat(REPORT_VIEW_INTERNAL_FIELD_VARIABLE)
         }
     }
 })();

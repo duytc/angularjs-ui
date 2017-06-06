@@ -85,7 +85,7 @@
         }
 
         function _getJSStringFromPattern(jsPattern, variable, value) {
-            if(!variable || (!variable && !value)) {
+            if(!variable || (!variable && !value) || !jsPattern) {
                 return '()';
             }
 
@@ -105,16 +105,16 @@
                     groupBuild += '(' + _buildNested(group[GROUP_KEY], group[GROUP_TYPE]) + ') ' + type + ' ';
                 }
                 else {
-                    var variable = _getConvertedVariable(group.var);
+                    var variable = _getConvertedVariable(group.customVar == 'CUSTOM' || !group.customVar ? group.var : group.customVar);
 
                     var value = !group.val ? "" : group.val;
 
-                    var cmpConfig = _getComparatorConfig(group.cmp, group.type, group.var);
+                    var cmpConfig = _getComparatorConfig(group.cmp, group.type, group.customVar == 'CUSTOM' || !group.customVar ? group.var : group.customVar);
                     var defaultGroupLabel = '';
 
                     if(typeof value == 'object') {
                         angular.forEach(value, function(item, key) {
-                            var typeForValueObject =  key+1 == value.length ? '' : group.cmp == 'isNot' ? 'AND' : 'OR';
+                            var typeForValueObject =  key+1 == value.length ? '' : group.cmp == 'isNot' ? '<strong>' + 'AND' + '</strong>': '<strong>' + 'OR' + '</strong>';
                             defaultGroupLabel = defaultGroupLabel + _getJSStringFromPattern(cmpConfig.jsPattern, variable, item) + typeForValueObject + ' ';
                         })
                     } else {

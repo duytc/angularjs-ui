@@ -107,8 +107,8 @@
     }
 
     input[type="checkbox"]:checked + span:before {
-        background-color: #4A9AAB; // pubvantage
-        border: 1px solid #4A9AAB; // pubvantage;
+        background-color: #2a2b38; // pubvantage
+        border: 1px solid #2a2b38; // pubvantage;
     }
     input[type="checkbox"]:checked + span:after {
         content: "";

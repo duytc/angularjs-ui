@@ -5,7 +5,7 @@
         .controller('AdTagForm', AdTagForm)
     ;
 
-    function AdTagForm($scope, Auth, _, $state, $modal, $translate, $stateParams, AdSlotManager, AdNetworkCache, AdTagManager, AlertService, AdTagLibrariesManager, userSession, ServerErrorProcessor, DisplayAdSlotManager, historyStorage, adTag, adSlot, site, publisher, publisherList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, USER_MODULES, PLATFORM_VAST_TAG, HISTORY_TYPE_PATH) {
+    function AdTagForm($scope, Auth, _, $state, $modal, $translate, $stateParams, queryBuilderService, blackList, whiteList, AdSlotManager, AdNetworkCache, AdTagManager, AlertService, AdTagLibrariesManager, userSession, ServerErrorProcessor, DisplayAdSlotManager, historyStorage, adTag, adSlot, site, publisher, publisherList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, USER_MODULES, PLATFORM_VAST_TAG, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
             name: 'Name',
@@ -95,6 +95,10 @@
         $scope.adTag = adTag || {
             adSlots: [],
             libraryAdTag: {
+                expressionDescriptor: {
+                    groupVal: [],
+                    groupType: 'AND'
+                },
                 name: null,
                 html: null,
                 adNetwork: null,
@@ -112,7 +116,8 @@
             position: null,
             impressionCap: null,
             networkOpportunityCap: null,
-            active: true
+            active: true,
+            passback: false
         };
 
         if(!!$scope.adTag.libraryAdTag.descriptor) {
@@ -131,11 +136,26 @@
             placeholder: 'sortable-placeholder'
         };
 
+        $scope.domainList = {
+            blacklist: blackList,
+            whitelist: whiteList
+        };
+
+        if(!$scope.isNew) {
+            if(angular.isArray($scope.adTag.libraryAdTag.expressionDescriptor) || !$scope.adTag.libraryAdTag.expressionDescriptor) {
+                $scope.adTag.libraryAdTag.expressionDescriptor = {groupVal: [], groupType: 'AND'}
+            }
+        }
+
         $scope.getAdTagLibrary = getAdTagLibrary;
         $scope.searchItem = searchItem;
         $scope.addMoreItems = addMoreItems;
         $scope.backToAdTagList = backToAdTagList;
         $scope.moveVastTag = moveVastTag;
+
+        $scope.builtVariable = function(expressionDescriptor) {
+            return queryBuilderService.builtVariable(expressionDescriptor)
+        };
 
         function backToAdTagList() {
             if(!!$stateParams.adSlotType && !!$stateParams.adSlotId) {
@@ -186,6 +206,11 @@
         $scope.selectPublisher = function (publisher, publisherId) {
             $scope.selected.site = null;
             $scope.adTag.adSlots = [];
+            $scope.adTag.libraryAdTag.expressionDescriptor = {
+                groupVal: [],
+                groupType: 'AND'
+            };
+
             $scope.resetSelection();
 
             $scope.hasUnifiedModule = publisher.enabledModules.indexOf('MODULE_UNIFIED_REPORT') !== -1;
@@ -222,12 +247,42 @@
         };
 
         $scope.isFormValid = function() {
+            for(var i in $scope.adTag.libraryAdTag.expressionDescriptor.groupVal) {
+                var group = $scope.adTag.libraryAdTag.expressionDescriptor.groupVal[i];
+                if (!_validateGroup(group)) {
+                    return false;
+                }
+            }
+
             if($scope.isNew) {
                 return $scope.adTagForm.$valid && $scope.adTag.adSlots.length > 0
             }
 
             return $scope.adTagForm.$valid;
         };
+
+        function _validateGroup(group) {
+            if(!!group.groupVal && group.groupVal.length > 0) {
+
+                var tmpGroup;
+                for(var i in group.groupVal) {
+                    tmpGroup = group.groupVal[i];
+                    if (!_validateGroup(tmpGroup)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            if(group.var == '${DOMAIN}' || group.var == '${DEVICE}' || group.var == '${COUNTRY}') {
+                if(!group.val || group.val.length == 0) {
+                    return false
+                }
+            }
+
+            return !!group.var;
+        }
 
         $scope.createAdNetwork = function() {
             var modalInstance = $modal.open({
@@ -237,6 +292,18 @@
                 resolve: {
                     publishers: function(){
                         return publisherList;
+                    },
+                    blockList: function (DisplayBlackListManager) {
+                        return DisplayBlackListManager.getList()
+                            .then(function (blockList) {
+                                return blockList.plain()
+                            });
+                    },
+                    whiteList: function (DisplayWhiteListManager) {
+                        return DisplayWhiteListManager.getList()
+                            .then(function (whiteList) {
+                                return whiteList.plain()
+                            });
                     }
                 }
             });
@@ -301,7 +368,11 @@
         }
 
         $scope.selectAdTagLibrary = function(libraryAdTag) {
-            angular.extend($scope.adTag.libraryAdTag, libraryAdTag);
+            var libraryAdTagClone = angular.copy(libraryAdTag);
+
+            _convertGroupVal(libraryAdTagClone.expressionDescriptor.groupVal);
+
+            angular.extend($scope.adTag.libraryAdTag, libraryAdTagClone);
         };
 
         $scope.addVast = function () {
@@ -343,6 +414,12 @@
 
             var adTag = angular.copy($scope.adTag);
 
+            _formatGroupVal(adTag.libraryAdTag.expressionDescriptor.groupVal);
+
+            if(adTag.libraryAdTag.expressionDescriptor.length == 0 || adTag.libraryAdTag.expressionDescriptor.groupVal.length == 0) {
+                adTag.libraryAdTag.expressionDescriptor = null;
+            }
+
             if($scope.isNew) {
                 adTag.adSlot = adTag.adSlots;
                 delete adTag.adSlots;
@@ -356,6 +433,13 @@
             saveAdTag
                 .catch(
                     function (response) {
+                        if(!response.data.errors) {
+                            AlertService.replaceAlerts({
+                                type: 'error',
+                                message: response.data.message
+                            });
+                        }
+
                         var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.adTagForm, $scope.fieldNameTranslations);
                         $scope.formProcessing = false;
 
@@ -485,6 +569,42 @@
                         $scope.adSlotList.push(item);
                     })
                 });
+        }
+
+        _update();
+
+        function _update() {
+            if(!$scope.isNew) {
+                _convertGroupVal($scope.adTag.libraryAdTag.expressionDescriptor.groupVal);
+            }
+        }
+
+        function _convertGroupVal(groupVal) {
+            angular.forEach(groupVal, function(group) {
+                if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}' || group.var == '${DOMAIN}')) {
+                    group.val = group.val.split(',');
+
+                    if(group.var != '${DOMAIN}') {
+                        group.cmp = group.cmp == '==' ||  group.cmp == 'is' ? 'is' : 'isNot';
+                    }
+                }
+
+                if(angular.isObject(group.groupVal)) {
+                    _convertGroupVal(group.groupVal);
+                }
+            });
+        }
+
+        function _formatGroupVal(groupVal) {
+            angular.forEach(groupVal, function(group) {
+                if(angular.isObject(group.val)) {
+                    group.val = group.val.toString();
+                }
+
+                if(angular.isObject(group.groupVal)) {
+                    _formatGroupVal(group.groupVal);
+                }
+            });
         }
 
         $scope.$watch(function() {

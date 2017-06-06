@@ -77,7 +77,7 @@
                 }
             })
             .state('unifiedReport.report.editBuilder', {
-                url: '/edit/?reportView&reportViewMultiViews&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&subReportsIncluded&userReorderTransformsAllowed&isShowDataSetName',
+                url: '/edit/?reportView&reportViewMultiViews&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&subReportsIncluded&userReorderTransformsAllowed&isShowDataSetName&enableCustomDimensionMetric',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -125,6 +125,7 @@
                                         subReportsIncluded: !!$stateParams.subReportsIncluded ? ($stateParams.subReportsIncluded == 'true') : reportView.subReportsIncluded,
                                         isShowDataSetName: !!$stateParams.isShowDataSetName ? ($stateParams.isShowDataSetName == 'true') : reportView.isShowDataSetName,
                                         userReorderTransformsAllowed: !!$stateParams.userReorderTransformsAllowed ? ($stateParams.userReorderTransformsAllowed == 'true') : reportView.userReorderTransformsAllowed,
+                                        enableCustomDimensionMetric: !!$stateParams.enableCustomDimensionMetric ? ($stateParams.enableCustomDimensionMetric == 'true') : reportView.enableCustomDimensionMetric,
                                         publisher: reportView.publisher.id || reportView.publisher
                                     }
                                 })
@@ -143,7 +144,8 @@
                             publisher: $stateParams.publisher,
                             multiView: $stateParams.multiView == 'true',
                             subReportsIncluded: $stateParams.subReportsIncluded == 'true',
-                            isShowDataSetName: $stateParams.isShowDataSetName == 'true'
+                            isShowDataSetName: $stateParams.isShowDataSetName == 'true',
+                            enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true'
                         };
                     },
                     publishers: function () {
@@ -155,7 +157,7 @@
                 }
             })
             .state('unifiedReport.report.detail', {
-                url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&saveReportView&startDate&endDate&isShowDataSetName',
+                url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&enableCustomDimensionMetric&startDate&endDate&isShowDataSetName&page&limit&searchs',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -178,23 +180,9 @@
                                         reportViewMultiView.subView = angular.isObject(reportViewMultiView.subView) ? reportViewMultiView.subView.id : reportViewMultiView.subView
                                     });
 
-                                    return {
-                                        reportViewDataSets: !!$stateParams.reportViewDataSets ? angular.fromJson($stateParams.reportViewDataSets) : reportView.reportViewDataSets,
-                                        reportViewMultiViews: !!$stateParams.reportViewMultiViews ? angular.fromJson($stateParams.reportViewMultiViews) : reportView.reportViewMultiViews,
-                                        transforms: !!$stateParams.transforms ? angular.fromJson($stateParams.transforms) : reportView.transforms,
-                                        showInTotal: !!$stateParams.showInTotal ? angular.fromJson($stateParams.showInTotal) : reportView.showInTotal,
-                                        formats: !!$stateParams.formats ? angular.fromJson($stateParams.formats) : reportView.formats,
-                                        fieldTypes: !!$stateParams.fieldTypes ? angular.fromJson($stateParams.fieldTypes) : reportView.fieldTypes,
-                                        weightedCalculations: !!$stateParams.weightedCalculations ? angular.fromJson($stateParams.weightedCalculations) : reportView.weightedCalculations,
-                                        joinBy: !!$stateParams.joinBy ? angular.fromJson($stateParams.joinBy) : reportView.joinBy,
-                                        name: !!$stateParams.name ? $stateParams.name : reportView.name,
-                                        alias: !!$stateParams.alias ? $stateParams.alias : reportView.alias,
-                                        id: reportView.id,
-                                        publisher: reportView.publisher.id || reportView.publisher,
-                                        multiView: !!$stateParams.multiView ? ($stateParams.multiView == 'true') : reportView.multiView,
-                                        subReportsIncluded: !!$stateParams.subReportsIncluded ? ($stateParams.subReportsIncluded == 'true') : reportView.subReportsIncluded,
-                                        isShowDataSetName: !!$stateParams.isShowDataSetName ? ($stateParams.isShowDataSetName == 'true') : reportView.isShowDataSetName
-                                    }
+                                    reportView.publisher = reportView.publisher.id || reportView.publisher;
+
+                                    return reportView
                                 })
                         }
 
@@ -212,29 +200,19 @@
                             publisher: $stateParams.publisher,
                             multiView: $stateParams.multiView == 'true',
                             subReportsIncluded: $stateParams.subReportsIncluded == 'true',
-                            isShowDataSetName: $stateParams.isShowDataSetName == 'true'
+                            isShowDataSetName: $stateParams.isShowDataSetName == 'true',
+                            enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true'
                         };
                     },
                     reportGroup: /* @ngInject */ function(unifiedReportBuilder, reportView, $stateParams) {
-                        var params = {
-                            reportViewDataSets: angular.toJson(reportView.reportViewDataSets),
-                            fieldTypes: angular.toJson(reportView.fieldTypes),
-                            reportViewMultiViews: angular.toJson(reportView.reportViewMultiViews),
-                            transforms: angular.toJson(reportView.transforms),
-                            showInTotal: angular.toJson(reportView.showInTotal),
-                            weightedCalculations: angular.toJson(reportView.weightedCalculations),
-                            formats: angular.toJson(reportView.formats),
-                            joinBy: angular.toJson(reportView.joinBy) || null,
-                            name: reportView.name,
-                            id: reportView.id,
-                            alias: reportView.alias,
-                            multiView: !!reportView.multiView || reportView.multiView == 'true',
-                            subReportsIncluded: !!reportView.subReportsIncluded || reportView.subReportsIncluded == 'true',
-                            isShowDataSetName: !!reportView.isShowDataSetName || reportView.isShowDataSetName == 'true'
-                        };
+                        var params = angular.copy(reportView);
 
                         params.startDate = $stateParams.startDate;
                         params.endDate = $stateParams.endDate;
+
+                        // set default page
+                        params.page = !$stateParams.page ? 1 : $stateParams.page;
+                        params.limit = !$stateParams.limit ? 10 : $stateParams.limit;
 
                         return unifiedReportBuilder.getPlatformReport(params);
                     }

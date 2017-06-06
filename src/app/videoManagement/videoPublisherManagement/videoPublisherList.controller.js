@@ -50,11 +50,11 @@
         function searchData() {
             var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
-            _getVideoPublishers(params);
+            _getVideoPublishers(params, 500);
         }
 
         var getVideoPublishers;
-        function _getVideoPublishers(query) {
+        function _getVideoPublishers(query, ms) {
             params = query;
 
             clearTimeout(getVideoPublishers);
@@ -68,7 +68,7 @@
                         $scope.tableConfig.totalItems = Number(videoPublishers.totalRecord);
                         $scope.availableOptions.currentPage = Number(query.page);
                     });
-            }, 500);
+            }, ms || 0);
         }
 
         function paramsReport(item) {

@@ -22,6 +22,11 @@
 ;
 // custom
 
+.btn:focus,.btn:active,
+button:focus, button:active {
+    outline: none !important;
+}
+
 .panel-heading .glyphicon-th {
     font-size: 15px;
     top: 2px;
@@ -104,6 +109,17 @@
             @include ui-select-width(200px);
         }
 
+        .multi-select-class {
+            margin-top: 4px;
+
+            .checkboxLayer label {
+              text-transform: none !important;
+            }
+
+            .multiSelect button:first-child {
+              min-width: 180px;
+            }
+        }
     }
 }
 
@@ -346,7 +362,7 @@ body {
 .tacade-fa-border{
   padding:10px 10px 10px 30px;
   border:solid .08em #eee;
-  border-radius:.1emd
+  border-radius: .1em
 }
 
 .highlightedRow {
@@ -419,4 +435,12 @@ legend {
 
 .ui-select-width-full-width {
   @include ui-select-width(100%);
+}
+
+.content_right_head {
+  display:inline-block;
+  //width:180px;
+  white-space: nowrap;
+  overflow:hidden !important;
+  text-overflow: ellipsis;
 }

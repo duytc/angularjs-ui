@@ -123,7 +123,7 @@
         function searchData() {
             var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
-            _getAdSlot(params);
+            _getAdSlot(params, 500);
         }
 
         $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
@@ -131,7 +131,7 @@
             _getAdSlot(params);
         });
 
-        function _getAdSlot(query) {
+        function _getAdSlot(query, ms) {
             params = query;
 
             clearTimeout(getAdSlot);
@@ -145,7 +145,7 @@
                         $scope.tableConfig.totalItems = Number(ronAdSlots.totalRecord);
                         $scope.availableOptions.currentPage = Number(query.page);
                     });
-            }, 500);
+            }, ms || 0);
         }
 
         $scope.$on('$locationChangeSuccess', function() {

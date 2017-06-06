@@ -48,6 +48,52 @@
             <ul class="submenu">
                 <li >
                     <a href="#" class="menu-dropdown">
+                        <span class="menu-text">{{ 'NAVBAR.DOMAIN_LISTS' | translate }}</span>
+                        <i class="menu-expand"></i>
+                    </a>
+
+                    <ul class="submenu">
+                        <li>
+                            <a href="#" class="menu-dropdown">
+                                <span class="menu-text">{{ 'NAVBAR.BLACK_LIST' | translate }}</span>
+                                <i class="menu-expand"></i>
+                            </a>
+                            <ul class="submenu">
+                                <li ui-sref-active="active">
+                                    <a ui-sref=".tagManagement.domainList.blockList">
+                                        <span class="menu-text">{{ 'NAVBAR.MY_BLACK_LIST' | translate }}</span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active">
+                                    <a ui-sref=".tagManagement.domainList.newBlockList">
+                                        <span class="menu-text">{{ 'NAVBAR.NEW_BLACK_LIST' | translate }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#" class="menu-dropdown">
+                                <span class="menu-text">{{ 'NAVBAR.WHITE_LIST' | translate }}</span>
+                                <i class="menu-expand"></i>
+                            </a>
+                            <ul class="submenu">
+                                <li ui-sref-active="active">
+                                    <a ui-sref=".tagManagement.domainList.whiteList">
+                                        <span class="menu-text">{{ 'NAVBAR.MY_WHITE_LIST' | translate }}</span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active">
+                                    <a ui-sref=".tagManagement.domainList.newWhiteList">
+                                        <span class="menu-text">{{ 'NAVBAR.NEW_WHITE_LIST' | translate }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li >
+                    <a href="#" class="menu-dropdown">
                         <span class="menu-text">{{ 'CHANNELS' | translate }}</span>
                         <i class="menu-expand"></i>
                     </a>
@@ -121,28 +167,8 @@
                                 <span class="menu-text">{{ 'NAVBAR.NEW_AD_NETWORK' | translate }}</span>
                             </a>
                         </li>
-
-                        <li>
-                            <a href="#" class="menu-dropdown">
-                                <span class="menu-text">{{ 'NAVBAR.BLACK_LIST' | translate }}</span>
-                                <i class="menu-expand"></i>
-                            </a>
-                            <ul class="submenu">
-                                <li ui-sref-active="active">
-                                    <a ui-sref=".tagManagement.domainList.blockList">
-                                        <span class="menu-text">{{ 'NAVBAR.MY_BLACK_LIST' | translate }}</span>
-                                    </a>
-                                </li>
-                                <li ui-sref-active="active">
-                                    <a ui-sref=".tagManagement.domainList.newBlockList">
-                                        <span class="menu-text">{{ 'NAVBAR.NEW_BLACK_LIST' | translate }}</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
                     </ul>
                 </li>
-
                 <li>
                     <a href="#" class="menu-dropdown">
                         <span class="menu-text">{{ 'AD_TAGS' | translate }}</span>
@@ -161,13 +187,11 @@
                         </li>
                     </ul>
                 </li>
-
                 <li ui-sref-active="active">
                     <a ui-sref=".tagManagement.tagGenerator">
                         <span class="menu-text"> {{ 'NAVBAR.GENERATE_TAGS' | translate }} </span>
                     </a>
                 </li>
-
             </ul>
         </li>
 

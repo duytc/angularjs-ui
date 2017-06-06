@@ -63,6 +63,24 @@
         $scope.noneSelect = noneSelect;
         $scope.selectAllInPages = selectAllInPages;
         $scope.previewData = previewData;
+        $scope.deleteAlertMulti = deleteAlertMulti;
+        
+        function deleteAlertMulti() {
+            var selectedDataSourceFiles = angular.copy($scope.selectedDataSourceFiles);
+
+            UnifiedReportDataSourceFileManager.one('delete').post(null, {entries: $scope.selectedDataSourceFiles})
+                .then(function () {
+                    _getDataSourceFiles(params, 0)
+                        .then(function () {
+                            $scope.checkAllItem = false;
+                        });
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: selectedDataSourceFiles.length + ' imported data files have been deleted'
+                    });
+                });
+        }
         
         function previewData(dataSourceFile) {
             UnifiedReportDataSourceFileManager.one(dataSourceFile.id).one('preview').get({limit: 1000})
@@ -77,7 +95,7 @@
                         },
                         controller: function ($scope, reportView) {
                             $scope.reportView = reportView;
-                            $scope.columns = reportView.columns;
+                            $scope.columns = _.keys(reportView.columns);
                             $scope.reports = reportView.reports;
 
                             $scope.itemsPerPage = [
@@ -108,7 +126,7 @@
                                 UnifiedReportDataSourceFileManager.one(dataSourceFile.id).one('preview').get({limit: $scope.selectedData.limit})
                                     .then(function (reportView) {
                                         $scope.reportView = reportView;
-                                        $scope.columns = reportView.columns;
+                                        $scope.columns = _.keys(reportView.columns);
                                         $scope.reports = reportView.reports;
                                     })
                             }
@@ -185,7 +203,7 @@
                 .then(function () {
                     AlertService.replaceAlerts({
                         type: 'success',
-                        message: 'The data was reloaded'
+                        message: 'The file ' + dataSourceFile.fileName + ' was reloaded'
                     });
                 })
                 .catch(function (response) {
@@ -197,8 +215,8 @@
                     }
 
                     AlertService.replaceAlerts({
-                        type: 'error',
-                        message: 'The data could not be reloaded'
+                        type: 'success',
+                        message: 'The file ' + dataSourceFile.fileName + ' could not be reloaded'
                     });
                 })
         }
@@ -296,7 +314,7 @@
                         if ($scope.selectedDataSourceFiles.indexOf(dataSourceFile.id) > -1) {
                             AlertService.replaceAlerts({
                                 type: 'success',
-                                message: 'The file ' + dataSourceFile.fileName + ' was reloaded'
+                                message: 'The imported files were reloaded'
                             });
                         }
                     });
@@ -307,7 +325,7 @@
                         if ($scope.selectedDataSourceFiles.indexOf(dataSourceFile.id) > -1) {
                             AlertService.replaceAlerts({
                                 type: 'success',
-                                message: 'The file ' + dataSourceFile.fileName + ' could not be reloaded'
+                                message: 'The imported files could not be reloaded'
                             });
                         }
                     });
@@ -350,7 +368,7 @@
         function searchData() {
             var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
-            _getDataSourceFiles(params)
+            _getDataSourceFiles(params, 500)
                 .then(function () {
                     // $scope.selectedDataSourceFiles = [];
                     // $scope.checkAllItem = false;
@@ -358,8 +376,6 @@
         }
 
         function _getDataSourceFiles(query, timeOut) {
-            timeOut = (timeOut == undefined) ? 500 : timeOut;
-
             clearTimeout(getDataSourceEntry);
 
             return $q(function(resolve, reject) {
@@ -394,7 +410,7 @@
                                 }, 0)
                             });
                     }
-                }, timeOut);
+                }, timeOut || 0);
             });
 
             function _resetCheckImported(dataSourceFiles) {

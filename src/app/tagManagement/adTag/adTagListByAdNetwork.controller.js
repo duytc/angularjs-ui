@@ -187,7 +187,7 @@
         function searchData() {
             var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
-            _getAdTag(params);
+            _getAdTag(params, 500);
         }
 
         $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
@@ -195,7 +195,7 @@
             _getAdTag(params);
         });
 
-        function _getAdTag(query) {
+        function _getAdTag(query, ms) {
             params = query;
 
             clearTimeout(getAdTag);
@@ -211,7 +211,7 @@
                         $scope.tableConfig.totalItems = Number(adTags.totalRecord);
                         $scope.availableOptions.currentPage = Number(query.page);
                     });
-            }, 500);
+            }, ms || 0);
         }
 
         $scope.$on('$locationChangeSuccess', function() {

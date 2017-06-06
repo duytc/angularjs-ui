@@ -1,7 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <span class="glyphicon glyphicon-th"></span>
-        <strong current-page-title></strong>
+        <span current-page-title></span>
 
         <div class="button-bar" ng-if="!isSubPublisher()">
             <button ui-sref="^.new({dataSetId: dataSet.id})" class="btn btn-primary btn-sm" type="button">
@@ -46,7 +45,11 @@
                         </div>
                     </td>
                     <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="{{ 'NAME' | translate }}"></td>
-                    <td at-implicit at-sortable at-attribute="dataSource.name" at-title="{{ 'DATA_SOURCE' | translate }}"></td>
+                    <td at-sortable at-attribute="dataSource.name" at-title="{{ 'DATA_SOURCE' | translate }}">
+                        {{ item.dataSource.name + ' (ID: '+ item.dataSource.id +')'}}
+                    </td>
+                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.ROWS' | translate }}" at-implicit at-sortable at-attribute="totalRow"></td>
+                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.FILES' | translate }}" at-implicit at-sortable at-attribute="dataSource.numOfFiles"></td>
                 </tr>
                 </tbody>
             </table>

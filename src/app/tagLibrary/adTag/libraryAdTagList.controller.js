@@ -58,17 +58,7 @@
             modalInstance.result.then(function () {
                 return AdTagLibrariesManager.one(adTag.id).remove()
                     .then(function () {
-                        var index = adTags.indexOf(adTag);
-
-                        if (index > -1) {
-                            adTags.splice(index, 1);
-                        }
-
-                        $scope.adTags = adTags;
-
-                        if($scope.tableConfig.currentPage > 0 && adTags.length/10 == $scope.tableConfig.currentPage) {
-                            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
-                        }
+                        _getAdTags(params);
 
                         AlertService.replaceAlerts({
                             type: 'success',
@@ -147,7 +137,7 @@
         function searchData() {
             var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
-            _getAdTags(params);
+            _getAdTags(params, 500);
         }
 
         $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
@@ -156,7 +146,7 @@
         });
 
         var getAdTag;
-        function _getAdTags(query) {
+        function _getAdTags(query, ms) {
             params = query;
 
             clearTimeout(getAdTag);
@@ -170,7 +160,7 @@
                         $scope.tableConfig.totalItems = Number(adTags.totalRecord);
                         $scope.availableOptions.currentPage = Number(query.page);
                     });
-            }, 500);
+            }, ms || 0);
         }
 
     }

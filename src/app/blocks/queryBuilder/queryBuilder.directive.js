@@ -34,6 +34,12 @@
                     var groupKey = GROUP_KEY;
                     var groupTYPE = GROUP_TYPE;
 
+                    scope.sortableOptions = {
+                        disabled: true,
+                        forcePlaceholderSize: true,
+                        placeholder: 'sortable-placeholder'
+                    };
+
                     scope.addExpression = addExpression;
                     scope.enableDragDropQueryBuilder = enableDragDropQueryBuilder;
                     scope.selectExpectAdSlot = selectExpectAdSlot;
@@ -42,12 +48,11 @@
                     scope.expectAdSlotIsDisplay = expectAdSlotIsDisplay;
                     scope.changeHeaderBidPrice = changeHeaderBidPrice;
                     scope.getHeaderName = getHeaderName;
+                    scope.removeGroup = removeGroup;
 
-                    scope.sortableOptions = {
-                        disabled: true,
-                        forcePlaceholderSize: true,
-                        placeholder: 'sortable-placeholder'
-                    };
+                    function removeGroup(expressions, $index) {
+                        expressions.splice($index, 1)
+                    }
 
                     scope.builtVariable = function(expressionDescriptor) {
                         return queryBuilderService.builtVariable(expressionDescriptor)
@@ -94,6 +99,10 @@
                                     })
                                 ;
                             }
+                        }
+
+                        if(!!expressionRoot) {
+                            expressionRoot.expressionDescriptor = {groupType: 'AND', groupVal: []};
                         }
                     }
 

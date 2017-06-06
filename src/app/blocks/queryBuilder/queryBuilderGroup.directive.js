@@ -5,7 +5,7 @@
         .directive('queryBuilderGroup', queryBuilderGroup)
     ;
 
-    function queryBuilderGroup($compile, _, CONDITIONS_STRING, CONDITIONS_BOOLEAN, CONDITIONS_NUMERIC, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, COUNTRY_LIST, DEVICES) {
+    function queryBuilderGroup($compile, $timeout, _, AdSlotLibrariesManager, AdSlotManager, VARIABLE_FOR_AD_TAG, CONDITIONS_STRING, CONDITIONS_BOOLEAN, CONDITIONS_NUMERIC, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, COUNTRY_LIST, DEVICES) {
         'use strict';
 
         return {
@@ -14,7 +14,9 @@
                 groups: '=',
                 index: '=',
                 tags: '=',
-                disabledDirective: '='
+                disabledDirective: '=',
+                isLibrary: '=',
+                expectAdSlot: '='
             },
             restrict: 'AE',
             templateUrl: 'blocks/queryBuilder/queryBuilderGroup.tpl.html',
@@ -30,6 +32,12 @@
                     scope.dataTypeList = DATA_TYPE;
                     scope.devices = DEVICES;
                     scope.countries = COUNTRY_LIST;
+                    scope.blacklists = [];
+                    scope.whitelists = [];
+                    scope.variableForAdTags = angular.copy(VARIABLE_FOR_AD_TAG);
+
+                    scope.variableForAdTags.push({key: 'CUSTOM', label: 'CUSTOM'});
+
                     var mostCommonlyCountry = [
                         {name: 'Australia', code: 'AU', line: true},
                         {name: 'Canada', code: 'CA', line: true},
@@ -46,7 +54,8 @@
                         })
                     });
 
-                    var numberLoad = 0;
+                    scope.hasGetBlacklist = false;
+                    scope.hasGetWhitelist = false;
 
                     scope.addGroup = addGroup;
                     scope.removeGroup = removeGroup;
@@ -56,10 +65,86 @@
                     scope.isDisabledButtonRemoveCondition = isDisabledButtonRemoveCondition;
                     scope.changeCondition = changeCondition;
                     scope.selectType = selectType;
+                    scope.selectTypeDomain = selectTypeDomain;
                     scope.valIsNull = valIsNull;
                     scope.changeVarName = changeVarName;
                     scope.getDataTypeList = getDataTypeList;
                     scope.groupEntities = groupEntities;
+                    scope.getDomains = getDomains;
+                    scope.selectCondition = selectCondition;
+                    scope.findCondition = findCondition;
+
+                    function findCondition(cmp, listCondition) {
+                        return _.find(listCondition, function (condition) {
+                            return condition.key == cmp
+                        });
+                    }
+
+                    function selectCondition(group, listCondition, index, resetVal) {
+                        if(resetVal) {
+                            group.val = null;
+                        }
+
+                        if(!group.cmp) {
+                            return
+                        }
+
+                        var condition = findCondition(group.cmp, listCondition);
+
+                        if(!!condition && _.has(condition, 'blacklist') && !condition.hideInputVal) {
+                            if(scope.isLibrary) {
+                                if(condition.blacklist) {
+                                    if(scope.blacklists.length == 0) {
+                                        AdSlotManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displayblacklists')
+                                            .then(function (blacklists) {
+                                                scope.blacklists = blacklists;
+                                                scope.hasGetBlacklist = true;
+                                            })
+                                    }
+                                } else {
+                                    if(scope.whitelists.length == 0) {
+                                        AdSlotManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displaywhitelists')
+                                            .then(function (whitelists) {
+                                                scope.whitelists =  whitelists;
+                                                scope.hasGetWhitelist = true;
+                                            })
+                                    }
+                                }
+                            } else {
+                                if(condition.blacklist) {
+                                    if(scope.blacklists.length == 0) {
+                                        AdSlotLibrariesManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displayblacklists')
+                                            .then(function (blacklists) {
+                                                scope.blacklists = blacklists;
+                                                scope.hasGetBlacklist = true;
+                                            })
+                                    }
+                                } else {
+                                    if(scope.whitelists.length == 0) {
+                                        AdSlotLibrariesManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displaywhitelists')
+                                            .then(function (whitelists) {
+                                                scope.whitelists =  whitelists;
+                                                scope.hasGetWhitelist = true;
+                                            })
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    function getDomains(group, listCondition) {
+                        var condition = findCondition(group.cmp, listCondition);
+
+                        if(!condition) {
+                            return []
+                        }
+
+                        if(condition.blacklist) {
+                            return scope.blacklists
+                        }
+
+                        return scope.whitelists
+                    }
 
                     function addGroup() {
                         // set default group, including two conditions
@@ -71,20 +156,26 @@
                     }
 
                     function changeVarName(group, indexValue) {
-                        numberLoad++;
+                        // numberLoad++;
+                        //
+                        // if(numberLoad > indexValue + 1) {
+                        //     // reset group
+                        //     group.type = getDataTypeList(group)[0].key;
+                        //     group.cmp = scope.conditions[0].key;
+                        //     group.val = null;
+                        // }
 
-                        if(numberLoad > indexValue + 1) {
-                            // reset group
+                        $timeout(function () {
                             group.type = getDataTypeList(group)[0].key;
                             group.cmp = scope.conditions[0].key;
                             group.val = null;
-                        }
+                        }, 0 , true)
                     }
 
                     function getDataTypeList(group) {
                         var dataTypeList = [];
                         for(var index in DATA_TYPE) {
-                            if(DATA_TYPE[index].builtInVars.indexOf(group.var) > -1) {
+                            if(DATA_TYPE[index].builtInVars.indexOf(group.customVar) > -1) {
                                 dataTypeList.push(DATA_TYPE[index]);
 
                                 return dataTypeList;
@@ -104,6 +195,7 @@
                         //reset expression group
                         scope.group = {};
                         scope.group = {
+                            customVar : null,
                             var : null,
                             cmp : scope.conditions[0].key,
                             val : null,
@@ -113,6 +205,7 @@
 
                     function addCondition() {
                         scope.group[scope.groupKey].push({
+                            customVar : null,
                             var : null,
                             cmp: scope.conditions[0].key,
                             val : null,
@@ -149,25 +242,25 @@
 
                         if(group.type == scope.dataTypes[1].key) {
                             for(var index in CONDITIONS_NUMERIC) {
-                                if(CONDITIONS_NUMERIC[index].unsupportedBuiltInVars.indexOf(group.var) == -1) {
+                                if(CONDITIONS_NUMERIC[index].unsupportedBuiltInVars.indexOf(group.customVar) == -1) {
                                     conditions.push(CONDITIONS_NUMERIC[index])
                                 }
                             }
                         }
                         else if(group.type == scope.dataTypes[2].key) {
                             for(var index in CONDITIONS_BOOLEAN) {
-                                if(CONDITIONS_BOOLEAN[index].unsupportedBuiltInVars.indexOf(group.var) == -1) {
+                                if(CONDITIONS_BOOLEAN[index].unsupportedBuiltInVars.indexOf(group.customVar) == -1) {
                                     conditions.push(CONDITIONS_BOOLEAN[index])
                                 }
                             }
                         }
                         else {
                             for(var index in CONDITIONS_STRING) {
-                                if(CONDITIONS_STRING[index].unsupportedBuiltInVars.indexOf(group.var) == -1) {
+                                if(CONDITIONS_STRING[index].unsupportedBuiltInVars.indexOf(group.customVar) == -1) {
                                     if(!CONDITIONS_STRING[index].onlySupport) {
                                         conditions.push(CONDITIONS_STRING[index])
                                     } else {
-                                        if(CONDITIONS_STRING[index].onlySupport.indexOf(group.var) > -1) {
+                                        if(CONDITIONS_STRING[index].onlySupport.indexOf(group.customVar) > -1) {
                                             conditions.push(CONDITIONS_STRING[index])
                                         }
                                     }
@@ -187,6 +280,10 @@
                         item.cmp = scope.conditions[0].key;
                     }
 
+                    function selectTypeDomain(item) {
+                        item.val = null;
+                    }
+
                     function valIsNull(cmp) {
                         if(cmp == scope.conditions[0].key || cmp == scope.conditions[1].key) {
                             return false;
@@ -197,11 +294,11 @@
 
                     // change variable not using underscore info using underscore
                     function _refactorVar(itemGroup) {
-                        if (itemGroup.var == '${PAGEURL}') {
-                            itemGroup.var = '${PAGE_URL}';
+                        if (itemGroup.customVar == '${PAGEURL}') {
+                            itemGroup.customVar = '${PAGE_URL}';
                         }
-                        else if (itemGroup.var == '${USERAGENT}') {
-                            itemGroup.var = '${USER_AGENT}';
+                        else if (itemGroup.customVar == '${USERAGENT}') {
+                            itemGroup.customVar = '${USER_AGENT}';
                         }
                     }
 

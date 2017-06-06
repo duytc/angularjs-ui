@@ -47,10 +47,10 @@
         
         function reloadAllData(dataSet) {
             UnifiedReportDataSetManager.one(dataSet.id).one('reloadalldatas').post()
-                .then(function() {
+                .then(function(data) {
                     AlertService.replaceAlerts({
-                        type: 'success',
-                        message: 'The data was reloaded. Please wait a few minutes for the changes to take effect.'
+                        type: 'warning',
+                        message: 'The data was reloaded with '+ data.pendingLoads +' loaded files. Please wait a few minutes for the changes to take effect.'
                     });
                 })
                 .catch(function() {
@@ -122,7 +122,7 @@
         function searchData() {
             var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
-            _getDataSet(params);
+            _getDataSet(params, 500);
         }
 
         $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
@@ -135,7 +135,7 @@
             _getDataSet(params);
         }
 
-        function _getDataSet(query) {
+        function _getDataSet(query, ms) {
             clearTimeout(getDataSet);
 
             getDataSet = setTimeout(function() {
@@ -147,7 +147,7 @@
                         $scope.tableConfig.totalItems = Number(dataSets.totalRecord);
                         $scope.availableOptions.currentPage = Number(query.page);
                     });
-            }, 500);
+            }, ms || 0);
         }
     }
 })();

@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.importHistory')
         .controller('ImportHistoryList', ImportHistoryList);
 
-    function ImportHistoryList($scope, $modal, importHistoryList, dataSet, dataSource, UnifiedReportImportHistoryManager, UnifiedReportDataSourceManager, UnifiedReportDataSetManager, historyStorage, HISTORY_TYPE_PATH, AlertService, exportExcelService) {
+    function ImportHistoryList($scope, $modal, importHistoryList, dataSet, dataSource, UnifiedReportImportHistoryManager, historyStorage, HISTORY_TYPE_PATH, AlertService, exportExcelService, AtSortableService) {
         $scope.dataSet = dataSet;
         $scope.importHistoryList = importHistoryList;
         $scope.formProcessing = false;
@@ -93,7 +93,7 @@
                     if(data.length > 0) {
                         var header = Object.keys(data[0]);
 
-                        exportExcelService.exportExcel(data, header, header, 'import-history ' + importHistory.dataSet.name + ' ' + importHistory.dataSourceEntry.dataSource.name, true);
+                        exportExcelService.exportExcel(data, header, header, 'import-history ' + importHistory.dataSet.name, true);
                     }
                 })
         }
@@ -105,25 +105,24 @@
 
             modalInstance.result.then(function(){
                 UnifiedReportImportHistoryManager.one(importHistory.id).one('undo').get()
+                    .then(function () {
+                        if(!!dataSet) {
+                            historyStorage.getLocationPath(HISTORY_TYPE_PATH.importHistoryList, '^.list');
+                        } else {
+                            historyStorage.getLocationPath(HISTORY_TYPE_PATH.importHistoryList, '^.listForDataSource');
+                        }
+
+                        AlertService.addFlash({
+                            type: 'success',
+                            message:  "The import was unloaded successfully"
+                        });
+                    })
                     .catch(function () {
                         AlertService.replaceAlerts({
                             type: 'error',
                             message: "Could not unload the import"
                         });
                     })
-                    .then(function () {
-                        var Manager = !!dataSet ? UnifiedReportDataSetManager.one(dataSet.id) : UnifiedReportDataSourceManager.one(dataSource.id);
-
-                        Manager.one('importhistories').getList().then(function (importHistoryList) {
-                            $scope.importHistoryList = importHistoryList.plain();
-
-                            AlertService.replaceAlerts({
-                                type: 'success',
-                                message:  "The import was unloaded successfully"
-                            });
-                        });
-                    })
-
                 ;
             });
         }
@@ -139,5 +138,9 @@
         function showPagination() {
             return angular.isArray($scope.importHistoryList) && $scope.importHistoryList.length > $scope.tableConfig.itemsPerPage;
         }
+
+        $scope.$on('$locationChangeSuccess', function() {
+            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.importHistoryList)
+        });
     }
 })();

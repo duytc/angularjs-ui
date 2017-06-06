@@ -86,6 +86,7 @@
                 "NEW_SUB_PUBLISHER": "New Sub Publisher",
                 "TAG_MANAGEMENT": "Tag Management",
                 "DISPLAY_ADS": "Display Ads",
+                "DOMAIN_LISTS": "Domain Lists",
                 "GENERATE_TAGS": "Generate Tags",
                 "GENERATE_VAST_TAGS": "Generate Vast/VPAID Tags",
                 "CHANNELS": "Channels",
@@ -164,8 +165,11 @@
                 "CREATE_CONNECTED_DATA_SOURCE":"Create Connected Data Source",
 
                 "BLACK_LIST": "Domain Blacklists",
+                "WHITE_LIST": "Domain Whitelists",
                 "MY_BLACK_LIST": "My Blacklists",
-                "NEW_BLACK_LIST": "New Blacklist"
+                "MY_WHITE_LIST": "My Whitelists",
+                "NEW_BLACK_LIST": "New Blacklist",
+                "NEW_WHITE_LIST": "New Whitelist"
             },
             "DASHBOARD_MODULE": {
                 "DATE_RANGE": "Date Range",
@@ -375,9 +379,14 @@
                 "CONFIRM_PAUSE_SITE": "Are you sure you want to pause this site?",
                 "NOTE_CONFIRM_PAUSE_SITE": "Every ad tag associated with this demand partner and site will be also paused.",
                 "BLOCK_LIST_DOMAINS": "Domain Blacklists",
+                "WHITE_LIST_DOMAINS": "Domain Whitelists",
+                "CUSTOM_IMPRESSION_PIXELS": "Custom Impression Pixels",
+                "PLACEHOLDER_CUSTOM_IMPRESSION_PIXELS": "Custom Impression Pixel URL",
+                "ADD_CUSTOM_IMPRESSION_PIXEL": "Add",
 
                 "MANAGE_AD_TAGS": "Manage Ad Tags",
                 "MANAGE_BLACk_LIST": "Manage Blacklist",
+                "MANAGE_WHITE_LIST": "Manage Whitelists",
                 "EDIT_AD_NETWORK": "Edit Demand Partner",
                 "SITES_FOR_AD_NETWORK": "Sites for Demand Partner",
                 "PLACEHOLDER_AD_NETWORK_NAME": "Demand Partner name",
@@ -410,6 +419,8 @@
                 "HELP_BLOCK_URL": "You can use this field to add the login url for your demand partner.",
                 "HELP_BLOCK_ENABLE_UNIFIED": "This credentials to use to login demand partner.",
                 "BLANK_FOR_NO_CHANGE":  "Leave it blank for no change",
+                "HELP_BLOCK_CUSTOM_IMPRESSION_PIXELS": "Add custom impressions pixels for all ad tags for the demand partner.",
+
                 "NEW_BLOCK_LIST": "New Block List",
                 "EDIT_BLOCK_LIST": "Edit Block List",
                 "ADD_NEW_BLACK_LIST_SUCCESS": "The blacklist has been created",
@@ -563,7 +574,7 @@
                 "BACK_TO_AD_SOURCE_LIST": "Back to Demand Ad Tag List",
                 "BACK_TO_LIBRARY_DEMAND_AD_TAG_LIST": "Back to Demand Ad Tag List",
                 "SELECT_A_AD_SOURCE": "Select a demand ad tag",
-                "CREATE_WHITE_LIST": "+ Create whitelist",
+                "CREATE_WHITE_LIST": "+ Create Whitelist",
                 "CREATE_BLACK_LIST": "+ Create blacklist",
                 "TARGETING_OVERRIDE": "Targeting Override",
 
@@ -607,11 +618,13 @@
             "DOMAIN_LIST_MODULE": {
                 "FROM": "From",
                 "BUILTIN": "Builtin",
-                "VIEW_DOMAINS": "View Domains",
-                "BACK_TO_BLACK_LIST": "Back to My Blacklists",
+                "VIEW_DOMAINS": "Manage Domains",
+                "BACK_TO_BLACK_LIST": "Back to my Blacklists",
+                "BACK_TO_WHITE_LIST": "Back to my Whitelists",
+                "ADD_DOMAINS": "Add Domains",
 
-                "CURRENTLY_NO_BLACK_LIST": "There is currently no blacklist",
-                "CURRENTLY_NO_WHITE_LIST": "There is currently no whitelist",
+                "CURRENTLY_NO_BLACK_LIST": "There is currently no blacklists",
+                "CURRENTLY_NO_WHITE_LIST": "There is currently no whitelists",
                 "MANAGE_AD_NETWORKS": "Manage Demand Partners",
 
                 "DELETE_BLACK_LIST_SUCCESS": "The blacklist was deleted",
@@ -638,7 +651,7 @@
                 "CUSTOM": "Custom",
                 "BUILT_IN": "Built In",
                 "SELECT_A_BUILT_IN": "Select a built in",
-                "HELP_TEXT_FOR_DEFAULT": "Editing this default blacklist will affect all ad networks and ad tags"
+                "SHOW_DOMAINS": "Show Domains"
             },
             "AD_SLOT_MODULE": {
                 "NATIVE": "Native",
@@ -648,9 +661,12 @@
                 "FROM_LIBRARY": "From Standalone",
                 "WIDTH": "Width",
                 "HEIGHT": "Height",
+                "REFRESH_EVERY": "Refresh Every",
+                "MAXIMUM_REFRESH_TIMES": "Maximum Refresh Times",
                 "TARGETING": "Targeting",
                 "SIZE": "Size",
                 "AUTO_FIT": "Auto Fit",
+                "AUTO_REFRESH": "Auto Refresh",
                 "PASSBACK_MODE": "Passback Mode",
                 "FLOOR_PRICE": "Floor Price",
                 "HEADER_BID_PRICE": "Header Bid Price",
@@ -694,7 +710,9 @@
                 "HELP_BLOCK_AUTO_FIT": "When Auto Fit is enabled, the ad slot will dynamically resize if the ad served is different from the size defined above.",
                 "HELP_BLOCK_FLOOR_PRICE": "If the RTB bid price is lower than this amount, the ad tag waterfall will serve instead.",
                 "HELP_BLOCK_RTB": "Enable RTB for this ad slot or inherit the RTB config from the associated site.",
-                "HELP_BLOCK_HEADER_BIDDING_PRICE": "Set the bid price for the Pubvantage bidder"
+                "HELP_BLOCK_HEADER_BIDDING_PRICE": "Set the bid price for the Pubvantage bidder",
+                "HELP_BLOCK_REFRESH_EVERY": "How many seconds after an impression before the ad slot is refreshed.",
+                "HELP_BLOCK_REFRESH_TIMES": "The maximum amount of times the ad slot will refresh after the initial load. Once this limit is exceeded, the ad slot will no longer refresh."
             },
             "RON_AD_SLOT_MODULE": {
                 "CURRENTLY_NO_RON_AD_SLOT": "There is currently no RON ad slots",
@@ -744,6 +762,10 @@
                 "DELETE_SUCCESS": "The ad tag was deleted",
                 "DELETE_FAIL": "The ad tag could not be deleted",
                 "CHANGE_STATUS_FAIL": "Could not change ad tag status",
+                "MARK_PASSBACK_FAIL": "Could not marked as passback for the ad tag",
+                "UNMARK_PASSBACK_FAIL": "Could not unmarked passback for the ad tag",
+                "MARK_PASSBACK_SUCCESS": "The ad tags have been marked as passback",
+                "UNMARK_PASSBACK_SUCCESS": "The ad tags have been unmarked passback",
                 "REORDERED_AD_TAG_FAIL": "The ad tags could not be reordered",
                 "REORDERED_AD_TAG_SUCCESS": "The ad tags have been reordered",
                 "CONFIRM_DELETE_AD_TAG": "Are you sure you want to delete this ad tag?",
@@ -752,6 +774,8 @@
                 "UNLINK_SUCCESS": "The ad tag has been unlinked",
                 "UNLINK_FAIL": "An error occurred. The ad tag could not be unlinked",
                 "UNLINK": "Unlink Ad Tag",
+                "MARK_AS_PASSBACK": "Mark as Passback",
+                "TARGETING": "Targeting",
 
                 "BACK_TO_AD_TAG_LIST": "Back to Ad Tag List",
                 "FROM_LIBRARY": "From Library",
@@ -781,6 +805,7 @@
                 "EDIT_AD_TAG": "Edit Ad Tag",
                 "PAUSE_AD_TAG" : "Pause Ad Tag",
                 "ACTIVATE_AD_TAG" : "Activate Ad Tag",
+                "UNMARK_AS_PASSBACK" : "Unmark Passback",
                 "DELETE_AD_TAG": "Delete Ad Tag",
                 "MOVE_TO_LIBRARY": "Move Standalone",
                 "EDIT_AD_TAG_IN_LIBRARY": "Edit Ad Tag in The Standalone",
@@ -802,10 +827,13 @@
                 "HELP_BLOCK_TARGET_URL": "You can use the following macros in your target url",
                 "HELP_BLOCK_CACHE_BUSTER": "A unique code that ensures URLs are unique",
                 "HELP_BLOCK_PAGE_URL": "The url of the current page",
-                "HELP_BLOCK_DOMAIN": "The domain of the current website",
+                "HELP_BLOCK_DOMAIN": "The domain defined manually by user",
+                "HELP_BLOCK_DECLARED_DOMAIN": "The domain defined manually by user",
+                "HELP_BLOCK_DETECTED_DOMAIN": "The domain of the current website",
                 "HELP_BLOCK_SLOT_ID": "The ad slot ID of the current tag",
                 "HELP_BLOCK_PARTNER_TAG_ID": "This is the ad tag id provided by your ad network partner. You have to fill in value for this field in order to see comparison between our report and your ad network partner report",
                 "HELP_BLOCK_AUTO_POSITION": "If Shift down is checked, all ad tags at the same or higher position will be shifted down.",
+                "HELP_BLOCK_MARK_AS_PASSBACK": "Tags marked as passbacks will not count impressions, they will count passbacks only. When this feature is used with the auto refresh feature, any passback tags are ignored once the ad slot is refreshed.",
                 "SHIFT_DOWN": "Shift Down",
 
                 "GUIDE_DRAG_DROP_TITLE": "You can drag and drop to re-order your ad tags.",
@@ -834,9 +862,9 @@
                 "WARNING_EDIT_LIBRARY": "This ad slot is linked to multiple sites. Modifying this ad slot will result in the changes being propagated to all sites that run this ad slot."
             },
             "AD_TAG_LIBRARY_MODULE": {
-                "REMOVE_SUCCESS": "The ad tag was removed from the standalone successfully",
-                "REMOVE_FAIL": "Could not remove ad tag from standalone",
-                "CURRENTLY_NO_AD_TAG": "There is currently no ad tags in the standalone",
+                "REMOVE_SUCCESS": "The ad tag was removed successfully",
+                "REMOVE_FAIL": "Could not remove ad tag",
+                "CURRENTLY_NO_AD_TAG": "There is currently no ad tags",
                 "CURRENTLY_NO_AD_TAG_ASSOCIATED": "This ad tag is currently not linked to any other ad tag",
                 "WARNING_EDIT_LIBRARY": "This ad tag is linked to multiple ad slots. Modifying this ad tag will result in the changes being propagated to all ad slots that run this ad tag.",
 
@@ -1154,6 +1182,8 @@
                 "GET_API_KEY": "Get API Key",
                 "UPLOAD_DATA": "Upload Data",
                 "MANAGE_RECEIVED_DATA": "View Imported Data",
+                "VIEW_ALERTS": "View Alerts",
+                "VIEW_BACKFILL_HISTORY": "View Backfill History",
                 "EDIT": "Edit",
                 "KEY": "Key",
                 "DELETE": "Delete",
@@ -1241,6 +1271,8 @@
                 "LAST_ACTIVITY": "Last Activity",
                 "REMOVE_ALL_DATA": "Remove All Data",
                 "ROWS": "# of Rows",
+                "FILES": "# of Files",
+                "PENDING_LOAD": "# Pending Loads",
                 "BACK_TO_DATA_SET_LIST": "Back to Data Set List",
                 "DELETE_DATA_SET_SUCCESS":"The data set has been deleted",
                 "ADD_NEW_SUCCESS": "The data set has been added",

@@ -1,7 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <span class="glyphicon glyphicon-th"></span>
-        <strong current-page-title></strong>
+        <span current-page-title></span>
 
         <div class="button-bar">
             <button ng-click="backToList()" class="btn btn-sm btn-primary" type="button">
@@ -36,8 +35,9 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li><a ng-click="downloadImportedData(item)">Download Imported Data</a></li>
-                                <li><a ng-click="previewData(item)">Preview Imported Data</a></li>
+                                <li><a ng-click="previewData(item)">Preview Loaded Data</a></li>
+                                <li class="divider"></li>
+                                <li><a ng-click="downloadImportedData(item)">Download Loaded Data</a></li>
                                 <li class="divider"></li>
                                 <li><a ng-click="undo(item, $index)">Undo</a></li>
                             </ul>
@@ -48,7 +48,9 @@
                         {{ item.createdDate | date:'MMM d, y H:mm:ss' }}
                     </td>
                     <td at-implicit at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.FILENAME' | translate }}" at-sortable at-attribute="dataSourceEntry.fileName"></td>
-                    <td ng-show="!!dataSet" at-implicit at-title="{{ 'DATA_SOURCE' | translate }}" at-sortable at-attribute="dataSourceEntry.dataSource.name"></td>
+                    <td ng-show="!!dataSet" at-title="{{ 'DATA_SOURCE' | translate }}" at-sortable at-attribute="dataSourceEntry.dataSource.name">
+                        {{ item.dataSourceEntry.dataSource.name + ' (ID: '+ item.dataSourceEntry.dataSource.id +')'}}
+                    </td>
                     <td ng-show="!dataSet" at-implicit at-title="{{ 'DATA_SET' | translate }}" at-sortable at-attribute="dataSet.name"></td>
                 </tr>
                 </tbody>

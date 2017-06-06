@@ -1,6 +1,6 @@
 <form name="reportSelectorForm" class="form-validation form-col form-horizontal form-col form-report-unified" role="form" ng-submit="getReports()" novalidate>
     <section class="panel panel-default">
-        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> {{ 'REPORT.FILTERS' | translate }}</div>
+        <div class="panel-heading">{{ 'REPORT.FILTERS' | translate }}</div>
 
         <div class="panel-body">
             <div class="row">
@@ -80,7 +80,7 @@
 
     <section class="panel panel-default">
         <div class="panel-heading">
-            <span class="glyphicon glyphicon-th"></span> {{ 'REPORT.METRICS' | translate }}
+            {{ 'REPORT.METRICS' | translate }}
         </div>
         <div class="panel-body select-dimensions">
             <label class="ui-checkbox"><input type="checkbox" ng-model="selectedData.selectMetricsAll" ng-click="selectMetricsAll(selectedData.selectMetricsAll)">
@@ -96,7 +96,7 @@
     </section>
 
     <section class="panel panel-default">
-        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> {{ 'REPORT.BREAKDOWN' | translate }}</div>
+        <div class="panel-heading">{{ 'REPORT.BREAKDOWN' | translate }}</div>
 
         <div class="panel-body">
             <div ng-repeat="breakdown in breakdownOption" class="col-sm-3" ng-if="showBreakdown(breakdown)">

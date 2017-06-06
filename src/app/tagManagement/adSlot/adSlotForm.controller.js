@@ -5,7 +5,7 @@
         .controller('AdSlotForm', AdSlotForm)
     ;
 
-    function AdSlotForm($scope, $translate, $stateParams, $filter, _, adSlot, publisherList, SiteManager, ChannelManager, DynamicAdSlotManager, adminUserManager, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, userSession, historyStorage, HISTORY_TYPE_PATH, RTB_STATUS_TYPES) {
+    function AdSlotForm($scope, $translate, $stateParams, $filter, _, adSlot, publisherList, SiteManager, ChannelManager, DynamicAdSlotManager, adminUserManager, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, userSession, historyStorage, HISTORY_TYPE_PATH, RTB_STATUS_TYPES, VARIABLE_FOR_AD_TAG) {
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
@@ -62,13 +62,20 @@
 
         $scope.adSlot = angular.isObject(adSlot) ? adSlot.libraryAdSlot : {
             libraryExpressions: [],
-            passbackMode: $scope.passbackOption[0].key
+            passbackMode: $scope.passbackOption[0].key,
+            autoRefresh: false,
+            refreshEvery: null,
+            maximumRefreshTimes: null
         };
 
         $scope.adSlot.rtbStatus = $scope.isNew ? RTB_STATUS_TYPES.inherit : adSlot.rtbStatus;
         $scope.adSlot.floorPrice = $scope.isNew ? null : adSlot.floorPrice;
         $scope.adSlot.hbBidPrice = $scope.isNew ? null : adSlot.hbBidPrice;
         $scope.adSlot.hbBidPriceClone = $scope.isNew ? null : _convertHeaderBiddingPriceToString(adSlot.hbBidPrice);
+
+        $scope.adSlot.autoRefresh = $scope.isNew ? null : adSlot.autoRefresh;
+        $scope.adSlot.refreshEvery = $scope.isNew ? null : adSlot.refreshEvery;
+        $scope.adSlot.maximumRefreshTimes = $scope.isNew ? null : adSlot.maximumRefreshTimes;
 
         $scope.selected = {
             type: angular.isObject(adSlot) ? adSlot.type : $scope.typesList.display,
@@ -627,7 +634,13 @@
                 return true;
             }
 
-            return !!group.var;
+            if(group.customVar == '${DOMAIN}' || group.customVar == '${DEVICE}' || group.customVar == '${COUNTRY}') {
+                if(!group.val || group.val.length == 0) {
+                    return false
+                }
+            }
+
+            return (!!group.customVar && group.customVar != 'CUSTOM') || !!group.var;
         }
 
         /**
@@ -847,6 +860,9 @@
             delete adSlot.site;
             delete adSlot.floorPrice;
             delete adSlot.hbBidPriceClone;
+            delete adSlot.autoRefresh;
+            delete adSlot.maximumRefreshTimes;
+            delete adSlot.refreshEvery;
 
             if($scope.selected.type == $scope.typesList.dynamic) {
                 if(!$scope.isNew) {
@@ -880,7 +896,10 @@
                 libraryAdSlot: angular.copy(adSlot),
                 rtbStatus: adSlot.rtbStatus,
                 floorPrice: adSlot.floorPrice,
-                hbBidPrice: adSlot.hbBidPrice
+                hbBidPrice: adSlot.hbBidPrice,
+                refreshEvery: adSlot.refreshEvery,
+                maximumRefreshTimes: adSlot.maximumRefreshTimes,
+                autoRefresh: adSlot.autoRefresh
             };
 
             adSlot.site = $scope.isNew ? $scope.selected.sites[0].id : $scope.selected.site.id;
@@ -900,6 +919,9 @@
                 delete adSlot.libraryAdSlot.passbackMode;
                 delete adSlot.floorPrice;
                 delete adSlot.hbBidPrice;
+                delete adSlot.autoRefresh;
+                delete adSlot.maximumRefreshTimes;
+                delete adSlot.refreshEvery;
 
                 _refactorExpressions(adSlot.libraryAdSlot.libraryExpressions);
 
@@ -943,6 +965,9 @@
             delete adSlot.libraryAdSlot.expressions;
             delete adSlot.libraryAdSlot.hbBidPrice;
             delete adSlot.libraryAdSlot.hbBidPriceClone;
+            delete adSlot.libraryAdSlot.autoRefresh;
+            delete adSlot.libraryAdSlot.maximumRefreshTimes;
+            delete adSlot.libraryAdSlot.refreshEvery;
 
             delete adSlot.libraryAdSlot.libType;
 
@@ -1063,6 +1088,12 @@
 
         function _formatGroupVal(groupVal) {
             angular.forEach(groupVal, function(group) {
+                if(group.customVar != 'CUSTOM') {
+                    group.var = group.customVar;
+                }
+
+                delete group.customVar;
+
                 if(angular.isObject(group.val)) {
                     group.val = group.val.toString();
                 }
@@ -1075,9 +1106,20 @@
 
         function _convertGroupVal(groupVal) {
             angular.forEach(groupVal, function(group) {
-                if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}')) {
+                var index = _.findIndex(VARIABLE_FOR_AD_TAG, {key: group.var});
+
+                if(index > -1) {
+                    group.customVar = group.var;
+                } else {
+                    group.customVar = 'CUSTOM';
+                }
+
+                if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}' || group.var == '${DOMAIN}')) {
                     group.val = group.val.split(',');
-                    group.cmp = group.cmp == '==' ||  group.cmp == 'is' ? 'is' : 'isNot';
+
+                    if(group.var != '${DOMAIN}') {
+                        group.cmp = group.cmp == '==' ||  group.cmp == 'is' ? 'is' : 'isNot';
+                    }
                 }
 
                 if(angular.isObject(group.groupVal)) {
