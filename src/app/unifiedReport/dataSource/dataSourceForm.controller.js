@@ -299,6 +299,20 @@
         // }
 
         function isFormValid(){
+            if(!!$scope.userForm.regex && !!$scope.userForm.regex.$viewValue) {
+                var isValid = true;
+
+                try {
+                    new RegExp($scope.userForm.regex.$viewValue);
+                } catch(e) {
+                    isValid = false
+                }
+
+                if(!isValid) {
+                    return false
+                }
+            }
+
             for (var index in $scope.dataSource.dataSourceIntegrations) {
                 if($scope.dataSource.dataSourceIntegrations[index].backFill) {
                     if(!$scope.dataSource.dataSourceIntegrations[index].backFillStartDate && !$scope.dataSource.dataSourceIntegrations[index].backFillStartDate.startDate) {
