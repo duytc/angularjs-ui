@@ -49,6 +49,16 @@
                     },
                     adSlotType: function() {
                         return null;
+                    },
+                    blackList: /* @ngInject */ function(DisplayBlackListManager) {
+                        return DisplayBlackListManager.getList().then(function (blockList) {
+                            return blockList.plain();
+                        });
+                    },
+                    whiteList: /* @ngInject */ function(DisplayWhiteListManager) {
+                        return DisplayWhiteListManager.getList().then(function (whiteList) {
+                            return whiteList.plain();
+                        });
                     }
                 },
                 customResolve: {
@@ -78,6 +88,16 @@
                     },
                     adSlotType: function(adSlot) {
                         return adSlot.libType;
+                    },
+                    blackList: /* @ngInject */ function(DisplayBlackListManager) {
+                        return DisplayBlackListManager.getList().then(function (blockList) {
+                            return blockList.plain();
+                        });
+                    },
+                    whiteList: /* @ngInject */ function(DisplayWhiteListManager) {
+                        return DisplayWhiteListManager.getList().then(function (whiteList) {
+                            return whiteList.plain();
+                        });
                     },
                     publisherList: function() {
                         return null;

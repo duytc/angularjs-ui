@@ -5,7 +5,7 @@
         .directive('queryBuilderGroup', queryBuilderGroup)
     ;
 
-    function queryBuilderGroup($compile, $timeout, _, AdSlotLibrariesManager, AdSlotManager, VARIABLE_FOR_AD_TAG, CONDITIONS_STRING, CONDITIONS_BOOLEAN, CONDITIONS_NUMERIC, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, COUNTRY_LIST, DEVICES) {
+    function queryBuilderGroup($compile, $timeout, _, VARIABLE_FOR_AD_TAG, CONDITIONS_STRING, CONDITIONS_BOOLEAN, CONDITIONS_NUMERIC, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, COUNTRY_LIST, DEVICES) {
         'use strict';
 
         return {
@@ -16,7 +16,10 @@
                 tags: '=',
                 disabledDirective: '=',
                 isLibrary: '=',
-                expectAdSlot: '='
+                expectAdSlot: '=',
+                blacklists: '=',
+                whitelists: '=',
+                publisher: "="
             },
             restrict: 'AE',
             templateUrl: 'blocks/queryBuilder/queryBuilderGroup.tpl.html',
@@ -32,8 +35,6 @@
                     scope.dataTypeList = DATA_TYPE;
                     scope.devices = DEVICES;
                     scope.countries = COUNTRY_LIST;
-                    scope.blacklists = [];
-                    scope.whitelists = [];
                     scope.variableForAdTags = angular.copy(VARIABLE_FOR_AD_TAG);
 
                     scope.variableForAdTags.push({key: 'CUSTOM', label: 'CUSTOM'});
@@ -54,9 +55,6 @@
                         })
                     });
 
-                    scope.hasGetBlacklist = false;
-                    scope.hasGetWhitelist = false;
-
                     scope.addGroup = addGroup;
                     scope.removeGroup = removeGroup;
                     scope.addCondition = addCondition;
@@ -70,7 +68,6 @@
                     scope.changeVarName = changeVarName;
                     scope.getDataTypeList = getDataTypeList;
                     scope.groupEntities = groupEntities;
-                    scope.getDomains = getDomains;
                     scope.selectCondition = selectCondition;
                     scope.findCondition = findCondition;
 
@@ -80,70 +77,8 @@
                         });
                     }
 
-                    function selectCondition(group, listCondition, index, resetVal) {
-                        if(resetVal) {
-                            group.val = null;
-                        }
-
-                        if(!group.cmp) {
-                            return
-                        }
-
-                        var condition = findCondition(group.cmp, listCondition);
-
-                        if(!!condition && _.has(condition, 'blacklist') && !condition.hideInputVal) {
-                            if(scope.isLibrary) {
-                                if(condition.blacklist) {
-                                    if(scope.blacklists.length == 0) {
-                                        AdSlotManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displayblacklists')
-                                            .then(function (blacklists) {
-                                                scope.blacklists = blacklists;
-                                                scope.hasGetBlacklist = true;
-                                            })
-                                    }
-                                } else {
-                                    if(scope.whitelists.length == 0) {
-                                        AdSlotManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displaywhitelists')
-                                            .then(function (whitelists) {
-                                                scope.whitelists =  whitelists;
-                                                scope.hasGetWhitelist = true;
-                                            })
-                                    }
-                                }
-                            } else {
-                                if(condition.blacklist) {
-                                    if(scope.blacklists.length == 0) {
-                                        AdSlotLibrariesManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displayblacklists')
-                                            .then(function (blacklists) {
-                                                scope.blacklists = blacklists;
-                                                scope.hasGetBlacklist = true;
-                                            })
-                                    }
-                                } else {
-                                    if(scope.whitelists.length == 0) {
-                                        AdSlotLibrariesManager.one(scope.expectAdSlot.id || scope.expectAdSlot).getList('displaywhitelists')
-                                            .then(function (whitelists) {
-                                                scope.whitelists =  whitelists;
-                                                scope.hasGetWhitelist = true;
-                                            })
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    function getDomains(group, listCondition) {
-                        var condition = findCondition(group.cmp, listCondition);
-
-                        if(!condition) {
-                            return []
-                        }
-
-                        if(condition.blacklist) {
-                            return scope.blacklists
-                        }
-
-                        return scope.whitelists
+                    function selectCondition(group) {
+                        group.val = null;
                     }
 
                     function addGroup() {

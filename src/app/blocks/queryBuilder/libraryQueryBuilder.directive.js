@@ -15,7 +15,10 @@
                 tags: '=',
                 native: '=',
                 disabledDirective: '=',
-                notHeaderBidding: '='
+                notHeaderBidding: '=',
+                blacklists: '=',
+                whitelists: '=',
+                publisher: "="
             },
             restrict: 'AE',
             templateUrl: 'blocks/queryBuilder/libraryQueryBuilder.tpl.html',
@@ -102,9 +105,9 @@
                             }
                         }
 
-                        if(!!expressionRoot) {
-                            expressionRoot.expressionDescriptor = {groupType: 'AND', groupVal: []};
-                        }
+                        // if(!!expressionRoot) {
+                        //     expressionRoot.expressionDescriptor = {groupType: 'AND', groupVal: []};
+                        // }
                     }
 
                     function _setupGroup(listAdTags) {
