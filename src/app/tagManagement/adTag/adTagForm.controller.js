@@ -370,6 +370,13 @@
         $scope.selectAdTagLibrary = function(libraryAdTag) {
             var libraryAdTagClone = angular.copy(libraryAdTag);
 
+            if(!libraryAdTagClone.expressionDescriptor || !libraryAdTagClone.expressionDescriptor.groupVal ) {
+                libraryAdTag.expressionDescriptor = {
+                    groupVal: [],
+                    groupType: 'AND'
+                }
+            }
+
             _convertGroupVal(libraryAdTagClone.expressionDescriptor.groupVal);
 
             angular.extend($scope.adTag.libraryAdTag, libraryAdTagClone);

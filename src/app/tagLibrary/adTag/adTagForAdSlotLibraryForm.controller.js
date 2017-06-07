@@ -5,7 +5,7 @@
         .controller('AdTagForAdSlotLibraryForm', AdTagForAdSlotLibraryForm)
     ;
 
-    function AdTagForAdSlotLibraryForm($scope, $modal, _, Auth, $stateParams, $translate, $state, AlertService, AdNetworkCache, ServerErrorProcessor, publisherList, adTag, adSlot, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, PLATFORM_VAST_TAG, NativeAdSlotLibrariesManager, DisplayAdSlotLibrariesManager, AdTagLibrariesManager, USER_MODULES) {
+    function AdTagForAdSlotLibraryForm($scope, $modal, _, Auth, $stateParams, $translate, $state, whiteList, blackList, queryBuilderService, AdSlotAdTagLibrariesManager, AlertService, AdNetworkCache, ServerErrorProcessor, publisherList, adTag, adSlot, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, PLATFORM_VAST_TAG, NativeAdSlotLibrariesManager, DisplayAdSlotLibrariesManager, AdTagLibrariesManager, USER_MODULES) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
             name: 'Name',
@@ -47,6 +47,11 @@
         $scope.adSlotList = adSlotList;
         $scope.adNetworkList = adNetworkList;
 
+        $scope.domainList = {
+            blacklist: blackList,
+            whitelist: whiteList
+        };
+
         $scope.adTagGroup = [];
         $scope.adTag = adTag || {
             libraryAdTag: {
@@ -54,6 +59,10 @@
                 adNetwork: null,
                 adType: $scope.adTypes.customAd,
                 descriptor: null,
+                expressionDescriptor: {
+                    groupVal: [],
+                    groupType: 'AND'
+                },
                 // partnerTagId: null,
                 inBannerDescriptor: {
                     platform: 'auto',
@@ -99,6 +108,18 @@
             if(!adTag.libraryAdTag.visible) {
                 delete adTag.libraryAdTag.id;
             }
+
+            if(angular.isArray($scope.adTag.libraryAdTag.expressionDescriptor) || !$scope.adTag.libraryAdTag.expressionDescriptor) {
+                $scope.adTag.libraryAdTag.expressionDescriptor = {groupVal: [], groupType: 'AND'}
+            }
+        }
+
+        _update();
+
+        function _update() {
+            if(!$scope.isNew) {
+                _convertGroupVal($scope.adTag.libraryAdTag.expressionDescriptor.groupVal);
+            }
         }
 
         $scope.showInputPosition = $scope.selected.adSlot && $scope.selected.adSlot.libType == $scope.adSlotTypes.display ? true : false;
@@ -114,8 +135,54 @@
         $scope.selectAdNetwork = selectAdNetwork;
         $scope.moveVastTag = moveVastTag;
 
+        function _convertGroupVal(groupVal) {
+            angular.forEach(groupVal, function(group) {
+                if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}' || group.var == '${DOMAIN}')) {
+                    group.val = group.val.split(',');
+
+                    if(group.var != '${DOMAIN}') {
+                        group.cmp = group.cmp == '==' ||  group.cmp == 'is' ? 'is' : 'isNot';
+                    }
+                }
+
+                if(angular.isObject(group.groupVal)) {
+                    _convertGroupVal(group.groupVal);
+                }
+            });
+        }
+
         function isFormValid() {
+            for(var i in $scope.adTag.libraryAdTag.expressionDescriptor.groupVal) {
+                var group = $scope.adTag.libraryAdTag.expressionDescriptor.groupVal[i];
+                if (!_validateGroup(group)) {
+                    return false;
+                }
+            }
+
             return $scope.adTagForm.$valid;
+        }
+
+        function _validateGroup(group) {
+            if(!!group.groupVal && group.groupVal.length > 0) {
+
+                var tmpGroup;
+                for(var i in group.groupVal) {
+                    tmpGroup = group.groupVal[i];
+                    if (!_validateGroup(tmpGroup)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            if(group.var == '${DOMAIN}' || group.var == '${DEVICE}' || group.var == '${COUNTRY}') {
+                if(!group.val || group.val.length == 0) {
+                    return false
+                }
+            }
+
+            return !!group.var;
         }
 
         function moveVastTag(array, from, to) {
@@ -144,6 +211,9 @@
             })
         };
 
+        $scope.builtVariable = function(expressionDescriptor) {
+            return queryBuilderService.builtVariable(expressionDescriptor)
+        };
 
         $scope.enableDragDropVastTag = function(enable) {
             $scope.sortableOptions['disabled'] = enable;
@@ -254,14 +324,30 @@
         }
 
         function selectAdTagLibrary(libraryAdTag) {
-            angular.extend($scope.adTag.libraryAdTag, libraryAdTag);
+            var libraryAdTagClone = angular.copy(libraryAdTag);
+
+            if(!libraryAdTagClone.expressionDescriptor || !libraryAdTagClone.expressionDescriptor.groupVal ) {
+                libraryAdTagClone.expressionDescriptor = {
+                    groupVal: [],
+                    groupType: 'AND'
+                }
+            }
+
+            _convertGroupVal(libraryAdTagClone.expressionDescriptor.groupVal);
+
+            angular.extend($scope.adTag.libraryAdTag, libraryAdTagClone);
         }
 
         function selectPublisher(publisher) {
             $scope.selected.adSlot = null;
             $scope.adTag.libraryAdTag.adNetwork = null;
 
-            $scope.hasUnifiedModule = publisher.enabledModules.indexOf('MODULE_UNIFIED_REPORT') !== -1
+            $scope.hasUnifiedModule = publisher.enabledModules.indexOf('MODULE_UNIFIED_REPORT') !== -1;
+
+            $scope.adTag.libraryAdTag.expressionDescriptor = {
+                groupVal: [],
+                groupType: 'AND'
+            }
         }
 
         function backToAdTagLibraryList() {
@@ -282,10 +368,17 @@
             delete $scope.adTag.libraryAdTag.associatedTagCount; // remove associatedTagCount
             delete $scope.adTag.libraryAdTag.id; // remove associatedTagCount
 
+
             var Manager = $scope.selected.adSlot && $scope.selected.adSlot.libType == $scope.adSlotTypes.display ? DisplayAdSlotLibrariesManager : NativeAdSlotLibrariesManager;
 
             var adTag = angular.copy($scope.adTag);
-            var saveAdTag = $scope.isNew ? Manager.one($scope.selected.adSlot.id).post('adtag', adTag) : adTag.patch();
+            _formatGroupVal(adTag.libraryAdTag.expressionDescriptor.groupVal);
+
+            if(adTag.libraryAdTag.expressionDescriptor.groupVal.length == 0) {
+                adTag.libraryAdTag.expressionDescriptor = null;
+            }
+
+            var saveAdTag = $scope.isNew ? Manager.one($scope.selected.adSlot.id).post('adtag', adTag) : AdSlotAdTagLibrariesManager.one(adTag.id).patch(adTag);
             saveAdTag
                 .catch(function (response) {
                     var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.adTagForm, $scope.fieldNameTranslations);
@@ -306,6 +399,18 @@
                 }
             )
             ;
+        }
+
+        function _formatGroupVal(groupVal) {
+            angular.forEach(groupVal, function(group) {
+                if(angular.isObject(group.val)) {
+                    group.val = group.val.toString();
+                }
+
+                if(angular.isObject(group.groupVal)) {
+                    _formatGroupVal(group.groupVal);
+                }
+            });
         }
 
         $scope.createAdNetwork = function() {
