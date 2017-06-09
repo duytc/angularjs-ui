@@ -19,9 +19,7 @@
         };
 
         var getDataSet;
-        var params = {
-            page: 1
-        };
+        var params = $stateParams;
 
         $scope.selectData = {
             query: $stateParams.searchKey || null
