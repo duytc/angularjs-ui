@@ -5,7 +5,7 @@
         .directive('transformConnect', transformConnect)
     ;
 
-    function transformConnect($compile, $timeout, AddCalculatedField, _, connectedDataSourceService, CONVERT_CASE_TYPES, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES){
+    function transformConnect($compile, $timeout, AddCalculatedField, _, connectedDataSourceService, CONNECT_TIMEZONES, CONVERT_CASE_TYPES, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES){
         'use strict';
 
         return {
@@ -49,6 +49,8 @@
                         {key: ',', label: 'Comma'},
                         {key: 'none', label: 'None'}
                     ];
+
+                    scope.timezones = CONNECT_TIMEZONES;
 
                     scope.conditionComparators = COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE;
 
@@ -217,7 +219,7 @@
 
                     function filterLeftSideAugmentation(transform) {
                         return function (field) {
-                            if(transform.mapFields.indexOf(field.key) > -1) {
+                            if(!!transform.mapFields && transform.mapFields.indexOf(field.key) > -1) {
                                 return false
                             }
 

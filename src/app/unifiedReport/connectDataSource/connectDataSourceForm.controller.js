@@ -206,7 +206,8 @@
                         type: 'date',
                         to: $scope.dimensionsMetrics[field] == 'date' ? 'Y-m-d': 'Y-m-d H:i:s',
                         openStatus: true,
-                        from: [{isCustomFormatDateFrom: false, format: null}]
+                        from: [{isCustomFormatDateFrom: false, format: null}],
+                        timezone: $scope.dimensionsMetrics[field] == 'datetime' ? 'UTC': null
                     })
 
                 }

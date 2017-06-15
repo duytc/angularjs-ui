@@ -700,7 +700,7 @@
         function _fieldsHaveDateType() {
             var fields = _getAllFieldInTransForm().concat($scope.selectedFields);
             angular.forEach(fields, function (metric) {
-                if (metric.type == 'date' || metric.type == 'dateTime') {
+                if (metric.type == 'date' || metric.type == 'datetime') {
                     var index = _.findIndex($scope.fieldsHaveDateType, function (field) {
                         return field.key == metric.key
                     });
@@ -716,8 +716,8 @@
             var fields = _getAllFieldInTransForm().concat($scope.selectedFields);
 
             angular.forEach(fields, function (metric) {
-                if (metric.type == 'number' || metric.type == 'decimal') {
-                    if(metric.key.indexOf('__') == -1 && (metric.key.indexOf('_day') == -1 || metric.key.indexOf('_month') == -1 || metric.key.indexOf('_year') == -1)) {
+                if (!!metric && (metric.type == 'number' || metric.type == 'decimal')) {
+                    if(!!metric.key && metric.key.indexOf('__') == -1 && (metric.key.indexOf('_day') == -1 || metric.key.indexOf('_month') == -1 || metric.key.indexOf('_year') == -1)) {
                         var index = _.findIndex($scope.fieldsHaveNumberType, function (field) {
                             return field.key == metric.key
                         });

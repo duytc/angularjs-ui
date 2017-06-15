@@ -187,7 +187,7 @@
                     }
 
                     var hasJoin = _.findIndex($scope.reportView.joinBy, function (join) {
-                        return join.outputField == key
+                        return join.outputField == col
                     });
 
                     if(totalDimensions.indexOf(key) > -1 || hasJoin > -1) {

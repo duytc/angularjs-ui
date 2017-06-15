@@ -32,7 +32,11 @@
             {label: 'DD/MM/YY', key: 'd/m/y', formatForJs:'DD/MM/YY'},   //15/01/99
             {label: 'DD-MM-YY', key: 'd-m-y', formatForJs:'DD-MM-YY'},   //15-01-99
             {label: 'YY/MM/DD', key: 'y/m/d', formatForJs:'YY/MM/DD'},   //99/01/15
-            {label: 'YY-MM-DD', key: 'y-m-d', formatForJs:'YY-MM-DD'}   //99-01-15
+            {label: 'YY-MM-DD', key: 'y-m-d', formatForJs:'YY-MM-DD'},   //99-01-15,
+
+            /** Support datetime format, include hour, month, second */
+            {label: 'YYYY-MM-DD HH:mm:ss', key: 'Y-m-d H:i:s',  formatForJs: 'YYYY-MM-DD HH:mm:ss'},
+            {label: 'YYYY-MM-DD HH:mm', key: 'Y-m-d H:i',  formatForJs: 'YYYY-MM-DD HH:mm'}  
         ];
 
         return api;

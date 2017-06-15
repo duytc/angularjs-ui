@@ -36,7 +36,7 @@
 
 <section class="panel panel-default">
     <div class="panel-heading">
-        <strong> {{ reportView.name }} </strong>
+        <strong> {{ reportView.name || 'Repoer Detail' }} </strong>
 
         <div class="button-bar">
             <button class="btn btn-sm btn-primary" ng-click="refreshData()" type="button">Refresh</button>

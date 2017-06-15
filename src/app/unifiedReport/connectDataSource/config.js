@@ -39,7 +39,11 @@
             {label: moment().format('DD/MM/YY') + ' (DD/MM/YY)', key: 'd/m/y'},   //15/01/99
             {label: moment().format('DD-MM-YY') + ' (DD-MM-YY)', key: 'd-m-y'},   //15-01-99
             {label: moment().format('YY/MM/DD') + ' (YY/MM/DD)', key: 'y/m/d'},   //99/01/15
-            {label: moment().format('YY-MM-DD') + ' (YY-MM-DD)', key: 'y-m-d'}   //99-01-15
+            {label: moment().format('YY-MM-DD') + ' (YY-MM-DD)', key: 'y-m-d'}, //99-01-15
+
+            /** Support datetime format, include hour, month, second */
+            {label: moment().format('YYYY-MM-DD HH:mm:ss') + ' (YYYY-MM-DD HH:mm:ss)', key: 'Y-m-d H:i:s'},
+            {label: moment().format('YYYY-MM-DD HH:mm') + ' (YYYY-MM-DD HH:mm)', key: 'Y-m-d H:i'}   
         ])
         .constant('COMPARISON_TYPES_FILTER_CONNECT_NUMBER', [
             {key: 'in', label: 'In'},
@@ -150,6 +154,12 @@
                 label: '__date',
                 original: '__date'
             }
+        ])
+        .constant('CONNECT_TIMEZONES', [
+            {key: 'UTC', label: 'UTC'},
+            {key: 'EST5EDT', label: 'EST'},
+            {key: 'CST6CDT', label: 'CST'},
+            {key: 'PST8PDT', label: ' PST'}
         ])
     ;
 })();
