@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.dataSet')
         .controller('dataSetList', dataSetList);
 
-    function dataSetList($scope, $stateParams, $modal, $translate, dataSets, UnifiedReportDataSetManager, AlertService, AtSortableService, EVENT_ACTION_SORTABLE, HISTORY_TYPE_PATH, historyStorage) {
+    function dataSetList($scope, $stateParams, $modal, $translate, dataSets, UnifiedReportDataSetManager, dataSetPendingJobs, AlertService, AtSortableService, EVENT_ACTION_SORTABLE, HISTORY_TYPE_PATH, historyStorage) {
         $scope.tableConfig = {
             itemsPerPage: 10,
             maxPages: 10,
@@ -12,6 +12,7 @@
         };
 
         $scope.dataSets = dataSets;
+        $scope.dataSetPendingJobs = dataSetPendingJobs;
 
         $scope.availableOptions = {
             currentPage: $stateParams.page || 1,
@@ -144,6 +145,17 @@
                         $scope.dataSets = dataSets;
                         $scope.tableConfig.totalItems = Number(dataSets.totalRecord);
                         $scope.availableOptions.currentPage = Number(query.page);
+
+
+                        // get dataSetPendingJobs
+                        var dataSetIds = [];
+                        angular.forEach(dataSets.records, function (dataSet) {
+                            dataSetIds.push(dataSet.id)
+                        });
+
+                        return UnifiedReportDataSetManager.one('pendingjobs').get({ids: dataSetIds.toString()}).then(function (dataSetPendingJobs) {
+                            $scope.dataSetPendingJobs = dataSetPendingJobs.plain();
+                        });
                     });
             }, ms || 0);
         }
