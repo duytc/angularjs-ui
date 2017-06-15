@@ -5,7 +5,7 @@
         .controller('LibraryAdTagForm', LibraryAdTagForm)
     ;
 
-    function LibraryAdTagForm($scope, Auth, $modal, $translate, whiteList, blackList, AlertService, ServerErrorProcessor, AdNetworkCache, adTag, publisherList, adNetworkList, AdTagLibrariesManager, historyStorage, queryBuilderService, AD_TYPES, USER_MODULES, PLATFORM_VAST_TAG, HISTORY_TYPE_PATH) {
+    function LibraryAdTagForm($scope, Auth, $modal, $translate, whiteList, blackList, AlertService, ServerErrorProcessor, AdNetworkCache, adTag, publisherList, adNetworkList, AdTagLibrariesManager, historyStorage, queryBuilderService, AD_TYPES, USER_MODULES, PLATFORM_VAST_TAG, VARIABLE_FOR_AD_TAG, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             adNetwork: 'adNetwork',
             html: 'html'
@@ -98,13 +98,13 @@
                 return true;
             }
 
-            if(group.var == '${DOMAIN}' || group.var == '${DEVICE}' || group.var == '${COUNTRY}') {
+            if(group.customVar == '${DOMAIN}' || group.customVar == '${DEVICE}' || group.customVar == '${COUNTRY}') {
                 if(!group.val || group.val.length == 0) {
                     return false
                 }
             }
 
-            return !!group.var;
+            return (!!group.customVar && group.customVar != 'CUSTOM') || !!group.var;
         }
 
         $scope.selectPublisher = function() {
@@ -246,6 +246,14 @@
 
         function _convertGroupVal(groupVal) {
             angular.forEach(groupVal, function(group) {
+                var index = _.findIndex(VARIABLE_FOR_AD_TAG, {key: group.var});
+
+                if(index > -1) {
+                    group.customVar = group.var;
+                } else {
+                    group.customVar = 'CUSTOM';
+                }
+
                 if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}' || group.var == '${DOMAIN}')) {
                     group.val = group.val.split(',');
 
@@ -262,6 +270,12 @@
 
         function _formatGroupVal(groupVal) {
             angular.forEach(groupVal, function(group) {
+                if(group.customVar != 'CUSTOM') {
+                    group.var = group.customVar;
+                }
+
+                delete group.customVar;
+
                 if(angular.isObject(group.val)) {
                     group.val = group.val.toString();
                 }

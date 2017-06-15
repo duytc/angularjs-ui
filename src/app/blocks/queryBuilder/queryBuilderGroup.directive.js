@@ -35,9 +35,7 @@
                     scope.dataTypeList = DATA_TYPE;
                     scope.devices = DEVICES;
                     scope.countries = COUNTRY_LIST;
-                    scope.variableForAdTags = angular.copy(VARIABLE_FOR_AD_TAG);
-
-                    scope.variableForAdTags.push({key: 'CUSTOM', label: 'CUSTOM'});
+                    scope.variableForAdTags =VARIABLE_FOR_AD_TAG;
 
                     var mostCommonlyCountry = [
                         {name: 'Australia', code: 'AU', line: true},

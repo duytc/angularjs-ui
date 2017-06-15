@@ -63,7 +63,8 @@
             {key: "${SCREEN_WIDTH}", label: 'SCREEN WIDTH'},
             {key: "${SCREEN_HEIGHT}", label: 'SCREEN HEIGHT'},
             {key: "${WINDOW_WIDTH}", label: 'WINDOW WIDTH'},
-            {key: "${WINDOW_HEIGHT}", label: 'WINDOW HEIGHT'}
+            {key: "${WINDOW_HEIGHT}", label: 'WINDOW HEIGHT'},
+            {key: 'CUSTOM', label: 'CUSTOM'}
         ])
     ;
 })();

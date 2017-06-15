@@ -5,7 +5,7 @@
         .controller('AdTagForAdSlotLibraryForm', AdTagForAdSlotLibraryForm)
     ;
 
-    function AdTagForAdSlotLibraryForm($scope, $modal, _, Auth, $stateParams, $translate, $state, whiteList, blackList, queryBuilderService, AdSlotAdTagLibrariesManager, AlertService, AdNetworkCache, ServerErrorProcessor, publisherList, adTag, adSlot, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, PLATFORM_VAST_TAG, NativeAdSlotLibrariesManager, DisplayAdSlotLibrariesManager, AdTagLibrariesManager, USER_MODULES) {
+    function AdTagForAdSlotLibraryForm($scope, $modal, _, Auth, $stateParams, $translate, $state, whiteList, blackList, queryBuilderService, AdSlotAdTagLibrariesManager, AlertService, AdNetworkCache, ServerErrorProcessor, publisherList, adTag, adSlot, adSlotList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, PLATFORM_VAST_TAG, NativeAdSlotLibrariesManager, DisplayAdSlotLibrariesManager, AdTagLibrariesManager, VARIABLE_FOR_AD_TAG, USER_MODULES) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
             name: 'Name',
@@ -137,6 +137,14 @@
 
         function _convertGroupVal(groupVal) {
             angular.forEach(groupVal, function(group) {
+                var index = _.findIndex(VARIABLE_FOR_AD_TAG, {key: group.var});
+
+                if(index > -1) {
+                    group.customVar = group.var;
+                } else {
+                    group.customVar = 'CUSTOM';
+                }
+
                 if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}' || group.var == '${DOMAIN}')) {
                     group.val = group.val.split(',');
 
@@ -176,13 +184,13 @@
                 return true;
             }
 
-            if(group.var == '${DOMAIN}' || group.var == '${DEVICE}' || group.var == '${COUNTRY}') {
+            if(group.customVar == '${DOMAIN}' || group.customVar == '${DEVICE}' || group.customVar == '${COUNTRY}') {
                 if(!group.val || group.val.length == 0) {
                     return false
                 }
             }
 
-            return !!group.var;
+            return (!!group.customVar && group.customVar != 'CUSTOM') || !!group.var;
         }
 
         function moveVastTag(array, from, to) {
@@ -403,6 +411,12 @@
 
         function _formatGroupVal(groupVal) {
             angular.forEach(groupVal, function(group) {
+                if(group.customVar != 'CUSTOM') {
+                    group.var = group.customVar;
+                }
+
+                delete group.customVar;
+
                 if(angular.isObject(group.val)) {
                     group.val = group.val.toString();
                 }
