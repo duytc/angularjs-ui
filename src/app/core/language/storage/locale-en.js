@@ -1268,6 +1268,7 @@
                 "VIEW_DATA_IMPORT_HISTORY": "View Loaded Data",
                 "EDIT": "Edit",
                 "DELETE": "Delete",
+                "RELOAD_ALL_DATA": "Reload Data Set",
                 "LAST_ACTIVITY": "Last Activity",
                 "REMOVE_ALL_DATA": "Remove All Data",
                 "ROWS": "# of Rows",
@@ -1290,7 +1291,7 @@
                 "REQUIRES": "Requires",
                 "FILTERS": "Filters",
                 "TRANSFORMATIONS": "Transformations",
-                "RELOAD_ALL_DATA": "Reload All Data",
+                "RELOAD_ALL_DATA": "Reload Data Source",
                 "NAME": "Name",
 
                 "NEW_CONNECTED_DATA_SOURCE": "New Connected Data Source",
