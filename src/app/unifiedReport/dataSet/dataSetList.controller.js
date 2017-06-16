@@ -52,14 +52,16 @@
                         message: 'The data was reloaded with '+ data.pendingLoads +' loaded files. Please wait a few minutes for the changes to take effect.'
                     });
                 })
-                .catch(function() {
-                    AlertService.replaceAlerts({
-                        type: 'error',
-                        message: 'The data could not be reloaded'
-                    });
+                .catch(function(response) {
+                    if(!!response && !!response.data && !!response.data.message) {
+                        AlertService.replaceAlerts({
+                            type: 'danger',
+                            message: response.data.message
+                        });
+                    }
                 });
         }
-        
+
         function removeAllData(dataSet) {
             var modalInstance = $modal.open({
                 templateUrl: 'unifiedReport/dataSet/removeAllDataConfirm.tpl.html'

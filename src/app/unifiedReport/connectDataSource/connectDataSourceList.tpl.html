@@ -52,6 +52,10 @@
                     </td>
                     <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.ROWS' | translate }}" at-implicit at-sortable at-attribute="totalRow"></td>
                     <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.FILES' | translate }}" at-implicit at-sortable at-attribute="dataSource.numOfFiles"></td>
+                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.STATUS' | translate }}" at-implicit at-attribute="status">
+                        <span class="label label-success" ng-if="item.noChanges == 0">Up to Date</span>
+                        <span class="label label-danger" ng-if="item.noChanges > 0">Needs Reload</span>
+                    </td>
                 </tr>
                 </tbody>
             </table>
