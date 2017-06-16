@@ -1297,6 +1297,7 @@
                 "FILTERS": "Filters",
                 "TRANSFORMATIONS": "Transformations",
                 "RELOAD_ALL_DATA": "Reload Data Source",
+                "REMOVE_ALL_DATA": "Remove All Data",
                 "NAME": "Name",
 
                 "NEW_CONNECTED_DATA_SOURCE": "New Connected Data Source",

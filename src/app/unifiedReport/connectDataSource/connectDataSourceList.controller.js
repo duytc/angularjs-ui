@@ -28,6 +28,7 @@
         $scope.showPagination = showPagination;
         $scope.confirmDeletion = confirmDeletion;
         $scope.reloadAllData = reloadAllData;
+        $scope.removeAllData = removeAllData;
         $scope.cloneConnectDataSource = cloneConnectDataSource;
 
         function cloneConnectDataSource(connect) {
@@ -41,6 +42,22 @@
                     }
                 }
             });
+        }
+
+        function removeAllData(connect) {
+            UnifiedReportConnectDataSourceManager.one(connect.id).one('removealldatas').post()
+                .then(function() {
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'All data has been removed from the connected data source.'
+                    });
+                })
+                .catch(function() {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'Could not removed all data'
+                    });
+                });
         }
 
         function reloadAllData(connect) {

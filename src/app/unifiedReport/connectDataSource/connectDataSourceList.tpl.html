@@ -40,6 +40,8 @@
                                 <li class="divider"></li>
                                 <li><a ng-click="reloadAllData(item)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.RELOAD_ALL_DATA' | translate }}</a></li>
                                 <li class="divider"></li>
+                                <li><a ng-click="removeAllData(item)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.REMOVE_ALL_DATA' | translate }}</a></li>
+                                <li class="divider"></li>
                                 <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item, $index)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.DELETE' | translate }}</a></li>
                             </ul>
                         </div>
