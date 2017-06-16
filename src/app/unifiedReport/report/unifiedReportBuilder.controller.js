@@ -499,67 +499,67 @@
                 $scope.selectedFields = $scope.selectedFields.concat(item.fields);
                 $scope.totalDimensionsMetrics = $scope.totalDimensionsMetrics.concat(item.tempDimensions.concat(item.tempMetrics));
 
-                angular.forEach(angular.copy($scope.totalDimensionsMetrics), function (dm) {
-                    if(dm.type == 'date' || dm.type == 'datetime') {
-                        var _year = null;
-                        var _month = null;
-                        var _day = null;
-
-                        if(!!dm.dataSet) {
-                            _year = {
-                                label: '__' + dm.root + '_year' + ' (' + dm.dataSet.name + ')',
-                                key: '__' + dm.root + '_year' + '_' + dm.dataSet.id,
-                                root: '__' + dm.root + '_year',
-                                type: 'number'
-                            };
-
-                            _day = {
-                                label: '__' + dm.root + '_day' + ' (' + dm.dataSet.name + ')',
-                                key: '__' + dm.root + '_day' + '_' + dm.dataSet.id,
-                                root: '__' + dm.root + '_day',
-                                type: 'number'
-                            };
-
-                            _month = {
-                                label: '__' + dm.root + '_month' + ' (' + dm.dataSet.name + ')',
-                                key: '__' + dm.root + '_month' + '_' + dm.dataSet.id,
-                                root: '__' + dm.root + '_month',
-                                type: 'number'
-                            };
-                        } else {
-                            _year = {
-                                label: '__' + dm.root + '_year',
-                                key: '__' + dm.root + '_year',
-                                root: '__' + dm.root + '_year',
-                                type: 'number'
-                            };
-
-                            _day = {
-                                label: '__' + dm.root + '_day',
-                                key: '__' + dm.root + '_day',
-                                root: '__' + dm.root + '_day',
-                                type: 'number'
-                            };
-
-                            _month = {
-                                label: '__' + dm.root + '_month',
-                                key: '__' + dm.root + '_month',
-                                root: '__' + dm.root + '_month',
-                                type: 'number'
-                            };
-                        }
-
-
-                        $scope.totalDimensionsMetrics.push(_year);
-                        $scope.selectedFields.push(_year);
-
-                        $scope.totalDimensionsMetrics.push(_month);
-                        $scope.selectedFields.push(_month);
-
-                        $scope.totalDimensionsMetrics.push(_day);
-                        $scope.selectedFields.push(_day);
-                    }
-                })
+                // angular.forEach(angular.copy($scope.totalDimensionsMetrics), function (dm) {
+                //     if(dm.type == 'date' || dm.type == 'datetime') {
+                //         var _year = null;
+                //         var _month = null;
+                //         var _day = null;
+                //
+                //         if(!!dm.dataSet) {
+                //             _year = {
+                //                 label: '__' + dm.root + '_year' + ' (' + dm.dataSet.name + ')',
+                //                 key: '__' + dm.root + '_year' + '_' + dm.dataSet.id,
+                //                 root: '__' + dm.root + '_year',
+                //                 type: 'number'
+                //             };
+                //
+                //             _day = {
+                //                 label: '__' + dm.root + '_day' + ' (' + dm.dataSet.name + ')',
+                //                 key: '__' + dm.root + '_day' + '_' + dm.dataSet.id,
+                //                 root: '__' + dm.root + '_day',
+                //                 type: 'number'
+                //             };
+                //
+                //             _month = {
+                //                 label: '__' + dm.root + '_month' + ' (' + dm.dataSet.name + ')',
+                //                 key: '__' + dm.root + '_month' + '_' + dm.dataSet.id,
+                //                 root: '__' + dm.root + '_month',
+                //                 type: 'number'
+                //             };
+                //         } else {
+                //             _year = {
+                //                 label: '__' + dm.root + '_year',
+                //                 key: '__' + dm.root + '_year',
+                //                 root: '__' + dm.root + '_year',
+                //                 type: 'number'
+                //             };
+                //
+                //             _day = {
+                //                 label: '__' + dm.root + '_day',
+                //                 key: '__' + dm.root + '_day',
+                //                 root: '__' + dm.root + '_day',
+                //                 type: 'number'
+                //             };
+                //
+                //             _month = {
+                //                 label: '__' + dm.root + '_month',
+                //                 key: '__' + dm.root + '_month',
+                //                 root: '__' + dm.root + '_month',
+                //                 type: 'number'
+                //             };
+                //         }
+                //
+                //
+                //         $scope.totalDimensionsMetrics.push(_year);
+                //         $scope.selectedFields.push(_year);
+                //
+                //         $scope.totalDimensionsMetrics.push(_month);
+                //         $scope.selectedFields.push(_month);
+                //
+                //         $scope.totalDimensionsMetrics.push(_day);
+                //         $scope.selectedFields.push(_day);
+                //     }
+                // });
 
                 angular.forEach(item.dimensions, function (dimension) {
                     var findDimension = _.find(item.tempDimensions, function (tempD) {
