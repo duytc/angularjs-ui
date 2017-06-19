@@ -50,10 +50,11 @@
                                     <li class="divider"></li>
                                     <li><a ui-sref="^.edit({ id: item.id })">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.EDIT' | translate }}</a></li>
                                     <li class="divider"></li>
-                                    <li><a ng-click="reloadAllData(item)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.RELOAD_ALL_DATA' | translate }}</a></li>
+                                    <li><a ng-click="reloadAllData(item)">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.RELOAD_ALL_DATA' | translate }}</a></li>
+                                    <li class="divider"></li>
+                                    <li><a ng-click="removeAllData(item)"> {{ 'UNIFIED_REPORT_DATA_SET_MODULE.REMOVE_ALL_DATA' | translate }}</a></li>
                                     <li class="divider"></li>
                                     <li><a ng-click="deleteDataSet(item.id)"> {{ 'UNIFIED_REPORT_DATA_SET_MODULE.DELETE' | translate }}</a></li>
-                                    <li><a ng-click="removeAllData(item)"> {{ 'UNIFIED_REPORT_DATA_SET_MODULE.REMOVE_ALL_DATA' | translate }}</a></li>
                                 </ul>
                             </div>
                         </td>
@@ -64,7 +65,14 @@
                         </td>
 
                         <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.ROWS' | translate }}" at-implicit at-sortable at-attribute="totalRow"></td>
-                        <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.PENDING_LOAD' | translate }}" at-implicit at-sortable at-attribute="numOfPendingLoad"></td>
+                        <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.PENDING_LOAD' | translate }}" at-attribute="numOfPendingLoad">
+                            {{ dataSetPendingJobs[item.id] }}
+                        </td>
+                        <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.STATUS' | translate }}" at-implicit at-attribute="status">
+                            <span class="label label-success" ng-if="item.noChanges == 0">Up to Date</span>
+                            <span class="label label-danger" ng-if="item.noChanges > 0">Needs Reload</span>
+                            <span class="label label-warning" ng-if="item.noConnectedDataSourceChanges > 0">Check Data Sources</span>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

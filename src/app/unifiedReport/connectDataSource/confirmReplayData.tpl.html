@@ -1,0 +1,8 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()">×</button>
+    <h4 class="modal-title">This is a new connected data source, would you like to load all existing data now? If no, you must manually reload this data source</h4>
+</div>
+<div class="modal-dialog-footer">
+    <button class="btn btn-primary" ng-click="$close()">No</button>
+    <button class="btn btn-success" ng-click="connectDataSource.replayData = true; $close()">Yes</button>
+</div>

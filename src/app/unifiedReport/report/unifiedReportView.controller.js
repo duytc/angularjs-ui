@@ -282,14 +282,14 @@
 
                     $scope.getShareableLink = function () {
                         var params = {
-                            fields: angular.toJson(fieldsToShare),
+                            fields: fieldsToShare,
                             dateRange: {
                                 startDate: DateFormatter.getFormattedDate($scope.selected.date.startDate),
                                 endDate: DateFormatter.getFormattedDate($scope.selected.date.endDate)
                             }
                         };
 
-                        UnifiedReportViewManager.one(reportView.id).customGET('shareablelink', params)
+                        UnifiedReportViewManager.one(reportView.id).post('shareablelink', params)
                             .then(function (shareableLink) {
                                 $scope.shareableLink = shareableLink
                             });

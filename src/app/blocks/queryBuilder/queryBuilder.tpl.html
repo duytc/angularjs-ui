@@ -62,9 +62,9 @@
                 </div>
 
                 <!--<span class="help-block">Select Group if you have compound conditions with AND/OR. Otherwise select Condition.</span>-->
-                <div ng-if="expressionRoot.expressions[0].expectAdSlot">
+                <div>
                     <label class="expression-label">{{ 'QUERY_BUILDER.RULE' | translate }}</label>
-                    <query-builder-group group="expressionRoot.expressionDescriptor" groups="expressions" tags="tags" expect-ad-slot="expressionRoot.expressions[0].expectAdSlot" is-library="true" disabled-directive="disabledDirective"></query-builder-group>
+                    <query-builder-group blacklists="blacklists" whitelists="whitelists" publisher="publisher" group="expressionRoot.expressionDescriptor" groups="expressions" tags="tags" expect-ad-slot="expressionRoot.expressions[0].expectAdSlot" is-library="true" disabled-directive="disabledDirective"></query-builder-group>
                 </div>
 
                 <div class="form-group expression-show">

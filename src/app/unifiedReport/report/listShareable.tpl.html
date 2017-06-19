@@ -29,15 +29,14 @@
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
                                 <li><a ng-click="revokeShare(item)">Revoke</a></li>
+                                <li><a ng-click="getShareableLink(item)">Get Shareable Link</a></li>
                             </ul>
                         </div>
                     </td>
                     <td at-title="Token" at-implicit at-sortable at-attribute="token"></td>
                     <td at-attribute="fields" at-title="Share Fields">
                         <ul>
-                            <li ng-repeat="field in item.fields.fields">
-                                {{ getFullNameField(field) }}
-                            </li>
+                            <li ng-repeat="field in item.fields.fields">{{ getFullNameField(field) }}</li>
                         </ul>
                     </td>
                     <td at-title="Date Range" at-attribute="fields.dateRange">

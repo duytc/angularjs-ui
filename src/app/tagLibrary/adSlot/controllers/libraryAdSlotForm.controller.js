@@ -5,7 +5,7 @@
         .controller('LibraryAdSlotForm', LibraryAdSlotForm)
     ;
 
-    function LibraryAdSlotForm($scope, $translate, $stateParams, $filter, _, adSlot, publisherList, adSlotType, VARIABLE_FOR_AD_TAG, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, historyStorage, HISTORY_TYPE_PATH) {
+    function LibraryAdSlotForm($scope, $translate, whiteList, blackList, $stateParams, $filter, _, adSlot, publisherList, adSlotType, VARIABLE_FOR_AD_TAG, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
@@ -28,12 +28,12 @@
                 key: TYPE_AD_SLOT.display
             },
             {
-                label: $translate.instant('NATIVE_AD_SLOT'),
-                key: TYPE_AD_SLOT.native
-            },
-            {
                 label: $translate.instant('DYNAMIC_AD_SLOT'),
                 key: TYPE_AD_SLOT.dynamic
+            },
+            {
+                label: $translate.instant('NATIVE_AD_SLOT'),
+                key: TYPE_AD_SLOT.native
             }
         ];
 
@@ -57,6 +57,9 @@
             type:  adSlotType || $scope.typesList.display
         };
 
+        $scope.blacklists = blackList;
+        $scope.whitelists = whiteList;
+
         $scope.adSlotsDefault = [{id: null, name: 'None'}];
         _update();
 
@@ -70,6 +73,11 @@
         $scope.filterEntityType = filterEntityType;
         $scope.backToAdSlotLibraryList = backToAdSlotLibraryList;
         $scope.findTypeLabel = findTypeLabel;
+        $scope.selectPublisher = selectPublisher;
+
+        function selectPublisher() {
+            $scope.adSlot.libraryExpressions = [];
+        }
 
         function showForDisplayAdSlot() {
             return $scope.selected.type == TYPE_AD_SLOT.display;

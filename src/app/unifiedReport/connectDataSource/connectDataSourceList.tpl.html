@@ -36,9 +36,11 @@
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
                                 <li ng-if="!isSubPublisher()"><a ui-sref="^.edit({ id: item.id })">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.EDIT' | translate }}</a></li>
                                 <li class="divider"></li>
+                                <li><a ng-click="reloadAllData(item)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.RELOAD_ALL_DATA' | translate }}</a></li>
+                                <li class="divider"></li>
                                 <li ng-if="!isSubPublisher()"><a ng-click="cloneConnectDataSource(item)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.CLONE_CONNECT_DATA_SOURCE' | translate }}</a></li>
                                 <li class="divider"></li>
-                                <li><a ng-click="reloadAllData(item)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.RELOAD_ALL_DATA' | translate }}</a></li>
+                                <li><a ng-click="removeAllData(item)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.REMOVE_ALL_DATA' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item, $index)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.DELETE' | translate }}</a></li>
                             </ul>
@@ -50,6 +52,10 @@
                     </td>
                     <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.ROWS' | translate }}" at-implicit at-sortable at-attribute="totalRow"></td>
                     <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.FILES' | translate }}" at-implicit at-sortable at-attribute="dataSource.numOfFiles"></td>
+                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.STATUS' | translate }}" at-implicit at-attribute="status">
+                        <span class="label label-success" ng-if="item.noChanges == 0">Up to Date</span>
+                        <span class="label label-danger" ng-if="item.noChanges > 0">Needs Reload</span>
+                    </td>
                 </tr>
                 </tbody>
             </table>

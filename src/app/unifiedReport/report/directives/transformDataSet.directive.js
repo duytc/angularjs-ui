@@ -5,7 +5,7 @@
         .directive('transformDataSet', transformDataSet)
     ;
 
-    function transformDataSet($compile, _, AddCalculatedField, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES, METRICS_SET) {
+    function transformDataSet($compile, _, AddCalculatedField, CONNECT_TIMEZONES, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES, METRICS_SET) {
         'use strict';
 
         return {
@@ -18,7 +18,8 @@
                 selectedFieldsDateSet: '=',
                 multiView: '=',
                 showDimensions: '=',
-                reorderTransformsAllowed: '='
+                reorderTransformsAllowed: '=',
+                reportBuilder: '='
             },
             restrict: 'AE',
             templateUrl: 'unifiedReport/report/directives/transformDataSet.tpl.html',
@@ -28,6 +29,7 @@
                 return function (scope, element, attrs) {
                     scope.allFiledFormatTypes = REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES;
                     scope.allFiledFormatTypeKeys = CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY;
+                    scope.timezones = CONNECT_TIMEZONES;
                     scope.dateFormatTypes = DATE_FORMAT_TYPES;
                     scope.typesField = METRICS_SET;
                     scope.positionsForReplaceText = POSITIONS_FOR_REPLACE_TEXT;
@@ -117,6 +119,22 @@
                     scope.addCompareValue = addCompareValue;
                     scope.getTotalDimensionsMetricsForDefaultValues = getTotalDimensionsMetricsForDefaultValues;
                     scope.selectedComparison = selectedComparison;
+                    scope.fieldIsDatetime = fieldIsDatetime;
+                    
+                    function fieldIsDatetime(transform) {
+                        var index = _.findIndex(transform.fields, function (field) {
+                            for(var i in scope.reportBuilder.joinBy) {
+                                var joinField = scope.reportBuilder.joinBy[i];
+                                if(joinField.outputField == field) {
+                                    return scope.dimensionsMetrics[joinField.joinFields[0].field + '_' + joinField.joinFields[0].dataSet] == 'datetime'
+                                }
+                            }
+
+                            return scope.dimensionsMetrics[field] == 'datetime'
+                        });
+
+                        return index > -1
+                    }
 
                     function selectedComparison(defaultValue) {
                         defaultValue.conditionValue = null;
@@ -468,13 +486,16 @@
                             }
                         }, 0);
 
+                        if (type.key == scope.allFiledFormatTypeKeys.groupBy) {
+                            transform.timezone = 'UTC'
+                        }
+
                         if (type.key == scope.allFiledFormatTypeKeys.comparisonPercent) {
                             transform.fields = [{field: null, numerator: null, denominator: null}];
                         }
 
                         if (type.key == scope.allFiledFormatTypeKeys.addField) {
                             transform.fields = [{field: null, value: null}];
-
                         }
 
                         if (type.key == scope.allFiledFormatTypeKeys.addCalculatedField) {

@@ -4,7 +4,7 @@
     angular.module('tagcade.public')
         .controller('shareableUnifiedReport', shareableUnifiedReport);
 
-    function shareableUnifiedReport($scope, $stateParams, $translate, reports, unifiedReportFormatReport, AlertService, AtSortableService, dataService, API_UNIFIED_PUBLIC_END_POINT, historyStorage, HISTORY_TYPE_PATH) {
+    function shareableUnifiedReport($scope, $stateParams, $translate, exportExcelService, reports, unifiedReportFormatReport, AlertService, AtSortableService, dataService, API_UNIFIED_PUBLIC_END_POINT, historyStorage, HISTORY_TYPE_PATH) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -117,6 +117,19 @@
         $scope.searchReportView = searchReportView;
         $scope.selectItemPerPages = selectItemPerPages;
         $scope.changePage = changePage;
+        $scope.exportExcel = exportExcel;
+
+        function exportExcel() {
+            var params = {
+                token: $stateParams.token,
+                reportView: $stateParams.reportView
+            };
+
+            dataService.makeHttpGetRequest('/v1/reportviews/:reportView/sharedReports', params, API_UNIFIED_PUBLIC_END_POINT)
+                .then(function (reportData) {
+                    exportExcelService.exportExcel(reportData.reports, $scope.columnReportDetailForExportExcel, $scope.titleReportDetailForExportExcel, getExportExcelFileName());
+                })
+        }
 
         function changePage(currentPage) {
             _getReportDetail();
@@ -187,7 +200,7 @@
                     }
 
                     var hasJoin = _.findIndex($scope.reportView.joinBy, function (join) {
-                        return join.outputField == key
+                        return join.outputField == col
                     });
 
                     if(totalDimensions.indexOf(key) > -1 || hasJoin > -1) {

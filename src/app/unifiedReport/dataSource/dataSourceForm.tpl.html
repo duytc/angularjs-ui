@@ -184,7 +184,7 @@
                                             </div>
 
                                             <div class="col-sm-9" ng-switch-when="regex">
-                                                <input style="width:100%" server-error name="value" ng-model="param.value" ng-pattern="/^(?!(\/.*))(?!(.*\/[gmixsuXUAJ]*$))/" type="text" class="form-control" placeholder="Value">
+                                                <input style="width:100%" server-error name="regex" ng-model="param.value" ng-pattern="/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]/" type="text" class="form-control" placeholder="Value">
                                             </div>
 
                                             <div class="col-sm-9" ng-switch-when="date">

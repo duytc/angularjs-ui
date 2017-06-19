@@ -12,8 +12,17 @@
         </div>
 
         <div class="form-inline condition" ng-if="!isGroup(itemGroup)">
+            <!--<div class="form-group select-data-type">-->
+                <!--<ui-select ng-disabled="disabledDirective" ng-model="itemGroup.var" ng-required="true" on-select="changeVarName(itemGroup, $index)" close-on-select="false" server-error reset-search-input="'false'">-->
+                    <!--<ui-select-match placeholder="Select a variable">{{ $select.selected.label }}</ui-select-match>-->
+                    <!--<ui-select-choices group-by="groupEntities" repeat="tag.key as tag in variableForAdTags | filter:$select.search">-->
+                        <!--{{ tag.label }}-->
+                    <!--</ui-select-choices>-->
+                <!--</ui-select>-->
+            <!--</div>-->
+
             <div class="form-group select-data-type">
-                <ui-select ng-disabled="disabledDirective" ng-model="itemGroup.var" ng-required="true" on-select="changeVarName(itemGroup, $index)" close-on-select="false" server-error reset-search-input="'false'">
+                <ui-select ng-disabled="disabledDirective" ng-model="itemGroup.customVar" ng-required="true" on-select="changeVarName(itemGroup, $index)" close-on-select="false" server-error reset-search-input="'false'">
                     <ui-select-match placeholder="Select a variable">{{ $select.selected.label }}</ui-select-match>
                     <ui-select-choices group-by="groupEntities" repeat="tag.key as tag in variableForAdTags | filter:$select.search">
                         {{ tag.label }}
@@ -21,26 +30,21 @@
                 </ui-select>
             </div>
 
-            <!--<div class="form-group select-data-type">-->
-                <!--<ui-select ng-model="itemGroup.type" ng-required="true" server-error ng-disabled="disabledDirective"  on-select="selectType(itemGroup)" reset-search-input="'false'">-->
-                    <!--<ui-select-match placeholder="Select data type">{{ $select.selected.label }}</ui-select-match>-->
-                    <!--<ui-select-choices repeat="dataType.key as dataType in getDataTypeList(itemGroup)">-->
-                        <!--{{ dataType.label }}-->
-                    <!--</ui-select-choices>-->
-                <!--</ui-select>-->
-            <!--</div>-->
+            <div class="form-group" ng-if="itemGroup.customVar == 'CUSTOM'">
+                <input ng-disabled="disabledDirective" server-error ng-required="true" type="text" class="form-control" ng-minlength="1" pattern="^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$" required ng-model="itemGroup.var" placeholder="JS variable name">
+            </div>
 
-            <select class="form-control" ng-disabled="disabledDirective" ng-model="itemGroup.cmp" ng-change="selectCondition(itemGroup)" ng-options="condition.key as condition.label for condition in changeCondition(itemGroup)"></select>
+            <select ng-if="!!itemGroup.customVar" class="form-control" ng-disabled="disabledDirective" ng-model="itemGroup.cmp" ng-change="selectCondition(itemGroup)" ng-options="condition.key as condition.label for condition in changeCondition(itemGroup)"></select>
 
-            <div class="form-group" ng-if="itemGroup.type != dataTypes[2].key && itemGroup.var != '${COUNTRY}' && itemGroup.var != '${DEVICE}' && itemGroup.var != '${DOMAIN}'">
+            <div class="form-group" ng-if="!!itemGroup.customVar && itemGroup.type != dataTypes[2].key && itemGroup.customVar != '${COUNTRY}' && itemGroup.customVar != '${DEVICE}' && itemGroup.customVar != '${DOMAIN}'">
                 <input ng-disabled="disabledDirective" server-error ng-required="valIsNull(itemGroup.cmp)" type="text" class="form-control" ng-minlength="1" pattern="{{ itemGroup.type == dataTypes[1].key ? '\\d*' : '[a-zA-Z0-9?=/&\\-_$.,;:@?+!*()#\\[\\]\']+$'}}" required ng-model="itemGroup.val" ng-init="itemGroup.val == null ? itemGroup.val = '' : itemGroup.val " placeholder="Value">
             </div>
 
-            <div class="form-group" ng-if="itemGroup.type == dataTypes[2].key && itemGroup.var != '${COUNTRY}' && itemGroup.var != '${DEVICE}' && itemGroup.var != '${DOMAIN}'">
+            <div class="form-group" ng-if="!!itemGroup.customVar && itemGroup.type == dataTypes[2].key && itemGroup.customVar != '${COUNTRY}' && itemGroup.var != '${DEVICE}' && itemGroup.var != '${DOMAIN}'">
                 <select ng-disabled="disabledDirective" class="form-control" ng-options="value for value in values" ng-model="itemGroup.val" ng-init="values = ['true', 'false']; itemGroup.val == null ? itemGroup.val = 'true' : '' "></select>
             </div>
 
-            <div class="form-group select-county" ng-if="itemGroup.var == '${COUNTRY}'">
+            <div class="form-group select-county" ng-if="!!itemGroup.customVar && itemGroup.customVar == '${COUNTRY}'">
                 <ui-select ng-disabled="disabledDirective" multiple ng-model="itemGroup.val" ng-required="true" close-on-select="false" on-select="$item.search = $select.search; $select.search = '';" server-error reset-search-input="'false'" style="min-width: 180px;">
                     <ui-select-match placeholder="Select a country">{{ $item.name }}</ui-select-match>
                     <ui-select-choices group-by="groupEntities" repeat="country.code as country in countries | filter:$select.search">
@@ -48,7 +52,7 @@
                     </ui-select-choices>
                 </ui-select>
             </div>
-            <div class="form-group select-county" ng-if="itemGroup.var == '${DEVICE}'">
+            <div class="form-group select-county" ng-if="!!itemGroup.customVar && itemGroup.customVar == '${DEVICE}'">
                 <ui-select ng-disabled="disabledDirective" multiple ng-model="itemGroup.val" ng-required="true" close-on-select="false" server-error reset-search-input="'false'" style="min-width: 180px;">
                     <ui-select-match placeholder="Select a device">{{ $item.name }}</ui-select-match>
                     <ui-select-choices group-by="groupEntities" repeat="device.code as device in devices | filter:$select.search">
@@ -57,7 +61,7 @@
                 </ui-select>
             </div>
 
-            <div class="form-group select-data-type" ng-if="itemGroup.var == '${DOMAIN}' && !findCondition(itemGroup.cmp, changeCondition(itemGroup, $index)).hideInputVal">
+            <div class="form-group select-data-type" ng-if="!!itemGroup.customVar && itemGroup.customVar == '${DOMAIN}' && !findCondition(itemGroup.cmp, changeCondition(itemGroup, $index)).hideInputVal">
                 <ui-select multiple ng-model="itemGroup.val" ng-required="true" close-on-select="false" server-error reset-search-input="'false'" ng-disabled="disabledDirective" style="min-width: 180px;">
                     <ui-select-match placeholder="{{ findCondition(itemGroup.cmp, changeCondition(itemGroup, $index)).blacklist ? 'select a blacklist' : 'select a whitelist' }}">{{ $item.name }}</ui-select-match>
                     <ui-select-choices group-by="groupEntities" repeat="domain.id as domain in getDomains(itemGroup, changeCondition(itemGroup), $index) | selectedPublisher:publisher | filter:$select.search">

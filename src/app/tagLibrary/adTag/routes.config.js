@@ -199,6 +199,16 @@
                     },
                     adNetworkList: /* @ngInject */ function (AdNetworkCache) {
                         return AdNetworkCache.getAllAdNetworks();
+                    },
+                    blackList: /* @ngInject */ function(DisplayBlackListManager) {
+                        return DisplayBlackListManager.getList().then(function (blockList) {
+                            return blockList.plain();
+                        });
+                    },
+                    whiteList: /* @ngInject */ function(DisplayWhiteListManager) {
+                        return DisplayWhiteListManager.getList().then(function (whiteList) {
+                            return whiteList.plain();
+                        });
                     }
                 },
                 customResolve: {
@@ -237,6 +247,16 @@
                     },
                     publisherList: function() {
                         return null;
+                    },
+                    blackList: /* @ngInject */ function(DisplayBlackListManager) {
+                        return DisplayBlackListManager.getList().then(function (blockList) {
+                            return blockList.plain();
+                        });
+                    },
+                    whiteList: /* @ngInject */ function(DisplayWhiteListManager) {
+                        return DisplayWhiteListManager.getList().then(function (whiteList) {
+                            return whiteList.plain();
+                        });
                     }
                 },
                 ncyBreadcrumb: {

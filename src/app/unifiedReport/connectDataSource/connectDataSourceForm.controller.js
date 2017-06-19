@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.connect')
         .controller('ConnectDataSourceForm', ConnectDataSourceForm);
 
-    function ConnectDataSourceForm($scope, $modal, _, dataSets, dataSources, connectedDataSourceService, connectDataSource, AlertService, sessionStorage, FileUploader, UnifiedReportConnectDataSourceManager, UnifiedReportDataSourceManager, ServerErrorProcessor, dataSet, dateUtil, historyStorage, HISTORY_TYPE_PATH, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, DateFormatter) {
+    function ConnectDataSourceForm($scope, $q, $modal, _, dataSets, dataSources, connectedDataSourceService, connectDataSource, AlertService, sessionStorage, FileUploader, UnifiedReportConnectDataSourceManager, UnifiedReportDataSourceManager, ServerErrorProcessor, dataSet, dateUtil, historyStorage, HISTORY_TYPE_PATH, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, DateFormatter) {
         $scope.fieldNameTranslations = {
             dataSet: 'Data Set',
             dataSource: 'Data Source',
@@ -40,7 +40,7 @@
             filters: [],
             transforms: [],
             alertSetting: [],
-            replayData: true,
+            replayData: false,
             userReorderTransformsAllowed: false
         };
         $scope.totalFields = {
@@ -206,7 +206,8 @@
                         type: 'date',
                         to: $scope.dimensionsMetrics[field] == 'date' ? 'Y-m-d': 'Y-m-d H:i:s',
                         openStatus: true,
-                        from: [{isCustomFormatDateFrom: false, format: null}]
+                        from: [{isCustomFormatDateFrom: false, format: null}],
+                        timezone: $scope.dimensionsMetrics[field] == 'datetime' ? 'UTC': null
                     })
 
                 }
@@ -317,38 +318,65 @@
 
             $scope.formProcessing = true;
 
-            var connectDataSource = _refactorJson($scope.connectDataSource);
+            var dfd = $q.defer();
 
-            var saveChannel = $scope.isNew ? UnifiedReportConnectDataSourceManager.post(connectDataSource) : UnifiedReportConnectDataSourceManager.one(connectDataSource.id).patch(connectDataSource);
+            dfd.promise.then(function () {
+                var connectDataSource = _refactorJson($scope.connectDataSource);
 
-            saveChannel
-                .catch(
-                    function (response) {
-                        if(!response.data.errors) {
-                            AlertService.replaceAlerts({
-                                type: 'error',
-                                message: response.data.message
+                var saveChannel = $scope.isNew ? UnifiedReportConnectDataSourceManager.post(connectDataSource) : UnifiedReportConnectDataSourceManager.one(connectDataSource.id).patch(connectDataSource);
+
+                saveChannel
+                    .catch(
+                        function (response) {
+                            if(!response.data.errors) {
+                                AlertService.replaceAlerts({
+                                    type: 'error',
+                                    message: response.data.message
+                                });
+                            }
+
+                            var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.connectForm, $scope.fieldNameTranslations);
+                            $scope.formProcessing = false;
+
+                            return errorCheck;
+                        })
+                    .then(
+                        function () {
+                            AlertService.addFlash({
+                                type: 'success',
+                                message: 'The connect data source has been created'
                             });
+                        })
+                    .then(
+                        function () {
+                            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.connectDataSource, '^.list', {dataSetId: $scope.dataSet.id || $scope.dataSet});
                         }
+                    )
+            });
 
-                        var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.connectForm, $scope.fieldNameTranslations);
-                        $scope.formProcessing = false;
-
-                        return errorCheck;
-                    })
-                .then(
-                    function () {
-                        AlertService.addFlash({
-                            type: 'success',
-                            message: 'The connect data source has been created'
-                        });
-                    })
-                .then(
-                    function () {
-                        return historyStorage.getLocationPath(HISTORY_TYPE_PATH.connectDataSource, '^.list', {dataSetId: $scope.dataSet.id || $scope.dataSet});
+            if ($scope.isNew) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'unifiedReport/connectDataSource/confirmReplayData.tpl.html',
+                    controller: function ($scope, connectDataSource) {
+                        $scope.connectDataSource = connectDataSource;
+                    },
+                    resolve: {
+                        connectDataSource: function () {
+                            return $scope.connectDataSource;
+                        }
                     }
-                )
-            ;
+                });
+
+                modalInstance.result.then(function () {
+                    dfd.resolve();
+                }).catch(function () {
+                    $scope.formProcessing = false;
+                });
+
+            } else {
+                // if it is not a pause, proceed without a modal
+                dfd.resolve();
+            }
         }
 
         function updateConnectedDataSourceForm() {

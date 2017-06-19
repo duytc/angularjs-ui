@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.dataSet')
         .controller('dataSetList', dataSetList);
 
-    function dataSetList($scope, $stateParams, $modal, $translate, dataSets, UnifiedReportDataSetManager, AlertService, AtSortableService, EVENT_ACTION_SORTABLE, HISTORY_TYPE_PATH, historyStorage) {
+    function dataSetList($scope, $stateParams, $modal, $translate, dataSets, UnifiedReportDataSetManager, dataSetPendingJobs, AlertService, AtSortableService, EVENT_ACTION_SORTABLE, HISTORY_TYPE_PATH, historyStorage) {
         $scope.tableConfig = {
             itemsPerPage: 10,
             maxPages: 10,
@@ -12,6 +12,7 @@
         };
 
         $scope.dataSets = dataSets;
+        $scope.dataSetPendingJobs = dataSetPendingJobs;
 
         $scope.availableOptions = {
             currentPage: $stateParams.page || 1,
@@ -19,9 +20,7 @@
         };
 
         var getDataSet;
-        var params = {
-            page: 1
-        };
+        var params = $stateParams;
 
         $scope.selectData = {
             query: $stateParams.searchKey || null
@@ -53,14 +52,16 @@
                         message: 'The data was reloaded with '+ data.pendingLoads +' loaded files. Please wait a few minutes for the changes to take effect.'
                     });
                 })
-                .catch(function() {
-                    AlertService.replaceAlerts({
-                        type: 'error',
-                        message: 'The data could not be reloaded'
-                    });
+                .catch(function(response) {
+                    if(!!response && !!response.data && !!response.data.message) {
+                        AlertService.replaceAlerts({
+                            type: 'danger',
+                            message: response.data.message
+                        });
+                    }
                 });
         }
-        
+
         function removeAllData(dataSet) {
             var modalInstance = $modal.open({
                 templateUrl: 'unifiedReport/dataSet/removeAllDataConfirm.tpl.html'
@@ -146,6 +147,17 @@
                         $scope.dataSets = dataSets;
                         $scope.tableConfig.totalItems = Number(dataSets.totalRecord);
                         $scope.availableOptions.currentPage = Number(query.page);
+
+
+                        // get dataSetPendingJobs
+                        var dataSetIds = [];
+                        angular.forEach(dataSets.records, function (dataSet) {
+                            dataSetIds.push(dataSet.id)
+                        });
+
+                        return UnifiedReportDataSetManager.one('pendingjobs').get({ids: dataSetIds.toString()}).then(function (dataSetPendingJobs) {
+                            $scope.dataSetPendingJobs = dataSetPendingJobs.plain();
+                        });
                     });
             }, ms || 0);
         }

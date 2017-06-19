@@ -122,7 +122,7 @@
                     function getDataTypeList(group) {
                         var dataTypeList = [];
                         for(var index in DATA_TYPE) {
-                            if(DATA_TYPE[index].builtInVars.indexOf(group.var) > -1) {
+                            if(DATA_TYPE[index].builtInVars.indexOf(group.customVar) > -1) {
                                 dataTypeList.push(DATA_TYPE[index]);
 
                                 return dataTypeList;
@@ -142,6 +142,7 @@
                         //reset expression group
                         scope.group = {};
                         scope.group = {
+                            customVar : null,
                             var : null,
                             cmp : scope.conditions[0].key,
                             val : null,
@@ -151,6 +152,7 @@
 
                     function addCondition() {
                         scope.group[scope.groupKey].push({
+                            customVar : null,
                             var : null,
                             cmp: scope.conditions[0].key,
                             val : null,
@@ -186,25 +188,25 @@
 
                         if(group.type == scope.dataTypes[1].key) {
                             for(var index in CONDITIONS_NUMERIC) {
-                                if(CONDITIONS_NUMERIC[index].unsupportedBuiltInVars.indexOf(group.var) == -1) {
+                                if(CONDITIONS_NUMERIC[index].unsupportedBuiltInVars.indexOf(group.customVar) == -1) {
                                     conditions.push(CONDITIONS_NUMERIC[index])
                                 }
                             }
                         }
                         else if(group.type == scope.dataTypes[2].key) {
                             for(var index in CONDITIONS_BOOLEAN) {
-                                if(CONDITIONS_BOOLEAN[index].unsupportedBuiltInVars.indexOf(group.var) == -1) {
+                                if(CONDITIONS_BOOLEAN[index].unsupportedBuiltInVars.indexOf(group.customVar) == -1) {
                                     conditions.push(CONDITIONS_BOOLEAN[index])
                                 }
                             }
                         }
                         else {
                             for(var index in CONDITIONS_STRING) {
-                                if(CONDITIONS_STRING[index].unsupportedBuiltInVars.indexOf(group.var) == -1) {
+                                if(CONDITIONS_STRING[index].unsupportedBuiltInVars.indexOf(group.customVar) == -1) {
                                     if(!CONDITIONS_STRING[index].onlySupport) {
                                         conditions.push(CONDITIONS_STRING[index])
                                     } else {
-                                        if(CONDITIONS_STRING[index].onlySupport.indexOf(group.var) > -1) {
+                                        if(CONDITIONS_STRING[index].onlySupport.indexOf(group.customVar) > -1) {
                                             conditions.push(CONDITIONS_STRING[index])
                                         }
                                     }

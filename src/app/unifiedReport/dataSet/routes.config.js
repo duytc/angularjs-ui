@@ -37,6 +37,16 @@
                         return UnifiedReportDataSetManager.one().get($stateParams).then(function (dataSets) {
                             return dataSets.plain();
                         });
+                    },
+                    dataSetPendingJobs: function (dataSets, UnifiedReportDataSetManager) {
+                        var dataSetIds = [];
+                        angular.forEach(dataSets.records, function (dataSet) {
+                            dataSetIds.push(dataSet.id)
+                        });
+
+                        return UnifiedReportDataSetManager.one('pendingjobs').get({ids: dataSetIds.toString()}).then(function (dataSetPendingJobs) {
+                            return dataSetPendingJobs.plain();
+                        });
                     }
                 },
                 ncyBreadcrumb: {

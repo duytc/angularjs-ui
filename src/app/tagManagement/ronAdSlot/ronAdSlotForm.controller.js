@@ -23,12 +23,12 @@
                 key: TYPE_AD_SLOT.display
             },
             {
-                label: $translate.instant('NATIVE_AD_SLOT'),
-                key: TYPE_AD_SLOT.native
-            },
-            {
                 label: $translate.instant('DYNAMIC_AD_SLOT'),
                 key: TYPE_AD_SLOT.dynamic
+            },
+            {
+                label: $translate.instant('NATIVE_AD_SLOT'),
+                key: TYPE_AD_SLOT.native
             }
         ];
 

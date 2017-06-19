@@ -58,7 +58,7 @@
                 <div class="form-group" ng-if="isAdmin() && isNew">
                     <label for="inputPublisher" class="col-sm-1 control-label">{{ 'PUBLISHER' | translate }}</label>
                     <div class="col-sm-5">
-                        <ui-select ng-required="true" id="inputPublisher" ng-model="adSlot.publisher" reset-search-input="'false'">
+                        <ui-select ng-required="true" id="inputPublisher" ng-model="adSlot.publisher" on-select="selectPublisher()" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
                             <ui-select-choices repeat="publisher.id as publisher in publisherList | filter: { company: $select.search }">
                                 {{ publisher.company }}
@@ -125,7 +125,7 @@
                     <label class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.TARGETING' | translate }}</label>
                     <div class="col-sm-11">
                         <div class="expressions-group">
-                            <library-query-builder not-header-bidding="true" expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native"></library-query-builder>
+                            <library-query-builder publisher="adSlot.publisher" blacklists="blacklists" whitelists="whitelists" not-header-bidding="true" expressions="adSlot.libraryExpressions" ad-slots="adSlots" tags="tags" native="adSlot.native"></library-query-builder>
                         </div>
                     </div>
                 </div>

@@ -5,7 +5,7 @@
         .controller('AdSlotForm', AdSlotForm)
     ;
 
-    function AdSlotForm($scope, $translate, $stateParams, $filter, _, adSlot, publisherList, SiteManager, ChannelManager, DynamicAdSlotManager, adminUserManager, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, userSession, historyStorage, HISTORY_TYPE_PATH, RTB_STATUS_TYPES, VARIABLE_FOR_AD_TAG) {
+    function AdSlotForm($scope, $translate, blackList, whiteList, $stateParams, $filter, _, adSlot, publisherList, SiteManager, ChannelManager, DynamicAdSlotManager, adminUserManager, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, userSession, historyStorage, HISTORY_TYPE_PATH, RTB_STATUS_TYPES, VARIABLE_FOR_AD_TAG) {
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
@@ -25,12 +25,12 @@
                 key: TYPE_AD_SLOT.display
             },
             {
-                label: $translate.instant('NATIVE_AD_SLOT'),
-                key: TYPE_AD_SLOT.native
-            },
-            {
                 label: $translate.instant('DYNAMIC_AD_SLOT'),
                 key: TYPE_AD_SLOT.dynamic
+            },
+            {
+                label: $translate.instant('NATIVE_AD_SLOT'),
+                key: TYPE_AD_SLOT.native
             }
         ];
 
@@ -131,6 +131,9 @@
             _getSitesForPublisher();
         }
 
+        $scope.blacklists = blackList;
+        $scope.whitelists = whiteList;
+
         $scope.adSlotsDefault = [{id: null, name: 'None', libraryAdSlot: {name: 'None'}}];
         _update();
 
@@ -218,6 +221,8 @@
             }
 
             enabledModules = publisher.enabledModules;
+
+            $scope.adSlot.libraryExpressions = [];
         }
 
         function isNormalAdSlotNotUseStandalone() {

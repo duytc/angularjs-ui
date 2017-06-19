@@ -28,6 +28,7 @@
         $scope.showPagination = showPagination;
         $scope.confirmDeletion = confirmDeletion;
         $scope.reloadAllData = reloadAllData;
+        $scope.removeAllData = removeAllData;
         $scope.cloneConnectDataSource = cloneConnectDataSource;
 
         function cloneConnectDataSource(connect) {
@@ -43,6 +44,22 @@
             });
         }
 
+        function removeAllData(connect) {
+            UnifiedReportConnectDataSourceManager.one(connect.id).one('removealldatas').post()
+                .then(function() {
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'All data has been removed from the connected data source.'
+                    });
+                })
+                .catch(function() {
+                    AlertService.replaceAlerts({
+                        type: 'error',
+                        message: 'Could not removed all data'
+                    });
+                });
+        }
+
         function reloadAllData(connect) {
             UnifiedReportConnectDataSourceManager.one(connect.id).one('reloadalldatas').post()
                 .then(function() {
@@ -51,11 +68,13 @@
                         message: 'The data was reloaded. Please wait a few minutes for the changes to take effect.'
                     });
                 })
-                .catch(function() {
-                    AlertService.replaceAlerts({
-                        type: 'error',
-                        message: 'The data could not be reloaded'
-                    });
+                .catch(function(response) {
+                    if(!!response && !!response.data && !!response.data.message) {
+                        AlertService.replaceAlerts({
+                            type: 'danger',
+                            message: response.data.message
+                        });
+                    }
                 });
         }
 

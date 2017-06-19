@@ -5,9 +5,7 @@
         .controller('DataSourceList', DataSourceList);
 
     function DataSourceList($scope, $translate, $modal, $stateParams, dataSources, EVENT_ACTION_SORTABLE, UnifiedReportDataSourceManager, AlertService, AtSortableService, HISTORY_TYPE_PATH, historyStorage){
-        var params = {
-            page: 1
-        };
+        var params = $stateParams;
         var getSite;
 
         $scope.tableConfig = {
