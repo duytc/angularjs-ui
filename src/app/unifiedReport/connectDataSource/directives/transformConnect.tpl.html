@@ -64,7 +64,6 @@
                                         Add Date From Format
                                     </button>
 
-
                                     <div class="expressions-group" ng-repeat="from in transform.from">
                                         <div class="form-group select-connect-data-source">
                                             <button type="button" class="btn btn-danger btn-close-ur" ng-disabled="transform.from.length == 1" ng-click="removeAddValue(transform.from, $index)">
@@ -85,9 +84,23 @@
                                             </div>
 
                                             <div  ng-if="from.isCustomFormatDateFrom">
-                                                <input server-error name="from" ng-model="from.format" ng-required="true" type="text" ng-pattern="/^([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})[\-,\.,\/,_\s]*([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})[\-,\.,\/,_\s]*([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})*(([T]{1}|[H]{1}|[i]{1}|[s]{1})|[\\\-,\.,\/,_:\s])*$/" class="form-control" placeholder="Date From Format">
+                                                <input server-error name="from" ng-model="from.format" ng-required="true" type="text" ng-pattern="/^([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})[\-,\.,\/,_\s]*([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})[\-,\.,\/,_\s]*([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})*(([T]{1}|[H]{1}|[i]{1}|[s]{1})|[\\\-,\.,\/,_:\s])*[eOPT]*$/" class="form-control" placeholder="Date From Format">
                                                 <span class="help-block"> {{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.INPUT_DATE_FORMAT_HELP_TEXT' | translate }} </span>
                                             </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group select-alert-timezone" ng-if="dimensionsMetrics[transform.field] != 'date'">
+                                        <label class="control-label">Timezone</label>
+                                        <div>
+                                            <ui-select ng-model="transform.timezone" ng-required="true" server-error reset-search-input="'false'">
+                                                <ui-select-match placeholder="Select a timezone">{{ $select.selected.label }}</ui-select-match>
+                                                <ui-select-choices group-by="groupEntities" repeat="timezone.key as timezone in timezones">
+                                                    {{ timezone.label }}
+                                                </ui-select-choices>
+                                            </ui-select>
+
+                                            <span class="help-block">Timezone only take effect when timezone part is not present in the date value</span>
                                         </div>
                                     </div>
                                 </div>
@@ -103,19 +116,6 @@
                                     <ui-select-match placeholder="Select a date format">{{ showDateToFormat(transform, $select)  }}</ui-select-match>
                                     <ui-select-choices repeat="type.key as type in dateFormatTypes | filter:$select.search">
                                         {{ type.label }}
-                                    </ui-select-choices>
-                                </ui-select>
-                            </div>
-                        </div>
-
-                        <div class="form-group select-alert-timezone" ng-if="dimensionsMetrics[transform.field] != 'date'">
-                            <label class="col-sm-2 control-label">Timezone</label>
-
-                            <div class="col-sm-10">
-                                <ui-select ng-model="transform.timezone" ng-required="true" server-error reset-search-input="'false'">
-                                    <ui-select-match placeholder="Select a timezone">{{ $select.selected.label }}</ui-select-match>
-                                    <ui-select-choices group-by="groupEntities" repeat="timezone.key as timezone in timezones">
-                                        {{ timezone.label }}
                                     </ui-select-choices>
                                 </ui-select>
                             </div>
