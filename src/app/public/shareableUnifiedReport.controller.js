@@ -120,7 +120,12 @@
         $scope.exportExcel = exportExcel;
 
         function exportExcel() {
-            dataService.makeHttpGetRequest('/v1/reportviews/:reportView/sharedReports', $stateParams, API_UNIFIED_PUBLIC_END_POINT)
+            var params = {
+                token: $stateParams.token,
+                reportView: $stateParams.reportView
+            };
+
+            dataService.makeHttpGetRequest('/v1/reportviews/:reportView/sharedReports', params, API_UNIFIED_PUBLIC_END_POINT)
                 .then(function (reportData) {
                     exportExcelService.exportExcel(reportData.reports, $scope.columnReportDetailForExportExcel, $scope.titleReportDetailForExportExcel, getExportExcelFileName());
                 })
