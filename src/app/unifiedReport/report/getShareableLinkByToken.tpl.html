@@ -1,0 +1,14 @@
+<div class="modal-header">
+    <h4 class="modal-title"> Shareable Link: {{reportView.name | translate}} </h4>
+</div>
+
+<div class="modal-body">
+    <div select-on-click class="highlight-js" ng-if="shareableLink" style="margin-top: 30px">
+        <pre><code class="hljs vim" ng-bind-html="highlightText(shareableLink)"></code></pre>
+    </div>
+</div>
+
+<div class="modal-footer" style="clear: both">
+    <button ng-if="shareableLink" auto-hide-on-no-flash="true" class="btn btn-primary" clip-copy="getTextToCopy(shareableLink)"> {{ 'COPY_TO_CLIPBOARD' | translate }}</button>
+    <button class="btn btn-primary" ng-click="$dismiss()">{{ 'CLOSE' | translate }}</button>
+</div>

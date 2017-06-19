@@ -21,6 +21,37 @@
         $scope.getFullNameField = getFullNameField;
         $scope.backToListReportView = backToListReportView;
         $scope.showPagination = showPagination;
+        $scope.getShareableLink = getShareableLink;
+        
+        function getShareableLink(item) {
+            UnifiedReportViewManager.one(reportView.id).one('shareablelink').get({token: item.token})
+            .then(function (shareableLink) {
+                $modal.open({
+                    templateUrl: 'unifiedReport/report/getShareableLinkByToken.tpl.html',
+                    size: 'lg',
+                    resolve: {
+                        shareableLink: function () {
+                            return shareableLink
+                        },
+                        reportView: function () {
+                            return reportView
+                        }
+                    },
+                    controller: function ($scope, shareableLink, reportView) {
+                        $scope.shareableLink = shareableLink;
+                        $scope.reportView = reportView;
+
+                        $scope.highlightText = function (shareableLink) {
+                            return shareableLink;
+                        };
+
+                        $scope.getTextToCopy = function (string) {
+                            return string.replace(/\n/g, '\r\n');
+                        };
+                    }
+                });
+            });
+        }
         
         function showPagination() {
             return angular.isArray($scope.listShare) && $scope.listShare.length > $scope.tableConfig.itemsPerPage;
