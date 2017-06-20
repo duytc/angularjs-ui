@@ -233,7 +233,6 @@
                     }
 
                     function isCollapsedRule(expression) {
-                        console.log("test");
                         return (expression.name ==  null && expression.expectLibraryAdSlot == null);
                     }
 

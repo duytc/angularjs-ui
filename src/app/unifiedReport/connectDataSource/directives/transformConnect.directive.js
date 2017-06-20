@@ -303,7 +303,7 @@
                         for(var index in scope.transforms) {
                             var transform = scope.transforms[index];
 
-                            if (transform.type == 'convertCase' || transform.type == 'normalizeText') {
+                            if (transform.type == 'convertCase' || transform.type == 'normalizeText' || transform.type == 'extractPattern') {
                                 var findField = _.findIndex(transform.fields, function (transformField) {
                                     return transformField.targetField == item.key && !transformField.isOverride
                                 });
@@ -1501,8 +1501,7 @@
                                             allFieldAdd.push(field.field)
                                         }
                                     });
-                                }
-                            );
+                            });
 
                             angular.forEach(transforms, function (transform) {
                                 $timeout(function () {
@@ -1562,7 +1561,7 @@
                                                 return item.key == transformField.targetField
                                             });
 
-                                            if(index == -1) {
+                                            if(index == -1 || !notInMapField({original: transformField.targetField})) {
                                                 transformField.targetField = null
                                             }
                                         }
@@ -1619,6 +1618,14 @@
 
                                         if(!item || !notInMapField(item)) {
                                             field.field = null
+                                        }
+                                    });
+                                }
+
+                                if(transform.type == 'subsetGroup') {
+                                    angular.forEach(transform.mapFields, function (field) {
+                                        if(!notInMapField({original: field.leftSide})) {
+                                            field.leftSide = null
                                         }
                                     });
                                 }

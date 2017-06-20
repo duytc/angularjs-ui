@@ -240,7 +240,6 @@
                         return UnifiedReportViewManager.one($stateParams.reportViewId).get()
                     },
                     dataSetsFromReportView: function (reportView, unifiedReportBuilder) {
-                        console.log(reportView);
                         return unifiedReportBuilder.getDataSetsFromReportView(reportView)
                     }
                 },
