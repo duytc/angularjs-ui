@@ -46,6 +46,95 @@
         $scope.getAPIKey = getAPIKey;
         $scope.getUnifiedReportEmail = getUnifiedReportEmail;
         $scope.viewBackfillHistory = viewBackfillHistory;
+        $scope.changeBackfill = changeBackfill;
+
+        function changeBackfill(dataSource) {
+            $modal.open({
+                templateUrl: 'unifiedReport/dataSource/changeBackfill.tpl.html',
+                size: 'lg',
+                controller: function ($scope, $modalInstance, dataSource, AlertService, dateUtil, UnifiedReportDataSourceManager) {
+                    $scope.dataSource = dataSource;
+
+                    $scope.datePickerOpts = {
+                        singleDatePicker: true
+                    };
+
+                    angular.forEach($scope.dataSource.dataSourceIntegrations, function (dataSourceIntegration) {
+                        delete dataSourceIntegration.integration;
+                        delete dataSourceIntegration.schedule;
+                        delete dataSourceIntegration.params;
+                        delete dataSourceIntegration.active;
+
+                        if(!angular.isObject(dataSourceIntegration.backFillStartDate)) {
+                            dataSourceIntegration.backFillStartDate = {
+                                startDate: dataSourceIntegration.backFillStartDate,
+                                endDate: dataSourceIntegration.backFillStartDate
+                            }
+                        }
+
+                        if(!angular.isObject(dataSourceIntegration.backFillEndDate)) {
+                            dataSourceIntegration.backFillEndDate = {
+                                startDate: dataSourceIntegration.backFillEndDate,
+                                endDate: dataSourceIntegration.backFillEndDate
+                            }
+                        }
+                    });
+
+                    $scope.submit = function (){
+                        $modalInstance.close();
+
+                        var dataSourceIntegrations = angular.copy($scope.dataSource.dataSourceIntegrations);
+                        angular.forEach(dataSourceIntegrations, function (dataSourceIntegration) {
+                            delete dataSourceIntegration.id;
+
+                            angular.forEach(dataSourceIntegration.params, function (param) {
+                                if(param.type == 'date') {
+                                    param.value = dateUtil.getFormattedDate(param.value.startDate);
+                                }
+
+                                if(param.type == 'option') {
+                                    delete param.optionValues
+                                }
+
+                                if(param.type == 'bool' && !param.value) {
+                                    param.value = false
+                                }
+                            });
+
+                            if(!!dataSourceIntegration.backFillStartDate && !!dataSourceIntegration.backFillStartDate.startDate) {
+                                dataSourceIntegration.backFillStartDate = dateUtil.getFormattedDate(dataSourceIntegration.backFillStartDate.startDate);
+                            } else {
+                                dataSourceIntegration.backFillStartDate = null;
+                            }
+
+                            if(!!dataSourceIntegration.backFillEndDate && !!dataSourceIntegration.backFillEndDate.startDate) {
+                                dataSourceIntegration.backFillEndDate = dateUtil.getFormattedDate(dataSourceIntegration.backFillEndDate.startDate);
+                            } else {
+                                dataSourceIntegration.backFillEndDate = null;
+                            }
+                        });
+
+                        var saveDataSource = UnifiedReportDataSourceManager.one(dataSource.id).patch({dataSourceIntegrations: dataSourceIntegrations});
+                        saveDataSource.catch(function (response){
+                            AlertService.addAlert({
+                                type: 'error',
+                                message: 'The data source could not be updated backfill'
+                            });
+                        }).then(function (){
+                            AlertService.addAlert({
+                                type: 'success',
+                                message: 'The data source has been updated backfill'
+                            });
+                        })
+                    }
+                },
+                resolve: {
+                    dataSource: function (UnifiedReportDataSourceManager) {
+                        return UnifiedReportDataSourceManager.one(dataSource.id).get();
+                    }
+                }
+            });
+        }
 
         function viewBackfillHistory(dataSource) {
             $modal.open({
