@@ -540,7 +540,9 @@
                     }
 
                     function selectCustomFormatDate(from) {
-                        from.format = null;
+                        // do nothing
+                        // TODO: remove when stable
+                        //from.format = null;
                     }
 
                     function enableDragDropQueryBuilder(enable) {

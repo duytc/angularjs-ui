@@ -204,7 +204,7 @@
                     $scope.connectDataSource.transforms.push({
                         field: field,
                         type: 'date',
-                        to: $scope.dimensionsMetrics[field] == 'date' ? 'Y-m-d': 'Y-m-d H:i:s',
+                        to: $scope.dimensionsMetrics[field] == 'date' ? 'YYYY-MM-DD': 'YYYY-MM-DD HH:mm:ss',
                         openStatus: true,
                         from: [{isCustomFormatDateFrom: false, format: null}],
                         timezone: $scope.dimensionsMetrics[field] == 'datetime' ? 'UTC': null
@@ -609,7 +609,7 @@
                                 $scope.connectDataSource.transforms.push({
                                     field: field.targetField,
                                     type: 'date',
-                                    to: 'Y-m-d',
+                                    to: 'YYYY-MM-DD',
                                     openStatus: true,
                                     from: [{isCustomFormatDateFrom: false, format: null}]
                                 })

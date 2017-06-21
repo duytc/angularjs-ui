@@ -18,37 +18,37 @@
             {key: 'number', label: 'Number'}
         ])
         .constant('DATE_FORMAT_TYPES', [
-            {label: moment().format('YYYY-MM-DD') + ' (YYYY-MM-DD)', key: 'Y-m-d'},   //2016-01-15
-            {label: moment().format('YYYY/MM/DD') + ' (YYYY/MM/DD)', key: 'Y/m/d'},   //2016/01/15
-            {label: moment().format('MM-DD-YYYY') + ' (MM-DD-YYYY)', key: 'm-d-Y'},   //01-15-2016
-            {label: moment().format('MM/DD/YYYY') + ' (MM/DD/YYYY)', key: 'm/d/Y'},   //01/15/2016
-            {label: moment().format('DD-MM-YYYY') + ' (DD-MM-YYYY)', key: 'd-m-Y'},   //15-01-2016
-            {label: moment().format('DD/MM/YYYY') + ' (DD/MM/YYYY)', key: 'd/m/Y'},   //15/01/2016
-            {label: moment().format('YYYY-MMM-DD') + ' (YYYY-MMM-DD)', key: 'Y-M-d'},   //2016-Jan-15
-            {label: moment().format('YYYY/MMM/DD') + ' (YYYY/MMM/DD)', key: 'Y/M/d'},   //2016-Jan-15
-            {label: moment().format('MMM-DD-YYYY') + ' (MMM-DD-YYYY)', key: 'M-d-Y'},   //Jan-15-2016
-            {label: moment().format('MMM/DD/YYYY') + ' (MMM/DD/YYYY)', key: 'M/d/Y'},   //Jan/15/2016
-            {label: moment().format('DD-MMM-YYYY') + ' (DD-MMM-YYYY)', key: 'd-M-Y'},   //15-Jan-2016
-            {label: moment().format('DD/MMM/YYYY') + ' (DD/MMM/YYYY)', key: 'd/M/Y'},    //15/Jan/2016
-            {label: moment().format('MMM DD, YYYY') + ' (MMM DD, YYYY)', key: 'M d, Y'},    //Jan 15, 2016
-            {label: moment().format('YYYY, MMM DD') + ' (YYYY, MMM DD)', key: 'Y, M d'},    //2016, Jan 15
+            {label: moment().format('YYYY-MM-DD') + ' (YYYY-MM-DD)', keyForJS: 'YYYY-MM-DD', key: 'Y-m-d'},   //2016-01-15
+            {label: moment().format('YYYY/MM/DD') + ' (YYYY/MM/DD)', keyForJS: 'YYYY/MM/DD', key: 'Y/m/d'},   //2016/01/15
+            {label: moment().format('MM-DD-YYYY') + ' (MM-DD-YYYY)', keyForJS: 'MM-DD-YYYY', key: 'm-d-Y'},   //01-15-2016
+            {label: moment().format('MM/DD/YYYY') + ' (MM/DD/YYYY)', keyForJS: 'MM/DD/YYYY', key: 'm/d/Y'},   //01/15/2016
+            {label: moment().format('DD-MM-YYYY') + ' (DD-MM-YYYY)', keyForJS: 'DD-MM-YYYY', key: 'd-m-Y'},   //15-01-2016
+            {label: moment().format('DD/MM/YYYY') + ' (DD/MM/YYYY)', keyForJS: 'DD/MM/YYYY', key: 'd/m/Y'},   //15/01/2016
+            {label: moment().format('YYYY-MMM-DD') + ' (YYYY-MMM-DD)', keyForJS: 'YYYY-MMM-DD', key: 'Y-M-d'},   //2016-Jan-15
+            {label: moment().format('YYYY/MMM/DD') + ' (YYYY/MMM/DD)', keyForJS: 'YYYY/MMM/DD', key: 'Y/M/d'},   //2016-Jan-15
+            {label: moment().format('MMM-DD-YYYY') + ' (MMM-DD-YYYY)', keyForJS: 'MMM-DD-YYYY', key: 'M-d-Y'},   //Jan-15-2016
+            {label: moment().format('MMM/DD/YYYY') + ' (MMM/DD/YYYY)', keyForJS: 'MMM/DD/YYYY', key: 'M/d/Y'},   //Jan/15/2016
+            {label: moment().format('DD-MMM-YYYY') + ' (DD-MMM-YYYY)', keyForJS: 'DD-MMM-YYYY', key: 'd-M-Y'},   //15-Jan-2016
+            {label: moment().format('DD/MMM/YYYY') + ' (DD/MMM/YYYY)', keyForJS: 'DD/MMM/YYYY', key: 'd/M/Y'},    //15/Jan/2016
+            {label: moment().format('MMM DD, YYYY') + ' (MMM DD, YYYY)', keyForJS: 'MMM DD, YYYY', key: 'M d, Y'},    //Jan 15, 2016
+            {label: moment().format('YYYY, MMM DD') + ' (YYYY, MMM DD)', keyForJS: 'YYYY, MMM DD', key: 'Y, M d'},    //2016, Jan 15
 
             /** Support 2 digit years*/
-            {label: moment().format('MM/DD/YY') + ' (MM/DD/YY)', key: 'm/d/y'},   //01/15/99
-            {label: moment().format('MM-DD-YY') + ' (MM-DD-YY)', key: 'm-d-y'},   //01-15-99
-            {label: moment().format('DD/MM/YY') + ' (DD/MM/YY)', key: 'd/m/y'},   //15/01/99
-            {label: moment().format('DD-MM-YY') + ' (DD-MM-YY)', key: 'd-m-y'},   //15-01-99
-            {label: moment().format('YY/MM/DD') + ' (YY/MM/DD)', key: 'y/m/d'},   //99/01/15
-            {label: moment().format('YY-MM-DD') + ' (YY-MM-DD)', key: 'y-m-d'}, //99-01-15
+            {label: moment().format('MM/DD/YY') + ' (MM/DD/YY)', keyForJS: 'MM/DD/YY', key: 'm/d/y'},   //01/15/99
+            {label: moment().format('MM-DD-YY') + ' (MM-DD-YY)', keyForJS: 'MM-DD-YY', key: 'm-d-y'},   //01-15-99
+            {label: moment().format('DD/MM/YY') + ' (DD/MM/YY)', keyForJS: 'DD/MM/YY', key: 'd/m/y'},   //15/01/99
+            {label: moment().format('DD-MM-YY') + ' (DD-MM-YY)', keyForJS: 'DD-MM-YY', key: 'd-m-y'},   //15-01-99
+            {label: moment().format('YY/MM/DD') + ' (YY/MM/DD)', keyForJS: 'YY/MM/DD', key: 'y/m/d'},   //99/01/15
+            {label: moment().format('YY-MM-DD') + ' (YY-MM-DD)', keyForJS: 'YY-MM-DD', key: 'y-m-d'}, //99-01-15
 
             /** Support datetime format, include hour, month, second */
-            {label: moment().format('YYYY-MM-DD HH:mm:ss') + ' (YYYY-MM-DD HH:mm:ss)', key: 'Y-m-d H:i:s'},
-            {label: moment().format('YYYY-MM-DD HH:mm') + ' (YYYY-MM-DD HH:mm)', key: 'Y-m-d H:i'},
+            {label: moment().format('YYYY-MM-DD HH:mm:ss') + ' (YYYY-MM-DD HH:mm:ss)', keyForJS: 'YYYY-MM-DD HH:mm:ss', key: 'Y-m-d H:i:s'},
+            {label: moment().format('YYYY-MM-DD HH:mm') + ' (YYYY-MM-DD HH:mm)', keyForJS: 'YYYY-MM-DD HH:mm', key: 'Y-m-d H:i'},
 
-            {label: moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + moment().format('Z') + ' (YYYY-MM-DD HH:mm:ss e)', key: 'Y-m-d H:i:s e'}, // 2017-06-12 20:00:00 +00:00
-            {label: moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + moment().format('Z').replace(':', '') + ' (YYYY-MM-DD HH:mm:ss O)', key: 'Y-m-d H:i:s O'}, // 2017-06-12 20:00:00 +0000
-            {label: moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + moment().format('Z') + ' (YYYY-MM-DD HH:mm:ss P)', key: 'Y-m-d H:i:s P'}, // 2017-06-12 20:00:00 +00:00
-            {label: moment().format('YYYY-MM-DD HH:mm:ss') + ' GMT' + moment().format('Z').replace(':', '') + ' (YYYY-MM-DD HH:mm:ss T)', key: 'Y-m-d H:i:s T'}  // 2017-06-12 20:00:00 GMT+0000
+            {label: moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + moment().format('Z') + ' (YYYY-MM-DD HH:mm:ss e)', keyForJS: 'YYYY-MM-DD HH:mm:ss e', key: 'Y-m-d H:i:s e'}, // 2017-06-12 20:00:00 +00:00
+            {label: moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + moment().format('Z').replace(':', '') + ' (YYYY-MM-DD HH:mm:ss O)', keyForJS: 'YYYY-MM-DD HH:mm:ss O', key: 'Y-m-d H:i:s O'}, // 2017-06-12 20:00:00 +0000
+            {label: moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + moment().format('Z') + ' (YYYY-MM-DD HH:mm:ss P)', keyForJS: 'YYYY-MM-DD HH:mm:ss P', key: 'Y-m-d H:i:s P'}, // 2017-06-12 20:00:00 +00:00
+            {label: moment().format('YYYY-MM-DD HH:mm:ss') + ' GMT' + moment().format('Z').replace(':', '') + ' (YYYY-MM-DD HH:mm:ss T)', keyForJS: 'YYYY-MM-DD HH:mm:ss T', key: 'Y-m-d H:i:s T'}  // 2017-06-12 20:00:00 GMT+0000
         ])
         .constant('COMPARISON_TYPES_FILTER_CONNECT_NUMBER', [
             {key: 'in', label: 'In'},
