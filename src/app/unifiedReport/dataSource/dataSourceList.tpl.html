@@ -44,7 +44,7 @@
                                 <li><a ui-sref="^.^.dataSourceFile.new({ dataSourceId: item.id })">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.UPLOAD_DATA' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li ng-click="viewBackfillHistory(item)"><a>{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.VIEW_BACKFILL_HISTORY' | translate }}</a></li>
-                                <li ng-click="changeBackfill(item)" ng-if="item.useIntegration"><a>{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.CHANGE_BACKFILL' | translate }}</a></li>
+                                <li ng-click="changeBackfill(item)" ng-if="item.useIntegration"><a>{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.SCHEDULE_BACKFILL' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li><a ui-sref="^.^.dataSourceFile.listForDataSource({dataSourceId: item.id })">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.MANAGE_RECEIVED_DATA' | translate }}</a></li>
                                 <li><a ui-sref="^.^.importHistory.listForDataSource({ dataSourceId: item.id })">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.VIEW_DATA_IMPORT_HISTORY' | translate }}</a></li>

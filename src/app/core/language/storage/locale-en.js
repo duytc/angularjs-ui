@@ -1189,7 +1189,7 @@
                 "MANAGE_RECEIVED_DATA": "View Imported Data",
                 "VIEW_ALERTS": "View Alerts",
                 "VIEW_BACKFILL_HISTORY": "View Backfill History",
-                "CHANGE_BACKFILL": "Update Backfill",
+                "SCHEDULE_BACKFILL": "Schedule Backfill",
                 "EDIT": "Edit",
                 "KEY": "Key",
                 "DELETE": "Delete",

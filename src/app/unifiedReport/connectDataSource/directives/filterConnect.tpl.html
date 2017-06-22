@@ -45,7 +45,7 @@
                 <div class="col-sm-10">
                     <ui-select ng-model="filter.format" ng-required="true" server-error reset-search-input="'false'">
                         <ui-select-match placeholder="Select format date">{{ $select.selected.label }}</ui-select-match>
-                        <ui-select-choices repeat="field.key as field in dateFormatTypes | orderBy | filter:$select.search">
+                        <ui-select-choices repeat="field.key as field in dateFormatTypes | filter:$select.search">
                             {{ field.label }}
                         </ui-select-choices>
                     </ui-select>

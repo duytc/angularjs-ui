@@ -72,7 +72,12 @@
                 .then(function () {
                     _getDataSourceFiles(params, 0)
                         .then(function () {
-                            $scope.checkAllItem = false;
+                            angular.forEach(angular.copy($scope.selectedDataSourceFiles), function (field) {
+                                $scope.selectedDataSourceFiles.splice($scope.selectedDataSourceFiles.indexOf(field.id), 1);
+                            });
+
+                            itemsForPager = [];
+                            noneSelect()
                         });
 
                     AlertService.replaceAlerts({
@@ -201,6 +206,8 @@
         function replayData(dataSourceFile) {
             UnifiedReportDataSourceFileManager.one(dataSourceFile.id).one('replaydata').post()
                 .then(function () {
+                    noneSelect();
+
                     AlertService.replaceAlerts({
                         type: 'success',
                         message: 'The file ' + dataSourceFile.fileName + ' was reloaded'
