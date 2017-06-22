@@ -215,23 +215,6 @@
                         params.limit = !$stateParams.limit ? 10 : $stateParams.limit;
 
                         return unifiedReportBuilder.getPlatformReport(params);
-                    },
-                    dataSources: function (reportView, UnifiedReportViewManager) {
-                        var listId = [];
-
-                        if(!reportView.multiView) {
-                            angular.forEach(reportView.reportViewDataSets, function (item) {
-                                listId.push(item.dataSet);
-                            })
-                        } else {
-                            angular.forEach(reportView.reportViewMultiViews, function (item) {
-                                listId.push(item.subView);
-                            })
-                        }
-
-                        var params = !!reportView.multiView ? {reportViews: listId.toString()} : {dataSets: listId.toString()};
-
-                        return UnifiedReportViewManager.one('datasources').getList(null, params);
                     }
                 },
                 ncyBreadcrumb: {
