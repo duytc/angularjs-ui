@@ -117,7 +117,7 @@
             impressionCap: null,
             networkOpportunityCap: null,
             active: true,
-            passback: false
+            // passback: false
         };
 
         if(!!$scope.adTag.libraryAdTag.descriptor) {
@@ -152,6 +152,27 @@
         $scope.addMoreItems = addMoreItems;
         $scope.backToAdTagList = backToAdTagList;
         $scope.moveVastTag = moveVastTag;
+        $scope.isPassback = isPassback;
+        
+        function isPassback() {
+            if(!$scope.isNew) {
+                return $scope.adTag.adSlot.type == $scope.adSlotTypes.display
+            }
+
+            if(!$scope.adTag.adSlots || $scope.adTag.adSlots.length == 0) {
+                return false
+            }
+
+            for (var i in $scope.adTag.adSlots) {
+                var adSlot = _.find($scope.adSlotList, {id: $scope.adTag.adSlots[i].id || $scope.adTag.adSlots[i]});
+
+                if(adSlot.type != $scope.adSlotTypes.display) {
+                    return false
+                }
+            }
+
+            return true
+        }
 
         $scope.builtVariable = function(expressionDescriptor) {
             return queryBuilderService.builtVariable(expressionDescriptor)

@@ -915,6 +915,7 @@
                 delete adSlot.libraryAdSlot.passbackMode;
                 delete adSlot.floorPrice;
                 delete adSlot.hbBidPrice;
+                delete adSlot.autoRefresh;
             }
 
             if($scope.selected.type == $scope.typesList.dynamic) {

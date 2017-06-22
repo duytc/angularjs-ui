@@ -34,6 +34,15 @@
                 <input ng-disabled="disabledDirective" server-error ng-required="true" type="text" class="form-control" ng-minlength="1" pattern="^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$" required ng-model="itemGroup.var" placeholder="JS variable name">
             </div>
 
+            <div class="form-group select-data-type" ng-if="getDataTypeList(itemGroup).length > 1 && !!itemGroup.customVar">
+                <ui-select ng-model="itemGroup.type" ng-required="true" server-error on-select="selectType(itemGroup)" reset-search-input="'false'" ng-disabled="disabledDirective">
+                    <ui-select-match placeholder="Select data type">{{ $select.selected.label }}</ui-select-match>
+                    <ui-select-choices repeat="dataType.key as dataType in getDataTypeList(itemGroup)">
+                        {{ dataType.label }}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
             <select ng-if="!!itemGroup.customVar" class="form-control" ng-disabled="disabledDirective" ng-model="itemGroup.cmp" ng-change="selectCondition(itemGroup)" ng-options="condition.key as condition.label for condition in changeCondition(itemGroup)"></select>
 
             <div class="form-group" ng-if="!!itemGroup.customVar && itemGroup.type != dataTypes[2].key && itemGroup.customVar != '${COUNTRY}' && itemGroup.customVar != '${DEVICE}' && itemGroup.customVar != '${DOMAIN}'">
