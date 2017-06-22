@@ -72,12 +72,12 @@
             if (status == 413) {
                 AlertService.replaceAlerts({
                     type: 'error',
-                    message: "'" + fileItem.file.name + "' isn't uploaded because of too large size"
+                    message: "'" + fileItem.file.name + "' could not be uploaded because the file size is too large"
                 });
             } else {
                 AlertService.replaceAlerts({
                     type: 'error',
-                    message: response.message || "Upload file '" + fileItem.file.name + "' fail due to can't find header!"
+                    message: response.message || "Upload file '" + fileItem.file.name + "' failed"
                 });
             }
         };
@@ -100,7 +100,7 @@
                 } else {
                     AlertService.replaceAlerts({
                         type: 'success',
-                        message: "Detect fields from uploaded file success!"
+                        message: "Detected fields from uploaded file successfully"
                     });
                 }
 
@@ -344,7 +344,7 @@
                         function () {
                             AlertService.addFlash({
                                 type: 'success',
-                                message: 'The connect data source has been created'
+                                message: 'The connected data source has been created'
                             });
                         })
                     .then(

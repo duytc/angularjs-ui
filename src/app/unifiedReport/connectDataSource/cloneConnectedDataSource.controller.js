@@ -33,7 +33,7 @@
                 .catch(function() {
                     AlertService.replaceAlerts({
                         type: 'error',
-                        message: 'Could not clone the connect data source'
+                        message: 'Could not clone the connected data source'
                     });
                 });
         }

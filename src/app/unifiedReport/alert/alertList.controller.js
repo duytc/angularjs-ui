@@ -188,7 +188,7 @@
 
                     AlertService.replaceAlerts({
                         type: 'success',
-                        message: $scope.selectedAlert.length + ' alerts have been unread'
+                        message: $scope.selectedAlert.length + ' alerts have been marked as unread'
                     });
 
                     noneSelect();

@@ -118,7 +118,7 @@
                         saveDataSource.then(function (){
                             AlertService.replaceAlerts({
                                 type: 'success',
-                                message: 'The data source has been updated backfill'
+                                message: 'The backfill has been scheduled'
                             });
                         }).catch(function (response){
                             if(!response.data.errors) {
@@ -130,7 +130,7 @@
 
                             AlertService.replaceAlerts({
                                 type: 'error',
-                                message: 'The data source could not be updated backfill'
+                                message: 'The backfill could not be scheduled'
                             });
                         })
                     }
