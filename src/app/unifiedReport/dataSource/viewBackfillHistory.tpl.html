@@ -13,9 +13,9 @@
                 <td at-title="Last Executed At" at-sortable at-attribute="lastExecutedAt">
                     {{ item.lastExecutedAt | date:'MMM d, y H:mm:ss' }}
                 </td>
-                <!--<td at-title="Is Running" at-sortable at-attribute="isRunning">-->
-                    <!--<i class="fa" ng-class="!!item.isRunning ? 'fa-check-square' : 'fa-square'"></i>-->
-                <!--</td>-->
+                <td at-title="Is Running" at-sortable at-attribute="isRunning">
+                    <i class="fa" ng-class="!!item.isRunning ? 'fa-check-square' : 'fa-square'"></i>
+                </td>
                 <td at-title="Data Source Integration" at-implicit at-sortable at-attribute="dataSourceIntegration.integration.name "></td>
             </tr>
             </tbody>

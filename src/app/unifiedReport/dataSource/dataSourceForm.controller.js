@@ -380,18 +380,26 @@
 
             var saveDataSource = $scope.isNew ? UnifiedReportDataSourceManager.post(dataSource) : UnifiedReportDataSourceManager.one(dataSource.id).patch(dataSource);
 
-            saveDataSource.catch(function (response){
-                var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.userForm, $scope.fieldNameTranslations);
-                $scope.formProcessing = false;
-
-                return errorCheck;
-            }).then(function (){
+            saveDataSource.then(function (){
                 AlertService.addFlash({
                     type: 'success',
                     message: $scope.isNew ? $translate.instant('UNIFIED_REPORT_DATA_SOURCE_MODULE.ADD_NEW_SUCCESS') : $translate.instant('UNIFIED_REPORT_DATA_SOURCE_MODULE.UPDATE_SUCCESS')
                 });
-            }).then(function (){
+
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSource, '^.list');
+            }).catch(function (response){
+                $scope.formProcessing = false;
+
+                if(!response.data.errors) {
+                    return AlertService.replaceAlerts({
+                        type: 'error',
+                        message: response.data.message
+                    });
+                }
+
+                var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.userForm, $scope.fieldNameTranslations);
+
+                return errorCheck;
             });
         }
 

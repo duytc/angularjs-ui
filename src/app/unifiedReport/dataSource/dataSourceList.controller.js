@@ -115,15 +115,22 @@
                         });
 
                         var saveDataSource = UnifiedReportDataSourceManager.one(dataSource.id).patch({dataSourceIntegrations: dataSourceIntegrations});
-                        saveDataSource.catch(function (response){
-                            AlertService.addAlert({
-                                type: 'error',
-                                message: 'The data source could not be updated backfill'
-                            });
-                        }).then(function (){
-                            AlertService.addAlert({
+                        saveDataSource.then(function (){
+                            AlertService.replaceAlerts({
                                 type: 'success',
                                 message: 'The data source has been updated backfill'
+                            });
+                        }).catch(function (response){
+                            if(!response.data.errors) {
+                                return AlertService.replaceAlerts({
+                                    type: 'error',
+                                    message: response.data.message
+                                });
+                            }
+
+                            AlertService.replaceAlerts({
+                                type: 'error',
+                                message: 'The data source could not be updated backfill'
                             });
                         })
                     }
