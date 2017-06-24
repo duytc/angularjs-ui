@@ -44,6 +44,10 @@
                             dataSetIds.push(dataSet.id)
                         });
 
+                        if(dataSetIds.length == 0) {
+                            return []
+                        }
+
                         return UnifiedReportDataSetManager.one('pendingjobs').get({ids: dataSetIds.toString()}).then(function (dataSetPendingJobs) {
                             return dataSetPendingJobs.plain();
                         });

@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, reportView, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT) {
+    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, reportView, dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -38,9 +38,6 @@
 
         $scope.dimensions = [];
         $scope.metrics = [];
-
-        // user tempReports to orderBy and reports to view
-        // $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);
 
         _updateColumnPositions();
 
@@ -106,6 +103,8 @@
             }
         };
 
+        _updateMissingDate($scope.selected.date);
+
         $scope.datePickerOpts = {
             maxDate:  moment().endOf('day'),
             ranges: {
@@ -128,13 +127,37 @@
         
         $scope.generateReport = generateReport;
         $scope.hasFilterDate = hasFilterDate;
-        $scope.hideDaterange = hideDaterange;
+        // $scope.hideDaterange = hideDaterange;
         $scope.enableSelectDaterange = enableSelectDaterange;
         $scope.refreshData = refreshData;
         $scope.changePage = changePage;
         $scope.selectItemPerPages = selectItemPerPages;
         $scope.searchReportView = searchReportView;
         $scope.exportExcel = exportExcel;
+        $scope.showDetailsMissingDates = showDetailsMissingDates;
+        
+        function showDetailsMissingDates() {
+            $modal.open({
+                templateUrl: 'unifiedReport/report/showMissingDate.tpl.html',
+                controller: function ($scope, missingDate) {
+                    $scope.missingDate = missingDate;
+
+                    $scope.tableConfig = {
+                        itemsPerPage: 10,
+                        maxPages: 7
+                    };
+
+                    $scope.showPagination = function () {
+                        return angular.isArray($scope.missingDate) && $scope.missingDate.length > $scope.tableConfig.itemsPerPage;
+                    }
+                },
+                resolve: {
+                    missingDate: function () {
+                        return $scope.missingDate;
+                    }
+                }
+            });
+        }
 
         function exportExcel() {
             var params = _toJsonReportView(reportView);
@@ -205,22 +228,22 @@
             return false;
         }
 
-        function hideDaterange() {
-            var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
-            for (var reportViewIndex in reportViews) {
-                var reportView = reportViews[reportViewIndex];
-
-                for (var filterIndex in reportView.filters) {
-                    var filter = reportView.filters[filterIndex];
-
-                    if(filter.type == 'date' || filter.type == 'datetime') {
-                        return true
-                    }
-                }
-            }
-
-            return false;
-        }
+        // function hideDaterange() {
+        //     var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
+        //     for (var reportViewIndex in reportViews) {
+        //         var reportView = reportViews[reportViewIndex];
+        //
+        //         for (var filterIndex in reportView.filters) {
+        //             var filter = reportView.filters[filterIndex];
+        //
+        //             if(filter.type == 'date' || filter.type == 'datetime') {
+        //                 return true
+        //             }
+        //         }
+        //     }
+        //
+        //     return false;
+        // }
 
         function hasFilterDate() {
             var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
@@ -230,7 +253,7 @@
                 for (var filterIndex in reportView.filters) {
                     var filter = reportView.filters[filterIndex];
 
-                    if((filter.type == 'date' || filter.type == 'datetime') && filter.dateType == 'userProvided') {
+                    if((filter.type == 'date' || filter.type == 'datetime') && filter.userProvided) {
                         return true
                     }
                 }
@@ -246,6 +269,8 @@
             params.endDate = DateFormatter.getFormattedDate(date.endDate);
 
             _getReportDetail(params);
+
+            _updateMissingDate(params);
         }
 
         function isNullValue(report, column) {
@@ -390,6 +415,28 @@
             });
 
             return params;
+        }
+
+        function _updateMissingDate(daterange) {
+            $scope.missingDate = [];
+            angular.forEach(dataSources, function (dataSource) {
+                if(!!dataSource.missingDate && dataSource.missingDate.length > 0) {
+                    angular.forEach(dataSource.missingDate, function (date) {
+                        if(hasFilterDate() && date) {
+                            var startDate = new Date(daterange.startDate);
+                            var endDate = new Date(daterange.endDate);
+                            var currentDate = new Date(date);
+
+                            if(currentDate >= startDate && currentDate <= endDate) {
+                                $scope.missingDate.push({date: date, dataSource: dataSource});
+                            }
+                        } else {
+                            $scope.missingDate.push({date: date, dataSource: dataSource});
+                        }
+                    })
+                }
+            });
+
         }
 
         function _updateColumnPositions() {

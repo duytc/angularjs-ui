@@ -12,6 +12,7 @@
         } : dataSourceFiles ;
 
         $scope.dataSource = dataSource;
+        $scope.isShowAlert = true;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -64,7 +65,36 @@
         $scope.selectAllInPages = selectAllInPages;
         $scope.previewData = previewData;
         $scope.deleteAlertMulti = deleteAlertMulti;
-        
+        $scope.showDetailsMissingDates = showDetailsMissingDates;
+
+        function showDetailsMissingDates() {
+            $modal.open({
+                templateUrl: 'unifiedReport/dataSourceFile/showMissingDate.tpl.html',
+                controller: function ($scope, missingDate) {
+                    $scope.missingDate = missingDate;
+
+                    $scope.tableConfig = {
+                        itemsPerPage: 10,
+                        maxPages: 7
+                    };
+
+                    $scope.showPagination = function () {
+                        return angular.isArray($scope.missingDate) && $scope.missingDate.length > $scope.tableConfig.itemsPerPage;
+                    }
+                },
+                resolve: {
+                    missingDate: function () {
+                        var missingDate = [];
+                        angular.forEach($scope.dataSource.missingDate, function (date) {
+                            missingDate.push({date: date});
+                        });
+
+                        return missingDate
+                    }
+                }
+            });
+        }
+
         function deleteAlertMulti() {
             var selectedDataSourceFiles = angular.copy($scope.selectedDataSourceFiles);
 
@@ -80,6 +110,7 @@
                             noneSelect()
                         });
 
+                    $scope.isShowAlert = false;
                     AlertService.replaceAlerts({
                         type: 'success',
                         message: selectedDataSourceFiles.length + ' imported data files have been deleted'
@@ -259,6 +290,10 @@
                                         type: 'success',
                                         message: $translate.instant('UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DELETE_SUCCESS')
                                     });
+
+                                    if($scope.tableConfig.totalItems == 0) {
+                                        $scope.isShowAlert = false;
+                                    }
                                 });
                         }
                     )

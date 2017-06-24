@@ -1203,7 +1203,8 @@
                 "BACK_TO_CONNECT_DATA_SOURCE_LIST": "Back To Connected Data Source List",
 
                 "SELECT_A_DATA_SOURCE": "Select a Data Source",
-                "USE_INTEGRATION": "Use Integration"
+                "USE_INTEGRATION": "Use Integration",
+                "DATE_RANGE_DETECTION_ENABLED": "Date Range Detection"
             },
             "UNIFIED_REPORT_ALERT_MODULE": {
                 "VIEW_DETAIL": "View Detail",
@@ -1247,6 +1248,8 @@
                 "DELETE_FILE_SUCCESS":"The data source file has been deleted",
                 "DOWNLOAD_FILE_SUCCESS":"The data source file has been downloaded",
                 "NOT_FOUND_FILE": "The file was not found or you do not have access",
+                "DATE_RANGE": "Date Range",
+                "STATUS": "Status",
 
                 "BACK_TO_DATA_SOURCE_LIST": "Back to Data Source List",
                 "DELETE_SUCCESS": "The data source entry was deleted",

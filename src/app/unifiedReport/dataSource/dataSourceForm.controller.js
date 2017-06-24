@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.dataSource')
         .controller('DataSourceForm', DataSourceForm);
 
-    function DataSourceForm($scope, _, UnifiedReportDataSourceManager, DataSourceIntegration, $translate, dataSource, integrations, publishers, AlertService, dateUtil, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH){
+    function DataSourceForm($scope, _, UnifiedReportDataSourceManager, DataSourceIntegration, $translate, dataSource, integrations, publishers, AlertService, dateUtil, ServerErrorProcessor, historyStorage, DATE_FORMAT_TYPES, HISTORY_TYPE_PATH){
         $scope.publishers = publishers;
         $scope.integrations = integrations;
 
@@ -28,6 +28,17 @@
 
         $scope.datePickerOpts = {
             singleDatePicker: true
+        };
+
+        $scope.daterangeDetectionPickerOpts = {
+            ranges: {
+                'Today': [moment().startOf('day'), moment().endOf('day')],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
+                'Last 30 Days': [moment().subtract(30, 'days'), moment().subtract(1, 'days')],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
         };
 
         $scope.change = false;
@@ -76,7 +87,15 @@
                 }
             ],
             enable: true,
-            useIntegration: false
+            useIntegration: false,
+            dateRangeDetectionEnabled: false,
+            dateFields: [],
+            dateFormats: [{isCustomFormatDate: false, format: null}],
+            dateRange: {
+                type: null,
+                startDate: null,
+                endDate: null
+            }
         };
 
         $scope.hours = _.range(0, 24);
@@ -102,6 +121,28 @@
             {label: 'Day', key: 24},
             {label: '2 Days', key: 48}
         ];
+
+        if(!$scope.dataSource.dateRange || angular.isArray($scope.dataSource.dateRange)) {
+            $scope.dataSource.dateRange = {
+                type: null,
+                startDate: null,
+                endDate: null
+            };
+        }
+
+        if($scope.dataSource.dateRange.type == 'fixedDateRange') {
+            $scope.dataSource.dateRange.date = {
+                startDate: $scope.dataSource.dateRange.startDate,
+                endDate: $scope.dataSource.dateRange.endDate
+            }
+        }
+
+        if($scope.dataSource.dateRange.type == 'dynamicEndDate') {
+            $scope.dataSource.dateRange.startDate = {
+                startDate: $scope.dataSource.dateRange.startDate,
+                endDate: $scope.dataSource.dateRange.startDate
+            };
+        }
 
         angular.forEach($scope.dataSource.dataSourceIntegrations, function (dataSourceIntegration) {
             angular.forEach(dataSourceIntegration.params, function (param) {
@@ -144,6 +185,34 @@
 
         $scope.disabledFormat = !!angular.copy($scope.dataSource.format);
 
+        $scope.dateFormatTypes = DATE_FORMAT_TYPES;
+
+        if(!$scope.isNew) {
+            if(!$scope.dataSource.dateFormats || $scope.dataSource.dateFormats.length == 0) {
+                $scope.dataSource.dateFormats = [{isCustomFormatDate: false, format: null}];
+            }
+        }
+
+        $scope.dateRangeTypes = [
+            {key: 'dynamicDateRange', label: 'Dynamic Date Range'},
+            {key: 'fixedDateRange', label: 'Fixed Date Range'},
+            {key: 'dynamicEndDate', label: 'Dynamic End Date'}
+        ];
+
+        $scope.dynamicDateRanges = [
+            {key: 'this month', label: 'This Month'},
+            {key: 'last month', label: 'Last Month'},
+            {key: 'this week', label: 'This Week'},
+            {key: 'last week', label: 'Last Week'}
+        ];
+
+        $scope.dynamicEndDateTypes = [
+            {key: 'yesterday', label: 'Yesterday'},
+            {key: '-3 day', label: 'Last 3 Days'},
+            {key: '-7 day', label: 'Last 7 Days'},
+            {key: '-30 day', label: 'Last 30 Days'}
+        ];
+
         // $scope.addNewIntegration = addNewIntegration;
         // $scope.removeIntegration = removeIntegration;
         $scope.isFormValid = isFormValid;
@@ -161,6 +230,52 @@
         $scope.checkedUseIntegration = checkedUseIntegration;
         $scope.formatParamKey = formatParamKey;
         $scope.viewValue = viewValue;
+        $scope.addValueDateFields = addValueDateFields;
+        $scope.removeAddValue = removeAddValue;
+        $scope.selectCustomFormatDate = selectCustomFormatDate;
+        $scope.addFromFormat = addFromFormat;
+        $scope.selectDateRangeType = selectDateRangeType;
+        
+        function selectDateRangeType(dateRangeType, dateRange) {
+            dateRange.startDate = null;
+            dateRange.endDate = null;
+
+            // if(dateRangeType.type == 'dynamicDateRange') {
+            //     dateRange.startDate = null;
+            //     dateRange.endDate = null
+            // }
+
+            if(dateRangeType.type == 'fixedDateRange') {
+                dateRange.date = {
+                    startDate: null,
+                    endDate: null
+                }
+            }
+
+            if(dateRangeType.type == 'dynamicEndDate') {
+                dateRange.startDate = null;
+                dateRange.endDate =  {
+                    startDate: null,
+                    endDate: null
+                }
+            }
+        }
+
+        function addFromFormat(dateFormats) {
+            dateFormats.push({isCustomFormatDate: false, format: null})
+        }
+
+        function selectCustomFormatDate(dateFormat) {
+            dateFormat.format = null;
+        }
+
+        function removeAddValue(fields, index){
+            fields.splice(index, 1);
+        }
+
+        function addValueDateFields(query) {
+            return query
+        }
 
         function viewValue(integration, param) {
             if(!$scope.isNew && !param.value) {
@@ -313,6 +428,12 @@
                 }
             }
 
+            if($scope.dataSource.dateRangeDetectionEnabled) {
+                if($scope.dataSource.dateFields.length == 0) {
+                    return false
+                }
+            }
+
             for (var index in $scope.dataSource.dataSourceIntegrations) {
                 if($scope.dataSource.dataSourceIntegrations[index].backFill) {
                     if(!$scope.dataSource.dataSourceIntegrations[index].backFillStartDate && !$scope.dataSource.dataSourceIntegrations[index].backFillStartDate.startDate) {
@@ -341,6 +462,9 @@
             if (!$scope.isAdmin()) {
                 delete dataSource.publisher;
             }
+
+            delete dataSource.missingDate;
+            delete dataSource.dateRangeBroken;
 
             if(dataSource.useIntegration) {
                 // dataSource.format = null;
@@ -377,6 +501,17 @@
             } else {
                 dataSource.dataSourceIntegrations = []
             }
+
+            if(dataSource.dateRange.type == 'fixedDateRange') {
+                dataSource.dateRange.startDate = dateUtil.getFormattedDate(dataSource.dateRange.date.startDate);
+                dataSource.dateRange.endDate = dateUtil.getFormattedDate(dataSource.dateRange.date.endDate);
+            }
+
+            if(dataSource.dateRange.type == 'dynamicEndDate') {
+                dataSource.dateRange.startDate = dateUtil.getFormattedDate(dataSource.dateRange.startDate.startDate);
+            }
+
+            delete dataSource.dateRange.date;
 
             var saveDataSource = $scope.isNew ? UnifiedReportDataSourceManager.post(dataSource) : UnifiedReportDataSourceManager.one(dataSource.id).patch(dataSource);
 

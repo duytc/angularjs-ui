@@ -1,7 +1,11 @@
-<div id="form-date-range-selector" class="panel panel-default" ng-if="hideDaterange() || reportView.enableCustomDimensionMetric">
+<div class="alert alert-warning" ng-click="showDetailsMissingDates()" ng-if="missingDate.length > 0">
+    We have detected missing dates in your data. Click on this message for details
+</div>
+
+<div id="form-date-range-selector" class="panel panel-default" ng-if="hasFilterDate() || reportView.enableCustomDimensionMetric">
     <div class="panel-body">
         <form name="reportSelectorForm" class="form-inline" role="form" ng-submit="generateReport(selected.date)" novalidate>
-            <div class="form-group" ng-if="hideDaterange()">
+            <div class="form-group" ng-if="hasFilterDate()">
                 <label for="inputDateRange">{{ 'DASHBOARD_MODULE.DATE_RANGE' | translate }}</label>
                 <div>
                     <div class="input-group">

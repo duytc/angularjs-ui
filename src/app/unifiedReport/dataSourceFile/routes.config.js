@@ -91,7 +91,11 @@
                                 return ids
                             });
                     },
-                    dataSource: function(UnifiedReportDataSourceManager, $stateParams) {
+                    dataSource: function(UnifiedReportDataSourceManager, $stateParams, dataSourceFiles) {
+                        if(!!dataSourceFiles && !!dataSourceFiles.records && dataSourceFiles.records.length > 0) {
+                            return dataSourceFiles.records[0].dataSource
+                        }
+
                         return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).get();
                     }
                 },

@@ -103,7 +103,7 @@
                     type: re.status ? 'success' : 'error',
                     message: re.message
                 });
-            })
+            });
         };
 
         uploader.uploadAllDataSource = function() {
@@ -126,6 +126,15 @@
         };
 
         uploader.onCompleteAll = function() {
+            var dataSource = _.find(dataSources, {id: $scope.dataSourceEntry.dataSource});
+
+            if(!!dataSource && dataSource.dateRangeDetectionEnabled) {
+                AlertService.addFlash({
+                    type: 'warning',
+                    message:'The detected dates may not be updated immediately. Please refresh to get updated'
+                });
+            }
+
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSourceFile, '^.listForDataSource', {dataSourceId: $scope.dataSourceEntry.dataSource.id || $scope.dataSourceEntry.dataSource});
         };
     }

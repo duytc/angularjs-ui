@@ -1,0 +1,26 @@
+<div class="modal-header">
+    <form class="form-inline">
+        <h4 class="form-group">View Missing Date</h4>
+    </form>
+
+</div>
+<div class="modal-body">
+    <div class="row">
+        <table class="table" at-table at-paginated at-list="missingDate" at-config="tableConfig">
+            <thead>
+            </thead>
+            <tbody>
+            <tr>
+                <td at-implicit at-attribute="date" at-sortable at-initial-sorting="asc" at-title="Date"></td>
+                <!--<td at-implicit at-attribute="dataSourceEntries.fileName" at-sortable at-title="Filename"></td>-->
+                <td at-implicit at-attribute="dataSource.name" at-sortable at-title="Data Source"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <at-pagination ng-if="showPagination()" at-list="missingDate" at-config="tableConfig"></at-pagination>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="$close()">{{ 'CLOSE' | translate }}</button>
+</div>

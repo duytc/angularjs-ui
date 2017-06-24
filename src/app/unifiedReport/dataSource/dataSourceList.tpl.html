@@ -68,6 +68,15 @@
                     <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ENABLE' | translate }}" at-sortable at-attribute="enable">
                         <i class="fa" ng-class="item.enable? 'fa-check-square' : 'fa-square'"></i>
                     </td>
+
+                    <!--<td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DATE_RANGE' | translate }}" at-attribute="dateRange">-->
+                        <!--{{ (item.dateRangeDetectionEnabled && !!item.startDate && !!item.endDate) ? (item.startDate | date:'MMM d, y') + ' - ' + (item.endDate | date:'MMM d, y') : null }}-->
+                    <!--</td>-->
+
+                    <!--<td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.STATUS' | translate }}" at-attribute="missingDate">-->
+                        <!--<span class="label label-warning" ng-if="item.dateRangeDetectionEnabled && item.dateRangeBroken">Date Range Broken</span>-->
+                        <!--<span class="label label-success" ng-if="item.dateRangeDetectionEnabled && !item.dateRangeBroken">Seamless Date Range</span>-->
+                    <!--</td>-->
                 </tr>
                 </tbody>
             </table>
