@@ -5,7 +5,7 @@
         .controller('LibraryAdTagForm', LibraryAdTagForm)
     ;
 
-    function LibraryAdTagForm($scope, Auth, $modal, $translate, whiteList, blackList, AlertService, ServerErrorProcessor, AdNetworkCache, adTag, publisherList, adNetworkList, AdTagLibrariesManager, historyStorage, queryBuilderService, AD_TYPES, USER_MODULES, PLATFORM_VAST_TAG, VARIABLE_FOR_AD_TAG, HISTORY_TYPE_PATH) {
+    function LibraryAdTagForm($scope, Auth, $modal, $translate, whiteList, blackList, AlertService, AdNetworkManager, adminUserManager, ServerErrorProcessor, AdNetworkCache, adTag, publisherList, AdTagLibrariesManager, historyStorage, queryBuilderService, AD_TYPES, USER_MODULES, PLATFORM_VAST_TAG, VARIABLE_FOR_AD_TAG, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             adNetwork: 'adNetwork',
             html: 'html'
@@ -21,7 +21,7 @@
         $scope.adTypes = AD_TYPES;
         $scope.platforms = PLATFORM_VAST_TAG;
         $scope.formProcessing = false;
-        $scope.adNetworkList = adNetworkList;
+        $scope.adNetworkList = [];
         $scope.publisherList = publisherList;
 
         $scope.adTag = adTag || {
@@ -69,6 +69,68 @@
             }
         }
 
+        var sideParams = {
+            adNetwork: {
+                totalRecord: 0,
+                params: {
+                    query: '',
+                    page: null
+                }
+            }
+        };
+
+        if(!$scope.isAdmin()) {
+            searchAdNetworkItem(null, Auth.getSession().id);
+        }
+
+        $scope.addMoreAdNetworkItems = addMoreAdNetworkItems;
+        $scope.searchAdNetworkItem = searchAdNetworkItem;
+
+        function searchAdNetworkItem(query, publisherId) {
+            if(query == sideParams.adNetwork.params.query) {
+                return;
+            }
+
+            sideParams.adNetwork.params.page = 1;
+            sideParams.adNetwork.params.searchKey = query;
+            sideParams.adNetwork.params.query = query;
+
+            var publisher = publisherId || (angular.isObject($scope.selected.publisher) ? $scope.selected.publisher.id : $scope.selected.publisher);
+
+            var Manage = $scope.isAdmin() ? adminUserManager.one(publisher).one('adnetworks') : AdNetworkManager.one();
+
+            return Manage.get(sideParams.adNetwork.params)
+                .then(function(datas) {
+                    sideParams.adNetwork.totalRecord = datas.totalRecord;
+
+                    $scope.adNetworkList = [];
+                    angular.forEach(datas.records, function(adNetwork) {
+                        $scope.adNetworkList.push(adNetwork);
+                    });
+                });
+        }
+
+        function addMoreAdNetworkItems() {
+            var page = Math.ceil((($scope.adNetworkList.length -1)/10) + 1);
+
+            if(($scope.isAdmin() && !$scope.selected.publisher) || sideParams.adNetwork.params.page === page || (page > Math.ceil(sideParams.adNetwork.totalRecord/10) && page != 1)) {
+                return
+            }
+
+            sideParams.adNetwork.params.page = page;
+
+            var publisher = angular.isObject($scope.selected.publisher) ? $scope.selected.publisher.id : $scope.selected.publisher;
+            var Manage = $scope.isAdmin() ? adminUserManager.one(publisher).one('adnetworks') : AdNetworkManager.one();
+
+            return Manage.get(sideParams.adNetwork.params)
+                .then(function(datas) {
+                    sideParams.adNetwork.totalRecord = datas.totalRecord;
+                    angular.forEach(datas.records, function(adNetwork) {
+                        $scope.adNetworkList.push(adNetwork);
+                    });
+                })
+        }
+
         $scope.builtVariable = function(expressionDescriptor) {
             return queryBuilderService.builtVariable(expressionDescriptor)
         };
@@ -107,12 +169,14 @@
             return (!!group.customVar && group.customVar != 'CUSTOM') || !!group.var;
         }
 
-        $scope.selectPublisher = function() {
+        $scope.selectPublisher = function(publisher) {
             $scope.adTag.adNetwork = null;
             $scope.adTag.expressionDescriptor = {
                 groupVal: [],
                     groupType: 'AND'
-            }
+            };
+
+            searchAdNetworkItem(null, publisher.id);
         };
 
         $scope.backToAdTagLibraryList = function() {

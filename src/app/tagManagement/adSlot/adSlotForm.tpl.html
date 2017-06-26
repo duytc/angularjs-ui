@@ -117,7 +117,7 @@
                     <div class="col-sm-5">
                         <ui-select name="adSlotLibrary" ng-model="selected.adSlotLibrary" id="inputAdSlotLibrary" ng-required="true" server-error ng-disabled="!pickFromLibrary || !isNew" on-select="selectAdSlotLibrary($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select a standalone ad slot">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
-                            <ui-select-choices repeat="adSlotLibrary.id as adSlotLibrary in adSlotLibraryList | filter:$select.search | selectedPublisher:selected.publisher | filter:{ libType: selected.type} | filter:filterAdSlotForSite:adSlotLibrary">
+                            <ui-select-choices infinite-scroll="addMoreLibraryAdSlotItems()" infinite-scroll-container="'#reloadLibrary'" id="reloadLibrary" infinite-scroll-distance="500" refresh="searchLibraryAdSlotItem($select.search)" refresh-delay="500" repeat="adSlotLibrary.id as adSlotLibrary in adSlotLibraryList | filter:{ libType: selected.type} | filter:filterAdSlotForSite:adSlotLibrary">
                                 {{ adSlotLibrary.name }} {{ adSlotLibrary.id ? '(ID: ' + adSlotLibrary.id + ')' : '' }}
                             </ui-select-choices>
                         </ui-select>

@@ -5,7 +5,7 @@
         .controller('AdTagForm', AdTagForm)
     ;
 
-    function AdTagForm($scope, Auth, _, $state, $modal, $translate, $stateParams, queryBuilderService, blackList, whiteList, AdSlotManager, AdNetworkCache, AdTagManager, AlertService, AdTagLibrariesManager, userSession, ServerErrorProcessor, DisplayAdSlotManager, historyStorage, adTag, adSlot, site, publisher, publisherList, adNetworkList, AD_TYPES, TYPE_AD_SLOT, USER_MODULES, PLATFORM_VAST_TAG, HISTORY_TYPE_PATH, VARIABLE_FOR_AD_TAG) {
+    function AdTagForm($scope, Auth, _, $state, $modal, $translate, $stateParams, queryBuilderService, blackList, whiteList, AdSlotManager, AdNetworkCache, AdTagManager, AlertService, AdTagLibrariesManager, userSession, ServerErrorProcessor, DisplayAdSlotManager, historyStorage, adTag, adSlot, site, publisher, publisherList, AdNetworkManager, adminUserManager, AD_TYPES, TYPE_AD_SLOT, USER_MODULES, PLATFORM_VAST_TAG, HISTORY_TYPE_PATH, VARIABLE_FOR_AD_TAG) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
             name: 'Name',
@@ -75,7 +75,7 @@
 
         $scope.publisherList = publisherList;
         $scope.adSlotList = !!$stateParams.adSlotId ? [adSlot] : [];
-        $scope.adNetworkList = adNetworkList;
+        $scope.adNetworkList = [];
         $scope.adTagLibraryList = [];
         var adSlotSelecting = !!$stateParams.adSlotId ? [adSlot] : [];
 
@@ -160,15 +160,76 @@
             adTagLibraryParams.publisherId = publisher.id || publisher
         }
 
+        var sideParams = {
+            adNetwork: {
+                totalRecord: 0,
+                params: {
+                    query: '',
+                    page: null
+                }
+            }
+        };
+
+        if(!$scope.isAdmin()) {
+            searchAdNetworkItem(null, Auth.getSession().id);
+        }
+
+        $scope.addMoreAdNetworkItems = addMoreAdNetworkItems;
+        $scope.searchAdNetworkItem = searchAdNetworkItem;
         $scope.getAdTagLibrary = getAdTagLibrary;
         $scope.searchItem = searchItem;
-        $scope.searchAdTagLibraryItem = searchAdTagLibraryItem;
         $scope.addMoreItems = addMoreItems;
+        $scope.searchAdTagLibraryItem = searchAdTagLibraryItem;
         $scope.addMoreAdTagLibraryItems = addMoreAdTagLibraryItems;
         $scope.backToAdTagList = backToAdTagList;
         $scope.moveVastTag = moveVastTag;
         $scope.isPassback = isPassback;
-        
+
+        function searchAdNetworkItem(query, publisherId) {
+            if(query == sideParams.adNetwork.params.query) {
+                return;
+            }
+
+            sideParams.adNetwork.params.page = 1;
+            sideParams.adNetwork.params.searchKey = query;
+            sideParams.adNetwork.params.query = query;
+
+            var publisher = publisherId || (angular.isObject($scope.selected.publisher) ? $scope.selected.publisher.id : $scope.selected.publisher);
+
+            var Manage = $scope.isAdmin() ? adminUserManager.one(publisher).one('adnetworks') : AdNetworkManager.one();
+
+            return Manage.get(sideParams.adNetwork.params)
+                .then(function(datas) {
+                    sideParams.adNetwork.totalRecord = datas.totalRecord;
+
+                    $scope.adNetworkList = [];
+                    angular.forEach(datas.records, function(adNetwork) {
+                        $scope.adNetworkList.push(adNetwork);
+                    });
+                });
+        }
+
+        function addMoreAdNetworkItems() {
+            var page = Math.ceil((($scope.adNetworkList.length -1)/10) + 1);
+
+            if(($scope.isAdmin() && !$scope.selected.publisher) || sideParams.adNetwork.params.page === page || (page > Math.ceil(sideParams.adNetwork.totalRecord/10) && page != 1)) {
+                return
+            }
+
+            sideParams.adNetwork.params.page = page;
+
+            var publisher = angular.isObject($scope.selected.publisher) ? $scope.selected.publisher.id : $scope.selected.publisher;
+            var Manage = $scope.isAdmin() ? adminUserManager.one(publisher).one('adnetworks') : AdNetworkManager.one();
+
+            return Manage.get(sideParams.adNetwork.params)
+                .then(function(datas) {
+                    sideParams.adNetwork.totalRecord = datas.totalRecord;
+                    angular.forEach(datas.records, function(adNetwork) {
+                        $scope.adNetworkList.push(adNetwork);
+                    });
+                })
+        }
+
         function isPassback() {
             if(!$scope.isNew) {
                 return $scope.adTag.adSlot.type == $scope.adSlotTypes.display

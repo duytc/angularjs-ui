@@ -48,9 +48,9 @@
                     adTag: /* @ngInject */ function() {
                         return null;
                     },
-                    adNetworkList: /* @ngInject */ function (AdNetworkCache) {
-                        return AdNetworkCache.getAllAdNetworks();
-                    },
+                    // adNetworkList: /* @ngInject */ function (AdNetworkCache) {
+                    //     return AdNetworkCache.getAllAdNetworks();
+                    // },
                     blackList: /* @ngInject */ function(DisplayBlackListManager) {
                         return DisplayBlackListManager.getList().then(function (blockList) {
                             return blockList.plain();
@@ -87,9 +87,9 @@
                     adTag: /* @ngInject */ function($stateParams, AdTagLibrariesManager) {
                         return AdTagLibrariesManager.one($stateParams.id).get();
                     },
-                    adNetworkList: /* @ngInject */ function (AdNetworkCache) {
-                        return AdNetworkCache.getAllAdNetworks();
-                    },
+                    // adNetworkList: /* @ngInject */ function (AdNetworkCache) {
+                    //     return AdNetworkCache.getAllAdNetworks();
+                    // },
                     publisherList: function() {
                         return null;
                     },
@@ -197,9 +197,9 @@
                     adSlotList: function(AdSlotLibrariesManager) {
                         return AdSlotLibrariesManager.getList();
                     },
-                    adNetworkList: /* @ngInject */ function (AdNetworkCache) {
-                        return AdNetworkCache.getAllAdNetworks();
-                    },
+                    // adNetworkList: /* @ngInject */ function (AdNetworkCache) {
+                    //     return AdNetworkCache.getAllAdNetworks();
+                    // },
                     blackList: /* @ngInject */ function(DisplayBlackListManager) {
                         return DisplayBlackListManager.getList().then(function (blockList) {
                             return blockList.plain();
@@ -242,9 +242,9 @@
                     adSlotList: function() {
                         return null;
                     },
-                    adNetworkList: /* @ngInject */ function (AdNetworkCache) {
-                        return AdNetworkCache.getAllAdNetworks();
-                    },
+                    // adNetworkList: /* @ngInject */ function (AdNetworkCache) {
+                    //     return AdNetworkCache.getAllAdNetworks();
+                    // },
                     publisherList: function() {
                         return null;
                     },

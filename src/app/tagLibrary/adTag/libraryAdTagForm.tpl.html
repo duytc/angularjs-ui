@@ -28,7 +28,7 @@
                 <div class="form-group" ng-if="isAdmin() && isNew">
                     <label for="inputPublisher" class="col-sm-1 control-label">{{ 'PUBLISHER' | translate }}</label>
                     <div class="col-sm-5">
-                        <ui-select id="inputPublisher" ng-model="selected.publisher" on-select="selectPublisher()" reset-search-input="'false'">
+                        <ui-select id="inputPublisher" ng-model="selected.publisher" on-select="selectPublisher($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="Select a publisher">{{ $select.selected.company }}</ui-select-match>
                             <ui-select-choices repeat="publisher in publisherList | filter: { company: $select.search }">
                                 {{ publisher.company }}
@@ -42,7 +42,7 @@
                     <div class="col-sm-5">
                         <ui-select name="adNetwork" ng-model="adTag.adNetwork" id="inputAdNetwork" on-select="selectAdNetwork($item)" ng-disabled="isAdmin() && !selected.publisher" ng-required="true" server-error reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'AD_NETWORK_MODULE.SELECT_A_AD_NETWORK' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices repeat="adNetwork.id as adNetwork in adNetworkList | filter: { name:$select.search } | selectedPublisher:selected.publisher">
+                            <ui-select-choices infinite-scroll="addMoreAdNetworkItems()" infinite-scroll-container="'#reload'" id="reload" infinite-scroll-distance="200" refresh="searchAdNetworkItem($select.search)" refresh-delay="500" repeat="adNetwork.id as adNetwork in adNetworkList">
                                 {{ adNetwork.name }}
                             </ui-select-choices>
                         </ui-select>

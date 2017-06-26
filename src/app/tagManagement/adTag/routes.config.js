@@ -136,9 +136,9 @@
                         return site.publisher;
                     },
 
-                    adNetworkList: /* @ngInject */ function (AdNetworkCache) {
-                        return AdNetworkCache.getAllAdNetworks();
-                    },
+                    // adNetworkList: /* @ngInject */ function (AdNetworkCache) {
+                    //     return AdNetworkCache.getAllAdNetworks();
+                    // },
                     blackList: /* @ngInject */ function(DisplayBlackListManager) {
                         return DisplayBlackListManager.getList().then(function (blockList) {
                             return blockList.plain();
@@ -202,9 +202,9 @@
                         return site.publisher;
                     },
 
-                    adNetworkList: /* @ngInject */ function (AdNetworkCache) {
-                        return AdNetworkCache.getAllAdNetworks();
-                    },
+                    // adNetworkList: /* @ngInject */ function (AdNetworkCache) {
+                    //     return AdNetworkCache.getAllAdNetworks();
+                    // },
                     blackList: /* @ngInject */ function(DisplayBlackListManager) {
                         return DisplayBlackListManager.getList().then(function (blockList) {
                             return blockList.plain();
@@ -273,9 +273,9 @@
                         return null;
                     },
 
-                    adNetworkList: /* @ngInject */ function (AdNetworkCache) {
-                        return AdNetworkCache.getAllAdNetworks();
-                    },
+                    // adNetworkList: /* @ngInject */ function (AdNetworkCache) {
+                    //     return AdNetworkCache.getAllAdNetworks();
+                    // },
                     blackList: /* @ngInject */ function(DisplayBlackListManager) {
                         return DisplayBlackListManager.getList().then(function (blockList) {
                             return blockList.plain();

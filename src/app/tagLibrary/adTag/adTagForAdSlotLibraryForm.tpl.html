@@ -96,7 +96,7 @@
                     <div class="col-sm-5">
                         <ui-select name="adNetwork" ng-model="adTag.libraryAdTag.adNetwork" id="inputAdNetwork" ng-required="true" on-select="selectAdNetwork($item)" server-error ng-disabled="isAdmin() && !selected.publisher" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'AD_NETWORK_MODULE.SELECT_A_AD_NETWORK' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices repeat="adNetwork.id as adNetwork in adNetworkList | filter: { name:$select.search } | selectedPublisher:selected.publisher">
+                            <ui-select-choices infinite-scroll="addMoreAdNetworkItems()" infinite-scroll-container="'#reload'" id="reload" infinite-scroll-distance="200" refresh="searchAdNetworkItem($select.search)" refresh-delay="500" repeat="adNetwork.id as adNetwork in adNetworkList">
                                 {{ adNetwork.name }}
                             </ui-select-choices>
                         </ui-select>

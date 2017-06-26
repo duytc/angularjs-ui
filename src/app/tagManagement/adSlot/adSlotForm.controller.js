@@ -19,6 +19,17 @@
         $scope.typesList = TYPE_AD_SLOT;
         $scope.rtbStatusTypes = RTB_STATUS_TYPES;
 
+        $scope.adSlotLibraryList = [];
+        var sideParams = {
+            libraryAdSlot: {
+                totalRecord: 0,
+                params: {
+                    query: '',
+                    page: null
+                }
+            }
+        };
+
         $scope.adSlotTypeOptions = [
             {
                 label: $translate.instant('DISPLAY_AD_SLOT'),
@@ -192,6 +203,59 @@
             }
         }
 
+        $scope.addMoreLibraryAdSlotItems = addMoreLibraryAdSlotItems;
+        $scope.searchLibraryAdSlotItem = searchLibraryAdSlotItem;
+
+        function searchLibraryAdSlotItem(query, publisherId) {
+            if(query == sideParams.libraryAdSlot.params.query) {
+                return;
+            }
+
+            var publisher = publisherId || (angular.isObject($scope.adSlot.publisher) ? $scope.adSlot.publisher.id : $scope.adSlot.publisher);
+
+            sideParams.libraryAdSlot.params.page = 1;
+            sideParams.libraryAdSlot.params.searchKey = query;
+            sideParams.libraryAdSlot.params.query = query;
+            sideParams.libraryAdSlot.params.publisherId = publisher;
+
+            return AdSlotLibrariesManager.one().get(sideParams.libraryAdSlot.params)
+                .then(function(datas) {
+                    sideParams.libraryAdSlot.totalRecord = datas.totalRecord;
+
+                    $scope.adSlotLibraryList = [];
+                    angular.forEach(datas.records, function(adslot) {
+                        $scope.adSlotLibraryList.push(adslot);
+                    });
+
+                    if(!$scope.isNew) {
+                        $scope.adSlotLibraryList.push(adSlot.libraryAdSlot);
+                    }
+                });
+        }
+
+        function addMoreLibraryAdSlotItems() {
+            var page = Math.ceil((($scope.adSlotLibraryList.length -1)/10) + 1);
+
+            if(($scope.isAdmin() && !$scope.adSlot.publisher) || sideParams.libraryAdSlot.params.page === page || (page > Math.ceil(sideParams.libraryAdSlot.totalRecord/10) && page != 1)) {
+                return
+            }
+
+            var publisher = angular.isObject($scope.adSlot.publisher) ? $scope.adSlot.publisher.id : $scope.adSlot.publisher;
+
+            sideParams.libraryAdSlot.params.page = page;
+            sideParams.libraryAdSlot.params.publisherId = publisher;
+
+            var Manage = AdSlotLibrariesManager.one();
+
+            return Manage.get(sideParams.libraryAdSlot.params)
+                .then(function(datas) {
+                    sideParams.libraryAdSlot.totalRecord = datas.totalRecord;
+                    angular.forEach(datas.records, function(adslot) {
+                        $scope.adSlotLibraryList.push(adslot);
+                    });
+                })
+        }
+
         function showForDisplayAdSlot() {
             return $scope.selected.type == TYPE_AD_SLOT.display;
         }
@@ -223,6 +287,8 @@
             enabledModules = publisher.enabledModules;
 
             $scope.adSlot.libraryExpressions = [];
+
+            searchLibraryAdSlotItem(null, publisherId);
         }
 
         function isNormalAdSlotNotUseStandalone() {
@@ -239,11 +305,12 @@
 
         function getAdSlotLibrary() {
             if($scope.pickFromLibrary) {
-                AdSlotLibrariesManager.getList()
-                    .then(function(adSlotLibrary) {
-                        $scope.adSlotLibraryList = adSlotLibrary.plain();
-                    }
-                );
+                searchLibraryAdSlotItem(null);
+                // AdSlotLibrariesManager.getList()
+                //     .then(function(adSlotLibrary) {
+                //         $scope.adSlotLibraryList = adSlotLibrary.plain();
+                //     }
+                // );
 
                 if(isNormalAdSlotNotUseStandalone()) {
                     var siteId = !$scope.isNew ? $scope.selected.site.id : $scope.selected.sites[0].id;
