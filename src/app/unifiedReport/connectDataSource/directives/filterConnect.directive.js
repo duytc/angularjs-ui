@@ -86,6 +86,8 @@
                                 startDate: moment().startOf('day'),
                                 endDate: moment().endOf('day')
                             };
+
+                            filter.isPartialMatch = false;
                         }
                     }
 
@@ -108,6 +110,8 @@
                                 startDate: moment().startOf('day'),
                                 endDate: moment().endOf('day')
                             };
+
+                            filter.isPartialMatch = false;
                         }
 
                     }
@@ -150,7 +154,8 @@
                             date: {
                                 startDate: moment().startOf('day'),
                                 endDate: moment().endOf('day')
-                            }
+                            },
+                            isPartialMatch: false
                         });
                     }
 

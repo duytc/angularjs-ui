@@ -282,7 +282,7 @@
                     }
 
                     function addFromFormat(from) {
-                        from.push({isCustomFormatDateFrom: false, format: null})
+                        from.push({isCustomFormatDateFrom: false, isPartialMatch: false, format: null})
                     }
 
                     function clickUseExternalDate(field, useDate) {
@@ -1158,6 +1158,22 @@
                         return _.values(scope.mapFields).indexOf(field.original) == -1;
                     }
 
+                    function notInMapFieldForSubsetGroup(field){
+                        for(var index in scope.transforms) {
+                            var transform = scope.transforms[index];
+
+                            if(transform.type == 'augmentation') {
+                                for(var indexMap in transform.mapFields) {
+                                    if(transform.mapFields[indexMap].leftSide == field.key) {
+                                        return false
+                                    }
+                                }
+                            }
+                        }
+
+                        return _.values(scope.mapFields).indexOf(field.original) == -1;
+                    }
+
                     function filterTargetFieldForExtractPattern(fieldCurrent) {
                         return function (field) {
                             if(fieldCurrent == field.key) {
@@ -1626,7 +1642,7 @@
 
                                 if(transform.type == 'subsetGroup') {
                                     angular.forEach(transform.mapFields, function (field) {
-                                        if(!notInMapField({original: field.leftSide})) {
+                                        if(!notInMapFieldForSubsetGroup({original: field.leftSide})) {
                                             field.leftSide = null
                                         }
                                     });
