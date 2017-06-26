@@ -48,16 +48,10 @@
                     integration: null,
                     active: true,
                     params: [],
-                    backFill: false,
+                    // backFill: false,
                     // backFillForce: false,
-                    backFillStartDate: {
-                        startDate: null,
-                        endDate: null
-                    },
-                    backFillEndDate: {
-                        startDate: null,
-                        endDate: null
-                    },
+                    backFillStartDate: null,
+                    backFillEndDate: null,
                     schedule: {
                         checked: 'checkAt',
                         checkEvery:  { hour: null },
@@ -168,19 +162,19 @@
                 }
             });
 
-            if(!angular.isObject(dataSourceIntegration.backFillStartDate)) {
-                dataSourceIntegration.backFillStartDate = {
-                    startDate: dataSourceIntegration.backFillStartDate,
-                    endDate: dataSourceIntegration.backFillStartDate
-                }
-            }
-
-            if(!angular.isObject(dataSourceIntegration.backFillEndDate)) {
-                dataSourceIntegration.backFillEndDate = {
-                    startDate: dataSourceIntegration.backFillEndDate,
-                    endDate: dataSourceIntegration.backFillEndDate
-                }
-            }
+            // if(!angular.isObject(dataSourceIntegration.backFillStartDate)) {
+            //     dataSourceIntegration.backFillStartDate = {
+            //         startDate: dataSourceIntegration.backFillStartDate,
+            //         endDate: dataSourceIntegration.backFillStartDate
+            //     }
+            // }
+            //
+            // if(!angular.isObject(dataSourceIntegration.backFillEndDate)) {
+            //     dataSourceIntegration.backFillEndDate = {
+            //         startDate: dataSourceIntegration.backFillEndDate,
+            //         endDate: dataSourceIntegration.backFillEndDate
+            //     }
+            // }
         });
 
         $scope.disabledFormat = !!angular.copy($scope.dataSource.format);
@@ -304,16 +298,10 @@
                    integration: null,
                    active: true,
                    params: [],
-                   backFill: false,
+                   // backFill: false,
                    // backFillForce: false,
-                   backFillStartDate: {
-                       startDate: null,
-                       endDate: null
-                   },
-                   backFillEndDate: {
-                       startDate: null,
-                       endDate: null
-                   },
+                   backFillStartDate: null,
+                   backFillEndDate: null,
                    schedule: {
                        checked: 'checkAt',
                        checkEvery:  { hour: null },
@@ -356,16 +344,10 @@
                 integration: null,
                 active: true,
                 params: [],
-                backFill: false,
+                // backFill: false,
                 // backFillForce: false,
-                backFillStartDate: {
-                    startDate: null,
-                    endDate: null
-                },
-                backFillEndDate: {
-                    startDate: null,
-                    endDate: null
-                },
+                backFillStartDate: null,
+                backFillEndDate: null,
                 schedule: {
                     checked: 'checkAt',
                     checkEvery:  { hour: null },
@@ -434,17 +416,17 @@
                 }
             }
 
-            for (var index in $scope.dataSource.dataSourceIntegrations) {
-                if($scope.dataSource.dataSourceIntegrations[index].backFill) {
-                    if(!$scope.dataSource.dataSourceIntegrations[index].backFillStartDate && !$scope.dataSource.dataSourceIntegrations[index].backFillStartDate.startDate) {
-                        return false
-                    }
-
-                    // if(!$scope.dataSource.dataSourceIntegrations[index].backFillEndDate && !$scope.dataSource.dataSourceIntegrations[index].backFillEndDate.startDate) {
-                    //     return false
-                    // }
-                }
-            }
+            // for (var index in $scope.dataSource.dataSourceIntegrations) {
+            //     if($scope.dataSource.dataSourceIntegrations[index].backFill) {
+            //         if(!$scope.dataSource.dataSourceIntegrations[index].backFillStartDate && !$scope.dataSource.dataSourceIntegrations[index].backFillStartDate.startDate) {
+            //             return false
+            //         }
+            //
+            //         // if(!$scope.dataSource.dataSourceIntegrations[index].backFillEndDate && !$scope.dataSource.dataSourceIntegrations[index].backFillEndDate.startDate) {
+            //         //     return false
+            //         // }
+            //     }
+            // }
 
             return $scope.userForm.$valid;
         }
@@ -486,17 +468,17 @@
                         }
                     });
 
-                    if(!!dataSourceIntegration.backFillStartDate && !!dataSourceIntegration.backFillStartDate.startDate) {
-                        dataSourceIntegration.backFillStartDate = dateUtil.getFormattedDate(dataSourceIntegration.backFillStartDate.startDate);
-                    } else {
-                        dataSourceIntegration.backFillStartDate = null;
-                    }
-
-                    if(!!dataSourceIntegration.backFillEndDate && !!dataSourceIntegration.backFillEndDate.startDate) {
-                        dataSourceIntegration.backFillEndDate = dateUtil.getFormattedDate(dataSourceIntegration.backFillEndDate.startDate);
-                    } else {
-                        dataSourceIntegration.backFillEndDate = null;
-                    }
+                    // if(!!dataSourceIntegration.backFillStartDate && !!dataSourceIntegration.backFillStartDate.startDate) {
+                    //     dataSourceIntegration.backFillStartDate = dateUtil.getFormattedDate(dataSourceIntegration.backFillStartDate.startDate);
+                    // } else {
+                    //     dataSourceIntegration.backFillStartDate = null;
+                    // }
+                    //
+                    // if(!!dataSourceIntegration.backFillEndDate && !!dataSourceIntegration.backFillEndDate.startDate) {
+                    //     dataSourceIntegration.backFillEndDate = dateUtil.getFormattedDate(dataSourceIntegration.backFillEndDate.startDate);
+                    // } else {
+                    //     dataSourceIntegration.backFillEndDate = null;
+                    // }
                 });
             } else {
                 dataSource.dataSourceIntegrations = []

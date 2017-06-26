@@ -67,15 +67,15 @@
 
                         if(!angular.isObject(dataSourceIntegration.backFillStartDate)) {
                             dataSourceIntegration.backFillStartDate = {
-                                startDate: dataSourceIntegration.backFillStartDate,
-                                endDate: dataSourceIntegration.backFillStartDate
+                                startDate: null, //dataSourceIntegration.backFillStartDate,
+                                endDate: null //dataSourceIntegration.backFillStartDate
                             }
                         }
 
                         if(!angular.isObject(dataSourceIntegration.backFillEndDate)) {
                             dataSourceIntegration.backFillEndDate = {
-                                startDate: dataSourceIntegration.backFillEndDate,
-                                endDate: dataSourceIntegration.backFillEndDate
+                                startDate: null, //dataSourceIntegration.backFillEndDate,
+                                endDate: null //dataSourceIntegration.backFillEndDate
                             }
                         }
                     });
@@ -149,6 +149,11 @@
                 size: 'lg',
                 controller: function ($scope, dataSource, backfillHistories) {
                     $scope.dataSource = dataSource;
+
+                    angular.forEach(backfillHistories, function (backfill, index) {
+                        backfill.sort = index
+                    });
+
                     $scope.backfillHistories = backfillHistories;
 
                     $scope.tableConfig = {

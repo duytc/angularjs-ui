@@ -10,11 +10,11 @@
                 <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
                 <td at-title="Start Date" at-implicit at-sortable at-attribute="backFillStartDate"></td>
                 <td at-title="End Date" at-implicit at-sortable at-attribute="backFillEndDate"></td>
-                <td at-title="Last Executed At" at-sortable at-attribute="lastExecutedAt">
-                    {{ item.lastExecutedAt | date:'MMM d, y H:mm:ss' }}
+                <td at-title="Executed At" at-sortable at-initial-sorting="asc" at-attribute="sort">
+                    {{ item.executedAt | date:'MMM d, y H:mm:ss' }}
                 </td>
-                <td at-title="Is Running" at-sortable at-attribute="isRunning">
-                    <i class="fa" ng-class="!!item.isRunning ? 'fa-check-square' : 'fa-square'"></i>
+                <td at-title="Pending" at-sortable at-attribute="pending">
+                    <i class="fa" ng-class="!!item.pending ? 'fa-check-square' : 'fa-square'"></i>
                 </td>
                 <td at-title="Data Source Integration" at-implicit at-sortable at-attribute="dataSourceIntegration.integration.name "></td>
             </tr>
