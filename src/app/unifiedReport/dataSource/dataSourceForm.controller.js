@@ -84,7 +84,7 @@
             useIntegration: false,
             dateRangeDetectionEnabled: false,
             dateFields: [],
-            dateFormats: [{isCustomFormatDate: false, format: null}],
+            dateFormats: [{isCustomFormatDate: false, isPartialMatch: false, format: null}],
             dateRange: {
                 type: null,
                 startDate: null,
@@ -183,7 +183,7 @@
 
         if(!$scope.isNew) {
             if(!$scope.dataSource.dateFormats || $scope.dataSource.dateFormats.length == 0) {
-                $scope.dataSource.dateFormats = [{isCustomFormatDate: false, format: null}];
+                $scope.dataSource.dateFormats = [{isCustomFormatDate: false, isPartialMatch: false, format: null}];
             }
         }
 
@@ -256,11 +256,13 @@
         }
 
         function addFromFormat(dateFormats) {
-            dateFormats.push({isCustomFormatDate: false, format: null})
+            dateFormats.push({isCustomFormatDate: false, isPartialMatch: false, format: null})
         }
 
         function selectCustomFormatDate(dateFormat) {
-            dateFormat.format = null;
+            // do nothing
+            // TODO: remove when stable
+            //from.format = null;
         }
 
         function removeAddValue(fields, index){
