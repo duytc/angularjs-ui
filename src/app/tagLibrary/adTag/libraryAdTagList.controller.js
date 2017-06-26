@@ -42,7 +42,7 @@
         $scope.searchData = searchData;
 
         function showPagination() {
-            return adTags.totalRecord >= $scope.tableConfig.itemsPerPage;
+            return angular.isArray(adTags.records) && adTags.totalRecord > $scope.tableConfig.itemsPerPage;
         }
 
         $scope.availableOptions = {

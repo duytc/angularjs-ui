@@ -5,7 +5,7 @@
         .controller('PerformanceReportSelector', PerformanceReportSelector)
     ;
 
-    function PerformanceReportSelector($scope, $translate, $q, $state, _, PERFORMANCE_REPORT_TYPES, Auth, UserStateHelper, AlertService, performanceReport, AdNetworkManager, adminUserManager, reportSelectorForm, ReportParams) {
+    function PerformanceReportSelector($scope, $translate, $q, $state, _, PERFORMANCE_REPORT_TYPES, Auth, UserStateHelper, AlertService, performanceReport, SiteManager, AdNetworkManager, adminUserManager, reportSelectorForm, ReportParams) {
         // important init code at the bottom
 
         var toState = null;
@@ -48,9 +48,28 @@
             ronAdSlots: []
         };
 
-        var totalRecord = 0;
-        var paramsForPager = {
-            page: 1
+        var sideParams = {
+            siteAdNetwork: {
+                totalRecord: 0,
+                params: {
+                    query: '',
+                    page: null
+                }
+            },
+            adNetwork: {
+                totalRecord: 0,
+                params: {
+                    query: '',
+                    page: null
+                }
+            },
+            site: {
+                totalRecord: 0,
+                params: {
+                    query: '',
+                    page: null
+                }
+            }
         };
 
         $scope.isFormValid = isFormValid;
@@ -74,7 +93,12 @@
         $scope.filterForDemandSourceReport = filterForDemandSourceReport;
         $scope.clickBreakdown = clickBreakdown;
         $scope.disabledOption = disabledOption;
-        $scope.addMoreItems = addMoreItems;
+        $scope.addMoreSiteAdNetworkItems = addMoreSiteAdNetworkItems;
+        $scope.searchSiteAdNetworkItem = searchSiteAdNetworkItem;
+        $scope.addMoreAdNetworkItems = addMoreAdNetworkItems;
+        $scope.searchAdNetworkItem = searchAdNetworkItem;
+        $scope.searchSiteItem = searchSiteItem;
+        $scope.addMoreSiteItems = addMoreSiteItems;
 
         $scope.datePickerOpts = {
             maxDate:  moment().endOf('day'),
@@ -363,8 +387,7 @@
          * @param {String} [label]
          * @returns {Array}
          */
-        function addAllOption(data, label)
-        {
+        function addAllOption(data, label) {
             if (!angular.isArray(data)) {
                 throw new Error('Expected an array of data');
             }
@@ -491,21 +514,23 @@
             $scope.selectedData.breakDowns = [];
             $scope.selectedData.siteId = null;
 
-            paramsForPager.page = 1;
+            sideParams.siteAdNetwork.params.page = 1;
+            $scope.selectedData.adNetworkId = adNetworkId;
 
             if(adNetworkId){
-                AdNetworkManager.one(adNetworkId).one('sites').get(paramsForPager)
-                .then(function(datas) {
-                    var sites = [];
-                    totalRecord = datas.totalRecord;
-                    angular.forEach(datas.records, function(data) {
-                        sites.push(data.site);
-                    });
+                // AdNetworkManager.one(adNetworkId).one('sites').get(sideParams.siteAdNetwork.params)
+                // .then(function(datas) {
+                //     var sites = [];
+                //     sideParams.siteAdNetwork.totalRecord = datas.totalRecord;
+                //     angular.forEach(datas.records, function(data) {
+                //         sites.push(data.site);
+                //     });
+                //
+                //     addAllOption(sites, 'All Sites');
+                //     $scope.optionData.adNetworkSites = sites;
+                // });
 
-                    addAllOption(sites, 'All Sites');
-                    $scope.optionData.adNetworkSites = sites;
-                });
-
+                searchSiteAdNetworkItem();
                 _setBreakdownOptionsForAllSiteByDemandPartner();
 
                 clickBreakdown(null);
@@ -698,58 +723,171 @@
             }
 
             if(reportType.key == $scope.reportTypes.adNetwork) {
-                if(!isAdmin) {
-                    reportSelectorForm.getAdNetworks()
-                        .then(function (data) {
-                            addAllOption(data, 'All Demand Partners');
-
-                            $scope.optionData.adNetworks = data;
-                        })
-                    ;
-                } else {
-                    adminUserManager.one(publisherId).one('adnetworks').getList()
-                        .then(function (data) {
-                            addAllOption(data, 'All Demand Partners');
-
-                            $scope.optionData.adNetworks = data;
-                        })
-                }
+                searchAdNetworkItem(null, publisherId);
+                // if(!isAdmin) {
+                //     reportSelectorForm.getAdNetworks()
+                //         .then(function (data) {
+                //             addAllOption(data, 'All Demand Partners');
+                //
+                //             $scope.optionData.adNetworks = data;
+                //         })
+                //     ;
+                // } else {
+                //     adminUserManager.one(publisherId).one('adnetworks').getList()
+                //         .then(function (data) {
+                //             addAllOption(data, 'All Demand Partners');
+                //
+                //             $scope.optionData.adNetworks = data;
+                //         })
+                // }
             }
 
             if(reportType.key == $scope.reportTypes.site || reportType.key == $scope.reportTypes.adSlot) {
-                if(!isAdmin) {
-                    reportSelectorForm.getSites()
-                        .then(function (data) {
+                // if(!isAdmin) {
+                //     reportSelectorForm.getSites()
+                //         .then(function (data) {
+                //
+                //             addAllOption(data, 'All Sites');
+                //             $scope.optionData.sites = data;
+                //         })
+                //     ;
+                // } else {
+                //     adminUserManager.one(publisherId).one('sites').getList()
+                //         .then(function (data) {
+                //
+                //             addAllOption(data, 'All Sites');
+                //             $scope.optionData.sites = data;
+                //         })
+                // }
 
-                            addAllOption(data, 'All Sites');
-                            $scope.optionData.sites = data;
-                        })
-                    ;
-                } else {
-                    adminUserManager.one(publisherId).one('sites').getList()
-                        .then(function (data) {
-
-                            addAllOption(data, 'All Sites');
-                            $scope.optionData.sites = data;
-                        })
-                }
+                searchSiteItem(null, publisherId);
             }
         }
 
-        function addMoreItems() {
+        function searchSiteAdNetworkItem(query) {
+            if(!$scope.selectedData.adNetworkId || query == sideParams.siteAdNetwork.params.query) {
+                return;
+            }
+
+            sideParams.siteAdNetwork.params.page = 1;
+            sideParams.siteAdNetwork.params.searchKey = query;
+            sideParams.siteAdNetwork.params.query = query;
+
+            return AdNetworkManager.one($scope.selectedData.adNetworkId).one('sites').get(sideParams.siteAdNetwork.params)
+                .then(function(datas) {
+                    sideParams.siteAdNetwork.totalRecord = datas.totalRecord;
+
+                    $scope.optionData.adNetworkSites = [];
+                    angular.forEach(datas.records, function(data) {
+                        $scope.optionData.adNetworkSites.push(data.site);
+                    });
+
+                    addAllOption($scope.optionData.adNetworkSites, 'All Sites');
+                });
+        }
+
+        function addMoreSiteAdNetworkItems() {
             var page = Math.ceil((($scope.optionData.adNetworkSites.length -1)/10) + 1);
 
-            if(paramsForPager.page === page || (page > Math.ceil(totalRecord/10) && page != 1)) {
+            if(!$scope.selectedData.adNetworkId || sideParams.siteAdNetwork.params.page === page || (page > Math.ceil(sideParams.siteAdNetwork.totalRecord/10) && page != 1)) {
                 return
             }
 
-            paramsForPager.page = page;
+            sideParams.siteAdNetwork.params.page = page;
 
-            return AdNetworkManager.one($scope.selectedData.adNetworkId).one('sites').get(paramsForPager)
+            return AdNetworkManager.one($scope.selectedData.adNetworkId).one('sites').get(sideParams.siteAdNetwork.params)
                 .then(function(datas) {
-                    totalRecord = datas.totalRecord;
+                    sideParams.siteAdNetwork.totalRecord = datas.totalRecord;
                     angular.forEach(datas.records, function(data) {
                         $scope.optionData.adNetworkSites.push(data.site);
+                    });
+
+                    // addAllOption($scope.optionData.adNetworkSites, 'All Sites')
+                })
+        }
+
+        function searchAdNetworkItem(query, publisherId) {
+            if(query == sideParams.adNetwork.params.query) {
+                return;
+            }
+
+            sideParams.adNetwork.params.page = 1;
+            sideParams.adNetwork.params.searchKey = query;
+            sideParams.adNetwork.params.query = query;
+
+            var Manage = isAdmin ? adminUserManager.one(publisherId || $scope.selectedData.publisherId).one('adnetworks') : AdNetworkManager.one();
+
+            return Manage.get(sideParams.adNetwork.params)
+                .then(function(datas) {
+                    sideParams.adNetwork.totalRecord = datas.totalRecord;
+
+                    $scope.optionData.adNetworks = [];
+                    angular.forEach(datas.records, function(adNetwork) {
+                        $scope.optionData.adNetworks.push(adNetwork);
+                    });
+
+                    addAllOption($scope.optionData.adNetworks, 'All Demand Partners');
+                });
+        }
+
+        function searchSiteItem(query, publisherId) {
+            if(query == sideParams.site.params.query) {
+                return;
+            }
+
+            sideParams.site.params.page = 1;
+            sideParams.site.params.searchKey = query;
+            sideParams.site.params.query = query;
+
+            var Manage = isAdmin ? adminUserManager.one(publisherId || $scope.selectedData.publisherId).one('sites') : SiteManager.one();
+
+            return Manage.get(sideParams.site.params)
+                .then(function(datas) {
+                    sideParams.site.totalRecord = datas.totalRecord;
+
+                    $scope.optionData.sites = [];
+                    angular.forEach(datas.records, function(site) {
+                        $scope.optionData.sites.push(site);
+                    });
+
+                    addAllOption($scope.optionData.sites, 'All Sites');
+                });
+        }
+
+        function addMoreAdNetworkItems() {
+            var page = Math.ceil((($scope.optionData.adNetworks.length -1)/10) + 1);
+
+            if(sideParams.adNetwork.params.page === page || (page > Math.ceil(sideParams.adNetwork.totalRecord/10) && page != 1)) {
+                return
+            }
+
+            sideParams.adNetwork.params.page = page;
+            var Manage = isAdmin ? adminUserManager.one($scope.selectedData.publisherId).one('adnetworks') : AdNetworkManager.one();
+
+            return Manage.get(sideParams.adNetwork.params)
+                .then(function(datas) {
+                    sideParams.adNetwork.totalRecord = datas.totalRecord;
+                    angular.forEach(datas.records, function(adNetwork) {
+                        $scope.optionData.adNetworks.push(adNetwork);
+                    });
+                })
+        }
+
+        function addMoreSiteItems() {
+            var page = Math.ceil((($scope.optionData.sites.length -1)/10) + 1);
+
+            if(sideParams.site.params.page === page || (page > Math.ceil(sideParams.site.totalRecord/10) && page != 1)) {
+                return
+            }
+
+            sideParams.site.params.page = page;
+            var Manage = isAdmin ? adminUserManager.one($scope.selectedData.publisherId).one('sites') : SiteManager.one();
+
+            return Manage.get(sideParams.site.params)
+                .then(function(datas) {
+                    sideParams.site.totalRecord = datas.totalRecord;
+                    angular.forEach(datas.records, function(site) {
+                        $scope.optionData.sites.push(site);
                     });
                 })
         }

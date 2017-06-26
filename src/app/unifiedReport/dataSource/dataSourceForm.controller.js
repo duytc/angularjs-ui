@@ -235,7 +235,7 @@
         $scope.selectCustomFormatDate = selectCustomFormatDate;
         $scope.addFromFormat = addFromFormat;
         $scope.selectDateRangeType = selectDateRangeType;
-        
+
         function selectDateRangeType(dateRangeType, dateRange) {
             dateRange.startDate = null;
             dateRange.endDate = null;

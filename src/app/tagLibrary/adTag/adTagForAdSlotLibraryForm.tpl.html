@@ -84,7 +84,7 @@
                     <div class="col-sm-5">
                         <ui-select name="libraryAdTag" ng-model="libraryAdTag" id="inputAdTagLibrary" server-error on-select="selectAdTagLibrary($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'AD_TAG_MODULE.SELECT_AN_AD_TAG_FROM_LIBRARY' | translate }}">{{ $select.selected.name }} {{ $select.selected.id ? '(ID: ' + $select.selected.id + ')' : '' }}</ui-select-match>
-                            <ui-select-choices repeat="libraryAdTag.id as libraryAdTag in adTagLibraryList | filter:$select.search | filter:filterByPublisher:libraryAdTag">
+                            <ui-select-choices infinite-scroll="addMoreAdTagLibraryItems()" infinite-scroll-container="'#reloadLibrary'" id="reloadLibrary" infinite-scroll-distance="500" refresh="searchAdTagLibraryItem($select.search)" refresh-delay="500" repeat="libraryAdTag.id as libraryAdTag in adTagLibraryList | filter:$select.search | filter:filterByPublisher:libraryAdTag">
                                 {{ libraryAdTag.name }} {{ libraryAdTag.id ? '(ID: ' + libraryAdTag.id + ')' : '' }}
                             </ui-select-choices>
                         </ui-select>

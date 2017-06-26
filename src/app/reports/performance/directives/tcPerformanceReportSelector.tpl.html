@@ -50,7 +50,7 @@
                         <label>{{ 'AD_NETWORK' | translate }}</label>
                         <ui-select name="adNetwork" ng-model="selectedData.adNetworkId" ng-disabled="!optionData.adNetworks.length" on-select="selectAdNetwork($model)" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'AD_NETWORK_MODULE.SELECT_A_AD_NETWORK' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices group-by="groupEntities" repeat="adNetwork.id as adNetwork in optionData.adNetworks | filter: $select.search | filter:filterNonEntityValues($select.search) | selectedPublisher:selectedData.publisherId">
+                            <ui-select-choices infinite-scroll="addMoreAdNetworkItems()" infinite-scroll-container="'#reloadAdNetwork'" id="reloadAdNetwork" infinite-scroll-distance="200" refresh="searchAdNetworkItem($select.search)" refresh-delay="500" group-by="groupEntities" repeat="adNetwork.id as adNetwork in optionData.adNetworks | filter:filterNonEntityValues($select.search)">
                                 <div ng-bind-html="adNetwork.name | highlight: $select.search"></div>
                             </ui-select-choices>
                         </ui-select>
@@ -60,7 +60,7 @@
                         <label>{{ 'SITE' | translate }}</label>
                         <ui-select name="adNetworkSites" ng-model="selectedData.siteId" ng-disabled="!optionData.adNetworkSites.length" on-select="selectSiteForAdNetwork($model)" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'SITE_MODULE.SELECT_A_SITE' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices infinite-scroll="addMoreItems()" infinite-scroll-container="'#reload'" id="reload" infinite-scroll-distance="200" refresh="searchItem($select.search)" refresh-delay="500" group-by="groupEntities" repeat="site.id as site in optionData.adNetworkSites | filter: $select.search | filter:filterNonEntityValues($select.search)">
+                            <ui-select-choices infinite-scroll="addMoreSiteAdNetworkItems()" infinite-scroll-container="'#reload'" id="reload" infinite-scroll-distance="200" refresh="searchSiteAdNetworkItem($select.search)" refresh-delay="500" group-by="groupEntities" repeat="site.id as site in optionData.adNetworkSites | filter: $select.search | filter:filterNonEntityValues($select.search)">
                                 <div ng-bind-html="site.name | highlight: $select.search"></div>
                             </ui-select-choices>
                         </ui-select>
@@ -77,13 +77,14 @@
                     </div>
                 </div>
             </div>
+
             <div class="site form-group" ng-if="fieldShouldBeVisible(reportFields.site) && optionData.sites.length && selectedData.publisherId">
                 <div class="form-inline">
                     <div class="form-group" ng-if="selectedData.reportType.toState != 'reports.performance.adSlots'">
                         <label>{{ 'SITE' | translate }}</label>
                         <ui-select name="site" ng-model="selectedData.siteId" on-select="selectSite($model)" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'SITE_MODULE.SELECT_A_SITE' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices group-by="groupEntities" repeat="site.id as site in optionData.sites | filter: $select.search | filter:filterNonEntityValues($select.search) | selectedPublisher:selectedData.publisherId">
+                            <ui-select-choices infinite-scroll="addMoreSiteItems()" infinite-scroll-container="'#reloadSite'" id="reloadSite" infinite-scroll-distance="200" refresh="searchSiteItem($select.search)" group-by="groupEntities" repeat="site.id as site in optionData.sites | filter:filterNonEntityValues($select.search)">
                                 <div ng-bind-html="site.name | highlight: $select.search"></div>
                             </ui-select-choices>
                         </ui-select>
@@ -92,7 +93,7 @@
                         <label>{{ 'SITE' | translate }}</label>
                         <ui-select name="site" ng-model="selectedData.siteId" ng-required="true" on-select="selectSite($model)" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'SITE_MODULE.SELECT_A_SITE' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices group-by="groupEntities" repeat="site.id as site in optionData.sites | filter: {$: $select.search, id: '!!'} | filter:filterNonEntityValues($select.search) | selectedPublisher:selectedData.publisherId">
+                            <ui-select-choices infinite-scroll="addMoreSiteItems()" infinite-scroll-container="'#reloadSite'" id="reloadSite" infinite-scroll-distance="200" refresh="searchSiteItem($select.search)" group-by="groupEntities" repeat="site.id as site in optionData.sites | filter: {$: $select.search, id: '!!'} | filter:filterNonEntityValues($select.search)">
                                 <div ng-bind-html="site.name | highlight: $select.search"></div>
                             </ui-select-choices>
                         </ui-select>

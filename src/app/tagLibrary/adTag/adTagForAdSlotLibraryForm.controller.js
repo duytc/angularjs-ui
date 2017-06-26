@@ -52,6 +52,8 @@
             whitelist: whiteList
         };
 
+        $scope.adTagLibraryList = [];
+
         $scope.adTagGroup = [];
         $scope.adTag = adTag || {
             libraryAdTag: {
@@ -92,12 +94,23 @@
             }
         }
 
+        var adTagLibraryTotalRecord = null;
+        var adTagLibraryParams = {
+            query: '',
+            publisherId: Auth.isAdmin() ? (adSlot.publisher.id || null) : Auth.getSession().id
+        };
+
         // delete file unnecessary
         if(!$scope.isNew) {
             $scope.disabledCheckPickFromLibrary = adTag.libraryAdTag.visible;
 
             // set pickFromLibrary when edit
             $scope.pickFromLibrary = adTag.libraryAdTag.visible;
+
+            if($scope.pickFromLibrary) {
+                $scope.adTagLibraryList.push(adTag.libraryAdTag);
+                searchAdTagLibraryItem();
+            }
 
             // get ad tag library
             getAdTagLibrary();
@@ -134,6 +147,44 @@
         $scope.filterByPublisher = filterByPublisher;
         $scope.selectAdNetwork = selectAdNetwork;
         $scope.moveVastTag = moveVastTag;
+        $scope.addMoreAdTagLibraryItems = addMoreAdTagLibraryItems;
+        $scope.searchAdTagLibraryItem = searchAdTagLibraryItem;
+
+        function searchAdTagLibraryItem(query) {
+            if(!adTagLibraryParams.publisherId) {
+                return;
+            }
+
+            adTagLibraryParams.page = 1;
+            adTagLibraryParams.searchKey = query;
+
+            AdTagLibrariesManager.one().get(adTagLibraryParams)
+                .then(function(data) {
+                    $scope.adTagLibraryList = data.records;
+                    adTagLibraryTotalRecord = data.totalRecord;
+                });
+        }
+
+        function addMoreAdTagLibraryItems() {
+            var page = Math.ceil(($scope.adTagLibraryList.length/10) + 1);
+
+            if(adTagLibraryParams.page === page || !adTagLibraryParams.publisherId || !adTagLibraryTotalRecord || (page > Math.ceil(adTagLibraryTotalRecord/10) && page != 1)) {
+                return
+            }
+
+            adTagLibraryParams.page = page;
+
+            AdTagLibrariesManager.one().get(adTagLibraryParams)
+                .then(function(data) {
+                    angular.forEach(data.records, function(item) {
+                        adTagLibraryTotalRecord = data.totalRecord;
+
+                        if(_.findIndex($scope.adTagLibraryList, {id: item.id}) == -1) {
+                            $scope.adTagLibraryList.push(item);
+                        }
+                    })
+                });
+        }
 
         function _convertGroupVal(groupVal) {
             angular.forEach(groupVal, function(group) {
@@ -306,11 +357,11 @@
 
         function getAdTagLibrary() {
             if($scope.pickFromLibrary) {
-                AdTagLibrariesManager.getList()
-                    .then(function(libraryAdTag) {
-                        $scope.adTagLibraryList = libraryAdTag.plain();
-                    }
-                );
+                // AdTagLibrariesManager.getList()
+                //     .then(function(libraryAdTag) {
+                //         $scope.adTagLibraryList = libraryAdTag.plain();
+                //     }
+                // );
 
                 // disabled form input html when select ad tag library
                 // return $scope.editorOptions.readOnly = 'nocursor';
@@ -355,7 +406,9 @@
             $scope.adTag.libraryAdTag.expressionDescriptor = {
                 groupVal: [],
                 groupType: 'AND'
-            }
+            };
+
+            adTagLibraryParams.publisherId = publisher.id;
         }
 
         function backToAdTagLibraryList() {

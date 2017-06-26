@@ -20,7 +20,6 @@
             mode : "htmlmixed"
         };
 
-
         if (_.isObject(adTag)) {
             var adTagActive = angular.copy(adTag.active);
             adTag.active = adTag.active == 1 ? true : false;
@@ -57,9 +56,15 @@
 
         var gettingAdTagGroup = false;
         var totalRecord = null;
+        var adTagLibraryTotalRecord = null;
         var params = {
             query: '',
             publisherId: $scope.isAdmin() ? (!!$stateParams.adSlotId ? publisher.id : null) || null : userSession.id
+        };
+
+        var adTagLibraryParams = {
+            query: '',
+            publisherId: $scope.isAdmin() ? !!$stateParams.adSlotId ? publisher.id : null : userSession.id
         };
 
         $scope.adSlotTypes = TYPE_AD_SLOT;
@@ -71,6 +76,7 @@
         $scope.publisherList = publisherList;
         $scope.adSlotList = !!$stateParams.adSlotId ? [adSlot] : [];
         $scope.adNetworkList = adNetworkList;
+        $scope.adTagLibraryList = [];
         var adSlotSelecting = !!$stateParams.adSlotId ? [adSlot] : [];
 
         // delete file unnecessary
@@ -79,6 +85,11 @@
 
             // set pickFromLibrary when edit
             $scope.pickFromLibrary = adTag.libraryAdTag.visible;
+
+            if($scope.pickFromLibrary) {
+                $scope.adTagLibraryList.push(adTag.libraryAdTag);
+                searchAdTagLibraryItem();
+            }
 
             // set ad tag library
             if(adTag.libraryAdTag.visible) {
@@ -145,11 +156,15 @@
             if(angular.isArray($scope.adTag.libraryAdTag.expressionDescriptor) || !$scope.adTag.libraryAdTag.expressionDescriptor) {
                 $scope.adTag.libraryAdTag.expressionDescriptor = {groupVal: [], groupType: 'AND'}
             }
+
+            adTagLibraryParams.publisherId = publisher.id || publisher
         }
 
         $scope.getAdTagLibrary = getAdTagLibrary;
         $scope.searchItem = searchItem;
+        $scope.searchAdTagLibraryItem = searchAdTagLibraryItem;
         $scope.addMoreItems = addMoreItems;
+        $scope.addMoreAdTagLibraryItems = addMoreAdTagLibraryItems;
         $scope.backToAdTagList = backToAdTagList;
         $scope.moveVastTag = moveVastTag;
         $scope.isPassback = isPassback;
@@ -237,6 +252,7 @@
             $scope.hasUnifiedModule = publisher.enabledModules.indexOf('MODULE_UNIFIED_REPORT') !== -1;
 
             params.publisherId = publisher.id;
+            adTagLibraryParams.publisherId = publisher.id;
             searchItem();
         };
 
@@ -345,11 +361,11 @@
 
         function getAdTagLibrary() {
             if($scope.pickFromLibrary) {
-                AdTagLibrariesManager.getList()
-                    .then(function(libraryAdTag) {
-                        $scope.adTagLibraryList = libraryAdTag.plain();
-                    }
-                );
+                // AdTagLibrariesManager.getList()
+                //     .then(function(libraryAdTag) {
+                //         $scope.adTagLibraryList = libraryAdTag.plain();
+                //     }
+                // );
 
                 // disabled form input html when select ad tag library
                 return $scope.editorOptions.readOnly = true;
@@ -595,6 +611,42 @@
                         }
 
                         $scope.adSlotList.push(item);
+                    })
+                });
+        }
+
+        function searchAdTagLibraryItem(query) {
+            if(!adTagLibraryParams.publisherId) {
+                return;
+            }
+
+            adTagLibraryParams.page = 1;
+            adTagLibraryParams.searchKey = query;
+
+            AdTagLibrariesManager.one().get(adTagLibraryParams)
+                .then(function(data) {
+                    $scope.adTagLibraryList = data.records;
+                    adTagLibraryTotalRecord = data.totalRecord;
+                });
+        }
+
+        function addMoreAdTagLibraryItems() {
+            var page = Math.ceil(($scope.adTagLibraryList.length/10) + 1);
+
+            if(adTagLibraryParams.page === page || !adTagLibraryParams.publisherId || !adTagLibraryTotalRecord || (page > Math.ceil(adTagLibraryTotalRecord/10) && page != 1)) {
+                return
+            }
+
+            adTagLibraryParams.page = page;
+
+            AdTagLibrariesManager.one().get(adTagLibraryParams)
+                .then(function(data) {
+                    angular.forEach(data.records, function(item) {
+                        adTagLibraryTotalRecord = data.totalRecord;
+
+                        if(_.findIndex($scope.adTagLibraryList, {id: item.id}) == -1) {
+                            $scope.adTagLibraryList.push(item);
+                        }
                     })
                 });
         }

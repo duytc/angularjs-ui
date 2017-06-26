@@ -135,7 +135,7 @@
         $scope.searchReportView = searchReportView;
         $scope.exportExcel = exportExcel;
         $scope.showDetailsMissingDates = showDetailsMissingDates;
-        
+
         function showDetailsMissingDates() {
             $modal.open({
                 templateUrl: 'unifiedReport/report/showMissingDate.tpl.html',
