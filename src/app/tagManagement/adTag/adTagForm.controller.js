@@ -437,7 +437,11 @@
                         html: null,
                         adNetwork: null,
                         adType: $scope.adTypes.customAd,
-                        descriptor: null
+                        descriptor: null,
+                        expressionDescriptor: {
+                            groupVal: [],
+                            groupType: 'AND'
+                        }
                     }
                 } else {
                     $scope.adTag = {
@@ -446,7 +450,11 @@
                             html: null,
                             adNetwork: null,
                             adType: $scope.adTypes.customAd,
-                            descriptor: null
+                            descriptor: null,
+                            expressionDescriptor: {
+                                groupVal: [],
+                                groupType: 'AND'
+                            }
                         }
                     };
                 }
