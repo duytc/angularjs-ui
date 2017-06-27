@@ -48,6 +48,9 @@
                         {{ item.createdDate | date:'MMM d, y H:mm:ss' }}
                     </td>
                     <td at-implicit at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.FILENAME' | translate }}" at-sortable at-attribute="dataSourceEntry.fileName"></td>
+                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DATE_RANGE' | translate }}" at-attribute="dateRange">
+                        {{ (!!item.dataSourceEntry.startDate && !!item.dataSourceEntry.endDate) ? ((item.dataSourceEntry.startDate == item.dataSourceEntry.endDate) ? (item.dataSourceEntry.startDate | date:'MMM d, y') : (item.dataSourceEntry.startDate | date:'MMM d, y') + ' - ' + (item.dataSourceEntry.endDate | date:'MMM d, y')) : null}}
+                    </td>
                     <td ng-show="!!dataSet" at-title="{{ 'DATA_SOURCE' | translate }}" at-sortable at-attribute="dataSourceEntry.dataSource.name">
                         {{ item.dataSourceEntry.dataSource.name + ' (ID: '+ item.dataSourceEntry.dataSource.id +')'}}
                     </td>

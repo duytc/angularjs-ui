@@ -95,7 +95,7 @@
                         <!--{{ (!!item.startDate && !!item.endDate) ? (item.startDate | date:'MMM d, y') + ' - ' + (item.endDate | date:'MMM d, y') : null }}-->
                     <!--</td>-->
                     <td ng-show="dataSource.dateRangeDetectionEnabled" at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DATE_RANGE' | translate }}" at-attribute="dateRange">
-                        {{ (!!item.startDate && !!item.endDate) ? ((item.startDate | date:'MMM d, y') + ' - ' + (item.endDate | date:'MMM d, y')) : null}}
+                        {{ (!!item.startDate && !!item.endDate) ? ((item.startDate == item.endDate) ? (item.startDate | date:'MMM d, y') : (item.startDate | date:'MMM d, y') + ' - ' + (item.endDate | date:'MMM d, y')) : null}}
                     </td>
                     <td at-title="Imported on" at-sortable at-initial-sorting="desc" at-attribute="receivedDate">{{ item.receivedDate | date:'MMM d, y H:mm:ss' }}</td>
                     <!--<td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.RESOURCE_NAME' | translate }}" at-implicit at-attribute="dataSource.name"></td>-->
@@ -107,8 +107,8 @@
 
                     <td ng-show="dataSource.dateRangeDetectionEnabled" at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.STATUS' | translate }}" at-attribute="missingDate">
                         <div ng-if="!!item.startDate && !!item.endDate">
-                            <span class="label label-warning" ng-if="item.dateRangeBroken">Date Range Broken</span>
-                            <span class="label label-success" ng-if="!item.dateRangeBroken">Seamless Date Range</span>
+                            <span class="label label-danger" ng-if="item.dateRangeBroken">Missing Date</span>
+                            <span class="label label-success" ng-if="!item.dateRangeBroken">Ok</span>
                         </div>
                     </td>
                 </tr>

@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.connect')
         .controller('PreviewDataConnect', PreviewDataConnect);
 
-    function PreviewDataConnect($scope, $modal, connectDataSource, dataSourceEntries, listFilePaths, UnifiedReportDataSourceFileManager, UnifiedReportConnectDataSourceManager) {
+    function PreviewDataConnect($scope, $modal, $filter, connectDataSource, dataSourceEntries, listFilePaths, UnifiedReportDataSourceFileManager, UnifiedReportConnectDataSourceManager) {
         const ALERT_CODE_DATA_IMPORT_MAPPING_FAIL = 1201;
         const ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL = 1202;
         const ALERT_CODE_FILTER_ERROR_INVALID_NUMBER = 1203;
@@ -18,6 +18,11 @@
         const ALERT_CODE_UN_EXPECTED_ERROR = 2000;
 
         $scope.connectDataSource = connectDataSource;
+
+        angular.forEach(dataSourceEntries, function (dataSourceEntrie) {
+            dataSourceEntrie.fileName = (!!dataSourceEntrie.startDate && !!dataSourceEntrie.startDate ? (dataSourceEntrie.startDate == dataSourceEntrie.endDate ? $filter('date')(dataSourceEntrie.startDate, 'MMM d, y') : $filter('date')(dataSourceEntrie.startDate, 'MMM d, y') + ' - ' + $filter('date')(dataSourceEntrie.endDate, 'MMM d, y')) : '') + (!!dataSourceEntrie.startDate && !!dataSourceEntrie.startDate ? ' (' : '') + dataSourceEntrie.fileName + (!!dataSourceEntrie.startDate && !!dataSourceEntrie.startDate ? ')' : '');
+        });
+
         $scope.dataSourceEntries = dataSourceEntries;
         $scope.reportProcessedData = [];
         $scope.originalData = [];

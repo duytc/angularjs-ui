@@ -1,6 +1,6 @@
 <div class="modal-header">
     <form class="form-inline">
-        <h4 class="form-group">View Missing Date</h4>
+        <h4 class="form-group">Missing Dates</h4>
     </form>
 
 </div>
@@ -13,7 +13,9 @@
             <tr>
                 <td at-implicit at-attribute="date" at-sortable at-initial-sorting="asc" at-title="Date"></td>
                 <!--<td at-implicit at-attribute="dataSourceEntries.fileName" at-sortable at-title="Filename"></td>-->
-                <td at-implicit at-attribute="dataSource.name" at-sortable at-title="Data Source"></td>
+                <td at-attribute="dataSource.name" at-sortable at-title="Data Source">
+                    {{ item.dataSource.name + ' (' + item.dataSource.id + ')'}}
+                </td>
             </tr>
             </tbody>
         </table>
