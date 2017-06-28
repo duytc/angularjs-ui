@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('tagcade.unifiedReport.alert')
@@ -26,6 +26,7 @@
         const ALERT_CODE_UN_EXPECTED_ERROR = 2000;
         const ALERT_CODE_FETCHER_LOGIN_FAIL = 2001;
         const ALERT_CODE_FETCHER_TIME_OUT = 2002;
+        const ALERT_CODE_FETCHER_PASSWORD_EXPIRES = 2003;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -414,6 +415,9 @@
 
                 case ALERT_CODE_FETCHER_TIME_OUT:
                     return 'A timeout error has occurred when downloading reports for data source (ID: ' + detail.dataSourceId + ')';
+
+                case ALERT_CODE_FETCHER_PASSWORD_EXPIRES:
+                    return 'Password expires on data source ' + detail.dataSourceId + '. Please change password for account ' + detail.username + ' on link ' + detail.url + ' or contact your account manager';
 
                 case ALERT_CODE_NO_DATE_FORMAT:
                     return 'A file failed to load. There was an invalid date format on field "' + detail.column +'"';
