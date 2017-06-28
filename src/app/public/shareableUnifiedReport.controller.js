@@ -249,6 +249,35 @@
                     $scope.columnPositions.unshift('report_view_alias');
                 }
             }
+
+            if (!!$scope.reportView.formats.length) {
+                angular.forEach($scope.reportView.formats, function (format) {
+                    if (format.type == 'columnPosition' && format.fields.length > 0) {
+                        angular.forEach(format.fields, function (field) {
+                            var index = $scope.columnPositions.indexOf(field);
+
+                            if(index > -1) {
+                                $scope.columnPositions.splice(index, 1)
+                            }
+                        });
+
+                        $scope.columnPositions = format.fields.concat($scope.columnPositions);
+
+                        angular.forEach(angular.copy($scope.columnPositions), function (col) {
+                            var index = $scope.columnPositions.indexOf(col);
+                            if(!!$scope.titleColumns && !$scope.titleColumns[col] && index > -1) {
+                                $scope.columnPositions.splice(index, 1);
+                            }
+                        })
+                    }
+                });
+
+                var indexReportAlias = $scope.columnPositions.indexOf('report_view_alias');
+                if(indexReportAlias > -1 && $scope.reportView.multiView) {
+                    $scope.columnPositions.splice(indexReportAlias, 1);
+                    $scope.columnPositions.unshift('report_view_alias');
+                }
+            }
         }
 
         function _getReportDetail() {
