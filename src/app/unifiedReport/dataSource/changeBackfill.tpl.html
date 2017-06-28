@@ -5,30 +5,14 @@
     <div class="modal-body">
         <div class="row">
             <div class="col-lg-12 form-validation form-horizontal">
-                <div class="form-group" data-ng-repeat="integration in dataSource.dataSourceIntegrations">
-                    <!--<div class="form-group">-->
-                        <!--<label class=" col-sm-2 control-label">Backfill</label>-->
-                        <!--<div class="col-sm-10">-->
-                            <!--<div>-->
-                                <!--<label class="ui-checkbox">-->
-                                    <!--<input server-error name="backFill" ng-model="integration.backFill" type="checkbox" id="backFill">-->
-                                    <!--<span></span>-->
-                                <!--</label>-->
-                            <!--</div>-->
-
-                            <!--<span class="help-block">Backfill allows you get historical data from a defined start date</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-
+                <div class="form-group">
                     <div>
-                    <!--<div ng-if="integration.backFill">-->
                         <div class="form-group">
                             <label class=" col-sm-2 control-label">Backfill Start Date</label>
                             <div class="col-sm-10">
                                 <div style="width:100%" class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input date-range-picker options="datePickerOpts" class="form-control date-picker" type="text" ng-model="integration.backFillStartDate">
-                                    <!--<input date-range-picker ng-disabled="!isNew && !integration.backFillForce && integration.backFillExecuted" options="datePickerOpts" class="form-control date-picker" type="text" ng-model="integration.backFillStartDate">-->
+                                    <input date-range-picker options="datePickerOpts" class="form-control date-picker" type="text" ng-model="backfillHistories.backFillStartDate">
                                 </div>
                             </div>
                         </div>
@@ -38,8 +22,7 @@
                             <div class="col-sm-10">
                                 <div style="width:100%" class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input date-range-picker options="datePickerOpts" class="form-control date-picker" type="text" ng-model="integration.backFillEndDate">
-                                    <!--<input date-range-picker ng-disabled="!isNew && !integration.backFillForce && integration.backFillExecuted" options="datePickerOpts" class="form-control date-picker" type="text" ng-model="integration.backFillEndDate">-->
+                                    <input date-range-picker options="datePickerOpts" class="form-control date-picker" type="text" ng-model="backfillHistories.backFillEndDate">
                                 </div>
                             </div>
                         </div>

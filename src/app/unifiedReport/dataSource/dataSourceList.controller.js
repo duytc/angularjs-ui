@@ -52,69 +52,32 @@
             $modal.open({
                 templateUrl: 'unifiedReport/dataSource/changeBackfill.tpl.html',
                 size: 'lg',
-                controller: function ($scope, $modalInstance, dataSource, AlertService, dateUtil, UnifiedReportDataSourceManager) {
+                controller: function ($scope, $modalInstance, dataSource, AlertService, dateUtil, UnifiedReportDataSourceIntegrationBackfillHistories) {
                     $scope.dataSource = dataSource;
 
                     $scope.datePickerOpts = {
                         singleDatePicker: true
                     };
 
-                    angular.forEach($scope.dataSource.dataSourceIntegrations, function (dataSourceIntegration) {
-                        delete dataSourceIntegration.integration;
-                        delete dataSourceIntegration.schedule;
-                        delete dataSourceIntegration.params;
-                        delete dataSourceIntegration.active;
-
-                        if(!angular.isObject(dataSourceIntegration.backFillStartDate)) {
-                            dataSourceIntegration.backFillStartDate = {
-                                startDate: null, //dataSourceIntegration.backFillStartDate,
-                                endDate: null //dataSourceIntegration.backFillStartDate
-                            }
+                    $scope.backfillHistories = {
+                        dataSourceIntegration: $scope.dataSource.dataSourceIntegrations[0].id,
+                        backFillStartDate: {
+                            startDate: null,
+                            endDate: null
+                        },
+                        backFillEndDate: {
+                            startDate: null,
+                            endDate: null
                         }
-
-                        if(!angular.isObject(dataSourceIntegration.backFillEndDate)) {
-                            dataSourceIntegration.backFillEndDate = {
-                                startDate: null, //dataSourceIntegration.backFillEndDate,
-                                endDate: null //dataSourceIntegration.backFillEndDate
-                            }
-                        }
-                    });
+                    };
 
                     $scope.submit = function (){
                         $modalInstance.close();
 
-                        var dataSourceIntegrations = angular.copy($scope.dataSource.dataSourceIntegrations);
-                        angular.forEach(dataSourceIntegrations, function (dataSourceIntegration) {
-                            delete dataSourceIntegration.id;
+                        $scope.backfillHistories.backFillStartDate = dateUtil.getFormattedDate($scope.backfillHistories.backFillStartDate.startDate);
+                        $scope.backfillHistories.backFillEndDate = dateUtil.getFormattedDate($scope.backfillHistories.backFillEndDate.startDate);
 
-                            angular.forEach(dataSourceIntegration.params, function (param) {
-                                if(param.type == 'date') {
-                                    param.value = dateUtil.getFormattedDate(param.value.startDate);
-                                }
-
-                                if(param.type == 'option') {
-                                    delete param.optionValues
-                                }
-
-                                if(param.type == 'bool' && !param.value) {
-                                    param.value = false
-                                }
-                            });
-
-                            if(!!dataSourceIntegration.backFillStartDate && !!dataSourceIntegration.backFillStartDate.startDate) {
-                                dataSourceIntegration.backFillStartDate = dateUtil.getFormattedDate(dataSourceIntegration.backFillStartDate.startDate);
-                            } else {
-                                dataSourceIntegration.backFillStartDate = null;
-                            }
-
-                            if(!!dataSourceIntegration.backFillEndDate && !!dataSourceIntegration.backFillEndDate.startDate) {
-                                dataSourceIntegration.backFillEndDate = dateUtil.getFormattedDate(dataSourceIntegration.backFillEndDate.startDate);
-                            } else {
-                                dataSourceIntegration.backFillEndDate = null;
-                            }
-                        });
-
-                        var saveDataSource = UnifiedReportDataSourceManager.one(dataSource.id).patch({dataSourceIntegrations: dataSourceIntegrations});
+                        var saveDataSource = UnifiedReportDataSourceIntegrationBackfillHistories.post($scope.backfillHistories);
                         saveDataSource.then(function (){
                             AlertService.replaceAlerts({
                                 type: 'success',
