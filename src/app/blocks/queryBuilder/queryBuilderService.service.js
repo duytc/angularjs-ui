@@ -47,10 +47,12 @@
                 trueJsVariable = 'top.screen.height';
             }
             else if (myVar == '${WINDOW_WIDTH}') {
-                trueJsVariable = 'top.screen.outerWidth';
+                // trueJsVariable = 'top.screen.outerWidth';
+                trueJsVariable = 'top.outerWidth';
             }
             else if (myVar == '${WINDOW_HEIGHT}') {
-                trueJsVariable = 'top.screen.outerHeight';
+                trueJsVariable = 'top.outerHeight';
+                // trueJsVariable = 'top.screen.outerHeight';
             }
             else if(myVar == '${DOMAIN}') {
                 trueJsVariable = 'top.location.hostname';
