@@ -64,11 +64,17 @@
                 <div class="row" ng-if="showInputPosition && !hasMultipleDeployAdSlot">
                     <div class="col-sm-offset-1 col-sm-5">
                         <div style="background-color: #e6e6e6; height: 85px; margin-bottom: 15px; clear: both" ng-repeat="adTagList in adTagGroup">
-                            <span style="text-align: center; float: left; height: 100%" ng-repeat="adTag in adTagList" ng-style="{width: 100/adTagList.length+'%', 'border-left': ($index != 0 ? '1px solid #000000' : '')}">
-                                <p style="margin: 10px 0 5px 0 !important;"><strong>{{ adTag.libraryAdTag.adNetwork.name }}</strong></p>
-                                <p style="margin: 5px !important;">{{ !!adTag.frequencyCap ? adTag.frequencyCap : 'N/A'}} FC</p>
-                                <p style="margin: 5px !important;">{{ !!adTag.rotation ? adTag.rotation : 'N/A'}} Weight</p>
-                            </span>
+                            <div ng-repeat="adTag in adTagList">
+                                <span style="text-align: center; float: left; height: 100%" ng-if="$index < 3" ng-style="{width: ($index < 3 && adTagList.length > 3? '25%' : 100/adTagList.length+'%'), 'border-left': ($index != 0 ? '1px solid #000000' : '')}">
+                                    <p style="margin: 10px 0 5px 0 !important;"><strong>{{ adTag.libraryAdTag.adNetwork.name }}</strong></p>
+                                    <p style="margin: 5px !important;">{{ !!adTag.frequencyCap ? adTag.frequencyCap : 'N/A'}} FC</p>
+                                    <p style="margin: 5px !important;">{{ !!adTag.rotation ? adTag.rotation : 'N/A'}} Weight</p>
+                                </span>
+
+                                <span style="text-align: center; float: left; height: 100%" ng-if="$index == 3" ng-style="{width: '25%', 'border-left':'1px solid #000000'}">
+                                    <p style="margin: 33px !important;">(100) ...</p>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>

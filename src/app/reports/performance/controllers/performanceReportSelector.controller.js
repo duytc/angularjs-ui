@@ -5,7 +5,7 @@
         .controller('PerformanceReportSelector', PerformanceReportSelector)
     ;
 
-    function PerformanceReportSelector($scope, $translate, $q, $state, _, PERFORMANCE_REPORT_TYPES, Auth, UserStateHelper, AlertService, performanceReport, SiteManager, AdNetworkManager, adminUserManager, reportSelectorForm, ReportParams) {
+    function PerformanceReportSelector($scope, $translate, $q, $state, _, PERFORMANCE_REPORT_TYPES, Auth, UserStateHelper, AlertService, performanceReport, SiteManager, AdNetworkManager, adminUserManager, reportSelectorForm, ReportParams, USER_MODULES) {
         // important init code at the bottom
 
         var toState = null;
@@ -464,6 +464,7 @@
          */
         function selectReportType(reportType) {
             $scope.selectedData.siteId = null;
+            $scope.selectedData.adNetworkId = null;
             $scope.selectedData.labelBreakdown = null;
             $scope.selectedData.breakDown = null;
             $scope.selectedData.breakDowns = [];
@@ -553,17 +554,17 @@
             clickBreakdown(null);
 
             if(!siteId) {
-                return $scope.selectedData.reportType.breakdownOptions = [
+                $scope.selectedData.reportType.breakdownOptions = [
                     {
                         key: 'day',
                         label: 'By Day',
                         toState: 'reports.performance.adNetwork'
                     },
-                    {
-                        key: 'subpublisher',
-                        label: 'By Sub Publisher',
-                        toState: 'reports.performance.adNetworkSiteSubPublishers'
-                    },
+                    // {
+                    //     key: 'subpublisher',
+                    //     label: 'By Sub Publisher',
+                    //     toState: 'reports.performance.adNetworkSiteSubPublishers'
+                    // },
                     {
                         key: 'site',
                         label: 'By Site',
@@ -574,7 +575,17 @@
                         label: 'By Ad Tag',
                         toState: 'reports.performance.adNetworkAdTags'
                     }
-                ]
+                ];
+
+                if(Auth.getSession().hasModuleEnabled(USER_MODULES.subPublisher)) {
+                    $scope.selectedData.reportType.breakdownOptions.splice(1, 0,    {
+                        key: 'subpublisher',
+                        label: 'By Sub Publisher',
+                        toState: 'reports.performance.adNetworkSiteSubPublishers'
+                    });
+                }
+
+                return;
             }
 
             return $scope.selectedData.reportType.breakdownOptions = [
@@ -798,11 +809,14 @@
             return AdNetworkManager.one($scope.selectedData.adNetworkId).one('sites').get(sideParams.siteAdNetwork.params)
                 .then(function(datas) {
                     sideParams.siteAdNetwork.totalRecord = datas.totalRecord;
+
+                    if($scope.optionData.adNetworkSites.length == 0) {
+                        addAllOption($scope.optionData.adNetworkSites, 'All Sites');
+                    }
+
                     angular.forEach(datas.records, function(data) {
                         $scope.optionData.adNetworkSites.push(data.site);
                     });
-
-                    // addAllOption($scope.optionData.adNetworkSites, 'All Sites')
                 })
         }
 
@@ -867,6 +881,11 @@
             return Manage.get(sideParams.adNetwork.params)
                 .then(function(datas) {
                     sideParams.adNetwork.totalRecord = datas.totalRecord;
+
+                    if($scope.optionData.adNetworks.length == 0) {
+                        addAllOption($scope.optionData.adNetworks, 'All Demand Partners');
+                    }
+
                     angular.forEach(datas.records, function(adNetwork) {
                         $scope.optionData.adNetworks.push(adNetwork);
                     });
@@ -886,6 +905,11 @@
             return Manage.get(sideParams.site.params)
                 .then(function(datas) {
                     sideParams.site.totalRecord = datas.totalRecord;
+
+                    if($scope.optionData.sites.length == 0) {
+                        addAllOption($scope.optionData.sites, 'All Sites');
+                    }
+
                     angular.forEach(datas.records, function(site) {
                         $scope.optionData.sites.push(site);
                     });
@@ -906,11 +930,11 @@
                         label: 'By Day',
                         toState: 'reports.performance.adNetworksDay'
                     },
-                    {
-                        key: 'subpublisher',
-                        label: 'By Sub Publisher',
-                        toState: 'reports.performance.adNetworksSubPublishers'
-                    },
+                    // {
+                    //     key: 'subpublisher',
+                    //     label: 'By Sub Publisher',
+                    //     toState: 'reports.performance.adNetworksSubPublishers'
+                    // },
                     {
                         key: 'partner',
                         label: 'By Partner',
@@ -922,6 +946,14 @@
                         toState: 'reports.performance.adNetworksAdTags'
                     }
                 ];
+
+                if(Auth.getSession().hasModuleEnabled(USER_MODULES.subPublisher)) {
+                    reportType.breakdownOptions.splice(1, 0,    {
+                        key: 'subpublisher',
+                        label: 'By Sub Publisher',
+                        toState: 'reports.performance.adNetworksSubPublishers'
+                    });
+                }
             }
 
             if(reportType.key == 'site' && reportType.toState == 'reports.performance.sites' && !selectedData.siteId) {
@@ -971,11 +1003,11 @@
                     label: 'By Day',
                     toState: 'reports.performance.adNetwork'
                 },
-                {
-                    key: 'subpublisher',
-                    label: 'By Sub Publisher',
-                    toState: 'reports.performance.adNetworkSiteSubPublishers'
-                },
+                // {
+                //     key: 'subpublisher',
+                //     label: 'By Sub Publisher',
+                //     toState: 'reports.performance.adNetworkSiteSubPublishers'
+                // },
                 {
                     key: 'site',
                     label: 'By Site',
@@ -987,6 +1019,14 @@
                     toState: 'reports.performance.adNetworkAdTags'
                 }
             ];
+
+            if(Auth.getSession().hasModuleEnabled(USER_MODULES.subPublisher)) {
+                $scope.selectedData.reportType.breakdownOptions.splice(1, 0,    {
+                    key: 'subpublisher',
+                    label: 'By Sub Publisher',
+                    toState: 'reports.performance.adNetworkSiteSubPublishers'
+                });
+            }
         }
 
         /**
@@ -1000,11 +1040,11 @@
                     label: 'By Day',
                     toState: 'reports.performance.adNetworksDay'
                 },
-                {
-                    key: 'subpublisher',
-                    label: 'By Sub Publisher',
-                    toState: 'reports.performance.adNetworksSubPublishers'
-                },
+                // {
+                //     key: 'subpublisher',
+                //     label: 'By Sub Publisher',
+                //     toState: 'reports.performance.adNetworksSubPublishers'
+                // },
                 {
                     key: 'partner',
                     label: 'By Partner',
@@ -1016,6 +1056,14 @@
                     toState: 'reports.performance.adNetworksAdTags'
                 }
             ];
+
+            if(Auth.getSession().hasModuleEnabled(USER_MODULES.subPublisher)) {
+                $scope.selectedData.reportType.breakdownOptions.splice(1, 0,    {
+                    key: 'subpublisher',
+                    label: 'By Sub Publisher',
+                    toState: 'reports.performance.adNetworksSubPublishers'
+                });
+            }
         }
 
         /**
@@ -1082,9 +1130,7 @@
             }
 
             reportSelectorForm.getCalculatedParams(params).then(
-
                 function (calculatedParams) {
-
                     var reportType = findReportType(calculatedParams.reportType) || null;
                     if (_.isNull(reportType)) {
                         return;
@@ -1103,6 +1149,11 @@
 
                         if (calculatedParams.siteId != null && calculatedParams.reportType == 'site') {
                             _setBreakdownOptionsForSite();
+                        }
+
+                        if (calculatedParams.siteId != null && calculatedParams.reportType == 'adslot') {
+                            hasGetAdSlot = false;
+                            getAdSlot(calculatedParams.siteId);
                         }
 
                         var breakdownOption = _.findWhere(reportType.breakdownOptions, { key: breakdownValue });
@@ -1143,6 +1194,29 @@
                         }
 
                         $scope.selectedData.labelBreakdown = _getLabelBreakdown([$scope.selectedData.breakDown, $scope.selectedData.subBreakDown]);
+                    }
+
+
+                    if(!!calculatedParams.adNetwork) {
+                        if(_.findIndex($scope.optionData.adNetworks, {id: calculatedParams.adNetwork.id}) == -1) {
+                            $scope.optionData.adNetworks.push(calculatedParams.adNetwork);
+                        }
+                    }
+
+                    if(!!calculatedParams.site) {
+                        if(_.findIndex($scope.optionData.sites, {id: calculatedParams.site.id}) == -1) {
+                            $scope.optionData.sites.push(calculatedParams.site);
+                        }
+
+                        if(_.findIndex($scope.optionData.adNetworkSites, {id: calculatedParams.site.id}) == -1) {
+                            $scope.optionData.adNetworkSites.push(calculatedParams.site);
+                        }
+                    }
+
+                    if(!!calculatedParams.adSlot) {
+                        if(_.findIndex($scope.optionData.sites, {id: calculatedParams.adSlot.site.id}) == -1) {
+                            $scope.optionData.sites.push(calculatedParams.adSlot.site);
+                        }
                     }
                 }
             );
