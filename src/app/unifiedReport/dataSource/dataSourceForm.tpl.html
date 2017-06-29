@@ -225,69 +225,6 @@
                                 </div>
                             </div>
                             <br>
-                            <!--<div class="form-group">-->
-                                <!--<label class=" col-sm-2 control-label">Backfill</label>-->
-                                <!--<div class="col-sm-10">-->
-                                    <!--<div>-->
-                                        <!--<label class="ui-checkbox">-->
-                                            <!--<input server-error name="backFill" ng-model="integration.backFill" type="checkbox" id="backFill">-->
-                                            <!--<span></span>-->
-                                        <!--</label>-->
-                                    <!--</div>-->
-
-                                    <!--<span class="help-block">Backfill allows you get historical data from a defined start date</span>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<br>-->
-                            <!--<div ng-if="integration.backFill">-->
-                                <!--&lt;!&ndash;<div class="form-group" ng-if="integration.backFillExecuted">&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<label class=" col-sm-2 control-label">Force Backfill Run</label>&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<div class="col-sm-10">&ndash;&gt;-->
-                                        <!--&lt;!&ndash;<div>&ndash;&gt;-->
-                                            <!--&lt;!&ndash;<label class="ui-checkbox">&ndash;&gt;-->
-                                                <!--&lt;!&ndash;<input server-error name="backFillForce" ng-model="integration.backFillForce" type="checkbox" id="backFillForce">&ndash;&gt;-->
-                                                <!--&lt;!&ndash;<span></span>&ndash;&gt;-->
-                                            <!--&lt;!&ndash;</label>&ndash;&gt;-->
-                                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-                                        <!--&lt;!&ndash;<span class="help-block">If checked, backfill will be run again one time</span>&ndash;&gt;-->
-                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                                <!--<br>-->
-                                <!--<div class="form-group">-->
-                                    <!--<label class=" col-sm-2 control-label">Backfill Start Date</label>-->
-                                    <!--<div class="col-sm-10">-->
-                                        <!--<div style="width:100%" class="input-group">-->
-                                            <!--<span class="input-group-addon"><i class="fa fa-calendar"></i></span>-->
-                                            <!--<input date-range-picker ng-required="true" options="datePickerOpts" class="form-control date-picker" type="text" ng-model="integration.backFillStartDate">-->
-                                            <!--&lt;!&ndash;<input date-range-picker ng-disabled="!isNew && !integration.backFillForce && integration.backFillExecuted" options="datePickerOpts" class="form-control date-picker" type="text" ng-model="integration.backFillStartDate">&ndash;&gt;-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <!--<br>-->
-                                <!--<div class="form-group">-->
-                                    <!--<label class=" col-sm-2 control-label">Backfill End Date</label>-->
-                                    <!--<div class="col-sm-10">-->
-                                        <!--<div style="width:100%" class="input-group">-->
-                                            <!--<span class="input-group-addon"><i class="fa fa-calendar"></i></span>-->
-                                            <!--<input date-range-picker options="datePickerOpts" class="form-control date-picker" type="text" ng-model="integration.backFillEndDate">-->
-                                            <!--&lt;!&ndash;<input date-range-picker ng-disabled="!isNew && !integration.backFillForce && integration.backFillExecuted" options="datePickerOpts" class="form-control date-picker" type="text" ng-model="integration.backFillEndDate">&ndash;&gt;-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <!--<br>-->
-                            <!--</div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label class=" col-sm-2 control-label">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.ENABLE' | translate }}</label>-->
-                                <!--<div class="col-sm-10">-->
-                                    <!--<div>-->
-                                        <!--<label class="ui-checkbox">-->
-                                            <!--<input server-error name="integrationActive" ng-model="integration.active" type="checkbox" id="integrationEnable">-->
-                                            <!--<span></span>-->
-                                        <!--</label>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
                             <br>
                         </div>
                     </div>
@@ -301,10 +238,54 @@
                 </div>
 
                 <div class="form-group" ng-if="!!dataSource.dateRangeDetectionEnabled">
+                    <label for="fromMetadata" class="col-sm-1 control-label">From Metadata</label>
+                    <div class="col-sm-5">
+                        <label class="ui-checkbox"><input server-error name="fromMetadata" type="checkbox" ng-model="dataSource.fromMetadata" id="fromMetadata"><span></span></label>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="!!dataSource.dateRangeDetectionEnabled && !dataSource.fromMetadata">
                     <label class="col-sm-1 control-label">Date Fields</label>
 
                     <div class="col-sm-5">
                         <oi-select ng-model="dataSource.dateFields" multiple oi-select-options="{newItem: true, newItemFn: 'addValueDateFields($query)'}" placeholder="Input field"></oi-select>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="!!dataSource.dateRangeDetectionEnabled && !!dataSource.fromMetadata">
+                    <label class="col-sm-1 control-label">Date Fields</label>
+
+                    <div class="col-sm-5">
+                        <ui-select multiple name="dataSource" ng-model="dataSource.dateFields" on-select="$select.search = '';" server-error>
+                            <ui-select-match placeholder="Select a metadata">{{ $item.label }}</ui-select-match>
+                            <ui-select-choices repeat="field.key as field in metadatas | filter:$select.search">
+                                {{ field.label }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="!!dataSource.dateRangeDetectionEnabled && !!dataSource.fromMetadata && (dataSource.dateFields.indexOf('from') > -1 || dataSource.dateFields.indexOf('body') > -1 || dataSource.dateFields.indexOf('filename') > -1  || dataSource.dateFields.indexOf('subject') > -1)">
+                    <label class="col-sm-1 control-label">Pattern</label>
+
+                    <div class="col-sm-5">
+                        <div class="expressions-group">
+                            <div class="form-group select-connect-data-source">
+                                <label class="col-sm-1 control-label">Pattern</label>
+                                <div class="col-sm-12">
+                                    <input class="form-control" type="text" ng-model="dataSource.pattern.pattern" ng-required="true" placeholder="Enter regular expression">
+                                </div>
+                            </div>
+
+                            <div class="form-group select-connect-data-source">
+                                <label class="col-sm-1 control-label">Value</label>
+                                <div class="col-sm-12">
+                                    <input class="form-control" type="text" ng-model="dataSource.pattern.value" ng-required="true" placeholder="Replacement Value">
+
+                                    <span class="help-block"> {{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.REPLACEMENT_VALUE_HELP_TEXT' | translate }} </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

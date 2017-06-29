@@ -113,10 +113,12 @@
                 var metadata = {};
                 angular.forEach(elem.metadata, function (item) {
                     if(item.key == 'date' || item.key == 'dateTime') {
-                        item.value = DateFormatter.getFormattedDate(item.value.endDate);
+                        item.value = !!item.value ? DateFormatter.getFormattedDate(item.value.endDate) : item.value;
                     }
 
-                    metadata[item.key] = item.value;
+                    if(!!item.value) {
+                        metadata[item.key] = item.value;
+                    }
                 });
 
                 elem.formData = [{metadata: angular.toJson(metadata)}];

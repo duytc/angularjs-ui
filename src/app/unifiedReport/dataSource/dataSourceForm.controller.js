@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.dataSource')
         .controller('DataSourceForm', DataSourceForm);
 
-    function DataSourceForm($scope, _, UnifiedReportDataSourceManager, DataSourceIntegration, $translate, dataSource, integrations, publishers, AlertService, dateUtil, ServerErrorProcessor, historyStorage, DATE_FORMAT_TYPES, HISTORY_TYPE_PATH){
+    function DataSourceForm($scope, _, UnifiedReportDataSourceManager, DataSourceIntegration, $translate, dataSource, integrations, publishers, AlertService, dateUtil, ServerErrorProcessor, historyStorage, DATA_SOURCE_METADATA, DATE_FORMAT_TYPES, HISTORY_TYPE_PATH){
         $scope.publishers = publishers;
         $scope.integrations = integrations;
 
@@ -83,8 +83,13 @@
             enable: true,
             useIntegration: false,
             dateRangeDetectionEnabled: false,
+            fromMetadata: false,
             dateFields: [],
             dateFormats: [{isCustomFormatDate: false, isPartialMatch: false, format: null}],
+            pattern: {
+                pattern: null,
+                value: null
+            },
             dateRange: {
                 type: null,
                 startDate: null,
@@ -180,10 +185,18 @@
         $scope.disabledFormat = !!angular.copy($scope.dataSource.format);
 
         $scope.dateFormatTypes = DATE_FORMAT_TYPES;
+        $scope.metadatas = DATA_SOURCE_METADATA;
 
         if(!$scope.isNew) {
             if(!$scope.dataSource.dateFormats || $scope.dataSource.dateFormats.length == 0) {
                 $scope.dataSource.dateFormats = [{isCustomFormatDate: false, isPartialMatch: false, format: null}];
+            }
+
+            if(angular.isArray($scope.dataSource.pattern) || !$scope.dataSource.pattern) {
+                $scope.dataSource.pattern = {
+                    pattern: null,
+                    value: null
+                }
             }
         }
 
