@@ -15,8 +15,8 @@
             <div class="form-group select-data-type">
                 <ui-select ng-disabled="disabledDirective" ng-model="itemGroup.customVar" ng-required="true" on-select="changeVarName(itemGroup, $index)" close-on-select="false" server-error reset-search-input="'false'">
                     <ui-select-match placeholder="Select a variable">{{ $select.selected.label }}</ui-select-match>
-                    <ui-select-choices group-by="groupEntities" repeat="tag.key as tag in variableForAdTags | filter:$select.search">
-                        {{ tag.label }}
+                    <ui-select-choices group-by="groupEntities" repeat="slot.key as slot in variableForAdSlots | filter:$select.search">
+                        {{ slot.label }}
                     </ui-select-choices>
                 </ui-select>
             </div>

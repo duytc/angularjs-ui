@@ -5,7 +5,7 @@
         .directive('queryBuilderGroup', queryBuilderGroup)
     ;
 
-    function queryBuilderGroup($compile, $timeout, _, VARIABLE_FOR_AD_TAG, CONDITIONS_STRING, CONDITIONS_BOOLEAN, CONDITIONS_NUMERIC, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, COUNTRY_LIST, DEVICES) {
+    function queryBuilderGroup($compile, $timeout, _, VARIABLE_FOR_AD_SLOT, CONDITIONS_STRING, CONDITIONS_BOOLEAN, CONDITIONS_NUMERIC, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, COUNTRY_LIST, DEVICES) {
         'use strict';
 
         return {
@@ -35,7 +35,7 @@
                     scope.dataTypeList = DATA_TYPE;
                     scope.devices = DEVICES;
                     scope.countries = COUNTRY_LIST;
-                    scope.variableForAdTags =VARIABLE_FOR_AD_TAG;
+                    scope.variableForAdSlots = VARIABLE_FOR_AD_SLOT;
 
                     var mostCommonlyCountry = [
                         {name: 'Australia', code: 'AU', line: true},

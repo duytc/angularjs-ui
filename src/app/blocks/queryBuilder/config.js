@@ -39,7 +39,7 @@
         .constant('OPERATORS', ['AND' , 'OR'])
         .constant('DATA_TYPE', [
             {key: 'string', label: 'TEXT', builtInVars: ['${USER_AGENT}', '${DOMAIN}', '${COUNTRY}', '${PAGE_URL}', '${PAGEURL}', '${DEVICE}']},
-            {key: 'numeric', label: 'NUMBER', builtInVars: ['${SCREEN_WIDTH}', '${SCREEN_HEIGHT}', '${WINDOW_WIDTH}', '${WINDOW_HEIGHT}']},
+            {key: 'numeric', label: 'NUMBER', builtInVars: ['${SCREEN_WIDTH}', '${SCREEN_HEIGHT}', '${WINDOW_WIDTH}', '${WINDOW_HEIGHT}', '${REFRESH_COUNT}']},
             {key: 'boolean', label: 'TRUE/FALSE', builtInVars: []}
         ])
         .constant('DEVICES', [
@@ -54,6 +54,18 @@
         ])
         .constant('GROUP_KEY', 'groupVal')
         .constant('GROUP_TYPE', 'groupType')
+        .constant('VARIABLE_FOR_AD_SLOT', [
+            {key: "${DOMAIN}", label: 'DOMAIN'},
+            {key: "${COUNTRY}", label: 'COUNTRY'},
+            {key: "${DEVICE}", label: 'DEVICE'},
+            {key: "${USER_AGENT}", label: 'USER AGENT'},
+            {key: "${PAGE_URL}", label: 'PAGE URL'},
+            {key: "${SCREEN_WIDTH}", label: 'SCREEN WIDTH'},
+            {key: "${SCREEN_HEIGHT}", label: 'SCREEN HEIGHT'},
+            {key: "${WINDOW_WIDTH}", label: 'WINDOW WIDTH'},
+            {key: "${WINDOW_HEIGHT}", label: 'WINDOW HEIGHT'},
+            {key: 'CUSTOM', label: 'CUSTOM'}
+        ])
         .constant('VARIABLE_FOR_AD_TAG', [
             {key: "${DOMAIN}", label: 'DOMAIN'},
             {key: "${COUNTRY}", label: 'COUNTRY'},
@@ -64,6 +76,7 @@
             {key: "${SCREEN_HEIGHT}", label: 'SCREEN HEIGHT'},
             {key: "${WINDOW_WIDTH}", label: 'WINDOW WIDTH'},
             {key: "${WINDOW_HEIGHT}", label: 'WINDOW HEIGHT'},
+            {key: "${REFRESH_COUNT}", label: 'REFRESH_COUNT'},
             {key: 'CUSTOM', label: 'CUSTOM'}
         ])
     ;

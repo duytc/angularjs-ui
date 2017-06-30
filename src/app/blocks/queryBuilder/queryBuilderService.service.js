@@ -57,6 +57,9 @@
             else if(myVar == '${DOMAIN}') {
                 trueJsVariable = 'top.location.hostname';
             }
+            else if(myVar == '${REFRESH_COUNT}') {
+                trueJsVariable = '${REFRESH_COUNT}';
+            }
             else if(!!myVar) {
                 trueJsVariable = 'window.' + myVar;
             }
