@@ -87,7 +87,7 @@
                     };
 
                     $scope.hasDisplayAdsModuleAndSecure = function () {
-                        return adSlot.site.publisher.enabledModules.indexOf(USER_MODULES.displayAds) > -1 && (adSlot.site.publisher.tagDomain.length == 0 || !adSlot.site.publisher.tagDomain || !!adSlot.site.publisher.tagDomain.secure)
+                        return adSlot.site.publisher.enabledModules.indexOf(USER_MODULES.displayAds) > -1 && ((!!adSlot.site.publisher.tagDomain && adSlot.site.publisher.tagDomain.length == 0) || !adSlot.site.publisher.tagDomain || !!adSlot.site.publisher.tagDomain.secure)
                     };
 
                     $scope.secureChange = function(secure) {

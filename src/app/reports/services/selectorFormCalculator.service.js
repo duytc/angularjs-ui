@@ -113,6 +113,13 @@
                     var getDataPromise = $q.when(getDataFn(initialParams[field]))
                             .then(function (entity) {
                                 _.extend(params, getParamsFromEntity(entity, ancestors));
+
+                                //
+                                var typeGet = stripPropertyId(field);
+                                var param = {};
+                                param[typeGet] = entity;
+
+                                _.extend(params, param);
                             })
                         ;
 

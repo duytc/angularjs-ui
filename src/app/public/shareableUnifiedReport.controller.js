@@ -273,7 +273,7 @@
                 });
 
                 var indexReportAlias = $scope.columnPositions.indexOf('report_view_alias');
-                if(indexReportAlias > -1 && reportView.multiView) {
+                if(indexReportAlias > -1 && $scope.reportView.multiView) {
                     $scope.columnPositions.splice(indexReportAlias, 1);
                     $scope.columnPositions.unshift('report_view_alias');
                 }
