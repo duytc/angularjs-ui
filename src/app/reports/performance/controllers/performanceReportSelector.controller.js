@@ -509,11 +509,11 @@
             resetToStateForCurrentReportType();
         }
 
-        function selectAdNetwork(adNetworkId) {
+        function selectAdNetwork(adNetworkId, siteId) {
             $scope.selectedData.labelBreakdown = null;
             $scope.selectedData.breakDown = null;
             $scope.selectedData.breakDowns = [];
-            $scope.selectedData.siteId = null;
+            $scope.selectedData.siteId = siteId || null;
 
             sideParams.siteAdNetwork.params.page = 1;
             $scope.selectedData.adNetworkId = adNetworkId;
@@ -1171,7 +1171,7 @@
                     }
 
                     if (calculatedParams.adNetworkId != null) {
-                        selectAdNetwork(calculatedParams.adNetworkId);
+                        selectAdNetwork(calculatedParams.adNetworkId, calculatedParams.siteId);
                         selectSiteForAdNetwork(calculatedParams.siteId);
                     }
 
