@@ -73,7 +73,7 @@
                     };
 
                     $scope.isFormValid = function () {
-                        return !!$scope.backfillHistories.backFillEndDate && !!$scope.backfillHistories.backFillEndDate.startDate && !!$scope.backfillHistories.backFillStartDate && !!$scope.backfillHistories.backFillStartDate.startDate && new Date($scope.backfillHistories.backFillStartDate.startDate) < new Date($scope.backfillHistories.backFillEndDate.startDate)
+                        return !!$scope.backfillHistories.backFillEndDate && !!$scope.backfillHistories.backFillEndDate.startDate && !!$scope.backfillHistories.backFillStartDate && !!$scope.backfillHistories.backFillStartDate.startDate && new Date($scope.backfillHistories.backFillStartDate.startDate) <= new Date($scope.backfillHistories.backFillEndDate.startDate)
                     };
 
                     $scope.submit = function (){
