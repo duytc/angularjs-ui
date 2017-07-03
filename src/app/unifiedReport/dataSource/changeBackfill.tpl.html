@@ -1,4 +1,4 @@
-<form name="createRonAdSlotForAdSlot" role="form" ng-submit="submit()" novalidate>
+<form name="changeBackfillForm" role="form" ng-submit="submit()" novalidate>
     <div class="modal-header">
         <h4 class="modal-title">Update backfill for : <strong>{{ dataSource.name }}</strong></h4>
     </div>
@@ -34,6 +34,6 @@
 
     <div class="modal-footer">
         <button class="btn btn-primary" ng-click="$dismiss()" type="button">{{ 'CANCEL' | translate }}</button>
-        <button class="btn btn-danger"  ng-click="$close()"  ng-disabled="formProcessing"  type="submit">{{ 'SUBMIT' | translate }}</button>
+        <button class="btn btn-danger" ng-click="$close()" ng-disabled="!isFormValid()" type="submit">{{ 'SUBMIT' | translate }}</button>
     </div>
 </form>
