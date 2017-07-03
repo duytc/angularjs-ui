@@ -5,7 +5,7 @@
         .directive('transformDataSet', transformDataSet)
     ;
 
-    function transformDataSet($compile, _, AddCalculatedField, CONNECT_TIMEZONES, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES, METRICS_SET) {
+    function transformDataSet($compile, _, AddCalculatedField, CONNECT_TIMEZONES, COMPARISON_TYPES_ADD_FIELD_VALUE, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES, METRICS_SET) {
         'use strict';
 
         return {
@@ -38,6 +38,7 @@
                     var totalDimensionsMetricsForDefaultValues = [];
 
                     scope.conditionComparators = COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE;
+                    scope.conditionComparatorsForAddField = COMPARISON_TYPES_ADD_FIELD_VALUE;
 
                     scope.separatorType = [
                         {key: ',', label: 'Comma'},
@@ -87,6 +88,8 @@
                     scope.removeTransform = removeTransform;
                     scope.addTransform = addTransform;
                     scope.addField = addField;
+                    scope.addConditionAddField = addConditionAddField;
+                    scope.addExpressionsAddField = addExpressionsAddField;
                     scope.addReplaceText = addReplaceText;
                     scope.removeAddValue = removeAddValue;
                     scope.addComparisonPercent = addComparisonPercent;
@@ -117,10 +120,16 @@
                     scope.addDefaultValue = addDefaultValue;
                     scope.enableDragDropDefaultValue = enableDragDropDefaultValue;
                     scope.addCompareValue = addCompareValue;
+                    scope.addValueForExpressionAddField = addValueForExpressionAddField;
                     scope.getTotalDimensionsMetricsForDefaultValues = getTotalDimensionsMetricsForDefaultValues;
                     scope.selectedComparison = selectedComparison;
                     scope.fieldIsDatetime = fieldIsDatetime;
-                    
+                    scope.selectedComparisonAddField = selectedComparisonAddField;
+
+                    function selectedComparisonAddField(defaultValue) {
+                        defaultValue.val = null;
+                    }
+
                     function fieldIsDatetime(transform) {
                         var index = _.findIndex(transform.fields, function (field) {
                             for(var i in scope.reportBuilder.joinBy) {
@@ -155,6 +164,10 @@
                             return;
                         }
 
+                        return query;
+                    }
+
+                    function addValueForExpressionAddField(query) {
                         return query;
                     }
 
@@ -253,6 +266,21 @@
                             scope.fieldsCalculatedField = scope.totalDimensionsMetrics;
                         }
 
+                        angular.forEach(scope.transforms, function (transform) {
+                            if(transform.type == scope.allFiledFormatTypeKeys.addField) {
+                                angular.forEach(transform.fields, function (field) {
+                                    if(field.type == 'number' || field.type == 'decimal') {
+                                        scope.fieldsCalculatedField.push({
+                                            key: field.field,
+                                            label: field.field,
+                                            root: field.field,
+                                            type: field.type
+                                        });
+                                    }
+                                });
+                            }
+                        });
+
                         if(!!type.key && !!calculatedField){
                             calculatedField.expression = null
                         }
@@ -284,7 +312,7 @@
                         var typesField = [];
 
                         angular.forEach(scope.typesField, function (type) {
-                            if (type.key == 'date' || type.key == 'text' || type.key == 'number') {
+                            if (type.key == 'date' || type.key == 'text' || type.key == 'number' || type.key == 'decimal') {
                                 typesField.push(type)
                             }
                         });
@@ -294,6 +322,10 @@
 
                     function selectedFieldType(field) {
                         field.value = null;
+                        
+                        angular.forEach(field.conditions, function (condition) {
+                            condition.value = null;
+                        })
                     }
 
                     function getTypesFieldNumber() {
@@ -549,12 +581,38 @@
                             value: null
                         });
                     }
+                    
+                    function addConditionAddField(field) {
+                        field.conditions = angular.isArray(field.conditions) ? field.conditions : [];
+
+                        field.conditions.push({
+                            expressions: [
+                                {
+                                    var: null,
+                                    cmp: null,
+                                    val: null
+                                }
+                            ],
+                            value: null
+                        })
+                    }
+
+                    function addExpressionsAddField(field) {
+                        field.expressions = angular.isArray(field.expressions) ? field.expressions : [];
+
+                        field.expressions.push({
+                            var: null,
+                            cmp: null,
+                            val: null
+                        })
+                    }
 
                     function addCalculatedField(fields){
                         fields.push({
-                            field: null,
-                            value: null,
-                            defaultValues: []
+                            var: null,
+                            cmp: null,
+                            val: null,
+                            type: null
                         });
                     }
 

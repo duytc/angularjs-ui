@@ -42,4 +42,14 @@
                 return API_UNIFIED_BASE_URL + '/reportview';
             }
         })
+        .constant('COMPARISON_TYPES_ADD_FIELD_VALUE', [
+            {key: 'in', label: 'In'},
+            {key: 'not in', label: 'Not In'},
+            {key: 'smaller', label: 'Less Than'},
+            {key: 'smaller or equal', label: 'Less Than or Equals'},
+            {key: 'equal', label: 'Equals'},
+            {key: 'not equal', label: 'Not Equal To'},
+            {key: 'greater', label: 'Greater Than'},
+            {key: 'greater or equal', label: 'Greater Than or Equals'}
+        ])
 })();
