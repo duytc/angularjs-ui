@@ -694,6 +694,7 @@
 
                 "MANAGE_AD_TAGS": "Manage Ad Tags",
                 "EDIT_AD_SLOT": "Edit Ad Slot",
+                "EDIT_STANDALONE_AD_SLOT": "Edit Standalone Ad Slot",
                 "CLONE_AD_SLOT": "Clone Ad Slot",
                 "DELETE_AD_SLOT": "Delete Ad Slot",
                 "MOVE_TO_LIBRARY": "Make Standalone",

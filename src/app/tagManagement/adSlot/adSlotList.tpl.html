@@ -77,7 +77,7 @@
 
                                 <li ng-if="!exist(item.type, adSlotTypes.dynamic) && !isSubPublisher()" class="divider"></li>
                                 <li ng-if="!isSubPublisher()"><a ui-sref="^.edit({ id: item.id })">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT' | translate }}</a></li>
-                                <!--<li ng-if="item.libraryAdSlot.visible && !isSubPublisher()"><a  ui-sref="^.^.^.tagLibrary.adSlot.edit({ id: item.libraryAdSlot.id, from: isChannel ? 'channel' : 'site'})">{{ 'AD_SLOT_MODULE.EDIT_AD_SLOT' | translate }}</a></li>-->
+                                <li ng-if="item.libraryAdSlot.visible && !isSubPublisher()"><a  ui-sref="^.^.^.tagLibrary.adSlot.edit({ id: item.libraryAdSlot.id, from: isChannel ? 'channel' : 'site'})">{{ 'AD_SLOT_MODULE.EDIT_STANDALONE_AD_SLOT' | translate }}</a></li>
 
                                 <li ng-if="!exist(item.type, adSlotTypes.dynamic) && !isSubPublisher()"><a ng-click="cloneAdSlot(item)">{{ 'AD_SLOT_MODULE.CLONE_AD_SLOT' | translate }}</a></li>
                                 <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item)">{{ 'AD_SLOT_MODULE.DELETE_AD_SLOT' | translate }}</a></li>
