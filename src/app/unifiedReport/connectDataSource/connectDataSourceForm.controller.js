@@ -510,6 +510,8 @@
             var allFields = _getAllFieldInTransform($scope.connectDataSource.transforms).concat(connectedDataSourceService.inputFormatDataSourceField($scope.dataSourceFields)).concat(connectedDataSourceService.inputFormatTemporaryFields($scope.connectDataSource.temporaryFields));
 
             angular.forEach(connectDataSource.transforms, function (transform) {
+                delete transform.openStatus;
+
                 if(transform.type == 'number' || transform.type == 'date') {
                     delete transform.fields;
 

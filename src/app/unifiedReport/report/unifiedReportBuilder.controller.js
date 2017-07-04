@@ -813,6 +813,8 @@
             });
 
             angular.forEach(reportBuilder.transforms, function (transform) {
+                delete transform.openStatus;
+
                 if (transform.type == 'date' || transform.type == 'number') {
                     delete transform.fields;
                 } else {
