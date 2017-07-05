@@ -13,10 +13,20 @@
 
             <div class="publisher form-group" ng-if="selectedData.publisherId || !isAdmin()">
                 <label>{{ 'DATA_SOURCE' | translate }}</label>
-                <ui-select name="publisher" ng-model="selectedData.dataSource" ng-required="true" reset-search-input="'false'">
+                <ui-select name="publisher" ng-model="selectedData.dataSource" ng-required="true" on-select="selectDataSource()" reset-search-input="'false'">
                     <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.SELECT_A_DATA_SOURCE' | translate }}">{{ $select.selected.name + ($select.selected.id ? ' (ID: '+ $select.selected.id +')' : '') }}</ui-select-match>
                     <ui-select-choices group-by="groupEntities" repeat="dataSource.id as dataSource in dataSources | selectedPublisher:selectedData.publisherId | filter: $select.search">
                         {{ dataSource.name + (dataSource.id ? ' (ID: '+ dataSource.id +')' : '') }}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="publisher form-group select-breakdown">
+                <label>Type</label>
+                <ui-select name="publisher" ng-model="selectedData.labelType" ng-required="true" reset-search-input="'false'">
+                    <ui-select-match placeholder="Select a type">{{ selectedData.labelType }}</ui-select-match>
+                    <ui-select-choices group-by="groupEntities" repeat="type.key as type in alertTypes">
+                        <label stop-event class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="selectedData.type[type.key]" ng-click="clickType(type.key, selectedData.type[type.key])"><span> {{ type.label }}</span></label>
                     </ui-select-choices>
                 </ui-select>
             </div>
@@ -92,8 +102,11 @@
                             </ul>
                         </div>
                     </td>
-                    <td at-title="{{  'UNIFIED_REPORT_ALERT_MODULE.SUMMARY' | translate }}" at-sortable at-attribute="message.message">
+                    <td at-title="{{  'UNIFIED_REPORT_ALERT_MODULE.SUMMARY' | translate }}" at-attribute="message.message">
                         {{ getTitleAlert(item) }}
+                    </td>
+                    <td at-title="Type" at-sortable at-attribute="type">
+                        <span class="label" ng-class="item.type == 'info' ? 'label-info' : (item.type == 'warning' ? 'label-warning' : 'label-danger')">{{ item.type }}</span>
                     </td>
                     <td ng-show="isAdmin()" at-implicit at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
                     <td at-title="{{  'UNIFIED_REPORT_ALERT_MODULE.DATE_CREATED' | translate }}" at-sortable at-attribute="createdDate">

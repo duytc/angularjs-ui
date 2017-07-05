@@ -36,8 +36,20 @@
 
         $scope.selectedData = {
             dataSource: $stateParams.dataSourceId || null,
-            publisherId: !!$stateParams.dataSourceId ? _.find(dataSources, {id: Number($stateParams.dataSourceId)}).publisher.id : null
+            publisherId: !!$stateParams.dataSourceId ? _.find(dataSources, {id: Number($stateParams.dataSourceId)}).publisher.id : null,
+            type: {
+                info: true,
+                warning: true,
+                error: true
+            }
         };
+        $scope.selectedData.labelType = 'All Type';
+
+        $scope.alertTypes = [
+            {key: 'info', label: 'Info'},
+            {key: 'warning', label: 'Warning'},
+            {key: 'error', label: 'Error'}
+        ];
 
         $scope.formProcessing = false;
         $scope.checkAllItem = false;
@@ -69,9 +81,38 @@
         $scope.noneSelect = noneSelect;
         $scope.getAlerts = getAlerts;
         $scope.selectPublisher = selectPublisher;
+        $scope.selectDataSource = selectDataSource;
+
+        $scope.clickType = clickType;
+        
+        function clickType(type, typeKey) {
+            var types = [];
+
+            angular.forEach($scope.selectedData.type, function (value, key) {
+                if(value == true) {
+                    types.push(_.find($scope.alertTypes, {key: key}).label)
+                }
+            });
+
+            if($scope.alertTypes.length == types.length || types.length == 0) {
+                $scope.selectedData.labelType = 'All Type'
+            } else {
+                $scope.selectedData.labelType = types.toString().replace(',', ', ')
+            }
+        }
         
         function selectPublisher() {
             $scope.selectedData.dataSource = null;
+        }
+
+        function selectDataSource() {
+            $scope.selectedData.type = {
+                info: true,
+                warning: true,
+                error: true
+            };
+
+            $scope.selectedData.labelType = 'All Type';
         }
         
         function getAlerts() {
@@ -83,15 +124,23 @@
                 manage = UnifiedReportAlertManager.one();
             }
 
-            return manage.getList(null, {publisher: $scope.selectedData.publisherId})
+            var types = [];
+
+            angular.forEach($scope.selectedData.type, function (value, key) {
+                if(value == true) {
+                    types.push(key)
+                }
+            });
+
+            return manage.getList(null, {publisher: $scope.selectedData.publisherId, types: types.length > 0 ? types.toString() : null})
                 .then(function (data) {
                     itemsForPager = [];
                     alerts = data.plain();
                     $scope.alerts = alerts;
-
-                    if($scope.tableConfig.currentPage > 0 && alerts.length/10 == $scope.tableConfig.currentPage) {
-                        $scope.tableConfig.currentPage = $scope.tableConfig.currentPage - 1;
-                    }
+                    $scope.tableConfig.currentPage = 0;
+                    // if($scope.tableConfig.currentPage > 0 && alerts.length/10 == $scope.tableConfig.currentPage) {
+                    //     $scope.tableConfig.currentPage = $scope.tableConfig.currentPage - 1;
+                    // }
 
                     noneSelect();
                 });
