@@ -12,6 +12,13 @@
         } : dataSourceFiles ;
 
         $scope.dataSource = dataSource;
+        $scope.dataSource = dataSource;
+
+        $scope.missingDate = [];
+        angular.forEach($scope.dataSource.missingDate, function (date) {
+            $scope.missingDate.push({date: date});
+        });
+
         $scope.isShowAlert = true;
 
         $scope.tableConfig = {
@@ -84,12 +91,7 @@
                 },
                 resolve: {
                     missingDate: function () {
-                        var missingDate = [];
-                        angular.forEach($scope.dataSource.missingDate, function (date) {
-                            missingDate.push({date: date});
-                        });
-
-                        return missingDate
+                       return $scope.missingDate
                     }
                 }
             });
