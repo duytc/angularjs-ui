@@ -130,7 +130,7 @@
                     
                     function filterOperatorAddField(expression) {
                         return function (separator) {
-                            if(separator.key == 'not contains' || separator.key == 'contains') {
+                            if(separator.key == 'not contain' || separator.key == 'contain') {
                                 return scope.dimensionsMetrics[expression.var] == 'text' || scope.dimensionsMetrics[expression.var] == 'largeText'
                             }
 
