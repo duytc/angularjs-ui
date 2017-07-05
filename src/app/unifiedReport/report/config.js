@@ -45,6 +45,8 @@
         .constant('COMPARISON_TYPES_ADD_FIELD_VALUE', [
             {key: 'in', label: 'In'},
             {key: 'not in', label: 'Not In'},
+            {key: 'contain', label: 'Contain'},
+            {key: 'not contain', label: 'Does Not Contain'},
             {key: 'smaller', label: 'Less Than'},
             {key: 'smaller or equal', label: 'Less Than or Equals'},
             {key: 'equal', label: 'Equals'},

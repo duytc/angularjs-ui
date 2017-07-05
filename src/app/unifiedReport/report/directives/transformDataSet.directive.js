@@ -125,9 +125,25 @@
                     scope.selectedComparison = selectedComparison;
                     scope.fieldIsDatetime = fieldIsDatetime;
                     scope.selectedComparisonAddField = selectedComparisonAddField;
+                    scope.selectedExpressionVar = selectedExpressionVar;
+                    scope.filterOperatorAddField = filterOperatorAddField;
+                    
+                    function filterOperatorAddField(expression) {
+                        return function (separator) {
+                            if(separator.key == 'not contains' || separator.key == 'contains') {
+                                return scope.dimensionsMetrics[expression.var] == 'text' || scope.dimensionsMetrics[expression.var] == 'largeText'
+                            }
+
+                            return true
+                        }
+                    }
 
                     function selectedComparisonAddField(defaultValue) {
                         defaultValue.val = null;
+                    }
+
+                    function selectedExpressionVar(defaultValue) {
+                        defaultValue.cmp = null;
                     }
 
                     function fieldIsDatetime(transform) {
