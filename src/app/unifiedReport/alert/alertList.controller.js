@@ -27,6 +27,7 @@
         const ALERT_CODE_FETCHER_LOGIN_FAIL = 2001;
         const ALERT_CODE_FETCHER_TIME_OUT = 2002;
         const ALERT_CODE_FETCHER_PASSWORD_EXPIRES = 2003;
+        const ALERT_CODE_RECHECK_EMAIl = 2004;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -349,7 +350,7 @@
             $modal.open({
                 templateUrl: 'unifiedReport/alert/viewDetail.tpl.html',
                 controller: function ($scope, alert) {
-                    $scope.message = convertMessage(alert);
+                    $scope.message = convertMessage(alert, true);
                     $scope.alertDetail = alert.detail;
                 },
                 resolve: {
@@ -359,7 +360,7 @@
         }
 
         // importAlertBuilderService
-        function convertMessage(alert) {
+        function convertMessage(alert, isDetail) {
             var code = alert.code;
             var detail = alert.detail;
 
@@ -424,6 +425,9 @@
 
                 case ALERT_CODE_DATA_IMPORTED_SUCCESSFULLY:
                     return 'A new file has been loaded into data set "' + detail.dataSetName + '"';
+
+                case ALERT_CODE_RECHECK_EMAIl:
+                    return 'Received an e-mail for Data Source "' + detail.dataSourceName + 'with no attached report files". Please configure email anchor text in Data Source to download report files. Anchor texts is text of links found in email body.';
 
                 default:
                     return 'Unknown alert code (' + code + '). Please contact your account manager';

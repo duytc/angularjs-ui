@@ -400,6 +400,14 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="col-sm-1 control-label">Email Anchor Texts</label>
+
+                    <div class="col-sm-5">
+                        <oi-select ng-model="dataSource.emailAnchorTexts" multiple oi-select-options="{newItem: true, newItemFn: 'addValueDateFields($query)'}" placeholder="Input Email Anchor Texts"></oi-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-5">
                         <div ng-repeat="alertSetting in dataSource.alertSetting">
                             <label class="ui-checkbox">

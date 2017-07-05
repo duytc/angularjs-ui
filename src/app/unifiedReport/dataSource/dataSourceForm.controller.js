@@ -85,6 +85,7 @@
             dateRangeDetectionEnabled: false,
             fromMetadata: false,
             dateFields: [],
+            emailAnchorTexts: [],
             dateFormats: [{isCustomFormatDate: false, isPartialMatch: false, format: null}],
             pattern: {
                 pattern: null,
@@ -166,20 +167,6 @@
                     }
                 }
             });
-
-            // if(!angular.isObject(dataSourceIntegration.backFillStartDate)) {
-            //     dataSourceIntegration.backFillStartDate = {
-            //         startDate: dataSourceIntegration.backFillStartDate,
-            //         endDate: dataSourceIntegration.backFillStartDate
-            //     }
-            // }
-            //
-            // if(!angular.isObject(dataSourceIntegration.backFillEndDate)) {
-            //     dataSourceIntegration.backFillEndDate = {
-            //         startDate: dataSourceIntegration.backFillEndDate,
-            //         endDate: dataSourceIntegration.backFillEndDate
-            //     }
-            // }
         });
 
         $scope.disabledFormat = !!angular.copy($scope.dataSource.format);
@@ -220,8 +207,6 @@
             {key: '-30 day', label: 'Last 30 Days'}
         ];
 
-        // $scope.addNewIntegration = addNewIntegration;
-        // $scope.removeIntegration = removeIntegration;
         $scope.isFormValid = isFormValid;
         $scope.submit = submit;
         $scope.deleteDataSource = deleteDataSource;
@@ -246,11 +231,6 @@
         function selectDateRangeType(dateRangeType, dateRange) {
             dateRange.startDate = null;
             dateRange.endDate = null;
-
-            // if(dateRangeType.type == 'dynamicDateRange') {
-            //     dateRange.startDate = null;
-            //     dateRange.endDate = null
-            // }
 
             if(dateRangeType.type == 'fixedDateRange') {
                 dateRange.date = {
@@ -313,10 +293,6 @@
                    integration: null,
                    active: true,
                    params: [],
-                   // backFill: false,
-                   // backFillForce: false,
-                   // backFillStartDate: null,
-                   // backFillEndDate: null,
                    schedule: {
                        checked: 'checkAt',
                        checkEvery:  { hour: null },
@@ -359,10 +335,6 @@
                 integration: null,
                 active: true,
                 params: [],
-                // backFill: false,
-                // backFillForce: false,
-                // backFillStartDate: null,
-                // backFillEndDate: null,
                 schedule: {
                     checked: 'checkAt',
                     checkEvery:  { hour: null },
@@ -398,18 +370,6 @@
             integration.params.splice(index, 1);
         }
 
-        // function addNewIntegration(){
-        //     $scope.dataSource.dataSourceIntegrations.push({
-        //         integration: null,
-        //         active: true,
-        //         params: []
-        //     });
-        // }
-
-        // function removeIntegration(index){
-        //     $scope.dataSource.dataSourceIntegrations.splice(index, 1);
-        // }
-
         function isFormValid(){
             if(!!$scope.userForm.regex && !!$scope.userForm.regex.$viewValue) {
                 var isValid = true;
@@ -430,18 +390,6 @@
                     return false
                 }
             }
-
-            // for (var index in $scope.dataSource.dataSourceIntegrations) {
-            //     if($scope.dataSource.dataSourceIntegrations[index].backFill) {
-            //         if(!$scope.dataSource.dataSourceIntegrations[index].backFillStartDate && !$scope.dataSource.dataSourceIntegrations[index].backFillStartDate.startDate) {
-            //             return false
-            //         }
-            //
-            //         // if(!$scope.dataSource.dataSourceIntegrations[index].backFillEndDate && !$scope.dataSource.dataSourceIntegrations[index].backFillEndDate.startDate) {
-            //         //     return false
-            //         // }
-            //     }
-            // }
 
             return $scope.userForm.$valid;
         }
@@ -483,17 +431,6 @@
                         }
                     });
 
-                    // if(!!dataSourceIntegration.backFillStartDate && !!dataSourceIntegration.backFillStartDate.startDate) {
-                    //     dataSourceIntegration.backFillStartDate = dateUtil.getFormattedDate(dataSourceIntegration.backFillStartDate.startDate);
-                    // } else {
-                    //     dataSourceIntegration.backFillStartDate = null;
-                    // }
-                    //
-                    // if(!!dataSourceIntegration.backFillEndDate && !!dataSourceIntegration.backFillEndDate.startDate) {
-                    //     dataSourceIntegration.backFillEndDate = dateUtil.getFormattedDate(dataSourceIntegration.backFillEndDate.startDate);
-                    // } else {
-                    //     dataSourceIntegration.backFillEndDate = null;
-                    // }
                 });
             } else {
                 dataSource.dataSourceIntegrations = []
