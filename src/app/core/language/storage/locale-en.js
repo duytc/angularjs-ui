@@ -1237,7 +1237,7 @@
                 "UPLOAD_FILES_SUCCESS": "The files were successfully uploaded",
                 "DOWNLOAD_DATA": "Download Data",
                 "REPLAY_DATA": "Reload Data",
-                "VIEW_DETAILS": "View Details",
+                "VIEW_DETAILS": "View Metadata",
                 "RECEIVED_DATE": "Date Received",
                 "FILENAME": "File Name",
                 "RESOURCE_NAME": "Resource Name",

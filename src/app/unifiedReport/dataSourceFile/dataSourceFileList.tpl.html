@@ -90,19 +90,16 @@
                             </ul>
                         </div>
                     </td>
-                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.FILENAME' | translate }}" at-implicit at-sortable at-attribute="fileName"></td>
-                    <!--<td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DATE_RANGE' | translate }}" at-attribute="dateRange">-->
-                        <!--{{ (!!item.startDate && !!item.endDate) ? (item.startDate | date:'MMM d, y') + ' - ' + (item.endDate | date:'MMM d, y') : null }}-->
-                    <!--</td>-->
                     <td ng-show="dataSource.dateRangeDetectionEnabled" at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DATE_RANGE' | translate }}" at-attribute="dateRange">
                         {{ (!!item.startDate && !!item.endDate) ? ((item.startDate == item.endDate) ? (item.startDate | date:'MMM d, y') : (item.startDate | date:'MMM d, y') + ' - ' + (item.endDate | date:'MMM d, y')) : null}}
                     </td>
+                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.FILENAME' | translate }}" at-implicit at-sortable at-attribute="fileName"></td>
                     <td at-title="Imported on" at-sortable at-initial-sorting="desc" at-attribute="receivedDate">{{ item.receivedDate | date:'MMM d, y H:mm:ss' }}</td>
                     <!--<td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.RESOURCE_NAME' | translate }}" at-implicit at-attribute="dataSource.name"></td>-->
                     <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.FORMAT' | translate }}" at-implicit at-attribute="dataSource.format"></td>
-                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.VALID' | translate }}" at-attribute="isValid">
-                        <i class="fa" ng-class="item.isValid? 'fa-check-square' : 'fa-square'"></i>
-                    </td>
+                    <!--<td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.VALID' | translate }}" at-attribute="isValid">-->
+                        <!--<i class="fa" ng-class="item.isValid? 'fa-check-square' : 'fa-square'"></i>-->
+                    <!--</td>-->
                     <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.RECEIVED_VIA' | translate }}" >{{ item.receivedVia }}</td>
 
                     <td ng-show="dataSource.dateRangeDetectionEnabled" at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.STATUS' | translate }}" at-attribute="missingDate">
