@@ -29,10 +29,13 @@
                     }
                 },
                 resolve: {
-                    dataSourceFiles: /* @ngInject */ function(UnifiedReportDataSourceFileManager, $stateParams) {
+                    dataSource: function(UnifiedReportDataSourceManager, $stateParams) {
+                        return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).get();
+                    },
+                    dataSourceFiles: /* @ngInject */ function(UnifiedReportDataSourceFileManager, $stateParams, dataSource) {
                         $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
-                        $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.page;
-                        $stateParams.sortField = !$stateParams.sortField ? 'receivedDate' : $stateParams.sortField;
+                        $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
+                        $stateParams.sortField = !$stateParams.sortField ? (dataSource.dateRangeDetectionEnabled ? 'endDate' :'receivedDate') : $stateParams.sortField;
 
                         return UnifiedReportDataSourceFileManager.one().get($stateParams).then(function (dataSourceFiles) {
                             return dataSourceFiles.plain();
@@ -49,9 +52,6 @@
 
                                 return ids
                             });
-                    },
-                    dataSource: function(UnifiedReportDataSourceManager, $stateParams) {
-                        return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).get();
                     },
                     publisher: function() {
                         return null
@@ -73,9 +73,15 @@
                     }
                 },
                 resolve: {
-                    dataSourceFiles: /* @ngInject */ function(UnifiedReportDataSourceManager, $stateParams) {
+                    dataSource: function(UnifiedReportDataSourceManager, $stateParams) {
+                        return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).get();
+                    },
+                    dataSourceFiles: /* @ngInject */ function(UnifiedReportDataSourceManager, $stateParams, dataSource) {
                         $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
-                         return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).customGET('datasourceentries',{page:$stateParams.page}).then(function (dataSourceFiles) {
+                        $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
+                        $stateParams.sortField = !$stateParams.sortField ? (dataSource.dateRangeDetectionEnabled ? 'endDate' :'receivedDate') : $stateParams.sortField;
+
+                        return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).customGET('datasourceentries', $stateParams).then(function (dataSourceFiles) {
                             return dataSourceFiles.plain();
                         });
                     },
@@ -90,13 +96,6 @@
 
                                 return ids
                             });
-                    },
-                    dataSource: function(UnifiedReportDataSourceManager, $stateParams, dataSourceFiles) {
-                        if(!!dataSourceFiles && !!dataSourceFiles.records && dataSourceFiles.records.length > 0) {
-                            return dataSourceFiles.records[0].dataSource
-                        }
-
-                        return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).get();
                     }
                 },
                 ncyBreadcrumb: {

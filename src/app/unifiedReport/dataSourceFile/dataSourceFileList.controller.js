@@ -35,9 +35,7 @@
         $scope.dataSourceId = $stateParams.dataSourceId;
 
         var getDataSourceEntry ;
-        var params = {
-            page: 1
-        };
+        var params = $stateParams;
 
         $scope.formProcessing = false;
         $scope.checkAllItem = false;
