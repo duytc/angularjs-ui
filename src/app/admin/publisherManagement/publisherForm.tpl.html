@@ -163,6 +163,13 @@
                     </div>
                 </div>
 
+                <div class="form-group" ng-if="hasModuleEnabled('MODULE_UNIFIED_REPORT')">
+                    <label for="inputEmailForAlert" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.EMAIL_FOR_ALERT' | translate }}</label>
+                    <div class="col-sm-10">
+                        <input server-error name="email" ng-model="publisher.emailSendAlert" type="email" class="form-control" id="inputEmailForAlert" placeholder="{{ 'PUBLISHER_MODULE.EMAIL_FOR_ALERT' | translate }}">
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="inputEnabled" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.ENABLED' | translate }}</label>
                     <div class="col-sm-10">

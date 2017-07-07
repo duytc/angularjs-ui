@@ -41,7 +41,8 @@
             tagDomain: {
                 secure: true,
                 domain: null
-            }
+            },
+            emailSendAlert: null
         };
 
         if(!$scope.isNew) {

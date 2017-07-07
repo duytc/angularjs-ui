@@ -201,6 +201,7 @@
                 "REPEAT_PASSWORD": "Repeat Password",
                 "COMPANY": "Company",
                 "EMAIL": "Email",
+                "EMAIL_FOR_ALERT": "Email For Alert",
                 "FIRST_NAME": "First Name",
                 "LAST_NAME": "Last Name",
                 "PHONE": "Phone",
