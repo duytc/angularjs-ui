@@ -80,14 +80,6 @@
             active: true
         };
 
-        if($scope.isAdmin()) {
-            $scope.hasUnifiedModule = null;
-        }
-
-        if(!!adSlot && !!adSlot.publisher) {
-            $scope.hasUnifiedModule = adSlot.publisher.enabledModules.indexOf('MODULE_UNIFIED_REPORT') !== -1
-        }
-
         if(!!$scope.adTag.libraryAdTag.descriptor) {
             if(!$scope.adTag.libraryAdTag.descriptor.imageUrl) {
                 $scope.adTag.libraryAdTag.descriptor = null;
@@ -462,8 +454,6 @@
         function selectPublisher(publisher) {
             $scope.selected.adSlot = null;
             $scope.adTag.libraryAdTag.adNetwork = null;
-
-            $scope.hasUnifiedModule = publisher.enabledModules.indexOf('MODULE_UNIFIED_REPORT') !== -1;
 
             $scope.adTag.libraryAdTag.expressionDescriptor = {
                 groupVal: [],

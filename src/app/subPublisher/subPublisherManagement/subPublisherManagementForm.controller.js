@@ -38,7 +38,6 @@
             delete $scope.subPublisher.lastLogin;
             delete $scope.subPublisher.publisher;
             delete $scope.subPublisher.enabledModules;
-            delete $scope.subPublisher.subPublisherPartnerRevenue;
             delete $scope.subPublisher.sites;
             delete $scope.subPublisher.subPublisherSites;
 

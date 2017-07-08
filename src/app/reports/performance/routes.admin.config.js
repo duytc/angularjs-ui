@@ -229,74 +229,76 @@
             })
         ;
 
-        $stateProvider
-            .state('app.admin.reports.performance.adNetworksSubPublishers', {
-                url: '/accounts/{publisherId:int}/adNetworksSubPublishers?{startDate:date}&{endDate:date}&{subBreakDown}',
-                params: {
-                    endDate: null,
-                    uniqueRequestCacheBuster: null
-                },
-                views: {
-                    report: {
-                        controller: 'ReportView',
-                        templateUrl: function($stateParams) {
-                            if ($stateParams.subBreakDown == 'day') {
-                                return 'reports/performance/views/reportType/adNetwork/subPublishersByDay.tpl.html';
-                            }
+        // TODO: remove when stable
+        //$stateProvider
+        //    .state('app.admin.reports.performance.adNetworksSubPublishers', {
+        //        url: '/accounts/{publisherId:int}/adNetworksSubPublishers?{startDate:date}&{endDate:date}&{subBreakDown}',
+        //        params: {
+        //            endDate: null,
+        //            uniqueRequestCacheBuster: null
+        //        },
+        //        views: {
+        //            report: {
+        //                controller: 'ReportView',
+        //                templateUrl: function($stateParams) {
+        //                    if ($stateParams.subBreakDown == 'day') {
+        //                        return 'reports/performance/views/reportType/adNetwork/subPublishersByDay.tpl.html';
+        //                    }
+        //
+        //                    if (!$stateParams.endDate) {
+        //                        return 'reports/performance/views/reportType/adNetwork/subPublisher.tpl.html';
+        //                    }
+        //
+        //                    return 'reports/performance/views/reportType/adNetwork/subPublishersDateRange.tpl.html';
+        //                }
+        //            }
+        //        },
+        //        resolve: {
+        //            reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+        //                return performanceReport.getPublisherAdNetworksBySubPublishersReport($stateParams, {
+        //                    reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
+        //                    breakDown: 'subpublisher'
+        //                });
+        //            }
+        //        },
+        //        ncyBreadcrumb: {
+        //            label: 'Performance reports'
+        //        }
+        //    })
+        //;
 
-                            if (!$stateParams.endDate) {
-                                return 'reports/performance/views/reportType/adNetwork/subPublisher.tpl.html';
-                            }
-
-                            return 'reports/performance/views/reportType/adNetwork/subPublishersDateRange.tpl.html';
-                        }
-                    }
-                },
-                resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
-                        return performanceReport.getPublisherAdNetworksBySubPublishersReport($stateParams, {
-                            reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
-                            breakDown: 'subpublisher'
-                        });
-                    }
-                },
-                ncyBreadcrumb: {
-                    label: 'Performance reports'
-                }
-            })
-        ;
-
-        $stateProvider
-            .state('app.admin.reports.performance.adNetworkSiteSubPublishers', {
-                url: '/accounts/{publisherId:int}/adNetworks/{adNetworkId:int}/subPublishers?{startDate:date}&{endDate:date}&{subBreakDown}',
-                params: {
-                    endDate: null,
-                    uniqueRequestCacheBuster: null
-                },
-                views: {
-                    report: {
-                        controller: 'ReportView',
-                        templateUrl: function($stateParams) {
-                            if($stateParams.subBreakDown == 'day') {
-                                return 'reports/performance/views/reportType/adNetwork/subPublishersByDay.tpl.html'
-                            }
-
-                            return 'reports/performance/views/reportType/adNetwork/subPublishersDateRange.tpl.html'
-                        }
-                    }
-                },
-                resolve: {
-                    reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
-                        return performanceReport.getAdNetworkSiteSubPublisherReport($stateParams, {
-                            reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
-                            breakDown: 'subpublisher'
-                        });
-                    }
-                },
-                ncyBreadcrumb: {
-                    label: 'Performance reports'
-                }
-            })
-        ;
+        // TODO: remove when stable
+        //$stateProvider
+        //    .state('app.admin.reports.performance.adNetworkSiteSubPublishers', {
+        //        url: '/accounts/{publisherId:int}/adNetworks/{adNetworkId:int}/subPublishers?{startDate:date}&{endDate:date}&{subBreakDown}',
+        //        params: {
+        //            endDate: null,
+        //            uniqueRequestCacheBuster: null
+        //        },
+        //        views: {
+        //            report: {
+        //                controller: 'ReportView',
+        //                templateUrl: function($stateParams) {
+        //                    if($stateParams.subBreakDown == 'day') {
+        //                        return 'reports/performance/views/reportType/adNetwork/subPublishersByDay.tpl.html'
+        //                    }
+        //
+        //                    return 'reports/performance/views/reportType/adNetwork/subPublishersDateRange.tpl.html'
+        //                }
+        //            }
+        //        },
+        //        resolve: {
+        //            reportGroup: /* @ngInject */ function ($stateParams, PERFORMANCE_REPORT_TYPES, performanceReport) {
+        //                return performanceReport.getAdNetworkSiteSubPublisherReport($stateParams, {
+        //                    reportType: PERFORMANCE_REPORT_TYPES.adNetwork,
+        //                    breakDown: 'subpublisher'
+        //                });
+        //            }
+        //        },
+        //        ncyBreadcrumb: {
+        //            label: 'Performance reports'
+        //        }
+        //    })
+        //;
     }
 })();

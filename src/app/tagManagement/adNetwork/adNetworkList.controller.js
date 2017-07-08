@@ -27,7 +27,6 @@
         };
 
         $scope.showPagination = showPagination;
-        $scope.getUnifiedReportEmail = getUnifiedReportEmail;
         $scope.backToBlackList = backToBlackList;
         
         function backToBlackList() {
@@ -127,37 +126,6 @@
 
         function showPagination() {
             return angular.isArray($scope.adNetworks) && $scope.adNetworks.length > $scope.tableConfig.itemsPerPage;
-        }
-
-        function getUnifiedReportEmail(adNetwork) {
-            AdNetworkManager.one(adNetwork.id).one('emailtoken').get()
-                .then(function(email) {
-                    $modal.open({
-                        templateUrl: 'tagManagement/adNetwork/EmailForUnifiedReport.tpl.html',
-                        controller: function($scope) {
-                            $scope.email = email;
-                            $scope.adNetwork = adNetwork;
-
-                            $scope.refreshUnifiedReportEmail = function (adNetwork) {
-                                AdNetworkManager.one(adNetwork.id).one('emailtoken').get({resetToken: true})
-                                    .then(function(email) {
-                                        $scope.email = email;
-
-                                        AlertService.replaceAlerts({
-                                            type: 'success',
-                                            message: $translate.instant('AD_NETWORK_MODULE.REFRESH_UNIFIED_REPORT_SUCCESS')
-                                        });
-                                    })
-                                    .catch(function() {
-                                        AlertService.replaceAlerts({
-                                            type: 'error',
-                                            message: $translate.instant('AD_NETWORK_MODULE.REFRESH_UNIFIED_REPORT_FAIL')
-                                        });
-                                    })
-                            }
-                        }
-                    });
-                });
         }
 
         $scope.$on('$locationChangeSuccess', function() {

@@ -249,15 +249,14 @@
                 "HELP_BLOCK_TAG_DOMAIN": "This will allow you to pull js tags data from your custom domain."
             },
             "SUB_PUBLISHER_MODULE": {
-                "PARTNER_CONFIG": "Revenue Share",
                 "NONE": "None",
                 "FIXED_RATE": "Fixed Rate",
                 "PERCENTAGE": "Percentage",
 
-                "CONFIRM_DEMAND_SOURCE_REPORT_ON": "The sub publisher will see demand sources that are associated to their account through the unified reporting data.",
-                "HELP_BLOCK_DEMAND_SOURCE_REPORT": "If checked, the sub publisher will see demand sources that are associated to their account through the unified reporting data.",
+                "CONFIRM_DEMAND_SOURCE_REPORT_ON": "The sub publisher will see demand sources that are associated to their account through the performance reporting data.",
+                "HELP_BLOCK_DEMAND_SOURCE_REPORT": "If checked, the sub publisher will see demand sources that are associated to their account through the performance reporting data.",
                 "ENABLE_VIEW_TAGCADE_REPORT": "View Pubvantage Report",
-                "HELP_BLOCK_ENABLE_VIEW_TAGCADE_REPORT": 'If checked, the sub publisher will be able to see tagcade and comparison report in unified report.'
+                "HELP_BLOCK_ENABLE_VIEW_TAGCADE_REPORT": 'If checked, the sub publisher will be able to see tagcade report.'
             },
             "VIDEO_PUBLISHER_MODULE": {
                 "SELECT_A_VIDEO_PUBLISHER": "Select a video publisher",
@@ -358,9 +357,6 @@
             },
             "AD_NETWORK_MODULE": {
                 "URL": "Url",
-                "BUILT_IN_PARTNER" : "Built-in Partner",
-                "CUSTOM": "Custom",
-                "FROM": "From",
                 "IMPRESSION_CAP": "Impression Cap",
                 "NETWORK_OPPORTUNITY_CAP": "Opportunity Cap",
                 "ENABLE_UNIFIED_REPORT": "Unified Report",
@@ -417,7 +413,6 @@
                 "PAUSE_SITE_AD_NETWORK": "The ad tags have been paused. Please wait a few minutes for the changes to take effect.",
                 "UPDATE_SITE_AD_NETWORK_FAIL": "The ad tags have not been updated",
 
-                "HELP_BLOCK_URL": "You can use this field to add the login url for your demand partner.",
                 "HELP_BLOCK_ENABLE_UNIFIED": "This credentials to use to login demand partner.",
                 "BLANK_FOR_NO_CHANGE":  "Leave it blank for no change",
                 "HELP_BLOCK_CUSTOM_IMPRESSION_PIXELS": "Add custom impressions pixels for all ad tags for the demand partner.",
@@ -1018,28 +1013,9 @@
                 "VIDEO_AD_CLICKS": "Video Ad Clicks"
             },
             "UNIFIED_REPORT_MODULE": {
-                "PARTNER_REQUESTS":         "Requests",
-                "TAGCADE_OPPORTUNITIES":    "Pubvantage Opportunities",
-                "OPPORTUNITY_COMPARISON":   "Opportunity Comparison",
-                "PARTNER_PASSBACKS":        "Partner Passbacks",
-                "TAGCADE_PASSBACKS":        "Pubvantage Passbacks",
-                "PASSBACK_COMPARISON":      "Passback Comparison",
-                "PARTNER_ECPM":             "Partner ECPM",
-                "TAGCADE_ECPM":             "Pubvantage ECPM",
-                "ECPM_COMPARISON":          "ECPM Comparison",
-                "REVENUE_OPPORTUNITY":      "Revenue Opportunity",
-                "IMPRESSION_COMPARISON":    "Impression Comparison",
-
+                // TODO: Rename this const module. Unified report module has been completely removed. Current many module use these constants
                 "SEARCH": "Search",
-                "DETAILS": "Details",
-                "AVERAGES": "Averages",
-                "FILL_RATE": "Fill Rate",
-                "REVENUE": "Revenue",
-                "CPM": "CPM",
-
-                "UNIFIED": "Unified",
-                "TAGCADE": "Pubvantage",
-                "DISCREPANCIES": "Comparison"
+                "DETAILS": "Details"
             },
             "RTB_REPORT_MODULE": {
                 "EARNED_AMOUNT": "Earned Amount",

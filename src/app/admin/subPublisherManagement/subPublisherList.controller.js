@@ -52,7 +52,7 @@
         function visitPublisher(publisherId) {
             publisherRestangular.one('subpublishers').one(publisherId.toString()).one('token').get()
                 .then(function(tokenPublisher) {
-                    autoLogin.switchToUser(tokenPublisher.plain(), 'app.subPublisher.reports.unified.day');
+                    autoLogin.switchToUser(tokenPublisher.plain(), 'app.subPublisher.tagManagement.sites.list');
                 });
         }
 

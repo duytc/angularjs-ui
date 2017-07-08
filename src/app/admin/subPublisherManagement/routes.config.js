@@ -54,9 +54,6 @@
                     },
                     sites: /* @ngInject */ function(SiteManager) {
                         return SiteManager.one('notBelongToSubPublisher').getList();
-                    },
-                    partners: function(PartnerManager) {
-                        return PartnerManager.getList();
                     }
                 },
                 customResolve: {
@@ -88,9 +85,6 @@
                     },
                     sites: /* @ngInject */ function(SiteManager) {
                         return SiteManager.one('notBelongToSubPublisher').getList();
-                    },
-                    partners: function(PartnerManager) {
-                        return PartnerManager.getList();
                     }
                 },
                 customResolve: {

@@ -6,12 +6,11 @@
         .controller('VideoPublisherList', VideoPublisherList)
     ;
 
-    function VideoPublisherList($scope, $translate, $stateParams, AtSortableService, videoPublishers, VideoPublisherManager, AlertService, publisherRestangular, autoLogin, dateUtil, historyStorage, DIMENSIONS_OPTIONS_VIDEO_REPORT, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE) {
+    function VideoPublisherList($scope, $translate, $stateParams, AtSortableService, videoPublishers, VideoPublisherManager, AlertService, dateUtil, historyStorage, DIMENSIONS_OPTIONS_VIDEO_REPORT, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE) {
 
         $scope.videoPublishers = videoPublishers.records;
         $scope.today = new Date();
         $scope.showPagination = showPagination;
-        $scope.visitPublisher = visitPublisher;
         $scope.togglePublisherStatus = togglePublisherStatus;
         $scope.paramsReport = paramsReport;
 
@@ -125,13 +124,6 @@
                     });
                 })
                 ;
-        }
-
-        function visitPublisher(publisherId) {
-            publisherRestangular.one('videopublishers').one(publisherId.toString()).one('token').get()
-                .then(function(tokenPublisher) {
-                    autoLogin.switchToUser(tokenPublisher.plain(), 'app.videoPublisher.reports.unified.day'); //TODO
-                });
         }
 
         function showPagination() {

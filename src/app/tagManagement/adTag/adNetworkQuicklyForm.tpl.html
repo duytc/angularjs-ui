@@ -17,41 +17,10 @@
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="hasUnifiedModule">
-                    <label class="col-sm-2 control-label">{{ 'AD_NETWORK_MODULE.FROM' | translate }}</label>
+                <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">{{ 'NAME' | translate }}</label>
                     <div class="col-sm-10">
-                        <label class="ui-radio"><input ng-model="selectData.inputType" type="radio" ng-value="DEMAND_PARTNER_TYPE.CUSTOM"><span>{{ 'AD_NETWORK_MODULE.CUSTOM' | translate }}</span></label>
-                        <label class="ui-radio"><input ng-model="selectData.inputType" type="radio" ng-value="DEMAND_PARTNER_TYPE.BUILD_IN"><span>{{ 'AD_NETWORK_MODULE.BUILT_IN_PARTNER' | translate }}</span></label>
-                    </div>
-                </div>
-
-                <div ng-if="isBuildInType() && hasUnifiedModule">
-                    <div class="form-group">
-                        <label for="inputPartner" class="col-sm-2 control-label">{{ 'AD_NETWORK' | translate }}</label>
-                        <div class="col-sm-10">
-                            <ui-select name="publisher" id="inputPartner" ng-model="adNetwork.networkPartner" ng-required="true" server-error reset-search-input="'false'">
-                                <ui-select-match placeholder="{{ 'AD_NETWORK_MODULE.SELECT_A_AD_NETWORK' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                                <ui-select-choices repeat="partner.id as partner in partners">
-                                    {{ partner.name }}
-                                </ui-select-choices>
-                            </ui-select>
-                        </div>
-                    </div>
-                </div>
-
-                <div ng-if="isCustomType() || !hasUnifiedModule">
-                    <div class="form-group">
-                        <label for="inputName" class="col-sm-2 control-label">{{ 'NAME' | translate }}</label>
-                        <div class="col-sm-10">
-                            <input server-error name="name" ng-model="adNetwork.name" ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="{{ 'AD_NETWORK_MODULE.PLACEHOLDER_AD_NETWORK_NAME' | translate }}">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputUrl" class="col-sm-2 control-label">{{ 'AD_NETWORK_MODULE.URL' | translate }}</label>
-                        <div class="col-sm-10">
-                            <input server-error name="url" ng-model="adNetwork.url" type="text" class="form-control" id="inputUrl" placeholder="{{ 'AD_NETWORK_MODULE.PLACEHOLDER_AD_NETWORK_URL' | translate }}">
-                            <span class="help-block">{{ 'AD_NETWORK_MODULE.HELP_BLOCK_URL' | translate }}</span>
-                        </div>
+                        <input server-error name="name" ng-model="adNetwork.name" ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="{{ 'AD_NETWORK_MODULE.PLACEHOLDER_AD_NETWORK_NAME' | translate }}">
                     </div>
                 </div>
 

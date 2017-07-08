@@ -36,14 +36,6 @@
             });
         }
 
-        if($scope.isAdmin()) {
-            if(!!publisher) {
-                $scope.hasUnifiedModule = publisher.enabledModules.indexOf('MODULE_UNIFIED_REPORT') !== -1
-            } else {
-                $scope.hasUnifiedModule = null;
-            }
-        }
-
         // !! converts a variable to a boolean
         // we are saying, if we don't have a predefined ad slot but we have a list of all ad slots, allow the user to choose
         $scope.allowAdSlotSelection = $scope.isNew;
@@ -309,8 +301,6 @@
             };
 
             $scope.resetSelection();
-
-            $scope.hasUnifiedModule = publisher.enabledModules.indexOf('MODULE_UNIFIED_REPORT') !== -1;
 
             params.publisherId = publisher.id;
             adTagLibraryParams.publisherId = publisher.id;

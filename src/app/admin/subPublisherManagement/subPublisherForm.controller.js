@@ -6,7 +6,7 @@
         .controller('SubPublisherForm', SubPublisherForm)
     ;
 
-    function SubPublisherForm($scope, $filter, $modal, $translate, _, partners, subPublisherRestangular, AlertService, sites, ServerErrorProcessor, SiteManager, publishers, subPublisher, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST) {
+    function SubPublisherForm($scope, $filter, $modal, $translate, _, subPublisherRestangular, AlertService, sites, ServerErrorProcessor, SiteManager, publishers, subPublisher, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST) {
         $scope.fieldNameTranslations = {
             username: 'Username',
             plainPassword: 'Password',
@@ -33,7 +33,6 @@
 
         $scope.sites = !$scope.isAdmin() ? sites : [];
         $scope.publishers = publishers;
-        $scope.partners = [];
         $scope.siteData = [];
 
         $scope.revenueOption = {
@@ -46,7 +45,6 @@
             username: null,
             email: null,
             sites: [],
-            subPublisherPartnerRevenue: [],
             demandSourceTransparency: false,
             enabled: true
         };
@@ -64,19 +62,6 @@
                 }
             });
         }
-
-        // convert input partners
-        angular.forEach(partners, function(partner) {
-            var partnerInSubPublisher = _.find($scope.subPublisher.subPublisherPartnerRevenue, function(subPublisherPartner) {
-                return subPublisherPartner.adNetworkPartner.id == partner.id;
-            });
-
-            if(!!partnerInSubPublisher) {
-                $scope.partners.push({adNetworkPartner: partner.id, revenueOption: partnerInSubPublisher.revenueOption, revenueValue: !partnerInSubPublisher.revenueOption ? null : partnerInSubPublisher.revenueValue, active: true, name: partner.name})
-            } else {
-                $scope.partners.push({adNetworkPartner: partner.id, revenueOption: $scope.revenueOption.none, revenueValue: null, active: false, name: partner.name})
-            }
-        });
 
         $scope.isFormValid = function() {
             if($scope.subPublisher.plainPassword != null || $scope.repeatPassword != null) {
@@ -157,8 +142,6 @@
             delete $scope.subPublisher.enabledModules;
             delete $scope.subPublisher.lastLogin;
 
-            $scope.subPublisher.subPublisherPartnerRevenue = refactorJson($scope.partners);
-
             if(!$scope.isAdmin()) {
                 delete $scope.subPublisher.publisher;
             }
@@ -194,25 +177,5 @@
                 )
             ;
         };
-
-        function refactorJson(partners) {
-            var subPublisherPartnerRevenue = [];
-            partners = angular.copy(partners);
-
-            angular.forEach(partners, function(partner) {
-                if(partner.active) {
-                    delete partner.active;
-                    delete partner.name;
-
-                    if(partner.revenueOption == 0) {
-                        delete partner.revenueValue
-                    }
-
-                    subPublisherPartnerRevenue.push(partner);
-                }
-            });
-
-            return subPublisherPartnerRevenue;
-        }
     }
 })();

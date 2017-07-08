@@ -62,7 +62,7 @@
                         <input server-error ng-required="true" name="email" ng-model="subPublisher.email" type="email" class="form-control" id="inputEmail" placeholder="{{ 'PUBLISHER_MODULE.EMAIL' | translate }}">
                     </div>
                 </div>
-                <div class="form-group" ng-if="hasUnifiedModule">
+                <div class="form-group">
                     <label for="inputDemandSourceTransparency" class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.DEMAND_SOURCE_TRANSPARENCY' | translate }}</label>
                     <div class="col-sm-10">
                         <label class="ui-checkbox"><input server-error name="active" ng-click="checkDemandSourceTransparency()" type="checkbox" ng-model="subPublisher.demandSourceTransparency" id="inputDemandSourceTransparency"><span></span></label>
@@ -91,42 +91,6 @@
                         <isteven-multi-select id="inputSite" input-model="sites" output-model="siteData" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
 
                         <a ng-click="createSite()" class="help-block">{{ 'PUBLISHER_MODULE.ADD_NEW_SITE' | translate }}</a>
-                    </div>
-                </div>
-
-                <div class="form-group" ng-if="!!partners.length">
-                    <label class="col-sm-2 control-label">{{ 'SUB_PUBLISHER_MODULE.PARTNER_CONFIG' | translate }} <strong class="text-danger">*</strong></label>
-                    <div class="col-sm-10 row">
-                        <div class="form-inline" ng-repeat="partner in partners">
-                            <div class="col-sm-1">
-                                <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="partner.active" id="inputActive"><span></span></label>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group"><label class="col-sm-12"></label>{{ partner.name }}</div>
-                            </div>
-                            <div class="col-sm-3">
-                                <select class="form-control" ng-disabled="!partner.active" ng-model="partner.revenueOption" convert-to-number>
-                                    <option ng-selected="partner.revenueOption == revenueOption.none" value="{{ revenueOption.none }}">{{ 'SUB_PUBLISHER_MODULE.NONE' | translate }}</option>
-                                    <option ng-selected="partner.revenueOption == revenueOption.fixedRate" value="{{ revenueOption.fixedRate }}">{{ 'SUB_PUBLISHER_MODULE.FIXED_RATE' | translate }}</option>
-                                    <option ng-selected="partner.revenueOption == revenueOption.percentage" value="{{ revenueOption.percentage }}">{{ 'SUB_PUBLISHER_MODULE.PERCENTAGE' | translate }}</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-4">
-                                <input ng-if="partner.revenueOption == revenueOption.none" ng-disabled="true" ng-model="partner.revenueValue" type="number" class="form-control input-group-fixed-width" placeholder="None">
-
-                                <div ng-if="partner.revenueOption == revenueOption.fixedRate" class="input-group">
-                                    <input ng-if="partner.revenueOption == revenueOption.fixedRate" ng-disabled="!partner.active" server-error ng-required="true" name="revenueValue" ng-model="partner.revenueValue" type="number" class="form-control" placeholder="Rate">
-                                    <div ng-if="partner.revenueOption == revenueOption.fixedRate" class="input-group-addon">$</div>
-                                </div>
-
-                                <div ng-if="partner.revenueOption == revenueOption.percentage" class="input-group input-group-fixed-width">
-                                    <input ng-if="partner.revenueOption == revenueOption.percentage" ng-disabled="!partner.active" server-error ng-required="true" name="revenueValue" ng-model="partner.revenueValue" type="number" class="form-control" min="0" max="100" placeholder="Percentage">
-                                    <div ng-if="partner.revenueOption == revenueOption.percentage" class="input-group-addon">%</div>
-                                </div>
-                            </div>
-
-                            <div class="clearfix"></div>
-                        </div>
                     </div>
                 </div>
 

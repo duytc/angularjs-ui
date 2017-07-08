@@ -577,13 +577,14 @@
                     }
                 ];
 
-                if(Auth.getSession().hasModuleEnabled(USER_MODULES.subPublisher)) {
-                    $scope.selectedData.reportType.breakdownOptions.splice(1, 0,    {
-                        key: 'subpublisher',
-                        label: 'By Sub Publisher',
-                        toState: 'reports.performance.adNetworkSiteSubPublishers'
-                    });
-                }
+                // TODO: remove when stable
+                //if(Auth.getSession().hasModuleEnabled(USER_MODULES.subPublisher)) {
+                //    $scope.selectedData.reportType.breakdownOptions.splice(1, 0,    {
+                //        key: 'subpublisher',
+                //        label: 'By Sub Publisher',
+                //        toState: 'reports.performance.adNetworkSiteSubPublishers'
+                //    });
+                //}
 
                 return;
             }
@@ -947,13 +948,14 @@
                     }
                 ];
 
-                if(Auth.getSession().hasModuleEnabled(USER_MODULES.subPublisher)) {
-                    reportType.breakdownOptions.splice(1, 0,    {
-                        key: 'subpublisher',
-                        label: 'By Sub Publisher',
-                        toState: 'reports.performance.adNetworksSubPublishers'
-                    });
-                }
+                // TODO: remove when stable
+                //if(Auth.getSession().hasModuleEnabled(USER_MODULES.subPublisher)) {
+                //    reportType.breakdownOptions.splice(1, 0,    {
+                //        key: 'subpublisher',
+                //        label: 'By Sub Publisher',
+                //        toState: 'reports.performance.adNetworksSubPublishers'
+                //    });
+                //}
             }
 
             if(reportType.key == 'site' && reportType.toState == 'reports.performance.sites' && !selectedData.siteId) {
@@ -1020,13 +1022,14 @@
                 }
             ];
 
-            if(Auth.getSession().hasModuleEnabled(USER_MODULES.subPublisher)) {
-                $scope.selectedData.reportType.breakdownOptions.splice(1, 0,    {
-                    key: 'subpublisher',
-                    label: 'By Sub Publisher',
-                    toState: 'reports.performance.adNetworkSiteSubPublishers'
-                });
-            }
+            // TODO: remove when stable
+            //if(Auth.getSession().hasModuleEnabled(USER_MODULES.subPublisher)) {
+            //    $scope.selectedData.reportType.breakdownOptions.splice(1, 0,    {
+            //        key: 'subpublisher',
+            //        label: 'By Sub Publisher',
+            //        toState: 'reports.performance.adNetworkSiteSubPublishers'
+            //    });
+            //}
         }
 
         /**
@@ -1057,13 +1060,14 @@
                 }
             ];
 
-            if(Auth.getSession().hasModuleEnabled(USER_MODULES.subPublisher)) {
-                $scope.selectedData.reportType.breakdownOptions.splice(1, 0,    {
-                    key: 'subpublisher',
-                    label: 'By Sub Publisher',
-                    toState: 'reports.performance.adNetworksSubPublishers'
-                });
-            }
+            // TODO: remove when stable
+            //if(Auth.getSession().hasModuleEnabled(USER_MODULES.subPublisher)) {
+            //    $scope.selectedData.reportType.breakdownOptions.splice(1, 0,    {
+            //        key: 'subpublisher',
+            //        label: 'By Sub Publisher',
+            //        toState: 'reports.performance.adNetworksSubPublishers'
+            //    });
+            //}
         }
 
         /**
