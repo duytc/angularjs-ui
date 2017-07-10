@@ -63,10 +63,19 @@
                     <label class="col-sm-1quarter control-label">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.DETECTED_FIELDS' | translate }}</label>
 
                     <div class="col-sm-10">
-                        <div ng-repeat="field in dataSourceFields" class="row col-sm-4">
-                            <label class="ui-checkbox"><input name="field[]" type="checkbox" ng-click="toggleField(field)" ng-checked="hasField(field)">
-                                <span>{{ field }}</span>
-                            </label>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="ui-checkbox"><input name="field[]" type="checkbox" ng-click="selectAll()" ng-checked="hasSelectAll()">
+                                    <span>Select All</span>
+                                </label>
+                            </div>
+                            <div class="col-sm-12">
+                                <div ng-repeat="field in dataSourceFields" class="row col-sm-4">
+                                    <label class="ui-checkbox"><input name="field[]" type="checkbox" ng-click="toggleField(field)" ng-checked="hasField(field)">
+                                        <span>{{ field }}</span>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -75,7 +84,8 @@
                     <label class="col-sm-1quarter control-label">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.MAP_FIELDS' | translate }}</label>
 
                     <div class="col-sm-5">
-                        <div class="form-group" ng-repeat="(key, value) in connectDataSource.mapFields">
+                        <!--<div class="form-group" ng-repeat="(key, value) in connectDataSource.mapFields">-->
+                        <div class="form-group" ng-repeat="key in dataSourceFields" ng-if="hasField(key)">
                             <label class="col-sm-3 form-control-static">{{ key }}:</label>
 
                             <div class="col-sm-6 map-field">

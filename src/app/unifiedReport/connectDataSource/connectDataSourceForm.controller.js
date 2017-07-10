@@ -162,6 +162,51 @@
         $scope.selectMapField = selectMapField;
         $scope.previewData = previewData;
         $scope.addValueTemporaryFields = addValueTemporaryFields;
+        $scope.selectAll = selectAll;
+        $scope.hasSelectAll = hasSelectAll;
+
+        function hasSelectAll() {
+            return _.keys($scope.connectDataSource.mapFields).length == $scope.dataSourceFields.length
+        }
+
+        function selectAll() {
+            if(hasSelectAll()) {
+                angular.forEach($scope.dataSourceFields, function (field) {
+                    delete $scope.connectDataSource.mapFields[field];
+                })
+            } else {
+                angular.forEach($scope.dataSourceFields, function (field) {
+                    if(!$scope.connectDataSource.mapFields[field]) {
+                        $scope.connectDataSource.mapFields[field] = _findFieldForMap(field);
+                        selectMapField($scope.connectDataSource.mapFields[field]);
+                    }
+                });
+            }
+        }
+
+        function _findFieldForMap(field) {
+            var totalDimensionsMetrics = [];
+            var totalDimensionsMetricsRoot = {};
+
+            var fieldClone = angular.copy(field);
+            fieldClone = fieldClone.toLowerCase();
+            fieldClone = fieldClone.replace(/[&\/\\#,_+()$~%.'":*?<>{}\s]/g, "");
+
+            angular.forEach($scope.totalDimensionsMetrics, function (dm) {
+                var fieldRoot = angular.copy(dm);
+                fieldRoot = fieldRoot.toLowerCase();
+                fieldRoot = fieldRoot.replace(/[&\/\\#,_+()$~%.'":*?<>{}\s]/g, "");
+
+                totalDimensionsMetrics.push(fieldRoot);
+                totalDimensionsMetricsRoot[fieldRoot] = dm
+            });
+
+            if(totalDimensionsMetrics.indexOf(fieldClone) > -1) {
+                return totalDimensionsMetricsRoot[fieldClone]
+            }
+
+            return null;
+        }
 
         function addValueTemporaryFields($query) {
             if(!/^[a-zA-Z_][a-zA-Z0-9_$\s]*$/.test($query)) {
@@ -247,21 +292,23 @@
             return _.isEmpty(object)
         }
 
-        function hasField(filed) {
+        function hasField(field) {
             if(!$scope.connectDataSource.mapFields) {
                 return false;
             }
 
-            return !!$scope.connectDataSource.mapFields[filed];
+            return _.keys($scope.connectDataSource.mapFields).indexOf(field) > -1;
         }
 
-        function toggleField(filed) {
-            var hasKey = Object.keys($scope.connectDataSource.mapFields).indexOf(filed) > -1;
+        function toggleField(field) {
+            var hasKey = Object.keys($scope.connectDataSource.mapFields).indexOf(field) > -1;
 
             if (hasKey) {
-                delete $scope.connectDataSource.mapFields[filed];
+                delete $scope.connectDataSource.mapFields[field];
             } else {
-                $scope.connectDataSource.mapFields[filed] = null;
+                $scope.connectDataSource.mapFields[field] = _findFieldForMap(field);
+
+                selectMapField($scope.connectDataSource.mapFields[field]);
             }
         }
 
