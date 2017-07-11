@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, reportView, dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT) {
+    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView, dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -410,8 +410,7 @@
                 orderBy: (!!$scope.reverse ? 'desc': 'acs'),
                 sortField: $scope.sortBy,
                 userDefineDimensions: newDimensions,
-                userDefineMetrics: newMetrics,
-                needToGroup: !!$scope.dimensions && newDimensions.length != $scope.dimensions.length || !!$scope.metrics && newMetrics.length != $scope.metrics.length
+                userDefineMetrics: newMetrics
             });
 
             return params;
@@ -447,6 +446,8 @@
 
             $scope.columnPositions = !!$scope.columnPositions && $scope.columnPositions.length > 0 ? $scope.columnPositions : [];
 
+            var fieldTypes = angular.copy($scope.reportView.fieldTypes);
+
             if ($scope.reports.length > 0) {
                 var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
                 var totalDimensions = [];
@@ -456,6 +457,14 @@
                     totalDimensions = totalDimensions.concat(reportView.dimensions);
                     totalMetrics = totalMetrics.concat(reportView.metrics)
                 });
+
+                var data = $scope.reportView.multiView ? allDimensionsMetrics.reportViews : allDimensionsMetrics.dataSets;
+
+                angular.forEach(data, function (item) {
+                    totalDimensions = totalDimensions.concat($scope.reportView.multiView ? item.dimensions : _.keys(item.dimensions));
+                    totalMetrics = totalMetrics.concat($scope.reportView.multiView ? item.metrics : _.keys(item.metrics))
+                });
+
                 
                 var dimensions = [];
                 var metrics = [];
@@ -474,18 +483,50 @@
                     });
 
                     if(totalDimensions.indexOf(key) > -1 || hasJoin > -1 || key == 'report_view_alias') {
-                        dimensions.push(col);
+                        if(dimensions.indexOf(col) == -1) {
+                            dimensions.push(col);
 
-                        if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == col }) == -1) {
-                            $scope.dimensions.push({name: col, label: $scope.titleColumnsForSelect[col], ticked: true});
+                            if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == col }) == -1) {
+                                $scope.dimensions.push({name: col, label: $scope.titleColumnsForSelect[col], ticked: true});
+                            }
                         }
                     } else {
-                        metrics.push(col);
+                        if(metrics.indexOf(col) == -1) {
+                            metrics.push(col);
 
-                        if(_.findIndex($scope.metrics, function (dimension) { return dimension.name == col }) == -1) {
-                            $scope.metrics.push({name: col, label: $scope.titleColumnsForSelect[col], ticked: true});
+                            if(_.findIndex($scope.metrics, function (dimension) { return dimension.name == col }) == -1) {
+                                $scope.metrics.push({name: col, label: $scope.titleColumnsForSelect[col], ticked: true});
+                            }
                         }
                     }
+                });
+
+                angular.forEach(data, function (item) {
+                    angular.forEach(item.dimensions, function (type, dimension) {
+                        var col = $scope.reportView.multiView ? type : dimension + '_' + item.id;
+
+                        if(dimensions.indexOf(col) == -1 && !!col) {
+                            if(!$scope.reportView.multiView || ($scope.reportView.multiView && $scope.reportView.subReportsIncluded)) {
+                                fieldTypes[col] = $scope.reportView.multiView ? item.fieldTypes[col] : type;
+
+                                if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == col }) == -1) {
+                                    $scope.dimensions.push({name: col, label: allDimensionsMetrics.columns[col] || allDimensionsMetrics.columns[dimension]});
+                                }
+                            }
+                        }
+                    });
+
+                    angular.forEach(item.metrics, function (type, metric) {
+                        var col = $scope.reportView.multiView ? type : metric + '_' + item.id;
+
+                        if(metrics.indexOf(col) == -1 && !!col) {
+                            fieldTypes[col] = $scope.reportView.multiView ? item.fieldTypes[col] : type;
+
+                            if(_.findIndex($scope.metrics, function (metric) { return metric.name == col }) == -1) {
+                                $scope.metrics.push({name: col, label: allDimensionsMetrics.columns[col] || allDimensionsMetrics.columns[metric]});
+                            }
+                        }
+                    })
                 });
 
                 dimensions = _.sortBy(dimensions);
@@ -515,14 +556,14 @@
                 });
 
                 angular.forEach(angular.copy(dimensions).reverse(), function (dimension) {
-                    if($scope.reportView.fieldTypes[dimension] == 'date' || $scope.reportView.fieldTypes[dimension] == 'datetime') {
+                    if(fieldTypes[dimension] == 'date' || fieldTypes[dimension] == 'datetime') {
                         dimensions.splice(dimensions.indexOf(dimension), 1);
                         dimensions.unshift(dimension);
                     }
                 });
 
                 angular.forEach(angular.copy(metrics).reverse(), function (metric) {
-                    if($scope.reportView.fieldTypes[metric] == 'date' || $scope.reportView.fieldTypes[metric] == 'datetime') {
+                    if(fieldTypes[metric] == 'date' || fieldTypes[metric] == 'datetime') {
                         metrics.splice(metrics.indexOf(metric), 1);
                         metrics.unshift(metric);
                     }

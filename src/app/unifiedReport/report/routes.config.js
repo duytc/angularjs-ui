@@ -214,6 +214,13 @@
                         params.page = !$stateParams.page ? 1 : $stateParams.page;
                         params.limit = !$stateParams.limit ? 10 : $stateParams.limit;
 
+                        params.userDefineDimensions = reportView.dimensions || [];
+                        params.userDefineMetrics = reportView.metrics || [];
+
+                        if(params.userDefineDimensions.indexOf('report_view_alias') == -1 && reportView.multiView && (params.userDefineDimensions.length > 0 || params.userDefineMetrics.length > 0)) {
+                            params.userDefineDimensions.unshift('report_view_alias');
+                        }
+
                         return unifiedReportBuilder.getPlatformReport(params);
                     },
                     dataSources: function (reportView, UnifiedReportViewManager) {
@@ -232,6 +239,24 @@
                         var params = !!reportView.multiView ? {reportViews: listId.toString()} : {dataSets: listId.toString()};
 
                         return UnifiedReportViewManager.one('datasources').getList(null, params);
+                    },
+                    allDimensionsMetrics: function (reportView, UnifiedReportViewManager) {
+                        var listId = [];
+
+                        if(!reportView.multiView) {
+                            angular.forEach(reportView.reportViewDataSets, function (item) {
+                                listId.push(item.dataSet);
+                            })
+                        } else {
+                            angular.forEach(reportView.reportViewMultiViews, function (item) {
+                                listId.push(item.subView);
+                            })
+                        }
+
+                        var params = !!reportView.multiView ? {reportViews: listId.toString()} : {dataSets: listId.toString()};
+                        params.showDataSetName = reportView.isShowDataSetName;
+
+                        return UnifiedReportViewManager.one('datasets').get(params);
                     }
                 },
                 ncyBreadcrumb: {
