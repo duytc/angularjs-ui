@@ -272,6 +272,10 @@
                 "SELECT_A_SITE_TO_GENERATE": "Select a site to generate tags for...",
                 "SELECT_A_CHANNEL_TO_GENERATE": "Select a channel to generate tags for...",
 
+                "PASSBACK_TYPE": "Passback type",
+                "PASSBACK_TYPE_JS": "Javascript",
+                "PASSBACK_TYPE_URL": "Url",
+
                 "EXPORT_TAG": "Export Tags",
                 "TAGS_FOR_SITE": "Tags for {{ name }}",
                 "RON_AD_SLOT_FOR": "{{ name }}",

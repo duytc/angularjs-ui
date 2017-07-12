@@ -17,6 +17,11 @@
             ronAdSlot: 'ronAdSlot'
         };
 
+        $scope.passbackTypes = {
+            js: 'js',
+            url: 'url'
+        };
+
         $scope.generatorOptions = [
             {
                 label: 'Site',
@@ -52,6 +57,7 @@
 
         $scope.selected = {
             type: !!site || !!channel ? $scope.typeKey.adSlot : $scope.typeKey.passback,
+            passbackType: $scope.passbackTypes.js,
             publisher: site && site.publisher || channel && channel.publisher,
             generatorFor: !!channel ? 'channel' : 'site',
             site: site,
@@ -241,9 +247,9 @@
 
             if ($scope.selected.type == $scope.typeKey.passback) {
                 if($scope.isAdmin()) {
-                    return adminUserManager.one($scope.selected.publisher.id).customGET('jspassback', {forceSecure: $scope.selected.forceSecure});
+                    return adminUserManager.one($scope.selected.publisher.id).customGET('jspassback', {type: $scope.selected.passbackType, forceSecure: $scope.selected.forceSecure});
                 } else {
-                    return accountManager.one().customGET('jspassback', {forceSecure: $scope.selected.forceSecure})
+                    return accountManager.one().customGET('jspassback', {type: $scope.selected.passbackType, forceSecure: $scope.selected.forceSecure})
                 }
             }
 
