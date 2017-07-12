@@ -84,7 +84,7 @@
                                             </div>
 
                                             <div ng-if="from.isCustomFormatDateFrom">
-                                                <input server-error name="from" ng-model="from.format" ng-required="true" type="text" ng-pattern="/^([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})[\-,\.,\/,_\s]*([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})[\-,\.,\/,_\s]*([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})*(([T]{1}|[H]{2,2}|[m]{2,2}|[s]{2,2})|[\\\-,\.,\/,_:\s])*((e?)|(O?)|(P?)|(T?))?$/" class="form-control" placeholder="Date From Format">
+                                                <input server-error name="from" ng-model="from.format" ng-required="true" type="text" ng-pattern="/^([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})[\-,\.,\/,_\s]*([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})[\-,\.,\/,_\s]*([Y]{2}|[Y]{4}|[M]{1,4}|[D]{1,2})*(([T]{1}|[H]{2,2}|[m]{2,2}|[s]{2,2})|[\\\-,\.,\/,_:\s])*((T?))?$/" class="form-control" placeholder="Date From Format">
                                                 <span class="help-block"> {{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.INPUT_DATE_FORMAT_HELP_TEXT' | translate }} </span>
                                             </div>
                                         </div>
