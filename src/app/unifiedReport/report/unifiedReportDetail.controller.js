@@ -407,7 +407,7 @@
                 searches: $scope.search,
                 limit: !!itemPerPage ? itemPerPage.key : $scope.tableConfig.itemsPerPage,
                 page: $scope.availableOptions.currentPage,
-                orderBy: (!!$scope.reverse ? 'desc': 'acs'),
+                orderBy: (!!$scope.reverse ? 'desc': 'asc'),
                 sortField: $scope.sortBy,
                 userDefineDimensions: newDimensions,
                 userDefineMetrics: newMetrics
