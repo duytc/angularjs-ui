@@ -214,8 +214,8 @@
                         params.page = !$stateParams.page ? 1 : $stateParams.page;
                         params.limit = !$stateParams.limit ? 10 : $stateParams.limit;
 
-                        params.userDefineDimensions = reportView.dimensions || [];
-                        params.userDefineMetrics = reportView.metrics || [];
+                        params.userDefineDimensions = reportView.enableCustomDimensionMetric ? reportView.dimensions : [];
+                        params.userDefineMetrics = reportView.enableCustomDimensionMetric ? reportView.metrics : [];
 
                         if(params.userDefineDimensions.indexOf('report_view_alias') == -1 && reportView.multiView && (params.userDefineDimensions.length > 0 || params.userDefineMetrics.length > 0)) {
                             params.userDefineDimensions.unshift('report_view_alias');
