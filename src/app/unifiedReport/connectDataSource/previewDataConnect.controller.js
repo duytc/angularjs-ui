@@ -43,6 +43,11 @@
             itemsPerPage: 10
         };
 
+        $scope.availableOptions = {
+            currentPage: 1,
+            pageSize: 10
+        };
+
         $scope.tableConfigProcessed = {
             maxPages: 10,
             itemsPerPage: 10
@@ -71,30 +76,9 @@
         $scope.viewProcessedData = function () {
             connectDataSource.dataSourceEntryId = $scope.selectedData.importedDataSource;
             connectDataSource.limit = $scope.selectedData.limit;
+            connectDataSource.page = 1;
 
-            UnifiedReportConnectDataSourceManager.one('dryrun').post(null, connectDataSource)
-                .then(function (reportData) {
-                    $scope.tableConfigProcessed.currentPage = 1;
-
-                    $scope.reportProcessedData = reportData;
-                    $scope.processedColumns = !!reportData && angular.isObject(reportData.columns) ? _.keys(reportData.columns) : [];
-                    $scope.processedReports = !!reportData && !!reportData.reports ? reportData.reports : [];
-                    $scope.types = reportData.types;
-                })
-                .catch(function (response) {
-                    $modal.open({
-                        templateUrl: 'unifiedReport/connectDataSource/alertErrorPreview.tpl.html',
-                        size: 'lg',
-                        resolve: {
-                            message: function () {
-                                return convertMessage(response.data.message);
-                            }
-                        },
-                        controller: function ($scope, message) {
-                            $scope.message = message;
-                        }
-                    });
-                })
+            _getProcessedData(connectDataSource);
         };
 
         $scope.viewOriginalData = function () {
@@ -126,6 +110,88 @@
         $scope.getTotalRowDataSourceEntry = getTotalRowDataSourceEntry;
         $scope.selectImportedDataSource = selectImportedDataSource;
         
+        $scope.isShow = isShow;
+        $scope.sort = sort;
+        $scope.changePage = changePage;
+        $scope.searchReportView = searchReportView;
+        $scope.showPagination = showPagination;
+        
+        function showPagination() {
+            return angular.isArray($scope.processedReports) && $scope.tableConfigProcessed.totalItems > $scope.tableConfigProcessed.itemsPerPage;
+        }
+
+        function sort(keyname) {
+            $scope.sortBy = '\u0022'+keyname+'\u0022'; //set the sortBy to the param passed
+            $scope.reverse = !$scope.reverse; //if true make it false and vice versa
+
+            connectDataSource = angular.extend(connectDataSource, {
+                searches: $scope.search,
+                limit: $scope.selectedData.limit,
+                page: $scope.availableOptions.currentPage,
+                orderBy: (!!$scope.reverse ? 'desc': 'acs'),
+                sortField: $scope.sortBy
+            });
+
+            _getProcessedData(connectDataSource);
+        }
+
+        function changePage(currentPage) {
+            connectDataSource = angular.extend(connectDataSource, {
+                searches: $scope.search,
+                limit: $scope.selectedData.limit,
+                page: currentPage,
+                orderBy: (!!$scope.reverse ? 'desc': 'acs'),
+                sortField: $scope.sortBy
+            });
+
+            _getProcessedData(connectDataSource);
+        }
+
+        function isShow(sortColumn) {
+            return ($scope.sortBy == '\u0022' + sortColumn + '\u0022')
+        }
+        
+        function searchReportView() {
+            connectDataSource = angular.extend(connectDataSource, {
+                searches: $scope.search,
+                limit: $scope.selectedData.limit,
+                page: $scope.availableOptions.currentPage,
+                orderBy: (!!$scope.reverse ? 'desc': 'acs'),
+                sortField: $scope.sortBy
+            });
+
+            _getProcessedData(connectDataSource);
+        }
+
+        function _getProcessedData(params) {
+            params.limitRows = params.limit;
+
+            UnifiedReportConnectDataSourceManager.one('dryrun').post(null, params)
+                .then(function (reportData) {
+                    $scope.tableConfigProcessed.currentPage = 1;
+
+                    $scope.reportProcessedData = reportData;
+                    $scope.processedColumns = !!reportData && angular.isObject(reportData.columns) ? _.keys(reportData.columns) : [];
+                    $scope.processedReports = !!reportData && !!reportData.reports ? reportData.reports : [];
+                    $scope.types = reportData.types;
+                    $scope.tableConfigProcessed.totalItems = reportData.total;
+                })
+                .catch(function (response) {
+                    $modal.open({
+                        templateUrl: 'unifiedReport/connectDataSource/alertErrorPreview.tpl.html',
+                        size: 'lg',
+                        resolve: {
+                            message: function () {
+                                return convertMessage(response.data.message);
+                            }
+                        },
+                        controller: function ($scope, message) {
+                            $scope.message = message;
+                        }
+                    });
+                })
+        }
+
         function selectImportedDataSource() {
             $scope.originalReports = [];
             $scope.processedReports = [];

@@ -35,18 +35,21 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th ng-repeat="column in processedColumns">{{ reportProcessedData.columns[column] }}</th>
+                            <th ng-repeat="column in processedColumns" ng-click="sort(column)">{{ reportProcessedData.columns[column] }}
+                                <span class="glyphicon glyphicon-minus" ng-show="!isShow(column)"></span>
+                                <span class="glyphicon" ng-show="isShow(column)" ng-class="{'glyphicon-chevron-up':!reverse,'glyphicon-chevron-down':reverse}"></span>
+                            </th>
                         </tr>
                         </thead>
 
                         <tbody>
                         <tr>
                             <td ng-repeat="column in processedColumns">
-                                <input type="text" ng-model="search[column]">
+                                <input type="text" ng-model="search[column]" ng-change="searchReportView()">
                             </td>
                         </tr>
 
-                        <tr dir-paginate="report in processedReports | filter:search | itemsPerPage:tableConfigProcessed.itemsPerPage" current-page="tableConfigProcessed.currentPage" pagination-id="processed">
+                        <tr dir-paginate="report in processedReports | itemsPerPage:tableConfigProcessed.itemsPerPage" current-page="tableConfigProcessed.currentPage" pagination-id="processed">
                             <td ng-class="{minWidth100: (types[column] == 'date' || types[column] == 'datetime')}" ng-repeat="column in processedColumns">
                                 <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>
                             </td>
@@ -58,6 +61,10 @@
                 <div class="pagination">
                     <dir-pagination-controls pagination-id="processed" max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
                 </div>
+
+                <!--<div class="pagination">-->
+                    <!--<pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfigProcessed.itemsPerPage" total-items="tableConfigProcessed.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfigProcessed.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>-->
+                <!--</div>-->
 
                 <span class="help-block pull-right" ng-if="reportProcessedData.total > 0">{{ reportProcessedData.total }} of {{ getTotalRowDataSourceEntry(selectedData.importedDataSource) }} Rows</span>
             </tab>
