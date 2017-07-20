@@ -14,7 +14,6 @@
             channel: 'channel',
             ronAdSlot: "ronAdSlot",
             segment: "segment",
-            exchange: "exchange",
             subPublisher: "subPublisher",
             videoPublisher: "videoPublisher",
             videoAdTag: "videoAdTag",

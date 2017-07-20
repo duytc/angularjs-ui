@@ -6,7 +6,7 @@
         .controller('PublisherForm', PublisherForm)
     ;
 
-    function PublisherForm($scope, $translate, _, exchanges, headerBiddings, defaultThresholds, adminUserManager, AlertService, ServerErrorProcessor, publisher, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST, USER_MODULES){
+    function PublisherForm($scope, $translate, _, headerBiddings, defaultThresholds, adminUserManager, AlertService, ServerErrorProcessor, publisher, historyStorage, HISTORY_TYPE_PATH, COUNTRY_LIST, USER_MODULES){
         $scope.fieldNameTranslations = {
             username: 'Username',
             plainPassword: 'Password',
@@ -35,7 +35,6 @@
             address: null,
             postalCode: null,
             country: null,
-            exchanges: [],
             bidders: [],
             billingConfigs: [],
             tagDomain: {
@@ -51,10 +50,6 @@
                     secure: true,
                     domain: null
                 };
-            }
-
-            if(!$scope.publisher.exchanges) {
-                $scope.publisher.exchanges = []
             }
 
             if(publisher.billingConfigs.length > 0) {
@@ -78,7 +73,6 @@
             { label: 'In-Banner Video', role: 'MODULE_IN_BANNER' },
             { label: 'Source Report', role: 'MODULE_SOURCE_REPORT' },
             { label: 'Unified Report', role: 'MODULE_UNIFIED_REPORT' },
-            { label: 'RTB (Real Time Bidding)', role: 'MODULE_RTB' },
             { label: 'Sub Publisher', role: 'MODULE_SUB_PUBLISHER' },
             { label: 'Header Bidding', role: 'MODULE_HEADER_BIDDING' }
 //            { label: 'Fraud Detection', role: 'MODULE_FRAUD_DETECTION' }
@@ -89,7 +83,6 @@
         _formatTiers(defaultThresholds['in-banner']);
         _formatTiers(defaultThresholds['header-bidding']);
 
-        $scope.exchanges = exchanges;
         $scope.headerBiddings = headerBiddings;
         $scope.defaultThresholds = defaultThresholds;
 
@@ -97,9 +90,7 @@
         $scope.toggleModuleRole = toggleModuleRole;
         $scope.isFormValid = isFormValid;
         $scope.backToListPublisher = backToListPublisher;
-        $scope.hasExchange = hasExchange;
         $scope.hasBidder = hasBidder;
-        $scope.toggleExchange = toggleExchange;
         $scope.toggleHeaderBidding = toggleHeaderBidding;
         $scope.disabledModule = disabledModule;
 
@@ -151,10 +142,6 @@
                     $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.headerBidding), 1);
                 }
 
-                if($scope.publisher.enabledModules.indexOf(USER_MODULES.rtb) > -1) {
-                    $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.rtb), 1);
-                }
-
                 // if($scope.publisher.enabledModules.indexOf(USER_MODULES.source) > -1) {
                 //     $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.source), 1);
                 // }
@@ -192,19 +179,6 @@
         }
 
         /**
-         * check if publisher already has an exchange, search by abbreviation of exchange
-         *
-         * @param {Object} exchange
-         * @param {String} exchange.abbreviation
-         * @return {boolean}
-         */
-        function hasExchange(exchange) {
-            var idx = getExchangeIdx(exchange);
-
-            return idx !== false && idx > -1;
-        }
-
-        /**
          * check if publisher already has an bidder, search by abbreviation of bidder
          *
          * @param {Object} bidder
@@ -215,24 +189,6 @@
             var idx = getBidderIdx(bidder);
 
             return idx !== false && idx > -1;
-        }
-
-        /**
-         * get idx of an exchange of current publisher, search by abbreviation of exchange
-         *
-         * @param {Object} exchange
-         * @param {String} exchange.abbreviation
-         * @return {*}
-         */
-        function getExchangeIdx(exchange)
-        {
-            if (!$scope.publisher.exchanges) {
-                return false;
-            }
-
-            return _.findIndex($scope.publisher.exchanges, function (publisherExchange) {
-                return exchange.abbreviation == publisherExchange
-            });
         }
 
         /**
@@ -253,23 +209,6 @@
             });
         }
 
-        /**
-         * handle event toggleExchange
-         *
-         * @param {Object} exchange
-         */
-        function toggleExchange(exchange) {
-            var exchangeIdx = getExchangeIdx(exchange);
-
-            if (hasExchange(exchange)) {
-                $scope.publisher.exchanges.splice(exchangeIdx, 1);
-            } else {
-                // !VERY IMPORTANT HERE: make exchange object "contains id" same as old data in $scope.publisher.exchanges
-                // DON'T GET SAME MISTAKE AGAIN!!!
-                $scope.publisher.exchanges.push(exchange.abbreviation);
-            }
-        }
-
         function toggleHeaderBidding(bidder) {
             var bidderIdx = getBidderIdx(bidder);
 
@@ -281,7 +220,7 @@
         }
 
         function disabledModule(module) {
-            if((module == USER_MODULES.subPublisher || module == USER_MODULES.rtb || module == USER_MODULES.headerBidding || module == USER_MODULES.inBanner) && !hasModuleEnabled(USER_MODULES.displayAds)) {
+            if((module == USER_MODULES.subPublisher || module == USER_MODULES.headerBidding || module == USER_MODULES.inBanner) && !hasModuleEnabled(USER_MODULES.displayAds)) {
                 return true;
             }
 

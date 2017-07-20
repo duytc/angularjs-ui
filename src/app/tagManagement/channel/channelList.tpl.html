@@ -24,7 +24,6 @@
                 <thead>
                 <tr>
                     <th ng-show="isAdmin()" at-attribute="publisher.company" >{{ 'PUBLISHER' | translate }}</th>
-                    <th ng-show="hasRtbModule" at-attribute="rtb">{{ 'SITE_MODULE.RTB' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -44,9 +43,6 @@
                     </td>
                     <td at-implicit at-sortable at-attribute="name" at-initial-sorting="asc" at-title="{{ 'CHANNEL' | translate }}"></td>
                     <td ng-show="isAdmin()" at-implicit at-sortable at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
-                    <td ng-show="hasRtbModule" at-title="{{ 'SITE_MODULE.RTB' | translate }}" at-attribute="rtb" at-sortable>
-                        {{ rtbStatusLabels[item.rtbStatus] }}
-                    </td>
                 </tr>
                 </tbody>
             </table>

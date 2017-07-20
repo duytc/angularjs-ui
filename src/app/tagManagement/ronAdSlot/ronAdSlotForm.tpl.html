@@ -80,7 +80,6 @@
                     </div>
                 </div>
 
-
                 <!--<div class="form-group">-->
                     <!--<label class="col-sm-1quarter control-label">{{ 'RON_AD_SLOT_MODULE.SELECT_PUBLISHER_SEGMENTS' | translate }}</label>-->
                     <!--<div class="col-sm-5">-->
@@ -96,35 +95,6 @@
                         <oi-select oi-options="item.name for item in segments | selectedPublisher:selected.publisher" ng-disabled="!selected.publisher && isAdmin()" ng-model="ronAdSlotSegments" multiple oi-select-options="{newItem: true, newItemFn: 'addSegment($query)'}" placeholder="{{ 'RON_AD_SLOT_MODULE.SELECT_SEGMENTS' | translate }}"></oi-select>
 
                         <span class="help-block">{{ 'RON_AD_SLOT_MODULE.HELP_BLOCK_SELECT_SEGMENT' | translate }}</span>
-                    </div>
-                </div>
-
-                <div class="form-group" ng-if="showForDisplayAdSlot() && isEnabledModuleRtb()">
-                    <label for="inputRtb" class="col-sm-1quarter control-label">{{ 'RTB_STATUS' | translate }}</label>
-                    <div class="col-sm-5" id="inputRtb">
-                        <label class="ui-radio"><input ng-model="ronAdSlot.rtbStatus" type="radio" ng-click="rtbStatusChanged(rtbStatusTypes.enable)" ng-value="rtbStatusTypes.enable"><span>{{ 'RTB_STATUS_ENABLE' | translate }}</span></label>
-                        <label class="ui-radio"><input ng-model="ronAdSlot.rtbStatus" type="radio" ng-click="rtbStatusChanged(rtbStatusTypes.disable)" ng-value="rtbStatusTypes.disable"><span>{{ 'RTB_STATUS_DISABLE' | translate }}</span></label>
-                        <span class="help-block">{{ 'RON_AD_SLOT_MODULE.HELP_BLOCK_RTB' | translate }}</span>
-                    </div>
-                </div>
-
-                <!--temporarily disable view/edit exchanges for ronAdSlot. exchanges will be inherited from publisher-->
-                <!--<div class="form-group" ng-if="showForDisplayAdSlot() && isEnabledModuleRtb() && ronAdSlot.rtbStatus != rtbStatusTypes.disable && exchangesOfPublisher.length > 0">-->
-                    <!--<label for="inputExchanges" class="col-sm-1quarter control-label">{{ 'SITE_MODULE.EXCHANGES' | translate}}</label>-->
-                    <!--<div class="col-sm-5" id="inputExchanges">-->
-                        <!--<div ng-repeat="exchange in exchanges" class="check_video_player">-->
-                            <!--<label ng-if="exchangesOfPublisher.indexOf(exchange.name) > -1" class="ui-checkbox"><input name="exchanges[]" type="checkbox" ng-click="toggleExchange(exchange.name)" ng-checked="hasExchange(exchange.name)">-->
-                                <!--<span>{{ exchange.label }}</span>-->
-                            <!--</label>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-
-                <div class="form-group" ng-if="showForDisplayAdSlot() && isEnabledModuleRtb() && ronAdSlot.rtbStatus != rtbStatusTypes.disable">
-                    <label for="inputFloorPrice" class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.FLOOR_PRICE' | translate }}</label>
-                    <div class="col-sm-5">
-                        <input server-error name="floorPrice" ng-model="ronAdSlot.floorPrice" type="number" class="form-control" id="inputFloorPrice" placeholder="{{ 'AD_SLOT_MODULE.FLOOR_PRICE' | translate }}">
-                        <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_FLOOR_PRICE' | translate }}</span>
                     </div>
                 </div>
 

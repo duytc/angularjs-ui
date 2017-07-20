@@ -62,11 +62,6 @@
             "DATA_SOURCE":"Data Source",
             "DATA_SET":"Data Set",
 
-            "RTB_STATUS": "RTB",
-            "RTB_STATUS_INHERIT": "Inherit",
-            "RTB_STATUS_ENABLE": "Enable",
-            "RTB_STATUS_DISABLE": "Disable",
-
             "VIEW_TODAY_REPORT": "View Today's Report",
             "COPY_TO_CLIPBOARD": "Copy to Clipboard",
             "REFRESH": 'Refresh',
@@ -108,11 +103,8 @@
                 "NEW_AD_SLOT": "New Ad Slot",
                 "NEW_RON_AD_SLOT": "New RON Ad Slot",
                 "NEW_AD_TAG": "New Ad Tag",
-                "EXCHANGE_MANAGEMENT": "Exchange Management",
-                "NEW_EXCHANGE": "New Exchange",
                 "TAG_LIBRARY": "Tag Standalone",
                 "REPORTS": "Reports",
-                "RTB_REPORTS": "RTB Reports",
                 "PERFORMANCE_REPORTS": "Performance Reports",
                 "SOURCE_REPORTS": "Source Reports",
                 "BILLING_REPORTS": "Billing Reports",
@@ -124,7 +116,6 @@
                 "CASCADE_MANAGER": "Cascade Manager",
                 "SOURCE_REPORT_CONFIG": "Source Report Config",
                 "ACTIVITY_LOG": "Activity Log",
-                "EXCHANGES": "Exchanges",
 
                 "VIDEO_ADS": "Video Ads",
                 "VIDEO_AD_TAGS": "Waterfalls",
@@ -191,6 +182,7 @@
                 "BILLED_AMOUNT": "Billed Amount",
                 "SLOT_OPPORTUNITIES": "Slot Opportunities",
                 "NETWORK_OPPORTUNITIES": "Network Opportunities",
+                "AD_OPPORTUNITIES": "Ad Opportunities",
                 "IMPRESSIONS": "Impressions",
                 "PASSBACKS": "Passbacks",
                 "FILL_RATE": "Fill Rate"
@@ -316,15 +308,11 @@
                 "NEW_CHANNEL": "New Channel",
                 "REMOVE_SITE_FROM_CHANNEL": "Remove Site from Channel",
 
-                "PLACEHOLDER_CHANNEL_NAME": "Channel name",
-
-                "HELP_BLOCK_RTB": "Enable RTB for all sites in this channel."
+                "PLACEHOLDER_CHANNEL_NAME": "Channel name"
             },
             "SITE_MODULE": {
                 "DOMAIN": "Domain",
                 "VIDEO_PLAYERS": "Video Players",
-                "RTB": "RTB",
-                "EXCHANGES" : "Exchanges",
 
                 "ADD_NEW_SUCCESS": "The site has been created",
                 "UPDATE_SUCCESS": "The site has been updated",
@@ -356,8 +344,7 @@
                 "ALL_SITES" : "All Sites",
                 "AUTO_CREATED_SITES": "Auto Created Sites",
                 "MANUALLY_CREATED_SITES": "Manually Created Sites",
-                "HELP_BLOCK_SOURCE_REPORT": "If checked, source reports will be created every day for this site",
-                "HELP_BLOCK_RTB": "Enable RTB for this site or inherit the RTB config from any channels associated with this site."
+                "HELP_BLOCK_SOURCE_REPORT": "If checked, source reports will be created every day for this site"
             },
             "AD_NETWORK_MODULE": {
                 "URL": "Url",
@@ -668,7 +655,6 @@
                 "AUTO_FIT": "Auto Fit",
                 "AUTO_REFRESH": "Auto Refresh",
                 "PASSBACK_MODE": "Passback Mode",
-                "FLOOR_PRICE": "Floor Price",
                 "HEADER_BID_PRICE": "Header Bid Price",
 
                 "ADD_NEW_SUCCESS": "The ad slot has been created",
@@ -709,8 +695,6 @@
                 "HELP_BLOCK_FROM_LIBRARY": "You can select an existing ad slot from your standalone ad slots. If you choose this option, all of the fields below will not be editable. If you would like to change these fields, you may do so the the standalone ad slots section.",
                 "HELP_BLOCK_DEFAULT_AD_SLOT": "If no default ad slot is selected and no rules match, the ad slot will not be shown on the page.",
                 "HELP_BLOCK_AUTO_FIT": "When Auto Fit is enabled, the ad slot will dynamically resize if the ad served is different from the size defined above.",
-                "HELP_BLOCK_FLOOR_PRICE": "If the RTB bid price is lower than this amount, the ad tag waterfall will serve instead.",
-                "HELP_BLOCK_RTB": "Enable RTB for this ad slot or inherit the RTB config from the associated site.",
                 "HELP_BLOCK_HEADER_BIDDING_PRICE": "Set the bid price for the Pubvantage bidder",
                 "HELP_BLOCK_REFRESH_EVERY": "How many seconds after an impression before the ad slot is refreshed.",
                 "HELP_BLOCK_REFRESH_TIMES": "The maximum amount of times the ad slot will refresh after the initial load. Once this limit is exceeded, the ad slot will no longer refresh."
@@ -743,7 +727,6 @@
                 "HELP_BLOCK_SELECT_STANDALONE_AD_SLOT": "A RON ad slot gets its configuration from a standalone ad slot. You must create a standalone ad slot first if the above drop down is blank",
                 "HELP_BLOCK_SELECT_SEGMENT": "You can create custom report segments above. To create new segments, enter in a text value and press enter. You may repeat this process to create more segments",
                 "HELP_BLOCK_GLOBAL": "You can generate unique tags for each report segment. The Global segment is the default report segment and should be used when you do not have any custom segments or do not want to track a specific segment.",
-                "HELP_BLOCK_RTB": "Enable RTB for this RON ad slot.",
                 "HELP_BLOCK_SELECT_SUB_PUBLISHER_SEGMENT": "Select to enable publisher's report"
             },
             "SEGMENT_MODULE": {
@@ -915,14 +898,14 @@
                 "BILLED_AMOUNT": "Billed Amount",
                 "SLOT_OPPORTUNITIES": "Slot Opportunities",
                 "NETWORK_OPPORTUNITIES": "Network Opportunities",
+                "AD_OPPORTUNITIES": "Ad Opportunities",
                 "IMPRESSIONS": "Impressions",
-                "RTB_IMPRESSIONS": "RTB Impressions",
                 "PASSBACKS": "Passbacks",
                 "FILL_RATE": "Fill Rate",
                 "BILLED_CPM_RATE": "Billed CPM Rate",
                 "CPM_RATE": "CPM Rate",
                 "FIRST_OPPORTUNITIES": "First Opportunities",
-                "VERIFIED_IMPRESSIONS": "Verified Impressions",
+                //"VERIFIED_IMPRESSIONS": "Verified Impressions",
                 "UNVERIFIED_IMPRESSIONS": "Unverified Impressions",
                 "BLANK_IMPRESSIONS": "Blank Impressions",
                 "VOID_IMPRESSIONS": "Void Impressions",
@@ -1021,10 +1004,6 @@
                 "SEARCH": "Search",
                 "DETAILS": "Details"
             },
-            "RTB_REPORT_MODULE": {
-                "EARNED_AMOUNT": "Earned Amount",
-                "OPPORTUNITIES": "Opportunities"
-            },
             "ACTION_LOG_MODULE": {
                 "DATE_RANGE": "Date Range",
                 "BUTTON_GET_LOGS": "Get Logs",
@@ -1095,21 +1074,6 @@
                 "STATUS": "Status",
                 "PLACEHOLDER_EMAIL_ADDRESS": "Email Address",
                 "ADD_ANOTHER_EMAIL": "Add another email"
-            },
-            "EXCHANGE_MODULE": {
-                "CANONICAL_NAME": "Abbreviation",
-                "ADD_NEW_SUCCESS": "The exchange has been created",
-                "UPDATE_SUCCESS": "The exchange has been updated",
-                "UPDATE_FAIL": "The exchange could not be updated",
-                "CONFIRM_DELETE_EXCHANGE": "Are you sure you want to delete this exchange?",
-                "DELETE_SUCCESS": "The exchange was deleted",
-                "DELETE_FAIL": "The exchange could not be deleted",
-                "CURRENTLY_NO_SITES": "There is currently no exchanges",
-
-                "EDIT_EXCHANGE": "Edit Exchange",
-                "DELETE_EXCHANGE": "Delete Exchange",
-                "NEW_EXCHANGE": "New Exchange",
-                "HELP_BLOCK_CANONICAL_NAME": "This abbreviation will be used in the auction service configuration in order to enable this exchange"
             },
             "ERROR_PAGE": {
                 "400": "An invalid request was sent to the server",

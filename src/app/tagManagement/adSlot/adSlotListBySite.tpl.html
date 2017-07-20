@@ -57,7 +57,6 @@
                 <tr>
                     <th ng-show="allAdSlot && !isChannel" at-attribute="domain">{{ 'SITE' | translate }}</th>
                     <th ng-show="isChannel && allAdSlot" at-attribute="channels">{{ 'CHANNELS' | translate }}</th>
-                    <th ng-show="hasRtbModule" at-attribute="rtb">{{ 'SITE_MODULE.RTB' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -97,9 +96,6 @@
                         <ul ng-repeat="channel in item.channels">
                             <li>{{ channel.name }}</li>
                         </ul>
-                    </td>
-                    <td ng-show="hasRtbModule" at-title="{{ 'SITE_MODULE.RTB' | translate }}" at-attribute="rtb">
-                        {{ rtbStatusLabels[item.rtbStatus] }}
                     </td>
                 </tr>
                 </tbody>

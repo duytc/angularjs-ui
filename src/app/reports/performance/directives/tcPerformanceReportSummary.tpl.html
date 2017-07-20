@@ -20,22 +20,22 @@
                         <label>{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.totalOpportunities | number }}</span>
                     </li>
+                    <li>
+                        <label>{{ 'REPORT.AD_OPPORTUNITIES' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.adOpportunities | number }}</span>
+                    </li>
                     <li ng-if="exist(reportGroup.firstOpportunities)">
                         <label>{{ 'REPORT.FIRST_OPPORTUNITIES' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.firstOpportunities | number }}</span>
-                    </li>
-                    <li ng-if="hideRTB()">
-                        <label>{{ 'REPORT.RTB_IMPRESSIONS' | translate }}</label>
-                        <span class="pull-right">{{ reportGroup.rtbImpressions | number }}</span>
                     </li>
                     <li>
                         <label>{{ 'REPORT.IMPRESSIONS' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.impressions | number }}</span>
                     </li>
-                    <li ng-if="exist(reportGroup.verifiedImpressions)">
-                        <label>{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}</label>
-                        <span class="pull-right">{{ reportGroup.verifiedImpressions | number }}</span>
-                    </li>
+                    <!--<li ng-if="exist(reportGroup.verifiedImpressions)">-->
+                        <!--<label>{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}</label>-->
+                        <!--<span class="pull-right">{{ reportGroup.verifiedImpressions | number }}</span>-->
+                    <!--</li>-->
                     <li ng-if="exist(reportGroup.unverifiedImpressions)">
                         <label>{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.unverifiedImpressions | number }}</span>
@@ -85,22 +85,22 @@
                         <label>{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageTotalOpportunities | number }}</span>
                     </li>
+                    <li>
+                        <label>{{ 'REPORT.AD_OPPORTUNITIES' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.averageAdOpportunities | number }}</span>
+                    </li>
                     <li ng-if="exist(reportGroup.averageFirstOpportunities)">
                         <label>{{ 'REPORT.FIRST_OPPORTUNITIES' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageFirstOpportunities | number }}</span>
-                    </li>
-                    <li ng-if="hideRTB()">
-                        <label>{{ 'REPORT.RTB_IMPRESSIONS' | translate }}</label>
-                        <span class="pull-right">{{ reportGroup.averageRtbImpressions | number }}</span>
                     </li>
                     <li>
                         <label>{{ 'REPORT.IMPRESSIONS' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageImpressions | number }}</span>
                     </li>
-                    <li ng-if="exist(reportGroup.averageVerifiedImpressions)">
-                        <label>{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}</label>
-                        <span class="pull-right">{{ reportGroup.averageVerifiedImpressions | number }}</span>
-                    </li>
+                    <!--<li ng-if="exist(reportGroup.averageVerifiedImpressions)">-->
+                        <!--<label>{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}</label>-->
+                        <!--<span class="pull-right">{{ reportGroup.averageVerifiedImpressions | number }}</span>-->
+                    <!--</li>-->
                     <li ng-if="exist(reportGroup.averageUnverifiedImpressions)">
                         <label>{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageUnverifiedImpressions | number }}</span>

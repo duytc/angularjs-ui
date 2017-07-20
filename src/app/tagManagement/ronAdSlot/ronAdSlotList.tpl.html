@@ -43,7 +43,6 @@
                 <thead>
                 <tr>
                     <th ng-show="isAdmin()" at-attribute="libraryAdSlot.publisher.company">{{ 'PUBLISHER' | translate }}</th>
-                    <th ng-show="hasRtbModule" at-attribute="rtb">{{ 'SITE_MODULE.RTB' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -72,9 +71,6 @@
                         <ul ng-repeat="segmentItem in item.ronAdSlotSegments">
                             <li>{{ segmentItem.segment.name }}</li>
                         </ul>
-                    </td>
-                    <td ng-show="hasRtbModule" at-title="{{ 'SITE_MODULE.RTB' | translate }}" at-attribute="rtb">
-                        {{ item.libraryAdSlot.libType != 'display' ? '' : rtbStatusLabels[item.rtbStatus] }}
                     </td>
                 </tr>
                 </tbody>

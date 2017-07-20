@@ -4,14 +4,14 @@
     <div class="panel panel-default daily-reports">
         <div class="panel-heading">{{ 'REPORT.SITE_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" fields="['startDate', 'endDate', 'name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Start Date', 'End Date','Site', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                <export-excel data="reports" fields="['startDate', 'endDate', 'name', 'slotOpportunities', 'totalOpportunities', 'adOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Start Date', 'End Date','Site', 'Slot Opportunities', 'Network Opportunities', 'Ad Opportunities', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
             </div>
 
             <div class="btn-group btnGrouped" dropdown>
                 <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><a>
-                        <export-excel css-class="''" data="reports" fields="['startDate', 'endDate', 'name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Start Date', 'End Date', 'Site', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel css-class="''" data="reports" fields="['startDate', 'endDate', 'name', 'slotOpportunities', 'totalOpportunities', 'adOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Start Date', 'End Date', 'Site', 'Slot Opportunities', 'Network Opportunities', 'Ad Opportunities', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
             </div>
@@ -20,7 +20,6 @@
             <table class="table table-hover" at-table at-paginated at-list="reports" at-config="tableConfig">
                 <thead>
                 <tr>
-                    <th at-attribute="rtbImpressions" ng-show="hasRtbModule">{{ 'REPORT.RTB_IMPRESSIONS' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -49,8 +48,8 @@
                     <td at-title="{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}" at-attribute="totalOpportunities" at-sortable>
                         {{ item.totalOpportunities | number }}
                     </td>
-                    <td ng-show="hasRtbModule" at-title="{{ 'REPORT.RTB_IMPRESSIONS' | translate }}" at-attribute="rtbImpressions" at-sortable>
-                        {{ item.rtbImpressions | number }}
+                    <td at-title="{{ 'REPORT.AD_OPPORTUNITIES' | translate }}" at-attribute="adOpportunities" at-sortable>
+                        {{ item.adOpportunities | number }}
                     </td>
                     <td at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="impressions" at-sortable>
                         {{ item.impressions | number }}

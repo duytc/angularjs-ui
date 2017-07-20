@@ -5,7 +5,7 @@
         .controller('SiteForm', SiteForm)
     ;
 
-    function SiteForm($scope, $translate, _, $filter, SiteCache, AlertService, ServerErrorProcessor, site, publishers, channels, userSession, historyStorage, HISTORY_TYPE_PATH, RTB_STATUS_TYPES) {
+    function SiteForm($scope, $translate, _, $filter, SiteCache, AlertService, ServerErrorProcessor, site, publishers, channels, userSession, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             domain: 'Domain'
@@ -18,9 +18,7 @@
         $scope.allowPublisherSelection = $scope.isAdmin() && !!publishers;
         $scope.publishers = publishers;
         $scope.channels = !$scope.isAdmin() ? channels : [];
-        $scope.rtbStatusTypes = RTB_STATUS_TYPES;
 
-        $scope.rtbStatusChanged = rtbStatusChanged;
         $scope.selectPublisher = selectPublisher;
         $scope.isEnabledModule = isEnabledModule;
         $scope.isFormValid = isFormValid;
@@ -34,8 +32,7 @@
             domain: null,
             enableSourceReport: false,
             players: [],
-            channelSites: [],
-            rtbStatus: RTB_STATUS_TYPES.inherit
+            channelSites: []
         };
 
         $scope.videoPlayers = [
@@ -55,10 +52,6 @@
 
         function isFormValid() {
             return $scope.siteForm.$valid;
-        }
-
-        function rtbStatusChanged(rtbStatus) {
-            $scope.site.rtbStatus = rtbStatus;
         }
 
         function selectPublisher(publisher) {
@@ -124,11 +117,6 @@
                 delete $scope.site.channels;
                 delete $scope.site.autoCreate;
                 delete $scope.site.subPublisher;
-            }
-
-            // not include rtbStatus if module rtb not enabled in publisher
-            if (!isEnabledModule('MODULE_RTB')) {
-                delete $scope.site.rtbStatus;
             }
 
             if (!isEnabledModule('MODULE_VIDEO_ANALYTICS')) {

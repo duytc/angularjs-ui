@@ -8,7 +8,6 @@ angular.module('tagcade', [
     'tagcade.reports',
     'tagcade.supportTools',
     'tagcade.tagLibrary',
-    'tagcade.exchangeManagement',
     'tagcade.subPublisher',
     'tagcade.videoManagement',
     'tagcade.videoLibrary',

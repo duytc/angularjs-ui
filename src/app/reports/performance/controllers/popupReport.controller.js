@@ -12,8 +12,6 @@
         
         $scope.relativeEntityData = relativeEntityData;
 
-        $scope.isRtb = $state.current.name.indexOf('rtb') > -1; // todo
-
         $scope.updateCpmTypes = UPDATE_CPM_TYPES;
 
         $scope.goToEditPage = goToEditPage;

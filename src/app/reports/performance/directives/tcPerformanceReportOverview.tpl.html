@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="{{ hideRTB() ? 'col-md-3': 'col-md-4' }}" ng-if="hasSlotOpportunities()">
+    <div class="col-md-4" ng-if="hasSlotOpportunities()">
         <section class="panel panel-box info-box">
             <div class="panel-item bg-reverse">
                 <p class="size-h1 no-margin">{{ reportGroup.slotOpportunities | number }}</p>
@@ -8,7 +8,7 @@
         </section>
     </div>
 
-    <div class="{{ hideRTB() ? 'col-md-3': 'col-md-4' }}" ng-if="!hasSlotOpportunities()">
+    <div class="col-md-4" ng-if="!hasSlotOpportunities()">
         <section class="panel panel-box info-box">
             <div class="panel-item bg-reverse">
                 <p class="size-h1 no-margin">{{ reportGroup.totalOpportunities | number }}</p>
@@ -17,16 +17,16 @@
         </section>
     </div>
 
-    <div ng-if="hideRTB()" class="{{ hideRTB() ? 'col-md-3': 'col-md-4' }}">
+    <div class="col-md-4" ng-if="!hasSlotOpportunities()">
         <section class="panel panel-box info-box">
             <div class="panel-item bg-reverse">
-                <p class="size-h1 no-margin">{{ reportGroup.rtbImpressions | number }}</p>
-                <p class="text-muted no-margin">{{ 'REPORT.RTB_IMPRESSIONS' | translate }}</p>
+                <p class="size-h1 no-margin">{{ reportGroup.adOpportunities | number }}</p>
+                <p class="text-muted no-margin">{{ 'REPORT.AD_OPPORTUNITIES' | translate }}</p>
             </div>
         </section>
     </div>
 
-    <div class="{{ hideRTB() ? 'col-md-3': 'col-md-4' }}">
+    <div class="col-md-4">
         <section class="panel panel-box info-box">
             <div class="panel-item bg-reverse">
                 <p class="size-h1 no-margin">{{ reportGroup.impressions | number }}</p>
@@ -35,7 +35,7 @@
         </section>
     </div>
 
-    <div class="{{ hideRTB() ? 'col-md-3': 'col-md-4' }}">
+    <div class="col-md-4">
         <section class="panel panel-box info-box">
             <div class="panel-item bg-reverse">
                 <p class="size-h1 no-margin">{{ reportGroup.fillRate | percentage }}</p>

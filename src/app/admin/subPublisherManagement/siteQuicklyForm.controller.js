@@ -5,7 +5,7 @@
         .controller('SiteQuicklyForm', SiteQuicklyForm)
     ;
 
-    function SiteQuicklyForm($scope, $modalInstance, $translate, Auth, SiteCache, AlertService, ServerErrorProcessor, publishers, channels, RTB_STATUS_TYPES) {
+    function SiteQuicklyForm($scope, $modalInstance, $translate, Auth, SiteCache, AlertService, ServerErrorProcessor, publishers, channels) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             domain: 'Domain'
@@ -19,24 +19,21 @@
         $scope.allowPublisherSelection = isAdmin && !!publishers;
         $scope.publishers = publishers;
         $scope.channels = !isAdmin ? channels : [];
-        $scope.rtbStatusTypes = RTB_STATUS_TYPES;
 
-        $scope.rtbStatusChanged = rtbStatusChanged;
         $scope.selectPublisher = selectPublisher;
         $scope.isEnabledModule = isEnabledModule;
         $scope.isFormValid = isFormValid;
         $scope.backToListSite = backToListSite;
-        $scope.toggleVideoPlayer =  toggleVideoPlayer;
-        $scope.hasVideoPlayer =  hasVideoPlayer;
-        $scope.submit =  submit;
+        $scope.toggleVideoPlayer = toggleVideoPlayer;
+        $scope.hasVideoPlayer = hasVideoPlayer;
+        $scope.submit = submit;
 
         $scope.site = {
             name: null,
             domain: null,
             enableSourceReport: false,
             players: [],
-            channelSites: [],
-            rtbStatus: RTB_STATUS_TYPES.inherit
+            channelSites: []
         };
 
         $scope.videoPlayers = [
@@ -56,10 +53,6 @@
 
         function isFormValid() {
             return $scope.siteForm.$valid;
-        }
-
-        function rtbStatusChanged(rtbStatus) {
-            $scope.site.rtbStatus = rtbStatus;
         }
 
         function selectPublisher(publisher) {
@@ -111,11 +104,6 @@
             angular.forEach($scope.data.channels, function(channel) {
                 $scope.site.channelSites.push({channel: channel.id})
             });
-
-            // not include rtbStatus if module rtb not enabled in publisher
-            if (!isEnabledModule('MODULE_RTB')) {
-                delete $scope.site.rtbStatus;
-            }
 
             if(!isEnabledModule('MODULE_VIDEO_ANALYTICS')) {
                 $scope.site.players = null;

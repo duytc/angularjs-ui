@@ -10,7 +10,6 @@
 
         $scope.hasSlotOpportunities = hasSlotOpportunities;
         $scope.exist = exist;
-        $scope.hideRTB = hideRTB;
 
         function hasSlotOpportunities() {
             return angular.isObject($scope.reportGroup) && angular.isNumber($scope.reportGroup.slotOpportunities);
@@ -22,14 +21,6 @@
 
         function exist(item) {
             if(item == undefined || !isNotNativeAdSlot) {
-                return false;
-            }
-
-            return true;
-        }
-
-        function hideRTB() {
-            if(!Auth.getSession().hasModuleEnabled(USER_MODULES.rtb) || $scope.reportGroup.rtbImpressions == undefined || $state.current.name.indexOf('reports.performance.ronAdSlotAdTags') > -1) {
                 return false;
             }
 

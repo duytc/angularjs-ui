@@ -5,7 +5,7 @@
         .controller('RonAdSlotForm', RonAdSlotForm)
     ;
 
-    function RonAdSlotForm($scope, _, $q, $translate, ronAdSlot, libraryAdSlot, segments, publisherList, adSlotLibraryList, AlertService, RonAdSlotManager, historyStorage, ServerErrorProcessor, TYPE_AD_SLOT, HISTORY_TYPE_PATH, RTB_STATUS_TYPES, userSession) {
+    function RonAdSlotForm($scope, _, $q, $translate, ronAdSlot, libraryAdSlot, segments, publisherList, adSlotLibraryList, AlertService, RonAdSlotManager, historyStorage, ServerErrorProcessor, TYPE_AD_SLOT, HISTORY_TYPE_PATH, userSession) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             width: 'Width',
@@ -16,7 +16,6 @@
         $scope.adSlotTypes = TYPE_AD_SLOT;
         $scope.segments = segments;
 
-        $scope.rtbStatusTypes = RTB_STATUS_TYPES;
         $scope.adSlotTypeOptions = [
             {
                 label: $translate.instant('DISPLAY_AD_SLOT'),
@@ -41,9 +40,7 @@
 
         $scope.ronAdSlot = ronAdSlot || {
             libraryAdSlot: libraryAdSlot.id || null,
-            ronAdSlotSegments: [],
-            floorPrice: null,
-            rtbStatus: RTB_STATUS_TYPES.disable
+            ronAdSlotSegments: []
         };
 
         $scope.selected = {
@@ -78,8 +75,6 @@
         $scope.showForNativeAdSlot = showForNativeAdSlot;
         $scope.showForDynamicAdSlot = showForDynamicAdSlot;
         $scope.selectLibraryAdSlot = selectLibraryAdSlot;
-        $scope.rtbStatusChanged = rtbStatusChanged;
-        $scope.isEnabledModuleRtb = isEnabledModuleRtb;
         $scope.getSubPublisherSegment = getSubPublisherSegment;
 
         function submit() {
@@ -159,21 +154,11 @@
             $scope.publisherSegments = [];
             $scope.adSlot = null;
             enabledModules = publisher.enabledModules;
-
-
         }
 
         function selectType(type) {
             $scope.ronAdSlot.libraryAdSlot = null;
             $scope.adSlot = null;
-        }
-
-        function rtbStatusChanged(rtbStatus) {
-            $scope.ronAdSlot.rtbStatus = rtbStatus;
-        }
-
-        function isEnabledModuleRtb() {
-            return isEnabledModule('MODULE_RTB');
         }
 
         function getSubPublisherSegment(segment) {
@@ -258,11 +243,6 @@
                     $scope.ronAdSlot.ronAdSlotSegments.push({segment: segment});
                 }
             });
-
-            // only set rtbStatus for RonDisplayAdSlot and module rtb enabled in publisher
-            if (!showForDisplayAdSlot() || !$scope.isEnabledModuleRtb()) {
-                delete $scope.ronAdSlot.rtbStatus;
-            }
         }
     }
 })();

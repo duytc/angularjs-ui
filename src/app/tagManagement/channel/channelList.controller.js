@@ -5,7 +5,7 @@
         .controller('ChannelList', ChannelList)
     ;
 
-    function ChannelList($scope, $translate, $modal, AlertService, channels, ChannelManager, AtSortableService, HISTORY_TYPE_PATH, RTB_STATUS_LABELS, historyStorage) {
+    function ChannelList($scope, $translate, $modal, AlertService, channels, ChannelManager, AtSortableService, HISTORY_TYPE_PATH, historyStorage) {
         $scope.channels = channels;
 
         $scope.hasData = function () {
@@ -19,7 +19,6 @@
             });
         }
 
-        $scope.rtbStatusLabels = RTB_STATUS_LABELS;
         $scope.showPagination = showPagination;
         $scope.confirmDeletion = confirmDeletion;
 

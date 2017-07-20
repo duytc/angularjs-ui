@@ -21,7 +21,6 @@
             source: 'MODULE_SOURCE_REPORT',
             unified: 'MODULE_UNIFIED_REPORT',
             subPublisher: 'MODULE_SUB_PUBLISHER',
-            rtb: 'MODULE_RTB',
             headerBidding: 'MODULE_HEADER_BIDDING'
         })
 

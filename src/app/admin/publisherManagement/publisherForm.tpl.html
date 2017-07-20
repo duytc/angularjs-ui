@@ -126,17 +126,6 @@
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="hasModuleEnabled('MODULE_RTB') && exchanges.length">
-                    <label class="col-sm-2 control-label">{{ 'SITE_MODULE.EXCHANGES' | translate}}</label>
-                    <div class="col-sm-10">
-                        <div ng-repeat="exchange in exchanges" class="check_exchange">
-                            <label class="ui-checkbox"><input name="exchanges[]" type="checkbox" ng-click="toggleExchange(exchange)" ng-checked="hasExchange(exchange)">
-                                <span>{{ exchange.name }}</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
                 <!--<div class="form-group" ng-if="hasModuleEnabled('MODULE_HEADER_BIDDING') && headerBiddings.length">-->
                     <!--<label class="col-sm-2 control-label">{{ 'PUBLISHER_MODULE.HEADER_BIDDING' | translate}}</label>-->
                     <!--<div class="col-sm-10">-->

@@ -5,7 +5,7 @@
         .controller('RonAdSlotList', RonAdSlotList)
     ;
 
-    function RonAdSlotList($scope, $modal, $stateParams, $translate, Auth, AlertService, ronAdSlots, historyStorage, AtSortableService, HISTORY_TYPE_PATH, RTB_STATUS_LABELS, EVENT_ACTION_SORTABLE, TYPE_AD_SLOT, RonAdSlotManager) {
+    function RonAdSlotList($scope, $modal, $stateParams, $translate, Auth, AlertService, ronAdSlots, historyStorage, AtSortableService, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE, TYPE_AD_SLOT, RonAdSlotManager) {
         $scope.ronAdSlots = ronAdSlots;
         $scope.hasData = function () {
             return !!ronAdSlots.totalRecord;
@@ -23,7 +23,6 @@
         }
 
         $scope.adSlotTypes = TYPE_AD_SLOT;
-        $scope.rtbStatusLabels = RTB_STATUS_LABELS;
         $scope.today = new Date();
         $scope.demandSourceTransparency = Auth.getSession().demandSourceTransparency;
 

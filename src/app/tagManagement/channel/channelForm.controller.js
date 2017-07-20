@@ -5,7 +5,7 @@
         .controller('ChannelForm', ChannelForm)
     ;
 
-    function ChannelForm($scope, $filter, $translate, sites, channel, publishers, AlertService, ChannelManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, RTB_STATUS_TYPES, userSession) {
+    function ChannelForm($scope, $filter, $translate, sites, channel, publishers, AlertService, ChannelManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, userSession) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             sites: 'Sites'
@@ -22,29 +22,15 @@
             sites: []
         };
 
-        $scope.rtbStatusTypes = RTB_STATUS_TYPES;
-
         $scope.channel = channel || {
             name: null,
-            channelSites: [], // only exist when NEW!!!
-            rtbStatus: RTB_STATUS_TYPES.disable
+            channelSites: [] // only exist when NEW!!!
         };
-
-        $scope.rtbStatusChanged = rtbStatusChanged;
-        $scope.isEnabledModuleRtb = isEnabledModuleRtb;
 
         $scope.backToListChannel = backToListChannel;
         $scope.selectPublisher = selectPublisher;
         $scope.isFormValid = isFormValid;
         $scope.submit = submit;
-
-        function rtbStatusChanged(rtbStatus) {
-            $scope.channel.rtbStatus = rtbStatus;
-        }
-
-        function isEnabledModuleRtb() {
-            return isEnabledModule('MODULE_RTB');
-        }
 
         function isEnabledModule(module) {
             if(!$scope.isAdmin()) {
@@ -125,11 +111,6 @@
                         { site: site.id }
                     )
                 });
-            }
-
-            // not include rtbStatus if module rtb not enabled in publisher
-            if (!$scope.isEnabledModuleRtb()) {
-                delete channel.rtbStatus;
             }
 
             // finally, remove publisher if editing

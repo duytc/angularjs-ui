@@ -5,7 +5,7 @@
         .controller('SiteList', SiteList)
     ;
 
-    function SiteList($scope, $rootScope, $stateParams, $modal, $translate, AlertService, SiteManager, sites, historyStorage, AtSortableService, HISTORY_TYPE_PATH, EVENT_SEARCH_AGAIN, RTB_STATUS_LABELS, EVENT_ACTION_SORTABLE) {
+    function SiteList($scope, $rootScope, $stateParams, $modal, $translate, AlertService, SiteManager, sites, historyStorage, AtSortableService, HISTORY_TYPE_PATH, EVENT_SEARCH_AGAIN, EVENT_ACTION_SORTABLE) {
 
         $scope.sites = sites;
         var typeOption = $scope.typeOption = {
@@ -36,7 +36,6 @@
         }
 
         $scope.today = new Date();
-        $scope.rtbStatusLabels = RTB_STATUS_LABELS;
         $scope.showPagination = showPagination;
         $scope.getAutoCreatedSite = getAutoCreatedSite;
         $scope.getSiteCreatedManually = getSiteCreatedManually;

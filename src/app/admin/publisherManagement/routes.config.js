@@ -55,9 +55,6 @@
                     publisher: function() {
                         return null;
                     },
-                    exchanges: /* @ngInject */ function(ExchangeManager) {
-                        return ExchangeManager.getList()
-                    },
                     headerBiddings: /* @ngInject */ function(HeaderBiddingManager) {
                         return HeaderBiddingManager.getList()
                     },
@@ -82,9 +79,6 @@
                 resolve: {
                     publisher: function($stateParams, adminUserManager) {
                         return adminUserManager.one($stateParams.id).get();
-                    },
-                    exchanges: /* @ngInject */ function(ExchangeManager) {
-                        return ExchangeManager.getList()
                     },
                     headerBiddings: /* @ngInject */ function(HeaderBiddingManager) {
                         return HeaderBiddingManager.getList()

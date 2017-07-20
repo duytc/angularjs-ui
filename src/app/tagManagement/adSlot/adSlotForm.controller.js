@@ -5,7 +5,7 @@
         .controller('AdSlotForm', AdSlotForm)
     ;
 
-    function AdSlotForm($scope, $translate, blackList, whiteList, $stateParams, $filter, _, adSlot, publisherList, SiteManager, ChannelManager, DynamicAdSlotManager, adminUserManager, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, userSession, historyStorage, HISTORY_TYPE_PATH, RTB_STATUS_TYPES, VARIABLE_FOR_AD_TAG) {
+    function AdSlotForm($scope, $translate, blackList, whiteList, $stateParams, $filter, _, adSlot, publisherList, SiteManager, ChannelManager, DynamicAdSlotManager, adminUserManager, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, userSession, historyStorage, HISTORY_TYPE_PATH, VARIABLE_FOR_AD_TAG) {
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
@@ -17,7 +17,6 @@
 
         $scope.formProcessing = false;
         $scope.typesList = TYPE_AD_SLOT;
-        $scope.rtbStatusTypes = RTB_STATUS_TYPES;
 
         $scope.adSlotLibraryList = [];
         var sideParams = {
@@ -79,8 +78,6 @@
             maximumRefreshTimes: null
         };
 
-        $scope.adSlot.rtbStatus = $scope.isNew ? RTB_STATUS_TYPES.inherit : adSlot.rtbStatus;
-        $scope.adSlot.floorPrice = $scope.isNew ? null : adSlot.floorPrice;
         $scope.adSlot.hbBidPrice = $scope.isNew ? null : adSlot.hbBidPrice;
         $scope.adSlot.hbBidPriceClone = $scope.isNew ? null : _convertHeaderBiddingPriceToString(adSlot.hbBidPrice);
 
@@ -161,7 +158,6 @@
         $scope.selectDeployment = selectDeployment;
         $scope.filterDeployEntityType = filterDeployEntityType;
         $scope.selectDefaultAdSlot = selectDefaultAdSlot;
-        $scope.isEnabledModuleRtb = isEnabledModuleRtb;
         $scope.isEnabledModuleHeaderBidding = isEnabledModuleHeaderBidding;
         $scope.selectPublisher = selectPublisher;
         $scope.isNormalAdSlotNotUseStandalone = isNormalAdSlotNotUseStandalone;
@@ -262,10 +258,6 @@
 
         function showForDynamicAdSlot() {
             return $scope.selected.type == TYPE_AD_SLOT.dynamic;
-        }
-
-        function isEnabledModuleRtb() {
-            return isEnabledModule('MODULE_RTB');
         }
 
         function isEnabledModuleHeaderBidding() {
@@ -928,9 +920,7 @@
 
             delete adSlot.libType;
             delete adSlot.isRonAdSlot;
-            delete adSlot.rtbStatus;
             delete adSlot.site;
-            delete adSlot.floorPrice;
             delete adSlot.hbBidPriceClone;
             delete adSlot.autoRefresh;
             delete adSlot.maximumRefreshTimes;
@@ -966,8 +956,6 @@
                 id: !$scope.isNew ? $stateParams.id: undefined,
                 defaultAdSlot: null,
                 libraryAdSlot: angular.copy(adSlot),
-                rtbStatus: adSlot.rtbStatus,
-                floorPrice: adSlot.floorPrice,
                 hbBidPrice: adSlot.hbBidPrice,
                 refreshEvery: adSlot.refreshEvery,
                 maximumRefreshTimes: adSlot.maximumRefreshTimes,
@@ -980,7 +968,6 @@
                 delete adSlot.libraryAdSlot.width;
                 delete adSlot.libraryAdSlot.autoFit;
                 delete adSlot.libraryAdSlot.passbackMode;
-                delete adSlot.floorPrice;
                 delete adSlot.hbBidPrice;
                 delete adSlot.autoRefresh;
             }
@@ -990,7 +977,6 @@
                 delete adSlot.libraryAdSlot.width;
                 delete adSlot.libraryAdSlot.autoFit;
                 delete adSlot.libraryAdSlot.passbackMode;
-                delete adSlot.floorPrice;
                 delete adSlot.hbBidPrice;
                 delete adSlot.autoRefresh;
                 delete adSlot.maximumRefreshTimes;
@@ -1022,19 +1008,12 @@
                 delete adSlot.expressions;
             }
 
-            // not include rtbStatus if module rtb not enabled in publisher
-            if (!isEnabledModuleRtb()) {
-                delete adSlot.rtbStatus;
-            }
-
             delete adSlot.type;
             delete adSlot.libraryAdSlot.publisher;
             delete adSlot.libraryAdSlot.sites;
             delete adSlot.libraryAdSlot.channels;
             delete adSlot.libraryAdSlot.isRonAdSlot;
-            delete adSlot.libraryAdSlot.rtbStatus;
             delete adSlot.libraryAdSlot.site;
-            delete adSlot.libraryAdSlot.floorPrice;
             delete adSlot.libraryAdSlot.expressions;
             delete adSlot.libraryAdSlot.hbBidPrice;
             delete adSlot.libraryAdSlot.hbBidPriceClone;

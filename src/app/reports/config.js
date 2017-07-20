@@ -22,6 +22,11 @@
                                     show: true
                                 },
                                 {
+                                    key : 'adOpportunities',
+                                    label: 'Ad Opportunities',
+                                    show: true
+                                },
+                                {
                                     key: 'firstOpportunities',
                                     label: 'First Opportunities',
                                     show: true,
@@ -32,12 +37,12 @@
                                     label: 'Impressions',
                                     show: true
                                 },
-                                {
-                                    key: 'verifiedImpressions',
-                                    label: 'Verified Impressions',
-                                    show: true,
-                                    hideForNativeAdSlot: true
-                                },
+                                //{
+                                //    key: 'verifiedImpressions',
+                                //    label: 'Verified Impressions',
+                                //    show: true,
+                                //    hideForNativeAdSlot: true
+                                //},
                                 {
                                     key: 'unverifiedImpressions',
                                     label: 'Unverified Impressions',
