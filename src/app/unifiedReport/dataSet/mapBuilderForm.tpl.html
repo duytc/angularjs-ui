@@ -1,0 +1,110 @@
+<section class="panel panel-default">
+    <div class="panel-heading">Filters</div>
+    <div class="panel-body">
+        <div class="col-sm-12">
+            <div class="row">
+                <label class="ui-checkbox"><input name="showMapped" ng-click="clickFilter(selectedData, 'showMapped')" ng-model="selectedData.showMapped" type="checkbox">
+                    <span>Show Mapped</span>
+                </label>
+
+                <label class="ui-checkbox"><input name="showUnmapped" ng-click="clickFilter(selectedData, 'showUnmapped')" ng-model="selectedData.showUnmapped" type="checkbox">
+                    <span>Show Unmapped</span>
+                </label>
+
+                <label class="ui-checkbox"><input name="showIgnore" ng-click="clickFilter(selectedData, 'showIgnore')" ng-model="selectedData.showIgnore" type="checkbox">
+                    <span>Show Ignore</span>
+                </label>
+
+                <label class="ui-checkbox"><input name="showAll" ng-model="selectedData.showAll" ng-click="clickFilter(selectedData, 'showAll')" type="checkbox">
+                    <span>Show All</span>
+                </label>
+            </div>
+        </div>
+
+        <form name="filter">
+            <filter-map-builder filters="selectedData.filters" field-types="dataRows.fieldTypes" fields="fields"></filter-map-builder>
+
+            <div>
+                <button class="btn btn-primary" type="button" ng-click="getDataFilter()" ng-disabled="!filter.$valid">Get Data</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span current-page-title></span>
+
+        <div class="button-bar">
+            <button ng-click="backToDataSetList()" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                {{ 'UNIFIED_REPORT_DATA_SET_MODULE.BACK_TO_DATA_SET_LIST' | translate }}
+            </button>
+        </div>
+
+        <div class="btn-group btnGrouped" dropdown ng-if="!isNew">
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ng-click="backToDataSetList()">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.BACK_TO_DATA_SET_LIST' | translate }}</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel-body" ng-if="columns.length > 0">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <!--<th>Is Left</th>-->
+                    <th>{{ 'ACTIONS' | translate }}</th>
+
+                    <th ng-repeat="column in columns">{{ dataRows.columns[column] }}
+                    <!--<th ng-repeat="column in columns" ng-click="sort(column)">{{ column }}-->
+                        <!--<span class="glyphicon glyphicon-minus" ng-show="!isShow(column)"></span>-->
+                        <!--<span class="glyphicon" ng-show="isShow(column)" ng-class="{'glyphicon-chevron-up':!reverse,'glyphicon-chevron-down':reverse}"></span>-->
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr dir-paginate="row in rows | itemsPerPage:tableConfig.itemsPerPage">
+                    <!--<td>-->
+                        <!--<i class="fa" ng-class="row.__is_left_side == '1' ? 'fa-check-square' : 'fa-square'"></i>-->
+                    <!--</td>-->
+                    <td>
+                        <div class="btn-group" dropdown>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                            <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <li ng-if="row.__is_associated == '0' && row.__is_ignored == '0'"><a ng-click="actionAssociate(row)">Associate</a></li>
+                                <li ng-if="row.__is_ignored == '0'"><a ng-click="actionIgnore(row)">Ignore</a></li>
+                                <li ng-if="row.__is_associated == '1'"><a ng-click="actionRemoveAssociate(row)">Remove Associate</a></li>
+                                <li ng-if="row.__is_ignored == '1'"><a ng-click="actionUndoIgnore(row)">Undo Ignore</a></li>
+                            </ul>
+                        </div>
+                    </td>
+
+                    <td ng-repeat="column in columns">
+                        <span ng-if="!isNullValue(row, column)"> {{ row[column]}} </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+
+            <div class="itemsPerPage" ng-if="dataRows.totalRecord > 10">
+                <label for="inputItemPerPage">Items per page</label>
+                <div class="itemNumber">
+                    <ui-select name="itemPerPage" id="inputItemPerPage" ng-model="tableConfig.itemsPerPage" on-select="selectItemPerPages($model)" reset-search-input="'false'">
+                        <ui-select-match placeholder="10">{{ $select.selected.label }}</ui-select-match>
+                        <ui-select-choices repeat="itemPerPage.key as itemPerPage in itemsPerPage">
+                            {{ itemPerPage.label }}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

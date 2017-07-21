@@ -73,6 +73,11 @@
                         return UnifiedReportDataSourceManager.getList().then(function (dataSources) {
                             return dataSources.plain();
                         });
+                    },
+                    dataSets: /* @ngInject */ function(UnifiedReportDataSetManager) {
+                        return UnifiedReportDataSetManager.one().getList().then(function (dataSets) {
+                            return dataSets.plain();
+                        });
                     }
                 },
                 customResolve: {
@@ -108,6 +113,11 @@
                     },
                     publishers: function() {
                         return null;
+                    },
+                    dataSets: /* @ngInject */ function(UnifiedReportDataSetManager) {
+                        return UnifiedReportDataSetManager.one().getList().then(function (dataSets) {
+                            return dataSets.plain();
+                        });
                     }
                 },
                 customResolve: {
@@ -121,6 +131,34 @@
                 },
                 ncyBreadcrumb: {
                     label: 'Edit data set - {{ dataSet.name }}'
+                }
+            })
+            .state('unifiedReport.dataSet.mapBuilder', {
+                url: '/{dataSet:[0-9]+}/mapBuilder',
+                views: {
+                    'content@app': {
+                        controller: 'mapBuilderForm',
+                        templateUrl: 'unifiedReport/dataSet/mapBuilderForm.tpl.html'
+                    }
+                },
+                resolve: {
+                    dataSet: /* @ngInject */ function($stateParams, UnifiedReportDataSetManager) {
+                        return UnifiedReportDataSetManager.one($stateParams.dataSet).get();
+                    },
+                    dataRows: /* @ngInject */ function(UnifiedReportDataSetManager, $stateParams) {
+                        var params = $stateParams;
+
+                        params.page = !$stateParams.page ? 1 : $stateParams.page;
+                        params.limit = !$stateParams.limit ? 10 : $stateParams.limit;
+
+                        return UnifiedReportDataSetManager.one($stateParams.dataSet).one('rows').get(params)
+                            .then(function (data) {
+                                return data.plain()
+                            });
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Map Builder Data Set - {{ dataSet.name }}'
                 }
             })
         ;

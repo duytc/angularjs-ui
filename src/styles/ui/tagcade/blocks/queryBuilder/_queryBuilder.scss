@@ -52,6 +52,10 @@
   .select-data-type.form-group {
     @include ui-select-width(180px);
   }
+
+  .form-control {
+    margin-right: 5px;
+  }
 }
 
 .enable-drag-drop-query-builder {

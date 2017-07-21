@@ -1,0 +1,58 @@
+<div class="modal-header">
+    <h4 class="modal-title"><strong>Map Builder</strong></h4>
+</div>
+<div class="modal-body">
+    <form name="filter">
+        <filter-map-builder filters="selectedDate.filters" field-types="dataRows.fieldTypes" fields="fields"></filter-map-builder>
+
+        <div>
+            <button class="btn btn-primary" type="button" ng-disabled="!filter.$valid" ng-click="getDataFilter()">Get Data</button>
+        </div>
+    </form>
+
+    <div class="table-responsive table-report-view" ng-if="columns.length > 0">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th ng-repeat="column in columns">{{ dataRows.columns[column] }}
+                <!--<th ng-repeat="column in columns" ng-click="sort(column)">{{ column }}-->
+                    <!--<span class="glyphicon glyphicon-minus" ng-show="!isShow(column)"></span>-->
+                    <!--<span class="glyphicon" ng-show="isShow(column)" ng-class="{'glyphicon-chevron-up':!reverse,'glyphicon-chevron-down':reverse}"></span>-->
+                </th>
+            </tr>
+            </thead>
+
+            <tbody>
+                <tr dir-paginate="row in rows | itemsPerPage:tableConfig.itemsPerPage">
+                    <td><label class="ui-checkbox"><input type="checkbox" ng-checked="checkedSide(row)" ng-click="selectEntity(row)"><span></span></label></td>
+
+                    <td ng-repeat="column in columns">
+                        <span ng-if="!isNullValue(row, column)"> {{ row[column]}} </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+
+        <div class="itemsPerPage" ng-if="dataRows.totalRecord > 10">
+            <label for="inputItemPerPage">Items per page</label>
+            <div class="itemNumber">
+                <ui-select name="itemPerPage" id="inputItemPerPage" ng-model="tableConfig.itemsPerPage" on-select="selectItemPerPages($model)" reset-search-input="'false'">
+                    <ui-select-match placeholder="10">{{ $select.selected.label }}</ui-select-match>
+                    <ui-select-choices repeat="itemPerPage.key as itemPerPage in itemsPerPage">
+                        {{ itemPerPage.label }}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-success" ng-click="submit()">Associate</button>
+    <button class="btn btn-default" ng-click="$dismiss()">{{ 'CLOSE' | translate }}</button>
+</div>

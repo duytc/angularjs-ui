@@ -1,0 +1,92 @@
+<div class="form-group select-connect-data-source">
+    <label class="col-sm-1 control-label">Left Side</label>
+    <div class="col-sm-5">
+        <input server-error name="leftSide" ng-model="dataSet.leftSide" type="text" ng-change="changeSide('leftSide', dataSet.leftSide)" class="form-control" placeholder="Left Side">
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-1 control-label">Right Side</label>
+    <div class="col-sm-5">
+        <input server-error name="rightSide" ng-model="dataSet.rightSide" type="text" ng-change="changeSide('rightSide', dataSet.rightSide)" class="form-control" placeholder="Right Side">
+    </div>
+</div>
+
+<div class="expressions-group">
+    <button class="btn btn-success" type="button" ng-click="addGroupDataSet()">
+        <span class="glyphicon glyphicon-plus"></span>
+        Add Data Set
+    </button>
+
+
+    <div class="expressions-group" ng-repeat="mapBuilderConfig in mapBuilderConfigs">
+        <div class="form-group select-connect-data-source">
+            <button type="button" class="btn btn-danger btn-close-ur" ng-disabled="mapBuilderConfigs.length == 1" ng-click="removeItem(mapBuilderConfigs, $index)">
+                <span class="glyphicon glyphicon-minus "></span>
+            </button>
+        </div>
+
+        <div>
+            <div class="form-group select-connect-data-source">
+                <label for="dataSet" class="col-sm-1 control-label">Data Set</label>
+                <div class="col-sm-5">
+                    <ui-select name="dataSet" id="dataSet" ng-model="mapBuilderConfig.mapDataSet" ng-required="true" on-select="selectDataSet($item, mapBuilderConfig)" server-error reset-search-input="'false'">
+                        <ui-select-match placeholder="Select a data set">{{ $select.selected.name + ' (ID: ' + $select.selected.id + ')' }}</ui-select-match>
+                        <ui-select-choices repeat="dataSet.id as dataSet in dataSets | filter:filterDataSets  | filter:$select.search">
+                            {{ dataSet.name + ' (ID: ' + dataSet.id + ')' }}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+
+            <div class="form-group select-connect-data-source">
+                <label for="side" class="col-sm-1 control-label">Side</label>
+                <div class="col-sm-5">
+                    <ui-select name="publisher" id="side" ng-model="mapBuilderConfig.name" on-select="selectSide($item, mapBuilderConfig)" ng-required="true" server-error reset-search-input="true">
+                        <ui-select-match placeholder="Select a data set">{{ $select.selected.label }}</ui-select-match>
+                        <ui-select-choices repeat="side.label as side in listSides">
+                            {{ side.label }}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-1 control-label">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.MAP_FIELDS' | translate }}</label>
+
+                <div class="col-sm-5">
+                    <div class="expressions-group">
+                        <button class="btn btn-success" type="button" ng-click="addMapField(mapBuilderConfig)">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            Add Map Field
+                        </button>
+
+                        <div class="expressions-group" ng-repeat="mapField in mapBuilderConfig.mapFields">
+                            <div class="form-inline condition">
+                                <div class="form-group select-data-type">
+                                    <ui-select ng-model="mapField.key" ng-required="true" server-error on-select="mapField.value = null" reset-search-input="true">
+                                        <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
+                                        <ui-select-choices repeat="dm in totalDimensionsMetrics | filter:filterMapField(mapField.key)">
+                                            {{ dm }}
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+
+                                <div class="form-group select-data-type">
+                                    <ui-select ng-model="mapField.value" ng-required="true" server-error reset-search-input="true">
+                                        <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
+                                        <ui-select-choices repeat="dm in mapBuilderConfig.totalDimensionsMetrics | filter:filterFieldValue(mapField, mapBuilderConfig)">
+                                            {{ dm }}
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+
+                                <button ng-disabled="mapBuilderConfig.mapFields.length == 1" class="btn btn-danger" type="button" required ng-click="removeItem(mapBuilderConfig.mapFields, $index)"><span class="glyphicon glyphicon-minus"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

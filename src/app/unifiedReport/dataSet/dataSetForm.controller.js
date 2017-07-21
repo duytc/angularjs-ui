@@ -4,21 +4,37 @@
     angular.module('tagcade.unifiedReport.dataSet')
         .controller('dataSetForm', dataSetForm);
 
-    function dataSetForm($scope, _, $modal, UnifiedReportDataSetManager, $translate, dataSources, dataSet, publishers, AlertService, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, METRICS_SET, DIMENSIONS_SET) {
+    function dataSetForm($scope, _, $modal, UnifiedReportDataSetManager, $translate, dataSources, dataSet, dataSets, publishers, AlertService, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, METRICS_SET, DIMENSIONS_SET) {
         $scope.isNew = (dataSet === null);
         $scope.publishers = publishers;
+        $scope.dataSets = dataSets;
         $scope.dataSources = dataSources;
+        $scope.totalDimensionsMetrics = [];
 
         $scope.dataSet = dataSet || {
             allowOverwriteExistingData: true,
             dimensions: [{type: null, name: null}],
             metrics: [],
+            mapBuilderEnabled: false,
+            mapBuilderConfigs: [],
             actions: {
                 rename: [
                 ]
             }
             // connectedDataSources: []
         };
+
+        $scope.$watch(function (){
+            return $scope.dataSet;
+        }, function (){
+            $scope.totalDimensionsMetrics = [];
+
+            angular.forEach($scope.dataSet.dimensions.concat($scope.dataSet.metrics), function (field) {
+                if(!!field.name) {
+                    $scope.totalDimensionsMetrics.push(field.name)
+                }
+            })
+        }, true);
 
         $scope.dimensionSet = DIMENSIONS_SET;
         $scope.metricSet = METRICS_SET;
@@ -51,6 +67,22 @@
                 }
             }
 
+            angular.forEach($scope.dataSet.mapBuilderConfigs, function (mapBuilderConfig) {
+                if(mapBuilderConfig.leftSide) {
+                    $scope.dataSet.leftSide = mapBuilderConfig.name
+                } else {
+                    $scope.dataSet.rightSide = mapBuilderConfig.name
+                }
+
+                var mapFields = [];
+
+                angular.forEach(mapBuilderConfig.mapFields, function (value, key) {
+                    mapFields.push({key: key, value: value});
+                });
+
+                mapBuilderConfig.mapFields = mapFields;
+            });
+
             $scope.dataSetClone = angular.copy(dataSet);
         }
 
@@ -63,8 +95,14 @@
         $scope.removeConnectedDataSource = removeConnectedDataSource;
         $scope.unValidNameDimensionsMetrics= unValidNameDimensionsMetrics;
         $scope.submit = submit;
+        // $scope.getMapBuilder = getMapBuilder;
         $scope.isFormValid = isFormValid;
         $scope.changeName = changeName;
+        $scope.selectType = selectType;
+        
+        function selectType(dm) {
+            _resetValue(dm)
+        }
 
         function changeName(isFieldOld, valueNew, valueOld) {
             if(isFieldOld) {
@@ -75,6 +113,14 @@
                     $scope.dataSet.actions.rename.push({from: valueOld, to: valueNew})
                 }
             }
+
+            angular.forEach($scope.dataSet.mapBuilderConfigs, function (mapBuilderConfig) {
+                angular.forEach(mapBuilderConfig.mapFields, function (field) {
+                    if(field.key == valueOld) {
+                        field.key = null;
+                    }
+                });
+            });
         }
 
         function unValidNameDimensionsMetrics(name) {
@@ -99,7 +145,9 @@
             return $scope.dataSet.dimensions.push({type: null, name: null});
         }
 
-        function removeDimension($index) {
+        function removeDimension($index, dimentsion) {
+            _removeMapField(dimentsion);
+
             if ($index < $scope.initialDimensionSetLength) {
                 $scope.initialDimensionSetLength--;
             }
@@ -110,7 +158,9 @@
             return $scope.dataSet.metrics.push({type: null, name: null});
         }
 
-        function removeMetric($index) {
+        function removeMetric($index, metric) {
+            _removeMapField(metric);
+
             if ($index < $scope.initialMetricSetLength) {
                 $scope.initialMetricSetLength--;
             }
@@ -175,18 +225,77 @@
             var dataSet = _refactorJson($scope.dataSet);
             var saveDataSet = $scope.isNew ? UnifiedReportDataSetManager.post(dataSet) : UnifiedReportDataSetManager.one(dataSet.id).patch(dataSet);
 
-            saveDataSet.catch(function(response) {
-                var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.dataSetForm, $scope.fieldNameTranslations);
-                $scope.formProcessing = false;
-
-                return errorCheck;
-            }).then(function() {
+            saveDataSet.then(function(data) {
                 AlertService.addFlash({
                     type: 'success',
                     message: $scope.isNew ? $translate.instant('UNIFIED_REPORT_DATA_SET_MODULE.ADD_NEW_SUCCESS') : $translate.instant('UNIFIED_REPORT_DATA_SET_MODULE.UPDATE_SUCCESS')
                 });
-            }).then(function() {
+
+                // if($scope.isNew && $scope.dataSet.mapBuilderEnabled) {
+                //     return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSet, '^.mapBuilder', {dataSet: data.id});
+                // }
+
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSet, '^.list');
+            }).catch(function(response) {
+                $scope.formProcessing = false;
+
+                if(!response.data.errors) {
+                    return AlertService.replaceAlerts({
+                        type: 'error',
+                        message: response.data.message
+                    });
+                }
+
+                var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.dataSetForm, $scope.fieldNameTranslations);
+
+                return errorCheck;
+            })
+        }
+
+        // function getMapBuilder() {
+        //     // if ($scope.formProcessing) {
+        //     //     return;
+        //     // }
+        //     //
+        //     // $scope.formProcessing = true;
+        //
+        //     var dataSet = _refactorJson($scope.dataSet);
+        //     var saveDataSet = $scope.isNew ? UnifiedReportDataSetManager.post(dataSet) : UnifiedReportDataSetManager.one(dataSet.id).patch(dataSet);
+        //
+        //     saveDataSet
+        //         .then(function(response) {
+        //             console.log(response);
+        //         })
+        //         .catch(function(response) {
+        //             var errorCheck = ServerErrorProcessor.setFormValidationErrors(response, $scope.dataSetForm, $scope.fieldNameTranslations);
+        //             $scope.formProcessing = false;
+        //
+        //             return errorCheck;
+        //         })
+        // }
+
+        function _resetValue(dm) {
+            angular.forEach($scope.dataSet.mapBuilderConfigs, function (mapBuilderConfig) {
+                angular.forEach(mapBuilderConfig.mapFields, function (mapField) {
+                    if(mapField.key == dm.name) {
+                        mapField.value = null
+                    }
+                });
+            });
+        }
+
+        function _removeMapField(dm) {
+            angular.forEach($scope.dataSet.mapBuilderConfigs, function (mapBuilderConfig) {
+                angular.forEach(angular.copy(mapBuilderConfig.mapFields), function (mapField, index) {
+                    if(mapField.key == dm.name) {
+                        if(mapBuilderConfig.mapFields.length == 1) {
+                            mapBuilderConfig.mapFields[index].key = null;
+                            mapBuilderConfig.mapFields[index].value = null;
+                        } else {
+                            mapBuilderConfig.mapFields.splice(index, 1)
+                        }
+                    }
+                });
             });
         }
 
@@ -214,7 +323,30 @@
             dataSet.metrics = metrics;
             dataSet.dimensions = dimensions;
 
-            delete dataSet.connectedDataSources;
+            if(dataSet.mapBuilderEnabled) {
+                angular.forEach(dataSet.mapBuilderConfigs, function (mapSideConfig) {
+                    delete mapSideConfig.totalDimensionsMetrics;
+                    delete mapSideConfig.dataSet;
+                    delete mapSideConfig.id;
+
+                    mapSideConfig.mapDataSet = mapSideConfig.mapDataSet.id || mapSideConfig.mapDataSet;
+
+                    var mapFields = {};
+
+                    angular.forEach(mapSideConfig.mapFields, function (mapField) {
+                        mapFields[mapField.key] = mapField.value
+                    });
+
+                    mapSideConfig.mapFields = mapFields;
+                });
+
+                delete dataSet.connectedDataSources;
+            } else {
+                dataSet.mapBuilderConfigs = []
+            }
+
+            delete dataSet.leftSide;
+            delete dataSet.rightSide;
 
             return dataSet;
         }

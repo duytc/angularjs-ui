@@ -1222,6 +1222,7 @@
                 "MANAGE_CONNECTED_DATA_SOURCES": "Manage Connected Data Sources",
                 "VIEW_DATA_IMPORT_HISTORY": "View Loaded Data",
                 "EDIT": "Edit Data Set",
+                "EDIT_MAP_BUILDER": "Open Map Builder",
                 "DELETE": "Delete Data Set",
                 "RELOAD_ALL_DATA": "Reload Data Set",
                 "LAST_ACTIVITY": "Last Activity",
