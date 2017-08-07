@@ -12,7 +12,6 @@
         } : dataSourceFiles ;
 
         $scope.dataSource = dataSource;
-        $scope.dataSource = dataSource;
 
         $scope.missingDate = [];
         angular.forEach($scope.dataSource.missingDate, function (date) {
@@ -77,6 +76,7 @@
                 templateUrl: 'unifiedReport/dataSourceFile/showMissingDate.tpl.html',
                 controller: function ($scope, missingDate) {
                     $scope.missingDate = missingDate;
+                    $scope.dataSource = dataSource;
 
                     $scope.tableConfig = {
                         itemsPerPage: 10,
@@ -85,7 +85,17 @@
 
                     $scope.showPagination = function () {
                         return angular.isArray($scope.missingDate) && $scope.missingDate.length > $scope.tableConfig.itemsPerPage;
-                    }
+                    };
+
+                    $scope.backfillMissingDate = function () {
+                        return UnifiedReportDataSourceManager.one($scope.dataSource.id).post('createbackfill')
+                            .then(function () {
+                                AlertService.addAlert({
+                                    type: 'success',
+                                    message: 'The backfill was created'
+                                });
+                            })
+                    };
                 },
                 resolve: {
                     missingDate: function () {
