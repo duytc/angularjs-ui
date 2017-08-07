@@ -79,6 +79,11 @@
                                     key: 'fillRate',
                                     label: 'Fill Rate',
                                     show: true
+                                },
+                                {
+                                    key: 'refreshes',
+                                    label: 'Refreshes',
+                                    show: true
                                 }
                             ]
                         },

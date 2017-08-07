@@ -104,11 +104,6 @@
         $scope.getExportExcelFileName = getExportExcelFileName();
         $scope.showConfigForPerformanceByAdTag = showConfigForPerformanceByAdTag;
 
-        $scope.test = function(item){
-            console.log('item: ', item);
-            return item.adOpportunities;
-        };
-
         if (!$scope.hasResult) {
             AlertService.replaceAlerts({
                 type: 'warning',

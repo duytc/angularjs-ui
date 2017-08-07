@@ -895,6 +895,7 @@
                 "END_DATE": "End Date",
                 "DATE": "Date",
 
+                "REFRESHES": "Refreshes",
                 "BILLED_AMOUNT": "Billed Amount",
                 "SLOT_OPPORTUNITIES": "Slot Opportunities",
                 "NETWORK_OPPORTUNITIES": "Network Opportunities",

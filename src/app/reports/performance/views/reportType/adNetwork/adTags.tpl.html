@@ -33,6 +33,7 @@
                     <th at-attribute="clicks" ng-show="showConfigForPerformanceByAdTag('clicks')">{{ 'REPORT.CLICKS' | translate }}</th>
                     <th at-attribute="passbacks" ng-show="showConfigForPerformanceByAdTag('passbacks')">{{ 'REPORT.PASSBACKS' | translate }}</th>
                     <th at-attribute="fillRate" ng-show="showConfigForPerformanceByAdTag('fillRate')">{{ 'REPORT.FILL_RATE' | translate }}</th>
+                    <th at-attribute="refreshes" ng-show="showConfigForPerformanceByAdTag('refreshes')">{{ 'REPORT.REFRESHES' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -89,7 +90,9 @@
                     <td at-title="{{ 'REPORT.FILL_RATE' | translate }}" at-attribute="fillRate" at-sortable ng-show="showConfigForPerformanceByAdTag('fillRate')">
                         {{ item.fillRate | percentage }}
                     </td>
-
+                    <td ng-show="showConfigForPerformanceByAdTag('refreshes')" at-title="{{ 'REPORT.REFRESHES' | translate }}" at-attribute="refreshes" at-sortable>
+                        {{ item.refreshes | number }}
+                    </td>
                     <!--<td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>-->
                         <!--{{ item.estRevenue | currency }}-->
                     <!--</td>-->
