@@ -244,7 +244,8 @@
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="!!dataSource.dateRangeDetectionEnabled && !dataSource.fromMetadata">
+                <div class="form-group">
+                <!--<div class="form-group" ng-if="!!dataSource.dateRangeDetectionEnabled && !dataSource.fromMetadata">-->
                     <label class="col-sm-1 control-label">Date Fields</label>
 
                     <div class="col-sm-5">
@@ -256,7 +257,7 @@
                     <label class="col-sm-1 control-label">Date Fields</label>
 
                     <div class="col-sm-5">
-                        <ui-select multiple name="dataSource" ng-model="dataSource.dateFields" on-select="$select.search = '';" server-error>
+                        <ui-select multiple name="dataSource" ng-model="dataSource.dateFieldsFromMetadata" on-select="$select.search = '';" server-error>
                             <ui-select-match placeholder="Select a metadata">{{ $item.label }}</ui-select-match>
                             <ui-select-choices repeat="field.key as field in metadatas | filter:$select.search">
                                 {{ field.label }}
@@ -265,7 +266,7 @@
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="!!dataSource.dateRangeDetectionEnabled && !!dataSource.fromMetadata && (dataSource.dateFields.indexOf('from') > -1 || dataSource.dateFields.indexOf('body') > -1 || dataSource.dateFields.indexOf('filename') > -1  || dataSource.dateFields.indexOf('subject') > -1)">
+                <div class="form-group" ng-if="!!dataSource.dateRangeDetectionEnabled && !!dataSource.fromMetadata && (dataSource.dateFieldsFromMetadata.indexOf('from') > -1 || dataSource.dateFieldsFromMetadata.indexOf('body') > -1 || dataSource.dateFieldsFromMetadata.indexOf('filename') > -1  || dataSource.dateFieldsFromMetadata.indexOf('subject') > -1)">
                     <label class="col-sm-1 control-label">Pattern</label>
 
                     <div class="col-sm-5">

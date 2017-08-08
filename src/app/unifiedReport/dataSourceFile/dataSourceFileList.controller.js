@@ -6,6 +6,18 @@
     ;
 
     function DataSourceFileList($scope, $q, $modal, AtSortableService, allEntryIds, EVENT_ACTION_SORTABLE, $stateParams, dataSource, dataSourceFiles, UnifiedReportDataSourceManager, UnifiedReportDataSourceFileManager, $translate, AlertService, historyStorage, HISTORY_TYPE_PATH) {
+        const ALERT_CODE_DATA_IMPORT_MAPPING_FAIL = 1201;
+        const ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL = 1202;
+        const ALERT_CODE_FILTER_ERROR_INVALID_NUMBER = 1203;
+        const ALERT_CODE_TRANSFORM_ERROR_INVALID_DATE = 1204;
+        const ALERT_CODE_DATA_IMPORT_NO_HEADER_FOUND = 1205;
+        const ALERT_CODE_DATA_IMPORT_NO_DATA_ROW_FOUND = 1206;
+        const ALERT_CODE_WRONG_TYPE_MAPPING = 1207;
+        const ALERT_CODE_FILE_NOT_FOUND = 1208;
+        const ALERT_CODE_NO_FILE_PREVIEW = 1209;
+        const ALERT_CODE_NO_DATE_FORMAT = 1210;
+        const ALERT_CODE_UN_EXPECTED_ERROR = 2000;
+
         $scope.dataSourceFiles = (dataSourceFiles.constructor === Array) ? {
             records: dataSourceFiles,
             totalRecord: (dataSourceFiles.length)
@@ -187,7 +199,7 @@
                         size: 'lg',
                         resolve: {
                             message: function () {
-                                return  'An unknown server error occurred';
+                                return  convertMessage(response.data.message);
                             }
                         },
                         controller: function ($scope, message) {
@@ -471,6 +483,55 @@
                 } else {
                     $scope.checkAllItem = false
                 }
+            }
+        }
+
+        function convertMessage(message) {
+            try {
+                message = angular.fromJson(message);
+            } catch(err) {
+                return message || 'An unknown server error occurred'
+            }
+
+            var code = message.code;
+            var detail = message.detail;
+
+            switch (code) {
+                case ALERT_CODE_DATA_IMPORT_MAPPING_FAIL:
+                    return 'Cannot preview data - no field in file is mapped to data set.';
+
+                case ALERT_CODE_WRONG_TYPE_MAPPING:
+                    return 'Cannot preview data - MAPPING ERROR: Found invalid content ' + '"' + detail.content + '"' + ' on field ' + '"' + detail.column + '"' + '.';
+
+                case ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL:
+                    return 'Cannot preview data - REQUIRE ERROR: Required field ' + '"' + detail.column + '"' + ' does not exist.';
+
+                case ALERT_CODE_FILTER_ERROR_INVALID_NUMBER:
+                    return 'Cannot preview data - TRANSFORM ERROR: Invalid number format on field ' + '"' + detail.column + '"' + '.';
+
+                case ALERT_CODE_TRANSFORM_ERROR_INVALID_DATE:
+                    return 'Cannot preview data - TRANSFORM ERROR: Invalid date format on field ' + '"' + detail.column + '"' + '.';
+
+                case ALERT_CODE_DATA_IMPORT_NO_HEADER_FOUND:
+                    return 'Cannot preview data - the file in data source has no data.';
+
+                case ALERT_CODE_DATA_IMPORT_NO_DATA_ROW_FOUND:
+                    return 'Cannot preview data - the file in data source has no data.';
+
+                case ALERT_CODE_FILE_NOT_FOUND:
+                    return 'Cannot preview data - file does not exist.';
+
+                case ALERT_CODE_UN_EXPECTED_ERROR:
+                    return 'Cannot preview data - unexpected error, please contact your account manager';
+
+                case ALERT_CODE_NO_FILE_PREVIEW:
+                    return 'cannot find any file in this data source for dry run';
+
+                case ALERT_CODE_NO_DATE_FORMAT:
+                    return 'FILTER ERROR: Invalid date format on field "' + detail.column +'".';
+
+                default:
+                    return 'Unknown code (' + detail.code + ')';
             }
         }
     }

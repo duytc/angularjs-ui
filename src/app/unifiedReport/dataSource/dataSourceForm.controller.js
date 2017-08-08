@@ -85,6 +85,7 @@
             dateRangeDetectionEnabled: false,
             fromMetadata: false,
             dateFields: [],
+            dateFieldsFromMetadata: [],
             emailAnchorTexts: [],
             dateFormats: [{isCustomFormatDate: false, isPartialMatch: false, format: null}],
             pattern: {
@@ -386,7 +387,7 @@
             }
 
             if($scope.dataSource.dateRangeDetectionEnabled) {
-                if($scope.dataSource.dateFields.length == 0) {
+                if($scope.dataSource.dateFields.length == 0 && $scope.dataSource.dateFieldsFromMetadata.length == 0) {
                     return false
                 }
             }
