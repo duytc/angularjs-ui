@@ -10,11 +10,17 @@
                 <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
                 <td at-title="Start Date" at-implicit at-sortable at-attribute="backFillStartDate"></td>
                 <td at-title="End Date" at-implicit at-sortable at-attribute="backFillEndDate"></td>
-                <td at-title="Executed At" at-sortable at-initial-sorting="asc" at-attribute="sort">
-                    {{ item.executedAt | date:'MMM d, y H:mm:ss' }}
+                <td at-title="Queued At" at-sortable at-initial-sorting="asc" at-attribute="queuedAt">
+                    {{ item.queuedAt | date:'MMM d, y H:mm:ss' }}
                 </td>
-                <td at-title="Pending" at-sortable at-attribute="pending">
-                    <i class="fa" ng-class="!!item.pending ? 'fa-check-square' : 'fa-square'"></i>
+                <td at-title="Finished At" at-sortable at-attribute="finishedAt">
+                    {{ item.finishedAt | date:'MMM d, y H:mm:ss' }}
+                </td>
+                <td at-title="Status" at-sortable at-attribute="status">
+                    <div ng-if="item.status == 0">Not Run</div>
+                    <div ng-if="item.status == 1">Pending</div>
+                    <div ng-if="item.status == 2">Finished</div>
+                    <div ng-if="item.status == 3">Failed</div>
                 </td>
                 <td at-title="Data Source Integration" at-implicit at-sortable at-attribute="dataSourceIntegration.integration.name "></td>
             </tr>

@@ -24,7 +24,7 @@
            </div>
        </div>
 
-       <div ng-if="filter.type == 'date'">
+       <div ng-if="filter.type == 'date' || filter.type == 'datetime'">
            <div class="form-group select-connect-data-source">
                <label class="col-sm-2 control-label">Date Type</label>
 
@@ -70,7 +70,7 @@
            </div>
        </div>
 
-       <div ng-if="filter.type == 'text'">
+       <div ng-if="filter.type == 'text' || filter.type == 'largeText'">
            <div class="form-group select-connect-data-source" ng-if="!!filter.field">
                <label class="col-sm-2 control-label">Comparison</label>
                <div class="col-sm-10">
@@ -87,7 +87,7 @@
                <label class="col-sm-2 control-label">Comparison Value</label>
 
                <div class="col-sm-10">
-                   <oi-select ng-model="filter.compareValue" multiple ng-required="true" oi-select-options="{newItem: true}" placeholder="{{ 'REPORT_BUILDER_MODULE.ENTER_ONE_OR_MULTIPLE_VALUE' | translate }}"></oi-select>
+                   <oi-select ng-model="filter.compareValue" multiple ng-required="true" oi-select-options="{newItem: true, newItemFn: 'addCompareValueText($query)'}" placeholder="{{ 'REPORT_BUILDER_MODULE.ENTER_ONE_OR_MULTIPLE_VALUE' | translate }}"></oi-select>
 
                    <span class="help-block" ng-if="!!filter.comparison && filter.comparison !='in' && filter.comparison !='not in'">{{ 'REPORT_BUILDER_MODULE.HELP_TEXT_FOR_ENTER_VALUES' | translate }}</span>
                </div>
@@ -95,7 +95,7 @@
 
        </div>
 
-       <div ng-if="filter.type == 'number'">
+       <div ng-if="filter.type == 'number' || filter.type == 'decimal'">
            <div class="form-group select-connect-data-source" ng-if="!!filter.field">
                <label class="col-sm-2 control-label">Comparison</label>
                <div class="col-sm-10">

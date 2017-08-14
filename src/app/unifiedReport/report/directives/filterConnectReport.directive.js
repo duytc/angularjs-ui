@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .directive('filterConnectReport', filterConnectReport);
 
-    function filterConnectReport($compile, _, FIELD_TYPES, DATE_FORMAT_TYPES, COMPARISON_TYPES_FILTER_CONNECT_NUMBER, COMPARISON_TYPES_FILTER_CONNECT_TEXT) {
+    function filterConnectReport($compile, _, FIELD_TYPES, DATE_FORMAT_TYPES, COMPARISON_TYPES_FILTER_CONNECT_NUMBER, COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_TEXT) {
         'use strict';
 
         return {
@@ -65,6 +65,7 @@
                     scope.getFieldNames = getFieldNames;
                     scope.selectedComparison = selectedComparison;
                     scope.addCompareValue = addCompareValue;
+                    scope.addCompareValueText = addCompareValueText;
                     scope.selectDateType = selectDateType;
 
                     function selectDateType(dateType, filter) {
@@ -86,13 +87,25 @@
                         return query;
                     }
 
+                    function addCompareValueText(query) {
+                        if (/['`$]/.test(query)) {
+                            return;
+                        }
+
+                        return query;
+                    }
+
                     function getFieldNames(itemField) {
                         return scope.fieldNames
                     }
 
                     function getComparisonTypes(type) {
-                        if (type.type == 'text') {
+                        if (type.type == 'text' || type.type == 'largeText') {
                             return COMPARISON_TYPES_FILTER_CONNECT_TEXT;
+                        }
+
+                        if (type.type == 'decimal') {
+                            return COMPARISON_TYPES_FILTER_CONNECT_DECIMAL;
                         }
 
                         if (type.type == 'number') {
@@ -107,17 +120,19 @@
                             filter.comparison = null;
 
                             if (scope.dimensionsMetrics[field] == 'date' || scope.dimensionsMetrics[field] == 'datetime') {
-                                filter.type = 'date';
+                                // filter.type = 'date';
                                 filter.userProvided = true;
                             }
 
-                            if (scope.dimensionsMetrics[field] == 'number' || scope.dimensionsMetrics[field] == 'decimal') {
-                                filter.type = 'number'
-                            }
+                            filter.type = scope.dimensionsMetrics[field];
 
-                            if (scope.dimensionsMetrics[field] == 'text' || scope.dimensionsMetrics[field] == 'largeText') {
-                                filter.type = 'text'
-                            }
+                            // if (scope.dimensionsMetrics[field] == 'number' || scope.dimensionsMetrics[field] == 'decimal') {
+                            //     filter.type = 'number'
+                            // }
+                            //
+                            // if (scope.dimensionsMetrics[field] == 'text' || scope.dimensionsMetrics[field] == 'largeText') {
+                            //     filter.type = 'text'
+                            // }
                         }, 0);
                     }
 

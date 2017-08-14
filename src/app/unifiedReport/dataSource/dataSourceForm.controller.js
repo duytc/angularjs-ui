@@ -447,6 +447,7 @@
             }
 
             delete dataSource.dateRange.date;
+            delete dataSource.backfillMissingDateRunning;
 
             var saveDataSource = $scope.isNew ? UnifiedReportDataSourceManager.post(dataSource) : UnifiedReportDataSourceManager.one(dataSource.id).patch(dataSource);
 

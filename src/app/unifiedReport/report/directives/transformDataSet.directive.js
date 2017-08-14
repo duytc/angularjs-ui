@@ -34,8 +34,10 @@
                     scope.typesField = METRICS_SET;
                     scope.positionsForReplaceText = POSITIONS_FOR_REPLACE_TEXT;
                     scope.reorderDefaultValueAllowed = false;
+                    scope.selectAllDimensions = false;
 
                     var totalDimensionsMetricsForDefaultValues = [];
+                    var filterDimensionField = false;
 
                     scope.conditionComparators = COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE;
                     scope.conditionComparatorsForAddField = COMPARISON_TYPES_ADD_FIELD_VALUE;
@@ -127,7 +129,55 @@
                     scope.selectedComparisonAddField = selectedComparisonAddField;
                     scope.selectedExpressionVar = selectedExpressionVar;
                     scope.filterOperatorAddField = filterOperatorAddField;
-                    
+                    scope.filterConditionComparators = filterConditionComparators;
+                    scope.filterForViewOfView = filterForViewOfView;
+                    scope.selectAllDimensionsForGroup = selectAllDimensionsForGroup;
+
+                    function selectAllDimensionsForGroup(transform) {
+                        scope.selectAllDimensions = true;
+
+                        angular.forEach(scope.selectedFields, function (field) {
+                            if(scope.reportBuilder.joinBy.length > 0) {
+                                for(var index in scope.reportBuilder.joinBy) {
+                                    if(scope.reportBuilder.joinBy[index].outputField == field.key && transform.fields.indexOf(field.key) == -1) {
+                                        transform.fields.push(field.key);
+                                    }
+                                }
+                            }
+
+                            if(transform.fields.indexOf(field.key) == -1 && _.findIndex(scope.dimensionsList, {key: field.key}) > -1) {
+                                transform.fields.push(field.key);
+                            }
+                        });
+                    }
+
+                    function filterForViewOfView(field) {
+                        if(!scope.multiView) return true;
+                        else {
+                            return field.type == 'number' || field.type == 'decimal'
+                        }
+                    }
+
+                    function filterConditionComparators(defaultValue) {
+                        return function (separator) {
+                            if(defaultValue.conditionField == '$$CALCULATED_VALUE$$') {
+                                if(separator.key == 'is invalid') {
+                                    return true
+                                }
+
+                                return false
+                            } else if(scope.dimensionsMetrics[defaultValue.conditionField] != 'number' && scope.dimensionsMetrics[defaultValue.conditionField] != 'decimal') {
+                                if(separator.key == 'in' || separator.key == 'not in') {
+                                    return true
+                                }
+
+                                return false
+                            }
+
+                            return true
+                        }
+                    }
+
                     function filterOperatorAddField(expression) {
                         return function (separator) {
                             if(separator.key == 'not contain' || separator.key == 'contain') {
@@ -157,6 +207,10 @@
 
                             return scope.dimensionsMetrics[field] == 'datetime'
                         });
+
+                        if(index == -1) {
+                            transform.timezone = 'UTC'
+                        }
 
                         return index > -1
                     }
@@ -245,7 +299,6 @@
                     function getLengthTransform (){
                         return scope.transforms.length;
                     }
-
 
                     function formatExpressionToHighlight(field) {
                         var expression = (!!field.field ? ('<strong>' + field.field + '</strong>' + ' = ') : '') + (angular.copy(field.expression) || '');
@@ -413,8 +466,6 @@
 
                         return types;
                     }
-
-                    var filterDimensionField = false;
 
                     function getFieldForGroupList(transformFields) {
                         if (!filterDimensionField) {

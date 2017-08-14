@@ -1,0 +1,77 @@
+<section class="panel panel-default">
+
+    <div class="panel-heading">
+        <span current-page-title></span>
+
+        <div class="button-bar">
+            <button ng-if="!isNew" ng-click="backToTagList()" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-arrow-left"></span> Back to Tag List
+            </button>
+        </div>
+
+        <div class="btn-group btnGrouped" dropdown ng-if="!isNew">
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ng-click="backToTagList()">Back to Tag List</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="row">
+            <form name="createTag" class="col-lg-6 form-validation form-horizontal" ng-submit="submit()" role="form" novalidate>
+                <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">{{ 'NAME' | translate }}</label>
+                    <div class="col-sm-10">
+                        <input server-error name="name" ng-model="tag.name" ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="{{ 'NAME' | translate }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">{{ 'PUBLISHERS' | translate }}</label>
+                    <div class="col-sm-10">
+                        <ui-select multiple ng-model="tag.userTags" server-error reset-search-input="'false'">
+                            <ui-select-match placeholder="Select a publisher">{{ $item.company }}</ui-select-match>
+                            <ui-select-choices repeat="publisher.id as publisher in publishers | filter:$select.search">
+                                {{ publisher.company }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">Templates</label>
+                    <div class="col-sm-10">
+                        <ui-select multiple ng-model="tag.reportViewTemplateTags" server-error reset-search-input="'false'">
+                            <ui-select-match placeholder="Select a template">{{ $item.name }}</ui-select-match>
+                            <ui-select-choices repeat="template.id as template in templates | filter:$select.search">
+                                {{ template.name }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">Integrations</label>
+                    <div class="col-sm-10">
+                        <ui-select multiple ng-model="tag.integrationTags" server-error reset-search-input="'false'">
+                            <ui-select-match placeholder="Select a integration">{{ $item.name }}</ui-select-match>
+                            <ui-select-choices repeat="integration.id as integration in integrations | filter:$select.search">
+                                {{ integration.name }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button  ng-disabled="!isFormValid()" type="submit" class="btn btn-success mce-i-indent">{{ 'SUBMIT' | translate }}</button>
+                        <div ng-show="!isFormValid()" class="callout callout-info">
+                            <p>{{ 'VALID_FORM' | translate }}</p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

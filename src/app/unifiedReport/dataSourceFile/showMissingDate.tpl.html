@@ -20,6 +20,6 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-default" ng-if="dataSource.dateRangeDetectionEnabled && missingDate.length > 0 && dataSource.dataSourceIntegrations.length > 0 && dataSource.useIntegration" ng-click="backfillMissingDate()">Backfill Missing Date</button>
+    <button class="btn btn-default" ng-if="dataSource.dateRangeDetectionEnabled && missingDate.length > 0 && dataSource.dataSourceIntegrations.length > 0 && !dataSource.backfillMissingDateRunning && !backfillMissing && dataSource.useIntegration" ng-click="backfillMissingDate()">Backfill Missing Date</button>
     <button class="btn btn-primary" ng-click="$close()">{{ 'CLOSE' | translate }}</button>
 </div>

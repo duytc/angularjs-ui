@@ -89,6 +89,7 @@
                 controller: function ($scope, missingDate) {
                     $scope.missingDate = missingDate;
                     $scope.dataSource = dataSource;
+                    $scope.backfillMissing = false;
 
                     $scope.tableConfig = {
                         itemsPerPage: 10,
@@ -102,6 +103,8 @@
                     $scope.backfillMissingDate = function () {
                         return UnifiedReportDataSourceManager.one($scope.dataSource.id).post('createbackfill')
                             .then(function () {
+                                $scope.backfillMissing = true;
+
                                 AlertService.addAlert({
                                     type: 'success',
                                     message: 'The backfill was created'

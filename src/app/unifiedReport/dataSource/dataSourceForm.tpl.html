@@ -244,9 +244,9 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                <!--<div class="form-group" ng-if="!!dataSource.dateRangeDetectionEnabled && !dataSource.fromMetadata">-->
-                    <label class="col-sm-1 control-label">Date Fields</label>
+                <div class="form-group" ng-if="!!dataSource.dateRangeDetectionEnabled">
+                    <!--<div class="form-group" ng-if="!!dataSource.dateRangeDetectionEnabled && !dataSource.fromMetadata">-->
+                    <label class="col-sm-1 control-label">Date Fields From File</label>
 
                     <div class="col-sm-5">
                         <oi-select ng-model="dataSource.dateFields" multiple oi-select-options="{newItem: true, newItemFn: 'addValueDateFields($query)'}" placeholder="Input field"></oi-select>
@@ -254,7 +254,7 @@
                 </div>
 
                 <div class="form-group" ng-if="!!dataSource.dateRangeDetectionEnabled && !!dataSource.fromMetadata">
-                    <label class="col-sm-1 control-label">Date Fields</label>
+                    <label class="col-sm-1 control-label">Date fields From Metadata</label>
 
                     <div class="col-sm-5">
                         <ui-select multiple name="dataSource" ng-model="dataSource.dateFieldsFromMetadata" on-select="$select.search = '';" server-error>

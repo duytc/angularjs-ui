@@ -29,6 +29,72 @@
         $scope.downloadReport = downloadReport;
         $scope.getShareableLink = getShareableLink;
         $scope.cloneReportView = cloneReportView;
+        $scope.createTemplate = createTemplate;
+        
+        function createTemplate() {
+            $modal.open({
+                templateUrl: 'unifiedReport/report/createTemplate.tpl.html',
+                size: 'lg',
+                controller: function ($scope, $modalInstance, tags, UnifiedReportViewManager) {
+                    $scope.reportViewList = reportViewList;
+                    $scope.tags = tags;
+
+                    $scope.template = {
+                        name: null,
+                        reportView: null,
+                        tags: []
+                    };
+
+                    $scope.addTag = function (query) {
+                        return {
+                            name: query
+                        }
+                    };
+
+                    $scope.isFormValid = function () {
+                      return $scope.createTemplate.$valid
+                    };
+
+                    $scope.submit = function () {
+                        var tags = [];
+
+                        angular.forEach($scope.template.tags, function (tag) {
+                            tags.push(tag.name);
+                        });
+
+                        UnifiedReportViewManager.one($scope.template.reportView).one('reportviewtemplates').post(null, {name: $scope.template.name, tags: tags})
+                            .catch(
+                                function (response) {
+                                    $modalInstance.close();
+
+                                    AlertService.replaceAlerts({
+                                        type: 'error',
+                                        message: 'The template could not be created'
+                                    });
+                                }
+                            )
+                            .then(
+                                function () {
+                                    $modalInstance.close();
+
+                                    AlertService.replaceAlerts({
+                                        type: 'success',
+                                        message: 'The template has been created'
+                                    });
+                                }
+                            )
+                        ;
+                    }
+                },
+                resolve: {
+                    tags: function (UnifiedReportTagManager) {
+                        return UnifiedReportTagManager.getList().then(function (tags) {
+                            return tags.plain();
+                        });
+                    }
+                }
+            });
+        }
 
         function cloneReportView(reportView) {
             $modal.open({

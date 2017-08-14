@@ -1,0 +1,41 @@
+<form name="createTemplate" role="form" ng-submit="submit()" novalidate>
+    <div class="modal-header">
+        <h4 class="modal-title"><strong>Create Template</strong></h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-12 form-validation form-horizontal">
+                <div class="form-group">
+                    <label for="reportView" class="col-sm-2 control-label">Report View</label>
+                    <div class="col-sm-10">
+                        <ui-select name="publisher" id="reportView" ng-model="template.reportView" ng-required="true" server-error>
+                            <ui-select-match placeholder="Select a Report View">{{ $select.selected.name  + ' (ID: ' + $select.selected.id + ')'}}</ui-select-match>
+                            <ui-select-choices repeat="reportView.id as reportView in reportViewList | filter:$select.search">
+                                {{ reportView.name + ' (ID: ' + reportView.id + ')' }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">{{ 'NAME' | translate }}</label>
+                    <div class="col-sm-10">
+                        <input server-error name="name" ng-model="template.name" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="{{ 'NAME' | translate }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Tags</label>
+                    <div class="col-sm-10">
+                        <oi-select oi-options="item.name for item in tags" ng-model="template.tags" multiple oi-select-options="{newItem: true, newItemFn: 'addTag($query)'}" placeholder="Select or Input Tag"></oi-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="$dismiss()" type="button">{{ 'CANCEL' | translate }}</button>
+        <button class="btn btn-danger" ng-disabled="!isFormValid()" type="submit">{{ 'SUBMIT' | translate }}</button>
+    </div>
+</form>

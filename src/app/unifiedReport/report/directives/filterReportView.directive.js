@@ -5,7 +5,7 @@
         .directive('filterReportView', filterReportView)
     ;
 
-    function filterReportView($compile, _, FIELD_TYPES, DATE_FORMAT_TYPES, COMPARISON_TYPES_FILTER_CONNECT_NUMBER, COMPARISON_TYPES_FILTER_CONNECT_TEXT) {
+    function filterReportView($compile, _, FIELD_TYPES, DATE_FORMAT_TYPES, COMPARISON_TYPES_FILTER_CONNECT_NUMBER, COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_TEXT) {
         'use strict';
 
         return {
@@ -67,6 +67,15 @@
                     scope.selectedComparison = selectedComparison;
                     scope.addCompareValue = addCompareValue;
                     scope.selectDateType = selectDateType;
+                    scope.addCompareValueText = addCompareValueText;
+
+                    function addCompareValueText(query) {
+                        if (/['`$]/.test(query)) {
+                            return;
+                        }
+
+                        return query;
+                    }
 
                     function selectDateType(dateType, filter) {
                         if(dateType.value == 'customRange' || dateType.value == 'userProvided') {
@@ -84,8 +93,12 @@
                     }
                     
                     function getComparisonTypes(type) {
-                        if(type.type == 'text') {
+                        if (type.type == 'text' || type.type == 'largeText') {
                             return COMPARISON_TYPES_FILTER_CONNECT_TEXT;
+                        }
+
+                        if (type.type == 'decimal') {
+                            return COMPARISON_TYPES_FILTER_CONNECT_DECIMAL;
                         }
 
                         if(type.type == 'number') {
@@ -107,17 +120,19 @@
                         }
 
                         if(findField.type == 'date' || findField.type == 'datetime') {
-                            filter.type = 'date';
+                            // filter.type = 'date';
                             filter.userProvided = true;
                         }
 
-                        if(findField.type == 'number' || findField.type == 'decimal') {
-                            filter.type = 'number'
-                        }
+                        // if(findField.type == 'number' || findField.type == 'decimal') {
+                        //     filter.type = 'number'
+                        // }
+                        //
+                        // if(findField.type == 'text' || findField.type == 'largeText') {
+                        //     filter.type = 'text'
+                        // }
 
-                        if(findField.type == 'text' || findField.type == 'largeText') {
-                            filter.type = 'text'
-                        }
+                        filter.type = findField.type;
 
                         filter.comparison = null;
                     }

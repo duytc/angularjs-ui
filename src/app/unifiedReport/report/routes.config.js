@@ -217,7 +217,7 @@
                         params.userDefineDimensions = reportView.enableCustomDimensionMetric ? reportView.dimensions : [];
                         params.userDefineMetrics = reportView.enableCustomDimensionMetric ? reportView.metrics : [];
 
-                        if(params.userDefineDimensions.indexOf('report_view_alias') == -1 && reportView.multiView && (params.userDefineDimensions.length > 0 || params.userDefineMetrics.length > 0)) {
+                        if(!!params.userDefineDimensions && (params.userDefineDimensions.length == 0 || params.userDefineDimensions.indexOf('report_view_alias') == -1) && (params.userDefineDimensions.length > 0 || params.userDefineMetrics.length > 0) && reportView.multiView) {
                             params.userDefineDimensions.unshift('report_view_alias');
                         }
 

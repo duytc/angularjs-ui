@@ -88,7 +88,7 @@
                 // $scope.connectDataSource.mapFields = {};
 
                 var detectedFields = response.fields;
-                listDetectFields.push(response);
+                // listDetectFields.push(response);
 
                 if(!detectedFields || detectedFields.length == 0) {
                     AlertService.replaceAlerts({

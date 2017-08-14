@@ -10,6 +10,8 @@
         'tagcade.unifiedReport.dataSet',
         'tagcade.unifiedReport.connect',
         'tagcade.unifiedReport.report',
-        'tagcade.unifiedReport.importHistory'
+        'tagcade.unifiedReport.importHistory',
+        'tagcade.unifiedReport.template',
+        'tagcade.unifiedReport.tag'
     ]);
 })();
