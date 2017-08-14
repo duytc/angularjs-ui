@@ -208,7 +208,7 @@
                                 <div class="expressions-group">
                                     <div class="form-group">
                                         <label for="inputVideoPublisher" class="col-sm-3 control-label">{{ 'VIDEO_PUBLISHER' | translate }}</label>
-                                        <div class="col-sm-9">
+                                        <div class="col-sm-9" ng-if="isAdmin()">
                                             <isteven-multi-select id="videoPublisher"
                                                                   translation="localLang"
                                                                   output-properties="id"
@@ -216,6 +216,23 @@
                                                                   on-select-all="filterWaterfallTagsBySelectAll(rule)"
                                                                   on-select-none = "filterWaterfallBySelectNone(rule)"
                                                                   input-model="rule.videoPublishers"
+                                                                  output-model="rule.publishers"
+                                                                  search-property="id name"
+                                                                  button-label="name"
+                                                                  item-label="name"
+                                                                  tick-property="ticked">
+
+                                            </isteven-multi-select>
+                                        </div>
+
+                                        <div class="col-sm-9" ng-if="!isAdmin()">
+                                            <isteven-multi-select id="videoPublisher"
+                                                                  translation="localLang"
+                                                                  output-properties="id"
+                                                                  on-item-click="filterWaterfallTags(rule)"
+                                                                  on-select-all="filterWaterfallTagsBySelectAll(rule)"
+                                                                  on-select-none = "filterWaterfallBySelectNone(rule)"
+                                                                  input-model="videoPublishers"
                                                                   output-model="rule.publishers"
                                                                   search-property="id name"
                                                                   button-label="name"

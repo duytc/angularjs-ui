@@ -221,6 +221,18 @@
                                 <span class="menu-text">{{ 'NAVBAR.NEW_VIDEO_PUBLISHER' | translate }}</span>
                             </a>
                         </li>
+
+                        <li ui-sref-active="active">
+                            <a ui-sref=".videoManagement.adTag.list">
+                                <span class="menu-text">{{ 'NAVBAR.VIDEO_AD_TAGS' | translate }}</span>
+                            </a>
+                        </li>
+
+                        <li ui-sref-active="active">
+                            <a ui-sref=".videoManagement.adTag.new">
+                                <span class="menu-text">{{ 'NAVBAR.NEW_VIDEO_AD_TAG' | translate }}</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li >
@@ -241,24 +253,16 @@
                                 <span class="menu-text">{{ 'NAVBAR.NEW_DEMAND_PARTNER' | translate }}</span>
                             </a>
                         </li>
-                    </ul>
-                </li>
-                <li >
-                    <a href="#" class="menu-dropdown">
-                        <span class="menu-text">{{ 'NAVBAR.VIDEO_AD_TAGS' | translate }}</span>
-                        <i class="menu-expand"></i>
-                    </a>
 
-                    <ul class="submenu">
                         <li ui-sref-active="active">
-                            <a ui-sref=".videoManagement.adTag.list">
-                                <span class="menu-text">{{ 'NAVBAR.VIDEO_AD_TAGS' | translate }}</span>
+                            <a ui-sref=".videoLibrary.demandAdTag.list">
+                                <span class="menu-text">{{ 'NAVBAR.DEMAND_TAGS' | translate }}</span>
                             </a>
                         </li>
 
                         <li ui-sref-active="active">
-                            <a ui-sref=".videoManagement.adTag.new">
-                                <span class="menu-text">{{ 'NAVBAR.NEW_VIDEO_AD_TAG' | translate }}</span>
+                            <a ui-sref=".videoLibrary.demandAdTag.new">
+                                <span class="menu-text">{{ 'NAVBAR.NEW_DEMAND_TAG' | translate }}</span>
                             </a>
                         </li>
                     </ul>

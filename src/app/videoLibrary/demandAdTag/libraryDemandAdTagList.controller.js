@@ -5,7 +5,7 @@
         .controller('LibraryDemandAdTagList', LibraryDemandAdTagList)
     ;
 
-    function LibraryDemandAdTagList($scope, _, $stateParams ,$translate, $modal, AlertService, demandAdTags, demandPartner, VideoAdTagManager, LibraryDemandAdTagManager, VideoDemandPartnerManager, AtSortableService, HISTORY_TYPE_PATH, historyStorage) {
+    function LibraryDemandAdTagList($scope, _, $stateParams ,$translate, $modal, AlertService, demandAdTags, demandPartner, VideoAdTagManager, LibraryDemandAdTagManager, VideoDemandPartnerManager, AtSortableService, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE, historyStorage) {
 
         $scope.demandAdTags = demandAdTags.records;
         $scope.demandPartner = demandPartner;
@@ -32,6 +32,10 @@
         $scope.changePage = changePage;
         $scope.searchData = searchData;
 
+        $scope.$on(EVENT_ACTION_SORTABLE, function (event, query){
+            params = angular.extend(params, query);
+            _getDemandAdTags(params);
+        });
 
         function changePage(currentPage) {
             params = angular.extend(params, {page: currentPage});

@@ -391,22 +391,12 @@
                                 <br>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.REQUIRED_MACROS' |
-                                        translate }}</label>
+                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.REQUIRED_MACROS' | translate }}</label>
 
                                     <div class="col-sm-9">
-                                        <ui-select on-select="$item.search = $select.search; $select.search = '';"
-                                                   multiple name="requiredMacros" close-on-select="false"
-                                                   ng-model="videoDemandAdTag.libraryVideoDemandAdTag.targeting.required_macros" ng-required="true"
-                                                   server-error>
-                                            <ui-select-match
-                                                    placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_REQUIRED_MACROS' | translate }}">
-                                                {{ $item.label }}
-                                            </ui-select-match>
-                                            <ui-select-choices
-                                                    repeat="require.key as require in requiredMacrosOptions | filter:$select.search">
-                                                {{ require.label }}
-                                            </ui-select-choices>
+                                        <ui-select ng-disabled="!videoDemandAdTag.targetingOverride && (pickFromLibrary || videoDemandAdTag.libraryVideoDemandAdTag.linkedCount > 1)" on-select="$item.search = $select.search; $select.search = '';" multiple name="requiredMacros" close-on-select="false" ng-model="videoDemandAdTag.libraryVideoDemandAdTag.targeting.required_macros" ng-required="true" server-error>
+                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_REQUIRED_MACROS' | translate }}">{{ $item.label }}</ui-select-match>
+                                            <ui-select-choices repeat="require.key as require in requiredMacrosOptions | filter:$select.search">{{ require.label }}</ui-select-choices>
                                         </ui-select>
                                     </div>
                                 </div>

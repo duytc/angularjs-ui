@@ -17,6 +17,26 @@
                     skip: true
                 }
             })
+            .state('videoManagement.demandAdTag.list', {
+                url: '/list',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    'content@app': {
+                        controller: 'AllDemandAdTagList',
+                        templateUrl: 'videoManagement/demandAdTag/allDemandAdTagList.tpl.html'
+                    }
+                },
+                resolve: {
+                    demandAdTags: /* @ngInject */ function(VideoDemandAdTagManager) {
+                        return VideoDemandAdTagManager.getList();
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Demand Ad Tags'
+                }
+            })
             .state('videoManagement.demandAdTag.listByVideoTag', {
                 url: '/videoWaterfallTag/{videoTagId:[0-9]+}/list',
                 params: {
@@ -131,7 +151,7 @@
                 }
             })
             .state('videoManagement.demandAdTag.edit', {
-                url: '/edit/{id:[0-9]+}?libraryDemandAdTagId',
+                url: '/edit/{id:[0-9]+}?libraryDemandAdTagId?allDemand',
                 views: {
                     'content@app': {
                         controller: 'DemandAdTagForm',

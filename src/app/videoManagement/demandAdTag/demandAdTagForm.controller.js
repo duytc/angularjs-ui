@@ -230,6 +230,10 @@
         }
 
         function backToListDemandAdTag() {
+            if (!!$stateParams.allDemand) {
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.allVideoDemandAdTag, '^.list');
+            }
+
             if (!!$stateParams.libraryDemandAdTagId) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.videoDemandAdTag, '^.listByLibrary');
             }

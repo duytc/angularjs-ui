@@ -83,7 +83,7 @@
                 "DISPLAY_ADS": "Display Ads",
                 "DOMAIN_LISTS": "Domain Lists",
                 "GENERATE_TAGS": "Generate Tags",
-                "GENERATE_VAST_TAGS": "Generate Vast/VPAID Tags",
+                "GENERATE_VAST_TAGS": "Generate Video Tags",
                 "CHANNELS": "Channels",
                 "MY_CHANNELS": "My Channels",
                 "MY_SEGMENTS": "My Report Segments",
@@ -118,11 +118,13 @@
                 "ACTIVITY_LOG": "Activity Log",
 
                 "VIDEO_ADS": "Video Ads",
-                "VIDEO_AD_TAGS": "Waterfalls",
+                "VIDEO_AD_TAGS": "Publisher Waterfalls",
                 "MY_VIDEO_AD_TAGS": "My Waterfalls",
                 "DEMAND_PARTNERS": "Demand Partners",
                 "MY_DEMAND_PARTNERS": "My Demand Partners",
                 "NEW_DEMAND_PARTNER": "New Demand Partner",
+                "DEMAND_TAGS": "Demand Tags",
+                "NEW_DEMAND_TAG": "New Demand Tag",
                 "NEW_VIDEO_AD_TAG": "New Waterfall",
 
                 "VIDEO_AD_SOURCES": "Demand Ad Tags",

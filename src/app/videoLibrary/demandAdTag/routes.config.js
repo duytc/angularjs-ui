@@ -29,8 +29,10 @@
                     }
                 },
                 resolve: {
-                    demandAdTags: /* @ngInject */ function(LibraryDemandAdTagManager) {
-                        return LibraryDemandAdTagManager.getList()
+                    demandAdTags: /* @ngInject */ function(LibraryDemandAdTagManager, $stateParams) {
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+
+                        return LibraryDemandAdTagManager.one().get($stateParams)
                     },
                     demandPartner: function() {
                         return null

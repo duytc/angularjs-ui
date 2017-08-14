@@ -110,6 +110,12 @@
                     videoPublisherObject['ticked'] = true;
                 });
 
+                angular.forEach($scope.videoPublishers, function(videoPublisher) {
+                    if(_.contains(videoPublisherIds, videoPublisher.id)) {
+                        videoPublisher['ticked'] = true;
+                    }
+                });
+
                 angular.forEach(waterfallTagsInDemandAdTag, function(waterfallTag) {
                     waterfallTag['ticked'] = true;
                 });

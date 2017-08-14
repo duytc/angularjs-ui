@@ -2,12 +2,11 @@
     'use strict';
 
     angular.module('tagcade.videoManagement.demandAdTag')
-        .controller('DemandAdTagList', DemandAdTagList)
+        .controller('AllDemandAdTagList', AllDemandAdTagList)
     ;
 
-    function DemandAdTagList($scope, $state, $translate, $modal, AlertService, demandAdTags, demandPartner, VideoDemandAdTagManager, AtSortableService, HISTORY_TYPE_PATH, DIMENSIONS_OPTIONS_VIDEO_REPORT, dateUtil, historyStorage) {
+    function AllDemandAdTagList($scope, $state, $translate, $modal, AlertService, demandAdTags, VideoDemandAdTagManager, AtSortableService, HISTORY_TYPE_PATH, DIMENSIONS_OPTIONS_VIDEO_REPORT, dateUtil, historyStorage) {
         $scope.demandAdTags = demandAdTags;
-        $scope.demandPartner = demandPartner;
         $scope.listByLibrary = $state.params.listByLibrary;
 
         $scope.hasData = function () {
@@ -24,7 +23,6 @@
         $scope.showPagination = showPagination;
         $scope.confirmDeletion = confirmDeletion;
         $scope.toggleDemandAdTagStatus = toggleDemandAdTagStatus;
-        $scope.backToListLibraryDemandAdTag = backToListLibraryDemandAdTag;
         $scope.paramsReport = paramsReport;
 
         $scope.tableConfig = {
@@ -56,14 +54,6 @@
             paramsReport.breakdowns = angular.toJson(paramsReport.breakdowns);
 
             return paramsReport;
-        }
-
-        function backToListLibraryDemandAdTag() {
-            if(!!demandPartner) {
-                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.libraryDemandAdTag, '^.^.^.videoLibrary.demandAdTag.listByDemandPartner');
-            }
-
-            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.libraryDemandAdTag, '^.^.^.videoLibrary.demandAdTag.list');
         }
 
         function toggleDemandAdTagStatus(videoDemandAdTag, active) {
@@ -125,7 +115,7 @@
         }
 
         $scope.$on('$locationChangeSuccess', function() {
-            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.videoDemandAdTag)
+            historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.allVideoDemandAdTag)
         });
     }
 })();

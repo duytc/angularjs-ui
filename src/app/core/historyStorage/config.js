@@ -16,6 +16,7 @@
                     segment: "segment",
                     subPublisher: "subPublisher",
                     videoPublisher: "videoPublisher",
+                    allVideoDemandAdTag: "allVideoDemandAdTag",
                     videoAdTag: "videoAdTag",
                     videoDemandAdTag: "videoDemandAdTag",
                     demandPartner: "demandPartner",
