@@ -115,6 +115,7 @@
                     scope.selectTypeCalculatedField = selectTypeCalculatedField;
                     scope.formatExpressionToHighlight = formatExpressionToHighlight;
                     scope.filterFieldByText = filterFieldByText;
+                    scope.filterFieldByNumber = filterFieldByNumber;
                     scope.enableDragDropQueryBuilder = enableDragDropQueryBuilder;
                     scope.getLengthTransform = getLengthTransform;
                     scope.getTransformName = getTransformName;
@@ -527,6 +528,10 @@
 
                     function filterFieldByText(field) {
                         return field.type == 'text' || field.type == 'largeText';
+                    }
+
+                    function filterFieldByNumber(field) {
+                        return field.type == 'number' || field.type == 'decimal';
                     }
 
                     function getDimensionsMetricsForComparison(fields, fieldCurrent) {

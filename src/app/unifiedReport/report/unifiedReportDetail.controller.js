@@ -135,6 +135,11 @@
         $scope.searchReportView = searchReportView;
         $scope.exportExcel = exportExcel;
         $scope.showDetailsMissingDates = showDetailsMissingDates;
+        $scope.showReportDetail = showReportDetail;
+        
+        function showReportDetail() {
+            return !angular.isArray($scope.titleColumns)
+        }
 
         function showDetailsMissingDates() {
             $modal.open({
@@ -456,7 +461,8 @@
 
             var fieldTypes = angular.copy($scope.reportView.fieldTypes);
 
-            if ($scope.reports.length > 0) {
+            if (true) {
+            // if ($scope.reports.length > 0) {
                 var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
                 var totalDimensions = [];
                 var totalMetrics = [];
@@ -532,7 +538,7 @@
                                     fieldTypes[col] = $scope.reportView.multiView ? item.fieldTypes[col] : type;
 
                                     if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == col }) == -1) {
-                                        $scope.dimensions.push({name: col, label: allDimensionsMetrics.columns[col] || allDimensionsMetrics.columns[dimension]});
+                                        $scope.dimensions.push({name: col, label: allDimensionsMetrics.columns[col] || allDimensionsMetrics.columns[dimension], ticked: $scope.reports.length == 0});
                                     }
                                 }
                             }
@@ -542,7 +548,7 @@
                     for(var x in $scope.reportView.joinBy) {
                         var join = $scope.reportView.joinBy[x];
                         if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == join.outputField }) == -1 && !!join.outputField) {
-                            $scope.dimensions.push({name: join.outputField , label: join.outputField });
+                            $scope.dimensions.push({name: join.outputField , label: join.outputField, ticked: $scope.reports.length == 0});
                         }
                     }
 
@@ -553,7 +559,7 @@
                             fieldTypes[col] = $scope.reportView.multiView ? item.fieldTypes[col] : type;
 
                             if(_.findIndex($scope.metrics, function (metric) { return metric.name == col }) == -1) {
-                                $scope.metrics.push({name: col, label: allDimensionsMetrics.columns[col] || allDimensionsMetrics.columns[metric]});
+                                $scope.metrics.push({name: col, label: allDimensionsMetrics.columns[col] || allDimensionsMetrics.columns[metric], ticked: $scope.reports.length == 0});
                             }
                         }
                     })

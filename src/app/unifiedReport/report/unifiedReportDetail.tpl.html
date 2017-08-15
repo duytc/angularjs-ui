@@ -40,7 +40,7 @@
 
 <section class="panel panel-default">
     <div class="panel-heading">
-        <strong> {{ reportView.name || 'Repoer Detail' }} </strong>
+        <strong> {{ reportView.name || 'Report Detail' }} </strong>
 
         <div class="button-bar">
             <button class="btn btn-sm btn-primary" ng-click="refreshData()" type="button">Refresh</button>
@@ -61,7 +61,7 @@
         </div>
     </div>
 
-    <div class="panel-body" ng-if="reports.length > 0 || hasResult">
+    <div class="panel-body" ng-if="(reports.length > 0 || hasResult) && showReportDetail()">
         <div class="table-responsive table-report-view">
             <table class="table">
                 <thead>

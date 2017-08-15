@@ -466,7 +466,11 @@
                             return item.key == field.field + '_' + field.dataSet
                         });
 
-                        if(index > -1) {
+                        var indexOutputField = _.findIndex($scope.selectedFields, function (item) {
+                            return item.key == itemJoinBy.outputField
+                        });
+
+                        if(index > -1 && indexOutputField == -1) {
                             if(itemJoinBy.isVisible) {
                                 $scope.selectedFields.push({
                                     root: itemJoinBy.outputField,

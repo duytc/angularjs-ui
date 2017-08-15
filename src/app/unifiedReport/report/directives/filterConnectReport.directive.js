@@ -99,16 +99,16 @@
                         return scope.fieldNames
                     }
 
-                    function getComparisonTypes(type) {
-                        if (type.type == 'text' || type.type == 'largeText') {
+                    function getComparisonTypes(type, field) {
+                        if (type.type == 'text') {
                             return COMPARISON_TYPES_FILTER_CONNECT_TEXT;
                         }
 
-                        if (type.type == 'decimal') {
-                            return COMPARISON_TYPES_FILTER_CONNECT_DECIMAL;
-                        }
+                        if(type.type == 'number') {
+                            if (scope.dimensionsMetrics[field] == 'decimal') {
+                                return COMPARISON_TYPES_FILTER_CONNECT_DECIMAL;
+                            }
 
-                        if (type.type == 'number') {
                             return COMPARISON_TYPES_FILTER_CONNECT_NUMBER;
                         }
 
@@ -120,19 +120,17 @@
                             filter.comparison = null;
 
                             if (scope.dimensionsMetrics[field] == 'date' || scope.dimensionsMetrics[field] == 'datetime') {
-                                // filter.type = 'date';
+                                filter.type = 'date';
                                 filter.userProvided = true;
                             }
 
-                            filter.type = scope.dimensionsMetrics[field];
+                            if (scope.dimensionsMetrics[field] == 'number' || scope.dimensionsMetrics[field] == 'decimal') {
+                                filter.type = 'number'
+                            }
 
-                            // if (scope.dimensionsMetrics[field] == 'number' || scope.dimensionsMetrics[field] == 'decimal') {
-                            //     filter.type = 'number'
-                            // }
-                            //
-                            // if (scope.dimensionsMetrics[field] == 'text' || scope.dimensionsMetrics[field] == 'largeText') {
-                            //     filter.type = 'text'
-                            // }
+                            if (scope.dimensionsMetrics[field] == 'text' || scope.dimensionsMetrics[field] == 'largeText') {
+                                filter.type = 'text'
+                            }
                         }, 0);
                     }
 

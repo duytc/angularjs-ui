@@ -92,16 +92,20 @@
                         return scope.fieldNames
                     }
                     
-                    function getComparisonTypes(type) {
-                        if (type.type == 'text' || type.type == 'largeText') {
+                    function getComparisonTypes(type, field) {
+                        if (type.type == 'text') {
                             return COMPARISON_TYPES_FILTER_CONNECT_TEXT;
                         }
 
-                        if (type.type == 'decimal') {
-                            return COMPARISON_TYPES_FILTER_CONNECT_DECIMAL;
-                        }
-
                         if(type.type == 'number') {
+                            var findField = _.find(scope.dimensionsMetrics, function (dm) {
+                                return dm.key == field;
+                            });
+
+                            if (!!findField && findField.type == 'decimal') {
+                                return COMPARISON_TYPES_FILTER_CONNECT_DECIMAL;
+                            }
+
                             return COMPARISON_TYPES_FILTER_CONNECT_NUMBER;
                         }
 
@@ -120,19 +124,17 @@
                         }
 
                         if(findField.type == 'date' || findField.type == 'datetime') {
-                            // filter.type = 'date';
+                            filter.type = 'date';
                             filter.userProvided = true;
                         }
 
-                        // if(findField.type == 'number' || findField.type == 'decimal') {
-                        //     filter.type = 'number'
-                        // }
-                        //
-                        // if(findField.type == 'text' || findField.type == 'largeText') {
-                        //     filter.type = 'text'
-                        // }
+                        if(findField.type == 'number' || findField.type == 'decimal') {
+                            filter.type = 'number'
+                        }
 
-                        filter.type = findField.type;
+                        if(findField.type == 'text' || findField.type == 'largeText') {
+                            filter.type = 'text'
+                        }
 
                         filter.comparison = null;
                     }
