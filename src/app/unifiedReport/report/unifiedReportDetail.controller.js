@@ -136,7 +136,7 @@
         $scope.exportExcel = exportExcel;
         $scope.showDetailsMissingDates = showDetailsMissingDates;
         $scope.showReportDetail = showReportDetail;
-        
+
         function showReportDetail() {
             return !angular.isArray($scope.titleColumns)
         }
@@ -452,8 +452,8 @@
         }
 
         function _updateColumnPositions() {
-            $scope.titleColumnsForSelect = !!$scope.titleColumns && Object.keys($scope.titleColumnsForSelect).length > 0 ? $scope.titleColumnsForSelect : $scope.reportGroup.columns;
-            $scope.titleColumns = $scope.reportGroup.columns;
+            $scope.titleColumnsForSelect = !!$scope.titleColumns && !!$scope.titleColumnsForSelect && Object.keys($scope.titleColumnsForSelect).length > 0 ? $scope.titleColumnsForSelect : $scope.reportGroup.columns;
+            $scope.titleColumns = isEmptyObject($scope.titleColumns) ? $scope.titleColumns : angular.extend({}, $scope.titleColumns, $scope.reportGroup.columns);
             $scope.columnReportDetailForExportExcel = [];
             $scope.titleReportDetailForExportExcel = [];
 
@@ -605,7 +605,8 @@
                     }
                 });
 
-                $scope.columnPositions = dimensions.concat(metrics);
+                $scope.columnPositions = $scope.reports.length > 0 ? dimensions.concat(metrics) : $scope.columnPositions;
+
                 var indexReportViewAlias = $scope.columnPositions.indexOf('report_view_alias');
                 if(indexReportViewAlias > -1 && reportView.multiView) {
                     $scope.columnPositions.splice(indexReportViewAlias, 1);
@@ -649,6 +650,10 @@
                     var title = !!$scope.titleColumns[key] ? $scope.titleColumns[key] : key;
                     $scope.titleReportDetailForExportExcel.push(title)
                 })
+            }
+
+            if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == 'report_view_alias' }) == -1 && $scope.reportView.multiView) {
+                $scope.dimensions.unshift({name: 'report_view_alias', label: 'Report View Alias', ticked: $scope.reports.length == 0});
             }
 
             $scope.fieldsShow = $scope.fieldsShow || {dimensions: [], metrics: []};

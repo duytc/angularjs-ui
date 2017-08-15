@@ -1,4 +1,4 @@
-<section class="panel panel-default" ng-if="reports.length > 0">
+<section class="panel panel-default">
     <div class="panel-heading">
         <span current-page-title></span>
         <div class="button-bar">
@@ -38,7 +38,7 @@
 
                     <tr dir-paginate="report in reports | itemsPerPage:tableConfig.itemsPerPage">
                         <td ng-repeat="column in columnPositions">
-                            <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>
+                            <span ng-if="!isNullValue(report, column)"> {{ !!report ? report[column] : null }} </span>
                         </td>
                     </tr>
                 </tbody>
@@ -47,9 +47,9 @@
 
 
         <div class="pagination">
-            <pagination class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+            <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
 
-            <div class="itemsPerPage">
+            <div class="itemsPerPage" ng-if="tableConfig.totalItems > 10">
                 <label for="inputItemPerPage">Items per page</label>
                 <div class="itemNumber">
                     <ui-select name="itemPerPage" id="inputItemPerPage" ng-model="tableConfig.itemsPerPage" on-select="selectItemPerPages($item)" reset-search-input="'false'">

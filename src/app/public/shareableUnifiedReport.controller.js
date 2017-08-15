@@ -118,6 +118,11 @@
         $scope.selectItemPerPages = selectItemPerPages;
         $scope.changePage = changePage;
         $scope.exportExcel = exportExcel;
+        $scope.showPagination = showPagination;
+
+        function showPagination() {
+            return angular.isArray(reports.reports) && $scope.tableConfig.totalItems > $scope.tableConfig.itemsPerPage;
+        }
 
         function exportExcel() {
             var params = {

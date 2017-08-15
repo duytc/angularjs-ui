@@ -384,7 +384,7 @@
                                                                             <div class="form-group select-data-type">
                                                                                 <ui-select name="defaultValueField" ng-model="defaultValue.conditionField" ng-required="true" server-error reset-search-input="'false'">
                                                                                     <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
-                                                                                    <ui-select-choices repeat="field.key as field in getTotalDimensionsMetricsForDefaultValues() | filter:filterFieldByNumber | filter:$select.search">
+                                                                                    <ui-select-choices repeat="field.key as field in getTotalDimensionsMetricsForDefaultValues() | filter:filterFieldConditionForCalculatedField | filter:$select.search">
                                                                                         {{ field.label }}
                                                                                     </ui-select-choices>
                                                                                 </ui-select>
