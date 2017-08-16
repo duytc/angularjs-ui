@@ -631,26 +631,38 @@
                             </div>
                         </div>
 
+
                         <div class="form-group select-connect-data-source">
                             <label for="dataSet" class="col-sm-2 control-label">Join Field</label>
                             <div class="col-sm-10">
-                                <div class="form-inline row">
-                                    <div class="col-sm-6 ui-select-width-full-width">
-                                        <ui-select name="dataSet" ng-model="transform.mapCondition.leftSide" ng-required="true" server-error reset-search-input="'false'">
-                                            <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
-                                            <ui-select-choices repeat="field.key as field in totalFields.totalDataSourceFieldsAugmentationLeftSide | filter:filterLeftSideAugmentation(transform) | filter:$select.search ">
-                                                {{ field.label }}
-                                            </ui-select-choices>
-                                        </ui-select>
-                                    </div>
+                                <div class="expressions-group">
+                                    <button class="btn btn-success" type="button" ng-click="addMapCondition(transform.mapConditions)">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                        Add Join Field
+                                    </button>
 
-                                    <div class="col-sm-6 ui-select-width-full-width">
-                                        <ui-select name="dataSet" ng-model="transform.mapCondition.rightSide" ng-required="true" server-error reset-search-input="'false'">
-                                            <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
-                                            <ui-select-choices repeat="field in transform.allFieldsDataSet | filter: $select.search">
-                                                {{ field }}
-                                            </ui-select-choices>
-                                        </ui-select>
+                                    <div class="form-inline condition">
+                                        <div ng-repeat="mapCondition in transform.mapConditions" class="select-connect-data-source">
+                                            <div class="form-group select-data-type">
+                                                <ui-select name="dataSet" ng-model="mapCondition.leftSide" ng-required="true" server-error reset-search-input="'false'">
+                                                    <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                    <ui-select-choices repeat="field.key as field in totalFields.totalDataSourceFieldsAugmentationLeftSide | filter:filterMapFieldLeft(transform, mapCondition) | filter:filterLeftSideAugmentation(transform) | filter:$select.search ">
+                                                        {{ field.label }}
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+
+                                            <div class="form-group select-data-type">
+                                                <ui-select name="dataSet" ng-model="mapCondition.rightSide" ng-required="true" server-error reset-search-input="'false'">
+                                                    <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
+                                                    <ui-select-choices repeat="field in transform.allFieldsDataSet | filter: $select.search">
+                                                        {{ field }}
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+
+                                            <button ng-disabled="transform.mapConditions.length == 1" class="btn btn-danger" style="margin-left: 5px" type="button" ng-click="removeAddValue(transform.mapConditions, $index)"><span class="glyphicon glyphicon-minus"></span></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

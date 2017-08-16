@@ -453,7 +453,7 @@
 
         function _updateColumnPositions() {
             $scope.titleColumnsForSelect = !!$scope.titleColumns && !!$scope.titleColumnsForSelect && Object.keys($scope.titleColumnsForSelect).length > 0 ? $scope.titleColumnsForSelect : $scope.reportGroup.columns;
-            $scope.titleColumns = isEmptyObject($scope.titleColumns) ? $scope.titleColumns : angular.extend({}, $scope.titleColumns, $scope.reportGroup.columns);
+            $scope.titleColumns = angular.extend({}, $scope.titleColumns, $scope.reportGroup.columns);
             $scope.columnReportDetailForExportExcel = [];
             $scope.titleReportDetailForExportExcel = [];
 
@@ -626,6 +626,13 @@
                         });
 
                         $scope.columnPositions = format.fields.concat($scope.columnPositions);
+
+                        angular.forEach(angular.copy($scope.columnPositions), function (field) {
+                            if(_.keys($scope.reports[0]).indexOf(field) == -1) {
+                                var index = $scope.columnPositions.indexOf(field);
+                                $scope.columnPositions.splice(index, 1);
+                            }
+                        });
 
                         angular.forEach(angular.copy($scope.columnPositions), function (col) {
                             var index = $scope.columnPositions.indexOf(col);

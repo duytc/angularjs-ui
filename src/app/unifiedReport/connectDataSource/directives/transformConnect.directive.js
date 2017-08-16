@@ -144,6 +144,7 @@
                     scope.addReplaceText = addReplaceText;
                     scope.addMapFields = addMapFields;
                     scope.addCustomCondition = addCustomCondition;
+                    scope.addMapCondition = addMapCondition;
                     scope.removeAddValue = removeAddValue;
                     scope.addComparisonPercent = addComparisonPercent;
                     scope.notInMapField = notInMapField;
@@ -208,6 +209,21 @@
                     scope.selectMapFieldLeftSideSubsetGroup = selectMapFieldLeftSideSubsetGroup;
                     scope.filterLeftSideAugmentation = filterLeftSideAugmentation;
                     scope.showDateToFormat = showDateToFormat;
+                    scope.filterMapFieldLeft = filterMapFieldLeft;
+
+                    function filterMapFieldLeft(transform, mapFieldThis) {
+                        return function (field) {
+                            for(var index in transform.mapConditions) {
+                                var mapCondition = transform.mapConditions[index];
+
+                                if(mapCondition.leftSide == field.key && mapFieldThis.leftSide != field.key) {
+                                    return false
+                                }
+                            }
+
+                            return true
+                        }
+                    }
 
                     function showDateToFormat(transform, $select) {
                         if(scope.dimensionsMetrics[transform.field] == 'datetime') {
@@ -508,10 +524,11 @@
                     }
 
                     function selectDataSet(dataSet, transform) {
-                        transform.mapCondition = {
+                        transform.mapConditions = [ {
                             leftSide: null,
                             rightSide: null
-                        };
+                        }];
+
                         transform.mapFields = [{
                             leftSide: null,
                             rightSide: null
@@ -1067,10 +1084,10 @@
                             }
 
                             if (type.key == scope.allFiledFormatTypeKeys.augmentation) {
-                                transform.mapCondition = {
+                                transform.mapConditions = [ {
                                     leftSide: null,
                                     rightSide: null
-                                };
+                                }];
 
                                 transform.mapFields = [{
                                     leftSide: null,
@@ -1296,6 +1313,13 @@
                             operator: null,
                             value: null,
                             dropUnmatched: false
+                        });
+                    }
+
+                    function addMapCondition(fields) {
+                        fields.push({
+                            leftSide: null,
+                            rightSide: null
                         });
                     }
 
