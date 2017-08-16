@@ -1,3 +1,39 @@
+<div id="form-date-range-selector" class="panel panel-default" ng-if="hasFilterDate() || reportView.enableCustomDimensionMetric">
+    <div class="panel-body">
+        <form name="reportSelectorForm" class="form-inline" role="form" ng-submit="generateReport(selected.date)" novalidate>
+            <div class="form-group" ng-if="hasFilterDate()">
+                <label for="inputDateRange">{{ 'DASHBOARD_MODULE.DATE_RANGE' | translate }}</label>
+                <div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input date-range-picker ng-disabled="!enableSelectDaterange()" options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="selected.date" ng-required="true">
+                    </div>
+                </div>
+            </div>
+
+            <div class="multi-select-class form-group" ng-if="reportView.enableCustomDimensionMetric">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label for="Dimensions" class="control-label">Dimensions</label>
+                        <div>
+                            <isteven-multi-select id="Dimensions" max-labels="3" disable-property="disabled" helper-elements="all filter reset" input-model="dimensions" output-model="fieldsShow.dimensions" button-label="label" item-label="label" tick-property="ticked"></isteven-multi-select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="metrics" class="control-label">Metrics</label>
+                        <div>
+                            <isteven-multi-select id="metrics" input-model="metrics" max-labels="3" output-model="fieldsShow.metrics" button-label="label" item-label="label" tick-property="ticked"></isteven-multi-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" ng-disabled="!enableSelectDaterange()">Run Report</button>
+        </form>
+    </div>
+</div>
+
 <section class="panel panel-default">
     <div class="panel-heading">
         <span current-page-title></span>
