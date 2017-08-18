@@ -349,6 +349,19 @@
                                     }
                                 });
                             }
+
+                            if (transform.type == scope.allFiledFormatTypeKeys.addCalculatedField) {
+                                angular.forEach(transform.fields, function (field) {
+                                    if(!!field.field) {
+                                        scope.fieldsCalculatedField.push({
+                                            key: field.field,
+                                            label: field.field,
+                                            root: field.field,
+                                            type: field.type
+                                        });
+                                    }
+                                })
+                            }
                         });
 
                         if(!!type.key && !!calculatedField){

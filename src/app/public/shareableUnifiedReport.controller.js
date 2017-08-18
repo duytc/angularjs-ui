@@ -454,7 +454,11 @@
                             $scope.dimensions.push({name: field, label: $scope.titleColumns[field], ticked: true});
                         }
                     }
-                })
+                });
+
+                if(_.findIndex($scope.dimensions, {name: field}) == -1 && _.findIndex($scope.metrics, {name: field}) == -1) {
+                    $scope.metrics.push({name: field, label: $scope.titleColumns[field], ticked: true});
+                }
             });
 
             $scope.fieldsShow = $scope.fieldsShow || {dimensions: [], metrics: []};
