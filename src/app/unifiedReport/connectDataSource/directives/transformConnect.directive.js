@@ -466,7 +466,7 @@
                             }
 
                             var item = _.find(_getAllFieldInTransform(), function (item) {
-                                return item.key == field.key
+                                return !!item && item.key == field.key
                             });
 
                             if(!!item) {
@@ -1165,7 +1165,7 @@
 
                             if(transform.type == 'augmentation' || transform.type == 'subsetGroup') {
                                 for(var indexMap in transform.mapFields) {
-                                    if(transform.mapFields[indexMap].leftSide == field.key) {
+                                    if(transform.mapFields[indexMap].leftSide == field.original) {
                                         return false
                                     }
                                 }
