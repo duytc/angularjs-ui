@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .directive('filterConnectReport', filterConnectReport);
 
-    function filterConnectReport($compile, _, FIELD_TYPES, DATE_FORMAT_TYPES, COMPARISON_TYPES_FILTER_CONNECT_NUMBER, COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_TEXT) {
+    function filterConnectReport($compile, $filter, _, FIELD_TYPES, DATE_FORMAT_TYPES, COMPARISON_TYPES_FILTER_CONNECT_NUMBER, COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_TEXT) {
         'use strict';
 
         return {
@@ -95,8 +95,26 @@
                         return query;
                     }
 
-                    function getFieldNames(itemField) {
-                        return scope.fieldNames
+                    function getFieldNames(itemField, filters) {
+                        return $filter('filter')(scope.fieldNames, function (field) {
+                            if(scope.dimensionsMetrics[field] != 'date' && scope.dimensionsMetrics[field] != 'datetime') {
+                                return true
+                            }
+
+                            if(itemField == field) {
+                                return true
+                            }
+
+                            for(var index in filters) {
+                                var filter = filters[index];
+
+                                if(filter.field == field) {
+                                    return false
+                                }
+                            }
+
+                            return true
+                        })
                     }
 
                     function getComparisonTypes(type, field) {

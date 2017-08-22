@@ -24,8 +24,11 @@
                                 params.page = !$stateParams.page ? 1 : $stateParams.page;
                                 params.limit = !$stateParams.limit ? 10 : $stateParams.limit;
 
-                                return dataService.makeHttpGetRequest('/v1/reportviews/:reportView/sharedReports', params, API_UNIFIED_PUBLIC_END_POINT).catch(function() {
-                                    return false
+                                return dataService.makeHttpGetRequest('/v1/reportviews/:reportView/sharedReports', params, API_UNIFIED_PUBLIC_END_POINT).catch(function(response) {
+                                    return {
+                                        status: response.status,
+                                        message: response.data.message
+                                    }
                                 });
                             }
 

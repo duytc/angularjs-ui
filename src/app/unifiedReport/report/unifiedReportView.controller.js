@@ -294,7 +294,7 @@
                     $scope.shareableLink = null;
                     $scope.selected = {
                         selectAll: true,
-                        date: {
+                        date: isDynamic() ? getDynamicDate() : {
                             startDate: getDateReportView.getMinStartDateInFilterReportView(reportView),
                             endDate : getDateReportView.getMaxEndDateInFilterReportView(reportView)
                         }
@@ -303,12 +303,22 @@
                     $scope.datePickerOpts = {
                         maxDate:  moment().endOf('day'),
                         ranges: {
+                            'Today': [moment().startOf('day'), moment().endOf('day')],
                             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                             'Last 7 Days': [moment().subtract(6, 'days'), moment()],
                             'This Month': [moment().startOf('month'), moment().endOf('month')],
                             'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                         }
                     };
+
+                    $scope.dynamicDatePickerOpts = [
+                        {key: 'Today', value: 'today'},
+                        {key: 'Yesterday', value: 'yesterday'},
+                        {key: 'Last 7 Days', value: 'last 7 days'},
+                        {key: 'Last 30 Days', value: 'last 30 days'},
+                        {key: 'This Month', value: 'this month'},
+                        {key: 'Last Month', value: 'last month'}
+                    ];
 
                     // default select all
                     selectAll();
@@ -317,6 +327,8 @@
                     $scope.changeDate = changeDate;
                     $scope.hideDaterange = hideDaterange;
                     $scope.enableSelectDaterange = enableSelectDaterange;
+                    $scope.getDynamicDate = getDynamicDate;
+                    $scope.isDynamic = isDynamic;
 
                     function changeDate() {
                         $scope.shareableLink = null;
@@ -347,10 +359,27 @@
                         return _.findIndex(fieldsToShare, function (item) {return item == filed.key}) > -1;
                     };
 
+                    function getDynamicDate() {
+                        var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
+                        for (var reportViewIndex in reportViews) {
+                            var reportView = reportViews[reportViewIndex];
+
+                            for (var filterIndex in reportView.filters) {
+                                var filter = reportView.filters[filterIndex];
+
+                                if((filter.type == 'date' || filter.type == 'datetime') && filter.dateType == 'dynamic') {
+                                    return filter.dateValue
+                                }
+                            }
+                        }
+
+                        return false;
+                    }
+
                     $scope.getShareableLink = function () {
                         var params = {
                             fields: fieldsToShare,
-                            dateRange: {
+                            dateRange: isDynamic() ? getDynamicDate() : {
                                 startDate: DateFormatter.getFormattedDate($scope.selected.date.startDate),
                                 endDate: DateFormatter.getFormattedDate($scope.selected.date.endDate)
                             }
@@ -394,6 +423,23 @@
                                     if(filter.userProvided) {
                                         return true
                                     }
+                                }
+                            }
+                        }
+
+                        return false;
+                    }
+
+                    function isDynamic() {
+                        var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
+                        for (var reportViewIndex in reportViews) {
+                            var reportView = reportViews[reportViewIndex];
+
+                            for (var filterIndex in reportView.filters) {
+                                var filter = reportView.filters[filterIndex];
+
+                                if((filter.type == 'date' || filter.type == 'datetime') && filter.dateType == 'dynamic') {
+                                    return true
                                 }
                             }
                         }

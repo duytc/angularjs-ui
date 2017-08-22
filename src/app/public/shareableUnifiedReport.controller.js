@@ -35,6 +35,8 @@
                     message: $translate.instant('REPORT.REPORTS_EMPTY')
                 });
             }
+
+            return
         } else {
             if ($scope.reports.length == 0) {
                 AlertService.replaceAlerts({
@@ -109,8 +111,10 @@
             maxDate:  reports.dateRange.endDate,
             minDate:  reports.dateRange.startDate,
             ranges: {
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Today': [moment().startOf('day'), moment().startOf('day')],
+                'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').startOf('day')],
+                'Last 7 Days': [moment().subtract(7, 'days').startOf('day'), moment().subtract(1, 'days').startOf('day')],
+                'Last 30 Days': [moment().subtract(30, 'days'), moment().subtract(1, 'days')],
                 'This Month': [moment().startOf('month'), moment().endOf('month')],
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }

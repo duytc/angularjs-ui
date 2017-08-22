@@ -6,11 +6,19 @@
     <form class="form-validation form-horizontal userForm" role="form" novalidate>
         <div class="form-group col-sm-12" ng-if="hideDaterange()">
             <label for="inputDateRange">{{ 'DASHBOARD_MODULE.DATE_RANGE' | translate }}</label>
-            <div>
+            <div ng-if="!isDynamic()">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     <input date-range-picker options="datePickerOpts" ng-disabled="!enableSelectDaterange()" class="form-control date-picker" ng-change="changeDate()" type="text" id="inputDateRange" ng-model="selected.date" ng-required="true">
                 </div>
+            </div>
+            <div ng-if="isDynamic()">
+                <ui-select ng-model="selected.date" ng-required="true" ng-disabled="true" server-error reset-search-input="'false'">
+                    <ui-select-match placeholder="Select a date range">{{ $select.selected.key }}</ui-select-match>
+                    <ui-select-choices repeat="range.value as range in dynamicDatePickerOpts | filter:$select.search">
+                        {{ range.key}}
+                    </ui-select-choices>
+                </ui-select>
             </div>
         </div>
 

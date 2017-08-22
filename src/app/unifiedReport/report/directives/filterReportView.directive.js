@@ -5,7 +5,7 @@
         .directive('filterReportView', filterReportView)
     ;
 
-    function filterReportView($compile, _, FIELD_TYPES, DATE_FORMAT_TYPES, COMPARISON_TYPES_FILTER_CONNECT_NUMBER, COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_TEXT) {
+    function filterReportView($compile, $filter, _, FIELD_TYPES, DATE_FORMAT_TYPES, COMPARISON_TYPES_FILTER_CONNECT_NUMBER, COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_TEXT) {
         'use strict';
 
         return {
@@ -68,6 +68,7 @@
                     scope.addCompareValue = addCompareValue;
                     scope.selectDateType = selectDateType;
                     scope.addCompareValueText = addCompareValueText;
+                    scope.filterFieldFilter = filterFieldFilter;
 
                     function addCompareValueText(query) {
                         if (/['`$]/.test(query)) {
@@ -88,7 +89,28 @@
                         }
                     }
 
-                    function getFieldNames(itemField) {
+                    function filterFieldFilter(itemField, filters) {
+                        return function (field) {
+                            if(field.type != 'date' && field.type != 'datetime') {
+                                return true
+                            }
+
+                            if(!!itemField && itemField == field.key) {
+                                return true
+                            }
+
+                            for(var index in filters) {
+                                var filter = filters[index];
+
+                                if(filter.field == field.key) {
+                                    return false
+                                }
+                            }
+
+                            return true
+                        }
+                    }
+                    function getFieldNames(itemField, filters) {
                         return scope.fieldNames
                     }
                     
