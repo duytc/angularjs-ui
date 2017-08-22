@@ -202,6 +202,10 @@
                         $scope.availableOptions.currentPage = Number(params.page);
 
                         _updateColumnPositions();
+
+                        if($scope.reports.length > 0) {
+                            AlertService.clearAll()
+                        }
                     });
             }, timeout || 0);
         }
