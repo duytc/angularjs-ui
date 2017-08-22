@@ -102,14 +102,14 @@
 
         $scope.selected = {
             date: {
-                startDate: $stateParams.startDate || reports.dateRange.startDate,
-                endDate : $stateParams.endDate || reports.dateRange.endDate
+                startDate: $stateParams.startDate || (!!reports.dateRange ? reports.dateRange.startDate : null),
+                endDate : $stateParams.endDate || (!!reports.dateRange ? reports.dateRange.endDate : null)
             }
         };
 
         $scope.datePickerOpts = {
-            maxDate:  reports.dateRange.endDate,
-            minDate:  reports.dateRange.startDate,
+            maxDate:  (!!reports.dateRange ? reports.dateRange.endDate : null),
+            minDate:  (!!reports.dateRange ? reports.dateRange.startDate : null),
             ranges: {
                 'Today': [moment().startOf('day'), moment().startOf('day')],
                 'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').startOf('day')],

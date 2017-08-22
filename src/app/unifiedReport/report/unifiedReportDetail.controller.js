@@ -184,6 +184,8 @@
         }
         
         function selectItemPerPages(itemPerPage) {
+            $scope.availableOptions.currentPage = 1;
+
             _getReportDetail(_toJsonReportView(reportView, itemPerPage));
         }
 
