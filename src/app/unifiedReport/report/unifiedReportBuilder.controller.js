@@ -462,6 +462,7 @@
             if(!!$scope.reportBuilder.joinBy && $scope.reportBuilder.joinBy.length > 0) {
                 angular.forEach($scope.reportBuilder.joinBy, function (itemJoinBy) {
                     angular.forEach(itemJoinBy.joinFields, function (field) {
+                        // update for selectedFields
                         var index = _.findIndex($scope.selectedFields, function (item) {
                             return item.key == field.field + '_' + field.dataSet
                         });
@@ -471,7 +472,8 @@
                         });
 
                         if(index > -1 && indexOutputField == -1) {
-                            if(itemJoinBy.isVisible) {
+                            // if(itemJoinBy.isVisible) {
+                            if(true) {
                                 $scope.selectedFields.push({
                                     root: itemJoinBy.outputField,
                                     key: itemJoinBy.outputField,
@@ -481,6 +483,37 @@
                             }
 
                             $scope.selectedFields.splice(index, 1);
+                        }
+
+                        if(index > -1 && indexOutputField > -1) {
+                            $scope.selectedFields.splice(index, 1);
+                        }
+
+                        // update for totalDimensionsMetrics
+                        var j = _.findIndex($scope.totalDimensionsMetrics, function (item) {
+                            return item.key == field.field + '_' + field.dataSet
+                        });
+
+                        var jOutputField = _.findIndex($scope.totalDimensionsMetrics, function (item) {
+                            return item.key == itemJoinBy.outputField
+                        });
+
+                        if(j > -1 && jOutputField == -1) {
+                            if(true) {
+                            // if(itemJoinBy.isVisible) {
+                                $scope.totalDimensionsMetrics.push({
+                                    root: itemJoinBy.outputField,
+                                    key: itemJoinBy.outputField,
+                                    label: itemJoinBy.outputField,
+                                    type: $scope.totalDimensionsMetrics[j].type
+                                });
+                            }
+
+                            $scope.totalDimensionsMetrics.splice(j, 1);
+                        }
+
+                        if(j > -1 && jOutputField > -1) {
+                            $scope.totalDimensionsMetrics.splice(j, 1);
                         }
                     })
                 });
@@ -830,6 +863,15 @@
                         if (field.type == 'decimal' || field.type == 'number') {
                             field.value = Number(field.value);
                         }
+
+                        angular.forEach(field.conditions, function (condition) {
+                            angular.forEach(condition.expressions, function (expression) {
+                                if(expression.cmp == 'between') {
+                                    expression.val.startDate = dateUtil.getFormattedDate(expression.val.startDate);
+                                    expression.val.endDate = dateUtil.getFormattedDate(expression.val.endDate);
+                                }
+                            })
+                        })
                     })
 
                 }
@@ -848,6 +890,13 @@
                             var regExp = new RegExp(dm.label.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "g");
                             field.expression = field.expression.replace(regExp, dm.key);
                         });
+
+                        angular.forEach(field.defaultValues, function (defaultValue) {
+                            if(defaultValue.conditionComparator == 'between') {
+                                defaultValue.conditionValue.startDate = dateUtil.getFormattedDate(defaultValue.conditionValue.startDate);
+                                defaultValue.conditionValue.endDate = dateUtil.getFormattedDate(defaultValue.conditionValue.endDate);
+                            }
+                        })
                     })
 
                 }

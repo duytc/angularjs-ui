@@ -39,8 +39,10 @@
                     var totalDimensionsMetricsForDefaultValues = [];
                     var filterDimensionField = false;
 
-                    scope.conditionComparators = COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE;
+                    scope.conditionComparators = angular.copy(COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE);
                     scope.conditionComparatorsForAddField = COMPARISON_TYPES_ADD_FIELD_VALUE;
+
+                    scope.conditionComparators.push({key: 'between', label: 'Between'});
 
                     scope.separatorType = [
                         {key: ',', label: 'Comma'},
@@ -161,26 +163,36 @@
 
                     function filterConditionComparators(defaultValue) {
                         return function (separator) {
-                            if(defaultValue.conditionField == '$$CALCULATED_VALUE$$') {
-                                if(separator.key == 'is invalid') {
-                                    return true
-                                }
-
-                                return false
-                            } else if(scope.dimensionsMetrics[defaultValue.conditionField] != 'number' && scope.dimensionsMetrics[defaultValue.conditionField] != 'decimal') {
-                                if(separator.key == 'in' || separator.key == 'not in') {
-                                    return true
-                                }
-
+                            if(defaultValue.conditionField.indexOf('__') > -1 && (defaultValue.conditionField.indexOf('_day') > -1 || defaultValue.conditionField.indexOf('_month') > -1 || defaultValue.conditionField.indexOf('_year') > -1) && separator.key == 'between') {
                                 return false
                             }
 
-                            return true
+                            if(!scope.dimensionsMetrics[defaultValue.conditionField] && separator.key == 'between') {
+                                return true
+                            }
+
+                            if(scope.dimensionsMetrics[defaultValue.conditionField] != 'date' && scope.dimensionsMetrics[defaultValue.conditionField] != 'datetime' && separator.key == 'between') {
+                                return false
+                            }
+
+                            return true;
                         }
                     }
 
                     function filterOperatorAddField(expression) {
                         return function (separator) {
+                            if(expression.var.indexOf('__') > -1 && (expression.var.indexOf('_day') > -1 || expression.var.indexOf('_month') > -1 || expression.var.indexOf('_year') > -1) && separator.key == 'between') {
+                                return false
+                            }
+
+                            if(!scope.dimensionsMetrics[expression.var] && separator.key == 'between') {
+                                return true
+                            }
+
+                            if(scope.dimensionsMetrics[expression.var] != 'date' && scope.dimensionsMetrics[expression.var] != 'datetime' && separator.key == 'between') {
+                                return false
+                            }
+
                             if(separator.key == 'not contain' || separator.key == 'contain') {
                                 return scope.dimensionsMetrics[expression.var] == 'text' || scope.dimensionsMetrics[expression.var] == 'largeText'
                             }
@@ -544,7 +556,7 @@
                     }
 
                     function filterFieldConditionForCalculatedField(field) {
-                        return field.type == 'number' || field.type == 'decimal' || field.key == '$$CALCULATED_VALUE$$';
+                        return field.type == 'date' || field.type == 'datetime' || field.type == 'number' || field.type == 'decimal' || field.key == '$$CALCULATED_VALUE$$';
                     }
 
                     function getDimensionsMetricsForComparison(fields, fieldCurrent) {

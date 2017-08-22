@@ -52,6 +52,7 @@
             {key: 'equal', label: 'Equals'},
             {key: 'not equal', label: 'Not Equal To'},
             {key: 'greater', label: 'Greater Than'},
-            {key: 'greater or equal', label: 'Greater Than or Equals'}
+            {key: 'greater or equal', label: 'Greater Than or Equals'},
+            {key: 'between', label: 'Between'}
         ])
 })();
