@@ -351,7 +351,7 @@
                 }
             }
 
-            if (!!$scope.reportView.formats.length) {
+            if (!!$scope.reportView.formats.length && $scope.reports.length > 0) {
                 angular.forEach($scope.reportView.formats, function (format) {
                     if (format.type == 'columnPosition' && format.fields.length > 0) {
                         angular.forEach(format.fields, function (field) {
