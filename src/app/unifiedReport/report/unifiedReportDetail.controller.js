@@ -118,7 +118,6 @@
         };
 
         $scope.showPagination = showPagination;
-        $scope.showItemPerPage = showItemPerPage;
         $scope.saveReportView = saveReportView;
         $scope.getExportExcelFileName = getExportExcelFileName;
 
@@ -129,7 +128,6 @@
         
         $scope.generateReport = generateReport;
         $scope.hasFilterDate = hasFilterDate;
-        // $scope.hideDaterange = hideDaterange;
         $scope.enableSelectDaterange = enableSelectDaterange;
         $scope.refreshData = refreshData;
         $scope.changePage = changePage;
@@ -140,7 +138,7 @@
         $scope.showReportDetail = showReportDetail;
 
         function showReportDetail() {
-            return !angular.isArray($scope.titleColumns)
+            return !angular.isArray($scope.titleColumns) && _.keys($scope.titleColumns).length > 0
         }
 
         function showDetailsMissingDates() {
@@ -240,23 +238,6 @@
 
             return false;
         }
-
-        // function hideDaterange() {
-        //     var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
-        //     for (var reportViewIndex in reportViews) {
-        //         var reportView = reportViews[reportViewIndex];
-        //
-        //         for (var filterIndex in reportView.filters) {
-        //             var filter = reportView.filters[filterIndex];
-        //
-        //             if(filter.type == 'date' || filter.type == 'datetime') {
-        //                 return true
-        //             }
-        //         }
-        //     }
-        //
-        //     return false;
-        // }
 
         function hasFilterDate() {
             var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
@@ -370,29 +351,7 @@
         }
 
         function showPagination() {
-            if(!showItemPerPage()) {
-                return false
-            }
-
             return angular.isArray($scope.reportGroup.reports) && $scope.reportGroup.totalReport > $scope.tableConfig.itemsPerPage;
-        }
-
-        function showItemPerPage() {
-            // var numFalse = 0;
-            // var numField = 0;
-            // for (var field in $scope.fieldsShow) {
-            //     numField += 1;
-            //
-            //     if(!$scope.fieldsShow[field]) {
-            //         numFalse += 1;
-            //     }
-            // }
-            //
-            // if(numFalse == numField) {
-            //     return false
-            // }
-
-            return true;
         }
 
         function _toJsonReportView(reportView, itemPerPage) {
@@ -670,6 +629,53 @@
             if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == 'report_view_alias' }) == -1 && $scope.reportView.multiView) {
                 $scope.dimensions.unshift({name: 'report_view_alias', label: 'Report View Alias', ticked: $scope.reports.length == 0});
             }
+
+            if($scope.reports.length == 0) {
+                angular.forEach(reportView.transforms, function (transform) {
+                    if (transform.type == 'addField' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent') {
+                        angular.forEach(transform.fields, function (field) {
+                            if (!!field.field) {
+                                var index = _.findIndex($scope.metrics, {name: field.field});
+                                if(index == -1) {
+                                    $scope.metrics.unshift({name: field.field, label: field.field, ticked: $scope.reports.length == 0});
+                                }
+                            }
+                        })
+                    }
+                })
+            }
+
+            // remove columnPositions
+            angular.forEach(angular.copy($scope.columnPositions), function (column) {
+                var indexD = _.findIndex($scope.dimensions, {name: column});
+
+                if(indexD > -1) {
+                    if(!$scope.dimensions[indexD].ticked) {
+                        $scope.columnPositions.splice($scope.columnPositions.indexOf(column), 1)
+                    }
+                } else {
+                    var indexM = _.findIndex($scope.metrics, {name: column});
+
+                    if(indexM > -1) {
+                        if(!$scope.metrics[indexM].ticked) {
+                            $scope.columnPositions.splice($scope.columnPositions.indexOf(column), 1)
+                        }
+                    }
+                }
+            });
+
+            // add columnPositions
+            angular.forEach($scope.dimensions, function (dm) {
+                if(dm.ticked && $scope.columnPositions.indexOf(dm.name) == -1)  {
+                    $scope.columnPositions.push(dm.name);
+                }
+            });
+
+            angular.forEach($scope.dimensions.concat($scope.metrics), function (dm) {
+                if(dm.ticked && $scope.columnPositions.indexOf(dm.name) == -1)  {
+                    $scope.columnPositions.push(dm.name);
+                }
+            });
 
             $scope.fieldsShow = $scope.fieldsShow || {dimensions: [], metrics: []};
         }

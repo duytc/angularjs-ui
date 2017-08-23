@@ -89,7 +89,7 @@
             </table>
         </div>
 
-        <div class="pagination" ng-if="showItemPerPage()">
+        <div class="pagination">
             <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
 
             <div class="itemsPerPage" ng-if="tableConfig.totalItems > 10">

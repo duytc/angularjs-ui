@@ -394,6 +394,38 @@
                     $scope.titleReportDetailForExportExcel.push(title)
                 })
             }
+
+            // remove columnPositions
+            angular.forEach(angular.copy($scope.columnPositions), function (column) {
+                var indexD = _.findIndex($scope.dimensions, {name: column});
+
+                if(indexD > -1) {
+                    if(!$scope.dimensions[indexD].ticked) {
+                        $scope.columnPositions.splice($scope.columnPositions.indexOf(column), 1)
+                    }
+                } else {
+                    var indexM = _.findIndex($scope.metrics, {name: column});
+
+                    if(indexM > -1) {
+                        if(!$scope.metrics[indexM].ticked) {
+                            $scope.columnPositions.splice($scope.columnPositions.indexOf(column), 1)
+                        }
+                    }
+                }
+            });
+
+            // add columnPositions
+            angular.forEach($scope.dimensions, function (dm) {
+                if(dm.ticked && $scope.columnPositions.indexOf(dm.name) == -1)  {
+                    $scope.columnPositions.push(dm.name);
+                }
+            });
+
+            angular.forEach($scope.dimensions.concat($scope.metrics), function (dm) {
+                if(dm.ticked && $scope.columnPositions.indexOf(dm.name) == -1)  {
+                    $scope.columnPositions.push(dm.name);
+                }
+            });
         }
 
         function showPagination() {
@@ -418,6 +450,8 @@
                         AtSortableService.insertParamForUrl(params);
                         $scope.reports = reports;
                         $scope.reports = reports.reports || [];
+                        $scope.total = reports.total;
+                        $scope.average = reports.average;
                         $scope.tableConfig.totalItems = reports.totalReport;
                         $scope.availableOptions.currentPage = Number(params.page);
 
