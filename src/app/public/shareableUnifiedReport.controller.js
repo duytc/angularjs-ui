@@ -522,6 +522,7 @@
             }
         });
 
+        historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.public);
         $scope.$on('$locationChangeSuccess', function() {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.public)
         });

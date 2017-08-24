@@ -93,8 +93,16 @@
                             return dataSets.plain();
                         });
                     },
-                    reportViews: /* @ngInject */ function(UnifiedReportViewManager) {
+                    reportViews: /* @ngInject */ function(UnifiedReportViewManager, $stateParams) {
                         return UnifiedReportViewManager.getList({multiView: false}).then(function (reportViews) {
+                            if($stateParams.reportView) {
+                                var index = _.findIndex(reportViews, {id: Number($stateParams.reportView)});
+
+                                if(index > -1) {
+                                    reportViews.splice(index, 1)
+                                }
+                            }
+
                             return reportViews.plain();
                         });
                     },

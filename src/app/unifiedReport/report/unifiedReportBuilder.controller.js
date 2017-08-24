@@ -58,6 +58,14 @@
             enableCustomDimensionMetric: false
         };
 
+        if(!$scope.isNew && !!reportView.id &&$scope.reportBuilder.multiView) {
+            angular.forEach($scope.reportBuilder.reportViewMultiViews, function (reportViewMultiView) {
+                if(!reportViewMultiView.subView || reportViewMultiView.subView == reportView.id) {
+                    _resetForm();
+                }
+            })
+        }
+
         $scope.$watch(function () {
             return $scope.reportBuilder.reportViewDataSets;
         }, watchDataSet, true);
@@ -1151,6 +1159,10 @@
         }
 
         function _setTempDimensions(item, reportView) {
+            if(!item || !item.dimensions) {
+                return
+            }
+
             reportView.tempDimensions = [];
             angular.forEach(item.dimensions, function (dimension) {
                 var key = null;
@@ -1187,6 +1199,10 @@
         }
 
         function _setTempMetrics(item, reportView) {
+            if(!item || !item.metrics) {
+                return
+            }
+
             reportView.tempMetrics = [];
             angular.forEach(item.metrics, function (metric) {
                 var key = null;
@@ -1293,7 +1309,7 @@
                 } else {
                     angular.forEach($scope.reportBuilder.reportViewMultiViews, function (reportView) {
                         var reportViewItem = _.find($scope.reportViews, function (item) {
-                            return reportView.subView == item.id || reportView.subView.id == item.id
+                            return !!reportView.subView && (reportView.subView == item.id || reportView.subView.id == item.id)
                         });
 
                         _setTempDimensions(reportViewItem, reportView);
