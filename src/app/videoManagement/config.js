@@ -8,23 +8,31 @@
             {label: "Large", key: "large"}
         ])
         .constant('REQUIRED_MACROS_OPTIONS', [
-            {label: "ip_address", key: "ip_address"},
-            {label: "user_agent", key: "user_agent"},
-            {label: "page_url", key: "page_url"},
-            {label: "domain", key: "domain"},
-            {label: "page_title", key: "page_title"},
-            {label: "player_width", key: "player_width"},
-            {label: "player_height", key: "player_height"},
-            {label: "player_dimensions", key: "player_dimensions"},
-            {label: "player_size", key: "player_size"},
-            {label: "video_duration", key: "video_duration"},
-            {label: "video_url", key: "video_url"},
-            {label: "video_id", key: "video_id"},
-            {label: "video_title", key: "video_title"},
-            {label: "video_description", key: "video_description"},
-            {label: "app_name", key: "app_name"},
-            {label: "user_lat", key: "user_lat"},
-            {label: "user_lon", key: "user_lon"}
+            // auto detect macros =>group item line = true
+            {label: "ip_address", key: "ip_address", root: '${ip_address}', helpText: "The IP address of the current website", line: true},
+            {label: "country", key: "country", root: '${country}', helpText: 'The country of the current website', line: true},
+            {label: "user_agent", key: "user_agent", root: '${user_agent}', helpText: "The user agent of the current browser", line: true},
+            {label: "timestamp", key: "timestamp", root: '${timestamp}', helpText: 'Current time in unix time', line: true},
+            // user provides macros
+            {label: "page_url", key: "page_url", root: '${page_url}', helpText: "The url of the current page"},
+            {label: "domain", key: "domain", root: '${domain}', helpText: "The domain defined manually by user"},
+            {label: "page_title", key: "page_title", root: '${page_title}', helpText: "Title of the current page"},
+            {label: "player_width", key: "player_width", root: '${player_width}', helpText: "Define the width of the video player"},
+            {label: "player_height", key: "player_height", root: '${player_height}', helpText: "Define the height of the video player"},
+            {label: "player_dimensions", key: "player_dimensions", root: '${player_dimensions}', helpText: "Define the dimension of video player (width and height)"},
+            {label: "player_size", key: "player_size", root: '${player_size}', helpText: "Define the size of player, size will be parsed into dimensions (width, height)"},
+            {label: "video_duration", key: "video_duration", root: '${video_duration}', helpText: "Duration of the curent video in second"},
+            {label: "video_url", key: "video_url", root: '${video_url}', helpText: "Url of current video"},
+            {label: "video_id", key: "video_id", root: '${video_id}', helpText: "Unique id of video in the system"},
+            {label: "video_title", key: "video_title", root: '${video_title}', helpText: "Title of the current video"},
+            {label: "video_description", key: "video_description", root: '${video_description}', helpText: "Text that describes the content of current video"},
+            {label: "app_name", key: "app_name", root: '${app_name}', helpText: " Name of the mobile app showing this video ad"},
+            {label: "user_lat", key: "user_lat", root: '${user_lat}', helpText: "The latitude of user"},
+            {label: "user_lon", key: "user_lon", root: '${user_lon}', helpText: "The longitude of user"},
+            {label: "waterfall_id", key: "waterfall_id", root: '${waterfall_id}', helpText: 'Unique id of the Video Waterfall Tag'},
+            {label: "demand_tag_id", key: "demand_tag_id", root: '${demand_tag_id}', helpText: 'Unique id of the Video Demand Tag'},
+            {label: "device_id", key: "device_id", root: '${device_id}', helpText: 'The device id, we expect the user to provide a value'},
+            {label: "device_name", key: "device_name", root: '${device_name}', helpText: 'The device name, we expect the user to provide a value'}
         ])
         .constant('VIDEO_MACROS_REFERENCE', {
 

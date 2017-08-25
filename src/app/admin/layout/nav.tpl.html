@@ -267,7 +267,26 @@
                         </li>
                     </ul>
                 </li>
+                <li >
+                    <a href="#" class="menu-dropdown">
+                        <span class="menu-text">IVT Pixel</span>
+                        <i class="menu-expand"></i>
+                    </a>
 
+                    <ul class="submenu">
+                        <li ui-sref-active="active">
+                            <a ui-sref=".videoManagement.IVTPixel.list">
+                                <span class="menu-text">IVT Pixels</span>
+                            </a>
+                        </li>
+
+                        <li ui-sref-active="active">
+                            <a ui-sref=".videoManagement.IVTPixel.new">
+                                <span class="menu-text">New IVT Pixel</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li ui-sref-active="active">
                     <a ui-sref=".videoManagement.vastGenerator">
                         <span class="menu-text"> {{ 'NAVBAR.GENERATE_VAST_TAGS' | translate }} </span>

@@ -58,7 +58,7 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label">{{ 'VIDEO_AD_TAG_MODULE.BUY_PRICE' | translate }}</label>
                     <div class="col-sm-5">
-                        <input name="buyPrice" ng-model="adTag.buyPrice" min="0" type="text" class="form-control" placeholder="{{ 'VIDEO_AD_TAG_MODULE.BUY_PRICE' | translate }}">
+                        <input name="buyPrice" ng-model="adTag.buyPrice" min="0" ng-pattern="/^\-?\d+((\.|\,)\d+)?$/" type="text" class="form-control" placeholder="{{ 'VIDEO_AD_TAG_MODULE.BUY_PRICE' | translate }}">
                     </div>
                 </div>
 
@@ -74,21 +74,26 @@
                     <!--</div>-->
                 <!--</div>-->
 
+                <!--<div class="form-group">-->
+                    <!--<label for="isServerToServer" class="col-sm-1 control-label">{{ 'VIDEO_AD_TAG_MODULE.SERVER_TO_SERVER' | translate }}</label>-->
+                    <!--<div class="col-sm-5">-->
+                        <!--<label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="adTag.isServerToServer" id="isServerToServer"><span></span></label>-->
+                    <!--</div>-->
+                <!--</div>-->
+
                 <div class="form-group">
-                    <label for="isServerToServer" class="col-sm-1 control-label">{{ 'VIDEO_AD_TAG_MODULE.SERVER_TO_SERVER' | translate }}</label>
+                    <label for="runOn" class="col-sm-1 control-label">Run On</label>
                     <div class="col-sm-5">
-                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="adTag.isServerToServer" id="isServerToServer"><span></span></label>
+                        <ui-select name="platform" id="runOn" ng-model="adTag.runOn" ng-required="true" server-error>
+                            <ui-select-match placeholder="Select a run">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices repeat="runOn.key as runOn in runOns | filter:$select.search">
+                                {{ runOn.label }}
+                            </ui-select-choices>
+                        </ui-select>
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="adTag.isServerToServer">
-                    <label for="isVastOnly" class="col-sm-1 control-label">{{ 'VIDEO_AD_TAG_MODULE.VAST_ONLY' | translate }}</label>
-                    <div class="col-sm-5">
-                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="adTag.isVastOnly" id="isVastOnly"><span></span></label>
-                    </div>
-                </div>
-
-                <div class="form-group" ng-if="!adTag.isServerToServer || !adTag.isVastOnly">
+                <div class="form-group" ng-if="adTag.runOn != 'Server-Side VAST Only'">
                     <label for="inputPlatform" class="col-sm-1 control-label">{{ 'VIDEO_AD_TAG_MODULE.PLATFORM' | translate }}</label>
                     <div class="col-sm-5">
                         <ui-select multiple name="platform" id="inputPlatform" ng-model="adTag.platform" ng-required="true" server-error on-select="$item.search = $select.search; $select.search = '';">

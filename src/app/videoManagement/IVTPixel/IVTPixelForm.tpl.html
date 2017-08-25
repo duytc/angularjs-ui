@@ -1,0 +1,107 @@
+<section class="panel panel-default">
+    <div class="panel-heading">
+        <span current-page-title></span>
+
+        <div class="button-bar">
+            <button ng-if="!isNew" ng-click="backToListIVTPixel()" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                Back to IVT Pixel List
+            </button>
+        </div>
+
+        <div class="btn-group btnGrouped" dropdown ng-if="!isNew">
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ng-click="backToListIVTPixel()">Back to IVT Pixel List</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="panel-body">
+        <div class="row">
+            <form name="IVTPixelForm" class="col-lg-6 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
+
+                <div class="form-group" ng-if="!isNew && isAdmin()">
+                    <label class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
+                    <div class="col-sm-10 form-control-static">
+                        {{ IVTPixel.publisher.company }}
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="isNew && isAdmin()">
+                    <label for="inputPublisher" class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
+                    <div class="col-sm-10">
+                        <ui-select name="publisher" id="inputPublisher" ng-model="IVTPixel.publisher" ng-required="true" server-error on-select="selectPublisher($item)">
+                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
+                            <ui-select-choices repeat="publisher.id as publisher in publishers | filter:$select.search">
+                                {{ publisher.company }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">{{ 'NAME' | translate }}</label>
+                    <div class="col-sm-10">
+                        <input name="name" ng-model="IVTPixel.name" server-error ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="{{ 'NAME' | translate }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">URLs</label>
+                    <div class="col-sm-10">
+                        <button class="btn btn-success" type="button" ng-click="addURL()"><span class="glyphicon glyphicon-plus"></span> Add URL</button>
+
+                        <div class="expressions-group">
+                            <div class="form-inline" ng-repeat="item in IVTPixel.urls">
+                                <input style="width: 80%" name="name" ng-model="item.url" server-error ng-required="true" ng-minlength="2" type="url"  class="form-control" id="inputURL" placeholder="Input URL">
+                                <button ng-disabled="IVTPixel.urls.length == 1" class="btn btn-danger" type="button" ng-minlength="1" required ng-click="removeURL($index)"><span class="glyphicon glyphicon-minus"></span></button>
+                            </div>
+                        </div>
+
+                        <a class="help-block" ng-click="clickVIewHelpText()">Allowed macros ${waterfall_id}, ${demand_tag_id}, ... Click here for more details</a>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">Fire On</label>
+                    <div class="col-sm-10">
+                        <ui-select ng-model="IVTPixel.fireOn" ng-required="true" close-on-select="false" server-error reset-search-input="'false'">
+                            <ui-select-match placeholder="Select a option">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices group-by="groupEntities" repeat="fireOn.key as fireOn in fireOnOption | filter:$select.search">
+                                {{ fireOn.label }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="IVTPixel.fireOn == 'request'">
+                    <label for="inputName" class="col-sm-2 control-label">Limit</label>
+                    <div class="col-sm-10">
+                        <div class="input-group" style="width:100%">
+                            <input style="width:100%" server-error name="runningLimit" min="0" max="100" ng-model="IVTPixel.runningLimit" type="number" class="form-control" placeholder="Value">
+                            <span style="width:10%; height: 34px" class="input-group-addon">%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputSite" class="col-sm-2 control-label">{{ 'WATERFALL_TAGS' | translate }}</label>
+                    <div class="col-sm-10">
+                        <isteven-multi-select id="inputSite" input-model="waterfalls" output-model="IVTPixel.ivtPixelWaterfallTags" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
+                        <div ng-show="!isFormValid()" class="callout callout-info">
+                            <p>{{ 'VALID_FORM' | translate }}</p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

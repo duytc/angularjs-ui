@@ -94,100 +94,119 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.TIMEOUT' | translate }}</label>
-                    <div class="col-sm-5">
-                        <input name="timeout" ng-model="demandAdTag.timeout" server-error type="number" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.TIMEOUT' | translate }}">
+                    <label for="Advanced" class="col-sm-1 control-label">Advanced</label>
 
-                        <span class="help-block">{{ 'AD_SOURCE_MODULE.HELP_BLOCK_TIMEOUT' | translate }}</span>
+                    <div class="col-sm-5">
+                        <div>
+                            <label class="ui-checkbox">
+                                <input name="advanced" type="checkbox" ng-model="advanced" server-error id="Advanced"><span></span>
+                            </label>
+                        </div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.TARGETING' | translate }}</label>
-                    <div class="col-sm-5">
-                        <div class="expressions-group">
-                            <div class="row">
+                <div class="row">
+                    <div class="col-sm-offset-1 col-sm-5">
+                        <div ng-if="advanced" class="expressions-group">
+                            <div class="form-group">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.COUNTRIES' | translate }}</label>
-                                    <div class="col-sm-9">
-                                        <ui-select multiple ng-model="demandAdTag.targeting.countries" ng-required="true" on-select="$item.search = $select.search; $select.search = '';" close-on-select="false" reset-search-input ="true" >
-                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_COUNTRIES' | translate }}">{{ $item.name }}</ui-select-match>
-                                            <ui-select-choices repeat="country.code as country in countries | filter:filterExcludeCountriesSelected | filter:$select.search">
-                                                {{ country.name }}
-                                            </ui-select-choices>
-                                        </ui-select>
+                                    <label class="col-sm-2 control-label">{{ 'AD_SOURCE_MODULE.TIMEOUT' | translate }}</label>
+                                    <div class="col-sm-10">
+                                        <input name="timeout" ng-model="demandAdTag.timeout" server-error type="number" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.TIMEOUT' | translate }}">
+
+                                        <span class="help-block">{{ 'AD_SOURCE_MODULE.HELP_BLOCK_TIMEOUT' | translate }}</span>
                                     </div>
                                 </div>
-                                <br>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.EXCLUDE_COUNTRIES' | translate }}</label>
-                                    <div class="col-sm-9">
-                                        <ui-select multiple ng-model="demandAdTag.targeting.exclude_countries" on-select="$item.search = $select.search; $select.search = '';" ng-required="true" close-on-select="false" server-error reset-search-input ="true">
-                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_COUNTRIES' | translate }}">{{ $item.name }}</ui-select-match>
-                                            <ui-select-choices repeat="country.code as country in countries | filter:filterCountriesSelected | filter:$select.search">
-                                                {{ country.name }}
-                                            </ui-select-choices>
-                                        </ui-select>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.DOMAINS' | translate }}</label>
-                                    <div class="col-sm-9">
-                                        <oi-select oi-options="item.name for item in whiteList | selectedPublisher:selectedData.publisher" ng-model="demandAdTag.targeting.domains" multiple oi-select-options="{newItem: false, newItemFn: 'addDomain($query)'}" placeholder="{{ 'AD_SOURCE_MODULE.DOMAINS' | translate }}"></oi-select>
 
-                                        <div class="inline">
-                                            <a ng-click="createQuicklyWhiteLink()" class="help-block pull-left">{{ 'AD_SOURCE_MODULE.CREATE_WHITE_LIST' | translate }}</a>
-                                            <a ng-click="viewQuicklyWhiteLink()" class="help-block pull-right">{{ 'AD_SOURCE_MODULE.VIEW_WHITE_LIST' | translate }}</a>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">{{ 'AD_SOURCE_MODULE.TARGETING' | translate }}</label>
+                                    <div class="col-sm-10">
+                                        <div class="expressions-group">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.COUNTRIES' | translate }}</label>
+                                                    <div class="col-sm-9">
+                                                        <ui-select multiple ng-model="demandAdTag.targeting.countries" ng-required="true" on-select="$item.search = $select.search; $select.search = '';" close-on-select="false" reset-search-input ="true" >
+                                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_COUNTRIES' | translate }}">{{ $item.name }}</ui-select-match>
+                                                            <ui-select-choices repeat="country.code as country in countries | filter:filterExcludeCountriesSelected | filter:$select.search">
+                                                                {{ country.name }}
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.EXCLUDE_COUNTRIES' | translate }}</label>
+                                                    <div class="col-sm-9">
+                                                        <ui-select multiple ng-model="demandAdTag.targeting.exclude_countries" on-select="$item.search = $select.search; $select.search = '';" ng-required="true" close-on-select="false" server-error reset-search-input ="true">
+                                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_COUNTRIES' | translate }}">{{ $item.name }}</ui-select-match>
+                                                            <ui-select-choices repeat="country.code as country in countries | filter:filterCountriesSelected | filter:$select.search">
+                                                                {{ country.name }}
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.DOMAINS' | translate }}</label>
+                                                    <div class="col-sm-9">
+                                                        <oi-select oi-options="item.name for item in whiteList | selectedPublisher:selectedData.publisher" ng-model="demandAdTag.targeting.domains" multiple oi-select-options="{newItem: false, newItemFn: 'addDomain($query)'}" placeholder="{{ 'AD_SOURCE_MODULE.DOMAINS' | translate }}"></oi-select>
+
+                                                        <div class="inline">
+                                                            <a ng-click="createQuicklyWhiteLink()" class="help-block pull-left">{{ 'AD_SOURCE_MODULE.CREATE_WHITE_LIST' | translate }}</a>
+                                                            <a ng-click="viewQuicklyWhiteLink()" class="help-block pull-right">{{ 'AD_SOURCE_MODULE.VIEW_WHITE_LIST' | translate }}</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.EXCLUDE_DOMAINS' | translate }}</label>
+                                                    <div class="col-sm-9">
+                                                        <oi-select oi-options="item.name for item in blackList | selectedPublisher:selectedData.publisher" ng-model="demandAdTag.targeting.exclude_domains" multiple oi-select-options="{newItem: false, newItemFn: 'addDomain($query)'}" placeholder="{{ 'AD_SOURCE_MODULE.EXCLUDE_DOMAINS' | translate }}"></oi-select>
+
+                                                        <div class="inline">
+                                                            <a ng-click="createQuicklyBlackLink()" class="help-block pull-left">{{ 'AD_SOURCE_MODULE.CREATE_BLACK_LIST' | translate }}</a>
+                                                            <a ng-click="viewQuicklyBlackLink()" class="help-block pull-right">{{ 'AD_SOURCE_MODULE.VIEW_BLACK_LIST' | translate }}</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.PLATFORM' | translate }}</label>
+                                                    <div class="col-sm-9">
+                                                        <ui-select multiple on-select="$item.search = $select.search; $select.search = '';" name="platform" close-on-select="false" id="inputPlatform" ng-model="demandAdTag.targeting.platform" ng-required="true" server-error>
+                                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_PLATFORM' | translate }}">{{ $item.label }}</ui-select-match>
+                                                            <ui-select-choices repeat="platform.key as platform in platformOption | filter:$select.search">
+                                                                {{ platform.label }}
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.PLAYER_SIZE' | translate }}</label>
+                                                    <div class="col-sm-9">
+                                                        <ui-select multiple on-select="$item.search = $select.search; $select.search = '';" name="playerSize" close-on-select="false" ng-model="demandAdTag.targeting.player_size" ng-required="true" server-error>
+                                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_PLAYER_SIZE' | translate }}">{{ $item.label }}</ui-select-match>
+                                                            <ui-select-choices repeat="player.key as player in playerSizeOptions | filter:$select.search">
+                                                                {{ player.label }}
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.REQUIRED_MACROS' | translate }}</label>
+                                                    <div class="col-sm-9">
+                                                        <ui-select on-select="$item.search = $select.search; $select.search = '';" multiple name="requiredMacros" close-on-select="false" ng-model="demandAdTag.targeting.required_macros" ng-required="true" server-error>
+                                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_REQUIRED_MACROS' | translate }}">{{ $item.label }}</ui-select-match>
+                                                            <ui-select-choices group-by="groupEntities" repeat="require.key as require in requiredMacrosOptions | filter:$select.search">
+                                                                {{ require.label }}
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.EXCLUDE_DOMAINS' | translate }}</label>
-                                    <div class="col-sm-9">
-                                        <oi-select oi-options="item.name for item in blackList | selectedPublisher:selectedData.publisher" ng-model="demandAdTag.targeting.exclude_domains" multiple oi-select-options="{newItem: false, newItemFn: 'addDomain($query)'}" placeholder="{{ 'AD_SOURCE_MODULE.EXCLUDE_DOMAINS' | translate }}"></oi-select>
-
-                                        <div class="inline">
-                                            <a ng-click="createQuicklyBlackLink()" class="help-block pull-left">{{ 'AD_SOURCE_MODULE.CREATE_BLACK_LIST' | translate }}</a>
-                                            <a ng-click="viewQuicklyBlackLink()" class="help-block pull-right">{{ 'AD_SOURCE_MODULE.VIEW_BLACK_LIST' | translate }}</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.PLATFORM' | translate }}</label>
-                                    <div class="col-sm-9">
-                                        <ui-select multiple on-select="$item.search = $select.search; $select.search = '';" name="platform" close-on-select="false" id="inputPlatform" ng-model="demandAdTag.targeting.platform" ng-required="true" server-error>
-                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_PLATFORM' | translate }}">{{ $item.label }}</ui-select-match>
-                                            <ui-select-choices repeat="platform.key as platform in platformOption | filter:$select.search">
-                                                {{ platform.label }}
-                                            </ui-select-choices>
-                                        </ui-select>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.PLAYER_SIZE' | translate }}</label>
-                                    <div class="col-sm-9">
-                                        <ui-select multiple on-select="$item.search = $select.search; $select.search = '';" name="playerSize" close-on-select="false" ng-model="demandAdTag.targeting.player_size" ng-required="true" server-error>
-                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_PLAYER_SIZE' | translate }}">{{ $item.label }}</ui-select-match>
-                                            <ui-select-choices repeat="player.key as player in playerSizeOptions | filter:$select.search">
-                                                {{ player.label }}
-                                            </ui-select-choices>
-                                        </ui-select>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.REQUIRED_MACROS' | translate }}</label>
-                                    <div class="col-sm-9">
-                                        <ui-select on-select="$item.search = $select.search; $select.search = '';" multiple name="requiredMacros" close-on-select="false" ng-model="demandAdTag.targeting.required_macros" ng-required="true" server-error>
-                                            <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_REQUIRED_MACROS' | translate }}">{{ $item.label }}</ui-select-match>
-                                            <ui-select-choices repeat="require.key as require in requiredMacrosOptions | filter:$select.search">
-                                                {{ require.label }}
-                                            </ui-select-choices>
-                                        </ui-select>
                                     </div>
                                 </div>
                             </div>

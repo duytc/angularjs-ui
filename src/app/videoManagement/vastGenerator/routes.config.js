@@ -29,14 +29,16 @@
                         return VideoPublisherManager.one(videoPublisherId).get();
                     },
                     vastTags: function( videoPublisher) {
-                        if (!videoPublisher) {
-                            return null;
-                        }
+                        // if (!videoPublisher) {
+                        //     return null;
+                        // }
+                        //
+                        // return videoPublisher.customGET('vasttags', {secure: false})
+                        //     .then(function(vastTags) {
+                        //         return vastTags.plain()
+                        //     });
 
-                        return videoPublisher.customGET('vasttags', {secure: false})
-                            .then(function(vastTags) {
-                                return vastTags.plain()
-                            });
+                        return null
                     }
                 },
                 customResolve: {

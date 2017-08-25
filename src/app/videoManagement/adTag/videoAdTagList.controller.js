@@ -229,18 +229,55 @@
         function generateVast(adTag) {
             $modal.open({
                 templateUrl: 'videoManagement/adTag/generateVast.tpl.html',
-                resolve: {
-                    vastTag: function () {
-                        return VideoAdTagManager.one(adTag.id).customGET('vasttag', {secure: false});
+                // resolve: {
+                //     vastTag: function () {
+                //         return VideoAdTagManager.one(adTag.id).customGET('vasttag', {secure: false});
+                //     }
+                // },
+                controller: function ($scope, VideoAdTagManager, REQUIRED_MACROS_OPTIONS) {
+                    var requiredMacrosOptions = angular.copy(REQUIRED_MACROS_OPTIONS);
+
+                    _update();
+
+                    //not allowed to be set via url parameter
+                    function _update() {
+                        angular.forEach(['ip_address', 'user_agent'], function (macro) {
+                            var index = _.findIndex(requiredMacrosOptions, function (item) {
+                                return item.key == macro
+                            });
+
+                            if(index > -1) {
+                                requiredMacrosOptions.splice(index, 1)
+                            }
+                        })
                     }
-                },
-                controller: function ($scope, vastTag, VideoAdTagManager) {
+
+                    $scope.requiredMacrosOptions = requiredMacrosOptions;
+
+                    $scope.adTag = adTag;
+                    $scope.vastTag = null;
+
                     $scope.selected = {
+                        macros: ['page_url', 'player_width', 'player_height'],
                         secure: false
                     };
 
-                    $scope.adTag = adTag;
-                    $scope.vastTag = vastTag;
+                    $scope.isFormValid = function() {
+                        if($scope.selected.macros.indexOf('page_url') == -1 || $scope.selected.macros.indexOf('player_width') == -1 || $scope.selected.macros.indexOf('player_height') == -1) {
+                            return false
+                        }
+
+                        return true
+                    };
+
+                    $scope.clickVIewHelpText = function () {
+                        $modal.open({
+                            templateUrl: 'videoManagement/vastGenerator/helpTextMacros.tpl.html',
+                            controller: function ($scope) {
+                                $scope.macrosOptions = requiredMacrosOptions;
+                            }
+                        });
+                    };
 
                     $scope.getTextToCopy = function(string) {
                         return string.replace(/\n/g, '\r\n');
@@ -252,8 +289,8 @@
                         });
                     };
 
-                    $scope.secureChange = function(secure) {
-                        VideoAdTagManager.one(adTag.id).customGET('vasttag', {secure: secure})
+                    $scope.generateVast = function() {
+                        VideoAdTagManager.one(adTag.id).customGET('vasttag', {secure: $scope.selected.secure, macros: angular.toJson($scope.selected.macros)})
                             .then(function(vastTag) {
                                 $scope.vastTag = vastTag;
                             });

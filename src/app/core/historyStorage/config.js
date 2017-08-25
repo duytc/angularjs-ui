@@ -33,7 +33,8 @@
                     public: "public",
                     importHistoryList: 'importHistoryList',
                     template: 'template',
-                    tag: 'tag'
+                    tag: 'tag',
+                    IVTPixel: 'IVTPixel'
             })
         ;
 })();

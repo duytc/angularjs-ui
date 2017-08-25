@@ -2,10 +2,31 @@
     <h4 class="modal-title" translate="VIDEO_AD_TAG_MODULE.VAST_FOR_NAME" translate-values='{name: adTag.name}'></h4>
 </div>
 <div class="modal-body">
-    <label class="ui-checkbox"><input ng-click="secureChange(selected.secure)" server-error name="active" type="checkbox" ng-model="selected.secure" id="inputSecure"><span>{{ 'PUBLISHER_MODULE.CREATE_SECURE_TAG' | translate }}</span></label>
+    <div class="form-group">
+        <label for="inputSecure" class="control-label">{{ 'AD_SOURCE_MODULE.REQUIRED_MACROS' | translate }}</label>
+        <div>
+            <ui-select on-select="$item.search = $select.search; $select.search = '';" multiple name="requiredMacros" on-remove="removeMacros($model)" close-on-select="false" ng-model="selected.macros" ng-required="true" server-error>
+                <ui-select-match placeholder="{{ 'AD_SOURCE_MODULE.SELECT_A_REQUIRED_MACROS' | translate }}">{{ $item.label }}</ui-select-match>
+                <ui-select-choices repeat="require.key as require in requiredMacrosOptions | filter:$select.search">
+                    {{ require.label }}
+                </ui-select-choices>
+            </ui-select>
 
-    <p><strong>{{ 'VAST_GENERATOR_MODULE.GUIDE_COPY' | translate }}</strong></p>
-    <div select-on-click class="highlight-js">
+            <a class="help-block" ng-click="clickVIewHelpText()">Allowed macros waterfall_id, demand_tag_id, ... Click here for more details</a>
+        </div>
+    </div>
+
+    <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="selected.secure" id="inputSecure"><span>{{ 'PUBLISHER_MODULE.CREATE_SECURE_TAG' | translate }}</span></label>
+
+    <div class="form-group">
+        <button class="btn btn-success" ng-disabled="!isFormValid()" ng-click="generateVast()">Generate Vast</button>
+        <div ng-show="!isFormValid()" class="callout callout-info">
+            <p>page_url, player_width and player_height are required macros</p>
+        </div>
+    </div>
+
+    <p ng-if="!!vastTag"><strong>{{ 'VAST_GENERATOR_MODULE.GUIDE_COPY' | translate }}</strong></p>
+    <div ng-if="!!vastTag" select-on-click class="highlight-js">
         <pre><code class="hljs vim" ng-bind-html="highlightText(vastTag)"></code></pre>
     </div>
 </div>
