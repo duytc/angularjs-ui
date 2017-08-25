@@ -7,6 +7,7 @@
         'tagcade.videoManagement.demandAdTag',
         'tagcade.videoManagement.videoPublisher',
         'tagcade.videoManagement.vastGenerator',
-        'tagcade.videoManagement.domainList'
+        'tagcade.videoManagement.domainList',
+        'tagcade.videoManagement.IVTPixel'
     ]);
 })();

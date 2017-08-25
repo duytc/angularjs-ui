@@ -5,7 +5,7 @@
         .controller('VastGenerator', VastGenerator)
     ;
 
-    function VastGenerator($scope, $translate, $location, $q, vastTags, publishers, videoPublishers, videoPublisher) {
+    function VastGenerator($scope, $modal, $translate, $location, $q, AlertService, vastTags, publishers, videoPublishers, videoPublisher, REQUIRED_MACROS_OPTIONS) {
         $scope.formProcessing = false;
 
         $scope.vastTags = vastTags;
@@ -13,10 +13,49 @@
         $scope.videoPublishers = videoPublishers;
         $scope.allowPublisherSelection = $scope.isAdmin() && !!publishers;
 
+        var requiredMacrosOptions = angular.copy(REQUIRED_MACROS_OPTIONS);
+
+        _update();
+
+        //not allowed to be set via url parameter
+        function _update() {
+            angular.forEach(['ip_address', 'user_agent'], function (macro) {
+                var index = _.findIndex(requiredMacrosOptions, function (item) {
+                    return item.key == macro
+                });
+
+                if(index > -1) {
+                    requiredMacrosOptions.splice(index, 1)
+                }
+            })
+        }
+
+        $scope.requiredMacrosOptions = requiredMacrosOptions;
+
         $scope.selected = {
             publisher: videoPublisher && videoPublisher.publisher,
             videoPublisher: videoPublisher,
-            secure: false
+            secure: false,
+            macros: ['page_url', 'player_width', 'player_height']
+        };
+
+        $scope.groupEntities = groupEntities;
+
+        function groupEntities(item){
+            if (item.line) {
+                return undefined; // no group
+            }
+
+            return ''; // separate group with no name
+        }
+
+        $scope.clickVIewHelpText = function () {
+            $modal.open({
+                templateUrl: 'videoManagement/vastGenerator/helpTextMacros.tpl.html',
+                controller: function ($scope) {
+                    $scope.macrosOptions = requiredMacrosOptions;
+                }
+            });
         };
 
         $scope.selectPublisher = function(publisher) {
@@ -24,7 +63,20 @@
         };
 
         $scope.isFormValid = function() {
+            if($scope.selected.macros.indexOf('page_url') == -1 || $scope.selected.macros.indexOf('player_width') == -1 || $scope.selected.macros.indexOf('player_height') == -1) {
+                return false
+            }
+
             return $scope.vastGeneratorForm.$valid;
+        };
+
+        $scope.removeMacros = function (item) {
+            if(['page_url', 'player_width', 'player_height'].indexOf(item) > -1) {
+                AlertService.replaceAlerts({
+                    type: 'warning',
+                    message: 'page_url, player_width and player_height are required macros'
+                });
+            }
         };
 
         $scope.exportVastTags = function(vastTags) {
@@ -61,7 +113,7 @@
 
             $scope.vastTags = null;
 
-            var getVastTagsPromise = $scope.selected.videoPublisher.customGET('vasttags', {secure: $scope.selected.secure});
+            var getVastTagsPromise = $scope.selected.videoPublisher.customGET('vasttags', {secure: $scope.selected.secure, macros: angular.toJson($scope.selected.macros)});
 
             $q.when(getVastTagsPromise)
                 .then(function (vastTags) {

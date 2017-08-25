@@ -8,7 +8,7 @@
         ])
         .constant('PLATFORM_OPTION', [
             {key: 'flash', label: 'Flash VPAID'},
-            {key: 'js', label: 'HTML/JS VPAID'}
+            {key: 'js', label: 'JS VPAID'}
         ])
         .constant('PLATFORM_VAST_TAG', [
             {key: 'html5', label: 'HTML/JS VPAID'},

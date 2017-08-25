@@ -91,6 +91,15 @@
         $scope.viewQuicklyWhiteLink = viewQuicklyWhiteLink;
         $scope.viewQuicklyBlackLink = viewQuicklyBlackLink;
         $scope.replaceMacros = replaceMacros;
+        $scope.groupEntities = groupEntities;
+
+        function groupEntities(item){
+            if (item.line) {
+                return undefined; // no group
+            }
+
+            return ''; // separate group with no name
+        }
 
         var isChangeTagURLValue = false;
         $scope.isChangeTagURL = isChangeTagURL;

@@ -254,7 +254,7 @@
             },
             "VIDEO_PUBLISHER_MODULE": {
                 "SELECT_A_VIDEO_PUBLISHER": "Select a video publisher",
-                "GENERATE_VAST_TAGS": "Generate Vast Tags",
+                "GENERATE_VAST_TAGS": "Generate Vast/VPAID Tag",
 
                 "EDIT_VIDEO_PUBLISHER": "Edit Publisher",
                 "MANAGE_WATERFALL_TAGS": "Manage Waterfalls"

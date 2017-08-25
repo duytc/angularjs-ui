@@ -172,6 +172,15 @@
         $scope.filterWaterfallBySelectNone = filterWaterfallBySelectNone;
         $scope.updateMaximumRequirePrice = updateMaximumRequirePrice;
         $scope.returnSellPrice = returnSellPrice;
+        $scope.groupEntities = groupEntities;
+
+        function groupEntities(item){
+            if (item.line) {
+                return undefined; // no group
+            }
+
+            return ''; // separate group with no name
+        }
 
         function returnSellPrice(sellPrice) {
             if(sellPrice.indexOf('.') > -1) {

@@ -26,12 +26,17 @@
             buyPrice: null,
             platform: null,
             companionAds: [],
-            isVastOnly: false,
-            isServerToServer: false,
+            runOn: 'Client-Side VAST+VPAID',
             targeting: {
                 player_size: []
             }
         };
+
+        $scope.runOns = [
+            {key: 'Client-Side VAST+VPAID', label: 'Client-Side VAST+VPAID'},
+            {key: 'Server-Side VAST+VPAID', label: 'Server-Side VAST+VPAID'},
+            {key: 'Server-Side VAST Only', label: 'Server-Side VAST Only'}
+        ];
 
         if(angular.isArray($scope.adTag.targeting)) {
             $scope.adTag.targeting = {};
