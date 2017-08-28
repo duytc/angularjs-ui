@@ -33,15 +33,15 @@
                     </div>
                 </div>
 
-                <div class="form-group" ng-if="((isAdmin() && !!reportBuilder.publisher) || !isAdmin()) && !!reportBuilder.multiView">
-                    <label for="inputSubReport" class="col-sm-1quarter control-label">Show Dimensions</label>
-                    <div class="col-sm-5">
-                        <label class="ui-checkbox"><input server-error ng-click="clickSubReportsIncluded(reportBuilder.subReportsIncluded)" name="subReportsIncluded" type="checkbox" ng-model="reportBuilder.subReportsIncluded" id="inputSubReport"><span></span></label>
-                        <span class="help-block">
-                            {{ 'REPORT_BUILDER_MODULE.HELP_TEXT_FOR_SHOW_DIMENSIONS' | translate }}
-                        </span>
-                    </div>
-                </div>
+                <!--<div class="form-group" ng-if="((isAdmin() && !!reportBuilder.publisher) || !isAdmin()) && !!reportBuilder.multiView">-->
+                    <!--<label for="inputSubReport" class="col-sm-1quarter control-label">Show Dimensions</label>-->
+                    <!--<div class="col-sm-5">-->
+                        <!--<label class="ui-checkbox"><input server-error ng-click="clickSubReportsIncluded(reportBuilder.subReportsIncluded)" name="subReportsIncluded" type="checkbox" ng-model="reportBuilder.subReportsIncluded" id="inputSubReport"><span></span></label>-->
+                        <!--<span class="help-block">-->
+                            <!--{{ 'REPORT_BUILDER_MODULE.HELP_TEXT_FOR_SHOW_DIMENSIONS' | translate }}-->
+                        <!--</span>-->
+                    <!--</div>-->
+                <!--</div>-->
 
                 <div class="form-group" ng-if="!reportBuilder.multiView">
                     <label class="col-sm-1quarter control-label">View Alias</label>

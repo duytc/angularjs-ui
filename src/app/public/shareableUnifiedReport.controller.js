@@ -444,7 +444,7 @@
             }
 
             getReportDetail = setTimeout(function() {
-                params = angular.extend(params, $stateParams, {searches: angular.toJson($scope.search), limit: $scope.tableConfig.itemsPerPage, page: $scope.availableOptions.currentPage, orderBy: (!!$scope.reverse ? 'desc': 'acs'), sortField: $scope.sortBy}, paramsCustom);
+                params = angular.extend(params, $stateParams, {searches: angular.toJson($scope.search), limit: $scope.tableConfig.itemsPerPage, page: $scope.availableOptions.currentPage, orderBy: (!!$scope.reverse ? 'desc': 'asc'), sortField: $scope.sortBy}, paramsCustom);
                 return dataService.makeHttpGetRequest('/v1/reportviews/:reportView/sharedReports', params, API_UNIFIED_PUBLIC_END_POINT)
                     .then(function(reports) {
                         AtSortableService.insertParamForUrl(params);

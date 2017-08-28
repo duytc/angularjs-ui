@@ -222,12 +222,12 @@
                         params.page = !$stateParams.page ? 1 : $stateParams.page;
                         params.limit = !$stateParams.limit ? 10 : $stateParams.limit;
 
-                        params.userDefineDimensions = reportView.enableCustomDimensionMetric ? reportView.dimensions : [];
-                        params.userDefineMetrics = reportView.enableCustomDimensionMetric ? reportView.metrics : [];
-
-                        if(!!params.userDefineDimensions && (params.userDefineDimensions.length == 0 || params.userDefineDimensions.indexOf('report_view_alias') == -1) && (params.userDefineDimensions.length > 0 || params.userDefineMetrics.length > 0) && reportView.multiView) {
-                            params.userDefineDimensions.unshift('report_view_alias');
-                        }
+                        // params.userDefineDimensions = reportView.enableCustomDimensionMetric ? reportView.dimensions : [];
+                        // params.userDefineMetrics = reportView.enableCustomDimensionMetric ? reportView.metrics : [];
+                        //
+                        // if(!!params.userDefineDimensions && (params.userDefineDimensions.length == 0 || params.userDefineDimensions.indexOf('report_view_alias') == -1) && (params.userDefineDimensions.length > 0 || params.userDefineMetrics.length > 0) && reportView.multiView) {
+                        //     params.userDefineDimensions.unshift('report_view_alias');
+                        // }
 
                         return unifiedReportBuilder.getPlatformReport(params);
                     },

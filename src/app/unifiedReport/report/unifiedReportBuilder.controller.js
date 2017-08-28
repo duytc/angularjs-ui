@@ -523,6 +523,33 @@
                         if(j > -1 && jOutputField > -1) {
                             $scope.totalDimensionsMetrics.splice(j, 1);
                         }
+
+                        // update for listDimensions
+                        var z = _.findIndex($scope.listDimensions, function (item) {
+                            return item.key == field.field + '_' + field.dataSet
+                        });
+
+                        var zOutputField = _.findIndex($scope.listDimensions, function (item) {
+                            return item.key == itemJoinBy.outputField
+                        });
+
+                        if(z > -1 && zOutputField == -1) {
+                            if(true) {
+                                // if(itemJoinBy.isVisible) {
+                                $scope.listDimensions.push({
+                                    root: itemJoinBy.outputField,
+                                    key: itemJoinBy.outputField,
+                                    label: itemJoinBy.outputField,
+                                    type: $scope.listDimensions[z].type
+                                });
+                            }
+
+                            $scope.listDimensions.splice(z, 1);
+                        }
+
+                        if(z > -1 && jOutputField > -1) {
+                            $scope.listDimensions.splice(z, 1);
+                        }
                     })
                 });
             }

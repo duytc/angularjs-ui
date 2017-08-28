@@ -2,6 +2,22 @@
     <h4 class="modal-title"><strong>Preview Imported Data</strong></h4>
 </div>
 <div class="modal-body">
+    <div id="performance-report-selector">
+        <div class="form-inline">
+            <div class="select-alert-timezone form-group">
+                <label>Row Limit</label>
+                <ui-select ng-model="selectedData.limit" ng-required="true">
+                    <ui-select-match placeholder="Select a itemsPerPage">{{ $select.selected.label }}</ui-select-match>
+                    <ui-select-choices repeat="item.key as item in itemsPerPage | filter: $select.search">
+                        {{ item.label }}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <button type="button" class="btn btn-primary" ng-click="getPreview()">Preview Data</button>
+        </div>
+    </div>
+
     <div class="table-responsive table-report-view">
         <table class="table">
             <thead>

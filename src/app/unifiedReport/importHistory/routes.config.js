@@ -30,7 +30,11 @@
                 },
                 resolve: {
                     importHistoryList: /* @ngInject */ function(UnifiedReportDataSetManager, $stateParams) {
-                        return UnifiedReportDataSetManager.one($stateParams.dataSetId).one('importhistories').getList().then(function (importHistoryList) {
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
+                        $stateParams.sortField = !$stateParams.sortField ? 'createdDate' : $stateParams.sortField;
+
+                        return UnifiedReportDataSetManager.one($stateParams.dataSetId).one('importhistories').get($stateParams).then(function (importHistoryList) {
                             return importHistoryList.plain();
                         });
                     },
@@ -58,7 +62,11 @@
                 },
                 resolve: {
                     importHistoryList: /* @ngInject */ function(UnifiedReportDataSourceManager, $stateParams) {
-                        return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).one('importhistories').getList().then(function (importHistoryList) {
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
+                        $stateParams.sortField = !$stateParams.sortField ? 'createdDate' : $stateParams.sortField;
+
+                        return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).one('importhistories').get($stateParams).then(function (importHistoryList) {
                             return importHistoryList.plain();
                         });
                     },
