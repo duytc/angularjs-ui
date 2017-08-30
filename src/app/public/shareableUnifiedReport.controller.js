@@ -108,8 +108,8 @@
         };
 
         $scope.datePickerOpts = {
-            maxDate:  (!!reports.dateRange ? reports.dateRange.endDate : null),
-            minDate:  (!!reports.dateRange ? reports.dateRange.startDate : null),
+            maxDate:  reports.allowDatesOutside ?  moment().subtract(1, 'days').startOf('day') : (!!reports.dateRange ? reports.dateRange.endDate : undefined),
+            minDate:  reports.allowDatesOutside ? undefined : (!!reports.dateRange ? reports.dateRange.startDate : undefined),
             ranges: {
                 'Today': [moment().startOf('day'), moment().startOf('day')],
                 'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').startOf('day')],
@@ -426,6 +426,16 @@
                     $scope.columnPositions.push(dm.name);
                 }
             });
+
+            if($scope.reports.length > 0) {
+                angular.forEach(angular.copy($scope.columnPositions), function (column) {
+                    var index = _.keys($scope.reports[0]).indexOf(column);
+
+                    if(index == -1) {
+                        $scope.columnPositions.splice($scope.columnPositions.indexOf(column), 1)
+                    }
+                })
+            }
         }
 
         function showPagination() {
@@ -444,7 +454,7 @@
             }
 
             getReportDetail = setTimeout(function() {
-                params = angular.extend(params, $stateParams, {searches: angular.toJson($scope.search), limit: $scope.tableConfig.itemsPerPage, page: $scope.availableOptions.currentPage, orderBy: (!!$scope.reverse ? 'desc': 'acs'), sortField: $scope.sortBy}, paramsCustom);
+                params = angular.extend(params, $stateParams, {searches: angular.toJson($scope.search), limit: $scope.tableConfig.itemsPerPage, page: $scope.availableOptions.currentPage, orderBy: (!!$scope.reverse ? 'desc': 'asc'), sortField: $scope.sortBy}, paramsCustom);
                 return dataService.makeHttpGetRequest('/v1/reportviews/:reportView/sharedReports', params, API_UNIFIED_PUBLIC_END_POINT)
                     .then(function(reports) {
                         AtSortableService.insertParamForUrl(params);
@@ -454,8 +464,28 @@
                         $scope.average = reports.average;
                         $scope.tableConfig.totalItems = reports.totalReport;
                         $scope.availableOptions.currentPage = Number(params.page);
+                        $scope.titleColumns = reports.columns;
+
+                        AlertService.clearAllRemovable();
 
                         _updateColumnPositions();
+                    }, function (response) {
+                        if(response.status == 400) {
+                            AlertService.replaceAlerts({
+                                type: 'error',
+                                message: response.data.message
+                            });
+                        } else if (response.status == 500){
+                            AlertService.replaceAlerts({
+                                type: 'error',
+                                message:  $translate.instant('REPORT.REPORT_FAIL')
+                            });
+                        } else {
+                            AlertService.replaceAlerts({
+                                type: 'warning',
+                                message: $translate.instant('REPORT.REPORTS_EMPTY')
+                            });
+                        }
                     });
             }, 500);
         }

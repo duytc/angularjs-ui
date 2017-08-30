@@ -117,6 +117,7 @@
                     scope.selectTypeCalculatedField = selectTypeCalculatedField;
                     scope.formatExpressionToHighlight = formatExpressionToHighlight;
                     scope.filterFieldByText = filterFieldByText;
+                    scope.filterFieldForGroup = filterFieldForGroup;
                     scope.filterFieldConditionForCalculatedField = filterFieldConditionForCalculatedField;
                     scope.enableDragDropQueryBuilder = enableDragDropQueryBuilder;
                     scope.getLengthTransform = getLengthTransform;
@@ -496,18 +497,22 @@
                     function getFieldForGroupList(transformFields) {
                         if (!filterDimensionField) {
                             filterDimensionField = true;
-                            return scope.selectedFields
+                            return scope.dimensionsList
                         }
 
                         var data = [];
 
-                        for (var index in scope.selectedFields) {
-                            if (angular.isArray(transformFields) && transformFields.indexOf(scope.selectedFields[index].key) == -1) {
-                                data.push(scope.selectedFields[index])
+                        for (var index in scope.dimensionsList) {
+                            if (angular.isArray(transformFields) && transformFields.indexOf(scope.dimensionsList[index].key) == -1) {
+                                data.push(scope.dimensionsList[index])
                             }
                         }
 
                         return data
+                    }
+
+                    function filterFieldForGroup(field) {
+                       return field.type != 'number' && field.type != 'decimal';
                     }
 
                     var filterFieldNameAscField = false;
@@ -605,7 +610,7 @@
                         return fields;
                     }
 
-                    function selectTransformType(transform, type) {
+                    function selectTransformType(transform, type, $index) {
                         transform.field = null;
                         transform.fields = [];
 
@@ -629,6 +634,11 @@
 
                         if (type.key == scope.allFiledFormatTypeKeys.addCalculatedField) {
                             transform.fields = [{field: null, expression: null}];
+                        }
+
+                        if (type.key == scope.allFiledFormatTypeKeys.groupBy) {
+                            scope.transforms.splice($index, 1);
+                            scope.transforms.unshift(transform);
                         }
                     }
 

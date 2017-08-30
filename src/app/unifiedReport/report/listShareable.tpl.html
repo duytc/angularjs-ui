@@ -45,6 +45,9 @@
                     <td at-title="Date Created" at-sortable at-attribute="fields.dateCreated">
                         {{ item.fields.dateCreated | date:'MMM d, y H:mm:ss' }}
                     </td>
+                    <td at-title="Allow Dates Outside" at-sortable at-attribute="fields.allowDatesOutside">
+                        <i class="fa" ng-class="item.fields.allowDatesOutside? 'fa-check-square' : 'fa-square'"></i>
+                    </td>
                 </tr>
                 </tbody>
             </table>

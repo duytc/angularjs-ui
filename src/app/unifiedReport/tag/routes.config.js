@@ -40,7 +40,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'List Tag'
+                    label: 'List User Tags'
                 }
             })
             .state('unifiedReport.tag.new', {
@@ -76,7 +76,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'New Tag'
+                    label: 'New User Tag'
                 }
             })
             .state('unifiedReport.tag.edit', {
@@ -112,7 +112,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Edit Tag - {{ tag.name }}'
+                    label: 'Edit User Tag - {{ tag.name }}'
                 }
             })
         ;
