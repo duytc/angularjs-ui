@@ -138,7 +138,7 @@
         $scope.showReportDetail = showReportDetail;
 
         function showReportDetail() {
-            return !angular.isArray($scope.titleColumns) && _.keys($scope.titleColumns).length > 0
+            return !angular.isArray($scope.titleColumns) && _.keys($scope.titleColumns).length > 0 && ($scope.reports.length > 0 || _.keys($scope.search).length > 0)
         }
 
         function showDetailsMissingDates() {
@@ -682,6 +682,16 @@
                     $scope.columnPositions.push(dm.name);
                 }
             });
+
+            if($scope.reports.length > 0) {
+                angular.forEach(angular.copy($scope.columnPositions), function (column) {
+                    var index = _.keys($scope.reports[0]).indexOf(column);
+
+                    if(index == -1) {
+                        $scope.columnPositions.splice($scope.columnPositions.indexOf(column), 1)
+                    }
+                })
+            }
 
             $scope.fieldsShow = $scope.fieldsShow || {dimensions: [], metrics: []};
         }

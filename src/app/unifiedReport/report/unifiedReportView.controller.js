@@ -378,6 +378,7 @@
 
                     $scope.getShareableLink = function () {
                         var params = {
+                            allowDatesOutside: $scope.selected.allowDatesOutside,
                             fields: fieldsToShare,
                             dateRange: isDynamic() ? getDynamicDate() : {
                                 startDate: DateFormatter.getFormattedDate($scope.selected.date.startDate),

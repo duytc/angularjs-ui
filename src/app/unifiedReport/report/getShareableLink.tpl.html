@@ -20,6 +20,10 @@
                     </ui-select-choices>
                 </ui-select>
             </div>
+
+            <div class="form-group col-sm-12" ng-if="enableSelectDaterange()">
+                <label class="ui-checkbox"><input name="all" type="checkbox" ng-model="selected.allowDatesOutside"><span>Allow dates outside of this date range</span></label>
+            </div>
         </div>
 
         <p><strong> Select fields to share in report </strong></p>
