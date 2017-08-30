@@ -1171,6 +1171,36 @@
                     });
                 }
 
+                if (transform.type == 'addField') {
+                    angular.forEach(transform.fields, function (field) {
+                        angular.forEach(field.conditions, function (condition) {
+                            angular.forEach(condition.expressions, function (expression) {
+                                var field = _.find($scope.totalDimensionsMetrics, function (dm) {
+                                    return dm.key == expression.var;
+                                });
+
+                                if (!field) {
+                                    expression.var = null
+                                }
+                            })
+                        })
+                    });
+                }
+
+                if (transform.type == 'addCalculatedField') {
+                    angular.forEach(transform.fields, function (field) {
+                        angular.forEach(field.defaultValues, function (defaultValue) {
+                            var field = _.find($scope.totalDimensionsMetrics, function (dm) {
+                                return dm.key == defaultValue.conditionField;
+                            });
+
+                            if (!field) {
+                                defaultValue.conditionField = null
+                            }
+                        })
+                    });
+                }
+
                 if (transform.type == 'comparisonPercent') {
                     // angular.forEach(transform.fields, function (field) {
                     //     if (_.values(selectedFields).indexOf(field.denominator) == -1) {
