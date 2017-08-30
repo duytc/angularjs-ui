@@ -5,13 +5,13 @@
         <div ng-if="isAdmin()" class="button-bar">
             <button ui-sref="^.new" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
-                New Template
+                New Report Template
             </button>
         </div>
         <div ng-if="isAdmin()" class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ui-sref="^.new">New Template</a></li>
+                <li><a ui-sref="^.new">New Report Template</a></li>
             </ul>
         </div>
     </div>
@@ -36,8 +36,8 @@
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
                                 <li><a ng-click="createReportView(item)">Create Report View</a></li>
                                 <li ng-if="isAdmin()" class="divider"></li>
-                                <li ng-if="isAdmin()"><a ui-sref="^.edit({ id: item.id })">Edit Template</a></li>
-                                <li ng-if="isAdmin()"><a ng-click="confirmDeletion(item, $index)">Delete Template</a></li>
+                                <li ng-if="isAdmin()"><a ui-sref="^.edit({ id: item.id })">Edit Report Template</a></li>
+                                <li ng-if="isAdmin()"><a ng-click="confirmDeletion(item, $index)">Delete Report Template</a></li>
                             </ul>
                         </div>
                     </td>

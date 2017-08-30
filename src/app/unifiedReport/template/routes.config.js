@@ -40,7 +40,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'List Template'
+                    label: 'List Report Template'
                 }
             })
             .state('unifiedReport.template.new', {
@@ -76,7 +76,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'New Template'
+                    label: 'New Report Template'
                 }
             })
             .state('unifiedReport.template.edit', {
@@ -112,7 +112,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Edit Template - {{ template.name }}'
+                    label: 'Edit Report Template - {{ template.name }}'
                 }
             })
         ;

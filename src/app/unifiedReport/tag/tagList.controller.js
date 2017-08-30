@@ -14,7 +14,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no tag'
+                message: 'There is currently no user tag'
             });
         }
 
@@ -53,12 +53,12 @@
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message: 'The tag was deleted'
+                            message: 'The user tag was deleted'
                         });
                     },   function () {
                         AlertService.replaceAlerts({
                             type: 'danger',
-                            message: 'The tag could not be deleted'
+                            message: 'The user tag could not be deleted'
                         });
                     })
             })

@@ -74,7 +74,7 @@
                     function () {
                         AlertService.addFlash({
                             type: 'success',
-                            message: 'The template has been created'
+                            message: 'The report template has been created'
                         });
 
                         backToTemplateList();
