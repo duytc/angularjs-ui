@@ -4,13 +4,13 @@
     angular.module('tagcade.unifiedReport.importHistory')
         .controller('ImportHistoryList', ImportHistoryList);
 
-    function ImportHistoryList($scope, $modal, importHistoryList, dataSet, dataSource, UnifiedReportImportHistoryManager, historyStorage, HISTORY_TYPE_PATH, AlertService, exportExcelService, AtSortableService) {
+    function ImportHistoryList($scope, $modal, $stateParams, importHistoryList, dataSet, dataSource, UnifiedReportDataSourceManager, UnifiedReportImportHistoryManager, historyStorage, HISTORY_TYPE_PATH, AlertService, exportExcelService, AtSortableService, EVENT_ACTION_SORTABLE) {
         $scope.dataSet = dataSet;
         $scope.importHistoryList = importHistoryList;
         $scope.formProcessing = false;
 
         $scope.hasData = function () {
-            return !!importHistoryList.length;
+            return !!$scope.importHistoryList && $scope.importHistoryList.totalRecord > 0;
         };
 
         if (!$scope.hasData()) {
@@ -22,14 +22,42 @@
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10
+            maxPages: 10,
+            totalItems: Number($scope.importHistoryList.totalRecord)
         };
+
+        $scope.availableOptions = {
+            currentPage: $stateParams.page || 1,
+            pageSize: 10
+        };
+
+        var params = $stateParams;
+        var getImport;
 
         $scope.showPagination = showPagination;
         $scope.backToList = backToList;
         $scope.undo= undo;
         $scope.downloadImportedData = downloadImportedData;
         $scope.previewData = previewData;
+        $scope.changePage = changePage;
+        $scope.searchData = searchData;
+
+        $scope.$on(EVENT_ACTION_SORTABLE, function (event, query){
+            params = angular.extend(params, query);
+            _getImport(params);
+        });
+
+        function changePage(currentPage) {
+            params = angular.extend(params, {page: currentPage});
+
+            _getImport(params)
+        }
+
+        function searchData() {
+            var query = {searchKey: $scope.selectData.query || ''};
+            params = angular.extend(params, query);
+            _getImport(params, 500)
+        }
 
         function previewData(importHistory) {
             if ($scope.formProcessing) {
@@ -39,7 +67,7 @@
 
             $scope.formProcessing = true;
 
-            UnifiedReportImportHistoryManager.one(importHistory.id).one('download').get()
+            UnifiedReportImportHistoryManager.one(importHistory.id).one('download').get({limit: 1000})
                 .then(function (reportData) {
                     $scope.formProcessing = false;
 
@@ -51,6 +79,18 @@
                             $scope.columns = reportData.length > 0 ? _.keys(reportData[0]) : [];
                             $scope.search = {};
 
+                            $scope.itemsPerPage = [
+                                {label: '100', key: '100'},
+                                {label: '500', key: '500'},
+                                {label: '1000', key: '1000'},
+                                {label: '5000', key: '5000'},
+                                {label: '10000', key: '10000'}
+                            ];
+
+                            $scope.selectedData = {
+                                limit: 1000
+                            };
+
                             $scope.tableConfig = {
                                 maxPages: 10,
                                 itemsPerPage: 10
@@ -60,6 +100,13 @@
 
                             function isNullValue(report, column) {
                                 return !report[column] && report[column] != 0;
+                            }
+
+                            $scope.getPreview = function () {
+                                UnifiedReportImportHistoryManager.one(importHistory.id).one('download').get({limit: $scope.selectedData.limit})
+                                    .then(function (reportData) {
+                                        $scope.reports = reportData || [];
+                                    })
                             }
                         },
                         resolve: {
@@ -90,14 +137,13 @@
         function downloadImportedData(importHistory) {
             return UnifiedReportImportHistoryManager.one(importHistory.id).one('download').get()
                 .then(function (data) {
-                    if(data.length > 0) {
-                        var header = Object.keys(data[0]);
+                    var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
+                    var reportName = 'import-history ' + importHistory.dataSet.name;
 
-                        exportExcelService.exportExcel(data, header, header, 'import-history ' + importHistory.dataSet.name, true);
-                    }
-                })
+                    return saveAs(blob, [reportName + '.csv']);
+                });
         }
-        
+
         function undo(importHistory, index) {
             var modalInstance = $modal.open({
                 templateUrl: 'unifiedReport/importHistory/confirmUndo.tpl.html'
@@ -126,7 +172,7 @@
                 ;
             });
         }
-        
+
         function backToList() {
             if(!!dataSet){
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSet, '^.^.dataSet.list');
@@ -136,7 +182,26 @@
         }
 
         function showPagination() {
-            return angular.isArray($scope.importHistoryList) && $scope.importHistoryList.length > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.importHistoryList.records) && $scope.importHistoryList.totalRecord > $scope.tableConfig.itemsPerPage;
+        }
+
+        function _getImport(query, timeOut) {
+            clearTimeout(getImport);
+
+            getImport = setTimeout(function (){
+                var Manage = !!query.dataSetId ? UnifiedReportDataSetManager.one(query.dataSetId) : UnifiedReportDataSourceManager.one(query.dataSourceId);
+
+                return Manage.one('importhistories').get($stateParams)
+                    .then(function (importHistoryList){
+                        AtSortableService.insertParamForUrl(query);
+
+                        setTimeout(function (){
+                            $scope.importHistoryList = importHistoryList;
+                            $scope.tableConfig.totalItems = Number(importHistoryList.totalRecord);
+                            $scope.availableOptions.currentPage = Number(query.page);
+                        }, 0)
+                    });
+            }, timeOut || 0)
         }
 
         $scope.$on('$locationChangeSuccess', function() {

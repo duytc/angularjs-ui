@@ -128,7 +128,7 @@
                 searches: $scope.search,
                 limit: $scope.selectedData.limit,
                 page: $scope.availableOptions.currentPage,
-                orderBy: (!!$scope.reverse ? 'desc': 'acs'),
+                orderBy: (!!$scope.reverse ? 'desc': 'asc'),
                 sortField: $scope.sortBy
             });
 
@@ -140,7 +140,7 @@
                 searches: $scope.search,
                 limit: $scope.selectedData.limit,
                 page: currentPage,
-                orderBy: (!!$scope.reverse ? 'desc': 'acs'),
+                orderBy: (!!$scope.reverse ? 'desc': 'asc'),
                 sortField: $scope.sortBy
             });
 
@@ -156,7 +156,7 @@
                 searches: $scope.search,
                 limit: $scope.selectedData.limit,
                 page: $scope.availableOptions.currentPage,
-                orderBy: (!!$scope.reverse ? 'desc': 'acs'),
+                orderBy: (!!$scope.reverse ? 'desc': 'asc'),
                 sortField: $scope.sortBy
             });
 

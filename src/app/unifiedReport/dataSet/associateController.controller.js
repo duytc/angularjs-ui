@@ -123,7 +123,7 @@
             $scope.sortBy = '\u0022'+keyname+'\u0022'; //set the sortBy to the param passed
             $scope.reverse = !$scope.reverse; //if true make it false and vice versa
 
-            params = angular.extend(params, {orderBy: (!!$scope.reverse ? 'desc': 'acs'), sortField: $scope.sortBy});
+            params = angular.extend(params, {orderBy: (!!$scope.reverse ? 'desc': 'asc'), sortField: $scope.sortBy});
             __getDataRows(params);
         }
 

@@ -69,7 +69,7 @@
             } else if (reportGroup.status == 500){
                 AlertService.replaceAlerts({
                     type: 'error',
-                    message:  $translate.instant('REPORT.REPORT_FAIL')
+                    message:  reportGroup.message || $translate.instant('REPORT.REPORT_FAIL')
                 });
             } else {
                 AlertService.replaceAlerts({
@@ -138,7 +138,7 @@
         $scope.showReportDetail = showReportDetail;
 
         function showReportDetail() {
-            return !angular.isArray($scope.titleColumns) && _.keys($scope.titleColumns).length > 0
+            return !angular.isArray($scope.titleColumns) && _.keys($scope.titleColumns).length > 0 && ($scope.reports.length > 0 || _.keys($scope.search).length > 0)
         }
 
         function showDetailsMissingDates() {
@@ -383,6 +383,12 @@
                 });
             }
 
+            angular.forEach(angular.copy($scope.search), function (value, key) {
+                if(!value || value == '') {
+                    delete $scope.search[key]
+                }
+            });
+
             params = angular.extend(params, {
                 searches: $scope.search,
                 limit: !!itemPerPage ? itemPerPage.key : $scope.tableConfig.itemsPerPage,
@@ -467,7 +473,7 @@
                         if(dimensions.indexOf(col) == -1) {
                             dimensions.push(col);
 
-                            if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == col }) == -1) {
+                            if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == col }) == -1 && !$scope.reportView.multiView) {
                                 $scope.dimensions.push({name: col, label: $scope.titleColumnsForSelect[col], ticked: true});
                             }
                         }
@@ -504,7 +510,7 @@
                                     // if(!$scope.reportView.multiView || ($scope.reportView.multiView && $scope.reportView.subReportsIncluded)) {
                                     fieldTypes[col] = $scope.reportView.multiView ? item.fieldTypes[col] : type;
 
-                                    if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == col }) == -1) {
+                                    if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == col }) == -1 && !$scope.reportView.multiView) {
                                         $scope.dimensions.push({name: col, label: allDimensionsMetrics.columns[col] || allDimensionsMetrics.columns[dimension], ticked: $scope.reports.length == 0});
                                     }
                                 }
@@ -627,7 +633,7 @@
             }
 
             if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == 'report_view_alias' }) == -1 && $scope.reportView.multiView) {
-                $scope.dimensions.unshift({name: 'report_view_alias', label: 'Report View Alias', ticked: $scope.reports.length == 0});
+                $scope.dimensions.unshift({name: 'report_view_alias', label: 'Report View Alias', ticked: true});
             }
 
             if($scope.reports.length == 0) {
@@ -676,6 +682,16 @@
                     $scope.columnPositions.push(dm.name);
                 }
             });
+
+            if($scope.reports.length > 0) {
+                angular.forEach(angular.copy($scope.columnPositions), function (column) {
+                    var index = _.keys($scope.reports[0]).indexOf(column);
+
+                    if(index == -1) {
+                        $scope.columnPositions.splice($scope.columnPositions.indexOf(column), 1)
+                    }
+                })
+            }
 
             $scope.fieldsShow = $scope.fieldsShow || {dimensions: [], metrics: []};
         }

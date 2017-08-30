@@ -14,7 +14,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no template'
+                message: 'There is currently no report template'
             });
         }
 
@@ -107,12 +107,12 @@
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message: 'The template was deleted'
+                            message: 'The report template was deleted'
                         });
                     },   function () {
                         AlertService.replaceAlerts({
                             type: 'danger',
-                            message: 'The template could not be deleted'
+                            message: 'The report template could not be deleted'
                         });
                     })
             })

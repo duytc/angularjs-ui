@@ -96,7 +96,7 @@
                     function () {
                         AlertService.addFlash({
                             type: 'success',
-                            message: $scope.isNew ? 'The tag has been created' : 'The tag has been updated'
+                            message: $scope.isNew ? 'The user tag has been created' : 'The user tag has been updated'
                         });
 
                         backToTagList()
