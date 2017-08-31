@@ -81,6 +81,7 @@
                 }
             ],
             enable: true,
+            timeSeries: false,
             useIntegration: false,
             dateRangeDetectionEnabled: false,
             fromMetadata: false,
@@ -411,6 +412,10 @@
 
             delete dataSource.missingDate;
             delete dataSource.dateRangeBroken;
+
+            // if(dataSource.format != 'json' || dataSource.useIntegration) {
+            //     dataSource.timeSeries = false;
+            // }
 
             if(dataSource.useIntegration) {
                 // dataSource.format = null;
