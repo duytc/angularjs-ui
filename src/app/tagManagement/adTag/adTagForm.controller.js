@@ -176,6 +176,16 @@
         $scope.backToAdTagList = backToAdTagList;
         $scope.moveVastTag = moveVastTag;
         $scope.isPassback = isPassback;
+        $scope.clickVIewHelpText = clickVIewHelpText;
+
+        function clickVIewHelpText() {
+            $modal.open({
+                templateUrl: 'videoManagement/IVTPixel/helpTextMacros.tpl.html',
+                controller: function ($scope, MACROS_FOR_AD_TAG) {
+                    $scope.macrosOptions = MACROS_FOR_AD_TAG;
+                }
+            });
+        }
 
         function searchAdNetworkItem(query, publisherId) {
             if(query == sideParams.adNetwork.params.query) {
