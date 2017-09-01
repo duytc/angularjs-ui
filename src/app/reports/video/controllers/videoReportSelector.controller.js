@@ -48,7 +48,7 @@
         };
 
         $scope.getReports = getReports;
-        $scope.saveOption = saveOption;
+        // $scope.saveOption = saveOption;
         $scope.isFormValid = isFormValid;
         $scope.groupEntities = groupEntities;
         $scope.checkedBreakdown = checkedBreakdown;
@@ -171,31 +171,31 @@
             ;
         }
 
-        function saveOption() {
-            if(!isPublisher) {
-                return;
-            }
-
-            var sessionSetting = angular.fromJson(sessionStorage.getCurrentSettings());
-            if(!sessionSetting || sessionSetting.length == 0) {
-                sessionSetting = REPORT_SETTINGS.default;
-            }
-
-            sessionSetting.view.report.videoReport = $scope.queryParams;
-
-            delete sessionSetting.view.report.videoReport.filters.startDate;
-            delete sessionSetting.view.report.videoReport.filters.endDate;
-
-            accountManager.one('').patch({ settings: sessionSetting })
-                .then(function() {
-                    //update settings for sessionStorage
-                    sessionStorage.setCurrentSettings({view: sessionSetting.view || REPORT_SETTINGS.default.view });
-                })
-                .catch(function() {
-                    console.log('update setting error !');
-                })
-            ;
-        }
+        // function saveOption() {
+        //     if(!isPublisher) {
+        //         return;
+        //     }
+        //
+        //     var sessionSetting = angular.fromJson(sessionStorage.getCurrentSettings());
+        //     if(!sessionSetting || sessionSetting.length == 0) {
+        //         sessionSetting = REPORT_SETTINGS.default;
+        //     }
+        //
+        //     sessionSetting.view.report.videoReport = $scope.queryParams;
+        //
+        //     delete sessionSetting.view.report.videoReport.filters.startDate;
+        //     delete sessionSetting.view.report.videoReport.filters.endDate;
+        //
+        //     accountManager.one('').patch({ settings: sessionSetting })
+        //         .then(function() {
+        //             //update settings for sessionStorage
+        //             sessionStorage.setCurrentSettings({view: sessionSetting.view || REPORT_SETTINGS.default.view });
+        //         })
+        //         .catch(function() {
+        //             console.log('update setting error !');
+        //         })
+        //     ;
+        // }
 
         function update() {
             var params = $stateParams;
