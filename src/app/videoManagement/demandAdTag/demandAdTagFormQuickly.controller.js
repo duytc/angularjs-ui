@@ -100,6 +100,16 @@
         $scope.viewQuicklyBlackLink = viewQuicklyBlackLink;
         $scope.replaceMacros = replaceMacros;
         $scope.groupEntities = groupEntities;
+        $scope.clickVIewHelpText = clickVIewHelpText;
+
+        function clickVIewHelpText() {
+            $modal.open({
+                templateUrl: 'videoManagement/IVTPixel/helpTextMacros.tpl.html',
+                controller: function ($scope, REQUIRED_MACROS_OPTIONS) {
+                    $scope.macrosOptions = REQUIRED_MACROS_OPTIONS;
+                }
+            });
+        }
 
         function groupEntities(item){
             if (item.line) {

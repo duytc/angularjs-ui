@@ -83,6 +83,7 @@
                     <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.TAG_URL' | translate }}</label>
                     <div class="col-sm-5">
                         <textarea name="tagUrl" ng-pattern="/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/" spellcheck="false" rows="5" ng-model="demandAdTag.tagURL" ng-change="isChangeTagURL()" ng-blur="replaceMacros()" server-error ng-required="true" class="form-control" placeholder="{{ 'AD_SOURCE_MODULE.TAG_URL' | translate }}"> </textarea>
+                        <a class="help-block" ng-click="clickVIewHelpText()">Allowed macros ${waterfall_id}, ${demand_tag_id}, ... Click here for more details</a>
                     </div>
                 </div>
 

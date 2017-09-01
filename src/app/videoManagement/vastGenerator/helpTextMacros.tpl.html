@@ -6,6 +6,10 @@
         <li ng-repeat="macro in macrosOptions" style="display: flex; cursor: text">
             <label>{{ macro.root }}</label>
             <span class="pull-right" style="width: 70%">{{ macro.helpText }}</span>
+
+            <div class="copy-clipboard">
+                <button auto-hide-on-no-flash="true" clip-copy="macro.root" class="btn btn-sm btn-primary">Copy</button>
+            </div>
         </li>
     </ul>
 </div>
