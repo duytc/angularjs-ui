@@ -109,11 +109,11 @@
 
     <button ng-disabled="!isFormValid()" type="submit" class="btn btn-primary" style="margin-right: 10px">{{ 'REPORT.GET_REPORTS' | translate }}</button>
 
-    <div class="btn-group" dropdown stop-event ng-if="!isAdmin">
-        <button ng-disabled="!isFormValid()" type="button" class="btn btn-primary" dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
-        <ul class="dropdown-menu pull-right-dropdown" role="menu">
-            <li><a ng-click="saveOption()">Save Options</a></li>
-            <!--<li><a> {{ 'EXPORT_EXCEL' | translate }}</a></li>-->
-        </ul>
-    </div>
+    <!--<div class="btn-group" dropdown stop-event ng-if="!isAdmin">-->
+        <!--<button ng-disabled="!isFormValid()" type="button" class="btn btn-primary" dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>-->
+        <!--<ul class="dropdown-menu pull-right-dropdown" role="menu">-->
+            <!--<li><a ng-click="saveOption()">Save Options</a></li>-->
+            <!--&lt;!&ndash;<li><a> {{ 'EXPORT_EXCEL' | translate }}</a></li>&ndash;&gt;-->
+        <!--</ul>-->
+    <!--</div>-->
 </form>
