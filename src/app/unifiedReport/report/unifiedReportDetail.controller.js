@@ -50,6 +50,7 @@
             formats: angular.toJson(reportView.formats),
             weightedCalculations: angular.toJson(reportView.weightedCalculations),
             joinBy: angular.toJson(reportView.joinBy),
+            metricCalculations: angular.toJson(reportView.metricCalculations),
             name: reportView.name,
             alias: reportView.alias,
             reportView: reportView.id,

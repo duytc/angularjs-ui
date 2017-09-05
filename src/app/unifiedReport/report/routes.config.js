@@ -77,7 +77,7 @@
                 }
             })
             .state('unifiedReport.report.editBuilder', {
-                url: '/edit/?reportView&reportViewMultiViews&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&subReportsIncluded&userReorderTransformsAllowed&isShowDataSetName&enableCustomDimensionMetric',
+                url: '/edit/?reportView&reportViewMultiViews&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&subReportsIncluded&userReorderTransformsAllowed&isShowDataSetName&enableCustomDimensionMetric&metricCalculations',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -126,6 +126,7 @@
                                         formats: !!$stateParams.formats ? angular.fromJson($stateParams.formats) : reportView.formats,
                                         weightedCalculations: !!$stateParams.weightedCalculations ? angular.fromJson($stateParams.weightedCalculations) : reportView.weightedCalculations,
                                         joinBy: !!$stateParams.joinBy ? angular.fromJson($stateParams.joinBy) : reportView.joinBy,
+                                        metricCalculations: !!$stateParams.metricCalculations ? angular.fromJson($stateParams.metricCalculations) : reportView.metricCalculations,
                                         name: !!$stateParams.name ? $stateParams.name : reportView.name,
                                         alias: !!$stateParams.alias ? $stateParams.alias : reportView.alias,
                                         id: reportView.id,
@@ -147,6 +148,7 @@
                             formats: angular.fromJson($stateParams.formats),
                             weightedCalculations: angular.fromJson($stateParams.weightedCalculations),
                             joinBy: angular.fromJson($stateParams.joinBy) || null,
+                            metricCalculations: angular.fromJson($stateParams.metricCalculations) || null,
                             name: $stateParams.name,
                             alias: $stateParams.alias,
                             publisher: $stateParams.publisher,
@@ -165,7 +167,7 @@
                 }
             })
             .state('unifiedReport.report.detail', {
-                url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&enableCustomDimensionMetric&startDate&endDate&isShowDataSetName&page&limit&searchs',
+                url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&enableCustomDimensionMetric&startDate&endDate&isShowDataSetName&page&limit&searchs&metricCalculations',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -203,6 +205,7 @@
                             weightedCalculations: angular.fromJson($stateParams.weightedCalculations),
                             formats: angular.fromJson($stateParams.formats),
                             joinBy: angular.fromJson($stateParams.joinBy) || null,
+                            metricCalculations: angular.fromJson($stateParams.metricCalculations) || null,
                             name: $stateParams.name,
                             alias: $stateParams.alias,
                             publisher: $stateParams.publisher,
@@ -214,6 +217,8 @@
                     },
                     reportGroup: /* @ngInject */ function(unifiedReportBuilder, reportView, $stateParams) {
                         var params = angular.copy(reportView);
+                        params.userDefineDimensions = [];
+                        params.userDefineMetrics = [];
 
                         params.startDate = $stateParams.startDate;
                         params.endDate = $stateParams.endDate;
@@ -222,12 +227,55 @@
                         params.page = !$stateParams.page ? 1 : $stateParams.page;
                         params.limit = !$stateParams.limit ? 10 : $stateParams.limit;
 
-                        // params.userDefineDimensions = reportView.enableCustomDimensionMetric ? reportView.dimensions : [];
-                        // params.userDefineMetrics = reportView.enableCustomDimensionMetric ? reportView.metrics : [];
-                        //
-                        // if(!!params.userDefineDimensions && (params.userDefineDimensions.length == 0 || params.userDefineDimensions.indexOf('report_view_alias') == -1) && (params.userDefineDimensions.length > 0 || params.userDefineMetrics.length > 0) && reportView.multiView) {
-                        //     params.userDefineDimensions.unshift('report_view_alias');
-                        // }
+                        if(reportView.enableCustomDimensionMetric) {
+                            var reportViews = !reportView.multiView ? reportView.reportViewDataSets : reportView.reportViewMultiViews;
+
+                            angular.forEach(reportViews, function (reportViewItem) {
+                                angular.forEach(reportViewItem.dimensions, function (dimension) {
+                                    var indexJoin = _.findIndex(reportView.joinBy, function (join) {
+                                        for(var i in join.joinFields) {
+                                            var joinField = join.joinFields[i];
+
+                                            if(joinField.field == dimension) {
+                                                return true
+                                            }
+                                        }
+
+                                        return false
+                                    });
+
+                                    if(indexJoin == -1) {
+                                        params.userDefineDimensions.push(reportView.multiView  ? dimension : dimension + '_' + reportViewItem.dataSet);
+                                    }
+                                });
+
+                                angular.forEach(reportViewItem.metrics, function (metric) {
+                                    params.userDefineMetrics.push(reportView.multiView  ? metric : metric + '_' + reportViewItem.dataSet);
+                                });
+                            });
+
+                            for(var x in reportView.joinBy) {
+                                var join = reportView.joinBy[x];
+
+                                if(params.userDefineDimensions.indexOf(join.outputField) == -1 && join.isVisible) {
+                                    params.userDefineDimensions.push(join.outputField);
+                                }
+                            }
+
+                            angular.forEach(reportView.transforms, function (transform) {
+                                if (transform.type == 'addField' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent') {
+                                    angular.forEach(transform.fields, function (field) {
+                                        if (!!field.field) {
+                                            params.userDefineMetrics.push(field.field);
+                                        }
+                                    })
+                                }
+                            });
+
+                            if(!!params.userDefineDimensions && (params.userDefineDimensions.length == 0 || params.userDefineDimensions.indexOf('report_view_alias') == -1) && (params.userDefineDimensions.length > 0 || params.userDefineMetrics.length > 0) && reportView.multiView) {
+                                params.userDefineDimensions.unshift('report_view_alias');
+                            }
+                        }
 
                         return unifiedReportBuilder.getPlatformReport(params);
                     },
