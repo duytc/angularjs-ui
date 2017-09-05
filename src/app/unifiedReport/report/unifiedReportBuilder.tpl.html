@@ -118,6 +118,24 @@
                     </div>
                 </div>
 
+                <div class="form-group" ng-if="(reportBuilder.enableCustomDimensionMetric || isGroup()) && !reportBuilder.multiView">
+                    <label for="enableCustomDimensionMetric" class="col-sm-1quarter control-label">Metric Calculations</label>
+                    <div class="col-sm-5">
+                        <div class="form-group" ng-repeat="item in fieldNumberByMetrics">
+                            <label class="col-sm-3 form-control-static">{{ item.label }}:</label>
+
+                            <div class="col-sm-12 map-field">
+                                <textarea class="addScrollToTextArea form-control" rows="3" spellcheck="false" id="metric-calculations-{{$index}}" mentio mentio-select="getPeopleText(item)"
+                                          type="text"
+                                          mentio-trigger-char="'['" mentio-macros="macros"
+                                          mentio-typed-text="typedTerm" mentio class="form-control"
+                                          mentio-items="fieldNumberByMetrics | filter:label:typedTerm"
+                                          ng-model="reportBuilder.metricCalculations[item.key]" placeholder="Expression"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <div class="col-sm-offset-1quarter col-sm-5">
                         <button ng-if="!reportBuilder.id" ng-disabled="!isFormRunValid()" type="submit" class="btn btn-success mce-i-indent" ng-click="getReports()">Run Report</button>

@@ -19,6 +19,7 @@
         $scope.summaryFieldTotal = [];
         $scope.fieldsHaveDateType = [];
         $scope.fieldsHaveNumberType = [];
+        $scope.fieldNumberByMetrics = [];
         $scope.selectedAndAddedFieldsInTransform = [];
 
         $scope.isNew = reportView === null;
@@ -55,8 +56,13 @@
             multiView: false,
             subReportsIncluded: false,
             isShowDataSetName: false,
-            enableCustomDimensionMetric: false
+            enableCustomDimensionMetric: false,
+            metricCalculations:{}
         };
+
+        if(!$scope.isNew && angular.isArray($scope.reportBuilder.metricCalculations)) {
+            $scope.reportBuilder.metricCalculations = {}
+        }
 
         if(!$scope.isNew && !!reportView.id &&$scope.reportBuilder.multiView) {
             angular.forEach($scope.reportBuilder.reportViewMultiViews, function (reportViewMultiView) {
@@ -105,6 +111,23 @@
         $scope.getNameDataSet = getNameDataSet;
         $scope.isFormRunValid = isFormRunValid;
         $scope.isFormSaveValid = isFormSaveValid;
+        $scope.isGroup = isGroup;
+        
+        function isGroup() {
+            for (var i in $scope.reportBuilder.transforms) {
+                var transform = $scope.reportBuilder.transforms[i];
+                if(transform.type == 'groupBy') {
+                    return true
+                }
+            }
+
+            return false
+        }
+
+        $scope.getPeopleText = function (item) {
+            // note item.label is sent when the typedText wasn't found
+            return '[' + item.label + ']';
+        };
 
         function isFormRunValid() {
             return isFormValid()
@@ -316,6 +339,7 @@
                 alias: reportBuilder.alias,
                 reportView: reportBuilder.id,
                 fieldTypes: angular.toJson(reportBuilder.fieldTypes),
+                metricCalculations: angular.toJson(reportBuilder.metricCalculations),
                 multiView: reportBuilder.multiView,
                 subReportsIncluded: reportBuilder.subReportsIncluded,
                 isShowDataSetName: reportBuilder.isShowDataSetName,
@@ -392,6 +416,7 @@
             $scope.selectedFields = [];
             $scope.fieldsHaveDateType = [];
             $scope.fieldsHaveNumberType = [];
+            $scope.fieldNumberByMetrics = [];
 
             var totalDimensions = [];
 
@@ -462,6 +487,7 @@
             updateSelectedAndAddedFieldsInTransform();
             _fieldsHaveDateType();
             _fieldsHaveNumberType();
+            _fieldNumberByMetrics();
             _removeFieldNotSelectInTransform();
             _removeFieldNotSelectInFormat();
         }
@@ -566,6 +592,7 @@
             $scope.dimensionsMetrics = {};
             $scope.fieldsHaveDateType = [];
             $scope.fieldsHaveNumberType = [];
+            $scope.fieldNumberByMetrics = [];
 
             angular.forEach($scope.reportBuilder.reportViewMultiViews, function (item) {
                 $scope.selectedFields = $scope.selectedFields.concat(item.fields);
@@ -668,6 +695,7 @@
             updateSelectedAndAddedFieldsInTransform();
             _fieldsHaveDateType();
             _fieldsHaveNumberType();
+            _fieldNumberByMetrics();
             _removeFieldNotSelectInTransform();
             _removeFieldNotSelectInFormat();
         }
@@ -763,9 +791,11 @@
             //reset field
             $scope.fieldsHaveDateType = [];
             $scope.fieldsHaveNumberType = [];
+            $scope.fieldNumberByMetrics = [];
 
             _fieldsHaveDateType();
             _fieldsHaveNumberType();
+            _fieldNumberByMetrics();
             _removeFieldNotSelectInFormat();
         }
 
@@ -796,6 +826,24 @@
 
                         if (index == -1) {
                             $scope.fieldsHaveNumberType.push(metric)
+                        }
+                    }
+                }
+            });
+        }
+
+        function _fieldNumberByMetrics() {
+            var fields = $scope.selectedFields;
+
+            angular.forEach(fields, function (metric) {
+                if (!!metric && (metric.type == 'number' || metric.type == 'decimal')) {
+                    if(!!metric.key && metric.key.indexOf('__') == -1 && (metric.key.indexOf('_day') == -1 || metric.key.indexOf('_month') == -1 || metric.key.indexOf('_year') == -1)) {
+                        var index = _.findIndex($scope.fieldNumberByMetrics, function (field) {
+                            return field.key == metric.key
+                        });
+
+                        if (index == -1) {
+                            $scope.fieldNumberByMetrics.push(metric)
                         }
                     }
                 }
@@ -935,6 +983,21 @@
                     })
 
                 }
+            });
+
+            angular.forEach(reportBuilder.metricCalculations, function (metric, key) {
+                angular.forEach($scope.fieldsHaveNumberType, function replace(field) {
+                    if (!metric || !angular.isString(metric)) {
+                        return;
+                    }
+
+                    if(field.label == field.key) {
+                        return
+                    }
+
+                    var regExp = new RegExp(field.label.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "g");
+                    reportBuilder.metricCalculations[key] = reportBuilder.metricCalculations[key].replace(regExp, field.key);
+                });
             });
 
             angular.forEach(reportBuilder.joinBy, function (join) {
@@ -1410,6 +1473,17 @@
 
                     }
                 });
+
+                angular.forEach($scope.reportBuilder.metricCalculations, function (metric, key) {
+                    angular.forEach($scope.fieldsHaveNumberType, function replace(dm) {
+                        if (!metric || !angular.isString(metric)) {
+                            return;
+                        }
+
+                        var regExp = new RegExp(dm.key.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "g");
+                        $scope.reportBuilder.metricCalculations[key] = $scope.reportBuilder.metricCalculations[key].replace(regExp, dm.label);
+                    });
+                })
             }
         }, 0);
     }

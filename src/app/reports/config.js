@@ -18,23 +18,34 @@
                             adTag : [
                                 {
                                     key : 'totalOpportunities',
-                                    label: 'Network Opportunities',
+                                    label: 'Network Ops',
                                     show: true
                                 },
                                 {
                                     key : 'adOpportunities',
-                                    label: 'Ad Opportunities',
+                                    label: 'Ad Ops',
                                     show: true
                                 },
                                 {
                                     key: 'firstOpportunities',
-                                    label: 'First Opportunities',
+                                    label: 'First Ops',
+                                    show: true,
+                                    hideForNativeAdSlot: true
+                                },
+                                {
+                                    key: 'passbacks',
+                                    label: 'Passbacks',
                                     show: true,
                                     hideForNativeAdSlot: true
                                 },
                                 {
                                     key: 'impressions',
-                                    label: 'Impressions',
+                                    label: 'Est. Impressions',
+                                    show: true
+                                },
+                                {
+                                    key: 'networkOpportunityFillRate',
+                                    label: 'Network Opportunity Fill Rate',
                                     show: true
                                 },
                                 //{
@@ -46,15 +57,31 @@
                                 {
                                     key: 'unverifiedImpressions',
                                     label: 'Unverified Impressions',
-                                    show: true,
+                                    show: false,
+                                    hideForNativeAdSlot: true
+                                },
+                                // {
+                                //     key: 'blankImpressions',
+                                //     label: 'Blank Impressions',
+                                //     show: true,
+                                //     hideForNativeAdSlot: true,
+                                //     hideForAdmin: true
+                                // },
+                                {
+                                    key: 'clicks',
+                                    label: 'Clicks',
+                                    show: false,
                                     hideForNativeAdSlot: true
                                 },
                                 {
-                                    key: 'blankImpressions',
-                                    label: 'Blank Impressions',
-                                    show: true,
-                                    hideForNativeAdSlot: true,
-                                    hideForAdmin: true
+                                    key: 'fillRate',
+                                    label: 'Fill Rate',
+                                    show: false
+                                },
+                                {
+                                    key: 'refreshes',
+                                    label: 'Refreshes',
+                                    show: true
                                 },
                                 {
                                     key: 'voidImpressions',
@@ -62,28 +89,6 @@
                                     show: true,
                                     hideForNativeAdSlot: true,
                                     hideForAdmin: true
-                                },
-                                {
-                                    key: 'clicks',
-                                    label: 'Clicks',
-                                    show: true,
-                                    hideForNativeAdSlot: true
-                                },
-                                {
-                                    key: 'passbacks',
-                                    label: 'Passbacks',
-                                    show: true,
-                                    hideForNativeAdSlot: true
-                                },
-                                {
-                                    key: 'fillRate',
-                                    label: 'Fill Rate',
-                                    show: true
-                                },
-                                {
-                                    key: 'refreshes',
-                                    label: 'Refreshes',
-                                    show: true
                                 }
                             ]
                         },

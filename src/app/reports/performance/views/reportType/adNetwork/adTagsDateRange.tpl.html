@@ -27,12 +27,12 @@
                     <th at-attribute="firstOpportunities" ng-show="showConfigForPerformanceByAdTag('firstOpportunities')">{{ 'REPORT.FIRST_OPPORTUNITIES' | translate }}</th>
                     <th at-attribute="impressions" ng-show="showConfigForPerformanceByAdTag('impressions')">{{ 'REPORT.IMPRESSIONS' | translate }}</th>
                     <!--<th at-attribute="verifiedImpressions" ng-show="showConfigForPerformanceByAdTag('verifiedImpressions')">{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}</th>-->
-                    <th at-attribute="unverifiedImpressions" ng-show="showConfigForPerformanceByAdTag('unverifiedImpressions')">{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}</th>
-                    <th at-attribute="blankImpressions" ng-show="isAdmin">{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}</th>
+                    <th at-attribute="unverifiedImpressions" ng-show="!isAdmin && showConfigForPerformanceByAdTag('unverifiedImpressions')">{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}</th>
+                    <!--<th at-attribute="blankImpressions" ng-show="isAdmin">{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}</th>-->
                     <th at-attribute="voidImpressions" ng-show="isAdmin ">{{ 'REPORT.VOID_IMPRESSIONS' | translate }}</th>
-                    <th at-attribute="clicks" ng-show="showConfigForPerformanceByAdTag('clicks')">{{ 'REPORT.CLICKS' | translate }}</th>
+                    <th at-attribute="clicks" ng-show="!isAdmin && showConfigForPerformanceByAdTag('clicks')">{{ 'REPORT.CLICKS' | translate }}</th>
                     <th at-attribute="passbacks" ng-show="showConfigForPerformanceByAdTag('passbacks')">{{ 'REPORT.PASSBACKS' | translate }}</th>
-                    <th at-attribute="fillRate" ng-show="showConfigForPerformanceByAdTag('fillRate')">{{ 'REPORT.FILL_RATE' | translate }}</th>
+                    <th at-attribute="fillRate" ng-show="!isAdmin && showConfigForPerformanceByAdTag('fillRate')">{{ 'REPORT.FILL_RATE' | translate }}</th>
                     <th at-attribute="refreshes" ng-show="showConfigForPerformanceByAdTag('refreshes')">{{ 'REPORT.REFRESHES' | translate }}</th>
                 </tr>
                 </thead>
@@ -63,32 +63,35 @@
                     <td at-title="{{ 'REPORT.FIRST_OPPORTUNITIES' | translate }}" at-attribute="firstOpportunities" at-sortable ng-show="showConfigForPerformanceByAdTag('firstOpportunities')">
                         {{ item.firstOpportunities | number }}
                     </td>
-                    <td at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="impressions" at-sortable ng-show="showConfigForPerformanceByAdTag('impressions')">
-                        {{ item.impressions | number }}
-                    </td>
-                    <!--<td at-title="{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}" at-attribute="verifiedImpressions" at-sortable ng-show="showConfigForPerformanceByAdTag('verifiedImpressions')">-->
-                        <!--{{ item.verifiedImpressions | number }}-->
-                    <!--</td>-->
-                    <td at-title="{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}" at-attribute="unverifiedImpressions" at-sortable ng-show="showConfigForPerformanceByAdTag('unverifiedImpressions')">
-                        {{ item.unverifiedImpressions | number }}
-                    </td>
-                    <td at-title="{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}" at-attribute="blankImpressions" at-sortable ng-show="isAdmin">
-                        {{ item.blankImpressions | number }}
-                    </td>
-                    <td at-title="{{ 'REPORT.VOID_IMPRESSIONS' | translate }}" at-attribute="voidImpressions" at-sortable ng-show="isAdmin">
-                        {{ item.voidImpressions | number }}
-                    </td>
-                    <td at-title="{{ 'REPORT.CLICKS' | translate }}" at-attribute="clicks" at-sortable ng-show="showConfigForPerformanceByAdTag('clicks')">
-                        {{ item.clicks | number }}
-                    </td>
                     <td at-title="{{ 'REPORT.PASSBACKS' | translate }}" at-attribute="passbacks" at-sortable ng-show="showConfigForPerformanceByAdTag('passbacks')">
                         {{ item.passbacks | number }}
                     </td>
-                    <td at-title="{{ 'REPORT.FILL_RATE' | translate }}" at-attribute="fillRate" at-sortable ng-show="showConfigForPerformanceByAdTag('fillRate')">
+                    <td at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="impressions" at-sortable ng-show="showConfigForPerformanceByAdTag('impressions')">
+                        {{ item.impressions | number }}
+                    </td>
+                    <td at-title="{{ 'REPORT.NETWORK_OPPORTUNITY_FILL_RATE' | translate }}" at-attribute="networkOpportunityFillRate" at-sortable>
+                        {{ item.networkOpportunityFillRate | number }}
+                    </td>
+                    <!--<td at-title="{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}" at-attribute="verifiedImpressions" at-sortable ng-show="showConfigForPerformanceByAdTag('verifiedImpressions')">-->
+                    <!--{{ item.verifiedImpressions | number }}-->
+                    <!--</td>-->
+                    <td at-title="{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}" at-attribute="unverifiedImpressions" at-sortable ng-show="!isAdmin && showConfigForPerformanceByAdTag('unverifiedImpressions')">
+                        {{ item.unverifiedImpressions | number }}
+                    </td>
+                    <!--<td at-title="{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}" at-attribute="blankImpressions" at-sortable ng-show="isAdmin">-->
+                        <!--{{ item.blankImpressions | number }}-->
+                    <!--</td>-->
+                    <td at-title="{{ 'REPORT.CLICKS' | translate }}" at-attribute="clicks" at-sortable ng-show="!isAdmin && showConfigForPerformanceByAdTag('clicks')">
+                        {{ item.clicks | number }}
+                    </td>
+                    <td at-title="{{ 'REPORT.FILL_RATE' | translate }}" at-attribute="fillRate" at-sortable ng-show="!isAdmin && showConfigForPerformanceByAdTag('fillRate')">
                         {{ item.fillRate | percentage }}
                     </td>
                     <td ng-show="showConfigForPerformanceByAdTag('refreshes')" at-title="{{ 'REPORT.REFRESHES' | translate }}" at-attribute="refreshes" at-sortable>
                         {{ item.refreshes | number }}
+                    </td>
+                    <td at-title="{{ 'REPORT.VOID_IMPRESSIONS' | translate }}" at-attribute="voidImpressions" at-sortable ng-show="isAdmin">
+                        {{ item.voidImpressions | number }}
                     </td>
                     <!--<td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>-->
                         <!--{{ item.estRevenue | currency }}-->
