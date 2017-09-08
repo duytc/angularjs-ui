@@ -75,7 +75,7 @@
                         {{ item.impressions | number }}
                     </td>
                     <td ng-show="showConfigForPerformanceByAdTag('networkOpportunityFillRate')" at-title="{{ 'REPORT.NETWORK_OPPORTUNITY_FILL_RATE' | translate }}" at-attribute="networkOpportunityFillRate" at-sortable>
-                        {{ item.networkOpportunityFillRate | number }}
+                        {{ item.networkOpportunityFillRate | percentage }}
                     </td>
                     <!--<td ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('verifiedImpressions')" at-title="{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}" at-attribute="verifiedImpressions" at-sortable>-->
                     <!--{{ item.verifiedImpressions | number }}-->

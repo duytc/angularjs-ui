@@ -26,6 +26,7 @@
                     <th at-attribute="adOpportunities" ng-show="showConfigForPerformanceByAdTag('adOpportunities')">{{ 'REPORT.AD_OPPORTUNITIES' | translate }}</th>
                     <th at-attribute="firstOpportunities" ng-show="showConfigForPerformanceByAdTag('firstOpportunities')">{{ 'REPORT.FIRST_OPPORTUNITIES' | translate }}</th>
                     <th at-attribute="impressions" ng-show="showConfigForPerformanceByAdTag('impressions')">{{ 'REPORT.IMPRESSIONS' | translate }}</th>
+                    <th at-attribute="networkOpportunityFillRate" ng-show="showConfigForPerformanceByAdTag('networkOpportunityFillRate')">{{ 'REPORT.NETWORK_OPPORTUNITY_FILL_RATE' | translate }}</th>
                     <!--<th at-attribute="verifiedImpressions" ng-show="showConfigForPerformanceByAdTag('verifiedImpressions')">{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}</th>-->
                     <th at-attribute="unverifiedImpressions" ng-show="!isAdmin && showConfigForPerformanceByAdTag('unverifiedImpressions')">{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}</th>
                     <!--<th at-attribute="blankImpressions" ng-show="isAdmin">{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}</th>-->
@@ -69,8 +70,8 @@
                     <td at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="impressions" at-sortable ng-show="showConfigForPerformanceByAdTag('impressions')">
                         {{ item.impressions | number }}
                     </td>
-                    <td at-title="{{ 'REPORT.NETWORK_OPPORTUNITY_FILL_RATE' | translate }}" at-attribute="networkOpportunityFillRate" at-sortable>
-                        {{ item.networkOpportunityFillRate | number }}
+                    <td ng-show="showConfigForPerformanceByAdTag('networkOpportunityFillRate')" at-title="{{ 'REPORT.NETWORK_OPPORTUNITY_FILL_RATE' | translate }}" at-attribute="networkOpportunityFillRate" at-sortable>
+                        {{ item.networkOpportunityFillRate | percentage }}
                     </td>
                     <!--<td at-title="{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}" at-attribute="verifiedImpressions" at-sortable ng-show="showConfigForPerformanceByAdTag('verifiedImpressions')">-->
                     <!--{{ item.verifiedImpressions | number }}-->

@@ -28,8 +28,10 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li><a ng-click="revokeShare(item)">Revoke</a></li>
                                 <li><a ng-click="getShareableLink(item)">Get Shareable Link</a></li>
+                                <li class="divider"></li>
+                                <li><a ng-click="revokeShare(item)">Revoke</a></li>
+                                <li><a ng-click="editShareableLink(item)">Edit Shareable Link</a></li>
                             </ul>
                         </div>
                     </td>
@@ -40,7 +42,7 @@
                         </ul>
                     </td>
                     <td at-title="Date Range" at-attribute="fields.dateRange">
-                        {{ !!item.fields.dateRange.startDate ? (item.fields.dateRange.startDate + ' - ' + item.fields.dateRange.endDate) : null }}
+                        <div style=" text-transform: capitalize;">{{ showDateRange(item) }}</div>
                     </td>
                     <td at-title="Date Created" at-sortable at-attribute="fields.dateCreated">
                         {{ item.fields.dateCreated | date:'MMM d, y H:mm:ss' }}

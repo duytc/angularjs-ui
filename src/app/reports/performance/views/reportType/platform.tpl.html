@@ -43,7 +43,7 @@
                         {{ item.impressions | number }}
                     </td>
                     <td at-title="{{ 'REPORT.OPPORTUNITY_FILL_RATE' | translate }}" at-attribute="opportunityFillRate" at-sortable>
-                        {{ item.opportunityFillRate | number }}
+                        {{ item.opportunityFillRate | percentage }}
                     </td>
                     <td at-title="{{ 'REPORT.FILL_RATE' | translate }}" at-attribute="fillRate" at-sortable>
                         {{ item.fillRate | percentage }}

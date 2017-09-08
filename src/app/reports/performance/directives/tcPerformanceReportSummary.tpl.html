@@ -38,11 +38,11 @@
                     </li>
                     <li ng-if="exist(reportGroup.opportunityFillRate)">
                         <label>{{ 'REPORT.OPPORTUNITY_FILL_RATE' | translate }}</label>
-                        <span class="pull-right">{{ reportGroup.opportunityFillRate | number }}</span>
+                        <span class="pull-right">{{ reportGroup.opportunityFillRate | percentage }}</span>
                     </li>
                     <li ng-if="exist(reportGroup.networkOpportunityFillRate)">
                         <label>{{ 'REPORT.NETWORK_OPPORTUNITY_FILL_RATE' | translate }}</label>
-                        <span class="pull-right">{{ reportGroup.networkOpportunityFillRate | number }}</span>
+                        <span class="pull-right">{{ reportGroup.networkOpportunityFillRate | percentage }}</span>
                     </li>
                     <!--<li ng-if="exist(reportGroup.verifiedImpressions)">-->
                     <!--<label>{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}</label>-->
@@ -111,11 +111,11 @@
                     </li>
                     <li ng-if="exist(reportGroup.averageOpportunityFillRate)">
                         <label>{{ 'REPORT.OPPORTUNITY_FILL_RATE' | translate }}</label>
-                        <span class="pull-right">{{ reportGroup.averageOpportunityFillRate | number }}</span>
+                        <span class="pull-right">{{ reportGroup.averageOpportunityFillRate | percentage }}</span>
                     </li>
                     <li ng-if="exist(reportGroup.averageNetworkOpportunityFillRate)">
                         <label>{{ 'REPORT.NETWORK_OPPORTUNITY_FILL_RATE' | translate }}</label>
-                        <span class="pull-right">{{ reportGroup.averageNetworkOpportunityFillRate | number }}</span>
+                        <span class="pull-right">{{ reportGroup.averageNetworkOpportunityFillRate | percentage }}</span>
                     </li>
                     <!--<li ng-if="exist(reportGroup.averageVerifiedImpressions)">-->
                     <!--<label>{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}</label>-->
