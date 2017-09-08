@@ -72,6 +72,13 @@
             })
         }
 
+        if(!$scope.isNew) {
+            AlertService.addAlertNotRemove({
+                type: 'warning',
+                message: 'This report view may have multiple shareable reports. Modifying this report view will result in the changes being propagated to all shareable reports of this report view.'
+            });
+        }
+
         $scope.$watch(function () {
             return $scope.reportBuilder.reportViewDataSets;
         }, watchDataSet, true);

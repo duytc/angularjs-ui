@@ -37,7 +37,8 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-success mce-i-indent" ng-click="getShareableLink()">Get Shareable Link</button>
+        <button ng-if="isNew" type="submit" ng-disabled="fieldsToShare.length == 0" class="btn btn-success mce-i-indent" ng-click="getShareableLink()">Get Shareable Link</button>
+        <button ng-if="!isNew" type="submit" ng-disabled="fieldsToShare.length == 0" class="btn btn-success mce-i-indent" ng-click="saveShareableLink()">Save Shareable Link</button>
     </form>
 
 

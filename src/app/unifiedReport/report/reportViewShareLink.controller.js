@@ -22,7 +22,36 @@
         $scope.backToListReportView = backToListReportView;
         $scope.showPagination = showPagination;
         $scope.getShareableLink = getShareableLink;
+        $scope.editShareableLink = editShareableLink;
+        $scope.showDateRange = showDateRange;
         
+        function showDateRange(item) {
+            if(angular.isString(item.fields.dateRange)) {
+                return item.fields.dateRange
+            }
+
+            return !!item.fields.dateRange.startDate ? (item.fields.dateRange.startDate + ' - ' + item.fields.dateRange.endDate) : null
+        }
+
+        function editShareableLink(shareable) {
+            $modal.open({
+                templateUrl: 'unifiedReport/report/getShareableLink.tpl.html',
+                size: 'lg',
+                resolve: {
+                    fieldsReportView: function (unifiedReportBuilder) {
+                        return unifiedReportBuilder.summaryFieldsReportView(reportView)
+                    },
+                    reportView: function () {
+                        return reportView
+                    },
+                    shareable: function () {
+                        return shareable
+                    }
+                },
+                controller: 'GetShareableLink'
+            });
+        }
+
         function getShareableLink(item) {
             UnifiedReportViewManager.one(reportView.id).one('shareablelink').get({token: item.token})
             .then(function (shareableLink) {
