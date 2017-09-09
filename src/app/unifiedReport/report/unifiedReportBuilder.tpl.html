@@ -119,20 +119,42 @@
                 </div>
 
                 <div class="form-group" ng-if="(reportBuilder.enableCustomDimensionMetric || isGroup()) && !reportBuilder.multiView">
-                    <label for="enableCustomDimensionMetric" class="col-sm-1quarter control-label">Metric Calculations</label>
-                    <div class="col-sm-5">
-                        <div class="form-group" ng-repeat="item in fieldNumberByMetrics">
-                            <label class="col-sm-12 form-control-static">{{ item.label }}:</label>
-
-                            <div class="col-sm-12 map-field">
-                                <textarea class="addScrollToTextArea form-control" rows="3" spellcheck="false" id="metric-calculations-{{$index}}" mentio mentio-select="getPeopleText(item)"
-                                          type="text"
-                                          mentio-trigger-char="'['" mentio-macros="macros"
-                                          mentio-typed-text="typedTerm" mentio class="form-control"
-                                          mentio-items="fieldNumberByMetrics | filter:label:typedTerm"
-                                          ng-model="reportBuilder.metricCalculations[item.key]" placeholder="Expression"></textarea>
+                    <label for="enableCustomDimensionMetric" class="col-sm-1quarter control-label">Aggregate Metrics</label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div ng-repeat="item in fieldNumberByMetrics" class="col-sm-3">
+                                <label class="ui-checkbox"><input server-error name="{{ item.key }}" type="checkbox" ng-click="clickMetricCalculation(item.key)" ng-checked="hasMetricCalculation(item.key)"><span>{{ item.label }}</span></label>
                             </div>
                         </div>
+
+                        <!--<div class="form-group" ng-repeat="item in fieldNumberByMetrics">-->
+                            <!--<label class="col-sm-2 form-control-static">{{ item.label }}:</label>-->
+
+                            <!--<div class="col-sm-10">-->
+                                <!--<div class="col-sm-3 map-field select-connect-data-source" ng-init="reportBuilder.metricCalculations[item.key] = reportBuilder.metricCalculations[item.key] || '$$SUM$$'">-->
+                                    <!--<ui-select name="dataSource" id="inputDataSource" ng-model="reportBuilder.metricCalculations[item.key]" ng-required="true" server-error on-select="selectCalculationOptions($item, item.key)">-->
+                                        <!--<ui-select-match placeholder="Select a option">{{ $select.selected.label }}</ui-select-match>-->
+                                        <!--<ui-select-choices repeat="option.key as option in calculationOptions | filter:$select.search">-->
+                                            <!--{{ option.label }}-->
+                                        <!--</ui-select-choices>-->
+                                    <!--</ui-select>-->
+                                <!--</div>-->
+
+                                <!--<div class="col-sm-9 map-field" ng-if="reportBuilder.metricCalculations[item.key] == 'advanced'">-->
+                                    <!--<textarea class="addScrollToTextArea form-control" rows="3" spellcheck="false" id="metric-calculations-{{$index}}" mentio mentio-select="getPeopleText(item)"-->
+                                              <!--type="text" ng-required="true"-->
+                                              <!--mentio-trigger-char="'['" mentio-macros="macros"-->
+                                              <!--mentio-typed-text="typedTerm" mentio class="form-control"-->
+                                              <!--mentio-items="fieldNumberByMetrics | filter:label:typedTerm"-->
+                                              <!--ng-model="metricCalculations[item.key]" placeholder="Type your SQL query here"></textarea>-->
+                                <!--</div>-->
+
+                                <!--<div class="col-sm-9 map-field" ng-if="reportBuilder.metricCalculations[item.key] != 'advanced'">-->
+                                   <!--<span class="help-block" ng-if="reportBuilder.metricCalculations[item.key] == '$$SUM$$'">The result is created by aggregating all sub values</span>-->
+                                   <!--<span class="help-block" ng-if="reportBuilder.metricCalculations[item.key] == '$$WHITE_LIST$$'">Get the first matched value while grouping</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
                     </div>
                 </div>
 

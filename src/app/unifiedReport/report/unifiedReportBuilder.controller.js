@@ -57,12 +57,14 @@
             subReportsIncluded: false,
             isShowDataSetName: false,
             enableCustomDimensionMetric: false,
-            metricCalculations:{}
+            metricCalculations: []
         };
 
-        if(!$scope.isNew && angular.isArray($scope.reportBuilder.metricCalculations)) {
-            $scope.reportBuilder.metricCalculations = {}
-        }
+        // $scope.metricCalculations = {};
+
+        // if(!$scope.isNew && angular.isArray($scope.reportBuilder.metricCalculations)) {
+        //     $scope.reportBuilder.metricCalculations = {}
+        // }
 
         if(!$scope.isNew && !!reportView.id &&$scope.reportBuilder.multiView) {
             angular.forEach($scope.reportBuilder.reportViewMultiViews, function (reportViewMultiView) {
@@ -72,12 +74,11 @@
             })
         }
 
-        if(!$scope.isNew) {
-            AlertService.addAlertNotRemove({
-                type: 'warning',
-                message: 'This report view may have multiple shareable reports. Modifying this report view will result in the changes being propagated to all shareable reports of this report view.'
-            });
-        }
+        $scope.calculationOptions = [
+            {key: '$$SUM$$', label: 'SUM'},
+            {key: '$$WHITE_LIST$$', label: 'White List'},
+            {key: 'advanced', label: 'Advanced'}
+        ];
 
         $scope.$watch(function () {
             return $scope.reportBuilder.reportViewDataSets;
@@ -119,6 +120,28 @@
         $scope.isFormRunValid = isFormRunValid;
         $scope.isFormSaveValid = isFormSaveValid;
         $scope.isGroup = isGroup;
+        $scope.clickMetricCalculation = clickMetricCalculation;
+        $scope.hasMetricCalculation = hasMetricCalculation;
+
+        function clickMetricCalculation(field) {
+            var index = $scope.reportBuilder.metricCalculations.indexOf(field);
+
+            if (index == -1) {
+                $scope.reportBuilder.metricCalculations.push(field);
+            } else {
+                $scope.reportBuilder.metricCalculations.splice(index, 1);
+            }
+        }
+
+        function hasMetricCalculation(filed) {
+            return $scope.reportBuilder.metricCalculations.indexOf(filed) > -1;
+        }
+
+        // $scope.selectCalculationOptions = selectCalculationOptions;
+        //
+        // function selectCalculationOptions(option, field) {
+        //     $scope.metricCalculations[field] = null
+        // }
         
         function isGroup() {
             for (var i in $scope.reportBuilder.transforms) {
@@ -992,20 +1015,26 @@
                 }
             });
 
-            angular.forEach(reportBuilder.metricCalculations, function (metric, key) {
-                angular.forEach($scope.fieldsHaveNumberType, function replace(field) {
-                    if (!metric || !angular.isString(metric)) {
-                        return;
-                    }
-
-                    if(field.label == field.key) {
-                        return
-                    }
-
-                    var regExp = new RegExp(field.label.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "g");
-                    reportBuilder.metricCalculations[key] = reportBuilder.metricCalculations[key].replace(regExp, field.key);
-                });
-            });
+            // angular.forEach(reportBuilder.metricCalculations, function (metric, key) {
+            //     if(reportBuilder.metricCalculations[key] == 'advanced') {
+            //         reportBuilder.metricCalculations[key] = $scope.metricCalculations[key];
+            //     }
+            //
+            //     angular.forEach($scope.fieldsHaveNumberType, function replace(field) {
+            //         if (!metric || !angular.isString(metric)) {
+            //             return;
+            //         }
+            //
+            //         if(field.label == field.key) {
+            //             return
+            //         }
+            //
+            //         if(!!reportBuilder.metricCalculations[key]) {
+            //             var regExp = new RegExp(field.label.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "g");
+            //             reportBuilder.metricCalculations[key] = reportBuilder.metricCalculations[key].replace(regExp, field.key);
+            //         }
+            //     });
+            // });
 
             angular.forEach(reportBuilder.joinBy, function (join) {
                 angular.forEach(join.joinFields, function (field) {
@@ -1481,16 +1510,23 @@
                     }
                 });
 
-                angular.forEach($scope.reportBuilder.metricCalculations, function (metric, key) {
-                    angular.forEach($scope.fieldsHaveNumberType, function replace(dm) {
-                        if (!metric || !angular.isString(metric)) {
-                            return;
-                        }
-
-                        var regExp = new RegExp(dm.key.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "g");
-                        $scope.reportBuilder.metricCalculations[key] = $scope.reportBuilder.metricCalculations[key].replace(regExp, dm.label);
-                    });
-                })
+                // angular.forEach($scope.reportBuilder.metricCalculations, function (metric, key) {
+                //     if(_.findIndex($scope.calculationOptions, {key: $scope.reportBuilder.metricCalculations[key]}) == -1) {
+                //         $scope.metricCalculations[key] = angular.copy($scope.reportBuilder.metricCalculations[key]);
+                //         $scope.reportBuilder.metricCalculations[key] = 'advanced';
+                //     } else {
+                //         $scope.metricCalculations[key] = $scope.reportBuilder.metricCalculations[key];
+                //     }
+                //
+                //     angular.forEach($scope.fieldsHaveNumberType, function replace(dm) {
+                //         if (!metric || !angular.isString(metric)) {
+                //             return;
+                //         }
+                //
+                //         var regExp = new RegExp(dm.key.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "g");
+                //         $scope.metricCalculations[key] = $scope.metricCalculations[key].replace(regExp, dm.label);
+                //     });
+                // })
             }
         }, 0);
     }
