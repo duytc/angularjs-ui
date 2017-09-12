@@ -18,8 +18,8 @@
              * @param {Array} [tagDomain]
              * @param {string} [serveTime]
              */
-            createNew: function(token, id, username, userRoles, enabledModules, demandSourceTransparency, enableViewTagcadeReport, tagDomain,  serveTime) {
-                return new Session(token, id, username, userRoles, enabledModules, demandSourceTransparency, enableViewTagcadeReport, tagDomain, serveTime);
+            createNew: function(token, id, username, userRoles, enabledModules, demandSourceTransparency, enableViewTagcadeReport, tagDomain,  serveTime, is2ndLogin) {
+                return new Session(token, id, username, userRoles, enabledModules, demandSourceTransparency, enableViewTagcadeReport, tagDomain, serveTime, is2ndLogin);
             },
 
             /**
@@ -38,7 +38,7 @@
                     throw new Error('missing username');
                 }
 
-                return this.createNew(data.token, data.id, data.username, data.userRoles, data.enabledModules, data.demandSourceTransparency, data.enableViewTagcadeReport, data.tagDomain, data.serveTime);
+                return this.createNew(data.token, data.id, data.username, data.userRoles, data.enabledModules, data.demandSourceTransparency, data.enableViewTagcadeReport, data.tagDomain, data.serveTime, data.is2ndLogin);
             },
 
             isSession: function(session) {
@@ -46,12 +46,13 @@
             }
         };
 
-        function Session(token, id, username, userRoles, enabledModules, demandSourceTransparency, enableViewTagcadeReport, tagDomain, serveTime) {
+        function Session(token, id, username, userRoles, enabledModules, demandSourceTransparency, enableViewTagcadeReport, tagDomain, serveTime, is2ndLogin) {
             this.token = token;
             this.id = parseInt(id, 10) || null;
             this.username = username;
             this.tagDomain = tagDomain;
             this.serveTime = serveTime;
+            this.is2ndLogin = is2ndLogin;
 
             // demandSourceTransparency is enabled if current user is not sub publisher
             this.demandSourceTransparency = userRoles.indexOf(USER_ROLES.subPublisher) > - 1 ? demandSourceTransparency : true;

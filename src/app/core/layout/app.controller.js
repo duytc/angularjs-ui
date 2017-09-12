@@ -17,6 +17,7 @@
         $scope.hasHeaderBidding = userSession.hasModuleEnabled(USER_MODULES.headerBidding);
         $scope.hasInBannerModule = userSession.hasModuleEnabled(USER_MODULES.inBanner);
 
+        $scope.is2ndLogin = userSession.is2ndLogin;
         $scope.onlyDisplayAdsModule = userSession.enabledModules.length == 1 && userSession.enabledModules.indexOf(USER_MODULES.displayAds) > -1;
         $scope.onlyVideoAdsModule = userSession.enabledModules.length == 1 && userSession.enabledModules.indexOf(USER_MODULES.videoAds) > -1;
 
