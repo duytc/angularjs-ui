@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.dataSet')
         .controller('mapBuilderForm', mapBuilderForm);
 
-    function mapBuilderForm($scope, $modal, $stateParams, dataRows, dataSet, mapBuilderDataSet, UnifiedReportDataSetManager, HISTORY_TYPE_PATH, historyStorage) {
+    function mapBuilderForm($scope, $modal, $stateParams, AlertService, dataRows, dataSet, mapBuilderDataSet, UnifiedReportDataSetManager, HISTORY_TYPE_PATH, historyStorage) {
         $scope.dataRows = dataRows;
         $scope.rows = dataRows.records;
         $scope.dataSet = dataSet;
@@ -248,7 +248,7 @@
                         }
 
                         if($scope.selectedData.showUnmapped) {
-                            filters.push({field: "__is_associated", type: "number", comparison: "equal", compareValue: '0'})
+                            filters.push({field: "__is_associated", type: "number", comparison: "equal", compareValue: '0'}, {field: "__is_mapped", type: "number", comparison: "equal", compareValue:"0"})
                         }
                     }
 

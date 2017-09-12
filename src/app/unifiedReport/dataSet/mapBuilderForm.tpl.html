@@ -75,7 +75,7 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li ng-if="row.__is_associated == '0' && row.__is_ignored == '0'"><a ng-click="actionAssociate(row)">Associate</a></li>
+                                <li><a ng-click="actionAssociate(row)">Associate</a></li>
                                 <li ng-if="row.__is_ignored == '0'"><a ng-click="actionIgnore(row)">Ignore</a></li>
                                 <li ng-if="row.__is_associated == '1'"><a ng-click="actionRemoveAssociate(row)">Remove Associate</a></li>
                                 <li ng-if="row.__is_ignored == '1'"><a ng-click="actionUndoIgnore(row)">Undo Ignore</a></li>
@@ -84,7 +84,10 @@
                     </td>
 
                     <td ng-repeat="column in columns">
-                        <span ng-if="!isNullValue(row, column)"> {{ row[column]}} </span>
+                        <div ng-if="!isNullValue(row, column)">
+                            <i ng-if="column == '__is_mapped'" class="fa" ng-class="row[column] == '1'? 'fa-check-square' : 'fa-square'"></i>
+                            <span ng-if="column != '__is_mapped'">{{ row[column] }}</span>
+                        </div>
                     </td>
                 </tr>
                 </tbody>
