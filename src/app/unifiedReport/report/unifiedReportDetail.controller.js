@@ -449,29 +449,31 @@
                         var join = $scope.reportView.joinBy[x];
                         if(!_joinIsMetrics(join, totalMetrics)) {
                             if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == join.outputField }) == -1 && !!join.outputField) {
-                                $scope.dimensions.push({name: join.outputField , label: join.outputField, ticked: true});
+                                $scope.dimensions.push({name: join.outputField , label: $scope.titleColumnsForSelect[join.outputField] || join.outputField, ticked: join.isVisible});
                             }
                         } else {
                             if(_.findIndex($scope.metrics, function (metric) { return metric.name == join.outputField }) == -1 && !!join.outputField) {
-                                $scope.metrics.push({name: join.outputField , label: join.outputField, ticked: true});
+                                $scope.metrics.push({name: join.outputField , label: $scope.titleColumnsForSelect[join.outputField] || join.outputField, ticked: join.isVisible});
                             }
                         }
                     }
 
-                    if(totalDimensions.indexOf(key) > -1 || key == 'report_view_alias') {
-                        if(dimensions.indexOf(col) == -1) {
-                            dimensions.push(col);
+                    if(hasJoin == -1) {
+                        if(totalDimensions.indexOf(key) > -1 || key == 'report_view_alias') {
+                            if(dimensions.indexOf(col) == -1) {
+                                dimensions.push(col);
 
-                            if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == col }) == -1 && !$scope.reportView.multiView) {
-                                $scope.dimensions.push({name: col, label: $scope.titleColumnsForSelect[col], ticked: true});
+                                if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == col }) == -1 && !$scope.reportView.multiView) {
+                                    $scope.dimensions.push({name: col, label: $scope.titleColumnsForSelect[col], ticked: true});
+                                }
                             }
-                        }
-                    } else {
-                        if(metrics.indexOf(col) == -1) {
-                            metrics.push(col);
+                        } else {
+                            if(metrics.indexOf(col) == -1) {
+                                metrics.push(col);
 
-                            if(_.findIndex($scope.metrics, function (dimension) { return dimension.name == col }) == -1) {
-                                $scope.metrics.push({name: col, label: $scope.titleColumnsForSelect[col], ticked: true});
+                                if(_.findIndex($scope.metrics, function (dimension) { return dimension.name == col }) == -1) {
+                                    $scope.metrics.push({name: col, label: $scope.titleColumnsForSelect[col], ticked: true});
+                                }
                             }
                         }
                     }

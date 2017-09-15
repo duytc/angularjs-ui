@@ -456,7 +456,7 @@
 
         function backToListDemandAdTag() {
             if (!!$stateParams.demandPartnerId) {
-                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.libraryDemandAdTag, '^.listByDemandPartner');
+                return historyStorage.getLocationPath(HISTORY_TYPE_PATH.libraryDemandAdTag, '^.listByDemandPartner' , {id: $stateParams.demandPartnerId});
             }
 
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.libraryDemandAdTag, '^.list');

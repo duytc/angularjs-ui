@@ -5,7 +5,7 @@
         .directive('filterMapBuilder', filterMapBuilder)
     ;
 
-    function filterMapBuilder($compile, COMPARISON_TYPES_FILTER_CONNECT_NUMBER, COMPARISON_TYPES_FILTER_CONNECT_TEXT) {
+    function filterMapBuilder($compile, $filter, COMPARISON_TYPES_FILTER_CONNECT_NUMBER, COMPARISON_TYPES_FILTER_CONNECT_TEXT) {
         'use strict';
 
         return {
@@ -20,6 +20,10 @@
                 var content, directive;
                 content = element.contents().remove();
                 return function (scope, element, attrs) {
+                    scope.dataFields = $filter('filter')(scope.fields, function (field) {
+                        return field.key != '__is_mapped' && !!field.label
+                    });
+
                     scope.dateTypes = [
                         {key: 'Fixed Date Range', value: 'customRange'},
                         {key: 'Dynamic', value: 'dynamic'}
