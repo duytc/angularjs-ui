@@ -65,7 +65,6 @@
         $scope.showPagination = showPagination;
         $scope.isNullValue = isNullValue;
         $scope.selectEntity = selectEntity;
-        $scope.checkedSide = checkedSide;
         $scope.submit = submit;
         
         function submit() {
@@ -97,7 +96,6 @@
                 } else {
                     $scope.data.rightSide.push({
                         __unique_id: row.__unique_id,
-                        __id: row.__id,
                         __is_associated: row.__is_associated == '1'
                     })
                 }
@@ -109,19 +107,10 @@
                 } else {
                     $scope.data.leftSide.push({
                         __unique_id: row.__unique_id,
-                        __id: row.__id,
                         __is_associated: row.__is_associated == '1'
                     })
                 }
             }
-        }
-
-        function checkedSide(row) {
-            if(leftSide) {
-                return $scope.data.leftSide.indexOf(row.__id) > -1
-            }
-
-            return $scope.data.rightSide.indexOf(row.__id) > -1
         }
 
         function isShow(sortColumn) {
