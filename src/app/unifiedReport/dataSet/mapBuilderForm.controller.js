@@ -148,6 +148,12 @@
         function actionRemoveAssociate(row) {
             UnifiedReportDataSetManager.one($scope.dataSet.id).post('unmatching', {rowId: row.__id, __is_left_side: row.__is_left_side})
                 .then(function() {
+                    $scope.tableConfig.totalItems = $scope.tableConfig.totalItems - 1;
+
+                    if($scope.availableOptions.currentPage > Math.ceil($scope.tableConfig.totalItems/10)) {
+                        params.page = params.page -1;
+                    }
+
                     __getDataRows(params);
 
                     AlertService.replaceAlerts({
