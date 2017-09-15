@@ -25,7 +25,7 @@
 
             <tbody>
                 <tr dir-paginate="row in rows | itemsPerPage:tableConfig.itemsPerPage">
-                    <td><label class="ui-checkbox"><input type="checkbox" ng-model="selectEntity[row.__unique_id]" ng-checked="checkedSide(row)" ng-click="selectEntity(row, selectEntity[row.__unique_id])"><span></span></label></td>
+                    <td><label class="ui-checkbox"><input type="checkbox" ng-model="selectEntity[row.__id]" ng-click="selectEntity(row, selectEntity[row.__id])"><span></span></label></td>
 
                     <td ng-repeat="column in columns" ng-if="column != '__is_mapped'">
                         <span ng-if="!isNullValue(row, column)"> {{ row[column]}} </span>
