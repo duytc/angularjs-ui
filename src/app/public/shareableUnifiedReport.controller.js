@@ -133,7 +133,6 @@
         $scope.changePage = changePage;
         $scope.exportExcel = exportExcel;
         $scope.hasFilterDate = hasFilterDate;
-        $scope.enableSelectDaterange = enableSelectDaterange;
         $scope.generateReport = generateReport;
         $scope.showPagination = showPagination;
 
@@ -251,29 +250,6 @@
 
         function getExportExcelFileName() {
             return 'report-detail'
-        }
-
-        function enableSelectDaterange() {
-            if(!!$scope.reportView.enableCustomDimensionMetric) {
-                return true
-            }
-
-            var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
-            for (var reportViewIndex in reportViews) {
-                var reportView = reportViews[reportViewIndex];
-
-                for (var filterIndex in reportView.filters) {
-                    var filter = reportView.filters[filterIndex];
-
-                    if(filter.type == 'date' || filter.type == 'datetime') {
-                        if(filter.userProvided) {
-                            return true
-                        }
-                    }
-                }
-            }
-
-            return false;
         }
 
         function _updateColumnPositions() {

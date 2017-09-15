@@ -3,6 +3,9 @@
     Add Transformation
 </button>
 
+<span class="help-block">Please use aggregation transformation to enable dynamic dimension grouping feature on report view</span>
+<span class="help-block">Use PostAggregation to re-update metrices based on aggregated metrices</span>
+
 <!--<label ng-if="getLengthTransform()"  class="ui-checkbox enable-drag-drop-query-builder">-->
     <!--<input type="checkbox" ng-model="reorderTransformsAllowed" ng-click="enableDragDropQueryBuilder(reorderTransformsAllowed)">-->
     <!--<span>{{ 'REPORT_BUILDER_MODULE.ENABLE_DRAG_AND_DROP' | translate }}</span>-->
@@ -21,7 +24,7 @@
                 </accordion-heading>
 
                 <div class="form-group select-connect-data-source">
-                    <button type="button" class="btn btn-danger btn-close-ur" ng-click="removeTransform($index)">
+                    <button type="button" class="btn btn-danger btn-close-ur" ng-click="removeTransform($index, transform)">
                         <span class="glyphicon glyphicon-minus "></span>
                     </button>
                 </div>
@@ -590,6 +593,71 @@
                                                 <label class="col-sm-2 control-label">Replace With</label>
                                                 <div class="col-sm-10">
                                                     <input server-error name="replaceWith" ng-model="replaceText.replaceWith" type="text" class="form-control" placeholder="Replace With">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-if="transform.type == allFiledFormatTypeKeys.aggregation">
+                        <div class="form-group select-connect-data-source">
+                            <label class="col-sm-2 control-label">Fields</label>
+
+                            <div class="col-sm-10">
+                                <ui-select multiple="true" ng-model="transform.fields" ng-required="true" server-error reset-search-input="'false'">
+                                    <ui-select-match placeholder="Select a field">{{ $item.label }}</ui-select-match>
+                                    <ui-select-choices repeat="field.key as field in getFieldForAggregation(transform.fields) | filter:$select.search">
+                                        {{ field.label }}
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-if="transform.type == allFiledFormatTypeKeys.postAggregation">
+                        <div class="form-group select-connect-data-source">
+                            <label class="col-sm-2 control-label">Post Aggregation</label>
+                            <div class="col-sm-10">
+                                <div class="expressions-group">
+                                    <button class="btn btn-success" type="button" ng-click="addCalculatedField(transform.fields)">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                        Add Post Aggregation
+                                    </button>
+
+                                    <div class="expressions-group" ng-repeat="field in transform.fields">
+                                        <div class="form-group select-connect-data-source">
+                                            <button type="button" class="btn btn-danger btn-close-ur" ng-click="removeAddValue(transform.fields, $index)">
+                                                <span class="glyphicon glyphicon-minus "></span>
+                                            </button>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group select-connect-data-source">
+                                                <label class="col-sm-2 control-label">Field Name</label>
+                                                <div class="col-sm-10">
+                                                    <ui-select ng-model="field.fieldName" ng-required="true" server-error reset-search-input="'false'">
+                                                        <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                        <ui-select-choices repeat="dm.key as dm in numberFields | filter:filterFieldPostAggregation(transform, field.fieldName) | filter:$select.search">
+                                                            {{ dm.label }}
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Expression</label>
+                                                <div class="col-sm-10">
+                                                    <textarea ng-required="true" spellcheck="false" class="addScrollToTextArea form-control" rows="5" mentio mentio-select="getPeopleText(item)" ng-change="addSpaceBeforeAndAfterOperator(field)" type="text" mentio-macros="macros" mentio-trigger-char="'['" mentio-typed-text="typedTerm"
+                                                              class="form-control"
+                                                              mentio-items="fieldsCalculatedField | filter:label:typedTerm"
+                                                              ng-model="field.expression" placeholder="Expression">
+                                                    </textarea>
+
+                                                    <span class="help-block">Use character <strong>[</strong> to show list of available variables. Each variable should be inside square bracket.</span>
+                                                    <div class="callout-success expressions-transform" ng-bind-html="formatExpressionToHighlight(field)"></div>
                                                 </div>
                                             </div>
                                         </div>

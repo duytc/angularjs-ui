@@ -114,15 +114,15 @@
         var j = 0;
         var result = "";
 
-        if (_.isNull(a) && _.isNull(b)) {
+        if (!a && !b) {
             return null;
         }
 
-        if (_.isNull(a)) {
+        if (!a) {
             return b;
         }
 
-        if (_.isNull(b)) {
+        if (!b) {
             return a;
         }
 
