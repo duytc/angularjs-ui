@@ -5,13 +5,14 @@
         .directive('reportViewManyJoin', reportViewManyJoin)
     ;
 
-    function reportViewManyJoin($compile, $timeout, _, AddCalculatedField, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES, METRICS_SET) {
+    function reportViewManyJoin($compile, $timeout, _) {
         'use strict';
 
         return {
             scope: {
                 dataSets: '=listDataSets',
-                reportBuilder: '='
+                reportBuilder: '=',
+                dimensionsMetrics: '='
             },
             restrict: 'AE',
             templateUrl: 'unifiedReport/report/directives/reportViewManyJoin.tpl.html',
@@ -27,8 +28,23 @@
                     scope.getDataSetForJoin = getDataSetForJoin;
                     scope.selectDateSet = selectDateSet;
                     scope.selectJoinField = selectJoinField;
-                    
-                    function selectJoinField(joinItem) {
+                    scope.filterJoinField = filterJoinField;
+
+                    function filterJoinField(index, joinItem) {
+                       return function (field) {
+                           if(index == 0) {
+                               return true
+                           }
+
+                           return !!joinItem && joinItem[0] && scope.dimensionsMetrics[field + '_' + joinItem[1].dataSet] == scope.dimensionsMetrics[joinItem[0].field + '_' + joinItem[0].dataSet]
+                       }
+                    }
+
+                    function selectJoinField(joinItem, index) {
+                        if(index == 0) {
+                            joinItem.joinFields[1].field = null;
+                        }
+
                         $timeout(function () {
                             if(joinItem.joinFields[0].field == joinItem.joinFields[1].field) {
                                 joinItem.outputField = joinItem.joinFields[0].field;

@@ -286,7 +286,7 @@
                     libraryVideoDemandAdTag: {
                         name: null,
                         videoDemandPartner: null,
-                        timeout: 3,
+                        timeout: null,
                         tagURL: null,
                         sellPrice: null,
                         targeting: {

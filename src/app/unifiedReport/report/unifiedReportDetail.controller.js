@@ -57,7 +57,6 @@
             multiView: reportView.multiView,
             subReportsIncluded: reportView.subReportsIncluded,
             isShowDataSetName: reportView.isShowDataSetName,
-            enableCustomDimensionMetric: reportView.enableCustomDimensionMetric,
             publisher: angular.isObject(reportView.publisher) ? reportView.publisher.id : reportView.publisher
         };
 
@@ -129,7 +128,6 @@
         
         $scope.generateReport = generateReport;
         $scope.hasFilterDate = hasFilterDate;
-        $scope.enableSelectDaterange = enableSelectDaterange;
         $scope.refreshData = refreshData;
         $scope.changePage = changePage;
         $scope.selectItemPerPages = selectItemPerPages;
@@ -215,29 +213,6 @@
 
         function refreshData() {
             historyStorage.getLocationPath(HISTORY_TYPE_PATH.unifiedReportDetail, '^.detail');
-        }
-
-        function enableSelectDaterange() {
-            if(!!$scope.reportView.enableCustomDimensionMetric) {
-                return true
-            }
-
-            var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
-            for (var reportViewIndex in reportViews) {
-                var reportView = reportViews[reportViewIndex];
-
-                for (var filterIndex in reportView.filters) {
-                    var filter = reportView.filters[filterIndex];
-
-                    if(filter.type == 'date' || filter.type == 'datetime') {
-                        if(filter.userProvided) {
-                            return true
-                        }
-                    }
-                }
-            }
-
-            return false;
         }
 
         function hasFilterDate() {
@@ -470,7 +445,20 @@
                         return join.outputField == col
                     });
 
-                    if(totalDimensions.indexOf(key) > -1 || hasJoin > -1 || key == 'report_view_alias') {
+                    for(var x in $scope.reportView.joinBy) {
+                        var join = $scope.reportView.joinBy[x];
+                        if(!_joinIsMetrics(join, totalMetrics)) {
+                            if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == join.outputField }) == -1 && !!join.outputField) {
+                                $scope.dimensions.push({name: join.outputField , label: join.outputField, ticked: true});
+                            }
+                        } else {
+                            if(_.findIndex($scope.metrics, function (metric) { return metric.name == join.outputField }) == -1 && !!join.outputField) {
+                                $scope.metrics.push({name: join.outputField , label: join.outputField, ticked: true});
+                            }
+                        }
+                    }
+
+                    if(totalDimensions.indexOf(key) > -1 || key == 'report_view_alias') {
                         if(dimensions.indexOf(col) == -1) {
                             dimensions.push(col);
 
@@ -521,13 +509,30 @@
 
                     for(var x in $scope.reportView.joinBy) {
                         var join = $scope.reportView.joinBy[x];
-                        if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == join.outputField }) == -1 && !!join.outputField) {
-                            $scope.dimensions.push({name: join.outputField , label: join.outputField, ticked: $scope.reports.length == 0});
+                        if(!_joinIsMetrics(join, totalMetrics)) {
+                            if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == join.outputField }) == -1 && !!join.outputField) {
+                                $scope.dimensions.push({name: join.outputField , label: join.outputField, ticked: $scope.reports.length == 0});
+                            }
+                        } else {
+                            if(_.findIndex($scope.metrics, function (metric) { return metric.name == join.outputField }) == -1 && !!join.outputField) {
+                                $scope.metrics.push({name: join.outputField , label: join.outputField, ticked: $scope.reports.length == 0});
+                            }
                         }
                     }
 
                     angular.forEach(item.metrics, function (type, metric) {
                         var col = $scope.reportView.multiView ? type : metric + '_' + item.id;
+
+                        for(var x in $scope.reportView.joinBy) {
+                            var join = $scope.reportView.joinBy[x];
+                            for(var y in join.joinFields) {
+                                var joinField = join.joinFields[y];
+
+                                if((joinField.field + '_' + joinField.dataSet) == col) {
+                                    return
+                                }
+                            }
+                        }
 
                         if(metrics.indexOf(col) == -1 && !!col) {
                             fieldTypes[col] = $scope.reportView.multiView ? item.fieldTypes[col] : type;
@@ -695,6 +700,14 @@
             }
 
             $scope.fieldsShow = $scope.fieldsShow || {dimensions: [], metrics: []};
+        }
+
+        function _joinIsMetrics(join, totalMetrics) {
+            if(totalMetrics.indexOf(join.joinFields[0].field) > -1 && totalMetrics.indexOf(join.joinFields[1].field) > -1) {
+                return true
+            }
+
+            return false
         }
 
         $scope.$watch(function () {

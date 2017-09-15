@@ -150,7 +150,7 @@
                                 <label class="col-sm-1 control-label">{{ 'AD_SOURCE_MODULE.TIMEOUT' | translate }}</label>
 
                                 <div class="col-sm-5">
-                                    <input name="timeout" ng-model="demandAdTag.libraryVideoDemandAdTag.timeout" server-error
+                                    <input name="timeout" min="0" ng-model="demandAdTag.libraryVideoDemandAdTag.timeout" server-error
                                            type="number" class="form-control"
                                            placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_DEFAULT' | translate }}">
 

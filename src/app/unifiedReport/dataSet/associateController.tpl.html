@@ -15,7 +15,7 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th ng-repeat="column in columns">{{ dataRows.columns[column] }}
+                <th ng-repeat="column in columns" ng-if="column != '__is_mapped'">{{ dataRows.columns[column] }}
                 <!--<th ng-repeat="column in columns" ng-click="sort(column)">{{ column }}-->
                     <!--<span class="glyphicon glyphicon-minus" ng-show="!isShow(column)"></span>-->
                     <!--<span class="glyphicon" ng-show="isShow(column)" ng-class="{'glyphicon-chevron-up':!reverse,'glyphicon-chevron-down':reverse}"></span>-->
@@ -25,9 +25,9 @@
 
             <tbody>
                 <tr dir-paginate="row in rows | itemsPerPage:tableConfig.itemsPerPage">
-                    <td><label class="ui-checkbox"><input type="checkbox" ng-checked="checkedSide(row)" ng-click="selectEntity(row)"><span></span></label></td>
+                    <td><label class="ui-checkbox"><input type="checkbox" ng-model="selectEntity[row.__unique_id]" ng-checked="checkedSide(row)" ng-click="selectEntity(row, selectEntity[row.__unique_id])"><span></span></label></td>
 
-                    <td ng-repeat="column in columns">
+                    <td ng-repeat="column in columns" ng-if="column != '__is_mapped'">
                         <span ng-if="!isNullValue(row, column)"> {{ row[column]}} </span>
                     </td>
                 </tr>

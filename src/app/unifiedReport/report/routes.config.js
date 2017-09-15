@@ -77,7 +77,7 @@
                 }
             })
             .state('unifiedReport.report.editBuilder', {
-                url: '/edit/?reportView&reportViewMultiViews&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&subReportsIncluded&userReorderTransformsAllowed&isShowDataSetName&enableCustomDimensionMetric&metricCalculations',
+                url: '/edit/?reportView&reportViewMultiViews&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&subReportsIncluded&userReorderTransformsAllowed&isShowDataSetName',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -126,7 +126,6 @@
                                         formats: !!$stateParams.formats ? angular.fromJson($stateParams.formats) : reportView.formats,
                                         weightedCalculations: !!$stateParams.weightedCalculations ? angular.fromJson($stateParams.weightedCalculations) : reportView.weightedCalculations,
                                         joinBy: !!$stateParams.joinBy ? angular.fromJson($stateParams.joinBy) : reportView.joinBy,
-                                        metricCalculations: !!$stateParams.metricCalculations ? angular.fromJson($stateParams.metricCalculations) : reportView.metricCalculations,
                                         name: !!$stateParams.name ? $stateParams.name : reportView.name,
                                         alias: !!$stateParams.alias ? $stateParams.alias : reportView.alias,
                                         id: reportView.id,
@@ -134,7 +133,6 @@
                                         subReportsIncluded: !!$stateParams.subReportsIncluded ? ($stateParams.subReportsIncluded == 'true') : reportView.subReportsIncluded,
                                         isShowDataSetName: !!$stateParams.isShowDataSetName ? ($stateParams.isShowDataSetName == 'true') : reportView.isShowDataSetName,
                                         userReorderTransformsAllowed: !!$stateParams.userReorderTransformsAllowed ? ($stateParams.userReorderTransformsAllowed == 'true') : reportView.userReorderTransformsAllowed,
-                                        enableCustomDimensionMetric: !!$stateParams.enableCustomDimensionMetric ? ($stateParams.enableCustomDimensionMetric == 'true') : reportView.enableCustomDimensionMetric,
                                         publisher: reportView.publisher.id || reportView.publisher
                                     }
                                 })
@@ -148,14 +146,12 @@
                             formats: angular.fromJson($stateParams.formats),
                             weightedCalculations: angular.fromJson($stateParams.weightedCalculations),
                             joinBy: angular.fromJson($stateParams.joinBy) || null,
-                            metricCalculations: angular.fromJson($stateParams.metricCalculations) || null,
                             name: $stateParams.name,
                             alias: $stateParams.alias,
                             publisher: $stateParams.publisher,
                             multiView: $stateParams.multiView == 'true',
                             subReportsIncluded: $stateParams.subReportsIncluded == 'true',
-                            isShowDataSetName: $stateParams.isShowDataSetName == 'true',
-                            enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true'
+                            isShowDataSetName: $stateParams.isShowDataSetName == 'true'
                         };
                     },
                     publishers: function () {
@@ -167,7 +163,7 @@
                 }
             })
             .state('unifiedReport.report.detail', {
-                url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&enableCustomDimensionMetric&startDate&endDate&isShowDataSetName&page&limit&searchs&metricCalculations',
+                url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&startDate&endDate&isShowDataSetName&page&limit&searchs',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -205,14 +201,12 @@
                             weightedCalculations: angular.fromJson($stateParams.weightedCalculations),
                             formats: angular.fromJson($stateParams.formats),
                             joinBy: angular.fromJson($stateParams.joinBy) || null,
-                            metricCalculations: angular.fromJson($stateParams.metricCalculations) || null,
                             name: $stateParams.name,
                             alias: $stateParams.alias,
                             publisher: $stateParams.publisher,
                             multiView: $stateParams.multiView == 'true',
                             subReportsIncluded: $stateParams.subReportsIncluded == 'true',
-                            isShowDataSetName: $stateParams.isShowDataSetName == 'true',
-                            enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true'
+                            isShowDataSetName: $stateParams.isShowDataSetName == 'true'
                         };
                     },
                     reportGroup: /* @ngInject */ function(unifiedReportBuilder, reportView, $stateParams) {
@@ -227,7 +221,10 @@
                         params.page = !$stateParams.page ? 1 : $stateParams.page;
                         params.limit = !$stateParams.limit ? 10 : $stateParams.limit;
 
-                        if(reportView.enableCustomDimensionMetric) {
+                        var joinByMetrics = [];
+                        var joinByDimensions = [];
+
+                        if(true) {
                             var reportViews = !reportView.multiView ? reportView.reportViewDataSets : reportView.reportViewMultiViews;
 
                             angular.forEach(reportViews, function (reportViewItem) {
@@ -237,6 +234,7 @@
                                             var joinField = join.joinFields[i];
 
                                             if(joinField.field == dimension) {
+                                                joinByDimensions.push(join.outputField);
                                                 return true
                                             }
                                         }
@@ -250,15 +248,36 @@
                                 });
 
                                 angular.forEach(reportViewItem.metrics, function (metric) {
-                                    params.userDefineMetrics.push(reportView.multiView  ? metric : metric + '_' + reportViewItem.dataSet);
+                                    var indexJoin = _.findIndex(reportView.joinBy, function (join) {
+                                        for(var i in join.joinFields) {
+                                            var joinField = join.joinFields[i];
+
+                                            if(joinField.field == metric) {
+                                                joinByMetrics.push(join.outputField);
+                                                return true
+                                            }
+                                        }
+
+                                        return false
+                                    });
+
+                                    if(indexJoin == -1) {
+                                        params.userDefineMetrics.push(reportView.multiView  ? metric : metric + '_' + reportViewItem.dataSet);
+                                    }
                                 });
                             });
 
                             for(var x in reportView.joinBy) {
                                 var join = reportView.joinBy[x];
 
-                                if(params.userDefineDimensions.indexOf(join.outputField) == -1 && join.isVisible) {
-                                    params.userDefineDimensions.push(join.outputField);
+                                if(join.isVisible) {
+                                    if(params.userDefineDimensions.indexOf(join.outputField) == -1 && joinByDimensions.indexOf(join.outputField) == -1) {
+                                        params.userDefineDimensions.push(join.outputField);
+                                    }
+
+                                    if(params.userDefineMetrics.indexOf(join.outputField) == -1 && joinByMetrics.indexOf(join.outputField) == -1) {
+                                        params.userDefineMetrics.push(join.outputField);
+                                    }
                                 }
                             }
 

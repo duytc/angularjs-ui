@@ -58,7 +58,7 @@
                     <!--<th>Is Left</th>-->
                     <th>{{ 'ACTIONS' | translate }}</th>
 
-                    <th ng-repeat="column in columns">{{ dataRows.columns[column] }}
+                    <th ng-repeat="column in columns" ng-if="column != '__is_mapped'">{{ dataRows.columns[column] }}
                     <!--<th ng-repeat="column in columns" ng-click="sort(column)">{{ column }}-->
                         <!--<span class="glyphicon glyphicon-minus" ng-show="!isShow(column)"></span>-->
                         <!--<span class="glyphicon" ng-show="isShow(column)" ng-class="{'glyphicon-chevron-up':!reverse,'glyphicon-chevron-down':reverse}"></span>-->
@@ -75,7 +75,7 @@
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li ng-if="row.__is_associated == '0' && row.__is_ignored == '0'"><a ng-click="actionAssociate(row)">Associate</a></li>
+                                <li ng-if="row.__is_ignored == '0'"><a ng-click="actionAssociate(row)">Associate</a></li>
                                 <li ng-if="row.__is_ignored == '0'"><a ng-click="actionIgnore(row)">Ignore</a></li>
                                 <li ng-if="row.__is_associated == '1'"><a ng-click="actionRemoveAssociate(row)">Remove Associate</a></li>
                                 <li ng-if="row.__is_ignored == '1'"><a ng-click="actionUndoIgnore(row)">Undo Ignore</a></li>
@@ -83,8 +83,8 @@
                         </div>
                     </td>
 
-                    <td ng-repeat="column in columns">
-                        <span ng-if="!isNullValue(row, column)"> {{ row[column]}} </span>
+                    <td ng-repeat="column in columns" ng-if="column != '__is_mapped'">
+                        <span ng-if="!isNullValue(row, column)">{{ row[column] }}</span>
                     </td>
                 </tr>
                 </tbody>

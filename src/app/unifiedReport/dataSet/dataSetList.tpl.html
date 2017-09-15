@@ -43,19 +43,19 @@
                             <div class="btn-group" dropdown>
                                 <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                                 <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                    <!--<li ng-if="!item.mapBuilderEnabled"><a ui-sref="^.^.connect.list({dataSetId: item.id})">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.MANAGE_CONNECTED_DATA_SOURCES' | translate }}</a></li>-->
-                                    <!--<li ng-if="!item.mapBuilderEnabled"><a ui-sref="^.^.connect.new({dataSetId: item.id})">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.NEW_CONNECTED_DATA_SOURCE' | translate }}</a></li>-->
-                                    <!--<li ng-if="!item.mapBuilderEnabled" class="divider"></li>-->
-                                    <!--<li ng-if="!item.mapBuilderEnabled"><a ui-sref="^.^.importHistory.list({ dataSetId: item.id })">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.VIEW_DATA_IMPORT_HISTORY' | translate }}</a></li>-->
-                                    <!--<li ng-if="!item.mapBuilderEnabled" class="divider"></li>-->
-                                    <li><a ui-sref="^.^.connect.list({dataSetId: item.id})">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.MANAGE_CONNECTED_DATA_SOURCES' | translate }}</a></li>
-                                    <li><a ui-sref="^.^.connect.new({dataSetId: item.id})">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.NEW_CONNECTED_DATA_SOURCE' | translate }}</a></li>
-                                    <li class="divider"></li>
-                                    <li><a ui-sref="^.^.importHistory.list({ dataSetId: item.id })">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.VIEW_DATA_IMPORT_HISTORY' | translate }}</a></li>
-                                    <li class="divider"></li>
+                                    <li ng-if="!item.mapBuilderEnabled"><a ui-sref="^.^.connect.list({dataSetId: item.id})">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.MANAGE_CONNECTED_DATA_SOURCES' | translate }}</a></li>
+                                    <li ng-if="!item.mapBuilderEnabled"><a ui-sref="^.^.connect.new({dataSetId: item.id})">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.NEW_CONNECTED_DATA_SOURCE' | translate }}</a></li>
+                                    <li ng-if="!item.mapBuilderEnabled" class="divider"></li>
+                                    <li ng-if="!item.mapBuilderEnabled"><a ui-sref="^.^.importHistory.list({ dataSetId: item.id })">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.VIEW_DATA_IMPORT_HISTORY' | translate }}</a></li>
+                                    <li ng-if="!item.mapBuilderEnabled" class="divider"></li>
+                                    <!--<li><a ui-sref="^.^.connect.list({dataSetId: item.id})">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.MANAGE_CONNECTED_DATA_SOURCES' | translate }}</a></li>-->
+                                    <!--<li><a ui-sref="^.^.connect.new({dataSetId: item.id})">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.NEW_CONNECTED_DATA_SOURCE' | translate }}</a></li>-->
+                                    <!--<li class="divider"></li>-->
+                                    <!--<li><a ui-sref="^.^.importHistory.list({ dataSetId: item.id })">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.VIEW_DATA_IMPORT_HISTORY' | translate }}</a></li>-->
+                                    <!--<li class="divider"></li>-->
 
                                     <li><a ui-sref="^.edit({ id: item.id })">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.EDIT' | translate }}</a></li>
-                                    <!--<li ng-if="item.mapBuilderEnabled"><a ui-sref="^.mapBuilder({ dataSet: item.id })">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.EDIT_MAP_BUILDER' | translate }}</a></li>-->
+                                    <li ng-if="item.mapBuilderEnabled"><a ui-sref="^.mapBuilder({ dataSet: item.id })">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.EDIT_MAP_BUILDER' | translate }}</a></li>
                                     <li class="divider"></li>
                                     <li><a ng-click="reloadAllData(item)">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.RELOAD_ALL_DATA' | translate }}</a></li>
                                     <li class="divider"></li>

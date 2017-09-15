@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.dataSet')
         .controller('mapBuilderForm', mapBuilderForm);
 
-    function mapBuilderForm($scope, $modal, $stateParams, dataRows, dataSet, mapBuilderDataSet, UnifiedReportDataSetManager, HISTORY_TYPE_PATH, historyStorage) {
+    function mapBuilderForm($scope, $modal, $stateParams, AlertService, dataRows, dataSet, mapBuilderDataSet, UnifiedReportDataSetManager, HISTORY_TYPE_PATH, historyStorage) {
         $scope.dataRows = dataRows;
         $scope.rows = dataRows.records;
         $scope.dataSet = dataSet;
@@ -148,6 +148,12 @@
         function actionRemoveAssociate(row) {
             UnifiedReportDataSetManager.one($scope.dataSet.id).post('unmatching', {rowId: row.__id, __is_left_side: row.__is_left_side})
                 .then(function() {
+                    $scope.tableConfig.totalItems = $scope.tableConfig.totalItems - 1;
+
+                    if($scope.availableOptions.currentPage > Math.ceil($scope.tableConfig.totalItems/10)) {
+                        params.page = params.page -1;
+                    }
+
                     __getDataRows(params);
 
                     AlertService.replaceAlerts({
@@ -248,7 +254,7 @@
                         }
 
                         if($scope.selectedData.showUnmapped) {
-                            filters.push({field: "__is_associated", type: "number", comparison: "equal", compareValue: '0'})
+                            filters.push({field: "__is_associated", type: "number", comparison: "equal", compareValue: '0'}, {field: "__is_mapped", type: "number", comparison: "equal", compareValue:"0"})
                         }
                     }
 

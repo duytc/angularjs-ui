@@ -122,8 +122,8 @@
 
             params.needToGroup = false;
 
-            params.userDefineDimensions = reportView.enableCustomDimensionMetric ? params.dimensions : [];
-            params.userDefineMetrics = reportView.enableCustomDimensionMetric ? params.metrics : [];
+            params.userDefineDimensions = params.dimensions;
+            params.userDefineMetrics = params.metrics;
 
             dataService.makeHttpPOSTRequest('', params, API_UNIFIED_END_POINT + '/v1/reportview/download')
                 .then(function (data) {

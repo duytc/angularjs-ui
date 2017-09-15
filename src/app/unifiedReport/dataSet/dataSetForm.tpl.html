@@ -115,23 +115,23 @@
                     </div>
                 </div>
 
-                <!--<div ng-if="totalDimensionsMetrics.length > 0">-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="mapBuilderEnabled" class="col-sm-1 control-label">Map Builder Enabled</label>-->
-                        <!--<div class="col-sm-5">-->
-                            <!--<label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="dataSet.mapBuilderEnabled" id="mapBuilderEnabled"><span></span></label>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                <div ng-if="totalDimensionsMetrics.length > 0">
+                    <div class="form-group">
+                        <label for="mapBuilderEnabled" class="col-sm-1 control-label">Map Builder Enabled</label>
+                        <div class="col-sm-5">
+                            <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="dataSet.mapBuilderEnabled" id="mapBuilderEnabled"><span></span></label>
+                        </div>
+                    </div>
 
-                    <!--<div class="form-group" ng-if="dataSet.mapBuilderEnabled">-->
-                        <!--<label for="mapBuilderEnabled" class="col-sm-1 control-label">Map Builder Configs</label>-->
-                        <!--<div class="col-sm-11">-->
-                            <!--<div class="expressions-group">-->
-                                <!--<map-source item-data-set="dataSet" list-data-sets="dataSets" total-dimensions-metrics="totalDimensionsMetrics"></map-source>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
+                    <div class="form-group" ng-if="dataSet.mapBuilderEnabled">
+                        <label for="mapBuilderEnabled" class="col-sm-1 control-label">Map Builder Configs</label>
+                        <div class="col-sm-11">
+                            <div class="expressions-group">
+                                <map-source item-data-set="dataSet" list-data-sets="dataSets" total-dimensions-metrics="totalDimensionsMetrics"></map-source>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <label for="allowOverwriteExistingData" class="col-sm-1 control-label">Overwrite Existing Data</label>

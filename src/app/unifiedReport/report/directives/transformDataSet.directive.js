@@ -5,7 +5,7 @@
         .directive('transformDataSet', transformDataSet)
     ;
 
-    function transformDataSet($compile, _, AddCalculatedField, CONNECT_TIMEZONES, COMPARISON_TYPES_ADD_FIELD_VALUE, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES, METRICS_SET) {
+    function transformDataSet($compile, _, AddCalculatedField, CONNECT_TIMEZONES, COMPARISON_TYPES_ADD_FIELD_VALUE, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS, DATE_FORMAT_TYPES, METRICS_SET) {
         'use strict';
 
         return {
@@ -19,7 +19,8 @@
                 multiView: '=',
                 showDimensions: '=',
                 reorderTransformsAllowed: '=',
-                reportBuilder: '='
+                reportBuilder: '=',
+                numberFields: '='
             },
             restrict: 'AE',
             templateUrl: 'unifiedReport/report/directives/transformDataSet.tpl.html',
@@ -28,7 +29,7 @@
                 content = element.contents().remove();
                 return function (scope, element, attrs) {
                     scope.allFiledFormatTypes = REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES;
-                    scope.allFiledFormatTypeKeys = CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY;
+                    scope.allFiledFormatTypeKeys = REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS;
                     scope.timezones = CONNECT_TIMEZONES;
                     scope.dateFormatTypes = DATE_FORMAT_TYPES;
                     scope.typesField = METRICS_SET;
@@ -38,6 +39,7 @@
 
                     var totalDimensionsMetricsForDefaultValues = [];
                     var filterDimensionField = false;
+                    var filterFieldForAggregation = false;
 
                     scope.conditionComparators = angular.copy(COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE);
                     scope.conditionComparatorsForAddField = COMPARISON_TYPES_ADD_FIELD_VALUE;
@@ -106,6 +108,7 @@
                     scope.getDimensionsMetricsForComparison = getDimensionsMetricsForComparison;
                     scope.getDimensionsMetricsForAddField = getDimensionsMetricsForAddField;
                     scope.getFieldForGroupList = getFieldForGroupList;
+                    scope.getFieldForAggregation = getFieldForAggregation;
                     scope.getFiledFormatTypes = getFiledFormatTypes;
                     scope.filterFieldNameForSortBy = filterFieldNameForSortBy;
                     scope.getFieldNamesList = getFieldNamesList;
@@ -136,6 +139,49 @@
                     scope.filterConditionComparators = filterConditionComparators;
                     scope.filterForViewOfView = filterForViewOfView;
                     scope.selectAllDimensionsForGroup = selectAllDimensionsForGroup;
+                    scope.filterFieldPostAggregation = filterFieldPostAggregation;
+
+                    function filterFieldPostAggregation(transform, currentField) {
+                        return function (field) {
+                            if(field.key == currentField) {
+                                return true
+                            }
+
+                            for(var i in transform.fields) {
+                                var fieldItem = transform.fields[i];
+
+                                if(field.key == fieldItem.fieldName) {
+                                    return false
+                                }
+                            }
+
+                            return true
+                        }
+                    }
+
+
+                    // scope.getFieldFormAggregation = getFieldFormAggregation;
+                    //
+                    // function getFieldFormAggregation() {
+                    //     var fields = [];
+                    //
+                    //     angular.forEach(scope.transforms, function (transform) {
+                    //         if(transform.type == scope.allFiledFormatTypeKeys.aggregation) {
+                    //
+                    //             angular.forEach(transform.fields, function (field) {
+                    //                 var hasField = _.find(scope.totalDimensionsMetrics, function (item) {
+                    //                     return item.key == field;
+                    //                 });
+                    //
+                    //                 if (!!hasField) {
+                    //                     fields.push(hasField);
+                    //                 }
+                    //             })
+                    //         }
+                    //     });
+                    //
+                    //     return fields
+                    // }
 
                     function selectAllDimensionsForGroup(transform) {
                         scope.selectAllDimensions = true;
@@ -315,6 +361,14 @@
                     }
 
                     function formatExpressionToHighlight(field) {
+                        field = angular.copy(field);
+
+                        if(!!field.fieldName) {
+                            var fieldTemp = _.find(scope.totalDimensionsMetrics, {key: field.fieldName});
+
+                            field.field = !!fieldTemp ? fieldTemp.label : fieldTemp;
+                        }
+
                         var expression = (!!field.field ? ('<strong>' + field.field + '</strong>' + ' = ') : '') + (angular.copy(field.expression) || '');
 
                         if(!expression) {
@@ -491,6 +545,22 @@
                             })
                         }
 
+                        if (scope.multiView) {
+                            types = _.filter(types, function (type) {
+                                return type.key != 'aggregation';
+                            })
+                        }
+
+                        var indexTrans = _.findIndex(transforms, function (transform) {
+                            return transform.type == 'aggregation'
+                        });
+
+                        if(indexTrans == -1) {
+                            types = _.filter(types, function (type) {
+                                return type.key != 'postAggregation';
+                            })
+                        }
+
                         return types;
                     }
 
@@ -505,6 +575,23 @@
                         for (var index in scope.dimensionsList) {
                             if (angular.isArray(transformFields) && transformFields.indexOf(scope.dimensionsList[index].key) == -1) {
                                 data.push(scope.dimensionsList[index])
+                            }
+                        }
+
+                        return data
+                    }
+
+                    function getFieldForAggregation(transformFields) {
+                        if (!filterFieldForAggregation) {
+                            filterFieldForAggregation = true;
+                            return scope.numberFields
+                        }
+
+                        var data = [];
+
+                        for (var index in scope.numberFields) {
+                            if (angular.isArray(transformFields) && transformFields.indexOf(scope.numberFields[index].key) == -1) {
+                                data.push(scope.numberFields[index])
                             }
                         }
 
@@ -663,7 +750,7 @@
                         return _.values(scope.selectedFields).indexOf(field) == -1;
                     }
 
-                    function removeTransform(index) {
+                    function removeTransform(index, transform) {
                         scope.transforms.splice(index, 1);
                     }
 

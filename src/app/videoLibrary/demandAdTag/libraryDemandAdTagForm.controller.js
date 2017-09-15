@@ -50,7 +50,7 @@
         $scope.demandAdTag = setTicketForVideoPublisherAndWaterfallTagInDemandAdTags(demandAdTag, videoPublishers, waterfallTags) || {
             name: null,
             tagURL: null,
-            timeout: 3,
+            timeout: null,
             sellPrice: null,
             videoDemandPartner: demandPartner || null,
             targeting: {

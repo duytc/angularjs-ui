@@ -53,7 +53,8 @@
         ];
 
         $scope.selectedDate = {
-            filters: []
+            filters: [],
+            selectEntity: {}
         };
 
         $scope.getDataFilter = getDataFilter;
@@ -86,33 +87,41 @@
                 })
         }
 
-        function selectEntity(row) {
+        function selectEntity(row, select) {
             var index;
             if(leftSide) {
-                index =  $scope.data.rightSide.indexOf(row.__unique_id);
+                index =  _.findIndex($scope.data.rightSide, {__unique_id: row.__unique_id});
 
-                if(index > -1) {
+                if(!select) {
                     $scope.data.rightSide.splice(index, 1)
                 } else {
-                    $scope.data.rightSide.push(row.__unique_id)
+                    $scope.data.rightSide.push({
+                        __unique_id: row.__unique_id,
+                        __id: row.__id,
+                        __is_associated: row.__is_associated == '1'
+                    })
                 }
             } else {
-                index =  $scope.data.leftSide.indexOf(row.__unique_id);
+                index =  _.findIndex($scope.data.leftSide, {__unique_id: row.__unique_id});
 
-                if(index > -1) {
+                if(!select) {
                     $scope.data.leftSide.splice(index, 1)
                 } else {
-                    $scope.data.leftSide.push(row.__unique_id)
+                    $scope.data.leftSide.push({
+                        __unique_id: row.__unique_id,
+                        __id: row.__id,
+                        __is_associated: row.__is_associated == '1'
+                    })
                 }
             }
         }
 
         function checkedSide(row) {
             if(leftSide) {
-                return $scope.data.leftSide.indexOf(row.__unique_id) > -1
+                return $scope.data.leftSide.indexOf(row.__id) > -1
             }
 
-            return $scope.data.rightSide.indexOf(row.__unique_id) > -1
+            return $scope.data.rightSide.indexOf(row.__id) > -1
         }
 
         function isShow(sortColumn) {

@@ -29,7 +29,7 @@
                     {{ 'LOGOUT' | translate }}
                 </a>
             </li>
-            <li>
+            <li ng-if="!is2ndLogin">
                 <a ui-sref=".accountManagement.edit">
                     <i class="fa fa-edit"></i>
                     {{ 'EDIT_PROFILE' | translate }}
