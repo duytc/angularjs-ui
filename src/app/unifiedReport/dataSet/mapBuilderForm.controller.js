@@ -45,10 +45,10 @@
         $scope.selectedData = {
             filters: [],
 
-            showAll: true,
+            showAll: false,
             showIgnore: false,
             showUnmapped: false,
-            showMapped: false
+            showMapped: true
         };
 
         $scope.backToDataSetList = backToDataSetList;
