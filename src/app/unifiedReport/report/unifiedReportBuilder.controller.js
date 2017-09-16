@@ -186,6 +186,14 @@
                     $scope.reportBuilder.transforms.splice(indexPostAgg, 1)
                 }
             }
+
+            var indexPostAggregation = _.findIndex($scope.reportBuilder.transforms, {type: 'postAggregation'});
+            if(indexPostAggregation > -1) {
+                var transformClone = $scope.reportBuilder.transforms[indexPostAggregation];
+
+                $scope.reportBuilder.transforms.splice(indexPostAggregation, 1);
+                $scope.reportBuilder.transforms.push(transformClone);
+            }
         }
 
         function updateSelectedSummaryFieldTotal() {
