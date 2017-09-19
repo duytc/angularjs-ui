@@ -5,7 +5,7 @@
         .controller('AdNetworkForm', AdNetworkForm)
     ;
 
-    function AdNetworkForm($scope, $translate, _, $filter, blockList, whiteList, AdNetworkCache, AlertService, ServerErrorProcessor, adNetwork, publishers, historyStorage, USER_MODULES, HISTORY_TYPE_PATH) {
+    function AdNetworkForm($scope, $translate, _, $filter, blockList, whiteList, AdNetworkCache, queryBuilderService, AlertService, ServerErrorProcessor, adNetwork, publishers, historyStorage, VARIABLE_FOR_AD_TAG, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             defaultCpmRate: 'Default CPM Rate'
@@ -24,7 +24,11 @@
             defaultCpmRate: null,
             impressionCap: null,
             networkOpportunityCap: null,
-            customImpressionPixels: []
+            customImpressionPixels: [],
+            expressionDescriptor: {
+                groupVal: [],
+                groupType: 'AND'
+            }
         };
 
         $scope.selectData = {
@@ -78,25 +82,83 @@
             });
         }
 
+        if(!$scope.isNew) {
+            if(angular.isArray($scope.adNetwork.expressionDescriptor) || !$scope.adNetwork.expressionDescriptor) {
+                $scope.adNetwork.expressionDescriptor = {groupVal: [], groupType: 'AND'}
+            }
+        }
+
+        _update();
+
+        function _update() {
+            if(!$scope.isNew) {
+                _convertGroupVal($scope.adNetwork.expressionDescriptor.groupVal);
+            }
+        }
+
         $scope.backToListAdNetwork = backToListAdNetwork;
         $scope.selectPublisher = selectPublisher;
         $scope.addCustomImpressionPixel = addCustomImpressionPixel;
         $scope.removeCustomImpressionPixel = removeCustomImpressionPixel;
 
+        $scope.builtVariable = function(expressionDescriptor) {
+            return queryBuilderService.builtVariable(expressionDescriptor)
+        };
+
         $scope.isFormValid = function() {
             return $scope.adNetworkForm.$valid;
         };
+
+        function _convertGroupVal(groupVal) {
+            angular.forEach(groupVal, function(group) {
+                var index = _.findIndex(VARIABLE_FOR_AD_TAG, {key: group.var});
+
+                if(index > -1) {
+                    group.customVar = group.var;
+                } else {
+                    group.customVar = 'CUSTOM';
+                }
+
+                if(angular.isString(group.val) && (group.var == '${COUNTRY}' || group.var == '${DEVICE}' || group.var == '${DOMAIN}')) {
+                    group.val = group.val.split(',');
+
+                    if(group.var != '${DOMAIN}') {
+                        group.cmp = group.cmp == '==' ||  group.cmp == 'is' ? 'is' : 'isNot';
+                    }
+                }
+
+                if(angular.isObject(group.groupVal)) {
+                    _convertGroupVal(group.groupVal);
+                }
+            });
+        }
+
+        function _formatGroupVal(groupVal) {
+            angular.forEach(groupVal, function(group) {
+                if(group.customVar != 'CUSTOM') {
+                    group.var = group.customVar;
+                }
+
+                delete group.customVar;
+
+                if(angular.isObject(group.val)) {
+                    group.val = group.val.toString();
+                }
+
+                if(angular.isObject(group.groupVal)) {
+                    _formatGroupVal(group.groupVal);
+                }
+            });
+        }
 
         /**
          * Add a custom impression pixel
          */
         function addCustomImpressionPixel() {
             if (!$scope.adNetwork.customImpressionPixels) {
-                console.log('INIT [] before adding');
                 $scope.adNetwork.customImpressionPixels = [];
             }
 
-            console.log('adding new [ url: null ]');
             $scope.adNetwork.customImpressionPixels.push({
                 url: null
             })
@@ -107,7 +169,6 @@
          * @param index
          */
         function removeCustomImpressionPixel(index) {
-            console.log('removing [ url: null ] index ' + index);
             if(index > -1) {
                 $scope.adNetwork.customImpressionPixels.splice(index, 1)
             }
@@ -141,26 +202,33 @@
                 return;
             }
 
+            var adNetwork = angular.copy($scope.adNetwork);
+
             var networkBlacklists = [];
 
-            angular.forEach($scope.adNetwork.networkBlacklists, function (networkBlacklist) {
+            angular.forEach(adNetwork.networkBlacklists, function (networkBlacklist) {
                 networkBlacklists.push({displayBlacklist: networkBlacklist.id});
             });
 
-            $scope.adNetwork.networkBlacklists = networkBlacklists;
-
+            adNetwork.networkBlacklists = networkBlacklists;
 
             var networkWhiteLists = [];
 
-            angular.forEach($scope.adNetwork.networkWhiteLists, function (networkWhiteList) {
+            angular.forEach(adNetwork.networkWhiteLists, function (networkWhiteList) {
                 networkWhiteLists.push({displayWhiteList: networkWhiteList.id});
             });
 
-            $scope.adNetwork.networkWhiteLists = networkWhiteLists;
+            adNetwork.networkWhiteLists = networkWhiteLists;
+
+            _formatGroupVal(adNetwork.expressionDescriptor.groupVal);
+
+            if(adNetwork.expressionDescriptor.groupVal.length == 0) {
+                adNetwork.expressionDescriptor = null;
+            }
 
             $scope.formProcessing = true;
 
-            var saveAdNetwork = $scope.isNew ? AdNetworkCache.postAdNetwork($scope.adNetwork) : AdNetworkCache.patchAdNetwork($scope.adNetwork);
+            var saveAdNetwork = $scope.isNew ? AdNetworkCache.postAdNetwork(adNetwork) : AdNetworkCache.patchAdNetwork(adNetwork);
 
             saveAdNetwork
                 .catch(

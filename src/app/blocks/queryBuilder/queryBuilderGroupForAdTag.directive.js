@@ -5,7 +5,7 @@
         .directive('queryBuilderGroupForAdTag', queryBuilderGroupForAdTag)
     ;
 
-    function queryBuilderGroupForAdTag($compile, $timeout, _, VARIABLE_FOR_AD_TAG, CONDITIONS_STRING, CONDITIONS_BOOLEAN, CONDITIONS_NUMERIC, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, COUNTRY_LIST, DEVICES) {
+    function queryBuilderGroupForAdTag($compile, $filter, $timeout, _, VARIABLE_FOR_AD_TAG, CONDITIONS_STRING, CONDITIONS_BOOLEAN, CONDITIONS_NUMERIC, OPERATORS, GROUP_KEY, GROUP_TYPE, DATA_TYPE, COUNTRY_LIST, DEVICES) {
         'use strict';
 
         return {
@@ -31,7 +31,14 @@
                     scope.dataTypeList = DATA_TYPE;
                     scope.devices = DEVICES;
                     scope.countries = COUNTRY_LIST;
-                    scope.variableForAdTags = VARIABLE_FOR_AD_TAG;
+                    scope.variableForAdTags = $filter('filter')(VARIABLE_FOR_AD_TAG, function (variable) {
+                        if(!scope.domainList && variable.key == '${DOMAIN}') {
+                            return false
+                        }
+
+                        return true
+                    });
+
                     var itemGroupClone = {};
 
                     var mostCommonlyCountry = [

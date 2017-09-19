@@ -71,7 +71,8 @@
                     networkOpportunityCap: adNetworkList[idx].networkOpportunityCap,
                     networkBlacklists: adNetworkList[idx].networkBlacklists,
                     networkWhiteLists: adNetworkList[idx].networkWhiteLists,
-                    customImpressionPixels: adNetworkList[idx].customImpressionPixels
+                    customImpressionPixels: adNetworkList[idx].customImpressionPixels,
+                    expressionDescriptor: adNetworkList[idx].expressionDescriptor
                 };
             }
 

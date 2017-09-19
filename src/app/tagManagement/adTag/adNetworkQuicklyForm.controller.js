@@ -5,7 +5,7 @@
         .controller('AdNetworkQuicklyForm', AdNetworkQuicklyForm)
     ;
 
-    function AdNetworkQuicklyForm($scope, $filter, $modalInstance, $translate, whiteList, blockList, AdNetworkCache, AlertService, ServerErrorProcessor, publishers, Auth, USER_MODULES) {
+    function AdNetworkQuicklyForm($scope, $filter, $modalInstance, $translate, queryBuilderService, whiteList, blockList, AdNetworkCache, AlertService, ServerErrorProcessor, publishers, Auth, USER_MODULES) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             defaultCpmRate: 'Default CPM Rate'
@@ -20,7 +20,11 @@
             name: null,
             defaultCpmRate: null,
             impressionCap: null,
-            networkOpportunityCap: null
+            networkOpportunityCap: null,
+            expressionDescriptor: {
+                groupVal: [],
+                groupType: 'AND'
+            }
         };
 
         $scope.selectData = {
@@ -28,6 +32,28 @@
 
         $scope.blockList = !Auth.isAdmin() ? blockList : [];
         $scope.whiteList = !Auth.isAdmin() ? whiteList : [];
+
+        function _formatGroupVal(groupVal) {
+            angular.forEach(groupVal, function(group) {
+                if(group.customVar != 'CUSTOM') {
+                    group.var = group.customVar;
+                }
+
+                delete group.customVar;
+
+                if(angular.isObject(group.val)) {
+                    group.val = group.val.toString();
+                }
+
+                if(angular.isObject(group.groupVal)) {
+                    _formatGroupVal(group.groupVal);
+                }
+            });
+        }
+
+        $scope.builtVariable = function(expressionDescriptor) {
+            return queryBuilderService.builtVariable(expressionDescriptor)
+        };
 
         $scope.selectPublisher = selectPublisher;
 
@@ -48,24 +74,31 @@
 
             $scope.formProcessing = true;
 
+            var adNetwork = angular.copy($scope.adNetwork);
+
             var networkBlacklists = [];
 
-            angular.forEach($scope.adNetwork.networkBlacklists, function (networkBlacklist) {
+            angular.forEach(adNetwork.networkBlacklists, function (networkBlacklist) {
                 networkBlacklists.push({displayBlacklist: networkBlacklist.id});
             });
 
-            $scope.adNetwork.networkBlacklists = networkBlacklists;
-
+            adNetwork.networkBlacklists = networkBlacklists;
 
             var networkWhiteLists = [];
 
-            angular.forEach($scope.adNetwork.networkWhiteLists, function (networkWhiteList) {
+            angular.forEach(adNetwork.networkWhiteLists, function (networkWhiteList) {
                 networkWhiteLists.push({displayWhiteList: networkWhiteList.id});
             });
 
-            $scope.adNetwork.networkWhiteLists = networkWhiteLists;
+            adNetwork.networkWhiteLists = networkWhiteLists;
 
-            var saveAdNetwork = AdNetworkCache.postAdNetwork($scope.adNetwork);
+            _formatGroupVal(adNetwork.expressionDescriptor.groupVal);
+
+            if(adNetwork.expressionDescriptor.groupVal.length == 0) {
+                adNetwork.expressionDescriptor = null;
+            }
+
+            var saveAdNetwork = AdNetworkCache.postAdNetwork(adNetwork);
 
             saveAdNetwork
                 .catch(

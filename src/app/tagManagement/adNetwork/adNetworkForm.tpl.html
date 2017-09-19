@@ -18,19 +18,19 @@
 
     <div class="panel-body">
         <div class="row">
-            <form name="adNetworkForm" class="col-lg-6 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
+            <form name="adNetworkForm" class="col-lg-12 form-validation form-horizontal" role="form" ng-submit="submit()" novalidate>
                 <!-- display own publisher when edit -->
                 <div class="form-group" ng-if="!isNew">
-                    <label class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
-                    <div class="col-sm-10 form-control-static">
+                    <label class="col-sm-1 control-label">{{ 'PUBLISHER' | translate }}</label>
+                    <div class="col-sm-5 form-control-static">
                         {{ adNetwork.publisher.company }}
                     </div>
                 </div>
 
                 <!-- choosing a publisher when new -->
                 <div class="form-group" ng-if="isNew && allowSelectPublisher">
-                    <label for="inputPublisher" class="col-sm-2 control-label">{{ 'PUBLISHER' | translate }}</label>
-                    <div class="col-sm-10">
+                    <label for="inputPublisher" class="col-sm-1 control-label">{{ 'PUBLISHER' | translate }}</label>
+                    <div class="col-sm-5">
                         <ui-select name="publisher" id="inputPublisher" ng-model="adNetwork.publisher" on-select="selectPublisher($item)" ng-required="true" server-error reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
                             <ui-select-choices repeat="publisher.id as publisher in publishers | filter: { company: $select.search }">
@@ -42,45 +42,45 @@
 
                 <!-- normal create/edit demand partner -->
                 <div class="form-group">
-                    <label for="inputName" class="col-sm-2 control-label">{{ 'NAME' | translate }}</label>
-                    <div class="col-sm-10">
+                    <label for="inputName" class="col-sm-1 control-label">{{ 'NAME' | translate }}</label>
+                    <div class="col-sm-5">
                         <input server-error name="name" ng-model="adNetwork.name" ng-required="true" ng-minlength="2" type="text" class="form-control" id="inputName" placeholder="{{ 'AD_NETWORK_MODULE.PLACEHOLDER_AD_NETWORK_NAME' | translate }}">
                     </div>
                 </div>
 
                 <!-- optional edit impression cap -->
                 <div class="form-group">
-                    <label for="inputImpressionCap" class="col-sm-2 control-label">{{ 'AD_NETWORK_MODULE.IMPRESSION_CAP' | translate }}</label>
-                    <div class="col-sm-10">
+                    <label for="inputImpressionCap" class="col-sm-1 control-label">{{ 'AD_NETWORK_MODULE.IMPRESSION_CAP' | translate }}</label>
+                    <div class="col-sm-5">
                         <input server-error name="impressionCap" ng-model="adNetwork.impressionCap" min="1" type="number" class="form-control" id="inputImpressionCap" placeholder="{{ 'AD_NETWORK_MODULE.PLACEHOLDER_IMPRESSION_CAP' | translate }}">
                     </div>
                 </div>
 
                 <!-- optional edit network opportunity cap -->
                 <div class="form-group">
-                    <label for="inputNetworkOpportunityCap" class="col-sm-2 control-label">{{ 'AD_NETWORK_MODULE.NETWORK_OPPORTUNITY_CAP' | translate }}</label>
-                    <div class="col-sm-10">
+                    <label for="inputNetworkOpportunityCap" class="col-sm-1 control-label">{{ 'AD_NETWORK_MODULE.NETWORK_OPPORTUNITY_CAP' | translate }}</label>
+                    <div class="col-sm-5">
                         <input server-error name="networkOpportunityCap" ng-model="adNetwork.networkOpportunityCap" min="1" type="number" class="form-control" id="inputNetworkOpportunityCap" placeholder="{{ 'AD_NETWORK_MODULE.PLACEHOLDER_NETWORK_OPPORTUNITY_CAP' | translate }}">
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="adNetwork.networkWhiteLists.length == 0 || !adNetwork.networkWhiteLists">
-                    <label for="inputBlackList" class="col-sm-2 control-label">{{ 'AD_NETWORK_MODULE.BLOCK_LIST_DOMAINS' | translate }}</label>
-                    <div class="col-sm-10">
+                    <label for="inputBlackList" class="col-sm-1 control-label">{{ 'AD_NETWORK_MODULE.BLOCK_LIST_DOMAINS' | translate }}</label>
+                    <div class="col-sm-5">
                         <isteven-multi-select id="inputBlackList" input-model="blockList" output-model="adNetwork.networkBlacklists" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
                     </div>
                 </div>
 
                 <div class="form-group" ng-if="adNetwork.networkBlacklists.length == 0 || !adNetwork.networkBlacklists">
-                    <label for="inputWhiteList" class="col-sm-2 control-label">{{ 'AD_NETWORK_MODULE.WHITE_LIST_DOMAINS' | translate }}</label>
-                    <div class="col-sm-10">
+                    <label for="inputWhiteList" class="col-sm-1 control-label">{{ 'AD_NETWORK_MODULE.WHITE_LIST_DOMAINS' | translate }}</label>
+                    <div class="col-sm-5">
                         <isteven-multi-select id="inputWhiteList" input-model="whiteList" output-model="adNetwork.networkWhiteLists" button-label="name" item-label="name" tick-property="ticked"></isteven-multi-select>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="inputCustomImpressionPixels" class="col-sm-2 control-label">{{ 'AD_NETWORK_MODULE.CUSTOM_IMPRESSION_PIXELS' | translate }}</label>
-                    <div class="col-sm-10" id="inputCustomImpressionPixels">
+                    <label for="inputCustomImpressionPixels" class="col-sm-1 control-label">{{ 'AD_NETWORK_MODULE.CUSTOM_IMPRESSION_PIXELS' | translate }}</label>
+                    <div class="col-sm-5" id="inputCustomImpressionPixels">
                         <button class="btn btn-success" type="button" ng-click="addCustomImpressionPixel()">
                             <span class="glyphicon glyphicon-plus"></span>
                             {{ 'AD_NETWORK_MODULE.ADD_CUSTOM_IMPRESSION_PIXEL' | translate }}
@@ -101,9 +101,23 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.TARGETING' | translate }}</label>
+                    <div class="col-sm-11">
+                        <div class="expressions-group">
+                            <query-builder-group-for-ad-tag group="adNetwork.expressionDescriptor" publisher="adNetwork.publisher" disabled-directive="pickFromLibrary"></query-builder-group-for-ad-tag>
+
+                            <div class="form-group expression-show">
+                                <label class="ui-checkbox"><input server-error name="liveView" type="checkbox" ng-model="liveViewChecked"  value="checked" id="liveExpression"/><span>{{ 'QUERY_BUILDER.SHOW_GENERATED_EXPRESSION' | translate }}</span></label>
+                                <div ng-if="liveViewChecked == true" class="callout-warning show-query-builder" ng-bind-html="builtVariable(adNetwork.expressionDescriptor)"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- button submit -->
                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="col-sm-offset-1 col-sm-5">
                         <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">
                             <p>{{ 'VALID_FORM' | translate }}</p>
