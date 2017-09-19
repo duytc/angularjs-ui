@@ -20,10 +20,6 @@
                 var content, directive;
                 content = element.contents().remove();
                 return function (scope, element, attrs) {
-                    scope.dataFields = $filter('filter')(scope.fields, function (field) {
-                        return field.key != '__is_mapped' && !!field.label
-                    });
-
                     scope.dateTypes = [
                         {key: 'Fixed Date Range', value: 'customRange'},
                         {key: 'Dynamic', value: 'dynamic'}

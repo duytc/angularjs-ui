@@ -119,7 +119,7 @@
                     <div class="form-group">
                         <label for="mapBuilderEnabled" class="col-sm-1 control-label">Map Builder Enabled</label>
                         <div class="col-sm-5">
-                            <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="dataSet.mapBuilderEnabled" id="mapBuilderEnabled"><span></span></label>
+                            <label class="ui-checkbox"><input server-error name="active" ng-click="checkMapBuilder(dataSet.mapBuilderEnabled)" type="checkbox" ng-model="dataSet.mapBuilderEnabled" id="mapBuilderEnabled"><span></span></label>
                         </div>
                     </div>
 
@@ -136,7 +136,7 @@
                 <div class="form-group">
                     <label for="allowOverwriteExistingData" class="col-sm-1 control-label">Overwrite Existing Data</label>
                     <div class="col-sm-5">
-                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="dataSet.allowOverwriteExistingData" id="allowOverwriteExistingData"><span></span></label>
+                        <label class="ui-checkbox"><input ng-disabled="dataSet.mapBuilderEnabled" server-error name="active" type="checkbox" ng-model="dataSet.allowOverwriteExistingData" id="allowOverwriteExistingData"><span></span></label>
 
                         <span class="help-block">If 'Overwrite existing data' checkbox is checked, all duplicated data of this data set will be removed</span>
                     </div>

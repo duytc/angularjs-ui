@@ -268,6 +268,18 @@
                         $scope.rows = dataRows.records || [];
                         $scope.tableConfig.totalItems = dataRows.totalRecord;
                         $scope.availableOptions.currentPage = Number(params.page);
+
+                        var columns = !!$scope.rows[0] ? Object.keys($scope.rows[0]) : [];
+                        $scope.columns = mapBuilderDataSet.removeValues(columns);
+
+                        $scope.fields = [];
+                        angular.forEach(columns, function (column) {
+                            $scope.fields.push({
+                                key: column,
+                                label: dataRows.columns[column],
+                                type: dataRows.fieldTypes[column]
+                            })
+                        });
                     });
             }, timeout || 0);
         }

@@ -150,6 +150,10 @@
 
                         params.page = !$stateParams.page ? 1 : $stateParams.page;
                         params.limit = !$stateParams.limit ? 10 : $stateParams.limit;
+                        params.filters = angular.toJson([
+                            {"field":"__is_ignored","type":"number","comparison":"equal","compareValue":"0"},
+                            {"field":"__is_associated","type":"number","comparison":"equal","compareValue":"1"}
+                        ]);
 
                         return UnifiedReportDataSetManager.one($stateParams.dataSet).one('rows').get(params)
                             .then(function (data) {

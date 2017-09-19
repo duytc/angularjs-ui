@@ -99,7 +99,14 @@
         $scope.isFormValid = isFormValid;
         $scope.changeName = changeName;
         $scope.selectType = selectType;
-        
+        $scope.checkMapBuilder = checkMapBuilder;
+
+        function checkMapBuilder(mapBuilderEnabled) {
+            if(mapBuilderEnabled) {
+                $scope.dataSet.allowOverwriteExistingData = true;
+            }
+        }
+
         function selectType(dm) {
             _resetValue(dm)
         }
