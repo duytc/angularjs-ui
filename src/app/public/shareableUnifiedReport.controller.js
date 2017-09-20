@@ -467,7 +467,15 @@
         }
 
         function _update() {
+            var totalDimensions = [];
+            var totalMetrics = [];
+
             var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
+
+            angular.forEach(reportViews, function (reportView) {
+                totalDimensions = totalDimensions.concat(reportView.dimensions);
+                totalMetrics = totalMetrics.concat(reportView.metrics)
+            });
 
             angular.forEach(reports.fields, function (field) {
                 var key = null;
@@ -482,30 +490,53 @@
                     return join.outputField == field
                 });
 
-                angular.forEach(reportViews, function (reportView) {
-                    if(reportView.metrics.indexOf(key) > -1) {
-                        var index = _.findIndex($scope.metrics, {name: field});
-
-                        if(index == -1) {
-                            $scope.metrics.push({name: field, label: $scope.titleColumns[field], ticked: true});
+                for(var x in $scope.reportView.joinBy) {
+                    var join = $scope.reportView.joinBy[x];
+                    if(!_joinIsMetrics(join, totalMetrics)) {
+                        if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == join.outputField }) == -1 && !!join.outputField) {
+                            $scope.dimensions.push({name: join.outputField , label: $scope.titleColumns[join.outputField] || join.outputField, ticked: join.isVisible});
+                        }
+                    } else {
+                        if(_.findIndex($scope.metrics, function (metric) { return metric.name == join.outputField }) == -1 && !!join.outputField) {
+                            $scope.metrics.push({name: join.outputField , label: $scope.titleColumns[join.outputField] || join.outputField, ticked: join.isVisible});
                         }
                     }
+                }
 
-                    if(reportView.dimensions.indexOf(key) > -1 || hasJoin > -1 || key == 'report_view_alias') {
-                        var j = _.findIndex($scope.dimensions, {name: field});
+                if(hasJoin == -1) {
+                    angular.forEach(reportViews, function (reportView) {
+                        if(reportView.metrics.indexOf(key) > -1) {
+                            var index = _.findIndex($scope.metrics, {name: field});
 
-                        if(j == -1) {
-                            $scope.dimensions.push({name: field, label: $scope.titleColumns[field], ticked: true});
+                            if(index == -1) {
+                                $scope.metrics.push({name: field, label: $scope.titleColumns[field] || field, ticked: true});
+                            }
                         }
-                    }
-                });
 
-                if(_.findIndex($scope.dimensions, {name: field}) == -1 && _.findIndex($scope.metrics, {name: field}) == -1) {
-                    $scope.metrics.push({name: field, label: $scope.titleColumns[field], ticked: true});
+                        if(reportView.dimensions.indexOf(key) > -1 || key == 'report_view_alias') {
+                            var j = _.findIndex($scope.dimensions, {name: field});
+
+                            if(j == -1) {
+                                $scope.dimensions.push({name: field, label: $scope.titleColumns[field] || field, ticked: true});
+                            }
+                        }
+                    });
+
+                    if(_.findIndex($scope.dimensions, {name: field}) == -1 && _.findIndex($scope.metrics, {name: field}) == -1) {
+                        $scope.metrics.push({name: field, label: $scope.titleColumns[field] || field, ticked: true});
+                    }
                 }
             });
 
             $scope.fieldsShow = $scope.fieldsShow || {dimensions: [], metrics: []};
+        }
+
+        function _joinIsMetrics(join, totalMetrics) {
+            if(totalMetrics.indexOf(join.joinFields[0].field) > -1 && totalMetrics.indexOf(join.joinFields[1].field) > -1) {
+                return true
+            }
+
+            return false
         }
 
         $scope.$watch(function () {

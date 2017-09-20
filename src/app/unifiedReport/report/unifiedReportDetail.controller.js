@@ -57,7 +57,8 @@
             multiView: reportView.multiView,
             subReportsIncluded: reportView.subReportsIncluded,
             isShowDataSetName: reportView.isShowDataSetName,
-            publisher: angular.isObject(reportView.publisher) ? reportView.publisher.id : reportView.publisher
+            publisher: angular.isObject(reportView.publisher) ? reportView.publisher.id : reportView.publisher,
+            enableCustomDimensionMetric: reportView.enableCustomDimensionMetric
         };
 
         if(!$scope.hasResult) {
@@ -135,6 +136,30 @@
         $scope.exportExcel = exportExcel;
         $scope.showDetailsMissingDates = showDetailsMissingDates;
         $scope.showReportDetail = showReportDetail;
+        $scope.enableSelectDaterange = enableSelectDaterange;
+
+        function enableSelectDaterange() {
+            if(!!$scope.reportView.enableCustomDimensionMetric) {
+                return true
+            }
+
+            var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
+            for (var reportViewIndex in reportViews) {
+                var reportView = reportViews[reportViewIndex];
+
+                for (var filterIndex in reportView.filters) {
+                    var filter = reportView.filters[filterIndex];
+
+                    if(filter.type == 'date' || filter.type == 'datetime') {
+                        if(filter.userProvided) {
+                            return true
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
 
         function showReportDetail() {
             return !angular.isArray($scope.titleColumns) && _.keys($scope.titleColumns).length > 0 && ($scope.reports.length > 0 || _.keys($scope.search).length > 0)
@@ -449,10 +474,12 @@
                         var join = $scope.reportView.joinBy[x];
                         if(!_joinIsMetrics(join, totalMetrics)) {
                             if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == join.outputField }) == -1 && !!join.outputField) {
+                                dimensions.push(join.outputField);
                                 $scope.dimensions.push({name: join.outputField , label: $scope.titleColumnsForSelect[join.outputField] || join.outputField, ticked: join.isVisible});
                             }
                         } else {
                             if(_.findIndex($scope.metrics, function (metric) { return metric.name == join.outputField }) == -1 && !!join.outputField) {
+                                metrics.push(join.outputField);
                                 $scope.metrics.push({name: join.outputField , label: $scope.titleColumnsForSelect[join.outputField] || join.outputField, ticked: join.isVisible});
                             }
                         }
@@ -540,7 +567,7 @@
                             fieldTypes[col] = $scope.reportView.multiView ? item.fieldTypes[col] : type;
 
                             if(_.findIndex($scope.metrics, function (metric) { return metric.name == col }) == -1) {
-                                $scope.metrics.push({name: col, label: allDimensionsMetrics.columns[col] || allDimensionsMetrics.columns[metric], ticked: $scope.reports.length == 0});
+                                $scope.metrics.push({name: col, label: allDimensionsMetrics.columns[col] || allDimensionsMetrics.columns[metric], ticked: _.keys($scope.reports[0]).indexOf(col) > -1 || $scope.reports.length == 0});
                             }
                         }
                     })

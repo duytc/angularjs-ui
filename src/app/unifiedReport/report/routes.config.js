@@ -77,7 +77,7 @@
                 }
             })
             .state('unifiedReport.report.editBuilder', {
-                url: '/edit/?reportView&reportViewMultiViews&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&subReportsIncluded&userReorderTransformsAllowed&isShowDataSetName',
+                url: '/edit/?reportView&reportViewMultiViews&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&subReportsIncluded&userReorderTransformsAllowed&isShowDataSetName&enableCustomDimensionMetric',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -133,7 +133,8 @@
                                         subReportsIncluded: !!$stateParams.subReportsIncluded ? ($stateParams.subReportsIncluded == 'true') : reportView.subReportsIncluded,
                                         isShowDataSetName: !!$stateParams.isShowDataSetName ? ($stateParams.isShowDataSetName == 'true') : reportView.isShowDataSetName,
                                         userReorderTransformsAllowed: !!$stateParams.userReorderTransformsAllowed ? ($stateParams.userReorderTransformsAllowed == 'true') : reportView.userReorderTransformsAllowed,
-                                        publisher: reportView.publisher.id || reportView.publisher
+                                        publisher: reportView.publisher.id || reportView.publisher,
+                                        enableCustomDimensionMetric: !!$stateParams.enableCustomDimensionMetric ? ($stateParams.enableCustomDimensionMetric == 'true') : reportView.enableCustomDimensionMetric,
                                     }
                                 })
                         }
@@ -151,7 +152,8 @@
                             publisher: $stateParams.publisher,
                             multiView: $stateParams.multiView == 'true',
                             subReportsIncluded: $stateParams.subReportsIncluded == 'true',
-                            isShowDataSetName: $stateParams.isShowDataSetName == 'true'
+                            isShowDataSetName: $stateParams.isShowDataSetName == 'true',
+                            enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true'
                         };
                     },
                     publishers: function () {
@@ -163,7 +165,7 @@
                 }
             })
             .state('unifiedReport.report.detail', {
-                url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&startDate&endDate&isShowDataSetName&page&limit&searchs',
+                url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&startDate&endDate&isShowDataSetName&page&limit&searchs&enableCustomDimensionMetric',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -206,7 +208,8 @@
                             publisher: $stateParams.publisher,
                             multiView: $stateParams.multiView == 'true',
                             subReportsIncluded: $stateParams.subReportsIncluded == 'true',
-                            isShowDataSetName: $stateParams.isShowDataSetName == 'true'
+                            isShowDataSetName: $stateParams.isShowDataSetName == 'true',
+                            enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true'
                         };
                     },
                     reportGroup: /* @ngInject */ function(unifiedReportBuilder, reportView, $stateParams) {
@@ -224,7 +227,7 @@
                         var joinByMetrics = [];
                         var joinByDimensions = [];
 
-                        if(true) {
+                        if(reportView.enableCustomDimensionMetric) {
                             var reportViews = !reportView.multiView ? reportView.reportViewDataSets : reportView.reportViewMultiViews;
 
                             angular.forEach(reportViews, function (reportViewItem) {
@@ -233,7 +236,7 @@
                                         for(var i in join.joinFields) {
                                             var joinField = join.joinFields[i];
 
-                                            if(joinField.field == dimension) {
+                                            if(joinField.field == dimension && joinField.dataSet == reportViewItem.dataSet) {
                                                 joinByDimensions.push(join.outputField);
                                                 return true
                                             }
@@ -252,7 +255,7 @@
                                         for(var i in join.joinFields) {
                                             var joinField = join.joinFields[i];
 
-                                            if(joinField.field == metric) {
+                                            if(joinField.field == metric && joinField.dataSet == reportViewItem.dataSet) {
                                                 joinByMetrics.push(join.outputField);
                                                 return true
                                             }
@@ -271,11 +274,11 @@
                                 var join = reportView.joinBy[x];
 
                                 if(join.isVisible) {
-                                    if(params.userDefineDimensions.indexOf(join.outputField) == -1 && joinByDimensions.indexOf(join.outputField) == -1) {
+                                    if(params.userDefineDimensions.indexOf(join.outputField) == -1 && joinByDimensions.indexOf(join.outputField) > -1) {
                                         params.userDefineDimensions.push(join.outputField);
                                     }
 
-                                    if(params.userDefineMetrics.indexOf(join.outputField) == -1 && joinByMetrics.indexOf(join.outputField) == -1) {
+                                    if(params.userDefineMetrics.indexOf(join.outputField) == -1 && joinByMetrics.indexOf(join.outputField) > -1) {
                                         params.userDefineMetrics.push(join.outputField);
                                     }
                                 }

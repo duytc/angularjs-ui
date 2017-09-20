@@ -20,7 +20,8 @@
                 showDimensions: '=',
                 reorderTransformsAllowed: '=',
                 reportBuilder: '=',
-                numberFields: '='
+                numberFields: '=',
+                transformPosition: '@'
             },
             restrict: 'AE',
             templateUrl: 'unifiedReport/report/directives/transformDataSet.tpl.html',
@@ -140,6 +141,31 @@
                     scope.filterForViewOfView = filterForViewOfView;
                     scope.selectAllDimensionsForGroup = selectAllDimensionsForGroup;
                     scope.filterFieldPostAggregation = filterFieldPostAggregation;
+                    scope.isShowTransform = isShowTransform;
+                    scope.filterFieldForAggregationGroup = filterFieldForAggregationGroup;
+                    scope.unValidName = unValidName;
+
+                    function unValidName(name) {
+                        var fields = [];
+
+                        angular.forEach(_getAllFieldInTransForm(), function (field) {
+                            fields.push(field.key);
+                        });
+
+                        return _.filter(fields, function(field){ return name == field && name != null; }).length > 1;
+                    }
+
+                    function filterFieldForAggregationGroup(field) {
+                        return _.findIndex(_getAllFieldInTransForm('postGroupTransforms'), {key: field.key}) == -1
+                    }
+
+                    function isShowTransform(transform) {
+                        if(transform.transformPosition == scope.transformPosition) {
+                            return true
+                        }
+
+                        return false
+                    }
 
                     function filterFieldPostAggregation(transform, currentField) {
                         return function (field) {
@@ -210,7 +236,7 @@
 
                     function filterConditionComparators(defaultValue) {
                         return function (separator) {
-                            if(defaultValue.conditionField.indexOf('__') > -1 && (defaultValue.conditionField.indexOf('_day') > -1 || defaultValue.conditionField.indexOf('_month') > -1 || defaultValue.conditionField.indexOf('_year') > -1) && separator.key == 'between') {
+                            if(!defaultValue.conditionField || (defaultValue.conditionField.indexOf('__') > -1 && (defaultValue.conditionField.indexOf('_day') > -1 || defaultValue.conditionField.indexOf('_month') > -1 || defaultValue.conditionField.indexOf('_year') > -1) && separator.key == 'between')) {
                                 return false
                             }
 
@@ -228,7 +254,7 @@
 
                     function filterOperatorAddField(expression) {
                         return function (separator) {
-                            if(expression.var.indexOf('__') > -1 && (expression.var.indexOf('_day') > -1 || expression.var.indexOf('_month') > -1 || expression.var.indexOf('_year') > -1) && separator.key == 'between') {
+                            if(!expression.var || (expression.var.indexOf('__') > -1 && (expression.var.indexOf('_day') > -1 || expression.var.indexOf('_month') > -1 || expression.var.indexOf('_year') > -1) && separator.key == 'between')) {
                                 return false
                             }
 
@@ -521,17 +547,21 @@
                         }
                     }
 
-                    function getFiledFormatTypes(transforms, currentType) {
+                    function getFiledFormatTypes(transforms, currentType, transform) {
                         var types = [];
 
                         angular.forEach(scope.allFiledFormatTypes, function (type) {
+                            if(scope.transformPosition == 'prePostTransforms' && type.key == 'sortBy') {
+                                return
+                            }
+
                             if (type.key == 'date' || type.key == 'number' || type.key == currentType) {
                                 types.push(type);
                                 return;
                             }
 
                             var indexTrans = _.findIndex(transforms, function (transform) {
-                                return transform.type == type.key
+                                return transform.type == type.key && transform.transformPosition == scope.transformPosition
                             });
 
                             if (indexTrans == -1) {
@@ -539,27 +569,15 @@
                             }
                         });
 
-                        if (scope.multiView == true && scope.showDimensions == false) {
-                            types = _.filter(types, function (type) {
-                                return (type.key != 'groupBy');
-                            })
-                        }
+                        // if (scope.multiView == true && scope.showDimensions == false) {
+                        //     types = _.filter(types, function (type) {
+                        //         return (type.key != 'groupBy');
+                        //     })
+                        // }
 
-                        if (scope.multiView) {
-                            types = _.filter(types, function (type) {
-                                return type.key != 'aggregation';
-                            })
-                        }
-
-                        var indexTrans = _.findIndex(transforms, function (transform) {
-                            return transform.type == 'aggregation'
+                        types = _.filter(types, function (type) {
+                            return (type.key != 'groupBy');
                         });
-
-                        if(indexTrans == -1) {
-                            types = _.filter(types, function (type) {
-                                return type.key != 'postAggregation';
-                            })
-                        }
 
                         return types;
                     }
@@ -757,7 +775,8 @@
                     function addTransform() {
                         scope.transforms.push({
                             fields: [],
-                            openStatus: true
+                            openStatus: true,
+                            transformPosition: scope.transformPosition
                         });
                     }
 
@@ -832,6 +851,29 @@
                         });
 
                         fields.splice(index, 1);
+                    }
+
+                    function _getAllFieldInTransForm(transformPosition) {
+                        var fieldsTransForm = [];
+                        angular.forEach(scope.transforms, function (transform) {
+                            if (transform.type == 'addField' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent') {
+                                if(!transformPosition || (!!transformPosition && transformPosition == transform.transformPosition)) {
+                                    angular.forEach(transform.fields, function (field) {
+                                        if (!!field.field) {
+                                            fieldsTransForm.push({
+                                                label: field.field,
+                                                key: field.field,
+                                                root: field.field,
+                                                type: field.type,
+                                                transformType: transform.type
+                                            });
+                                        }
+                                    })
+                                }
+                            }
+                        });
+
+                        return fieldsTransForm;
                     }
 
                     directive || (directive = $compile(content));

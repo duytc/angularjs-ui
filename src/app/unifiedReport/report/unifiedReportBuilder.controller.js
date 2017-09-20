@@ -55,15 +55,33 @@
             showInTotal: [],
             multiView: false,
             subReportsIncluded: false,
-            isShowDataSetName: false
+            isShowDataSetName: false,
+            enableCustomDimensionMetric: false
         };
 
-        if(!$scope.isNew && !!reportView.id &&$scope.reportBuilder.multiView) {
+        if(!$scope.isNew && !!reportView.id && $scope.reportBuilder.multiView) {
             angular.forEach($scope.reportBuilder.reportViewMultiViews, function (reportViewMultiView) {
                 if(!reportViewMultiView.subView || reportViewMultiView.subView == reportView.id) {
                     _resetForm();
                 }
             })
+        }
+
+        if(!$scope.reportBuilder.multiView) {
+            var indexGroupBy = _.findIndex($scope.reportBuilder.transforms, function (transform) {
+                return transform.type == 'groupBy'
+            });
+
+            if(indexGroupBy > -1) {
+                $scope.reportBuilder.transforms[indexGroupBy].transformPosition = 'groupTransform'
+            } else {
+                $scope.reportBuilder.transforms.push({
+                    transformPosition: 'groupTransform',
+                    type: 'groupBy',
+                    fields: [],
+                    openStatus: true
+                })
+            }
         }
 
         $scope.$watch(function () {
@@ -81,10 +99,6 @@
         $scope.$watch(function () {
             return $scope.reportBuilder.transforms;
         }, updateSelectedAndAddedFieldsInTransform, true);
-
-        $scope.$watch(function () {
-            return $scope.reportBuilder.transforms;
-        }, _removeTranforms, true);
 
         $scope.$watch(function () {
             return $scope.reportBuilder.joinBy;
@@ -174,26 +188,6 @@
                 _removeFieldNotSelectInFormat();
                 _removeFieldNotSelectInTransform();
             }, 0);
-
-
-        }
-
-        function _removeTranforms() {
-            if(_.findIndex($scope.reportBuilder.transforms, {type: 'aggregation'}) == -1) {
-                var indexPostAgg = _.findIndex($scope.reportBuilder.transforms, {type: 'postAggregation'});
-
-                if(indexPostAgg > -1) {
-                    $scope.reportBuilder.transforms.splice(indexPostAgg, 1)
-                }
-            }
-
-            var indexPostAggregation = _.findIndex($scope.reportBuilder.transforms, {type: 'postAggregation'});
-            if(indexPostAggregation > -1) {
-                var transformClone = $scope.reportBuilder.transforms[indexPostAggregation];
-
-                $scope.reportBuilder.transforms.splice(indexPostAggregation, 1);
-                $scope.reportBuilder.transforms.push(transformClone);
-            }
         }
 
         function updateSelectedSummaryFieldTotal() {
@@ -236,10 +230,28 @@
             _resetForm();
         }
 
+        function unValidName(name) {
+            var fields = [];
+
+            angular.forEach(_getAllFieldInTransForm(), function (field) {
+                fields.push(field.key);
+            });
+
+            return _.filter(fields, function(field){ return name == field && name != null; }).length > 1;
+        }
+
         function isFormValid() {
             if ($scope.reportBuilder.transforms.length > 0) {
                 for (var index in $scope.reportBuilder.transforms) {
                     var transform = $scope.reportBuilder.transforms[index];
+
+                    if (transform.type == 'addField' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent') {
+                        for (var fieldIndex in transform.fields) {
+                            if(unValidName(transform.fields[fieldIndex].field)) {
+                                return false
+                            }
+                        }
+                    }
 
                     if (transform.type == 'sortBy') {
                         if (!angular.isArray(transform.fields) || !angular.isObject(transform.fields[0]) || !angular.isObject(transform.fields[1])) {
@@ -251,9 +263,9 @@
                         }
                     }
 
-                    if (transform.type == 'groupBy' && transform.fields.length == 0 ) {
-                        return false
-                    }
+                    // if (transform.type == 'groupBy' && transform.fields.length == 0 && !$scope.reportBuilder.multiView) {
+                    //     return false
+                    // }
                 }
             }
 
@@ -347,7 +359,8 @@
                 fieldTypes: angular.toJson(reportBuilder.fieldTypes),
                 multiView: reportBuilder.multiView,
                 subReportsIncluded: reportBuilder.subReportsIncluded,
-                isShowDataSetName: reportBuilder.isShowDataSetName
+                isShowDataSetName: reportBuilder.isShowDataSetName,
+                enableCustomDimensionMetric: reportBuilder.enableCustomDimensionMetric
             };
 
             if ($scope.isAdmin()) {
@@ -826,6 +839,16 @@
             reportBuilder = angular.copy(reportBuilder);
             reportBuilder.fieldTypes = angular.extend(angular.copy($scope.dimensionsMetrics), $scope.fieldInTransforms);
 
+            var indexGroupBy = _.findIndex(reportBuilder.transforms, {type: 'groupBy'});
+
+            if(indexGroupBy > -1) {
+                var transform = reportBuilder.transforms[indexGroupBy];
+
+                if(transform.fields.length == 0) {
+                    reportBuilder.transforms.splice(indexGroupBy, 1);
+                }
+            }
+
             var builders = reportBuilder.multiView ? reportBuilder.reportViewMultiViews : reportBuilder.reportViewDataSets;
 
             angular.forEach(builders, function (item) {
@@ -867,11 +890,17 @@
 
             angular.forEach(reportBuilder.transforms, function (transform) {
                 delete transform.openStatus;
+                transform.isPostGroup = transform.transformPosition == 'postGroupTransforms';
+                delete transform.transformPosition;
 
                 if (transform.type == 'date' || transform.type == 'number') {
                     delete transform.fields;
                 } else {
                     delete transform.field;
+                }
+
+                if (transform.type == 'groupBy') {
+                    delete transform.isPostGroup;
                 }
 
                 if (transform.type == 'addField') {
@@ -973,11 +1002,17 @@
 
             $scope.reportBuilder.joinBy = [];
             $scope.reportBuilder.formats = [];
-            $scope.reportBuilder.transforms = [];
+            $scope.reportBuilder.transforms = [{
+                transformPosition: 'groupTransform',
+                type: 'groupBy',
+                fields: [],
+                openStatus: true
+            }];
             $scope.reportBuilder.weightedCalculations = [];
             $scope.reportBuilder.showInTotal = [];
             $scope.reportBuilder.subReportsIncluded = false;
             $scope.reportBuilder.isShowDataSetName = false;
+            $scope.reportBuilder.enableCustomDimensionMetric = false;
         }
 
         /**
@@ -1174,7 +1209,7 @@
                                 return dm.key == defaultValue.conditionField;
                             });
 
-                            if (!field) {
+                            if (!field && defaultValue.conditionField != '$$CALCULATED_VALUE$$') {
                                 defaultValue.conditionField = null
                             }
                         })
@@ -1327,14 +1362,6 @@
             });
         }
 
-        function _removeFieldNotSelectInTotal() {
-            angular.forEach(angular.copy($scope.reportBuilder.showInTotal), function (field, index) {
-                if(_.findIndex($scope.totalDimensionsMetrics, {key: field}) == -1) {
-                    $scope.reportBuilder.showInTotal.splice(index, 1)
-                }
-            })
-        }
-
         update();
         function update() {
             if (!$scope.isNew) {
@@ -1384,6 +1411,10 @@
         setTimeout(function () {
             if (!$scope.isNew) {
                 angular.forEach($scope.reportBuilder.transforms, function (transform) {
+                    if('isPostGroup' in transform) {
+                        transform.transformPosition = (('isPostGroup' in transform) && transform.isPostGroup) ? 'postGroupTransforms' : 'prePostTransforms';
+                    }
+
                     if (transform.type == 'addCalculatedField' || transform.type == 'postAggregation') {
                         angular.forEach(transform.fields, function (field) {
                             angular.forEach($scope.totalDimensionsMetrics, function replace(dm) {

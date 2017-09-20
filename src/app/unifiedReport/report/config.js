@@ -12,9 +12,8 @@
             comparisonPercent: 'comparisonPercent',
             currency: 'currency',
             columnPosition: 'columnPosition',
-            replaceText: 'replaceText',
-            aggregation: 'aggregation',
-            postAggregation: 'postAggregation'
+            // replaceText: 'replaceText',
+            // postAggregation: 'postAggregation'
         })
         .provider('REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES', {
             $get: function (REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS) {
@@ -24,9 +23,8 @@
                     {key: REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS.addField, label: 'Add Field'},
                     {key: REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS.addCalculatedField, label: 'Add Calculated Field'},
                     {key: REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS.comparisonPercent, label: 'Comparison Percent'},
-                    {key: REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS.replaceText, label: 'Replace Text'},
-                    {key: REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS.aggregation, label: 'Aggregation'},
-                    {key: REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS.postAggregation, label: 'Post Aggregation'}
+                    // {key: REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS.replaceText, label: 'Replace Text'},
+                    // {key: REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS.postAggregation, label: 'Post Group By'}
                 ]
             }
         })

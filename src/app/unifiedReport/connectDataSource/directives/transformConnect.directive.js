@@ -75,6 +75,7 @@
                         totalFieldForGroupBy: _getFieldForGroupBy(scope.transforms),
                         totalFieldForTypeDate: [],
                         totalFieldForTypeNumber: [],
+                        totalDimensionsMetricsAllFieldTransform: [],
                         totalDimensionsMetricsForAddField: [],
                         totalDataSourceFieldsAugmentationLeftSide: []
                     };
@@ -86,6 +87,7 @@
 
                         _updateTransform();
                         _getDimensionsMetricsForDefaultValues();
+                        _updateTotalField();
                         _removeFieldInTransform();
                     }, true);
 
@@ -148,6 +150,8 @@
                     scope.removeAddValue = removeAddValue;
                     scope.addComparisonPercent = addComparisonPercent;
                     scope.notInMapField = notInMapField;
+                    scope.isMapField = isMapField;
+                    scope.isMapFieldSubsetGroup = isMapFieldSubsetGroup;
                     scope.notInMapFieldAndShowFieldCurrent = notInMapFieldAndShowFieldCurrent;
                     scope.mapDataSourceField = mapDataSourceField;
                     scope.filterFieldByText = filterFieldByText;
@@ -210,6 +214,17 @@
                     scope.filterLeftSideAugmentation = filterLeftSideAugmentation;
                     scope.showDateToFormat = showDateToFormat;
                     scope.filterMapFieldLeft = filterMapFieldLeft;
+                    scope.filterAggregationForGroupSubSet = filterAggregationForGroupSubSet;
+
+                    function filterAggregationForGroupSubSet(transform) {
+                        return function (field) {
+                            if(_.findIndex(transform.mapFields, {rightSide: field.key}) > -1) {
+                                return true
+                            }
+
+                            return false
+                        }
+                    }
 
                     function filterMapFieldLeft(transform, mapFieldThis) {
                         return function (field) {
@@ -1159,6 +1174,26 @@
                         return !item
                     }
 
+                    function isMapField(field) {
+                        return !notInMapField(field)
+                    }
+
+                    function isMapFieldSubsetGroup(field) {
+                        for(var index in scope.transforms) {
+                            var transform = scope.transforms[index];
+
+                            if(transform.type == 'subsetGroup') {
+                                for(var indexMap in transform.mapFields) {
+                                    if(transform.mapFields[indexMap].leftSide == field.original) {
+                                        return true
+                                    }
+                                }
+                            }
+                        }
+
+                        return false
+                    }
+
                     function notInMapField(field){
                         for(var index in scope.transforms) {
                             var transform = scope.transforms[index];
@@ -1523,6 +1558,12 @@
                         scope.totalFields.totalDimensionsMetricsForAddField = _getDimensionsMetricsForAddField().concat(scope.temporaryFieldsFormat);
                         scope.totalFields.totalDataSourceFieldsAugmentationLeftSide = scope.dataSourceFields.concat(_getAllFieldInAugmentationLeftSide());
 
+                        var fieldIsMaps = _.filter(_getDimensionsMetricsForAddField(), function (dm){
+                            return _.values(scope.mapFields).indexOf(dm.original) > -1;
+                        });
+
+                        scope.totalFields.totalDimensionsMetricsAllFieldTransform = fieldIsMaps;
+
                         _getDimensionsMetricsForDefaultValues();
                     }
 
@@ -1571,15 +1612,11 @@
 
                             angular.forEach(scope.transforms, function (transform) {
                                 if(transform.type == 'groupBy') {
-                                    //var difference = _.difference(transform.fields, _.values($scope.connectDataSource.mapFields));
-                                    //
-                                    //if(difference.length > 0) {
-                                    //    angular.forEach(difference, function (field) {
-                                    //        if(transform.fields.indexOf(field) > -1) {
-                                    //            transform.fields.splice(transform.fields.indexOf(field), 1)
-                                    //        }
-                                    //    });
-                                    //}
+                                    angular.forEach(angular.copy(transform.aggregationFields), function (field) {
+                                        if(_.findIndex(scope.totalFields.totalDimensionsMetricsAllFieldTransform, {key: field}) == -1) {
+                                            transform.aggregationFields.splice(transform.aggregationFields.indexOf(field), 1)
+                                        }
+                                    })
                                 }
 
                                 // if(transform.type == 'sortBy') {
@@ -1587,7 +1624,7 @@
                                 //        var difference = _.difference(field.names, _.values($scope.connectDataSource.mapFields));
                                 //
                                 //        if(difference.length > 0) {
-                                //            angular.forEach(difference, function (item) {
+                                 //            angular.forEach(difference, function (item) {
                                 //                if(field.names.indexOf(item) > -1) {
                                 //                    field.names.splice(field.names.indexOf(item), 1)
                                 //                }
@@ -1670,6 +1707,12 @@
                                             field.leftSide = null
                                         }
                                     });
+
+                                    angular.forEach(angular.copy(transform.aggregationFields), function (field) {
+                                        if(_.findIndex(transform.mapFields, {rightSide: field}) == -1) {
+                                            transform.aggregationFields.splice(transform.aggregationFields.indexOf(field), 1)
+                                        }
+                                    })
                                 }
 
                                 var allFields = _getAllFieldInTransform().concat(scope.dataSourceFields);
