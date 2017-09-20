@@ -52,7 +52,7 @@
 
             return httpi({
                 method: 'post',
-                url: url + '?XDEBUG_SESSION_START=1',
+                url: url,
                 data: params
             }).then(function(response) {
                 return response.data;
