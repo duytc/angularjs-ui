@@ -573,6 +573,22 @@
                     })
                 });
 
+                // add columnPositions
+                angular.forEach($scope.dimensions, function (dm) {
+                    if(dm.ticked && dimensions.indexOf(dm.name) == -1)  {
+                        dimensions.push(dm.name);
+                    }
+                });
+
+                angular.forEach($scope.metrics, function (dm) {
+                    if(dm.ticked && metrics.indexOf(dm.name) == -1)  {
+                        metrics.push(dm.name);
+                    }
+                });
+
+                dimensions = _.uniq(dimensions);
+                metrics = _.uniq(metrics);
+
                 dimensions = _.sortBy(dimensions);
                 dimensions = _.sortBy(dimensions, function (dimension) {
                     var key = null;
@@ -705,18 +721,18 @@
                 }
             });
 
-            // add columnPositions
-            angular.forEach($scope.dimensions, function (dm) {
-                if(dm.ticked && $scope.columnPositions.indexOf(dm.name) == -1)  {
-                    $scope.columnPositions.push(dm.name);
-                }
-            });
-
-            angular.forEach($scope.dimensions.concat($scope.metrics), function (dm) {
-                if(dm.ticked && $scope.columnPositions.indexOf(dm.name) == -1)  {
-                    $scope.columnPositions.push(dm.name);
-                }
-            });
+            // // add columnPositions
+            // angular.forEach($scope.dimensions, function (dm) {
+            //     if(dm.ticked && $scope.columnPositions.indexOf(dm.name) == -1)  {
+            //         $scope.columnPositions.push(dm.name);
+            //     }
+            // });
+            //
+            // angular.forEach($scope.dimensions.concat($scope.metrics), function (dm) {
+            //     if(dm.ticked && $scope.columnPositions.indexOf(dm.name) == -1)  {
+            //         $scope.columnPositions.push(dm.name);
+            //     }
+            // });
 
             if($scope.reports.length > 0) {
                 angular.forEach(angular.copy($scope.columnPositions), function (column) {
