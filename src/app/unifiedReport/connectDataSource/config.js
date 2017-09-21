@@ -116,7 +116,7 @@
                 return [
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.date, label: 'Date Format'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.number, label: 'Number Format'},
-                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.groupBy, label: 'Group By'},
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.groupBy, label: 'Group'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.sortBy, label: 'Sort By'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addField, label: 'Add Field'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addCalculatedField, label: 'Add Calculated Field'},

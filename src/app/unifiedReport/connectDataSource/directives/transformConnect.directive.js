@@ -218,7 +218,8 @@
 
                     function filterAggregationForGroupSubSet(transform) {
                         return function (field) {
-                            if(_.findIndex(transform.mapFields, {rightSide: field.key}) > -1) {
+                            var indexMapField = _.findIndex(transform.mapFields, {rightSide: field.key});
+                            if(indexMapField > -1 && (scope.dimensionsMetrics[transform.mapFields[indexMapField].leftSide] == 'number' || scope.dimensionsMetrics[transform.mapFields[indexMapField].leftSide] == 'decimal')) {
                                 return true
                             }
 
@@ -1088,9 +1089,14 @@
 
                             if (type.key == scope.allFiledFormatTypeKeys.subsetGroup) {
                                 transform.groupFields = [];
+                                transform.aggregateAll = false;
                                 transform.mapFields = [
                                     {leftSide: null, rightSide: null}
                                 ];
+                            }
+
+                            if (type.key == scope.allFiledFormatTypeKeys.groupBy) {
+                                transform.aggregateAll = false;
                             }
 
                             if (type.key == scope.allFiledFormatTypeKeys.number) {
