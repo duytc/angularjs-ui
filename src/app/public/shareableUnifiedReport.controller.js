@@ -493,11 +493,11 @@
                 for(var x in $scope.reportView.joinBy) {
                     var join = $scope.reportView.joinBy[x];
                     if(!_joinIsMetrics(join, totalMetrics)) {
-                        if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == join.outputField }) == -1 && !!join.outputField) {
+                        if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == join.outputField }) == -1 && !!join.outputField && join.outputField == field) {
                             $scope.dimensions.push({name: join.outputField , label: $scope.titleColumns[join.outputField] || join.outputField, ticked: join.isVisible});
                         }
                     } else {
-                        if(_.findIndex($scope.metrics, function (metric) { return metric.name == join.outputField }) == -1 && !!join.outputField) {
+                        if(_.findIndex($scope.metrics, function (metric) { return metric.name == join.outputField }) == -1 && !!join.outputField && join.outputField == field) {
                             $scope.metrics.push({name: join.outputField , label: $scope.titleColumns[join.outputField] || join.outputField, ticked: join.isVisible});
                         }
                     }

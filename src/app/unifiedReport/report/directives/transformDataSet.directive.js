@@ -66,6 +66,13 @@
                     }, true);
 
                     scope.$watch(function () {
+                        return scope.reportBuilder;
+                    }, function () {
+                        var transform = _.find(scope.transforms, {type: 'groupBy'});
+                        selectAllDimensionsForGroup(transform);
+                    }, true);
+
+                    scope.$watch(function () {
                         return scope.selectedFieldsDateSet;
                     }, function () {
                         totalDimensionsMetricsForDefaultValues = angular.copy(scope.selectedFieldsDateSet);
@@ -211,12 +218,19 @@
 
                     function selectAllDimensionsForGroup(transform) {
                         scope.selectAllDimensions = true;
+                        transform.fields = [];
 
                         angular.forEach(scope.selectedFields, function (field) {
                             if(scope.reportBuilder.joinBy.length > 0) {
                                 for(var index in scope.reportBuilder.joinBy) {
-                                    if(scope.reportBuilder.joinBy[index].outputField == field.key && transform.fields.indexOf(field.key) == -1) {
-                                        transform.fields.push(field.key);
+                                    if(scope.reportBuilder.joinBy[index].outputField == field.key) {
+                                        if(!scope.reportBuilder.joinBy[index].isVisible) {
+                                            return
+                                        } else {
+                                            if(transform.fields.indexOf(field.key) == -1) {
+                                                transform.fields.push(field.key);
+                                            }
+                                        }
                                     }
                                 }
                             }

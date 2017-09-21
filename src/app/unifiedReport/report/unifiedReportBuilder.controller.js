@@ -56,7 +56,7 @@
             multiView: false,
             subReportsIncluded: false,
             isShowDataSetName: false,
-            enableCustomDimensionMetric: false
+            enableCustomDimensionMetric: true
         };
 
         if(!$scope.isNew && !!reportView.id && $scope.reportBuilder.multiView) {
@@ -1012,7 +1012,7 @@
             $scope.reportBuilder.showInTotal = [];
             $scope.reportBuilder.subReportsIncluded = false;
             $scope.reportBuilder.isShowDataSetName = false;
-            $scope.reportBuilder.enableCustomDimensionMetric = false;
+            $scope.reportBuilder.enableCustomDimensionMetric = true;
         }
 
         /**
