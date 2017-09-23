@@ -14,7 +14,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no report template'
+                message: 'There is currently no report templates'
             });
         }
 

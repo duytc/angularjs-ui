@@ -14,7 +14,7 @@
         if (!$scope.hasData()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: 'There is currently no user tag'
+                message: 'There is currently no user tags'
             });
         }
 
