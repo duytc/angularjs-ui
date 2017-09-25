@@ -826,6 +826,7 @@
                 "HELP_BLOCK_AUTO_POSITION": "If Shift down is checked, all ad tags at the same or higher position will be shifted down.",
                 "HELP_BLOCK_MARK_AS_PASSBACK": "Tags marked as passbacks will not count impressions, they will count passbacks only. When this feature is used with the auto refresh feature, any passback tags are ignored once the ad slot is refreshed.",
                 "SHIFT_DOWN": "Shift Down",
+                "INBANNER_TIMEOUT": "Inbanner Ads timeout in seconds",
 
                 "GUIDE_DRAG_DROP_TITLE": "You can drag and drop to re-order your ad tags.",
                 "GUIDE_DRAG_DROP_GROUP_AD_TAG": "To move all ad tags from one position group to another, click and drag the gray position header bar up and down.",

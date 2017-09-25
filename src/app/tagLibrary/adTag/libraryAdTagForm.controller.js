@@ -5,7 +5,7 @@
         .controller('LibraryAdTagForm', LibraryAdTagForm)
     ;
 
-    function LibraryAdTagForm($scope, Auth, $modal, $translate, whiteList, blackList, AlertService, AdNetworkManager, adminUserManager, ServerErrorProcessor, AdNetworkCache, adTag, publisherList, AdTagLibrariesManager, historyStorage, queryBuilderService, AD_TYPES, USER_MODULES, PLATFORM_VAST_TAG, VARIABLE_FOR_AD_TAG, HISTORY_TYPE_PATH) {
+    function LibraryAdTagForm($scope, Auth, $modal, $translate, whiteList, blackList, AlertService, AdNetworkManager, adminUserManager, ServerErrorProcessor, AdNetworkCache, adTag, publisherList, AdTagLibrariesManager, historyStorage, queryBuilderService, AD_TYPES, USER_MODULES, VARIABLE_FOR_AD_TAG, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             adNetwork: 'adNetwork',
             html: 'html'
@@ -19,7 +19,6 @@
 
         $scope.isNew = adTag === null;
         $scope.adTypes = AD_TYPES;
-        $scope.platforms = PLATFORM_VAST_TAG;
         $scope.formProcessing = false;
         $scope.adNetworkList = [];
         $scope.publisherList = publisherList;
@@ -34,7 +33,6 @@
                 groupType: 'AND'
             },
             inBannerDescriptor: {
-                platform: 'auto',
                 timeout: null,
                 playerWidth: null,
                 playerHeight: null,

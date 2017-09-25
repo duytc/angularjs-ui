@@ -5,7 +5,7 @@
         .controller('AdTagForm', AdTagForm)
     ;
 
-    function AdTagForm($scope, Auth, _, $state, $modal, $translate, $stateParams, queryBuilderService, blackList, whiteList, AdSlotManager, AdNetworkCache, AdTagManager, AlertService, AdTagLibrariesManager, userSession, ServerErrorProcessor, DisplayAdSlotManager, historyStorage, adTag, adSlot, site, publisher, publisherList, AdNetworkManager, adminUserManager, AD_TYPES, TYPE_AD_SLOT, USER_MODULES, PLATFORM_VAST_TAG, HISTORY_TYPE_PATH, VARIABLE_FOR_AD_TAG) {
+    function AdTagForm($scope, Auth, _, $state, $modal, $translate, $stateParams, queryBuilderService, blackList, whiteList, AdSlotManager, AdNetworkCache, AdTagManager, AlertService, AdTagLibrariesManager, userSession, ServerErrorProcessor, DisplayAdSlotManager, historyStorage, adTag, adSlot, site, publisher, publisherList, AdNetworkManager, adminUserManager, AD_TYPES, TYPE_AD_SLOT, USER_MODULES, HISTORY_TYPE_PATH, VARIABLE_FOR_AD_TAG) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
             name: 'Name',
@@ -63,7 +63,6 @@
         $scope.showInputPosition = adSlot && adSlot.type == $scope.adSlotTypes.display ? true : false;
 
         $scope.adTypes = AD_TYPES;
-        $scope.platforms = PLATFORM_VAST_TAG;
 
         $scope.publisherList = publisherList;
         $scope.adSlotList = !!$stateParams.adSlotId ? [adSlot] : [];
@@ -109,7 +108,6 @@
                 // partnerTagId: null,
                 descriptor: null,
                 inBannerDescriptor: {
-                    platform: 'auto',
                     timeout: null,
                     playerWidth: null,
                     playerHeight: null,

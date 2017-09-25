@@ -179,21 +179,10 @@
 
                 <div ng-if="adTag.libraryAdTag.adType == adTypes.inBanner">
                     <div class="form-group">
-                        <label for="inputPlatform" class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.PLATFORM' | translate }}</label>
-                        <div class="col-sm-5">
-                            <ui-select id="inputPlatform" ng-disabled="pickFromLibrary" ng-pattern="true" ng-model="adTag.libraryAdTag.inBannerDescriptor.platform" reset-search-input="'false'">
-                                <ui-select-match placeholder="Select a platform">{{ $select.selected.label }}</ui-select-match>
-                                <ui-select-choices repeat="platform.key as platform in platforms">
-                                    {{ platform.label }}
-                                </ui-select-choices>
-                            </ui-select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
                         <label for="inputTimeout" class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.TIMEOUT' | translate }}</label>
                         <div class="col-sm-5">
                             <input name="timeout" ng-disabled="pickFromLibrary" ng-model="adTag.libraryAdTag.inBannerDescriptor.timeout" min="0" server-error type="number" class="form-control" id="inputTimeout" placeholder="{{ 'AD_TAG_MODULE.TIMEOUT' | translate }}">
+                            <span class="help-block">{{ 'AD_TAG_MODULE.INBANNER_TIMEOUT' | translate }}</span>
                         </div>
                     </div>
 
@@ -241,6 +230,8 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <a class="help-block" ng-click="clickVIewHelpText()">Allowed macros ${CACHEBUSTER}, ${PAGE_URL}, ... Click here for more details</a>
                             </div>
                         </div>
                     </div>
