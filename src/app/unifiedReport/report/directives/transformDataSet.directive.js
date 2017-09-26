@@ -565,7 +565,7 @@
                         var types = [];
 
                         angular.forEach(scope.allFiledFormatTypes, function (type) {
-                            if(scope.transformPosition == 'prePostTransforms' && type.key == 'sortBy') {
+                            if(scope.transformPosition == 'prePostTransforms' && (type.key == 'sortBy' || type.key == 'comparisonPercent')) {
                                 return
                             }
 
