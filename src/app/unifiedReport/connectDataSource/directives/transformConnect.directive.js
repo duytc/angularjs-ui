@@ -1562,7 +1562,7 @@
                         scope.totalFields.totalFieldForTypeNumber = _getFieldForTypeNumber(scope.transforms);
                         scope.totalFields.totalFieldForTypeDate = _getFieldForTypeDate(scope.transforms);
                         scope.totalFields.totalDimensionsMetricsForAddField = _getDimensionsMetricsForAddField().concat(scope.temporaryFieldsFormat);
-                        scope.totalFields.totalDataSourceFieldsAugmentationLeftSide = scope.dataSourceFields.concat(_getAllFieldInAugmentationLeftSide());
+                        scope.totalFields.totalDataSourceFieldsAugmentationLeftSide = scope.dataSourceFields.concat(_getAllFieldInAugmentationLeftSide()).concat(_getAllFieldInTransform());
 
                         var fieldIsMaps = _.filter(_getDimensionsMetricsForAddField(), function (dm){
                             return _.values(scope.mapFields).indexOf(dm.original) > -1;
