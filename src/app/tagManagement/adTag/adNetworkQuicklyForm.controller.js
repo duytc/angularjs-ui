@@ -63,8 +63,38 @@
         }
 
         $scope.isFormValid = function() {
+            for(var i in $scope.adNetwork.expressionDescriptor.groupVal) {
+                var group = $scope.adNetwork.expressionDescriptor.groupVal[i];
+                if (!_validateGroup(group)) {
+                    return false;
+                }
+            }
+
             return $scope.adNetworkForm.$valid;
         };
+
+        function _validateGroup(group) {
+            if(!!group.groupVal && group.groupVal.length > 0) {
+
+                var tmpGroup;
+                for(var i in group.groupVal) {
+                    tmpGroup = group.groupVal[i];
+                    if (!_validateGroup(tmpGroup)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            if(group.customVar == '${DOMAIN}' || group.customVar == '${DEVICE}' || group.customVar == '${COUNTRY}') {
+                if(!group.val || group.val.length == 0) {
+                    return false
+                }
+            }
+
+            return (!!group.customVar && group.customVar != 'CUSTOM') || !!group.var;
+        }
 
         $scope.submit = function() {
             if ($scope.formProcessing) {
