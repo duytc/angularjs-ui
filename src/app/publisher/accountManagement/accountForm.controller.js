@@ -22,6 +22,32 @@
             $scope.publisher.settings = REPORT_SETTINGS.default;
         }
 
+        $scope.addEmailSendAlert = addEmailSendAlert;
+        $scope.removeEmailSendAlert = removeEmailSendAlert;
+
+        /**
+         * Add an Email Send Alert
+         */
+        function addEmailSendAlert() {
+            if (!$scope.publisher.emailSendAlert) {
+                $scope.publisher.emailSendAlert = [];
+            }
+
+            $scope.publisher.emailSendAlert.push({
+                email: null
+            })
+        }
+
+        /**
+         * Remove an Email Send Alert
+         * @param index
+         */
+        function removeEmailSendAlert(index) {
+            if(index > -1) {
+                $scope.publisher.emailSendAlert.splice(index, 1)
+            }
+        }
+
         $scope.isFormValid = function() {
             if($scope.publisher.plainPassword != null || $scope.repeatPassword != null) {
                 return $scope.userForm.$valid && $scope.repeatPassword == $scope.publisher.plainPassword;

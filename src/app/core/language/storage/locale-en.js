@@ -195,7 +195,8 @@
                 "REPEAT_PASSWORD": "Repeat Password",
                 "COMPANY": "Company",
                 "EMAIL": "Email",
-                "EMAIL_FOR_ALERT": "Email For Alert",
+                "EMAIL_FOR_ALERT": "Emails For Alert",
+                "ADD_EMAIL_FOR_ALERT": "Add",
                 "FIRST_NAME": "First Name",
                 "LAST_NAME": "Last Name",
                 "PHONE": "Phone",
@@ -240,7 +241,8 @@
 
                 "HELP_BLOCK_REPEAT_PASSWORD": "Leave it blank for no change",
                 "HELP_BLOCK_BILLING_RATE": "You can set a custom CPM rate for this publisher. If you do not set a custom rate, the rate is calculated from our rate card.",
-                "HELP_BLOCK_TAG_DOMAIN": "This will allow you to pull js tags data from your custom domain."
+                "HELP_BLOCK_TAG_DOMAIN": "This will allow you to pull js tags data from your custom domain.",
+                "HELP_BLOCK_URL_EMAIL_ALERT": "The emails are for receiving alerts from Unified Report module."
             },
             "SUB_PUBLISHER_MODULE": {
                 "NONE": "None",

@@ -93,6 +93,8 @@
         $scope.hasBidder = hasBidder;
         $scope.toggleHeaderBidding = toggleHeaderBidding;
         $scope.disabledModule = disabledModule;
+        $scope.addEmailSendAlert = addEmailSendAlert;
+        $scope.removeEmailSendAlert = removeEmailSendAlert;
 
         /**
          * check if current Publisher has a module enabled
@@ -241,6 +243,29 @@
                     tier.number = 1000;
                 }
             })
+        }
+
+        /**
+         * Add an Email Send Alert
+         */
+        function addEmailSendAlert() {
+            if (!$scope.publisher.emailSendAlert) {
+                $scope.publisher.emailSendAlert = [];
+            }
+
+            $scope.publisher.emailSendAlert.push({
+                email: null
+            })
+        }
+
+        /**
+         * Remove an Email Send Alert
+         * @param index
+         */
+        function removeEmailSendAlert(index) {
+            if(index > -1) {
+                $scope.publisher.emailSendAlert.splice(index, 1)
+            }
         }
 
         $scope.submit = function() {
