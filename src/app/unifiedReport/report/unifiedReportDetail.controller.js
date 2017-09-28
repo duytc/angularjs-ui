@@ -258,6 +258,8 @@
         }
 
         function generateReport(date) {
+            $scope.availableOptions.currentPage = 1;
+
             var params = _toJsonReportView(reportView);
 
             params.startDate = DateFormatter.getFormattedDate(date.startDate);
