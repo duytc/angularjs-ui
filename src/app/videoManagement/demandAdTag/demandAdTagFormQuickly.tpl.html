@@ -219,6 +219,14 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="impressionCap" class="col-sm-2 control-label">{{ 'VIDEO_DEMAND_PARTNER_MODULE.IMPRESSION_CAP' | translate }}</label>
+                    <div class="col-sm-10">
+                        <input server-error name="impressionCap" ng-model="videoDemandAdTag.impressionCap" min="1" type="number" class="form-control" id="impressionCap" placeholder="{{ 'VIDEO_DEMAND_PARTNER_MODULE.IMPRESSION_CAP' | translate }}">
+                        <span class="help-block">{{ 'VIDEO_DEMAND_PARTNER_MODULE.HELP_BLOCK_IMPRESSION_CAP' | translate }}</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label for="Advanced" class="col-sm-2 control-label">Advanced</label>
 
                     <div class="col-sm-10">

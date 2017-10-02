@@ -423,6 +423,8 @@
                 "CONFIRM_DELETE_BLACK_LIST": "Are you sure you want to delete this blacklist?"
             },
             "VIDEO_DEMAND_PARTNER_MODULE": {
+                "IMPRESSION_CAP": "Impression Cap",
+                "REQUEST_CAP": "Request Cap",
                 "DEFAULT_TAG_URL": "Default Tag URL",
                 "NEW_DEMAND_PARTNER": "New Demand Partner",
                 "SELECT_A_VIDEO_DEMAND_PARTNER": "Select a demand partner",
@@ -459,7 +461,9 @@
                 "DROPDOWN_PAUSE": "Pause Demand Partner",
 
                 "CONFIRM_PAUSE_DEMAND_PARTNER": "Are you sure you want to pause this demand partner?",
-                "NOTE_CONFIRM_PAUSE_DEMAND_PARTNER": "Every ad tag associated with this demand partner will be also paused."
+                "NOTE_CONFIRM_PAUSE_DEMAND_PARTNER": "Every ad tag associated with this demand partner will be also paused.",
+
+                "HELP_BLOCK_IMPRESSION_CAP": "You can cap the amount of impressions per day. Leave it blank to use no cap"
             },
             "VIDEO_AD_TAG_MODULE": {
                 "BUY_PRICE": "Buy Price",

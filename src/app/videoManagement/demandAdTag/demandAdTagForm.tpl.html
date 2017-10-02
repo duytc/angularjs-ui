@@ -33,10 +33,8 @@
                     <label for="inputPublisher" class="col-sm-1 control-label">{{ 'PUBLISHER' | translate }}</label>
 
                     <div class="col-sm-5">
-                        <ui-select name="publisher" id="inputPublisher" ng-model="selectedData.publisher"
-                                   ng-required="true" server-error on-select="selectPublisher($item)">
-                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{
-                                $select.selected.company }}
+                        <ui-select name="publisher" id="inputPublisher" ng-model="selectedData.publisher" ng-required="true" server-error on-select="selectPublisher($item)">
+                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}
                             </ui-select-match>
                             <ui-select-choices repeat="publisher.id as publisher in publishers | filter:$select.search">
                                 {{ publisher.company }}
@@ -49,22 +47,14 @@
                     <label class="col-sm-1 control-label">{{ 'VIDEO_DEMAND_PARTNER' | translate }}</label>
 
                     <div class="col-sm-5">
-                        <ui-select name="publisher" id="inputVideoDemandPartner"
-                                   ng-disabled="!selectedData.publisher && isAdmin() && isNew"
-                                   ng-model="demandAdTag.libraryVideoDemandAdTag.videoDemandPartner" ng-required="true"
-                                   server-error on-select="selectVideoDemandPartner($item)">
-                            <ui-select-match
-                                    placeholder="{{ 'VIDEO_DEMAND_PARTNER_MODULE.SELECT_A_VIDEO_DEMAND_PARTNER' | translate }}">
-                                {{ $select.selected.name }}
-                            </ui-select-match>
-                            <ui-select-choices
-                                    repeat="partner.id as partner in demandPartners | filter:$select.search | selectedPublisher:selectedData.publisher">
+                        <ui-select name="publisher" id="inputVideoDemandPartner" ng-disabled="!selectedData.publisher && isAdmin() && isNew" ng-model="demandAdTag.libraryVideoDemandAdTag.videoDemandPartner" ng-required="true" server-error on-select="selectVideoDemandPartner($item)">
+                            <ui-select-match placeholder="{{ 'VIDEO_DEMAND_PARTNER_MODULE.SELECT_A_VIDEO_DEMAND_PARTNER' | translate }}">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices repeat="partner.id as partner in demandPartners | filter:$select.search | selectedPublisher:selectedData.publisher">
                                 {{ partner.name }}
                             </ui-select-choices>
                         </ui-select>
 
-                        <a ng-click="createVideoDemandPartner()" class="help-block">{{
-                            'VIDEO_DEMAND_PARTNER_MODULE.ADD_NEW_VIDEO_DEMAND_PARTNER' | translate }}</a>
+                        <a ng-click="createVideoDemandPartner()" class="help-block">{{ 'VIDEO_DEMAND_PARTNER_MODULE.ADD_NEW_VIDEO_DEMAND_PARTNER' | translate }}</a>
                     </div>
                 </div>
 
@@ -130,12 +120,18 @@
                     </div>
                 </div>
 
-
+                <div class="form-group">
+                    <label for="impressionCap" class="col-sm-1 control-label">{{ 'VIDEO_DEMAND_PARTNER_MODULE.IMPRESSION_CAP' | translate }}</label>
+                    <div class="col-sm-5">
+                        <input server-error name="impressionCap" ng-model="demandAdTag.impressionCap" min="1" type="number" class="form-control" id="impressionCap" placeholder="{{ 'VIDEO_DEMAND_PARTNER_MODULE.IMPRESSION_CAP' | translate }}">
+                        <span class="help-block">{{ 'VIDEO_DEMAND_PARTNER_MODULE.HELP_BLOCK_IMPRESSION_CAP' | translate }}</span>
+                    </div>
+                </div>
 
                 <div class="form-group">
-                    <label for="Advanced" class="col-sm-2 control-label">Advanced</label>
+                    <label for="Advanced" class="col-sm-1 control-label">Advanced</label>
 
-                    <div class="col-sm-10">
+                    <div class="col-sm-5">
                         <div>
                             <label class="ui-checkbox">
                                 <input name="advanced" type="checkbox" ng-model="advanced" server-error id="Advanced"><span></span>
