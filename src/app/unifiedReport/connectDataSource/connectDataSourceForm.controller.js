@@ -658,7 +658,7 @@
                                 $scope.connectDataSource.transforms.push({
                                     field: field.targetField,
                                     type: 'date',
-                                    to: 'YYYY-MM-DD',
+                                    to: $scope.dimensionsMetrics[field.targetField] == 'datetime' ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD',
                                     openStatus: true,
                                     from: [{isCustomFormatDateFrom: false, format: null}]
                                 })
