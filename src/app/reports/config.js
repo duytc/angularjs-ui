@@ -40,8 +40,13 @@
                                 },
                                 {
                                     key: 'impressions',
-                                    label: 'Est. Impressions',
+                                    label: 'Impressions',
                                     show: true
+                                },
+                                {
+                                    key: 'inBannerImpressions',
+                                    label: 'In Banner Impressions',
+                                    show: false
                                 },
                                 {
                                     key: 'networkOpportunityFillRate',

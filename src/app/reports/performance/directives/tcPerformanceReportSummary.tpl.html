@@ -36,6 +36,10 @@
                         <label>{{ 'REPORT.IMPRESSIONS' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.impressions | number }}</span>
                     </li>
+                    <li>
+                        <label>{{ 'REPORT.IN_BANNER_IMPRESSIONS' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.inBannerImpressions | number }}</span>
+                    </li>
                     <li ng-if="exist(reportGroup.opportunityFillRate)">
                         <label>{{ 'REPORT.OPPORTUNITY_FILL_RATE' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.opportunityFillRate | percentage }}</span>
@@ -108,6 +112,10 @@
                     <li>
                         <label>{{ 'REPORT.IMPRESSIONS' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageImpressions | number }}</span>
+                    </li>
+                    <li>
+                        <label>{{ 'REPORT.IN_BANNER_IMPRESSIONS' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.averageInBannerImpressions | number }}</span>
                     </li>
                     <li ng-if="exist(reportGroup.averageOpportunityFillRate)">
                         <label>{{ 'REPORT.OPPORTUNITY_FILL_RATE' | translate }}</label>
