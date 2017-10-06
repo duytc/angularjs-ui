@@ -24,6 +24,9 @@
 
         if($scope.hasResult && !!reportGroup.expandedResult) {
             reportGroup = reportGroup.expandedResult || {};
+            reportGroup.refreshedSlotOpportunities = $scope.reportGroup.refreshedSlotOpportunities;
+            reportGroup.averageRefreshedSlotOpportunities = $scope.reportGroup.averageRefreshedSlotOpportunities;
+
             $scope.reportGroup = reportGroup;
             dataGroupReport = $scope.reportGroup.reports || [];
         }

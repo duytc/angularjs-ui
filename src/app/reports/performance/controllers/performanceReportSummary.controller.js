@@ -9,10 +9,20 @@
         $scope.isAdmin = Auth.isAdmin();
 
         $scope.hasSlotOpportunities = hasSlotOpportunities;
+        $scope.hasRefreshedSlotOpportunities = hasRefreshedSlotOpportunities;
+        $scope.hasRefreshes = hasRefreshes;
         $scope.exist = exist;
 
         function hasSlotOpportunities() {
             return angular.isObject($scope.reportGroup) && angular.isNumber($scope.reportGroup.slotOpportunities);
+        }
+
+        function hasRefreshedSlotOpportunities() {
+            return angular.isObject($scope.reportGroup) && angular.isNumber($scope.reportGroup.refreshedSlotOpportunities) && $scope.showRefreshedSlotOpportunities;
+        }
+
+        function hasRefreshes() {
+            return angular.isObject($scope.reportGroup) && angular.isNumber($scope.reportGroup.refreshes) && $scope.showRefreshes;
         }
 
         if(!!$scope.reportGroup) {

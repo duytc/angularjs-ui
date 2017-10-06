@@ -4,14 +4,14 @@
     <div class="panel panel-default daily-reports">
         <div class="panel-heading">{{ 'REPORT.AD_SLOT_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" fields="['date', 'name', 'slotOpportunities', 'totalOpportunities', 'adOpportunities', 'impressions', 'inBannerImpressions', 'passbacks', 'fillRate']" header="['Date', 'Ad Slot', 'Slot Opportunities', 'Network Opportunities', 'Ad Opportunities', 'Impressions', 'In Banner Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                <export-excel data="reports" fields="['date', 'name', 'slotOpportunities', 'refreshedSlotOpportunities', 'totalOpportunities', 'adOpportunities', 'impressions', 'inBannerImpressions', 'passbacks', 'fillRate']" header="['Date', 'Ad Slot', 'Slot Opportunities', 'Network Opportunities', 'Ad Opportunities', 'Impressions', 'In Banner Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
             </div>
 
             <div class="btn-group btnGrouped" dropdown>
                 <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><a>
-                        <export-excel css-class="''" data="reports" fields="['date', 'name', 'slotOpportunities', 'totalOpportunities', 'adOpportunities', 'impressions', 'inBannerImpressions', 'passbacks', 'fillRate']" header="['Date', 'Ad Slot', 'Slot Opportunities', 'Network Opportunities', 'Ad Opportunities', 'Impressions', 'In Banner Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel css-class="''" data="reports" fields="['date', 'name', 'slotOpportunities', 'refreshedSlotOpportunities', 'totalOpportunities', 'adOpportunities', 'impressions', 'inBannerImpressions', 'passbacks', 'fillRate']" header="['Date', 'Ad Slot', 'Slot Opportunities', 'Network Opportunities', 'Ad Opportunities', 'Impressions', 'In Banner Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
             </div>
@@ -41,6 +41,9 @@
                     </td>
                     <td at-title="{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}" at-attribute="slotOpportunities" at-sortable>
                         {{ item.slotOpportunities | number }}
+                    </td>
+                    <td at-title="{{ 'REPORT.REFRESHED_SLOT_OPPORTUNITIES' | translate }}" at-attribute="refreshedSlotOpportunities" at-sortable>
+                        {{ item.refreshedSlotOpportunities | number }}
                     </td>
                     <td at-title="{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}" at-attribute="totalOpportunities" at-sortable>
                         {{ item.totalOpportunities | number }}
@@ -78,5 +81,5 @@
         <at-pagination ng-if="showPagination()" class="table-footer" at-list="reports" at-config="tableConfig"></at-pagination>
     </div>
 
-    <tc-performance-report-summary report-group="reportGroup"></tc-performance-report-summary>
+    <tc-performance-report-summary report-group="reportGroup" show-refreshed-slot-opportunities="true"></tc-performance-report-summary>
 </div>

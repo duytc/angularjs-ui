@@ -8,7 +8,9 @@
     function tcPerformanceReportSummary() {
         return {
             scope: {
-                reportGroup: '='
+                reportGroup: '=',
+                showRefreshedSlotOpportunities: '=',
+                showRefreshes: '='
             },
             restrict: 'AE',
             replace: 'true',

@@ -16,6 +16,10 @@
                         <label>{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.slotOpportunities | number }}</span>
                     </li>
+                    <li ng-if="hasRefreshedSlotOpportunities()">
+                        <label>{{ 'REPORT.REFRESHED_SLOT_OPPORTUNITIES' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.refreshedSlotOpportunities | number }}</span>
+                    </li>
                     <li>
                         <label>{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.totalOpportunities | number }}</span>
@@ -39,6 +43,10 @@
                     <li>
                         <label>{{ 'REPORT.IN_BANNER_IMPRESSIONS' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.inBannerImpressions | number }}</span>
+                    </li>
+                    <li ng-if="exist(reportGroup.refreshes) && hasRefreshes()">
+                        <label>{{ 'REPORT.REFRESHES' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.refreshes | number }}</span>
                     </li>
                     <li ng-if="exist(reportGroup.opportunityFillRate)">
                         <label>{{ 'REPORT.OPPORTUNITY_FILL_RATE' | translate }}</label>
@@ -93,6 +101,10 @@
                         <label>{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageSlotOpportunities | number }}</span>
                     </li>
+                    <li ng-if="hasRefreshedSlotOpportunities()">
+                        <label>{{ 'REPORT.REFRESHED_SLOT_OPPORTUNITIES' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.averageRefreshedSlotOpportunities | number }}</span>
+                    </li>
                     <li>
                         <label>{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageTotalOpportunities | number }}</span>
@@ -116,6 +128,10 @@
                     <li>
                         <label>{{ 'REPORT.IN_BANNER_IMPRESSIONS' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageInBannerImpressions | number }}</span>
+                    </li>
+                    <li ng-if="exist(reportGroup.averageRefreshes) && hasRefreshes()">
+                        <label>{{ 'REPORT.REFRESHES' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.averageRefreshes | number }}</span>
                     </li>
                     <li ng-if="exist(reportGroup.averageOpportunityFillRate)">
                         <label>{{ 'REPORT.OPPORTUNITY_FILL_RATE' | translate }}</label>
