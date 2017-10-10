@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.importHistory')
         .controller('ImportHistoryList', ImportHistoryList);
 
-    function ImportHistoryList($scope, $modal, $stateParams, importHistoryList, dataSet, dataSource, UnifiedReportDataSourceManager, UnifiedReportImportHistoryManager, historyStorage, HISTORY_TYPE_PATH, AlertService, exportExcelService, AtSortableService, EVENT_ACTION_SORTABLE) {
+    function ImportHistoryList($scope, $modal, $stateParams, importHistoryList, dataSet, dataSource, UnifiedReportDataSetManager, UnifiedReportDataSourceManager, UnifiedReportImportHistoryManager, historyStorage, HISTORY_TYPE_PATH, AlertService, exportExcelService, AtSortableService, EVENT_ACTION_SORTABLE) {
         $scope.dataSet = dataSet;
         $scope.importHistoryList = importHistoryList;
         $scope.formProcessing = false;
