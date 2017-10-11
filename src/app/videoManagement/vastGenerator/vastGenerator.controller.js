@@ -84,7 +84,7 @@
 
             var blob = new Blob([tagsString], {type: "text/plain;charset=utf-8"});
             var name = $scope.selected.videoPublisher.name;
-            var lastNameFile = '-vats-tags.txt';
+            var lastNameFile = '-vast-tags.txt';
 
             return saveAs(blob, [name  + lastNameFile]);
         };
