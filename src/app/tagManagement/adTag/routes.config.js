@@ -18,6 +18,27 @@
                     skip: true
                 }
             })
+            .state('tagManagement.adTag.listAll', {
+                url: '/listAll?page&sortField&orderBy&search',
+                params: {
+                    uniqueRequestCacheBuster: null
+                },
+                views: {
+                    'content@app': {
+                        controller: 'AllAdTagList',
+                        templateUrl: 'tagManagement/adTag/allAdTagList.tpl.html'
+                    }
+                },
+                resolve: {
+                    adTags: /* @ngInject */ function(AdTagManager, $stateParams) {
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        return AdTagManager.one().get($stateParams);
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Ad Tags'
+                }
+            })
             .state('tagManagement.adTag.list', {
                 url: '/list/adslot/{adSlotId:[0-9]+}',
                 params: {

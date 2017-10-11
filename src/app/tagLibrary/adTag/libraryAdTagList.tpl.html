@@ -16,6 +16,15 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs nav-tab-margin">
+                <li role="presentation"><a ui-sref="^.^.^.tagManagement.adTag.listAll">All Ad Tags</a></li>
+                <li role="presentation" ui-sref-active="active"><a ui-sref="^.^.^.tagLibrary.adTag.list">Standalone Ad Tags</a></li>
+            </ul>
+        </div>
+    </div>
+
     <form class="input-group col-sm-6 search-box">
         <input class="form-control" ng-model="selectData.query" ng-change="searchData()" placeholder="{{ 'UNIFIED_REPORT_MODULE.SEARCH' | translate }}" type="text"/>
             <span class="input-group-addon">
