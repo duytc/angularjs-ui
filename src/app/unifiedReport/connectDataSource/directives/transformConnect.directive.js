@@ -418,9 +418,11 @@
                     }
 
                     function addCompareValue(query) {
-                        if (!/^[+-]?\d+(\.\d+)?$/.test(query)) {
-                            return;
-                        }
+                        // only allow number type
+                        // but now allow text. Temp comment here. TODO: remove
+                        //if (!/^[+-]?\d+(\.\d+)?$/.test(query)) {
+                        //    return;
+                        //}
 
                         return query;
                     }

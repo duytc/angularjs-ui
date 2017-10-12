@@ -364,8 +364,12 @@
                                                                                 </div>
 
                                                                                 <div class="form-group select-data-type" ng-if="defaultValue.conditionComparator != 'is invalid'">
-                                                                                    <div ng-if="defaultValue.conditionComparator != 'in' && defaultValue.conditionComparator != 'not in'">
+                                                                                    <div ng-if="defaultValue.conditionComparator != 'in' && defaultValue.conditionComparator != 'not in' && defaultValue.conditionComparator != 'equal' && defaultValue.conditionComparator != 'not equal'">
                                                                                         <input server-error name="value" ng-model="defaultValue.conditionValue" ng-required="true" type="number" class="form-control" placeholder="Condition Value">
+                                                                                    </div>
+
+                                                                                    <div ng-if="defaultValue.conditionComparator == 'equal' || defaultValue.conditionComparator == 'not equal'">
+                                                                                        <input server-error name="value" ng-model="defaultValue.conditionValue" ng-required="true" class="form-control" placeholder="Condition Value">
                                                                                     </div>
 
                                                                                     <div ng-if="defaultValue.conditionComparator == 'in' || defaultValue.conditionComparator == 'not in'">
