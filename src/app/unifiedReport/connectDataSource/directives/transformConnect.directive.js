@@ -1224,7 +1224,7 @@
 
                             if(transform.type == 'augmentation') {
                                 for(var indexMap in transform.mapFields) {
-                                    if(transform.mapFields[indexMap].leftSide == field.key) {
+                                    if(transform.mapFields[indexMap].leftSide == field.original) {
                                         return false
                                     }
                                 }
@@ -1621,7 +1621,7 @@
                             angular.forEach(scope.transforms, function (transform) {
                                 if(transform.type == 'groupBy') {
                                     angular.forEach(angular.copy(transform.aggregationFields), function (field) {
-                                        if(_.findIndex(scope.totalFields.totalDimensionsMetricsAllFieldTransform, {key: field}) == -1) {
+                                        if(_.findIndex(scope.totalDimensionsMetrics, {key: field}) == -1) {
                                             transform.aggregationFields.splice(transform.aggregationFields.indexOf(field), 1)
                                         }
                                     })
