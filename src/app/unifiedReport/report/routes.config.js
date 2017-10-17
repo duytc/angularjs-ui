@@ -54,11 +54,6 @@
                             return dataSets.plain();
                         });
                     },
-                    reportViews: /* @ngInject */ function(UnifiedReportViewManager) {
-                        return UnifiedReportViewManager.getList({multiView: false}).then(function (reportViews) {
-                            return reportViews.plain();
-                        });
-                    },
                     reportView: function () {
                         return null
                     }
@@ -77,7 +72,7 @@
                 }
             })
             .state('unifiedReport.report.editBuilder', {
-                url: '/edit/?reportView&reportViewMultiViews&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&subReportsIncluded&userReorderTransformsAllowed&isShowDataSetName&enableCustomDimensionMetric',
+                url: '/edit?id&filters&subView&masterReportView&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&publisher&formats&userReorderTransformsAllowed&isShowDataSetName&enableCustomDimensionMetric',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -93,67 +88,48 @@
                             return dataSets.plain();
                         });
                     },
-                    reportViews: /* @ngInject */ function(UnifiedReportViewManager, $stateParams) {
-                        return UnifiedReportViewManager.getList({multiView: false}).then(function (reportViews) {
-                            if($stateParams.reportView) {
-                                var index = _.findIndex(reportViews, {id: Number($stateParams.reportView)});
-
-                                if(index > -1) {
-                                    reportViews.splice(index, 1)
-                                }
-                            }
-
-                            return reportViews.plain();
-                        });
-                    },
                     reportView: function (UnifiedReportViewManager, $stateParams) {
-                        if(!!$stateParams.reportView) {
-                            return UnifiedReportViewManager.one($stateParams.reportView).get()
+                        if(!!$stateParams.id) {
+                            return UnifiedReportViewManager.one($stateParams.id).get()
                                 .then(function (reportView) {
                                     angular.forEach(reportView.reportViewDataSets, function (reportViewDataSet) {
                                         reportViewDataSet.dataSet = angular.isObject(reportViewDataSet.dataSet) ? reportViewDataSet.dataSet.id : reportViewDataSet.dataSet
                                     });
 
-                                    angular.forEach(reportView.reportViewMultiViews, function (reportViewMultiView) {
-                                        reportViewMultiView.subView = angular.isObject(reportViewMultiView.subView) ? reportViewMultiView.subView.id : reportViewMultiView.subView
-                                    });
-
                                     return {
                                         reportViewDataSets: !!$stateParams.reportViewDataSets ? angular.fromJson($stateParams.reportViewDataSets) : reportView.reportViewDataSets,
-                                        reportViewMultiViews: !!$stateParams.reportViewMultiViews ? angular.fromJson($stateParams.reportViewMultiViews) : reportView.reportViewMultiViews,
                                         transforms: !!$stateParams.transforms ? angular.fromJson($stateParams.transforms) : reportView.transforms,
                                         showInTotal: !!$stateParams.showInTotal ? angular.fromJson($stateParams.showInTotal) : reportView.showInTotal,
                                         formats: !!$stateParams.formats ? angular.fromJson($stateParams.formats) : reportView.formats,
                                         weightedCalculations: !!$stateParams.weightedCalculations ? angular.fromJson($stateParams.weightedCalculations) : reportView.weightedCalculations,
+                                        filters: !!$stateParams.filters ? angular.fromJson($stateParams.filters) : reportView.filters,
                                         joinBy: !!$stateParams.joinBy ? angular.fromJson($stateParams.joinBy) : reportView.joinBy,
                                         name: !!$stateParams.name ? $stateParams.name : reportView.name,
-                                        alias: !!$stateParams.alias ? $stateParams.alias : reportView.alias,
                                         id: reportView.id,
-                                        multiView: !!$stateParams.multiView ? ($stateParams.multiView == 'true') : reportView.multiView,
-                                        subReportsIncluded: !!$stateParams.subReportsIncluded ? ($stateParams.subReportsIncluded == 'true') : reportView.subReportsIncluded,
+                                        masterReportView: !!$stateParams.masterReportView ? angular.fromJson($stateParams.masterReportView) : reportView.masterReportView,
                                         isShowDataSetName: !!$stateParams.isShowDataSetName ? ($stateParams.isShowDataSetName == 'true') : reportView.isShowDataSetName,
                                         userReorderTransformsAllowed: !!$stateParams.userReorderTransformsAllowed ? ($stateParams.userReorderTransformsAllowed == 'true') : reportView.userReorderTransformsAllowed,
                                         publisher: reportView.publisher.id || reportView.publisher,
                                         enableCustomDimensionMetric: !!$stateParams.enableCustomDimensionMetric ? ($stateParams.enableCustomDimensionMetric == 'true') : reportView.enableCustomDimensionMetric,
+                                        subView: !!$stateParams.subView ? ($stateParams.subView == 'true') : reportView.subView
                                     }
                                 })
                         }
 
                         return {
+                            id: $stateParams.id,
                             reportViewDataSets: angular.fromJson($stateParams.reportViewDataSets),
-                            reportViewMultiViews: angular.fromJson($stateParams.reportViewMultiViews),
+                            filters: angular.fromJson($stateParams.filters),
                             transforms: angular.fromJson($stateParams.transforms),
                             showInTotal: angular.fromJson($stateParams.showInTotal),
                             formats: angular.fromJson($stateParams.formats),
                             weightedCalculations: angular.fromJson($stateParams.weightedCalculations),
                             joinBy: angular.fromJson($stateParams.joinBy) || null,
                             name: $stateParams.name,
-                            alias: $stateParams.alias,
                             publisher: $stateParams.publisher,
-                            multiView: $stateParams.multiView == 'true',
-                            subReportsIncluded: $stateParams.subReportsIncluded == 'true',
                             isShowDataSetName: $stateParams.isShowDataSetName == 'true',
-                            enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true'
+                            enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true',
+                            subView: $stateParams.subView == 'true'
                         };
                     },
                     publishers: function () {
@@ -165,7 +141,7 @@
                 }
             })
             .state('unifiedReport.report.detail', {
-                url: '/detail?reportView&reportViewMultiViews&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&alias&publisher&formats&multiView&fieldTypes&subReportsIncluded&startDate&endDate&isShowDataSetName&page&limit&searchs&enableCustomDimensionMetric',
+                url: '/detail?id&masterReportView&subView&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&publisher&formats&fieldTypes&startDate&endDate&isShowDataSetName&page&limit&searchs&enableCustomDimensionMetric',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -177,39 +153,48 @@
                 },
                 resolve: {
                     reportView: function (UnifiedReportViewManager, $stateParams) {
-                        if(!!$stateParams.reportView) {
-                            return UnifiedReportViewManager.one($stateParams.reportView).get()
+                        if(!!$stateParams.id) {
+                            return UnifiedReportViewManager.one($stateParams.id).get()
                                 .then(function (reportView) {
+                                    if(!!reportView && reportView.subView && angular.isObject(reportView.masterReportView)) {
+                                        var masterReportView = angular.copy(reportView.masterReportView);
+                                        masterReportView.filters = reportView.filters;
+                                        delete  masterReportView.id;
+                                        delete  masterReportView.subView;
+                                        delete  masterReportView.masterReportView;
+                                        delete  masterReportView.name;
+
+                                        reportView = angular.extend(reportView, masterReportView);
+                                    }
+
                                     angular.forEach(reportView.reportViewDataSets, function (reportViewDataSet) {
                                         reportViewDataSet.dataSet = angular.isObject(reportViewDataSet.dataSet) ? reportViewDataSet.dataSet.id : reportViewDataSet.dataSet
                                     });
 
-                                    angular.forEach(reportView.reportViewMultiViews, function (reportViewMultiView) {
-                                        reportViewMultiView.subView = angular.isObject(reportViewMultiView.subView) ? reportViewMultiView.subView.id : reportViewMultiView.subView
-                                    });
-
                                     reportView.publisher = reportView.publisher.id || reportView.publisher;
+                                    reportView.filters = reportView.filters || angular.fromJson($stateParams.filters);
+                                    reportView.subView = reportView.subView || $stateParams.subView == 'true';
 
                                     return reportView
                                 })
                         }
 
                         return {
+                            id: angular.fromJson($stateParams.id),
+                            masterReportView: angular.fromJson($stateParams.masterReportView),
                             reportViewDataSets: angular.fromJson($stateParams.reportViewDataSets),
                             fieldTypes: angular.fromJson($stateParams.fieldTypes),
-                            reportViewMultiViews: angular.fromJson($stateParams.reportViewMultiViews),
                             transforms: angular.fromJson($stateParams.transforms),
                             showInTotal: angular.fromJson($stateParams.showInTotal),
                             weightedCalculations: angular.fromJson($stateParams.weightedCalculations),
                             formats: angular.fromJson($stateParams.formats),
+                            filters: angular.fromJson($stateParams.filters),
                             joinBy: angular.fromJson($stateParams.joinBy) || null,
                             name: $stateParams.name,
-                            alias: $stateParams.alias,
                             publisher: $stateParams.publisher,
-                            multiView: $stateParams.multiView == 'true',
-                            subReportsIncluded: $stateParams.subReportsIncluded == 'true',
                             isShowDataSetName: $stateParams.isShowDataSetName == 'true',
-                            enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true'
+                            enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true',
+                            subView: $stateParams.subView == 'true'
                         };
                     },
                     reportGroup: /* @ngInject */ function(unifiedReportBuilder, reportView, $stateParams) {
@@ -228,9 +213,7 @@
                         var joinByDimensions = [];
 
                         if(reportView.enableCustomDimensionMetric) {
-                            var reportViews = !reportView.multiView ? reportView.reportViewDataSets : reportView.reportViewMultiViews;
-
-                            angular.forEach(reportViews, function (reportViewItem) {
+                            angular.forEach(reportView.reportViewDataSets, function (reportViewItem) {
                                 angular.forEach(reportViewItem.dimensions, function (dimension) {
                                     var indexJoin = _.findIndex(reportView.joinBy, function (join) {
                                         for(var i in join.joinFields) {
@@ -246,7 +229,7 @@
                                     });
 
                                     if(indexJoin == -1) {
-                                        params.userDefineDimensions.push(reportView.multiView  ? dimension : dimension + '_' + reportViewItem.dataSet);
+                                        params.userDefineDimensions.push(dimension + '_' + reportViewItem.dataSet);
                                     }
                                 });
 
@@ -265,7 +248,7 @@
                                     });
 
                                     if(indexJoin == -1) {
-                                        params.userDefineMetrics.push(reportView.multiView  ? metric : metric + '_' + reportViewItem.dataSet);
+                                        params.userDefineMetrics.push(metric + '_' + reportViewItem.dataSet);
                                     }
                                 });
                             });
@@ -293,10 +276,6 @@
                                     })
                                 }
                             });
-
-                            if(!!params.userDefineDimensions && (params.userDefineDimensions.length == 0 || params.userDefineDimensions.indexOf('report_view_alias') == -1) && (params.userDefineDimensions.length > 0 || params.userDefineMetrics.length > 0) && reportView.multiView) {
-                                params.userDefineDimensions.unshift('report_view_alias');
-                            }
                         }
 
                         return unifiedReportBuilder.getPlatformReport(params);
@@ -304,34 +283,22 @@
                     dataSources: function (reportView, UnifiedReportViewManager) {
                         var listId = [];
 
-                        if(!reportView.multiView) {
-                            angular.forEach(reportView.reportViewDataSets, function (item) {
-                                listId.push(item.dataSet);
-                            })
-                        } else {
-                            angular.forEach(reportView.reportViewMultiViews, function (item) {
-                                listId.push(item.subView);
-                            })
-                        }
+                        angular.forEach(reportView.reportViewDataSets, function (item) {
+                            listId.push(item.dataSet);
+                        });
 
-                        var params = !!reportView.multiView ? {reportViews: listId.toString()} : {dataSets: listId.toString()};
+                        var params = {dataSets: listId.toString()};
 
                         return UnifiedReportViewManager.one('datasources').getList(null, params);
                     },
                     allDimensionsMetrics: function (reportView, UnifiedReportViewManager) {
                         var listId = [];
 
-                        if(!reportView.multiView) {
-                            angular.forEach(reportView.reportViewDataSets, function (item) {
-                                listId.push(item.dataSet);
-                            })
-                        } else {
-                            angular.forEach(reportView.reportViewMultiViews, function (item) {
-                                listId.push(item.subView);
-                            })
-                        }
+                        angular.forEach(reportView.reportViewDataSets, function (item) {
+                            listId.push(item.dataSet);
+                        });
 
-                        var params = !!reportView.multiView ? {reportViews: listId.toString()} : {dataSets: listId.toString()};
+                        var params =  {dataSets: listId.toString()};
                         params.showDataSetName = reportView.isShowDataSetName;
 
                         return UnifiedReportViewManager.one('datasets').get(params);

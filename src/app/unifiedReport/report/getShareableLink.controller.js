@@ -25,8 +25,6 @@
             }
         };
 
-        console.log($scope.selected);
-
         $scope.datePickerOpts = {
             maxDate:  moment().endOf('day'),
             ranges: {
@@ -143,9 +141,16 @@
         }
 
         function getDynamicDate() {
-            var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
-            for (var reportViewIndex in reportViews) {
-                var reportView = reportViews[reportViewIndex];
+            for (var i in $scope.reportView.filters) {
+                var filterRoot = $scope.reportView.filters[i];
+
+                if((filterRoot.type == 'date' || filterRoot.type == 'datetime') && filterRoot.dateType == 'dynamic') {
+                    return filterRoot.dateValue
+                }
+            }
+
+            for (var reportViewIndex in $scope.reportView.reportViewDataSets) {
+                var reportView = $scope.reportView.reportViewDataSets[reportViewIndex];
 
                 for (var filterIndex in reportView.filters) {
                     var filter = reportView.filters[filterIndex];
@@ -178,9 +183,18 @@
         }
 
         function enableSelectDaterange() {
-            var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
-            for (var reportViewIndex in reportViews) {
-                var reportView = reportViews[reportViewIndex];
+            for (var i in $scope.reportView.filters) {
+                var filterRoot = $scope.reportView.filters[i];
+
+                if(filterRoot.type == 'date' || filterRoot.type == 'datetime') {
+                    if(filterRoot.userProvided) {
+                        return true
+                    }
+                }
+            }
+
+            for (var reportViewIndex in $scope.reportView.reportViewDataSets) {
+                var reportView = $scope.reportView.reportViewDataSets[reportViewIndex];
 
                 for (var filterIndex in reportView.filters) {
                     var filter = reportView.filters[filterIndex];
@@ -197,9 +211,20 @@
         }
 
         function isDynamic() {
-            var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
-            for (var reportViewIndex in reportViews) {
-                var reportView = reportViews[reportViewIndex];
+            for (var i in $scope.reportView.filters) {
+                var reportViewRoot = $scope.reportView.filters[i];
+
+                for (var j in reportViewRoot.filters) {
+                    var filterRoot = reportViewRoot.filters[j];
+
+                    if((filterRoot.type == 'date' || filterRoot.type == 'datetime') && filterRoot.dateType == 'dynamic') {
+                        return true
+                    }
+                }
+            }
+
+            for (var reportViewIndex in $scope.reportView.reportViewDataSets) {
+                var reportView = $scope.reportView.reportViewDataSets[reportViewIndex];
 
                 for (var filterIndex in reportView.filters) {
                     var filter = reportView.filters[filterIndex];
@@ -214,9 +239,16 @@
         }
 
         function hideDaterange() {
-            var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
-            for (var reportViewIndex in reportViews) {
-                var reportView = reportViews[reportViewIndex];
+            for (var i in $scope.reportView.filters) {
+                var filterRoot = $scope.reportView.filters[i];
+
+                if(filterRoot.type == 'date' || filterRoot.type == 'datetime') {
+                    return true
+                }
+            }
+
+            for (var reportViewIndex in $scope.reportView.reportViewDataSets) {
+                var reportView = $scope.reportView.reportViewDataSets[reportViewIndex];
 
                 for (var filterIndex in reportView.filters) {
                     var filter = reportView.filters[filterIndex];

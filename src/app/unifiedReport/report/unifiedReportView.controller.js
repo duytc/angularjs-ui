@@ -114,14 +114,25 @@
                 reportViewDataSet.dataSet = angular.isObject(reportViewDataSet.dataSet) ? reportViewDataSet.dataSet.id : reportViewDataSet.dataSet
             });
 
-            angular.forEach(reportView.reportViewMultiViews, function (reportViewMultiView) {
-                reportViewMultiView.subView = angular.isObject(reportViewMultiView.subView) ? reportViewMultiView.subView.id : reportViewMultiView.subView
-            });
-
             var params = angular.copy(reportView);
 
-            params.needToGroup = false;
+            if(!!params && params.subView && angular.isObject(params.masterReportView)) {
+                var masterReportView = angular.copy(params.masterReportView);
+                masterReportView.filters = reportView.filters;
+                delete  masterReportView.id;
+                delete  masterReportView.subView;
+                delete  masterReportView.masterReportView;
+                delete  masterReportView.name;
 
+                reportView = angular.extend(params, masterReportView);
+            }
+
+            angular.forEach(params.reportViewDataSets, function (reportViewDataSet) {
+                reportViewDataSet.dataSet = angular.isObject(reportViewDataSet.dataSet) ? reportViewDataSet.dataSet.id : reportViewDataSet.dataSet
+            });
+
+            params.masterReportView = angular.isObject(params.masterReportView) ? params.masterReportView.id : params.masterReportView;
+            params.needToGroup = false;
             params.userDefineDimensions = reportView.enableCustomDimensionMetric ? params.dimensions : [];
             params.userDefineMetrics = reportView.enableCustomDimensionMetric ? params.metrics : [];
 
@@ -137,7 +148,7 @@
         function runReport(reportView) {
             var transition = UserStateHelper.transitionRelativeToBaseState(
                 'unifiedReport.report.detail', {
-                    reportView: reportView.id,
+                    id: reportView.id,
                     saveReportView: true
                 }
             );

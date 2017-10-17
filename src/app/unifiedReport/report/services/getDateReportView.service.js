@@ -22,14 +22,26 @@
 
         return api;
         
-        function getMinStartDateInFilterReportView(reportView) {
+        function getMinStartDateInFilterReportView(item) {
+            var reportView = angular.copy(item);
             var minStartDate = null;
-            var reportViews = reportView.multiView ? angular.copy(reportView.reportViewMultiViews) : angular.copy(reportView.reportViewDataSets);
 
-            angular.forEach(reportViews, function (reportView) {
-                angular.forEach(reportView.filters, function (filter) {
+            angular.forEach(reportView.filters, function (filter) {
+                if(filter.type == 'date' || filter.type == 'datetime') {
+                    if(filter.dateType == 'dynamic' && !angular.isObject(filter.dateValue)) {
+                        filter.dateValue = _getDateByDynamicKey(filter.dateValue);
+                    }
+
+                    if(!minStartDate || (new Date(filter.dateValue.startDate).getTime() < new Date(minStartDate).getTime())) {
+                        minStartDate = filter.dateValue.startDate;
+                    }
+                }
+            });
+
+            angular.forEach(reportView.reportViewDataSets, function (item) {
+                angular.forEach(item.filters, function (filter) {
                     if(filter.type == 'date' || filter.type == 'datetime') {
-                        if(filter.dateType == 'dynamic') {
+                        if(filter.dateType == 'dynamic' && !angular.isObject(filter.dateValue)) {
                             filter.dateValue = _getDateByDynamicKey(filter.dateValue);
                         }
 
@@ -43,14 +55,26 @@
             return minStartDate;
         }
         
-        function getMaxEndDateInFilterReportView(reportView) {
+        function getMaxEndDateInFilterReportView(item) {
+            var reportView = angular.copy(item);
             var maxEndDate = null;
-            var reportViews = reportView.multiView ? angular.copy(reportView.reportViewMultiViews) : angular.copy(reportView.reportViewDataSets);
 
-            angular.forEach(reportViews, function (reportView) {
-                angular.forEach(reportView.filters, function (filter) {
+            angular.forEach(reportView.filters, function (filter) {
+                if(filter.type == 'date' || filter.type == 'datetime') {
+                    if(filter.dateType == 'dynamic' && !angular.isObject(filter.dateValue)) {
+                        filter.dateValue = _getDateByDynamicKey(filter.dateValue);
+                    }
+
+                    if(!maxEndDate || (new Date(filter.dateValue.endDate).getTime() > new Date(maxEndDate).getTime())) {
+                        maxEndDate = filter.dateValue.endDate;
+                    }
+                }
+            });
+
+            angular.forEach(angular.copy(reportView.reportViewDataSets), function (item) {
+                angular.forEach(item.filters, function (filter) {
                     if(filter.type == 'date' || filter.type == 'datetime') {
-                        if(filter.dateType == 'dynamic') {
+                        if(filter.dateType == 'dynamic' && !angular.isObject(filter.dateValue)) {
                             filter.dateValue = _getDateByDynamicKey(filter.dateValue);
                         }
 

@@ -11,7 +11,8 @@
         return {
             scope: {
                 dataSets: '=listDataSets',
-                reportBuilder: '='
+                reportBuilder: '=',
+                disabled: '='
             },
             restrict: 'AE',
             templateUrl: 'unifiedReport/report/directives/dataSetBuilder.tpl.html',

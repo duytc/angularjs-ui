@@ -1,11 +1,11 @@
-<button class="btn btn-success" type="button" ng-click="addFormat()">
+<button class="btn btn-success" type="button" ng-click="addFormat()" ng-disabled="disabled">
     <span class="glyphicon glyphicon-plus"></span>
     Add Format
 </button>
 
 <div class="expressions-group" ng-repeat="format in formats">
     <div class="form-group select-connect-data-source">
-        <button type="button" class="btn btn-danger btn-close-ur" ng-click="removeFormat($index)">
+        <button type="button" class="btn btn-danger btn-close-ur" ng-disabled="disabled" ng-click="removeFormat($index)">
             <span class="glyphicon glyphicon-minus "></span>
         </button>
     </div>
@@ -14,7 +14,7 @@
         <div class="form-group select-connect-data-source">
             <label class="col-sm-2 control-label">Type</label>
             <div class="col-sm-10">
-                <ui-select ng-model="format.type" ng-required="true" on-select="selectedFormat(format, $item)" server-error reset-search-input="'false'">
+                <ui-select ng-model="format.type" ng-disabled="disabled" ng-required="true" on-select="selectedFormat(format, $item)" server-error reset-search-input="'false'">
                     <ui-select-match placeholder="Select a format type">{{ $select.selected.label }}</ui-select-match>
                     <ui-select-choices repeat="type.key as type in allFiledFormatTypesCopy | filter:$select.search">
                         {{ type.label }}
@@ -30,7 +30,7 @@
                         <label class="col-sm-2 control-label">Field Name</label>
 
                         <div class="col-sm-10">
-                            <ui-select multiple ng-model="format.fields" ng-required="true" server-error reset-search-input="'false'">
+                            <ui-select ng-disabled="disabled" multiple ng-model="format.fields" ng-required="true" server-error reset-search-input="'false'">
                                 <ui-select-match placeholder="Select a field">{{ $item.label }}</ui-select-match>
                                 <ui-select-choices repeat="field.key as field in resetDateFields(format.fields)  | filter:filterFieldFormat(format.fields, 'date') | filter:$select.search">
                                     {{ field.label }}
@@ -41,7 +41,7 @@
 
                     <label class="col-sm-2 control-label">Date Format</label>
                     <div class="col-sm-10">
-                        <ui-select ng-model="format.format" ng-required="true" server-error reset-search-input="'false'">
+                        <ui-select ng-disabled="disabled" ng-model="format.format" ng-required="true" server-error reset-search-input="'false'">
                             <ui-select-match placeholder="Select a date format">{{ $select.selected.label }}</ui-select-match>
                             <ui-select-choices repeat="type.key as type in dateFormatTypes | filter:$select.search">
                                 {{ type.label }}
@@ -55,7 +55,7 @@
                 <div class="form-group select-connect-data-source">
                     <label class="col-sm-2 control-label">Field Name</label>
                     <div class="col-sm-10">
-                        <ui-select multiple ng-model="format.fields" ng-required="true" server-error reset-search-input="'false'">
+                        <ui-select ng-disabled="disabled" multiple ng-model="format.fields" ng-required="true" server-error reset-search-input="'false'">
                             <ui-select-match placeholder="Select a field">{{ $item.label }}</ui-select-match>
                             <ui-select-choices repeat="field.key as field in resetNumberFields(format.fields) | filter:filterFieldFormat(format.fields, 'percentage') | filter:filterFieldFormat(format.fields, 'number') | filter:$select.search">
                                 {{ field.label }}
@@ -67,14 +67,14 @@
                 <div class="form-group select-connect-data-source">
                     <label class="col-sm-2 control-label">Decimals</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="number" ng-model="format.decimals" ng-required="true" placeholder="Decimals">
+                        <input ng-disabled="disabled" class="form-control" type="number" ng-model="format.decimals" ng-required="true" placeholder="Decimals">
                     </div>
                 </div>
 
                 <div class="form-group select-connect-data-source">
                     <label class="col-sm-2 control-label">Thousands Separator</label>
                     <div class="col-sm-10">
-                        <ui-select ng-model="format.thousandsSeparator" ng-required="true" server-error reset-search-input="'false'">
+                        <ui-select ng-disabled="disabled" ng-model="format.thousandsSeparator" ng-required="true" server-error reset-search-input="'false'">
                             <ui-select-match placeholder="Select a Separator">{{ $select.selected.label }}</ui-select-match>
                             <ui-select-choices repeat="separator.key as separator in separatorType | filter:$select.search">
                                 {{ separator.label }}
@@ -88,7 +88,7 @@
                 <div class="form-group select-connect-data-source">
                     <label class="col-sm-2 control-label">Field Name</label>
                     <div class="col-sm-10">
-                        <ui-select multiple ng-model="format.fields" ng-required="true" server-error reset-search-input="'false'">
+                        <ui-select ng-disabled="disabled" multiple ng-model="format.fields" ng-required="true" server-error reset-search-input="'false'">
                             <ui-select-match placeholder="Select a field">{{ $item.label }}</ui-select-match>
                             <ui-select-choices repeat="field.key as field in resetCurrencyFields(format.fields) | filter:filterFieldFormat(format.fields, 'currency') | filter:filterFieldFormat(format.fields, 'percentage') | filter:$select.search">
                                 {{ field.label }}
@@ -100,7 +100,7 @@
                 <div class="form-group select-connect-data-source">
                     <label class="col-sm-2 control-label">Currency</label>
                     <div class="col-sm-10">
-                        <ui-select ng-model="format.currency" ng-required="true" server-error reset-search-input="'false'">
+                        <ui-select ng-disabled="disabled" ng-model="format.currency" ng-required="true" server-error reset-search-input="'false'">
                             <ui-select-match placeholder="Select a currency">{{ $select.selected.label }}</ui-select-match>
                             <ui-select-choices repeat="field.key as field in currencies | filter:$select.search">
                                 {{ field.label }}
@@ -114,7 +114,7 @@
                 <div class="form-group select-connect-data-source">
                     <label class="col-sm-2 control-label">Field Name</label>
                     <div class="col-sm-10">
-                        <ui-select multiple ng-model="format.fields" ng-required="true" sortable="true" server-error reset-search-input="'false'">
+                        <ui-select ng-disabled="disabled" multiple ng-model="format.fields" ng-required="true" sortable="true" server-error reset-search-input="'false'">
                             <ui-select-match placeholder="Select fields" ui-sortable="sortableGroupOptions" ng-model="format.fields">{{ $item.label }}</ui-select-match>
                             <ui-select-choices repeat="field.key as field in resetSelectedFields(format.fields) | filter:filterFieldFormat(format.fields, 'columnPosition') | filter:$select.search">
                                 {{ field.label }}
@@ -129,7 +129,7 @@
                 <div class="form-group select-connect-data-source">
                     <label class="col-sm-2 control-label">Field Name</label>
                     <div class="col-sm-10">
-                        <ui-select multiple ng-model="format.fields" ng-required="true" server-error reset-search-input="'false'">
+                        <ui-select ng-disabled="disabled" multiple ng-model="format.fields" ng-required="true" server-error reset-search-input="'false'">
                             <ui-select-match placeholder="Select a field">{{ $item.label }}</ui-select-match>
                             <ui-select-choices repeat="field.key as field in resetNumberFields(format.fields) | filter:filterFieldFormat(format.fields, 'percentage') | filter:filterFieldFormat(format.fields, 'number') | filter:$select.search">
                                 {{ field.label }}
@@ -142,7 +142,7 @@
                 <div class="form-group select-connect-data-source">
                     <label class="col-sm-2 control-label">Precision</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="number" ng-model="format.precision" ng-required="true" placeholder="Precision">
+                        <input ng-disabled="disabled" class="form-control" type="number" ng-model="format.precision" ng-required="true" placeholder="Precision">
                     </div>
                 </div>
             </div>

@@ -4,10 +4,10 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportBuilder', UnifiedReportBuilder);
 
-    function UnifiedReportBuilder($scope, $timeout, $q, $translate, _, dataSets, reportViews, publishers, reportView, UnifiedReportViewManager, UserStateHelper, dateUtil, AlertService, historyStorage, HISTORY_TYPE_PATH) {
-        $scope.reportViews = reportViews;
+    function UnifiedReportBuilder($scope, $timeout, $q, $translate, _, dataSets, publishers, reportView, UnifiedReportViewManager, UserStateHelper, dateUtil, AlertService, historyStorage, HISTORY_TYPE_PATH) {
         $scope.dataSets = dataSets;
         $scope.publishers = publishers;
+        $scope.subView = !!reportView && reportView.subView;
 
         $scope.formProcessing = false;
 
@@ -23,6 +23,17 @@
         $scope.selectedAndAddedFieldsInTransform = [];
 
         $scope.isNew = reportView === null;
+        if(!!reportView && reportView.subView && !$scope.isNew && angular.isObject(reportView.masterReportView)) {
+            var masterReportView = angular.copy(reportView.masterReportView);
+            masterReportView.filters = reportView.filters;
+            delete  masterReportView.id;
+            delete  masterReportView.subView;
+            delete  masterReportView.masterReportView;
+            delete  masterReportView.name;
+
+            reportView = angular.extend(reportView, masterReportView);
+        }
+
         $scope.reportBuilder = reportView || {
             publisher: null,
             reportViewDataSets: [
@@ -37,37 +48,24 @@
                     dataSet: null
                 }
             ],
-            reportViewMultiViews: [
-                {
-                    filters: [],
-                    dimensions: [],
-                    metrics: [],
-                    tempDimensions: [],
-                    tempMetrics: [],
-                    dimensionsMetrics: [],
-                    fields: []
-                }
-            ],
             joinBy: [],
             weightedCalculations: [],
             transforms: [],
             formats: [],
             showInTotal: [],
-            multiView: false,
-            subReportsIncluded: false,
             isShowDataSetName: false,
-            enableCustomDimensionMetric: true
+            enableCustomDimensionMetric: true,
+            filters: [],
+            masterReportView: null,
+            subView: false
         };
 
-        if(!$scope.isNew && !!reportView.id && $scope.reportBuilder.multiView) {
-            angular.forEach($scope.reportBuilder.reportViewMultiViews, function (reportViewMultiView) {
-                if(!reportViewMultiView.subView || reportViewMultiView.subView == reportView.id) {
-                    _resetForm();
-                }
-            })
+        if(!$scope.reportBuilder.masterReportView && $scope.subView) {
+            $scope.reportBuilder.masterReportView = $scope.subView ? reportView.id : null;
+            delete $scope.reportBuilder.id;
         }
 
-        if(!$scope.reportBuilder.multiView) {
+        if(true) {
             var indexGroupBy = _.findIndex($scope.reportBuilder.transforms, function (transform) {
                 return transform.type == 'groupBy'
             });
@@ -87,14 +85,6 @@
         $scope.$watch(function () {
             return $scope.reportBuilder.reportViewDataSets;
         }, watchDataSet, true);
-
-        $scope.$watch(function () {
-            return $scope.reportBuilder.reportViewMultiViews;
-        }, watchReportView, true);
-
-        $scope.$watch(function () {
-            return $scope.reportBuilder.subReportsIncluded;
-        }, watchReportView, true);
 
         $scope.$watch(function () {
             return $scope.reportBuilder.transforms;
@@ -118,8 +108,6 @@
         $scope.selectPublisher = selectPublisher;
         $scope.hasFieldForTotal = hasFieldForTotal;
         $scope.toggleFieldForTotal = toggleFieldForTotal;
-        $scope.clickMultiView = clickMultiView;
-        $scope.clickSubReportsIncluded = clickSubReportsIncluded;
         $scope.getNameDataSet = getNameDataSet;
         $scope.isFormRunValid = isFormRunValid;
         $scope.isFormSaveValid = isFormSaveValid;
@@ -143,28 +131,6 @@
             });
 
             return !!dataSet ? dataSet.name : "---"
-        }
-
-        function clickSubReportsIncluded(subReportsIncluded) {
-            angular.forEach($scope.reportBuilder.reportViewMultiViews, function (reportView) {
-                if (!subReportsIncluded) {
-                    reportView.dimensions = [];
-                }
-
-                reportView.selectAllDimensionsMetrics = false;
-                reportView.fields = [];
-                var selectFields = reportView.dimensions.concat(reportView.metrics);
-
-                angular.forEach(selectFields, function (selectField) {
-                    var field = _.find(reportView.dimensionsMetrics, function (dm) {
-                        return dm.key == selectField
-                    });
-
-                    if (!!field) {
-                        reportView.fields.push(field)
-                    }
-                })
-            });
         }
 
         function hasFieldForTotal(filed) {
@@ -226,10 +192,6 @@
             _resetForm();
         }
 
-        function clickMultiView() {
-            _resetForm();
-        }
-
         function unValidName(name) {
             var fields = [];
 
@@ -263,40 +225,26 @@
                         }
                     }
 
-                    // if (transform.type == 'groupBy' && transform.fields.length == 0 && !$scope.reportBuilder.multiView) {
+                    // if (transform.type == 'groupBy' && transform.fields.length == 0) {
                     //     return false
                     // }
                 }
             }
 
-            if (!$scope.reportBuilder.multiView) {
-                if (!!$scope.reportBuilder.reportViewDataSets && $scope.reportBuilder.reportViewDataSets.length == 0) {
+            if (!!$scope.reportBuilder.reportViewDataSets && $scope.reportBuilder.reportViewDataSets.length == 0) {
+                return false
+            }
+
+            for (var index in $scope.reportBuilder.reportViewDataSets) {
+                var dataSetItem = $scope.reportBuilder.reportViewDataSets[index];
+
+                if (!dataSetItem.dataSet || (dataSetItem.dimensions.length == 0 && dataSetItem.metrics.length == 0)) {
                     return false
                 }
+            }
 
-                for (var index in $scope.reportBuilder.reportViewDataSets) {
-                    var dataSetItem = $scope.reportBuilder.reportViewDataSets[index];
-
-                    if (!dataSetItem.dataSet || (dataSetItem.dimensions.length == 0 && dataSetItem.metrics.length == 0)) {
-                        return false
-                    }
-                }
-
-                if (angular.isArray($scope.reportBuilder.reportViewDataSets) && $scope.reportBuilder.reportViewDataSets.length > 1) {
-                    return !!$scope.reportBuilder.joinBy && $scope.unifiedBuilderForm.$valid
-                }
-            } else {
-                if (!!$scope.reportBuilder.reportViewMultiViews && $scope.reportBuilder.reportViewMultiViews.length == 0) {
-                    return false
-                }
-
-                for (var index in $scope.reportBuilder.reportViewMultiViews) {
-                    var reportViewItem = $scope.reportBuilder.reportViewMultiViews[index];
-
-                    if (!reportViewItem.subView || (reportViewItem.dimensions.length == 0 && reportViewItem.metrics.length == 0)) {
-                        return false
-                    }
-                }
+            if (angular.isArray($scope.reportBuilder.reportViewDataSets) && $scope.reportBuilder.reportViewDataSets.length > 1) {
+                return !!$scope.reportBuilder.joinBy && $scope.unifiedBuilderForm.$valid
             }
 
             return $scope.unifiedBuilderForm.$valid;
@@ -346,19 +294,17 @@
 
             var params = {
                 reportViewDataSets: angular.toJson(reportBuilder.reportViewDataSets),
-                reportViewMultiViews: angular.toJson(reportBuilder.reportViewMultiViews),
-                filter: angular.toJson(reportBuilder.filter),
+                filters: angular.toJson(reportBuilder.filters),
                 transforms: angular.toJson(reportBuilder.transforms),
                 showInTotal: angular.toJson(reportBuilder.showInTotal),
                 weightedCalculations: angular.toJson(reportBuilder.weightedCalculations),
                 formats: angular.toJson(reportBuilder.formats),
                 joinBy: angular.toJson(reportBuilder.joinBy),
                 name: reportBuilder.name,
-                alias: reportBuilder.alias,
-                reportView: reportBuilder.id,
+                id: reportBuilder.id,
+                masterReportView: reportBuilder.masterReportView,
+                subView: reportBuilder.subView,
                 fieldTypes: angular.toJson(reportBuilder.fieldTypes),
-                multiView: reportBuilder.multiView,
-                subReportsIncluded: reportBuilder.subReportsIncluded,
                 isShowDataSetName: reportBuilder.isShowDataSetName,
                 enableCustomDimensionMetric: reportBuilder.enableCustomDimensionMetric
             };
@@ -370,11 +316,11 @@
             }
 
             if (save) {
-                var reportViewSave = (!$scope.isNew && reportBuilder.id) ? UnifiedReportViewManager.one(reportBuilder.id).patch(reportBuilder) : UnifiedReportViewManager.post(reportBuilder);
+                var reportViewSave = (((!$scope.isNew && !$scope.subView) || angular.isObject($scope.reportBuilder.masterReportView)) ||  $scope.reportBuilder.masterReportView != $scope.reportBuilder.id) && !!reportBuilder.id ? UnifiedReportViewManager.one(reportBuilder.id).patch(reportBuilder) : UnifiedReportViewManager.post(reportBuilder);
 
                 reportViewSave.then(function (data) {
-                    if ($scope.isNew || !params.reportView) {
-                        params.reportView = !!data ? data.id : params.id || params.reportView;
+                    if ($scope.isNew || !params.id || $scope.subView) {
+                        params.id = !!data ? data.id : params.id || params.id;
                     }
 
                     _viewDetail(params);
@@ -393,6 +339,10 @@
                     });
                 });
             } else {
+                if($scope.subView) {
+                    delete params.id;
+                }
+
                 _viewDetail(params);
             }
         }
@@ -423,10 +373,6 @@
         }
 
         function watchDataSet() {
-            if ($scope.reportBuilder.multiView) {
-                return;
-            }
-
             $scope.totalDimensionsMetrics = [];
             $scope.listDimensions = [];
             $scope.dimensionsMetrics = {};
@@ -480,14 +426,14 @@
                 angular.forEach($scope.reportBuilder.joinBy, function (itemJoinBy) {
                     angular.forEach(itemJoinBy.joinFields, function (joinField) {
                         var itemDataSet = _.find($scope.reportBuilder.reportViewDataSets, function (reportViewDataSet) {
-                            return reportViewDataSet.dataSet == joinField.dataSet
+                            return reportViewDataSet.dataSet == joinField.dataSet || reportViewDataSet.dataSet.id == joinField.dataSet
                         });
 
                         if(!itemDataSet) {
                             joinField.dataSet = null;
                         } else {
                             var reportViewDataSet = _.find($scope.reportBuilder.reportViewDataSets, function (reportViewDataSet) {
-                                return reportViewDataSet.dataSet == joinField.dataSet;
+                                return reportViewDataSet.dataSet == joinField.dataSet || reportViewDataSet.dataSet.id == joinField.dataSet;
                             });
 
                             if(!!reportViewDataSet) {
@@ -596,125 +542,6 @@
                     })
                 });
             }
-        }
-
-        function watchReportView() {
-            if (!$scope.reportBuilder.multiView) {
-                return;
-            }
-
-            $scope.selectedFields = [];
-            $scope.totalDimensionsMetrics = [];
-            $scope.listDimensions = [];
-            $scope.dimensionsMetrics = {};
-            $scope.fieldsHaveDateType = [];
-            $scope.fieldsHaveNumberType = [];
-            $scope.fieldNumberByMetrics = [];
-
-            angular.forEach($scope.reportBuilder.reportViewMultiViews, function (item) {
-                $scope.selectedFields = $scope.selectedFields.concat(item.fields);
-                $scope.totalDimensionsMetrics = $scope.totalDimensionsMetrics.concat(item.tempDimensions.concat(item.tempMetrics));
-
-                // angular.forEach(angular.copy($scope.totalDimensionsMetrics), function (dm) {
-                //     if(dm.type == 'date' || dm.type == 'datetime') {
-                //         var _year = null;
-                //         var _month = null;
-                //         var _day = null;
-                //
-                //         if(!!dm.dataSet) {
-                //             _year = {
-                //                 label: '__' + dm.root + '_year' + ' (' + dm.dataSet.name + ')',
-                //                 key: '__' + dm.root + '_year' + '_' + dm.dataSet.id,
-                //                 root: '__' + dm.root + '_year',
-                //                 type: 'number'
-                //             };
-                //
-                //             _day = {
-                //                 label: '__' + dm.root + '_day' + ' (' + dm.dataSet.name + ')',
-                //                 key: '__' + dm.root + '_day' + '_' + dm.dataSet.id,
-                //                 root: '__' + dm.root + '_day',
-                //                 type: 'number'
-                //             };
-                //
-                //             _month = {
-                //                 label: '__' + dm.root + '_month' + ' (' + dm.dataSet.name + ')',
-                //                 key: '__' + dm.root + '_month' + '_' + dm.dataSet.id,
-                //                 root: '__' + dm.root + '_month',
-                //                 type: 'number'
-                //             };
-                //         } else {
-                //             _year = {
-                //                 label: '__' + dm.root + '_year',
-                //                 key: '__' + dm.root + '_year',
-                //                 root: '__' + dm.root + '_year',
-                //                 type: 'number'
-                //             };
-                //
-                //             _day = {
-                //                 label: '__' + dm.root + '_day',
-                //                 key: '__' + dm.root + '_day',
-                //                 root: '__' + dm.root + '_day',
-                //                 type: 'number'
-                //             };
-                //
-                //             _month = {
-                //                 label: '__' + dm.root + '_month',
-                //                 key: '__' + dm.root + '_month',
-                //                 root: '__' + dm.root + '_month',
-                //                 type: 'number'
-                //             };
-                //         }
-                //
-                //
-                //         $scope.totalDimensionsMetrics.push(_year);
-                //         $scope.selectedFields.push(_year);
-                //
-                //         $scope.totalDimensionsMetrics.push(_month);
-                //         $scope.selectedFields.push(_month);
-                //
-                //         $scope.totalDimensionsMetrics.push(_day);
-                //         $scope.selectedFields.push(_day);
-                //     }
-                // });
-
-                angular.forEach(item.dimensions, function (dimension) {
-                    var findDimension = _.find(item.tempDimensions, function (tempD) {
-                        return tempD.key == dimension;
-                    });
-
-                    if (!!findDimension) {
-                        var index = _.findIndex($scope.listDimensions, function (dm) {
-                            return dm.key == findDimension.key
-                        });
-
-                        if (index == -1) {
-                            $scope.listDimensions.push(findDimension)
-                        }
-                    }
-                });
-
-                var reportView = _.find($scope.reportViews, function (reportView) {
-                    return angular.isObject(item.subView) ? reportView.id == item.subView.id : reportView.id == item.subView;
-                });
-
-                if (!!reportView) {
-                    $timeout(function () {
-                        item.selectAllDimensionsMetrics = ((item.dimensions.length == reportView.dimensions.length || !$scope.reportBuilder.subReportsIncluded) && item.metrics.length == reportView.metrics.length);
-                    }, 0, true);
-                }
-            });
-
-            angular.forEach($scope.totalDimensionsMetrics, function (dm) {
-                $scope.dimensionsMetrics[dm.key] = dm.type;
-            });
-
-            // update
-            updateSelectedAndAddedFieldsInTransform();
-            _fieldsHaveDateType();
-            _fieldsHaveNumberType();
-            _fieldNumberByMetrics();
-            _removeFieldNotSelectInTransform();
-            _removeFieldNotSelectInFormat();
         }
 
         function summaryFieldForTotal() {
@@ -838,6 +665,7 @@
         function _refactorJson(reportBuilder) {
             reportBuilder = angular.copy(reportBuilder);
             reportBuilder.fieldTypes = angular.extend(angular.copy($scope.dimensionsMetrics), $scope.fieldInTransforms);
+            reportBuilder.masterReportView = angular.isObject(reportBuilder.masterReportView) ? reportBuilder.masterReportView.id : reportBuilder.masterReportView;
 
             var indexGroupBy = _.findIndex(reportBuilder.transforms, {type: 'groupBy'});
 
@@ -849,9 +677,7 @@
                 }
             }
 
-            var builders = reportBuilder.multiView ? reportBuilder.reportViewMultiViews : reportBuilder.reportViewDataSets;
-
-            angular.forEach(builders, function (item) {
+            angular.forEach(reportBuilder.reportViewDataSets, function (item) {
                 angular.forEach(item.filters, function (filter) {
                     if (filter.type == 'date') {
                         if (filter.dateType == 'customRange' || filter.dateType == 'userProvided') {
@@ -870,7 +696,6 @@
                         delete filter.format;
                         delete filter.dateValue;
                     }
-
                     if (filter.type == 'text') {
                         delete filter.date;
                         delete filter.startDate;
@@ -880,6 +705,18 @@
                     }
                 });
 
+                angular.forEach(item.filters, function (filter) {
+                    if(!filter.filterOld && $scope.subView) {
+                        filter.dataSet = angular.isObject(item.dataSet) ? item.dataSet.id : item.dataSet;
+                        reportBuilder.filters.push(filter);
+                    }
+                });
+
+                item.filters = _.filter(item.filters, function (filter) {
+                    return !filter.dataSet
+                });
+
+                delete item.id;
                 delete item.tempDimensions;
                 delete item.tempMetrics;
                 delete item.fields;
@@ -957,38 +794,24 @@
                 });
             });
 
-            if (reportBuilder.multiView) {
-                angular.forEach(reportBuilder.reportViewMultiViews, function (reportViewMultiView) {
-                    reportViewMultiView.subView = angular.isObject(reportViewMultiView.subView) ? reportViewMultiView.subView.id : reportViewMultiView.subView
-                });
-
-                delete reportBuilder.reportViewDataSets
-            } else {
-                angular.forEach(reportBuilder.reportViewDataSets, function (reportViewDataSet) {
-                    reportViewDataSet.dataSet = angular.isObject(reportViewDataSet.dataSet) ? reportViewDataSet.dataSet.id : reportViewDataSet.dataSet
-                });
-
-                delete reportBuilder.reportViewMultiViews
-            }
+            angular.forEach(reportBuilder.reportViewDataSets, function (reportViewDataSet) {
+                reportViewDataSet.dataSet = angular.isObject(reportViewDataSet.dataSet) ? reportViewDataSet.dataSet.id : reportViewDataSet.dataSet
+            });
 
             delete  reportBuilder.userReorderTransformsAllowed;
+            delete  reportBuilder.dimensions;
+            delete  reportBuilder.metrics;
+            delete  reportBuilder.createdDate;
+            delete  reportBuilder.lastActivity;
+            delete  reportBuilder.lastRun;
+            delete  reportBuilder.shared;
+            delete  reportBuilder.createdDate;
 
             return reportBuilder;
         }
 
         function _resetForm() {
             $scope.reportBuilder.reportViewDataSets = [
-                {
-                    filters: [],
-                    dimensions: [],
-                    metrics: [],
-                    tempDimensions: [],
-                    tempMetrics: [],
-                    dimensionsMetrics: [],
-                    fields: []
-                }
-            ];
-            $scope.reportBuilder.reportViewMultiViews = [
                 {
                     filters: [],
                     dimensions: [],
@@ -1010,7 +833,6 @@
             }];
             $scope.reportBuilder.weightedCalculations = [];
             $scope.reportBuilder.showInTotal = [];
-            $scope.reportBuilder.subReportsIncluded = false;
             $scope.reportBuilder.isShowDataSetName = false;
             $scope.reportBuilder.enableCustomDimensionMetric = true;
         }
@@ -1230,85 +1052,85 @@
             });
         }
 
-        function _setTempDimensions(item, reportView) {
-            if(!item || !item.dimensions) {
-                return
-            }
-
-            reportView.tempDimensions = [];
-            angular.forEach(item.dimensions, function (dimension) {
-                var key = null;
-                var id = null;
-
-                if(dimension.lastIndexOf('_') > -1) {
-                    key = dimension.slice(0, dimension.lastIndexOf('_'));
-                    id = dimension.slice(dimension.lastIndexOf('_') + 1, dimension.length);
-                } else {
-                    key = dimension;
-                }
-
-                var dataSet = _.find($scope.dataSets, function (dataSet) {
-                    return !!dataSet.dimensions[key] && dataSet.id == id;
-                });
-
-                if (!!dataSet) {
-                    reportView.tempDimensions.push({
-                        key: dimension,
-                        label: key + ' (' + dataSet.name + ')',
-                        type: dataSet.dimensions[key],
-                        root: key,
-                        dataSet: dataSet
-                    })
-                } else {
-                    reportView.tempDimensions.push({
-                        key: dimension,
-                        root: key,
-                        label: dimension,
-                        type: item.fieldTypes[dimension]
-                    })
-                }
-            });
-        }
-
-        function _setTempMetrics(item, reportView) {
-            if(!item || !item.metrics) {
-                return
-            }
-
-            reportView.tempMetrics = [];
-            angular.forEach(item.metrics, function (metric) {
-                var key = null;
-                var id = null;
-
-                if(metric.lastIndexOf('_') > -1) {
-                    key = metric.slice(0, metric.lastIndexOf('_'));
-                    id = metric.slice(metric.lastIndexOf('_') + 1, metric.length);
-                } else {
-                    key = metric;
-                }
-
-                var dataSet = _.find($scope.dataSets, function (dataSet) {
-                    return !!dataSet.metrics[key] && dataSet.id == id;
-                });
-
-                if (!!dataSet) {
-                    reportView.tempMetrics.push({
-                        key: metric,
-                        label: key + ' (' + dataSet.name + ')',
-                        type: dataSet.metrics[key],
-                        root: key,
-                        dataSet: dataSet
-                    })
-                } else {
-                    reportView.tempMetrics.push({
-                        key: metric,
-                        root: key,
-                        label: metric,
-                        type: item.fieldTypes[metric]
-                    })
-                }
-            });
-        }
+        // function _setTempDimensions(item, reportView) {
+        //     if(!item || !item.dimensions) {
+        //         return
+        //     }
+        //
+        //     reportView.tempDimensions = [];
+        //     angular.forEach(item.dimensions, function (dimension) {
+        //         var key = null;
+        //         var id = null;
+        //
+        //         if(dimension.lastIndexOf('_') > -1) {
+        //             key = dimension.slice(0, dimension.lastIndexOf('_'));
+        //             id = dimension.slice(dimension.lastIndexOf('_') + 1, dimension.length);
+        //         } else {
+        //             key = dimension;
+        //         }
+        //
+        //         var dataSet = _.find($scope.dataSets, function (dataSet) {
+        //             return !!dataSet.dimensions[key] && dataSet.id == id;
+        //         });
+        //
+        //         if (!!dataSet) {
+        //             reportView.tempDimensions.push({
+        //                 key: dimension,
+        //                 label: key + ' (' + dataSet.name + ')',
+        //                 type: dataSet.dimensions[key],
+        //                 root: key,
+        //                 dataSet: dataSet
+        //             })
+        //         } else {
+        //             reportView.tempDimensions.push({
+        //                 key: dimension,
+        //                 root: key,
+        //                 label: dimension,
+        //                 type: item.fieldTypes[dimension]
+        //             })
+        //         }
+        //     });
+        // }
+        //
+        // function _setTempMetrics(item, reportView) {
+        //     if(!item || !item.metrics) {
+        //         return
+        //     }
+        //
+        //     reportView.tempMetrics = [];
+        //     angular.forEach(item.metrics, function (metric) {
+        //         var key = null;
+        //         var id = null;
+        //
+        //         if(metric.lastIndexOf('_') > -1) {
+        //             key = metric.slice(0, metric.lastIndexOf('_'));
+        //             id = metric.slice(metric.lastIndexOf('_') + 1, metric.length);
+        //         } else {
+        //             key = metric;
+        //         }
+        //
+        //         var dataSet = _.find($scope.dataSets, function (dataSet) {
+        //             return !!dataSet.metrics[key] && dataSet.id == id;
+        //         });
+        //
+        //         if (!!dataSet) {
+        //             reportView.tempMetrics.push({
+        //                 key: metric,
+        //                 label: key + ' (' + dataSet.name + ')',
+        //                 type: dataSet.metrics[key],
+        //                 root: key,
+        //                 dataSet: dataSet
+        //             })
+        //         } else {
+        //             reportView.tempMetrics.push({
+        //                 key: metric,
+        //                 root: key,
+        //                 label: metric,
+        //                 type: item.fieldTypes[metric]
+        //             })
+        //         }
+        //     });
+        // }
 
         function _removeFieldNotSelectInFormat() {
             angular.forEach($scope.reportBuilder.formats, function (format) {
@@ -1330,10 +1152,6 @@
 
                 if (difference.length > 0) {
                     angular.forEach(difference, function (field) {
-                        if (field == 'report_view_alias' && $scope.reportBuilder.multiView) {
-                            return
-                        }
-
                         if (format.fields.indexOf(field) > -1) {
                             format.fields.splice(format.fields.indexOf(field), 1)
                         }
@@ -1349,7 +1167,7 @@
                 var fields = dataSet.dimensions.concat(dataSet.metrics);
 
                 angular.forEach(fields, function (field) {
-                    selectedFields.push(field + '_' + dataSet.dataSet)
+                    selectedFields.push(field + '_' + (dataSet.dataSet.id || dataSet.dataSet))
                 })
             });
 
@@ -1365,45 +1183,31 @@
         update();
         function update() {
             if (!$scope.isNew) {
-                if (!$scope.reportBuilder.multiView) {
-                    angular.forEach($scope.reportBuilder.reportViewDataSets, function (dataSet) {
-                        var dataSetItem = _.find($scope.dataSets, function (item) {
-                            return dataSet.dataSet == item.id || dataSet.dataSet.id == item.id
-                        });
-
-                        dataSet.tempDimensions = _.keys(dataSetItem.dimensions);
-                        dataSet.tempMetrics = _.keys(dataSetItem.metrics);
-                        dataSet.dimensionsMetrics = angular.extend(angular.copy(dataSetItem.dimensions), angular.copy(dataSetItem.metrics));
-
-                        dataSet.fields = dataSet.dimensions.concat(dataSet.metrics);
-                        dataSet.allFields = dataSet.tempDimensions.concat(dataSet.tempMetrics);
+                angular.forEach($scope.reportBuilder.reportViewDataSets, function (dataSet) {
+                    angular.forEach(dataSet.filters, function (filter) {
+                        filter.filterOld = true
                     });
-                } else {
-                    angular.forEach($scope.reportBuilder.reportViewMultiViews, function (reportView) {
-                        var reportViewItem = _.find($scope.reportViews, function (item) {
-                            return !!reportView.subView && (reportView.subView == item.id || reportView.subView.id == item.id)
-                        });
 
-                        _setTempDimensions(reportViewItem, reportView);
-                        _setTempMetrics(reportViewItem, reportView);
-                        reportView.dimensionsMetrics = reportView.tempDimensions.concat(angular.copy(reportView.tempMetrics));
-
-                        reportView.fields = [];
-
-                        if (reportView.dimensions instanceof  Array) {
-	                        var fields = reportView.dimensions.concat(reportView.metrics);
-	                        angular.forEach(fields, function (field) {
-		                        var findField = _.find(reportView.dimensionsMetrics, function (dm) {
-			                        return dm.key == field;
-		                        });
-
-		                        if (!!findField) {
-			                        reportView.fields.push(findField)
-		                        }
-	                        });
+                    // update filter
+                    angular.forEach($scope.reportBuilder.filters, function (filter) {
+                        if(filter.dataSet == dataSet.dataSet || filter.dataSet == dataSet.dataSet.id || filter.dataSet.id == dataSet.dataSet || (!!filter.dataSet.id && dataSet.dataSet.id && filter.dataSet.id == dataSet.dataSet.id)) {
+                            dataSet.filters.push(filter);
                         }
                     });
-                }
+                    
+                    var dataSetItem = _.find($scope.dataSets, function (item) {
+                        return dataSet.dataSet == item.id || dataSet.dataSet.id == item.id
+                    });
+
+                    dataSet.tempDimensions = _.keys(dataSetItem.dimensions);
+                    dataSet.tempMetrics = _.keys(dataSetItem.metrics);
+                    dataSet.dimensionsMetrics = angular.extend(angular.copy(dataSetItem.dimensions), angular.copy(dataSetItem.metrics));
+
+                    dataSet.fields = dataSet.dimensions.concat(dataSet.metrics);
+                    dataSet.allFields = dataSet.tempDimensions.concat(dataSet.tempMetrics);
+                });
+
+                $scope.reportBuilder.filters = [];
             }
         }
 

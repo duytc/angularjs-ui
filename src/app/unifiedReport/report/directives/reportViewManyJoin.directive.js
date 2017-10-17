@@ -12,7 +12,8 @@
             scope: {
                 dataSets: '=listDataSets',
                 reportBuilder: '=',
-                dimensionsMetrics: '='
+                dimensionsMetrics: '=',
+                disabled: '='
             },
             restrict: 'AE',
             templateUrl: 'unifiedReport/report/directives/reportViewManyJoin.tpl.html',
@@ -74,10 +75,10 @@
                             if(!!reportViewDataSet.dataSet) {
                                 var dataSet = _.find(scope.dataSets, function (dataSet) {
                                     var indexJoinField = _.findIndex(joinFields, function (joinField) {
-                                        return joinField.dataSet == reportViewDataSet.dataSet && reportViewDataSet.dataSet != currentJoinField.dataSet
+                                        return (joinField.dataSet == reportViewDataSet.dataSet && reportViewDataSet.dataSet != currentJoinField.dataSet) || (joinField.dataSet == reportViewDataSet.dataSet.id && reportViewDataSet.dataSet.id != currentJoinField.dataSet)
                                     });
 
-                                    return dataSet.id == reportViewDataSet.dataSet && indexJoinField == -1;
+                                    return (dataSet.id == reportViewDataSet.dataSet && indexJoinField == -1) || (dataSet.id == reportViewDataSet.dataSet.id && indexJoinField == -1);
                                 });
 
                                 if(!!dataSet) {

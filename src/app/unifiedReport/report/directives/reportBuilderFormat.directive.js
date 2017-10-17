@@ -14,7 +14,7 @@
                 dateFields: '=',
                 numberFields: '=',
                 selectedFields: '=',
-                multiView: '='
+                disabled: '='
             },
             restrict: 'AE',
             templateUrl: 'unifiedReport/report/directives/reportBuilderFormat.tpl.html',
@@ -54,12 +54,6 @@
                         scope.fieldNames = scope.selectedFields;
                     }, true);
 
-                    scope.$watch(function () {
-                        return scope.multiView;
-                    }, function () {
-                        _updateFieldForColumnPosition();
-                    }, true);
-
                     function _updateFieldForColumnPosition() {
                         fieldForColumnPosition = $filter('filter')(scope.selectedFields, function (field) {
                             if(!!field && !!field.key && field.key.indexOf('__') == -1 && (field.key.indexOf('_day') == -1 || field.key.indexOf('_month') == -1 || field.key.indexOf('_year') == -1)) {
@@ -68,10 +62,6 @@
 
                             return false
                         });
-
-                        if(scope.multiView) {
-                            fieldForColumnPosition.push({key: 'report_view_alias', label: 'Report View Alias', root: 'report_view_alias'});
-                        }
                     }
 
                     scope.allFiledFormatTypesCopy = angular.copy(scope.allFiledFormatTypes);

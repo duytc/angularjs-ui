@@ -57,17 +57,9 @@
         function getDataSetsFromReportView(reportView) {
             var dataSets = [];
 
-            if(reportView.multiView) {
-                angular.forEach(reportView.reportViewMultiViews, function (reportViewMultiView) {
-                    angular.forEach(reportViewMultiView.subView.reportViewDataSets, function (reportViewDataSet) {
-                        dataSets.push(reportViewDataSet.dataSet)
-                    });
-                });
-            } else {
-                angular.forEach(reportView.reportViewDataSets, function (reportViewDataSet) {
-                    dataSets.push(reportViewDataSet.dataSet)
-                });
-            }
+            angular.forEach(reportView.reportViewDataSets, function (reportViewDataSet) {
+                dataSets.push(reportViewDataSet.dataSet)
+            });
 
             return dataSets;
         }
@@ -150,13 +142,6 @@
                         })
                     }
                 });
-
-                if(reportView.multiView) {
-                    formatFields.unshift({
-                        key: 'report_view_alias',
-                        label: 'Report View Alias'
-                    });
-                }
 
                 return formatFields;
             });

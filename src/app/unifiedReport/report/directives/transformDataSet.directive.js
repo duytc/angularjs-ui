@@ -16,12 +16,11 @@
                 dimensionsMetrics: '=',
                 dimensionsList: '=',
                 selectedFieldsDateSet: '=',
-                multiView: '=',
-                showDimensions: '=',
                 reorderTransformsAllowed: '=',
                 reportBuilder: '=',
                 numberFields: '=',
-                transformPosition: '@'
+                transformPosition: '@',
+                disabled: '='
             },
             restrict: 'AE',
             templateUrl: 'unifiedReport/report/directives/transformDataSet.tpl.html',
@@ -145,7 +144,6 @@
                     scope.selectedExpressionVar = selectedExpressionVar;
                     scope.filterOperatorAddField = filterOperatorAddField;
                     scope.filterConditionComparators = filterConditionComparators;
-                    scope.filterForViewOfView = filterForViewOfView;
                     scope.selectAllDimensionsForGroup = selectAllDimensionsForGroup;
                     scope.filterFieldPostAggregation = filterFieldPostAggregation;
                     scope.isShowTransform = isShowTransform;
@@ -239,13 +237,6 @@
                                 transform.fields.push(field.key);
                             }
                         });
-                    }
-
-                    function filterForViewOfView(field) {
-                        if(!scope.multiView) return true;
-                        else {
-                            return field.type == 'number' || field.type == 'decimal'
-                        }
                     }
 
                     function filterConditionComparators(defaultValue) {
@@ -582,12 +573,6 @@
                                 types.push(type);
                             }
                         });
-
-                        // if (scope.multiView == true && scope.showDimensions == false) {
-                        //     types = _.filter(types, function (type) {
-                        //         return (type.key != 'groupBy');
-                        //     })
-                        // }
 
                         types = _.filter(types, function (type) {
                             return (type.key != 'groupBy');

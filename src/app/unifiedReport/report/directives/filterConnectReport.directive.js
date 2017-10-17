@@ -11,7 +11,8 @@
             scope: {
                 filters: '=',
                 mapFields: '=',
-                dimensionsMetrics: '='
+                dimensionsMetrics: '=',
+                disabled: "="
             },
             restrict: 'AE',
             templateUrl: 'unifiedReport/report/directives/filterConnectReport.tpl.html',

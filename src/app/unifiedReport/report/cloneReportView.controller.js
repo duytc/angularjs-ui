@@ -10,8 +10,7 @@
         $scope.reportView = reportView;
 
         $scope.cloneReportView = {
-            name: null,
-            alias: null
+            name: null
         };
 
         $scope.submit = submit;

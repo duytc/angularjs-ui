@@ -33,7 +33,7 @@
         $scope.reports = reportGroup.reports || [];
         $scope.types = reportGroup.types;
         $scope.isNew = !$scope.reportView.id;
-        $scope.hasSaveRepoerView = !!$stateParams.reportView;
+        $scope.hasSaveRepoerView = !!$stateParams.id;
         $scope.formProcessing = false;
 
         $scope.dimensions = [];
@@ -41,10 +41,20 @@
 
         _updateColumnPositions();
 
+        if(!!reportView && reportView.subView && angular.isObject(reportView.masterReportView)) {
+            var masterReportView = angular.copy(reportView.masterReportView);
+            masterReportView.filters = reportView.filters;
+            delete  masterReportView.id;
+            delete  masterReportView.subView;
+            delete  masterReportView.masterReportView;
+            delete  masterReportView.name;
+
+            reportView = angular.extend(reportView, masterReportView);
+        }
+
         $scope.reportViewForEdit = {
             reportViewDataSets: angular.toJson(reportView.reportViewDataSets),
-            reportViewMultiViews: angular.toJson(reportView.reportViewMultiViews),
-            filter: angular.toJson(reportView.filter),
+            filters: angular.toJson(reportView.filters),
             transforms: angular.toJson(reportView.transforms),
             showInTotal: angular.toJson(reportView.showInTotal),
             formats: angular.toJson(reportView.formats),
@@ -52,10 +62,9 @@
             joinBy: angular.toJson(reportView.joinBy),
             metricCalculations: angular.toJson(reportView.metricCalculations),
             name: reportView.name,
-            alias: reportView.alias,
-            reportView: reportView.id,
-            multiView: reportView.multiView,
-            subReportsIncluded: reportView.subReportsIncluded,
+            masterReportView: angular.isObject(reportView.masterReportView) ? reportView.masterReportView.id : reportView.masterReportView,
+            subView: reportView.subView,
+            id: reportView.id,
             isShowDataSetName: reportView.isShowDataSetName,
             publisher: angular.isObject(reportView.publisher) ? reportView.publisher.id : reportView.publisher,
             enableCustomDimensionMetric: reportView.enableCustomDimensionMetric
@@ -143,9 +152,18 @@
                 return true
             }
 
-            var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
-            for (var reportViewIndex in reportViews) {
-                var reportView = reportViews[reportViewIndex];
+            for (var i in $scope.reportView.filters) {
+                var filterRoot = $scope.reportView.filters[i];
+
+                if(filterRoot.type == 'date' || filterRoot.type == 'datetime') {
+                    if(filterRoot.userProvided) {
+                        return true
+                    }
+                }
+            }
+
+            for (var reportViewIndex in $scope.reportView.reportViewDataSets) {
+                var reportView = $scope.reportView.reportViewDataSets[reportViewIndex];
 
                 for (var filterIndex in reportView.filters) {
                     var filter = reportView.filters[filterIndex];
@@ -202,6 +220,8 @@
         }
         
         function searchReportView() {
+            $scope.availableOptions.currentPage = 1;
+
             _getReportDetail(_toJsonReportView(reportView), 250);
         }
         
@@ -241,9 +261,8 @@
         }
 
         function hasFilterDate() {
-            var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
-            for (var reportViewIndex in reportViews) {
-                var reportView = reportViews[reportViewIndex];
+            for (var reportViewIndex in $scope.reportView.reportViewDataSets) {
+                var reportView = $scope.reportView.reportViewDataSets[reportViewIndex];
 
                 for (var filterIndex in reportView.filters) {
                     var filter = reportView.filters[filterIndex];
@@ -251,6 +270,14 @@
                     if((filter.type == 'date' || filter.type == 'datetime') && filter.userProvided) {
                         return true
                     }
+                }
+            }
+
+            for (var i in $scope.reportView.filters) {
+                var filterRoot = $scope.reportView.filters[i];
+
+                if((filterRoot.type == 'date' || filterRoot.type == 'datetime') && filterRoot.userProvided) {
+                    return true
                 }
             }
 
@@ -264,6 +291,11 @@
 
             params.startDate = DateFormatter.getFormattedDate(date.startDate);
             params.endDate = DateFormatter.getFormattedDate(date.endDate);
+
+            if(!hasFilterDate()) {
+                delete params.startDate;
+                delete params.endDate;
+            }
 
             _getReportDetail(params);
 
@@ -314,7 +346,7 @@
                     save.then(function (data) {
                         if ($scope.isNew) {
                             $scope.reportView.id = data.id;
-                            $scope.reportViewForEdit.reportView = data.id;
+                            $scope.reportViewForEdit.id = data.id;
                         }
 
                         $scope.formProcessing = false;
@@ -360,6 +392,19 @@
         function _toJsonReportView(reportView, itemPerPage) {
             var params = angular.copy(reportView);
 
+            angular.forEach(params.reportViewDataSets, function (item) {
+                item.dataSet = angular.isObject(item.dataSet) ? item.dataSet.id : item.dataSet;
+
+                delete item.id;
+                delete item.tempDimensions;
+                delete item.tempMetrics;
+                delete item.fields;
+                delete item.allFields;
+                delete item.dimensionsMetrics;
+                delete item.selectAllDimensionsMetrics;
+            });
+
+            params.masterReportView = angular.isObject(params.masterReportView) ? params.masterReportView.id : params.masterReportView;
             params.startDate = DateFormatter.getFormattedDate($scope.selected.date.startDate);
             params.endDate = DateFormatter.getFormattedDate($scope.selected.date.endDate);
 
@@ -438,21 +483,19 @@
             var fieldTypes = angular.copy($scope.reportView.fieldTypes);
 
             if (true) {
-            // if ($scope.reports.length > 0) {
-                var reportViews = !$scope.reportView.multiView ? $scope.reportView.reportViewDataSets : $scope.reportView.reportViewMultiViews;
                 var totalDimensions = [];
                 var totalMetrics = [];
 
-                angular.forEach(reportViews, function (reportView) {
+                angular.forEach($scope.reportView.reportViewDataSets, function (reportView) {
                     totalDimensions = totalDimensions.concat(reportView.dimensions);
                     totalMetrics = totalMetrics.concat(reportView.metrics)
                 });
 
-                var data = $scope.reportView.multiView ? allDimensionsMetrics.reportViews : allDimensionsMetrics.dataSets;
+                var data = allDimensionsMetrics.dataSets;
 
                 angular.forEach(data, function (item) {
-                    totalDimensions = totalDimensions.concat($scope.reportView.multiView ? item.dimensions : _.keys(item.dimensions));
-                    totalMetrics = totalMetrics.concat($scope.reportView.multiView ? item.metrics : _.keys(item.metrics))
+                    totalDimensions = totalDimensions.concat(_.keys(item.dimensions));
+                    totalMetrics = totalMetrics.concat(_.keys(item.metrics))
                 });
 
 
@@ -462,7 +505,7 @@
                 angular.forEach(_.keys($scope.reports[0]), function (col) {
                     var key = null;
 
-                    if(!$scope.reportView.multiView && col.lastIndexOf('_') > -1) {
+                    if(col.lastIndexOf('_') > -1) {
                         key = col.slice(0, col.lastIndexOf('_'));
                     } else {
                         key = col;
@@ -488,11 +531,11 @@
                     }
 
                     if(hasJoin == -1) {
-                        if(totalDimensions.indexOf(key) > -1 || key == 'report_view_alias') {
+                        if(totalDimensions.indexOf(key) > -1) {
                             if(dimensions.indexOf(col) == -1) {
                                 dimensions.push(col);
 
-                                if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == col }) == -1 && !$scope.reportView.multiView) {
+                                if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == col }) == -1) {
                                     $scope.dimensions.push({name: col, label: $scope.titleColumnsForSelect[col], ticked: true});
                                 }
                             }
@@ -510,9 +553,8 @@
 
                 angular.forEach(data, function (item) {
                     if(true) {
-                    // if(!$scope.reportView.multiView) {
                         angular.forEach(item.dimensions, function (type, dimension) {
-                            var col = $scope.reportView.multiView ? type : dimension + '_' + item.id;
+                            var col = dimension + '_' + item.id;
 
                             for(var x in $scope.reportView.joinBy) {
                                 var join = $scope.reportView.joinBy[x];
@@ -526,13 +568,10 @@
                             }
 
                             if(dimensions.indexOf(col) == -1 && !!col) {
-                                if(true) {
-                                    // if(!$scope.reportView.multiView || ($scope.reportView.multiView && $scope.reportView.subReportsIncluded)) {
-                                    fieldTypes[col] = $scope.reportView.multiView ? item.fieldTypes[col] : type;
+                                fieldTypes[col] = type;
 
-                                    if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == col }) == -1 && !$scope.reportView.multiView) {
-                                        $scope.dimensions.push({name: col, label: allDimensionsMetrics.columns[col] || allDimensionsMetrics.columns[dimension], ticked: $scope.reports.length == 0});
-                                    }
+                                if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == col }) == -1) {
+                                    $scope.dimensions.push({name: col, label: allDimensionsMetrics.columns[col] || allDimensionsMetrics.columns[dimension], ticked: $scope.reports.length == 0});
                                 }
                             }
                         });
@@ -552,7 +591,7 @@
                     }
 
                     angular.forEach(item.metrics, function (type, metric) {
-                        var col = $scope.reportView.multiView ? type : metric + '_' + item.id;
+                        var col = metric + '_' + item.id;
 
                         for(var x in $scope.reportView.joinBy) {
                             var join = $scope.reportView.joinBy[x];
@@ -566,7 +605,7 @@
                         }
 
                         if(metrics.indexOf(col) == -1 && !!col) {
-                            fieldTypes[col] = $scope.reportView.multiView ? item.fieldTypes[col] : type;
+                            fieldTypes[col] = type;
 
                             if(_.findIndex($scope.metrics, function (metric) { return metric.name == col }) == -1) {
                                 $scope.metrics.push({name: col, label: allDimensionsMetrics.columns[col] || allDimensionsMetrics.columns[metric], ticked: _.keys($scope.reports[0]).indexOf(col) > -1 || $scope.reports.length == 0});
@@ -632,12 +671,6 @@
                 });
 
                 $scope.columnPositions = $scope.reports.length > 0 ? dimensions.concat(metrics) : $scope.columnPositions;
-
-                var indexReportViewAlias = $scope.columnPositions.indexOf('report_view_alias');
-                if(indexReportViewAlias > -1 && reportView.multiView) {
-                    $scope.columnPositions.splice(indexReportViewAlias, 1);
-                    $scope.columnPositions.unshift('report_view_alias');
-                }
             }
 
             if (!!reportView.formats.length && $scope.reports.length > 0) {
@@ -668,12 +701,6 @@
                         })
                     }
                 });
-
-                var indexReportAlias = $scope.columnPositions.indexOf('report_view_alias');
-                if(indexReportAlias > -1 && reportView.multiView) {
-                    $scope.columnPositions.splice(indexReportAlias, 1);
-                    $scope.columnPositions.unshift('report_view_alias');
-                }
             }
 
             if (angular.isArray($scope.reports) && $scope.reports.length > 0) {
@@ -683,10 +710,6 @@
                     var title = !!$scope.titleColumns[key] ? $scope.titleColumns[key] : key;
                     $scope.titleReportDetailForExportExcel.push(title)
                 })
-            }
-
-            if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == 'report_view_alias' }) == -1 && $scope.reportView.multiView) {
-                $scope.dimensions.unshift({name: 'report_view_alias', label: 'Report View Alias', ticked: true});
             }
 
             if($scope.reports.length == 0) {
