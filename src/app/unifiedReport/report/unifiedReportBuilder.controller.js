@@ -807,6 +807,11 @@
             delete  reportBuilder.shared;
             delete  reportBuilder.createdDate;
 
+            delete  reportBuilder.alias;
+            delete  reportBuilder.subReportsIncluded;
+            delete  reportBuilder.multiView;
+            delete  reportBuilder.reportViewMultiViews;
+
             return reportBuilder;
         }
 
