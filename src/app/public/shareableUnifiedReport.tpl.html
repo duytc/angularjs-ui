@@ -100,35 +100,47 @@
     </div>
 </section>
 
-<section style="min-height: 200px">
-    <div class="row">
-        <div class="col-md-6" ng-if="isEmptyObject(total)">
-            <div class="panel panel-default">
-                <div class="panel-heading">Totals</div>
-                <div class="panel-body">
-                    <ul class="list-unstyled report-builder list-info">
-                        <li ng-repeat="(key, value) in total">
-                            <label>{{ !!titleColumns[key] ? titleColumns[key] : key }}</label>
-                            <span class="pull-right">{{ value }}</span>
-                        </li>
-                    </ul>
-                </div>
+<div class="row" ng-if="hasResult">
+    <div class="{{ setClassName() }}" ng-repeat="column in columnPositions" ng-if="isEmptyObject(total) && !!total[column]">
+        <section class="panel panel-box info-box">
+            <div class="panel-item bg-reverse">
+                <p class="size-h1 no-margin">{{ total[column] }}</p>
+                <p class="text-muted no-margin">{{ !!titleColumns[column] ? titleColumns[column] : column }}</p>
             </div>
-        </div>
-        <div class="col-md-6" ng-if="isEmptyObject(average)">
-            <div class="panel panel-default">
-                <div class="panel-heading">Averages</div>
-                <div class="panel-body">
-                    <ul class="list-unstyled report-builder list-info">
-                        <li ng-repeat="(key, value) in average">
-                            <label>{{ !!titleColumns[key] ? titleColumns[key] : key }}</label>
-                            <span class="pull-right">{{ value }}</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        </section>
     </div>
+</div>
 
-    <p class="text-center">Unified reports powered by Pubvantage</p>
-</section>
+
+<!--<section style="min-height: 200px">-->
+    <!--<div class="row">-->
+        <!--<div class="col-md-6" ng-if="isEmptyObject(total)">-->
+            <!--<div class="panel panel-default">-->
+                <!--<div class="panel-heading">Totals</div>-->
+                <!--<div class="panel-body">-->
+                    <!--<ul class="list-unstyled report-builder list-info">-->
+                        <!--<li ng-repeat="(key, value) in total">-->
+                            <!--<label>{{ !!titleColumns[key] ? titleColumns[key] : key }}</label>-->
+                            <!--<span class="pull-right">{{ value }}</span>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-md-6" ng-if="isEmptyObject(average)">-->
+            <!--<div class="panel panel-default">-->
+                <!--<div class="panel-heading">Averages</div>-->
+                <!--<div class="panel-body">-->
+                    <!--<ul class="list-unstyled report-builder list-info">-->
+                        <!--<li ng-repeat="(key, value) in average">-->
+                            <!--<label>{{ !!titleColumns[key] ? titleColumns[key] : key }}</label>-->
+                            <!--<span class="pull-right">{{ value }}</span>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <!--<p class="text-center">Unified reports powered by Pubvantage</p>-->
+<!--</section>-->

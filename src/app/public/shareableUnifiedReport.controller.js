@@ -129,6 +129,28 @@
         $scope.hasFilterDate = hasFilterDate;
         $scope.generateReport = generateReport;
         $scope.showPagination = showPagination;
+        $scope.setClassName = setClassName;
+
+        function setClassName() {
+            var totalItem = Object.keys($scope.total).length;
+
+            if(totalItem == 1) {
+                return 'col-md-12'
+            } else if(totalItem == 2) {
+                return 'col-md-6'
+            } else if(totalItem%5 == 0 || ((totalItem+1)%5 == 0 && totalItem%3 != 0 && totalItem%4 != 0)) {
+                return 'col-md-5-2'
+            } else if(totalItem%4 == 0 || ((totalItem+1)%4 == 0 && totalItem%3 != 0)) {
+                return 'col-md-3'
+            }
+            else if(totalItem%3 == 0 || (totalItem+1)%3 == 0) {
+                return 'col-md-4'
+            } else if(totalItem > 5) {
+                return 'col-md-5-2'
+            } else {
+                return 'col-md-4'
+            }
+        }
 
         function generateReport(date) {
             var params = {};
