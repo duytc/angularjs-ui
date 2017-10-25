@@ -126,7 +126,7 @@
 
                         for (var index in scope.dateFields) {
                             // not select field have type is date in add field
-                            if (angular.isArray(formatFields) && formatFields.indexOf(scope.dateFields[index].key) == -1 && scope.dateFields[index].transformType != 'addField') {
+                            if (angular.isArray(formatFields) && formatFields.indexOf(scope.dateFields[index].key) == -1 && scope.dateFields[index].transformType != 'addField' && scope.dateFields[index].transformType != 'addConditionValue') {
                                 data.push(scope.dateFields[index])
                             }
                         }
