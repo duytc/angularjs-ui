@@ -75,7 +75,7 @@
                <label class="col-sm-2 control-label">Comparison</label>
                <div class="col-sm-10">
                    <ui-select ng-disabled="disabled && filter.filterOld" ng-model="filter.comparison" ng-required="true" server-error on-select='selectedComparison(filter)' reset-search-input="'false'">
-                       <ui-select-match placeholder="Select a comparison operator">{{ $select.selected.label }}</ui-select-match>
+                       <ui-select-match placeholder="Select a comparison">{{ $select.selected.label }}</ui-select-match>
                        <ui-select-choices repeat="type.key as type in getComparisonTypes(filter) | filter:$select.search">
                            {{ type.label }}
                        </ui-select-choices>
@@ -100,7 +100,7 @@
                <label class="col-sm-2 control-label">Comparison</label>
                <div class="col-sm-10">
                    <ui-select ng-disabled="disabled && filter.filterOld" ng-model="filter.comparison" ng-required="true" server-error on-select='selectedComparison(filter)' reset-search-input="'false'">
-                       <ui-select-match placeholder="Select a comparison operator">{{ $select.selected.label }}</ui-select-match>
+                       <ui-select-match placeholder="Select a comparison">{{ $select.selected.label }}</ui-select-match>
                        <ui-select-choices repeat="type.key as type in getComparisonTypes(filter, filter.field) | filter:$select.search">
                            {{ type.label }}
                        </ui-select-choices>

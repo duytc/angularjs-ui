@@ -207,7 +207,7 @@
                 for (var index in $scope.reportBuilder.transforms) {
                     var transform = $scope.reportBuilder.transforms[index];
 
-                    if (transform.type == 'addField' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent') {
+                    if (transform.type == 'addField' || transform.type == 'addConditionValue' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent') {
                         for (var fieldIndex in transform.fields) {
                             if(unValidName(transform.fields[fieldIndex].field)) {
                                 return false
@@ -539,6 +539,14 @@
                         if(z > -1 && jOutputField > -1) {
                             $scope.listDimensions.splice(z, 1);
                         }
+
+                        var xOutputField = _.find($scope.totalDimensionsMetrics, function (item) {
+                            return item.key == itemJoinBy.outputField
+                        });
+
+                        if(!!xOutputField) {
+                            $scope.dimensionsMetrics[itemJoinBy.outputField] = xOutputField.type
+                        }
                     })
                 });
             }
@@ -626,7 +634,7 @@
         function _getAllFieldInTransForm() {
             var fieldsTransForm = [];
             angular.forEach($scope.reportBuilder.transforms, function (transform) {
-                if (transform.type == 'addField' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent') {
+                if (transform.type == 'addField' || transform.type == 'addConditionValue' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent') {
                     angular.forEach(transform.fields, function (field) {
                         if (!!field.field) {
                             $scope.fieldInTransforms[field.field] = field.type;

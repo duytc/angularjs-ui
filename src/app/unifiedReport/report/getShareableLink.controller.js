@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('tagcade.tagManagement.adSlot')
+        .module('tagcade.unifiedReport.report')
         .controller('GetShareableLink', GetShareableLink)
     ;
 

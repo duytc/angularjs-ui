@@ -100,16 +100,18 @@
     </div>
 </section>
 
-<div class="row" ng-if="hasResult">
-    <div class="{{ setClassName() }}" ng-repeat="column in columnPositions" ng-if="isEmptyObject(total) && !!total[column]">
-        <section class="panel panel-box info-box">
-            <div class="panel-item bg-reverse">
-                <p class="size-h1 no-margin">{{ total[column] }}</p>
-                <p class="text-muted no-margin">{{ !!titleColumns[column] ? titleColumns[column] : column }}</p>
-            </div>
-        </section>
+<section style="min-height: 200px">
+    <div class="row" ng-if="hasResult">
+        <div class="{{ setClassName() }}" ng-repeat="column in columnPositions" ng-if="isEmptyObject(total) && !!total[column]">
+            <section class="panel panel-box info-box">
+                <div class="panel-item bg-reverse">
+                    <p class="size-h1 no-margin">{{ total[column] }}</p>
+                    <p class="text-muted no-margin">{{ !!titleColumns[column] ? titleColumns[column] : column }}</p>
+                </div>
+            </section>
+        </div>
     </div>
-</div>
+</section>
 
 
 <!--<section style="min-height: 200px">-->

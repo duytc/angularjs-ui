@@ -245,6 +245,7 @@
         }
 
         function selectItemPerPages(itemPerPage) {
+            $scope.availableOptions.currentPage = 1;
             _getReportDetail();
         }
 
@@ -253,7 +254,8 @@
         }
 
         function refreshData() {
-            historyStorage.getLocationPath(HISTORY_TYPE_PATH.public, 'app.public');
+            $scope.tableConfig.itemsPerPage = 10;
+            historyStorage.getLocationPath(HISTORY_TYPE_PATH.public, 'app.public', {limit: $scope.tableConfig.itemsPerPage});
         }
 
         function isNullValue(report, column) {
@@ -347,6 +349,13 @@
                     if($scope.reportView.fieldTypes[dimension] == 'date' || $scope.reportView.fieldTypes[dimension] == 'datetime') {
                         dimensions.splice(dimensions.indexOf(dimension), 1);
                         dimensions.unshift(dimension);
+                    }
+                });
+
+                angular.forEach(angular.copy(metrics).reverse(), function (metric) {
+                    if($scope.reportView.fieldTypes[metric] == 'date' || $scope.reportView.fieldTypes[metric] == 'datetime') {
+                        metrics.splice(metrics.indexOf(metric), 1);
+                        metrics.unshift(metric);
                     }
                 });
 

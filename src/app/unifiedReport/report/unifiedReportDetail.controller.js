@@ -736,7 +736,7 @@
 
             if($scope.reports.length == 0) {
                 angular.forEach(reportView.transforms, function (transform) {
-                    if (transform.type == 'addField' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent') {
+                    if (transform.type == 'addField' || transform.type == 'addConditionValue' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent') {
                         angular.forEach(transform.fields, function (field) {
                             if (!!field.field) {
                                 var index = _.findIndex($scope.metrics, {name: field.field});
