@@ -152,6 +152,19 @@
                     scope.getTotalDimensionsMetricsForDefaultValues = getTotalDimensionsMetricsForDefaultValues;
                     scope.addCompareValue = addCompareValue;
                     scope.ManageValues = ManageValues;
+                    scope.setPattern = setPattern;
+
+                    function setPattern(type) {
+                        if(type == 'number') {
+                            return '^[0-9]*$'
+                        }
+
+                        if(type == 'decimal') {
+                            return '^[0-9]+([,.][0-9]+)?$';
+                        }
+
+                        return ''
+                    }
 
                     function ManageValues(field) {
                         $modal.open({
