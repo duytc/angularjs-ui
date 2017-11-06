@@ -18,7 +18,7 @@
 
         <div ng-if="selected.addDomains" class="row form-group">
             <div class="col-sm-10">
-                <oi-select oi-options="item for item in []" ng-model="selected.domains" multiple oi-select-options="{newItem: true, newItemFn: 'addDomain($query)'}" placeholder="{{ 'DOMAIN_LIST_MODULE.DOMAINS' | translate }}"></oi-select>
+                <oi-select oi-options="item for item in []" ng-model="selected.domains" multiple oi-select-options="{newItem: true, newItemFn: 'addDomain($query)'}" placeholder="{{ 'DOMAIN_LIST_MODULE.DOMAINS_PLACEHOLDER' | translate }}"></oi-select>
             </div>
 
             <div class="col-sm-2">

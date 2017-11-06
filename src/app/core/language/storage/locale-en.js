@@ -641,6 +641,7 @@
 
                 "CONFIRM_DELETE_DOMAIN_LIST": "Are you sure you want to delete this domain list?",
                 "DOMAINS": "Domains",
+                "DOMAINS_PLACEHOLDER": "Allow wildcard for all Sub-Domains. E.g: *.mydomain.com",
                 "DOMAIN": "Domain",
 
                 "CUSTOM": "Custom",

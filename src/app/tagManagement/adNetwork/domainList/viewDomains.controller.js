@@ -87,7 +87,9 @@
                     angular.forEach(domains, function(item, index) {
                         item = item.toLowerCase();
 
-                        if(!/^(?:[-A-Za-z0-9]+\.)+[A-Za-z]{2,6}$/.test(item)) {
+                        // validate domain
+                        // support wildcard domain such as "*.sub-2.sub-1.mydomain.com"
+                        if(!/^(?:[\*]?\.)?(?:[-A-Za-z0-9]+\.)+[A-Za-z]{2,6}$/.test(item)) {
                             return
                         }
 
@@ -104,7 +106,7 @@
                 return '';
             }
 
-            if(!/^(?:[-A-Za-z0-9]+\.)+[A-Za-z]{2,6}$/.test(query)) {
+            if(!/^(?:[\*]?\.)?(?:[-A-Za-z0-9]+\.)+[A-Za-z]{2,6}$/.test(query)) {
                 return
             }
 

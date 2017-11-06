@@ -73,7 +73,7 @@
                     angular.forEach(domains, function(domain, index) {
                         domain = domain.toLowerCase();
 
-                        if(!/^(?:[-A-Za-z0-9]+\.)+[A-Za-z]{2,6}$/.test(domain)) {
+                        if(!/^(?:[\*]?\.)?(?:[-A-Za-z0-9]+\.)+[A-Za-z]{2,6}$/.test(domain)) {
                             return
                         }
 
@@ -91,7 +91,7 @@
                 return '';
             }
 
-            if(!/^(?:[-A-Za-z0-9]+\.)+[A-Za-z]{2,6}$/.test(query)) {
+            if(!/^(?:[\*]?\.)?(?:[-A-Za-z0-9]+\.)+[A-Za-z]{2,6}$/.test(query)) {
                 return
             }
 
