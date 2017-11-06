@@ -150,6 +150,9 @@
 
                         params.page = !$stateParams.page ? 1 : $stateParams.page;
                         params.limit = !$stateParams.limit ? 10 : $stateParams.limit;
+                        $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
+                        $stateParams.sortField = !$stateParams.sortField ? ('__is_mapped_' + $stateParams.dataSet) : $stateParams.sortField;
+
                         params.filters = angular.toJson([
                             {"field":"__is_ignored","type":"number","comparison":"equal","compareValue":"0"},
                             {"field":"__is_associated","type":"number","comparison":"equal","compareValue":"1"}

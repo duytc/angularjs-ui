@@ -215,6 +215,23 @@
                     scope.showDateToFormat = showDateToFormat;
                     scope.filterMapFieldLeft = filterMapFieldLeft;
                     scope.filterAggregationForGroupSubSet = filterAggregationForGroupSubSet;
+                    scope.filterAggregationFields = filterAggregationFields;
+                    
+                    function filterAggregationFields(transform) {
+                        return function (field) {
+                            for(var i in transform.fields) {
+                                var item = transform.fields[i];
+
+                                var fieldMap = scope.mapFields[item.slice('__$$FILE$$'.length, item.length)];
+
+                                if(field.key == fieldMap) {
+                                    return false
+                                }
+                            }
+
+                            return true
+                        }
+                    }
 
                     function filterAggregationForGroupSubSet(transform) {
                         return function (field) {

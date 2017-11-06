@@ -9,7 +9,7 @@
         $scope.rows = dataRows.records;
         $scope.dataSet = dataSet;
 
-        var columns = !!$scope.rows[0] ? Object.keys($scope.rows[0]) : [];
+        var columns = Object.keys(dataRows.columns);
         $scope.columns = mapBuilderDataSet.removeValues(columns);
         $scope.fields = [];
 
@@ -241,6 +241,8 @@
 
             getDataRows = setTimeout(function() {
                 params = angular.copy(query);
+                params.orderBy = !params.orderBy ? 'desc' : params.orderBy;
+                params.sortField = !params.sortField ? ('__is_mapped_' + $scope.dataSet.id) : params.sortField;
 
                 var filters = angular.fromJson(params.filters) || [];
                 if($scope.selectedData.showAll || (!$scope.selectedData.showMapped && !$scope.selectedData.showUnmapped && !$scope.selectedData.showIgnore && !$scope.selectedData.showAll)) {
@@ -269,7 +271,7 @@
                         $scope.tableConfig.totalItems = dataRows.totalRecord;
                         $scope.availableOptions.currentPage = Number(params.page);
 
-                        var columns = !!$scope.rows[0] ? Object.keys($scope.rows[0]) : [];
+                        var columns = Object.keys(dataRows.columns);
                         $scope.columns = mapBuilderDataSet.removeValues(columns);
 
                         $scope.fields = [];

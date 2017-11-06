@@ -5,7 +5,7 @@
         .directive('filterConnect', filterConnect)
     ;
 
-    function filterConnect($compile, _, connectedDataSourceService, FIELD_TYPES, DATE_FORMAT_TYPES, COMPARISON_TYPES_FILTER_CONNECT_NUMBER, COMPARISON_TYPES_FILTER_CONNECT_TEXT) {
+    function filterConnect($compile, _, connectedDataSourceService, FIELD_TYPES, DATE_FORMAT_TYPES, CONNECT_TIMEZONES, COMPARISON_TYPES_FILTER_CONNECT_NUMBER, COMPARISON_TYPES_FILTER_CONNECT_TEXT) {
         'use strict';
 
         return {
@@ -38,6 +38,8 @@
                         }
                     };
 
+                    scope.timezones = CONNECT_TIMEZONES;
+
                     scope.addFilter = addFilter;
                     scope.removeFilter = removeFilter;
                     scope.getComparisonTypes = getComparisonTypes;
@@ -47,7 +49,21 @@
                     scope.onSelectFilterType = onSelectFilterType;
                     scope.onSelectFieldName = onSelectFieldName;
                     scope.showSelectType = showSelectType;
-                    
+                    scope.removeAddValue = removeAddValue;
+                    scope.addFormat = addFormat;
+
+                    function addFormat(from) {
+                        if(!from) {
+                            from = [];
+                        }
+
+                        from.push({isCustomFormatDateFrom: false, isPartialMatch: false, format: null})
+                    }
+
+                    function removeAddValue(fields, index){
+                        fields.splice(index, 1);
+                    }
+
                     function showSelectType(filter) {
                         var item = _.find(scope.dataSourceFields, function (item) {
                             return item.key == filter.field
@@ -87,7 +103,7 @@
                                 endDate: moment().endOf('day')
                             };
 
-                            filter.isPartialMatch = false;
+                            // filter.isPartialMatch = false;
                         }
                     }
 
@@ -111,7 +127,7 @@
                                 endDate: moment().endOf('day')
                             };
 
-                            filter.isPartialMatch = false;
+                            // filter.isPartialMatch = false;
                         }
 
                     }
@@ -148,14 +164,17 @@
                         scope.filters.push({
                             field: null,
                             type: null,
-                            // format: null,
+                            formats: [
+                                {isCustomFormatDateFrom: false, isPartialMatch: false, format: null}
+                            ],
+                            timezone: 'UTC',
                             startDate: null,
                             endDate: null,
                             date: {
                                 startDate: moment().startOf('day'),
                                 endDate: moment().endOf('day')
-                            },
-                            isPartialMatch: false
+                            }
+                            // isPartialMatch: false
                         });
                     }
 

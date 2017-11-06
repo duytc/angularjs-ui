@@ -531,10 +531,25 @@
                     filter.startDate = dateUtil.getFormattedDate(filter.date.startDate);
                     filter.endDate = dateUtil.getFormattedDate(filter.date.endDate);
 
+                    if(!!filter.field) {
+                        var fieldDate = $scope.connectDataSource.mapFields[filter.field.slice('__$$FILE$$'.length, filter.field.length)];
+
+                        if(!!fieldDate) {
+                            var transFormForDate = _.find(connectDataSource.transforms, function (transform) {
+                                return transform.field == fieldDate;
+                            });
+
+                            if(!!transFormForDate) {
+                                filter.formats = transFormForDate.from;
+                            }
+                        }
+                    }
+
                     delete filter.date;
                     delete filter.comparison;
                     delete filter.compareValue;
                 }
+
                 if(filter.type == 'number') {
                     delete filter.date;
                     delete filter.startDate;
