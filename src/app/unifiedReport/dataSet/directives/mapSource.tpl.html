@@ -32,7 +32,7 @@
                 <div class="col-sm-5">
                     <ui-select name="dataSet" id="dataSet" ng-model="mapBuilderConfig.mapDataSet" ng-required="true" on-select="selectDataSet($item, mapBuilderConfig)" server-error reset-search-input="'false'">
                         <ui-select-match placeholder="Select a data set">{{ $select.selected.name + ' (ID: ' + $select.selected.id + ')' }}</ui-select-match>
-                        <ui-select-choices repeat="dataSet.id as dataSet in dataSets | filter:filterDataSets  | filter:$select.search">
+                        <ui-select-choices repeat="dataSet.id as dataSet in dataSets | filter:filterDataSets  | selectedPublisher:dataSet.publisher | filter:$select.search">
                             {{ dataSet.name + ' (ID: ' + dataSet.id + ')' }}
                         </ui-select-choices>
                     </ui-select>
