@@ -4,7 +4,7 @@
     <div class="panel panel-default daily-reports">
         <div class="panel-heading">{{ 'REPORT.DAILY_ACCOUNT_BREAKDOWN' | translate }}
             <div class="button-bar">
-                <export-excel data="reports" fields="['date', 'impressions', 'billedAmount', 'billedRate']" header="['Date', 'Impressions', 'Billed Amount ($)', 'Billed CPM Rate ($)']" file-name="getExportExcelFileName"></export-excel>
+                <export-excel data="reports" fields="['reportType.publisher.company', 'impressions', 'billedAmount', 'billedRate']" header="['Publisher', 'Impressions', 'Billed Amount ($)', 'Billed CPM Rate ($)']" file-name="getExportExcelFileName"></export-excel>
             </div>
         </div>
         <div class="table-responsive">

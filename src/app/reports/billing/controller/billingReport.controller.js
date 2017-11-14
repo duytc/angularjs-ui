@@ -59,7 +59,8 @@
         }
 
         function getExportExcelFileName() {
-            return 'pubvantage-billing-report-' + DateFormatter.getFormattedDate(new Date(reportGroup.startDate)) + '-' + DateFormatter.getFormattedDate(new Date(reportGroup.endDate));
+            var lastName = !$stateParams.endDate ? DateFormatter.getFormattedDate(new Date($stateParams.startDate)) : DateFormatter.getFormattedDate(new Date($stateParams.startDate)) + '-' + DateFormatter.getFormattedDate(new Date($stateParams.endDate));
+            return 'pubvantage-billing-report-' + lastName;
         }
     }
 })();
