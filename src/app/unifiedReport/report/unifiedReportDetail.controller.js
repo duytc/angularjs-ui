@@ -12,7 +12,7 @@
         $scope.tableConfig = {
             itemsPerPage: $stateParams.limit || 10,
             maxPages: 10,
-            totalItems: reportGroup.totalReport
+            totalItems: Number(reportGroup.totalReport)
         };
 
         $scope.availableOptions = {
@@ -266,7 +266,7 @@
                     .then(function(reportGroup) {
                         $scope.reportGroup = reportGroup;
                         $scope.reports = reportGroup.reports || [];
-                        $scope.tableConfig.totalItems = reportGroup.totalReport;
+                        $scope.tableConfig.totalItems = Number(reportGroup.totalReport);
                         $scope.availableOptions.currentPage = Number(params.page);
 
                         _updateColumnPositions();
@@ -408,7 +408,7 @@
         }
 
         function showPagination() {
-            return angular.isArray($scope.reportGroup.reports) && $scope.reportGroup.totalReport > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.reportGroup.reports) && $scope.tableConfig.totalItems > $scope.tableConfig.itemsPerPage;
         }
 
         function _toJsonReportView(reportView, itemPerPage) {
