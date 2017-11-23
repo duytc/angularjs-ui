@@ -144,6 +144,7 @@
                     scope.addNormalizeText = addNormalizeText;
                     scope.addCalculatedField = addCalculatedField;
                     scope.addReplaceText = addReplaceText;
+                    scope.addFieldFromDate = addFieldFromDate;
                     scope.addMapFields = addMapFields;
                     scope.addCustomCondition = addCustomCondition;
                     scope.addMapCondition = addMapCondition;
@@ -361,6 +362,16 @@
                                     return false
                                 }
                             }
+
+                            if (transform.type == 'addFieldFromDate') {
+                                var findField1 = _.findIndex(transform.fields, function (transformField) {
+                                    return transformField.fieldName == item.key
+                                });
+
+                                if(findField1 > -1) {
+                                    return false
+                                }
+                            }
                         }
 
                         return !mapDataSourceField(item.original)
@@ -372,7 +383,8 @@
                                 return !!item && item.key == field.field
                             });
 
-                            if(!!item && _.keys(scope.mapFields).indexOf(item.original) == -1) {
+                            // if(!!item && _.keys(scope.mapFields).indexOf(item.original) == -1) {
+                            if(_.keys(scope.mapFields).indexOf(item.original) == -1) {
                                 field.isOverride = false
                             } else {
                                 field.isOverride = true
@@ -399,6 +411,26 @@
                                     });
 
                                     if(findField > -1) {
+                                        return false
+                                    }
+                                }
+
+                                if (transform.type == 'addFieldFromDate') {
+                                    var findField1 = _.findIndex(transform.fields, function (transformField) {
+                                        return transformField.fieldName == field.key
+                                    });
+
+                                    if(findField1 > -1) {
+                                        return false
+                                    }
+                                }
+
+                                if (transform.type == 'addField') {
+                                    var findField2 = _.findIndex(transform.fields, function (transformField) {
+                                        return transformField.field == field.key
+                                    });
+
+                                    if (findField2 > -1) {
                                         return false
                                     }
                                 }
@@ -709,11 +741,15 @@
                         for (var index in scope.transforms) {
                             var transform = scope.transforms[index];
 
-                            if (transform.type == 'addField' || transform.type == 'replaceText' || transform.type == 'extractPattern' || transform.type == 'comparisonPercent' || transform.type == 'addCalculatedField') {
+                            if (transform.type == 'addField' || transform.type == 'convertCase' || transform.type == 'normalizeText' || transform.type == 'replaceText' || transform.type == 'extractPattern' || transform.type == 'comparisonPercent' || transform.type == 'addCalculatedField' || transform.type == 'addFieldFromDate') {
                                 for (var indexField in transform.fields) {
                                     var fieldTransform = transform.fields[indexField];
 
-                                    if(transform.type == 'extractPattern' && field.key == fieldTransform.targetField) {
+                                    if((transform.type == 'extractPattern' || transform.type == 'convertCase' || transform.type == 'normalizeText') && field.key == fieldTransform.targetField) {
+                                        return false
+                                    }
+
+                                    if(transform.type == 'addFieldFromDate' && field.key == fieldTransform.fieldName) {
                                         return false
                                     }
 
@@ -778,6 +814,18 @@
 
                                         if (!_.isNull(field.targetField) && !field.isOverride){
                                             fieldInConcat.push(connectedDataSourceService.findField(field.targetField))
+                                        }
+                                    });
+                                    break;
+
+                                case 'addFieldFromDate':
+                                    angular.forEach(transform.fields, function (field){
+                                        if (!'fieldName' in field) {
+                                            return;
+                                        }
+
+                                        if (!_.isNull(field.fieldName)){
+                                            fieldInConcat.push(connectedDataSourceService.findField(field.fieldName))
                                         }
                                     });
                                     break;
@@ -1360,6 +1408,14 @@
                         });
                     }
 
+                    function addFieldFromDate(fields){
+                        fields.push({
+                            fromField: null,
+                            fieldName: null,
+                            format: null
+                        });
+                    }
+
                     function addMapFields(fields) {
                         fields.push({
                             leftSide: null,
@@ -1431,6 +1487,18 @@
 
                                     if (!!field.field && index == -1) {
                                         fields.push(connectedDataSourceService.findField(field.field));
+                                    }
+                                })
+                            }
+
+                            if (transform.type == 'addFieldFromDate') {
+                                angular.forEach(transform.fields, function (field){
+                                    var index = _.findIndex(connectedDataSourceService, function (item) {
+                                        return item.key == field.fieldName
+                                    });
+
+                                    if (!!field.fieldName && index == -1) {
+                                        fields.push(connectedDataSourceService.findField(field.fieldName));
                                     }
                                 })
                             }
@@ -1518,7 +1586,7 @@
                                             }
                                         }
 
-                                        field.isOverride = false
+                                        // field.isOverride = false
                                     }
                                 })
                             }

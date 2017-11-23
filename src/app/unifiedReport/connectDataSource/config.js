@@ -109,7 +109,8 @@
             augmentation: 'augmentation',
             subsetGroup: 'subsetGroup',
             convertCase: 'convertCase',
-            normalizeText: 'normalizeText'
+            normalizeText: 'normalizeText',
+            addFieldFromDate: 'addFieldFromDate'
         })
         .provider('CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD', {
             $get: function (CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY) {
@@ -127,7 +128,8 @@
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.augmentation, label: 'Data Augmentation'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.subsetGroup, label: 'Subset Group'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.convertCase, label: 'Convert Case'},
-                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.normalizeText, label: 'Normalize Text'}
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.normalizeText, label: 'Normalize Text'},
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addFieldFromDate, label: 'Add Field From Date'}
                 ];
             }
         })
