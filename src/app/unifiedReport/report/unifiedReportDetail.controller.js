@@ -593,7 +593,7 @@
                                 fieldTypes[col] = type;
 
                                 if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == col }) == -1) {
-                                    $scope.dimensions.push({name: col, label: allDimensionsMetrics.columns[col] || allDimensionsMetrics.columns[dimension], ticked: $scope.reports.length == 0});
+                                    $scope.dimensions.push({name: col, label: allDimensionsMetrics.columns[col] || allDimensionsMetrics.columns[dimension], ticked: isTicket(dimension)});
                                 }
                             }
                         });
@@ -603,11 +603,11 @@
                         var join = $scope.reportView.joinBy[x];
                         if(!_joinIsMetrics(join, totalMetrics)) {
                             if(_.findIndex($scope.dimensions, function (dimension) { return dimension.name == join.outputField }) == -1 && !!join.outputField) {
-                                $scope.dimensions.push({name: join.outputField , label: join.outputField, ticked: $scope.reports.length == 0});
+                                $scope.dimensions.push({name: join.outputField , label: join.outputField, ticked: join.isVisible && $scope.reports.length == 0});
                             }
                         } else {
                             if(_.findIndex($scope.metrics, function (metric) { return metric.name == join.outputField }) == -1 && !!join.outputField) {
-                                $scope.metrics.push({name: join.outputField , label: join.outputField, ticked: $scope.reports.length == 0});
+                                $scope.metrics.push({name: join.outputField , label: join.outputField, ticked: join.isVisible && $scope.reports.length == 0});
                             }
                         }
                     }
@@ -630,7 +630,7 @@
                             fieldTypes[col] = type;
 
                             if(_.findIndex($scope.metrics, function (metric) { return metric.name == col }) == -1) {
-                                $scope.metrics.push({name: col, label: allDimensionsMetrics.columns[col] || allDimensionsMetrics.columns[metric], ticked: _.keys($scope.reports[0]).indexOf(col) > -1 || $scope.reports.length == 0});
+                                $scope.metrics.push({name: col, label: allDimensionsMetrics.columns[col] || allDimensionsMetrics.columns[metric], ticked: _.keys($scope.reports[0]).indexOf(col) > -1 || isTicket(metric)});
                             }
                         }
                     })
@@ -792,6 +792,16 @@
             }
 
             $scope.fieldsShow = $scope.fieldsShow || {dimensions: [], metrics: []};
+        }
+
+        function isTicket(col) {
+            var totalDimensionsMetrics = [];
+            angular.forEach($scope.reportView.reportViewDataSets, function (reportView) {
+                totalDimensionsMetrics = totalDimensionsMetrics.concat(reportView.dimensions);
+                totalDimensionsMetrics = totalDimensionsMetrics.concat(reportView.metrics)
+            });
+
+            return totalDimensionsMetrics.indexOf(col) > -1
         }
 
         function _joinIsMetrics(join, totalMetrics) {
