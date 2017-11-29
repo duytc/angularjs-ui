@@ -129,7 +129,7 @@
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.subsetGroup, label: 'Subset Group'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.convertCase, label: 'Convert Case'},
                     {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.normalizeText, label: 'Normalize Text'},
-                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addFieldFromDate, label: 'Add Field From Date'}
+                    {key: CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY.addFieldFromDate, label: 'Add Date Field'}
                 ];
             }
         })
