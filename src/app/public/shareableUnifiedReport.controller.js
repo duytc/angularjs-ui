@@ -27,7 +27,7 @@
             } else if (reports.status == 500){
                 AlertService.replaceAlerts({
                     type: 'error',
-                    message:  $translate.instant('REPORT.REPORT_FAIL')
+                    message: reports.message ||  $translate.instant('REPORT.REPORT_FAIL')
                 });
             } else {
                 AlertService.replaceAlerts({
@@ -274,7 +274,7 @@
         }
 
         function isEmptyObject(object) {
-            if (!object) {
+            if (!object && object != 0) {
                 return false
             }
 

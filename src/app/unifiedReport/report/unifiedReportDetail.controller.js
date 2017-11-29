@@ -66,6 +66,10 @@
             subView: reportView.subView,
             id: reportView.id,
             isShowDataSetName: reportView.isShowDataSetName,
+            preCalculateTable: reportView.preCalculateTable,
+            largeReport:  reportView.largeReport,
+            availableToRun:  reportView.availableToRun,
+            availableToChange: reportView.availableToChange,
             publisher: angular.isObject(reportView.publisher) ? reportView.publisher.id : reportView.publisher,
             enableCustomDimensionMetric: reportView.enableCustomDimensionMetric
         };
@@ -368,7 +372,17 @@
                     save.then(function (data) {
                         if ($scope.isNew) {
                             $scope.reportView.id = data.id;
+                            $scope.reportView.largeReport = data.largeReport;
                             $scope.reportViewForEdit.id = data.id;
+                        }
+
+                        if(data.largeReport) {
+                            AlertService.addFlash({
+                                type: 'warning',
+                                message: 'Please wait a few minutes for the changes to take effect.'
+                            });
+
+                            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.unifiedReportView, '^.listReportView');
                         }
 
                         $scope.formProcessing = false;

@@ -10,7 +10,7 @@
                 <div>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                        <input date-range-picker ng-disabled="!enableSelectDaterange()" options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="selected.date" ng-required="true">
+                        <input date-range-picker ng-disabled="!enableSelectDaterange() || reportView.largeReport" options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="selected.date" ng-required="true">
                     </div>
                 </div>
             </div>
@@ -20,7 +20,7 @@
                     <div class="form-group">
                         <label for="Dimensions" class="control-label">Dimensions</label>
                         <div>
-                            <isteven-multi-select id="Dimensions" max-labels="3" disable-property="disabled" helper-elements="all filter reset" input-model="dimensions" output-model="fieldsShow.dimensions" button-label="label" item-label="label" tick-property="ticked"></isteven-multi-select>
+                            <isteven-multi-select id="Dimensions" max-labels="3" is-disabled="reportView.largeReport" disable-property="disabled" helper-elements="all filter reset" input-model="dimensions" output-model="fieldsShow.dimensions" button-label="label" item-label="label" tick-property="ticked"></isteven-multi-select>
                         </div>
                     </div>
 
@@ -107,7 +107,7 @@
     </div>
 </section>
 
-<div class="row" ng-if="hasResult">
+<div class="row" ng-if="isEmptyObject(reportGroup.total)">
     <div class="{{ setClassName() }}" ng-repeat="column in columnPositions" ng-if="isEmptyObject(reportGroup.total) && !isNullValue(reportGroup.total, column)">
         <section class="panel panel-box info-box">
             <div class="panel-item bg-reverse">

@@ -72,7 +72,7 @@
                 }
             })
             .state('unifiedReport.report.editBuilder', {
-                url: '/edit?id&filters&subView&masterReportView&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&publisher&formats&userReorderTransformsAllowed&isShowDataSetName&enableCustomDimensionMetric',
+                url: '/edit?id&filters&subView&masterReportView&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&publisher&formats&userReorderTransformsAllowed&preCalculateTable&largeReport&availableToRun&availableToChange&isShowDataSetName&enableCustomDimensionMetric',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -108,6 +108,10 @@
                                         id: reportView.id,
                                         masterReportView: !!$stateParams.masterReportView ? angular.fromJson($stateParams.masterReportView) : reportView.masterReportView,
                                         isShowDataSetName: !!$stateParams.isShowDataSetName ? ($stateParams.isShowDataSetName == 'true') : reportView.isShowDataSetName,
+                                        preCalculateTable: !!$stateParams.preCalculateTable ? $stateParams.preCalculateTable : reportView.preCalculateTable,
+                                        largeReport: !!$stateParams.largeReport ? ($stateParams.largeReport == 'true') : reportView.largeReport,
+                                        availableToRun: !!$stateParams.availableToRun ? ($stateParams.availableToRun == 'true') : reportView.availableToRun,
+                                        availableToChange: !!$stateParams.availableToChange ? ($stateParams.availableToChange == 'true') : reportView.availableToChange,
                                         userReorderTransformsAllowed: !!$stateParams.userReorderTransformsAllowed ? ($stateParams.userReorderTransformsAllowed == 'true') : reportView.userReorderTransformsAllowed,
                                         publisher: reportView.publisher.id || reportView.publisher,
                                         enableCustomDimensionMetric: !!$stateParams.enableCustomDimensionMetric ? ($stateParams.enableCustomDimensionMetric == 'true') : reportView.enableCustomDimensionMetric,
@@ -128,6 +132,10 @@
                             name: $stateParams.name,
                             publisher: $stateParams.publisher,
                             isShowDataSetName: $stateParams.isShowDataSetName == 'true',
+                            preCalculateTable: $stateParams.preCalculateTable,
+                            largeReport:  $stateParams.largeReport == 'true',
+                            availableToRun:  $stateParams.availableToRun == 'true',
+                            availableToChange:  $stateParams.availableToChange == 'true',
                             enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true',
                             subView: $stateParams.subView == 'true'
                         };
@@ -141,7 +149,7 @@
                 }
             })
             .state('unifiedReport.report.detail', {
-                url: '/detail?id&masterReportView&subView&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&publisher&formats&fieldTypes&startDate&endDate&isShowDataSetName&page&limit&searchs&enableCustomDimensionMetric',
+                url: '/detail?id&masterReportView&subView&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&publisher&formats&fieldTypes&startDate&endDate&preCalculateTable&largeReport&availableToRun&availableToChange&isShowDataSetName&page&limit&searchs&enableCustomDimensionMetric',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -193,6 +201,10 @@
                             name: $stateParams.name,
                             publisher: $stateParams.publisher,
                             isShowDataSetName: $stateParams.isShowDataSetName == 'true',
+                            preCalculateTable: $stateParams.preCalculateTable,
+                            largeReport:  $stateParams.largeReport == 'true',
+                            availableToRun:  $stateParams.availableToRun == 'true',
+                            availableToChange:  $stateParams.availableToChange == 'true',
                             enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true',
                             subView: $stateParams.subView == 'true'
                         };

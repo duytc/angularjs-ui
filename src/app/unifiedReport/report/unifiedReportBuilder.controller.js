@@ -54,6 +54,10 @@
             formats: [],
             showInTotal: [],
             isShowDataSetName: false,
+            largeReport: false,
+            preCalculateTable: null,
+            availableToChange: true,
+            availableToRun: true,
             enableCustomDimensionMetric: true,
             filters: [],
             masterReportView: null,
@@ -62,6 +66,10 @@
 
         if(!$scope.reportBuilder.masterReportView && $scope.subView) {
             $scope.reportBuilder.masterReportView = $scope.subView ? reportView.id : null;
+            $scope.reportBuilder.largeReport = false;
+            $scope.reportBuilder.availableToChange = true;
+            $scope.reportBuilder.availableToRun = true;
+            $scope.reportBuilder.preCalculateTable = null;
             delete $scope.reportBuilder.id;
         }
 
@@ -306,6 +314,10 @@
                 subView: reportBuilder.subView,
                 fieldTypes: angular.toJson(reportBuilder.fieldTypes),
                 isShowDataSetName: reportBuilder.isShowDataSetName,
+                preCalculateTable: reportBuilder.preCalculateTable,
+                largeReport: reportBuilder.largeReport,
+                availableToRun: reportBuilder.availableToRun,
+                availableToChange: reportBuilder.availableToChange,
                 enableCustomDimensionMetric: reportBuilder.enableCustomDimensionMetric
             };
 
@@ -323,7 +335,16 @@
                         params.id = !!data ? data.id : params.id || params.id;
                     }
 
-                    _viewDetail(params);
+                    if(data.largeReport && !data.availableToRun) {
+                        AlertService.addFlash({
+                            type: 'warning',
+                            message: 'Please wait a few minutes for the changes to take effect.'
+                        });
+
+                        return historyStorage.getLocationPath(HISTORY_TYPE_PATH.unifiedReportView, '^.listReportView');
+                    } else {
+                        _viewDetail(params);
+                    }
 
                     AlertService.addFlash({
                         type: 'success',
@@ -847,6 +868,10 @@
             $scope.reportBuilder.weightedCalculations = [];
             $scope.reportBuilder.showInTotal = [];
             $scope.reportBuilder.isShowDataSetName = false;
+            $scope.reportBuilder.largeReport = false;
+            $scope.reportBuilder.preCalculateTable = null;
+            $scope.reportBuilder.availableToRun = true;
+            $scope.reportBuilder.availableToChange = true;
             $scope.reportBuilder.enableCustomDimensionMetric = true;
         }
 
