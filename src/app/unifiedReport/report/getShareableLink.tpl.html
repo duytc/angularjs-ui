@@ -28,12 +28,12 @@
 
         <p><strong> Select fields to share in report </strong></p>
         <div class="form-group col-sm-12">
-            <label class="ui-checkbox"><input name="all" type="checkbox" ng-model="selected.selectAll" ng-click="selectAll()"><span>Select All</span></label>
+            <label class="ui-checkbox"><input name="all" ng-disabled="reportView.largeReport" type="checkbox" ng-model="selected.selectAll" ng-click="selectAll()"><span>Select All</span></label>
         </div>
 
         <div class="form-group col-sm-12">
             <div ng-repeat="field in fieldsReportView" class="col-sm-4">
-                <label class="ui-checkbox"><input name="field[]" type="checkbox" ng-click="toggleField(field)" ng-checked="hasField(field)"><span>{{ field.label }}</span></label>
+                <label class="ui-checkbox"><input name="field[]" ng-disabled="disabledDimension(field)" type="checkbox" ng-click="toggleField(field)" ng-checked="hasField(field)"><span>{{ field.label }}</span></label>
             </div>
         </div>
 

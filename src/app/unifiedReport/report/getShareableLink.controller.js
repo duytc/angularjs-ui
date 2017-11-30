@@ -57,6 +57,11 @@
         $scope.getDynamicDate = getDynamicDate;
         $scope.isDynamic = isDynamic;
         $scope.saveShareableLink = saveShareableLink;
+        $scope.disabledDimension = disabledDimension;
+
+        function disabledDimension(field) {
+            return $scope.reportView.largeReport && _.values($scope.reportView.dimensions).indexOf(field.key) > -1
+        }
 
         $scope.getTextToCopy = function (string) {
             return string.replace(/\n/g, '\r\n');
