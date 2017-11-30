@@ -28,8 +28,18 @@
         $scope.showPagination = showPagination;
         $scope.confirmDeletion = confirmDeletion;
         $scope.reloadAllData = reloadAllData;
+        $scope.reloadDateRangeData = reloadDateRangeData;
         $scope.removeAllData = removeAllData;
         $scope.cloneConnectDataSource = cloneConnectDataSource;
+        $scope.showReloadDaterange = showReloadDaterange;
+
+        function showReloadDaterange(item) {
+            if(!item.dataSource || !item.dataSource.dateRangeDetectionEnabled) {
+                return false
+            }
+
+            return true
+        }
 
         function cloneConnectDataSource(connect) {
             $modal.open({
@@ -60,8 +70,68 @@
                 });
         }
 
+        function reloadDateRangeData(connect) {
+            $modal.open({
+                templateUrl: 'unifiedReport/dataSet/reloadDataSetDateRange.tpl.html',
+                size: 'lg',
+                resolve: {
+
+                },
+                controller: function ($scope, $modalInstance, DateFormatter) {
+                    $scope.selected = {
+                        date: {
+                            startDate: null,
+                            endDate: null
+                        }
+                    };
+
+                    $scope.datePickerOpts = {
+                        maxDate:  moment().endOf('day'),
+                        ranges: {
+                            'Today': [moment().startOf('day'), moment().endOf('day')],
+                            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                            'Last 7 Days': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
+                            'Last 30 Days': [moment().subtract(30, 'days'), moment().subtract(1, 'days')],
+                            'This Month': [moment().startOf('month'), moment().endOf('month')],
+                            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                        }
+                    };
+
+                    $scope.isFormValid = function () {
+                        return !!$scope.selected.date.startDate && !!$scope.selected.date.endDate
+                    };
+
+                    $scope.submit = function (date) {
+                        $modalInstance.close();
+
+                        var params = {
+                            startDate: DateFormatter.getFormattedDate(date.startDate),
+                            endDate: DateFormatter.getFormattedDate(date.endDate)
+                        };
+
+                        UnifiedReportConnectDataSourceManager.one(connect.id).one('reloads').post(null, params)
+                            .then(function() {
+                                AlertService.replaceAlerts({
+                                    type: 'success',
+                                    message: 'The data was reloaded. Please wait a few minutes for the changes to take effect.'
+                                });
+                            })
+                            .catch(function(response) {
+                                if(!!response && !!response.data && !!response.data.message) {
+                                    AlertService.replaceAlerts({
+                                        type: 'danger',
+                                        message: response.data.message
+                                    });
+                                }
+                            });
+                    }
+
+                }
+            });
+        }
+
         function reloadAllData(connect) {
-            UnifiedReportConnectDataSourceManager.one(connect.id).one('reloadalldatas').post()
+            UnifiedReportConnectDataSourceManager.one(connect.id).one('reloads').post()
                 .then(function() {
                     AlertService.replaceAlerts({
                         type: 'success',

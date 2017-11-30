@@ -1240,6 +1240,7 @@
                 "EDIT_MAP_BUILDER": "Open Map Builder",
                 "DELETE": "Delete Data Set",
                 "RELOAD_ALL_DATA": "Reload Data Set",
+                "RELOAD_BY_DATE_RANGE": "Reload By Date Range",
                 "LAST_ACTIVITY": "Last Activity",
                 "REMOVE_ALL_DATA": "Remove All Data",
                 "ROWS": "# of Rows",
@@ -1264,6 +1265,7 @@
                 "FILTERS": "Filters",
                 "TRANSFORMATIONS": "Transformations",
                 "RELOAD_ALL_DATA": "Reload Data Source",
+                "RELOAD_BY_DATE_RANGE": "Reload By Date Range",
                 "REMOVE_ALL_DATA": "Remove Data",
                 "NAME": "Name",
 

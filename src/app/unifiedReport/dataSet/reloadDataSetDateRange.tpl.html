@@ -1,0 +1,20 @@
+<form name="reloadForm" role="form" ng-submit="submit(selected.date)" novalidate>
+    <div class="modal-header">
+        <h4 class="modal-title">Select Date Range</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-12 form-validation form-horizontal">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input date-range-picker options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="selected.date" ng-required="true">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="$dismiss()" type="button">{{ 'CANCEL' | translate }}</button>
+        <button class="btn btn-danger" ng-disabled="!isFormValid()" type="submit">{{ 'SUBMIT' | translate }}</button>
+    </div>
+</form>
