@@ -10,6 +10,18 @@
         app.css({position: 'inherit'});
 
         $scope.reportView = reports.reportView;
+
+        if(!!$scope.reportView && $scope.reportView.subView && angular.isObject($scope.reportView.masterReportView)) {
+            var masterReportView = angular.copy($scope.reportView.masterReportView);
+            masterReportView.filters = $scope.reportView.filters;
+            delete  masterReportView.id;
+            delete  masterReportView.subView;
+            delete  masterReportView.masterReportView;
+            delete  masterReportView.name;
+
+            $scope.reportView = angular.extend($scope.reportView, masterReportView);
+        }
+
         $scope.hasResult = !angular.isNumber(reports.status);
         $scope.reports = reports.reports || [];
         $scope.total = reports.total;

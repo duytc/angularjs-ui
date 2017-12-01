@@ -212,7 +212,20 @@
                         return unifiedReportBuilder.summaryFieldsReportView(reportView)
                     },
                     reportView: function () {
-                        return reportView
+                        var reportViewClone = angular.copy(reportView);
+
+                        if(!!reportViewClone && reportViewClone.subView && angular.isObject(reportViewClone.masterReportView)) {
+                            var masterReportView = angular.copy(reportViewClone.masterReportView);
+                            masterReportView.filters = reportViewClone.filters;
+                            delete  masterReportView.id;
+                            delete  masterReportView.subView;
+                            delete  masterReportView.masterReportView;
+                            delete  masterReportView.name;
+
+                            reportViewClone = angular.extend(reportViewClone, masterReportView);
+                        }
+
+                        return reportViewClone
                     },
                     shareable: function () {
                         return null
