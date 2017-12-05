@@ -337,6 +337,20 @@
                     },
                     reportView: function (UnifiedReportViewManager, $stateParams) {
                         return UnifiedReportViewManager.one($stateParams.reportViewId).get()
+                            .then(function(reportViewClone) {
+                                if(!!reportViewClone && reportViewClone.subView && angular.isObject(reportViewClone.masterReportView)) {
+                                    var masterReportView = angular.copy(reportViewClone.masterReportView);
+                                    masterReportView.filters = reportViewClone.filters;
+                                    delete  masterReportView.id;
+                                    delete  masterReportView.subView;
+                                    delete  masterReportView.masterReportView;
+                                    delete  masterReportView.name;
+
+                                    reportViewClone = angular.extend(reportViewClone, masterReportView);
+                                }
+
+                                return reportViewClone
+                            })
                     },
                     dataSetsFromReportView: function (reportView, unifiedReportBuilder) {
                         return unifiedReportBuilder.getDataSetsFromReportView(reportView)
