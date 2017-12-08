@@ -57,8 +57,7 @@
                                     <li><a ui-sref="^.edit({ id: item.id })">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.EDIT' | translate }}</a></li>
                                     <li ng-if="item.mapBuilderEnabled"><a ui-sref="^.mapBuilder({ dataSet: item.id })">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.EDIT_MAP_BUILDER' | translate }}</a></li>
                                     <li class="divider"></li>
-                                    <li><a ng-click="reloadAllData(item)">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.RELOAD_ALL_DATA' | translate }}</a></li>
-                                    <li ng-if="showReloadDaterange(item)"><a ng-click="reloadDateRangeData(item)">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.RELOAD_BY_DATE_RANGE' | translate }}</a></li>
+                                    <li><a ng-click="reloadDateRangeData(item)">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.RELOAD_ALL_DATA' | translate }}</a></li>
                                     <li class="divider"></li>
                                     <li><a ng-click="removeAllData(item)"> {{ 'UNIFIED_REPORT_DATA_SET_MODULE.REMOVE_ALL_DATA' | translate }}</a></li>
                                     <li class="divider"></li>

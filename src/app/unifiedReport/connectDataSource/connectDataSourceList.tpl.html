@@ -36,8 +36,7 @@
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
                                 <li ng-if="!isSubPublisher()"><a ui-sref="^.edit({ id: item.id })">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.EDIT' | translate }}</a></li>
                                 <li class="divider"></li>
-                                <li><a ng-click="reloadAllData(item)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.RELOAD_ALL_DATA' | translate }}</a></li>
-                                <li ng-if="showReloadDaterange(item)"><a ng-click="reloadDateRangeData(item)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.RELOAD_BY_DATE_RANGE' | translate }}</a></li>
+                                <li><a ng-click="reloadDateRangeData(item)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.RELOAD_ALL_DATA' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li ng-if="!isSubPublisher()"><a ng-click="cloneConnectDataSource(item)">{{ 'UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE.CLONE_CONNECT_DATA_SOURCE' | translate }}</a></li>
                                 <li class="divider"></li>

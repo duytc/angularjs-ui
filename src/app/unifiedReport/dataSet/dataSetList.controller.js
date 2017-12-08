@@ -43,22 +43,36 @@
         $scope.searchData = searchData;
         $scope.removeAllData = removeAllData;
         $scope.reloadDateRangeData = reloadDateRangeData;
-        $scope.reloadAllData = reloadAllData;
-        $scope.showReloadDaterange = showReloadDaterange;
-        
-        function showReloadDaterange(item) {
-            for(var i in item.connectedDataSources) {
-                var connectedDataSource = item.connectedDataSources[i];
-                
-                if(!connectedDataSource.dataSource || !connectedDataSource.dataSource.dateRangeDetectionEnabled) {
-                    return false
-                }
-            }
-
-            return true
-        }
 
         function reloadDateRangeData(dataSet) {
+            if(dataSet.mapBuilderEnabled) {
+                var params = {
+                    option: 'allData',
+                    startDate: null,
+                    endDate: null
+                };
+
+                UnifiedReportDataSetManager.one(dataSet.id).one('reloads').post(null, params)
+                    .then(function(data) {
+                        dataSetPendingJobs[dataSet.id] = data.pendingLoads;
+
+                        AlertService.replaceAlerts({
+                            type: 'success',
+                            message: 'The data was reloaded with '+ data.pendingLoads +' loaded files. Please wait a few minutes for the changes to take effect.'
+                        });
+                    })
+                    .catch(function(response) {
+                        if(!!response && !!response.data && !!response.data.message) {
+                            AlertService.replaceAlerts({
+                                type: 'danger',
+                                message: response.data.message
+                            });
+                        }
+                    });
+
+                return
+            }
+
             $modal.open({
                 templateUrl: 'unifiedReport/dataSet/reloadDataSetDateRange.tpl.html',
                 size: 'lg',
@@ -67,11 +81,18 @@
                 },
                 controller: function ($scope, $modalInstance, DateFormatter) {
                     $scope.selected = {
+                        option: 'allData',
                         date: {
-                            startDate: null,
-                            endDate: null
+                            startDate: moment().subtract(7, 'days'),
+                            endDate: moment().subtract(1, 'days')
                         }
                     };
+
+                    $scope.options = [
+                        {key: 'allData', label: 'All Data'},
+                        {key: 'detectedDateRange', label: 'Custom On Detected Date Range'},
+                        {key: 'importedDate', label: 'Custom On Imported Date'}
+                    ];
 
                     $scope.datePickerOpts = {
                         maxDate:  moment().endOf('day'),
@@ -85,8 +106,20 @@
                         }
                     };
 
+                    $scope.showReloadDaterange = function(item) {
+                        for(var i in dataSet.connectedDataSources) {
+                            var connectedDataSource = dataSet.connectedDataSources[i];
+
+                            if((!connectedDataSource.dataSource || !connectedDataSource.dataSource.dateRangeDetectionEnabled) && item.key == 'detectedDateRange') {
+                                return false
+                            }
+                        }
+
+                        return true
+                    };
+
                     $scope.isFormValid = function () {
-                        return !!$scope.selected.date.startDate && !!$scope.selected.date.endDate
+                        return $scope.reloadForm.$valid
                     };
 
                     $scope.submit = function (date) {
@@ -94,7 +127,8 @@
 
                         var params = {
                             startDate: DateFormatter.getFormattedDate(date.startDate),
-                            endDate: DateFormatter.getFormattedDate(date.endDate)
+                            endDate: DateFormatter.getFormattedDate(date.endDate),
+                            option: $scope.selected.option
                         };
 
                         UnifiedReportDataSetManager.one(dataSet.id).one('reloads').post(null, params)
@@ -118,26 +152,6 @@
 
                 }
             });
-        }
-
-        function reloadAllData(dataSet) {
-            UnifiedReportDataSetManager.one(dataSet.id).one('reloads').post()
-                .then(function(data) {
-                    dataSetPendingJobs[dataSet.id] = data.pendingLoads;
-
-                    AlertService.replaceAlerts({
-                        type: 'success',
-                        message: 'The data was reloaded with '+ data.pendingLoads +' loaded files. Please wait a few minutes for the changes to take effect.'
-                    });
-                })
-                .catch(function(response) {
-                    if(!!response && !!response.data && !!response.data.message) {
-                        AlertService.replaceAlerts({
-                            type: 'danger',
-                            message: response.data.message
-                        });
-                    }
-                });
         }
 
         function removeAllData(dataSet) {

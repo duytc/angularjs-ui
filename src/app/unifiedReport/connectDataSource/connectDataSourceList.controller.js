@@ -27,19 +27,9 @@
         $scope.backToDataSetList = backToDataSetList;
         $scope.showPagination = showPagination;
         $scope.confirmDeletion = confirmDeletion;
-        $scope.reloadAllData = reloadAllData;
         $scope.reloadDateRangeData = reloadDateRangeData;
         $scope.removeAllData = removeAllData;
         $scope.cloneConnectDataSource = cloneConnectDataSource;
-        $scope.showReloadDaterange = showReloadDaterange;
-
-        function showReloadDaterange(item) {
-            if(!item.dataSource || !item.dataSource.dateRangeDetectionEnabled) {
-                return false
-            }
-
-            return true
-        }
 
         function cloneConnectDataSource(connect) {
             $modal.open({
@@ -79,11 +69,18 @@
                 },
                 controller: function ($scope, $modalInstance, DateFormatter) {
                     $scope.selected = {
+                        option: 'allData',
                         date: {
-                            startDate: null,
-                            endDate: null
+                            startDate: moment().subtract(7, 'days'),
+                            endDate: moment().subtract(1, 'days')
                         }
                     };
+
+                    $scope.options = [
+                        {key: 'allData', label: 'All Data'},
+                        {key: 'detectedDateRange', label: 'Custom On Detected Date Range'},
+                        {key: 'importedDate', label: 'Custom On Imported Date'}
+                    ];
 
                     $scope.datePickerOpts = {
                         maxDate:  moment().endOf('day'),
@@ -97,8 +94,16 @@
                         }
                     };
 
+                    $scope.showReloadDaterange = function(item) {
+                        if((!connect.dataSource || !connect.dataSource.dateRangeDetectionEnabled) && item.key == 'detectedDateRange') {
+                            return false
+                        }
+
+                        return true
+                    };
+
                     $scope.isFormValid = function () {
-                        return !!$scope.selected.date.startDate && !!$scope.selected.date.endDate
+                        return $scope.reloadForm.$valid
                     };
 
                     $scope.submit = function (date) {
@@ -106,7 +111,8 @@
 
                         var params = {
                             startDate: DateFormatter.getFormattedDate(date.startDate),
-                            endDate: DateFormatter.getFormattedDate(date.endDate)
+                            endDate: DateFormatter.getFormattedDate(date.endDate),
+                            option: $scope.selected.option
                         };
 
                         UnifiedReportConnectDataSourceManager.one(connect.id).one('reloads').post(null, params)
@@ -128,24 +134,6 @@
 
                 }
             });
-        }
-
-        function reloadAllData(connect) {
-            UnifiedReportConnectDataSourceManager.one(connect.id).one('reloads').post()
-                .then(function() {
-                    AlertService.replaceAlerts({
-                        type: 'success',
-                        message: 'The data was reloaded. Please wait a few minutes for the changes to take effect.'
-                    });
-                })
-                .catch(function(response) {
-                    if(!!response && !!response.data && !!response.data.message) {
-                        AlertService.replaceAlerts({
-                            type: 'danger',
-                            message: response.data.message
-                        });
-                    }
-                });
         }
 
         function confirmDeletion(connectDataSource, index) {
