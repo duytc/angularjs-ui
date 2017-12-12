@@ -81,7 +81,7 @@
                 }
             ],
             enable: true,
-            timeSeries: false,
+            removeDuplicateDates: false,
             useIntegration: false,
             dateRangeDetectionEnabled: false,
             fromMetadata: false,
@@ -414,7 +414,7 @@
             delete dataSource.dateRangeBroken;
 
             // if(dataSource.format != 'json' || dataSource.useIntegration) {
-            //     dataSource.timeSeries = false;
+            //     dataSource.removeDuplicateDates = false;
             // }
 
             if(dataSource.useIntegration) {
