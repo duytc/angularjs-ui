@@ -1,6 +1,6 @@
 <form name="reloadForm" role="form" ng-submit="submit(selected.date)" novalidate>
     <div class="modal-header">
-        <h4 class="modal-title">Reload Data Set</h4>
+        <h4 class="modal-title">{{ helpText.title }}</h4>
     </div>
     <div class="modal-body">
         <div class="row">
@@ -15,7 +15,7 @@
                             </ui-select-choices>
                         </ui-select>
 
-                        <span class="help-block">You can only reload by detected date range if all data sources have this feature enabled.</span>
+                        <span class="help-block">{{ helpText.detail }}</span>
                     </div>
                 </div>
 

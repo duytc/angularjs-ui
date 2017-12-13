@@ -88,6 +88,11 @@
                         }
                     };
 
+                    $scope.helpText = {
+                        detail: 'You can only reload by detected date range if all data sources have this feature enabled.',
+                        title: 'Reload Data Set'
+                    };
+
                     $scope.options = [
                         {key: 'allData', label: 'All Data'},
                         {key: 'detectedDateRange', label: 'Detected Date Range'},
