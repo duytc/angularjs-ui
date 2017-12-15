@@ -38,11 +38,11 @@
                                     show: true,
                                     hideForNativeAdSlot: true
                                 },
-                                {
-                                    key: 'impressions',
-                                    label: 'Impressions',
-                                    show: true
-                                },
+                                // {
+                                //     key: 'impressions',
+                                //     label: 'Impressions',
+                                //     show: true
+                                // },
                                 {
                                     key: 'inBannerImpressions',
                                     label: 'In Banner Impressions',

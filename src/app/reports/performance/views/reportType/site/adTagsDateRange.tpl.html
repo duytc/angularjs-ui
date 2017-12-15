@@ -25,7 +25,7 @@
                     <th at-attribute="totalOpportunities" ng-show="showConfigForPerformanceByAdTag('totalOpportunities')">{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}</th>
                     <th at-attribute="adOpportunities" ng-show="showConfigForPerformanceByAdTag('adOpportunities')">{{ 'REPORT.AD_OPPORTUNITIES' | translate }}</th>
                     <th at-attribute="firstOpportunities" ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('firstOpportunities')">{{ 'REPORT.FIRST_OPPORTUNITIES' | translate }}</th>
-                    <th at-attribute="impressions" ng-show="showConfigForPerformanceByAdTag('impressions')">{{ 'REPORT.IMPRESSIONS' | translate }}</th>
+                    <!--<th at-attribute="impressions" ng-show="showConfigForPerformanceByAdTag('impressions')">{{ 'REPORT.IMPRESSIONS' | translate }}</th>-->
                     <th at-attribute="inBannerImpressions" ng-show="showConfigForPerformanceByAdTag('inBannerImpressions')">{{ 'REPORT.IN_BANNER_IMPRESSIONS' | translate }}</th>
                     <th at-attribute="networkOpportunityFillRate" ng-show="showConfigForPerformanceByAdTag('networkOpportunityFillRate')">{{ 'REPORT.NETWORK_OPPORTUNITY_FILL_RATE' | translate }}</th>
                     <!--<th at-attribute="verifiedImpressions" ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('verifiedImpressions')">{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}</th>-->
@@ -71,9 +71,9 @@
                     <td ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('passbacks')" at-title="{{ 'REPORT.PASSBACKS' | translate }}" at-attribute="passbacks" at-sortable>
                         {{ item.passbacks | number }}
                     </td>
-                    <td ng-show="showConfigForPerformanceByAdTag('impressions')" at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="impressions" at-sortable>
-                        {{ item.impressions | number }}
-                    </td>
+                    <!--<td ng-show="showConfigForPerformanceByAdTag('impressions')" at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="impressions" at-sortable>-->
+                        <!--{{ item.impressions | number }}-->
+                    <!--</td>-->
                     <td ng-show="showConfigForPerformanceByAdTag('inBannerImpressions')" at-title="{{ 'REPORT.IN_BANNER_IMPRESSIONS' | translate }}" at-attribute="inBannerImpressions" at-sortable>
                         {{ item.inBannerImpressions | number }}
                     </td>

@@ -23,6 +23,7 @@
         var dataGroupReport = $state.current.params.expanded ? ($scope.reportGroup.expandedReports || []) : ($scope.reportGroup.reports || []);
 
         if($scope.hasResult && !!reportGroup.expandedResult) {
+            reportGroup.expandedResult.reportType = reportGroup.reportType;
             reportGroup = reportGroup.expandedResult || {};
             reportGroup.refreshedSlotOpportunities = $scope.reportGroup.refreshedSlotOpportunities;
             reportGroup.averageRefreshedSlotOpportunities = $scope.reportGroup.averageRefreshedSlotOpportunities;
