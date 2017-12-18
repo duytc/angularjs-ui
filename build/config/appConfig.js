@@ -45,8 +45,6 @@ module.exports = {
     },
     envFiles: {
         js: [
-            'vendor/xdomain/dist/xdomain.min.js',
-            'src/xdomain.config.js',
             'src/browserCheck.js'
         ]
     },
