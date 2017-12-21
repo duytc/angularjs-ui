@@ -5,7 +5,7 @@
 
 <div class="expressions-group" ng-repeat="joinItem in joinBy">
     <div class="form-group select-connect-data-source">
-        <button type="button" class="btn btn-danger btn-close-ur" ng-disabled="disabled" ng-disabled="joinBy.length == 1" ng-click="removeJoinBy($index)">
+        <button type="button" class="btn btn-danger btn-close-ur" ng-disabled="joinBy.length == 1 || disabled" ng-click="removeJoinBy($index)">
             <span class="glyphicon glyphicon-minus "></span>
         </button>
     </div>
