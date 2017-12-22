@@ -1,8 +1,8 @@
 (function(){
     xdomain.slaves({
-        "http://api.tagcade.dev": "/xdomain/proxy.html",
-        "http://api.unified-reports.dev": "/xdomain/proxy.html",
-        "https://api.tagcade.dev": "/xdomain/proxy.html",
-        "https://api.unified-reports.dev": "/xdomain/proxy.html"
+        "http://api.pubvantage-dev.test": "/xdomain/proxy.html",
+        "http://ur-api.pubvantage-dev.test": "/xdomain/proxy.html",
+        "https://api.pubvantage-dev.test": "/xdomain/proxy.html",
+        "https://ur-api.pubvantage-dev.test": "/xdomain/proxy.html"
     });
 })();

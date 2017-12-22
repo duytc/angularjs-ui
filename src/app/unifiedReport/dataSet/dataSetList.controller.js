@@ -95,8 +95,8 @@
 
                     $scope.options = [
                         {key: 'allData', label: 'All Data'},
-                        {key: 'detectedDateRange', label: 'Detected Date Range'},
-                        {key: 'importedDate', label: 'Import Date'}
+                        {key: 'detectedDateRange', label: 'By Detected Date Range'},
+                        {key: 'importedDate', label: 'By Import Date'}
                     ];
 
                     $scope.datePickerOpts = {
