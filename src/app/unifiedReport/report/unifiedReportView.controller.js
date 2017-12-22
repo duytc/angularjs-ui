@@ -173,7 +173,7 @@
                 return UnifiedReportViewManager.one(reportView.id).remove()
                     .then(
                     function () {
-                        var index = $scope.reportViewList.indexOf(reportView);
+                        var index = reportViewList.indexOf(reportView);
 
                         if (index > -1) {
                             reportViewList.splice(index, 1);
