@@ -8,7 +8,7 @@
     function ChannelForm($scope, $filter, $translate, sites, channel, publishers, AlertService, ChannelManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, userSession) {
         $scope.fieldNameTranslations = {
             name: 'Name',
-            sites: 'Sites'
+            sites: 'Supply'
         };
 
         $scope.isNew = channel === null;
@@ -99,7 +99,7 @@
         }
 
         /**
-         * Refactor channel json before submitting
+         * Refactor supply group json before submitting
          */
         function refactorJson(channel) {
             var channel = angular.copy(channel);

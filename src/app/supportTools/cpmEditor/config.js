@@ -5,7 +5,7 @@
         .constant('CPM_EDITOR_TYPES', {
             adTag: 'adTag',
             adNetwork: 'adNetwork',
-            site: 'site'
+            site: 'supply'
         })
     ;
 })();

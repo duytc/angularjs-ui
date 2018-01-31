@@ -57,7 +57,7 @@
                     }
 
                     if(siteStatus.site.id == null) {
-                        throw new Error('Unknown Site');
+                        throw new Error('Unknown Supply');
                     }
 
                     var request = AdNetworkManager.one(adNetwork.id).one('sites', siteStatus.site.id).customPUT('', 'status', { active: checked });

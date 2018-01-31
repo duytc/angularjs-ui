@@ -4,14 +4,14 @@
     <div class="panel panel-default daily-reports">
         <div class="panel-heading">{{ 'REPORT.PUBLISHER_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" fields="['date', 'name', 'slotOpportunities', 'totalOpportunities', 'adOpportunities', 'impressions', 'inBannerImpressions', 'passbacks', 'fillRate']" header="['Date', 'Publisher', 'Slot Opportunities', 'Network Opportunities', 'Ad Opportunities', 'Impressions', 'In Banner Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                <export-excel data="reports" fields="['date', 'name', 'slotOpportunities', 'totalOpportunities', 'adOpportunities', 'impressions', 'inBannerImpressions', 'passbacks', 'fillRate']" header="['Date', 'Publisher', 'Slot Opportunities', 'Network Opportunities', 'Impression Opportunities', 'Impressions', 'In Banner Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
                 <!--<export-excel data="reports" fields="['startDate', 'endDate', 'name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate', 'estRevenue', 'estCpm']" header="['Start Date', 'End Date', 'Publisher', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate', 'Est. Revenue ($)', 'Est. CPM ($)']" file-name="getExportExcelFileName"></export-excel>-->
             </div>
             <div class="btn-group btnGrouped" dropdown>
                 <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><a>
-                        <export-excel css-class="''" data="reports" fields="['date', 'name', 'slotOpportunities', 'totalOpportunities', 'adOpportunities', 'impressions', 'inBannerImpressions', 'passbacks', 'fillRate']" header="['Date', 'Publisher', 'Slot Opportunities', 'Network Opportunities', 'Ad Opportunities', 'Impressions', 'In Banner Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel css-class="''" data="reports" fields="['date', 'name', 'slotOpportunities', 'totalOpportunities', 'adOpportunities', 'impressions', 'inBannerImpressions', 'passbacks', 'fillRate']" header="['Date', 'Publisher', 'Slot Opportunities', 'Network Opportunities', 'Impression Opportunities', 'Impressions', 'In Banner Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
             </div>

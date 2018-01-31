@@ -57,11 +57,11 @@
 
         $scope.deploymentOptions = [
             {
-                label: 'Sites',
+                label: 'Supply',
                 key: 'sites'
             },
             {
-                label: 'Channels',
+                label: 'Supply Group',
                 key: 'channels'
             },
             {

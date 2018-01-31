@@ -74,7 +74,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Site Config For Email - {{ sourceReportConfigCurrent.email }}'
+                    label: 'Supply Config For Email - {{ sourceReportConfigCurrent.email }}'
                 }
             })
         ;
