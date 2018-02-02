@@ -301,7 +301,7 @@
                 "CONFIRM_DELETE_SUCCESS": "The supply group was deleted",
                 "CONFIRM_DELETE_FAIL": "The supply group could not be deleted",
                 "CURRENTLY_NO_CHANNELS": "There is currently no supply groups",
-                "CURRENTLY_NO_SITES_CHANNEL": "There is currently no sites in this supply group",
+                "CURRENTLY_NO_SITES_CHANNEL": "There is currently no supply in this supply group",
 
                 "MANAGE_SITES": "Manage Supply",
                 "EDIT_CHANNEL": "Edit Supply Group",
@@ -327,7 +327,7 @@
                 "CONFIRM_REMOVE_CHANNEL_FROM_SITE": "Are you sure you want to remove this supply group from the supply?",
                 "DELETE_SUCCESS": "The supply was deleted",
                 "DELETE_FAIL": "The supply could not be deleted",
-                "CURRENTLY_NO_SITES": "There is currently no sites",
+                "CURRENTLY_NO_SITES": "There is currently no supply",
                 "CURRENTLY_NO_CHANNELS_SITE": "There is currently no supply groups in this supply",
 
                 "MANAGE_AD_SLOTS": "Manage Ad Slots",
