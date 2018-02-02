@@ -365,7 +365,7 @@
                 "REFRESH_UNIFIED_REPORT_SUCCESS": "The unified report email token has been refreshed",
                 "REFRESH_UNIFIED_REPORT_FAIL": "The unified report email token could not be refreshed",
                 "CURRENTLY_NO_AD_NETWORK": "There is currently no demand partners",
-                "CURRENTLY_NO_SITES_AD_NETWORK": "Demand Partner : ' {{ ad_network_name }} ' does not have sites",
+                "CURRENTLY_NO_SITES_AD_NETWORK": "Demand Partner : ' {{ ad_network_name }} ' does not have supply",
                 "CONFIRM_PAUSE_AD_NETWORK": "Are you sure you want to pause this demand partner?",
                 "NOTE_CONFIRM_PAUSE_AD_NETWORK": "Every ad tag associated with this demand partner will be also paused.",
                 "CONFIRM_PAUSE_SITE": "Are you sure you want to pause this supply?",
@@ -843,10 +843,10 @@
             "AD_SLOT_LIBRARY_MODULE": {
                 "REMOVE_SUCCESS": "The ad slot was removed successfully",
                 "REMOVE_FAIL": "Could not remove the standalone ad slot",
-                "AD_SLOT_FOR_SITE_SUCCESS": "This ad slot has been linked to the selected sites",
+                "AD_SLOT_FOR_SITE_SUCCESS": "This ad slot has been linked to the selected supply",
                 "AD_SLOT_FOR_SITE_FAIL": "Could not link the ad slot",
                 "CURRENTLY_NO_AD_SLOT": "There is currently no standalone ad slots",
-                "CURRENTLY_NO_AD_SLOT_ASSOCIATED": "This standalone ad slot is currently not linked to any sites",
+                "CURRENTLY_NO_AD_SLOT_ASSOCIATED": "This standalone ad slot is currently not linked to any supply",
                 "ALERT_CREATE_LINKED_AD_SLOTS_FULL_SITE": "This ad slot is already linked on every supply",
 
                 "TITLE_CREATE_LINKED_AD_SLOTS": "Link standalone Ad Slot",
@@ -858,7 +858,7 @@
                 "CREATE_LINKED_AD_SLOTS": "Link this Ad Slot",
                 "VIEW_LINKED_AD_SLOTS": "View linked Ad Slots",
                 "LINKED_AD_SLOTS": "Linked Ad Slots",
-                "WARNING_EDIT_LIBRARY": "This ad slot is linked to multiple sites. Modifying this ad slot will result in the changes being propagated to all sites that run this ad slot."
+                "WARNING_EDIT_LIBRARY": "This ad slot is linked to multiple supply. Modifying this ad slot will result in the changes being propagated to all supply that run this ad slot."
             },
             "AD_TAG_LIBRARY_MODULE": {
                 "REMOVE_SUCCESS": "The ad tag was removed successfully",
