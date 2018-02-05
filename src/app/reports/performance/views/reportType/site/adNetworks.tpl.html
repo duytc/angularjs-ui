@@ -81,7 +81,15 @@
                     <td ng-show="isAdmin" at-title="{{ 'REPORT.VOID_IMPRESSIONS' | translate }}" at-attribute="voidImpressions" at-sortable>
                         {{ item.voidImpressions | number }}
                     </td>
-
+                    <td at-title="{{ 'REPORT.EST_REVENUE' | translate }}" at-attribute="estRevenue" at-sortable>
+                        {{ item.estRevenue | currency }}
+                    </td>
+                    <td at-title="{{ 'REPORT.SUPPLY_COST' | translate }}" at-attribute="supplyCost" at-sortable>
+                        {{ item.supplyCost | currency }}
+                    </td>
+                    <td at-title="{{ 'REPORT.EST_PROFIT' | translate }}" at-attribute="estProfit" at-sortable>
+                        {{ item.estProfit | currency }}
+                    </td>
                     <!--<td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>-->
                         <!--{{ item.estRevenue | currency:'$':4 }}-->
                     <!--</td>-->

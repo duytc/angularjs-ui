@@ -94,7 +94,22 @@
                                     show: true,
                                     hideForNativeAdSlot: true,
                                     hideForAdmin: true
-                                }
+                                },
+                                {
+                                    key: 'estRevenue',
+                                    label: 'Est. Revenue',
+                                    show: true
+                                },
+                                // {
+                                //     key: 'supplyCost',
+                                //     label: 'Supply Cost',
+                                //     show: true
+                                // },
+                                // {
+                                //     key: 'estProfit',
+                                //     label: 'Est. Profit',
+                                //     show: true
+                                // }
                             ]
                         },
                         videoReport: {

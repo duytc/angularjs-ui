@@ -650,6 +650,7 @@
                 "SHOW_DOMAINS": "Show Domains"
             },
             "AD_SLOT_MODULE": {
+                "BUY_PRICE": "Buy Price",
                 "NATIVE": "Native",
                 "DEFAULT_AD_SLOT": "Default Ad Slot",
                 "TYPE": "Type",
@@ -769,6 +770,7 @@
                 "UNLINK": "Unlink Ad Tag",
                 "MARK_AS_PASSBACK": "Mark as Passback",
                 "TARGETING": "Targeting",
+                "SELL_PRICE": "Sell Price",
 
                 "BACK_TO_AD_TAG_LIST": "Back to Ad Tag List",
                 "FROM_LIBRARY": "From Library",
@@ -924,6 +926,9 @@
                 "UNVERIFIED_IMPRESSIONS": "Unverified Impressions",
                 "BLANK_IMPRESSIONS": "Blank Impressions",
                 "VOID_IMPRESSIONS": "Void Impressions",
+                "EST_REVENUE": "Est. Revenue",
+                "EST_PROFIT": "Est. Profit",
+                "SUPPLY_COST": "Supply Cost",
                 "CLICKS": "Clicks",
                 "TIER_FILL_RATE": "Tier Fill Rate",
                 "POSITION": "Position",

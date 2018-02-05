@@ -36,6 +36,9 @@
                     <th at-attribute="passbacks" ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('passbacks')">{{ 'REPORT.PASSBACKS' | translate }}</th>
                     <th at-attribute="fillRate" ng-show="!isAdmin && showConfigForPerformanceByAdTag('fillRate')">{{ 'REPORT.FILL_RATE' | translate }}</th>
                     <th at-attribute="refreshes" ng-show="showConfigForPerformanceByAdTag('refreshes')">{{ 'REPORT.REFRESHES' | translate }}</th>
+                    <th at-attribute="estRevenue" ng-show="showConfigForPerformanceByAdTag('estRevenue')">{{ 'REPORT.EST_REVENUE' | translate }}</th>
+                    <!--<th at-attribute="supplyCost" ng-show="showConfigForPerformanceByAdTag('supplyCost')">{{ 'REPORT.SUPPLY_COST' | translate }}</th>-->
+                    <!--<th at-attribute="estProfit" ng-show="showConfigForPerformanceByAdTag('estProfit')">{{ 'REPORT.EST_PROFIT' | translate }}</th>-->
                 </tr>
                 </thead>
                 <tbody>
@@ -98,6 +101,15 @@
                     <td ng-show="isAdmin && isNotNativeAdSlot" at-title="{{ 'REPORT.VOID_IMPRESSIONS' | translate }}" at-attribute="voidImpressions" at-sortable>
                         {{ item.voidImpressions | number }}
                     </td>
+                    <td ng-show="showConfigForPerformanceByAdTag('estRevenue')" at-title="{{ 'REPORT.EST_REVENUE' | translate }}" at-attribute="estRevenue" at-sortable>
+                        {{ item.estRevenue | currency }}
+                    </td>
+                    <!--<td ng-show="showConfigForPerformanceByAdTag('supplyCost')" at-title="{{ 'REPORT.SUPPLY_COST' | translate }}" at-attribute="supplyCost" at-sortable>-->
+                        <!--{{ item.supplyCost | currency }}-->
+                    <!--</td>-->
+                    <!--<td ng-show="showConfigForPerformanceByAdTag('estProfit')" at-title="{{ 'REPORT.EST_PROFIT' | translate }}" at-attribute="estProfit" at-sortable>-->
+                        <!--{{ item.estProfit | currency }}-->
+                    <!--</td>-->
                     <!--<td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>-->
                         <!--{{ item.estRevenue | currency:'$':4 }}-->
                     <!--</td>-->

@@ -139,6 +139,13 @@
                     </div>
                 </div>
 
+                <div class="form-group" ng-if="!showForDynamicAdSlot()">
+                    <label class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.BUY_PRICE' | translate }}</label>
+                    <div class="col-sm-5">
+                        <input name="buyPrice" ng-model="adSlot.buyPrice" min="0" ng-pattern="/^\-?\d+((\.|\,)\d+)?$/" type="text" class="form-control" placeholder="{{ 'AD_SLOT_MODULE.BUY_PRICE' | translate }}">
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-5">
                         <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>
