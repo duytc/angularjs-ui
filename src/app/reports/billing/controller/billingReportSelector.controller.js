@@ -151,7 +151,7 @@
             },
             {
                 key: REPORT_TYPES.site,
-                label: 'Site',
+                label: 'Supply',
                 toState: 'reports.billing.hbSites',
                 breakdownKey: 'siteBreakdown',
                 breakdownOptions: [
@@ -309,7 +309,7 @@
             if(!isAdmin) {
                 billingService.getSites()
                     .then(function (data) {
-                        UISelectMethod.addAllOption(data, 'All Sites');
+                        UISelectMethod.addAllOption(data, 'All Supply');
                         $scope.optionData.sites = data;
                     })
                 ;
@@ -438,7 +438,7 @@
 
             adminUserManager.one(publisherId).one('sites').getList()
                 .then(function (data) {
-                    UISelectMethod.addAllOption(data, 'All Sites');
+                    UISelectMethod.addAllOption(data, 'All Supply');
                     $scope.optionData.sites = data;
                 })
             ;

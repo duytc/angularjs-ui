@@ -67,7 +67,7 @@
 
         function getSiteProjectedBill(params) {
             if (!angular.isNumber(params.siteId)) {
-                return $q.reject(new Error('site id should be a number'));
+                return $q.reject(new Error('supply id should be a number'));
             }
 
             return makeHttpGetRequest('/sites/:siteId//projectedbill', params);

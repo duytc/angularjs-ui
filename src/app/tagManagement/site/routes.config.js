@@ -35,7 +35,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Sites'
+                    label: 'Supply'
                 }
             })
             .state('tagManagement.sites.new', {
@@ -64,7 +64,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'New Site'
+                    label: 'New Supply'
                 }
             })
             .state('tagManagement.sites.edit', {
@@ -93,7 +93,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Edit Site - {{ site.name }}'
+                    label: 'Edit Supply - {{ site.name }}'
                 }
             })
 
@@ -119,7 +119,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Channels - {{ site.name }}'
+                    label: 'Supply Group - {{ site.name }}'
                 }
             })
         ;

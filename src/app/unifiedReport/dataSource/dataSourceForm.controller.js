@@ -12,6 +12,7 @@
         $scope.formProcessing = false;
         $scope.integrations.active = false;
         $scope.dynamicDatePickerOpts = [
+            {key: 'today', label: 'Today'},
             {key: 'yesterday', label: 'Yesterday'},
             {key: 'last 2 days', label: 'Last 2 Days'},
             {key: 'last 3 days', label: 'Last 3 Days'},
@@ -54,7 +55,7 @@
                     // backFillEndDate: null,
                     schedule: {
                         checked: 'checkAt',
-                        checkEvery:  { hour: null },
+                        checkEvery:  { hour: null, minutes: null },
                         checkAt: [{timeZone: null, hour: 1, minutes: 0}]
                     }
                 }
@@ -117,6 +118,8 @@
         ];
 
         $scope.frequencies = [
+            {label: '30 minutes', key: 0.5},
+            {label: '1 hour', key: 1},
             {label: '3 hours', key: 3},
             {label: '6 hours', key: 6},
             {label: '12 hours', key: 12},
@@ -187,6 +190,13 @@
                     value: null
                 }
             }
+
+            angular.forEach($scope.dataSource.dataSourceIntegrations, function (dataSourceIntegration) {
+                if(!!dataSourceIntegration.schedule && !!dataSourceIntegration.schedule.checkEvery && dataSourceIntegration.schedule.checkEvery.minutes > 0) {
+                    dataSourceIntegration.schedule.checkEvery.hour = dataSourceIntegration.schedule.checkEvery.minutes/60 ;
+                    dataSourceIntegration.schedule.checkEvery.minutes = null;
+                }
+            })
         }
 
         $scope.dateRangeTypes = [
@@ -297,7 +307,7 @@
                    params: [],
                    schedule: {
                        checked: 'checkAt',
-                       checkEvery:  { hour: null },
+                       checkEvery:  { hour: null, minutes: null },
                        checkAt: [{timeZone: null, hour: 1, minutes: 0}]
                    }
                }]
@@ -339,7 +349,7 @@
                 params: [],
                 schedule: {
                     checked: 'checkAt',
-                    checkEvery:  { hour: null },
+                    checkEvery:  { hour: null, minutes: null },
                     checkAt: [{timeZone: null, hour: 1, minutes: 0}]
                 }
             }]
@@ -437,6 +447,10 @@
                         }
                     });
 
+                    if(dataSourceIntegration.schedule.checkEvery.hour < 1) {
+                        dataSourceIntegration.schedule.checkEvery.minutes = 60 * dataSourceIntegration.schedule.checkEvery.hour;
+                        dataSourceIntegration.schedule.checkEvery.hour = null;
+                    }
                 });
             } else {
                 dataSource.dataSourceIntegrations = []

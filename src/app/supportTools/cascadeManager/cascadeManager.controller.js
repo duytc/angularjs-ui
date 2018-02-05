@@ -36,11 +36,11 @@
 
         $scope.deploymentOptions = [
             {
-                label: 'Sites',
+                label: 'Supply',
                 key: 'sites'
             },
             {
-                label: 'Channels',
+                label: 'Supply Group',
                 key: 'channels'
             }
         ];
@@ -55,7 +55,7 @@
         $scope.selectAdNetwork = function (adNetworkId) {
             return AdNetworkManager.one(adNetworkId).one('sites').one('active').getList()
                     .then(function (data) {
-                        UISelectMethod.addAllOption(data, 'All Sites');
+                        UISelectMethod.addAllOption(data, 'All Supply');
                         $scope.sites = data.plain();
                     })
                 ;

@@ -24,11 +24,11 @@
 
         $scope.generatorOptions = [
             {
-                label: 'Site',
+                label: 'Supply',
                 key: 'site'
             },
             {
-                label: 'Channel',
+                label: 'Supply Group',
                 key: 'channel'
             }
         ];

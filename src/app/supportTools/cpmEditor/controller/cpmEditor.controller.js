@@ -67,7 +67,7 @@
             },
             {
                 key: CPM_EDITOR_TYPES.site,
-                label: 'Site'
+                label: 'Supply'
             }
         ];
 

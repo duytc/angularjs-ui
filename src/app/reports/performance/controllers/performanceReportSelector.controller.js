@@ -127,7 +127,7 @@
         var reportTypeSite = {
                 key: PERFORMANCE_REPORT_TYPES.site,
                 breakdownKey: 'breakDown',
-                label: 'Site',
+                label: 'Supply',
                 toState: 'reports.performance.sites',
                 visibleFields: [reportFields.site],
                 breakdownOptions: [
@@ -195,7 +195,7 @@
                     },
                     {
                         key: 'site',
-                        label: 'By Site',
+                        label: 'By Supply',
                         toState: 'reports.performance.adNetworkSites'
                     },
                     {
@@ -231,7 +231,7 @@
                     },
                     {
                         key: 'site',
-                        label: 'By Site',
+                        label: 'By Supply',
                         toState: 'reports.performance.ronAdSlotSites'
                     },
                     {
@@ -262,7 +262,7 @@
                     },
                     {
                         key: 'site',
-                        label: 'By Site',
+                        label: 'By Supply',
                         toState: 'reports.performance.platformSites'
                     }
                 ]
@@ -527,7 +527,7 @@
                 //         sites.push(data.site);
                 //     });
                 //
-                //     addAllOption(sites, 'All Sites');
+                //     addAllOption(sites, 'All Supply');
                 //     $scope.optionData.adNetworkSites = sites;
                 // });
 
@@ -567,7 +567,7 @@
                     // },
                     {
                         key: 'site',
-                        label: 'By Site',
+                        label: 'By Supply',
                         toState: 'reports.performance.adNetworkSites'
                     },
                     {
@@ -794,7 +794,7 @@
                         $scope.optionData.adNetworkSites.push(data.site);
                     });
 
-                    addAllOption($scope.optionData.adNetworkSites, 'All Sites');
+                    addAllOption($scope.optionData.adNetworkSites, 'All Supply');
                 });
         }
 
@@ -812,7 +812,7 @@
                     sideParams.siteAdNetwork.totalRecord = datas.totalRecord;
 
                     if($scope.optionData.adNetworkSites.length == 0) {
-                        addAllOption($scope.optionData.adNetworkSites, 'All Sites');
+                        addAllOption($scope.optionData.adNetworkSites, 'All Supply');
                     }
 
                     angular.forEach(datas.records, function(data) {
@@ -865,7 +865,7 @@
                         $scope.optionData.sites.push(site);
                     });
 
-                    addAllOption($scope.optionData.sites, 'All Sites');
+                    addAllOption($scope.optionData.sites, 'All Supply');
                 });
         }
 
@@ -908,7 +908,7 @@
                     sideParams.site.totalRecord = datas.totalRecord;
 
                     if($scope.optionData.sites.length == 0) {
-                        addAllOption($scope.optionData.sites, 'All Sites');
+                        addAllOption($scope.optionData.sites, 'All Supply');
                     }
 
                     angular.forEach(datas.records, function(site) {
@@ -967,7 +967,7 @@
                     },
                     {
                         key: 'site',
-                        label: 'By Site',
+                        label: 'By Supply',
                         toState: 'reports.performance.sites'
                     }
                 ];
@@ -995,7 +995,7 @@
         }
 
         /**
-         * set breakdownOptions for all site and one demand partner
+         * set breakdownOptions for all supply and one demand partner
          * @private
          */
         function _setBreakdownOptionsForAllSiteByDemandPartner() {
@@ -1012,7 +1012,7 @@
                 // },
                 {
                     key: 'site',
-                    label: 'By Site',
+                    label: 'By Supply',
                     toState: 'reports.performance.adNetworkSites'
                 },
                 {
@@ -1071,7 +1071,7 @@
         }
 
         /**
-         * set breakdownOptions for a site
+         * set breakdownOptions for a supply
          * @private
          */
         function _setBreakdownOptionsForSite() {

@@ -1374,6 +1374,7 @@
                             field: null,
                             isOverride: true,
                             targetField: null,
+                            autoNormalizeText: false,
                             type: null
                         });
                     }

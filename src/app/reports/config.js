@@ -23,7 +23,7 @@
                                 },
                                 {
                                     key : 'adOpportunities',
-                                    label: 'Ad Ops',
+                                    label: 'Impression Ops', // old: Ad Ops
                                     show: true
                                 },
                                 {

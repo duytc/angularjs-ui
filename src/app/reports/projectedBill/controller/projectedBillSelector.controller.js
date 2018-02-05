@@ -47,7 +47,7 @@
         var reportTypeOptions = [
             {
                 key: REPORT_TYPES.site,
-                label: 'Site',
+                label: 'Supply',
                 toState: 'reports.projectedBill.site'
             }
         ];
