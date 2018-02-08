@@ -60,10 +60,11 @@
                     <!--<label>{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}</label>-->
                     <!--<span class="pull-right">{{ reportGroup.verifiedImpressions | number }}</span>-->
                     <!--</li>-->
-                    <li ng-if="exist(reportGroup.unverifiedImpressions)">
-                        <label>{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}</label>
-                        <span class="pull-right">{{ reportGroup.unverifiedImpressions | number }}</span>
-                    </li>
+                    <!--Remove unverified impressions-->
+                    <!--<li ng-if="exist(reportGroup.unverifiedImpressions)">-->
+                        <!--<label>{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}</label>-->
+                        <!--<span class="pull-right">{{ reportGroup.unverifiedImpressions | number }}</span>-->
+                    <!--</li>-->
                     <!--<li ng-if="isAdmin && exist(reportGroup.blankImpressions)">-->
                         <!--<label>{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}</label>-->
                         <!--<span class="pull-right">{{ reportGroup.blankImpressions | number }}</span>-->
@@ -158,10 +159,11 @@
                     <!--<label>{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}</label>-->
                     <!--<span class="pull-right">{{ reportGroup.averageVerifiedImpressions | number }}</span>-->
                     <!--</li>-->
-                    <li ng-if="exist(reportGroup.averageUnverifiedImpressions)">
-                        <label>{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}</label>
-                        <span class="pull-right">{{ reportGroup.averageUnverifiedImpressions | number }}</span>
-                    </li>
+                    <!--Remove unverified impressions-->
+                    <!--<li ng-if="exist(reportGroup.averageUnverifiedImpressions)">-->
+                        <!--<label>{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}</label>-->
+                        <!--<span class="pull-right">{{ reportGroup.averageUnverifiedImpressions | number }}</span>-->
+                    <!--</li>-->
                     <!--<li ng-if="isAdmin && exist(reportGroup.averageBlankImpressions)">-->
                         <!--<label>{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}</label>-->
                         <!--<span class="pull-right">{{ reportGroup.averageBlankImpressions | number }}</span>-->

@@ -59,12 +59,13 @@
                                 //    show: true,
                                 //    hideForNativeAdSlot: true
                                 //},
-                                {
-                                    key: 'unverifiedImpressions',
-                                    label: 'Unverified Impressions',
-                                    show: false,
-                                    hideForNativeAdSlot: true
-                                },
+                                // Remove unverified impressions
+                                // {
+                                //     key: 'unverifiedImpressions',
+                                //     label: 'Unverified Impressions',
+                                //     show: false,
+                                //     hideForNativeAdSlot: true
+                                // },
                                 // {
                                 //     key: 'blankImpressions',
                                 //     label: 'Blank Impressions',

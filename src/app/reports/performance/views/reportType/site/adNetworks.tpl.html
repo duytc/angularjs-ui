@@ -66,9 +66,10 @@
                     <td at-title="{{ 'REPORT.PASSBACKS' | translate }}" at-attribute="passbacks" at-sortable>
                         {{ item.passbacks | number }}
                     </td>
-                    <td at-title="{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}" at-attribute="unverifiedImpressions" at-sortable>
-                        {{ item.unverifiedImpressions | number }}
-                    </td>
+                    <!--Remove unverified impressions-->
+                    <!--<td at-title="{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}" at-attribute="unverifiedImpressions" at-sortable>-->
+                        <!--{{ item.unverifiedImpressions | number }}-->
+                    <!--</td>-->
                     <td ng-show="isAdmin" at-title="{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}" at-attribute="blankImpressions" at-sortable>
                         {{ item.blankImpressions | number }}
                     </td>
