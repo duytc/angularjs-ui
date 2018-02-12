@@ -59,12 +59,13 @@
                                 //    show: true,
                                 //    hideForNativeAdSlot: true
                                 //},
-                                {
-                                    key: 'unverifiedImpressions',
-                                    label: 'Unverified Impressions',
-                                    show: false,
-                                    hideForNativeAdSlot: true
-                                },
+                                // Remove unverified impressions
+                                // {
+                                //     key: 'unverifiedImpressions',
+                                //     label: 'Unverified Impressions',
+                                //     show: false,
+                                //     hideForNativeAdSlot: true
+                                // },
                                 // {
                                 //     key: 'blankImpressions',
                                 //     label: 'Blank Impressions',
@@ -94,7 +95,22 @@
                                     show: true,
                                     hideForNativeAdSlot: true,
                                     hideForAdmin: true
-                                }
+                                },
+                                {
+                                    key: 'estRevenue',
+                                    label: 'Est. Revenue',
+                                    show: true
+                                },
+                                // {
+                                //     key: 'supplyCost',
+                                //     label: 'Supply Cost',
+                                //     show: true
+                                // },
+                                // {
+                                //     key: 'estProfit',
+                                //     label: 'Est. Profit',
+                                //     show: true
+                                // }
                             ]
                         },
                         videoReport: {

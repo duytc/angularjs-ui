@@ -5,7 +5,7 @@
         .controller('AdTagForAdSlotLibraryForm', AdTagForAdSlotLibraryForm)
     ;
 
-    function AdTagForAdSlotLibraryForm($scope, $modal, _, Auth, $stateParams, $translate, $state, whiteList, blackList, queryBuilderService, AdSlotAdTagLibrariesManager, AlertService, AdNetworkCache, ServerErrorProcessor, AdNetworkManager, adminUserManager, publisherList, adTag, adSlot, adSlotList, AD_TYPES, TYPE_AD_SLOT, NativeAdSlotLibrariesManager, DisplayAdSlotLibrariesManager, AdTagLibrariesManager, VARIABLE_FOR_AD_TAG, USER_MODULES) {
+    function AdTagForAdSlotLibraryForm($scope, $modal, _, Auth, $stateParams, $translate, $state, whiteList, blackList, queryBuilderService, AdSlotAdTagLibrariesManager, AlertService, AdNetworkCache, ServerErrorProcessor, AdNetworkManager, adminUserManager, publisherList, adTag, adSlot, NumberConvertUtil, adSlotList, AD_TYPES, TYPE_AD_SLOT, NativeAdSlotLibrariesManager, DisplayAdSlotLibrariesManager, AdTagLibrariesManager, VARIABLE_FOR_AD_TAG, USER_MODULES) {
         $scope.fieldNameTranslations = {
             adSlot: 'Ad Slot',
             name: 'Name',
@@ -70,7 +70,8 @@
                     playerWidth: null,
                     playerHeight: null,
                     vastTags: [{tag: null}]
-                }
+                },
+                sellPrice: null
             },
             position: null,
             impressionCap: null,
@@ -157,6 +158,10 @@
         $scope.addMoreAdTagLibraryItems = addMoreAdTagLibraryItems;
         $scope.searchAdTagLibraryItem = searchAdTagLibraryItem;
         $scope.clickVIewHelpText = clickVIewHelpText;
+
+        if($scope.adTag.libraryAdTag.sellPrice != null) {
+            $scope.adTag.libraryAdTag.sellPrice =  NumberConvertUtil.convertPriceToString($scope.adTag.libraryAdTag.sellPrice);
+        }
 
         function clickVIewHelpText() {
             $modal.open({

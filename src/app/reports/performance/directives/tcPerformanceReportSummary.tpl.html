@@ -60,10 +60,11 @@
                     <!--<label>{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}</label>-->
                     <!--<span class="pull-right">{{ reportGroup.verifiedImpressions | number }}</span>-->
                     <!--</li>-->
-                    <li ng-if="exist(reportGroup.unverifiedImpressions)">
-                        <label>{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}</label>
-                        <span class="pull-right">{{ reportGroup.unverifiedImpressions | number }}</span>
-                    </li>
+                    <!--Remove unverified impressions-->
+                    <!--<li ng-if="exist(reportGroup.unverifiedImpressions)">-->
+                        <!--<label>{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}</label>-->
+                        <!--<span class="pull-right">{{ reportGroup.unverifiedImpressions | number }}</span>-->
+                    <!--</li>-->
                     <!--<li ng-if="isAdmin && exist(reportGroup.blankImpressions)">-->
                         <!--<label>{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}</label>-->
                         <!--<span class="pull-right">{{ reportGroup.blankImpressions | number }}</span>-->
@@ -79,6 +80,19 @@
                     <li>
                         <label>{{ 'REPORT.FILL_RATE' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.fillRate | percentage }}</span>
+                    </li>
+
+                    <li>
+                        <label>{{ 'REPORT.EST_REVENUE' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.estRevenue | currency }}</span>
+                    </li>
+                    <li ng-if="exist(reportGroup.supplyCost)">
+                        <label>{{ 'REPORT.SUPPLY_COST' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.supplyCost | currency }}</span>
+                    </li>
+                    <li  ng-if="exist(reportGroup.estProfit)">
+                        <label>{{ 'REPORT.EST_PROFIT' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.estProfit | currency }}</span>
                     </li>
                 </ul>
             </div>
@@ -145,10 +159,11 @@
                     <!--<label>{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}</label>-->
                     <!--<span class="pull-right">{{ reportGroup.averageVerifiedImpressions | number }}</span>-->
                     <!--</li>-->
-                    <li ng-if="exist(reportGroup.averageUnverifiedImpressions)">
-                        <label>{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}</label>
-                        <span class="pull-right">{{ reportGroup.averageUnverifiedImpressions | number }}</span>
-                    </li>
+                    <!--Remove unverified impressions-->
+                    <!--<li ng-if="exist(reportGroup.averageUnverifiedImpressions)">-->
+                        <!--<label>{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}</label>-->
+                        <!--<span class="pull-right">{{ reportGroup.averageUnverifiedImpressions | number }}</span>-->
+                    <!--</li>-->
                     <!--<li ng-if="isAdmin && exist(reportGroup.averageBlankImpressions)">-->
                         <!--<label>{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}</label>-->
                         <!--<span class="pull-right">{{ reportGroup.averageBlankImpressions | number }}</span>-->
@@ -164,6 +179,19 @@
                     <li>
                         <label>{{ 'REPORT.FILL_RATE' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageFillRate | percentage }}</span>
+                    </li>
+
+                    <li>
+                        <label>{{ 'REPORT.EST_REVENUE' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.averageEstRevenue | currency }}</span>
+                    </li>
+                    <li ng-if="exist(reportGroup.averageSupplyCost)">
+                        <label>{{ 'REPORT.SUPPLY_COST' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.averageSupplyCost | currency }}</span>
+                    </li>
+                    <li ng-if="exist(reportGroup.averageEstProfit)">
+                        <label>{{ 'REPORT.EST_PROFIT' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.averageEstProfit | currency }}</span>
                     </li>
                 </ul>
             </div>

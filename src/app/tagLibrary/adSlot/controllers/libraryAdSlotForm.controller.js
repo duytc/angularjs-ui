@@ -5,7 +5,7 @@
         .controller('LibraryAdSlotForm', LibraryAdSlotForm)
     ;
 
-    function LibraryAdSlotForm($scope, $translate, whiteList, blackList, $stateParams, $filter, _, adSlot, publisherList, adSlotType, VARIABLE_FOR_AD_TAG, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, historyStorage, HISTORY_TYPE_PATH) {
+    function LibraryAdSlotForm($scope, $translate, whiteList, blackList, $stateParams, $filter, _, adSlot, NumberConvertUtil, publisherList, adSlotType, VARIABLE_FOR_AD_TAG, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, historyStorage, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
@@ -50,12 +50,15 @@
 
         $scope.adSlot = adSlot || {
             libraryExpressions: [],
-            passbackMode: $scope.passbackOption[0].key
+            passbackMode: $scope.passbackOption[0].key,
+            buyPrice: null
         };
 
         $scope.selected = {
             type:  adSlotType || $scope.typesList.display
         };
+
+        $scope.adSlot.buyPrice = $scope.isNew ? null : NumberConvertUtil.convertPriceToString($scope.adSlot.buyPrice);
 
         $scope.blacklists = blackList;
         $scope.whitelists = whiteList;
@@ -377,6 +380,7 @@
                 delete adSlot.width;
                 delete adSlot.autoFit;
                 delete adSlot.passbackMode;
+                delete adSlot.buyPrice;
 
                 angular.forEach(adSlot.libraryExpressions, function(libraryExpression) {
                     delete libraryExpression.openStatus;

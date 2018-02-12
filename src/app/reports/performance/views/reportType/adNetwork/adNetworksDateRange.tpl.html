@@ -69,9 +69,10 @@
                     <!--<td at-title="{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}" at-attribute="verifiedImpressions" at-sortable>-->
                     <!--{{ item.verifiedImpressions | number }}-->
                     <!--</td>-->
-                    <td at-title="{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}" at-attribute="unverifiedImpressions" at-sortable>
-                        {{ item.unverifiedImpressions | number }}
-                    </td>
+                    <!--Remove unverified impressions-->
+                    <!--<td at-title="{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}" at-attribute="unverifiedImpressions" at-sortable>-->
+                        <!--{{ item.unverifiedImpressions | number }}-->
+                    <!--</td>-->
                     <td ng-show="isAdmin" at-title="{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}" at-attribute="blankImpressions" at-sortable>
                         {{ item.blankImpressions | number }}
                     </td>
@@ -84,7 +85,15 @@
                     <td ng-show="isAdmin" at-title="{{ 'REPORT.VOID_IMPRESSIONS' | translate }}" at-attribute="voidImpressions" at-sortable>
                         {{ item.voidImpressions | number }}
                     </td>
-
+                    <td at-title="{{ 'REPORT.EST_REVENUE' | translate }}" at-attribute="estRevenue" at-sortable>
+                        {{ item.estRevenue | currency }}
+                    </td>
+                    <!--<td at-title="{{ 'REPORT.SUPPLY_COST' | translate }}" at-attribute="supplyCost" at-sortable>-->
+                        <!--{{ item.supplyCost | currency }}-->
+                    <!--</td>-->
+                    <!--<td at-title="{{ 'REPORT.EST_PROFIT' | translate }}" at-attribute="estProfit" at-sortable>-->
+                        <!--{{ item.estProfit | currency }}-->
+                    <!--</td>-->
                     <!--<td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>-->
                         <!--{{ item.estRevenue | currency }}-->
                     <!--</td>-->

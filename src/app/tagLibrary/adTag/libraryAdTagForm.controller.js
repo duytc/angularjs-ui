@@ -5,7 +5,7 @@
         .controller('LibraryAdTagForm', LibraryAdTagForm)
     ;
 
-    function LibraryAdTagForm($scope, Auth, $modal, $translate, whiteList, blackList, AlertService, AdNetworkManager, adminUserManager, ServerErrorProcessor, AdNetworkCache, adTag, publisherList, AdTagLibrariesManager, historyStorage, queryBuilderService, AD_TYPES, USER_MODULES, VARIABLE_FOR_AD_TAG, HISTORY_TYPE_PATH) {
+    function LibraryAdTagForm($scope, Auth, $modal, $translate, whiteList, blackList, AlertService, AdNetworkManager, adminUserManager, ServerErrorProcessor, AdNetworkCache, adTag, NumberConvertUtil, publisherList, AdTagLibrariesManager, historyStorage, queryBuilderService, AD_TYPES, USER_MODULES, VARIABLE_FOR_AD_TAG, HISTORY_TYPE_PATH) {
         $scope.fieldNameTranslations = {
             adNetwork: 'adNetwork',
             html: 'html'
@@ -37,7 +37,8 @@
                 playerWidth: null,
                 playerHeight: null,
                 vastTags: [{tag: null}]
-            }
+            },
+            sellPrice: null
         };
 
         $scope.domainList = {
@@ -48,6 +49,7 @@
         $scope.selected = {
             publisher: !$scope.isNew ? adTag.adNetwork.publisher : null
         };
+        $scope.adTag.sellPrice = NumberConvertUtil.convertPriceToString($scope.adTag.sellPrice);
 
         if(!!$scope.adTag.descriptor) {
             if(!$scope.adTag.descriptor.imageUrl) {

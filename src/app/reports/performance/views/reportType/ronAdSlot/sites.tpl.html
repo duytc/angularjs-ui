@@ -4,7 +4,7 @@
     <div class="panel panel-default daily-reports">
         <div class="panel-heading">{{ 'REPORT.SITE_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" fields="['date', 'reportType.site.domain', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['Date', 'Supply', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate' ]" file-name="getExportExcelFileName"></export-excel>
+                <export-excel data="reports" fields="['date', 'reportType.site.domain', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate',  'estRevenue', 'supplyCost', 'estProfit']" header="['Date', 'Site', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate', 'Est. Revenue', 'Supply Cost']" file-name="getExportExcelFileName"></export-excel>
             </div>
 
             <div class="btn-group btnGrouped" dropdown>
@@ -12,7 +12,7 @@
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li ng-click="backToAdTagList()"><a>{{ 'PERFORMANCE_REPORT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
                     <li><a>
-                        <export-excel css-class="''" data="reports" fields="['date', 'reportType.site.domain', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate']" header="['date', 'Supply', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel css-class="''" data="reports" fields="['date', 'reportType.site.domain', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate',  'estRevenue', 'supplyCost', 'estProfit']" header="['date', 'Site', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate', 'Est. Revenue', 'Supply Cost']" file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
             </div>
@@ -26,7 +26,8 @@
                     <th at-attribute="firstOpportunities" ng-show="isNotNativeAdSlot">{{ 'REPORT.FIRST_OPPORTUNITIES' | translate }}</th>
                     <th at-attribute="impressions">Impressions</th>
                     <!--<th at-attribute="verifiedImpressions" ng-show="isNotNativeAdSlot">{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}</th>-->
-                    <th at-attribute="unverifiedImpressions" ng-show="isNotNativeAdSlot">{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}</th>
+                    <!--Remove unverified impressions-->
+                    <!--<th at-attribute="unverifiedImpressions" ng-show="isNotNativeAdSlot">{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}</th>-->
                     <th at-attribute="clicks" ng-show="isNotNativeAdSlot">{{ 'REPORT.CLICKS' | translate }}</th>
                     <th at-attribute="passbacks" ng-show="isNotNativeAdSlot">{{ 'REPORT.PASSBACKS' | translate }}</th>
                     <th at-attribute="fillRate">{{ 'REPORT.FILL_RATE' | translate }}</th>
@@ -64,6 +65,15 @@
                     <!--</td>-->
                     <td at-title="{{ 'REPORT.FILL_RATE' | translate }}" at-attribute="fillRate" at-sortable>
                         {{ item.fillRate | percentage }}
+                    </td>
+                    <td at-title="{{ 'REPORT.EST_REVENUE' | translate }}" at-attribute="estRevenue" at-sortable>
+                        {{ item.estRevenue | currency }}
+                    </td>
+                    <td at-title="{{ 'REPORT.SUPPLY_COST' | translate }}" at-attribute="supplyCost" at-sortable>
+                        {{ item.supplyCost | currency }}
+                    </td>
+                    <td at-title="{{ 'REPORT.EST_PROFIT' | translate }}" at-attribute="estProfit" at-sortable>
+                        {{ item.estProfit | currency }}
                     </td>
                 </tr>
                 </tbody>
