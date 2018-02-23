@@ -697,11 +697,11 @@
         function isShowPlacementRule() {
             if($scope.selected.deployment == $scope.deploymentOptionsJson.supply){
                 var emptySite =  $scope.selected.sites == null || $scope.selected.sites.length == 0;
-                return !showForDynamicAdSlot() && emptySite;
+                return emptySite;
             }
             if($scope.selected.deployment == $scope.deploymentOptionsJson.supply_group){
                 var emptySiteGroup = $scope.selected.channels == null || $scope.selected.channels.length == 0;
-                return !showForDynamicAdSlot() && emptySiteGroup;
+                return emptySiteGroup;
             }
         }
 
