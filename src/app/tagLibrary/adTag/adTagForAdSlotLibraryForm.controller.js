@@ -20,6 +20,11 @@
             mode : "htmlmixed"
         };
 
+        if (_.isObject(adTag)) {
+            var adTagActive = angular.copy(adTag.active);
+            adTag.active = adTag.active == 1;
+        }
+
         $scope.sortableOptions = {
             disabled: true,
             forcePlaceholderSize: true,
@@ -502,6 +507,10 @@
 
             if(adTag.libraryAdTag.expressionDescriptor.groupVal.length == 0) {
                 adTag.libraryAdTag.expressionDescriptor = null;
+            }
+
+            if ((adTagActive == -1 || adTagActive == 0) && !adTag.active) {
+                adTag.active = adTagActive
             }
 
             var saveAdTag = $scope.isNew ? Manager.one($scope.selected.adSlot.id).post('adtag', adTag) : AdSlotAdTagLibrariesManager.one(adTag.id).patch(adTag);

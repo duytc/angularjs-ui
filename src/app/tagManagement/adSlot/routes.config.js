@@ -115,6 +115,12 @@
                     adSlot: function() {
                         return null;
                     },
+                    adNetworks: /* @ngInject */ function (AdNetworkManager) {
+                        return AdNetworkManager.getList()
+                            .then(function (adNetworks) {
+                                return adNetworks.plain()
+                            })
+                    },
                     blackList: /* @ngInject */ function(DisplayBlackListManager) {
                         return DisplayBlackListManager.getList().then(function (blockList) {
                             return blockList.plain();
@@ -163,6 +169,24 @@
                         return DisplayWhiteListManager.getList().then(function (whiteList) {
                             return whiteList.plain();
                         });
+                    }
+                },
+                customResolve: {
+                    admin: {
+                        adNetworks: function (adminUserManager, adSlot) {
+                            return adminUserManager.one(adSlot.site.publisher.id).one('adnetworks').getList()
+                                .then(function (adNetworks) {
+                                    return adNetworks.plain()
+                                })
+                        }
+                    },
+                    publisher: {
+                        adNetworks: /* @ngInject */ function (AdNetworkManager) {
+                            return AdNetworkManager.getList()
+                                .then(function (adNetworks) {
+                                    return adNetworks.plain()
+                                })
+                        }
                     }
                 },
                 ncyBreadcrumb: {

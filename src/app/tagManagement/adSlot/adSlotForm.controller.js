@@ -5,15 +5,18 @@
         .controller('AdSlotForm', AdSlotForm)
     ;
 
-    function AdSlotForm($scope, $translate, blackList, whiteList, $stateParams, $filter, _, adSlot, NumberConvertUtil, publisherList, SiteManager, ChannelManager, DynamicAdSlotManager, adminUserManager, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, userSession, historyStorage, HISTORY_TYPE_PATH, VARIABLE_FOR_AD_TAG) {
+    function AdSlotForm($scope, $translate, blackList, whiteList, $stateParams, $filter, _, adSlot, adNetworks, AdTagLibrariesManager, NumberConvertUtil, publisherList, SiteManager, ChannelManager, DynamicAdSlotManager, adminUserManager, AdNetworkManager, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, userSession, historyStorage, HISTORY_TYPE_PATH, VARIABLE_FOR_AD_TAG) {
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
-        AdSlotForm.$inject
+
         //var adSlotRefactor = null; // this adSlotRefactor use to copy ad slot have been refactor
         var channelsCopy = [];
         $scope.isNew = adSlot === null;
         $scope.publisherList = publisherList;
+
+        $scope.adNetworkList = adNetworks;
+        $scope.adTagList = [];
 
         $scope.formProcessing = false;
         $scope.typesList = TYPE_AD_SLOT;
@@ -76,12 +79,23 @@
             buyPrice: null,
             autoRefresh: false,
             refreshEvery: null,
-            maximumRefreshTimes: null
+            maximumRefreshTimes: null,
+            adTagPlacementRules: []
         };
 
         $scope.adSlot.hbBidPrice = $scope.isNew ? null : adSlot.hbBidPrice;
         $scope.adSlot.hbBidPriceClone = $scope.isNew ? null : _convertHeaderBiddingPriceToString(adSlot.hbBidPrice);
+
         $scope.adSlot.buyPrice = $scope.isNew ? null : NumberConvertUtil.convertPriceToString(adSlot.libraryAdSlot.buyPrice);
+        $scope.adSlot.adTagPlacementRules = !$scope.adSlot.adTagPlacementRules ? [] : $scope.adSlot.adTagPlacementRules;
+
+        $scope.profiltValueLabel = 'Profit Value';
+
+        $scope.ruleTypes = [
+            {key: 1, value: "Fixed Profit"},
+            {key: 2, value: "Profit Margin"},
+            {key: 3, value: "Manual"}
+        ];
 
         $scope.adSlot.autoRefresh = $scope.isNew ? null : adSlot.autoRefresh;
         $scope.adSlot.refreshEvery = $scope.isNew ? null : adSlot.refreshEvery;
@@ -147,6 +161,8 @@
         $scope.adSlotsDefault = [{id: null, name: 'None', libraryAdSlot: {name: 'None'}}];
         _update();
 
+        _updateRule();
+
         $scope.submit = submit;
         $scope.isFormValid = isFormValid;
         $scope.showForDisplayAdSlot = showForDisplayAdSlot;
@@ -169,6 +185,14 @@
         $scope.selectAdSlotLibrary = selectAdSlotLibrary;
         $scope.filterAdSlotForSite = filterAdSlotForSite;
         $scope.changeHeaderBidPrice = changeHeaderBidPrice;
+
+        $scope.addNewPlacementRule = addNewPlacementRule;
+        $scope.initProfitValueLabel = initProfitValueLabel;
+        $scope.changeProfitValueLabel = changeProfitValueLabel;
+        $scope.changeRequireSellPrice = changeRequireSellPrice;
+        $scope.returnBuyPrice = returnBuyPrice;
+        $scope.updateMinimumRequireSellPrice = updateMinimumRequireSellPrice;
+        $scope.removePlacementRule = removePlacementRule;
 
         function selectDeployment(deployment) {
             if (deployment == 'channels') {
@@ -283,6 +307,12 @@
             $scope.adSlot.libraryExpressions = [];
 
             searchLibraryAdSlotItem(null, publisherId);
+
+            AdNetworkManager.getList().then(function (adNetworks) {
+                $scope.adNetworkList = $filter('selectedPublisher')(adNetworks, $scope.adSlot.publisher);
+
+                _updateRule();
+            });
         }
 
         function isNormalAdSlotNotUseStandalone() {
@@ -317,7 +347,9 @@
                 $scope.adSlot = {
                     libraryExpressions: [],
                     passbackMode: $scope.passbackOption[0].key,
-                    publisher: $scope.adSlot.publisher
+                    publisher: $scope.adSlot.publisher,
+                    buyPrice: null,
+                    adTagPlacementRules: []
                 };
             }
         }
@@ -546,6 +578,112 @@
             adSlot.hbBidPrice = adSlot.hbBidPriceClone
         }
 
+        function returnBuyPrice(buyPrice) {
+            if (buyPrice.indexOf('.') > -1) {
+                return '$' + buyPrice;
+            } else {
+                var num = Number(buyPrice);
+                return $filter('currency')(num)
+            }
+        }
+
+        function updateMinimumRequireSellPrice() {
+            if($scope.adSlot.adTagPlacementRules.length > 0) {
+                angular.forEach($scope.adSlot.adTagPlacementRules, function(adTagPlacementRule) {
+                    if(!$scope.adSlot.buyPrice) {
+                        adTagPlacementRule.profitType = 3
+                    }
+
+                    changeRequireSellPrice(adTagPlacementRule);
+                });
+            }
+        }
+
+        function changeRequireSellPrice(rule, buyPrice) {
+            rule.requiredSellPrice = null;
+            buyPrice = buyPrice || (!!$scope.adSlot ? $scope.adSlot.buyPrice : null);
+
+            switch (rule.profitType) {
+                case 1:
+                    // realProfitValue = sellPrice (from ad tag) - buyPrice (from ad slot)
+                    // expect: profitValue <= realProfitValue
+                    // => profitValue <= sellPrice (from ad tag) - buyPrice (from ad slot)
+                    // => sellPrice (from ad tag) >= buyPrice (from ad slot) + profitValue
+                    var requireSellPriceByFixProfit = rule.profitValue
+                        ? parseFloat(buyPrice) + parseFloat(rule.profitValue)
+                        : parseFloat(buyPrice);
+                    rule.requiredSellPrice = requireSellPriceByFixProfit > 0 ? requireSellPriceByFixProfit : 0;
+
+                    break;
+                case 2:
+                    // realProfitMargin = [1 - (buyPrice (from ad slot) / sellPrice (from ad tag))] * 100 (%)
+                    // expect: profitValue <= realProfitMargin
+                    // => profitValue <= [1 - (buyPrice (from ad slot) / sellPrice (from ad tag))] * 100 (%)
+                    // => sellPrice (from ad tag) >= buyPrice (from ad slot) / [1 - profitValue / 100]
+                    var requireSellPriceByMarginProfit = rule.profitValue
+                        ? parseFloat(buyPrice) / (1 - parseFloat(rule.profitValue) / 100)
+                        : parseFloat(buyPrice);
+                    rule.requiredSellPrice = requireSellPriceByMarginProfit > 0 ? requireSellPriceByMarginProfit : 0;
+
+                    break;
+                default:
+                    rule.requiredSellPrice = parseFloat(buyPrice);
+                    break;
+            }
+        }
+
+        function initProfitValueLabel(rule) {
+            switch (rule.profitType) {
+                case 1:
+                    $scope.profiltValueLabel = 'Profit Value ($)';
+                    break;
+                case 2:
+                    $scope.profiltValueLabel = 'Profit Value (%)';
+                    break;
+                default:
+                    $scope.profiltValueLabel = 'Profit Value';
+                    break;
+            }
+
+            changeRequireSellPrice(rule);
+        }
+
+        function changeProfitValueLabel($item, rule) {
+            switch ($item.key) {
+                case 1:
+                    $scope.profiltValueLabel = 'Profit Value ($)';
+                    break;
+                case 2:
+                    $scope.profiltValueLabel = 'Profit Value (%)';
+                    break;
+                default:
+                    $scope.profiltValueLabel = 'Profit Value';
+                    break;
+            }
+
+            rule.profitValue = null;
+            changeRequireSellPrice(rule);
+        }
+
+        function addNewPlacementRule() {
+            $scope.adSlot.adTagPlacementRules.push({
+                adNetworkList: angular.copy($scope.adNetworkList),
+                adTagList: angular.copy($scope.adTagList),
+                adNetworks: [],
+                adTags: [],
+                profitType: 3,
+                profitValue: null,
+                position: null,
+                priority: null,
+                rotationWeight: null,
+                active: true
+            });
+        }
+
+        function removePlacementRule(index) {
+            $scope.adSlot.adTagPlacementRules.splice(index, 1);
+        }
+
         function backToAdSlotList() {
             if ((isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) && !$scope.pickFromLibrary) {
                 return historyStorage.getLocationPath(HISTORY_TYPE_PATH.adSlotLibrary, '^.^.^.tagLibrary.adSlot.list');
@@ -575,7 +713,9 @@
             $scope.adSlot = {
                 libraryExpressions: [],
                 passbackMode: $scope.passbackOption[0].key,
-                publisher: $scope.adSlot.publisher
+                publisher: $scope.adSlot.publisher,
+                buyPrice: null,
+                adTagPlacementRules: []
             };
 
             updateDueToDeploymentChanged();
@@ -864,10 +1004,10 @@
          */
         function _refactorAdSlot(adSlot) {
             if ($scope.pickFromLibrary && ($scope.selected.sites.length > 1 || $scope.selected.channels.length > 0)) {
-                return _refactorCreateAdSlot();
+                return _refactorCreateAdSlot(); // TODO: rename function, not mean refactor create ad slot...
             }
 
-            else if (isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) {
+            if (isStandaloneAdSlot() || isNormalAdSlotUseStandalone()) {
                 return _refactorLibraryAdSlot(adSlot);
             }
 
@@ -886,6 +1026,8 @@
                 adSlot.channels.push(channel.id)
             });
 
+            adSlot.adTagPlacementRules = _refactorAdTagPlacementRules(adSlot.adTagPlacementRules);
+
             if ($scope.selected.type == $scope.typesList.native) {
                 delete adSlot.height;
                 delete adSlot.width;
@@ -901,6 +1043,7 @@
                 delete adSlot.autoFit;
                 delete adSlot.passbackMode;
                 delete adSlot.buyPrice;
+                delete adSlot.adTagPlacementRules;
 
                 _refactorExpressions(adSlot.libraryExpressions);
             }
@@ -964,6 +1107,8 @@
                 autoRefresh: adSlot.autoRefresh
             };
 
+            adSlot.libraryAdSlot.adTagPlacementRules = _refactorAdTagPlacementRules(adSlot.libraryAdSlot.adTagPlacementRules);
+
             adSlot.site = $scope.isNew ? $scope.selected.sites[0].id : $scope.selected.site.id;
             if ($scope.selected.type == $scope.typesList.native) {
                 delete adSlot.libraryAdSlot.height;
@@ -980,6 +1125,7 @@
                 delete adSlot.libraryAdSlot.autoFit;
                 delete adSlot.libraryAdSlot.passbackMode;
                 delete adSlot.libraryAdSlot.buyPrice;
+                delete adSlot.libraryAdSlot.adTagPlacementRules;
                 delete adSlot.hbBidPrice;
                 delete adSlot.autoRefresh;
                 delete adSlot.maximumRefreshTimes;
@@ -1111,7 +1257,9 @@
                 $scope.adSlot = {
                     libraryExpressions: [],
                     passbackMode: $scope.passbackOption[0].key,
-                    publisher: $scope.adSlot.publisher
+                    publisher: $scope.adSlot.publisher,
+                    buyPrice: null,
+                    adTagPlacementRules: []
                 };
 
                 $scope.adSlotContext = AD_SLOT_CONTEXTS.normal.notUseStandalone;
@@ -1184,6 +1332,106 @@
                 if (angular.isObject(group.groupVal)) {
                     _convertGroupVal(group.groupVal);
                 }
+            });
+        }
+
+        function _setRule() {
+            angular.forEach($scope.adSlot.adTagPlacementRules, function (rule) {
+                angular.forEach(rule.adNetworkList, function (adNetwork) {
+                    adNetwork['ticked'] = rule.adNetworks.indexOf(adNetwork.id) > -1
+                });
+
+                angular.forEach(rule.adTagList, function (adTag) {
+                    adTag['ticked'] = rule.adTags.indexOf(adTag.id) > -1
+                });
+            });
+        }
+
+        function _updateRule() {
+            if (!$scope.isNew) {
+                if ($scope.isAdmin()) {
+                    if (adNetworks.length > 0) {
+                        $scope.adNetworkList = $filter('selectedPublisher')(angular.copy(adNetworks), $scope.adSlot.publisher);
+                    }
+                }
+            }
+
+            angular.forEach($scope.adSlot.adTagPlacementRules, function (rule) {
+                rule.adNetworkList = angular.copy($scope.adNetworkList);
+                rule.adTagList = angular.copy($scope.adTagList);
+            });
+
+            _setRule()
+        }
+
+        function _refactorAdTagPlacementRules(adTagPlacementRules) {
+            adTagPlacementRules = angular.copy(adTagPlacementRules);
+
+            angular.forEach(adTagPlacementRules, function (rule) {
+                delete rule.adNetworkList;
+                delete rule.adTagList;
+
+                var adNetworks = [];
+
+                angular.forEach(rule.adNetworks, function (adNetwork) {
+                    adNetworks.push(adNetwork.id)
+                });
+
+                rule.adNetworks = adNetworks;
+
+                var adTags = [];
+
+                angular.forEach(rule.adTags, function (adTag) {
+                    adTags.push(adTag.id)
+                });
+
+                rule.adTags = adTags;
+            });
+
+            return adTagPlacementRules;
+        }
+
+        $scope.$watch(function () {
+            return $scope.adSlot.adTagPlacementRules
+        }, function (oldAdTagPlacementRules, newAdTagPlacementRules) {
+            var changedIds = [];
+
+            angular.forEach(oldAdTagPlacementRules, function (oldRule, id) {
+                var newRule = newAdTagPlacementRules[id];
+                if (!newRule) {
+                    return;
+                }
+
+                if (!oldRule.adNetworks || !newRule.adNetworks || oldRule.adNetworks.length != newRule.adNetworks.length) {
+                    changedIds.push(id);
+                }
+            });
+
+            if (changedIds.length > 0) {
+                return _updateRuleWhenSelectedAdNetworksChange(changedIds)
+            }
+        }, true);
+
+        function _updateRuleWhenSelectedAdNetworksChange(changedIds) {
+            angular.forEach($scope.adSlot.adTagPlacementRules, function (rule, id) {
+                if (changedIds.indexOf(id) < 0) {
+                    return;
+                }
+
+                // build adTagList due to selected ad networks
+                var adNetworkIds = [];
+                angular.forEach(angular.copy(rule.adNetworks), function (adNetwork) {
+                    adNetworkIds.push(adNetwork.id);
+                });
+
+                return AdTagLibrariesManager.getList({adNetworkIds: adNetworkIds.join(',')})
+                    .then(function (adTags) {
+                        angular.forEach(adTags, function (adTag) {
+                            adTag.publisher = adTag.adNetwork.publisher
+                        });
+
+                        rule.adTagList = adTags.plain()
+                    })
             });
         }
     }

@@ -860,7 +860,13 @@
                 "CREATE_LINKED_AD_SLOTS": "Link this Ad Slot",
                 "VIEW_LINKED_AD_SLOTS": "View linked Ad Slots",
                 "LINKED_AD_SLOTS": "Linked Ad Slots",
-                "WARNING_EDIT_LIBRARY": "This ad slot is linked to multiple supply. Modifying this ad slot will result in the changes being propagated to all supply that run this ad slot."
+                "WARNING_EDIT_LIBRARY": "This ad slot is linked to multiple supply. Modifying this ad slot will result in the changes being propagated to all supply that run this ad slot.",
+
+                "PLACEMENT_RULES": "Ad Tag Placement Rules",
+                "ADD_PLACEMENT_RULES": "Add Ad Tag Placement Rules",
+                "REQUIRED_SELL_PRICE": "Minimum Sell Price",
+                "RULE_TYPE": "Ad Tag Selection",
+                "DEMAND_PARTNER_PLACEMENT_RULE_TYPE_HELP_BLOCK": "Ad Tag selection will be able if buy price is set"
             },
             "AD_TAG_LIBRARY_MODULE": {
                 "REMOVE_SUCCESS": "The ad tag was removed successfully",

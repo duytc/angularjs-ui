@@ -58,7 +58,7 @@
                 <div class="form-group" ng-if="isAdmin() && isNew">
                     <label for="inputPublisher" class="col-sm-1 control-label">{{ 'PUBLISHER' | translate }}</label>
                     <div class="col-sm-5">
-                        <ui-select ng-required="true" id="inputPublisher" ng-model="adSlot.publisher" on-select="selectPublisher()" reset-search-input="'false'">
+                        <ui-select ng-required="true" id="inputPublisher" ng-model="adSlot.publisher" on-select="selectPublisher($item)" reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
                             <ui-select-choices repeat="publisher.id as publisher in publisherList | filter: { company: $select.search }">
                                 {{ publisher.company }}
@@ -140,11 +140,208 @@
                 </div>
 
                 <div class="form-group" ng-if="!showForDynamicAdSlot()">
-                    <label class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.BUY_PRICE' | translate }}</label>
+                    <label class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.BUY_PRICE' | translate }}</label>
+
                     <div class="col-sm-5">
-                        <input name="buyPrice" ng-model="adSlot.buyPrice" min="0" ng-pattern="/^\-?\d+((\.|\,)\d+)?$/" type="text" class="form-control" placeholder="{{ 'AD_SLOT_MODULE.BUY_PRICE' | translate }}">
+                        <input name="buyPrice"
+                               ng-model="adSlot.buyPrice"
+                               ng-change="updateMinimumRequireSellPrice()"
+                               min="0"
+                               ng-pattern="/^[0-9]*[.]?[0-9]*$/"
+                               type="text"
+                               class="form-control"
+                               placeholder="{{ 'AD_SLOT_MODULE.BUY_PRICE' | translate }}">
                     </div>
                 </div>
+
+                <div class="form-group" style="margin-bottom: -20px" ng-if="!showForDynamicAdSlot()">
+                    <label for="placementRule" class="col-sm-1 control-label">{{ 'AD_SLOT_LIBRARY_MODULE.PLACEMENT_RULES' | translate }}</label>
+
+                    <div class="col-sm-5">
+                        <button id="placementRule" class="btn btn-success" type="button"
+                                ng-click="addNewPlacementRule()">
+                            <span class="glyphicon glyphicon-plus"></span> {{ 'AD_SLOT_LIBRARY_MODULE.ADD_PLACEMENT_RULES' | translate }}
+                        </button>
+
+                        <div class=" expressions-group" ng-if="adSlot.adTagPlacementRules.length >0">
+                            <div class="form-group"
+                                 ng-repeat="rule in adSlot.adTagPlacementRules track by $index">
+                                <!--<div class="">-->
+                                <div class="expressions-group">
+                                    <div class="form-group">
+                                        <label for="inputAdNetworks"
+                                               class="col-sm-3 control-label">{{ 'AD_NETWORKS' | translate }}</label>
+
+                                        <div class="col-sm-9">
+                                            <isteven-multi-select id="inputAdNetworks"
+                                                                  output-properties="id"
+                                                                  input-model="rule.adNetworkList"
+                                                                  output-model="rule.adNetworks"
+                                                                  search-property="id name"
+                                                                  button-label="name"
+                                                                  item-label="name"
+                                                                  tick-property="ticked">
+                                            </isteven-multi-select>
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="form-group">
+                                        <label class=" col-sm-3 control-label">{{ 'AD_SLOT_LIBRARY_MODULE.RULE_TYPE' | translate }}</label>
+
+                                        <div class="col-sm-9">
+                                            <ui-select name="ruleType" id="ruleType"
+                                                       ng-disabled="!adSlot.buyPrice"
+                                                       ng-model="rule.profitType"
+                                                       on-select="changeProfitValueLabel($item, rule)"
+                                                       ng-required="true" server-error
+                                                       reset-search-input="'false'">
+                                                <ui-select-match
+                                                        placeholder="{{ 'AD_SLOT_LIBRARY_MODULE.RULE_TYPE' | translate }}">
+                                                    {{ $select.selected.value }}
+                                                </ui-select-match>
+                                                <ui-select-choices
+                                                        repeat="ruleType.key as ruleType in ruleTypes">
+                                                    {{ ruleType.value }}
+                                                </ui-select-choices>
+                                            </ui-select>
+
+                                            <span class="help-block">{{ 'AD_SLOT_LIBRARY_MODULE.DEMAND_PARTNER_PLACEMENT_RULE_TYPE_HELP_BLOCK' | translate }}</span>
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="form-group" ng-if="rule.profitType ==3">
+                                        <label for="inputAdTags" class="col-sm-3 control-label">Ad Tags</label>
+
+                                        <div class="col-sm-9">
+                                            <isteven-multi-select id="inputAdTags"
+                                                                  output-properties="id"
+                                                                  input-model="rule.adTagList"
+                                                                  output-model="rule.adTags"
+                                                                  search-property="id name"
+                                                                  button-label="name"
+                                                                  item-label="name"
+                                                                  tick-property="ticked">
+                                            </isteven-multi-select>
+                                        </div>
+                                    </div>
+                                    <br ng-if="rule.profitType ==3">
+
+                                    <!--<div class="form-group" ng-if="rule.profitType != 3">-->
+                                    <!--<label class="col-sm-3 control-label">{{'VIDEO_AD_TAG_MODULE.BUY_PRICE'| translate}} </label>-->
+                                    <!--<div class="col-sm-9 form-control-static">-->
+                                    <!--{{ returnBuyPrice(adSlot.buyPrice) }}-->
+                                    <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<br ng-if="(rule.profitType != 3)">-->
+
+                                    <div class="form-group" ng-if="rule.profitType != 3">
+                                        <label class="col-sm-3 control-label"
+                                               data-ng-init="initProfitValueLabel(rule)">{{
+                                            profiltValueLabel }}</label>
+
+                                        <div class="col-sm-9" ng-if="rule.profitType == 1">
+                                            <input server-error name="profitValue"
+                                                   ng-model="rule.profitValue"
+                                                   ng-change="changeRequireSellPrice(rule)"
+                                                   type="text"
+                                                   ng-pattern="/^[0-9]*[.]?[0-9]*$/"
+                                                   class="form-control" id="profitValueForFixed"
+                                                   placeholder="{{ profiltValueLabel }}">
+                                        </div>
+
+                                        <div class="col-sm-9" ng-if="rule.profitType == 2">
+                                            <input server-error name="profitValue"
+                                                   ng-model="rule.profitValue"
+                                                   ng-change="changeRequireSellPrice(rule)"
+                                                   type="number" min="0" max="99.99"
+                                                   class="form-control" id="profitValueForMargin"
+                                                   placeholder="{{ profiltValueLabel }}">
+                                        </div>
+                                    </div>
+
+                                    <br ng-if="rule.profitType != 3">
+
+                                    <div class="form-group" ng-if="((rule.profitType != 3)&&(!!adSlot.buyPrice))">
+                                        <label class="col-sm-3 control-label">{{'AD_SLOT_LIBRARY_MODULE.REQUIRED_SELL_PRICE'|translate}} </label>
+                                        <div class="col-sm-9 form-control-static">
+                                            {{ rule.requiredSellPrice | currency }}
+                                        </div>
+                                    </div>
+
+                                    <br ng-if="(rule.profitType != 3)">
+
+                                    <div class="form-group">
+                                        <label for="inputPosition" class="col-sm-3 control-label">{{
+                                            'VIDEO_AD_TAG_MODULE.POSITION' | translate }}</label>
+
+                                        <div class="col-sm-9">
+                                            <input name="position" id="inputPosition"
+                                                   ng-model="rule.position" server-error type="number"
+                                                   class="form-control"
+                                                   placeholder="{{ 'VIDEO_AD_TAG_MODULE.POSITION' | translate }}">
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <!--<div class="form-group">-->
+                                        <!--<label for="inputPriority" class="col-sm-3 control-label">{{-->
+                                            <!--'AD_SOURCE_MODULE.PRIORITY' | translate }}</label>-->
+
+                                        <!--<div class="col-sm-9">-->
+                                            <!--<input name="priority" id="inputPriority"-->
+                                                   <!--ng-model="rule.priority" server-error type="number"-->
+                                                   <!--class="form-control"-->
+                                                   <!--placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_PRIORITY' | translate }}">-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<br>-->
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">{{
+                                            'AD_SOURCE_MODULE.WEIGHT' | translate }}</label>
+
+                                        <div class="col-sm-9">
+                                            <input name="weight" ng-model="rule.rotationWeight"
+                                                   server-error type="number" class="form-control"
+                                                   placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_WEIGHT' | translate }}">
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <!--<div class="form-group">-->
+                                        <!--<label for="inputSecure" class="col-sm-3 control-label">{{-->
+                                            <!--'AD_SOURCE_MODULE.ACTIVE' | translate }}</label>-->
+
+                                        <!--<div class="col-sm-9">-->
+                                            <!--<label class="ui-checkbox"><input server-error name="active"-->
+                                                                              <!--type="checkbox"-->
+                                                                              <!--ng-model="rule.active"-->
+                                                                              <!--id="inputSecure"><span></span></label>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+
+                                    <div class="form-group">
+                                        <div class=" col-sm-offset-10 ">
+                                            <button type="button" style="margin-left: -5px"
+                                                    class="btn btn-danger"
+                                                    ng-click="removePlacementRule($index)">
+                                                <span class="glyphicon glyphicon-minus "></span> Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- </div>-->
+                                </div>
+                                <!--</div>-->
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: {{ adSlot.adTagPlacementRules.length == 0 ? '20px' : '40px' }}"></div>
+
 
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-5">

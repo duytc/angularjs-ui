@@ -50,6 +50,12 @@
                     adSlotType: function() {
                         return null;
                     },
+                    adNetworks: /* @ngInject */ function (AdNetworkManager) {
+                        return AdNetworkManager.getList()
+                            .then(function (adNetworks) {
+                                return adNetworks.plain()
+                            })
+                    },
                     blackList: /* @ngInject */ function(DisplayBlackListManager) {
                         return DisplayBlackListManager.getList().then(function (blockList) {
                             return blockList.plain();
@@ -63,8 +69,8 @@
                 },
                 customResolve: {
                     admin: {
-                        publisherList: /* @ngInject */ function(adminUserManager) {
-                            return adminUserManager.getList({ filter: 'publisher' }).then(function (users) {
+                        publisherList: /* @ngInject */ function (adminUserManager) {
+                            return adminUserManager.getList({filter: 'publisher'}).then(function (users) {
                                 return users.plain();
                             });
                         }
@@ -101,6 +107,24 @@
                     },
                     publisherList: function() {
                         return null;
+                    }
+                },
+                customResolve: {
+                    admin: {
+                        adNetworks: function (adminUserManager, adSlot) {
+                            return adminUserManager.one(adSlot.publisher.id).one('adnetworks').getList()
+                                .then(function (adNetworks) {
+                                    return adNetworks.plain()
+                                })
+                        }
+                    },
+                    publisher: {
+                        adNetworks: /* @ngInject */ function (AdNetworkManager) {
+                            return AdNetworkManager.getList()
+                                .then(function (adNetworks) {
+                                    return adNetworks.plain()
+                                })
+                        }
                     }
                 },
                 ncyBreadcrumb: {

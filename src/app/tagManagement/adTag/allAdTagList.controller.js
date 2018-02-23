@@ -97,18 +97,27 @@
                 return Manager.one(adTag.id).remove()
                     .then(
                     function () {
-                        var index = adTags.indexOf(adTag);
-
-                        if (index > -1) {
-                            adTags.splice(index, 1);
-                        }
-
-                        $scope.adTags = adTags;
+                        // Use _getAdTags() instead of directly AdTagManager.get() because of pagination.
+                        // TODO: remove below block code...
+                        //$stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        //
+                        //return AdTagManager.one().get($stateParams)
+                        //    .then(function (adTags) {
+                        //        $scope.adTags = adTags;
+                        //
+                        //        AlertService.replaceAlerts({
+                        //            type: 'success',
+                        //            message: $translate.instant('AD_TAG_MODULE.DELETE_SUCCESS')
+                        //        });
+                        //    });
 
                         AlertService.replaceAlerts({
                             type: 'success',
                             message: $translate.instant('AD_TAG_MODULE.DELETE_SUCCESS')
                         });
+
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        _getAdTags($stateParams);
                     },
                     function () {
                         AlertService.replaceAlerts({
