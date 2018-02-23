@@ -6,6 +6,7 @@
     ;
 
     function LibraryAdSlotForm($scope, $translate, whiteList, blackList, $stateParams, $filter, _, adSlot, adNetworks, AdTagLibrariesManager, NumberConvertUtil, publisherList, adSlotType, VARIABLE_FOR_AD_TAG, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, historyStorage, HISTORY_TYPE_PATH) {
+        $scope.showPosition = false;
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
@@ -101,6 +102,12 @@
         $scope.returnBuyPrice = returnBuyPrice;
         $scope.updateMinimumRequireSellPrice = updateMinimumRequireSellPrice;
         $scope.removePlacementRule = removePlacementRule;
+
+        updateShowPosition();
+
+        function updateShowPosition() {
+            $scope.showPosition = $scope.selected.type != TYPE_AD_SLOT.native;
+        }
 
         function selectPublisher(publisher) {
             $scope.adSlot.libraryExpressions = [];
@@ -373,6 +380,7 @@
             };
 
             _getAdSlots(type)
+            updateShowPosition();
         }
 
         function findTypeLabel(type) {

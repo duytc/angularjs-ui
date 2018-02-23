@@ -6,7 +6,7 @@
     ;
 
     function AdSlotForm($scope, $translate, blackList, whiteList, $stateParams, $filter, _, adSlot, adNetworks, AdTagLibrariesManager, NumberConvertUtil, publisherList, SiteManager, ChannelManager, DynamicAdSlotManager, adminUserManager, AdNetworkManager, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, userSession, historyStorage, HISTORY_TYPE_PATH, VARIABLE_FOR_AD_TAG) {
-        $scope.showPositon = true;
+        $scope.showPosition = false;
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
@@ -203,6 +203,12 @@
         $scope.removePlacementRule = removePlacementRule;
 
         $scope.isShowPlacementRule = isShowPlacementRule;
+
+        updateShowPosition();
+
+        function updateShowPosition() {
+            $scope.showPosition = $scope.selected.type != TYPE_AD_SLOT.native;
+        }
 
         function selectDeployment(deployment) {
             if (deployment == 'channels') {
@@ -697,10 +703,14 @@
         function isShowPlacementRule() {
             if($scope.selected.deployment == $scope.deploymentOptionsJson.supply){
                 var emptySite =  $scope.selected.sites == null || $scope.selected.sites.length == 0;
+                console.log('emptySite');
+                console.log(emptySite);
                 return emptySite;
             }
             if($scope.selected.deployment == $scope.deploymentOptionsJson.supply_group){
                 var emptySiteGroup = $scope.selected.channels == null || $scope.selected.channels.length == 0;
+                console.log('emptySiteGroup');
+                console.log(emptySiteGroup);
                 return emptySiteGroup;
             }
         }
@@ -740,7 +750,7 @@
             };
 
             updateDueToDeploymentChanged();
-            $scope.showPositon = type == TYPE_AD_SLOT.native ? false : true;
+            updateShowPosition();
         }
 
         function findTypeLabel(type) {
