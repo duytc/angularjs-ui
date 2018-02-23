@@ -72,6 +72,11 @@
                 key: 'none'
             }
         ];
+        $scope.deploymentOptionsJson = {
+            'supply': 'sites',
+            'supply_group': 'channels',
+            'Standalone_ad_slots': 'none'
+        };
 
         $scope.adSlot = angular.isObject(adSlot) ? adSlot.libraryAdSlot : {
             libraryExpressions: [],
@@ -195,6 +200,8 @@
         $scope.returnBuyPrice = returnBuyPrice;
         $scope.updateMinimumRequireSellPrice = updateMinimumRequireSellPrice;
         $scope.removePlacementRule = removePlacementRule;
+
+        $scope.isShowPlacementRule = isShowPlacementRule;
 
         function selectDeployment(deployment) {
             if (deployment == 'channels') {
@@ -684,6 +691,17 @@
 
         function removePlacementRule(index) {
             $scope.adSlot.adTagPlacementRules.splice(index, 1);
+        }
+
+        function isShowPlacementRule() {
+            if($scope.selected.deployment == $scope.deploymentOptionsJson.supply){
+                var emptySite =  $scope.selected.sites == null || $scope.selected.sites.length == 0;
+                return !showForDynamicAdSlot() && emptySite;
+            }
+            if($scope.selected.deployment == $scope.deploymentOptionsJson.supply_group){
+                var emptySiteGroup = $scope.selected.channels == null || $scope.selected.channels.length == 0;
+                return !showForDynamicAdSlot() && emptySiteGroup;
+            }
         }
 
         function backToAdSlotList() {

@@ -270,7 +270,7 @@
                     </div>
                 </div>
 
-                <div class="form-group" style="margin-bottom: -20px" ng-if="!showForDynamicAdSlot() && !(isNormalAdSlotUseStandalone() && !isNew || pickFromLibrary)">
+                <div class="form-group" style="margin-bottom: -20px" ng-if="isShowPlacementRule()">
                     <label for="placementRule" class="col-sm-1quarter control-label">{{ 'AD_SLOT_LIBRARY_MODULE.PLACEMENT_RULES' | translate }}</label>
 
                     <div class="col-sm-5">
