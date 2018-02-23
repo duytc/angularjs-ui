@@ -6,6 +6,7 @@
     ;
 
     function AdSlotForm($scope, $translate, blackList, whiteList, $stateParams, $filter, _, adSlot, adNetworks, AdTagLibrariesManager, NumberConvertUtil, publisherList, SiteManager, ChannelManager, DynamicAdSlotManager, adminUserManager, AdNetworkManager, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, userSession, historyStorage, HISTORY_TYPE_PATH, VARIABLE_FOR_AD_TAG) {
+        $scope.showPositon = true;
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
@@ -739,6 +740,7 @@
             };
 
             updateDueToDeploymentChanged();
+            $scope.showPositon = type == TYPE_AD_SLOT.native ? false : true;
         }
 
         function findTypeLabel(type) {
