@@ -1066,7 +1066,6 @@
                 delete adSlot.libraryExpressions;
                 delete adSlot.autoFit;
                 delete adSlot.passbackMode;
-                delete adSlot.buyPrice;
             }
 
             if ($scope.selected.type == $scope.typesList.dynamic) {
