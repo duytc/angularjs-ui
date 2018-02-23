@@ -23,6 +23,7 @@
                   ng-submit="submit()" novalidate>
                 <div class="form-group" ng-if="isAdmin() && !isNew">
                     <label class="col-sm-1 control-label">{{ 'PUBLISHER' | translate }}</label>
+
                     <div class="col-sm-5 form-control-static">
                         {{ selected.publisher.company }}
                     </div>
@@ -30,6 +31,7 @@
 
                 <div class="form-group" ng-if="isAdmin() && isNew">
                     <label for="inputPublisher" class="col-sm-1 control-label">{{ 'PUBLISHER' | translate }}</label>
+
                     <div class="col-sm-5">
                         <ui-select id="inputPublisher" ng-model="selected.publisher" on-select="selectPublisher($item)"
                                    reset-search-input="'false'">
@@ -45,29 +47,36 @@
 
                 <div class="form-group">
                     <label for="inputAdNetwork" class="col-sm-1 control-label">{{ 'AD_NETWORK' | translate }}</label>
+
                     <div class="col-sm-5">
-                        <ui-select name="adNetwork" ng-model="adTag.adNetwork" id="inputAdNetwork"
-                                   on-select="selectAdNetwork($item)" ng-disabled="isAdmin() && !selected.publisher"
-                                   ng-required="true" server-error reset-search-input="'false'">
+                        <ui-select name="adNetwork" ng-model="adTag.adNetwork"
+                                   id="inputAdNetwork"
+                                   on-select="selectAdNetwork($item)"
+                                   ng-disabled="isAdmin() && !selected.publisher"
+                                   ng-required="true"
+                                   server-error
+                                   reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'AD_NETWORK_MODULE.SELECT_A_AD_NETWORK' | translate }}">{{
                                 $select.selected.name }}
                             </ui-select-match>
                             <ui-select-choices infinite-scroll="addMoreAdNetworkItems()"
-                                               infinite-scroll-container="'#reload'" id="reload"
+                                               infinite-scroll-container="'#reload'"
+                                               id="reload"
                                                infinite-scroll-distance="200"
-                                               refresh="searchAdNetworkItem($select.search)" refresh-delay="500"
+                                               refresh="searchAdNetworkItem($select.search)"
+                                               refresh-delay="500"
                                                repeat="adNetwork.id as adNetwork in adNetworkList">
                                 {{ adNetwork.name }}
                             </ui-select-choices>
                         </ui-select>
 
-                        <a ng-click="createAdNetwork()" class="help-block">{{ 'AD_NETWORK_MODULE.ADD_NEW_AD_NETWORK' |
-                            translate }}</a>
+                        <a ng-click="createAdNetwork()" class="help-block">{{ 'AD_NETWORK_MODULE.ADD_NEW_AD_NETWORK' | translate }}</a>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="inputName" class="col-sm-1 control-label">{{ 'NAME' | translate }}</label>
+
                     <div class="col-sm-5">
                         <input name="name" ng-model="adTag.name" server-error ng-required="true" ng-minlength="2"
                                type="text" class="form-control" id="inputName"
@@ -77,6 +86,7 @@
 
                 <div class="form-group">
                     <label class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.AD_TYPE' | translate }}</label>
+
                     <div class="col-sm-5">
                         <label class="ui-radio"><input ng-model="adTag.adType" type="radio" ng-value="adTypes.customAd"><span>{{ 'AD_TAG_MODULE.CUSTOM_AD' | translate }}</span></label>
                         <label ng-if="hasInBanner()" class="ui-radio"><input ng-model="adTag.adType" type="radio"
@@ -89,11 +99,10 @@
                 <!--ad type html-->
                 <div class="form-group" ng-if="adTag.adType == adTypes.customAd">
                     <label for="inputHtml" class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.HTML' | translate }}</label>
+
                     <div class="col-sm-5">
-                        <ui-codemirror ng-required="true" id="inputHtml" ng-model="adTag.html"
-                                       ui-codemirror-opts="editorOptions"></ui-codemirror>
-                        <a class="help-block" ng-click="clickVIewHelpText()">Allowed macros ${CACHEBUSTER}, ${PAGE_URL},
-                            ... Click here for more details</a>
+                        <ui-codemirror ng-required="true" id="inputHtml" ng-model="adTag.html" ui-codemirror-opts="editorOptions"></ui-codemirror>
+                        <a class="help-block" ng-click="clickVIewHelpText()">{{ 'AD_TAG_MODULE.HTML_HELP_TEXT' | translate }}</a>
                         <!--<span class="help-block">{{ 'AD_TAG_MODULE.HELP_BLOCK_HTML' | translate }}:<br/>-->
                         <!--<strong>${CACHEBUSTER}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_CACHE_BUSTER' | translate }}<br/>-->
                         <!--<strong>${PAGE_URL}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_PAGE_URL' | translate }}<br/>-->
@@ -110,8 +119,8 @@
                 <!--ad type images-->
                 <div ng-if="adTag.adType == adTypes.imageAd">
                     <div class="form-group">
-                        <label for="inputImageUrl" class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.IMAGE_URL' |
-                            translate }}</label>
+                        <label for="inputImageUrl" class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.IMAGE_URL' | translate }}</label>
+
                         <div class="col-sm-5">
                             <input name="name" ng-model="adTag.descriptor.imageUrl" server-error ng-required="true"
                                    ng-minlength="2" type="url" class="form-control" id="inputImageUrl"
@@ -120,14 +129,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="inputTargetUrl" class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.TARGET_URL' |
-                            translate }}</label>
+                        <label for="inputTargetUrl" class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.TARGET_URL' | translate }}</label>
+
                         <div class="col-sm-5">
                             <input name="name" ng-model="adTag.descriptor.targetUrl" server-error ng-required="true"
                                    ng-minlength="2" type="url" class="form-control" id="inputTargetUrl"
                                    placeholder="{{ 'AD_TAG_MODULE.TARGET_URL' | translate }}">
-                            <a class="help-block" ng-click="clickVIewHelpText()">Allowed macros ${CACHEBUSTER},
-                                ${PAGE_URL}, ... Click here for more details</a>
+                            <a class="help-block" ng-click="clickVIewHelpText()">{{ 'AD_TAG_MODULE.HTML_HELP_TEXT' | translate }}</a>
                             <!--<span class="help-block">{{ 'AD_TAG_MODULE.HELP_BLOCK_TARGET_URL' | translate }}:<br/>-->
                             <!--<strong>${CACHEBUSTER}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_CACHE_BUSTER' | translate }}<br/>-->
                             <!--<strong>${PAGE_URL}</strong>: {{ 'AD_TAG_MODULE.HELP_BLOCK_PAGE_URL' | translate }}<br/>-->
@@ -141,8 +149,8 @@
 
                 <div ng-if="adTag.adType == adTypes.inBanner">
                     <div class="form-group">
-                        <label for="inputTimeout" class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.TIMEOUT' | translate
-                            }}</label>
+                        <label for="inputTimeout" class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.TIMEOUT' | translate}}</label>
+
                         <div class="col-sm-5">
                             <input name="timeout" ng-model="adTag.inBannerDescriptor.timeout" min="0" server-error
                                    type="number" class="form-control" id="inputTimeout"
@@ -152,8 +160,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="inputPlayerWidth" class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.PLAYER_WIDTH' |
-                            translate }}</label>
+                        <label for="inputPlayerWidth" class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.PLAYER_WIDTH' | translate }}</label>
+
                         <div class="col-sm-5">
                             <input name="playerWidth" ng-model="adTag.inBannerDescriptor.playerWidth" min="0"
                                    server-error type="number" class="form-control" id="inputPlayerWidth"
@@ -162,8 +170,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="inputPlayerHeight" class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.PLAYER_HEIGHT' |
-                            translate }}</label>
+                        <label for="inputPlayerHeight" class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.PLAYER_HEIGHT' | translate }}</label>
+
                         <div class="col-sm-5">
                             <input name="playerHeight" ng-model="adTag.inBannerDescriptor.playerHeight" min="0"
                                    server-error type="number" class="form-control" id="inputPlayerHeight"
@@ -173,8 +181,8 @@
 
                     <div class="vast">
                         <div class="form-group">
-                            <label for="inputPlayerHeight" class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.VAST_TAGS' |
-                                translate }}</label>
+                            <label for="inputPlayerHeight" class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.VAST_TAGS' | translate }}</label>
+
                             <div class="col-sm-5">
                                 <button class="btn btn-success" type="button" ng-click="addVast()">
                                     <span class="glyphicon glyphicon-plus"></span>
@@ -217,8 +225,7 @@
                                     </div>
                                 </div>
 
-                                <a class="help-block" ng-click="clickVIewHelpText()">Allowed macros ${CACHEBUSTER},
-                                    ${PAGE_URL}, ... Click here for more details</a>
+                                <a class="help-block" ng-click="clickVIewHelpText()">{{ 'AD_TAG_MODULE.HTML_HELP_TEXT' | translate }}</a>
                             </div>
                         </div>
                     </div>
@@ -226,6 +233,7 @@
 
                 <div class="form-group">
                     <label class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.TARGETING' | translate }}</label>
+
                     <div class="col-sm-10">
                         <div class="expressions-group">
                             <query-builder-group-for-ad-tag domain-list="domainList" group="adTag.expressionDescriptor"
@@ -235,6 +243,7 @@
                                 <label class="ui-checkbox"><input server-error name="liveView" type="checkbox"
                                                                   ng-model="liveViewChecked" value="checked"
                                                                   id="liveExpression"/><span>{{ 'QUERY_BUILDER.SHOW_GENERATED_EXPRESSION' | translate }}</span></label>
+
                                 <div ng-if="liveViewChecked == true" class="callout-warning show-query-builder"
                                      ng-bind-html="builtVariable(adTag.expressionDescriptor)"></div>
                             </div>
@@ -244,14 +253,199 @@
 
                 <div class="form-group">
                     <label class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.SELL_PRICE' | translate }}</label>
+
                     <div class="col-sm-5">
-                        <input name="sellPrice" ng-model="adTag.sellPrice" min="0"
-                               ng-pattern="/^\-?\d+((\.|\,)\d+)?$/" type="text" class="form-control"
+                        <input name="sellPrice" ng-model="adTag.sellPrice" ng-min="0"
+                               ng-change="onSellPriceChange()"
+                               ng-pattern="/^[0-9]*[.]?[0-9]*$/" type="text" class="form-control"
                                placeholder="{{ 'AD_TAG_MODULE.SELL_PRICE' | translate }}">
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="margin-bottom: -20px">
+                    <label for="placementRule" class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.LABEL_AD_SLOT_PLACEMENT_RULE' | translate }}</label>
+
+                    <div class="col-sm-5">
+                        <button id="placementRule" class="btn btn-success" type="button"
+                                ng-click="addNewPlacementRule()">
+                            <span class="glyphicon glyphicon-plus"></span> {{ 'AD_TAG_MODULE.BUTTON_AD_SLOT_PLACEMENT_RULE' | translate }}
+                        </button>
+
+                        <div class=" expressions-group" ng-if="adTag.adSlotPlacementRules.length >0">
+                            <div class="form-group" ng-repeat="rule in adTag.adSlotPlacementRules track by $index">
+                                <!--<div class="">-->
+                                <div class="expressions-group">
+                                    <div class="form-group">
+                                        <label for="inputSites" class="col-sm-3 control-label">Supply</label>
+
+                                        <div class="col-sm-9">
+                                            <isteven-multi-select id="inputSites"
+                                                                  output-properties="id"
+                                                                  input-model="rule.siteList"
+                                                                  output-model="rule.sites"
+                                                                  search-property="id name"
+                                                                  button-label="name"
+                                                                  item-label="name"
+                                                                  tick-property="ticked"
+                                                                  ng-click="onClickEachRuleSites(rule)">
+                                            </isteven-multi-select>
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="form-group">
+                                        <label class=" col-sm-3 control-label">{{'AD_SOURCE_MODULE.AD_SLOT_SELECTION' | translate}}</label>
+
+                                        <div class="col-sm-9">
+                                            <ui-select name="ruleType" id="ruleType" ng-model="rule.profitType"
+                                                       on-select="changeProfitValueLabel($item, rule)"
+                                                       ng-required="true" server-error reset-search-input="'false'">
+                                                <ui-select-match
+                                                        placeholder="{{ 'AD_SOURCE_MODULE.RULE_TYPE' | translate }}">{{
+                                                    $select.selected.value }}
+                                                </ui-select-match>
+                                                <ui-select-choices repeat="ruleType.key as ruleType in ruleTypes">
+                                                    {{ ruleType.value }}
+                                                </ui-select-choices>
+                                            </ui-select>
+                                            <span class="help-block">{{ 'AD_SOURCE_MODULE.DEMAND_PARTNER_PLACEMENT_RULE_TYPE_HELP_BLOCK' | translate }}</span>
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="form-group" ng-if="rule.profitType ==3">
+                                        <label for="inputAdSlots" class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.AD_SLOTS' | translate }}</label>
+
+                                        <div class="col-sm-9">
+                                            <isteven-multi-select id="inputAdSlots"
+                                                                  output-properties="id"
+                                                                  input-model="rule.adSlotList"
+                                                                  output-model="rule.adSlots"
+                                                                  search-property="id name"
+                                                                  button-label="name"
+                                                                  item-label="name"
+                                                                  tick-property="ticked">
+                                            </isteven-multi-select>
+                                        </div>
+                                    </div>
+                                    <br ng-if="rule.profitType ==3">
+
+                                    <!--<div class="form-group" ng-if="rule.profitType != 3">-->
+                                    <!--<label class="col-sm-3 control-label">{{'AD_SOURCE_MODULE.SELL_PRICE'| translate}} </label>-->
+                                    <!--<div class="col-sm-9 form-control-static">-->
+                                    <!--{{ returnSellPrice(adTag.sellPrice) }}-->
+                                    <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<br ng-if="(rule.profitType != 3)">-->
+
+                                    <div class="form-group" ng-if="rule.profitType != 3">
+                                        <label class="col-sm-3 control-label" data-ng-init="initProfitValueLabel(rule)">
+                                            {{'AD_SOURCE_MODULE.PROFIT_VALUE'| translate }} ({{profitUnit[rule.profitType]}})</label>
+
+                                        <div class="col-sm-9" ng-if="rule.profitType == 1">
+                                            <input server-error name="profitValue"
+                                                   ng-model="rule.profitValue"
+                                                   ng-change="changeRequireBuyPrice(rule)"
+                                                   type="text"
+                                                   ng-pattern="/^[0-9]*[.]?[0-9]*$/"
+                                                   class="form-control" id="profitValueForFixed"
+                                                   placeholder="{{'AD_SOURCE_MODULE.PROFIT_VALUE'| translate }} ({{profitUnit[rule.profitType]}})">
+
+                                            <span class="help-block ng-binding">{{'AD_SOURCE_MODULE.PROFIT_VALUE_VALIDATION_MESSAGE'| translate }}</span>
+                                        </div>
+
+                                        <div class="col-sm-9" ng-if="rule.profitType == 2">
+                                            <input server-error name="profitValue"
+                                                   ng-model="rule.profitValue"
+                                                   ng-change="changeRequireBuyPrice(rule)"
+                                                   type="number" min="0" max="100"
+                                                   class="form-control" id="profitValueForMargin"
+                                                   placeholder="{{'AD_SOURCE_MODULE.PROFIT_VALUE'| translate }} ({{profitUnit[rule.profitType]}})">
+                                        </div>
+                                    </div>
+
+                                    <br ng-if="rule.profitType != 3">
+
+                                    <div class="form-group" ng-if="((rule.profitType != 3)&&(!!adTag.sellPrice))">
+                                        <label class="col-sm-3 control-label">{{'AD_SOURCE_MODULE.REQUIRED_BUY_PRICE'|translate}} </label>
+                                        <div class="col-sm-9 form-control-static">
+                                            {{ rule.requiredBuyPrice | currency }}
+                                        </div>
+                                    </div>
+
+                                    <br ng-if="(rule.profitType != 3)">
+
+                                    <div class="form-group">
+                                        <label for="inputPosition" class="col-sm-3 control-label">{{
+                                            'VIDEO_AD_TAG_MODULE.POSITION' | translate }}</label>
+
+                                        <div class="col-sm-9">
+                                            <input name="position" id="inputPosition" ng-required="true"
+                                                   ng-model="rule.position" server-error type="number"
+                                                   class="form-control"
+                                                   placeholder="{{ 'VIDEO_AD_TAG_MODULE.POSITION' | translate }}">
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <!--<div class="form-group" ng-if="!!rule.position">-->
+                                        <!--<label for="inputShiftDown" class="col-sm-3 control-label">{{-->
+                                            <!--'AD_SOURCE_MODULE.SHIFT_DOWN' | translate }}</label>-->
+
+                                        <!--<div class="col-sm-9">-->
+                                            <!--<label class="ui-checkbox">-->
+                                                <!--<input name="active" type="checkbox" ng-model="rule.shiftDown"-->
+                                                       <!--server-error id="inputShiftDown"><span></span>-->
+                                            <!--</label>-->
+
+                                            <!--<span class="help-block">{{ 'AD_SOURCE_MODULE.HELP_BLOCK_AUTO_POSITION' | translate }}</span>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+
+
+                                    <!--<div class="form-group">-->
+                                        <!--<label for="inputPriority" class="col-sm-3 control-label">{{-->
+                                            <!--'AD_SOURCE_MODULE.PRIORITY' | translate }}</label>-->
+
+                                        <!--<div class="col-sm-9">-->
+                                            <!--<input name="priority" id="inputPriority" ng-model="rule.priority"-->
+                                                   <!--server-error type="number" class="form-control"-->
+                                                   <!--placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_PRIORITY' | translate }}">-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<br>-->
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">{{ 'AD_SOURCE_MODULE.WEIGHT' | translate
+                                            }}</label>
+
+                                        <div class="col-sm-9">
+                                            <input name="weight" ng-model="rule.rotationWeight" server-error
+                                                   type="number" class="form-control"
+                                                   placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_WEIGHT' | translate }}">
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="form-group">
+                                        <div class=" col-sm-offset-10 ">
+                                            <button type="button" style="margin-left: -5px" class="btn btn-danger"
+                                                    ng-click="removePlacementRule($index)">
+                                                <span class="glyphicon glyphicon-minus "></span> Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- </div>-->
+                                </div>
+                                <!--</div>-->
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group"
+                     style="margin-top: {{ adTag.adSlotPlacementRules.length == 0 ? '20px' : '40px' }}">
                     <div class="col-sm-offset-1 col-sm-5">
                         <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit"
                                 class="btn btn-success">{{ 'SUBMIT' | translate }}

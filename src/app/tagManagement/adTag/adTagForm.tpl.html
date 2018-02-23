@@ -106,10 +106,21 @@
                 <div class="form-group">
                     <label for="inputAdNetwork" class="col-sm-1 control-label">{{ 'AD_NETWORK' | translate }}</label>
                     <div class="col-sm-5">
-                        <ui-select name="adNetwork" ng-model="adTag.libraryAdTag.adNetwork" id="inputAdNetwork" on-select="selectAdNetwork($item)"
-                                   ng-required="true" server-error ng-disabled="isAdmin() && !selected.publisher || pickFromLibrary" reset-search-input="'false'">
+                        <ui-select name="adNetwork" ng-model="adTag.libraryAdTag.adNetwork"
+                                   id="inputAdNetwork"
+                                   on-select="selectAdNetwork($item)"
+                                   ng-required="true"
+                                   server-error
+                                   ng-disabled="isAdmin() && !selected.publisher || pickFromLibrary"
+                                   reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'AD_NETWORK_MODULE.SELECT_A_AD_NETWORK' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices infinite-scroll="addMoreAdNetworkItems()" infinite-scroll-container="'#reloadAdNetwork'" id="reloadAdNetwork" infinite-scroll-distance="200" refresh="searchAdNetworkItem($select.search)" refresh-delay="500" repeat="adNetwork.id as adNetwork in adNetworkList" repeat="adNetwork.id as adNetwork in adNetworkList">
+                            <ui-select-choices infinite-scroll="addMoreAdNetworkItems()"
+                                               infinite-scroll-container="'#reloadAdNetwork'"
+                                               id="reloadAdNetwork"
+                                               infinite-scroll-distance="200"
+                                               refresh="searchAdNetworkItem($select.search)"
+                                               refresh-delay="500"
+                                               repeat="adNetwork.id as adNetwork in adNetworkList">
                                 {{ adNetwork.name }}
                             </ui-select-choices>
                         </ui-select>
@@ -318,7 +329,7 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.SELL_PRICE' | translate }}</label>
                     <div class="col-sm-5">
-                        <input name="sellPrice" ng-model="adTag.libraryAdTag.sellPrice" min="0" ng-pattern="/^\-?\d+((\.|\,)\d+)?$/"
+                        <input name="sellPrice" ng-model="adTag.libraryAdTag.sellPrice" min="0"  ng-pattern="/^[0-9]*[.]?[0-9]*$/"
                                type="text" class="form-control" placeholder="{{ 'AD_TAG_MODULE.SELL_PRICE' | translate }}"
                                ng-disabled="pickFromLibrary">
                     </div>

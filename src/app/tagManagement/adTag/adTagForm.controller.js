@@ -26,7 +26,6 @@
         }
 
         $scope.isNew = adTag === null;
-        console.log('adTag: ' + adTag)
 
         $scope.formProcessing = false;
         $scope.hasMultipleDeployAdSlot = false;
@@ -124,8 +123,8 @@
                 // passback: false
             };
 
-        if (!$scope.isNew) {
-            $scope.adTag.libraryAdTag.sellPrice = NumberConvertUtil.convertPriceToString($scope.adTag.libraryAdTag.sellPrice);
+        if (!$scope.isNew && $scope.adTag.libraryAdTag.sellPrice != null) {
+            $scope.adTag.libraryAdTag.sellPrice = NumberConvertUtil.convertPriceToString($scope.adTag.libraryAdTag.sellPrice)
         }
 
         if (!!$scope.adTag.libraryAdTag.descriptor) {
@@ -320,7 +319,9 @@
             params.publisherId = publisher.id;
             adTagLibraryParams.publisherId = publisher.id;
             searchItem();
+            searchAdNetworkItem(null, publisher.id);
         };
+
 
         /**
          * Decide whether to include this library ad tag in display list or not.
@@ -549,7 +550,10 @@
                 adTag.active = adTagActive
             }
 
-            $scope.adTag.buyPrice = NumberConvertUtil.convertPriceToString($scope.adTag.buyPrice);
+
+            if($scope.adTag.buyPrice != null){
+                $scope.adTag.buyPrice = NumberConvertUtil.convertPriceToString($scope.adTag.buyPrice);
+            }
 
             var saveAdTag = $scope.isNew ? AdTagManager.post(adTag) : AdTagManager.one(adTag.id).patch(adTag);
             saveAdTag

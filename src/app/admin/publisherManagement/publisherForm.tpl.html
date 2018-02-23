@@ -96,7 +96,7 @@
                     <div class="col-sm-10">
                         <select name="country" ng-model="publisher.country" class="form-control" id="inputCountry">
                             <option disabled ng-selected="true">Country...</option>
-                            <option value="{{ country.name }}" ng-selected="publisher.country == country.name" ng-repeat="country in countries">{{ country.name }}</option>
+                            <option value="{{ country.name }}" ng-selected="publisher.country == country.name" ng-repeat="country in countries track by $index">{{ country.name }}</option>
                         </select>
                     </div>
                 </div>

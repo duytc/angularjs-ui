@@ -86,7 +86,9 @@
         $scope.adSlot.hbBidPrice = $scope.isNew ? null : adSlot.hbBidPrice;
         $scope.adSlot.hbBidPriceClone = $scope.isNew ? null : _convertHeaderBiddingPriceToString(adSlot.hbBidPrice);
 
-        $scope.adSlot.buyPrice = $scope.isNew ? null : NumberConvertUtil.convertPriceToString(adSlot.libraryAdSlot.buyPrice);
+        if($scope.adSlot.buyPrice != null){
+            $scope.adSlot.buyPrice =  NumberConvertUtil.convertPriceToString(adSlot.libraryAdSlot.buyPrice);
+        }
         $scope.adSlot.adTagPlacementRules = !$scope.adSlot.adTagPlacementRules ? [] : $scope.adSlot.adTagPlacementRules;
 
         $scope.profiltValueLabel = 'Profit Value';

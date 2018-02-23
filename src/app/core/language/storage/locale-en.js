@@ -594,10 +594,15 @@
                 "RULE_VALUE_FIXED":"Profit Value($)",
                 "RULE_VALUE_MARGIN":"Profit Value(%)",
                 "RULE_VALUE_MANUAL":"Profit Value",
+                "PROFIT_VALUE":"Profit Value",
                 "VIDEO_PUBLISHERS":"Publishers",
                 "PROFIT": "Profit",
                 "WATERFALL_PLACEMENT_RULE_TYPE_HELP_BLOCK": "Waterfall selection will be able if sell price is set",
-                "WARNING": "Warning"
+                "WARNING": "Warning",
+                "DEMAND_PARTNER_PLACEMENT_RULE_TYPE_HELP_BLOCK": "Ad Slot selection will be able if buy price is set",
+                "AD_SLOT_SELECTION": "Ad Slot Selection",
+                "PROFIT_VALUE_VALIDATION_MESSAGE": "Profit Value must be less than Sell Price",
+                "AD_SLOTS": "Ad Slots"
             },
             "AD_SOURCE_LIBRARY_MODULE": {
                 "CREATE_LINKED_DEMAND_AD_TAGS": "Link this Demand Ad Tag",
@@ -840,7 +845,11 @@
                 "GUIDE_DRAG_DROP_TITLE": "You can drag and drop to re-order your ad tags.",
                 "GUIDE_DRAG_DROP_GROUP_AD_TAG": "To move all ad tags from one position group to another, click and drag the gray position header bar up and down.",
                 "GUIDE_DRAG_DROP_AD_TAG": "To move a single ad tag to another position, click and drag on that ad tag only.",
-                "GUIDE_SPLIT_GROUP": "To quickly remove an ad tag from a position group, click on Actions > Split Group."
+                "GUIDE_SPLIT_GROUP": "To quickly remove an ad tag from a position group, click on Actions > Split Group.",
+
+                "HTML_HELP_TEXT": "Allowed macros ${CACHEBUSTER}, ${PAGE_URL}, ... Click here for more details",
+                "BUTTON_AD_SLOT_PLACEMENT_RULE": "Add Ad Slot Placement Rules",
+                "LABEL_AD_SLOT_PLACEMENT_RULE": "Ad Slot Placement Rules"
             },
             "AD_SLOT_LIBRARY_MODULE": {
                 "REMOVE_SUCCESS": "The ad slot was removed successfully",

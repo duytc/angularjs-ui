@@ -45,6 +45,23 @@
                     }
                 },
                 resolve: {
+                    adSlots: function (AdSlotManager) {
+                        return AdSlotManager.getList()
+                            .then(function (adSlots) {
+                                angular.forEach(adSlots, function (adSlot) {
+                                    adSlot.name = adSlot.libraryAdSlot.name;
+                                    adSlot.publisher = adSlot.libraryAdSlot.publisher
+                                });
+
+                                return adSlots.plain()
+                            })
+                    },
+                    sites: function (SiteManager) {
+                        return SiteManager.getList()
+                            .then(function (sites) {
+                                return sites.plain()
+                            })
+                    },
                     adTag: /* @ngInject */ function() {
                         return null;
                     },
@@ -90,6 +107,17 @@
                     // adNetworkList: /* @ngInject */ function (AdNetworkCache) {
                     //     return AdNetworkCache.getAllAdNetworks();
                     // },
+                    adSlots: function (AdSlotManager) {
+                        return AdSlotManager.getList()
+                            .then(function (adSlots) {
+                                angular.forEach(adSlots, function (adSlot) {
+                                    adSlot.name = adSlot.libraryAdSlot.name;
+                                    adSlot.publisher = adSlot.libraryAdSlot.publisher
+                                });
+
+                                return adSlots.plain()
+                            })
+                    },
                     publisherList: function() {
                         return null;
                     },
@@ -102,6 +130,24 @@
                         return DisplayWhiteListManager.getList().then(function (whiteList) {
                             return whiteList.plain();
                         });
+                    }
+                },
+                customResolve: {
+                    admin: {
+                        sites: function (adminUserManager, adTag) {
+                            return adminUserManager.one(adTag.adNetwork.publisher.id).one('sites').getList()
+                                .then(function (sites) {
+                                    return sites.plain()
+                                })
+                        }
+                    },
+                    publisher: {
+                        sites: function (SiteManager) {
+                            return SiteManager.getList()
+                                .then(function (sites) {
+                                    return sites.plain()
+                                })
+                        }
                     }
                 },
                 ncyBreadcrumb: {

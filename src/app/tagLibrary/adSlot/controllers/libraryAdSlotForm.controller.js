@@ -62,7 +62,9 @@
             type:  adSlotType || $scope.typesList.display
         };
 
-        $scope.adSlot.buyPrice = $scope.isNew ? null : NumberConvertUtil.convertPriceToString($scope.adSlot.buyPrice);
+        if($scope.adSlot.buyPrice != null){
+            $scope.adSlot.buyPrice = NumberConvertUtil.convertPriceToString($scope.adSlot.buyPrice);
+        }
         $scope.adSlot.adTagPlacementRules = !$scope.adSlot.adTagPlacementRules ? [] : $scope.adSlot.adTagPlacementRules;
 
         $scope.profiltValueLabel = 'Profit Value';
