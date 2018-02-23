@@ -306,7 +306,7 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'EDIT AD TAG'
+                    label: 'Edit Ad Tag'
                 }
             })
         ;
