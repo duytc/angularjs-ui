@@ -14,10 +14,14 @@
 
                 try {
                     title = currentState.ncyBreadcrumb.label;
+                    console.log('title');
+                    console.log(title);
                 } catch(e) {}
 
                 if (angular.isDefined(title) && angular.isString(title)) {
+                    console.log(currentState.locals.globals);
                     title = $interpolate(title)(currentState.locals.globals);
+                    console.log(title);
                     element.text(title);
                 }
             }
