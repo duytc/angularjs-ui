@@ -706,7 +706,8 @@
             }
             if($scope.selected.deployment == $scope.deploymentOptionsJson.supply){
                 var emptySites =  $scope.selected.sites == null || $scope.selected.sites.length == 0;
-                return emptySites;
+                var emptySite =  $scope.selected.site == null || $scope.selected.site.length == 0;
+                return emptySites && emptySite;
             }
             if($scope.selected.deployment == $scope.deploymentOptionsJson.supply_group){
                 var emptySiteGroup = $scope.selected.channels == null || $scope.selected.channels.length == 0;
