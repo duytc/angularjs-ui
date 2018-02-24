@@ -705,7 +705,9 @@
                 return true;
             }
             if($scope.selected.deployment == $scope.deploymentOptionsJson.supply){
+                //check for create form
                 var emptySites =  $scope.selected.sites == null || $scope.selected.sites.length == 0;
+                // check for edit form
                 var emptySite =  $scope.selected.site == null || $scope.selected.site.length == 0;
                 return emptySites && emptySite;
             }
