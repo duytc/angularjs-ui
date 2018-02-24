@@ -70,8 +70,6 @@
 
             // this is a closure variable
             _$currentSession = session;
-
-            console.log('session written');
         }
 
         /**
