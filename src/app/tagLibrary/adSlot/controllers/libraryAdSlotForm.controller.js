@@ -228,7 +228,7 @@
                 priority: null,
                 rotationWeight: null,
                 active: true,
-                tempId: time()
+                tempId: Math.random()
             };
 
             $scope.adSlot.adTagPlacementRules.push(newAdTagPlacementRule);
