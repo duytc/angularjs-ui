@@ -74,6 +74,8 @@
 
         $scope.adTag.adSlotPlacementRules = $scope.adTag.adSlotPlacementRules ? $scope.adTag.adSlotPlacementRules : [];
 
+        $scope.orginalAdSlotPlacementRules = angular.copy($scope.adTag.adSlotPlacementRules);
+
         if(!!$scope.adTag.descriptor) {
             if(!$scope.adTag.descriptor.imageUrl) {
                 $scope.adTag.descriptor = null;
@@ -541,6 +543,42 @@
             array.splice(to, 0, array.splice(from, 1)[0]);
         };
 
+        var toSitesJson = function (sites) {
+            var jsonSites = [];
+            for (var index = 0; index < sites.length; index++) {
+                var siteId = sites[index];
+                var json = {
+                    id: siteId
+                }
+                jsonSites.push(json);
+            }
+            return jsonSites;
+        };
+        var addDeleteFlag = function (originalAdSlotPlacementRules, adSlotPlacementRules) {
+
+            for (var index = 0; index < originalAdSlotPlacementRules.length; index++) {
+                var foundRule = adSlotPlacementRules.find(function (rule) {
+                    if (rule.id) {
+                        return rule.id == originalAdSlotPlacementRules[index].id;
+                    }
+                    return null;
+                });
+                if (!foundRule) {
+                    originalAdSlotPlacementRules[index]._delete = true;
+                    originalAdSlotPlacementRules[index].sites = toSitesJson(originalAdSlotPlacementRules[index].sites);
+
+                }else{
+                    originalAdSlotPlacementRules[index] = foundRule;
+                }
+            }
+           // push new rules
+            for (var index = 0; index < adSlotPlacementRules.length; index++) {
+                if(!adSlotPlacementRules[index].id){
+                    originalAdSlotPlacementRules.push(adSlotPlacementRules[index]);
+                }
+            }
+            return originalAdSlotPlacementRules;
+        };
         $scope.submit = function() {
             if ($scope.formProcessing) {
                 // already running, prevent duplicates
@@ -557,6 +595,9 @@
                 adTag.sellPrice =  NumberConvertUtil.convertPriceToString(adTag.sellPrice);
             }
 
+            if(!$scope.isNew){
+                adTag.adSlotPlacementRules = addDeleteFlag($scope.orginalAdSlotPlacementRules, angular.copy( adTag.adSlotPlacementRules));
+            }
             angular.forEach(adTag.adSlotPlacementRules, function(rule) {
                 delete rule.adSlotList;
                 delete rule.siteList;
