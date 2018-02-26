@@ -68,6 +68,8 @@
         }
         $scope.adSlot.adTagPlacementRules = !$scope.adSlot.adTagPlacementRules ? [] : $scope.adSlot.adTagPlacementRules;
 
+        $scope.originalAdTagPlacementRules = angular.copy($scope.adSlot.adTagPlacementRules);
+
         $scope.profiltValueLabel = 'Profit Value';
 
         $scope.ruleTypes = [
@@ -209,7 +211,7 @@
         }
 
         function addNewPlacementRule() {
-            $scope.adSlot.adTagPlacementRules.push({
+            var newAdTagPlacementRule = {
                 adNetworkList: angular.copy($scope.adNetworkList),
                 adTagList: angular.copy($scope.adTagList),
                 adNetworks: [],
@@ -220,11 +222,18 @@
                 priority: null,
                 rotationWeight: null,
                 active: true
-            });
+            };
+
+            $scope.adSlot.adTagPlacementRules.push(newAdTagPlacementRule);
+            $scope.originalAdTagPlacementRules.push(newAdTagPlacementRule);
         }
 
         function removePlacementRule(index) {
             $scope.adSlot.adTagPlacementRules.splice(index, 1);
+
+            if ($scope.originalAdTagPlacementRules[index]) {
+                $scope.originalAdTagPlacementRules[index]._delete = true;
+            }
         }
 
         function showForDisplayAdSlot() {
@@ -247,7 +256,10 @@
 
             $scope.formProcessing = true;
 
-            var adSlot = _refactorAdSlot($scope.adSlot);
+            var adSlot = angular.copy($scope.adSlot);
+            adSlot.adTagPlacementRules = $scope.originalAdTagPlacementRules;
+
+            adSlot = _refactorAdSlot(adSlot);
 
             angular.forEach(adSlot.adTagPlacementRules, function (rule) {
                 delete rule.adNetworkList;
