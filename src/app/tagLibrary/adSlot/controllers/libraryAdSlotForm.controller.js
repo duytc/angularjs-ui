@@ -283,6 +283,8 @@
                         $scope.originalAdTagPlacementRules[idx] = angular.copy(foundRule); // don't know why use "rule" directly not work...
                     } else {
                         // delete
+                        rule.adNetworks = [];
+                        rule.adTags = [];
                         rule._delete = true;
                     }
                 });
