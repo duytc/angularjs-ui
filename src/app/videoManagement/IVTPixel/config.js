@@ -8,7 +8,8 @@
             {label: "country", key: "country", root: '${country}', helpText: 'The country of the current website'},
             {label: "timestamp", key: "timestamp", root: '${timestamp}', helpText: 'Current time in unix time'},
             {label: "device_id", key: "device_id", root: '${device_id}', helpText: 'The device id, we expect the user to provide a value'},
-            {label: "device_name", key: "device_name", root: '${device_name}', helpText: 'The device name, we expect the user to provide a value'}
+            {label: "device_name", key: "device_name", root: '${device_name}', helpText: 'The device name, we expect the user to provide a value'},
+            {label: "demand_sell_price", key: "demand_sell_price", root: '${demand_sell_price}', helpText: 'The sell price of demand tag, only for "Fire On" is Impression'}
         ])
     ;
 })();
