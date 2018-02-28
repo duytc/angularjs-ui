@@ -801,6 +801,7 @@
                 "ENABLE_DRAG_DROP": "Enable Drag/Drop",
                 "NEW_AD_TAG": "New Ad Tag",
                 "STATUS": "Status",
+                "SUPPLY": "Supply",
                 "IN_LIBRARY": "In Library",
                 "EDIT_AD_TAG": "Edit Ad Tag",
                 "PAUSE_AD_TAG" : "Pause Ad Tag",

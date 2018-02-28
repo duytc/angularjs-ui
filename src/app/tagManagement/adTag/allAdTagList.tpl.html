@@ -68,6 +68,9 @@
                     <td at-title="{{ 'AD_SLOT' | translate }}" at-sortable at-attribute="adSlot">
                         {{ item.adSlot.libraryAdSlot.name }}
                     </td>
+                    <td at-title="{{ 'AD_TAG_MODULE.SUPPLY' | translate }}" at-sortable at-attribute="site">
+                        {{ item.adSlot.site.name }}
+                    </td>
                     <td at-title="{{ 'AD_TAG_MODULE.ROTATION_WEIGHT' | translate }}" at-sortable ng-dblclick="rotationForm.$show()" at-attribute="rotation">
                         <div ng-show="!isSubPublisher()">
                             <span class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>
