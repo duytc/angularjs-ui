@@ -76,9 +76,17 @@
                             {{ dataSetPendingJobs[item.id] }}
                         </td>
                         <td at-title="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.STATUS' | translate }}" at-implicit at-attribute="status">
-                            <span class="label label-success" ng-if="item.numChanges == 0 && item.numConnectedDataSourceChanges == 0">Up to Date</span>
-                            <span class="label label-danger" ng-if="item.numChanges > 0">Needs Reload</span>
-                            <span class="label label-danger" ng-if="item.numConnectedDataSourceChanges > 0 && item.numChanges == 0">Check Data Sources</span>
+                            <div ng-if="dataSetPendingJobs[item.id] > 0">
+                                <span class="label label-warning">
+                                    <i class="glyphicon  glyphicon-refresh" aria-hidden="true"></i> Loading
+                                </span>
+                            </div>
+
+                            <div ng-if="dataSetPendingJobs[item.id] == 0">
+                                <span class="label label-success" ng-if="item.numChanges == 0 && item.numConnectedDataSourceChanges == 0">Up to Date</span>
+                                <span class="label label-danger" ng-if="item.numChanges > 0">Needs Reload</span>
+                                <span class="label label-danger" ng-if="item.numConnectedDataSourceChanges > 0 && item.numChanges == 0">Check Data Sources</span>
+                            </div>
                         </td>
                     </tr>
                     </tbody>
