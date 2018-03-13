@@ -343,7 +343,9 @@
                                             {{'AD_SOURCE_MODULE.PROFIT_VALUE'| translate }} ({{profitUnit[rule.profitType]}})</label>
 
                                         <div class="col-sm-9" ng-if="rule.profitType == 1">
-                                            <input server-error name="profitValue"
+                                            <input server-error
+                                             name="profitValue"
+                                             ng-required="true"
                                                    ng-model="rule.profitValue"
                                                    ng-change="changeRequireBuyPrice(rule)"
                                                    type="text"
@@ -355,7 +357,9 @@
                                         </div>
 
                                         <div class="col-sm-9" ng-if="rule.profitType == 2">
-                                            <input server-error name="profitValue"
+                                            <input server-error
+                                            name="profitValue"
+                                            ng-required="true"
                                                    ng-model="rule.profitValue"
                                                    ng-change="changeRequireBuyPrice(rule)"
                                                    type="number" min="0" max="100"
