@@ -242,7 +242,7 @@
                                             profiltValueLabel }}</label>
 
                                         <div class="col-sm-9" ng-if="rule.profitType == 1">
-                                            <input server-error name="profitValue"
+                                            <input server-error name="profitValue" ng-required="true"
                                                    ng-model="rule.profitValue"
                                                    ng-change="changeRequireSellPrice(rule)"
                                                    type="text"
@@ -252,7 +252,7 @@
                                         </div>
 
                                         <div class="col-sm-9" ng-if="rule.profitType == 2">
-                                            <input server-error name="profitValue"
+                                            <input server-error name="profitValue"  ng-required="true"
                                                    ng-model="rule.profitValue"
                                                    ng-change="changeRequireSellPrice(rule)"
                                                    type="number" min="0" max="99.99"
