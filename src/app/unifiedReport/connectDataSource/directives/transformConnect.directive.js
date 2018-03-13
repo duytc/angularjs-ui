@@ -882,10 +882,13 @@
                             else {
                                 if (elem.selectionStart) {
                                     elem.focus();
-                                    elem.setSelectionRange(caretPos, caretPos);
+                                    // elem.setSelectionRange(caretPos, caretPos);
                                 }
                                 else
+                                {
                                     elem.focus();
+                                }
+
                             }
                         }
                     }
