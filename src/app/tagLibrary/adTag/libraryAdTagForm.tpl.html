@@ -384,7 +384,7 @@
                                             'VIDEO_AD_TAG_MODULE.POSITION' | translate }}</label>
 
                                         <div class="col-sm-9">
-                                            <input name="position" id="inputPosition" ng-required="true"
+                                            <input name="position" id="inputPosition" ng-required="true" min="0"
                                                    ng-model="rule.position" server-error type="number"
                                                    class="form-control"
                                                    placeholder="{{ 'VIDEO_AD_TAG_MODULE.POSITION' | translate }}">
@@ -424,7 +424,7 @@
                                             }}</label>
 
                                         <div class="col-sm-9">
-                                            <input name="weight" ng-model="rule.rotationWeight" server-error
+                                            <input name="weight" ng-model="rule.rotationWeight" server-error min="0"
                                                    type="number" class="form-control"
                                                    placeholder="{{ 'AD_SOURCE_MODULE.PLACEHOLDER_WEIGHT' | translate }}">
                                         </div>
