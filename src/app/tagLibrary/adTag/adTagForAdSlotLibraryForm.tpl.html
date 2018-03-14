@@ -297,7 +297,7 @@
                     <label class="col-sm-1 control-label">{{ 'AD_TAG_MODULE.SELL_PRICE' | translate }}</label>
                     <div class="col-sm-5">
                         <input name="sellPrice" ng-model="adTag.libraryAdTag.sellPrice" min="0"
-                               ng-pattern="/^\-?\d+((\.|\,)\d+)?$/" type="text" class="form-control"
+                               ng-pattern="/^[0-9]{0,12}[.]?[0-9]{0,2}$/" type="text" class="form-control"
                                placeholder="{{ 'AD_TAG_MODULE.SELL_PRICE' | translate }}">
                     </div>
                 </div>
