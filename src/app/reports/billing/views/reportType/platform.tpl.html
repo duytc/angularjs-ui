@@ -18,6 +18,11 @@
                     <td at-title="{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}" at-attribute="slotOpportunities" at-sortable>
                         {{ item.slotOpportunities | number }}
                     </td>
+
+                    <td at-title="{{ 'REPORT.IMPRESSION_OPPORTUNITIES' | translate }}" at-attribute="adOpportunities" at-sortable>
+                        {{ item.adOpportunities | number }}
+                    </td>
+
                     <td at-title="{{ 'REPORT.BILLED_AMOUNT' | translate }}" at-attribute="billedAmount" at-sortable>
                         {{ item.billedAmount | currency }}
                     </td>

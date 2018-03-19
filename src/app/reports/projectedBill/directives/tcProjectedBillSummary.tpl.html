@@ -9,6 +9,10 @@
                         <span class="pull-right">{{ reportGroup.slotOpportunities | number }}</span>
                     </li>
                     <li>
+                        <label>{{ 'REPORT.IMPRESSION_OPPORTUNITIES' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.adOpportunities | number }}</span>
+                    </li>
+                    <li>
                         <label>{{ 'REPORT.BILLED_AMOUNT' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.billedAmount | currency }}</span>
                     </li>
@@ -24,6 +28,10 @@
                     <li>
                         <label>{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageSlotOpportunities | number }}</span>
+                    </li>
+                    <li>
+                        <label>{{ 'REPORT.IMPRESSION_OPPORTUNITIES' | translate }}</label>
+                        <span class="pull-right">{{ reportGroup.averageAdOpportunities | number }}</span>
                     </li>
                       <li>
                         <label>{{ 'REPORT.BILLED_AMOUNT' | translate }}</label>

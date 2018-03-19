@@ -11,6 +11,7 @@
         ])
         .constant('BILLING_FACTORS', [
             { label: 'Slot opportunity', key: 'SLOT_OPPORTUNITY', supportForModule: ['MODULE_DISPLAY']},
+            { label: 'Impression Opportunity', key: 'IMPRESSION_OPPORTUNITY', supportForModule: ['MODULE_DISPLAY']},
             { label: 'In-Banner Impression', key: 'VIDEO_AD_IMPRESSION', supportForModule: ['MODULE_IN_BANNER']},
             { label: 'Video impression', key: 'VIDEO_IMPRESSION', supportForModule: ['MODULE_ANALYTICS', 'MODULE_VIDEO']},
             { label: 'Visit', key: 'VISIT', supportForModule: ['MODULE_ANALYTICS']},

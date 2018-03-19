@@ -9,6 +9,10 @@
                             <label>{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}</label>
                             <span class="pull-right">{{ reportGroup.slotOpportunities | number }}</span>
                         </li>
+                        <li ng-if="reportGroup.adOpportunities">
+                            <label>{{ 'REPORT.IMPRESSION_OPPORTUNITIES' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.adOpportunities | number }}</span>
+                        </li>
                         <li ng-if="reportGroup.impressions">
                             <label>{{ 'REPORT.IMPRESSIONS' | translate }}</label>
                             <span class="pull-right">{{ reportGroup.impressions | number }}</span>
@@ -26,9 +30,13 @@
                 <div class="panel-heading">Daily Averages</div>
                 <div class="panel-body">
                     <ul class="list-unstyled report list-info">
-                        <li  ng-if="reportGroup.averageSlotOpportunities">
+                        <li ng-if="reportGroup.averageSlotOpportunities">
                             <label>{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}</label>
                             <span class="pull-right">{{ reportGroup.averageSlotOpportunities | number }}</span>
+                        </li>
+                        <li ng-if="reportGroup.averageAdOpportunities">
+                            <label>{{ 'REPORT.IMPRESSION_OPPORTUNITIES' | translate }}</label>
+                            <span class="pull-right">{{ reportGroup.averageAdOpportunities | number }}</span>
                         </li>
                         <li ng-if="reportGroup.averageImpressions">
                             <label>{{ 'REPORT.IMPRESSIONS' | translate }}</label>

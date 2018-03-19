@@ -910,6 +910,7 @@
                 "REFRESHES": "Refreshes",
                 "BILLED_AMOUNT": "Billed Amount",
                 "SLOT_OPPORTUNITIES": "Slot Ops",
+                "IMPRESSION_OPPORTUNITIES": "Impression Ops",
                 "REFRESHED_SLOT_OPPORTUNITIES": "Refreshed Slot Ops",
                 "NETWORK_OPPORTUNITIES": "Network Ops",
                 "AD_OPPORTUNITIES": "Impression Ops", // old: Ad Ops
