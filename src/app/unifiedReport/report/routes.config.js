@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('tagcade.unifiedReport.report')
@@ -29,8 +29,16 @@
                     }
                 },
                 resolve: {
-                    reportViewList: function (UnifiedReportViewManager) {
-                        return UnifiedReportViewManager.getList();
+
+                    reportViewList: function (UnifiedReportViewManager, $stateParams) {
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
+                        $stateParams.sortField = !$stateParams.sortField ? 'detail' : $stateParams.sortField;
+                        $stateParams.limit = !$stateParams.limit ? 10 : $stateParams.itemsPerPage;
+
+                        return UnifiedReportViewManager.one().get($stateParams).then(function (reportViewList) {
+                            return reportViewList.plain();
+                        });
                     }
                 },
                 ncyBreadcrumb: {
@@ -49,7 +57,7 @@
                     }
                 },
                 resolve: {
-                    dataSets: /* @ngInject */ function(UnifiedReportDataSetManager) {
+                    dataSets: /* @ngInject */ function (UnifiedReportDataSetManager) {
                         return UnifiedReportDataSetManager.getList().then(function (dataSets) {
                             return dataSets.plain();
                         });
@@ -60,8 +68,8 @@
                 },
                 customResolve: {
                     admin: {
-                        publishers: /* @ngInject */ function(adminUserManager) {
-                            return adminUserManager.getList({ filter: 'publisher' }).then(function (users) {
+                        publishers: /* @ngInject */ function (adminUserManager) {
+                            return adminUserManager.getList({filter: 'publisher'}).then(function (users) {
                                 return users.plain();
                             });
                         }
@@ -83,13 +91,13 @@
                     }
                 },
                 resolve: {
-                    dataSets: /* @ngInject */ function(UnifiedReportDataSetManager) {
+                    dataSets: /* @ngInject */ function (UnifiedReportDataSetManager) {
                         return UnifiedReportDataSetManager.getList().then(function (dataSets) {
                             return dataSets.plain();
                         });
                     },
                     reportView: function (UnifiedReportViewManager, $stateParams) {
-                        if(!!$stateParams.id) {
+                        if (!!$stateParams.id) {
                             return UnifiedReportViewManager.one($stateParams.id).get()
                                 .then(function (reportView) {
                                     angular.forEach(reportView.reportViewDataSets, function (reportViewDataSet) {
@@ -133,9 +141,9 @@
                             publisher: $stateParams.publisher,
                             isShowDataSetName: $stateParams.isShowDataSetName == 'true',
                             preCalculateTable: $stateParams.preCalculateTable,
-                            largeReport:  $stateParams.largeReport == 'true',
-                            availableToRun:  $stateParams.availableToRun == 'true',
-                            availableToChange:  $stateParams.availableToChange == 'true',
+                            largeReport: $stateParams.largeReport == 'true',
+                            availableToRun: $stateParams.availableToRun == 'true',
+                            availableToChange: $stateParams.availableToChange == 'true',
                             enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true',
                             subView: $stateParams.subView == 'true'
                         };
@@ -161,10 +169,10 @@
                 },
                 resolve: {
                     reportView: function (UnifiedReportViewManager, $stateParams) {
-                        if(!!$stateParams.id) {
+                        if (!!$stateParams.id) {
                             return UnifiedReportViewManager.one($stateParams.id).get()
                                 .then(function (reportView) {
-                                    if(!!reportView && reportView.subView && angular.isObject(reportView.masterReportView)) {
+                                    if (!!reportView && reportView.subView && angular.isObject(reportView.masterReportView)) {
                                         var masterReportView = angular.copy(reportView.masterReportView);
                                         masterReportView.filters = reportView.filters;
                                         delete  masterReportView.id;
@@ -202,14 +210,14 @@
                             publisher: $stateParams.publisher,
                             isShowDataSetName: $stateParams.isShowDataSetName == 'true',
                             preCalculateTable: $stateParams.preCalculateTable,
-                            largeReport:  $stateParams.largeReport == 'true',
-                            availableToRun:  $stateParams.availableToRun == 'true',
-                            availableToChange:  $stateParams.availableToChange == 'true',
+                            largeReport: $stateParams.largeReport == 'true',
+                            availableToRun: $stateParams.availableToRun == 'true',
+                            availableToChange: $stateParams.availableToChange == 'true',
                             enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true',
                             subView: $stateParams.subView == 'true'
                         };
                     },
-                    reportGroup: /* @ngInject */ function(unifiedReportBuilder, reportView, $stateParams) {
+                    reportGroup: /* @ngInject */ function (unifiedReportBuilder, reportView, $stateParams) {
                         var params = angular.copy(reportView);
                         params.userDefineDimensions = [];
                         params.userDefineMetrics = [];
@@ -224,14 +232,14 @@
                         var joinByMetrics = [];
                         var joinByDimensions = [];
 
-                        if(reportView.enableCustomDimensionMetric) {
+                        if (reportView.enableCustomDimensionMetric) {
                             angular.forEach(reportView.reportViewDataSets, function (reportViewItem) {
                                 angular.forEach(reportViewItem.dimensions, function (dimension) {
                                     var indexJoin = _.findIndex(reportView.joinBy, function (join) {
-                                        for(var i in join.joinFields) {
+                                        for (var i in join.joinFields) {
                                             var joinField = join.joinFields[i];
 
-                                            if(joinField.field == dimension && joinField.dataSet == reportViewItem.dataSet) {
+                                            if (joinField.field == dimension && joinField.dataSet == reportViewItem.dataSet) {
                                                 joinByDimensions.push(join.outputField);
                                                 return true
                                             }
@@ -240,17 +248,17 @@
                                         return false
                                     });
 
-                                    if(indexJoin == -1) {
+                                    if (indexJoin == -1) {
                                         params.userDefineDimensions.push(dimension + '_' + reportViewItem.dataSet);
                                     }
                                 });
 
                                 angular.forEach(reportViewItem.metrics, function (metric) {
                                     var indexJoin = _.findIndex(reportView.joinBy, function (join) {
-                                        for(var i in join.joinFields) {
+                                        for (var i in join.joinFields) {
                                             var joinField = join.joinFields[i];
 
-                                            if(joinField.field == metric && joinField.dataSet == reportViewItem.dataSet) {
+                                            if (joinField.field == metric && joinField.dataSet == reportViewItem.dataSet) {
                                                 joinByMetrics.push(join.outputField);
                                                 return true
                                             }
@@ -259,21 +267,21 @@
                                         return false
                                     });
 
-                                    if(indexJoin == -1) {
+                                    if (indexJoin == -1) {
                                         params.userDefineMetrics.push(metric + '_' + reportViewItem.dataSet);
                                     }
                                 });
                             });
 
-                            for(var x in reportView.joinBy) {
+                            for (var x in reportView.joinBy) {
                                 var join = reportView.joinBy[x];
 
-                                if(join.isVisible) {
-                                    if(params.userDefineDimensions.indexOf(join.outputField) == -1 && joinByDimensions.indexOf(join.outputField) > -1) {
+                                if (join.isVisible) {
+                                    if (params.userDefineDimensions.indexOf(join.outputField) == -1 && joinByDimensions.indexOf(join.outputField) > -1) {
                                         params.userDefineDimensions.push(join.outputField);
                                     }
 
-                                    if(params.userDefineMetrics.indexOf(join.outputField) == -1 && joinByMetrics.indexOf(join.outputField) > -1) {
+                                    if (params.userDefineMetrics.indexOf(join.outputField) == -1 && joinByMetrics.indexOf(join.outputField) > -1) {
                                         params.userDefineMetrics.push(join.outputField);
                                     }
                                 }
@@ -310,7 +318,7 @@
                             listId.push(item.dataSet);
                         });
 
-                        var params =  {dataSets: listId.toString()};
+                        var params = {dataSets: listId.toString()};
                         params.showDataSetName = reportView.isShowDataSetName;
 
                         return UnifiedReportViewManager.one('datasets').get(params);
@@ -332,13 +340,13 @@
                     }
                 },
                 resolve: {
-                    listShare: /* @ngInject */ function(UnifiedReportViewManager, $stateParams) {
+                    listShare: /* @ngInject */ function (UnifiedReportViewManager, $stateParams) {
                         return UnifiedReportViewManager.one($stateParams.reportViewId).one('sharekeyconfigs').getList();
                     },
                     reportView: function (UnifiedReportViewManager, $stateParams) {
                         return UnifiedReportViewManager.one($stateParams.reportViewId).get()
-                            .then(function(reportViewClone) {
-                                if(!!reportViewClone && reportViewClone.subView && angular.isObject(reportViewClone.masterReportView)) {
+                            .then(function (reportViewClone) {
+                                if (!!reportViewClone && reportViewClone.subView && angular.isObject(reportViewClone.masterReportView)) {
                                     var masterReportView = angular.copy(reportViewClone.masterReportView);
                                     masterReportView.filters = reportViewClone.filters;
                                     delete  masterReportView.id;

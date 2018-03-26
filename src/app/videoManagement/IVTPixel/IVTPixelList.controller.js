@@ -5,7 +5,9 @@
         .controller('IVTPixelList', IVTPixelList)
     ;
 
-    function IVTPixelList($scope, $stateParams ,$translate, $modal, AlertService, IVTPixels, VideoIVTPixelManager, AtSortableService, HISTORY_TYPE_PATH, historyStorage, EVENT_ACTION_SORTABLE) {
+    function IVTPixelList($scope, $stateParams ,$translate, $modal, AlertService, IVTPixels, VideoIVTPixelManager, AtSortableService, HISTORY_TYPE_PATH, historyStorage, EVENT_ACTION_SORTABLE, ITEMS_PER_PAGE) {
+
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
         $scope.IVTPixels = IVTPixels.records;
 
         $scope.hasData = function () {
@@ -29,6 +31,7 @@
 
         $scope.showPagination = showPagination;
         $scope.confirmDeletion = confirmDeletion;
+        $scope.changeItemsPerPage = changeItemsPerPage;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -112,5 +115,12 @@
         $scope.$on('$locationChangeSuccess', function() {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.IVTPixel)
         });
+
+        function changeItemsPerPage()
+        {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getIVTPixels(params, 500);
+        }
     }
 })();

@@ -45,16 +45,25 @@
 
     <!--<search-box show-query="true" sb-list="adSlots" search-fields="['id', 'libraryAdSlot.name', 'libraryAdSlot.width', 'libraryAdSlot.height']"></search-box>-->
 
-    <form class="input-group col-sm-6 search-box">
+    <form class="input-group col-sm-10 search-box">
         <input class="form-control" ng-model="selectData.query" ng-change="searchData()" placeholder="{{ 'UNIFIED_REPORT_MODULE.SEARCH' | translate }}" type="text"/>
-            <span class="input-group-addon">
+        <span class="input-group-addon">
                 {{ tableConfig.totalItems }} records found
             </span>
+
+        <span class="input-group-addon-items-per-page">
+            <select name="" id="selectItemsPerPage" ng-change="changeItemsPerPage()" ng-model="tableConfig.itemsPerPage">
+                <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
+            </select>
+
+            <label class="items-per-page" for="selectItemsPerPage"> Items Per Page </label>
+        </span>
+
     </form>
 
     <div class="panel-body" ng-if="hasData()">
         <div class="table-responsive">
-            <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="adSlots.records" at-config="tableConfig">
+            <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="adSlots" at-config="tableConfig">
                 <thead>
                 <tr>
                     <th ng-show="allAdSlot && !isChannel" at-attribute="site.name">{{ 'SITE' | translate }}</th>

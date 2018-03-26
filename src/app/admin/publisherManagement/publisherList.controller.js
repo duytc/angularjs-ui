@@ -6,9 +6,10 @@
         .controller('PublisherList', PublisherList)
     ;
 
-    function PublisherList($scope, $translate, publishers, autoLogin, adminUserManager, AlertService, historyStorage, HISTORY_TYPE_PATH) {
+    function PublisherList($scope, $translate, publishers, autoLogin, adminUserManager, AlertService, historyStorage, HISTORY_TYPE_PATH, ITEMS_PER_PAGE ) {
         $scope.publishers = publishers;
 
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
         $scope.today = new Date();
         $scope.visitPublisher = visitPublisher;
         $scope.showPagination = showPagination;

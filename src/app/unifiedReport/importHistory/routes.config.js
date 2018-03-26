@@ -18,7 +18,7 @@
                 }
             })
             .state('unifiedReport.importHistory.list', {
-                url: '/dataSet/{dataSetId:[0-9]+}/list?page&sortField&orderBy&search',
+                url: '/dataSet/{dataSetId:[0-9]+}/list?page&sortField&orderBy&search&limit',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -33,6 +33,7 @@
                         $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
                         $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
                         $stateParams.sortField = !$stateParams.sortField ? 'createdDate' : $stateParams.sortField;
+                        $stateParams.limit = !$stateParams.limit ? 10 : $stateParams.itemsPerPage;
 
                         return UnifiedReportDataSetManager.one($stateParams.dataSetId).one('importhistories').get($stateParams).then(function (importHistoryList) {
                             return importHistoryList.plain();

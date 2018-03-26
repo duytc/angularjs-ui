@@ -4,8 +4,11 @@
     angular.module('tagcade.unifiedReport.tag')
         .controller('TagList', TagList);
 
-    function TagList($scope, $modal, $stateParams, AlertService, tags, UnifiedReportTagManager, AtSortableService, historyStorage, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE) {
+    function TagList($scope, $modal, $stateParams, AlertService, tags, UnifiedReportTagManager, AtSortableService, historyStorage, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE, ITEMS_PER_PAGE) {
         $scope.tags = tags;
+
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
+        $scope.changeItemsPerPage = changeItemsPerPage;
 
         $scope.hasData = function () {
             return !!$scope.tags && $scope.tags.totalRecord > 0;
@@ -102,6 +105,13 @@
                     });
             }, ms || 0)
 
+        }
+
+        function changeItemsPerPage()
+        {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getTags(params, 500);
         }
 
         $scope.$on('$locationChangeSuccess', function() {

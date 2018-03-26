@@ -5,7 +5,7 @@
         .controller('AlertList', AlertList)
     ;
 
-    function AlertList($scope, _, $stateParams, $translate, $modal, UISelectMethod, alerts, publishers, dataSources, UnifiedReportAlertManager, UnifiedReportDataSourceManager, AlertService) {
+    function AlertList($scope, _, $stateParams, $translate, $modal, UISelectMethod, alerts, publishers, dataSources, UnifiedReportAlertManager, UnifiedReportDataSourceManager, AlertService, AtSortableService, ITEMS_PER_PAGE) {
         const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_UPLOAD = 1100;
         const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_EMAIL = 1101;
         const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_API = 1102;
@@ -29,9 +29,19 @@
         const ALERT_CODE_FETCHER_PASSWORD_EXPIRES = 2003;
         const ALERT_CODE_RECHECK_EMAIl = 2004;
 
+
+        var params = $stateParams;
+        var getAlertsForPagination;
+
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10
+            maxPages: 50,
+            totalItems: Number(alerts.totalRecord)
+        };
+
+        $scope.availableOptions = {
+            currentPage: $stateParams.page || 1,
+            pageSize: 10
         };
 
         $scope.selectedData = {
@@ -70,37 +80,44 @@
         $scope.markAsRead = markAsRead;
         $scope.markAsUnread = markAsUnread;
         $scope.viewDetail = viewDetail;
-        
+
         $scope.markAsReadMulti = markAsReadMulti;
         $scope.markAsUnreadMulti = markAsUnreadMulti;
         $scope.deleteAlertMulti = deleteAlertMulti;
 
-        $scope.getTitleAlert= getTitleAlert;
+        $scope.getTitleAlert = getTitleAlert;
         $scope.setItemForPager = setItemForPager;
         $scope.selectAllAlertInPages = selectAllAlertInPages;
         $scope.noneSelect = noneSelect;
         $scope.getAlerts = getAlerts;
         $scope.selectPublisher = selectPublisher;
         $scope.selectDataSource = selectDataSource;
+        $scope.changePage = changePage;
 
         $scope.clickType = clickType;
-        
+
+        $scope.alerts = alerts.records;
+
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
+
+        $scope.changeItemsPerPage = changeItemsPerPage;
+
         function clickType(type, typeKey) {
             var types = [];
 
             angular.forEach($scope.selectedData.type, function (value, key) {
-                if(value == true) {
+                if (value == true) {
                     types.push(_.find($scope.alertTypes, {key: key}).label)
                 }
             });
 
-            if($scope.alertTypes.length == types.length || types.length == 0) {
+            if ($scope.alertTypes.length == types.length || types.length == 0) {
                 $scope.selectedData.labelType = 'All Type'
             } else {
                 $scope.selectedData.labelType = types.toString().replace(',', ', ')
             }
         }
-        
+
         function selectPublisher() {
             $scope.selectedData.dataSource = null;
         }
@@ -114,11 +131,11 @@
 
             $scope.selectedData.labelType = 'All Type';
         }
-        
+
         function getAlerts() {
             var manage = null;
 
-            if(!!$scope.selectedData.dataSource) {
+            if (!!$scope.selectedData.dataSource) {
                 manage = UnifiedReportDataSourceManager.one($scope.selectedData.dataSource).one('alerts');
             } else {
                 manage = UnifiedReportAlertManager.one();
@@ -127,12 +144,15 @@
             var types = [];
 
             angular.forEach($scope.selectedData.type, function (value, key) {
-                if(value == true) {
+                if (value == true) {
                     types.push(key)
                 }
             });
 
-            return manage.getList(null, {publisher: $scope.selectedData.publisherId, types: types.length > 0 ? types.toString() : null})
+            return manage.getList(null, {
+                publisher: $scope.selectedData.publisherId,
+                types: types.length > 0 ? types.toString() : null
+            })
                 .then(function (data) {
                     itemsForPager = [];
                     alerts = data.plain();
@@ -146,7 +166,25 @@
                 });
         }
 
-        $scope.isFormValid = function() {
+        function _getAlertsForPagination(query, ms) {
+            clearTimeout(getAlertsForPagination);
+
+            getAlertsForPagination = setTimeout(function () {
+                return UnifiedReportAlertManager.one().get(query)
+                    .then(function (alerts) {
+                        AtSortableService.insertParamForUrl(query);
+
+                        setTimeout(function () {
+                            $scope.alerts = alerts.records;
+                            $scope.tableConfig.totalItems = Number(alerts.totalRecord);
+                            $scope.availableOptions.currentPage = Number(query.page);
+                        }, 0)
+                    });
+            }, ms || 0)
+
+        }
+
+        $scope.isFormValid = function () {
             return $scope.alertForm.$valid;
         };
 
@@ -154,7 +192,7 @@
             $scope.checkAllItem = true;
 
             angular.forEach(alerts, function (alert) {
-                if($scope.selectedAlert.indexOf(alert.id) == -1) {
+                if ($scope.selectedAlert.indexOf(alert.id) == -1) {
                     $scope.selectedAlert.push(alert.id)
                 }
             });
@@ -166,7 +204,7 @@
         }
 
         function setItemForPager(item) {
-            if(itemsForPager.length > $scope.tableConfig.itemsPerPage) {
+            if (itemsForPager.length > $scope.tableConfig.itemsPerPage) {
                 itemsForPager.splice(0, $scope.tableConfig.itemsPerPage);
             }
 
@@ -185,7 +223,7 @@
                     $scope.checkAllItem = false;
 
                     angular.forEach(angular.copy($scope.alerts), function (alert) {
-                        if($scope.selectedAlert.indexOf(alert.id) > -1) {
+                        if ($scope.selectedAlert.indexOf(alert.id) > -1) {
                             var index = _.findIndex(alerts, function (item) {
                                 return alert.id == item.id;
                             });
@@ -205,15 +243,15 @@
                             $scope.selectedAlert.splice($scope.selectedAlert.indexOf(alert.id), 1);
                             $scope.alerts = alerts;
 
-                            if($scope.tableConfig.currentPage > 0 && alerts.length/10 == $scope.tableConfig.currentPage) {
+                            if ($scope.tableConfig.currentPage > 0 && alerts.length / 10 == $scope.tableConfig.currentPage) {
                                 $scope.tableConfig.currentPage = $scope.tableConfig.currentPage - 1;
                             }
 
-                            if($scope.alerts.length == $scope.selectedAlert.length) {
+                            if ($scope.alerts.length == $scope.selectedAlert.length) {
                                 $scope.checkAllItem = true;
                             }
 
-                            if($scope.alerts.length == 0) {
+                            if ($scope.alerts.length == 0) {
                                 $scope.checkAllItem = false;
                             }
                         }
@@ -232,7 +270,7 @@
                     // $scope.checkAllItem = false;
 
                     angular.forEach($scope.alerts, function (alert) {
-                        if($scope.selectedAlert.indexOf(alert.id) > -1) {
+                        if ($scope.selectedAlert.indexOf(alert.id) > -1) {
                             alert.isRead = false
                         }
                     });
@@ -252,7 +290,7 @@
                     // $scope.checkAllItem = false;
 
                     angular.forEach($scope.alerts, function (alert) {
-                        if($scope.selectedAlert.indexOf(alert.id) > -1) {
+                        if ($scope.selectedAlert.indexOf(alert.id) > -1) {
                             alert.isRead = true
                         }
                     });
@@ -267,30 +305,37 @@
         }
 
         function showPagination() {
-            return angular.isArray($scope.alerts) && $scope.alerts.length > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.alerts) && alerts.totalRecord > $scope.tableConfig.itemsPerPage;
+        }
+
+        function changePage(currentPage) {
+            params = angular.extend(params, {
+                page: currentPage
+            });
+            _getAlertsForPagination(params, 500);
         }
 
         function checkedAlert(alert) {
             return $scope.selectedAlert.indexOf(alert.id) > -1
         }
 
-        function selectEntity (alert) {
+        function selectEntity(alert) {
             var index = $scope.selectedAlert.indexOf(alert.id);
 
-            if(index == -1) {
+            if (index == -1) {
                 $scope.selectedAlert.push(alert.id)
             } else {
                 $scope.selectedAlert.splice(index, 1);
                 $scope.checkAllItem = false;
             }
 
-            if($scope.selectedAlert.length == $scope.alerts.length) {
+            if ($scope.selectedAlert.length == $scope.alerts.length) {
                 $scope.checkAllItem = true;
             }
         }
 
-        function selectAll () {
-            if($scope.selectedAlert.length == itemsForPager.length) {
+        function selectAll() {
+            if ($scope.selectedAlert.length == itemsForPager.length) {
                 $scope.selectedAlert = [];
                 $scope.checkAllItem = false;
             } else {
@@ -298,7 +343,7 @@
                 $scope.checkAllItem = true;
 
                 angular.forEach(itemsForPager, function (alert) {
-                    if($scope.selectedAlert.indexOf(alert.id) == -1) {
+                    if ($scope.selectedAlert.indexOf(alert.id) == -1) {
                         $scope.selectedAlert.push(alert.id)
                     }
                 });
@@ -306,7 +351,7 @@
         }
 
         function deleteAlert(alert) {
-            var deleteAlert =  UnifiedReportAlertManager.one(alert.id).remove();
+            var deleteAlert = UnifiedReportAlertManager.one(alert.id).remove();
 
             deleteAlert
                 .catch(function () {
@@ -316,64 +361,64 @@
                     });
                 })
                 .then(function () {
-                    var index = alerts.indexOf(alert);
+                        var index = alerts.records.indexOf(alert);
 
-                    if (index > -1) {
-                        alerts.splice(index, 1);
+                        if (index > -1) {
+                            alerts.records.splice(index, 1);
+                        }
+
+                        $scope.alerts = alerts.records;
+
+                        var indexItemsForPager = _.findIndex(itemsForPager, function (item) {
+                            return alert.id == item.id;
+                        });
+
+                        if (indexItemsForPager > -1) {
+                            itemsForPager.splice(indexItemsForPager, 1);
+                        }
+
+                        $scope.selectedAlert.splice($scope.selectedAlert.indexOf(alert.id), 1);
+
+                        if ($scope.tableConfig.currentPage > 0 && alerts.length / 10 == $scope.tableConfig.currentPage) {
+                            $scope.tableConfig.currentPage = $scope.tableConfig.currentPage - 1;
+                        }
+
+                        AlertService.replaceAlerts({
+                            type: 'success',
+                            message: $translate.instant('UNIFIED_REPORT_ALERT_MODULE.DELETE_SUCCESS')
+                        });
+
+                        if ($scope.alerts.length == $scope.selectedAlert.length) {
+                            $scope.checkAllItem = true;
+                        }
                     }
-
-                    $scope.alerts = alerts;
-
-                    var indexItemsForPager = _.findIndex(itemsForPager, function (item) {
-                        return alert.id == item.id;
-                    });
-
-                    if (indexItemsForPager > -1) {
-                        itemsForPager.splice(indexItemsForPager, 1);
-                    }
-
-                    $scope.selectedAlert.splice($scope.selectedAlert.indexOf(alert.id), 1);
-
-                    if($scope.tableConfig.currentPage > 0 && alerts.length/10 == $scope.tableConfig.currentPage) {
-                        $scope.tableConfig.currentPage = $scope.tableConfig.currentPage - 1;
-                    }
-
-                    AlertService.replaceAlerts({
-                        type: 'success',
-                        message: $translate.instant('UNIFIED_REPORT_ALERT_MODULE.DELETE_SUCCESS')
-                    });
-
-                    if($scope.alerts.length == $scope.selectedAlert.length) {
-                        $scope.checkAllItem = true;
-                    }
-                }
-            );
+                );
 
         }
 
-        function markAsRead (alert, hideAlert) {
-            var updateAlert =  UnifiedReportAlertManager.one(alert.id).patch({isRead: true});
+        function markAsRead(alert, hideAlert) {
+            var updateAlert = UnifiedReportAlertManager.one(alert.id).patch({isRead: true});
 
             updateAlert
                 .then(function () {
                     alert.isRead = true;
 
-                    if(!hideAlert) {
+                    if (!hideAlert) {
                         AlertService.replaceAlerts({
                             type: 'success',
                             message: $translate.instant('UNIFIED_REPORT_ALERT_MODULE.MARK_ALERT_AS_READ_SUCCESS')
                         });
                     }
                 }).catch(function () {
-                    AlertService.replaceAlerts({
-                        type: 'error',
-                        message: $translate.instant('UNIFIED_REPORT_ALERT_MODULE.MARK_ALERT_AS_READ_FAIL')
-                    });
+                AlertService.replaceAlerts({
+                    type: 'error',
+                    message: $translate.instant('UNIFIED_REPORT_ALERT_MODULE.MARK_ALERT_AS_READ_FAIL')
+                });
             })
         }
 
-        function markAsUnread (alert) {
-            var updateAlert =  UnifiedReportAlertManager.one(alert.id).patch({isRead: false});
+        function markAsUnread(alert) {
+            var updateAlert = UnifiedReportAlertManager.one(alert.id).patch({isRead: false});
 
             updateAlert
                 .then(function () {
@@ -384,15 +429,15 @@
                         message: $translate.instant('UNIFIED_REPORT_ALERT_MODULE.MARK_ALERT_AS_UNREAD_SUCCESS')
                     });
                 }).catch(function () {
-                    AlertService.replaceAlerts({
-                        type: 'error',
-                        message: $translate.instant('UNIFIED_REPORT_ALERT_MODULE.MARK_ALERT_AS_UNREAD_FAIL')
-                    });
+                AlertService.replaceAlerts({
+                    type: 'error',
+                    message: $translate.instant('UNIFIED_REPORT_ALERT_MODULE.MARK_ALERT_AS_UNREAD_FAIL')
+                });
             })
         }
 
         function viewDetail(alert) {
-            if(!alert.isRead) {
+            if (!alert.isRead) {
                 markAsRead(alert, true);
             }
 
@@ -413,7 +458,7 @@
             var code = alert.code;
             var detail = alert.detail;
 
-            if(!!detail.detail) {
+            if (!!detail.detail) {
                 // support old alert detail with key "detail"
                 return detail.detail;
             }
@@ -437,7 +482,7 @@
                     return 'Failed to import a file into data set "' + detail.dataSetName + '". There was a mapping error due to invalid content on field "' + detail.column + '"';
 
                 case ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL:
-                    return 'Failed to import a file into data set "' + detail.dataSetName + '". A required field "'+ detail.column +'" is missing';
+                    return 'Failed to import a file into data set "' + detail.dataSetName + '". A required field "' + detail.column + '" is missing';
 
                 case ALERT_CODE_FILTER_ERROR_INVALID_NUMBER:
                     return 'Failed to import a file into data set "' + detail.dataSetName + '". There was an invalid number format on field "' + detail.column + '"';
@@ -470,7 +515,7 @@
                     return 'Password expires on data source ' + detail.dataSourceId + '. Please change password for account ' + detail.username + ' on link ' + detail.url + ' or contact your account manager';
 
                 case ALERT_CODE_NO_DATE_FORMAT:
-                    return 'A file failed to load. There was an invalid date format on field "' + detail.column +'"';
+                    return 'A file failed to load. There was an invalid date format on field "' + detail.column + '"';
 
                 case ALERT_CODE_DATA_IMPORTED_SUCCESSFULLY:
                     return 'A new file has been loaded into data set "' + detail.dataSetName + '"';
@@ -483,12 +528,18 @@
             }
         }
 
+        function changeItemsPerPage() {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getAlertsForPagination(params, 500);
+        }
+
         $scope.$watch(function () {
             return $scope.tableConfig.currentPage
         }, function () {
             itemsForPager = [];
 
-            if($scope.checkAllItem == true && alerts.length == $scope.selectedAlert.length) {
+            if ($scope.checkAllItem == true && alerts.length == $scope.selectedAlert.length) {
                 return
             }
 

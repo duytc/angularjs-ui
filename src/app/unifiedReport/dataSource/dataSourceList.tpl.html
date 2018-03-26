@@ -18,11 +18,20 @@
 
     <!--<search-box show-query="true" sb-list="dataSources.records" search-fields="['id', 'name']"></search-box>-->
 
-    <form class="input-group col-sm-6 search-box">
+    <form class="input-group col-sm-10 search-box">
         <input class="form-control" ng-model="selectData.query" ng-change="searchData()" placeholder="{{ 'UNIFIED_REPORT_MODULE.SEARCH' | translate }}" type="text"/>
             <span class="input-group-addon">
                 {{ tableConfig.totalItems }} records found
             </span>
+
+        <span class="input-group-addon-items-per-page">
+            <select name="" id="selectItemsPerPage" ng-change="changeItemsPerPage()" ng-model="tableConfig.itemsPerPage">
+                <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
+            </select>
+
+            <label class="items-per-page" for="selectItemsPerPage"> Items Per Page </label>
+        </span>
+
     </form>
 
     <div ng-if="hasData()" class="panel-body">
@@ -81,7 +90,7 @@
                 </tbody>
             </table>
 
-            <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+            <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"> </pagination>
         </div>
     </div>
 </div>

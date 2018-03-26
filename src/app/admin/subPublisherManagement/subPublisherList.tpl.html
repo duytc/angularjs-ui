@@ -16,7 +16,16 @@
         </div>
     </div>
 
-    <search-box show-query="true" sb-list="subPublishers" search-fields="['id', 'firstName', 'lastName', 'company', 'username', 'email', 'phone']"></search-box>
+    <div style="display: flex">
+        <search-box class="col-sm-10" show-query="true" sb-list="sites" search-fields="['id', 'name', 'publisher.username', 'publisher.company', 'domain']"></search-box>
+        <div style="float:right; margin-right: 20px; margin-top: 5px">
+            <select id="selectItemsPerPage" ng-model="tableConfig.itemsPerPage">
+                <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
+            </select>
+            <label class="items-per-page" for="selectItemsPerPage"> Items Per Page </label>
+
+        </div>
+    </div>
 
     <div class="panel-body">
         <div class="table-responsive">

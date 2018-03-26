@@ -55,6 +55,10 @@
                 resolve: {
                     adTags: /* @ngInject */ function(VideoPublisherManager, $stateParams) {
                         $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
+                        $stateParams.sortField = !$stateParams.sortField ? 'name' : $stateParams.sortField;
+                        $stateParams.limit = !$stateParams.limit ? 10 : $stateParams.itemsPerPage;
+
                         return VideoPublisherManager.one($stateParams.videoPublisherId).one('videowaterfalltags').get($stateParams);
                     },
                     videoPublisher: function(VideoPublisherManager, $stateParams) {

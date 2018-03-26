@@ -1171,7 +1171,8 @@
 
                 "SELECT_A_DATA_SOURCE": "Select a Data Source",
                 "USE_INTEGRATION": "Use Integration",
-                "DATE_RANGE_DETECTION_ENABLED": "Date Range Detection"
+                "DATE_RANGE_DETECTION_ENABLED": "Date Range Detection",
+                "ITEMS_PER_PAGE": "Items Per Page",
             },
             "UNIFIED_REPORT_ALERT_MODULE": {
                 "VIEW_DETAIL": "View Detail",

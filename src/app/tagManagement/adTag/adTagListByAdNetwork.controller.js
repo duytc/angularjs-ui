@@ -5,9 +5,11 @@
         .controller('AdTagListByAdNetwork', AdTagListByAdNetwork)
     ;
 
-    function AdTagListByAdNetwork($scope, $translate, $stateParams, $state, $modal, adTags, adNetwork, AdTagManager, AlertService, AdTagLibrariesManager, AtSortableService, AdNetworkManager, historyStorage, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE) {
+    function AdTagListByAdNetwork($scope, $translate, $stateParams, $state, $modal, adTags, adNetwork, AdTagManager, AlertService, AdTagLibrariesManager, AtSortableService, AdNetworkManager, historyStorage, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE, ITEMS_PER_PAGE) {
         $scope.adNetwork = adNetwork;
         $scope.adTags = adTags;
+
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
 
         $scope.hasAdTags = function () {
             return !!adTags.totalRecord;
@@ -19,6 +21,7 @@
         $scope.shareAdTag = shareAdTag;
         $scope.changePage = changePage;
         $scope.searchData = searchData;
+        $scope.changeItemsPerPage = changeItemsPerPage;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -213,6 +216,14 @@
                     });
             }, ms || 0);
         }
+
+        function changeItemsPerPage()
+        {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getAdTag(params, 500);
+        }
+
 
         $scope.$on('$locationChangeSuccess', function() {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.adTagAdNetwork)

@@ -6,13 +6,16 @@
         .controller('VideoPublisherList', VideoPublisherList)
     ;
 
-    function VideoPublisherList($scope, $translate, $stateParams, AtSortableService, videoPublishers, VideoPublisherManager, AlertService, dateUtil, historyStorage, DIMENSIONS_OPTIONS_VIDEO_REPORT, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE) {
+    function VideoPublisherList($scope, $translate, $stateParams, AtSortableService, videoPublishers, VideoPublisherManager, AlertService, dateUtil, historyStorage, DIMENSIONS_OPTIONS_VIDEO_REPORT, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE, ITEMS_PER_PAGE) {
 
         $scope.videoPublishers = videoPublishers.records;
         $scope.today = new Date();
         $scope.showPagination = showPagination;
         $scope.togglePublisherStatus = togglePublisherStatus;
         $scope.paramsReport = paramsReport;
+
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
+        $scope.changeItemsPerPage = changeItemsPerPage;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -128,6 +131,13 @@
 
         function showPagination() {
             return angular.isArray($scope.videoPublishers) && $scope.tableConfig.totalItems > $scope.tableConfig.itemsPerPage;
+        }
+
+        function changeItemsPerPage()
+        {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getVideoPublishers(params, 500);
         }
 
         $scope.$on('$locationChangeSuccess', function() {

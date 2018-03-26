@@ -5,8 +5,10 @@
         .controller('LibraryAdTagList', LibraryAdTagList)
     ;
 
-    function LibraryAdTagList($scope, $translate, $stateParams, EVENT_ACTION_SORTABLE ,$modal, adTags, AlertService, AdTagLibrariesManager, AdSlotManager, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT, AtSortableService) {
+    function LibraryAdTagList($scope, $translate, $stateParams, EVENT_ACTION_SORTABLE ,$modal, adTags, AlertService, AdTagLibrariesManager, AdSlotManager, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT, AtSortableService, ITEMS_PER_PAGE) {
         $scope.adTags = adTags.records;
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
+        $scope.changeItemsPerPage = changeItemsPerPage;
 
         $scope.hasData = function () {
             return !!adTags.records.length;
@@ -161,6 +163,13 @@
                         $scope.availableOptions.currentPage = Number(query.page);
                     });
             }, ms || 0);
+        }
+
+        function changeItemsPerPage()
+        {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getAdTags(params, 500);
         }
 
     }

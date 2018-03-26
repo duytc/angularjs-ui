@@ -5,9 +5,10 @@
         .controller('ChannelSiteList', ChannelSiteList)
     ;
 
-    function ChannelSiteList($scope, $translate, $filter, $modal, AlertService, channel, sites, ChannelManager, SiteManager, SiteCache, historyStorage, HISTORY_TYPE_PATH) {
+    function ChannelSiteList($scope, $translate, $filter, $modal, AlertService, channel, sites, ChannelManager, SiteManager, SiteCache, historyStorage, HISTORY_TYPE_PATH, ITEMS_PER_PAGE) {
         $scope.sites = sites;
         $scope.channel = channel;
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
 
         $scope.hasData = function () {
             return !!sites.length;

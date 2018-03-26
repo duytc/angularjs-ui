@@ -150,6 +150,8 @@
                 'rnd'           : '${cache_buster}'
             }
 
-        })
+        }).constant('ITEMS_PER_PAGE', [
+        10, 25, 50, 100
+    ]);
     ;
 })();

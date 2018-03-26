@@ -4,11 +4,16 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportView', UnifiedReportView);
 
-    function UnifiedReportView($scope, _, $q, $translate, $modal, AlertService, reportViewList, UnifiedReportViewManager, dataService, UserStateHelper, AtSortableService, API_UNIFIED_END_POINT, historyStorage, HISTORY_TYPE_PATH) {
-        $scope.reportViewList = reportViewList;
+    function UnifiedReportView($scope, $stateParams, $q, $translate, $modal, AlertService, reportViewList, UnifiedReportViewManager, dataService, UserStateHelper, AtSortableService, API_UNIFIED_END_POINT, historyStorage, HISTORY_TYPE_PATH, ITEMS_PER_PAGE) {
+
+        var params = $stateParams;
+        var getReportViewList;
+
+        $scope.reportViewList = reportViewList.records;
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
 
         $scope.hasData = function () {
-            return !!reportViewList.length;
+            return !!$scope.reportViewList.length;
         };
 
         if (!$scope.hasData()) {
@@ -20,7 +25,17 @@
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10
+            maxPages: 10,
+            totalItems: Number(reportViewList.totalRecord)
+        };
+
+        $scope.selectData = {
+            query: $stateParams.searchKey || null
+        };
+
+        $scope.availableOptions = {
+            currentPage: $stateParams.page || 1,
+            pageSize: 10
         };
 
         $scope.showPagination = showPagination;
@@ -30,7 +45,17 @@
         $scope.getShareableLink = getShareableLink;
         $scope.cloneReportView = cloneReportView;
         $scope.createTemplate = createTemplate;
-        
+        $scope.searchData = searchData;
+        $scope.changeItemsPerPage = changeItemsPerPage;
+        $scope.changePage = changePage;
+
+        function changePage(currentPage) {
+            params = angular.extend(params, {
+                page: currentPage
+            });
+            _getReportViewList(params, 500);
+        }
+
         function createTemplate() {
             $modal.open({
                 templateUrl: 'unifiedReport/report/createTemplate.tpl.html',
@@ -52,7 +77,7 @@
                     };
 
                     $scope.isFormValid = function () {
-                      return $scope.createTemplate.$valid
+                        return $scope.createTemplate.$valid
                     };
 
                     $scope.submit = function () {
@@ -62,7 +87,10 @@
                             tags.push(tag.name);
                         });
 
-                        UnifiedReportViewManager.one($scope.template.reportView).one('reportviewtemplates').post(null, {name: $scope.template.name, tags: tags})
+                        UnifiedReportViewManager.one($scope.template.reportView).one('reportviewtemplates').post(null, {
+                            name: $scope.template.name,
+                            tags: tags
+                        })
                             .catch(
                                 function (response) {
                                     $modalInstance.close();
@@ -116,7 +144,7 @@
 
             var params = angular.copy(reportView);
 
-            if(!!params && params.subView && angular.isObject(params.masterReportView)) {
+            if (!!params && params.subView && angular.isObject(params.masterReportView)) {
                 var masterReportView = angular.copy(params.masterReportView);
                 masterReportView.filters = reportView.filters;
                 delete  masterReportView.id;
@@ -172,34 +200,34 @@
             modalInstance.result.then(function () {
                 return UnifiedReportViewManager.one(reportView.id).remove()
                     .then(
-                    function () {
-                        var index = reportViewList.indexOf(reportView);
+                        function () {
+                            var index = reportViewList.indexOf(reportView);
 
-                        if (index > -1) {
-                            reportViewList.splice(index, 1);
-                        }
+                            if (index > -1) {
+                                reportViewList.splice(index, 1);
+                            }
 
-                        $scope.reportViewList = reportViewList;
+                            $scope.reportViewList = reportViewList;
 
-                        if ($scope.tableConfig.currentPage > 0 && reportViewList.length/10 == $scope.tableConfig.currentPage) {
-                            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
-                            $scope.tableConfig.currentPage =- 1;
-                        }
+                            if ($scope.tableConfig.currentPage > 0 && reportViewList.length / 10 == $scope.tableConfig.currentPage) {
+                                AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
+                                $scope.tableConfig.currentPage = -1;
+                            }
 
-                        AlertService.replaceAlerts({
-                            type: 'success',
-                            message: 'The report view was deleted'
-                        });
-                    },
-                    function (response) {
-                        if(!!response && !!response.data && !!response.data.message) {
                             AlertService.replaceAlerts({
-                                type: 'danger',
-                                message: response.data.message
+                                type: 'success',
+                                message: 'The report view was deleted'
                             });
+                        },
+                        function (response) {
+                            if (!!response && !!response.data && !!response.data.message) {
+                                AlertService.replaceAlerts({
+                                    type: 'danger',
+                                    message: response.data.message
+                                });
+                            }
                         }
-                    }
-                );
+                    );
             });
         }
 
@@ -214,7 +242,7 @@
                     reportView: function () {
                         var reportViewClone = angular.copy(reportView);
 
-                        if(!!reportViewClone && reportViewClone.subView && angular.isObject(reportViewClone.masterReportView)) {
+                        if (!!reportViewClone && reportViewClone.subView && angular.isObject(reportViewClone.masterReportView)) {
                             var masterReportView = angular.copy(reportViewClone.masterReportView);
                             masterReportView.filters = reportViewClone.filters;
                             delete  masterReportView.id;
@@ -235,12 +263,42 @@
             });
         }
 
+        function _getReportViewList(query, ms) {
+            clearTimeout(getReportViewList);
+
+            getReportViewList = setTimeout(function () {
+                return UnifiedReportViewManager.one().get(query)
+                    .then(function (reportViewList) {
+                        AtSortableService.insertParamForUrl(query);
+
+                        setTimeout(function () {
+                            $scope.reportViewList = reportViewList.records;
+                            $scope.tableConfig.totalItems = Number(reportViewList.totalRecord);
+                            $scope.availableOptions.currentPage = Number(query.page);
+                        }, 0)
+                    });
+            }, ms || 0)
+
+        }
+
+        function searchData() {
+            var query = {searchKey: $scope.selectData.query || ''};
+            params = angular.extend(params, query);
+            _getReportViewList(params, 500);
+        }
+
         function showPagination() {
-            return angular.isArray($scope.reportViewList) && $scope.reportViewList.length > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.reportViewList) && reportViewList.totalRecord > $scope.tableConfig.itemsPerPage;
         }
 
         $scope.$on('$locationChangeSuccess', function () {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.unifiedReportView)
         });
+
+        function changeItemsPerPage() {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getReportViewList(params, 500);
+        }
     }
 })();

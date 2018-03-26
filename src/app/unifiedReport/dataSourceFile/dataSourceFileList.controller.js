@@ -1,11 +1,11 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('tagcade.unifiedReport.dataSourceFile')
         .controller('DataSourceFileList', DataSourceFileList)
     ;
 
-    function DataSourceFileList($scope, $q, $modal, AtSortableService, allEntryIds, EVENT_ACTION_SORTABLE, $stateParams, dataSource, dataSourceFiles, UnifiedReportDataSourceManager, UnifiedReportDataSourceFileManager, $translate, AlertService, historyStorage, HISTORY_TYPE_PATH) {
+    function DataSourceFileList($scope, $q, $modal, AtSortableService, allEntryIds, EVENT_ACTION_SORTABLE, $stateParams, dataSource, dataSourceFiles, UnifiedReportDataSourceManager, UnifiedReportDataSourceFileManager, $translate, AlertService, historyStorage, HISTORY_TYPE_PATH, ITEMS_PER_PAGE) {
         const ALERT_CODE_DATA_IMPORT_MAPPING_FAIL = 1201;
         const ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL = 1202;
         const ALERT_CODE_FILTER_ERROR_INVALID_NUMBER = 1203;
@@ -18,10 +18,15 @@
         const ALERT_CODE_NO_DATE_FORMAT = 1210;
         const ALERT_CODE_UN_EXPECTED_ERROR = 2000;
 
+
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
+
+        $scope.changeItemsPerPage = changeItemsPerPage;
+
         $scope.dataSourceFiles = (dataSourceFiles.constructor === Array) ? {
             records: dataSourceFiles,
             totalRecord: (dataSourceFiles.length)
-        } : dataSourceFiles ;
+        } : dataSourceFiles;
 
         $scope.dataSource = dataSource;
 
@@ -45,7 +50,7 @@
 
         $scope.dataSourceId = $stateParams.dataSourceId;
 
-        var getDataSourceEntry ;
+        var getDataSourceEntry;
         var params = $stateParams;
 
         $scope.formProcessing = false;
@@ -114,7 +119,7 @@
                 },
                 resolve: {
                     missingDate: function () {
-                       return $scope.missingDate
+                        return $scope.missingDate
                     }
                 }
             });
@@ -142,7 +147,7 @@
                     });
                 });
         }
-        
+
         function previewData(dataSourceFile) {
             UnifiedReportDataSourceFileManager.one(dataSourceFile.id).one('preview').get({limit: 1000})
                 .then(function (reportView) {
@@ -202,7 +207,7 @@
                         size: 'lg',
                         resolve: {
                             message: function () {
-                                return  convertMessage(response.data.message);
+                                return convertMessage(response.data.message);
                             }
                         },
                         controller: function ($scope, message) {
@@ -225,7 +230,7 @@
         function setItemForPager(item) {
             itemsForPager.push(item);
         }
-        
+
         function viewDetails(dataSourceFile) {
             $modal.open({
                 templateUrl: 'unifiedReport/dataSourceFile/viewDetails.tpl.html',
@@ -242,9 +247,9 @@
 
                     $scope.dataSourceFile = dataSourceFile;
                     $scope.metaData = dataSourceFile.metaData;
-                    
+
                     $scope.showAlert = function () {
-                        if(!$scope.metaData || !angular.isObject($scope.metaData) || _.difference(_.keys($scope.mapLabel), _.keys($scope.metaData)).length == 6) {
+                        if (!$scope.metaData || !angular.isObject($scope.metaData) || _.difference(_.keys($scope.mapLabel), _.keys($scope.metaData)).length == 6) {
                             return true
                         }
 
@@ -258,7 +263,7 @@
                 }
             });
         }
-        
+
         function replayData(dataSourceFile) {
             UnifiedReportDataSourceFileManager.one(dataSourceFile.id).one('replaydata').post()
                 .then(function () {
@@ -270,7 +275,7 @@
                     });
                 })
                 .catch(function (response) {
-                    if(!!response.data.message) {
+                    if (!!response.data.message) {
                         AlertService.replaceAlerts({
                             type: 'error',
                             message: response.data.message
@@ -295,11 +300,11 @@
                         function () {
                             _getDataSourceFiles(params, 0)
                                 .then(function () {
-                                    if(allEntryIds.indexOf(dataSourceFile.id) > -1) {
+                                    if (allEntryIds.indexOf(dataSourceFile.id) > -1) {
                                         allEntryIds.splice(allEntryIds.indexOf(dataSourceFile.id), 1);
                                     }
 
-                                    if($scope.selectedDataSourceFiles.indexOf(dataSourceFile.id) > -1) {
+                                    if ($scope.selectedDataSourceFiles.indexOf(dataSourceFile.id) > -1) {
                                         $scope.selectedDataSourceFiles.splice($scope.selectedDataSourceFiles.indexOf(dataSourceFile.id), 1);
                                     }
 
@@ -307,7 +312,7 @@
                                         return item.id == dataSourceFile.id
                                     });
 
-                                    if(indexItemsForPager > -1) {
+                                    if (indexItemsForPager > -1) {
                                         itemsForPager.splice(indexItemsForPager, 1);
                                     }
 
@@ -316,7 +321,7 @@
                                         message: $translate.instant('UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DELETE_SUCCESS')
                                     });
 
-                                    if($scope.tableConfig.totalItems == 0) {
+                                    if ($scope.tableConfig.totalItems == 0) {
                                         $scope.isShowAlert = false;
                                     }
                                 });
@@ -333,8 +338,8 @@
             });
         };
 
-        function selectAll () {
-            if($scope.selectedDataSourceFiles.length == itemsForPager.length) {
+        function selectAll() {
+            if ($scope.selectedDataSourceFiles.length == itemsForPager.length) {
                 $scope.selectedDataSourceFiles = [];
                 $scope.checkAllItem = false;
             } else {
@@ -342,7 +347,7 @@
                 $scope.checkAllItem = true;
 
                 angular.forEach(itemsForPager, function (item) {
-                    if($scope.selectedDataSourceFiles.indexOf(item.id) == -1) {
+                    if ($scope.selectedDataSourceFiles.indexOf(item.id) == -1) {
                         $scope.selectedDataSourceFiles.push(item.id)
                     }
                 });
@@ -353,27 +358,27 @@
             return $scope.selectedDataSourceFiles.indexOf(dataSourceFile.id) > -1
         }
 
-        function selectEntity (dataSourceFile) {
+        function selectEntity(dataSourceFile) {
             var index = $scope.selectedDataSourceFiles.indexOf(dataSourceFile.id);
 
-            if(index == -1) {
+            if (index == -1) {
                 $scope.selectedDataSourceFiles.push(dataSourceFile.id)
             } else {
                 $scope.selectedDataSourceFiles.splice(index, 1);
                 $scope.checkAllItem = false;
             }
 
-            if($scope.selectedDataSourceFiles.length == $scope.dataSourceFiles.records.length) {
+            if ($scope.selectedDataSourceFiles.length == $scope.dataSourceFiles.records.length) {
                 $scope.checkAllItem = true;
             }
 
 
-            if( _.difference(allEntryIds, $scope.selectedDataSourceFiles).length == 0) {
+            if (_.difference(allEntryIds, $scope.selectedDataSourceFiles).length == 0) {
                 $scope.checkAllItem = true;
             }
         }
 
-        function replayMultiData () {
+        function replayMultiData() {
             UnifiedReportDataSourceFileManager.one().customPUT({ids: $scope.selectedDataSourceFiles}, null, {replay: true})
                 .then(function () {
                     AlertService.clearAll();
@@ -411,12 +416,12 @@
             return angular.isArray($scope.dataSourceFiles.records) && $scope.dataSourceFiles.totalRecord > $scope.tableConfig.itemsPerPage;
         }
 
-        $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
+        $scope.$on(EVENT_ACTION_SORTABLE, function (event, query) {
             params = angular.extend(params, query);
             _getDataSourceFiles(params);
         });
 
-        $scope.$on('$locationChangeSuccess', function() {
+        $scope.$on('$locationChangeSuccess', function () {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.dataSourceFile);
 
             itemsForPager = [];
@@ -445,14 +450,14 @@
         function _getDataSourceFiles(query, timeOut) {
             clearTimeout(getDataSourceEntry);
 
-            return $q(function(resolve, reject) {
-                getDataSourceEntry = setTimeout(function() {
-                    if($stateParams.dataSourceId) {
+            return $q(function (resolve, reject) {
+                getDataSourceEntry = setTimeout(function () {
+                    if ($stateParams.dataSourceId) {
                         return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).customGET('datasourceentries', query)
-                            .then(function(dataSourceFiles) {
+                            .then(function (dataSourceFiles) {
                                 AtSortableService.insertParamForUrl(query);
 
-                                setTimeout(function() {
+                                setTimeout(function () {
                                     $scope.dataSourceFiles = dataSourceFiles;
                                     $scope.tableConfig.totalItems = Number(dataSourceFiles.totalRecord);
                                     $scope.availableOptions.currentPage = Number(query.page);
@@ -465,10 +470,10 @@
 
                     } else {
                         return UnifiedReportDataSourceFileManager.one().get(query)
-                            .then(function(dataSourceFiles) {
+                            .then(function (dataSourceFiles) {
                                 AtSortableService.insertParamForUrl(query);
 
-                                setTimeout(function() {
+                                setTimeout(function () {
                                     $scope.dataSourceFiles = dataSourceFiles;
                                     $scope.tableConfig.totalItems = Number(dataSourceFiles.totalRecord);
                                     $scope.availableOptions.currentPage = Number(query.page);
@@ -481,7 +486,7 @@
             });
 
             function _resetCheckImported(dataSourceFiles) {
-                if( _.difference(allEntryIds, $scope.selectedDataSourceFiles).length == 0) {
+                if (_.difference(allEntryIds, $scope.selectedDataSourceFiles).length == 0) {
                     $scope.checkAllItem = true;
                 } else {
                     $scope.checkAllItem = false
@@ -492,7 +497,7 @@
         function convertMessage(message) {
             try {
                 message = angular.fromJson(message);
-            } catch(err) {
+            } catch (err) {
                 return message || 'An unknown server error occurred'
             }
 
@@ -531,11 +536,17 @@
                     return 'cannot find any file in this data source for dry run';
 
                 case ALERT_CODE_NO_DATE_FORMAT:
-                    return 'FILTER ERROR: Invalid date format on field "' + detail.column +'".';
+                    return 'FILTER ERROR: Invalid date format on field "' + detail.column + '".';
 
                 default:
                     return 'Unknown code (' + detail.code + ')';
             }
+        }
+
+        function changeItemsPerPage() {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getDataSourceFiles(params, 500);
         }
     }
 })();

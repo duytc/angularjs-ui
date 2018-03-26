@@ -5,10 +5,10 @@
         .controller('AdSlotList', AdSlotList)
     ;
 
-    function AdSlotList($scope, $translate, $state, $stateParams, $modal, Auth, AlertService, adSlotService, SiteManager, adSlots, site, AdSlotManager, AtSortableService, libraryAdSlotService, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT, EVENT_ACTION_SORTABLE) {
+    function AdSlotList($scope, $translate, $state, $stateParams, $modal, Auth, AlertService, adSlotService, SiteManager, adSlots, site, AdSlotManager, AtSortableService, libraryAdSlotService, historyStorage, HISTORY_TYPE_PATH, TYPE_AD_SLOT, EVENT_ACTION_SORTABLE, ITEMS_PER_PAGE) {
         $scope.site = site;
-
-        $scope.adSlots = adSlots;
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
+        $scope.adSlots = adSlots.records;
         $scope.adSlotTypes = TYPE_AD_SLOT;
 
         $scope.smartAdSlots = [];
@@ -21,11 +21,7 @@
         };
 
         $scope.hasData = function () {
-            if(angular.isArray(adSlots)) {
-                return  adSlots.length > 0;
-            }
-
-            return !!adSlots.totalRecord;
+            return $scope.adSlots.length;
         };
 
         if (!$scope.hasData()) {
@@ -46,6 +42,8 @@
         $scope.unLinkAdSlot = unLinkAdSlot;
         $scope.changePage = changePage;
         $scope.searchData = searchData;
+        $scope.changeItemsPerPage = changeItemsPerPage;
+        $scope.changePage = changePage;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -168,11 +166,11 @@
         };
 
         function showPagination() {
-            if(angular.isArray($scope.adSlots)) {
+            if(angular.isArray(adSlots)) {
                 return $scope.adSlots.length > $scope.tableConfig.itemsPerPage;
             }
 
-            return angular.isArray($scope.adSlots.records) && $scope.adSlots.totalRecord > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.adSlots) && adSlots.totalRecord > $scope.tableConfig.itemsPerPage;
         }
 
         function backToListSite() {
@@ -242,6 +240,19 @@
             _getAdSlot(params, 500);
         }
 
+        function changeItemsPerPage()
+        {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getAdSlot(params, 500);
+        }
+
+        function changePage(currentPage) {
+            params = angular.extend(params, {page: currentPage});
+            _getAdSlot(params, 500);
+        }
+
+
         $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
             params = angular.extend(params, query);
             _getAdSlot(params);
@@ -265,7 +276,7 @@
                 return Manager
                     .then(function(adSlots) {
                         AtSortableService.insertParamForUrl(query);
-                        $scope.adSlots = adSlots;
+                        $scope.adSlots = adSlots.records;
                         $scope.tableConfig.totalItems = Number(adSlots.totalRecord);
                         $scope.availableOptions.currentPage = Number(query.page);
                     });

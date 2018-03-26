@@ -36,6 +36,10 @@
                     // because during init it attaches additional behaviour to the adslots resource
                     adSlots: /* @ngInject */ function($stateParams, SiteManager) {
                         $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
+                        $stateParams.sortField = !$stateParams.sortField ? 'name' : $stateParams.sortField;
+                        $stateParams.limit = !$stateParams.limit ? 10 : $stateParams.itemsPerPage;
+
                         return SiteManager.one($stateParams.siteId).one('adslots').get($stateParams).then(function (adSlots) {
                             return adSlots.plain();
                         });

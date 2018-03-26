@@ -5,9 +5,11 @@
         .controller('AdNetworkList', AdNetworkList)
     ;
 
-    function AdNetworkList($scope, $stateParams, $translate, $modal, $q, AlertService, AdNetworkManager, AdNetworkCache, adNetworks, historyStorage, HISTORY_TYPE_PATH) {
+    function AdNetworkList($scope, $stateParams, $translate, $modal, $q, AlertService, AdNetworkManager, AdNetworkCache, adNetworks, historyStorage, HISTORY_TYPE_PATH, ITEMS_PER_PAGE) {
         $scope.adNetworks = adNetworks;
         $scope.blackList = $stateParams.id;
+
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
 
         $scope.hasData = function () {
             return !!adNetworks.length;
@@ -127,6 +129,8 @@
         function showPagination() {
             return angular.isArray($scope.adNetworks) && $scope.adNetworks.length > $scope.tableConfig.itemsPerPage;
         }
+
+
 
         $scope.$on('$locationChangeSuccess', function() {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.adNetwork)

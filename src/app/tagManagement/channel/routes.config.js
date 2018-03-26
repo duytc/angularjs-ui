@@ -32,8 +32,13 @@
                     }
                 },
                 resolve: {
-                    channels: /* @ngInject */ function(ChannelManager) {
-                        return ChannelManager.getList().then(function (channels) {
+                    channels: /* @ngInject */ function(ChannelManager, $stateParams) {
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
+                        $stateParams.sortField = !$stateParams.sortField ? 'name' : $stateParams.sortField;
+                        $stateParams.limit = !$stateParams.limit ? 10 : $stateParams.itemsPerPage;
+
+                        return ChannelManager.one().get($stateParams).then(function (channels) {
                             return channels.plain();
                         });
                     }

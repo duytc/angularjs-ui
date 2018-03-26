@@ -18,7 +18,7 @@
                 }
             })
             .state('unifiedReport.dataSourceFile.list', {
-                url: '/list?page&sortField&orderBy&search',
+                url: '/list?page&sortField&orderBy&search&limit',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -35,6 +35,7 @@
                     dataSourceFiles: /* @ngInject */ function(UnifiedReportDataSourceFileManager, $stateParams, dataSource) {
                         $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
                         $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
+                        $stateParams.limit = !$stateParams.limit ? 10 : $stateParams.itemsPerPage;
                         $stateParams.sortField = !$stateParams.sortField ? (dataSource.dateRangeDetectionEnabled ? 'endDate' :'receivedDate') : $stateParams.sortField;
 
                         return UnifiedReportDataSourceFileManager.one().get($stateParams).then(function (dataSourceFiles) {

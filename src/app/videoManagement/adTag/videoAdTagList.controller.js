@@ -5,9 +5,12 @@
         .controller('VideoAdTagList', VideoAdTagList)
     ;
 
-    function VideoAdTagList($scope, $translate, $stateParams ,$modal, AlertService, adTags, videoPublisher, VideoAdTagManager, AtSortableService, VideoPublisherManager, HISTORY_TYPE_PATH, historyStorage, dateUtil, DIMENSIONS_OPTIONS_VIDEO_REPORT, EVENT_ACTION_SORTABLE) {
+    function VideoAdTagList($scope, $translate, $stateParams ,$modal, AlertService, adTags, videoPublisher, VideoAdTagManager, AtSortableService, VideoPublisherManager, HISTORY_TYPE_PATH, historyStorage, dateUtil, DIMENSIONS_OPTIONS_VIDEO_REPORT, EVENT_ACTION_SORTABLE, ITEMS_PER_PAGE) {
         $scope.adTags = adTags.records;
         $scope.videoPublisher = videoPublisher;
+
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
+        $scope.changeItemsPerPage = changeItemsPerPage;
 
         $scope.hasData = function () {
             return !!$scope.adTags.length;
@@ -301,6 +304,13 @@
 
         function showPagination() {
             return angular.isArray($scope.adTags) && $scope.tableConfig.totalItems > $scope.tableConfig.itemsPerPage;
+        }
+
+        function changeItemsPerPage()
+        {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getAdTags(params, 500);
         }
 
         $scope.$on('$locationChangeSuccess', function() {

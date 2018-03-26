@@ -18,7 +18,7 @@
                 }
             })
             .state('videoManagement.demandPartner.list', {
-                url: '/list?page&sortField&orderBy&search',
+                url: '/list?page&sortField&orderBy&search&limit',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -31,6 +31,9 @@
                 resolve: {
                     demandPartners: /* @ngInject */ function(VideoDemandPartnerManager, $stateParams) {
                         $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
+                        $stateParams.sortField = !$stateParams.sortField ? 'name' : $stateParams.sortField;
+                        $stateParams.limit = !$stateParams.limit ? 10 : $stateParams.itemsPerPage;
                         return VideoDemandPartnerManager.one().get($stateParams);
                     }
                 },

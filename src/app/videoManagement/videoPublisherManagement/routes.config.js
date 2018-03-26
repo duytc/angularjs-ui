@@ -29,6 +29,10 @@
                 resolve: {
                     videoPublishers: function(VideoPublisherManager, $stateParams ) {
                         $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
+                        $stateParams.sortField = !$stateParams.sortField ? 'detail' : $stateParams.sortField;
+                        $stateParams.limit = !$stateParams.limit ? 10 : $stateParams.itemsPerPage;
+
                         return VideoPublisherManager.one().get($stateParams);
                     }
                 },

@@ -4,7 +4,8 @@
     angular.module('tagcade.unifiedReport.connect')
         .controller('ConnectDataSourceList', ConnectDataSourceList);
 
-    function ConnectDataSourceList($scope, $modal, $translate, connectDataSources, dataSet, UnifiedReportConnectDataSourceManager, AlertService, AtSortableService, HISTORY_TYPE_PATH, historyStorage) {
+    function ConnectDataSourceList($scope, $modal, $translate, connectDataSources, dataSet, UnifiedReportConnectDataSourceManager, AlertService, AtSortableService, HISTORY_TYPE_PATH, historyStorage, ITEMS_PER_PAGE) {
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
         $scope.connectDataSources = connectDataSources;
         $scope.dataSet = dataSet;
 

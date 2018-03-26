@@ -5,8 +5,9 @@
         .controller('DemandPartnerList', DemandPartnerList)
     ;
 
-    function DemandPartnerList($scope, $q, $stateParams ,$translate, $modal, AlertService, demandPartners, VideoDemandPartnerManager, AtSortableService, dateUtil, DIMENSIONS_OPTIONS_VIDEO_REPORT, HISTORY_TYPE_PATH, historyStorage, EVENT_ACTION_SORTABLE) {
+    function DemandPartnerList($scope, $q, $stateParams ,$translate, $modal, AlertService, demandPartners, VideoDemandPartnerManager, AtSortableService, dateUtil, DIMENSIONS_OPTIONS_VIDEO_REPORT, HISTORY_TYPE_PATH, historyStorage, EVENT_ACTION_SORTABLE, ITEMS_PER_PAGE) {
         $scope.demandPartners = demandPartners.records;
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
 
         $scope.hasData = function () {
             return !!$scope.demandPartners.length;
@@ -32,6 +33,9 @@
         $scope.toggleDemandPartnerStatus = toggleDemandPartnerStatus;
         $scope.openListWaterfallForDemandAdTag = openListWaterfallForDemandAdTag;
         $scope.paramsReport = paramsReport;
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
+        $scope.changeItemsPerPage = changeItemsPerPage;
+
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -237,6 +241,13 @@
                 // if it is not a pause, proceed without a modal
                 dfd.resolve();
             }
+        }
+
+        function changeItemsPerPage()
+        {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getDemandPartners(params, 500);
         }
 
         $scope.$on('$locationChangeSuccess', function() {

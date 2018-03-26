@@ -6,8 +6,10 @@
         .controller('SubPublisherList', SubPublisherList)
     ;
 
-    function SubPublisherList($scope, $translate, subPublishers, subPublisherRestangular, AlertService, publisherRestangular, autoLogin, historyStorage, HISTORY_TYPE_PATH) {
+    function SubPublisherList($scope, $translate, subPublishers, subPublisherRestangular, AlertService, publisherRestangular, autoLogin, historyStorage, HISTORY_TYPE_PATH, ITEMS_PER_PAGE) {
         $scope.subPublishers = subPublishers;
+
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
 
         $scope.today = new Date();
         $scope.showPagination = showPagination;

@@ -4,10 +4,13 @@
     angular.module('tagcade.unifiedReport.importHistory')
         .controller('ImportHistoryList', ImportHistoryList);
 
-    function ImportHistoryList($scope, $modal, $stateParams, importHistoryList, dataSet, dataSource, UnifiedReportDataSetManager, UnifiedReportDataSourceManager, UnifiedReportImportHistoryManager, historyStorage, HISTORY_TYPE_PATH, AlertService, exportExcelService, AtSortableService, EVENT_ACTION_SORTABLE) {
+    function ImportHistoryList($scope, $modal, $stateParams, importHistoryList, dataSet, dataSource, UnifiedReportDataSetManager, UnifiedReportDataSourceManager, UnifiedReportImportHistoryManager, historyStorage, HISTORY_TYPE_PATH, AlertService, exportExcelService, AtSortableService, EVENT_ACTION_SORTABLE, ITEMS_PER_PAGE) {
         $scope.dataSet = dataSet;
         $scope.importHistoryList = importHistoryList;
         $scope.formProcessing = false;
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
+
+        $scope.changeItemsPerPage = changeItemsPerPage;
 
         $scope.hasData = function () {
             return !!$scope.importHistoryList && $scope.importHistoryList.totalRecord > 0;
@@ -207,5 +210,11 @@
         $scope.$on('$locationChangeSuccess', function() {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.importHistoryList)
         });
+
+        function changeItemsPerPage() {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getImport(params, 500);
+        }
     }
 })();

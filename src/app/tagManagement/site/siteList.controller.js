@@ -5,9 +5,11 @@
         .controller('SiteList', SiteList)
     ;
 
-    function SiteList($scope, $rootScope, $stateParams, $modal, $translate, AlertService, SiteManager, sites, historyStorage, AtSortableService, HISTORY_TYPE_PATH, EVENT_SEARCH_AGAIN, EVENT_ACTION_SORTABLE) {
+    function SiteList($scope, $rootScope, $stateParams, $modal, $translate, AlertService, SiteManager, sites, historyStorage, AtSortableService, HISTORY_TYPE_PATH, EVENT_SEARCH_AGAIN, EVENT_ACTION_SORTABLE, ITEMS_PER_PAGE ) {
 
-        $scope.sites = sites;
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
+
+        $scope.sites = sites.records;
         var typeOption = $scope.typeOption = {
             allSite: 0,
             AutoSite: 1,
@@ -25,7 +27,7 @@
         var getSite;
 
         $scope.hasData = function () {
-            return !!sites.records.length;
+            return !!$scope.sites.length;
         };
 
         if (!$scope.hasData()) {
@@ -42,6 +44,7 @@
         $scope.getSites = getSites;
         $scope.changePage = changePage;
         $scope.searchData = searchData;
+        $scope.changeItemsPerPage = changeItemsPerPage;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -57,6 +60,13 @@
         $scope.selectData = {
             query: $stateParams.searchKey || null
         };
+
+        function changeItemsPerPage()
+        {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getSite(params, 500);
+        }
 
         $scope.confirmDeletion = function (site) {
             var modalInstance = $modal.open({
@@ -108,7 +118,7 @@
         }
 
         function showPagination() {
-            return angular.isArray($scope.sites.records) && $scope.sites.totalRecord > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.sites) && sites.totalRecord > $scope.tableConfig.itemsPerPage;
         }
 
         $scope.$on('$locationChangeSuccess', function() {
@@ -139,7 +149,7 @@
                 return SiteManager.one().get(query)
                     .then(function(sites) {
                         AtSortableService.insertParamForUrl(query);
-                        $scope.sites = sites;
+                        $scope.sites = sites.records;
                         $scope.tableConfig.totalItems = Number(sites.totalRecord);
                         $scope.availableOptions.currentPage = Number(query.page);
                     });

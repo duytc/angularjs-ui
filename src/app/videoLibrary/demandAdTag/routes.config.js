@@ -56,6 +56,9 @@
                 resolve: {
                     demandAdTags: /* @ngInject */ function(VideoDemandPartnerManager, $stateParams) {
                         $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
+                        $stateParams.sortField = !$stateParams.sortField ? 'name' : $stateParams.sortField;
+                        $stateParams.limit = !$stateParams.limit ? 10 : $stateParams.itemsPerPage;
                         return VideoDemandPartnerManager.one($stateParams.id).one('libraryvideodemandadtags').get($stateParams);
                     },
                     demandPartner: function($stateParams, VideoDemandPartnerManager) {

@@ -16,7 +16,22 @@
         </div>
     </div>
 
-    <search-box show-query="true" sb-list="channels" search-fields="['id', 'name', 'publisher.company', 'publisher.username']"></search-box>
+   <!-- <search-box show-query="true" sb-list="channels" search-fields="['id', 'name', 'publisher.company', 'publisher.username']"></search-box>-->
+    <form class="input-group col-sm-10 search-box">
+        <input class="form-control" ng-model="selectData.query" ng-change="searchData()" placeholder="{{ 'UNIFIED_REPORT_MODULE.SEARCH' | translate }}" type="text"/>
+        <span class="input-group-addon">
+                {{ tableConfig.totalItems }} records found
+            </span>
+
+        <span class="input-group-addon-items-per-page">
+            <select name="" id="selectItemsPerPage" ng-change="changeItemsPerPage()" ng-model="tableConfig.itemsPerPage">
+                <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
+            </select>
+
+            <label class="items-per-page" for="selectItemsPerPage"> Items Per Page </label>
+        </span>
+
+    </form>
 
     <div class="panel-body" ng-if="hasData()">
         <div class="table-responsive">
@@ -47,7 +62,8 @@
                 </tbody>
             </table>
 
-            <at-pagination at-pagination-query ng-if="showPagination()" at-list="channels" at-config="tableConfig"></at-pagination>
+           <!-- <at-pagination at-pagination-query ng-if="showPagination()" at-list="channels" at-config="tableConfig"></at-pagination>-->
+            <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
         </div>
     </div>
 </div>

@@ -5,9 +5,12 @@
         .controller('LibraryAdSlotList', LibraryAdSlotList)
     ;
 
-    function LibraryAdSlotList($scope, $translate, $stateParams, $modal, Auth, adSlots, AlertService, ChannelManager, AdSlotLibrariesManager, DisplayAdSlotLibrariesManager, NativeAdSlotLibrariesManager, DynamicAdSlotLibrariesManager, TYPE_AD_SLOT, historyStorage, AtSortableService, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE, SiteManager, RonAdSlotManager) {
-        $scope.adSlots = adSlots;
+    function LibraryAdSlotList($scope, $translate, $stateParams, $modal, Auth, adSlots, AlertService, ChannelManager, AdSlotLibrariesManager, DisplayAdSlotLibrariesManager, NativeAdSlotLibrariesManager, DynamicAdSlotLibrariesManager, TYPE_AD_SLOT, historyStorage, AtSortableService, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE, SiteManager, RonAdSlotManager, ITEMS_PER_PAGE ) {
 
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
+        $scope.adSlots = adSlots.records;
+
+        console.log('Ad slots:', $scope.adSlots);
         var params = {
             page: 1
         };
@@ -49,9 +52,10 @@
         $scope.createRonAdSlot = createRonAdSlot;
         $scope.changePage = changePage;
         $scope.searchData = searchData;
+        $scope.changeItemsPerPage = changeItemsPerPage;
 
         function showPagination() {
-            return angular.isArray($scope.adSlots.records) && $scope.adSlots.totalRecord > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.adSlots) && adSlots.totalRecord > $scope.tableConfig.itemsPerPage;
         }
 
         function removeMoveToLibrary(adSlot) {
@@ -187,12 +191,20 @@
                 return AdSlotLibrariesManager.one().get(query)
                     .then(function(adSlots) {
                         AtSortableService.insertParamForUrl(query);
-                        $scope.adSlots = adSlots;
+                        $scope.adSlots = adSlots.records;
                         $scope.tableConfig.totalItems = Number(adSlots.totalRecord);
                         $scope.availableOptions.currentPage = Number(query.page);
                     });
             }, ms || 0);
         }
+
+        function changeItemsPerPage()
+        {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getAdSlot(params, 500);
+        }
+
 
         $scope.$on('$locationChangeSuccess', function() {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.adSlotLibrary)

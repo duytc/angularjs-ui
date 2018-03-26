@@ -34,7 +34,12 @@
                             return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).getList('alerts');
                         }
 
-                        return UnifiedReportAlertManager.getList().then(function (alerts) {
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        $stateParams.orderBy = !$stateParams.orderBy ? 'createdDate' : $stateParams.orderBy;
+                        $stateParams.sortField = !$stateParams.sortField ? 'createdDate' : $stateParams.sortField;
+                        $stateParams.limit = !$stateParams.limit ? 10 : $stateParams.itemsPerPage;
+
+                        return UnifiedReportAlertManager.one().get($stateParams).then(function (alerts) {
                             return alerts.plain();
                         });
                     },

@@ -1,10 +1,13 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('tagcade.unifiedReport.dataSet')
         .controller('dataSetList', dataSetList);
 
-    function dataSetList($scope, $stateParams, $modal, $translate, dataSets, UnifiedReportDataSetManager, dataSetPendingJobs, AlertService, AtSortableService, EVENT_ACTION_SORTABLE, HISTORY_TYPE_PATH, historyStorage) {
+    function dataSetList($scope, $stateParams, $modal, $translate, dataSets, UnifiedReportDataSetManager, dataSetPendingJobs, AlertService, AtSortableService, EVENT_ACTION_SORTABLE, HISTORY_TYPE_PATH, historyStorage, ITEMS_PER_PAGE) {
+
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
+
         $scope.tableConfig = {
             itemsPerPage: 10,
             maxPages: 10,
@@ -43,9 +46,10 @@
         $scope.searchData = searchData;
         $scope.removeAllData = removeAllData;
         $scope.reloadDateRangeData = reloadDateRangeData;
+        $scope.changeItemsPerPage = changeItemsPerPage;
 
         function reloadDateRangeData(dataSet) {
-            if(dataSet.mapBuilderEnabled) {
+            if (dataSet.mapBuilderEnabled) {
                 var params = {
                     option: 'allData',
                     startDate: null,
@@ -53,16 +57,16 @@
                 };
 
                 UnifiedReportDataSetManager.one(dataSet.id).one('reloads').post(null, params)
-                    .then(function(data) {
+                    .then(function (data) {
                         dataSetPendingJobs[dataSet.id] = data.pendingLoads;
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message: 'The data was reloaded with '+ data.pendingLoads +' loaded files. Please wait a few minutes for the changes to take effect.'
+                            message: 'The data was reloaded with ' + data.pendingLoads + ' loaded files. Please wait a few minutes for the changes to take effect.'
                         });
                     })
-                    .catch(function(response) {
-                        if(!!response && !!response.data && !!response.data.message) {
+                    .catch(function (response) {
+                        if (!!response && !!response.data && !!response.data.message) {
                             AlertService.replaceAlerts({
                                 type: 'danger',
                                 message: response.data.message
@@ -76,9 +80,7 @@
             $modal.open({
                 templateUrl: 'unifiedReport/dataSet/reloadDataSetDateRange.tpl.html',
                 size: 'lg',
-                resolve: {
-
-                },
+                resolve: {},
                 controller: function ($scope, $modalInstance, DateFormatter) {
                     $scope.selected = {
                         option: 'allData',
@@ -100,7 +102,7 @@
                     ];
 
                     $scope.datePickerOpts = {
-                        maxDate:  moment().endOf('day'),
+                        maxDate: moment().endOf('day'),
                         ranges: {
                             'Today': [moment().startOf('day'), moment().endOf('day')],
                             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -111,11 +113,11 @@
                         }
                     };
 
-                    $scope.showReloadDaterange = function(item) {
-                        for(var i in dataSet.connectedDataSources) {
+                    $scope.showReloadDaterange = function (item) {
+                        for (var i in dataSet.connectedDataSources) {
                             var connectedDataSource = dataSet.connectedDataSources[i];
 
-                            if((!connectedDataSource.dataSource || !connectedDataSource.dataSource.dateRangeDetectionEnabled) && item.key == 'detectedDateRange') {
+                            if ((!connectedDataSource.dataSource || !connectedDataSource.dataSource.dateRangeDetectionEnabled) && item.key == 'detectedDateRange') {
                                 return false
                             }
                         }
@@ -137,16 +139,16 @@
                         };
 
                         UnifiedReportDataSetManager.one(dataSet.id).one('reloads').post(null, params)
-                            .then(function(data) {
+                            .then(function (data) {
                                 dataSetPendingJobs[dataSet.id] = data.pendingLoads;
 
                                 AlertService.replaceAlerts({
                                     type: 'success',
-                                    message: 'The data was reloaded with '+ data.pendingLoads +' loaded files. Please wait a few minutes for the changes to take effect.'
+                                    message: 'The data was reloaded with ' + data.pendingLoads + ' loaded files. Please wait a few minutes for the changes to take effect.'
                                 });
                             })
-                            .catch(function(response) {
-                                if(!!response && !!response.data && !!response.data.message) {
+                            .catch(function (response) {
+                                if (!!response && !!response.data && !!response.data.message) {
                                     AlertService.replaceAlerts({
                                         type: 'danger',
                                         message: response.data.message
@@ -166,7 +168,7 @@
 
             modalInstance.result.then(function () {
                 UnifiedReportDataSetManager.one(dataSet.id).one('truncate').post()
-                    .then(function() {
+                    .then(function () {
                         dataSet.totalRow = 0;
 
                         AlertService.replaceAlerts({
@@ -174,7 +176,7 @@
                             message: $translate.instant('UNIFIED_REPORT_DATA_SET_MODULE.REMOVE_ALL_DATE_SUCCESS')
                         });
                     })
-                    .catch(function() {
+                    .catch(function () {
                         AlertService.replaceAlerts({
                             type: 'error',
                             message: $translate.instant('UNIFIED_REPORT_DATA_SET_MODULE.REMOVE_ALL_DATE_FAIL')
@@ -191,15 +193,15 @@
             modalInstance.result.then(function () {
                 var deleteDataSource = UnifiedReportDataSetManager.one($dataSetId).remove();
 
-                deleteDataSource.then(function() {
+                deleteDataSource.then(function () {
                     AlertService.addFlash({
                         type: 'success',
                         message: $translate.instant('UNIFIED_REPORT_DATA_SET_MODULE.DELETE_DATA_SET_SUCCESS')
                     });
-                }).then(function() {
+                }).then(function () {
                     return historyStorage.getLocationPath(HISTORY_TYPE_PATH.dataSet, '^.list');
-                }).catch(function(response) {
-                    if(!!response && !!response.data && !!response.data.message) {
+                }).catch(function (response) {
+                    if (!!response && !!response.data && !!response.data.message) {
                         AlertService.replaceAlerts({
                             type: 'danger',
                             message: response.data.message
@@ -213,7 +215,7 @@
             return angular.isArray($scope.dataSets.records) && $scope.dataSets.totalRecord > $scope.tableConfig.itemsPerPage;
         }
 
-        $scope.$on('$locationChangeSuccess', function() {
+        $scope.$on('$locationChangeSuccess', function () {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.dataSet)
         });
 
@@ -223,7 +225,7 @@
             _getDataSet(params, 500);
         }
 
-        $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
+        $scope.$on(EVENT_ACTION_SORTABLE, function (event, query) {
             params = angular.extend(params, query);
             _getDataSet(params);
         });
@@ -236,10 +238,10 @@
         function _getDataSet(query, ms) {
             clearTimeout(getDataSet);
 
-            getDataSet = setTimeout(function() {
+            getDataSet = setTimeout(function () {
                 params = query;
                 return UnifiedReportDataSetManager.one().get(query)
-                    .then(function(dataSets) {
+                    .then(function (dataSets) {
                         AtSortableService.insertParamForUrl(query);
                         $scope.dataSets = dataSets;
                         $scope.tableConfig.totalItems = Number(dataSets.totalRecord);
@@ -258,5 +260,12 @@
                     });
             }, ms || 0);
         }
+
+        function changeItemsPerPage() {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getDataSet(params, 500);
+        }
+
     }
 })();

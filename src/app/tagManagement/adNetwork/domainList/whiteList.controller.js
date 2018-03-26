@@ -5,9 +5,13 @@
         .controller('WhiteList', WhiteList)
     ;
 
-    function WhiteList($scope, $translate, $stateParams, $modal, AlertService, domainList, adNetwork, AdNetworkManager, DisplayWhiteListManager, AtSortableService, EVENT_ACTION_SORTABLE, HISTORY_TYPE_PATH, historyStorage) {
+    function WhiteList($scope, $translate, $stateParams, $modal, AlertService, domainList, adNetwork, AdNetworkManager, DisplayWhiteListManager, AtSortableService, EVENT_ACTION_SORTABLE, HISTORY_TYPE_PATH, historyStorage, ITEMS_PER_PAGE) {
         $scope.domainList = domainList;
         $scope.adNetwork = adNetwork;
+
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
+        $scope.changeItemsPerPage = changeItemsPerPage;
+        $scope.changePage = changePage;
 
         angular.forEach($scope.adNetworks, function (adNetwork) {
             adNetwork.name = adNetwork.name + ' (ID: '+ adNetwork.id +')'
@@ -133,6 +137,14 @@
         function showPagination() {
             return angular.isArray($scope.domainList.records) && $scope.domainList.totalRecord > $scope.tableConfig.itemsPerPage;
         }
+
+        function changeItemsPerPage()
+        {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getDomainList(params, 500);
+        }
+
 
         $scope.$on('$locationChangeSuccess', function() {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.whiteList)

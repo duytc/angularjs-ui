@@ -18,7 +18,7 @@
                 }
             })
             .state('unifiedReport.dataSet.list', {
-                url: '/list?page&sortField&orderBy&searchKey',
+                url: '/list?page&sortField&orderBy&searchKey&limit',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -33,6 +33,7 @@
                         $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
                         $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
                         $stateParams.sortField = !$stateParams.sortField ? 'lastActivity' : $stateParams.sortField;
+                        $stateParams.limit = !$stateParams.limit ? 10 : $stateParams.itemsPerPage;
 
                         return UnifiedReportDataSetManager.one().get($stateParams).then(function (dataSets) {
                             return dataSets.plain();

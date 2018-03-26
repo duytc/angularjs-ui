@@ -4,9 +4,11 @@
     angular.module('tagcade.unifiedReport.dataSource')
         .controller('DataSourceList', DataSourceList);
 
-    function DataSourceList($scope, $translate, $modal, $stateParams, dataSources, EVENT_ACTION_SORTABLE, UnifiedReportDataSourceManager, AlertService, AtSortableService, HISTORY_TYPE_PATH, historyStorage){
+    function DataSourceList($scope, $translate, $modal, $stateParams, dataSources, EVENT_ACTION_SORTABLE, UnifiedReportDataSourceManager, AlertService, AtSortableService, HISTORY_TYPE_PATH, historyStorage, ITEMS_PER_PAGE){
         var params = $stateParams;
         var getSite;
+
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -38,7 +40,6 @@
             });
         }
 
-
         $scope.changePage = changePage;
         $scope.searchData = searchData;
         $scope.showPagination = showPagination;
@@ -47,6 +48,7 @@
         $scope.getUnifiedReportEmail = getUnifiedReportEmail;
         $scope.viewBackfillHistory = viewBackfillHistory;
         $scope.changeBackfill = changeBackfill;
+        $scope.changeItemsPerPage = changeItemsPerPage;
 
         function changeBackfill(dataSource) {
             $modal.open({
@@ -115,7 +117,8 @@
             $modal.open({
                 templateUrl: 'unifiedReport/dataSource/viewBackfillHistory.tpl.html',
                 size: 'lg',
-                controller: function ($scope, dataSource, backfillHistories) {
+                controller: function ($scope, dataSource, backfillHistories, ITEMS_PER_PAGE) {
+                    $scope.itemsPerPageList = ITEMS_PER_PAGE;
                     $scope.dataSource = dataSource;
 
                     angular.forEach(backfillHistories, function (backfill, index) {
@@ -132,6 +135,8 @@
                     $scope.showPagination = function () {
                         return angular.isArray($scope.backfillHistories) && $scope.backfillHistories.length > $scope.tableConfig.itemsPerPage;
                     }
+
+
 
                 },
                 resolve: {
@@ -305,6 +310,13 @@
                     });
             }, ms || 0)
 
+        }
+
+        function changeItemsPerPage()
+        {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getDataSources(params, 500);
         }
     }
 })();

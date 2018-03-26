@@ -103,7 +103,12 @@
                 },
                 resolve: {
                     demandAdTags: /* @ngInject */ function($stateParams, LibraryDemandAdTagManager) {
-                        return LibraryDemandAdTagManager.one($stateParams.id).one('videodemandadtags').getList();
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
+                        $stateParams.sortField = !$stateParams.sortField ? 'name' : $stateParams.sortField;
+                        $stateParams.limit = !$stateParams.limit ? 10 : $stateParams.itemsPerPage;
+
+                        return LibraryDemandAdTagManager.one($stateParams.id).one('videodemandadtags').get($stateParams);
                     },
                     demandPartner: function() {
                         return null;

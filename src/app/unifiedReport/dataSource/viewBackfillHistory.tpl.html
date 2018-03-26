@@ -1,5 +1,17 @@
 <div class="modal-header">
-    <h4 class="modal-title"><strong>View Backfill history of Data Source:</strong> {{ dataSource.name }}</h4>
+    <h4 class="modal-title">
+        <strong>View Backfill history of Data Source:</strong> {{ dataSource.name }}
+
+        <div style="float: right; display: flex">
+            <select  name="" id="selectItemsPerPage" ng-change="changeItemsPerPage()" ng-model="tableConfig.itemsPerPage">
+                <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
+            </select>
+            <label class="items-per-page" for="selectItemsPerPage"> Items Per Page </label>
+        </div>
+    </h4>
+
+
+
 </div>
 <div class="modal-body">
     <div class="table-responsive">

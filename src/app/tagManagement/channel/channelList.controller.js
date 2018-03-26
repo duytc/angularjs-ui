@@ -5,11 +5,19 @@
         .controller('ChannelList', ChannelList)
     ;
 
-    function ChannelList($scope, $translate, $modal, AlertService, channels, ChannelManager, AtSortableService, HISTORY_TYPE_PATH, historyStorage) {
-        $scope.channels = channels;
+    function ChannelList($scope, $translate, $stateParams ,$modal, AlertService, channels, ChannelManager, AtSortableService, HISTORY_TYPE_PATH, historyStorage, ITEMS_PER_PAGE ) {
+        $scope.channels = channels.records;
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
 
+        $scope.changeItemsPerPage = changeItemsPerPage;
+        $scope.changePage = changePage;
+        $scope.searchData = searchData;
+
+
+        var getChannel;
+        var params = $stateParams;
         $scope.hasData = function () {
-            return !!channels.length;
+            return !!$scope.channels.length;
         };
 
         if (!$scope.hasData()) {
@@ -24,7 +32,13 @@
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10
+            maxPages: 10,
+            totalItems: Number(channels.totalRecord)
+        };
+
+        $scope.availableOptions = {
+            currentPage: $stateParams.page || 1,
+            pageSize: 10
         };
 
         function confirmDeletion(channel, index) {
@@ -36,13 +50,13 @@
                 return ChannelManager.one(channel.id).remove()
                     .then(
                     function () {
-                        var index = channels.indexOf(channel);
+                        var index = channels.records.indexOf(channel);
 
                         if (index > -1) {
-                            channels.splice(index, 1);
+                            channels.records.splice(index, 1);
                         }
 
-                        $scope.channels = channels;
+                        $scope.channels = channels.records;
 
                         if($scope.tableConfig.currentPage > 0 && channels.length/10 == $scope.tableConfig.currentPage) {
                             AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
@@ -65,11 +79,47 @@
         }
 
         function showPagination() {
-            return angular.isArray($scope.channels) && $scope.channels.length > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.channels) && channels.totalRecord > $scope.tableConfig.itemsPerPage;
+        }
+
+        function searchData() {
+            var query = {searchKey: $scope.selectData.query || ''};
+            params = angular.extend(params, query);
+            _getChannel(params, 500);
+        }
+
+        function changePage(currentPage) {
+            params = angular.extend(params, {page: currentPage});
+            _getChannel(params);
+        }
+
+        function _getChannel(query, ms) {
+            clearTimeout(getChannel);
+
+            getChannel = setTimeout(function() {
+                params = query;
+                return ChannelManager.one().get(query)
+                    .then(function(channels) {
+                        AtSortableService.insertParamForUrl(query);
+                        $scope.channels = channels.records;
+                        $scope.tableConfig.totalItems = Number(channels.totalRecord);
+                        $scope.availableOptions.currentPage = Number(query.page);
+                    });
+            }, ms || 0);
+        }
+
+
+        function changeItemsPerPage()
+        {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getChannel(params, 500);
         }
 
         $scope.$on('$locationChangeSuccess', function() {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.channel)
         });
+
+
     }
 })();

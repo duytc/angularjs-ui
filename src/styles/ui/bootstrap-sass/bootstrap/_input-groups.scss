@@ -68,6 +68,19 @@
   vertical-align: middle; // Match the inputs
 }
 
+// Addon and addon wrapper for buttons
+.input-group-addon-items-per-page{
+  width: 1%;
+  white-space: nowrap;
+  vertical-align: middle; // Match the inputs
+  float: right;
+}
+
+.items-per-page {
+  margin-left: 10px;
+  font-weight: normal !important;
+}
+
 // Text input groups
 // -------------------------
 .input-group-addon {

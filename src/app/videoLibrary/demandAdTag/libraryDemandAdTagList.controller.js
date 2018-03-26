@@ -5,10 +5,13 @@
         .controller('LibraryDemandAdTagList', LibraryDemandAdTagList)
     ;
 
-    function LibraryDemandAdTagList($scope, _, $stateParams ,$translate, $modal, AlertService, demandAdTags, demandPartner, VideoAdTagManager, LibraryDemandAdTagManager, VideoDemandPartnerManager, AtSortableService, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE, historyStorage) {
+    function LibraryDemandAdTagList($scope, _, $stateParams ,$translate, $modal, AlertService, demandAdTags, demandPartner, VideoAdTagManager, LibraryDemandAdTagManager, VideoDemandPartnerManager, AtSortableService, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE, ITEMS_PER_PAGE ,historyStorage) {
 
         $scope.demandAdTags = demandAdTags.records;
         $scope.demandPartner = demandPartner;
+
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
+        $scope.changeItemsPerPage = changeItemsPerPage;
 
         var params = {
             page: 1
@@ -31,6 +34,7 @@
 
         $scope.changePage = changePage;
         $scope.searchData = searchData;
+        $scope.changeItemsPerPage = changeItemsPerPage;
 
         $scope.$on(EVENT_ACTION_SORTABLE, function (event, query){
             params = angular.extend(params, query);
@@ -170,5 +174,12 @@
         $scope.$on('$locationChangeSuccess', function() {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.libraryDemandAdTag)
         });
+
+        function changeItemsPerPage()
+        {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getDemandAdTags(params, 500);
+        }
     }
 })();

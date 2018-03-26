@@ -4,8 +4,11 @@
     angular.module('tagcade.unifiedReport.template')
         .controller('TemplateList', TemplateList);
 
-    function TemplateList($scope, $stateParams, $modal, AlertService, templates, UnifiedReportTemplateManager, AtSortableService, historyStorage, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE) {
+    function TemplateList($scope, $stateParams, $modal, AlertService, templates, UnifiedReportTemplateManager, AtSortableService, historyStorage, HISTORY_TYPE_PATH, EVENT_ACTION_SORTABLE, ITEMS_PER_PAGE) {
         $scope.templates = templates;
+
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
+        $scope.changeItemsPerPage = changeItemsPerPage;
 
         $scope.hasData = function () {
             return !!$scope.templates && $scope.templates.totalRecord > 0;
@@ -156,6 +159,13 @@
                     });
             }, ms || 0)
 
+        }
+
+        function changeItemsPerPage()
+        {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params = angular.extend(params, query);
+            _getTemplate(params, 500);
         }
 
         $scope.$on('$locationChangeSuccess', function() {

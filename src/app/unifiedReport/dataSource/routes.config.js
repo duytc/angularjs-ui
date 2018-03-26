@@ -18,7 +18,7 @@
                 }
             })
             .state('unifiedReport.dataSource.list', {
-                url: '/list?page&sortField&orderBy&searchKey',
+                url: '/list?page&sortField&orderBy&searchKey&limit',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -32,7 +32,8 @@
                     dataSources: /* @ngInject */ function(UnifiedReportDataSourceManager, $stateParams) {
                         $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
                         $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
-                        $stateParams.sortField = !$stateParams.sortField ? 'lastActivity' : $stateParams.sortField;
+                        $stateParams.sortField = !$stateParams.sortField ? 'detail' : $stateParams.sortField;
+                        $stateParams.limit = !$stateParams.limit ? 10 : $stateParams.itemsPerPage;
 
                         return UnifiedReportDataSourceManager.one().get($stateParams).then(function (dataSources) {
                             return dataSources.plain();
