@@ -55,7 +55,16 @@
                 </tbody>
             </table>
 
-            <at-pagination at-pagination-query ng-if="showPagination()" at-list="domainList" at-config="tableConfig"></at-pagination>
+            <div style="float:left; display: flex; margin-right: 20px; margin-top: 5px">
+                <div style="margin-top: 25px;">
+                    <select id="selectItemsPerPage" ng-change="changeItemsPerPage()" ng-model="tableConfig.itemsPerPage">
+                        <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
+                    </select>
+                    <label class="items-per-page" for="selectItemsPerPage"> Items Per Page </label>
+                </div>
+                <at-pagination at-pagination-query ng-if="showPagination()" at-list="domainList" at-config="tableConfig"></at-pagination>
+            </div>
+
         </div>
     </div>
 </div>

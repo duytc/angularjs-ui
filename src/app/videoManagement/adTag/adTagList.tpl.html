@@ -35,16 +35,7 @@
         <input class="form-control" ng-model="selectData.query" ng-change="searchData()" placeholder="{{ 'UNIFIED_REPORT_MODULE.SEARCH' | translate }}" type="text"/>
         <span class="input-group-addon">
                 {{ tableConfig.totalItems }} records found
-            </span>
-
-        <span class="input-group-addon-items-per-page">
-            <select name="" id="selectItemsPerPage" ng-change="changeItemsPerPage()" ng-model="tableConfig.itemsPerPage">
-                <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
-            </select>
-
-            <label class="items-per-page" for="selectItemsPerPage"> Items Per Page </label>
         </span>
-
     </form>
 
     <div class="panel-body" ng-if="hasData()">
@@ -86,7 +77,18 @@
             </table>
 
             <!--<at-pagination at-pagination-query ng-if="showPagination()" at-list="adTags" at-config="tableConfig"></at-pagination>-->
-            <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+
+            <div style="float:left; display: flex; margin-right: 20px; margin-top: 5px">
+
+                <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+                <div style="margin-top: 25px;">
+                    <label class="items-per-page" for="selectItemsPerPage"> Items Per Page </label>
+                    <select id="selectItemsPerPage" ng-change="changeItemsPerPage()" ng-model="tableConfig.itemsPerPage">
+                        <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
+                    </select>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

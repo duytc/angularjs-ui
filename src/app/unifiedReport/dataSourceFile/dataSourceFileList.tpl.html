@@ -57,13 +57,6 @@
                     </ul>
                 </div>
 
-                <div class="col-sm-8">
-                    <select name="" id="selectItemsPerPage" ng-change="changeItemsPerPage()" ng-model="tableConfig.itemsPerPage">
-                        <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
-                    </select>
-
-                    <label class="items-per-page" for="selectItemsPerPage"> Items Per Page </label>
-                </div>
             </div>
 
             <div style="margin-bottom: 10px" ng-if="selectedDataSourceFiles.length > 0" class="alert alert-warning alert-number">
@@ -120,6 +113,15 @@
             </tbody>
         </table>
 
-        <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+        <div style="float:left; display: flex; margin-right: 20px; margin-top: 5px">
+            <div style="margin-top: 25px;">
+                <select id="selectItemsPerPage" ng-change="changeItemsPerPage()" ng-model="tableConfig.itemsPerPage">
+                    <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
+                </select>
+                <label class="items-per-page" for="selectItemsPerPage"> Items Per Page </label>
+            </div>
+            <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+        </div>
+
     </div>
 </div>

@@ -222,6 +222,7 @@
         function changeItemsPerPage()
         {
             var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params.page = 1;
             params = angular.extend(params, query);
             _getAdTags(params, 500);
         }

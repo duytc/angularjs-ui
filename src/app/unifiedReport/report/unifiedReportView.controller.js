@@ -201,13 +201,11 @@
                 return UnifiedReportViewManager.one(reportView.id).remove()
                     .then(
                         function () {
-                            var index = reportViewList.indexOf(reportView);
+                            var index = $scope.reportViewList.indexOf(reportView);
 
                             if (index > -1) {
-                                reportViewList.splice(index, 1);
+                                $scope.reportViewList.splice(index, 1);
                             }
-
-                            $scope.reportViewList = reportViewList;
 
                             if ($scope.tableConfig.currentPage > 0 && reportViewList.length / 10 == $scope.tableConfig.currentPage) {
                                 AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
@@ -297,6 +295,7 @@
 
         function changeItemsPerPage() {
             var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params.page = 1;
             params = angular.extend(params, query);
             _getReportViewList(params, 500);
         }
