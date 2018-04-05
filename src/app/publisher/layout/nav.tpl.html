@@ -1,9 +1,15 @@
 <div slim-scroll>
     <ul class="nav sidebar-menu">
+        <!--<li ui-sref-active="active">-->
+            <!--<a ui-sref=".dashboard">-->
+                <!--<i class="menu-icon glyphicon glyphicon-home"></i>-->
+                <!--<span class="menu-text"> {{ 'NAVBAR.DASHBOARD' | translate }} </span>-->
+            <!--</a>-->
+        <!--</li>-->
         <li ui-sref-active="active">
-            <a ui-sref=".dashboard">
+            <a ui-sref=".newDashboard">
                 <i class="menu-icon glyphicon glyphicon-home"></i>
-                <span class="menu-text"> {{ 'NAVBAR.DASHBOARD' | translate }} </span>
+                <span class="menu-text"> {{ 'NAVBAR.NEW_DASHBOARD' | translate }} </span>
             </a>
         </li>
         <li ng-show="hasSubPublisherModule" ui-sref-active="active">

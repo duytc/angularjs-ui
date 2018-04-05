@@ -40,7 +40,7 @@
                         return urlPrefixService.getPrefixedUrl('/reports/unified/day');
                     }
 
-                    return urlPrefixService.getPrefixedUrl('/dashboard');
+                    return urlPrefixService.getPrefixedUrl('/newDashboard');
                 }
 
                 return urlPrefixService.getPrefixedUrl('/error/404');

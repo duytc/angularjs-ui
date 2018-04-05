@@ -1,0 +1,34 @@
+<div class="panel panel-default">
+    <div class="panel-heading">{{'NEW_DASHBOARD.CHART'|translate}}
+    </div>
+    <div class="panel-body">
+        <!--date-->
+        <div ng-if="!!chartData.reports && chartData.reports.length > 0">
+            <div>
+                <div class="form-inline form-group">
+                    <label for="inputDateRange" class="inline-space">
+                        {{ 'NEW_DASHBOARD.DATE_LABEL' | translate }} </label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input date-range-picker
+                               options="chartData.datePickerOpts"
+                               class="form-control date-picker date-picker-new-dashboard"
+                               type="text"
+                               id="inputDateRange"
+                               ng-model="chartData.dateRange"
+                               ng-required="true">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--chart-->
+        <div>
+            <div>
+                <highchart ng-if="chartConfig" config="chartConfig"></highchart>
+            </div>
+        </div>
+    </div>
+</div>
+
+

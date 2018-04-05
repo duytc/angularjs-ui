@@ -1,10 +1,10 @@
 (function() {
     'use strict';
-    
+
     angular.module('tagcade.reports.performance')
         .factory('performanceReport', performanceReport)
     ;
-    
+
     function performanceReport($q, _, ReportFetcher, ReportParams) {
         var api = {
             getInitialParams: getInitialParams,

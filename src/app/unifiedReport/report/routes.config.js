@@ -2,8 +2,7 @@
     'use strict';
 
     angular.module('tagcade.unifiedReport.report')
-        .config(addStates)
-    ;
+        .config(addStates);
 
     function addStates(UserStateHelperProvider) {
         // uniqueRequestCacheBuster is used as a work-around for reloading only the current state

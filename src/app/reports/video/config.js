@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('tagcade.reports.video')
@@ -96,8 +96,13 @@
             // }
         ])
         .provider('API_VIDEO_REPORTS_BASE_URL', {
-            $get: function(API_REPORTS_BASE_URL) {
+            $get: function (API_REPORTS_BASE_URL) {
                 return API_REPORTS_BASE_URL + '/videoreports/video/report';
+            }
+        })
+        .provider('API_VIDEO_REPORTS_COMPARISION', {
+            $get: function (API_REPORTS_BASE_URL) {
+                return API_REPORTS_BASE_URL + '/videoreports/comparison';
             }
         })
     ;

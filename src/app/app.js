@@ -12,5 +12,6 @@ angular.module('tagcade', [
     'tagcade.videoManagement',
     'tagcade.videoLibrary',
     'tagcade.unifiedReport',
+    'tagcade.newDashboard',
     'tagcade.public'
 ]);
