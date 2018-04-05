@@ -78,7 +78,7 @@
                 </div>
             </div>
 
-            <table class="table" at-sortable-query at-table at-paginated at-list="alerts" at-config="tableConfig">
+            <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="alerts" at-config="tableConfig">
                 <thead>
                 <tr>
                     <th ng-show="isAdmin()" at-attribute="publisher.company">{{ 'PUBLISHER' | translate }}</th>
@@ -106,11 +106,11 @@
                     <td at-title="{{  'UNIFIED_REPORT_ALERT_MODULE.SUMMARY' | translate }}" at-attribute="message.message">
                         {{ getTitleAlert(item) }}
                     </td>
-                    <td at-title="Type" at-sortable at-attribute="type">
+                    <td at-title="Type" at-sortable at-implicit at-attribute="type">
                         <span class="label" ng-class="item.type == 'info' ? 'label-info' : (item.type == 'warning' ? 'label-warning' : 'label-danger')">{{ item.type }}</span>
                     </td>
                     <td ng-show="isAdmin()" at-implicit at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
-                    <td at-title="{{  'UNIFIED_REPORT_ALERT_MODULE.DATE_CREATED' | translate }}" at-sortable at-attribute="createdDate">
+                    <td at-title="{{  'UNIFIED_REPORT_ALERT_MODULE.DATE_CREATED' | translate }}" at-sortable at-implicit at-attribute="createdDate">
                         {{ item.createdDate | date:'MMM d, y H:mm:ss' }}
                     </td>
                 </tr>

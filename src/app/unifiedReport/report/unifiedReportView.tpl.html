@@ -33,7 +33,7 @@
 
     <div class="panel-body" ng-if="hasData()">
         <div class="table-responsive">
-            <table class="table" at-sortable-query at-table at-paginated at-list="reportViewList" at-config="tableConfig">
+            <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="reportViewList" at-config="tableConfig">
                 <thead>
                 <tr>
                     <th ng-show="isAdmin()" at-attribute="publisher.company" >{{ 'PUBLISHER' | translate }}</th>
@@ -41,7 +41,7 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
+                    <td at-title="#" at-sortable at-implicit at-attribute="id"></td>
                     <td at-title="{{ 'ACTIONS' | translate }}">
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>

@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportView', UnifiedReportView);
 
-    function UnifiedReportView($scope, $stateParams, $q, $translate, $modal, AlertService, reportViewList, UnifiedReportViewManager, dataService, UserStateHelper, AtSortableService, API_UNIFIED_END_POINT, historyStorage, HISTORY_TYPE_PATH, ITEMS_PER_PAGE) {
+    function UnifiedReportView($scope, $stateParams, $q, $translate, $modal, AlertService, reportViewList, UnifiedReportViewManager, dataService, UserStateHelper, AtSortableService, API_UNIFIED_END_POINT, historyStorage, HISTORY_TYPE_PATH, ITEMS_PER_PAGE, EVENT_ACTION_SORTABLE) {
 
         var params = $stateParams;
         var getReportViewList;
@@ -201,16 +201,7 @@
                 return UnifiedReportViewManager.one(reportView.id).remove()
                     .then(
                         function () {
-                            var index = $scope.reportViewList.indexOf(reportView);
-
-                            if (index > -1) {
-                                $scope.reportViewList.splice(index, 1);
-                            }
-
-                            if ($scope.tableConfig.currentPage > 0 && reportViewList.length / 10 == $scope.tableConfig.currentPage) {
-                                AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
-                                $scope.tableConfig.currentPage = -1;
-                            }
+                            _getReportViewList(params);
 
                             AlertService.replaceAlerts({
                                 type: 'success',
@@ -262,14 +253,15 @@
         }
 
         function _getReportViewList(query, ms) {
+            params = query;
             clearTimeout(getReportViewList);
 
             getReportViewList = setTimeout(function () {
+                params = query;
                 return UnifiedReportViewManager.one().get(query)
                     .then(function (reportViewList) {
-                        AtSortableService.insertParamForUrl(query);
-
                         setTimeout(function () {
+                            AtSortableService.insertParamForUrl(query);
                             $scope.reportViewList = reportViewList.records;
                             $scope.tableConfig.totalItems = Number(reportViewList.totalRecord);
                             $scope.availableOptions.currentPage = Number(query.page);
@@ -299,5 +291,10 @@
             params = angular.extend(params, query);
             _getReportViewList(params, 500);
         }
+
+        $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
+            params = angular.extend(params, query);
+            _getReportViewList(params);
+        });
     }
 })();

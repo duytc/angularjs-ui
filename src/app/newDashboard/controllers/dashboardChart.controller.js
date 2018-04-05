@@ -144,8 +144,16 @@
          * @returns {*}
          */
         function chartConfig(reportDetails, localChangeDate) {
-            if (!reportDetails || reportDetails.length === 0) return null;
+            if (!reportDetails || reportDetails.length === 0) {
+                return null;
+            }
+
             var showFields = getShowFields($scope.dashboardType);
+            if (!showFields || showFields.length === 0) {
+                // skip drawing chart without any show fields
+                return null;
+            }
+
             var dates = [];
             var showData = {};
             var key = getDateKey();

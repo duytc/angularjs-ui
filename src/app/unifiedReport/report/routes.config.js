@@ -32,7 +32,7 @@
                     reportViewList: function (UnifiedReportViewManager, $stateParams) {
                         $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
                         $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
-                        $stateParams.sortField = !$stateParams.sortField ? 'detail' : $stateParams.sortField;
+                        $stateParams.sortField = !$stateParams.sortField ? 'lastRun' : $stateParams.sortField;
                         $stateParams.limit = !$stateParams.limit ? 10 : $stateParams.itemsPerPage;
 
                         return UnifiedReportViewManager.one().get($stateParams).then(function (reportViewList) {

@@ -121,7 +121,7 @@
 
         function getUnifiedComparision(param, isClickChangeMode) {
             unifiedReportComparisionRestangular.one('comparison').customPOST(param).then(function (data) {
-                $scope.comparisionData = data;
+                $scope.comparisionData = data.plain();
                 $scope.formData.comparisionData = $scope.extractComparisionData(data, $scope.dashboardType);
                 if (isClickChangeMode)
                     notifyDrawChart();

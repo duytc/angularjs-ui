@@ -120,8 +120,10 @@
                     $scope.formData.chartData.urData.fields = Object.keys(total);
                 }
 
-                // set report data
-                $scope.formData.chartData.reports = data.reports || [];
+                // set report data.
+                // Notice: total contains all show fields for chart, return empty report detail if total empty!!!
+                // This avoid show empty chart
+                $scope.formData.chartData.reports = (data.reports && total && total.length > 0) ? data.reports : [];
             }
 
             if (!$scope.$$phase) {

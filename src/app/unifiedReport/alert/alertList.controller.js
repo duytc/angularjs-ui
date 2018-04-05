@@ -5,7 +5,7 @@
         .controller('AlertList', AlertList)
     ;
 
-    function AlertList($scope, _, $stateParams, $translate, $modal, UISelectMethod, alerts, publishers, dataSources, UnifiedReportAlertManager, UnifiedReportDataSourceManager, AlertService, AtSortableService, ITEMS_PER_PAGE) {
+    function AlertList($scope, _, $stateParams, $translate, $modal, UISelectMethod, alerts, publishers, dataSources, UnifiedReportAlertManager, UnifiedReportDataSourceManager, AlertService, AtSortableService, ITEMS_PER_PAGE, EVENT_ACTION_SORTABLE) {
         const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_UPLOAD = 1100;
         const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_EMAIL = 1101;
         const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_API = 1102;
@@ -217,45 +217,9 @@
 
         function deleteAlertMulti() {
             var selectedAlerts = angular.copy($scope.selectedAlert);
-
             UnifiedReportAlertManager.one().customPUT({ids: $scope.selectedAlert}, null, {delete: true})
                 .then(function () {
-                    $scope.checkAllItem = false;
-
-                    angular.forEach(angular.copy($scope.alerts), function (alert) {
-                        if ($scope.selectedAlert.indexOf(alert.id) > -1) {
-                            var index = _.findIndex(alerts, function (item) {
-                                return alert.id == item.id;
-                            });
-
-                            if (index > -1) {
-                                alerts.splice(index, 1);
-                            }
-
-                            var indexItemsForPager = _.findIndex(itemsForPager, function (item) {
-                                return alert.id == item.id;
-                            });
-
-                            if (indexItemsForPager > -1) {
-                                itemsForPager.splice(indexItemsForPager, 1);
-                            }
-
-                            $scope.selectedAlert.splice($scope.selectedAlert.indexOf(alert.id), 1);
-                            $scope.alerts = alerts;
-
-                            if ($scope.tableConfig.currentPage > 0 && alerts.length / 10 == $scope.tableConfig.currentPage) {
-                                $scope.tableConfig.currentPage = $scope.tableConfig.currentPage - 1;
-                            }
-
-                            if ($scope.alerts.length == $scope.selectedAlert.length) {
-                                $scope.checkAllItem = true;
-                            }
-
-                            if ($scope.alerts.length == 0) {
-                                $scope.checkAllItem = false;
-                            }
-                        }
-                    });
+                    _getAlertsForPagination(params);
 
                     AlertService.replaceAlerts({
                         type: 'success',
@@ -314,6 +278,11 @@
             });
             _getAlertsForPagination(params, 500);
         }
+
+        $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
+            params = angular.extend(params, query);
+            _getAlertsForPagination(params);
+        });
 
         function checkedAlert(alert) {
             return $scope.selectedAlert.indexOf(alert.id) > -1
