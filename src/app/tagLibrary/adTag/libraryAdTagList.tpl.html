@@ -60,8 +60,8 @@
                         <div e-form="nameForm" buttons="no" oncancel="updateAdTag($data, 'name', item)" onbeforesave="updateAdTag($data, 'name', item)" editable-text="item.name">{{ item.name }}</div>
                     </td>
                     <td at-title="{{ 'AD_NETWORK' | translate }}" at-implicit at-sortable at-attribute="adNetwork.name"></td>
-                    <td ng-show="isAdmin()" at-title="{{ 'PUBLISHER' | translate }}" at-sortable at-implicit at-attribute="adNetwork.publisher.company"></td>
-                    <td at-title="{{ 'AD_TAG_LIBRARY_MODULE.LINKED_AD_TAGS' | translate }}" at-implicit at-sortable at-attribute="associatedTagCount"></td>
+                    <td ng-show="isAdmin()" at-title="{{ 'PUBLISHER' | translate }}"  at-implicit at-attribute="adNetwork.publisher.company"></td>
+                    <td at-title="{{ 'AD_TAG_LIBRARY_MODULE.LINKED_AD_TAGS' | translate }}" at-implicit at-attribute="associatedTagCount"></td>
                 </tr>
                 </tbody>
             </table>

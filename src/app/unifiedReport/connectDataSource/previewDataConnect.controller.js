@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.connect')
         .controller('PreviewDataConnect', PreviewDataConnect);
 
-    function PreviewDataConnect($scope, $modal, $filter, connectDataSource, dataSourceEntries, listFilePaths, UnifiedReportDataSourceFileManager, UnifiedReportConnectDataSourceManager) {
+    function PreviewDataConnect($scope, $modal, $filter, connectDataSource, dataSourceEntries, listFilePaths, UnifiedReportDataSourceFileManager, UnifiedReportConnectDataSourceManager, ITEMS_PER_PAGE ) {
         const ALERT_CODE_DATA_IMPORT_MAPPING_FAIL = 1201;
         const ALERT_CODE_DATA_IMPORT_REQUIRED_FAIL = 1202;
         const ALERT_CODE_FILTER_ERROR_INVALID_NUMBER = 1203;
@@ -18,6 +18,13 @@
         const ALERT_CODE_UN_EXPECTED_ERROR = 2000;
 
         $scope.connectDataSource = connectDataSource;
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
+
+        $scope.changeItemsPerPage =  changeItemsPerPage;
+
+        function changeItemsPerPage() {
+
+        }
 
         angular.forEach(dataSourceEntries, function (dataSourceEntrie) {
             dataSourceEntrie.fileName = (!!dataSourceEntrie.startDate && !!dataSourceEntrie.startDate ? (dataSourceEntrie.startDate == dataSourceEntrie.endDate ? $filter('date')(dataSourceEntrie.startDate, 'MMM d, y') : $filter('date')(dataSourceEntrie.startDate, 'MMM d, y') + ' - ' + $filter('date')(dataSourceEntrie.endDate, 'MMM d, y')) : '') + (!!dataSourceEntrie.startDate && !!dataSourceEntrie.startDate ? ' (' : '') + dataSourceEntrie.fileName + (!!dataSourceEntrie.startDate && !!dataSourceEntrie.startDate ? ')' : '');
@@ -260,6 +267,7 @@
                     return 'Unknown code (' + detail.code + ')';
             }
         }
+
 
         $scope.$watch('search', function() {
             angular.forEach(angular.copy($scope.search), function (value, key) {

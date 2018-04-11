@@ -5,7 +5,7 @@
         .controller('DemandAdTagList', DemandAdTagList)
     ;
 
-    function DemandAdTagList($scope, $state, $stateParams, $translate, $modal, AlertService, demandAdTags, demandPartner, LibraryDemandAdTagManager ,VideoDemandAdTagManager, AtSortableService, HISTORY_TYPE_PATH, DIMENSIONS_OPTIONS_VIDEO_REPORT, dateUtil, historyStorage, ITEMS_PER_PAGE) {
+    function DemandAdTagList($scope, $state, $stateParams, $translate, $modal, AlertService, demandAdTags, demandPartner, LibraryDemandAdTagManager ,VideoDemandAdTagManager, AtSortableService, HISTORY_TYPE_PATH, DIMENSIONS_OPTIONS_VIDEO_REPORT, dateUtil, historyStorage, ITEMS_PER_PAGE, EVENT_ACTION_SORTABLE) {
 
         $scope.demandAdTags = demandAdTags.records;
         $scope.demandPartner = demandPartner;
@@ -16,19 +16,7 @@
         $scope.itemsPerPageList = ITEMS_PER_PAGE;
         $scope.changeItemsPerPage = changeItemsPerPage;
         $scope.changePage = changePage;
-
-        function changePage(currentPage) {
-            params = angular.extend(params, {page: currentPage});
-            _getDemandAdTags(params);
-        }
-
-        function changeItemsPerPage()
-        {
-            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
-            params.page = 1;
-            params = angular.extend(params, query);
-            -_getDemandAdTags(query, 500);
-        }
+        $scope.searchData = searchData;
 
         $scope.hasData = function () {
             return !!$scope.demandAdTags.length;
@@ -142,18 +130,7 @@
                 return VideoDemandAdTagManager.one(demandAdTag.id).remove()
                     .then(
                     function () {
-                        var index = demandAdTags.indexOf(demandAdTag);
-
-                        if (index > -1) {
-                            demandAdTags.splice(index, 1);
-                        }
-
-                        $scope.demandAdTags = demandAdTags;
-
-                        if($scope.tableConfig.currentPage > 0 && demandAdTags.length/10 == $scope.tableConfig.currentPage) {
-                            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
-                        }
-
+                        changePage(params.page);
                         AlertService.replaceAlerts({
                             type: 'success',
                             message: $translate.instant('AD_SOURCE_MODULE.DELETE_SUCCESS')
@@ -174,8 +151,32 @@
 
         }
 
+        function changeItemsPerPage() {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params.page = 1;
+            params = angular.extend(params, query);
+            -_getDemandAdTags(query, 500);
+        }
+
+        function changePage(currentPage) {
+            params = angular.extend(params, {page: currentPage});
+            _getDemandAdTags(params);
+        }
+
+        function searchData() {
+            var query = {searchKey: $scope.selectData.query || ''};
+            params = angular.extend(params, query);
+            _getDemandAdTags(params, 500);
+        }
+
         $scope.$on('$locationChangeSuccess', function() {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.videoDemandAdTag)
         });
+
+        $scope.$on(EVENT_ACTION_SORTABLE, function (event, query){
+            params = angular.extend(params, query);
+            _getDemandAdTags(params);
+        });
+
     }
 })();

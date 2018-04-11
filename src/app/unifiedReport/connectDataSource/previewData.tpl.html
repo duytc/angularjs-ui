@@ -58,13 +58,15 @@
                     </table>
                 </div>
 
-                <div class="pagination">
+                <div style="float:left; display: flex; margin-right: 20px; margin-top: 5px">
                     <dir-pagination-controls pagination-id="processed" max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+                    <div style="margin-top: 25px;">
+                        <label class="items-per-page" for="selectItemsPerPageProcess"> Items Per Page </label>
+                        <select id="selectItemsPerPageProcess" ng-change="changeItemsPerPage()" ng-model="tableConfigProcessed.itemsPerPage">
+                            <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
+                        </select>
+                    </div>
                 </div>
-
-                <!--<div class="pagination">-->
-                    <!--<pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfigProcessed.itemsPerPage" total-items="tableConfigProcessed.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfigProcessed.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>-->
-                <!--</div>-->
 
                 <span class="help-block pull-right" ng-if="reportProcessedData.total > 0">{{ reportProcessedData.total }} of {{ getTotalRowDataSourceEntry(selectedData.importedDataSource) }} Rows</span>
             </tab>
@@ -113,8 +115,14 @@
                     </table>
                 </div>
 
-                <div class="pagination">
+                <div style="float:left; display: flex; margin-right: 20px; margin-top: 5px">
                     <dir-pagination-controls pagination-id="original" max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+                    <div style="margin-top: 25px;">
+                        <label class="items-per-page" for="selectItemsPerPage"> Items Per Page </label>
+                        <select id="selectItemsPerPage" ng-change="changeItemsPerPage()" ng-model="tableConfigOriginal.itemsPerPage">
+                            <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
+                        </select>
+                    </div>
                 </div>
 
                 <span class="help-block pull-right" ng-if="originalReports.length > 0">{{ originalReports.length }} of {{ originalData.total }} Rows</span>

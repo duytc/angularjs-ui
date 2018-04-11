@@ -73,9 +73,14 @@
 
                 </div>
 
-                <div ng-if="selectedAlert.length > 0" class="alert alert-warning alert-number">
+                <div ng-if="(selectedAlert.length > 0) && !checkAllItem" class="alert alert-warning alert-number">
                     All <strong>{{ selectedAlert.length }}</strong> alerts on this page are selected.
                 </div>
+
+                <div ng-if="checkAllItem" class="alert alert-warning alert-number">
+                    All <strong>{{ tableConfig.totalItems }}</strong> alerts on this page are selected.
+                </div>
+
             </div>
 
             <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="alerts" at-config="tableConfig">
@@ -106,7 +111,7 @@
                     <td at-title="{{  'UNIFIED_REPORT_ALERT_MODULE.SUMMARY' | translate }}" at-attribute="message.message">
                         {{ getTitleAlert(item) }}
                     </td>
-                    <td at-title="Type" at-sortable at-implicit at-attribute="type">
+                    <td at-title="Type" at-sortable at-attribute="type">
                         <span class="label" ng-class="item.type == 'info' ? 'label-info' : (item.type == 'warning' ? 'label-warning' : 'label-danger')">{{ item.type }}</span>
                     </td>
                     <td ng-show="isAdmin()" at-implicit at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>

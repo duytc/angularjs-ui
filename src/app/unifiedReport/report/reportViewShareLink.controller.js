@@ -4,10 +4,10 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('ReportViewShareList', ReportViewShareList);
 
-    function ReportViewShareList($scope, $modal, listShare, dataSetsFromReportView, reportView, AlertService, UnifiedReportViewManager, unifiedReportBuilder, historyStorage, HISTORY_TYPE_PATH) {
+    function ReportViewShareList($scope, $modal, listShare, dataSetsFromReportView, reportView, AlertService, UnifiedReportViewManager, unifiedReportBuilder, historyStorage, HISTORY_TYPE_PATH, ITEMS_PER_PAGE) {
         $scope.listShare = listShare;
         $scope.dataSetsFromReportView = dataSetsFromReportView;
-
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
         $scope.tableConfig = {
             itemsPerPage: 10,
             maxPages: 10

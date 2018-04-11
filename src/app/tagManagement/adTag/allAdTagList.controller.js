@@ -100,14 +100,7 @@
                 return Manager.one(adTag.id).remove()
                     .then(
                     function () {
-                        var index = adTags.indexOf(adTag);
-
-                        if (index > -1) {
-                            adTags.splice(index, 1);
-                        }
-
-                        $scope.adTags = adTags;
-
+                        changePage(params.page);
                         AlertService.replaceAlerts({
                             type: 'success',
                             message: $translate.instant('AD_TAG_MODULE.DELETE_SUCCESS')

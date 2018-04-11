@@ -77,10 +77,12 @@
                     $modal.open({
                         templateUrl: 'unifiedReport/importHistory/previewData.tpl.html',
                         size: 'lg',
-                        controller: function ($scope, reportData) {
+                        controller: function ($scope, reportData, ITEMS_PER_PAGE) {
                             $scope.reports = reportData || [];
                             $scope.columns = reportData.length > 0 ? _.keys(reportData[0]) : [];
                             $scope.search = {};
+
+                            $scope.itemsPerPageList = ITEMS_PER_PAGE;
 
                             $scope.itemsPerPage = [
                                 {label: '100', key: '100'},

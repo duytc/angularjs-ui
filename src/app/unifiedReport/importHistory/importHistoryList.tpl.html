@@ -25,56 +25,61 @@
 
     </form>
 
-    <!--<search-box show-query="true" sb-list="importHistoryList" search-fields="['id', 'description']"></search-box>-->
-
     <div class="panel-body" ng-if="hasData()">
         <div class="table-responsive">
             <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="importHistoryList.records" at-config="tableConfig">
                 <thead>
-                <tr>
-                    <th ng-show="!!dataSet" at-attribute="dataSourceEntry.dataSource.name">{{ 'DATA_SOURCE' | translate }}</th>
-                    <th ng-show="!dataSet" at-attribute="dataSet.name">{{ 'DATA_SET' | translate }}</th>
-                </tr>
+                    <tr>
+                        <th ng-show="!!dataSet" at-attribute="dataSourceEntry.dataSource.name">{{ 'DATA_SOURCE' | translate }}</th>
+                        <th ng-show="!dataSet" at-attribute="dataSet.name">{{ 'DATA_SET' | translate }}</th>
+                    </tr>
                 </thead>
+
                 <tbody>
-                <tr>
-                    <td at-implicit at-title="#" at-sortable at-attribute="id"></td>
-                    <td at-title="{{ 'ACTIONS' | translate }}">
-                        <div class="btn-group" dropdown>
-                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
-                            <ul class="dropdown-menu pull-right-dropdown" role="menu">
-                                <li><a ng-click="previewData(item)">Preview Loaded Data</a></li>
-                                <li class="divider"></li>
-                                <li><a ng-click="downloadImportedData(item)">Download Loaded Data</a></li>
-                                <li class="divider"></li>
-                                <li><a ng-click="undo(item, $index)">Undo</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                    <!--<td at-implicit at-title="Description" at-attribute="description"></td>-->
-                    <td at-title="Loaded on" at-initial-sorting="desc" at-sortable at-attribute="createdDate">
-                        {{ item.createdDate | date:'MMM d, y H:mm:ss' }}
-                    </td>
-                    <td at-implicit at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.FILENAME' | translate }}" at-sortable at-attribute="dataSourceEntry.fileName"></td>
-                    <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DATE_RANGE' | translate }}" at-attribute="dateRange">
-                        {{ (!!item.dataSourceEntry.startDate && !!item.dataSourceEntry.endDate) ? ((item.dataSourceEntry.startDate == item.dataSourceEntry.endDate) ? (item.dataSourceEntry.startDate | date:'MMM d, y') : (item.dataSourceEntry.startDate | date:'MMM d, y') + ' - ' + (item.dataSourceEntry.endDate | date:'MMM d, y')) : null}}
-                    </td>
-                    <td ng-show="!!dataSet" at-title="{{ 'DATA_SOURCE' | translate }}" at-sortable at-attribute="dataSourceEntry.dataSource.name">
-                        {{ item.dataSourceEntry.dataSource.name + ' (ID: '+ item.dataSourceEntry.dataSource.id +')'}}
-                    </td>
-                    <td ng-show="!dataSet" at-implicit at-title="{{ 'DATA_SET' | translate }}" at-sortable at-attribute="dataSet.name"></td>
-                </tr>
+                    <tr>
+                        <td at-implicit at-title="#" at-sortable at-attribute="id"></td>
+
+                        <td at-title="{{ 'ACTIONS' | translate }}">
+                            <div class="btn-group" dropdown>
+                                <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                                <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                    <li><a ng-click="previewData(item)">Preview Loaded Data</a></li>
+                                    <li class="divider"></li>
+                                    <li><a ng-click="downloadImportedData(item)">Download Loaded Data</a></li>
+                                    <li class="divider"></li>
+                                    <li><a ng-click="undo(item, $index)">Undo</a></li>
+                                </ul>
+                            </div>
+                        </td>
+
+                        <!--<td at-implicit at-title="Description" at-attribute="description"></td>-->
+                        <td at-title="Loaded on" at-initial-sorting="desc" at-sortable at-attribute="createdDate">
+                            {{ item.createdDate | date:'MMM d, y H:mm:ss' }}
+                        </td>
+
+                        <td at-implicit at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.FILENAME' | translate }}" at-sortable at-attribute="dataSourceEntry.fileName"></td>
+
+                        <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DATE_RANGE' | translate }}" at-attribute="dateRange">
+                            {{ (!!item.dataSourceEntry.startDate && !!item.dataSourceEntry.endDate) ? ((item.dataSourceEntry.startDate == item.dataSourceEntry.endDate) ? (item.dataSourceEntry.startDate | date:'MMM d, y') : (item.dataSourceEntry.startDate | date:'MMM d, y') + ' - ' + (item.dataSourceEntry.endDate | date:'MMM d, y')) : null}}
+                        </td>
+
+                        <td ng-show="!!dataSet" at-title="{{ 'DATA_SOURCE' | translate }}" at-sortable at-attribute="dataSourceEntry.dataSource.name">
+                            {{ item.dataSourceEntry.dataSource.name + ' (ID: '+ item.dataSourceEntry.dataSource.id +')'}}
+                        </td>
+
+                        <td ng-show="!dataSet" at-implicit at-title="{{ 'DATA_SET' | translate }}" at-sortable at-attribute="dataSet.name"></td>
+                    </tr>
                 </tbody>
             </table>
 
             <div style="float:left; display: flex; margin-right: 20px; margin-top: 5px">
+                <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
                 <div style="margin-top: 25px;">
                     <select id="selectItemsPerPage" ng-change="changeItemsPerPage()" ng-model="tableConfig.itemsPerPage">
                         <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
                     </select>
                     <label class="items-per-page" for="selectItemsPerPage"> Items Per Page </label>
                 </div>
-                <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
             </div>
 
         </div>

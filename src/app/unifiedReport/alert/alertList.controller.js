@@ -35,7 +35,7 @@
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 50,
+            maxPages: 10,
             totalItems: Number(alerts.totalRecord)
         };
 
@@ -53,6 +53,7 @@
                 error: true
             }
         };
+
         $scope.selectedData.labelType = 'All Type';
 
         $scope.alertTypes = [
@@ -178,6 +179,16 @@
                             $scope.alerts = alerts.records;
                             $scope.tableConfig.totalItems = Number(alerts.totalRecord);
                             $scope.availableOptions.currentPage = Number(query.page);
+
+                            // update selected status for new
+                            if ($scope.checkAllItem) {
+                                angular.forEach($scope.alerts, function (alert) {
+                                    if ($scope.selectedAlert.indexOf(alert.id) == -1) {
+                                        $scope.selectedAlert.push(alert.id)
+                                    }
+                                });
+                            }
+
                         }, 0)
                     });
             }, ms || 0)
@@ -191,7 +202,7 @@
         function selectAllAlertInPages() {
             $scope.checkAllItem = true;
 
-            angular.forEach(alerts, function (alert) {
+            angular.forEach($scope.alerts, function (alert) {
                 if ($scope.selectedAlert.indexOf(alert.id) == -1) {
                     $scope.selectedAlert.push(alert.id)
                 }
@@ -217,7 +228,15 @@
 
         function deleteAlertMulti() {
             var selectedAlerts = angular.copy($scope.selectedAlert);
-            UnifiedReportAlertManager.one().customPUT({ids: $scope.selectedAlert}, null, {delete: true})
+
+            var idsObject = [];
+            if (!$scope.checkAllItem) {
+                idsObject = {ids: $scope.selectedAlert};
+            } else {
+                idsObject = {ids: []};
+            }
+
+            UnifiedReportAlertManager.one().customPUT(idsObject, null, {delete: true})
                 .then(function () {
                     _getAlertsForPagination(params);
 
@@ -229,7 +248,14 @@
         }
 
         function markAsUnreadMulti() {
-            UnifiedReportAlertManager.one().customPUT({ids: $scope.selectedAlert}, null, {status: false})
+            var idsObject = [];
+            if (!$scope.checkAllItem) {
+                idsObject = {ids: $scope.selectedAlert};
+            } else {
+                idsObject = {ids: []};
+            }
+
+            UnifiedReportAlertManager.one().customPUT(idsObject, null, {status: false})
                 .then(function () {
                     // $scope.checkAllItem = false;
 
@@ -249,7 +275,15 @@
         }
 
         function markAsReadMulti() {
-            UnifiedReportAlertManager.one().customPUT({ids: $scope.selectedAlert}, null, {status: true})
+
+            var idsObject = [];
+            if (!$scope.checkAllItem) {
+                idsObject = {ids: $scope.selectedAlert};
+            } else {
+                idsObject = {ids: []};
+            }
+
+            UnifiedReportAlertManager.one().customPUT(idsObject, null, {status: true})
                 .then(function () {
                     // $scope.checkAllItem = false;
 
@@ -269,7 +303,7 @@
         }
 
         function showPagination() {
-            return angular.isArray($scope.alerts) && alerts.totalRecord > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.alerts) && $scope.tableConfig.totalItems > $scope.tableConfig.itemsPerPage;
         }
 
         function changePage(currentPage) {
@@ -277,9 +311,11 @@
                 page: currentPage
             });
             _getAlertsForPagination(params, 500);
+
+
         }
 
-        $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
+        $scope.$on(EVENT_ACTION_SORTABLE, function (event, query) {
             params = angular.extend(params, query);
             _getAlertsForPagination(params);
         });
@@ -309,7 +345,7 @@
                 $scope.checkAllItem = false;
             } else {
                 $scope.selectedAlert = [];
-                $scope.checkAllItem = true;
+                $scope.checkAllItem = false;
 
                 angular.forEach(itemsForPager, function (alert) {
                     if ($scope.selectedAlert.indexOf(alert.id) == -1) {

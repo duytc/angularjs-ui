@@ -159,10 +159,12 @@
                                 return reportView
                             }
                         },
-                        controller: function ($scope, reportView) {
+                        controller: function ($scope, reportView, ITEMS_PER_PAGE) {
                             $scope.reportView = reportView;
                             $scope.columns = _.keys(reportView.columns);
                             $scope.reports = reportView.reports;
+
+                            $scope.itemsPerPageList = ITEMS_PER_PAGE;
 
                             $scope.itemsPerPage = [
                                 {label: '100', key: '100'},
@@ -219,7 +221,16 @@
 
         function selectAllInPages() {
             $scope.checkAllItem = true;
-            $scope.selectedDataSourceFiles = angular.copy(allEntryIds);
+
+            //Note: always get the newest entries in data base
+            UnifiedReportDataSourceManager.one($stateParams.dataSourceId).one('datasourceentryids').getList()
+                .then(function (dataSourceEntries) {
+                    angular.forEach(dataSourceEntries, function (item) {
+                        $scope.selectedDataSourceFiles.push(item.id);
+                    });
+
+                    return $scope.selectedDataSourceFiles
+                });
         }
 
         function noneSelect() {

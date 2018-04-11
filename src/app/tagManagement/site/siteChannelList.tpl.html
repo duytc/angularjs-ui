@@ -46,6 +46,14 @@
             </table>
 
             <at-pagination ng-if="showPagination()" at-list="channels" at-config="tableConfig"></at-pagination>
+            <div style="margin-top: 25px;">
+                <label class="items-per-page" for="selectItemsPerPage"> Items Per Page </label>
+                <select id="selectItemsPerPage" ng-change="changeItemsPerPage()" ng-model="tableConfig.itemsPerPage">
+                    <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
+                </select>
+            </div>
+
+
         </div>
     </div>
 </div>

@@ -1,11 +1,11 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('tagcade.tagManagement.channel')
         .controller('ChannelList', ChannelList)
     ;
 
-    function ChannelList($scope, $translate, $stateParams ,$modal, AlertService, channels, ChannelManager, AtSortableService, HISTORY_TYPE_PATH, historyStorage, ITEMS_PER_PAGE ) {
+    function ChannelList($scope, $translate, $stateParams, $modal, AlertService, channels, ChannelManager, AtSortableService, HISTORY_TYPE_PATH, historyStorage, EVENT_ACTION_SORTABLE, ITEMS_PER_PAGE) {
         $scope.channels = channels.records;
         $scope.itemsPerPageList = ITEMS_PER_PAGE;
 
@@ -49,18 +49,8 @@
             modalInstance.result.then(function () {
                 return ChannelManager.one(channel.id).remove()
                     .then(
-                    function () {
-                        var index = channels.records.indexOf(channel);
-
-                        if (index > -1) {
-                            channels.records.splice(index, 1);
-                        }
-
-                        $scope.channels = channels.records;
-
-                        if($scope.tableConfig.currentPage > 0 && channels.length/10 == $scope.tableConfig.currentPage) {
-                            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
-                        }
+                        function () {
+                            changePage(params.page);
 
                         AlertService.replaceAlerts({
                             type: 'success',
@@ -96,10 +86,10 @@
         function _getChannel(query, ms) {
             clearTimeout(getChannel);
 
-            getChannel = setTimeout(function() {
+            getChannel = setTimeout(function () {
                 params = query;
                 return ChannelManager.one().get(query)
-                    .then(function(channels) {
+                    .then(function (channels) {
                         AtSortableService.insertParamForUrl(query);
                         $scope.channels = channels.records;
                         $scope.tableConfig.totalItems = Number(channels.totalRecord);
@@ -109,18 +99,21 @@
         }
 
 
-        function changeItemsPerPage()
-        {
+        function changeItemsPerPage() {
             var query = {limit: $scope.tableConfig.itemsPerPage || ''};
             params.page = 1;
             params = angular.extend(params, query);
             _getChannel(params, 500);
         }
 
-        $scope.$on('$locationChangeSuccess', function() {
+        $scope.$on('$locationChangeSuccess', function () {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.channel)
         });
 
+        $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {
+            params = angular.extend(params, query);
+            _getChannel(params);
+        });
 
     }
 })();

@@ -5,10 +5,11 @@
         .controller('SiteChannelList', SiteChannelList)
     ;
 
-    function SiteChannelList($scope, $translate, $filter, $modal, AlertService, channels, site, ChannelManager, SiteManager, historyStorage, HISTORY_TYPE_PATH) {
+    function SiteChannelList($scope, $translate, $filter, $modal, AlertService, channels, site, ChannelManager, SiteManager, historyStorage, HISTORY_TYPE_PATH, ITEMS_PER_PAGE) {
         $scope.channels = channels;
         $scope.site = site;
 
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
         $scope.hasData = function () {
             return !!channels.length;
         };
@@ -106,7 +107,7 @@
         }
 
         function showPagination() {
-            return angular.isArray($scope.sites) && $scope.sites.length > $scope.tableConfig.itemsPerPage;
+            return angular.isArray($scope.channels) && $scope.channels.length > $scope.tableConfig.itemsPerPage;
         }
 
         function addChannelForChannel() {

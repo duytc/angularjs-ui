@@ -42,8 +42,16 @@
         </table>
     </div>
 
-    <div class="pagination">
+
+
+    <div style="float:left; display: flex; margin-right: 20px; margin-top: 5px">
         <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+        <div style="margin-top: 25px;">
+            <label class="items-per-page" for="selectItemsPerPage"> Items Per Page </label>
+            <select id="selectItemsPerPage" ng-change="changeItemsPerPage()" ng-model="tableConfig.itemsPerPage">
+                <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
+            </select>
+        </div>
     </div>
 </div>
 

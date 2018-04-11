@@ -98,9 +98,6 @@
                     <td at-title="Imported on" at-sortable at-attribute="receivedDate">{{ item.receivedDate | date:'MMM d, y H:mm:ss' }}</td>
                     <!--<td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.RESOURCE_NAME' | translate }}" at-implicit at-attribute="dataSource.name"></td>-->
                     <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.FORMAT' | translate }}" at-implicit at-attribute="item.format">{{item.fileExtension}}</td>
-                    <!--<td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.VALID' | translate }}" at-attribute="isValid">-->
-                        <!--<i class="fa" ng-class="item.isValid? 'fa-check-square' : 'fa-square'"></i>-->
-                    <!--</td>-->
                     <td at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.RECEIVED_VIA' | translate }}" >{{ item.receivedVia }}</td>
 
                     <td ng-show="dataSource.dateRangeDetectionEnabled" at-title="{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.STATUS' | translate }}" at-attribute="missingDate">
@@ -114,13 +111,14 @@
         </table>
 
         <div style="float:left; display: flex; margin-right: 20px; margin-top: 5px">
+            <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
             <div style="margin-top: 25px;">
                 <select id="selectItemsPerPage" ng-change="changeItemsPerPage()" ng-model="tableConfig.itemsPerPage">
                     <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
                 </select>
                 <label class="items-per-page" for="selectItemsPerPage"> Items Per Page </label>
             </div>
-            <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+
         </div>
 
     </div>

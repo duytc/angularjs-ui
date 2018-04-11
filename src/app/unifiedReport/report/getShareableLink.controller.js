@@ -6,7 +6,7 @@
         .controller('GetShareableLink', GetShareableLink)
     ;
 
-    function GetShareableLink($scope, AlertService, fieldsReportView, reportView, shareable, UnifiedReportViewManager, DateFormatter, getDateReportView) {
+    function GetShareableLink($scope, AlertService, fieldsReportView, reportView, shareable, UnifiedReportViewManager, DateFormatter, getDateReportView, ITEMS_PER_PAGE) {
         $scope.shareable = angular.copy(shareable);
         $scope.reportView = reportView;
 
