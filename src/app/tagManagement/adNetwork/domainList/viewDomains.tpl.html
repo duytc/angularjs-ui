@@ -43,24 +43,19 @@
             </tbody>
         </table>
 
-        <div class="row">
-            <div class="col-sm-11">
-                <at-pagination ng-if="showPagination()" at-list="domains" at-config="tableConfig"></at-pagination>
-            </div>
-            <div class="col-sm-1">
-                <div class="itemsPerPage">
-                    <label for="inputItemPerPage">Items per page</label>
-                    <div class="itemNumber">
-                        <ui-select name="itemPerPage" id="inputItemPerPage" ng-model="tableConfig.itemsPerPage" on-select="selectItemPerPages($item)" reset-search-input="'false'">
-                            <ui-select-match placeholder="10">{{ $select.selected.label }}</ui-select-match>
-                            <ui-select-choices repeat="itemPerPage.key as itemPerPage in itemsPerPage">
-                                {{ itemPerPage.label }}
-                            </ui-select-choices>
-                        </ui-select>
-                    </div>
-                </div>
+
+        <div style="float:left; display: flex; margin-right: 20px; margin-top: 5px">
+
+            <at-pagination ng-if="showPagination()" at-list="domains" at-config="tableConfig"> </at-pagination>
+            <div style="margin-top: 25px;">
+                <label class="items-per-page" for="selectItemsPerPage"> Items Per Page </label>
+                <select id="selectItemsPerPage" ng-change="changeItemsPerPage()" ng-model="tableConfig.itemsPerPage">
+                    <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
+                </select>
+
             </div>
         </div>
+
     </div>
 </div>
 <div class="modal-footer">

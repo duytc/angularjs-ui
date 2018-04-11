@@ -5,9 +5,10 @@
         .controller('ViewDomains', ViewDomains)
     ;
 
-    function ViewDomains($scope, $filter, DisplayBlackListManager, DisplayWhiteListManager, domain, whiteList, DOMAINS_LIST_SEPARATOR) {
+    function ViewDomains($scope, $filter, DisplayBlackListManager, DisplayWhiteListManager, domain, whiteList, DOMAINS_LIST_SEPARATOR, ITEMS_PER_PAGE ) {
         $scope.domain = domain;
         $scope.domains = $scope.domain.domains;
+        $scope.itemsPerPageList = ITEMS_PER_PAGE;
 
         $scope.alerts = [];
 
