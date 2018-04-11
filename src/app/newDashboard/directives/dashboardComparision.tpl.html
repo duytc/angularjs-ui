@@ -24,8 +24,13 @@
         <table class="table no-border"
                ng-if="formData.comparisionData && formData.comparisionData.length > 0">
             <th class="th-no-border"></th>
-            <th class="text-right th-no-border">Current {{compareTypeData.label}}</th>
-            <th class="text-right th-no-border">Last {{compareTypeData.label}}</th>
+            <th ng-if="dashboardType.id == 'UNIFIED_REPORT' && compareTypeData.compareType == 'day-over-day'" class="text-right th-no-border">Recent {{compareTypeData.label}}</th>
+            <th ng-if="!(dashboardType.id == 'UNIFIED_REPORT' && compareTypeData.compareType == 'day-over-day')"  class="text-right th-no-border">Current {{compareTypeData.label}}</th>
+
+            <th ng-if="dashboardType.id == 'UNIFIED_REPORT' && compareTypeData.compareType == 'day-over-day'" class="text-right th-no-border">Previous {{compareTypeData.label}}</th>
+            <th ng-if="!(dashboardType.id == 'UNIFIED_REPORT' && compareTypeData.compareType == 'day-over-day')" class="text-right th-no-border">Last {{compareTypeData.label}}</th>
+
+
             <tr ng-repeat="row in formData.comparisionData">
                 <td class="text-capitalize"><b>{{row.label}}</b></td>
                 <td class="text-right">{{row.current.value}}</td>

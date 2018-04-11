@@ -116,14 +116,15 @@
             } else if (isUnifiedReportDashboard($scope.currentModel.dashboardType)) {
                 // set report fields
                 var total = data.total;
+                var fields = [];
                 if (total) {
-                    $scope.formData.chartData.urData.fields = Object.keys(total);
+                    fields = Object.keys(total);
+                    $scope.formData.chartData.urData.fields = fields;
                 }
-
                 // set report data.
                 // Notice: total contains all show fields for chart, return empty report detail if total empty!!!
                 // This avoid show empty chart
-                $scope.formData.chartData.reports = (data.reports && total && total.length > 0) ? data.reports : [];
+                $scope.formData.chartData.reports = (data.reports && total && fields && fields.length > 0) ? data.reports : [];
             }
 
             if (!$scope.$$phase) {
