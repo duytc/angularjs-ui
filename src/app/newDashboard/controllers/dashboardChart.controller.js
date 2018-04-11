@@ -125,7 +125,13 @@
             return moment(dateValue, inputDateFormat).format('YYYY-MM-DD');
         }
 
-        function isInDateRang(date, selectedDate) {
+        function isInDateRange(date, selectedDate) {
+            // temp not support custom date range from chart panel, use date from overview date range
+            // TODO: remove all code related to date range from chart panel...
+            if (1 == 1) {
+                return true;
+            }
+
             if (!selectedDate) return true;
             var startDate = selectedDate.startDate;
             var endDate = selectedDate.endDate;
@@ -168,7 +174,7 @@
                 // normalize dateValue to standard format "Y-m-d" for comparison date range
                 dateValue = normalizeDatevalue(dateValue, dateFormat);
 
-                if (isInDateRang(dateValue, $scope.selectedDate)) {
+                if (isInDateRange(dateValue, $scope.selectedDate)) {
                     dates.push(dateValue); // dates.push($filter('date')(dateValue));
                     angular.forEach(showFields, function (field) {
                         if (!showData[field])
