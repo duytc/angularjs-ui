@@ -166,11 +166,11 @@
                     label: label,
                     current: {
                         label: CURRENT_LABEL,
-                        value: currentData == null ? null : currentData[showFields[index]]
+                        value: currentData == null || showFields[index] == null ? null : currentData[showFields[index]]
                     },
                     history: {
                         label: HISTORY_LABEL,
-                        value: historyData == null ? null : historyData[showFields[index]]
+                        value: historyData == null || showFields[index] == null ? null : historyData[showFields[index]]
                     }
                 };
                 returnData.push(json);
@@ -193,17 +193,30 @@
         }
 
         function extractUnifiedReportComparision(data) {
-            if (!data || !data.current || !data.history || !data.current.total || !data.history.total) {
+            if (!data) {
                 return [];
             }
-
-            var total = data.current.total;
-            var showFields = Object.keys(total);
-            var currentData = data.current.total;
-            var historyData = data.history.total;
-            var columns = data.history.columns;
+            var showFields = getUnifiedShowFields(data);
+            var currentData = data.current ? data.current.total : [];
+            var historyData = data.history ? data.history.total : [];
+            var columns = data.history ? data.history.columns : [];
 
             return $scope.comparisionGenerator(showFields, currentData, historyData, columns);
+        }
+
+        function getUnifiedShowFields(data){
+            if(!data) return [];
+            if(data.current && data.current.total){
+                var keys = Object.keys(data.current.total);
+                if(keys && keys.length >0)
+                    return keys;
+            }
+            if(data.history && data.history.total){
+                var keys = Object.keys(data.history.total);
+                if(keys && keys.length >0)
+                    return keys;
+            }
+            return [];
         }
 
         function extractVideoComparision(data) {
