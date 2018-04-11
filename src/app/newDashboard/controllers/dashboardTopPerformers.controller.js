@@ -405,7 +405,12 @@
             });
 
             // get metrics from data sets of reportViews, join fields, add fields, ...
-            var metrics = $scope.reportView.metrics;
+            var metrics = $scope.reportView.showInTotal;
+            if (!angular.isArray(metrics) || metrics.length < 1) {
+                // do not show any things if not have metrics
+                $scope.columnPositions = [];
+                return;
+            }
 
             // then add metric after, let metric date first, sort alphabet
             metrics = _.sortBy(metrics);
@@ -417,8 +422,18 @@
                 }
             });
 
+            // remove not selected fields in metrics from column positions
+            var newColumnPositions = [];
+            angular.forEach(columnPositions, function (field) {
+                if (!field || metrics.indexOf(field) < 0) {
+                    return;
+                }
+
+                newColumnPositions.push(field);
+            });
+
             // merge
-            columnPositions = columnPositions.concat(dimensions, metrics);
+            columnPositions = newColumnPositions.concat(dimensions, metrics);
             columnPositions = _.uniq(columnPositions);
 
             // remove fields not in reports
@@ -434,10 +449,15 @@
         }
 
         function _getDefaultSortField() {
+            var metrics = $scope.reportView.showInTotal;
+            if (!angular.isArray(metrics) || metrics.length < 1) {
+                return null;
+            }
+
             // get the first metric to sort
             var types = $scope.topPerformersUnifiedReportData.types;
             var sortField = null;
-            angular.forEach($scope.reportView.metrics, function (field) {
+            angular.forEach(metrics, function (field) {
                 if (!sortField && types[field] && (types[field] === 'number' || types[field] === 'decimal')) {
                     sortField = field;
                 }
