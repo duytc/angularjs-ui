@@ -54,7 +54,7 @@
         function visitPublisher(publisherId) {
             adminUserManager.one(publisherId).one('token').get()
                 .then(function(tokenPublisher) {
-                    autoLogin.switchToUser(tokenPublisher.plain(), 'app.publisher.newDashboard');
+                    autoLogin.switchToUser(tokenPublisher.plain(), 'app.publisher.dashboard');
                 });
         }
 

@@ -12,7 +12,7 @@
                 return UserStateHelper.transitionRelativeToBaseState('tagManagement.sites.list');
             }
 
-            UserStateHelper.transitionRelativeToBaseState('newDashboard');
+            UserStateHelper.transitionRelativeToBaseState('dashboard');
         });
 
         $rootScope.$on(AUTH_EVENTS.loginFailed, function() {
