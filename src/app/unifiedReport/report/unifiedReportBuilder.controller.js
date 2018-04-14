@@ -64,6 +64,16 @@
             subView: false
         };
 
+        $scope.aggregateAndAverage = {
+            availableOptions: [
+                {key:'aggregate',value:"Sum"},
+                {key:'average',value:"Average"}
+            ]
+            //selectedOption: {key:'aggregate',value:"Sum"} //This sets the default value of the select in the ui
+        };
+
+        console.log($scope.aggregateAndAverage);
+
         if(!$scope.reportBuilder.masterReportView && $scope.subView) {
             $scope.reportBuilder.masterReportView = $scope.subView ? reportView.id : null;
             $scope.reportBuilder.largeReport = false;
@@ -142,6 +152,8 @@
         }
 
         function hasFieldForTotal(filed) {
+
+            // check field in showInTotal or not
             return $scope.reportBuilder.showInTotal.indexOf(filed.key) > -1;
         }
 
@@ -182,13 +194,33 @@
             })
         }
 
-        function toggleFieldForTotal(filed) {
-            var index = $scope.reportBuilder.showInTotal.indexOf(filed.key);
+        function toggleFieldForTotal(field) {
+            var showInTotal = angular.copy($scope.reportBuilder.showInTotal);
+            var deletedFromShowInTotal = false;
+            angular.forEach(showInTotal, function (showInTotalObject){
+                var index = showInTotalObject.fields.indexOf(field.key);
+                if (index > -1) {
+                    // delete from array
+                    if (showInTotalObject.type == 'aggregate') {
+                        $scope.reportBuilder.showInTotal[0].fields.splice(index, 1);
+                    } else {
+                        $scope.reportBuilder.showInTotal[1].fields.splice(index, 1);
+                    }
+                    deletedFromShowInTotal = true;
+                }
+            });
 
-            if (index == -1) {
-                $scope.reportBuilder.showInTotal.push(filed.key);
-            } else {
-                $scope.reportBuilder.showInTotal.splice(index, 1);
+            // add to array
+            if (deletedFromShowInTotal == false) {
+                if (showInTotal == []) {
+                    var aggregate = {
+                            "type":"aggregate",
+                            "fields":[ field.key]
+                        };
+                    $scope.reportBuilder.showInTotal.push(aggregate);
+                } else {
+                    $scope.reportBuilder.showInTotal[0].fields.push(field.key);
+                }
             }
         }
 
@@ -575,6 +607,7 @@
 
         function summaryFieldForTotal() {
             $scope.summaryFieldTotal = [];
+            $scope.summaryFieldTotalObject = [];
 
             angular.forEach(_getAllFieldInTransForm().concat($scope.selectedFields), function (dm) {
                 if (!!dm && (dm.type == 'number' || dm.type == 'decimal')) {
@@ -589,7 +622,6 @@
                     }
                 }
             });
-
             //reset field
             $scope.fieldsHaveDateType = [];
             $scope.fieldsHaveNumberType = [];
@@ -599,6 +631,56 @@
             _fieldsHaveNumberType();
             _fieldNumberByMetrics();
             _removeFieldNotSelectInFormat();
+
+            var showInTotal = angular.copy($scope.reportBuilder.showInTotal);
+            if (!showInTotal) {
+                angular.forEach($scope.summaryFieldTotal, function (field){
+                    var availableOption = {
+                        label: field.label,
+                        key: field.key,
+                        checked: false,
+                        type: $scope.aggregateAndAverage.availableOptions[0]
+                    };
+                    $scope.summaryFieldTotalObject.push(availableOption);
+                });
+            } else {
+                angular.forEach($scope.summaryFieldTotal, function (field){
+                    var insertedToSummaryFieldTotalObject = false;
+                    angular.forEach(showInTotal, function (showInTotalObject){
+                        if (showInTotalObject.fields) {
+                            if (showInTotalObject.fields.indexOf(field.key) > -1) {
+                                var typeOption = $scope.aggregateAndAverage.availableOptions[0]
+                                if (showInTotalObject.type == 'aggregate') {
+                                    typeOption = $scope.aggregateAndAverage.availableOptions[0];
+                                } else {
+                                    typeOption = $scope.aggregateAndAverage.availableOptions[1]
+                                }
+                                var availableOption = {
+                                    label: field.label,
+                                    key: field.key,
+                                    checked: true,
+                                    type: typeOption
+                                };
+                                $scope.summaryFieldTotalObject.push(availableOption);
+                                insertedToSummaryFieldTotalObject = true;
+                            }
+                        }
+
+                    });
+
+                    if (insertedToSummaryFieldTotalObject == false) {
+                        var availableOption = {
+                            label: field.label,
+                            key: field.key,
+                            checked: false,
+                            type: $scope.aggregateAndAverage.availableOptions[0]
+                        };
+                        $scope.summaryFieldTotalObject.push(availableOption);
+                    }
+                });
+            }
+            console.log('phuongdinh');
+            console.log($scope.summaryFieldTotalObject);
         }
 
         function _fieldsHaveDateType() {
@@ -826,6 +908,37 @@
             angular.forEach(reportBuilder.reportViewDataSets, function (reportViewDataSet) {
                 reportViewDataSet.dataSet = angular.isObject(reportViewDataSet.dataSet) ? reportViewDataSet.dataSet.id : reportViewDataSet.dataSet
             });
+
+            // reset show In Total based on type (aggregate and average)
+            var aggreagteField = [];
+            var averageField = [];
+            angular.forEach($scope.summaryFieldTotalObject, function (summaryObject) {
+
+                if (summaryObject.checked == true) {
+
+                    if (summaryObject.type.key == 'aggregate') {
+                        aggreagteField.push(summaryObject.key);
+                    } else {
+                        averageField.push(summaryObject.key);
+                    }
+                }
+            });
+
+            reportBuilder.showInTotal = [];
+            if (aggreagteField != []) {
+                var aggreagteFieldJson = {
+                    "type":"aggregate",
+                    "fields": aggreagteField
+                };
+                reportBuilder.showInTotal.push(aggreagteFieldJson);
+            }
+            if (averageField != []) {
+                var averageFieldJson = {
+                    "type":"average",
+                    "fields": averageField
+                };
+                reportBuilder.showInTotal.push(averageFieldJson);
+            }
 
             delete  reportBuilder.userReorderTransformsAllowed;
             delete  reportBuilder.dimensions;
