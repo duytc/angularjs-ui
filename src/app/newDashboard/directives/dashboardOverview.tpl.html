@@ -1,23 +1,80 @@
-<div class="panel panel-default" ng-class="chartFollow.type == 'OVER_VIEW' ? 'panel-primary' : ''">
+<div class="panel panel-default">
     <div class="panel-heading">{{'NEW_DASHBOARD.OVERVIEW'|translate}}</div>
     <div class="panel-body">
-        <!--date-->
-        <div class="form-inline" style="margin-bottom: 15px">
-            <label for="inputDateRange" class="inline-space">
-                {{ 'NEW_DASHBOARD.DATE_LABEL' | translate }} </label>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                <input date-range-picker
-                       options="overviewData.datePickerOpts"
-                       class="form-control date-picker date-picker-new-dashboard"
-                       type="text"
-                       id="inputDateRange"
-                       ng-model="overviewData.dateRange"
-                       ng-required="true">
-            </div>
-        </div>
+        <!--Display-->
+        <table class="table no-border" ng-if="isShowForDisplayReport() && overviewData.data">
+            <th class="th-no-border"><span style="visibility: hidden">.</span></th>
+            <th class="text-right th-no-border"><span style="visibility: hidden">.</span></th>
 
-        <table class="table no-border mt-15" ng-if="overviewData.data && overviewData.data.length > 0">
+            <tr ng-if="isAdmin">
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</td>
+                <td class="text-right">{{ customOverviewData.billedAmount | currency }}</td>
+            </tr>
+            <tr>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}</td>
+                <td class="text-right">{{ customOverviewData.slotOpportunities | number }}</td>
+            </tr>
+            <tr>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}</td>
+                <td class="text-right">{{ customOverviewData.totalOpportunities | number }}</td>
+            </tr>
+            <tr>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.IMPRESSIONS' | translate }}</td>
+                <td class="text-right">{{ customOverviewData.impressions | number }}</td>
+            </tr>
+            <tr>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}</td>
+                <td class="text-right">{{ customOverviewData.passbacks | number }}</td>
+            </tr>
+            <tr>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}</td>
+                <td class="text-right">{{ customOverviewData.fillRate | percentage }}</td>
+            </tr>
+        </table>
+
+        <!--Video-->
+        <table class="table no-border" ng-if="isShowForVideoReport() && overviewData.data">
+            <th class="th-no-border"><span style="visibility: hidden">.</span></th>
+            <th class="text-right th-no-border"><span style="visibility: hidden">.</span></th>
+
+            <tr ng-if="isAdmin">
+                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['billedAmount'] }}</b></td>
+                <td class="text-right">{{ (customOverviewData.billedAmount != null) ? (customOverviewData.billedAmount | currency) : (0 | currency) }}</td>
+            </tr>
+
+            <tr>
+                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['requests'] }}</b></td>
+                <td class="text-right">{{ (customOverviewData.requests != null) ? (customOverviewData.requests | number) : 0 }}</td>
+            </tr>
+
+            <tr>
+                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['impressions'] }}</b></td>
+                <td class="text-right">{{ (customOverviewData.impressions != null) ? (customOverviewData.impressions | number) : 0 }}</td>
+            </tr>
+
+            <tr>
+                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['bids'] }}</b></td>
+                <td class="text-right">{{ (customOverviewData.bids != null) ? (customOverviewData.bids | number) : 0 }}</td>
+            </tr>
+
+            <tr>
+                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['errors'] }}</b></td>
+                <td class="text-right">{{ (customOverviewData.errors != null) ? (customOverviewData.errors | number) : 0 }}</td>
+            </tr>
+
+            <tr>
+                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['blocks'] }}</b></td>
+                <td class="text-right">{{ (customOverviewData.blocks != null) ? (customOverviewData.blocks | number) : 0 }}</td>
+            </tr>
+
+            <tr>
+                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['requestFillRate'] }}</b></td>
+                <td class="text-right">{{ (customOverviewData.requestFillRate != null) ? (customOverviewData.requestFillRate | percentage) : (0 | percentage)  }}</td>
+            </tr>
+        </table>
+
+        <!--Unified report-->
+        <table class="table no-border" ng-if="isShowForUnifiedReport() && overviewData.data && overviewData.data.length > 0">
             <th class="th-no-border"><span style="visibility: hidden">.</span></th>
             <th class="text-right th-no-border"><span style="visibility: hidden">.</span></th>
             <tr ng-repeat="row in customOverviewData">
@@ -25,7 +82,6 @@
                 <td class="text-right">{{row.value}}</td>
             </tr>
         </table>
-
     </div>
 </div>
 

@@ -1,8 +1,30 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form name="dateRangeSelection" class="form-inline" role="form" novalidate>
+            <div class="form-group">
+                <label for="inputDateRange">{{ 'NEW_DASHBOARD.DATE_LABEL' | translate }}</label>
+                <div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input date-range-picker
+                               options="datePickerOpts"
+                               class="form-control date-picker date-picker-new-dashboard"
+                               type="text"
+                               id="inputDateRange"
+                               ng-model="formData.dateRange"
+                               ng-required="true">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <section class="panel panel-default">
     <div class="panel-heading">
         <span>{{currentModel.dashboardType.name}}</span>
 
-        <div class="button-bar">
+        <div class="button-bar" style="margin-top: -2px">
             <ui-select name="unifiedReport"
                        id="unifiedReport"
                        ng-model="currentModel.dashboardType"
@@ -27,7 +49,7 @@
                             name="inputReportViews"
                             ng-model="currentModel.reportView"
                             id="inputReportViews"
-                            on-select="onSelectReportView($item)"
+                            on-select="onSelectReportViewForUnifiedReport($item)"
                             reset-search-input="'false'">
                         <ui-select-match placeholder="Select a report view">{{ $select.selected.name }}</ui-select-match>
                         <ui-select-choices repeat="reportView in formData.reportView | filter: {name: $select.search}">
@@ -53,6 +75,7 @@
 
         <div class="form-group" style="margin-top: 20px">
             <dashboard-detail dashboard-type="currentModel.dashboardType"
+                              date-range="formData.dateRange"
                               overview-data="formData.overviewData"
                               chart-data="formData.chartData"
                               report-view="currentModel.reportView"
@@ -60,8 +83,7 @@
                               comparision-data="formData.comparisionData"
                               compare-type-data="formData.compareTypeData"
                               chart-follow="chartFollow"
-                              on-change-chart-follow="onChangeChartFollow()"
-                              on-change-overview-date="onSelectDashboardType(currentModel.dashboardType)">
+                              on-change-chart-follow="onChangeChartFollow()">
             </dashboard-detail>
         </div>
     </div>

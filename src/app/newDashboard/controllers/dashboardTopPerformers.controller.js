@@ -6,7 +6,7 @@
     ;
 
     function DashboardTopPerformers($scope, _, dashboard, videoReportService, dataService, Auth, NewDashboardUtil,
-                                    DASHBOARD_TYPE_JSON, REPORT_SETTINGS, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL) {
+                                    DASHBOARD_TYPE_JSON, REPORT_SETTINGS, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL, COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT) {
         $scope.userSession = Auth.getSession();
         $scope.isAdmin = Auth.isAdmin();
 
@@ -32,16 +32,16 @@
         };
 
         $scope.videoMetrics = [
-            'estDemandRevenue',
+            'billedAmount',
             'requests',
             'impressions',
-            'requestFillRate',
             'bids',
             'errors',
-            'blocks'
+            'blocks',
+            'requestFillRate'
         ];
 
-        $scope.sortFieldForVideo = 'requests';
+        $scope.sortFieldForVideo = $scope.isAdmin ? 'billedAmount' : 'requests';
         $scope.sortOrderForVideo = 'desc';
 
         var rowCount = 10;
@@ -55,17 +55,7 @@
         $scope.configTopSites = $scope.configTopStatistics;
         $scope.configTopAdNetworks = $scope.configTopStatistics;
 
-        // temp here, TODO: define in locale-en.js
-        $scope.columnNameMappingForVideoReport = {
-            'date': 'Date',
-            'estDemandRevenue': 'Revenue',
-            'requests': 'Requests',
-            'impressions': 'Impression',
-            'requestFillRate': 'Fill Rate',
-            'bids': 'Bids',
-            'errors': 'Errors',
-            'blocks': 'Blocked Requests'
-        };
+        $scope.columnNameMappingForVideoReport = COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT;
 
         $scope.queryParams = angular.copy(REPORT_SETTINGS.default.view.report.videoReport);
 
@@ -405,7 +395,7 @@
             });
 
             // get metrics from data sets of reportViews, join fields, add fields, ...
-            var metrics = $scope.reportView.showInTotal;
+            var metrics = _getFieldsFromShowInTotal($scope.reportView);
             if (!angular.isArray(metrics) || metrics.length < 1) {
                 // do not show any things if not have metrics
                 $scope.columnPositions = [];
@@ -449,10 +439,13 @@
         }
 
         function _getDefaultSortField() {
-            var metrics = $scope.reportView.showInTotal;
+            var metrics = _getFieldsFromShowInTotal($scope.reportView);
             if (!angular.isArray(metrics) || metrics.length < 1) {
                 return null;
             }
+
+            // sort alphabet
+            metrics = _.sortBy(metrics);
 
             // get the first metric to sort
             var types = $scope.topPerformersUnifiedReportData.types;
@@ -531,6 +524,47 @@
             }
 
             return moment(dateValue, inputDateFormat).format('YYYY-MM-DD');
+        }
+
+        function _getFieldsFromShowInTotal(reportView) {
+            if (!reportView || !reportView.showInTotal || !angular.isArray(reportView.showInTotal)) {
+                return [];
+            }
+
+            /* [
+             *     {
+             *         "type":"aggregate",
+             *         "fields":[
+             *             "pre add 1",
+             *             "requests_2",
+             *             "impressions_2",
+             *             "cpm_2"
+             *         ]
+             *     },
+             *     {
+             *         "type":"average",
+             *         "fields":[
+             *             "pre add calc 2",
+             *             "revenue_2"
+             *         ]
+             *     }
+             * ]
+             */
+
+            var fields = [];
+
+            angular.forEach(reportView.showInTotal, function (config) {
+                if (!config || !config.fields || !angular.isArray(config.fields)) {
+                    return;
+                }
+
+                fields = fields.concat(config.fields);
+            });
+
+            // unique
+            fields = _.uniq(fields);
+
+            return fields;
         }
     }
 })();

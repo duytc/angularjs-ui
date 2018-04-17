@@ -5,48 +5,30 @@
         .controller('DashboardOverview', DashboardOverview)
     ;
 
-    function DashboardOverview($scope, Auth, CHART_FOLLOW, DASHBOARD_TYPE_JSON, NewDashboardUtil) {
+    function DashboardOverview($scope, Auth, DASHBOARD_TYPE_JSON, COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT) {
         $scope.isAdmin = Auth.isAdmin();
-        $scope.onDateApply = onDateApply;
+
         $scope.resetOverviewData = resetOverviewData;
-        $scope.conClickOverViewDirective = conClickOverViewDirective;
-        $scope.customOverviewData = _getOverviewData();
+        $scope.isShowForUnifiedReport = isShowForUnifiedReport;
+        $scope.isShowForDisplayReport = isShowForDisplayReport;
+        $scope.isShowForVideoReport = isShowForVideoReport;
+
+        $scope.columnNameMappingForVideoReport = COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT;
+
+        $scope.customOverviewData = _refactorOverviewData();
 
         /* watch reportView changed, then render for unified report */
         $scope.$watch('overviewData.data', _onOverviewDataChange);
-        $scope.$watch('overviewData.dateRange', _onDateRangeChange);
 
         function resetOverviewData() {
             $scope.overviewData.data = [];
         }
 
-        function conClickOverViewDirective() {
-            if ($scope.chartFollow.type !== CHART_FOLLOW['OVER_VIEW']) {
-                $scope.chartFollow.type = CHART_FOLLOW['OVER_VIEW'];
-                $scope.onChangeChartFollow();
-            }
-        }
-
-        function onDateApply() {
-            $scope.resetOverviewData();
-            var selectedDate = NewDashboardUtil.getStringDate($scope.overviewData.dateRange);
-            if ($scope.chartFollow.type !== CHART_FOLLOW['OVER_VIEW'])
-                $scope.chartFollow.type = CHART_FOLLOW['OVER_VIEW'];
-
-            $scope.onDateChange(selectedDate);
-        }
-        
-        function _onDateRangeChange(newValue, oldValue, scope) {
-            if (NewDashboardUtil.isDifferentDate(newValue, oldValue)) {
-                onDateApply();
-            }
-        }
-
         function _onOverviewDataChange() {
-            $scope.customOverviewData = _getOverviewData();
+            $scope.customOverviewData = _refactorOverviewData();
         }
 
-        function _getOverviewData() {
+        function _refactorOverviewData() {
             var data = angular.copy($scope.overviewData.data);
 
             if (!isShowForUnifiedReport()) {
@@ -76,6 +58,22 @@
             }
 
             return DASHBOARD_TYPE_JSON[$scope.dashboardType.id] === DASHBOARD_TYPE_JSON.UNIFIED_REPORT;
+        }
+
+        function isShowForDisplayReport() {
+            if (!$scope.dashboardType || !$scope.dashboardType.id) {
+                return false;
+            }
+
+            return DASHBOARD_TYPE_JSON[$scope.dashboardType.id] === DASHBOARD_TYPE_JSON.DISPLAY;
+        }
+
+        function isShowForVideoReport() {
+            if (!$scope.dashboardType || !$scope.dashboardType.id) {
+                return false;
+            }
+
+            return DASHBOARD_TYPE_JSON[$scope.dashboardType.id] === DASHBOARD_TYPE_JSON.VIDEO;
         }
     }
 })();

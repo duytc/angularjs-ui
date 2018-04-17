@@ -16,7 +16,8 @@
             'bids': 'Bids',
             'errors': 'Errors',
             'requests': 'Requests',
-            'netRevenue': 'Revenue',
+            'billedAmount': 'Billed Amount',
+            'blocks': 'Blocked Requests',
             'slotOpportunities': 'Slot Opps'
         };
 
@@ -68,9 +69,12 @@
         function isDifferentDate(newValue, oldValue) {
             var newDate = getStringDate(newValue) || newValue;
             var oldDate = getStringDate(oldValue) || oldValue;
+            if (!newDate || !newDate.startDate || !newDate.endDate || !oldDate || !oldDate.startDate || !oldDate.endDate) {
+                return (newDate != oldDate);
+            }
+
             /* If date range value not change. Do not call api */
-            var isDifferent = !(newDate.startDate === oldDate.startDate && newDate.endDate === oldDate.endDate);
-            return isDifferent;
+            return (newDate.startDate !== oldDate.startDate || newDate.endDate !== oldDate.endDate);
         }
 
         function removeNonDigit(inputString) {

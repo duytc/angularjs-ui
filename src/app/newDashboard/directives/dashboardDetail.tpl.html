@@ -4,7 +4,6 @@
             <dashboard-overview-directive
                     dashboard-type="dashboardType"
                     overview-data="overviewData"
-                    on-date-change="onOverviewDateChange(selectedDate)"
                     on-change-chart-follow="onSelectFollow()"
                     publisher="publisher"
                     chart-follow="chartFollow">
@@ -26,7 +25,6 @@
 
     <div>
         <dashboard-chart chart-data="chartData"
-                         overview-date-range="overviewData.dateRange"
                          dashboard-type="dashboardType"
                          compare-type-data="compareTypeData"
                          chart-follow="chartFollow"
@@ -36,7 +34,7 @@
 
     <div>
         <dashboard-top-performance dashboard-type="dashboardType"
-                                   date-range="overviewData.dateRange"
+                                   date-range="dateRange"
                                    report-view="reportView">
         </dashboard-top-performance>
     </div>

@@ -20,16 +20,7 @@
             },
             restrict: 'AE',
             templateUrl: 'newDashboard/directives/dashboardComparision.tpl.html',
-            controller: 'DashboardComparision',
-            link: function (scope, elem, attrs) {
-                elem.bind('click', function (e) {
-                    if ($(e.target).hasClass('btn-action')) {
-                        e.stopPropagation();
-                        return;
-                    }
-                    scope.conClickComparisionDirective();
-                });
-            }
+            controller: 'DashboardComparision'
         };
     }
 })();

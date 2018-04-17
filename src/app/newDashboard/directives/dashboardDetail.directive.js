@@ -10,15 +10,17 @@
 
         return {
             scope: {
-                overviewData: "=",
-                compareTypeData:"=",
-                comparisionData: "=",
-                onChangeOverviewDate: "&",
-                chartData: "=",
+                // bind properties
                 dashboardType: "=",
+                dateRange: "=",
+                overviewData: "=",
+                chartData: "=",
                 reportView: '=',
                 publisher: "=",
+                comparisionData: "=",
+                compareTypeData: "=",
                 chartFollow: "=",
+                // bind functions
                 onChangeChartFollow: "&"
             },
             restrict: 'AE',
@@ -26,12 +28,14 @@
             compile: function (element, attrs) {
                 var content, directive;
                 content = element.contents().remove();
+
                 return function (scope, element, attrs) {
-                    scope.onOverviewDateChange = function (date) {
-                        scope.onChangeOverviewDate(date);
-                    };
+                    /**
+                     * on click of overview or comparison, we bind event back to main newDashboard page
+                     * this is for showing chart data due to current selected item is overview or comparison
+                     */
                     scope.onSelectFollow = function () {
-                        scope.onChangeChartFollow();
+                        // scope.onChangeChartFollow();
                     };
 
                     directive || (directive = $compile(content));

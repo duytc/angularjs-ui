@@ -2,11 +2,6 @@
     <div class="panel-heading">{{'NEW_DASHBOARD.TOP_PERFORMERS'|translate}}</div>
     <div class="panel-body">
         <!--display report-->
-        <!--<ul class="nav nav-tabs" ng-if="isShowForDisplay()">-->
-            <!--<li role="presentation" ng-if="isAdmin" class="active"><a href="#">Top Publisher</a></li>-->
-            <!--<li role="presentation" class="!isAdmin ? active: ''"><a>Top Supply</a></li>-->
-            <!--<li role="presentation" ng-if="!isAdmin"><a>Top Demand</a></li>-->
-        <!--</ul>-->
         <div ng-if="isShowForDisplay() && isAdmin">
             <tabset class="nav-tab-margin">
                 <tab heading="{{ 'NEW_DASHBOARD.TOP_PUBLISHERS' | translate }}">
@@ -41,9 +36,9 @@
                                     <span class="glyphicon glyphicon-minus" ng-show="false"></span>
                                 </th>
 
-                                <th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'estDemandRevenue')" ng-click="onClickSortForVideo('estDemandRevenue')">{{ columnNameMappingForVideoReport['estDemandRevenue'] }}
-                                    <span class="glyphicon glyphicon-minus" ng-show="!isShowSortIconForVideoReport('estDemandRevenue')"></span>
-                                    <span class="glyphicon" ng-show="isShowSortIconForVideoReport('estDemandRevenue')" ng-class="getSortIconClass()"></span>
+                                <th ng-show="isAdmin && hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'billedAmount')" ng-click="onClickSortForVideo('billedAmount')">{{ columnNameMappingForVideoReport['billedAmount'] }}
+                                    <span class="glyphicon glyphicon-minus" ng-show="!isShowSortIconForVideoReport('billedAmount')"></span>
+                                    <span class="glyphicon" ng-show="isShowSortIconForVideoReport('billedAmount')" ng-class="getSortIconClass()"></span>
                                 </th>
 
                                 <th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'requests')" ng-click="onClickSortForVideo('requests')">{{ columnNameMappingForVideoReport['requests'] }}
@@ -84,8 +79,8 @@
                                     {{ report.date | date }}
                                 </td>
 
-                                <td ng-show="hasKeyObjectForVideoReport(report, 'estDemandRevenue')">
-                                    {{ (report.estDemandRevenue != null) ? (report.estDemandRevenue | currency) : '-' }}
+                                <td ng-show="isAdmin && hasKeyObjectForVideoReport(report, 'billedAmount')">
+                                    {{ (report.billedAmount != null) ? (report.billedAmount | currency) : '-' }}
                                 </td>
 
                                 <td ng-show="hasKeyObjectForVideoReport(report, 'requests')">
@@ -161,53 +156,49 @@
                         <!--</table>-->
                     <!--</div>-->
 
-                    <at-pagination ng-if="showPagination()" class="table-footer" at-list="topPerformersVideoData.reports" at-config="configTopStatistics"></at-pagination>
+                    <!--<at-pagination ng-if="showPagination()" class="table-footer" at-list="topPerformersVideoData.reports" at-config="configTopStatistics"></at-pagination>-->
                 </tab>
             </tabset>
         </div>
 
         <!--unified report-->
         <div ng-if="isShowForUnifiedReport()">
-            <!--<tabset class="nav-tab-margin">-->
-                <!--<tab heading="{{ 'NEW_DASHBOARD.TOP_UNIFIED_REPORTS' | translate }}">-->
-                    <div class="table-responsive table-report-view" style="overflow: auto;">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th ng-class="{minWidth100: (columnTypesForUnifiedReport[column] == 'date' || columnTypesForUnifiedReport[column] == 'datetime')}" ng-repeat="column in columnPositions track by $index" ng-click="sortUnifiedReport(column)">{{ titleColumnsForUnifiedReport[column] }}
-                                    <span class="glyphicon glyphicon-minus" ng-show="!isShowFieldForUnifiedReport(column)"></span>
-                                    <span class="glyphicon" ng-show="isShowFieldForUnifiedReport(column)" ng-class="{'glyphicon-chevron-up':!reverseForUnifiedReport,'glyphicon-chevron-down':reverseForUnifiedReport}"></span>
-                                </th>
-                            </tr>
-                            </thead>
+            <div class="table-responsive table-report-view" style="overflow: auto;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th ng-class="{minWidth100: (columnTypesForUnifiedReport[column] == 'date' || columnTypesForUnifiedReport[column] == 'datetime')}" ng-repeat="column in columnPositions track by $index" ng-click="sortUnifiedReport(column)">{{ titleColumnsForUnifiedReport[column] }}
+                            <span class="glyphicon glyphicon-minus" ng-show="!isShowFieldForUnifiedReport(column)"></span>
+                            <span class="glyphicon" ng-show="isShowFieldForUnifiedReport(column)" ng-class="{'glyphicon-chevron-up':!reverseForUnifiedReport,'glyphicon-chevron-down':reverseForUnifiedReport}"></span>
+                        </th>
+                    </tr>
+                    </thead>
 
-                            <tbody>
-                            <tr dir-paginate="report in topPerformersUnifiedReportData.reports | itemsPerPage:tableConfig.itemsPerPage">
-                                <td ng-repeat="column in columnPositions track by $index">
-                                    <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <tbody>
+                    <tr dir-paginate="report in topPerformersUnifiedReportData.reports | itemsPerPage:tableConfig.itemsPerPage">
+                        <td ng-repeat="column in columnPositions track by $index">
+                            <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
-                    <div class="pagination">
-                        <pagination ng-if="showPaginationForUnifiedReport()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+            <!--<div class="pagination">-->
+                <!--<pagination ng-if="showPaginationForUnifiedReport()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>-->
 
-                        <div class="itemsPerPage" ng-if="tableConfig.totalItems > 10">
-                            <label for="inputItemPerPage">Items per page</label>
-                            <div class="itemNumber">
-                                <ui-select name="itemPerPage" id="inputItemPerPage" ng-model="tableConfig.itemsPerPage" on-select="selectItemPerPages($item)" reset-search-input="'false'">
-                                    <ui-select-match placeholder="10">{{ $select.selected.label }}</ui-select-match>
-                                    <ui-select-choices repeat="itemPerPage.key as itemPerPage in itemsPerPage">
-                                        {{ itemPerPage.label }}
-                                    </ui-select-choices>
-                                </ui-select>
-                            </div>
-                        </div>
-                    </div>
-                <!--</tab>-->
-            <!--</tabset>-->
+                <!--<div class="itemsPerPage" ng-if="tableConfig.totalItems > 10">-->
+                    <!--<label for="inputItemPerPage">Items per page</label>-->
+                    <!--<div class="itemNumber">-->
+                        <!--<ui-select name="itemPerPage" id="inputItemPerPage" ng-model="tableConfig.itemsPerPage" on-select="selectItemPerPages($item)" reset-search-input="'false'">-->
+                            <!--<ui-select-match placeholder="10">{{ $select.selected.label }}</ui-select-match>-->
+                            <!--<ui-select-choices repeat="itemPerPage.key as itemPerPage in itemsPerPage">-->
+                                <!--{{ itemPerPage.label }}-->
+                            <!--</ui-select-choices>-->
+                        <!--</ui-select>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
         </div>
     </div>
 </section>

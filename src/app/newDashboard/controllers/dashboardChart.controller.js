@@ -10,47 +10,21 @@
         $scope.isAdmin = Auth.isAdmin();
 
         $scope.chartConfig = {};
-        $scope.selectedDate = null; //type string
         $scope.chartData.dateRange = angular.copy($scope.overviewDateRange);
+        $scope.selectedDate = NewDashboardUtil.getStringDate($scope.chartData.dateRange);
 
         $scope.showChart = false;
 
-        $scope.onDateApply = onDateApply;
-
-        updateChart(false);
+        updateChart();
 
         $scope.$watch('chartData.reports', function (newValue, oldValue, scope) {
-            updateDateRange();
-            updateChart(false);
+            updateChart();
         }, true);
 
-        $scope.$watch('chartData.dateRange', _onDateRangeChange);
-
-        function updateDateRange() {
-            $scope.chartData.dateRange = angular.copy($scope.overviewDateRange);
-            if ($scope.chartFollow.type !== CHART_FOLLOW['COMPARISION'])
-                return;
-
-            var dateValue = [];
-            if ($scope.compareTypeData.compareType === COMPARE_TYPE['day']) {
-                dateValue = NewDashboardUtil.getTodayDateRange();
-            } else if ($scope.compareTypeData.compareType === COMPARE_TYPE['week']) {
-                dateValue = NewDashboardUtil.getWeekDateRange();
-            } else if ($scope.compareTypeData.compareType === COMPARE_TYPE['month']) {
-                dateValue = NewDashboardUtil.getMonthDateRange();
-            } else if ($scope.compareTypeData.compareType === COMPARE_TYPE['year']) {
-                dateValue = NewDashboardUtil.getYearDateRange();
-            }
-
-            $scope.chartData.dateRange.startDate = dateValue[0];
-            $scope.chartData.dateRange.endDate = dateValue[1];
-        }
-
         /**
-         *
-         * @param localChangeDate  True if use date range piker of chart directive.False if use date from overview or comparision
+         * update chart
          */
-        function updateChart(localChangeDate) {
+        function updateChart() {
             // temp disable char when updating data
             $scope.showChart = false;
 
@@ -63,16 +37,16 @@
                     // sort by date field
                     data = sort(getDateKey(), data);
 
-                    $scope.chartConfig = chartConfig(data, localChangeDate);
+                    $scope.chartConfig = _getChartConfig(data);
                 } else if (DASHBOARD_TYPE_JSON['VIDEO'] === $scope.dashboardType.name) {
                     // sort by date field
                     data = sort(getDateKey(), data);
 
-                    $scope.chartConfig = chartConfig(data, localChangeDate);
+                    $scope.chartConfig = _getChartConfig(data);
                 } else if (DASHBOARD_TYPE_JSON['UNIFIED_REPORT'] === $scope.dashboardType.name) {
                     // no need sort, already sorted by date
 
-                    $scope.chartConfig = chartConfig(data, localChangeDate);
+                    $scope.chartConfig = _getChartConfig(data);
                 }
             }, 0);
         }
@@ -85,12 +59,6 @@
             if (DASHBOARD_TYPE_JSON['UNIFIED_REPORT'] === dashboardType.name)
                 return $scope.chartData.urData.fields;
 
-        }
-
-        function _onDateRangeChange(newValue, oldValue, scope) {
-            if (NewDashboardUtil.isDifferentDate(newValue, oldValue)) {
-                onDateApply();
-            }
         }
 
         function getLabelForChart(field, dashboardType) {
@@ -146,10 +114,9 @@
         /**
          *
          * @param reportDetails list of reports to draw chart
-         * @param localChangeDate True if use date range piker of chart directive.False if use date from overview or comparision
          * @returns {*}
          */
-        function chartConfig(reportDetails, localChangeDate) {
+        function _getChartConfig(reportDetails) {
             if (!reportDetails || reportDetails.length === 0) {
                 return null;
             }
@@ -164,9 +131,6 @@
             var showData = {};
             var key = getDateKey();
             var dateFormat = getDateFormat();
-            if (!localChangeDate) {
-                $scope.selectedDate = NewDashboardUtil.getStringDate($scope.chartData.dateRange);
-            }
 
             angular.forEach(reportDetails, function (report) {
                 var dateValue = report[key];
@@ -177,8 +141,10 @@
                 if (isInDateRange(dateValue, $scope.selectedDate)) {
                     dates.push(dateValue); // dates.push($filter('date')(dateValue));
                     angular.forEach(showFields, function (field) {
-                        if (!showData[field])
+                        if (!showData[field]) {
                             showData[field] = [];
+                        }
+
                         var digitOnly = NewDashboardUtil.removeNonDigit(report[field]);
                         digitOnly = digitOnly ? digitOnly : 0;
                         showData[field].push(Number(digitOnly));
@@ -193,7 +159,8 @@
                     name: getLabelForChart(field, $scope.dashboardType),
                     data: showData[field],
                     connectNulls: true,
-                    color: DASHBOARD_COLOR[i]
+                    color: DASHBOARD_COLOR[i],
+                    visible: _getVisibleForField(field)
                 };
 
                 i++;
@@ -231,11 +198,20 @@
                 },
                 series: chartSeries
             };
-        }
 
-        function onDateApply() {
-            $scope.selectedDate = NewDashboardUtil.getStringDate($scope.chartData.dateRange);
-            updateChart(true);
+            function _getVisibleForField(field) {
+                if (DASHBOARD_TYPE_JSON['UNIFIED_REPORT'] === $scope.dashboardType.name) {
+                    return true;
+                }
+
+                if (DASHBOARD_TYPE_JSON['DISPLAY'] === $scope.dashboardType.name) {
+                    return field != 'fillRate'; // default hide for "fillRate"
+                }
+
+                if (DASHBOARD_TYPE_JSON['VIDEO'] === $scope.dashboardType.name) {
+                    return field != 'requestFillRate'; // default hide for "requestFillRate"
+                }
+            }
         }
 
         function sort(columnName, unsortedData) {

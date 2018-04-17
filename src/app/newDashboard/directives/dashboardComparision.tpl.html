@@ -1,34 +1,139 @@
-<div class="panel panel-default" ng-class="chartFollow.type == 'COMPARISION' ? 'panel-primary' : ''">
-    <div class="panel-heading">{{'NEW_DASHBOARD.COMPARISION'|translate}}
+<div class="panel panel-default">
+    <div class="panel-heading" style="padding-top: 7px; padding-bottom: 7px">
+        <div class="row align-items-center">
+            <div class="col col-md-2" style="padding-top: 5px;">
+                <span>{{'NEW_DASHBOARD.COMPARISION'|translate}}</span>
+            </div>
+            <div class="col col-md-10">
+                <div class="btn-group pull-right">
+                    <button type="button" class="btn btn-default btn-sm btn-action" id="day-over-day"
+                            ng-class="{active: compareTypeData.compareType == 'day-over-day'}"
+                            ng-click="onChangeMode('day')">{{'NEW_DASHBOARD.DAY_OVER_DAY' | translate}}
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm btn-action" id="week-over-week"
+                            ng-class="{active: compareTypeData.compareType == 'week-over-week'}"
+                            ng-click="onChangeMode('week')">{{'NEW_DASHBOARD.WEEK_OVER_WEEK' | translate}}
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm btn-action" id="month-over-month"
+                            ng-class="{active: compareTypeData.compareType == 'month-over-month'}"
+                            ng-click="onChangeMode('month')">{{'NEW_DASHBOARD.MONTH_OVER_MONTH' | translate}}
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm btn-action" id="year-over-year"
+                            ng-class="{active: compareTypeData.compareType == 'year-over-year'}"
+                            ng-click="onChangeMode('year')">{{'NEW_DASHBOARD.YEAR_OVER_YEAR' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="panel-body">
-        <div class="btn-group pull-right form-group">
-            <button type="button" class="btn btn-default btn-action" id="day-over-day"
-                    ng-class="{active: compareTypeData.compareType == 'day-over-day'}"
-                    ng-click="onChangeMode('day')">{{'NEW_DASHBOARD.DAY_OVER_DAY' | translate}}
-            </button>
-            <button type="button" class="btn btn-default btn-action" id="week-over-week"
-                    ng-class="{active: compareTypeData.compareType == 'week-over-week'}"
-                    ng-click="onChangeMode('week')">{{'NEW_DASHBOARD.WEEK_OVER_WEEK' | translate}}
-            </button>
-            <button type="button" class="btn btn-default btn-action" id="month-over-month"
-                    ng-class="{active: compareTypeData.compareType == 'month-over-month'}"
-                    ng-click="onChangeMode('month')">{{'NEW_DASHBOARD.MONTH_OVER_MONTH' | translate}}
-            </button>
-            <button type="button" class="btn btn-default btn-action" id="year-over-year"
-                    ng-class="{active: compareTypeData.compareType == 'year-over-year'}"
-                    ng-click="onChangeMode('year')">{{'NEW_DASHBOARD.YEAR_OVER_YEAR' | translate}}
-            </button>
-        </div>
+        <!--Display-->
+        <table class="table no-border" ng-if="isShowForDisplayReport() && formData.comparisionData">
+            <th class="th-no-border"></th>
+            <th ng-if="compareTypeData.compareType == 'day-over-day'" class="text-right th-no-border">{{ getRecentDay() }}</th>
+            <th ng-if="compareTypeData.compareType != 'day-over-day'" class="text-right th-no-border">Current {{compareTypeData.label}}</th>
+
+            <th ng-if="compareTypeData.compareType == 'day-over-day'" class="text-right th-no-border">{{ getPreviousDay() }}</th>
+            <th ng-if="compareTypeData.compareType != 'day-over-day'" class="text-right th-no-border">Last {{compareTypeData.label}}</th>
+
+            <tr ng-if="isAdmin">
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.billedAmount | currency}}</td>
+                <td class="text-right">{{ formData.comparisionData.history.billedAmount | currency}}</td>
+            </tr>
+
+            <tr>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.slotOpportunities | number }}</td>
+                <td class="text-right">{{ formData.comparisionData.history.slotOpportunities | number }}</td>
+            </tr>
+
+            <tr>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.totalOpportunities | number }}</td>
+                <td class="text-right">{{ formData.comparisionData.history.totalOpportunities | number }}</td>
+            </tr>
+
+            <tr>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.IMPRESSIONS' | translate }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.impressions | number }}</td>
+                <td class="text-right">{{ formData.comparisionData.history.impressions | number }}</td>
+            </tr>
+
+            <tr>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.passbacks | number }}</td>
+                <td class="text-right">{{ formData.comparisionData.history.passbacks | number }}</td>
+            </tr>
+
+            <tr>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.fillRate | percentage }}</td>
+                <td class="text-right">{{ formData.comparisionData.history.fillRate | percentage }}</td>
+            </tr>
+
+        </table>
+
+        <!--video-->
+        <table class="table no-border" ng-if="isShowForVideoReport() && formData.comparisionData">
+            <th class="th-no-border"></th>
+            <th ng-if="compareTypeData.compareType == 'day-over-day'" class="text-right th-no-border">{{ getRecentDay() }}</th>
+            <th ng-if="compareTypeData.compareType != 'day-over-day'" class="text-right th-no-border">Current {{compareTypeData.label}}</th>
+
+            <th ng-if="compareTypeData.compareType == 'day-over-day'" class="text-right th-no-border">{{ getPreviousDay() }}</th>
+            <th ng-if="compareTypeData.compareType != 'day-over-day'" class="text-right th-no-border">Last {{compareTypeData.label}}</th>
+
+            <tr ng-if="isAdmin">
+                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['billedAmount'] }}</b></td>
+                <td class="text-right">{{ (formData.comparisionData.current.billedAmount != null) ? (formData.comparisionData.current.billedAmount | currency) : (0 | currency) }}</td>
+                <td class="text-right">{{ (formData.comparisionData.history.billedAmount != null) ? (formData.comparisionData.history.billedAmount | currency) : (0 | currency) }}</td>
+            </tr>
+
+            <tr>
+                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['requests'] }}</b></td>
+                <td class="text-right">{{ (formData.comparisionData.current.requests != null) ? (formData.comparisionData.current.requests | number) : 0 }}</td>
+                <td class="text-right">{{ (formData.comparisionData.history.requests != null) ? (formData.comparisionData.history.requests | number) : 0 }}</td>
+            </tr>
+
+            <tr>
+                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['impressions'] }}</b></td>
+                <td class="text-right">{{ (formData.comparisionData.current.impressions != null) ? (formData.comparisionData.current.impressions | number) : 0 }}</td>
+                <td class="text-right">{{ (formData.comparisionData.history.impressions != null) ? (formData.comparisionData.history.impressions | number) : 0 }}</td>
+            </tr>
+
+            <tr>
+                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['bids'] }}</b></td>
+                <td class="text-right">{{ (formData.comparisionData.current.bids != null) ? (formData.comparisionData.current.bids | number) : 0 }}</td>
+                <td class="text-right">{{ (formData.comparisionData.history.bids != null) ? (formData.comparisionData.history.bids | number) : 0 }}</td>
+            </tr>
+
+            <tr>
+                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['errors'] }}</b></td>
+                <td class="text-right">{{ (formData.comparisionData.current.errors != null) ? (formData.comparisionData.current.errors | number) : 0 }}</td>
+                <td class="text-right">{{ (formData.comparisionData.history.errors != null) ? (formData.comparisionData.history.errors | number) : 0 }}</td>
+            </tr>
+
+            <tr>
+                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['blocks'] }}</b></td>
+                <td class="text-right">{{ (formData.comparisionData.current.blocks != null) ? (formData.comparisionData.current.blocks | number) : 0 }}</td>
+                <td class="text-right">{{ (formData.comparisionData.history.blocks != null) ? (formData.comparisionData.history.blocks | number) : 0 }}</td>
+            </tr>
+
+            <tr>
+                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['requestFillRate'] }}</b></td>
+                <td class="text-right">{{ (formData.comparisionData.current.requestFillRate != null) ? (formData.comparisionData.current.requestFillRate | percentage) : (0 | percentage) }}</td>
+                <td class="text-right">{{ (formData.comparisionData.history.requestFillRate != null) ? (formData.comparisionData.history.requestFillRate | percentage) : (0 | percentage) }}</td>
+            </tr>
+        </table>
 
         <table class="table no-border"
-               ng-if="formData.comparisionData && formData.comparisionData.length > 0">
+               ng-if="isShowForUnifiedReport() && formData.comparisionData && formData.comparisionData.length > 0">
             <th class="th-no-border"></th>
-            <th ng-if="dashboardType.id == 'UNIFIED_REPORT' && compareTypeData.compareType == 'day-over-day'" class="text-right th-no-border">Recent {{compareTypeData.label}}</th>
-            <th ng-if="!(dashboardType.id == 'UNIFIED_REPORT' && compareTypeData.compareType == 'day-over-day')"  class="text-right th-no-border">Current {{compareTypeData.label}}</th>
+            <th ng-if="compareTypeData.compareType == 'day-over-day'" class="text-right th-no-border">{{ getRecentDay() }}</th>
+            <th ng-if="compareTypeData.compareType != 'day-over-day'" class="text-right th-no-border">Current {{compareTypeData.label}}</th>
 
-            <th ng-if="dashboardType.id == 'UNIFIED_REPORT' && compareTypeData.compareType == 'day-over-day'" class="text-right th-no-border">Previous {{compareTypeData.label}}</th>
-            <th ng-if="!(dashboardType.id == 'UNIFIED_REPORT' && compareTypeData.compareType == 'day-over-day')" class="text-right th-no-border">Last {{compareTypeData.label}}</th>
+            <th ng-if="compareTypeData.compareType == 'day-over-day'" class="text-right th-no-border">{{ getPreviousDay() }}</th>
+            <th ng-if="compareTypeData.compareType != 'day-over-day'" class="text-right th-no-border">Last {{compareTypeData.label}}</th>
 
 
             <tr ng-repeat="row in formData.comparisionData">

@@ -22,8 +22,8 @@
             ranges: {
                 'Today': [moment().startOf('day'), moment().endOf('day')],
                 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(30, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(7, 'days'), moment().subtract(1, 'days')], // note: from yesterday
+                'Last 30 Days': [moment().subtract(30, 'days'), moment().subtract(1, 'days')], // note: from yesterday
                 'This Month': [moment().startOf('month'), moment().endOf('month')],
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
@@ -37,21 +37,16 @@
             comparisionData: [],
             unifiedReportingOptions: [],
             masterReport: [],
+            dateRange: {
+                startDate: $scope.datePickerOpts.ranges['Last 7 Days'][0],
+                endDate: $scope.datePickerOpts.ranges['Last 7 Days'][1]
+            },
             overviewData: {
-                dateRange: {
-                    startDate: moment().subtract(1, 'days'),
-                    endDate: moment().subtract(1, 'days')
-                },
                 data: [],
                 datePickerOpts: $scope.datePickerOpts
-
             },
             chartData: {
                 datePickerOpts: $scope.datePickerOpts,
-                dateRange: {
-                    startDate: moment().subtract(1, 'days'),
-                    endDate: moment().subtract(1, 'days')
-                },
                 reports: [],
                 dateField: 'date', // default for display and video, not for ur
                 urData: {
@@ -77,8 +72,10 @@
 
         $scope.onSelectDashboardType = onSelectDashboardType;
         $scope.isUnifiedReportDashboard = isUnifiedReportDashboard;
-        $scope.onSelectReportView = onSelectReportView;
+        $scope.onSelectReportViewForUnifiedReport = onSelectReportViewForUnifiedReport;
         $scope.onChangeChartFollow = onChangeChartFollow;
+
+        $scope.$watch('formData.dateRange', _onDateRangeChanged);
 
         _initData();
 
@@ -132,7 +129,7 @@
             }
         }
 
-        function onSelectReportView(reportView) {
+        function onSelectReportViewForUnifiedReport(reportView) {
             // reset default chartFollow
             $scope.chartFollow = {
                 type: CHART_FOLLOW['OVER_VIEW']
@@ -143,8 +140,8 @@
 
             var param = {
                 masterReport: reportView.id,
-                startDate: DateFormatter.getFormattedDate($scope.formData.overviewData.dateRange.startDate),
-                endDate: DateFormatter.getFormattedDate($scope.formData.overviewData.dateRange.endDate)
+                startDate: DateFormatter.getFormattedDate($scope.formData.dateRange.startDate),
+                endDate: DateFormatter.getFormattedDate($scope.formData.dateRange.endDate)
             };
 
             UnifiedReportDashboardRestAngular.one('reportview').one('overview').customPOST(param)
@@ -176,44 +173,24 @@
             // update current dashboard type
             _currentDashboardType = item;
 
-            // reset default chartFollow
+            // reset default chartFollow to overview
             $scope.chartFollow = {
                 type: CHART_FOLLOW['OVER_VIEW']
             };
 
-            if (item.id === 'DISPLAY') {
-                // set chart date field
-                $scope.formData.chartData.dateField = {
-                    field: 'date',
-                    format: 'YYYY-MM-DD'
-                };
-
-                _getDisplayReport();
-
-                return;
-            }
-
-            if (item.id === 'VIDEO') {
-                // set chart date field
-                $scope.formData.chartData.dateField = {
-                    field: 'date',
-                    format: 'YYYY-MM-DD'
-                };
-
-                _getVideoReport();
-
-                return;
-            }
-
-            if (item.id === 'UNIFIED_REPORT') {
-                // set chart date field
-                // later in getUnifiedReport() because depend on which report view is selected!
-
-                _getUnifiedReport();
-            }
+            _getOverviewReport();
         }
 
         /* local functions ============================ */
+        function _onDateRangeChanged(newValue, oldValue, scope) {
+            if (!NewDashboardUtil.isDifferentDate(newValue, oldValue)) {
+                return;
+            }
+
+            // get over view report again
+            _getOverviewReport();
+        }
+
         function _getReportView() {
             /* temp do not show quickly creating report view when getting list report views */
             $scope.currentModel.isGettingReportView = true;
@@ -284,15 +261,48 @@
             return hasDateFilter;
         }
 
-        function _getVideoReport() {
+        function _getOverviewReport() {
+            if (_currentDashboardType.id === 'DISPLAY') {
+                // set chart date field
+                $scope.formData.chartData.dateField = {
+                    field: 'date',
+                    format: 'YYYY-MM-DD'
+                };
+
+                _getDisplayOverviewReport();
+
+                return;
+            }
+
+            if (_currentDashboardType.id === 'VIDEO') {
+                // set chart date field
+                $scope.formData.chartData.dateField = {
+                    field: 'date',
+                    format: 'YYYY-MM-DD'
+                };
+
+                _getVideoOverviewReport();
+
+                return;
+            }
+
+            if (_currentDashboardType.id === 'UNIFIED_REPORT') {
+                // set chart date field
+                // later in getUnifiedReport() because depend on which report view is selected!
+
+                _getUnifiedReportOverviewReport();
+            }
+        }
+
+        function _getVideoOverviewReport() {
             var param = {
                 'breakdowns': angular.toJson(['day']),
-                'endDate': DateFormatter.getFormattedDate($scope.formData.overviewData.dateRange.endDate),
+                'endDate': DateFormatter.getFormattedDate($scope.formData.dateRange.endDate),
                 'filters': angular.toJson({
                     'publisher': [], 'waterfallTag': [], 'demandPartner': [],
                     'videoDemandAdTag': [], 'videoPublisher': [],
-                    'startDate': DateFormatter.getFormattedDate($scope.formData.overviewData.dateRange.startDate),
-                    'endDate': DateFormatter.getFormattedDate($scope.formData.overviewData.dateRange.endDate)
+                    'startDate': DateFormatter.getFormattedDate($scope.formData.dateRange.startDate),
+                    'endDate': DateFormatter.getFormattedDate($scope.formData.dateRange.endDate)
                 }),
                 'metrics': angular.toJson(['requests'])
             };
@@ -309,7 +319,7 @@
                 );
         }
 
-        function _getDisplayReport() {
+        function _getDisplayOverviewReport() {
             var route;
             if ($scope.isAdmin) {
                 route = DISPLAY_REPORT_TYPES.platform;
@@ -318,8 +328,8 @@
             }
 
             var param = {
-                'startDate': DateFormatter.getFormattedDate($scope.formData.overviewData.dateRange.startDate),
-                'endDate': DateFormatter.getFormattedDate($scope.formData.overviewData.dateRange.endDate)
+                'startDate': DateFormatter.getFormattedDate($scope.formData.dateRange.startDate),
+                'endDate': DateFormatter.getFormattedDate($scope.formData.dateRange.endDate)
             };
 
             DisplayDashboardRestAngular.one(route).get(param)
@@ -334,7 +344,7 @@
                 );
         }
 
-        function _getUnifiedReport() {
+        function _getUnifiedReportOverviewReport() {
             if (!$scope.currentModel.reportView) {
                 $scope.formData.overviewData.data = [];
                 $scope.formData.chartData.reports = [];
@@ -347,14 +357,14 @@
                             // set chart date field
                             // get chart date field later once get chartData
 
-                            onSelectReportView($scope.currentModel.reportView);
+                            onSelectReportViewForUnifiedReport($scope.currentModel.reportView);
                         }
                     });
             } else {
                 // set chart date field
                 // get chart date field later once get chartData
 
-                onSelectReportView($scope.currentModel.reportView);
+                onSelectReportViewForUnifiedReport($scope.currentModel.reportView);
             }
         }
 
@@ -369,18 +379,7 @@
                 return;
             }
 
-            var fields = VIDEO_SHOW_FIELDS;
-            var showData = [];
-            angular.forEach(fields, function (field) {
-                var label = NewDashboardUtil.getShowLabel(field);
-                var json = {
-                    label: label,
-                    value: data[field]
-                };
-                showData.push(json);
-            });
-
-            $scope.formData.overviewData.data = showData;
+            $scope.formData.overviewData.data = data;
             $scope.formData.chartData.reports = data.reports;
         }
 
@@ -420,18 +419,7 @@
 
             var data = dataDisplay[key];
 
-            var fields = DISPLAY_SHOW_FIELDS;
-            var showData = [];
-            angular.forEach(fields, function (field) {
-                var label = NewDashboardUtil.getShowLabel(field);
-                var json = {
-                    label: label,
-                    value: data[field]
-                };
-                showData.push(json);
-            });
-
-            $scope.formData.overviewData.data = showData;
+            $scope.formData.overviewData.data = data;
             $scope.formData.chartData.reports = data.reports;
         }
 
@@ -476,6 +464,7 @@
             $scope.formData.topPerformersData = [];
             $scope.currentModel.dashboardType = ($scope.formData.unifiedReportingOptions && $scope.formData.unifiedReportingOptions.length > 0) ? $scope.formData.unifiedReportingOptions[0] : [];
 
+            /* load dashboard data for current dashboard type */
             onSelectDashboardType($scope.currentModel.dashboardType);
         }
     }

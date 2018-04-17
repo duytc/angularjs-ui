@@ -32,8 +32,18 @@
             platform: 'platform',
             accounts: 'accounts'
         })
+        .constant('COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT', {
+            'date': 'Date',
+            'billedAmount': 'Billed Amount',
+            'requests': 'Requests',
+            'impressions': 'Impression',
+            'bids': 'Bids',
+            'errors': 'Errors',
+            'blocks': 'Blocked Requests',
+            'requestFillRate': 'Fill Rate'
+        })
         .constant('DISPLAY_SHOW_FIELDS', ['estRevenue', 'slotOpportunities', 'passbacks', 'impressions', 'fillRate'])
-        .constant('VIDEO_SHOW_FIELDS', ['netRevenue', 'requests', 'impressions', 'requestFillRate', 'bids', 'errors'])
+        .constant('VIDEO_SHOW_FIELDS', ['billedAmount', 'requests', 'impressions', 'bids', 'errors', 'blocks', 'requestFillRate'])
         .constant('DASHBOARD_COLOR', {
             0: '#1f77b4',
             1: '#ff7f0e',
