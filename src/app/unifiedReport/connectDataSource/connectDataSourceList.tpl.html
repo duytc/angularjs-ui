@@ -22,13 +22,20 @@
     </div>
 
 
-    <div style="display: flex">
-        <search-box class="col-sm-10" show-query="true" sb-list="sites" search-fields="['id', 'name', 'publisher.username', 'publisher.company', 'domain']"></search-box>
-    </div>
+ <!--   <div style="display: flex">
+        <search-box class="col-sm-10" show-query="true" sb-list="connectDataSources" search-fields="['id', 'name', 'totalRow', 'status']"></search-box>
+    </div>-->
+
+    <form class="input-group col-sm-10 search-box">
+        <input class="form-control" ng-model="selectData.query" ng-change="searchData()" placeholder="{{ 'UNIFIED_REPORT_MODULE.SEARCH' | translate }}" type="text"/>
+        <span class="input-group-addon">
+                {{ tableConfig.totalItems }} records found
+            </span>
+    </form>
 
     <div class="panel-body" ng-if="hasData()">
         <div class="table-responsive">
-            <table class="table" at-sortable-query at-table at-paginated at-list="connectDataSources" at-config="tableConfig">
+            <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="connectDataSources" at-config="tableConfig">
                 <thead></thead>
                 <tbody>
                 <tr>
@@ -64,12 +71,14 @@
             </table>
 
             <div style="float:left; display: flex; margin-right: 20px; margin-top: 5px">
-                <at-pagination at-pagination-query ng-if="showPagination()" at-list="connectDataSources" at-config="tableConfig"></at-pagination>
+                <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
+
                 <div style="margin-top: 25px;">
                     <label class="items-per-page" for="selectItemsPerPage"> Items Per Page </label>
                     <select id="selectItemsPerPage" ng-change="changeItemsPerPage()" ng-model="tableConfig.itemsPerPage">
                         <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
                     </select>
+
                 </div>
             </div>
 

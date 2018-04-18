@@ -33,7 +33,12 @@
                         return UnifiedReportDataSetManager.one($stateParams.dataSetId).get();
                     },
                     connectDataSources: function(UnifiedReportDataSetManager, $stateParams) {
-                        return UnifiedReportDataSetManager.one($stateParams.dataSetId).one('connecteddatasources').getList();
+                        $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
+                        $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
+                        $stateParams.sortField = !$stateParams.sortField ? 'id' : $stateParams.sortField;
+                        $stateParams.limit = !$stateParams.limit ? 10 : $stateParams.itemsPerPage;
+
+                        return UnifiedReportDataSetManager.one($stateParams.dataSetId).one('connecteddatasources').get($stateParams);
                     }
                 },
                 ncyBreadcrumb: {

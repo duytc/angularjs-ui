@@ -1,16 +1,19 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('tagcade.unifiedReport.connect')
         .controller('ConnectDataSourceList', ConnectDataSourceList);
 
-    function ConnectDataSourceList($scope, $modal, $translate, connectDataSources, dataSet, UnifiedReportConnectDataSourceManager, AlertService, AtSortableService, HISTORY_TYPE_PATH, historyStorage, ITEMS_PER_PAGE) {
+    function ConnectDataSourceList($scope, $modal, $stateParams, $translate, connectDataSources, dataSet, UnifiedReportDataSetManager ,UnifiedReportConnectDataSourceManager, AlertService, AtSortableService, HISTORY_TYPE_PATH, historyStorage, ITEMS_PER_PAGE, EVENT_ACTION_SORTABLE) {
+        var params = $stateParams;
+        var getConnectedDataSource;
+
         $scope.itemsPerPageList = ITEMS_PER_PAGE;
-        $scope.connectDataSources = connectDataSources;
+        $scope.connectDataSources = connectDataSources.records;
         $scope.dataSet = dataSet;
 
         $scope.hasData = function () {
-            return !!connectDataSources.length;
+            return !!$scope.connectDataSources.length;
         };
 
         if (!$scope.hasData()) {
@@ -22,7 +25,13 @@
 
         $scope.tableConfig = {
             itemsPerPage: 10,
-            maxPages: 10
+            maxPages: 10,
+            totalItems: Number(connectDataSources.totalRecord)
+        };
+
+        $scope.availableOptions = {
+            currentPage: $stateParams.page || 1,
+            pageSize: 10
         };
 
         $scope.backToDataSetList = backToDataSetList;
@@ -31,6 +40,9 @@
         $scope.reloadDateRangeData = reloadDateRangeData;
         $scope.removeAllData = removeAllData;
         $scope.cloneConnectDataSource = cloneConnectDataSource;
+        $scope.searchData = searchData;
+        $scope.changePage = changePage;
+        $scope.changeItemsPerPage = changeItemsPerPage;
 
         function cloneConnectDataSource(connect) {
             $modal.open({
@@ -47,13 +59,13 @@
 
         function removeAllData(connect) {
             UnifiedReportConnectDataSourceManager.one(connect.id).one('removealldatas').post()
-                .then(function() {
+                .then(function () {
                     AlertService.replaceAlerts({
                         type: 'success',
                         message: 'All data has been removed from the connected data source.'
                     });
                 })
-                .catch(function() {
+                .catch(function () {
                     AlertService.replaceAlerts({
                         type: 'error',
                         message: 'Could not removed all data'
@@ -65,9 +77,7 @@
             $modal.open({
                 templateUrl: 'unifiedReport/dataSet/reloadDataSetDateRange.tpl.html',
                 size: 'lg',
-                resolve: {
-
-                },
+                resolve: {},
                 controller: function ($scope, $modalInstance, DateFormatter) {
                     $scope.selected = {
                         option: 'allData',
@@ -80,7 +90,7 @@
                     $scope.helpText = {
                         detail: 'You can only reload detected date range if the data source has this feature enabled.',
                         title: 'Reload Data source'
-                    }; 
+                    };
 
                     $scope.options = [
                         {key: 'allData', label: 'All Data'},
@@ -89,7 +99,7 @@
                     ];
 
                     $scope.datePickerOpts = {
-                        maxDate:  moment().endOf('day'),
+                        maxDate: moment().endOf('day'),
                         ranges: {
                             'Today': [moment().startOf('day'), moment().endOf('day')],
                             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -100,8 +110,8 @@
                         }
                     };
 
-                    $scope.showReloadDaterange = function(item) {
-                        if((!connect.dataSource || !connect.dataSource.dateRangeDetectionEnabled) && item.key == 'detectedDateRange') {
+                    $scope.showReloadDaterange = function (item) {
+                        if ((!connect.dataSource || !connect.dataSource.dateRangeDetectionEnabled) && item.key == 'detectedDateRange') {
                             return false
                         }
 
@@ -122,14 +132,14 @@
                         };
 
                         UnifiedReportConnectDataSourceManager.one(connect.id).one('reloads').post(null, params)
-                            .then(function() {
+                            .then(function () {
                                 AlertService.replaceAlerts({
                                     type: 'success',
                                     message: 'The data was reloaded. Please wait a few minutes for the changes to take effect.'
                                 });
                             })
-                            .catch(function(response) {
-                                if(!!response && !!response.data && !!response.data.message) {
+                            .catch(function (response) {
+                                if (!!response && !!response.data && !!response.data.message) {
                                     AlertService.replaceAlerts({
                                         type: 'danger',
                                         message: response.data.message
@@ -150,21 +160,12 @@
             modalInstance.result.then(function () {
                 return UnifiedReportConnectDataSourceManager.one(connectDataSource.id).remove()
                     .then(function () {
-                        var index = connectDataSources.indexOf(connectDataSource);
 
-                        if (index > -1) {
-                            connectDataSources.splice(index, 1);
-                        }
-
-                        $scope.connectDataSources = connectDataSources;
-
-                        if($scope.tableConfig.currentPage > 0 && connectDataSources.length/10 == $scope.tableConfig.currentPage) {
-                            AtSortableService.insertParamForUrl({page: $scope.tableConfig.currentPage});
-                        }
+                        changeItemsPerPage();
 
                         AlertService.replaceAlerts({
                             type: 'success',
-                            message:  "The connected data source was removed successfully"
+                            message: "The connected data source was removed successfully"
                         });
                     })
                     .catch(function () {
@@ -182,11 +183,55 @@
         }
 
         function showPagination() {
-            return angular.isArray($scope.connectDataSources) && $scope.connectDataSources.length > $scope.tableConfig.itemsPerPage;
+            return (angular.isArray($scope.connectDataSources) && (connectDataSources.totalRecord > $scope.tableConfig.itemsPerPage));
         }
 
-        $scope.$on('$locationChangeSuccess', function() {
+        $scope.$on('$locationChangeSuccess', function () {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.connectDataSource)
         });
+
+        $scope.$on(EVENT_ACTION_SORTABLE, function (event, query){
+            params = angular.extend(params, query);
+            _getConnectedDataSource(params);
+        });
+
+        function searchData() {
+            var query = {searchKey: $scope.selectData.query || ''};
+            params = angular.extend(params, query);
+            _getConnectedDataSource(params, 500);
+        }
+
+        function changePage(currentPage){
+            params = angular.extend(params, {
+                page: currentPage
+            });
+            _getConnectedDataSource(params);
+        }
+
+        function changeItemsPerPage()
+        {
+            var query = {limit: $scope.tableConfig.itemsPerPage || ''};
+            params.page = 1;
+            params = angular.extend(params, query);
+            _getConnectedDataSource(params, 500);
+        }
+
+        function _getConnectedDataSource(query, ms) {
+            clearTimeout(getConnectedDataSource);
+
+            getConnectedDataSource = setTimeout(function () {
+                return UnifiedReportDataSetManager.one($stateParams.dataSetId).one('connecteddatasources').get($stateParams)
+                    .then(function (connectedDataSources) {
+                        AtSortableService.insertParamForUrl(query);
+
+                        setTimeout(function () {
+                            $scope.connectDataSources = connectedDataSources.records;
+                            $scope.tableConfig.totalItems = Number(connectedDataSources.totalRecord);
+                            $scope.availableOptions.currentPage = Number(query.page);
+                        }, 0)
+                    });
+            }, ms || 0)
+
+        }
     }
 })();
