@@ -36,6 +36,7 @@
         _getData(false);
 
         $scope.$watch('dashboardType', function () {
+            resetFormData();
             // reset to default
             $scope.compareTypeData.compareType = COMPARE_TYPE['day'];
 
@@ -168,7 +169,14 @@
             return NewDashboardUtil.getCompareLabel(mode);
         }
 
+        function resetFormData() {
+            // Empty data during the time waits for getting new data from api
+            $scope.comparisionData = [];
+            $scope.formData.comparisionData = [];
+        }
         function onChangeMode(mode) {
+            resetFormData();
+
             $scope.compareTypeData.compareType = COMPARE_TYPE[mode];
             $scope.compareTypeData.label = getLabel(mode);
             _getData(true);

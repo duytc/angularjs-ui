@@ -39,37 +39,37 @@
 
             <tr ng-if="isAdmin">
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['billedAmount'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.billedAmount != null) ? (customOverviewData.billedAmount | currency) : (0 | currency) }}</td>
+                <td class="text-right">{{ (customOverviewData.billedAmount != null) ? (customOverviewData.billedAmount | currency) : '' }}</td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['requests'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.requests != null) ? (customOverviewData.requests | number) : 0 }}</td>
+                <td class="text-right">{{ (customOverviewData.requests != null) ? (customOverviewData.requests | number) : '' }}</td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['impressions'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.impressions != null) ? (customOverviewData.impressions | number) : 0 }}</td>
+                <td class="text-right">{{ (customOverviewData.impressions != null) ? (customOverviewData.impressions | number) : '' }}</td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['bids'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.bids != null) ? (customOverviewData.bids | number) : 0 }}</td>
+                <td class="text-right">{{ (customOverviewData.bids != null) ? (customOverviewData.bids | number) : '' }}</td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['errors'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.errors != null) ? (customOverviewData.errors | number) : 0 }}</td>
+                <td class="text-right">{{ (customOverviewData.errors != null) ? (customOverviewData.errors | number) : '' }}</td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['blocks'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.blocks != null) ? (customOverviewData.blocks | number) : 0 }}</td>
+                <td class="text-right">{{ (customOverviewData.blocks != null) ? (customOverviewData.blocks | number) : '' }}</td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['requestFillRate'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.requestFillRate != null) ? (customOverviewData.requestFillRate | percentage) : (0 | percentage)  }}</td>
+                <td class="text-right">{{ (customOverviewData.requestFillRate != null) ? (customOverviewData.requestFillRate | percentage) : ''  }}</td>
             </tr>
         </table>
 

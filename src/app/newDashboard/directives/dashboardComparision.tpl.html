@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading" style="padding-top: 7px; padding-bottom: 7px">
+    <div class="panel-heading" style="padding-top: 5px; padding-bottom: 5px">
         <div class="row align-items-center">
             <div class="col col-md-2" style="padding-top: 5px;">
                 <span>{{'NEW_DASHBOARD.COMPARISION'|translate}}</span>
@@ -85,44 +85,44 @@
 
             <tr ng-if="isAdmin">
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['billedAmount'] }}</b></td>
-                <td class="text-right">{{ (formData.comparisionData.current.billedAmount != null) ? (formData.comparisionData.current.billedAmount | currency) : (0 | currency) }}</td>
-                <td class="text-right">{{ (formData.comparisionData.history.billedAmount != null) ? (formData.comparisionData.history.billedAmount | currency) : (0 | currency) }}</td>
+                <td class="text-right">{{ (formData.comparisionData.current.billedAmount != null) ? (formData.comparisionData.current.billedAmount | currency) : '' }}</td>
+                <td class="text-right">{{ (formData.comparisionData.history.billedAmount != null) ? (formData.comparisionData.history.billedAmount | currency) : '' }}</td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['requests'] }}</b></td>
-                <td class="text-right">{{ (formData.comparisionData.current.requests != null) ? (formData.comparisionData.current.requests | number) : 0 }}</td>
-                <td class="text-right">{{ (formData.comparisionData.history.requests != null) ? (formData.comparisionData.history.requests | number) : 0 }}</td>
+                <td class="text-right">{{ (formData.comparisionData.current.requests != null) ? (formData.comparisionData.current.requests | number) : '' }}</td>
+                <td class="text-right">{{ (formData.comparisionData.history.requests != null) ? (formData.comparisionData.history.requests | number) : '' }}</td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['impressions'] }}</b></td>
-                <td class="text-right">{{ (formData.comparisionData.current.impressions != null) ? (formData.comparisionData.current.impressions | number) : 0 }}</td>
-                <td class="text-right">{{ (formData.comparisionData.history.impressions != null) ? (formData.comparisionData.history.impressions | number) : 0 }}</td>
+                <td class="text-right">{{ (formData.comparisionData.current.impressions != null) ? (formData.comparisionData.current.impressions | number) : '' }}</td>
+                <td class="text-right">{{ (formData.comparisionData.history.impressions != null) ? (formData.comparisionData.history.impressions | number) : '' }}</td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['bids'] }}</b></td>
-                <td class="text-right">{{ (formData.comparisionData.current.bids != null) ? (formData.comparisionData.current.bids | number) : 0 }}</td>
-                <td class="text-right">{{ (formData.comparisionData.history.bids != null) ? (formData.comparisionData.history.bids | number) : 0 }}</td>
+                <td class="text-right">{{ (formData.comparisionData.current.bids != null) ? (formData.comparisionData.current.bids | number) : '' }}</td>
+                <td class="text-right">{{ (formData.comparisionData.history.bids != null) ? (formData.comparisionData.history.bids | number) : '' }}</td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['errors'] }}</b></td>
-                <td class="text-right">{{ (formData.comparisionData.current.errors != null) ? (formData.comparisionData.current.errors | number) : 0 }}</td>
-                <td class="text-right">{{ (formData.comparisionData.history.errors != null) ? (formData.comparisionData.history.errors | number) : 0 }}</td>
+                <td class="text-right">{{ (formData.comparisionData.current.errors != null) ? (formData.comparisionData.current.errors | number) : '' }}</td>
+                <td class="text-right">{{ (formData.comparisionData.history.errors != null) ? (formData.comparisionData.history.errors | number) : '' }}</td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['blocks'] }}</b></td>
-                <td class="text-right">{{ (formData.comparisionData.current.blocks != null) ? (formData.comparisionData.current.blocks | number) : 0 }}</td>
-                <td class="text-right">{{ (formData.comparisionData.history.blocks != null) ? (formData.comparisionData.history.blocks | number) : 0 }}</td>
+                <td class="text-right">{{ (formData.comparisionData.current.blocks != null) ? (formData.comparisionData.current.blocks | number) : '' }}</td>
+                <td class="text-right">{{ (formData.comparisionData.history.blocks != null) ? (formData.comparisionData.history.blocks | number) : '' }}</td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['requestFillRate'] }}</b></td>
-                <td class="text-right">{{ (formData.comparisionData.current.requestFillRate != null) ? (formData.comparisionData.current.requestFillRate | percentage) : (0 | percentage) }}</td>
-                <td class="text-right">{{ (formData.comparisionData.history.requestFillRate != null) ? (formData.comparisionData.history.requestFillRate | percentage) : (0 | percentage) }}</td>
+                <td class="text-right">{{ (formData.comparisionData.current.requestFillRate != null) ? (formData.comparisionData.current.requestFillRate | percentage) : '' }}</td>
+                <td class="text-right">{{ (formData.comparisionData.history.requestFillRate != null) ? (formData.comparisionData.history.requestFillRate | percentage) : '' }}</td>
             </tr>
         </table>
 

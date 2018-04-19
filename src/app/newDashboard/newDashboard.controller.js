@@ -262,6 +262,7 @@
         }
 
         function _getOverviewReport() {
+            resetData();
             if (_currentDashboardType.id === 'DISPLAY') {
                 // set chart date field
                 $scope.formData.chartData.dateField = {
