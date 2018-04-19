@@ -4,14 +4,13 @@
     <div class="panel panel-default daily-reports">
         <div class="panel-heading">{{ 'REPORT.DAILY_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" fields="['date', 'slotOpportunities', 'totalOpportunities', 'adOpportunities', 'impressions', 'inBannerImpressions', 'passbacks', 'fillRate',  'estRevenue', 'supplyCost', 'estProfit']" header="['Date', 'Slot Opportunities', 'Network Opportunities', 'Impression Opportunities', 'Impressions', 'In Banner Impressions', 'Passbacks', 'Fill Rate', 'Est. Revenue', 'Supply Cost']" file-name="getExportExcelFileName"></export-excel>
-                <!--<export-excel data="reports" fields="['date', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate', 'estRevenue', 'estCpm']" header="['Date', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate', 'Est. Revenue ($)', 'Est. CPM ($)']" file-name="getExportExcelFileName"></export-excel>-->
+                <export-excel data="reports" fields="['date', 'slotOpportunities', 'totalOpportunities', 'adOpportunities', 'passbacks', 'inBannerImpressions', 'opportunityFillRate', 'fillRate',  'estRevenue', 'supplyCost', 'estProfit']" header="['Date', 'Slot Ops', 'Network Ops', 'Impression Ops', 'Passbacks', 'In Banner Impressions', 'Op Fill Rate', 'Fill Rate', 'Est. Revenue', 'Supply Cost', 'Est. Profit']" file-name="getExportExcelFileName"></export-excel>
             </div>
             <div class="btn-group btnGrouped" dropdown>
                 <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><a>
-                        <export-excel css-class="''" data="reports" fields="['date', 'slotOpportunities', 'totalOpportunities', 'adOpportunities', 'impressions', 'inBannerImpressions', 'passbacks', 'fillRate',  'estRevenue', 'supplyCost', 'estProfit']" header="['Date', 'Slot Opportunities', 'Network Opportunities', 'Impression Opportunities', 'Impressions', 'In Banner Impressions', 'Passbacks', 'Fill Rate', 'Est. Revenue', 'Supply Cost']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel css-class="''" data="reports" fields="['date', 'slotOpportunities', 'totalOpportunities', 'adOpportunities', 'passbacks', 'inBannerImpressions', 'opportunityFillRate', 'fillRate',  'estRevenue', 'supplyCost', 'estProfit']" header="['Date', 'Slot Ops', 'Network Ops', 'Impression Ops', 'Passbacks', 'In Banner Impressions', 'Op Fill Rate', 'Fill Rate', 'Est. Revenue', 'Supply Cost', 'Est. Profit']" file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
             </div>
@@ -39,9 +38,6 @@
                     <td at-title="{{ 'REPORT.PASSBACKS' | translate }}" at-attribute="passbacks" at-sortable>
                         {{ item.passbacks | number }}
                     </td>
-                    <!--<td at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="impressions" at-sortable>-->
-                        <!--{{ item.impressions | number }}-->
-                    <!--</td>-->
                     <td at-title="{{ 'REPORT.IN_BANNER_IMPRESSIONS' | translate }}" at-attribute="inBannerImpressions" at-sortable>
                         {{ item.inBannerImpressions | number }}
                     </td>
@@ -60,12 +56,6 @@
                     <td at-title="{{ 'REPORT.EST_PROFIT' | translate }}" at-attribute="estProfit" at-sortable>
                         {{ item.estProfit | currency }}
                     </td>
-                    <!--<td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>-->
-                        <!--{{ item.estRevenue | currency }}-->
-                    <!--</td>-->
-                    <!--<td at-title="Est. CPM" at-attribute="estCpm" at-sortable>-->
-                        <!--{{ item.estCpm | currency:'$':4 }}-->
-                    <!--</td>-->
                 </tr>
                 </tbody>
             </table>
@@ -74,5 +64,7 @@
         <at-pagination ng-if="showPagination()" class="table-footer" at-list="reports" at-config="tableConfig"></at-pagination>
     </div>
 
-    <tc-performance-report-summary report-group="reportGroup"></tc-performance-report-summary>
+    <div class="clear-float">
+        <tc-performance-report-summary report-group="reportGroup"></tc-performance-report-summary>
+    </div>
 </div>

@@ -4,14 +4,14 @@
     <div class="panel panel-default daily-reports">
         <div class="panel-heading">{{ 'REPORT.SITE_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" fields="['startDate', 'endDate', 'name', 'totalOpportunities', 'adOpportunities', 'impressions', 'inBannerImpressions', 'passbacks', 'fillRate',  'estRevenue']" header="['Start Date', 'End Date', 'Sub Publisher', 'Network Opportunities', 'Impression Opportunities', 'Impressions', 'In Banner Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                <export-excel data="reports" fields="['startDate', 'endDate', 'name', 'totalOpportunities', 'adOpportunities', 'inBannerImpressions', 'passbacks', 'fillRate',  'estRevenue']" header="['Start Date', 'End Date', 'Sub Publisher', 'Network Ops', 'Impression Ops', 'In Banner Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
             </div>
 
             <div class="btn-group btnGrouped" dropdown>
                 <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><a>
-                        <export-excel data="reports" fields="['startDate', 'endDate', 'name', 'totalOpportunities', 'adOpportunities', 'impressions', 'inBannerImpressions', 'passbacks', 'fillRate',  'estRevenue']" header="['Start Date', 'End Date', 'Sub Publisher', 'Network Opportunities', 'Impression Opportunities', 'Impressions', 'In Banner Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel data="reports" fields="['startDate', 'endDate', 'name', 'totalOpportunities', 'adOpportunities', 'inBannerImpressions', 'passbacks', 'fillRate',  'estRevenue']" header="['Start Date', 'End Date', 'Sub Publisher', 'Network Ops', 'Impression Ops', 'In Banner Impressions', 'Passbacks', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
             </div>

@@ -38,11 +38,6 @@
                                     show: true,
                                     hideForNativeAdSlot: true
                                 },
-                                // {
-                                //     key: 'impressions',
-                                //     label: 'Impressions',
-                                //     show: true
-                                // },
                                 {
                                     key: 'inBannerImpressions',
                                     label: 'In Banner Impressions',
@@ -50,39 +45,21 @@
                                 },
                                 {
                                     key: 'networkOpportunityFillRate',
-                                    label: 'Network Opportunity Fill Rate',
+                                    label: 'Network Op Fill Rate',
                                     show: true
                                 },
-                                //{
-                                //    key: 'verifiedImpressions',
-                                //    label: 'Verified Impressions',
-                                //    show: true,
-                                //    hideForNativeAdSlot: true
-                                //},
-                                // Remove unverified impressions
-                                // {
-                                //     key: 'unverifiedImpressions',
-                                //     label: 'Unverified Impressions',
-                                //     show: false,
-                                //     hideForNativeAdSlot: true
-                                // },
-                                // {
-                                //     key: 'blankImpressions',
-                                //     label: 'Blank Impressions',
-                                //     show: true,
-                                //     hideForNativeAdSlot: true,
-                                //     hideForAdmin: true
-                                // },
                                 {
                                     key: 'clicks',
                                     label: 'Clicks',
                                     show: false,
-                                    hideForNativeAdSlot: true
+                                    hideForNativeAdSlot: true,
+                                    hideForAdmin: true
                                 },
                                 {
                                     key: 'fillRate',
                                     label: 'Fill Rate',
-                                    show: false
+                                    show: false,
+                                    hideForAdmin: true
                                 },
                                 {
                                     key: 'refreshes',
@@ -92,25 +69,175 @@
                                 {
                                     key: 'voidImpressions',
                                     label: 'Void Impressions',
-                                    show: true,
+                                    show: false,
                                     hideForNativeAdSlot: true,
-                                    hideForAdmin: true
+                                    hideForAdmin: false
                                 },
                                 {
                                     key: 'estRevenue',
                                     label: 'Est. Revenue',
                                     show: true
+                                }
+                            ],
+                            siteAdNetwork : [
+                                {
+                                    key : 'totalOpportunities',
+                                    label: 'Network Ops',
+                                    isPublisherView: true,
+                                    isAdminView: true
                                 },
-                                // {
-                                //     key: 'supplyCost',
-                                //     label: 'Supply Cost',
-                                //     show: true
-                                // },
-                                // {
-                                //     key: 'estProfit',
-                                //     label: 'Est. Profit',
-                                //     show: true
-                                // }
+                                {
+                                    key : 'adOpportunities',
+                                    label: 'Impression Ops', // old: Ad Ops
+                                    isPublisherView: true,
+                                    isAdminView: true
+                                },
+                                {
+                                    key: 'firstOpportunities',
+                                    label: 'First Ops',
+                                    isPublisherView: true,
+                                    isAdminView: true,
+                                    hideForNativeAdSlot: true
+                                },
+                                {
+                                    key: 'inBannerImpressions',
+                                    label: 'In Banner Impressions',
+                                    isPublisherView: true,
+                                    isAdminView: true
+                                },
+                                {
+                                    key: 'networkOpportunityFillRate',
+                                    label: 'Network Op Fill Rate',
+                                    isPublisherView: true,
+                                    isAdminView: true
+                                },
+                                {
+                                    key: 'passbacks',
+                                    label: 'Passbacks',
+                                    isPublisherView: true,
+                                    isAdminView: true,
+                                    hideForNativeAdSlot: true
+                                },
+                                {
+                                    key: 'blankImpressions',
+                                    label: 'Blank Impressions',
+                                    isPublisherView: false,
+                                    isAdminView: true,
+                                    hideForNativeAdSlot: true
+                                },
+                                {
+                                    key: 'clicks',
+                                    label: 'Clicks',
+                                    isPublisherView: true,
+                                    isAdminView: true,
+                                    hideForNativeAdSlot: true
+                                },
+                                {
+                                    key: 'fillRate',
+                                    label: 'Fill Rate',
+                                    isPublisherView: false,
+                                    isAdminView: true,
+                                    hideForNativeAdSlot: true
+                                },
+                                {
+                                    key: 'voidImpressions',
+                                    label: 'Void Impressions',
+                                    isPublisherView: false,
+                                    isAdminView: true,
+                                    hideForNativeAdSlot: true
+                                },
+                                {
+                                    key: 'estRevenue',
+                                    label: 'Est. Revenue',
+                                    isPublisherView: true,
+                                    isAdminView: true
+                                },
+                                {
+                                    key: 'supplyCost',
+                                    label: 'Supply Cost',
+                                    isPublisherView: true,
+                                    isAdminView: true
+                                },
+                                {
+                                    key: 'estProfit',
+                                    label: 'Est Profit',
+                                    isPublisherView: true,
+                                    isAdminView: true
+                                }
+                            ],
+                            adNetworkSite : [
+                                {
+                                    key : 'totalOpportunities',
+                                    label: 'Network Ops',
+                                    isPublisherView: true,
+                                    isAdminView: true
+                                },
+                                {
+                                    key : 'adOpportunities',
+                                    label: 'Impression Ops', // old: Ad Ops
+                                    isPublisherView: true,
+                                    isAdminView: true
+                                },
+                                {
+                                    key: 'firstOpportunities',
+                                    label: 'First Ops',
+                                    isPublisherView: true,
+                                    isAdminView: true,
+                                    hideForNativeAdSlot: true
+                                },
+                                {
+                                    key: 'passbacks',
+                                    label: 'Passbacks',
+                                    isPublisherView: true,
+                                    isAdminView: true,
+                                    hideForNativeAdSlot: true
+                                },
+                                {
+                                    key: 'inBannerImpressions',
+                                    label: 'In Banner Impressions',
+                                    isPublisherView: true,
+                                    isAdminView: true
+                                },
+                                {
+                                    key: 'networkOpportunityFillRate',
+                                    label: 'Network Op Fill Rate',
+                                    isPublisherView: true,
+                                    isAdminView: true
+                                },
+                                {
+                                    key: 'blankImpressions',
+                                    label: 'Blank Impressions',
+                                    isPublisherView: false,
+                                    isAdminView: true,
+                                    hideForNativeAdSlot: true
+                                },
+                                {
+                                    key: 'clicks',
+                                    label: 'Clicks',
+                                    isPublisherView: true,
+                                    isAdminView: true,
+                                    hideForNativeAdSlot: true
+                                },
+                                {
+                                    key: 'fillRate',
+                                    label: 'Fill Rate',
+                                    isPublisherView: false,
+                                    isAdminView: true,
+                                    hideForNativeAdSlot: true
+                                },
+                                {
+                                    key: 'voidImpressions',
+                                    label: 'Void Impressions',
+                                    isPublisherView: false,
+                                    isAdminView: true,
+                                    hideForNativeAdSlot: true
+                                },
+                                {
+                                    key: 'estRevenue',
+                                    label: 'Est. Revenue',
+                                    isPublisherView: true,
+                                    isAdminView: true
+                                }
                             ]
                         },
                         videoReport: {
@@ -128,7 +255,21 @@
                 }
             }
         })
-
+        .constant('ADDITION_FIELDS_FOR_PRICE', [
+                {
+                    key : 'estRevenue',
+                    label: 'Est Revenue'
+                },
+                {
+                    key : 'supplyCost',
+                    label: 'Supply Cost'
+                },
+                {
+                    key : 'estProfit',
+                    label: 'Est Profit'
+                }
+            ]
+        )
         .provider('API_REPORTS_BASE_URL', {
             $get: function(API_END_POINT) {
                 return API_END_POINT + '/reports/v1';

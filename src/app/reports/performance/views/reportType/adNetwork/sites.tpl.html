@@ -4,14 +4,14 @@
     <div class="panel panel-default daily-reports">
         <div class="panel-heading">{{ 'REPORT.SITE_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" report-fields="getReportFields([{key: 'startDate', label: 'Date'}, {key: 'name', label: 'Supply'}])" file-name="getExportExcelFileName"></export-excel>
+                <export-excel data="reports" report-fields="getExportedFieldsForAdNetworkSite([{key: 'startDate', label: 'Date'}, {key: 'name', label: 'Supply'}])" file-name="getExportExcelFileName"></export-excel>
             </div>
 
             <div class="btn-group btnGrouped" dropdown>
                 <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><a>
-                        <export-excel css-class="''" data="reports" report-fields="getReportFields([{key: 'startDate', label: 'Date'}, {key: 'name', label: 'Supply'}])" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel css-class="''" data="reports" report-fields="getExportedFieldsForAdNetworkSite([{key: 'startDate', label: 'Date'}, {key: 'name', label: 'Supply'}])" file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
             </div>
@@ -22,6 +22,7 @@
                 <tr>
                     <th at-attribute="blankImpressions" ng-show="isAdmin">{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}</th>
                     <th at-attribute="voidImpressions" ng-show="isAdmin">{{ 'REPORT.VOID_IMPRESSIONS' | translate }}</th>
+                    <th at-attribute="fillRate" ng-show="isAdmin">{{ 'REPORT.FILL_RATE' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -32,7 +33,6 @@
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
                                 <li><a ng-click="popupReport(reportStates.adNetworkSite, item)">{{ 'PERFORMANCE_REPORT_MODULE.SITE_INFO' | translate }}</a></li>
                                 <li><a ng-click="goToEditPage('tagManagement.sites.edit', item.reportType.siteId)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_SITE' | translate }}</a></li>
-                                <!--<li><a ng-click="openUpdateCpm(item, updateCpmTypes.site)">Update Cpm</a></li>-->
                             </ul>
                         </div>
                     </td>
@@ -54,49 +54,32 @@
                     <td at-title="{{ 'REPORT.PASSBACKS' | translate }}" at-attribute="passbacks" at-sortable>
                         {{ item.passbacks | number }}
                     </td>
-                    <!--<td at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="impressions" at-sortable>-->
-                        <!--{{ item.impressions | number }}-->
-                    <!--</td>-->
                     <td at-title="{{ 'REPORT.IN_BANNER_IMPRESSIONS' | translate }}" at-attribute="inBannerImpressions" at-sortable>
                         {{ item.inBannerImpressions | number }}
                     </td>
                     <td at-title="{{ 'REPORT.NETWORK_OPPORTUNITY_FILL_RATE' | translate }}" at-attribute="networkOpportunityFillRate" at-sortable>
                         {{ item.networkOpportunityFillRate | percentage }}
                     </td>
-                    <!--<td at-title="{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}" at-attribute="verifiedImpressions" at-sortable>-->
-                    <!--{{ item.verifiedImpressions | number }}-->
-                    <!--</td>-->
-                    <!--Remove unverified impressions-->
-                    <!--<td at-title="{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}" at-attribute="unverifiedImpressions" at-sortable>-->
-                        <!--{{ item.unverifiedImpressions | number }}-->
-                    <!--</td>-->
+
                     <td ng-show="isAdmin" at-title="{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}" at-attribute="blankImpressions" at-sortable>
                         {{ item.blankImpressions | number }}
                     </td>
+
                     <td at-title="{{ 'REPORT.CLICKS' | translate }}" at-attribute="clicks" at-sortable>
                         {{ item.clicks | number }}
                     </td>
-                    <td at-title="{{ 'REPORT.FILL_RATE' | translate }}" at-attribute="fillRate" at-sortable>
+
+                    <td ng-show="isAdmin" at-title="{{ 'REPORT.FILL_RATE' | translate }}" at-attribute="fillRate" at-sortable>
                         {{ item.fillRate | percentage }}
                     </td>
+
                     <td ng-show="isAdmin" at-title="{{ 'REPORT.VOID_IMPRESSIONS' | translate }}" at-attribute="voidImpressions" at-sortable>
                         {{ item.voidImpressions | number }}
                     </td>
+
                     <td at-title="{{ 'REPORT.EST_REVENUE' | translate }}" at-attribute="estRevenue" at-sortable>
                         {{ item.estRevenue | currency }}
                     </td>
-                    <!--<td at-title="{{ 'REPORT.SUPPLY_COST' | translate }}" at-attribute="supplyCost" at-sortable>-->
-                        <!--{{ item.supplyCost | currency }}-->
-                    <!--</td>-->
-                    <!--<td at-title="{{ 'REPORT.EST_PROFIT' | translate }}" at-attribute="estProfit" at-sortable>-->
-                        <!--{{ item.estProfit | currency }}-->
-                    <!--</td>-->
-                    <!--<td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>-->
-                        <!--{{ item.estRevenue | currency }}-->
-                    <!--</td>-->
-                    <!--<td at-title="Est. CPM" at-attribute="estCpm" at-sortable>-->
-                        <!--{{ item.estCpm | currency:'$':4 }}-->
-                    <!--</td>-->
                 </tr>
                 </tbody>
             </table>

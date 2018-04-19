@@ -38,6 +38,10 @@
   }
 }
 
+.clear-float {
+  clear: left;
+}
+
 @media (max-width: 768px) {
   .form-search .form-control {
     width: 100% !important;

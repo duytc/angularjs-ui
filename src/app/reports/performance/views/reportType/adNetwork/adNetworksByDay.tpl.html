@@ -4,14 +4,16 @@
     <div class="panel panel-default daily-reports">
         <div class="panel-heading">{{ 'REPORT.AD_NETWORK_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" report-fields="getReportFields([{key: 'date', label: 'Date'}, {key: 'name', label: 'Demand Partner'}])" file-name="getExportExcelFileName"></export-excel>
+                <export-excel ng-if="isAdmin" data="reports" fields="['date', 'name', 'totalOpportunities', 'adOpportunities', 'firstOpportunities', 'passbacks', 'inBannerImpressions', 'networkOpportunityFillRate', 'blankImpressions', 'clicks', 'fillRate', 'voidImpressions', 'estRevenue']" header="['Date', 'Demand Partner', 'Network Ops', 'Impression Ops', 'First Ops', 'Passbacks', 'In Banner Impressions', 'Network Op Fill Rate', 'Blank Impressions', 'Clicks', 'Fill Rate', 'Void Impressions', 'Est. Revenue']" file-name="getExportExcelFileName"></export-excel>
+                <export-excel ng-if="!isAdmin" data="reports" fields="['date', 'name', 'totalOpportunities', 'adOpportunities', 'firstOpportunities', 'passbacks', 'inBannerImpressions', 'networkOpportunityFillRate', 'clicks', 'fillRate', 'estRevenue']" header="['Date', 'Demand Partner', 'Network Ops', 'Impression Ops', 'First Ops', 'Passbacks', 'In Banner Impressions', 'Network Op Fill Rate', 'Clicks', 'Fill Rate', 'Est. Revenue']" file-name="getExportExcelFileName"></export-excel>
             </div>
 
             <div class="btn-group btnGrouped" dropdown>
                 <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><a>
-                        <export-excel css-class="''" data="reports" report-fields="getReportFields([{key: 'date', label: 'Date'}, {key: 'name', label: 'Demand Partner'}])" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel ng-if="isAdmin" css-class="''" fields="['date', 'name', 'totalOpportunities', 'adOpportunities', 'firstOpportunities', 'passbacks', 'inBannerImpressions', 'networkOpportunityFillRate', 'blankImpressions', 'clicks', 'fillRate', 'voidImpressions', 'estRevenue']" header="['Date', 'Demand Partner', 'Network Ops', 'Impression Ops', 'First Ops', 'Passbacks', 'In Banner Impressions', 'Network Op Fill Rate', 'Blank Impressions', 'Clicks', 'Fill Rate', 'Void Impressions', 'Est. Revenue']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel ng-if="!isAdmin" css-class="''" fields="['date', 'name', 'totalOpportunities', 'adOpportunities', 'firstOpportunities', 'passbacks', 'inBannerImpressions', 'networkOpportunityFillRate', 'clicks', 'fillRate', 'estRevenue']" header="['Date', 'Demand Partner', 'Network Ops', 'Impression Ops', 'First Ops', 'Passbacks', 'In Banner Impressions', 'Network Op Fill Rate', 'Clicks', 'Fill Rate', 'Est. Revenue']" file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
             </div>
@@ -32,7 +34,6 @@
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
                                 <li><a ng-click="popupReport(reportStates.adNetworkSites, item)">{{ 'PERFORMANCE_REPORT_MODULE.AD_NETWORK_INFO' | translate }}</a></li>
                                 <li><a ng-click="goToEditPage('tagManagement.adNetwork.edit', item.reportType.adNetworkId)">{{ 'PERFORMANCE_REPORT_MODULE.EDIT_AD_NETWORK' | translate }}</a></li>
-                                <!--<li><a ng-click="openUpdateCpm(item, updateCpmTypes.adNetwork)">Update Cpm</a></li>-->
                             </ul>
                         </div>
                     </td>
@@ -54,22 +55,12 @@
                     <td at-title="{{ 'REPORT.PASSBACKS' | translate }}" at-attribute="passbacks" at-sortable>
                         {{ item.passbacks | number }}
                     </td>
-                    <!--<td at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="impressions" at-sortable>-->
-                        <!--{{ item.impressions | number }}-->
-                    <!--</td>-->
                     <td at-title="{{ 'REPORT.IN_BANNER_IMPRESSIONS' | translate }}" at-attribute="inBannerImpressions" at-sortable>
                         {{ item.inBannerImpressions | number }}
                     </td>
                     <td at-title="{{ 'REPORT.NETWORK_OPPORTUNITY_FILL_RATE' | translate }}" at-attribute="networkOpportunityFillRate" at-sortable>
                         {{ item.networkOpportunityFillRate | percentage }}
                     </td>
-                    <!--<td at-title="{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}" at-attribute="verifiedImpressions" at-sortable>-->
-                    <!--{{ item.verifiedImpressions | number }}-->
-                    <!--</td>-->
-                    <!--Remove unverified impressions-->
-                    <!--<td at-title="{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}" at-attribute="unverifiedImpressions" at-sortable>-->
-                        <!--{{ item.unverifiedImpressions | number }}-->
-                    <!--</td>-->
                     <td ng-show="isAdmin" at-title="{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}" at-attribute="blankImpressions" at-sortable>
                         {{ item.blankImpressions | number }}
                     </td>
@@ -85,18 +76,6 @@
                     <td at-title="{{ 'REPORT.EST_REVENUE' | translate }}" at-attribute="estRevenue" at-sortable>
                         {{ item.estRevenue | currency }}
                     </td>
-                    <!--<td at-title="{{ 'REPORT.SUPPLY_COST' | translate }}" at-attribute="supplyCost" at-sortable>-->
-                        <!--{{ item.supplyCost | currency }}-->
-                    <!--</td>-->
-                    <!--<td at-title="{{ 'REPORT.EST_PROFIT' | translate }}" at-attribute="estProfit" at-sortable>-->
-                        <!--{{ item.estProfit | currency }}-->
-                    <!--</td>-->
-                    <!--<td at-title="Est. Revenue" at-attribute="estRevenue" at-sortable>-->
-                        <!--{{ item.estRevenue | currency }}-->
-                    <!--</td>-->
-                    <!--<td at-title="Est. CPM" at-attribute="estCpm" at-sortable>-->
-                        <!--{{ item.estCpm | currency:'$':4 }}-->
-                    <!--</td>-->
                 </tr>
                 </tbody>
             </table>
@@ -105,5 +84,7 @@
         <at-pagination ng-if="showPagination()" class="table-footer" at-list="reports" at-config="tableConfig"></at-pagination>
     </div>
 
-    <tc-performance-report-summary report-group="reportGroup"></tc-performance-report-summary>
+    <div class="clear-float">
+        <tc-performance-report-summary report-group="reportGroup" show-refreshes="true"></tc-performance-report-summary>
+    </div>
 </div>

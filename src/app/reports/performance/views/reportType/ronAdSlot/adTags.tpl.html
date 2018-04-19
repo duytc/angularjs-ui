@@ -24,20 +24,14 @@
                 <tr>
                     <th at-attribute="totalOpportunities" ng-show="showConfigForPerformanceByAdTag('totalOpportunities')">{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}</th>
                     <th at-attribute="adOpportunities" ng-show="showConfigForPerformanceByAdTag('adOpportunities')">{{ 'REPORT.AD_OPPORTUNITIES' | translate }}</th>
-                    <th at-attribute="firstOpportunities" ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('firstOpportunities')">{{ 'REPORT.FIRST_OPPORTUNITIES' | translate }}</th>
+                    <th at-attribute="firstOpportunities" ng-show="showConfigForPerformanceByAdTag('firstOpportunities')">{{ 'REPORT.FIRST_OPPORTUNITIES' | translate }}</th>
                     <th at-attribute="impressions" ng-show="showConfigForPerformanceByAdTag('impressions')">Impressions</th>
-                    <!--<th at-attribute="verifiedImpressions" ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('verifiedImpressions')">{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}</th>-->
-                    <!--Remove unverified impressions-->
-                    <!--<th at-attribute="unverifiedImpressions" ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('unverifiedImpressions')">{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}</th>-->
-                    <!--<th at-attribute="blankImpressions" ng-show="isAdmin && isNotNativeAdSlot">{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}</th>-->
-                    <th at-attribute="voidImpressions" ng-show="isAdmin && isNotNativeAdSlot">{{ 'REPORT.VOID_IMPRESSIONS' | translate }}</th>
-                    <th at-attribute="clicks" ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('clicks')">{{ 'REPORT.CLICKS' | translate }}</th>
-                    <th at-attribute="passbacks" ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('passbacks')">{{ 'REPORT.PASSBACKS' | translate }}</th>
+                    <th at-attribute="voidImpressions" ng-show="showConfigForPerformanceByAdTag('voidImpressions')">{{ 'REPORT.VOID_IMPRESSIONS' | translate }}</th>
+                    <th at-attribute="clicks" ng-show="showConfigForPerformanceByAdTag('clicks')">{{ 'REPORT.CLICKS' | translate }}</th>
+                    <th at-attribute="passbacks" ng-show="showConfigForPerformanceByAdTag('passbacks')">{{ 'REPORT.PASSBACKS' | translate }}</th>
                     <th at-attribute="fillRate" ng-show="showConfigForPerformanceByAdTag('fillRate')">{{ 'REPORT.FILL_RATE' | translate }}</th>
                     <th at-attribute="refreshes" ng-show="showConfigForPerformanceByAdTag('refreshes')">{{ 'REPORT.REFRESHES' | translate }}</th>
                     <th at-attribute="estRevenue" ng-show="showConfigForPerformanceByAdTag('estRevenue')">{{ 'REPORT.EST_REVENUE' | translate }}</th>
-                    <!--<th at-attribute="supplyCost" ng-show="showConfigForPerformanceByAdTag('supplyCost')">{{ 'REPORT.SUPPLY_COST' | translate }}</th>-->
-                    <!--<th at-attribute="estProfit" ng-show="showConfigForPerformanceByAdTag('estProfit')">{{ 'REPORT.EST_PROFIT' | translate }}</th>-->
                 </tr>
                 </thead>
                 <tbody>
@@ -54,55 +48,46 @@
                     <td at-title="{{ 'REPORT.DATE' | translate }}" at-attribute="startDate">
                         {{ item.startDate | date }}
                     </td>
+
                     <td class="name" at-title="{{ 'AD_TAG' | translate }}" at-attribute="name" at-sortable>
                         {{ item.name }}
                     </td>
+
                     <td ng-show="showConfigForPerformanceByAdTag('totalOpportunities')" at-title="{{ 'REPORT.NETWORK_OPPORTUNITIES' | translate }}" at-attribute="totalOpportunities" at-sortable>
                         {{ item.totalOpportunities | number }}
                     </td>
+
                     <td ng-show="showConfigForPerformanceByAdTag('adOpportunities')" at-title="{{ 'REPORT.AD_OPPORTUNITIES' | translate }}" at-attribute="adOpportunities" at-sortable>
                         {{ item.adOpportunities | number }}
                     </td>
-                    <td ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('firstOpportunities')" at-title="{{ 'REPORT.FIRST_OPPORTUNITIES' | translate }}" at-attribute="firstOpportunities" at-sortable>
+
+                    <td ng-show="showConfigForPerformanceByAdTag('firstOpportunities')" at-title="{{ 'REPORT.FIRST_OPPORTUNITIES' | translate }}" at-attribute="firstOpportunities" at-sortable>
                         {{ item.firstOpportunities | number }}
                     </td>
-                    <td ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('passbacks')" at-title="{{ 'REPORT.PASSBACKS' | translate }}" at-attribute="passbacks" at-sortable>
+
+                    <td ng-show="showConfigForPerformanceByAdTag('passbacks')" at-title="{{ 'REPORT.PASSBACKS' | translate }}" at-attribute="passbacks" at-sortable>
                         {{ item.passbacks | number }}
                     </td>
-                    <!--<td ng-show="showConfigForPerformanceByAdTag('impressions')" at-title="{{ 'REPORT.IMPRESSIONS' | translate }}" at-attribute="impressions" at-sortable>-->
-                        <!--{{ item.impressions | number }}-->
-                    <!--</td>-->
-                    <!--<td ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('verifiedImpressions')" at-title="{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}" at-attribute="verifiedImpressions" at-sortable>-->
-                    <!--{{ item.verifiedImpressions | number }}-->
-                    <!--</td>-->
-                    <!--Remove unverified impressions-->
-                    <!--<td ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('unverifiedImpressions')" at-title="{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}" at-attribute="unverifiedImpressions" at-sortable>-->
-                        <!--{{ item.unverifiedImpressions | number }}-->
-                    <!--</td>-->
-                    <!--<td ng-show="isAdmin && isNotNativeAdSlot" at-title="{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}" at-attribute="blankImpressions" at-sortable>-->
-                        <!--{{ item.blankImpressions | number }}-->
-                    <!--</td>-->
-                    <td ng-show="isNotNativeAdSlot && showConfigForPerformanceByAdTag('clicks')" at-title="{{ 'REPORT.CLICKS' | translate }}" at-attribute="clicks" at-sortable>
+
+                    <td ng-show="showConfigForPerformanceByAdTag('clicks')" at-title="{{ 'REPORT.CLICKS' | translate }}" at-attribute="clicks" at-sortable>
                         {{ item.clicks | number }}
                     </td>
+
                     <td ng-show="showConfigForPerformanceByAdTag('fillRate')" at-title="{{ 'REPORT.FILL_RATE' | translate }}" at-attribute="fillRate" at-sortable>
                         {{ item.fillRate | percentage }}
                     </td>
+
                     <td ng-show="showConfigForPerformanceByAdTag('refreshes')" at-title="{{ 'REPORT.REFRESHES' | translate }}" at-attribute="refreshes" at-sortable>
                         {{ item.refreshes | number }}
                     </td>
-                    <td ng-show="isAdmin && isNotNativeAdSlot" at-title="{{ 'REPORT.VOID_IMPRESSIONS' | translate }}" at-attribute="voidImpressions" at-sortable>
+
+                    <td ng-show="showConfigForPerformanceByAdTag('voidImpressions')"at-title="{{ 'REPORT.VOID_IMPRESSIONS' | translate }}" at-attribute="voidImpressions" at-sortable>
                         {{ item.voidImpressions | number }}
                     </td>
+
                     <td ng-show="showConfigForPerformanceByAdTag('estRevenue')" at-title="{{ 'REPORT.EST_REVENUE' | translate }}" at-attribute="estRevenue" at-sortable>
                         {{ item.estRevenue | currency }}
                     </td>
-                    <!--<td ng-show="showConfigForPerformanceByAdTag('supplyCost')" at-title="{{ 'REPORT.SUPPLY_COST' | translate }}" at-attribute="supplyCost" at-sortable>-->
-                        <!--{{ item.supplyCost | currency }}-->
-                    <!--</td>-->
-                    <!--<td ng-show="showConfigForPerformanceByAdTag('estProfit')" at-title="{{ 'REPORT.EST_PROFIT' | translate }}" at-attribute="estProfit" at-sortable>-->
-                        <!--{{ item.estProfit | currency }}-->
-                    <!--</td>-->
                 </tr>
                 </tbody>
             </table>
@@ -111,5 +96,7 @@
         <at-pagination ng-if="showPagination()" class="table-footer" at-list="reports" at-config="tableConfig"></at-pagination>
     </div>
 
-    <tc-performance-report-summary report-group="reportGroup"></tc-performance-report-summary>
+    <div class="clear-float">
+        <tc-performance-report-summary report-group="reportGroup" show-refreshes="true"></tc-performance-report-summary>
+    </div>
 </div>

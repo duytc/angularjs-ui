@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('tagcade.reports.performance')
@@ -11,9 +11,10 @@
     function ReportView($scope, $translate, $stateParams, $timeout, _, accountManager, sessionStorage, $state, Auth, AlertService, reportGroup, DateFormatter, performanceReportHelper, PERFORMANCE_REPORT_STATES, UPDATE_CPM_TYPES, TYPE_AD_SLOT, REPORT_SETTINGS) {
 
         var isAdmin = Auth.isAdmin();
+        $scope.isAdmin = isAdmin;
+
         var isSubPublisher = Auth.isSubPublisher();
 
-        $scope.isAdmin = isAdmin;
         $scope.hasResult = reportGroup !== false;
         reportGroup = reportGroup || {};
         $scope.reportGroup = reportGroup;
@@ -22,7 +23,7 @@
 
         var dataGroupReport = $state.current.params.expanded ? ($scope.reportGroup.expandedReports || []) : ($scope.reportGroup.reports || []);
 
-        if($scope.hasResult && !!reportGroup.expandedResult) {
+        if ($scope.hasResult && !!reportGroup.expandedResult) {
             reportGroup.expandedResult.reportType = reportGroup.reportType;
             reportGroup = reportGroup.expandedResult || {};
             reportGroup.refreshedSlotOpportunities = $scope.reportGroup.refreshedSlotOpportunities;
@@ -34,8 +35,8 @@
 
         // var dataGroupReport = $state.current.params.expanded ? ($scope.reportGroup.expandedReports || []) : ($scope.reportGroup.reports || []);
 
-        if(!!$scope.subBreakDown && $scope.subBreakDown == 'day') {
-            angular.forEach(dataGroupReport, function(rootReport) {
+        if (!!$scope.subBreakDown && $scope.subBreakDown == 'day') {
+            angular.forEach(dataGroupReport, function (rootReport) {
                 // set report type for item by day
                 angular.forEach(rootReport.reports, function (report) {
                     report.reportType = rootReport.reportType
@@ -52,7 +53,7 @@
         var reportType = 'adTag';
 
         var currentSetting = sessionStorage.getCurrentSettings();
-        var oldSetting = (!_.isUndefined(currentSetting) &&  _.isNull(currentSetting)) ? angular.fromJson(currentSetting) : [];
+        var oldSetting = (!_.isUndefined(currentSetting) && _.isNull(currentSetting)) ? angular.fromJson(currentSetting) : [];
 
         var settings = (isAdmin || isSubPublisher) ? [] : oldSetting;
 
@@ -80,13 +81,12 @@
             onSubmit: eventSubmitSetting
         };
 
-        if(!!$scope.reportGroup && !!$scope.reportGroup.reportType) {
-            if(!!$scope.reportGroup.reportType.adSlotType) {
+        if (!!$scope.reportGroup && !!$scope.reportGroup.reportType) {
+            if (!!$scope.reportGroup.reportType.adSlotType) {
                 $scope.isNotNativeAdSlot = $scope.reportGroup.reportType.adSlotType != TYPE_AD_SLOT.native ? true : false;
             } else {
                 $scope.isNotNativeAdSlot = $scope.reportGroup.reportType.ronAdSlotType != TYPE_AD_SLOT.native ? true : false;
             }
-
         }
 
         $scope.tableConfig = {
@@ -107,6 +107,8 @@
         $scope.getReportFields = getReportFields;
         $scope.getExportExcelFileName = getExportExcelFileName();
         $scope.showConfigForPerformanceByAdTag = showConfigForPerformanceByAdTag;
+        $scope.getExportedFieldsForSiteAdNetwork = getExportedFieldsForSiteAdNetwork;
+        $scope.getExportedFieldsForAdNetworkSite = getExportedFieldsForAdNetworkSite;
 
         if (!$scope.hasResult) {
             AlertService.replaceAlerts({
@@ -137,7 +139,7 @@
 
         function getExportExcelFileName() {
             var reportType = reportGroup.reportType || {};
-            var reportTypeString =  angular.isArray(reportType) ? (reportType.shift().reportType): reportType.reportType;
+            var reportTypeString = angular.isArray(reportType) ? (reportType.shift().reportType) : reportType.reportType;
 
             reportTypeString = (reportTypeString != null && reportTypeString != undefined) ? reportTypeString.replace(/\./g, "-") : '';
 
@@ -145,8 +147,7 @@
         }
 
         function showConfigForPerformanceByAdTag(setting) {
-            if (isAdmin
-                || !settings
+            if (!settings
                 || !settings.view
                 || !settings.view.report
                 || !settings.view.report.performance
@@ -156,8 +157,28 @@
 
             setting = _.findWhere(settings.view.report.performance[reportType], {key: setting});
 
-            if(!setting) {
+            if (!setting) {
                 return true;
+            }
+
+            // Display fields for admin
+            if ($scope.isAdmin) {
+                if (setting.hasOwnProperty('hideForAdmin') && setting.hideForAdmin) {
+                    return false;
+                }
+
+                if (setting.hasOwnProperty('hideForNativeAdSlot')) {
+                    if (setting.hideForNativeAdSlot && !$scope.isNotNativeAdSlot) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            //Native adSlot and not show this field for native adslot
+            if (setting.hasOwnProperty('isNotNativeAdSlot') && !$scope.isNotNativeAdSlot && setting.hideForNativeAdSlot) {
+                return false;
             }
 
             return !!setting.show;
@@ -165,16 +186,23 @@
 
         function getReportFields(reportFilesNew, type) {
             var fields = [];
-            if(isAdmin) {
+            if (isAdmin) {
                 fields = _getReportFieldsForAdmin();
             }
             else {
                 fields = _getReportFieldsForPublisher(type);
             }
 
-            angular.forEach(fields, function(field) {
+            angular.forEach(fields, function (field) {
                 reportFilesNew.push(field);
             });
+
+            // add fields for site-adNetworkReport
+            if (type == 'siteAdNetwork') {
+                angular.forEach(ADDITION_FIELDS_FOR_PRICE, function (additionField) {
+                    reportFilesNew.push(additionField);
+                })
+            }
 
             return reportFilesNew;
         }
@@ -191,18 +219,36 @@
                 settings = angular.copy(REPORT_SETTINGS.default);
             }
 
-            $timeout(function() {
-                angular.forEach(settings.view.report.performance[reportType], function(item) {
-                    if(item.hideForNativeAdSlot) {
-                        if($scope.isNotNativeAdSlot && !item.hideForAdmin) {
-                            return data.push(item);
+            $timeout(function () {
+                angular.forEach(settings.view.report.performance[reportType], function (item) {
+                    if (!$scope.isAdmin) {
+                        if (item.hasOwnProperty('show')) {
+                            if ($scope.isNotNativeAdSlot && item.key != 'voidImpressions') { //void impression ís only for admin
+                                data.push(item);
+                            } else {
+                                if (item.hasOwnProperty('hideForNativeAdSlot') && !item.hideForNativeAdSlot) {
+                                    data.push(item)
+                                }
+                            }
                         }
-                    }
-                    else if(!item.hideForAdmin) {
-                        return data.push(item);
+
+                    } else {
+                        if (item.hasOwnProperty('hideForAdmin') && !item.hideForAdmin) {
+                            if ($scope.isNotNativeAdSlot) {
+                                data.push(item);
+                            } else {
+                                if (item.hasOwnProperty('hideForNativeAdSlot') && !item.hideForNativeAdSlot) {
+                                    data.push(item)
+                                }
+                            }
+                        } else {
+                            data.push(item)
+                        }
                     }
                 });
             }, 0);
+
+            console.log('Data to select ', data);
 
             return data;
         }
@@ -210,9 +256,9 @@
         function modelSelect() {
             var data = [];
 
-            $timeout(function() {
-                angular.forEach($scope.dataSelect, function(item) {
-                    if(item.show) {
+            $timeout(function () {
+                angular.forEach($scope.dataSelect, function (item) {
+                    if (item.show) {
                         return data.push({id: item.key});
                     }
                 });
@@ -226,7 +272,7 @@
         }
 
         function onItemSelect() {
-           // _onItemSetting();
+            // _onItemSetting();
         }
 
         function onItemDeselect() {
@@ -244,50 +290,40 @@
             //old-settings contains full columns for building patch
             var settingsOld = angular.copy(settings);
 
-            //detect all changed-items and call api for PATCH
-            angular.forEach(settings.view.report.performance[reportType], function(setting) {
-                if (!$scope.modelSelect.length) {
-                    if (!$scope.isNotNativeAdSlot) {
-                        if (!setting.hideForNativeAdSlot) {
-                            setting.show = false;
-                        }
-                    } else {
-                        setting.show = false;
-                    }
+            console.log('model select', $scope.modelSelect);
 
+            //detect all changed-items and call api for PATCH
+            angular.forEach(settings.view.report.performance[reportType], function (setting) {
+                if (!$scope.modelSelect.length) {
+                    setting.show = false;
                     return;
                 }
 
-                for (var index in $scope.modelSelect) {
-                    var item = $scope.modelSelect[index];
+                var found = $scope.modelSelect.find(function (element) {
+                    return element.id == setting.key
+                });
 
-                    if (setting.key == item.id) {
-                        setting.show = true;
-                        break;
-                    }
+                setting.show = !!found;
 
-                    if (!$scope.isNotNativeAdSlot) {
-                        if (!setting.hideForNativeAdSlot) {
-                            setting.show = false;
-                        }
-                    } else {
+                if (!$scope.isNotNativeAdSlot) {
+                    if (setting.hideForNativeAdSlot) {
                         setting.show = false;
                     }
                 }
             });
 
-            if(!isAdmin) {
+            if (!isAdmin) {
                 var patchedSettings = getPatchedSettings(settingsOld, settings);
 
-                accountManager.one('').patch({ settings: patchedSettings })
-                    .then(function() {
+                accountManager.one('').patch({settings: patchedSettings})
+                    .then(function () {
                         //update settings for sessionStorage
                         sessionStorage.setCurrentSettings(settings);
 
                         // enable again save button
                         $scope.settingsSelect.buttonSettingDisable = false;
                     })
-                    .catch(function() {
+                    .catch(function () {
                         console.log('update setting error !');
 
                         // enable again save button
@@ -300,16 +336,17 @@
         function _getReportFieldsForAdmin() {
             var fields = [];
 
-            angular.forEach(REPORT_SETTINGS.default.view.report.performance[reportType], function(setting) {
-                if(setting.hideForNativeAdSlot) {
-                    if($scope.isNotNativeAdSlot) {
+            angular.forEach(REPORT_SETTINGS.default.view.report.performance[reportType], function (setting) {
+                if (setting.hideForNativeAdSlot) {
+                    if ($scope.isNotNativeAdSlot && !setting.hideForAdmin) {
                         return fields.push(setting);
                     }
                 }
-                else{
-                    return fields.push(setting);
+                else {
+                    if (!setting.hideForAdmin) {
+                        return fields.push(setting);
+                    }
                 }
-
             });
 
             return angular.copy(fields);
@@ -318,8 +355,7 @@
         function _getReportFieldsForPublisher(type) {
             var fields = [];
 
-            if (isAdmin
-                || !settings
+            if (!settings
                 || !settings.view
                 || !settings.view.report
                 || !settings.view.report.performance
@@ -327,16 +363,12 @@
                 settings = angular.copy(REPORT_SETTINGS.default);
             }
 
-            angular.forEach(settings.view.report.performance[reportType], function(setting) {
-                if(setting.hideForNativeAdSlot) {
-                    if((setting.show || type != reportType) && $scope.isNotNativeAdSlot && !setting.hideForAdmin) {
+            angular.forEach(settings.view.report.performance[reportType], function (setting) {
+                if ((setting.show || (!!type && type != reportType))) {
+                    if (!!$scope.isNotNativeAdSlot) {
                         return fields.push(setting);
                     }
                 }
-                else if((setting.show || type != reportType) && !setting.hideForAdmin) {
-                    return fields.push(setting);
-                }
-
             });
 
             return angular.copy(fields);
@@ -369,5 +401,59 @@
 
             return patchedSettings;
         }
+
+
+        function getExportedFieldsForSiteAdNetwork(customFields) {
+            var commonConfigFields = REPORT_SETTINGS.default.view.report.performance['siteAdNetwork'];
+
+            if (!angular.isArray(customFields)) {
+                return [];
+            }
+
+            return _addCommonConfigFields(customFields, commonConfigFields);
+        }
+
+        function getExportedFieldsForAdNetworkSite(customFields) {
+
+            var commonConfigFields = REPORT_SETTINGS.default.view.report.performance['adNetworkSite'];
+
+            if (!angular.isArray(customFields)) {
+                return [];
+            }
+
+            return _addCommonConfigFields(customFields, commonConfigFields);
+        }
+
+        function _addCommonConfigFields(customFields, commonConfigFields) {
+            if ($scope.isAdmin) {
+                angular.forEach(commonConfigFields, function (configField) {
+                    if (configField.hasOwnProperty('isAdminView') && configField.isAdminView) {
+                        if ($scope.isNotNativeAdSlot) {
+                            customFields.push(configField);
+                        } else {
+                            if (configField.hasOwnProperty('hideForNativeAdSlot') && !configField.hideForNativeAdSlot) {
+                                customFields.push(configField);
+                            }
+                        }
+                    }
+                });
+            } else {
+                angular.forEach(commonConfigFields, function (configField) {
+                    if (configField.hasOwnProperty('isPublisherView') && configField.isPublisherView) {
+                        if ($scope.isNotNativeAdSlot) {
+                            customFields.push(configField);
+                        } else {
+                            if (configField.hasOwnProperty('hideForNativeAdSlot') && !configField.hideForNativeAdSlot) {
+                                customFields.push(configField);
+                            }
+                        }
+                    }
+                });
+            }
+
+            return customFields;
+        }
+
+
     }
 })();

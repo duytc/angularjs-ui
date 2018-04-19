@@ -4,14 +4,6 @@
             <div class="panel-heading">{{ 'REPORT.TOTALS' | translate }}</div>
             <div class="panel-body">
                 <ul class="list-unstyled report list-info">
-                    <!--<li>-->
-                        <!--<label>Estimated Revenue</label>-->
-                        <!--<span class="pull-right">{{ reportGroup.estRevenue | currency }}</span>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<label>Estimated CPM</label>-->
-                        <!--<span class="pull-right">{{ reportGroup.estCpm | currency:'$':4 }}</span>-->
-                    <!--</li>-->
                     <li ng-if="hasSlotOpportunities()">
                         <label>{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.slotOpportunities | number }}</span>
@@ -36,10 +28,6 @@
                         <label>{{ 'REPORT.PASSBACKS' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.passbacks | number }}</span>
                     </li>
-                    <!--<li>-->
-                        <!--<label>{{ 'REPORT.IMPRESSIONS' | translate }}</label>-->
-                        <!--<span class="pull-right">{{ reportGroup.impressions | number }}</span>-->
-                    <!--</li>-->
                     <li>
                         <label>{{ 'REPORT.IN_BANNER_IMPRESSIONS' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.inBannerImpressions | number }}</span>
@@ -56,20 +44,7 @@
                         <label>{{ 'REPORT.NETWORK_OPPORTUNITY_FILL_RATE' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.networkOpportunityFillRate | percentage }}</span>
                     </li>
-                    <!--<li ng-if="exist(reportGroup.verifiedImpressions)">-->
-                    <!--<label>{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}</label>-->
-                    <!--<span class="pull-right">{{ reportGroup.verifiedImpressions | number }}</span>-->
-                    <!--</li>-->
-                    <!--Remove unverified impressions-->
-                    <!--<li ng-if="exist(reportGroup.unverifiedImpressions)">-->
-                        <!--<label>{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}</label>-->
-                        <!--<span class="pull-right">{{ reportGroup.unverifiedImpressions | number }}</span>-->
-                    <!--</li>-->
-                    <!--<li ng-if="isAdmin && exist(reportGroup.blankImpressions)">-->
-                        <!--<label>{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}</label>-->
-                        <!--<span class="pull-right">{{ reportGroup.blankImpressions | number }}</span>-->
-                    <!--</li>-->
-                    <li ng-if="isAdmin && exist(reportGroup.voidImpressions)">
+                    <li ng-if="!isAdmin && exist(reportGroup.voidImpressions)">
                         <label>{{ 'REPORT.VOID_IMPRESSIONS' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.voidImpressions | number }}</span>
                     </li>
@@ -103,14 +78,6 @@
             <div class="panel-heading">{{ 'REPORT.DAILY_AVERAGES' | translate }}</div>
             <div class="panel-body">
                 <ul class="list-unstyled report list-info">
-                    <!--<li>-->
-                        <!--<label>Estimated Revenue</label>-->
-                        <!--<span class="pull-right">{{ reportGroup.averageEstRevenue | currency }}</span>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<label>Estimated CPM</label>-->
-                        <!--<span class="pull-right">{{ reportGroup.averageEstCpm | currency:'$':4 }}</span>-->
-                    <!--</li>-->
                     <li ng-if="hasSlotOpportunities()">
                         <label>{{ 'REPORT.SLOT_OPPORTUNITIES' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageSlotOpportunities | number }}</span>
@@ -135,10 +102,6 @@
                         <label>{{ 'REPORT.PASSBACKS' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averagePassbacks | number }}</span>
                     </li>
-                    <!--<li>-->
-                        <!--<label>{{ 'REPORT.IMPRESSIONS' | translate }}</label>-->
-                        <!--<span class="pull-right">{{ reportGroup.averageImpressions | number }}</span>-->
-                    <!--</li>-->
                     <li>
                         <label>{{ 'REPORT.IN_BANNER_IMPRESSIONS' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageInBannerImpressions | number }}</span>
@@ -155,20 +118,7 @@
                         <label>{{ 'REPORT.NETWORK_OPPORTUNITY_FILL_RATE' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageNetworkOpportunityFillRate | percentage }}</span>
                     </li>
-                    <!--<li ng-if="exist(reportGroup.averageVerifiedImpressions)">-->
-                    <!--<label>{{ 'REPORT.VERIFIED_IMPRESSIONS' | translate }}</label>-->
-                    <!--<span class="pull-right">{{ reportGroup.averageVerifiedImpressions | number }}</span>-->
-                    <!--</li>-->
-                    <!--Remove unverified impressions-->
-                    <!--<li ng-if="exist(reportGroup.averageUnverifiedImpressions)">-->
-                        <!--<label>{{ 'REPORT.UNVERIFIED_IMPRESSIONS' | translate }}</label>-->
-                        <!--<span class="pull-right">{{ reportGroup.averageUnverifiedImpressions | number }}</span>-->
-                    <!--</li>-->
-                    <!--<li ng-if="isAdmin && exist(reportGroup.averageBlankImpressions)">-->
-                        <!--<label>{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}</label>-->
-                        <!--<span class="pull-right">{{ reportGroup.averageBlankImpressions | number }}</span>-->
-                    <!--</li>-->
-                    <li ng-if="isAdmin && exist(reportGroup.averageVoidImpressions)">
+                    <li ng-if="!isAdmin && exist(reportGroup.averageVoidImpressions)">
                         <label>{{ 'REPORT.VOID_IMPRESSIONS' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageVoidImpressions | number }}</span>
                     </li>

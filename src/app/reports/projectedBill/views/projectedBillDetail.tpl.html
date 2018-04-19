@@ -4,13 +4,13 @@
     <div class="panel panel-default daily-reports">
         <div class="panel-heading">{{ 'REPORT.DAILY_ACCOUNT_BREAKDOWN' | translate }}
             <div class="button-bar">
-                <export-excel data="reports" fields="['date', 'slotOpportunities', 'billedAmount', 'billedRate']" header="['Date', 'Slot Opportunities', 'Billed Amount ($)', 'Billed CPM Rate($)']" file-name="getExportExcelFileName"></export-excel>
+                <export-excel data="reports" fields="['date', 'slotOpportunities', 'billedAmount', 'billedRate']" header="['Date', 'Slot Ops', 'Billed Amount ($)', 'Billed CPM Rate($)']" file-name="getExportExcelFileName"></export-excel>
             </div>
             <div class="btn-group btnGrouped" dropdown>
                 <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li>
-                        <export-excel data="reports" fields="['date', 'slotOpportunities', 'billedAmount', 'billedRate']" header="['Date', 'Slot Opportunities', 'Billed Amount ($)', 'Billed CPM Rate($)']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel data="reports" fields="['date', 'slotOpportunities', 'billedAmount', 'billedRate']" header="['Date', 'Slot Ops', 'Billed Amount ($)', 'Billed CPM Rate($)']" file-name="getExportExcelFileName"></export-excel>
                     </li>
                 </ul>
             </div>

@@ -4,7 +4,7 @@
     <div class="panel panel-default daily-reports">
         <div class="panel-heading">{{ 'REPORT.SEGMENT_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
-                <export-excel data="reports" fields="['date', 'reportType.segment.name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate',  'estRevenue', 'supplyCost', 'estProfit']" header="['Date', 'Segment', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate', 'Est. Revenue', 'Supply Cost']" file-name="getExportExcelFileName"></export-excel>
+                <export-excel data="reports" fields="['date', 'reportType.segment.name', 'slotOpportunities', 'totalOpportunities', 'passbacks', 'fillRate',  'estRevenue', 'supplyCost', 'estProfit']" header="['Date', 'Segment', 'Slot Ops', 'Network Ops', 'Passbacks', 'Fill Rate', 'Est. Revenue', 'Supply Cost']" file-name="getExportExcelFileName"></export-excel>
             </div>
 
             <div class="btn-group btnGrouped" dropdown>
@@ -12,7 +12,7 @@
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li ng-click="backToAdTagList()"><a>{{ 'PERFORMANCE_REPORT_MODULE.MANAGE_AD_TAGS' | translate }}</a></li>
                     <li><a>
-                        <export-excel css-class="''" data="reports" fields="['date', 'reportType.segment.name', 'slotOpportunities', 'totalOpportunities', 'impressions', 'passbacks', 'fillRate',  'estRevenue', 'supplyCost', 'estProfit']" header="['Date', 'Segment', 'Slot Opportunities', 'Network Opportunities', 'Impressions', 'Passbacks', 'Fill Rate', 'Est. Revenue', 'Supply Cost']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel css-class="''" data="reports" fields="['date', 'reportType.segment.name', 'slotOpportunities', 'totalOpportunities', 'passbacks', 'fillRate',  'estRevenue', 'supplyCost', 'estProfit']" header="['Date', 'Segment', 'Slot Ops', 'Network Ops', 'Passbacks', 'Fill Rate', 'Est. Revenue', 'Supply Cost']" file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
             </div>
@@ -82,5 +82,7 @@
         <at-pagination ng-if="showPagination()" class="table-footer" at-list="reports" at-config="tableConfig"></at-pagination>
     </div>
 
-    <tc-performance-report-summary report-group="reportGroup"></tc-performance-report-summary>
+    <div class="clear-float">
+        <tc-performance-report-summary report-group="reportGroup" show-refreshes="true"></tc-performance-report-summary>
+    </div>
 </div>
