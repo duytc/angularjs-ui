@@ -151,7 +151,11 @@
         $scope.showReportDetail = showReportDetail;
         $scope.enableSelectDaterange = enableSelectDaterange;
         $scope.setClassName = setClassName;
-        
+
+
+
+        console.log($scope.dimensions);
+
         function setClassName() {
             var totalItem = Object.keys($scope.reportGroup.total).length;
 

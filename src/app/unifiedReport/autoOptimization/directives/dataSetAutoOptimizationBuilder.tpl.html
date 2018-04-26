@@ -1,0 +1,59 @@
+<button class="btn btn-success" type="button" ng-click="addDataSet()" ng-disabled="disabled">
+    <span class="glyphicon glyphicon-plus"></span>
+    Add Data Set
+</button>
+
+<div class="expressions-group" ng-repeat="dataSet in autoBuilder.autoOptimizationConfigDataSets">
+    <div class="form-group select-connect-data-source">
+        <button type="button" class="btn btn-danger btn-close-ur" ng-click="removeDataSet($index)" ng-disabled="disabled">
+            <span class="glyphicon glyphicon-minus "></span>
+        </button>
+    </div>
+
+    <div class="form-group select-connect-data-source">
+        <label class="control-label">Data Set</label>
+
+        <div>
+            <ui-select ng-model="dataSet.dataSet" ng-disabled="disabled" ng-required="true" server-error on-select="selectDataSet($item, dataSet)" reset-search-input="'false'">
+                <ui-select-match placeholder="Select a data set">{{ $select.selected.name + ' (ID: ' + $select.selected.id + ')'}}</ui-select-match>
+                <ui-select-choices repeat="dataSet.id as dataSet in getDataSets(dataSet.dataSet) | selectedPublisher:autoBuilder.publisher | filter:$select.search">
+                    {{ dataSet.name + ' (ID: ' + dataSet.id + ')' }}
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+
+    <div ng-if="dataSet.tempDimensions.length > 0 || dataSet.tempMetrics.length > 0">
+        <label class="ui-checkbox"><input name="field[]" ng-disabled="disabled" type="checkbox" ng-model="dataSet.selectAllDimensionsMetrics" ng-click="selectAllDimensionsMetrics(dataSet)"><span>Select All</span></label>
+    </div>
+
+    <div class="form-group" ng-if="dataSet.tempDimensions.length > 0">
+        <label class="control-label">Dimensions</label>
+
+        <div>
+            <div ng-repeat="field in dataSet.tempDimensions" class="col-sm-4">
+                <label class="ui-checkbox"><input ng-disabled="disabled" name="field[]" type="checkbox" ng-click="toggleField(field, dataSet.dimensions, dataSet)" ng-checked="hasField(field, dataSet.dimensions)"><span>{{ field }}</span></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group" ng-if="dataSet.tempMetrics.length > 0">
+        <label class="control-label">Metrics</label>
+
+        <div>
+            <div ng-repeat="field in dataSet.tempMetrics" class="col-sm-4">
+                <label class="ui-checkbox"><input ng-disabled="disabled" name="field[]" type="checkbox" ng-click="toggleField(field, dataSet.metrics, dataSet)" ng-checked="hasField(field, dataSet.metrics)"><span>{{ field }}</span></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Filters</label>
+
+        <div>
+            <div class="expressions-group">
+                <filter-connect-report disabled="disabled" filters="dataSet.filters" map-fields="dataSet.allFields" dimensions-metrics="dataSet.dimensionsMetrics"></filter-connect-report>
+            </div>
+        </div>
+    </div>
+</div>

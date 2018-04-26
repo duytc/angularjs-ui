@@ -61,6 +61,9 @@
                             return dataSets.plain();
                         });
                     },
+                    editable: function () {
+                        return true;
+                    },
                     reportView: function () {
                         return null
                     }
@@ -94,6 +97,22 @@
                         return UnifiedReportDataSetManager.getList().then(function (dataSets) {
                             return dataSets.plain();
                         });
+                    },
+                    editable: function (UnifiedReportViewManager, $stateParams) {
+                        console.log('--');
+                        if (!!$stateParams.id) {
+                            var param = {
+                                ids: [$stateParams.id]
+                            };
+                            return UnifiedReportViewManager.one("editable").get(param)
+                                .then(function (data) {
+                                    var result = data.plain();
+                                    return result[$stateParams.id];
+                                }, function (error) {
+                                    return false;
+                                });
+                        }
+                        return true;
                     },
                     reportView: function (UnifiedReportViewManager, $stateParams) {
                         if (!!$stateParams.id) {

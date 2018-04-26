@@ -1,0 +1,151 @@
+<!--identifier mapping-->
+<div class="form-group">
+    <label for="inputIdentifierMapping" class="col-sm-1quarter control-label">
+        {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.IDENTIFIERS_MAPPING' |translate}}
+    </label>
+    <div class="col-sm-5">
+        <ui-select name="inputIdentifierMapping" id="inputIdentifierMapping"
+                   ng-model="autoOptimizeIntegration.identifierMapping"
+                   ng-required="true"
+                   server-error>
+            <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+            <ui-select-choices repeat="identifier in identifierMappings | filter:$select.search">
+                {{ identifier.label }}
+            </ui-select-choices>
+        </ui-select>
+    </div>
+</div>
+
+<!--Identifier Field-->
+<div class="form-group">
+    <label for="identifierField" class="col-sm-1quarter control-label">Identifier Field</label>
+    <div class="col-sm-5">
+        <ui-select name="identifierField" id="identifierField"
+                   ng-model="autoOptimizeIntegration.identifierField"
+                   ng-required="true"
+                   server-error>
+            <ui-select-match placeholder="Select a field">{{ columnName[$select.selected] || $select.selected }}</ui-select-match>
+            <ui-select-choices repeat="identifier in optimizationRule.identifierFields | filter:$select.search">
+                {{ columnName[identifier] }}
+            </ui-select-choices>
+        </ui-select>
+        <span class="help-block"> {{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.IDENTIFIER_FIELDS_HELP_TEXT' | translate }} </span>
+    </div>
+</div>
+
+<!--segment-->
+<div class="form-group">
+    <label class="col-sm-1quarter control-label">Segments Mapping</label>
+    <div class="col-sm-5">
+        <!--select segment field-->
+        <div ng-repeat="item in supportedSegments" class="check_video_player">
+            <label class="ui-checkbox"><input name="moduleConfigs[]" type="checkbox"
+                                              ng-click="toggleDimension(item.key)"
+                                              ng-checked="hasDimension(item.key)">
+                <span>{{ item.label }}</span>
+            </label>
+        </div>
+
+        <div ng-if="autoOptimizeIntegration.segments.length > 0">
+            <div ng-repeat="segment in autoOptimizeIntegration.segments" class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">
+                        {{ getNameSegments(segment.dimension) }}
+                    </label>
+                    <div>
+                        <!--select from optimization rule segment fields-->
+                        <div class="form-group">
+                            <label for="toFactor" class="col-sm-3 control-label">Field name</label>
+                            <div class="col-sm-9">
+                                <ui-select id="toFactor" ng-model="segment.toFactor"
+                                           ng-required="true"
+                                           server-error reset-search-input="'false'">
+                                    <ui-select-match placeholder="Select a field">{{
+                                        columnName[$select.selected] || $select.selected }}
+                                    </ui-select-match>
+                                    <ui-select-choices group-by="groupEntities"
+                                                       repeat="factor in optimizationRule.segmentFields | filter:filterFactor(segment.toFactor) | filter:filterText | filter:$select.search">
+                                        {{ columnName[factor] || factor }}
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                        <!--select multiple countries if selected country-->
+                        <div class="form-group" ng-if="segment.dimension == 'country'">
+                            <label for="neededValue" class="col-sm-3 control-label">Countries</label>
+                            <div class="col-sm-9">
+                                <ui-select multiple id="neededValue" ng-model="segment.neededValue"
+                                           ng-required="true" close-on-select="false"
+                                           on-select="$item.search = $select.search; $select.search = '';"
+                                           server-error reset-search-input="'false'"
+                                           style="min-width: 180px;">
+                                    <ui-select-match placeholder="Select a country">{{ $item.name }}
+                                    </ui-select-match>
+                                    <ui-select-choices group-by="groupEntities"
+                                                       repeat="country.name as country in countries | filter:$select.search">
+                                        {{ country.name }}
+                                    </ui-select-choices>
+                                </ui-select>
+
+                                <span class="help-block">Leave blank for all</span>
+                            </div>
+                        </div>
+
+                        <!--enter multiple domains if selected domain-->
+                        <div class="form-group" ng-if="segment.dimension == 'domain'">
+                            <label class="col-sm-3 control-label">Domains</label>
+                            <div class="col-sm-9">
+                                <oi-select oi-options="item for item in []"
+                                           ng-model="segment.neededValue"
+                                           multiple
+                                           oi-select-options="{newItem: true, newItemFn: 'addDomain($query, segment.neededValue)'}"
+                                           placeholder="{{ 'DOMAIN_LIST_MODULE.DOMAINS' | translate }}">
+                                </oi-select>
+                                <span class="help-block">{{ 'DOMAIN_LIST_MODULE.DOMAINS_PLACEHOLDER' | translate }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--select multiple supply-->
+<div class="form-group">
+    <label for="inputSites" class="col-sm-1quarter control-label">{{'AUTO_OPTIMIZE_INTEGRATION_MODULE.SUPPLY' | translate}}</label>
+    <div class="col-sm-5">
+        <isteven-multi-select id="inputSites"
+                              output-properties="id"
+                              input-model="siteList"
+                              output-model="autoOptimizeIntegration.sites"
+                              search-property="id name"
+                              button-label="name"
+                              item-label="name"
+                              is-disabled="isFixSelectedSite"
+                              tick-property="ticked">
+        </isteven-multi-select>
+    </div>
+</div>
+<br>
+
+<!--select multiple ad slots-->
+<div class="form-group">
+    <label for="inputAdSlots" class="col-sm-1quarter control-label">
+        {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.AD_SLOTS' | translate}}</label>
+
+    <div class="col-sm-5">
+        <isteven-multi-select id="inputAdSlots"
+                              output-properties="id"
+                              input-model="adSlotListFormData"
+                              output-model="autoOptimizeIntegration.adSlots"
+                              search-property="id name"
+                              button-label="name"
+                              item-label="name"
+                              is-disabled="isFixSelectedAdSlot"
+                              tick-property="ticked">
+        </isteven-multi-select>
+    </div>
+</div>
+<br>

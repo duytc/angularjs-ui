@@ -45,6 +45,7 @@
         $scope.changePage = changePage;
         $scope.searchData = searchData;
         $scope.changeItemsPerPage = changeItemsPerPage;
+        $scope.addSiteToOptimizationRule = addSiteToOptimizationRule;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -130,6 +131,32 @@
             var query = {searchKey: $scope.selectData.query || ''};
             params = angular.extend(params, query);
             _getSite(params, 500);
+        }
+
+        function addSiteToOptimizationRule(site) {
+            var modalInstance = $modal.open({
+                templateUrl: 'tagManagement/site/addSupplyToOptimizationRule.tpl.html',
+                size: 'lg',
+                controller: 'AddSupplyToOptimizationRule',
+                resolve: {
+                    site: function () {
+                        return site;
+                    },
+                    optimizationRules: function (AutoOptimizationManager) {
+                        return AutoOptimizationManager.getList({publisher: site.publisher.id})
+                            .then(function (optimizationRules) {
+                                return optimizationRules.plain();
+                            })
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Add To Optimization Rule - {{ site.name }}'
+                }
+            });
+
+            modalInstance.result.then(function () {
+                // do nothing...
+            });
         }
 
         $scope.$on(EVENT_ACTION_SORTABLE, function(event, query) {

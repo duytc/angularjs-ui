@@ -63,7 +63,8 @@
         'angular-cache',
         'oi.select',
         'infinite-scroll',
-        'angularFileUpload'
+        'angularFileUpload',
+        'ui.bootstrap-slider'
     ]);
 
     core.run(appRun);

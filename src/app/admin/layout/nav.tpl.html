@@ -385,6 +385,27 @@
 
                 <li >
                     <a href="#" class="menu-dropdown">
+                        <span class="menu-text"> {{ 'NAVBAR.AUTO_OPTIMIZATIONS' | translate }}</span>
+                        <i class="menu-expand"></i>
+                    </a>
+
+                    <ul class="submenu">
+                        <li ui-sref-active="active">
+                            <a ui-sref=".unifiedReport.autoOptimization.list">
+                                <span class="menu-text">{{ 'NAVBAR.MY_AUTO_OPTIMIZATION' | translate }}</span>
+                            </a>
+                        </li>
+
+                        <li ui-sref-active="active">
+                            <a ui-sref=".unifiedReport.autoOptimization.builder">
+                                <span class="menu-text">{{ 'NAVBAR.CREATE_AUTO_OPTIMIZATION' | translate }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li >
+                    <a href="#" class="menu-dropdown">
                         <span class="menu-text"> Report Templates</span>
                         <i class="menu-expand"></i>
                     </a>

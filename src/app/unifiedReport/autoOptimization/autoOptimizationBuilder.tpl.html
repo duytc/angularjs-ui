@@ -1,0 +1,246 @@
+<section class="panel panel-default">
+
+    <div class="panel-heading">
+        <span current-page-title></span>
+        <!--back to list optimization list-->
+        <div class="button-bar">
+            <button ui-sref="^.list" class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.BACK_TO_LIST' | translate}}
+            </button>
+        </div>
+        <div class="btn-group btnGrouped" dropdown>
+            <button type="button" class="btn " dropdown-toggle>
+                <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
+            </button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ui-sref="^.list">{{'AUTO_OPTIMIZE_INTEGRATION_MODULE.BACK_TO_LIST' | translate}}</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="row">
+            <form name="unifiedBuilderForm" class="col-lg-12 form-validation form-horizontal" role="form" novalidate>
+                <div class="form-group" ng-if="isNew && isAdmin()">
+                    <label for="inputPublisher" class="col-sm-1quarter control-label">{{ 'PUBLISHER' | translate }}</label>
+                    <div class="col-sm-5">
+                        <ui-select name="publisher"
+                                   id="inputPublisher"
+                                   ng-model="current.publisher"
+                                   on-select="selectPublisher($item)">
+                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">
+                                {{ $select.selected.company }}
+                            </ui-select-match>
+                            <ui-select-choices repeat="publisher in publishers | filter:$select.search">
+                                {{ publisher.company }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1quarter control-label">
+                        {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.NAME'| translate}}
+                    </label>
+                    <div class="col-sm-5">
+                        <input server-error
+                               name="name"
+                               id="inputName"
+                               ng-model="current.name"
+                               ng-required="false"
+                               type="text"
+                               class="form-control"
+                               placeholder="{{ 'NAME' | translate }}">
+                    </div>
+                </div>
+                <!--Report View-->
+
+                <div class="form-group">
+                    <label for="inputReportViews" class="col-sm-1quarter control-label">
+                        {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.REPORT_VIEW_NAME' | translate}}
+                    </label>
+                    <div class="col-sm-5">
+                        <ui-select name="inputReportViews"
+                                   ng-model="current.reportView"
+                                   id="inputReportViews"
+                                   on-select="onSelectReportView($item)"
+                                   reset-search-input="'false'">
+                            <ui-select-match placeholder="Select a report view">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices repeat="reportView in reportViewList | filter: {name: $select.search}">
+                                {{ reportView.name }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <!--Date fields-->
+                <div class="form-group">
+                    <label for="dateFields" class="col-sm-1quarter control-label">
+                        {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.DATE_FIELDS' | translate}}
+                    </label>
+                    <div class="col-sm-5">
+                        <ui-select name="dateFields"
+                                   ng-model="current.dateField"
+                                   id="dateFields"
+                                   reset-search-input="'false'"
+                                   on-select="onSelectDateFields($item)">
+                            <ui-select-match placeholder="{{'AUTO_OPTIMIZE_INTEGRATION_MODULE.DATE_FIELDS_PLACE_HOLDER' | translate}}">
+                                {{ $select.selected.label }}
+                            </ui-select-match>
+                            <ui-select-choices repeat="dateField in formData.dateFields | filter: {name: $select.search}">
+                                {{ dateField.label }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <!--Date range-->
+                <div class="form-group">
+                    <label class="col-sm-1quarter control-label">{{ 'DASHBOARD_MODULE.DATE_RANGE' | translate }}</label>
+                    <div class="col-sm-5">
+                        <ui-select ng-model="current.dateRange"
+                                   reset-search-input="'false'">
+                            <ui-select-match placeholder="{{'AUTO_OPTIMIZE_INTEGRATION_MODULE.DATE_RANGE_PLACE_HOLDER' | translate}}">
+                                {{ $select.selected.key }}
+                            </ui-select-match>
+                            <ui-select-choices repeat="range as range in formData.dateRanges | filter:$select.search">
+                                {{ range.key}}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <!--Identifier fields-->
+                <div class="form-group">
+                    <label for="identifierFields" class="col-sm-1quarter control-label">
+                        {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.IDENTIFIER_FIELDS' | translate}}
+                    </label>
+                    <div class="col-sm-5">
+                        <ui-select multiple
+                                   name="identifierFields"
+                                   ng-model="current.identifierFields"
+                                   id="identifierFields"
+                                   reset-search-input="'false'">
+                            <ui-select-match placeholder="{{'AUTO_OPTIMIZE_INTEGRATION_MODULE.IDENTIFIER_FIELDS' | translate}}">{{ $item.label }}</ui-select-match>
+                            <ui-select-choices repeat="identifier in formData.dimensions | filter: {value: $select.search}">
+                                {{ identifier.label }}
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="help-block"> {{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.IDENTIFIER_FIELDS_HELP_TEXT' | translate }} </span>
+                    </div>
+
+                </div>
+                <!--Optimize fields-->
+                <div class="form-group">
+                    <label for="optimizeFields" class="col-sm-1quarter control-label">
+                        {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_FIELDS' | translate}}
+                    </label>
+                    <div class="col-sm-5">
+                        <ui-select multiple
+                                   name="optimizeFields"
+                                   id="optimizeFields"
+                                   ng-model="current.optimizeFields"
+                                   on-select="onSelectOptimizeFields($item)"
+                                   on-remove="onDeSelectOptimizeFields($item, $model)">
+                            <ui-select-match placeholder="{{'AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_FIELDS_PLACE_HOLDER' | translate}}">{{ $item.label }}</ui-select-match>
+                            <ui-select-choices repeat="optimizeField in formData.optimizeFieldsData | filter:$select.search">
+                                {{ optimizeField.label }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <!--goal and weight-->
+                <div ng-repeat="optimizeField in current.optimizeFields">
+                    <div class="form-group">
+                        <label for="optimizeFields" class="col-sm-1quarter control-label">{{optimizeField.label}}</label>
+                        <div class="col-sm-5">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="optimizeFields" class="col-sm-1quarter control-label">
+                                            {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.GOAL' | translate}}
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <ui-select ng-model="optimizeField.goal"
+                                                       name="goal"
+                                                       on-select="onSelectGoal($item)">
+                                                <ui-select-match placeholder="Select a goal">{{ $select.selected.value }}</ui-select-match>
+                                                <ui-select-choices repeat="goal in formData.goals">
+                                                    {{ goal.value }}
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="optimizeFields" class="col-sm-1quarter control-label">
+                                            {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.WEIGHT' | translate}}
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <slider class="pt-10 pl-10 pr-10"
+                                                    ng-model="optimizeField.weight"
+                                                    min="sliderOptions.min"
+                                                    step="sliderOptions.step"
+                                                    max="sliderOptions.max"
+                                                    value="optimizeField.weight"
+                                                    slider-tooltip="hide"
+                                                    ng-change="onStopSlider($event,value)">
+                                            </slider>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <input class="form-control"
+                                                   ng-model="optimizeField.weight_input"
+                                                   ng-required="true"
+                                                   type="number"
+                                                   ng-max="sliderInputOptions.max"
+                                                   ng-min="sliderInputOptions.min"
+                                                   ng-step="sliderInputOptions.step"
+                                                   value="optimizeField.weight_input"
+                                                   ng-change="onChangeWeight()">
+
+                                        </div>
+                                        <div class="col-sm- pt-10">
+                                            <span>%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Segment fields-->
+                <div class="form-group">
+                    <label for="segmentFields" class="col-sm-1quarter control-label">
+                        {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.SEGMENT_FIELDS' | translate}}
+                    </label>
+                    <div class="col-sm-5">
+                        <ui-select multiple
+                                   name="segmentFields"
+                                   ng-model="current.segmentFields"
+                                   id="segmentFields"
+                                   reset-search-input="'false'">
+                            <ui-select-match placeholder="{{'AUTO_OPTIMIZE_INTEGRATION_MODULE.SEGMENT_FIELDS_PLACE_HOLDER' | translate}}">{{ $item.label }}</ui-select-match>
+                            <ui-select-choices repeat="identifier in formData.dimensions | filter: {value: $select.search}">
+                                {{ identifier.label }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <!--submit-->
+                <div class="form-group">
+                    <div class="col-sm-offset-1quarter col-sm-5">
+                        <button ng-disabled="!isFormSaveValid() || unifiedBuilderForm.$invalid "
+                                type="submit"
+                                class="btn btn-success mce-i-indent"
+                                ng-click="submit()">
+                            {{ 'SUBMIT' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

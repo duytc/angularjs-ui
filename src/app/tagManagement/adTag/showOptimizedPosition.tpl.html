@@ -1,0 +1,61 @@
+<div class="modal-header">
+    <form class="form-inline">
+        <h4 class="form-group">{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_POSITION_AD_TAG' | translate }}</h4>
+    </form>
+</div>
+<div class="modal-body">
+    <div class="col-lg-12 form-validation form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.LIST_SEGMENTS' | translate }}</label>
+            <div class="col-sm-10">
+                <ui-select multiple ng-required="true" ng-model="selected.option" on-select="selectOption($item)" on-remove="selectOption($item)" reset-search-input="'false'">
+                    <ui-select-match placeholder="Select an option">{{ $item.label }}</ui-select-match>
+                    <ui-select-choices repeat="option.key as option in options | filter:$select.search">
+                        {{ option.label }}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div ng-if="!!optimizedPositions && optimizedPositions.length > 0">
+            <div class="col-lg-12 form-validation form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.SEARCH_LIST_SEGMENTS' | translate }}</label>
+                    <div class="col-sm-10">
+                        <search-box sb-list="optimizedPositions" search-fields="['label']"></search-box>
+                    </div>
+                </div>
+            </div>
+            <table class="table" at-table at-paginated at-list="optimizedPositions" at-config="tableConfig">
+                <thead></thead>
+                <tbody>
+                <tr>
+                    <td at-title="{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.LIST_SEGMENTS' | translate }}" at-attribute="by" width="200">
+                        {{ item.label }}
+                    </td>
+                    <td at-title="Position" at-attribute="position">
+                        <div style="background-color: #e6e6e6; height: 35px; margin-top: 5px; clear: both" ng-repeat="tags in item.tags">
+                            <div ng-repeat="adTag in tags">
+                                <span style="text-align: center; float: left; height: 100%" ng-if="$index < 3" ng-style="{width: ($index < 3 && tags.length > 3? '25%' : 100/tags.length+'%'), 'border-left': ($index != 0 ? '1px solid #000000' : '')}">
+                                <p style="margin: 10px 0 5px 0 !important;"><strong>{{ adTag.name + ' (ID: '+ adTag.id +')'}}</strong></p>
+                                </span>
+
+                                <span style="text-align: center; float: left; height: 100%" ng-if="$index == 3" ng-style="{width: '25%', 'border-left':'1px solid #000000'}">
+                                    <p style="margin: 10px 0 5px 0 !important;">({{ tags.length - 3 }}) ...</p>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <at-pagination ng-show="optimizedPositions.length > tableConfig.itemsPerPage" at-list="optimizedPositions" at-config="tableConfig"></at-pagination>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="$close()">{{ 'CLOSE' | translate }}</button>
+</div>

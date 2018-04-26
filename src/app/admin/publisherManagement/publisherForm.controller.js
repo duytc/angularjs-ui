@@ -74,7 +74,8 @@
             { label: 'Source Report', role: 'MODULE_SOURCE_REPORT' },
             { label: 'Unified Report', role: 'MODULE_UNIFIED_REPORT' },
             { label: 'Sub Publisher', role: 'MODULE_SUB_PUBLISHER' },
-            { label: 'Header Bidding', role: 'MODULE_HEADER_BIDDING' }
+            { label: 'Header Bidding', role: 'MODULE_HEADER_BIDDING' },
+            { label: 'Auto Optimize', role: 'MODULE_AUTO_OPTIMIZE' }
 //            { label: 'Fraud Detection', role: 'MODULE_FRAUD_DETECTION' }
         ];
 
@@ -224,6 +225,10 @@
         function disabledModule(module) {
             if((module == USER_MODULES.subPublisher || module == USER_MODULES.headerBidding || module == USER_MODULES.inBanner) && !hasModuleEnabled(USER_MODULES.displayAds)) {
                 return true;
+            }
+
+            if(module == USER_MODULES.autoOptimize && (!hasModuleEnabled(USER_MODULES.unified) || !hasModuleEnabled(USER_MODULES.displayAds))) {
+                return true
             }
 
             return false;

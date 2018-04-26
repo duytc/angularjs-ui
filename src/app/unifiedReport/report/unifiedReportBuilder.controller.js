@@ -4,7 +4,17 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportBuilder', UnifiedReportBuilder);
 
-    function UnifiedReportBuilder($scope, $timeout, $q, $translate, _, dataSets, publishers, reportView, UnifiedReportViewManager, UserStateHelper, dateUtil, AlertService, historyStorage, HISTORY_TYPE_PATH) {
+    function UnifiedReportBuilder($scope, $timeout, $q, $translate, _, dataSets, publishers,editable, reportView, UnifiedReportViewManager, UserStateHelper, dateUtil, AlertService, historyStorage, HISTORY_TYPE_PATH) {
+        $scope.editable = editable == true ? true : false;
+        if(!$scope.editable){
+            AlertService.replaceAlerts({
+                type: 'warning',
+                message: $translate.instant("AUTO_OPTIMIZE_INTEGRATION_MODULE.DISABLE_EDIT_REPORT_VIEW")
+            });
+        }
+        /* [ hashKey: fieldName, ... ] */
+        $scope.transformsHashes = [];
+
         $scope.dataSets = dataSets;
         $scope.publishers = publishers;
         $scope.subView = !!reportView && reportView.subView;
@@ -126,7 +136,6 @@
         $scope.selectPublisher = selectPublisher;
         $scope.hasFieldForTotal = hasFieldForTotal;
         $scope.toggleFieldForTotal = toggleFieldForTotal;
-        $scope.getNameDataSet = getNameDataSet;
         $scope.isFormRunValid = isFormRunValid;
         $scope.isFormSaveValid = isFormSaveValid;
 
@@ -143,13 +152,7 @@
             return isFormValid() && !!$scope.reportBuilder.name
         }
 
-        function getNameDataSet(dataSetId) {
-            var dataSet = _.find($scope.dataSets, function (dataSet) {
-                return dataSet.id == dataSetId
-            });
 
-            return !!dataSet ? dataSet.name : "---"
-        }
 
         function hasFieldForTotal(filed) {
 
@@ -212,7 +215,7 @@
 
             // add to array
             if (deletedFromShowInTotal == false) {
-                if (showInTotal == []) {
+                if (!showInTotal || showInTotal.length === 0) {
                     var aggregate = {
                             "type":"aggregate",
                             "fields":[ field.key]
@@ -416,8 +419,6 @@
 
             $q.when(transition)
                 .catch(function (error) {
-                    console.log(params);
-
                     AlertService.replaceAlerts({
                         type: 'error',
                         message: $translate.instant('REPORT.REPORT_FAIL')
@@ -607,18 +608,27 @@
 
         function summaryFieldForTotal() {
             $scope.summaryFieldTotal = [];
+            var oldSummaryFieldTotalObject = angular.copy($scope.summaryFieldTotalObject);
             $scope.summaryFieldTotalObject = [];
-
+            console.log(oldSummaryFieldTotalObject);
             angular.forEach(_getAllFieldInTransForm().concat($scope.selectedFields), function (dm) {
-                if (!!dm && (dm.type == 'number' || dm.type == 'decimal')) {
-                    if(!!dm.key && dm.key.indexOf('__') == -1 && (dm.key.indexOf('_day') == -1 || dm.key.indexOf('_month') == -1 || dm.key.indexOf('_year') == -1)) {
-                        var join = _.find($scope.reportBuilder.joinBy, {outputField: dm.key});
+                // Some fields are configured before. Reload it.
+                var found = oldSummaryFieldTotalObject.find(function (old) {
+                    return old.key === dm.key;
+                });
+                if (found) $scope.summaryFieldTotal.push(dm);
+                // Some new fields that are not configured
+                else {
+                    if (!!dm && (dm.type == 'number' || dm.type == 'decimal')) {
+                        if (!!dm.key && dm.key.indexOf('__') == -1 && (dm.key.indexOf('_day') == -1 || dm.key.indexOf('_month') == -1 || dm.key.indexOf('_year') == -1)) {
+                            var join = _.find($scope.reportBuilder.joinBy, {outputField: dm.key});
 
-                        if(!!join && !join.isVisible) {
-                           return
+                            if (!!join && !join.isVisible) {
+                                return
+                            }
+
+                            $scope.summaryFieldTotal.push(dm);
                         }
-
-                        $scope.summaryFieldTotal.push(dm);
                     }
                 }
             });
@@ -734,12 +744,31 @@
             });
         }
 
+
         function _getAllFieldInTransForm() {
             var fieldsTransForm = [];
             angular.forEach($scope.reportBuilder.transforms, function (transform) {
                 if (transform.type == 'addField' || transform.type == 'addConditionValue' || transform.type == 'addCalculatedField' || transform.type == 'comparisonPercent') {
                     angular.forEach(transform.fields, function (field) {
                         if (!!field.field) {
+                            var oldField = null;
+                            // check if same $$hashKey
+                            // get oldField for remove from $scope.transformsHashes
+                            if ($scope.transformsHashes.indexOf(field['$$hashKey'] > -1)) {
+                                oldField = $scope.transformsHashes[field['$$hashKey']];
+                            }
+
+                            // update
+                            if (!!field['$$hashKey']) {
+                                $scope.transformsHashes[field['$$hashKey']] = field.field;
+                            }
+
+                            // remove oldField from $scope.fieldInTransforms if has
+                            if (!!oldField) {
+                                delete $scope.fieldInTransforms[oldField];
+                            }
+
+                            // add new
                             $scope.fieldInTransforms[field.field] = field.type;
 
                             fieldsTransForm.push({

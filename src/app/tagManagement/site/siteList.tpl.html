@@ -56,6 +56,8 @@
                                     <li ng-show="hasDisplayAdsModule" class="divider"></li>
                                     <li ng-show="hasDisplayAdsModule"><a ui-sref="^.^.^.reports.performance.siteAdSlots({ siteId: item.id, startDate: today})">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
                                     <li ng-if="!isSubPublisher()" class="divider"></li>
+                                    <li ng-if="!isSubPublisher() && hasAutoOptimizeModule && item.autoOptimize"><a ng-click="addSiteToOptimizationRule(item, $index)">Add To Optimization Rule</a></li>
+                                    <li ng-if="!isSubPublisher() && hasAutoOptimizeModule && item.autoOptimize" class="divider"></li>
                                     <li ng-if="!isSubPublisher()"><a ui-sref="^.edit({ id: item.id })">{{ 'SITE_MODULE.EDIT_SITE' | translate }}</a></li>
                                     <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item)">{{ 'SITE_MODULE.DELETE_SITE' | translate }}</a></li>
                                 </ul>

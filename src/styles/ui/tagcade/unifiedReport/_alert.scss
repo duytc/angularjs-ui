@@ -15,3 +15,29 @@
   width: 100%;
   clear: both;
 }
+.no-margin-bottom{
+  margin-bottom: 0;
+}
+.small-panel-heading{
+  padding: 5px 10px !important;
+}
+.bold-border-top{
+  border-top: 1px solid #cccccc !important;
+}
+.small-padding{
+  padding-left: 2px !important;
+  padding-right: 2px !important;
+}
+.small-padding-panel-body{
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+.small-list-group-item-padding{
+  padding: 10px !important;
+}
+.break-summary-mobile{
+  white-space: normal !important;
+}
+.margin-top-item-per-page{
+  margin-top: 25px;
+}

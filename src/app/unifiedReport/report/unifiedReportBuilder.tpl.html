@@ -3,7 +3,7 @@
     <div class="panel-heading">
         <span current-page-title></span>
     </div>
-
+<fieldset ng-disabled="!editable">
     <div class="panel-body">
         <div class="row">
             <form name="unifiedBuilderForm" class="col-lg-12 form-validation form-horizontal" role="form" novalidate>
@@ -74,9 +74,9 @@
                     <div class="col-sm-10">
                         <div ng-repeat="field in summaryFieldTotalObject" class="col-sm-4">
                             <div class="col-sm-6">
-                                <label class="ui-checkbox"><input name="" type="checkbox" ng-disabled="subView"
-                                                                  ng-click="toggleFieldForTotal(field)"
-                                                                  ng-model="field.checked">
+                                <label class="ui-checkbox">
+                                    <input name="" type="checkbox" ng-disabled="subView"
+                                           ng-click="toggleFieldForTotal(field)" ng-model="field.checked">
                                     <span>{{ field.label }}</span>
                                 </label>
                             </div>
@@ -149,4 +149,5 @@
             </form>
         </div>
     </div>
+</fieldset>
 </section>

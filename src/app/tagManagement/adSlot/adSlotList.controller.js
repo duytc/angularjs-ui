@@ -9,6 +9,7 @@
         $scope.site = site;
         $scope.itemsPerPageList = ITEMS_PER_PAGE;
         $scope.adSlots = adSlots.records;
+        console.log($scope.adSlots);
         $scope.adSlotTypes = TYPE_AD_SLOT;
 
         $scope.smartAdSlots = [];
@@ -19,6 +20,8 @@
         var params = {
             page: 1
         };
+
+        AlertService.clearAll ();
 
         $scope.hasData = function () {
             return $scope.adSlots.length;
@@ -44,6 +47,7 @@
         $scope.searchData = searchData;
         $scope.changeItemsPerPage = changeItemsPerPage;
         $scope.changePage = changePage;
+        $scope.addAdSlotToOptimizationRule = addAdSlotToOptimizationRule;
 
         $scope.tableConfig = {
             itemsPerPage: 10,
@@ -148,6 +152,32 @@
                 ;
             });
         };
+
+        function addAdSlotToOptimizationRule(adSlot) {
+            var modalInstance = $modal.open({
+                templateUrl: 'tagManagement/adSlot/addAdSlotToOptimizationRule.tpl.html',
+                size: 'lg',
+                controller: 'AddAdSlotToOptimizationRule',
+                resolve: {
+                    adSlot: function () {
+                        return adSlot;
+                    },
+                    optimizationRules: function (AutoOptimizationManager) {
+                        return AutoOptimizationManager.getList({publisher: adSlot.site.publisher.id})
+                            .then(function (optimizationRules) {
+                                return optimizationRules.plain();
+                            })
+                    }
+                },
+                ncyBreadcrumb: {
+                    label: 'Add To Optimization Rule - {{ adSlot.libraryAdSlot.name }}'
+                }
+            });
+
+            modalInstance.result.then(function () {
+                // do nothing...
+            });
+        }
 
         $scope.cloneAdSlot = function(adSlot) {
             $modal.open({

@@ -4,7 +4,14 @@
     angular.module('tagcade.unifiedReport.dataSet')
         .controller('dataSetForm', dataSetForm);
 
-    function dataSetForm($scope, _, $modal, UnifiedReportDataSetManager, $translate, dataSources, dataSet, dataSets, publishers, AlertService, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, METRICS_SET, DIMENSIONS_SET) {
+    function dataSetForm($scope, _, $modal, UnifiedReportDataSetManager, $translate, dataSources, dataSet, dataSets, publishers, AlertService, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, METRICS_SET, DIMENSIONS_SET, editable) {
+        $scope.editable = editable == true ? true : false;
+        if(!$scope.editable){
+            AlertService.replaceAlerts({
+                type: 'warning',
+                message: $translate.instant("AUTO_OPTIMIZE_INTEGRATION_MODULE.DISABLE_EDIT_DATA_SET")
+            });
+        }
         $scope.isNew = (dataSet === null);
         $scope.publishers = publishers;
         $scope.dataSets = dataSets;

@@ -18,7 +18,7 @@
                 }
             })
             .state('unifiedReport.alert.list', {
-                url: '/list?page&sortField&orderBy&search&dataSourceId',
+                url: '/list?page&sortField&orderBy&publisher&source&id',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -29,23 +29,37 @@
                     }
                 },
                 resolve: {
-                    alerts: /* @ngInject */ function(UnifiedReportAlertManager, UnifiedReportDataSourceManager, $stateParams) {
-                        if($stateParams.dataSourceId) {
-                            return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).getList('alerts');
-                        }
+                    alerts: /* @ngInject */ function(UnifiedReportAlertManager, UnifiedReportDataSourceManager, $stateParams,UnifiedAlertRestAngular) {
+                        // if($stateParams.dataSourceId) {
+                        //     return UnifiedReportDataSourceManager.one($stateParams.dataSourceId).getList('alerts');
+                        // }
 
                         $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
                         $stateParams.orderBy = !$stateParams.orderBy ? 'desc' : $stateParams.orderBy;
                         $stateParams.sortField = !$stateParams.sortField ? 'createdDate' : $stateParams.sortField;
-                        $stateParams.limit = !$stateParams.limit ? 10 : $stateParams.itemsPerPage;
+                        $stateParams.limit = 10;
+                        $stateParams.publisher = !$stateParams.publisher ? null : $stateParams.publisher;
+                        $stateParams.source = !$stateParams.source ? 'all' : $stateParams.source;
+                        $stateParams.id = !$stateParams.id ? null : $stateParams.id; //data source id/ optimization integration id
+                        $stateParams.types = !$stateParams.types ? 'info,warning,error,actionRequired' : $stateParams.types;
+                        // var getParam = angular.copy($stateParams);
+                        // getParam.source = !getParam.source ? 'all' : getParam.source;
+                        // getParam.id = !getParam.id ? null : getParam.id;
+                        // getParam.types = !getParam.types ? 'info,warning,error,actionRequired' : getParam.types;
 
-                        return UnifiedReportAlertManager.one().get($stateParams).then(function (alerts) {
+                        return UnifiedAlertRestAngular.one('list').get($stateParams).then(function (alerts) {
                             return alerts.plain();
                         });
                     },
                     dataSources: /* @ngInject */ function(UnifiedReportDataSourceManager) {
                         return UnifiedReportDataSourceManager.getList().then(function (dataSources) {
                             return dataSources.plain();
+                        });
+                    },
+                    optimizeIntegrationList: function (AutoOptimizeIntegrationManager) {
+
+                        return AutoOptimizeIntegrationManager.one().get().then(function (optimizeRules) {
+                            return optimizeRules.plain();
                         });
                     }
                 },

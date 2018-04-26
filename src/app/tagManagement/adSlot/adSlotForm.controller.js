@@ -1,6 +1,7 @@
 (function () {
     'use strict';
 
+    AdSlotForm.$inject = ["$scope", "$translate", "blackList", "whiteList", "$stateParams", "$filter", "_", "adSlot", "NumberConvertUtil", "publisherList", "SiteManager", "ChannelManager", "DynamicAdSlotManager", "adminUserManager", "TYPE_AD_SLOT", "AlertService", "adSlotService", "ServerErrorProcessor", "libraryAdSlotService", "AdSlotLibrariesManager", "userSession", "historyStorage", "HISTORY_TYPE_PATH", "VARIABLE_FOR_AD_TAG"];
     angular.module('tagcade.tagManagement.adSlot')
         .controller('AdSlotForm', AdSlotForm)
     ;
@@ -9,7 +10,7 @@
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
-        AdSlotForm.$inject
+
         //var adSlotRefactor = null; // this adSlotRefactor use to copy ad slot have been refactor
         var channelsCopy = [];
         $scope.isNew = adSlot === null;
@@ -71,18 +72,22 @@
         ];
 
         $scope.adSlot = angular.isObject(adSlot) ? adSlot.libraryAdSlot : {
-            libraryExpressions: [],
-            passbackMode: $scope.passbackOption[0].key,
-            buyPrice: null,
-            autoRefresh: false,
-            refreshEvery: null,
-            maximumRefreshTimes: null
-        };
+                libraryExpressions: [],
+                passbackMode: $scope.passbackOption[0].key,
+                buyPrice: null,
+                autoRefresh: false,
+                autoOptimize: false,
+                refreshEvery: null,
+                maximumRefreshTimes: null
+            };
+
+        console.log($scope.adSlot);
 
         $scope.adSlot.hbBidPrice = $scope.isNew ? null : adSlot.hbBidPrice;
         $scope.adSlot.hbBidPriceClone = $scope.isNew ? null : _convertHeaderBiddingPriceToString(adSlot.hbBidPrice);
         $scope.adSlot.buyPrice = $scope.isNew ? null : NumberConvertUtil.convertPriceToString(adSlot.libraryAdSlot.buyPrice);
 
+        $scope.adSlot.autoOptimize = $scope.isNew ? null : adSlot.autoOptimize;
         $scope.adSlot.autoRefresh = $scope.isNew ? null : adSlot.autoRefresh;
         $scope.adSlot.refreshEvery = $scope.isNew ? null : adSlot.refreshEvery;
         $scope.adSlot.maximumRefreshTimes = $scope.isNew ? null : adSlot.maximumRefreshTimes;
@@ -169,6 +174,11 @@
         $scope.selectAdSlotLibrary = selectAdSlotLibrary;
         $scope.filterAdSlotForSite = filterAdSlotForSite;
         $scope.changeHeaderBidPrice = changeHeaderBidPrice;
+        $scope.isAutoOptimizeModule = isAutoOptimizeModule;
+
+        function isAutoOptimizeModule() {
+            return isEnabledModule('MODULE_AUTO_OPTIMIZE');
+        }
 
         function selectDeployment(deployment) {
             if (deployment == 'channels') {
@@ -925,6 +935,7 @@
             delete adSlot.site;
             delete adSlot.hbBidPriceClone;
             delete adSlot.autoRefresh;
+            delete adSlot.autoOptimize;
             delete adSlot.maximumRefreshTimes;
             delete adSlot.refreshEvery;
 
@@ -961,7 +972,8 @@
                 hbBidPrice: adSlot.hbBidPrice,
                 refreshEvery: adSlot.refreshEvery,
                 maximumRefreshTimes: adSlot.maximumRefreshTimes,
-                autoRefresh: adSlot.autoRefresh
+                autoRefresh: adSlot.autoRefresh,
+                autoOptimize: adSlot.autoOptimize
             };
 
             adSlot.site = $scope.isNew ? $scope.selected.sites[0].id : $scope.selected.site.id;
@@ -972,6 +984,7 @@
                 delete adSlot.libraryAdSlot.passbackMode;
                 delete adSlot.hbBidPrice;
                 delete adSlot.autoRefresh;
+                delete adSlot.autoOptimize;
             }
 
             if ($scope.selected.type == $scope.typesList.dynamic) {
@@ -982,6 +995,7 @@
                 delete adSlot.libraryAdSlot.buyPrice;
                 delete adSlot.hbBidPrice;
                 delete adSlot.autoRefresh;
+                delete adSlot.autoOptimize;
                 delete adSlot.maximumRefreshTimes;
                 delete adSlot.refreshEvery;
 
@@ -1025,6 +1039,7 @@
             delete adSlot.libraryAdSlot.hbBidPrice;
             delete adSlot.libraryAdSlot.hbBidPriceClone;
             delete adSlot.libraryAdSlot.autoRefresh;
+            delete adSlot.libraryAdSlot.autoOptimize;
             delete adSlot.libraryAdSlot.maximumRefreshTimes;
             delete adSlot.libraryAdSlot.refreshEvery;
 

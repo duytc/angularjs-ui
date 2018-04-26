@@ -1,0 +1,89 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span current-page-title></span>
+
+        <div class="button-bar">
+            <button ui-sref="^.builder" class="btn btn-primary btn-sm" type="button">
+                <span class="glyphicon glyphicon-plus"></span>{{'AUTO_OPTIMIZE_INTEGRATION_MODULE.BUTTON_NEW'| translate}}
+            </button>
+        </div>
+        <div class="btn-group btnGrouped" dropdown>
+            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ui-sref="^.builder">New Auto Optimization</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!--<search-box show-query="true" sb-list="autoList" search-fields="['id', 'name']"></search-box>-->
+    <form class="input-group col-sm-6 search-box">
+        <input class="form-control" ng-model="selectData.query" ng-change="searchData()" placeholder="{{ 'SEARCH' | translate }}" type="text"/>
+        <span class="input-group-addon">
+                {{ tableConfig.totalItems }} records found
+            </span>
+    </form>
+    <div class="panel-body" ng-if="hasData()">
+        <div class="table-responsive">
+            <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="autoList.records" at-config="tableConfig">
+                <thead>
+                <tr>
+                    <th ng-show="isAdmin()" at-attribute="publisher.company">{{ 'PUBLISHER' | translate }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
+                    <td at-title="{{ 'ACTIONS' | translate }}">
+                        <div class="btn-group" dropdown>
+                            <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span></button>
+                            <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <li><a ui-sref="^.viewRuleData({id: item.id})">{{'AUTO_OPTIMIZE_INTEGRATION_MODULE.VIEW_DATA' | translate}}</a></li>
+                                <li><a ui-sref="^.^.autoOptimizeIntegration.new({optimizationRuleId: item.id})">{{'AUTO_OPTIMIZE_INTEGRATION_MODULE.ASSIGN_OPTIMIZE_RULE' | translate}}</a></li>
+                                <li><a ui-sref="^.^.autoOptimizeIntegration.list({optimizationRuleId: item.id})">{{'AUTO_OPTIMIZE_INTEGRATION_MODULE.VIEW_ASSIGN_OPTIMIZATION_RULE' | translate}}</a></li>
+                                <li><a ui-sref="^.editBuilder({id: item.id})">{{'AUTO_OPTIMIZE_INTEGRATION_MODULE.EDIT_RULE' | translate}}</a></li>
+                                <li><a ng-click="confirmDeletion(item, $index)">{{'AUTO_OPTIMIZE_INTEGRATION_MODULE.DELETE_RULE' | translate}}</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td at-implicit at-sortable at-attribute="name" at-title="{{ 'NAME' | translate }}"></td>
+                    <td ng-show="isAdmin()" at-implicit at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
+                    <td at-implicit at-attribute="product" at-title="{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.LIST_PRODUCT' | translate }}"></td>
+                    <td at-title="{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.LIST_STATUS' | translate }}">
+                        <span class="label label-success" ng-if="item.finishLoading == true">Completed</span>
+                        <span class="label label-danger" ng-if="item.finishLoading == false">Updating</span>
+                    </td>
+                    <td class="mw-350 break-word" at-title="{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.LIST_METRICS' | translate }}">
+                        <span ng-repeat="optimizeField in item.optimizeFields">
+                            <span ng-if="!$first">,</span>
+                            {{optimizeField.label}}
+                        </span>
+
+                    </td>
+                    <td class="mw-350 break-word" at-title="{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.LIST_SEGMENTS' | translate }}">
+                        <span ng-repeat="segment in item.segmentFormData">
+                            <span ng-if="!$first">,</span>
+                            {{segment.label}}
+                        </span>
+                    </td>
+                    <td at-title="{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.LIST_CREATE_DATE' | translate }}" at-initial-sorting="desc" at-sortable at-attribute="createdDate">
+                        {{ item.createdDate | date:'d MMM y' }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <pagination ng-if="showPagination()"
+                        class="pagination"
+                        boundary-links="true"
+                        previous-text="&lsaquo;"
+                        next-text="&rsaquo;"
+                        items-per-page="tableConfig.itemsPerPage"
+                        total-items="tableConfig.totalItems"
+                        ng-model="availableOptions.currentPage"
+                        max-size="tableConfig.maxPages"
+                        ng-change="changePage(availableOptions.currentPage)">
+            </pagination>
+
+        </div>
+    </div>
+</div>

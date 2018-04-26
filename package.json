@@ -33,5 +33,7 @@
     "protractor": "^1.7.0",
     "selenium-standalone": "^4.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "angularjs-slider": "^6.5.0"
+  }
 }

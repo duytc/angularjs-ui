@@ -28,12 +28,12 @@
         $scope.submit = submit;
 
         $scope.site = site || {
-            name: null,
-            domain: null,
-            enableSourceReport: false,
-            players: [],
-            channelSites: []
-        };
+                name: null,
+                domain: null,
+                enableSourceReport: false,
+                players: [],
+                channelSites: []
+            };
 
         $scope.videoPlayers = [
             {label: '5min', name: '5min'},

@@ -1,9 +1,77 @@
 <div class="modal-header">
-    <h4 class="modal-title">{{ message }}</h4>
+    <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title"><strong>{{ message }}</strong></h3>
 </div>
-<div class="modal-body">
+<div class="modal-body" style="word-wrap: break-word">
+    <!--other content-->
     <div ng-repeat="(key, value) in alertDetail">
-        <strong>{{ key }}</strong>: {{ value }}
+        <strong ng-if="key != 'Positions'" class="text-capitalize">{{ key }}:</strong>
+        <span ng-if="key != 'url' && key != 'Positions'">{{ value }}</span>
+        <a ng-if="key=='url' && key != 'Positions'" ng-href="{{ value }}" target="_blank">{{ value }}</a>
+    </div>
+    <br>
+    <!--Position-->
+    <div ng-if="position">
+        <!--<strong class="text-capitalize">Position:</strong>-->
+        <div ng-repeat="(adSlot, value) in position">
+            <div class="panel panel-default">
+                <div class="panel-heading small-panel-heading"> Ad Slot {{adSlot}}</div>
+                <div class="panel-body small-padding-panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!--current-->
+                            <div class="col col-md-6 small-padding">
+                                <div class="panel panel-default no-margin-bottom">
+                                    <div class="panel-heading small-panel-heading">Current Position</div>
+                                    <ul class="list-group">
+                                        <li class="list-group-item bold-border-top small-list-group-item-padding"
+                                            ng-repeat="pos in value.current track by $index">
+                                            <div class="row">
+                                                <div class="col col-md-4" style="padding-bottom: 5px; font-size: 0.8em;">
+                                                    Position {{$index + 1}}
+                                                </div>
+                                                <div class="col col-md-8">
+                                                    <div class="col"
+                                                         ng-class="'col-md-' + getWidth(pos)"
+                                                         ng-repeat="adTag in pos">
+                                                        <strong style="font-size: 0.9em;">{{adTag}}</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--Optimization-->
+                            <div class="col col-md-6 small-padding">
+                                <div class="panel panel-default no-margin-bottom">
+                                    <div class="panel-heading small-panel-heading">Optimized Position</div>
+                                    <ul class="list-group">
+                                        <li class="list-group-item bold-border-top small-list-group-item-padding"
+                                            ng-repeat="pos in value.optimize track by $index">
+                                            <div class="row">
+                                                <div class="col col-md-4" style="padding-bottom: 5px; font-size: 0.8em;">
+                                                    Position {{$index + 1}}
+                                                </div>
+                                                <div class="col col-md-8">
+                                                    <div class="col"
+                                                         ng-class="'col-md-' + getWidth(pos)"
+                                                         ng-repeat="adTag in pos">
+                                                        <strong style="font-size: 0.9em;">{{adTag}}</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div class="modal-dialog-footer">

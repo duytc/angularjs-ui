@@ -79,6 +79,9 @@
                         return UnifiedReportDataSetManager.one().getList().then(function (dataSets) {
                             return dataSets.plain();
                         });
+                    },
+                    editable: function () {
+                        return true;
                     }
                 },
                 customResolve: {
@@ -119,6 +122,21 @@
                         return UnifiedReportDataSetManager.one().getList().then(function (dataSets) {
                             return dataSets.plain();
                         });
+                    },
+                    editable: function (UnifiedReportDataSetManager, $stateParams) {
+                        if (!!$stateParams.id) {
+                            var param = {
+                                ids: [$stateParams.id]
+                            };
+                            return UnifiedReportDataSetManager.one("editable").get(param)
+                                .then(function (data) {
+                                    var result = data.plain();
+                                    return result[$stateParams.id];
+                                }, function (error) {
+                                    return false;
+                                });
+                        }
+                        return true;
                     }
                 },
                 customResolve: {

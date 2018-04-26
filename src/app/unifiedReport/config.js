@@ -2,6 +2,11 @@
     'use strict';
 
     angular.module('tagcade.unifiedReport')
+        .provider('UR_API_ADMIN_BASE_URL', {
+            $get: function(API_UNIFIED_END_POINT) {
+                return API_UNIFIED_END_POINT + '/admin/v1';
+            }
+        })
         .constant('FILE_TYPE_OPTIONS', [
             {key: 'csv', label: 'CSV'},
             {key: 'excel', label: 'Excel'},

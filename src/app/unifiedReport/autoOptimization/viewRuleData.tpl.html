@@ -1,0 +1,160 @@
+<!--<div class="alert alert-warning" ng-click="showDetailsMissingDates()" ng-if="missingDate.length > 0">-->
+<!--We have detected missing dates in your data. Click on this message for details-->
+<!--</div>-->
+
+<div id="form-date-range-selector" class="panel panel-default">
+    <div class="panel-body">
+        <form name="reportSelectorForm" class="form-inline" role="form" ng-submit="onViewRuleData()" novalidate>
+            <!--date range-->
+            <div class="form-group" ng-if="hasFilterDate()">
+                <label for="inputDateRange">{{ 'DASHBOARD_MODULE.DATE_RANGE' | translate }}</label>
+                <div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input date-range-picker
+                               options="datePickerOpts"
+                               class="form-control date-picker"
+                               type="text"
+                               id="inputDateRange"
+                               ng-model="currentModel.dateRange"
+                               ng-change="onDateApply()"
+                               ng-required="true">
+                    </div>
+                </div>
+            </div>
+
+            <div class="multi-select-class form-group">
+                <div class="form-inline">
+                    <!--segments-->
+                    <div class="form-group">
+                        <label for="metrics" class="control-label mb-5">
+                            {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.RULE_DATA_SEGMENTS' | translate}}
+                        </label>
+                        <div>
+                            <isteven-multi-select id="metrics"
+                                                  max-labels="3"
+                                                  disable-property="disabled"
+                                                  input-model="formData.segmentFields"
+                                                  output-model="currentModel.segmentFields"
+                                                  button-label="label"
+                                                  item-label="label"
+                                                  on-item-click="onChangeSegments(data)"
+                                                  tick-property="ticked">
+                            </isteven-multi-select>
+                        </div>
+                    </div>
+                    <!--segments child-->
+                    <div class="form-group" ng-repeat="segment in currentModel.segmentFields track by $index">
+                        <label class="control-label mb-5">
+                            {{segment.plainName}}
+                        </label>
+                        <div>
+                            <ui-select ng-model="segment.selected" on-select="onChildSegmentSelect(segment, $model)">
+                                <ui-select-match class="min-width-select"
+                                                 placeholder="{{'AUTO_OPTIMIZE_INTEGRATION_MODULE.SELECT' | translate}}">
+                                    {{ $select.selected }}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="item in getFormDataBySegment(segment) | filter:$select.search">
+                                    {{ item }}
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" ng-disabled="disableViewRuleData() || formProcessing">
+                {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.BUTTON_VIEW_DATA' | translate}}
+            </button>
+            <!--BACK_TO_OPTIMIZATION_LIST-->
+            <button ui-sref="^.list" class="btn btn-primary btn-sm pull-right" type="button" style="margin-top: 25px">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.BACK_TO_OPTIMIZATION_LIST' | translate}}
+            </button>
+        </form>
+    </div>
+</div>
+
+<section class="panel panel-default" ng-if="hasData()">
+    <div class="panel-heading">
+        <strong> {{ optimizeRule.name || 'Optimization Rule Detail' }} </strong>
+
+        <div class="button-bar">
+        </div>
+
+        <div class="btn-group btnGrouped" dropdown>
+            <button type="button" class="btn " dropdown-toggle>
+                <span class="glyphicon glyphicon-align-justify" aria-hidden="true">
+
+                </span>
+            </button>
+            <ul class="dropdown-menu pull-right" role="menu">
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="table-responsive table-report-view">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th ng-class="{minWidth100: (types[column.field] == 'date' || types[column.field] == 'datetime')}"
+                        ng-repeat="column in formData.columnsData"
+                        ng-click="sort(column.field)" class="capitalize">
+                        {{ column.label }}
+                        <span class="glyphicon glyphicon-minus"
+                              ng-show="formData.columnSortTypes[column.field] == null">
+                        </span>
+                        <span class="glyphicon glyphicon-chevron-up"
+                              ng-show="formData.columnSortTypes[column.field] == 'asc'">
+                        </span>
+                        <span class="glyphicon glyphicon-chevron-down"
+                              ng-show="formData.columnSortTypes[column.field] == 'desc'">
+                        </span>
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr dir-paginate="ruleData in formData.viewRulePageData | itemsPerPage:tableConfig.itemsPerPage">
+                    <td ng-repeat="column in formData.columnsData">
+                        <span> {{ ruleData[column.field]}} </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <pagination ng-if="showPagination()"
+                        class="pagination"
+                        boundary-links="true"
+                        previous-text="&lsaquo;"
+                        next-text="&rsaquo;"
+                        items-per-page="tableConfig.itemsPerPage"
+                        total-items="tableConfig.totalItems"
+                        ng-model="availableOptions.currentPage"
+                        max-size="tableConfig.maxPages"
+                        ng-change="changePage(availableOptions.currentPage)">
+            </pagination>
+
+            <div class="itemsPerPage" ng-if="tableConfig.totalItems > 10">
+                <label for="inputItemPerPage">Items per page</label>
+                <div class="itemNumber">
+                    <ui-select name="itemPerPage"
+                               id="inputItemPerPage"
+                               ng-model="tableConfig.itemsPerPage"
+                               on-select="selectItemPerPages($item)"
+                               reset-search-input="'false'">
+                        <ui-select-match placeholder="10">{{ $select.selected.label }}</ui-select-match>
+                        <ui-select-choices repeat="itemPerPage.key as itemPerPage in itemsPerPage">
+                            {{ itemPerPage.label }}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

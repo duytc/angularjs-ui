@@ -12,6 +12,8 @@
         'tagcade.unifiedReport.report',
         'tagcade.unifiedReport.importHistory',
         'tagcade.unifiedReport.template',
-        'tagcade.unifiedReport.tag'
+        'tagcade.unifiedReport.tag',
+        'tagcade.unifiedReport.autoOptimization',
+        'tagcade.unifiedReport.autoOptimizeIntegration'
     ]);
 })();

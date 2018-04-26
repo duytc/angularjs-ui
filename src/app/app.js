@@ -1,4 +1,4 @@
-angular.module('tagcade', [
+app = angular.module('tagcade', [
     'tagcade.core',
 
     'tagcade.dashboard',

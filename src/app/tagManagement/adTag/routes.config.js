@@ -59,6 +59,42 @@
                         return DisplayAdSlotManager.one($stateParams.adSlotId).getList('adtags').then(function (adTags) {
                             return adTags.plain();
                         });
+                    },
+
+                    segments: /* @ngInject */ function($stateParams, AutoOptimizeIntegrationManager) {
+                        /* always return all segments. TODO: only return segments related to ad slot */
+                        return [
+                           {
+                               key: "country",
+                               label: "Country"
+                           },
+                           {
+                               key: "domain",
+                               label: "Domain"
+                           }
+                        ];
+
+                        return AutoOptimizeIntegrationManager.one('adslot').one($stateParams.adSlotId).getList('segments')
+                            .then(
+                                function (segments) {
+                                    var refactoredSegments = [];
+                                    angular.forEach(segments, function (segment) {
+                                        if (!segment) {
+                                            return;
+                                        }
+
+                                        refactoredSegments.push({
+                                            key: segment,
+                                            label: segment
+                                        });
+                                    });
+
+                                    return refactoredSegments;
+                                },
+                                function (error) {
+                                    return [];
+                                }
+                            );
                     }
                 },
                 ncyBreadcrumb: {

@@ -18,10 +18,13 @@
             var urlPrefix;
 
             if (Auth.isAuthorized(USER_ROLES.admin)) {
+                console.log('admin');
                 urlPrefix = BASE_USER_URLS.admin;
             } else if (Auth.isAuthorized(USER_ROLES.publisher)) {
+                console.log('publisher');
                 urlPrefix = BASE_USER_URLS.publisher;
             } else if (Auth.isAuthorized(USER_ROLES.subPublisher)) {
+                console.log('subPublisher');
                 urlPrefix = BASE_USER_URLS.subPublisher;
             }
 

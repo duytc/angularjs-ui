@@ -131,6 +131,7 @@
                     .then(
                     function () {
                         changePage(params.page);
+
                         AlertService.replaceAlerts({
                             type: 'success',
                             message: $translate.instant('AD_SOURCE_MODULE.DELETE_SUCCESS')

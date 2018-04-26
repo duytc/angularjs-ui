@@ -49,7 +49,11 @@
                                 <li><a ui-sref="^.^.dataSourceFile.listForDataSource({dataSourceId: item.id })">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.MANAGE_RECEIVED_DATA' | translate }}</a></li>
                                 <li><a ui-sref="^.^.importHistory.listForDataSource({ dataSourceId: item.id })">{{ 'UNIFIED_REPORT_DATA_SET_MODULE.VIEW_DATA_IMPORT_HISTORY' | translate }}</a></li>
                                 <li class="divider"></li>
-                                <li><a ui-sref="^.^.alert.list({dataSourceId: item.id })">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.VIEW_ALERTS' | translate }}</a></li>
+                                <li>
+                                    <a ui-sref="^.^.alert.list({publisher: item.publisher.id, source: 'datasource', id: item.id })">
+                                        {{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.VIEW_ALERTS' | translate }}
+                                    </a>
+                                </li>
                                 <li class="divider"></li>
                                 <li><a ng-click="getUnifiedReportEmail(item)">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.GET_UNIFIED_REPORT_EMAIL' | translate }}</a></li>
                                 <li><a ng-click="getAPIKey(item)">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.GET_API_KEY' | translate }}</a></li>

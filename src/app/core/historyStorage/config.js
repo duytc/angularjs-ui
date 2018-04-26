@@ -34,7 +34,9 @@
                     importHistoryList: 'importHistoryList',
                     template: 'template',
                     tag: 'tag',
-                    IVTPixel: 'IVTPixel'
+                    IVTPixel: 'IVTPixel',
+                    autoOptimization: 'autoOptimization',
+                    autoOptimizeIntegration: 'autoOptimizeIntegration'
             })
         ;
 })();

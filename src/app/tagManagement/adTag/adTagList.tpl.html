@@ -1,33 +1,145 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <span current-page-title></span>
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col col-md-2 col-sm-12 col-xs-10" style="margin-top: 5px">
+                    <span current-page-title></span>
+                </div>
+                <div id="adTagOptions-sm" class="col col-md-10 col-sm-12" style="padding-top: 5px; text-transform: none">
+                    <div style="display: inline-block" class="pull-right">
+                        <!--label show optimized positions-->
+                        <label class="ui-checkbox" ng-if="isAutoOptimize()" style="margin: 0 20px 0 20px;">
+                            <input type="checkbox" ng-checked="enableShowOptimizedPositions" ng-click="showOptimizedPositions()">
+                            <span>{{ 'AD_TAG_MODULE.ENABLE_SHOW_OPTIMIZED_POSITIONS' | translate }}</span>
+                        </label>
 
-        <div class="button-bar">
-            <label class="ui-checkbox">
-                <input type="checkbox" ng-checked="enableDragDrop" ng-disabled="isSubPublisher()" ng-click="enableDragDropAdTag(enableDragDrop)">
-                <span>{{ 'AD_TAG_MODULE.ENABLE_DRAG_DROP' | translate }}</span>
-            </label>
-            <button ng-if="!!adSlot.libType && !isSubPublisher()" ui-sref="^.newForAdSlot({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
-                <span class="glyphicon glyphicon-plus"></span>
-                {{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}
-            </button>
-            <button ng-if="!adSlot.libType && !isSubPublisher()" ui-sref="^.new({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
-                <span class="glyphicon glyphicon-plus"></span>
-                {{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}
-            </button>
-            <button ng-click="backToListAdSlot()" class="btn btn-sm btn-primary" type="button">
-                <span class="glyphicon glyphicon-arrow-left"></span>
-                {{ 'AD_SLOT_MODULE.BACK_TO_AD_SLOT_LIST' | translate }}
-            </button>
-        </div>
-        <div class="btn-group btnGrouped" dropdown>
-            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
-            <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ng-click="enableDragDropAdTag(enableDragDrop)"><span class="fa" ng-class="enableDragDrop ? 'fa-check-square' : 'fa-square'"></span> {{ 'AD_TAG_MODULE.ENABLE_DRAG_DROP' | translate }}</a></li>
-                <li ng-if="!!adSlot.libType && !isSubPublisher()"><a ui-sref="^.newForAdSlot({ adSlotId: adSlot.id, adSlotType: adSlotType })"> {{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}</a></li>
-                <li ng-if="!adSlot.libType && !isSubPublisher()"><a ui-sref="^.new({ adSlotId: adSlot.id })">{{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}</a></li>
-                <li><a ng-click="backToListAdSlot()">{{ 'AD_SLOT_MODULE.BACK_TO_AD_SLOT_LIST' | translate }}</a></li>
-            </ul>
+                        <!--show segment selection-->
+                        <label ng-if="isAutoOptimize() && enableShowOptimizedPositions" class="form-group" style="min-width: 180px; margin: 0 20px 0 20px">
+                            <isteven-multi-select input-model="segments" output-model="selected.segments" button-label="label" item-label="label" tick-property="ticked"></isteven-multi-select>
+                        </label>
+
+                        <!--show country selection if selected country from segments-->
+                        <label ng-if="isShowCountrySelect()" class="form-group" style="margin: 0 20px 0 20px; min-width: 180px;">
+                            <ui-select ng-model="selected.country"
+                                       ng-required="false" close-on-select="true"
+                                       on-select="selectCountry($item)"
+                                       on-select="$item.search = $select.search; $select.search = '';"
+                                       server-error reset-search-input="'false'">
+                                <ui-select-match placeholder="Select a country">{{ $select.selected.name }}
+                                </ui-select-match>
+                                <ui-select-choices group-by="groupEntities" class="capitalize"
+                                                   repeat="country.name as country in countries | filter:$select.search">
+                                    {{ country.name }}
+                                </ui-select-choices>
+                            </ui-select>
+                        </label>
+
+                        <!--show domain input if selected domain from segments-->
+                        <label ng-if="isShowDomainInput()" class="form-group" style="margin: 0 20px 0 20px; min-width: 180px;">
+                            <ui-select name="selectedDomain" ng-model="selected.domain"
+                                       ng-required="false" close-on-select="true"
+                                       on-select="selectDomain($item)"
+                                       ng-required="true" server-error
+                                       reset-search-input="'false'">
+                                <ui-select-match placeholder="Select a domain">{{ $select.selected }}</ui-select-match>
+                                <ui-select-choices repeat="domain in domains"
+                                                   infinite-scroll="getMoreSegmentDomains()"
+                                                   infinite-scroll-container="'#selectedDomain'"
+                                                   id="selectedDomain"
+                                                   infinite-scroll-distance="500"
+                                                   refresh="searchSegmentDomain($select.search)"
+                                                   refresh-delay="500">
+                                    {{ domain }}
+                                </ui-select-choices>
+                            </ui-select>
+                        </label>
+
+                        <!--label enable drag/drop-->
+                        <label class="ui-checkbox" ng-if="!(isSubPublisher() || enableShowOptimizedPositions)">
+                            <input type="checkbox" ng-checked="enableDragDrop" ng-disabled="isSubPublisher() || enableShowOptimizedPositions" ng-click="enableDragDropAdTag(enableDragDrop)">
+                            <span>{{ 'AD_TAG_MODULE.ENABLE_DRAG_DROP' | translate }}</span>
+                        </label>
+
+                        <!--button new ad tag for stand alone-->
+                        <button ng-if="!!adSlot.libType && !isSubPublisher()" ui-sref="^.newForAdSlot({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            {{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}
+                        </button>
+
+                        <!--button new ad tag for not stand alone-->
+                        <button ng-if="!adSlot.libType && !isSubPublisher()" ui-sref="^.new({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            {{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}
+                        </button>
+
+                        <!--button back to list ad slot-->
+                        <button ng-click="backToListAdSlot()" class="btn btn-sm btn-primary" type="button">
+                            <span class="glyphicon glyphicon-arrow-left"></span>
+                            {{ 'AD_SLOT_MODULE.BACK_TO_AD_SLOT_LIST' | translate }}
+                        </button>
+                    </div>
+                </div>
+
+                <!--responsive for mobile screen: change to menu items-->
+                <div class="btn-group btnGrouped col col-xs-2" dropdown style="margin-top: 1px">
+                    <button type="button" class="btn" style="float: right;" dropdown-toggle>
+                        <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right" role="menu" style="min-width: 220px">
+                        <!--label show optimized positions-->
+                        <li ng-if="isAutoOptimize()">
+                            <input type="checkbox" ng-checked="enableShowOptimizedPositions" ng-click="showOptimizedPositions()" style=" margin: 7px 0 0 20px;">
+                            <span>{{ 'AD_TAG_MODULE.ENABLE_SHOW_OPTIMIZED_POSITIONS' | translate }}</span>
+                        </li>
+
+                        <!--show segment selection-->
+                        <li ng-if="isAutoOptimize() && enableShowOptimizedPositions" class="form-group" style="min-width: 180px; margin: 7px 0 0 20px">
+                            <isteven-multi-select input-model="segments" output-model="selected.segments" button-label="label" item-label="label" tick-property="ticked"></isteven-multi-select>
+                        </li>
+
+                        <!--show country selection if selected country from segments-->
+                        <li ng-if="isShowCountrySelect()" class="form-group" style="margin: 7px 0 0 20px; min-width: 180px;">
+                            <ui-select ng-model="selected.country"
+                                       ng-required="false" close-on-select="true"
+                                       on-select="$item.search = $select.search; $select.search = '';"
+                                       server-error reset-search-input="'false'">
+                                <ui-select-match placeholder="Select a country">{{ $select.selected.name }}
+                                </ui-select-match>
+                                <ui-select-choices group-by="groupEntities"
+                                                   repeat="country.name as country in countries | filter:$select.search">
+                                    {{ country.name }}
+                                </ui-select-choices>
+                            </ui-select>
+                        </li>
+
+                        <!--show domain input if selected domain from segments-->
+                        <li ng-if="isShowDomainInput()" class="form-group" style="margin: 7px 0 0 20px; min-width: 180px;">
+                            <ui-select name="selectedDomain" ng-model="selected.domain"
+                                       close-on-select="true"
+                                       on-select="selectDomain($item)"
+                                       ng-required="false" server-error
+                                       reset-search-input="'false'">
+                                <ui-select-match placeholder="Select a domain">{{ $select.selected }}</ui-select-match>
+                                <ui-select-choices repeat="domain in domains">
+                                    {{ domain }}
+                                </ui-select-choices>
+                            </ui-select>
+                        </li>
+
+                        <!--label enable drag/drop-->
+                        <li ng-if="!(isSubPublisher() || enableShowOptimizedPositions)">
+                            <input type="checkbox" ng-checked="enableDragDrop" ng-disabled="isSubPublisher() || enableShowOptimizedPositions" ng-click="enableDragDropAdTag(enableDragDrop)" style=" margin: 7px 0 0 20px;">
+                            <span>{{ 'AD_TAG_MODULE.ENABLE_DRAG_DROP' | translate }}</span>
+                        </li>
+
+                        <li ng-if="!!adSlot.libType && !isSubPublisher()"><a ui-sref="^.newForAdSlot({ adSlotId: adSlot.id, adSlotType: adSlotType })"> {{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}</a></li>
+
+                        <li ng-if="!adSlot.libType && !isSubPublisher()"><a ui-sref="^.new({ adSlotId: adSlot.id })">{{ 'AD_TAG_MODULE.NEW_AD_TAG' | translate }}</a></li>
+
+                        <li><a ng-click="backToListAdSlot()">{{ 'AD_SLOT_MODULE.BACK_TO_AD_SLOT_LIST' | translate }}</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -40,7 +152,8 @@
                 <li class="col-md-3">{{ 'NAME' | translate }}</li>
                 <li class="col-md-2">{{ 'AD_TAG_MODULE.ROTATION_WEIGHT' | translate }}</li>
                 <li class="col-md-2">{{ 'AD_TAG_MODULE.FREQUENCY_CAP' | translate }}</li>
-                <li class="col-md-2">{{ 'AD_TAG_MODULE.STATUS' | translate }}</li>
+                <li class="col-md-1" ng-if="isAutoOptimize()">{{ 'AD_TAG_MODULE.PIN' | translate }}</li>
+                <li class="col-md-1">{{ 'AD_TAG_MODULE.STATUS' | translate }}</li>
             </ul>
             <ul ui-sortable="sortableGroupOptions" ng-model="adTagsGroup">
                 <li class="group-ad-tag" ng-repeat="adTags in adTagsGroup" ng-class="{'moveable': !sortableGroupOptions['disabled']}">
@@ -56,13 +169,14 @@
                                         <li ng-if="!!adSlot.libType && !isSubPublisher()"><a ui-sref="^.editForAdSlot({ id: adTag.id })">{{ 'AD_TAG_MODULE.EDIT_AD_TAG' | translate }}</a></li>
                                         <li ng-if="!isSubPublisher()"><a ng-click="toggleAdTagStatus(adTag)">{{ adTag.active ? ('AD_TAG_MODULE.PAUSE_AD_TAG' | translate) : ('AD_TAG_MODULE.ACTIVATE_AD_TAG' | translate) }}</a></li>
                                         <li ng-if="!isSubPublisher()"><a ng-click="toggleAdTagPassback(adTag)">{{ adTag.passback ? ('AD_TAG_MODULE.UNMARK_AS_PASSBACK' | translate) : ('AD_TAG_MODULE.MARK_AS_PASSBACK' | translate) }}</a></li>
+                                        <li ng-if="!isSubPublisher() && isAutoOptimize() && !enableShowOptimizedPositions"><a ng-click="toggleAdTagPin(adTag)">{{ adTag.pin ? ('AD_TAG_MODULE.UNPIN' | translate) : ('AD_TAG_MODULE.PIN' | translate) }}</a></li>
                                         <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(adTag)">{{ 'AD_TAG_MODULE.DELETE_AD_TAG' | translate }}</a></li>
                                         <li ng-if="!isSubPublisher() && (!adTag.libraryAdTag.visible || (adTag.libraryAdTag.visible && !adSlot.libraryAdSlot.visible && !!adSlot.libraryAdSlot))" class="divider"></li>
                                         <li ng-if="!adTag.libraryAdTag.visible && !isSubPublisher()" ng-click="shareAdTag(adTag)"><a>{{ 'AD_TAG_MODULE.MOVE_TO_LIBRARY' | translate }}</a></li>
                                         <li ng-if="adTag.libraryAdTag.visible && !adSlot.libraryAdSlot.visible && !!adSlot.libraryAdSlot && !isSubPublisher()" ng-click="unLinkAdTag(adTag)"><a>{{ 'AD_TAG_MODULE.UNLINK' | translate }}</a></li>
                                         <!--<li ng-if="adTag.libraryAdTag.visible && !isSubPublisher()"><a  ui-sref="^.^.^.tagLibrary.adTag.edit({ id: adTag.libraryAdTag.id})">{{ 'AD_TAG_MODULE.EDIT_AD_TAG_IN_LIBRARY' | translate }}</a></li>-->
-                                        <li ng-if="adTags.length > 1 && !isSubPublisher()" class="divider"></li>
-                                        <li ng-if="adTags.length > 1 && !isSubPublisher()"><a ng-click="splitFromGroup(adTags, adTag)">{{ 'AD_TAG_MODULE.SPLIT_GROUP' | translate }}</a></li>
+                                        <li ng-if="adTags.length > 1 && !isSubPublisher() && !enableShowOptimizedPositions" class="divider"></li>
+                                        <li ng-if="adTags.length > 1 && !isSubPublisher() && !enableShowOptimizedPositions"><a ng-click="splitFromGroup(adTags, adTag)">{{ 'AD_TAG_MODULE.SPLIT_GROUP' | translate }}</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -83,7 +197,8 @@
                                 </div>
                                 <div ng-show="isSubPublisher()">{{ adTag.frequencyCap }}</div>
                             </div>
-                            <div class="col-md-2"><span class="label" ng-class="adTag.active == 1 ? 'label-success' : (adTag.active == -1 ? 'label-warning' : 'label-danger')">{{ adTag.active == 1 ? 'Active' : (adTag.active == -1 ? 'Auto Paused' : 'Paused') }}</span></div>
+                            <div class="col-md-1" ng-if="isAutoOptimize()"><span class="label" ng-class="adTag.pin == 1 ? 'label-success' : (adTag.pin == 0 ? 'label-warning' : 'label-danger')">{{ adTag.pin == 1 ? 'Yes' : 'No' }}</span></div>
+                            <div class="col-md-1"><span class="label" ng-class="adTag.active == 1 ? 'label-success' : (adTag.active == -1 ? 'label-warning' : 'label-danger')">{{ adTag.active == 1 ? 'Active' : (adTag.active == -1 ? 'Auto Paused' : 'Paused') }}</span></div>
                         </li>
                     </ul>
                 </li>
@@ -92,11 +207,19 @@
         </div>
     </div>
 
-    <div class="callout callout-info ad-tag-drag-help" ng-if="hasAdTags()">
+    <div class="callout callout-info ad-tag-drag-help" ng-if="hasAdTags() && !enableShowOptimizedPositions">
         <p>{{ 'AD_TAG_MODULE.GUIDE_DRAG_DROP_TITLE' | translate }}</p>
         <p>{{ 'AD_TAG_MODULE.GUIDE_DRAG_DROP_GROUP_AD_TAG' | translate }}</p>
         <p>{{ 'AD_TAG_MODULE.GUIDE_DRAG_DROP_AD_TAG' | translate }}</p>
         <p>{{ 'AD_TAG_MODULE.GUIDE_SPLIT_GROUP' | translate }}</p>
+        <p ng-if="isAutoOptimize() && !enableShowOptimizedPositions">{{ 'AD_TAG_MODULE.GUIDE_PIN_AD_TAG' | translate }}</p>
     </div>
-
 </div>
+
+<style>
+    @media only screen and (max-width: 600px) {
+        #adTagOptions-sm {
+            display: none;
+        }
+    }
+</style>

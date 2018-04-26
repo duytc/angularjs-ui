@@ -1,0 +1,52 @@
+<button class="btn btn-success" type="button" ng-click="addJoinBy()" ng-disabled="disabled">
+    <span class="glyphicon glyphicon-plus"></span>
+    Add Join By
+</button>
+
+<div class="expressions-group" ng-repeat="joinItem in joinBy">
+    <div class="form-group select-connect-data-source">
+        <button type="button" class="btn btn-danger btn-close-ur" ng-disabled="joinBy.length == 1 || disabled" ng-click="removeJoinBy($index)">
+            <span class="glyphicon glyphicon-minus "></span>
+        </button>
+    </div>
+
+    <div class="expressions-group select-connect-data-source">
+        <!--<button class="btn btn-success" type="button" ng-click="addJoinField(joinItem.joinFields)">-->
+        <!--<span class="glyphicon glyphicon-plus"></span>-->
+        <!--Add Join Field-->
+        <!--</button>-->
+
+        <div class="form-inline condition" ng-repeat="joinField in joinItem.joinFields">
+            <div class="form-group select-join-field">
+                <ui-select ng-disabled="disabled" name="field" ng-model="joinField.dataSet" ng-required="true" server-error>
+                    <ui-select-match placeholder="Select a data set">{{ $select.selected.name + ' (ID: ' + $select.selected.id + ')'}}</ui-select-match>
+                    <ui-select-choices repeat="dataSet.id as dataSet in getDataSetForJoin(joinField, joinItem.joinFields) | filter:$select.search">
+                        {{ dataSet.name + ' (ID: ' + dataSet.id + ')'}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="form-group select-join-field">
+                <ui-select ng-disabled="disabled" name="field" ng-model="joinField.field" on-select="selectJoinField(joinItem, $index)" ng-required="true" server-error>
+                    <ui-select-match placeholder="Select a field">{{ $select.selected }}</ui-select-match>
+                    <ui-select-choices repeat="dm in joinField.allFields | filter:filterJoinField($index, joinItem.joinFields) | orderBy | filter:$select.search">
+                        {{ dm }}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        <!--<button class="btn btn-danger" ng-disabled="joinItem.joinFields.length == 2" type="button" required ng-click="removeJoinField(joinItem.joinFields, $index)"><span class="glyphicon glyphicon-minus"></span></button>-->
+        </div>
+    </div>
+    <br>
+     <div class="form-group">
+        <label class="col-sm-1" style="padding-top: 10px" for="inputOutputField">Field Name</label>
+         <div class="col-sm-11">
+             <input ng-disabled="disabled" class="form-control" style="height:34px; border:1px solid #ddd;" server-error name="outputField" ng-model="joinItem.outputField" ng-required="true" type="text" id="inputOutputField" placeholder="Output Field">
+         </div>
+    </div>
+    <br>
+    <div class="form-group">
+        <label class="col-sm-1" for="hiddenColumn">Field Visible</label>
+        <input ng-disabled="disabled" style="width: 18px; height: 18px" server-error name="active" type="checkbox" ng-model="joinItem.isVisible" id="hiddenColumn">
+    </div>
+</div>

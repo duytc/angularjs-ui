@@ -1,7 +1,7 @@
 <section id="performance-report-selector" class="panel panel-default">
     <div class="panel-body">
         <form name="alertForm" class="form-inline" role="form" ng-submit="getAlerts()" novalidate>
-            <div class="publisher form-group" ng-if="isAdmin()">
+            <div class="publisher form-group" ng-if="isAdmin">
                 <label>{{ 'PUBLISHER' | translate }}</label>
                 <ui-select name="publisher" ng-model="selectedData.publisherId" on-select="selectPublisher()" ng-required="true" reset-search-input="'false'">
                     <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
@@ -11,22 +11,63 @@
                 </ui-select>
             </div>
 
-            <div class="publisher form-group" ng-if="selectedData.publisherId || !isAdmin()">
+            <!--Sources selection : optimization or data source-->
+            <div class="publisher form-group" ng-if="selectedData.publisherId || !isAdmin">
+                <label>{{ 'UNIFIED_REPORT_ALERT_MODULE.LABEL_ALERT_SOURCE' | translate }}</label>
+                <ui-select name="publisher" ng-model="alertSource" ng-required="true"
+                           on-select="selectAlertSource($item)" reset-search-input="'false'">
+                    <ui-select-match
+                            placeholder="{{ 'UNIFIED_REPORT_ALERT_MODULE.SELECT_ALERT_SOURCE_PLACE_HOLDER' | translate }}">
+                        {{$select.selected.value }}
+                    </ui-select-match>
+                    <ui-select-choices repeat="source in ALERT_SOURCES | filter: $select.search">
+                        {{ source.value}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <!--optimization selection-->
+            <div class="publisher form-group" ng-if="(selectedData.publisherId || !isAdmin) && alertSource.key === 'optimization'">
+                <label>{{ 'UNIFIED_REPORT_ALERT_MODULE.LABEL_ALERT_SOURCE_OPTIMIZATION' | translate }}</label>
+                <ui-select name="publisher" ng-model="alertSourceOptimization" on-select="onSelectOptimization($item)"
+                           ng-required="true" reset-search-input="'false'">
+                    <ui-select-match
+                            placeholder="{{ 'UNIFIED_REPORT_ALERT_MODULE.PLACE_HOLDER_ALERT_SOURCE_OPTIMIZATION' | translate }}">
+                        {{$select.selected.name }}
+                    </ui-select-match>
+                    <ui-select-choices repeat="optimizeIntegration in optimizeIntegrationList | filterOptimizationRule:selectedData.publisherId | filter: $select.search">
+                        {{ optimizeIntegration.name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <!--data source-->
+            <div class="publisher form-group"
+                 ng-if="(selectedData.publisherId || !isAdmin) && alertSource.key === 'datasource'">
                 <label>{{ 'DATA_SOURCE' | translate }}</label>
-                <ui-select name="publisher" ng-model="selectedData.dataSource" ng-required="true" on-select="selectDataSource()" reset-search-input="'false'">
-                    <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.SELECT_A_DATA_SOURCE' | translate }}">{{ $select.selected.name + ($select.selected.id ? ' (ID: '+ $select.selected.id +')' : '') }}</ui-select-match>
-                    <ui-select-choices group-by="groupEntities" repeat="dataSource.id as dataSource in dataSources | selectedPublisher:selectedData.publisherId | filter: $select.search">
+                <ui-select name="publisher" ng-model="selectedData.dataSource" ng-required="true"
+                           on-select="selectDataSource()" reset-search-input="'false'">
+                    <ui-select-match
+                            placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.SELECT_A_DATA_SOURCE' | translate }}">{{
+                        $select.selected.name + ($select.selected.id ? ' (ID: '+ $select.selected.id +')' : '') }}
+                    </ui-select-match>
+                    <ui-select-choices group-by="groupEntities"
+                                       repeat="dataSource.id as dataSource in dataSources | filterByPublisher:selectedData.publisherId | filter: $select.search">
                         {{ dataSource.name + (dataSource.id ? ' (ID: '+ dataSource.id +')' : '') }}
                     </ui-select-choices>
                 </ui-select>
             </div>
 
+            <!--Types-->
             <div class="publisher form-group select-breakdown">
                 <label>Type</label>
-                <ui-select name="publisher" ng-model="selectedData.labelType" ng-required="true" reset-search-input="'false'">
-                    <ui-select-match placeholder="Select a type">{{ selectedData.labelType }}</ui-select-match>
-                    <ui-select-choices group-by="groupEntities" repeat="type.key as type in alertTypes">
-                        <label stop-event class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="selectedData.type[type.key]" ng-click="clickType(type.key, selectedData.type[type.key])"><span> {{ type.label }}</span></label>
+                <ui-select name="publisher" ng-model="selectedData.labelType" ng-required="true"
+                           reset-search-input="'false'">
+                    <ui-select-match placeholder="Select types">{{ selectedData.labelType }}</ui-select-match>
+                    <ui-select-choices group-by="groupEntities" repeat="type.key as type in alertTypes | alertType:alertSource">
+                        <label stop-event class="ui-checkbox">
+                            <input server-error name="active" type="checkbox"
+                                   ng-model="selectedData.type[type.key]"
+                                   ng-click="clickType(type.key, selectedData.type[type.key])"><span> {{ type.label }}</span></label>
                     </ui-select-choices>
                 </ui-select>
             </div>
@@ -50,9 +91,13 @@
 
                 <div class="btn-group pull-left check-toggle-dropdown" dropdown>
                     <button type="button" class="btn" ng-disabled="alerts.length == 0" dropdown-toggle>
-                        <label stop-event class="ui-checkbox check-toggle-alert"><input name="checkbox1" type="checkbox" value="option1" ng-model="checkAllItem" ng-click="selectAll()"><span></span></label>
+                        <label stop-event class="ui-checkbox check-toggle-alert">
+                            <input name="checkbox1" type="checkbox" value="option1" ng-model="checkAllItemInOnePage" ng-click="selectAll()">
+                            <span> </span>
+                        </label>
                         <span class="caret"></span>
                     </button>
+
                     <ul class="dropdown-menu pull-right-dropdown" role="menu">
                         <li ng-click="selectAllAlertInPages()"><a>All Pages</a></li>
                         <li ng-click="noneSelect()"><a>None</a></li>
@@ -72,13 +117,20 @@
                     </ul>
 
                 </div>
+                <div ng-if="selectedAlert && selectedAlert.length > 0">
+                    <div ng-if="!checkAllItem" class="alert alert-warning alert-number">
+                        <strong>{{ selectedAlert.length }}</strong>
+                        <span ng-if="selectedAlert.length > 1">alerts</span>
+                        <span ng-if="selectedAlert.length == 1">alert</span>
+                        on this page are selected.
+                    </div>
 
-                <div ng-if="(selectedAlert.length > 0) && !checkAllItem" class="alert alert-warning alert-number">
-                    All <strong>{{ selectedAlert.length }}</strong> alerts on this page are selected.
-                </div>
-
-                <div ng-if="checkAllItem" class="alert alert-warning alert-number">
-                    All <strong>{{ tableConfig.totalItems }}</strong> alerts on this page are selected.
+                    <div ng-if="checkAllItem" class="alert alert-warning alert-number">
+                        <strong>{{ tableConfig.totalItems }}</strong>
+                        <span ng-if="tableConfig.totalItems > 1">alerts</span>
+                        <span ng-if="tableConfig.totalItems == 1">alert</span>
+                        on this page are selected.
+                    </div>
                 </div>
 
             </div>
@@ -86,15 +138,33 @@
             <table class="table" at-action-sortable-query at-sortable-query at-table at-paginated at-list="alerts" at-config="tableConfig">
                 <thead>
                 <tr>
-                    <th ng-show="isAdmin()" at-attribute="publisher.company">{{ 'PUBLISHER' | translate }}</th>
+                    <th ng-show="isAdmin" at-attribute="publisher.company">{{ 'PUBLISHER' | translate }}</th>
                 </thead>
                 <tbody>
                 <tr ng-class="{'mail-unread': !item.isRead}" ng-init="setItemForPager(item)">
-                    <td at-title="#" at-attribute="id" at-initial-sorting="desc"><label class="ui-checkbox"><input type="checkbox" ng-checked="checkedAlert(item)" ng-click="selectEntity(item)"><span></span></label></td>
+                    <!--Check box-->
+                    <td><label class="ui-checkbox"><input type="checkbox" ng-checked="checkedAlert(item)" ng-click="selectEntity(item)"><span></span></label></td>
+                    <!--Id-->
+                    <td at-title="#" at-attribute="id" at-initial-sorting="desc">{{item.id}}</td>
+                    <!--Actions-->
                     <td at-title="{{ 'ACTIONS' | translate }}" at-attribute="action">
                         <div class="btn-group" dropdown>
                             <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
                             <ul class="dropdown-menu pull-right-dropdown" role="menu">
+                                <!--actions-->
+                                <li ng-if="item.type == 'actionRequired' && (item.optimizationIntegration.active == -1 || item.optimizationIntegration.active == 0)">
+                                    <a ng-click="confirmChange(item, 'ACTIVE_OPTIMIZATION_INTEGRATION')">
+                                        <span>{{ 'UNIFIED_REPORT_ALERT_MODULE.APPLY_CHANGE_OPTIMIZATION' | translate }}</span>
+                                    </a>
+                                </li>
+                                <li ng-if="item.type == 'actionRequired' && item.optimizationIntegration.active == 1">
+                                    <a ng-click="confirmChange(item, 'REJECT_OPTIMIZATION_INTEGRATION')">
+                                        <span>{{ 'UNIFIED_REPORT_ALERT_MODULE.REJECT_CHANGES_OPTIMIZATION' | translate }}</span>
+                                    </a>
+                                </li>
+                                <li ng-if="item.type == 'actionRequired'"><a ui-sref="^.^.autoOptimizeIntegration.list({optimizationRuleId: item.optimizationIntegration.optimizationRule.id})">{{'AUTO_OPTIMIZE_INTEGRATION_MODULE.VIEW_ASSIGN_OPTIMIZATION_RULE' | translate}}</a></li>
+                                <li class="divider" ng-if="item.type == 'actionRequired'"></li>
+                                <!--view detail-->
                                 <li ng-if="!item.viewDetail"><a ng-click="viewDetail(item)">{{ 'UNIFIED_REPORT_ALERT_MODULE.VIEW_DETAIL' | translate }}</a></li>
 
                                 <!--<li ng-if="item.isRead == false" class="divider"></li>-->
@@ -108,13 +178,32 @@
                             </ul>
                         </div>
                     </td>
-                    <td at-title="{{  'UNIFIED_REPORT_ALERT_MODULE.SUMMARY' | translate }}" at-attribute="message.message">
+                    <!--Summary-->
+                    <td at-title="{{  'UNIFIED_REPORT_ALERT_MODULE.SUMMARY' | translate }}" at-attribute="message.message" class="break-summary-mobile">
                         {{ getTitleAlert(item) }}
                     </td>
+                    <!--Alert types-->
                     <td at-title="Type" at-sortable at-attribute="type">
-                        <span class="label" ng-class="item.type == 'info' ? 'label-info' : (item.type == 'warning' ? 'label-warning' : 'label-danger')">{{ item.type }}</span>
+                        <span class="label" ng-if="item.type == 'info'" ng-class="'label-info'">{{ item.type }}</span>
+                        <span class="label" ng-if="item.type == 'error'" ng-class="'label-danger'">{{ item.type }}</span>
+                        <span class="label" ng-if="item.type == 'warning'" ng-class="'label-warning'">{{ item.type }}</span>
+                        <span class="label" ng-if="item.type == 'actionRequired'" ng-class="'label-success'">action required</span>
                     </td>
-                    <td ng-show="isAdmin()" at-implicit at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
+                    <!--Action Status-->
+                    <td at-title="{{'UNIFIED_REPORT_ALERT_MODULE.ACTION_STATUS' | translate }}">
+                        <span ng-if="item.type == 'actionRequired' && item.optimizationIntegration.active == 1">
+                            {{'UNIFIED_REPORT_ALERT_MODULE.ACTION_STATUS_APPLIED' | translate }}
+                        </span>
+                        <span ng-if="item.type == 'actionRequired' && item.optimizationIntegration.active == -1">
+                            {{'UNIFIED_REPORT_ALERT_MODULE.ACTION_STATUS_REJECTED' | translate }}
+                        </span>
+                        <span ng-if="item.type == 'actionRequired' && item.optimizationIntegration.active == 0">
+                            {{'UNIFIED_REPORT_ALERT_MODULE.ACTION_STATUS_NO_ACTION' | translate }}
+                        </span>
+                    </td>
+                    <!--Publisher-->
+                    <td ng-show="isAdmin" at-implicit at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
+                    <!--Created Date-->
                     <td at-title="{{  'UNIFIED_REPORT_ALERT_MODULE.DATE_CREATED' | translate }}" at-sortable at-attribute="createdDate">
                         {{ item.createdDate | date:'MMM d, y H:mm:ss' }}
                     </td>
@@ -122,12 +211,16 @@
                 </tbody>
             </table>
 
-           <!-- <at-pagination at-pagination-query ng-if="showPagination()" at-list="alerts" at-config="tableConfig"></at-pagination>-->
+            <!-- <at-pagination at-pagination-query ng-if="showPagination()" at-list="alerts" at-config="tableConfig"></at-pagination>-->
 
             <div style="float:left; display: flex; margin-right: 20px; margin-top: 5px">
-                <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"> </pagination>
+                <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;"
+                            next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage"
+                            total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage"
+                            max-size="tableConfig.maxPages"
+                            ng-change="changePage(availableOptions.currentPage)"></pagination>
 
-                <div style="margin-top: 25px;">
+                <div class="margin-top-item-per-page" ng-if="alerts && alerts.length > 0">
                     <label class="items-per-page" for="selectItemsPerPage"> Items Per Page </label>
                     <select id="selectItemsPerPage" ng-change="changeItemsPerPage()" ng-model="tableConfig.itemsPerPage">
                         <option ng-repeat="option in itemsPerPageList" value="{{option}}">{{option}}</option>
@@ -135,8 +228,6 @@
 
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>

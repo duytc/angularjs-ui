@@ -904,7 +904,6 @@
                                 }
                             }
                         });
-
                         return fieldsTransForm;
                     }
 
