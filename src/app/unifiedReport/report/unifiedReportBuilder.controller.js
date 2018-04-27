@@ -82,8 +82,6 @@
             //selectedOption: {key:'aggregate',value:"Sum"} //This sets the default value of the select in the ui
         };
 
-        console.log($scope.aggregateAndAverage);
-
         if(!$scope.reportBuilder.masterReportView && $scope.subView) {
             $scope.reportBuilder.masterReportView = $scope.subView ? reportView.id : null;
             $scope.reportBuilder.largeReport = false;
@@ -689,8 +687,6 @@
                     }
                 });
             }
-            console.log('phuongdinh');
-            console.log($scope.summaryFieldTotalObject);
         }
 
         function _fieldsHaveDateType() {

@@ -37,6 +37,9 @@
                     scope.currencies = [{
                         label: '$',
                         key: '$'
+                    }, {
+                        label: '€',
+                        key: '€'
                     }];
 
                     scope.separatorType = [
