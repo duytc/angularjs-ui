@@ -47,7 +47,7 @@
         if (!$scope.hasAdTags()) {
             AlertService.replaceAlerts({
                 type: 'warning',
-                message: $translate.instant('AD_TAG_MODULE.CURRENTLY_NO_AD_TAG')
+                message: $translate.instant('AD_TAG_MODULE.CURRENTLY_NO_AD_TAG_IN_THIS_AD_NETWORK')
             });
         }
 

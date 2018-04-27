@@ -782,6 +782,8 @@
                 "REORDERED_AD_TAG_SUCCESS": "The ad tags have been reordered",
                 "CONFIRM_DELETE_AD_TAG": "Are you sure you want to delete this ad tag?",
                 "CURRENTLY_NO_AD_TAG": "There is currently no ad tags in this ad slot",
+                "CURRENTLY_NO_AD_TAG_IN_THIS_AD_SLOT": "There is currently no ad tags in this ad slot",
+                "CURRENTLY_NO_AD_TAG_IN_THIS_AD_NETWORK": "There is currently no ad tags in this ad net work",
                 "MOVED_TO_LIBRARY_SUCCESS": "The ad tag has been moved to standalone",
                 "UNLINK_SUCCESS": "The ad tag has been unlinked",
                 "UNLINK_FAIL": "An error occurred. The ad tag could not be unlinked",
