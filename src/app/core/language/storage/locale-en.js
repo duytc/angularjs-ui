@@ -67,6 +67,7 @@
             "COPY_TO_CLIPBOARD": "Copy to Clipboard",
             "REFRESH": 'Refresh',
             "SEARCH": 'Search',
+            "MESSAGE_500": 'An error occurred on server.',
 
             "EVENT_LISTENER": {
                 "LOGIN_FAIL": "Login failed, did you provide an invalid username and/or password?",

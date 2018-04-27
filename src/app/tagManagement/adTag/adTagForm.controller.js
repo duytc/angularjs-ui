@@ -555,7 +555,12 @@
             saveAdTag
                 .catch(
                     function (response) {
-                        if (!response.data.errors) {
+                        if(response.status === 500){
+                            AlertService.replaceAlerts({
+                                type: 'error',
+                                message: $translate.instant('MESSAGE_500')
+                            });
+                        }else if (!response.data.errors) {
                             AlertService.replaceAlerts({
                                 type: 'error',
                                 message: response.data.message
