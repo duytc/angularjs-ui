@@ -246,9 +246,13 @@
 
             params.searches = $scope.search;
 
-            dataService.makeHttpGetRequest('/v1/reportviews/:reportView/sharedReports', params, API_UNIFIED_PUBLIC_END_POINT)
+            dataService.makeHttpGetRequest('/v1/reportviews/:reportView/downloadSharedReports', params, API_UNIFIED_PUBLIC_END_POINT)
                 .then(function (reportData) {
-                    exportExcelService.exportExcel(reportData.reports, $scope.columnReportDetailForExportExcel, $scope.titleReportDetailForExportExcel, getExportExcelFileName());
+                   // exportExcelService.exportExcel(reportData.reports, $scope.columnReportDetailForExportExcel, $scope.titleReportDetailForExportExcel, getExportExcelFileName());
+                    var blob = new Blob([reportData], {type: "text/plain;charset=utf-8"});
+                    var reportName = 'report-detail';
+
+                    return saveAs(blob, [reportName + '.csv']);
                 })
         }
 
