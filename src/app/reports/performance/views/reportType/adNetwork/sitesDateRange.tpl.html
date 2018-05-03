@@ -24,6 +24,8 @@
                         <th at-attribute="blankImpressions" ng-show="isAdmin">{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}</th>
                         <th at-attribute="voidImpressions" ng-show="isAdmin">{{ 'REPORT.VOID_IMPRESSIONS' | translate }}</th>
                         <th at-attribute="fillRate" ng-show="isAdmin">{{ 'REPORT.FILL_RATE' | translate }}</th>
+                        <!--Note: Admin does not need to view est Revenue-->
+                        <th ng-show="!isAdmin" at-attribute="estRevenue">{{ 'REPORT.EST_REVENUE' | translate }}</th>
                     </tr>
                 </thead>
 
@@ -80,7 +82,7 @@
                         <td ng-show="isAdmin" at-title="{{ 'REPORT.VOID_IMPRESSIONS' | translate }}" at-attribute="voidImpressions" at-sortable>
                             {{ item.voidImpressions | number }}
                         </td>
-                        <td at-title="{{ 'REPORT.EST_REVENUE' | translate }}" at-attribute="estRevenue" at-sortable>
+                        <td ng-show="!isAdmin" at-title="{{ 'REPORT.EST_REVENUE' | translate }}" at-attribute="estRevenue" at-sortable>
                             {{ item.estRevenue | currency }}
                         </td>
                     </tr>

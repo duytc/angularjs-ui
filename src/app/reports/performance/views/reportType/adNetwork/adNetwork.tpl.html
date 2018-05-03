@@ -4,16 +4,36 @@
     <div class="panel panel-default daily-reports">
         <div class="panel-heading">{{ 'REPORT.DAILY_BREAKDOWN' | translate }}
             <div class="button-bar hidden-xs">
-                <export-excel ng-if="isAdmin" data="reports" fields="['date', 'name', 'totalOpportunities', 'adOpportunities', 'firstOpportunities', 'passbacks', 'inBannerImpressions', 'networkOpportunityFillRate', 'blankImpressions', 'clicks', 'fillRate', 'voidImpressions', 'estRevenue']" header="['Date', 'Demand Partner', 'Network Ops', 'Impression Ops', 'First Ops', 'Passbacks', 'In Banner Impressions', 'Network Op Fill Rate', 'Blank Impressions', 'Clicks', 'Fill Rate', 'Void Impressions', 'Est. Revenue']" file-name="getExportExcelFileName"></export-excel>
-                <export-excel ng-if="!isAdmin" data="reports" fields="['date', 'name', 'totalOpportunities', 'adOpportunities', 'firstOpportunities', 'passbacks', 'inBannerImpressions', 'networkOpportunityFillRate', 'clicks', 'fillRate', 'estRevenue']" header="['Date', 'Demand Partner', 'Network Ops', 'Impression Ops', 'First Ops', 'Passbacks', 'In Banner Impressions', 'Network Op Fill Rate', 'Clicks', 'Fill Rate', 'Est. Revenue']" file-name="getExportExcelFileName"></export-excel>
+                <export-excel ng-if="isAdmin"
+                              data="reports"
+                              fields="['date', 'name', 'totalOpportunities', 'adOpportunities', 'firstOpportunities', 'passbacks', 'inBannerImpressions', 'networkOpportunityFillRate', 'blankImpressions', 'clicks', 'fillRate', 'voidImpressions']"
+                              header="['Date', 'Demand Partner', 'Network Ops', 'Impression Ops', 'First Ops', 'Passbacks', 'In Banner Impressions', 'Network Op Fill Rate', 'Blank Impressions', 'Clicks', 'Fill Rate', 'Void Impressions']"
+                              file-name="getExportExcelFileName">
+                </export-excel>
+                <export-excel ng-if="!isAdmin"
+                              data="reports"
+                              fields="['date', 'name', 'totalOpportunities', 'adOpportunities', 'firstOpportunities', 'passbacks', 'inBannerImpressions', 'networkOpportunityFillRate', 'clicks', 'fillRate', 'estRevenue']"
+                              header="['Date', 'Demand Partner', 'Network Ops', 'Impression Ops', 'First Ops', 'Passbacks', 'In Banner Impressions', 'Network Op Fill Rate', 'Clicks', 'Fill Rate', 'Est. Revenue']"
+                              file-name="getExportExcelFileName">
+                </export-excel>
             </div>
 
             <div class="btn-group btnGrouped" dropdown>
                 <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><a>
-                        <export-excel ng-if="isAdmin" css-class="''" fields="['date', 'name', 'totalOpportunities', 'adOpportunities', 'firstOpportunities', 'passbacks', 'inBannerImpressions', 'networkOpportunityFillRate', 'blankImpressions',  'clicks', 'fillRate', 'voidImpressions', 'estRevenue']" header="['Date', 'Demand Partner', 'Network Ops', 'Impression Ops', 'First Ops', 'Passbacks', 'In Banner Impressions', 'Network Op Fill Rate', 'Blank Impressions', 'Clicks', 'Fill Rate', 'Void Impressions', 'Est. Revenue']" file-name="getExportExcelFileName"></export-excel>
-                        <export-excel ng-if="!isAdmin" css-class="''" fields="['date', 'name', 'totalOpportunities', 'adOpportunities', 'firstOpportunities', 'passbacks', 'inBannerImpressions', 'networkOpportunityFillRate',  'clicks', 'fillRate', 'estRevenue']" header="['Date', 'Demand Partner', 'Network Ops', 'Impression Ops', 'First Ops', 'Passbacks', 'In Banner Impressions', 'Network Op Fill Rate', 'Clicks', 'Fill Rate', 'Est. Revenue']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel ng-if="isAdmin"
+                                      data="reports"
+                                      fields="['date', 'name', 'totalOpportunities', 'adOpportunities', 'firstOpportunities', 'passbacks', 'inBannerImpressions', 'networkOpportunityFillRate', 'blankImpressions', 'clicks', 'fillRate', 'voidImpressions']"
+                                      header="['Date', 'Demand Partner', 'Network Ops', 'Impression Ops', 'First Ops', 'Passbacks', 'In Banner Impressions', 'Network Op Fill Rate', 'Blank Impressions', 'Clicks', 'Fill Rate', 'Void Impressions']"
+                                      file-name="getExportExcelFileName">
+                        </export-excel>
+                        <export-excel ng-if="!isAdmin"
+                                      data="reports"
+                                      fields="['date', 'name', 'totalOpportunities', 'adOpportunities', 'firstOpportunities', 'passbacks', 'inBannerImpressions', 'networkOpportunityFillRate', 'clicks', 'fillRate', 'estRevenue']"
+                                      header="['Date', 'Demand Partner', 'Network Ops', 'Impression Ops', 'First Ops', 'Passbacks', 'In Banner Impressions', 'Network Op Fill Rate', 'Clicks', 'Fill Rate', 'Est. Revenue']"
+                                      file-name="getExportExcelFileName">
+                        </export-excel>
                     </a></li>
                 </ul>
             </div>
@@ -25,6 +45,7 @@
                 <tr>
                     <th at-attribute="blankImpressions" ng-show="isAdmin">{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}</th>
                     <th at-attribute="voidImpressions" ng-show="isAdmin">{{ 'REPORT.VOID_IMPRESSIONS' | translate }}</th>
+                    <th ng-show="!isAdmin" at-attribute="estRevenue">{{ 'REPORT.EST_REVENUE' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -75,7 +96,7 @@
                     <td ng-show="isAdmin" at-title="{{ 'REPORT.VOID_IMPRESSIONS' | translate }}" at-attribute="voidImpressions" at-sortable>
                         {{ item.voidImpressions | number }}
                     </td>
-                    <td at-title="{{ 'REPORT.EST_REVENUE' | translate }}" at-attribute="estRevenue" at-sortable>
+                    <td ng-show="!isAdmin" at-title="{{ 'REPORT.EST_REVENUE' | translate }}" at-attribute="estRevenue" at-sortable>
                         {{ item.estRevenue | currency }}
                     </td>
                 </tr>

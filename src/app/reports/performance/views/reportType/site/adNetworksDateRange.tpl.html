@@ -24,6 +24,10 @@
                     <th at-attribute="blankImpressions" ng-show="isAdmin">{{ 'REPORT.BLANK_IMPRESSIONS' | translate }}</th>
                     <th at-attribute="voidImpressions" ng-show="isAdmin">{{ 'REPORT.VOID_IMPRESSIONS' | translate }}</th>
                     <th at-attribute="fillRate" ng-show="isAdmin">{{ 'REPORT.FILL_RATE' | translate }}</th>
+
+                    <th ng-show="!isAdmin" at-attribute="estRevenue">{{ 'REPORT.EST_REVENUE' | translate }}</th>
+                    <th ng-show="!isAdmin" at-attribute="supplyCost" >{{ 'REPORT.SUPPLY_COST' | translate }}</th>
+                    <th ng-show="!isAdmin" at-attribute="estProfit" >{{ 'REPORT.EST_PROFIT' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -84,13 +88,13 @@
                     <td ng-show="isAdmin" at-title="{{ 'REPORT.VOID_IMPRESSIONS' | translate }}" at-attribute="voidImpressions" at-sortable>
                         {{ item.voidImpressions | number }}
                     </td>
-                    <td at-title="{{ 'REPORT.EST_REVENUE' | translate }}" at-attribute="estRevenue" at-sortable>
+                    <td ng-show="!isAdmin" at-title="{{ 'REPORT.EST_REVENUE' | translate }}" at-attribute="estRevenue" at-sortable>
                         {{ item.estRevenue | currency }}
                     </td>
-                    <td at-title="{{ 'REPORT.SUPPLY_COST' | translate }}" at-attribute="supplyCost" at-sortable>
+                    <td ng-show="!isAdmin" at-title="{{ 'REPORT.SUPPLY_COST' | translate }}" at-attribute="supplyCost" at-sortable>
                         {{ item.supplyCost | currency }}
                     </td>
-                    <td at-title="{{ 'REPORT.EST_PROFIT' | translate }}" at-attribute="estProfit" at-sortable>
+                    <td ng-show="!isAdmin" at-title="{{ 'REPORT.EST_PROFIT' | translate }}" at-attribute="estProfit" at-sortable>
                         {{ item.estProfit | currency }}
                     </td>
                 </tr>

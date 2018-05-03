@@ -406,22 +406,46 @@
         function getExportedFieldsForSiteAdNetwork(customFields) {
             var commonConfigFields = REPORT_SETTINGS.default.view.report.performance['siteAdNetwork'];
 
+            var filteredCommonConfigFields = [];
+            angular.forEach(commonConfigFields, function (config) {
+                if ($scope.isAdmin) {
+                    if (config.hasOwnProperty('isAdminView') && config.isAdminView) {
+                        filteredCommonConfigFields.push(config);
+                    }
+                } else {
+                    filteredCommonConfigFields.push(config);
+                }
+            });
+
+            console.log('getExportedFieldsForSiteAdNetwork',filteredCommonConfigFields);
+
             if (!angular.isArray(customFields)) {
                 return [];
             }
 
-            return _addCommonConfigFields(customFields, commonConfigFields);
+            return _addCommonConfigFields(customFields, filteredCommonConfigFields);
         }
 
         function getExportedFieldsForAdNetworkSite(customFields) {
 
             var commonConfigFields = REPORT_SETTINGS.default.view.report.performance['adNetworkSite'];
 
+            var filteredCommonConfigFields = [];
+            angular.forEach(commonConfigFields, function (config) {
+                if ($scope.isAdmin) {
+                    if (config.hasOwnProperty('isAdminView') && config.isAdminView) {
+                        filteredCommonConfigFields.push(config);
+                    }
+                } else {
+                    filteredCommonConfigFields.push(config);
+                }
+            });
+
             if (!angular.isArray(customFields)) {
                 return [];
             }
 
-            return _addCommonConfigFields(customFields, commonConfigFields);
+            return _addCommonConfigFields(customFields, filteredCommonConfigFields);
         }
 
         function _addCommonConfigFields(customFields, commonConfigFields) {

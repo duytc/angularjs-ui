@@ -76,7 +76,8 @@
                                 {
                                     key: 'estRevenue',
                                     label: 'Est. Revenue',
-                                    show: true
+                                    show: true,
+                                    hideForAdmin: true
                                 }
                             ],
                             siteAdNetwork : [
@@ -150,19 +151,19 @@
                                     key: 'estRevenue',
                                     label: 'Est. Revenue',
                                     isPublisherView: true,
-                                    isAdminView: true
+                                    isAdminView: false
                                 },
                                 {
                                     key: 'supplyCost',
                                     label: 'Supply Cost',
                                     isPublisherView: true,
-                                    isAdminView: true
+                                    isAdminView: false
                                 },
                                 {
                                     key: 'estProfit',
                                     label: 'Est Profit',
                                     isPublisherView: true,
-                                    isAdminView: true
+                                    isAdminView: false
                                 }
                             ],
                             adNetworkSite : [
@@ -236,7 +237,7 @@
                                     key: 'estRevenue',
                                     label: 'Est. Revenue',
                                     isPublisherView: true,
-                                    isAdminView: true
+                                    isAdminView: false
                                 }
                             ]
                         },

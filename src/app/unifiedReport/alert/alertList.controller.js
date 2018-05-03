@@ -530,7 +530,6 @@
                         }
                     }
                 );
-
         }
 
         function markAsRead(alert, hideAlert, needGetAlerts) {
