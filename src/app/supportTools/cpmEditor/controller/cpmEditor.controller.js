@@ -149,7 +149,7 @@
         }
 
         function submit() {
-            console.log($scope.selectedData);
+            //console.log($scope.selectedData);
 
             var Manager = null;
 

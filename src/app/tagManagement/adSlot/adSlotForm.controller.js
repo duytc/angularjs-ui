@@ -81,8 +81,6 @@
                 maximumRefreshTimes: null
             };
 
-        console.log($scope.adSlot);
-
         $scope.adSlot.hbBidPrice = $scope.isNew ? null : adSlot.hbBidPrice;
         $scope.adSlot.hbBidPriceClone = $scope.isNew ? null : _convertHeaderBiddingPriceToString(adSlot.hbBidPrice);
         $scope.adSlot.buyPrice = $scope.isNew ? null : NumberConvertUtil.convertPriceToString(adSlot.libraryAdSlot.buyPrice);

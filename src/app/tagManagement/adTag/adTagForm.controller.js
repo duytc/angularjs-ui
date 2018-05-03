@@ -26,7 +26,7 @@
         }
 
         $scope.isNew = adTag === null;
-        console.log('adTag: ' + adTag)
+        //console.log('adTag: ' + adTag)
 
         $scope.formProcessing = false;
         $scope.hasMultipleDeployAdSlot = false;

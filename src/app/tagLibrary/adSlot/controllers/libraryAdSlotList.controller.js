@@ -10,7 +10,7 @@
         $scope.itemsPerPageList = ITEMS_PER_PAGE;
         $scope.adSlots = adSlots.records;
 
-        console.log('Ad slots:', $scope.adSlots);
+        //console.log('Ad slots:', $scope.adSlots);
         var params = {
             page: 1
         };
