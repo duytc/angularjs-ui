@@ -57,15 +57,16 @@
                         <span class="pull-right">{{ reportGroup.fillRate | percentage }}</span>
                     </li>
 
-                    <li>
+                    <!--Note: These fields does not need to show for admin-->
+                    <li ng-show="!isAdmin">
                         <label>{{ 'REPORT.EST_REVENUE' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.estRevenue | currency }}</span>
                     </li>
-                    <li ng-if="exist(reportGroup.supplyCost)">
+                    <li ng-if="exist(reportGroup.supplyCost)" ng-show="!isAdmin">
                         <label>{{ 'REPORT.SUPPLY_COST' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.supplyCost | currency }}</span>
                     </li>
-                    <li  ng-if="exist(reportGroup.estProfit)">
+                    <li  ng-if="exist(reportGroup.estProfit)" ng-show="!isAdmin">
                         <label>{{ 'REPORT.EST_PROFIT' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.estProfit | currency }}</span>
                     </li>
@@ -131,15 +132,16 @@
                         <span class="pull-right">{{ reportGroup.averageFillRate | percentage }}</span>
                     </li>
 
-                    <li>
+                    <!--Note: These fields does not need to show for admin-->
+                    <li ng-show="!isAdmin" >
                         <label>{{ 'REPORT.EST_REVENUE' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageEstRevenue | currency }}</span>
                     </li>
-                    <li ng-if="exist(reportGroup.averageSupplyCost)">
+                    <li ng-if="exist(reportGroup.averageSupplyCost)" ng-show="!isAdmin">
                         <label>{{ 'REPORT.SUPPLY_COST' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageSupplyCost | currency }}</span>
                     </li>
-                    <li ng-if="exist(reportGroup.averageEstProfit)">
+                    <li ng-if="exist(reportGroup.averageEstProfit)" ng-show="!isAdmin">
                         <label>{{ 'REPORT.EST_PROFIT' | translate }}</label>
                         <span class="pull-right">{{ reportGroup.averageEstProfit | currency }}</span>
                     </li>
