@@ -36,7 +36,7 @@
         </div>
 
         <!--Display-->
-        <table class="table no-border" ng-if="isShowForDisplayReport() && overviewData.data">
+        <table class="table no-border" ng-if="hasDisplayOverviewTable() || hasDisplayComparisonTable()">
             <th class="th-no-border fixed-th-width"><span style="visibility: hidden">.</span></th>
             <th class="text-right th-no-border fixed-th-width">{{'NEW_DASHBOARD.YESTERDAY' | translate}}</th>
 
@@ -155,64 +155,162 @@
         </table>
 
         <!--Video-->
-        <table class="table no-border" ng-if="isShowForVideoReport() && overviewData.data">
-            <th class="th-no-border"><span style="visibility: hidden">.</span></th>
-            <th class="text-right th-no-border"><span style="visibility: hidden">.</span></th>
+        <table class="table no-border" ng-if="hasVideoOverviewTable() || hasVideoComparisonTable()">
+            <th class="th-no-border fixed-th-width"><span style="visibility: hidden">.</span></th>
+            <th class="text-right th-no-border fixed-th-width">{{'NEW_DASHBOARD.YESTERDAY' | translate}}</th>
 
+            <th class="text-right th-no-border fixed-th-width">
+                <span ng-if="compareTypeData.compareType !== 'custom'">Current</span>
+                <!--Current-->
+                <div class="input-group pull-right fixed-th-width" ng-if="compareTypeData.compareType === 'custom'">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input date-range-picker
+                           options="datePickerOpts"
+                           class="input-sm form-control date-picker date-picker-new-dashboard"
+                           type="text"
+                           ng-model="formData.currentDateRange"
+                           ng-required="true">
+                </div>
+            </th>
+
+            <th class="text-right th-no-border fixed-th-width">
+                <span ng-if="compareTypeData.compareType !== 'custom'">Last</span>
+                <!--Last-->
+                <div class="input-group pull-right fixed-th-width" ng-if="compareTypeData.compareType === 'custom'">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input date-range-picker
+                           options="datePickerOpts"
+                           class="input-sm form-control date-picker date-picker-new-dashboard"
+                           type="text"
+                           ng-model="formData.historyDateRange"
+                           ng-required="true">
+                </div>
+            </th>
+
+            <th class="th-no-border btn-custom">
+                <button type="button" class="btn btn-primary btn-sm" ng-click="getCustomComparisonData()"
+                        ng-if="compareTypeData.compareType === 'custom'">Get data
+                </button>
+            </th>
+
+            <!--billedAmount-->
             <tr ng-if="isAdmin">
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['billedAmount'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.billedAmount != null) ? (customOverviewData.billedAmount |
-                    currency) : '' }}
-                </td>
+                <div ng-if="isAdmin && hasVideoOverviewTable()">
+                    <td class="text-right">
+                        {{ (customOverviewData.billedAmount != null) ? (customOverviewData.billedAmount | currency) : '' }}
+                    </td>
+                </div>
+                <div ng-if="hasVideoComparisonTable()">
+                    <td class="text-right">{{ (formData.comparisionData.current.billedAmount != null) ? (formData.comparisionData.current.billedAmount | currency) : '' }}</td>
+                    <td class="text-right">{{ (formData.comparisionData.history.billedAmount != null) ? (formData.comparisionData.history.billedAmount | currency) : '' }}</td>
+                </div>
+                <td></td>
             </tr>
 
+            <!--netRevenue-->
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['netRevenue'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.netRevenue != null) ? (customOverviewData.netRevenue |
-                    currency) : '' }}
-                </td>
+                <div ng-if="hasVideoOverviewTable()">
+                    <td class="text-right">{{ (customOverviewData.netRevenue != null) ? (customOverviewData.netRevenue |
+                        currency) : '' }}
+                    </td>
+                </div>
+                <div ng-if="hasVideoComparisonTable()">
+                    <td class="text-right">{{ (formData.comparisionData.current.netRevenue != null) ? (formData.comparisionData.current.netRevenue | number) : '' }}</td>
+                    <td class="text-right">{{ (formData.comparisionData.history.netRevenue != null) ? (formData.comparisionData.history.netRevenue | number) : '' }}</td>
+                </div>
+                <td></td>
             </tr>
 
+            <!--requests-->
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['requests'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.requests != null) ? (customOverviewData.requests | number)
-                    : '' }}
-                </td>
+                <div ng-if="hasVideoOverviewTable()">
+                    <td class="text-right">{{ (customOverviewData.requests != null) ? (customOverviewData.requests | number) : '' }}
+                    </td>
+                </div>
+                <div ng-if="hasVideoComparisonTable()">
+                    <td class="text-right">{{ (formData.comparisionData.current.requests != null) ? (formData.comparisionData.current.requests | number) : '' }}</td>
+                    <td class="text-right">{{ (formData.comparisionData.history.requests != null) ? (formData.comparisionData.history.requests | number) : '' }}</td>
+                </div>
+                <td></td>
             </tr>
 
+            <!--impressions-->
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['impressions'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.impressions != null) ? (customOverviewData.impressions |
-                    number) : '' }}
-                </td>
+                <div ng-if="hasVideoOverviewTable()">
+                    <td class="text-right">
+                        {{ (customOverviewData.impressions != null) ? (customOverviewData.impressions | number) : '' }}
+                    </td>
+                </div>
+                <div ng-if="hasVideoComparisonTable()">
+                    <td class="text-right">{{ (formData.comparisionData.current.impressions != null) ? (formData.comparisionData.current.impressions | number) : '' }}</td>
+                    <td class="text-right">{{ (formData.comparisionData.history.impressions != null) ? (formData.comparisionData.history.impressions | number) : '' }}</td>
+                </div>
+                <td></td>
             </tr>
 
+            <!--bids-->
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['bids'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.bids != null) ? (customOverviewData.bids | number) : ''
-                    }}
-                </td>
+                <div ng-if="hasVideoOverviewTable()">
+                    <td class="text-right">
+                        {{ (customOverviewData.bids != null) ? (customOverviewData.bids | number) : ''
+                        }}
+                    </td>
+                </div>
+                <div ng-if="hasVideoComparisonTable()">
+                    <td class="text-right">{{ (formData.comparisionData.current.bids != null) ? (formData.comparisionData.current.bids | number) : '' }}</td>
+                    <td class="text-right">{{ (formData.comparisionData.history.bids != null) ? (formData.comparisionData.history.bids | number) : '' }}</td>
+                </div>
+                <td></td>
             </tr>
 
+            <!--errors-->
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['errors'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.errors != null) ? (customOverviewData.errors | number) :
-                    '' }}
-                </td>
+                <div ng-if="hasVideoOverviewTable()">
+                    <td class="text-right">
+                        {{ (customOverviewData.errors != null) ? (customOverviewData.errors | number) : '' }}
+                    </td>
+                </div>
+                <div ng-if="hasVideoComparisonTable()">
+                    <td class="text-right">{{ (formData.comparisionData.current.errors != null) ? (formData.comparisionData.current.errors | number) : '' }}</td>
+                    <td class="text-right">{{ (formData.comparisionData.history.errors != null) ? (formData.comparisionData.history.errors | number) : '' }}</td>
+                </div>
+                <td></td>
             </tr>
 
+            <!--blocks-->
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['blocks'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.blocks != null) ? (customOverviewData.blocks | number) :
-                    '' }}
-                </td>
+                <div ng-if="hasVideoOverviewTable()">
+                    <td class="text-right">
+                        {{ (customOverviewData.blocks != null) ? (customOverviewData.blocks | number) : '' }}
+                    </td>
+                </div>
+                <div ng-if="hasVideoComparisonTable()">
+                    <td class="text-right">{{ (formData.comparisionData.current.blocks != null) ? (formData.comparisionData.current.blocks | number) : '' }}</td>
+                    <td class="text-right">{{ (formData.comparisionData.history.blocks != null) ? (formData.comparisionData.history.blocks | number) : '' }}</td>
+                </div>
+                <td></td>
             </tr>
 
+            <!--requestFillRate-->
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['requestFillRate'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.requestFillRate != null) ?
-                    (customOverviewData.requestFillRate | percentage) : '' }}
-                </td>
+                <div ng-if="hasVideoOverviewTable()">
+                    <td class="text-right">
+                        {{ (customOverviewData.requestFillRate != null) ? (customOverviewData.requestFillRate | percentage) : '' }}
+                    </td>
+                </div>
+                <div ng-if="hasVideoComparisonTable()">
+                    <td class="text-right">{{ (formData.comparisionData.current.requestFillRate != null) ? (formData.comparisionData.current.requestFillRate | percentage) : '' }}</td>
+                    <td class="text-right">{{ (formData.comparisionData.history.requestFillRate != null) ? (formData.comparisionData.history.requestFillRate | percentage) : '' }}</td>
+                </div>
+                <td></td>
             </tr>
         </table>
 

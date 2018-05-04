@@ -17,6 +17,8 @@
         $scope.isShowForVideoReport = isShowForVideoReport;
         $scope.hasDisplayOverviewTable = hasDisplayOverviewTable;
         $scope.hasDisplayComparisonTable = hasDisplayComparisonTable;
+        $scope.hasVideoOverviewTable = hasVideoOverviewTable;
+        $scope.hasVideoComparisonTable = hasVideoComparisonTable;
 
         $scope.columnNameMappingForVideoReport = COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT;
 
@@ -91,12 +93,17 @@
             _getData(false);
         });
         //-----------------------------------------------------------------
-
-
-
-
+        
         /* watch reportView changed, then render for unified report */
         $scope.$watch('overviewData.data', _onOverviewDataChange);
+
+        function hasVideoOverviewTable() {
+            return isShowForVideoReport() && $scope.overviewData.data;
+        }
+
+        function hasVideoComparisonTable() {
+            return isShowForVideoReport() && $scope.formData.comparisionData;
+        }
 
         function hasDisplayOverviewTable() {
             return isShowForDisplayReport() && $scope.overviewData.data;
