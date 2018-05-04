@@ -37,57 +37,56 @@
                 <div ng-if="isAdmin && hasDisplayOverviewTable()">
                     <td class="text-capitalize">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</td>
                     <td class="text-right">{{ customOverviewData.billedAmount | currency }}</td>
-                    <td class="text-right">{{ customOverviewData.billedAmount | currency }}</td>
-                    <td class="text-right">{{ customOverviewData.billedAmount | currency }}</td>
+                    <td class="text-right">{{ formData.comparisionData.current.billedAmount | currency}}</td>
+                    <td class="text-right">{{ formData.comparisionData.history.billedAmount | currency}}</td>
                 </div>
             </tr>
             <tr>
                 <div ng-if="hasDisplayOverviewTable()">
                     <td class="text-capitalize">{{ 'DASHBOARD_MODULE.REVENUE' | translate }}</td>
                     <td class="text-right">{{ customOverviewData.estRevenue | currency }}</td>
-                    <td class="text-right">{{ customOverviewData.estRevenue | currency }}</td>
-                    <td class="text-right">{{ customOverviewData.estRevenue | currency }}</td>
+                    <td class="text-right">{{ formData.comparisionData.current.estRevenue | currency }}</td>
+                    <td class="text-right">{{ formData.comparisionData.history.estRevenue | currency }}</td>
                 </div>
             </tr>
             <tr>
                 <div ng-if="hasDisplayOverviewTable()">
                     <td class="text-capitalize">{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}</td>
                     <td class="text-right">{{ customOverviewData.slotOpportunities | number }}</td>
-                    <td class="text-right">{{ customOverviewData.slotOpportunities | number }}</td>
-                    <td class="text-right">{{ customOverviewData.slotOpportunities | number }}</td>
+                    <td class="text-right">{{ formData.comparisionData.current.slotOpportunities | number }}</td>
+                    <td class="text-right">{{ formData.comparisionData.history.slotOpportunities | number }}</td>
                 </div>
             </tr>
             <tr>
                 <div ng-if="hasDisplayOverviewTable()">
                     <td class="text-capitalize">{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}</td>
                     <td class="text-right">{{ customOverviewData.totalOpportunities | number }}</td>
-                    <td class="text-right">{{ customOverviewData.totalOpportunities | number }}</td>
-                    <td class="text-right">{{ customOverviewData.totalOpportunities | number }}</td>
+                    <td class="text-right">{{ formData.comparisionData.current.totalOpportunities | number }}</td>
+                    <td class="text-right">{{ formData.comparisionData.history.totalOpportunities | number }}</td>
                 </div>
             </tr>
             <tr>
                 <div ng-if="hasDisplayOverviewTable()">
                     <td class="text-capitalize">{{ 'DASHBOARD_MODULE.IMPRESSIONS_OPPORTUNITY' | translate }}</td>
                     <td class="text-right">{{ customOverviewData.adOpportunities | number }}</td>
-                    <td class="text-right">{{ customOverviewData.adOpportunities | number }}</td>
-                    <td class="text-right">{{ customOverviewData.adOpportunities | number }}</td>
+                    <td class="text-right">{{ formData.comparisionData.current.adOpportunities | number }}</td>
+                    <td class="text-right">{{ formData.comparisionData.history.adOpportunities | number }}</td>
                 </div>
             </tr>
             <tr>
                 <div ng-if="hasDisplayOverviewTable()">
                     <td class="text-capitalize">{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}</td>
                     <td class="text-right">{{ customOverviewData.passbacks | number }}</td>
-                    <td class="text-right">{{ customOverviewData.passbacks | number }}</td>
-                    <td class="text-right">{{ customOverviewData.passbacks | number }}</td>
+                    <td class="text-right">{{ formData.comparisionData.current.passbacks | number }}</td>
+                    <td class="text-right">{{ formData.comparisionData.history.passbacks | number }}</td>
                 </div>
-
             </tr>
             <tr>
                 <div ng-if="hasDisplayOverviewTable()">
                     <td class="text-capitalize">{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}</td>
                     <td class="text-right">{{ customOverviewData.fillRate | percentage }}</td>
-                    <td class="text-right">{{ customOverviewData.fillRate | percentage }}</td>
-                    <td class="text-right">{{ customOverviewData.fillRate | percentage }}</td>
+                    <td class="text-right">{{ formData.comparisionData.current.fillRate | percentage }}</td>
+                    <td class="text-right">{{ formData.comparisionData.history.fillRate | percentage }}</td>
                 </div>
             </tr>
         </table>
