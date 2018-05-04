@@ -1,27 +1,23 @@
 (function () {
     'use strict';
 
-    angular.module('tagcade.newDashboard')
-        .directive('dashboardDetail', dashboardDetail)
-    ;
+    angular.module('tagcade.newDashboard').directive('dashboardDetail', dashboardDetail);
 
     function dashboardDetail($compile) {
-        'use strict';
-
         return {
             scope: {
                 // bind properties
-                dashboardType: "=",
-                dateRange: "=",
-                overviewData: "=",
-                chartData: "=",
+                dashboardType: '=',
+                dateRange: '=',
+                overviewData: '=',
+                chartData: '=',
                 reportView: '=',
-                publisher: "=",
-                comparisionData: "=",
-                compareTypeData: "=",
-                chartFollow: "=",
+                publisher: '=',
+                comparisionData: '=',
+                compareTypeData: '=',
+                chartFollow: '=',
                 // bind functions
-                onChangeChartFollow: "&"
+                onChangeChartFollow: '&'
             },
             restrict: 'AE',
             templateUrl: 'newDashboard/directives/dashboardDetail.tpl.html',
@@ -42,7 +38,7 @@
                     element.append(directive(scope, function ($compile) {
                         return $compile;
                     }));
-                }
+                };
             }
         };
     }

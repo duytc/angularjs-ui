@@ -23,6 +23,19 @@
 
 
         // ----------------------COMPARISION----------------------
+        $scope.datePickerOpts = {
+            maxDate: moment().endOf('day'),
+            ranges: {
+                'Today': [moment().startOf('day'), moment().endOf('day')],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(7, 'days'), moment().subtract(1, 'days')], // note: from yesterday
+                'Last 30 Days': [moment().subtract(30, 'days'), moment().subtract(1, 'days')], // note: from yesterday
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            },
+            opens: 'left'
+        };
+
         const CURRENT_LABEL = 'current';
         const HISTORY_LABEL = 'history';
 
@@ -33,7 +46,9 @@
             dayValuesForDayOverDay: [
                 moment().subtract(1, 'days').format('YYYY-MM-DD'),
                 moment().subtract(2, 'days').format('YYYY-MM-DD')
-            ]
+            ],
+            currentDateRange: null,
+            historyDateRange: null
         };
 
         $scope.onChangeMode = onChangeMode;
@@ -195,7 +210,7 @@
             if ($scope.isAdmin) {
                 route = ADMIN_DISPLAY_COMPARISION;
             } else {
-                route = PUBLISHER_DISPLAY_COMPARISION + "/" + $scope.publisher.id;
+                route = PUBLISHER_DISPLAY_COMPARISION + '/' + $scope.publisher.id;
             }
             reportRestangular.one(route).get(json).then(function (data) {
                 $scope.comparisionData = data;
@@ -286,8 +301,8 @@
                         return 0;
                     }
                     return (r1[sortByForUnifiedReport] < r2[sortByForUnifiedReport])
-                        ? (orderBy == DESC ? 1 : -1)
-                        : (orderBy == DESC ? -1 : 1);
+                        ? (orderBy === DESC ? 1 : -1)
+                        : (orderBy === DESC ? -1 : 1);
                 });
             }
 

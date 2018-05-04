@@ -7,24 +7,24 @@
             <div class="col col-sm-10 col-xs-12">
                 <div class="btn-group pull-right">
                     <button type="button" class="btn btn-default btn-sm btn-action"
-                            ng-class="{active: compareTypeData.compareType == 'day-over-day'}"
+                            ng-class="{active: compareTypeData.compareType === 'day-over-day'}"
                             ng-click="onChangeMode('day')">{{'NEW_DASHBOARD.DAY_OVER_DAY' | translate}}
                     </button>
                     <button type="button" class="btn btn-default btn-sm btn-action"
-                            ng-class="{active: compareTypeData.compareType == 'week-over-week'}"
+                            ng-class="{active: compareTypeData.compareType === 'week-over-week'}"
                             ng-click="onChangeMode('week')">{{'NEW_DASHBOARD.LAST_7_DAY' | translate}}
                     </button>
                     <button type="button" class="btn btn-default btn-sm btn-action"
-                            ng-class="{active: compareTypeData.compareType == 'month-over-month'}"
+                            ng-class="{active: compareTypeData.compareType === 'month-over-month'}"
                             ng-click="onChangeMode('month')">{{'NEW_DASHBOARD.LAST_30_DAY' | translate}}
                     </button>
                     <button type="button" class="btn btn-default btn-sm btn-action"
-                            ng-class="{active: compareTypeData.compareType == 'year-over-year'}"
+                            ng-class="{active: compareTypeData.compareType === 'year-over-year'}"
                             ng-click="onChangeMode('year')">{{'NEW_DASHBOARD.YEAR_TO_DATE' | translate}}
                     </button>
                     <button type="button" class="btn btn-default btn-sm btn-action"
-                            ng-class="{active: compareTypeData.compareType == 'custom'}"
-                            ng-click="onChangeMode('year')">{{'NEW_DASHBOARD.CUSTOM_COMPARISON' | translate}}
+                            ng-class="{active: compareTypeData.compareType === 'custom'}"
+                            ng-click="onChangeMode('custom')">{{'NEW_DASHBOARD.CUSTOM_COMPARISON' | translate}}
                     </button>
                 </div>
             </div>
@@ -33,10 +33,38 @@
     <div class="panel-body">
         <!--Display-->
         <table class="table no-border" ng-if="isShowForDisplayReport() && overviewData.data">
-            <th class="th-no-border"><span style="visibility: hidden">.</span></th>
-            <th class="text-right th-no-border">{{'NEW_DASHBOARD.YESTERDAY' | translate}}</th>
-            <th class="text-right th-no-border">Current</th>
-            <th class="text-right th-no-border">Last</th>
+            <th class="th-no-border fixed-th-width"><span style="visibility: hidden">.</span></th>
+            <th class="text-right th-no-border fixed-th-width">{{'NEW_DASHBOARD.YESTERDAY' | translate}}</th>
+
+            <th class="text-right th-no-border fixed-th-width">
+                <span ng-if="compareTypeData.compareType !== 'custom'">Current</span>
+                <!--Current-->
+                <div class="input-group pull-right fixed-th-width" ng-if="compareTypeData.compareType === 'custom'">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input date-range-picker
+                           options="datePickerOpts"
+                           class="input-sm form-control date-picker date-picker-new-dashboard"
+                           type="text"
+                           id="inputDateRangeCurrent"
+                           ng-model="formData.currentDateRange"
+                           ng-required="true">
+                </div>
+            </th>
+
+            <th class="text-right th-no-border fixed-th-width">
+                <span ng-if="compareTypeData.compareType !== 'custom'">Last</span>
+                <!--Last-->
+                <div class="input-group pull-right fixed-th-width" ng-if="compareTypeData.compareType === 'custom'">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input date-range-picker
+                           options="datePickerOpts"
+                           class="input-sm form-control date-picker date-picker-new-dashboard"
+                           type="text"
+                           id="inputDateRangeLast"
+                           ng-model="formData.historyDateRange"
+                           ng-required="true">
+                </div>
+            </th>
 
             <tr>
                 <div ng-if="isAdmin && hasDisplayOverviewTable()">

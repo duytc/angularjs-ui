@@ -25,7 +25,8 @@
                 'day': 'day-over-day',
                 'week': 'week-over-week',
                 'month': 'month-over-month',
-                'year': 'year-over-year'
+                'year': 'year-over-year',
+                'custom': 'custom'
             }
         )
         .constant('DISPLAY_REPORT_TYPES', {

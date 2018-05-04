@@ -45,9 +45,14 @@
             }
             if (mode === 'month') {
                 return $translate.instant('NEW_DASHBOARD.MONTH_LABEL');
-            } else {
+            }
+            if (mode === 'year') {
                 return $translate.instant('NEW_DASHBOARD.YEAR_LABEL');
             }
+            if (mode === 'custom') {
+                return '';
+            }
+            return '';
         }
 
         function getTodayDateRange() {
