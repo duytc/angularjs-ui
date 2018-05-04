@@ -16,6 +16,7 @@
         $scope.isShowForDisplayReport = isShowForDisplayReport;
         $scope.isShowForVideoReport = isShowForVideoReport;
         $scope.hasDisplayOverviewTable = hasDisplayOverviewTable;
+        $scope.hasDisplayComparisonTable = hasDisplayComparisonTable;
 
         $scope.columnNameMappingForVideoReport = COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT;
 
@@ -23,6 +24,13 @@
 
 
         // ----------------------COMPARISION----------------------
+        $scope.comparisonConst = {
+            CUSTOM: 'custom'
+        };
+        $scope.alertMessage = {
+            isShow: false,
+            content: ''
+        };
         $scope.datePickerOpts = {
             maxDate: moment().endOf('day'),
             ranges: {
@@ -47,8 +55,14 @@
                 moment().subtract(1, 'days').format('YYYY-MM-DD'),
                 moment().subtract(2, 'days').format('YYYY-MM-DD')
             ],
-            currentDateRange: null,
-            historyDateRange: null
+            currentDateRange: {
+                startDate: $scope.datePickerOpts.ranges['Yesterday'][0],
+                endDate: $scope.datePickerOpts.ranges['Yesterday'][0]
+            },
+            historyDateRange: {
+                startDate: $scope.datePickerOpts.ranges['Today'][0],
+                endDate: $scope.datePickerOpts.ranges['Today'][0]
+            },
         };
 
         $scope.onChangeMode = onChangeMode;
@@ -57,6 +71,7 @@
         $scope.isShowForUnifiedReport = isShowForUnifiedReport;
         $scope.isShowForDisplayReport = isShowForDisplayReport;
         $scope.isShowForVideoReport = isShowForVideoReport;
+        $scope.getCustomComparisonData = getCustomComparisonData;
 
         // $scope.columnNameMappingForVideoReport = COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT;
         _getData(false);
@@ -85,6 +100,10 @@
 
         function hasDisplayOverviewTable() {
             return isShowForDisplayReport() && $scope.overviewData.data;
+        }
+
+        function hasDisplayComparisonTable() {
+            return isShowForDisplayReport() && $scope.formData.comparisionData;
         }
 
         function resetOverviewData() {
@@ -163,9 +182,10 @@
             return $scope.formData.dayValuesForDayOverDay[1];
         }
 
-        function _getData(isClickChangeMode) {
+        function _getData(isClickChangeMode, customDateRange) {
             var param = {
-                type: $scope.compareTypeData.compareType
+                type: $scope.compareTypeData.compareType,
+                extraData: customDateRange
             };
 
             if ($scope.dashboardType.id === 'DISPLAY') {
@@ -202,10 +222,22 @@
             });
         }
 
+        function getExtraCustomDateRangeParameters(originalParam, param) {
+            if(param.extraData){
+                originalParam.currentStartDate = param.extraData.current.startDate;
+                originalParam.currentEndDate = param.extraData.current.endDate;
+                originalParam.historyStartDate = param.extraData.history.startDate;
+                originalParam.historyEndDate = param.extraData.history.endDate;
+            }
+
+            return originalParam;
+        }
+
         function _getDisplayComparision(param, isClickChangeMode) {
             var json = {
                 type: $scope.compareTypeData.compareType
             };
+            json = getExtraCustomDateRangeParameters(json, param);
             var route;
             if ($scope.isAdmin) {
                 route = ADMIN_DISPLAY_COMPARISION;
@@ -252,7 +284,30 @@
 
             $scope.compareTypeData.compareType = COMPARE_TYPE[mode];
             $scope.compareTypeData.label = getLabel(mode);
-            _getData(true);
+            if(mode !== $scope.comparisonConst.CUSTOM){
+                _getData(true);
+            }else {
+                getCustomComparisonData();
+            }
+        }
+
+        function getCustomComparisonData() {
+            var customDateRange = extractCustomDateRange();
+            if(customDateRange){
+                _getData(true, customDateRange);
+            }
+        }
+
+        function extractCustomDateRange() {
+            var current = NewDashboardUtil.getStringDate($scope.formData.currentDateRange);
+            var history = NewDashboardUtil.getStringDate($scope.formData.historyDateRange);
+            if(current && history){
+                return {
+                    current: current,
+                    history: history
+                };
+            }
+            return null;
         }
 
         function _extractComparisionData(data, dashboardType) {
