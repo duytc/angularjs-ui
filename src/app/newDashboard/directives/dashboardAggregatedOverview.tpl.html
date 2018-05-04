@@ -114,58 +114,57 @@
         <!--Display comparison-->
         <table class="table no-border table-responsive"
                ng-if="hasDisplayComparisonTable() && compareTypeData.compareType !== 'yesterday'">
-            <th class="th-no-border fixed-th-width"><span style="visibility: hidden">.</span></th>
+            <th class="th-no-border col-sm-2"><span style="visibility: hidden">.</span></th>
 
-            <th class="text-left th-no-border fixed-th-width">
+            <th class="text-right th-no-border col-sm-2">
                 <span ng-if="compareTypeData.compareType !== 'custom'">Current</span>
                 <!--Current-->
             </th>
-
-            <th class="text-left th-no-border fixed-th-width">
+            <th class="text-right th-no-border col-sm-2">
                 <span ng-if="compareTypeData.compareType !== 'custom'">Last</span>
                 <!--Last-->
             </th>
-
+            <th class="th-no-border"><span style="visibility: hidden">.</span></th>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</td>
-                <td class="text-left">{{ formData.comparisionData.current.billedAmount | currency}}</td>
-                <td class="text-left">{{ formData.comparisionData.history.billedAmount | currency}}</td>
+                <td class="text-right">{{ formData.comparisionData.current.billedAmount | currency}}</td>
+                <td class="text-right">{{ formData.comparisionData.history.billedAmount | currency}}</td>
                 <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.REVENUE' | translate }}</td>
-                <td class="text-left">{{ formData.comparisionData.current.estRevenue | currency }}</td>
-                <td class="text-left">{{ formData.comparisionData.history.estRevenue | currency }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.estRevenue | currency }}</td>
+                <td class="text-right">{{ formData.comparisionData.history.estRevenue | currency }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}</td>
-                <td class="text-left">{{ formData.comparisionData.current.slotOpportunities | number }}</td>
-                <td class="text-left">{{ formData.comparisionData.history.slotOpportunities | number }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.slotOpportunities | number }}</td>
+                <td class="text-right">{{ formData.comparisionData.history.slotOpportunities | number }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}</td>
-                <td class="text-left">{{ formData.comparisionData.current.totalOpportunities | number }}</td>
-                <td class="text-left">{{ formData.comparisionData.history.totalOpportunities | number }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.totalOpportunities | number }}</td>
+                <td class="text-right">{{ formData.comparisionData.history.totalOpportunities | number }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.IMPRESSIONS_OPPORTUNITY' | translate }}</td>
-                <td class="text-left">{{ formData.comparisionData.current.adOpportunities | number }}</td>
-                <td class="text-left">{{ formData.comparisionData.history.adOpportunities | number }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.adOpportunities | number }}</td>
+                <td class="text-right">{{ formData.comparisionData.history.adOpportunities | number }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}</td>
-                <td class="text-left">{{ formData.comparisionData.current.passbacks | number }}</td>
-                <td class="text-left">{{ formData.comparisionData.history.passbacks | number }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.passbacks | number }}</td>
+                <td class="text-right">{{ formData.comparisionData.history.passbacks | number }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}</td>
-                <td class="text-left">{{ formData.comparisionData.current.fillRate | percentage }}</td>
-                <td class="text-left">{{ formData.comparisionData.history.fillRate | percentage }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.fillRate | percentage }}</td>
+                <td class="text-right">{{ formData.comparisionData.history.fillRate | percentage }}</td>
                 <td></td>
             </tr>
         </table>
