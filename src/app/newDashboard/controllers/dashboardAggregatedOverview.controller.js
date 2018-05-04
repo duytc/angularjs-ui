@@ -64,7 +64,7 @@
             historyDateRange: {
                 startDate: $scope.datePickerOpts.ranges['Today'][0],
                 endDate: $scope.datePickerOpts.ranges['Today'][0]
-            },
+            }
         };
 
         $scope.onChangeMode = onChangeMode;
@@ -216,7 +216,8 @@
         }
 
         function _getVideoComparision(param, isClickChangeMode) {
-            videoReportService.getComparision(param).then(function (data) {
+            var apiParams = getExtraCustomDateRangeParameters({}, param);
+            videoReportService.getComparision(apiParams).then(function (data) {
                 $scope.comparisionData = data;
                 $scope.formData.comparisionData = _extractComparisionData(data, $scope.dashboardType);
 
