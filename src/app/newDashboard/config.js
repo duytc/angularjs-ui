@@ -40,7 +40,8 @@
             'bids': 'Bids',
             'errors': 'Errors',
             'blocks': 'Blocked Requests',
-            'requestFillRate': 'Fill Rate'
+            'requestFillRate': 'Fill Rate',
+            'netRevenue': 'Revenue'
         })
         .constant('DISPLAY_SHOW_FIELDS', ['estRevenue', 'slotOpportunities', 'passbacks', 'impressions', 'fillRate'])
         .constant('VIDEO_SHOW_FIELDS', ['billedAmount', 'requests', 'impressions', 'bids', 'errors', 'blocks', 'requestFillRate'])

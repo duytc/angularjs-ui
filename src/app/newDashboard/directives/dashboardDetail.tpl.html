@@ -1,4 +1,16 @@
 <div>
+
+    <dashboard-aggregated-overview dashboard-type="dashboardType"
+                                   overview-data="overviewData"
+                                   on-change-chart-follow="onSelectFollow()"
+                                   publisher="publisher"
+                                   chart-follow="chartFollow"
+                                   report-view="reportView"
+                                   compare-type-data="compareTypeData"
+                                   comparision-data="comparisionData">
+    </dashboard-aggregated-overview>
+
+
     <div class="row">
         <div id="dashboard-overview-directive" class="col-md-6">
             <dashboard-overview-directive
@@ -23,19 +35,18 @@
         </div>
     </div>
 
-    <div>
-        <dashboard-chart chart-data="chartData"
-                         dashboard-type="dashboardType"
-                         compare-type-data="compareTypeData"
-                         chart-follow="chartFollow"
-                         publisher="publisher">
-        </dashboard-chart>
-    </div>
 
-    <div>
-        <dashboard-top-performance dashboard-type="dashboardType"
-                                   date-range="dateRange"
-                                   report-view="reportView">
-        </dashboard-top-performance>
-    </div>
+    <dashboard-chart chart-data="chartData"
+                     dashboard-type="dashboardType"
+                     compare-type-data="compareTypeData"
+                     chart-follow="chartFollow"
+                     publisher="publisher">
+    </dashboard-chart>
+
+
+    <dashboard-top-performance dashboard-type="dashboardType"
+                               date-range="dateRange"
+                               report-view="reportView">
+    </dashboard-top-performance>
+
 </div>
