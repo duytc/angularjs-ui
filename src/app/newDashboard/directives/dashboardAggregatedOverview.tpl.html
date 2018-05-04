@@ -83,30 +83,37 @@
             <tr ng-if="isAdmin && hasDisplayOverviewTable()">
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</td>
                 <td class="text-right">{{ customOverviewData.billedAmount | currency }}</td>
+                <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.REVENUE' | translate }}</td>
                 <td class="text-right">{{ customOverviewData.estRevenue | currency }}</td>
+                <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}</td>
                 <td class="text-right">{{ customOverviewData.slotOpportunities | number }}</td>
+                <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}</td>
                 <td class="text-right">{{ customOverviewData.totalOpportunities | number }}</td>
+                <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.IMPRESSIONS_OPPORTUNITY' | translate }}</td>
                 <td class="text-right">{{ customOverviewData.adOpportunities | number }}</td>
+                <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}</td>
                 <td class="text-right">{{ customOverviewData.passbacks | number }}</td>
+                <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}</td>
                 <td class="text-right">{{ customOverviewData.fillRate | percentage }}</td>
+                <td></td>
             </tr>
         </table>
 
@@ -125,40 +132,48 @@
                 <!--Last-->
             </th>
             <th class="th-no-border"><span style="visibility: hidden">.</span></th>
+
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</td>
                 <td class="text-right">{{ formData.comparisionData.current.billedAmount | currency}}</td>
                 <td class="text-right">{{ formData.comparisionData.history.billedAmount | currency}}</td>
+                <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.REVENUE' | translate }}</td>
                 <td class="text-right">{{ formData.comparisionData.current.estRevenue | currency }}</td>
                 <td class="text-right">{{ formData.comparisionData.history.estRevenue | currency }}</td>
+                <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}</td>
                 <td class="text-right">{{ formData.comparisionData.current.slotOpportunities | number }}</td>
                 <td class="text-right">{{ formData.comparisionData.history.slotOpportunities | number }}</td>
+                <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}</td>
                 <td class="text-right">{{ formData.comparisionData.current.totalOpportunities | number }}</td>
                 <td class="text-right">{{ formData.comparisionData.history.totalOpportunities | number }}</td>
+                <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.IMPRESSIONS_OPPORTUNITY' | translate }}</td>
                 <td class="text-right">{{ formData.comparisionData.current.adOpportunities | number }}</td>
                 <td class="text-right">{{ formData.comparisionData.history.adOpportunities | number }}</td>
+                <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}</td>
                 <td class="text-right">{{ formData.comparisionData.current.passbacks | number }}</td>
                 <td class="text-right">{{ formData.comparisionData.history.passbacks | number }}</td>
+                <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}</td>
                 <td class="text-right">{{ formData.comparisionData.current.fillRate | percentage }}</td>
                 <td class="text-right">{{ formData.comparisionData.history.fillRate | percentage }}</td>
+                <td></td>
             </tr>
         </table>
 
@@ -176,6 +191,7 @@
                 <td class="text-right">
                     {{ (customOverviewData.billedAmount != null) ? (customOverviewData.billedAmount | currency) : '' }}
                 </td>
+                <td></td>
             </tr>
             <!--netRevenue-->
             <tr>
@@ -183,6 +199,7 @@
                 <td class="text-right">{{ (customOverviewData.netRevenue != null) ? (customOverviewData.netRevenue |
                     currency) : '' }}
                 </td>
+                <td></td>
             </tr>
             <!--requests-->
             <tr>
@@ -190,6 +207,7 @@
                 <td class="text-right">{{ (customOverviewData.requests != null) ? (customOverviewData.requests |
                     number) : '' }}
                 </td>
+                <td></td>
             </tr>
             <!--impressions-->
             <tr>
@@ -197,6 +215,7 @@
                 <td class="text-right">
                     {{ (customOverviewData.impressions != null) ? (customOverviewData.impressions | number) : '' }}
                 </td>
+                <td></td>
             </tr>
             <!--bids-->
             <tr>
@@ -204,6 +223,7 @@
                 <td class="text-right">
                     {{ (customOverviewData.bids != null) ? (customOverviewData.bids | number) : '' }}
                 </td>
+                <td></td>
             </tr>
 
             <!--errors-->
@@ -212,6 +232,7 @@
                 <td class="text-right">
                     {{ (customOverviewData.errors != null) ? (customOverviewData.errors | number) : '' }}
                 </td>
+                <td></td>
             </tr>
             <!--blocks-->
             <tr>
@@ -219,6 +240,7 @@
                 <td class="text-right">
                     {{ (customOverviewData.blocks != null) ? (customOverviewData.blocks | number) : '' }}
                 </td>
+                <td></td>
             </tr>
             <!--requestFillRate-->
             <tr>
@@ -227,6 +249,7 @@
                     {{ (customOverviewData.requestFillRate != null) ? (customOverviewData.requestFillRate |
                     percentage) : '' }}
                 </td>
+                <td></td>
             </tr>
         </table>
 
@@ -251,6 +274,7 @@
                 <td class="text-right">{{ (formData.comparisionData.history.billedAmount != null) ?
                     (formData.comparisionData.history.billedAmount | currency) : '' }}
                 </td>
+                <td></td>
             </tr>
             <!--netRevenue-->
             <tr>
@@ -261,6 +285,7 @@
                 <td class="text-right">{{ (formData.comparisionData.history.netRevenue != null) ?
                     (formData.comparisionData.history.netRevenue | number) : '' }}
                 </td>
+                <td></td>
             </tr>
             <!--requests-->
             <tr>
@@ -270,6 +295,8 @@
                 </td>
                 <td class="text-right">{{ (formData.comparisionData.history.requests != null) ?
                     (formData.comparisionData.history.requests | number) : '' }}
+                </td>
+                <td></td>
             </tr>
             <!--impressions-->
             <tr>
@@ -280,6 +307,7 @@
                 <td class="text-right">{{ (formData.comparisionData.history.impressions != null) ?
                     (formData.comparisionData.history.impressions | number) : '' }}
                 </td>
+                <td></td>
             </tr>
             <!--bids-->
             <tr>
@@ -290,6 +318,7 @@
                 <td class="text-right">{{ (formData.comparisionData.history.bids != null) ?
                     (formData.comparisionData.history.bids | number) : '' }}
                 </td>
+                <td></td>
             </tr>
             <!--errors-->
             <tr>
@@ -300,6 +329,7 @@
                 <td class="text-right">{{ (formData.comparisionData.history.errors != null) ?
                     (formData.comparisionData.history.errors | number) : '' }}
                 </td>
+                <td></td>
             </tr>
             <!--blocks-->
             <tr>
@@ -310,6 +340,7 @@
                 <td class="text-right">{{ (formData.comparisionData.history.blocks != null) ?
                     (formData.comparisionData.history.blocks | number) : '' }}
                 </td>
+                <td></td>
             </tr>
             <!--requestFillRate-->
             <tr>
@@ -320,6 +351,7 @@
                 <td class="text-right">{{ (formData.comparisionData.history.requestFillRate != null) ?
                     (formData.comparisionData.history.requestFillRate | percentage) : '' }}
                 </td>
+                <td></td>
             </tr>
         </table>
 
