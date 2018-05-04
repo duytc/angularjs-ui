@@ -1,43 +1,72 @@
 <div class="panel panel-default">
-    <div class="panel-heading small-panel-padding">
-        <div class="row align-items-center">
-            <div class="col col-sm-2 col-xs-12" style="padding-top: 5px;">
-                <span>{{'NEW_DASHBOARD.OVERVIEW'|translate}}</span>
-            </div>
-            <div class="col col-sm-10 col-xs-12">
-                <div class="btn-group pull-right">
-                    <button type="button" class="btn btn-default btn-sm btn-action"
-                            ng-class="{active: compareTypeData.compareType === 'yesterday'}"
-                            ng-click="onChangeMode('yesterday')">{{'NEW_DASHBOARD.YESTERDAY' | translate}}
-                    </button>
-                    <button type="button" class="btn btn-default btn-sm btn-action"
-                            ng-class="{active: compareTypeData.compareType === 'day-over-day'}"
-                            ng-click="onChangeMode('day')">{{'NEW_DASHBOARD.DAY_OVER_DAY' | translate}}
-                    </button>
-                    <button type="button" class="btn btn-default btn-sm btn-action"
-                            ng-class="{active: compareTypeData.compareType === 'week-over-week'}"
-                            ng-click="onChangeMode('week')">{{'NEW_DASHBOARD.LAST_7_DAY' | translate}}
-                    </button>
-                    <button type="button" class="btn btn-default btn-sm btn-action"
-                            ng-class="{active: compareTypeData.compareType === 'month-over-month'}"
-                            ng-click="onChangeMode('month')">{{'NEW_DASHBOARD.LAST_30_DAY' | translate}}
-                    </button>
-                    <button type="button" class="btn btn-default btn-sm btn-action"
-                            ng-class="{active: compareTypeData.compareType === 'year-over-year'}"
-                            ng-click="onChangeMode('year')">{{'NEW_DASHBOARD.YEAR_TO_DATE' | translate}}
-                    </button>
-                    <button type="button" class="btn btn-default btn-sm btn-action"
-                            ng-class="{active: compareTypeData.compareType === 'custom'}"
-                            ng-click="onChangeMode('custom')">{{'NEW_DASHBOARD.CUSTOM_COMPARISON' | translate}}
-                    </button>
-                </div>
-            </div>
-        </div>
+    <div class="panel-heading">
+        <span>{{'NEW_DASHBOARD.OVERVIEW'|translate}}</span>
     </div>
     <div class="panel-body">
         <div>
             <alert class="alert alert-warning" ng-show="alertMessage.isShow">{{$scope.alertMessage.content}}</alert>
         </div>
+
+        <!--buttons-->
+        <div class="btn-group pull-left">
+            <button type="button" class="btn btn-default btn-sm btn-action"
+                    ng-class="{active: compareTypeData.compareType === 'yesterday'}"
+                    ng-click="onChangeMode('yesterday')">{{'NEW_DASHBOARD.YESTERDAY' | translate}}
+            </button>
+            <button type="button" class="btn btn-default btn-sm btn-action"
+                    ng-class="{active: compareTypeData.compareType === 'day-over-day'}"
+                    ng-click="onChangeMode('day')">{{'NEW_DASHBOARD.DAY_OVER_DAY' | translate}}
+            </button>
+            <button type="button" class="btn btn-default btn-sm btn-action"
+                    ng-class="{active: compareTypeData.compareType === 'week-over-week'}"
+                    ng-click="onChangeMode('week')">{{'NEW_DASHBOARD.LAST_7_DAY' | translate}}
+            </button>
+            <button type="button" class="btn btn-default btn-sm btn-action"
+                    ng-class="{active: compareTypeData.compareType === 'month-over-month'}"
+                    ng-click="onChangeMode('month')">{{'NEW_DASHBOARD.LAST_30_DAY' | translate}}
+            </button>
+            <button type="button" class="btn btn-default btn-sm btn-action"
+                    ng-class="{active: compareTypeData.compareType === 'year-over-year'}"
+                    ng-click="onChangeMode('year')">{{'NEW_DASHBOARD.YEAR_TO_DATE' | translate}}
+            </button>
+            <button type="button" class="btn btn-default btn-sm btn-action"
+                    ng-class="{active: compareTypeData.compareType === 'custom'}"
+                    ng-click="onChangeMode('custom')">{{'NEW_DASHBOARD.CUSTOM_COMPARISON' | translate}}
+            </button>
+
+        </div>
+
+        <div class="clearfix" style="padding: 10px 10px"></div>
+
+        <form class="form-inline" role="form" novalidate ng-if="compareTypeData.compareType === 'custom'">
+            <div class="form-group">
+                <label class="padding-10" for="inputDateRangeCurrent">{{ 'NEW_DASHBOARD.DATE_LABEL' | translate }}</label>
+                <div class="input-group padding-10">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input date-range-picker
+                           options="datePickerOpts"
+                           class="input-sm form-control date-picker date-picker-new-dashboard"
+                           type="text"
+                           id="inputDateRangeCurrent"
+                           ng-model="formData.currentDateRange"
+                           ng-required="true">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="padding-10" for="inputDateRangeCurrent">{{ 'NEW_DASHBOARD.DATE_LABEL' | translate }}</label>
+                <div class="input-group padding-10">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input date-range-picker
+                           options="datePickerOpts"
+                           class="input-sm form-control date-picker date-picker-new-dashboard"
+                           type="text"
+                           id="inputDateRangeLast"
+                           ng-model="formData.historyDateRange"
+                           ng-required="true">
+                </div>
+            </div>
+        </form>
+
 
         <!--Display yesterday-->
         <table class="table no-border" ng-if="hasDisplayOverviewTable() && compareTypeData.compareType === 'yesterday'">
@@ -75,85 +104,60 @@
 
 
         <!--Display comparison-->
-        <table class="table no-border" ng-if="hasDisplayComparisonTable() && compareTypeData.compareType !== 'yesterday'">
+        <table class="table no-border table-responsive"
+               ng-if="hasDisplayComparisonTable() && compareTypeData.compareType !== 'yesterday'">
             <th class="th-no-border fixed-th-width"><span style="visibility: hidden">.</span></th>
 
-            <th class="text-right th-no-border fixed-th-width">
+            <th class="text-left th-no-border fixed-th-width">
                 <span ng-if="compareTypeData.compareType !== 'custom'">Current</span>
                 <!--Current-->
-                <div class="input-group pull-right fixed-th-width" ng-if="compareTypeData.compareType === 'custom'">
-                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <input date-range-picker
-                           options="datePickerOpts"
-                           class="input-sm form-control date-picker date-picker-new-dashboard"
-                           type="text"
-                           id="inputDateRangeCurrent"
-                           ng-model="formData.currentDateRange"
-                           ng-required="true">
-                </div>
             </th>
 
-            <th class="text-right th-no-border fixed-th-width">
+            <th class="text-left th-no-border fixed-th-width">
                 <span ng-if="compareTypeData.compareType !== 'custom'">Last</span>
                 <!--Last-->
-                <div class="input-group pull-right fixed-th-width" ng-if="compareTypeData.compareType === 'custom'">
-                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <input date-range-picker
-                           options="datePickerOpts"
-                           class="input-sm form-control date-picker date-picker-new-dashboard"
-                           type="text"
-                           id="inputDateRangeLast"
-                           ng-model="formData.historyDateRange"
-                           ng-required="true">
-                </div>
-            </th>
-
-            <th class="th-no-border btn-custom">
-                <button type="button" class="btn btn-primary btn-sm" ng-click="getCustomComparisonData()"
-                        ng-if="compareTypeData.compareType === 'custom'">Get data
-                </button>
             </th>
 
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</td>
-                <td class="text-right">{{ formData.comparisionData.current.billedAmount | currency}}</td>
-                <td class="text-right">{{ formData.comparisionData.history.billedAmount | currency}}</td>
+                <td class="text-left">{{ formData.comparisionData.current.billedAmount | currency}}</td>
+                <td class="text-left">{{ formData.comparisionData.history.billedAmount | currency}}</td>
                 <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.REVENUE' | translate }}</td>
-                <td class="text-right">{{ formData.comparisionData.current.estRevenue | currency }}</td>
-                <td class="text-right">{{ formData.comparisionData.history.estRevenue | currency }}</td>
+                <td class="text-left">{{ formData.comparisionData.current.estRevenue | currency }}</td>
+                <td class="text-left">{{ formData.comparisionData.history.estRevenue | currency }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}</td>
-                <td class="text-right">{{ formData.comparisionData.current.slotOpportunities | number }}</td>
-                <td class="text-right">{{ formData.comparisionData.history.slotOpportunities | number }}</td>
+                <td class="text-left">{{ formData.comparisionData.current.slotOpportunities | number }}</td>
+                <td class="text-left">{{ formData.comparisionData.history.slotOpportunities | number }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}</td>
-                <td class="text-right">{{ formData.comparisionData.current.totalOpportunities | number }}</td>
-                <td class="text-right">{{ formData.comparisionData.history.totalOpportunities | number }}</td>
+                <td class="text-left">{{ formData.comparisionData.current.totalOpportunities | number }}</td>
+                <td class="text-left">{{ formData.comparisionData.history.totalOpportunities | number }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.IMPRESSIONS_OPPORTUNITY' | translate }}</td>
-                <td class="text-right">{{ formData.comparisionData.current.adOpportunities | number }}</td>
-                <td class="text-right">{{ formData.comparisionData.history.adOpportunities | number }}</td>
+                <td class="text-left">{{ formData.comparisionData.current.adOpportunities | number }}</td>
+                <td class="text-left">{{ formData.comparisionData.history.adOpportunities | number }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}</td>
-                <td class="text-right">{{ formData.comparisionData.current.passbacks | number }}</td>
-                <td class="text-right">{{ formData.comparisionData.history.passbacks | number }}</td>
+                <td class="text-left">{{ formData.comparisionData.current.passbacks | number }}</td>
+                <td class="text-left">{{ formData.comparisionData.history.passbacks | number }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td class="text-capitalize">{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}</td>
-                <td class="text-right">{{ formData.comparisionData.current.fillRate | percentage }}</td>
-                <td class="text-right">{{ formData.comparisionData.history.fillRate | percentage }}</td>
+                <td class="text-left">{{ formData.comparisionData.current.fillRate | percentage }}</td>
+                <td class="text-left">{{ formData.comparisionData.history.fillRate | percentage }}</td>
                 <td></td>
             </tr>
         </table>

@@ -43,7 +43,7 @@
                 'This Month': [moment().startOf('month'), moment().endOf('month')],
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             },
-            opens: 'left'
+            opens: 'right'
         };
 
         const CURRENT_LABEL = 'current';
