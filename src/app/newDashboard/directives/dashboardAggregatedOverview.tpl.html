@@ -128,8 +128,8 @@
                 <!--Current-->
             </th>
             <th class="text-right th-no-border col-sm-2">
-                <span ng-if="compareTypeData.compareType !== 'custom'">Last</span>
-                <!--Last-->
+                <span ng-if="compareTypeData.compareType !== 'custom'">History</span>
+                <!--History-->
             </th>
             <th class="th-no-border"><span style="visibility: hidden">.</span></th>
 
@@ -262,7 +262,7 @@
             </th>
 
             <th class="text-right th-no-border col-sm-2">
-                <span ng-if="compareTypeData.compareType !== 'custom'">Last</span>
+                <span ng-if="compareTypeData.compareType !== 'custom'">History</span>
             </th>
             <th class="th-no-border"><span style="visibility: hidden">.</span></th>
             <!--billedAmount-->
@@ -356,16 +356,43 @@
         </table>
 
 
-        <!--Unified report-->
+        <!--Unified report overview-->
         <table class="table no-border"
-               ng-if="isShowForUnifiedReport() && overviewData.data && overviewData.data.length > 0">
+               ng-if="isShowForUnifiedReport()
+                &&  overviewData.data
+                && overviewData.data.length > 0
+                &&  compareTypeData.compareType === 'yesterday'">
+            <th class="th-no-border col-sm-3"><span style="visibility: hidden">.</span></th>
+            <th class="text-right th-no-border col-sm-3">{{'NEW_DASHBOARD.YESTERDAY' | translate}}</th>
             <th class="th-no-border"><span style="visibility: hidden">.</span></th>
-            <th class="text-right th-no-border"><span style="visibility: hidden">.</span></th>
             <tr ng-repeat="row in customOverviewData">
                 <td class="text-capitalize"><b>{{row.label}}</b></td>
                 <td class="text-right">{{row.value}}</td>
             </tr>
         </table>
+
+        <!--Unified report comparison-->
+        <table class="table no-border"
+               ng-if="isShowForUnifiedReport() &&
+                formData.comparisionData &&
+                formData.comparisionData.length > 0 &&
+                 compareTypeData.compareType !== 'yesterday'">
+            <th class="th-no-border col-sm-2"></th>
+            <th ng-if="compareTypeData.compareType == 'day-over-day'" class="text-right th-no-border col-sm-2">{{ getRecentDay() }}</th>
+            <th ng-if="compareTypeData.compareType != 'day-over-day'" class="text-right th-no-border col-sm-2">Current {{compareTypeData.label}}</th>
+
+            <th ng-if="compareTypeData.compareType == 'day-over-day'" class="text-right th-no-border col-sm-2">{{ getPreviousDay() }}</th>
+            <th ng-if="compareTypeData.compareType != 'day-over-day'" class="text-right th-no-border col-sm-2">History {{compareTypeData.label}}</th>
+            <th class="th-no-border"></th>
+
+            <tr ng-repeat="row in formData.comparisionData">
+                <td class="text-capitalize"><b>{{row.label}}</b></td>
+                <td class="text-right">{{row.current.value}}</td>
+                <td class="text-right">{{row.history.value}}</td>
+                <td></td>
+            </tr>
+        </table>
+
     </div>
 </div>
 
