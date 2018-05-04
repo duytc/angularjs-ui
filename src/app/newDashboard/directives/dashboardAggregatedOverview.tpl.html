@@ -7,6 +7,10 @@
             <div class="col col-sm-10 col-xs-12">
                 <div class="btn-group pull-right">
                     <button type="button" class="btn btn-default btn-sm btn-action"
+                            ng-class="{active: compareTypeData.compareType === 'yesterday'}"
+                            ng-click="onChangeMode('yesterday')">{{'NEW_DASHBOARD.YESTERDAY' | translate}}
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm btn-action"
                             ng-class="{active: compareTypeData.compareType === 'day-over-day'}"
                             ng-click="onChangeMode('day')">{{'NEW_DASHBOARD.DAY_OVER_DAY' | translate}}
                     </button>
@@ -35,10 +39,44 @@
             <alert class="alert alert-warning" ng-show="alertMessage.isShow">{{$scope.alertMessage.content}}</alert>
         </div>
 
-        <!--Display-->
-        <table class="table no-border" ng-if="hasDisplayOverviewTable() || hasDisplayComparisonTable()">
+        <!--Display yesterday-->
+        <table class="table no-border" ng-if="hasDisplayOverviewTable() && compareTypeData.compareType === 'yesterday'">
             <th class="th-no-border fixed-th-width"><span style="visibility: hidden">.</span></th>
             <th class="text-right th-no-border fixed-th-width">{{'NEW_DASHBOARD.YESTERDAY' | translate}}</th>
+            <tr ng-if="isAdmin && hasDisplayOverviewTable()">
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</td>
+                <td class="text-right">{{ customOverviewData.billedAmount | currency }}</td>
+            </tr>
+            <tr>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.REVENUE' | translate }}</td>
+                <td class="text-right">{{ customOverviewData.estRevenue | currency }}</td>
+            </tr>
+            <tr>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}</td>
+                <td class="text-right">{{ customOverviewData.slotOpportunities | number }}</td>
+            </tr>
+            <tr>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}</td>
+                <td class="text-right">{{ customOverviewData.totalOpportunities | number }}</td>
+            </tr>
+            <tr>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.IMPRESSIONS_OPPORTUNITY' | translate }}</td>
+                <td class="text-right">{{ customOverviewData.adOpportunities | number }}</td>
+            </tr>
+            <tr>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}</td>
+                <td class="text-right">{{ customOverviewData.passbacks | number }}</td>
+            </tr>
+            <tr>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}</td>
+                <td class="text-right">{{ customOverviewData.fillRate | percentage }}</td>
+            </tr>
+        </table>
+
+
+        <!--Display comparison-->
+        <table class="table no-border" ng-if="hasDisplayComparisonTable() && compareTypeData.compareType !== 'yesterday'">
+            <th class="th-no-border fixed-th-width"><span style="visibility: hidden">.</span></th>
 
             <th class="text-right th-no-border fixed-th-width">
                 <span ng-if="compareTypeData.compareType !== 'custom'">Current</span>
@@ -75,84 +113,51 @@
                         ng-if="compareTypeData.compareType === 'custom'">Get data
                 </button>
             </th>
+
             <tr>
-                <div ng-if="isAdmin && hasDisplayOverviewTable()">
-                    <td class="text-capitalize">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</td>
-                    <td class="text-right">{{ customOverviewData.billedAmount | currency }}</td>
-                </div>
-                <div ng-if="hasDisplayComparisonTable()">
-                    <td class="text-right">{{ formData.comparisionData.current.billedAmount | currency}}</td>
-                    <td class="text-right">{{ formData.comparisionData.history.billedAmount | currency}}</td>
-                    <td></td>
-                </div>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.billedAmount | currency}}</td>
+                <td class="text-right">{{ formData.comparisionData.history.billedAmount | currency}}</td>
+                <td></td>
             </tr>
             <tr>
-                <div ng-if="hasDisplayOverviewTable()">
-                    <td class="text-capitalize">{{ 'DASHBOARD_MODULE.REVENUE' | translate }}</td>
-                    <td class="text-right">{{ customOverviewData.estRevenue | currency }}</td>
-                </div>
-                <div ng-if="hasDisplayComparisonTable()">
-                    <td class="text-right">{{ formData.comparisionData.current.estRevenue | currency }}</td>
-                    <td class="text-right">{{ formData.comparisionData.history.estRevenue | currency }}</td>
-                    <td></td>
-                </div>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.REVENUE' | translate }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.estRevenue | currency }}</td>
+                <td class="text-right">{{ formData.comparisionData.history.estRevenue | currency }}</td>
+                <td></td>
             </tr>
             <tr>
-                <div ng-if="hasDisplayOverviewTable()">
-                    <td class="text-capitalize">{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}</td>
-                    <td class="text-right">{{ customOverviewData.slotOpportunities | number }}</td>
-                </div>
-                <div ng-if="hasDisplayComparisonTable()">
-                    <td class="text-right">{{ formData.comparisionData.current.slotOpportunities | number }}</td>
-                    <td class="text-right">{{ formData.comparisionData.history.slotOpportunities | number }}</td>
-                    <td></td>
-                </div>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.slotOpportunities | number }}</td>
+                <td class="text-right">{{ formData.comparisionData.history.slotOpportunities | number }}</td>
+                <td></td>
             </tr>
             <tr>
-                <div ng-if="hasDisplayOverviewTable()">
-                    <td class="text-capitalize">{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}</td>
-                    <td class="text-right">{{ customOverviewData.totalOpportunities | number }}</td>
-                </div>
-                <div ng-if="hasDisplayComparisonTable()">
-                    <td class="text-right">{{ formData.comparisionData.current.totalOpportunities | number }}</td>
-                    <td class="text-right">{{ formData.comparisionData.history.totalOpportunities | number }}</td>
-                    <td></td>
-                </div>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.totalOpportunities | number }}</td>
+                <td class="text-right">{{ formData.comparisionData.history.totalOpportunities | number }}</td>
+                <td></td>
             </tr>
             <tr>
-                <div ng-if="hasDisplayOverviewTable()">
-                    <td class="text-capitalize">{{ 'DASHBOARD_MODULE.IMPRESSIONS_OPPORTUNITY' | translate }}</td>
-                    <td class="text-right">{{ customOverviewData.adOpportunities | number }}</td>
-                </div>
-                <div ng-if="hasDisplayComparisonTable()">
-                    <td class="text-right">{{ formData.comparisionData.current.adOpportunities | number }}</td>
-                    <td class="text-right">{{ formData.comparisionData.history.adOpportunities | number }}</td>
-                    <td></td>
-                </div>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.IMPRESSIONS_OPPORTUNITY' | translate }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.adOpportunities | number }}</td>
+                <td class="text-right">{{ formData.comparisionData.history.adOpportunities | number }}</td>
+                <td></td>
             </tr>
             <tr>
-                <div ng-if="hasDisplayOverviewTable()">
-                    <td class="text-capitalize">{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}</td>
-                    <td class="text-right">{{ customOverviewData.passbacks | number }}</td>
-                </div>
-                <div ng-if="hasDisplayComparisonTable()">
-                    <td class="text-right">{{ formData.comparisionData.current.passbacks | number }}</td>
-                    <td class="text-right">{{ formData.comparisionData.history.passbacks | number }}</td>
-                    <td></td>
-                </div>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.passbacks | number }}</td>
+                <td class="text-right">{{ formData.comparisionData.history.passbacks | number }}</td>
+                <td></td>
             </tr>
             <tr>
-                <div ng-if="hasDisplayOverviewTable()">
-                    <td class="text-capitalize">{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}</td>
-                    <td class="text-right">{{ customOverviewData.fillRate | percentage }}</td>
-                </div>
-                <div ng-if="hasDisplayComparisonTable()">
-                    <td class="text-right">{{ formData.comparisionData.current.fillRate | percentage }}</td>
-                    <td class="text-right">{{ formData.comparisionData.history.fillRate | percentage }}</td>
-                    <td></td>
-                </div>
+                <td class="text-capitalize">{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}</td>
+                <td class="text-right">{{ formData.comparisionData.current.fillRate | percentage }}</td>
+                <td class="text-right">{{ formData.comparisionData.history.fillRate | percentage }}</td>
+                <td></td>
             </tr>
         </table>
+
 
         <!--Video-->
         <table class="table no-border" ng-if="hasVideoOverviewTable() || hasVideoComparisonTable()">
@@ -198,12 +203,17 @@
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['billedAmount'] }}</b></td>
                 <div ng-if="isAdmin && hasVideoOverviewTable()">
                     <td class="text-right">
-                        {{ (customOverviewData.billedAmount != null) ? (customOverviewData.billedAmount | currency) : '' }}
+                        {{ (customOverviewData.billedAmount != null) ? (customOverviewData.billedAmount | currency) : ''
+                        }}
                     </td>
                 </div>
                 <div ng-if="hasVideoComparisonTable()">
-                    <td class="text-right">{{ (formData.comparisionData.current.billedAmount != null) ? (formData.comparisionData.current.billedAmount | currency) : '' }}</td>
-                    <td class="text-right">{{ (formData.comparisionData.history.billedAmount != null) ? (formData.comparisionData.history.billedAmount | currency) : '' }}</td>
+                    <td class="text-right">{{ (formData.comparisionData.current.billedAmount != null) ?
+                        (formData.comparisionData.current.billedAmount | currency) : '' }}
+                    </td>
+                    <td class="text-right">{{ (formData.comparisionData.history.billedAmount != null) ?
+                        (formData.comparisionData.history.billedAmount | currency) : '' }}
+                    </td>
                 </div>
                 <td></td>
             </tr>
@@ -217,8 +227,12 @@
                     </td>
                 </div>
                 <div ng-if="hasVideoComparisonTable()">
-                    <td class="text-right">{{ (formData.comparisionData.current.netRevenue != null) ? (formData.comparisionData.current.netRevenue | number) : '' }}</td>
-                    <td class="text-right">{{ (formData.comparisionData.history.netRevenue != null) ? (formData.comparisionData.history.netRevenue | number) : '' }}</td>
+                    <td class="text-right">{{ (formData.comparisionData.current.netRevenue != null) ?
+                        (formData.comparisionData.current.netRevenue | number) : '' }}
+                    </td>
+                    <td class="text-right">{{ (formData.comparisionData.history.netRevenue != null) ?
+                        (formData.comparisionData.history.netRevenue | number) : '' }}
+                    </td>
                 </div>
                 <td></td>
             </tr>
@@ -227,12 +241,17 @@
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['requests'] }}</b></td>
                 <div ng-if="hasVideoOverviewTable()">
-                    <td class="text-right">{{ (customOverviewData.requests != null) ? (customOverviewData.requests | number) : '' }}
+                    <td class="text-right">{{ (customOverviewData.requests != null) ? (customOverviewData.requests |
+                        number) : '' }}
                     </td>
                 </div>
                 <div ng-if="hasVideoComparisonTable()">
-                    <td class="text-right">{{ (formData.comparisionData.current.requests != null) ? (formData.comparisionData.current.requests | number) : '' }}</td>
-                    <td class="text-right">{{ (formData.comparisionData.history.requests != null) ? (formData.comparisionData.history.requests | number) : '' }}</td>
+                    <td class="text-right">{{ (formData.comparisionData.current.requests != null) ?
+                        (formData.comparisionData.current.requests | number) : '' }}
+                    </td>
+                    <td class="text-right">{{ (formData.comparisionData.history.requests != null) ?
+                        (formData.comparisionData.history.requests | number) : '' }}
+                    </td>
                 </div>
                 <td></td>
             </tr>
@@ -246,8 +265,12 @@
                     </td>
                 </div>
                 <div ng-if="hasVideoComparisonTable()">
-                    <td class="text-right">{{ (formData.comparisionData.current.impressions != null) ? (formData.comparisionData.current.impressions | number) : '' }}</td>
-                    <td class="text-right">{{ (formData.comparisionData.history.impressions != null) ? (formData.comparisionData.history.impressions | number) : '' }}</td>
+                    <td class="text-right">{{ (formData.comparisionData.current.impressions != null) ?
+                        (formData.comparisionData.current.impressions | number) : '' }}
+                    </td>
+                    <td class="text-right">{{ (formData.comparisionData.history.impressions != null) ?
+                        (formData.comparisionData.history.impressions | number) : '' }}
+                    </td>
                 </div>
                 <td></td>
             </tr>
@@ -262,8 +285,12 @@
                     </td>
                 </div>
                 <div ng-if="hasVideoComparisonTable()">
-                    <td class="text-right">{{ (formData.comparisionData.current.bids != null) ? (formData.comparisionData.current.bids | number) : '' }}</td>
-                    <td class="text-right">{{ (formData.comparisionData.history.bids != null) ? (formData.comparisionData.history.bids | number) : '' }}</td>
+                    <td class="text-right">{{ (formData.comparisionData.current.bids != null) ?
+                        (formData.comparisionData.current.bids | number) : '' }}
+                    </td>
+                    <td class="text-right">{{ (formData.comparisionData.history.bids != null) ?
+                        (formData.comparisionData.history.bids | number) : '' }}
+                    </td>
                 </div>
                 <td></td>
             </tr>
@@ -277,8 +304,12 @@
                     </td>
                 </div>
                 <div ng-if="hasVideoComparisonTable()">
-                    <td class="text-right">{{ (formData.comparisionData.current.errors != null) ? (formData.comparisionData.current.errors | number) : '' }}</td>
-                    <td class="text-right">{{ (formData.comparisionData.history.errors != null) ? (formData.comparisionData.history.errors | number) : '' }}</td>
+                    <td class="text-right">{{ (formData.comparisionData.current.errors != null) ?
+                        (formData.comparisionData.current.errors | number) : '' }}
+                    </td>
+                    <td class="text-right">{{ (formData.comparisionData.history.errors != null) ?
+                        (formData.comparisionData.history.errors | number) : '' }}
+                    </td>
                 </div>
                 <td></td>
             </tr>
@@ -292,8 +323,12 @@
                     </td>
                 </div>
                 <div ng-if="hasVideoComparisonTable()">
-                    <td class="text-right">{{ (formData.comparisionData.current.blocks != null) ? (formData.comparisionData.current.blocks | number) : '' }}</td>
-                    <td class="text-right">{{ (formData.comparisionData.history.blocks != null) ? (formData.comparisionData.history.blocks | number) : '' }}</td>
+                    <td class="text-right">{{ (formData.comparisionData.current.blocks != null) ?
+                        (formData.comparisionData.current.blocks | number) : '' }}
+                    </td>
+                    <td class="text-right">{{ (formData.comparisionData.history.blocks != null) ?
+                        (formData.comparisionData.history.blocks | number) : '' }}
+                    </td>
                 </div>
                 <td></td>
             </tr>
@@ -303,12 +338,17 @@
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['requestFillRate'] }}</b></td>
                 <div ng-if="hasVideoOverviewTable()">
                     <td class="text-right">
-                        {{ (customOverviewData.requestFillRate != null) ? (customOverviewData.requestFillRate | percentage) : '' }}
+                        {{ (customOverviewData.requestFillRate != null) ? (customOverviewData.requestFillRate |
+                        percentage) : '' }}
                     </td>
                 </div>
                 <div ng-if="hasVideoComparisonTable()">
-                    <td class="text-right">{{ (formData.comparisionData.current.requestFillRate != null) ? (formData.comparisionData.current.requestFillRate | percentage) : '' }}</td>
-                    <td class="text-right">{{ (formData.comparisionData.history.requestFillRate != null) ? (formData.comparisionData.history.requestFillRate | percentage) : '' }}</td>
+                    <td class="text-right">{{ (formData.comparisionData.current.requestFillRate != null) ?
+                        (formData.comparisionData.current.requestFillRate | percentage) : '' }}
+                    </td>
+                    <td class="text-right">{{ (formData.comparisionData.history.requestFillRate != null) ?
+                        (formData.comparisionData.history.requestFillRate | percentage) : '' }}
+                    </td>
                 </div>
                 <td></td>
             </tr>

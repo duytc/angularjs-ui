@@ -52,6 +52,9 @@
             if (mode === 'custom') {
                 return '';
             }
+            if(mode === 'yesterday'){
+                return $translate.instant('NEW_DASHBOARD.YESTERDAY');
+            }
             return '';
         }
 
