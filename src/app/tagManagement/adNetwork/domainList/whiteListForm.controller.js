@@ -167,8 +167,7 @@
                 .catch(
                 function (response) {
                     $scope.formProcessing = false;
-
-                    if(!response.data.errors) {
+                    if (!response.data.errors || [200, 201, 204, 400, 401].indexOf(response.data.code) > -1) {
                         AlertService.replaceAlerts({
                             type: 'error',
                             message: response.data.message
