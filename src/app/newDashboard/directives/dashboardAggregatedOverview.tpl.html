@@ -1,31 +1,36 @@
 <div class="panel panel-default">
-    <div class="panel-heading">{{'NEW_DASHBOARD.OVERVIEW'|translate}}</div>
-    <div class="panel-body">
-
-        <div class="btn-group pull-right">
-            <button type="button" class="btn btn-default btn-sm btn-action"
-                    ng-class="{active: compareTypeData.compareType == 'day-over-day'}"
-                    ng-click="onChangeMode('day')">{{'NEW_DASHBOARD.DAY_OVER_DAY' | translate}}
-            </button>
-            <button type="button" class="btn btn-default btn-sm btn-action"
-                    ng-class="{active: compareTypeData.compareType == 'week-over-week'}"
-                    ng-click="onChangeMode('week')">{{'NEW_DASHBOARD.LAST_7_DAY' | translate}}
-            </button>
-            <button type="button" class="btn btn-default btn-sm btn-action"
-                    ng-class="{active: compareTypeData.compareType == 'month-over-month'}"
-                    ng-click="onChangeMode('month')">{{'NEW_DASHBOARD.LAST_30_DAY' | translate}}
-            </button>
-            <button type="button" class="btn btn-default btn-sm btn-action"
-                    ng-class="{active: compareTypeData.compareType == 'year-over-year'}"
-                    ng-click="onChangeMode('year')">{{'NEW_DASHBOARD.YEAR_TO_DATE' | translate}}
-            </button>
-            <button type="button" class="btn btn-default btn-sm btn-action"
-                    ng-class="{active: compareTypeData.compareType == 'custom'}"
-                    ng-click="onChangeMode('year')">{{'NEW_DASHBOARD.CUSTOM_COMPARISON' | translate}}
-            </button>
+    <div class="panel-heading small-panel-padding">
+        <div class="row align-items-center">
+            <div class="col col-md-2" style="padding-top: 5px;">
+                <span>{{'NEW_DASHBOARD.OVERVIEW'|translate}}</span>
+            </div>
+            <div class="col col-md-10">
+                <div class="btn-group pull-right">
+                    <button type="button" class="btn btn-default btn-sm btn-action"
+                            ng-class="{active: compareTypeData.compareType == 'day-over-day'}"
+                            ng-click="onChangeMode('day')">{{'NEW_DASHBOARD.DAY_OVER_DAY' | translate}}
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm btn-action"
+                            ng-class="{active: compareTypeData.compareType == 'week-over-week'}"
+                            ng-click="onChangeMode('week')">{{'NEW_DASHBOARD.LAST_7_DAY' | translate}}
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm btn-action"
+                            ng-class="{active: compareTypeData.compareType == 'month-over-month'}"
+                            ng-click="onChangeMode('month')">{{'NEW_DASHBOARD.LAST_30_DAY' | translate}}
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm btn-action"
+                            ng-class="{active: compareTypeData.compareType == 'year-over-year'}"
+                            ng-click="onChangeMode('year')">{{'NEW_DASHBOARD.YEAR_TO_DATE' | translate}}
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm btn-action"
+                            ng-class="{active: compareTypeData.compareType == 'custom'}"
+                            ng-click="onChangeMode('year')">{{'NEW_DASHBOARD.CUSTOM_COMPARISON' | translate}}
+                    </button>
+                </div>
+            </div>
         </div>
-
-
+    </div>
+    <div class="panel-body">
         <!--Display-->
         <table class="table no-border" ng-if="isShowForDisplayReport() && overviewData.data">
             <th class="th-no-border"><span style="visibility: hidden">.</span></th>
@@ -98,47 +103,64 @@
 
             <tr ng-if="isAdmin">
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['billedAmount'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.billedAmount != null) ? (customOverviewData.billedAmount | currency) : '' }}</td>
+                <td class="text-right">{{ (customOverviewData.billedAmount != null) ? (customOverviewData.billedAmount |
+                    currency) : '' }}
+                </td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['netRevenue'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.netRevenue != null) ? (customOverviewData.netRevenue | currency) : '' }}</td>
+                <td class="text-right">{{ (customOverviewData.netRevenue != null) ? (customOverviewData.netRevenue |
+                    currency) : '' }}
+                </td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['requests'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.requests != null) ? (customOverviewData.requests | number) : '' }}</td>
+                <td class="text-right">{{ (customOverviewData.requests != null) ? (customOverviewData.requests | number)
+                    : '' }}
+                </td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['impressions'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.impressions != null) ? (customOverviewData.impressions | number) : '' }}</td>
+                <td class="text-right">{{ (customOverviewData.impressions != null) ? (customOverviewData.impressions |
+                    number) : '' }}
+                </td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['bids'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.bids != null) ? (customOverviewData.bids | number) : '' }}</td>
+                <td class="text-right">{{ (customOverviewData.bids != null) ? (customOverviewData.bids | number) : ''
+                    }}
+                </td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['errors'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.errors != null) ? (customOverviewData.errors | number) : '' }}</td>
+                <td class="text-right">{{ (customOverviewData.errors != null) ? (customOverviewData.errors | number) :
+                    '' }}
+                </td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['blocks'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.blocks != null) ? (customOverviewData.blocks | number) : '' }}</td>
+                <td class="text-right">{{ (customOverviewData.blocks != null) ? (customOverviewData.blocks | number) :
+                    '' }}
+                </td>
             </tr>
 
             <tr>
                 <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['requestFillRate'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.requestFillRate != null) ? (customOverviewData.requestFillRate | percentage) : ''  }}</td>
+                <td class="text-right">{{ (customOverviewData.requestFillRate != null) ?
+                    (customOverviewData.requestFillRate | percentage) : '' }}
+                </td>
             </tr>
         </table>
 
         <!--Unified report-->
-        <table class="table no-border" ng-if="isShowForUnifiedReport() && overviewData.data && overviewData.data.length > 0">
+        <table class="table no-border"
+               ng-if="isShowForUnifiedReport() && overviewData.data && overviewData.data.length > 0">
             <th class="th-no-border"><span style="visibility: hidden">.</span></th>
             <th class="text-right th-no-border"><span style="visibility: hidden">.</span></th>
             <tr ng-repeat="row in customOverviewData">
