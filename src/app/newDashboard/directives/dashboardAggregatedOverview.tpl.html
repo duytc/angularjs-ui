@@ -39,6 +39,7 @@
         <div class="clearfix" style="padding: 10px 10px"></div>
 
         <form class="form-inline" role="form" novalidate ng-if="compareTypeData.compareType === 'custom'">
+            <!--currentDateRange-->
             <div class="form-group">
                 <label class="padding-10" for="inputDateRangeCurrent">{{ 'NEW_DASHBOARD.CURRENT_DATE_LABEL' | translate
                     }}</label>
@@ -53,6 +54,7 @@
                            ng-required="true">
                 </div>
             </div>
+            <!--historyDateRange-->
             <div class="form-group">
                 <label class="padding-10" for="inputDateRangeCurrent">{{ 'NEW_DASHBOARD.HISTORY_DATE_LABEL' | translate
                     }}</label>
@@ -69,7 +71,7 @@
             </div>
             <!--Get data-->
             <button type="button" class="btn btn-primary btn-sm" ng-click="getCustomComparisonData()"
-                    ng-if="compareTypeData.compareType === 'custom'">Get data
+                    ng-if="compareTypeData.compareType === 'custom'" ng-disabled="!isValidCustomDateRange()">Get data
             </button>
         </form>
 

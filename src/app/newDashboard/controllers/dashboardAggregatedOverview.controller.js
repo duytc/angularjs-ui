@@ -58,12 +58,12 @@
                 moment().subtract(2, 'days').format('YYYY-MM-DD')
             ],
             currentDateRange: {
-                startDate: $scope.datePickerOpts.ranges['Yesterday'][0],
-                endDate: $scope.datePickerOpts.ranges['Yesterday'][0]
-            },
-            historyDateRange: {
                 startDate: $scope.datePickerOpts.ranges['Today'][0],
                 endDate: $scope.datePickerOpts.ranges['Today'][0]
+            },
+            historyDateRange: {
+                startDate: $scope.datePickerOpts.ranges['Yesterday'][0],
+                endDate: $scope.datePickerOpts.ranges['Yesterday'][0]
             }
         };
 
@@ -74,6 +74,7 @@
         $scope.isShowForDisplayReport = isShowForDisplayReport;
         $scope.isShowForVideoReport = isShowForVideoReport;
         $scope.getCustomComparisonData = getCustomComparisonData;
+        $scope.isValidCustomDateRange = isValidCustomDateRange;
 
         // $scope.columnNameMappingForVideoReport = COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT;
         _getData(false);
@@ -93,7 +94,7 @@
             _getData(false);
         });
         //-----------------------------------------------------------------
-        
+
         /* watch reportView changed, then render for unified report */
         $scope.$watch('overviewData.data', _onOverviewDataChange);
 
@@ -119,6 +120,18 @@
 
         function _onOverviewDataChange() {
             $scope.customOverviewData = _refactorOverviewData();
+        }
+
+        function isValidCustomDateRange() {
+            var customDateRange = extractCustomDateRange();
+            if (!customDateRange) {
+                return false;
+            }
+            console.log(customDateRange);
+            if (customDateRange.current.startDate > customDateRange.history.endDate) {
+                return true;
+            }
+            return false;
         }
 
         function _refactorOverviewData() {
