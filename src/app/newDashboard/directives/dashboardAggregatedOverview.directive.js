@@ -18,7 +18,7 @@
                 compareTypeData: '='
             },
             restrict: 'AE',
-            templateUrl: 'newDashboard/directives/dashboardAggregatedOverview.tpl.html',
+            templateUrl: 'newDashboard/directives/dashboardAggregatedOverview-horizontal.tpl.html',
             controller: 'DashboardAggregatedOverview'
         };
     }
