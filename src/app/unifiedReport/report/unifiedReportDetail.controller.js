@@ -242,10 +242,11 @@
 
             dataService.makeHttpPOSTRequest('', params, API_UNIFIED_END_POINT + '/v1/reportview/download')
                 .then(function (data) {
-                    var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
+                    return data ? window.open(data) : void 0;
+                   /* var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
                     var reportName = !!reportView.name ? reportView.name : 'report-detail';
 
-                    return saveAs(blob, [reportName + '.csv']);
+                    return saveAs(blob, [reportName + '.csv']);*/
                 });
         }
         
