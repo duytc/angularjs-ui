@@ -434,7 +434,7 @@
             }
 
             // validate dynamic ad slot
-            if (!!$scope.adSlot.defaultLibraryAdSlot && (!$scope.adSlot.libraryExpressions || $scope.adSlot.libraryExpressions.length < 1)) {
+            if ((!!$scope.adSlot.defaultLibraryAdSlot || !!$scope.selected.defaultAdSlot) && (!$scope.adSlot.libraryExpressions || $scope.adSlot.libraryExpressions.length < 1)) {
                 return $scope.adSlotLibraryForm.$valid;
             }
 
