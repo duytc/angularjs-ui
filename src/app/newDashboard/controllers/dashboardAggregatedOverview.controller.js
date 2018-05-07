@@ -70,13 +70,9 @@
         $scope.onChangeMode = onChangeMode;
         $scope.getRecentDay = getRecentDay;
         $scope.getPreviousDay = getPreviousDay;
-        $scope.isShowForUnifiedReport = isShowForUnifiedReport;
-        $scope.isShowForDisplayReport = isShowForDisplayReport;
-        $scope.isShowForVideoReport = isShowForVideoReport;
         $scope.getCustomComparisonData = getCustomComparisonData;
         $scope.isValidCustomDateRange = isValidCustomDateRange;
 
-        // $scope.columnNameMappingForVideoReport = COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT;
         _getData(false);
 
         $scope.$watch('dashboardType', function () {
@@ -244,7 +240,7 @@
         }
 
         function getExtraCustomDateRangeParameters(originalParam, param) {
-            if(param.extraData){
+            if (param.extraData) {
                 originalParam.currentStartDate = param.extraData.current.startDate;
                 originalParam.currentEndDate = param.extraData.current.endDate;
                 originalParam.historyStartDate = param.extraData.history.startDate;
@@ -300,21 +296,22 @@
             $scope.comparisionData = [];
             $scope.formData.comparisionData = [];
         }
+
         function onChangeMode(mode) {
             resetFormData();
 
             $scope.compareTypeData.compareType = COMPARE_TYPE[mode];
             $scope.compareTypeData.label = getLabel(mode);
-            if(mode !== $scope.comparisonConst.CUSTOM){
+            if (mode !== $scope.comparisonConst.CUSTOM) {
                 _getData(true);
-            }else {
+            } else {
                 getCustomComparisonData();
             }
         }
 
         function getCustomComparisonData() {
             var customDateRange = extractCustomDateRange();
-            if(customDateRange){
+            if (customDateRange) {
                 _getData(true, customDateRange);
             }
         }
@@ -322,7 +319,7 @@
         function extractCustomDateRange() {
             var current = NewDashboardUtil.getStringDate($scope.formData.currentDateRange);
             var history = NewDashboardUtil.getStringDate($scope.formData.historyDateRange);
-            if(current && history){
+            if (current && history) {
                 return {
                     current: current,
                     history: history

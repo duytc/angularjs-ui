@@ -30,6 +30,7 @@
                     ng-click="onChangeMode('year')">{{'NEW_DASHBOARD.YEAR_TO_DATE' | translate}}
             </button>
             <button type="button" class="btn btn-default btn-action"
+                    ng-if="isShowForDisplayReport()"
                     ng-class="{active: compareTypeData.compareType === 'custom'}"
                     ng-click="onChangeMode('custom')">{{'NEW_DASHBOARD.CUSTOM_COMPARISON' | translate}}
             </button>
