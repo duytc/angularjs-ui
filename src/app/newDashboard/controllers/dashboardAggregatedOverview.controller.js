@@ -128,7 +128,7 @@
             }else if($scope.compareTypeData.compareType === 'custom'){
                 history.label = $translate.instant('NEW_DASHBOARD.HISTORY')+ ' ' + dateRangeString(history.dateRange);
             }else {
-                history.label = $translate.instant('NEW_DASHBOARD.HISTORY')+ ' ' + $scope.compareTypeData.label;
+                history.label = $translate.instant('NEW_DASHBOARD.LAST')+ ' ' + $scope.compareTypeData.label;
             }
 
             arr.push(current);
@@ -170,7 +170,6 @@
             if (!customDateRange) {
                 return false;
             }
-            console.log(customDateRange);
             if (customDateRange.current.startDate > customDateRange.history.endDate) {
                 return true;
             }

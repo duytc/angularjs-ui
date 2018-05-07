@@ -1365,7 +1365,8 @@
                 "MONTH_LABEL":"Month",
                 "YEAR_LABEL":"Year",
                 "CURRENT":"Current",
-                "HISTORY":"History"
+                "HISTORY":"History",
+                "LAST":"Last"
             },
             "AUTO_OPTIMIZE_INTEGRATION_MODULE": {
                 "ACTIVE_AUTO_OPTIMIZE_INTEGRATION": "Active Optimization Integration",
