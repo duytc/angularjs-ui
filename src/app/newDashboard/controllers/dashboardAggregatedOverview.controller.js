@@ -239,7 +239,7 @@
         }
 
         function _getVideoComparision(param, isClickChangeMode) {
-            var apiParams = getExtraCustomDateRangeParameters({}, param);
+            var apiParams = getExtraCustomDateRangeParameters({type: $scope.compareTypeData.compareType}, param);
             videoReportService.getComparision(apiParams).then(function (data) {
                 $scope.comparisionData = data;
                 $scope.formData.comparisionData = _extractComparisionData(data, $scope.dashboardType);
