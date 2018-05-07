@@ -15,7 +15,8 @@
                 chartFollow: '=',
                 reportView: '=',
                 comparisionData: '=',
-                compareTypeData: '='
+                compareTypeData: '=',
+                dateRange: "="
             },
             restrict: 'AE',
             templateUrl: 'newDashboard/directives/dashboardAggregatedOverview-horizontal.tpl.html',

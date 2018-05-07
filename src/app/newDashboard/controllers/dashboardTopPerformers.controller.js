@@ -97,6 +97,8 @@
         /* watch dateRange changed, then re-get data for display or video or unified report */
         $scope.$watch('dateRange', _onDateRangeChange);
 
+        $scope.$watch('comparisionData', _onComparisionDataChange);
+
         /* all scope functions ===================== */
         function isShowForDisplay() {
             return DASHBOARD_TYPE_JSON[$scope.dashboardType.id] === DASHBOARD_TYPE_JSON.DISPLAY;
@@ -189,6 +191,14 @@
             _updateTopPerformersForUnifiedReport();
         }
 
+        function _onComparisionDataChange() {
+            if(!$scope.comparisionData || $scope.comparisionData.length === 0) return;
+            var dateRange = {
+                startDate: $scope.comparisionData.startEndDateCurrent.startDate,
+                endDate: $scope.comparisionData.startEndDateCurrent.endDate
+            };
+            _updateTopPerformersForDisplay(dateRange);
+        }
         function _onDateRangeChange(newValue, oldValue, scope) {
             if (!NewDashboardUtil.isDifferentDate(newValue, oldValue)) {
                 return; // ignore if date range not change. Case: move cursor in date range picker value
@@ -207,8 +217,13 @@
             }
         }
 
-        function _updateTopPerformersForDisplay() {
-            var stringDate = NewDashboardUtil.getStringDate($scope.dateRange);
+        function _updateTopPerformersForDisplay(dateRange) {
+            var stringDate= null;
+            if(dateRange){
+                stringDate = dateRange;
+            }else {
+                stringDate = NewDashboardUtil.getStringDate($scope.dateRange);
+            }
             var params = {
                 startDate: stringDate.startDate,
                 endDate: stringDate.endDate
