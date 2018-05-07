@@ -43,7 +43,7 @@
             <div class="row">
                 <!--currentDateRange-->
                 <div class="form-group col col-sm-2 col-xs-12">
-                    <label class="" for="inputDateRangeCurrent">
+                    <label for="inputDateRangeCurrent">
                         {{ 'NEW_DASHBOARD.CURRENT_DATE_LABEL' | translate }}</label>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -58,7 +58,7 @@
                 </div>
                 <!--historyDateRange-->
                 <div class="form-group col col-sm-2 col-xs-12">
-                    <label class="" for="inputDateRangeCurrent">
+                    <label for="inputDateRangeCurrent">
                         {{ 'NEW_DASHBOARD.HISTORY_DATE_LABEL' | translate }}</label>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -85,77 +85,45 @@
         </form>
 
         <!--Display yesterday-->
-        <table class="table no-border" ng-if="hasDisplayOverviewTable() && compareTypeData.compareType === 'yesterday'">
-            <!--<th><span></span></th>-->
-            <th ng-if="isAdmin">
-                <span class="text-capitalize">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</span>
-            </th>
-            <th><span class="text-capitalize">{{ 'DASHBOARD_MODULE.REVENUE' | translate }}</span></th>
-            <th><span class="text-capitalize">{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}</span></th>
-            <th><span class="text-capitalize">{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}</span></th>
-            <th><span class="text-capitalize">{{ 'DASHBOARD_MODULE.IMPRESSIONS_OPPORTUNITY' | translate }}</span></th>
-            <th><span class="text-capitalize">{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}</span></th>
-            <th><span class="text-capitalize">{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}</span></th>
+        <div class="table-responsive">
+            <table class="table no-border" ng-if="hasDisplayOverviewTable() && compareTypeData.compareType === 'yesterday'" at-table at-list="customOverviewTableData">
+                <thead></thead>
+                <tbody>
+                <tr>
+                    <td at-attribute="billedAmount" at-title="{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}" ng-if="isAdmin">{{ customOverviewData.billedAmount | currency }}</td>
+                    <td at-attribute="estRevenue" at-title="{{ 'DASHBOARD_MODULE.REVENUE' | translate }}">{{ customOverviewData.estRevenue | currency }}</td>
+                    <td at-attribute="slotOpportunities" at-title="{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}">{{ customOverviewData.slotOpportunities | number }}</td>
+                    <td at-attribute="totalOpportunities" at-title="{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}">{{ customOverviewData.totalOpportunities | number }}</td>
+                    <td at-attribute="adOpportunities" at-title="{{ 'DASHBOARD_MODULE.IMPRESSIONS_OPPORTUNITY' | translate }}">{{ customOverviewData.adOpportunities | number }}</td>
+                    <td at-attribute="passbacks" at-title="{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}">{{ customOverviewData.passbacks | number }}</td>
+                    <td at-attribute="fillRate" at-title="{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}">{{ customOverviewData.fillRate | percentage }}</td>
+                </tr>
+                </tbody>
 
-            <tr>
-                <!--<td class="text-left">{{'NEW_DASHBOARD.YESTERDAY' | translate}}</td>-->
-                <td class="text-left" ng-if="isAdmin">{{ customOverviewData.billedAmount | currency }}</td>
-                <td class="text-left">{{ customOverviewData.estRevenue | currency }}</td>
-                <td class="text-left">{{ customOverviewData.slotOpportunities | number }}</td>
-                <td class="text-left">{{ customOverviewData.totalOpportunities | number }}</td>
-                <td class="text-left">{{ customOverviewData.adOpportunities | number }}</td>
-                <td class="text-left">{{ customOverviewData.passbacks | number }}</td>
-                <td class="text-left">{{ customOverviewData.fillRate | percentage }}</td>
-            </tr>
-        </table>
-
+            </table>
+        </div>
 
         <!--Display comparison-->
-        <table class="table no-border table-responsive"
-               ng-if="hasDisplayComparisonTable() && compareTypeData.compareType !== 'yesterday'">
-            <th><span></span></th>
-            <th ng-if="isAdmin">
-                <span class="text-capitalize">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</span>
-            </th>
-            <th><span class="text-capitalize">{{ 'DASHBOARD_MODULE.REVENUE' | translate }}</span></th>
-            <th><span class="text-capitalize">{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}</span></th>
-            <th><span class="text-capitalize">{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}</span></th>
-            <th><span class="text-capitalize">{{ 'DASHBOARD_MODULE.IMPRESSIONS_OPPORTUNITY' | translate }}</span></th>
-            <th><span class="text-capitalize">{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}</span></th>
-            <th><span class="text-capitalize">{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}</span></th>
+        <div class="table-responsive">
+            <table class="table no-border" ng-if="hasDisplayComparisonTable() && compareTypeData.compareType !== 'yesterday'" at-table at-list="getComparisonTableData()">
+                <thead>
+                </thead>
 
+                <tbody>
+                <tr>
+                    <td><strong>{{item.label}}</strong></td>
+                    <td at-attribute="billedAmount" at-title="{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}" ng-if="isAdmin">{{ item.billedAmount | currency}}</td>
+                    <td at-attribute="estRevenue" at-title="{{ 'DASHBOARD_MODULE.REVENUE' | translate }}">{{ item.estRevenue | currency }}</td>
+                    <td at-attribute="slotOpportunities" at-title="{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}">{{ item.slotOpportunities | number }}</td>
+                    <td at-attribute="totalOpportunities" at-title="{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}">{{ item.totalOpportunities | number }}</td>
+                    <td at-attribute="adOpportunities" at-title="{{ 'DASHBOARD_MODULE.IMPRESSIONS_OPPORTUNITY' | translate }}">{{ item.adOpportunities | number }}</td>
+                    <td at-attribute="passbacks" at-title="{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}">{{ item.passbacks | number }}</td>
+                    <td at-attribute="fillRate" at-title="{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}">{{ item.fillRate | percentage }}</td>
+                </tr>
 
-            <!--current-->
-            <tr>
-                <td ng-if="compareTypeData.compareType == 'day-over-day'" class=""><strong>{{getRecentDay()}}</strong></td>
-                <td ng-if="compareTypeData.compareType == 'custom'" class=""><strong>{{dateRangeString(formData.currentDateRange)}}</strong></td>
-                <td ng-if="compareTypeData.compareType != 'day-over-day' && compareTypeData.compareType != 'custom'"class=""><strong>Current {{compareTypeData.label}}</strong></td>
-
-                <td>{{ formData.comparisionData.current.billedAmount | currency}}</td>
-                <td>{{ formData.comparisionData.current.estRevenue | currency }}</td>
-                <td>{{ formData.comparisionData.current.slotOpportunities | number }}</td>
-                <td>{{ formData.comparisionData.current.totalOpportunities | number }}</td>
-                <td>{{ formData.comparisionData.current.adOpportunities | number }}</td>
-                <td>{{ formData.comparisionData.current.passbacks | number }}</td>
-                <td>{{ formData.comparisionData.current.fillRate | percentage }}</td>
-            </tr>
-
-            <!--history-->
-            <tr>
-                <td ng-if="compareTypeData.compareType == 'day-over-day'" class=" col-sm-2"><strong>{{getPreviousDay() }}</strong></td>
-                <td ng-if="compareTypeData.compareType == 'custom'" class=" col-sm-2"><strong>{{dateRangeString(formData.historyDateRange)}}</strong></td>
-                <td ng-if="compareTypeData.compareType != 'day-over-day' && compareTypeData.compareType != 'custom'"class=" col-sm-2"><strong>Last {{compareTypeData.label}}</strong></td>
-
-                <td ng-if="isAdmin">{{ formData.comparisionData.history.billedAmount | currency}}</td>
-                <td>{{ formData.comparisionData.history.estRevenue | currency }}</td>
-                <td>{{ formData.comparisionData.history.slotOpportunities | number }}</td>
-                <td>{{ formData.comparisionData.history.totalOpportunities | number }}</td>
-                <td>{{ formData.comparisionData.history.adOpportunities | number }}</td>
-                <td>{{ formData.comparisionData.history.passbacks | number }}</td>
-                <td>{{ formData.comparisionData.history.fillRate | percentage }}</td>
-            </tr>
-
-        </table>
+                </tbody>
+            </table>
+        </div>
 
 
         <!--Video Yesterday-->
@@ -195,8 +163,8 @@
 
             <!--current-->
             <tr >
-                <td ng-if="compareTypeData.compareType == 'day-over-day'" class=""><strong>{{getRecentDay()}}</strong></td>
-                <td ng-if="compareTypeData.compareType == 'custom'" class=""><strong>{{dateRangeString(formData.currentDateRange)}}</strong></td>
+                <td ng-if="compareTypeData.compareType == 'day-over-day'"><strong>{{getRecentDay()}}</strong></td>
+                <td ng-if="compareTypeData.compareType == 'custom'"><strong>{{dateRangeString(formData.currentDateRange)}}</strong></td>
                 <td ng-if="compareTypeData.compareType != 'day-over-day' && compareTypeData.compareType != 'custom'"class=""><strong>Current {{compareTypeData.label}}</strong></td>
                 <td>{{ (formData.comparisionData.current.billedAmount != null) ? (formData.comparisionData.current.billedAmount | currency) : '' }} </td>
                 <td>{{ (formData.comparisionData.current.netRevenue != null) ? (formData.comparisionData.current.netRevenue | number) : '' }} </td>
@@ -209,8 +177,8 @@
             </tr>
             <!--history-->
             <tr>
-                <td ng-if="compareTypeData.compareType == 'day-over-day'" class=""><strong>{{getPreviousDay()}}</strong></td>
-                <td ng-if="compareTypeData.compareType == 'custom'" class=""><strong>{{dateRangeString(formData.historyDateRange)}}</strong></td>
+                <td ng-if="compareTypeData.compareType == 'day-over-day'"><strong>{{getPreviousDay()}}</strong></td>
+                <td ng-if="compareTypeData.compareType == 'custom'"><strong>{{dateRangeString(formData.historyDateRange)}}</strong></td>
                 <td ng-if="compareTypeData.compareType != 'day-over-day' && compareTypeData.compareType != 'custom'"class=""><strong>Last {{compareTypeData.label}}</strong></td>
                 <td ng-if="isAdmin">{{ (formData.comparisionData.history.billedAmount != null) ? (formData.comparisionData.history.billedAmount | currency) : '' }}</td>
                 <td>{{ (formData.comparisionData.history.netRevenue != null) ? (formData.comparisionData.history.netRevenue | number) : '' }}</td>

@@ -8,7 +8,7 @@
     function DashboardAggregatedOverview($scope, Auth, DASHBOARD_TYPE_JSON, COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT,
                                          $timeout, COMPARE_TYPE, videoReportService, ASC, reportRestangular, DESC,
                                          CHART_FOLLOW, ADMIN_DISPLAY_COMPARISION, PUBLISHER_DISPLAY_COMPARISION,
-                                         DISPLAY_SHOW_FIELDS, unifiedReportComparisionRestangular, NewDashboardUtil) {
+                                         DISPLAY_SHOW_FIELDS, unifiedReportComparisionRestangular, NewDashboardUtil, $translate) {
         $scope.isAdmin = Auth.isAdmin();
 
         $scope.resetOverviewData = resetOverviewData;
@@ -25,6 +25,7 @@
         $scope.columnNameMappingForVideoReport = COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT;
 
         $scope.customOverviewData = _refactorOverviewData();
+        $scope.customOverviewTableData = getCustomOverviewTableData();
 
 
         // ----------------------COMPARISION----------------------
@@ -68,6 +69,7 @@
                 endDate: $scope.datePickerOpts.ranges['Yesterday'][0]
             }
         };
+        $scope.getComparisonTableData = getComparisonTableData;
 
         $scope.onChangeMode = onChangeMode;
         $scope.getRecentDay = getRecentDay;
@@ -96,6 +98,49 @@
         /* watch reportView changed, then render for unified report */
         $scope.$watch('overviewData.data', _onOverviewDataChange);
 
+
+        function getComparisonTableData() {
+            var arr = [];
+            var current = $scope.formData.comparisionData.current;
+            var history = $scope.formData.comparisionData.history;
+
+            if(!current || !history){
+                 return [];
+            }
+
+            current.dateRange = $scope.formData.currentDateRange;
+
+            if($scope.compareTypeData.compareType === COMPARE_TYPE['day']) {
+                current.label = getRecentDay();
+            }else if($scope.compareTypeData.compareType === COMPARE_TYPE['custom']){
+                current.label = $translate.instant('NEW_DASHBOARD.CURRENT')+ ' ' + dateRangeString(current.dateRange);
+            }else {
+                current.label = $translate.instant('NEW_DASHBOARD.CURRENT')+ ' ' + $scope.compareTypeData.label;
+            }
+
+
+
+            history.dateRange = $scope.formData.historyDateRange;
+            history.label = $translate.instant('NEW_DASHBOARD.HISTORY');
+
+            if($scope.compareTypeData.compareType === 'day-over-day') {
+                history.label = getRecentDay();
+            }else if($scope.compareTypeData.compareType === 'custom'){
+                history.label = $translate.instant('NEW_DASHBOARD.HISTORY')+ ' ' + dateRangeString(history.dateRange);
+            }else {
+                history.label = $translate.instant('NEW_DASHBOARD.HISTORY')+ ' ' + $scope.compareTypeData.label;
+            }
+
+            arr.push(current);
+            arr.push(history);
+
+            return arr;
+        }
+        function getCustomOverviewTableData() {
+            var arr = [];
+            arr.push($scope.customOverviewData);
+            return arr;
+        }
         function hasVideoOverviewTable() {
             return isShowForVideoReport() && $scope.overviewData.data;
         }
@@ -213,6 +258,9 @@
         }
 
         function _getData(isClickChangeMode, customDateRange) {
+            if( $scope.compareTypeData.compareType == 'yesterday'){
+                return;
+            }
             var param = {
                 type: $scope.compareTypeData.compareType,
                 extraData: customDateRange

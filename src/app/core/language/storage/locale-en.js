@@ -1351,7 +1351,6 @@
                 "LAST_30_DAY": "Last 30 Day Comparison",
                 "YEAR_TO_DATE": "Year to date Comparison",
                 "CUSTOM_COMPARISON": "Custom Comparison",
-
                 "COMPARISION": "Comparision",
                 "METRICS_PLACE_HOLDER": "Select Metrics ...",
                 "TOP_PERFORMERS": "Top Performers",
@@ -1364,7 +1363,9 @@
                 "DAY_LABEL":"Day",
                 "WEEK_LABEL":"Week",
                 "MONTH_LABEL":"Month",
-                "YEAR_LABEL":"Year"
+                "YEAR_LABEL":"Year",
+                "CURRENT":"Current",
+                "HISTORY":"History"
             },
             "AUTO_OPTIMIZE_INTEGRATION_MODULE": {
                 "ACTIVE_AUTO_OPTIMIZE_INTEGRATION": "Active Optimization Integration",
