@@ -112,7 +112,7 @@
 
         <!--Display comparison-->
         <table class="table no-border table-responsive"
-               ng-if="hasDisplayComparisonTable() && compareTypeData.compareType !== 'yesterday' && isValidCustomDateRange()">
+               ng-if="hasDisplayComparisonTable() && compareTypeData.compareType !== 'yesterday'">
             <th><span></span></th>
             <th ng-if="isAdmin">
                 <span class="text-capitalize">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</span>
@@ -159,86 +159,34 @@
 
 
         <!--Video Yesterday-->
-        <table class="table no-border table-responsive"
-               ng-if="hasVideoOverviewTable() && compareTypeData.compareType === 'yesterday'">
-            <th class="th-no-border col-sm-3"><span style="visibility: hidden">.</span></th>
-            <th class="text-left th-no-border col-sm-3">{{'NEW_DASHBOARD.YESTERDAY' | translate}}</th>
-            <th class="th-no-border"><span style="visibility: hidden">.</span></th>
+        <table class="table no-border table-responsive" ng-if="hasVideoOverviewTable() && compareTypeData.compareType === 'yesterday'">
+            <th ng-if="isAdmin" class="text-capitalize">{{ columnNameMappingForVideoReport['billedAmount'] }}</th>
+            <th class="text-capitalize">{{ columnNameMappingForVideoReport['netRevenue'] }}</th>
+            <th class="text-capitalize">{{ columnNameMappingForVideoReport['requests'] }}</th>
+            <th class="text-capitalize">{{ columnNameMappingForVideoReport['impressions'] }}</th>
+            <th class="text-capitalize">{{ columnNameMappingForVideoReport['bids'] }}</th>
+            <th class="text-capitalize">{{ columnNameMappingForVideoReport['errors'] }}</th>
+            <th class="text-capitalize">{{ columnNameMappingForVideoReport['blocks'] }}</th>
+            <th class="text-capitalize">{{ columnNameMappingForVideoReport['requestFillRate'] }}</th>
 
-            <!--billedAmount-->
-            <tr ng-if="isAdmin">
-                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['billedAmount'] }}</b></td>
-                <td class="text-right">
-                    {{ (customOverviewData.billedAmount != null) ? (customOverviewData.billedAmount | currency) : '' }}
-                </td>
-                <td></td>
-            </tr>
-            <!--netRevenue-->
-            <tr>
-                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['netRevenue'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.netRevenue != null) ? (customOverviewData.netRevenue |
-                    currency) : '' }}
-                </td>
-                <td></td>
-            </tr>
-            <!--requests-->
-            <tr>
-                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['requests'] }}</b></td>
-                <td class="text-right">{{ (customOverviewData.requests != null) ? (customOverviewData.requests |
-                    number) : '' }}
-                </td>
-                <td></td>
-            </tr>
-            <!--impressions-->
-            <tr>
-                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['impressions'] }}</b></td>
-                <td class="text-right">
-                    {{ (customOverviewData.impressions != null) ? (customOverviewData.impressions | number) : '' }}
-                </td>
-                <td></td>
-            </tr>
-            <!--bids-->
-            <tr>
-                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['bids'] }}</b></td>
-                <td class="text-right">
-                    {{ (customOverviewData.bids != null) ? (customOverviewData.bids | number) : '' }}
-                </td>
-                <td></td>
-            </tr>
-
-            <!--errors-->
-            <tr>
-                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['errors'] }}</b></td>
-                <td class="text-right">
-                    {{ (customOverviewData.errors != null) ? (customOverviewData.errors | number) : '' }}
-                </td>
-                <td></td>
-            </tr>
-            <!--blocks-->
-            <tr>
-                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['blocks'] }}</b></td>
-                <td class="text-right">
-                    {{ (customOverviewData.blocks != null) ? (customOverviewData.blocks | number) : '' }}
-                </td>
-                <td></td>
-            </tr>
-            <!--requestFillRate-->
-            <tr>
-                <td class="text-capitalize"><b>{{ columnNameMappingForVideoReport['requestFillRate'] }}</b></td>
-                <td class="text-right">
-                    {{ (customOverviewData.requestFillRate != null) ? (customOverviewData.requestFillRate |
-                    percentage) : '' }}
-                </td>
-                <td></td>
+            <tr >
+                <td ng-if="isAdmin">{{(customOverviewData.billedAmount != null) ? (customOverviewData.billedAmount | currency) : '' }}</td>
+                <td>{{ (customOverviewData.netRevenue != null) ? (customOverviewData.netRevenue | currency) : '' }}</td>
+                <td>{{ (customOverviewData.requests != null) ? (customOverviewData.requests |number) : '' }}</td>
+                <td>{{ (customOverviewData.impressions != null) ? (customOverviewData.impressions | number) : '' }}</td>
+                <td>{{ (customOverviewData.bids != null) ? (customOverviewData.bids | number) : '' }}</td>
+                <td>{{ (customOverviewData.errors != null) ? (customOverviewData.errors | number) : '' }}</td>
+                <td>{{ (customOverviewData.blocks != null) ? (customOverviewData.blocks | number) : '' }}</td>
+                <td>{{ (customOverviewData.requestFillRate != null) ? (customOverviewData.requestFillRate | percentage) : '' }}</td>
             </tr>
         </table>
 
         <!--Video Comparison-->
         <table class="table no-border table-responsive"
                ng-if="compareTypeData.compareType !== 'yesterday' && hasVideoComparisonTable()">
-            <th class="th-no-border col-sm-2"><span style="visibility: hidden">.</span></th>
+            <th class="col-sm-2"><span style="visibility: hidden">.</span></th>
 
-            <th ng-if="compareTypeData.compareType == 'day-over-day'" class="text-right th-no-border col-sm-2">{{
+            <th ng-if="compareTypeData.compareType == 'day-over-day'" class="text-right col-sm-2">{{
                 getRecentDay() }}
             </th>
             <th ng-if="compareTypeData.compareType != 'day-over-day'" class="text-right th-no-border col-sm-2">Current
