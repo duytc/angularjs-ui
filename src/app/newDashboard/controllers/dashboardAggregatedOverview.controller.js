@@ -115,7 +115,7 @@
             if($scope.compareTypeData.compareType === COMPARE_TYPE['day']) {
                 current.label = getRecentDay();
             }else if($scope.compareTypeData.compareType === COMPARE_TYPE['custom']){
-                current.label = $translate.instant('NEW_DASHBOARD.CURRENT')+ ' ' + dateRangeString(current.dateRange);
+                current.label = $translate.instant('NEW_DASHBOARD.CURRENT')+ ' (' + dateRangeString(current.dateRange) + ')';
             }else {
                 current.label = $translate.instant('NEW_DASHBOARD.CURRENT')+ ' ' + $scope.compareTypeData.label;
             }
@@ -128,7 +128,7 @@
             if($scope.compareTypeData.compareType === 'day-over-day') {
                 history.label = getRecentDay();
             }else if($scope.compareTypeData.compareType === 'custom'){
-                history.label = $translate.instant('NEW_DASHBOARD.HISTORY')+ ' ' + dateRangeString(history.dateRange);
+                history.label = $translate.instant('NEW_DASHBOARD.HISTORY')+ ' (' + dateRangeString(history.dateRange) + ')';
             }else {
                 history.label = $translate.instant('NEW_DASHBOARD.LAST')+ ' ' + $scope.compareTypeData.label;
             }
