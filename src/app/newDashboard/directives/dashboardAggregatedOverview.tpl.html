@@ -40,7 +40,7 @@
 
         <form class="form-inline" role="form" novalidate ng-if="compareTypeData.compareType === 'custom'">
             <div class="form-group">
-                <label class="padding-10" for="inputDateRangeCurrent">{{ 'NEW_DASHBOARD.DATE_LABEL' | translate
+                <label class="padding-10" for="inputDateRangeCurrent">{{ 'NEW_DASHBOARD.CURRENT_DATE_LABEL' | translate
                     }}</label>
                 <div class="input-group padding-10">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -54,7 +54,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="padding-10" for="inputDateRangeCurrent">{{ 'NEW_DASHBOARD.DATE_LABEL' | translate
+                <label class="padding-10" for="inputDateRangeCurrent">{{ 'NEW_DASHBOARD.HISTORY_DATE_LABEL' | translate
                     }}</label>
                 <div class="input-group padding-10">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -368,6 +368,7 @@
             <tr ng-repeat="row in customOverviewData">
                 <td class="text-capitalize"><b>{{row.label}}</b></td>
                 <td class="text-right">{{row.value}}</td>
+                <td></td>
             </tr>
         </table>
 

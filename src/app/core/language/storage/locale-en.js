@@ -1339,6 +1339,8 @@
                 "SELECT_PLACE_HOLDER": "Select report",
                 "SELECT_PLACE_HOLDER_MASTER_REPORT": "Master report",
                 "DATE_LABEL": "Date Range",
+                "CURRENT_DATE_LABEL": "Current Date Range",
+                "HISTORY_DATE_LABEL": "History Date Range",
                 "OVERVIEW": "Overview",
                 "DAY_OVER_DAY": "Day Over Day",
                 "WEEK_OVER_WEEK": "Week Over Week",
