@@ -55,7 +55,7 @@
         // $scope.currentModel = $scope.compareTypeData;
 
         $scope.formData = {
-            comparisionData: [],
+            comparisionData: $scope.compareTypeData,
             dayValuesForDayOverDay: [
                 moment().subtract(1, 'days').format('YYYY-MM-DD'),
                 moment().subtract(2, 'days').format('YYYY-MM-DD')
@@ -77,19 +77,21 @@
         $scope.getCustomComparisonData = getCustomComparisonData;
         $scope.isValidCustomDateRange = isValidCustomDateRange;
 
+
+        console.log($scope.formData.comparisionData);
         _getData(false);
 
         $scope.$watch('dashboardType', function () {
             resetFormData();
             // reset to default
-            $scope.compareTypeData.compareType = COMPARE_TYPE['day'];
+            $scope.compareTypeData.compareType = COMPARE_TYPE['yesterday'];
 
             _getData(false);
         });
 
         $scope.$watch('reportView', function () {
             // reset to default
-            $scope.compareTypeData.compareType = COMPARE_TYPE['day'];
+            $scope.compareTypeData.compareType = COMPARE_TYPE['yesterday'];
 
             _getData(false);
         });
@@ -257,9 +259,9 @@
         }
 
         function _getData(isClickChangeMode, customDateRange) {
-            if( $scope.compareTypeData.compareType == 'yesterday'){
-                return;
-            }
+            // if( $scope.compareTypeData.compareType == 'yesterday'){
+            //     return;
+            // }
             var param = {
                 type: $scope.compareTypeData.compareType,
                 extraData: customDateRange

@@ -31,8 +31,8 @@
 
         $scope.formData = {
             compareTypeData: {
-                compareType: COMPARE_TYPE['day'],
-                label: NewDashboardUtil.getCompareLabel('day')
+                compareType: COMPARE_TYPE['yesterday'],
+                label: NewDashboardUtil.getCompareLabel('yesterday')
             },
             comparisionData: [],
             unifiedReportingOptions: [],
