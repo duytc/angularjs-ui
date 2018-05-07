@@ -20,6 +20,8 @@
         $scope.hasVideoOverviewTable = hasVideoOverviewTable;
         $scope.hasVideoComparisonTable = hasVideoComparisonTable;
 
+        $scope.dateRangeString = dateRangeString;
+
         $scope.columnNameMappingForVideoReport = COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT;
 
         $scope.customOverviewData = _refactorOverviewData();
@@ -128,6 +130,18 @@
                 return true;
             }
             return false;
+        }
+
+        function getStringDate(date) {
+            return NewDashboardUtil.getStringDate(date);
+        }
+
+        function dateRangeString(date) {
+            var dateRange = getStringDate(date);
+            if (dateRange) {
+                return dateRange.startDate + ' - ' + dateRange.endDate;
+            }
+            return '';
         }
 
         function _refactorOverviewData() {

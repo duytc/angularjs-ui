@@ -133,10 +133,12 @@
             <th class="th-no-border col-sm-2"><span style="visibility: hidden">.</span></th>
 
             <th ng-if="compareTypeData.compareType == 'day-over-day'" class="text-right th-no-border col-sm-2">{{ getRecentDay() }}</th>
-            <th ng-if="compareTypeData.compareType != 'day-over-day'" class="text-right th-no-border col-sm-2">Current {{compareTypeData.label}}</th>
+            <th ng-if="compareTypeData.compareType == 'custom'" class="text-right th-no-border col-sm-2">{{dateRangeString(formData.currentDateRange)}}</th>
+            <th ng-if="compareTypeData.compareType != 'day-over-day' && compareTypeData.compareType != 'custom'" class="text-right th-no-border col-sm-2">Current {{compareTypeData.label}}</th>
 
             <th ng-if="compareTypeData.compareType == 'day-over-day'" class="text-right th-no-border col-sm-2">{{ getPreviousDay() }}</th>
-            <th ng-if="compareTypeData.compareType != 'day-over-day'" class="text-right th-no-border col-sm-2">Last {{compareTypeData.label}}</th>
+            <th ng-if="compareTypeData.compareType == 'custom'" class="text-right th-no-border col-sm-2">{{dateRangeString(formData.historyDateRange)}}</th>
+            <th ng-if="compareTypeData.compareType != 'day-over-day' && compareTypeData.compareType != 'custom'" class="text-right th-no-border col-sm-2">Last {{compareTypeData.label}}</th>
 
             <th class="th-no-border"><span style="visibility: hidden">.</span></th>
 
