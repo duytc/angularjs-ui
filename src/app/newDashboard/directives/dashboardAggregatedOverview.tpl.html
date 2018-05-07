@@ -38,41 +38,47 @@
 
         <div class="clearfix" style="padding: 10px 10px"></div>
 
-        <form class="form-inline" role="form" novalidate ng-if="compareTypeData.compareType === 'custom'">
-            <!--currentDateRange-->
-            <div class="form-group">
-                <label class="padding-10" for="inputDateRangeCurrent">{{ 'NEW_DASHBOARD.CURRENT_DATE_LABEL' | translate
-                    }}</label>
-                <div class="input-group padding-10">
-                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <input date-range-picker
-                           options="datePickerOpts"
-                           class="input-sm form-control date-picker date-picker-new-dashboard"
-                           type="text"
-                           id="inputDateRangeCurrent"
-                           ng-model="formData.currentDateRange"
-                           ng-required="true">
+        <form role="form" novalidate ng-if="compareTypeData.compareType === 'custom'">
+            <div class="row">
+                <!--currentDateRange-->
+                <div class="form-group col col-sm-2">
+                    <label class="" for="inputDateRangeCurrent">
+                        {{ 'NEW_DASHBOARD.CURRENT_DATE_LABEL' | translate }}</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input date-range-picker
+                               options="datePickerOpts"
+                               class="input-sm form-control date-picker"
+                               type="text"
+                               id="inputDateRangeCurrent"
+                               ng-model="formData.currentDateRange"
+                               ng-required="true">
+                    </div>
                 </div>
-            </div>
-            <!--historyDateRange-->
-            <div class="form-group">
-                <label class="padding-10" for="inputDateRangeCurrent">{{ 'NEW_DASHBOARD.HISTORY_DATE_LABEL' | translate
-                    }}</label>
-                <div class="input-group padding-10">
-                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <input date-range-picker
-                           options="datePickerOpts"
-                           class="input-sm form-control date-picker date-picker-new-dashboard"
-                           type="text"
-                           id="inputDateRangeLast"
-                           ng-model="formData.historyDateRange"
-                           ng-required="true">
+                <!--historyDateRange-->
+                <div class="form-group col col-sm-2">
+                    <label class="" for="inputDateRangeCurrent">
+                        {{ 'NEW_DASHBOARD.HISTORY_DATE_LABEL' | translate }}</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input date-range-picker
+                               options="datePickerOpts"
+                               class="input-sm form-control date-picker"
+                               type="text"
+                               id="inputDateRangeLast"
+                               ng-model="formData.historyDateRange"
+                               ng-required="true">
+                    </div>
                 </div>
+                <!--Get data-->
+                <div class="form-group col col-sm-1">
+                    <label style="visibility: hidden">.</label>
+                    <button type="button" class="btn btn-primary btn-sm form-control" ng-click="getCustomComparisonData()"
+                            ng-if="compareTypeData.compareType === 'custom'" ng-disabled="!isValidCustomDateRange()">Get data
+                    </button>
+                </div>
+
             </div>
-            <!--Get data-->
-            <button type="button" class="btn btn-primary btn-sm" ng-click="getCustomComparisonData()"
-                    ng-if="compareTypeData.compareType === 'custom'" ng-disabled="!isValidCustomDateRange()">Get data
-            </button>
         </form>
 
 
