@@ -78,7 +78,6 @@
         $scope.isValidCustomDateRange = isValidCustomDateRange;
 
 
-        console.log($scope.formData.comparisionData);
         _getData(false);
 
         $scope.$watch('dashboardType', function () {
@@ -259,9 +258,6 @@
         }
 
         function _getData(isClickChangeMode, customDateRange) {
-            // if( $scope.compareTypeData.compareType == 'yesterday'){
-            //     return;
-            // }
             var param = {
                 type: $scope.compareTypeData.compareType,
                 extraData: customDateRange

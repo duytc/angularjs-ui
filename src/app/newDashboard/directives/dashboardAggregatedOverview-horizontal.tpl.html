@@ -85,27 +85,27 @@
         </form>
 
         <!--Display yesterday-->
-        <div class="table-responsive">
-            <table class="table no-border" ng-if="hasDisplayOverviewTable() && compareTypeData.compareType === 'yesterday'" at-table at-list="customOverviewTableData">
-                <thead></thead>
-                <tbody>
-                <tr>
-                    <td at-attribute="billedAmount" at-title="{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}" ng-if="isAdmin">{{ customOverviewData.billedAmount | currency }}</td>
-                    <td at-attribute="estRevenue" at-title="{{ 'DASHBOARD_MODULE.REVENUE' | translate }}">{{ customOverviewData.estRevenue | currency }}</td>
-                    <td at-attribute="slotOpportunities" at-title="{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}">{{ customOverviewData.slotOpportunities | number }}</td>
-                    <td at-attribute="totalOpportunities" at-title="{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}">{{ customOverviewData.totalOpportunities | number }}</td>
-                    <td at-attribute="adOpportunities" at-title="{{ 'DASHBOARD_MODULE.IMPRESSIONS_OPPORTUNITY' | translate }}">{{ customOverviewData.adOpportunities | number }}</td>
-                    <td at-attribute="passbacks" at-title="{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}">{{ customOverviewData.passbacks | number }}</td>
-                    <td at-attribute="fillRate" at-title="{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}">{{ customOverviewData.fillRate | percentage }}</td>
-                </tr>
-                </tbody>
+        <!--<div class="table-responsive">-->
+            <!--<table class="table no-border" ng-if="hasDisplayOverviewTable() && compareTypeData.compareType === 'yesterday'" at-table at-list="customOverviewTableData">-->
+                <!--<thead></thead>-->
+                <!--<tbody>-->
+                <!--<tr>-->
+                    <!--<td at-attribute="billedAmount" at-title="{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}" ng-if="isAdmin">{{ customOverviewData.billedAmount | currency }}</td>-->
+                    <!--<td at-attribute="estRevenue" at-title="{{ 'DASHBOARD_MODULE.REVENUE' | translate }}">{{ customOverviewData.estRevenue | currency }}</td>-->
+                    <!--<td at-attribute="slotOpportunities" at-title="{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}">{{ customOverviewData.slotOpportunities | number }}</td>-->
+                    <!--<td at-attribute="totalOpportunities" at-title="{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}">{{ customOverviewData.totalOpportunities | number }}</td>-->
+                    <!--<td at-attribute="adOpportunities" at-title="{{ 'DASHBOARD_MODULE.IMPRESSIONS_OPPORTUNITY' | translate }}">{{ customOverviewData.adOpportunities | number }}</td>-->
+                    <!--<td at-attribute="passbacks" at-title="{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}">{{ customOverviewData.passbacks | number }}</td>-->
+                    <!--<td at-attribute="fillRate" at-title="{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}">{{ customOverviewData.fillRate | percentage }}</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
 
-            </table>
-        </div>
+            <!--</table>-->
+        <!--</div>-->
 
         <!--Display comparison-->
         <div class="table-responsive">
-            <table class="table no-border" ng-if="hasDisplayComparisonTable() && compareTypeData.compareType !== 'yesterday'" at-table at-list="getComparisonTableData()">
+            <table class="table no-border" at-table at-list="getComparisonTableData()" ng-if="hasDisplayComparisonTable()">
                 <thead>
                 </thead>
 
