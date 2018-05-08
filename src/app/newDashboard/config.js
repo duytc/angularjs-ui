@@ -12,14 +12,14 @@
         .constant('PUBLISHER_DISPLAY_COMPARISION', 'accounts/comparison')
         .constant('DASHBOARD_TYPE', [
             {id: 'DISPLAY', name: 'Pubvantage Display'},
-            {id: 'UNIFIED_REPORT', name: 'Unified Report'},
-            {id: 'VIDEO', name: 'Pubvantage Video'}
+            // {id: 'UNIFIED_REPORT', name: 'Unified Report'},
+            // {id: 'VIDEO', name: 'Pubvantage Video'}
 
         ])
         .constant('DASHBOARD_TYPE_JSON', {
             'DISPLAY': 'Pubvantage Display',
-            'UNIFIED_REPORT': 'Unified Report',
-            'VIDEO': 'Pubvantage Video'
+            // 'UNIFIED_REPORT': 'Unified Report',
+            // 'VIDEO': 'Pubvantage Video'
         })
         .constant('COMPARE_TYPE', {
                 'day': 'day-over-day',
