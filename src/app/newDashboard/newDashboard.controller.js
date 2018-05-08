@@ -14,7 +14,7 @@
         $scope.isAdmin = Auth.isAdmin();
         $scope.publisher = publisher == null ? null : publisher.plain();
         $scope.chartFollow = {
-            type: CHART_FOLLOW['OVER_VIEW']
+            type: CHART_FOLLOW['COMPARISION']
         };
 
         $scope.datePickerOpts = {
@@ -35,7 +35,7 @@
                 label: NewDashboardUtil.getCompareLabel('yesterday')
             },
             comparisionData: [],
-            unifiedReportingOptions: [],
+            dashboardTypes: [],
             masterReport: [],
             dateRange: {
                 startDate: $scope.datePickerOpts.ranges['Last 7 Days'][0],
@@ -157,28 +157,28 @@
                 );
         }
 
-        function onSelectDashboardType(item) {
-            // check if no item selected. This is in case of loggin as publisher and has no module
-            if (!item) {
+        function onSelectDashboardType(dashboardType) {
+            // check if no dashboardType selected. This is in case of loggin as publisher and has no module
+            if (!dashboardType) {
                 return;
             }
 
             // avoid select dashboard type again
             // also avoid event when select date range. TODO: find out why select date range makes this event...
             // temp unused because this make no report fill again when change date range. TODO: why???
-            // if (!item.id || item.id === _currentDashboardType.id) {
+            // if (!dashboardType.id || dashboardType.id === _currentDashboardType.id) {
             //     return;
             // }
 
             // update current dashboard type
-            _currentDashboardType = item;
+            _currentDashboardType = dashboardType;
 
             // reset default chartFollow to overview
             $scope.chartFollow = {
                 type: CHART_FOLLOW['OVER_VIEW']
             };
 
-            _getOverviewReport();
+            // _getOverviewReport();
         }
 
         /* local functions ============================ */
@@ -442,7 +442,7 @@
 
         function _initData() {
             if ($scope.isAdmin) {
-                $scope.formData.unifiedReportingOptions = DASHBOARD_TYPE;
+                $scope.formData.dashboardTypes = DASHBOARD_TYPE;
             } else {
                 var dashboardTypeForPublisher = [];
 
@@ -458,12 +458,12 @@
                     dashboardTypeForPublisher.push({id: 'VIDEO', name: 'Pubvantage Video'});
                 }
 
-                $scope.formData.unifiedReportingOptions = dashboardTypeForPublisher;
+                $scope.formData.dashboardTypes = dashboardTypeForPublisher;
             }
 
             $scope.formData.overviewData.data = [];
             $scope.formData.topPerformersData = [];
-            $scope.currentModel.dashboardType = ($scope.formData.unifiedReportingOptions && $scope.formData.unifiedReportingOptions.length > 0) ? $scope.formData.unifiedReportingOptions[0] : [];
+            $scope.currentModel.dashboardType = ($scope.formData.dashboardTypes && $scope.formData.dashboardTypes.length > 0) ? $scope.formData.dashboardTypes[0] : [];
 
             /* load dashboard data for current dashboard type */
             onSelectDashboardType($scope.currentModel.dashboardType);
