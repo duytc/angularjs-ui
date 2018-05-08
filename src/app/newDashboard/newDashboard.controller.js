@@ -101,7 +101,6 @@
             }
             data = newComparisionData;
 
-            console.log(data);
             if (isDisplayDashboard($scope.currentModel.dashboardType)) {
                 var key = $scope.isAdmin ? 'platformStatistics' : 'accountStatistics';
 

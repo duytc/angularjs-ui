@@ -53,6 +53,7 @@
         const HISTORY_LABEL = 'history';
 
         $scope.formData = {
+            comparisonTableData: [],
             comparisionData: $scope.compareTypeData,
             dayValuesForDayOverDay: [
                 moment().subtract(1, 'days').format('YYYY-MM-DD'),
@@ -68,6 +69,7 @@
             }
         };
         $scope.getComparisonTableData = getComparisonTableData;
+        $scope.comparisonTableData = [];
 
         $scope.onChangeMode = onChangeMode;
         $scope.getRecentDay = getRecentDay;
@@ -102,35 +104,37 @@
             var tableData = [];
             var current = $scope.formData.comparisionData.current;
             var history = $scope.formData.comparisionData.history;
-
-            if(!current || !history){
-                 return [];
+            if(!current){
+                current = {key: 'current'};
+            }
+            if(!history){
+                history = {key: 'history'};
             }
 
             current.dateRange = $scope.formData.currentDateRange;
-            current.label = getLabelByComparisonType($scope.compareTypeData.compareType, true);
+            current.label = getLabelByComparisonType($scope.compareTypeData.compareType, true, current.dateRange);
 
             history.dateRange = $scope.formData.historyDateRange;
-            history.label = getLabelByComparisonType($scope.compareTypeData.compareType, false);
+            history.label = getLabelByComparisonType($scope.compareTypeData.compareType, false, history.dateRange);
 
             //push to array
             tableData.push(current);
-            if ($scope.compareTypeData.compareType !== COMPARE_TYPE['yesterday']){
+            if ($scope.compareTypeData.compareType !== COMPARE_TYPE['yesterday']) {
                 tableData.push(history);
             }
 
             return tableData;
         }
 
-        function getLabelByComparisonType(comparisonType, isCurrentNotHistory) {
+        function getLabelByComparisonType(comparisonType, isCurrentNotHistory, dateRange) {
             var currentOrHistoryText = isCurrentNotHistory ? $translate.instant('NEW_DASHBOARD.CURRENT') : $translate.instant('NEW_DASHBOARD.HISTORY');
             var currentOrLastText = isCurrentNotHistory ? $translate.instant('NEW_DASHBOARD.CURRENT') : $translate.instant('NEW_DASHBOARD.LAST');
 
             if (comparisonType === COMPARE_TYPE['day']) {
-                return history.label = getRecentDay();
+                return getRecentDay();
             }
             if (comparisonType === COMPARE_TYPE['custom']) {
-                return currentOrHistoryText + ' (' + dateRangeString(history.dateRange) + ')';
+                return currentOrHistoryText + ' (' + dateRangeString(dateRange) + ')';
             }
             if (comparisonType === COMPARE_TYPE['yesterday']) {
                 return $translate.instant('NEW_DASHBOARD.YESTERDAY');
@@ -259,6 +263,8 @@
         }
 
         function _getData(isClickChangeMode, customDateRange) {
+            $scope.formData.comparisonTableData = [];
+
             var param = {
                 type: $scope.compareTypeData.compareType,
                 extraData: customDateRange
@@ -324,6 +330,8 @@
             reportRestangular.one(route).get(json).then(function (data) {
                 $scope.comparisionData = data;
                 $scope.formData.comparisionData = _extractComparisionData(data, $scope.dashboardType);
+                $scope.formData.comparisonTableData = getComparisonTableData();
+
                 if (isClickChangeMode) {
                     _notifyDrawChart();
                 }

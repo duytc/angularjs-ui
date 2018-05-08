@@ -86,7 +86,7 @@
 
         <!--Display comparison-->
         <div class="table-responsive">
-            <table class="table no-border" at-table at-list="getComparisonTableData()" ng-if="hasDisplayComparisonTable()">
+            <table class="table no-border" at-table at-list="formData.comparisonTableData" ng-if="formData.comparisonTableData">
                 <thead>
                 <th ng-show="isAdmin" at-attribute="billedAmount">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</th>
                 </thead>
