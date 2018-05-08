@@ -173,10 +173,8 @@
             if (!customDateRange) {
                 return false;
             }
-            if (customDateRange.current.startDate > customDateRange.history.endDate) {
-                return true;
-            }
-            return false;
+            return customDateRange.current.startDate > customDateRange.history.endDate;
+
         }
 
         function getStringDate(date) {
@@ -199,7 +197,7 @@
             }
 
             // sort data for unified report
-            var orderBy = 'asc'; // sort field name by alphabet asc
+            var orderBy = ASC; // sort field name by alphabet asc
             var sortByForUnifiedReport = 'label';
             data.sort(function (r1, r2) {
                 if (r1[sortByForUnifiedReport] == r2[sortByForUnifiedReport]) {
@@ -207,8 +205,8 @@
                 }
 
                 return (r1[sortByForUnifiedReport] < r2[sortByForUnifiedReport])
-                    ? (orderBy == 'desc' ? 1 : -1)
-                    : (orderBy == 'desc' ? -1 : 1);
+                    ? (orderBy == DESC ? 1 : -1)
+                    : (orderBy == DESC ? -1 : 1);
             });
 
             return data;
