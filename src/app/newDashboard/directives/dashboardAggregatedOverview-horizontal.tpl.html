@@ -88,12 +88,13 @@
         <div class="table-responsive">
             <table class="table no-border" at-table at-list="getComparisonTableData()" ng-if="hasDisplayComparisonTable()">
                 <thead>
+                <th ng-show="isAdmin" at-attribute="billedAmount">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</th>
                 </thead>
 
                 <tbody>
                 <tr>
                     <td><strong>{{item.label}}</strong></td>
-                    <td at-attribute="billedAmount" at-title="{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}" ng-if="isAdmin">{{ item.billedAmount | currency}}</td>
+                    <td ng-show="isAdmin" at-attribute="billedAmount" at-title="{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}">{{ item.billedAmount | currency}}</td>
                     <td at-attribute="estRevenue" at-title="{{ 'DASHBOARD_MODULE.REVENUE' | translate }}">{{ item.estRevenue | currency }}</td>
                     <td at-attribute="slotOpportunities" at-title="{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}">{{ item.slotOpportunities | number }}</td>
                     <td at-attribute="totalOpportunities" at-title="{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}">{{ item.totalOpportunities | number }}</td>
