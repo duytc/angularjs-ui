@@ -5,12 +5,15 @@
         .controller('autoOptimizationBuilder', autoOptimizationBuilder);
 
     function autoOptimizationBuilder($scope, _, $translate, publishers, auto, reportViewList,
-                                     AutoOptimizationManager, AlertService, historyStorage,
+                                     AutoOptimizationManager, AlertService, historyStorage, DATETIME_RANGE_OPTIONS,
                                      HISTORY_TYPE_PATH, UnifiedReportViewManager, OptimizationUtil) {
 
         const DEFAULT_WEIGHT = 0.5;
         const NUMBER = 'number';
         const DECIMAL = 'decimal';
+        const _12HOURS = '-12 hours';
+
+
         AlertService.replaceAlerts({
             type: 'warning',
             message: $translate.instant("AUTO_OPTIMIZE_INTEGRATION_MODULE.GENERAL_MESSAGE_HELP")
@@ -335,7 +338,7 @@
             if (item.type == 'datetime') {
                 var dateFieldIsDataTime = false;
                 angular.forEach($scope.formData.dateRanges, function (dateRange) {
-                    if (dateRange.value == '-12 hours') {
+                    if (dateRange.value == _12HOURS) {
                         dateFieldIsDataTime = true;
                     }
                 });
@@ -345,12 +348,12 @@
             } else {
                 var needToDeleteHours = false;
                 angular.forEach($scope.formData.dateRanges, function (dateRange) {
-                    if (dateRange.value == '-12 hours') {
+                    if (dateRange.value == _12HOURS) {
                         needToDeleteHours = true;
                     }
                 });
                 if (needToDeleteHours == true) {
-                    $scope.formData.dateRanges.splice(0, 2);
+                    $scope.formData.dateRanges.splice(0, DATETIME_RANGE_OPTIONS.length);
                     $scope.current.dateRange = '';
                 }
             }
@@ -360,18 +363,9 @@
          * support 12 hours and 24 hours in dateRanges if dataType dateField is datetime
          */
         function dateRangesSupportHours() {
-            var json1 = {
-                key: $translate.instant('AUTO_OPTIMIZE_INTEGRATION_MODULE.DATE_RANGE_LAST_12_HOURS'),
-                value: '-12 hours'
-            };
-
-            var json2 = {
-                key: $translate.instant('AUTO_OPTIMIZE_INTEGRATION_MODULE.DATE_RANGE_LAST_24_HOURS'),
-                value: '-24 hours'
-            };
-
-            $scope.formData.dateRanges.unshift(json2);
-            $scope.formData.dateRanges.unshift(json1);
+            angular.forEach(DATETIME_RANGE_OPTIONS, function (option) {
+                $scope.formData.dateRanges.unshift(option);
+            });
         }
 
         function getOptimizeFieldsData(metrics, reportView) {

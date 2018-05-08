@@ -1431,6 +1431,7 @@
                 "SEARCH_LIST_SEGMENTS":"Search",
                 "DATE_RANGE_LAST_12_HOURS":"Last 12 Hours",
                 "DATE_RANGE_LAST_24_HOURS":"Last 24 Hours",
+                "DATE_RANGE_LAST_48_HOURS":"Last 48 Hours",
                 "UPDATE_FAIL_OPTIMIZATION_RULE":"An error occurred. The auto optimization could not be updated.",
                 "CREATE_NEW_FAIL_OPTIMIZATION_RULE":"An error occurred. The auto optimization could not be created.",
                 "PLATFORM_INTEGRATION": "Platform Integration",

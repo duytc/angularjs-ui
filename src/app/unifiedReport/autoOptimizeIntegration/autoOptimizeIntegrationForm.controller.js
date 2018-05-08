@@ -110,10 +110,8 @@
             return ''; // separate group with no name
         }
 
-
-
         function backToListAuto() {
-            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.autoOptimizeIntegration, '^.list');
+            return historyStorage.getLocationPath(HISTORY_TYPE_PATH.autoOptimizeIntegration, '^.^.autoOptimizeIntegration.list', {optimizationRuleId: $scope.optimizationRule.id});
         }
 
         function filterText(factor) {
