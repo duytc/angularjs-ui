@@ -94,10 +94,10 @@
         function getStringDate(dateRange) {
             var startDate = dateRange == null ? null : dateRange.startDate;
             var endDate = dateRange == null ? null : dateRange.endDate;
-            if (!startDate || !startDate._isValid) {
+            if (!startDate || (startDate._isValid && startDate._isValid === false)) {
                 return null;
             }
-            if (!endDate || !endDate._isValid) {
+            if (!endDate || (endDate._isValid && endDate._isValid === false)) {
                 return null;
             }
             var selectedStartDate = DateFormatter.getFormattedDate(startDate);

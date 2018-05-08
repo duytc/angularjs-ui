@@ -68,9 +68,6 @@
                 endDate: $scope.datePickerOpts.ranges['Yesterday'][0]
             }
         };
-        $scope.getComparisonTableData = getComparisonTableData;
-        $scope.comparisonTableData = [];
-
         $scope.onChangeMode = onChangeMode;
         $scope.getRecentDay = getRecentDay;
         $scope.getPreviousDay = getPreviousDay;
@@ -78,7 +75,7 @@
         $scope.isValidCustomDateRange = isValidCustomDateRange;
 
 
-        _getData(false);
+        // _getData(false);
 
         $scope.$watch('dashboardType', function () {
             resetFormData();
@@ -97,7 +94,7 @@
         //-----------------------------------------------------------------
 
         /* watch reportView changed, then render for unified report */
-        $scope.$watch('overviewData.data', _onOverviewDataChange);
+        // $scope.$watch('overviewData.data', _onOverviewDataChange);
 
 
         function getComparisonTableData() {
@@ -263,8 +260,6 @@
         }
 
         function _getData(isClickChangeMode, customDateRange) {
-            $scope.formData.comparisonTableData = [];
-
             var param = {
                 type: $scope.compareTypeData.compareType,
                 extraData: customDateRange
@@ -363,9 +358,11 @@
             // Empty data during the time waits for getting new data from api
             $scope.comparisionData = [];
             $scope.formData.comparisionData = [];
+            $scope.formData.comparisonTableData = [];
         }
 
         function onChangeMode(mode) {
+            console.log('onChangeMode');
             resetFormData();
 
             $scope.compareTypeData.compareType = COMPARE_TYPE[mode];
@@ -379,6 +376,7 @@
 
         function getCustomComparisonData() {
             var customDateRange = extractCustomDateRange();
+            console.log(customDateRange);
             if (customDateRange) {
                 _getData(true, customDateRange);
             }
