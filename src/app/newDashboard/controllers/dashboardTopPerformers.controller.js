@@ -225,8 +225,8 @@
                 stringDate = NewDashboardUtil.getStringDate($scope.dateRange);
             }
             var params = {
-                startDate: stringDate.startDate,
-                endDate: stringDate.endDate
+                startDate: !stringDate ? null : stringDate.startDate,
+                endDate: !stringDate ? null : stringDate.endDate
             };
 
             if ($scope.isAdmin) {

@@ -101,7 +101,7 @@
 
 
         function getComparisonTableData() {
-            var arr = [];
+            var tableData = [];
             var current = $scope.formData.comparisionData.current;
             var history = $scope.formData.comparisionData.history;
 
@@ -119,8 +119,6 @@
                 current.label = $translate.instant('NEW_DASHBOARD.CURRENT')+ ' ' + $scope.compareTypeData.label;
             }
 
-
-
             history.dateRange = $scope.formData.historyDateRange;
             history.label = $translate.instant('NEW_DASHBOARD.HISTORY');
 
@@ -132,10 +130,10 @@
                 history.label = $translate.instant('NEW_DASHBOARD.LAST')+ ' ' + $scope.compareTypeData.label;
             }
 
-            arr.push(current);
-            arr.push(history);
+            tableData.push(current);
+            tableData.push(history);
 
-            return arr;
+            return tableData;
         }
         function getCustomOverviewTableData() {
             var arr = [];

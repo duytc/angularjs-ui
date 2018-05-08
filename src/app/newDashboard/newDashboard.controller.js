@@ -270,7 +270,7 @@
                     format: 'YYYY-MM-DD'
                 };
 
-                _getDisplayOverviewReport();
+                // _getDisplayOverviewReport();
 
                 return;
             }
