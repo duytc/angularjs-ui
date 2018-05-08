@@ -76,6 +76,8 @@
         $scope.onChangeChartFollow = onChangeChartFollow;
 
         $scope.$watch('formData.dateRange', _onDateRangeChanged);
+        $scope.$watch('formData.compareTypeData.compareType', _onCompareTypeDataChanged);
+        $scope.$watch('formData.comparisionData.current', _onComparisionDataChanged);
 
         _initData();
 
@@ -92,25 +94,25 @@
             return NewDashboardUtil.isDisplayDashboard(type);
         }
 
-        function onChangeChartFollow() {
+        function onChangeChartFollow(newComparisionData) {
             var data;
-
-            if ($scope.chartFollow.type === CHART_FOLLOW['OVER_VIEW']) {
-                data = $scope.formData.reportData;
-            } else {
-                if (!$scope.formData.comparisionData || !$scope.formData.comparisionData.current) return;
-                data = $scope.formData.comparisionData.current;
+            if(!newComparisionData){
+                return;
             }
+            data = newComparisionData;
 
+            console.log(data);
             if (isDisplayDashboard($scope.currentModel.dashboardType)) {
                 var key = $scope.isAdmin ? 'platformStatistics' : 'accountStatistics';
 
                 if (data && data[key]) {
                     $scope.formData.chartData.reports = data[key].reports;
                 }
-            } else if (isVideoDashboard($scope.currentModel.dashboardType)) {
+            }
+            else if (isVideoDashboard($scope.currentModel.dashboardType)) {
                 $scope.formData.chartData.reports = data.reports;
-            } else if (isUnifiedReportDashboard($scope.currentModel.dashboardType)) {
+            }
+            else if (isUnifiedReportDashboard($scope.currentModel.dashboardType)) {
                 // set report fields
                 var total = data.total;
                 var fields = [];
@@ -189,6 +191,18 @@
 
             // get over view report again
             _getOverviewReport();
+        }
+
+        function _onCompareTypeDataChanged(newValue, oldValue, scope) {
+            // console.log('comparison type change');
+        }
+
+        function _onComparisionDataChanged(newValue, oldValue, scope) {
+            if (!newValue) {
+                return;
+            }
+            $scope.chartFollow.type = CHART_FOLLOW['COMPARISION'];
+            onChangeChartFollow(newValue);
         }
 
         function _getReportView() {
