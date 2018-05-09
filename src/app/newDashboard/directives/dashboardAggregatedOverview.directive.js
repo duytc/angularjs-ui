@@ -16,7 +16,8 @@
                 reportView: '=',
                 comparisionData: '=',
                 compareTypeData: '=',
-                dateRange: "="
+                dateRange: "=",
+                notifyComparisonDataChange: '='
             },
             restrict: 'AE',
             templateUrl: 'newDashboard/directives/dashboardAggregatedOverview-horizontal.tpl.html',

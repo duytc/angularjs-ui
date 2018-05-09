@@ -2,6 +2,37 @@
     'use strict';
 
     angular.module('tagcade.newDashboard')
+        .constant('LINE_CHART_CONFIG',{
+            options: {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: null
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: false
+                        },
+                        enableMouseTracking: true
+                    }
+                }
+            },
+            xAxis: {
+                categories: [],
+                labels: {
+                    // autoRotation: [-10, -20, -30, -40, -50, -60, -70, -80, -90]
+                    rotation: -60
+                }
+            },
+            yAxis: {
+                title: {
+                    text: null
+                }
+            },
+            series: []
+        })
         .constant('CHART_FOLLOW', {
             'OVER_VIEW': 'OVER_VIEW',
             'COMPARISION': 'COMPARISION'

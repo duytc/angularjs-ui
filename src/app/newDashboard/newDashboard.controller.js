@@ -30,6 +30,7 @@
         };
 
         $scope.formData = {
+            notifyComparisonDataChange: false,
             compareTypeData: {
                 compareType: COMPARE_TYPE['yesterday'],
                 label: NewDashboardUtil.getCompareLabel('yesterday')
@@ -46,8 +47,11 @@
                 datePickerOpts: $scope.datePickerOpts
             },
             chartData: {
+                notifyDrawChart: false,
                 datePickerOpts: $scope.datePickerOpts,
                 reports: [],
+                currentReports:[],
+                historyReports:[],
                 dateField: 'date', // default for display and video, not for ur
                 urData: {
                     fields: [],
@@ -77,7 +81,7 @@
 
         $scope.$watch('formData.dateRange', _onDateRangeChanged);
         $scope.$watch('formData.compareTypeData.compareType', _onCompareTypeDataChanged);
-        $scope.$watch('formData.comparisionData.current', _onComparisionDataChanged);
+        $scope.$watch('formData.notifyComparisonDataChange', _onComparisionDataChanged);
 
         _initData();
 
@@ -94,18 +98,25 @@
             return NewDashboardUtil.isDisplayDashboard(type);
         }
 
+        /**
+         *
+         * @param newComparisionData {current, history}
+         */
         function onChangeChartFollow(newComparisionData) {
-            var data;
+            var chartData;
+
             if(!newComparisionData){
                 return;
             }
-            data = newComparisionData;
+            chartData = newComparisionData;
 
             if (isDisplayDashboard($scope.currentModel.dashboardType)) {
                 var key = $scope.isAdmin ? 'platformStatistics' : 'accountStatistics';
-
-                if (data && data[key]) {
-                    $scope.formData.chartData.reports = data[key].reports;
+                if (chartData) {
+                    var current = chartData.current || {};
+                    var history = chartData.history || {};
+                    $scope.formData.chartData.currentReports = current[key] ? current[key].reports : [];
+                    $scope.formData.chartData.historyReports = history[key] ? history[key].reports : [];
                     $scope.formData.chartData.dateField = {
                         field: 'date',
                         format: 'YYYY-MM-DD'
@@ -113,9 +124,15 @@
                 }
             }
             else if (isVideoDashboard($scope.currentModel.dashboardType)) {
-                $scope.formData.chartData.reports = data.reports;
+                $scope.formData.chartData.currentReports = chartData.current.reports;
+                $scope.formData.chartData.historyReports = chartData.history.reports;
+                $scope.formData.chartData.dateField = {
+                    field: 'date',
+                    format: 'YYYY-MM-DD'
+                };
             }
             else if (isUnifiedReportDashboard($scope.currentModel.dashboardType)) {
+                //TODO need to get current and history report
                 // set report fields
                 var total = data.total;
                 var fields = [];
@@ -126,12 +143,18 @@
                 // set report data.
                 // Notice: total contains all show fields for chart, return empty report detail if total empty!!!
                 // This avoid show empty chart
-                $scope.formData.chartData.reports = (data.reports && total && fields && fields.length > 0) ? data.reports : [];
+                $scope.formData.chartData.reports = (chartData.reports && total && fields && fields.length > 0) ? chartData.reports : [];
             }
+
+            askForDrawingChart();
 
             if (!$scope.$$phase) {
                 $scope.$apply();
             }
+        }
+
+        function askForDrawingChart() {
+            $scope.formData.chartData.notifyDrawChart = !$scope.formData.chartData.notifyDrawChart;
         }
 
         function onSelectReportViewForUnifiedReport(reportView) {
@@ -201,11 +224,8 @@
         }
 
         function _onComparisionDataChanged(newValue, oldValue, scope) {
-            if (!newValue) {
-                return;
-            }
             $scope.chartFollow.type = CHART_FOLLOW['COMPARISION'];
-            onChangeChartFollow(newValue);
+            onChangeChartFollow($scope.formData.comparisionData);
         }
 
         function _getReportView() {

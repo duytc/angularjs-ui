@@ -5,7 +5,7 @@
         .controller('DashboardChart', DashboardChart)
     ;
 
-    function DashboardChart($scope, $filter, Auth, DASHBOARD_TYPE_JSON, CHART_FOLLOW, COMPARE_TYPE,
+    function DashboardChart($scope, $filter, Auth, DASHBOARD_TYPE_JSON, CHART_FOLLOW, COMPARE_TYPE, LINE_CHART_CONFIG,
                             DISPLAY_SHOW_FIELDS, VIDEO_SHOW_FIELDS, DASHBOARD_COLOR, NewDashboardUtil) {
         $scope.isAdmin = Auth.isAdmin();
 
@@ -17,7 +17,7 @@
 
         updateChart();
 
-        $scope.$watch('chartData.reports', function (newValue, oldValue, scope) {
+        $scope.$watch('chartData.notifyDrawChart', function (notifyDrawChart) {
             updateChart();
         }, true);
 
@@ -32,20 +32,22 @@
             setTimeout(function () {
                 $scope.showChart = true;
 
-                var data = $scope.chartData.reports;
+                var data = {
+                   currentReports: $scope.chartData.currentReports,
+                   historyReports: $scope.chartData.historyReports
+                };
                 if (DASHBOARD_TYPE_JSON['DISPLAY'] === $scope.dashboardType.name) {
                     // sort by date field
-                    data = sort(getDateKey(), data);
-
+                    data.currentReports = sort(getDateKey(), data.currentReports);
+                    data.historyReports = sort(getDateKey(), data.historyReports);
                     $scope.chartConfig = _getChartConfig(data);
                 } else if (DASHBOARD_TYPE_JSON['VIDEO'] === $scope.dashboardType.name) {
                     // sort by date field
-                    data = sort(getDateKey(), data);
-
+                    data.currentReports = sort(getDateKey(), data.currentReports);
+                    data.historyReports = sort(getDateKey(), data.historyReports);
                     $scope.chartConfig = _getChartConfig(data);
                 } else if (DASHBOARD_TYPE_JSON['UNIFIED_REPORT'] === $scope.dashboardType.name) {
                     // no need sort, already sorted by date
-
                     $scope.chartConfig = _getChartConfig(data);
                 }
             }, 0);
@@ -112,12 +114,17 @@
         }
 
         /**
-         *
          * @param reportDetails list of reports to draw chart
          * @returns {*}
          */
         function _getChartConfig(reportDetails) {
-            if (!reportDetails || reportDetails.length === 0) {
+            if (!reportDetails) {
+                return null;
+            }
+            var currentReports = reportDetails.currentReports;
+            var historyReports = reportDetails.historyReports;
+
+            if((!currentReports && !historyReports) || (currentReports.length === 0 && historyReports.length === 0)){
                 return null;
             }
 
@@ -132,12 +139,10 @@
             var key = getDateKey();
             var dateFormat = getDateFormat();
 
-            angular.forEach(reportDetails, function (report) {
+            angular.forEach(currentReports, function (report) {
                 var dateValue = report[key];
-
                 // normalize dateValue to standard format "Y-m-d" for comparison date range
                 dateValue = normalizeDatevalue(dateValue, dateFormat);
-
                 if (isInDateRange(dateValue, $scope.selectedDate)) {
                     dates.push(dateValue); // dates.push($filter('date')(dateValue));
                     angular.forEach(showFields, function (field) {
@@ -162,55 +167,28 @@
                     color: DASHBOARD_COLOR[i],
                     visible: _getVisibleForField(field)
                 };
-
                 i++;
                 chartSeries.push(json);
             });
 
-            return {
-                options: {
-                    chart: {
-                        type: 'line'
-                    },
-                    title: {
-                        text: null
-                    },
-                    plotOptions: {
-                        line: {
-                            dataLabels: {
-                                enabled: false
-                            },
-                            enableMouseTracking: true
-                        }
-                    }
-                },
-                xAxis: {
-                    categories: dates,
-                    labels: {
-                        // autoRotation: [-10, -20, -30, -40, -50, -60, -70, -80, -90]
-                        rotation: -60
-                    }
-                },
-                yAxis: {
-                    title: {
-                        text: null
-                    }
-                },
-                series: chartSeries
-            };
+            var chartConfig =  LINE_CHART_CONFIG;
+            chartConfig.xAxis.categories = dates;
+            chartConfig.series = chartSeries;
 
-            function _getVisibleForField(field) {
-                if (DASHBOARD_TYPE_JSON['UNIFIED_REPORT'] === $scope.dashboardType.name) {
-                    return true;
-                }
+            return chartConfig;
+        }
 
-                if (DASHBOARD_TYPE_JSON['DISPLAY'] === $scope.dashboardType.name) {
-                    return field != 'fillRate'; // default hide for "fillRate"
-                }
+        function _getVisibleForField(field) {
+            if (DASHBOARD_TYPE_JSON['UNIFIED_REPORT'] === $scope.dashboardType.name) {
+                return true;
+            }
 
-                if (DASHBOARD_TYPE_JSON['VIDEO'] === $scope.dashboardType.name) {
-                    return field != 'requestFillRate'; // default hide for "requestFillRate"
-                }
+            if (DASHBOARD_TYPE_JSON['DISPLAY'] === $scope.dashboardType.name) {
+                return field != 'fillRate'; // default hide for "fillRate"
+            }
+
+            if (DASHBOARD_TYPE_JSON['VIDEO'] === $scope.dashboardType.name) {
+                return field != 'requestFillRate'; // default hide for "requestFillRate"
             }
         }
 

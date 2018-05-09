@@ -309,6 +309,10 @@
             return originalParam;
         }
 
+        function notifyComparisonDataChanged() {
+            $scope.notifyComparisonDataChange = !$scope.notifyComparisonDataChange;
+        }
+
         function _getDisplayComparision(param, isClickChangeMode) {
             var json = {
                 type: $scope.compareTypeData.compareType
@@ -321,9 +325,10 @@
                 route = PUBLISHER_DISPLAY_COMPARISION + '/' + $scope.publisher.id;
             }
             reportRestangular.one(route).get(json).then(function (data) {
-                $scope.comparisionData = data;
+                $scope.comparisionData = data; //???
                 $scope.formData.comparisionData = _extractComparisionData(data, $scope.dashboardType);
                 $scope.formData.comparisonTableData = getComparisonTableData();
+                notifyComparisonDataChanged();
 
                 if (isClickChangeMode) {
                     _notifyDrawChart();
@@ -360,7 +365,6 @@
         }
 
         function onChangeMode(mode) {
-            console.log('onChangeMode');
             resetFormData();
 
             $scope.compareTypeData.compareType = COMPARE_TYPE[mode];
@@ -374,7 +378,6 @@
 
         function getCustomComparisonData() {
             var customDateRange = extractCustomDateRange();
-            console.log(customDateRange);
             if (customDateRange) {
                 _getData(true, customDateRange);
             }
