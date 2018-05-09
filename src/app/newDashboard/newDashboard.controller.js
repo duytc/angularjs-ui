@@ -106,6 +106,10 @@
 
                 if (data && data[key]) {
                     $scope.formData.chartData.reports = data[key].reports;
+                    $scope.formData.chartData.dateField = {
+                        field: 'date',
+                        format: 'YYYY-MM-DD'
+                    };
                 }
             }
             else if (isVideoDashboard($scope.currentModel.dashboardType)) {
