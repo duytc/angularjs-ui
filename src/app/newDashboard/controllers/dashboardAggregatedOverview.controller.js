@@ -73,7 +73,7 @@
         $scope.getPreviousDay = getPreviousDay;
         $scope.getCustomComparisonData = getCustomComparisonData;
         $scope.isValidCustomDateRange = isValidCustomDateRange;
-
+        $scope.isYesterdayType = isYesterdayType;
 
         // _getData(false);
 
@@ -368,25 +368,12 @@
             $scope.comparisionData = [];
             $scope.formData.comparisionData = [];
             // Build fake data for comparison table so that table still appears
-            $scope.formData.comparisonTableData = buildFakeDataForComparisonTable();
+            $scope.formData.comparisonTableData = null;
         }
 
        function isYesterdayType(){
             return $scope.compareTypeData.compareType === COMPARE_TYPE['yesterday'];
        }
-
-        function buildFakeDataForComparisonTable() {
-            var fakeData = [];
-            var numOfFakeRow = isYesterdayType() ? 1 : 2;
-            for (var row = 0; row < numOfFakeRow; row++) {
-                var rowObject = {
-                    label: 'Loading...'
-                };
-                fakeData.push(rowObject);
-            }
-
-            return fakeData;
-        }
 
         function onChangeMode(mode) {
             resetFormData();

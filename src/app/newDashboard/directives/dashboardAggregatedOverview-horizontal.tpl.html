@@ -88,6 +88,9 @@
             </div>
         </form>
 
+
+
+
         <!--Display-->
         <div class="table-responsive">
             <table class="table no-border" at-table at-list="formData.comparisonTableData" ng-if="formData.comparisonTableData">
@@ -111,6 +114,20 @@
             </table>
         </div>
 
+        <!--fake 2 row table-->
+        <div class="table-responsive">
+            <table class="table no-border" ng-if="!formData.comparisonTableData && !isYesterdayType()">
+                <thead> <tr> <td class="non-visible">Loading...</td> </tr> </thead> <tbody>
+                <tr> <td><strong>Loading...</strong></td> </tr> <tr> <td><strong>Loading...</strong></td> </tr> </tbody>
+            </table>
+        </div>
+        <!--fake 1 row table-->
+        <div class="table-responsive">
+            <table class="table no-border" ng-if="!formData.comparisonTableData && isYesterdayType()">
+                <thead> <tr> <td class="non-visible">Loading...</td> </tr> </thead>
+                <tbody> <tr>  <td><strong>Loading...</strong></td> </tr> </tbody>
+            </table>
+        </div>
 
 
         <!--TODO Please follow Display dashboard for video and UR-->
