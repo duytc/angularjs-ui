@@ -7,7 +7,7 @@
 
     function DashboardAggregatedOverview($scope, Auth, DASHBOARD_TYPE_JSON, COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT,
                                          $timeout, COMPARE_TYPE, videoReportService, ASC, reportRestangular, DESC,
-                                         CHART_FOLLOW, ADMIN_DISPLAY_COMPARISION, PUBLISHER_DISPLAY_COMPARISION,
+                                         CHART_FOLLOW, ADMIN_DISPLAY_COMPARISION, PUBLISHER_DISPLAY_COMPARISION, DEFAULT_DATE_FORMAT,
                                          DISPLAY_SHOW_FIELDS, unifiedReportComparisionRestangular, NewDashboardUtil, $translate) {
         $scope.isAdmin = Auth.isAdmin();
 
@@ -56,8 +56,8 @@
             comparisonTableData: [],
             comparisionData: $scope.compareTypeData,
             dayValuesForDayOverDay: [
-                moment().subtract(1, 'days').format('YYYY-MM-DD'),
-                moment().subtract(2, 'days').format('YYYY-MM-DD')
+                moment().format(DEFAULT_DATE_FORMAT),
+                moment().subtract(1, 'days').format(DEFAULT_DATE_FORMAT)
             ],
             currentDateRange: {
                 startDate: $scope.datePickerOpts.ranges['Today'][0],
@@ -94,6 +94,7 @@
         //-----------------------------------------------------------------
 
         /* watch reportView changed, then render for unified report */
+
         // $scope.$watch('overviewData.data', _onOverviewDataChange);
 
 
@@ -101,10 +102,10 @@
             var tableData = [];
             var current = $scope.formData.comparisionData.current;
             var history = $scope.formData.comparisionData.history;
-            if(!current){
+            if (!current) {
                 current = {key: 'current'};
             }
-            if(!history){
+            if (!history) {
                 history = {key: 'history'};
             }
 
@@ -128,7 +129,11 @@
             var currentOrLastText = isCurrentNotHistory ? $translate.instant('NEW_DASHBOARD.CURRENT') : $translate.instant('NEW_DASHBOARD.LAST');
 
             if (comparisonType === COMPARE_TYPE['day']) {
-                return getRecentDay();
+                if (isCurrentNotHistory){
+                    return getRecentDay();
+                }else {
+                    return getPreviousDay();
+                }
             }
             if (comparisonType === COMPARE_TYPE['custom']) {
                 return currentOrHistoryText + ' (' + dateRangeString(dateRange) + ')';
@@ -136,7 +141,7 @@
             if (comparisonType === COMPARE_TYPE['yesterday']) {
                 return $translate.instant('NEW_DASHBOARD.YESTERDAY');
             }
-            return  currentOrLastText + ' ' + $scope.compareTypeData.label;
+            return currentOrLastText + ' ' + $scope.compareTypeData.label;
         }
 
         function getCustomOverviewTableData() {
@@ -144,6 +149,7 @@
             arr.push($scope.customOverviewData);
             return arr;
         }
+
         function hasVideoOverviewTable() {
             return isShowForVideoReport() && $scope.overviewData.data;
         }
