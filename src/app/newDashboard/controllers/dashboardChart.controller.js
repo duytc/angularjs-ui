@@ -5,10 +5,11 @@
         .controller('DashboardChart', DashboardChart)
     ;
 
-    function DashboardChart($scope, $filter, Auth, DASHBOARD_TYPE_JSON, CHART_FOLLOW, COMPARE_TYPE, LINE_CHART_CONFIG,
-                            DISPLAY_SHOW_FIELDS, VIDEO_SHOW_FIELDS, DASHBOARD_COLOR, NewDashboardUtil, CHART_DASH_TYPES) {
+    function DashboardChart($scope, $filter, Auth, DASHBOARD_TYPE_JSON, CHART_FOLLOW, COMPARE_TYPE, LINE_CHART_CONFIG,DESC, HOUR_EXTENSION,
+                            DISPLAY_SHOW_FIELDS, VIDEO_SHOW_FIELDS, DASHBOARD_COLOR, NewDashboardUtil, CHART_DASH_TYPES, DEFAULT_DATE_FORMAT) {
         const CURRENT_LABEL = 'Current';
         const HISTORY_LABEL = 'History';
+        const HOUR = 'hour';
 
         $scope.isAdmin = Auth.isAdmin();
 
@@ -20,9 +21,30 @@
 
         updateChart();
 
-        $scope.$watch('chartData.notifyDrawChart', function (notifyDrawChart) {
+        $scope.$watch('chartData.notifyDrawChart', function () {
             updateChart();
         }, true);
+
+        /**
+         * each report has date field : example {date: '2018-12-22 23'}
+         * Modify each report become {date: '2018-12-22', hour: 23}
+         * @param reports
+         */
+        function separateDateAndHour(reports) {
+            if (!reports) {
+                return;
+            }
+            var dateKey = getDateKey();
+            angular.forEach(reports, function (report) {
+                var dateTime = report[dateKey];
+                if(isDayOverDayChart()){
+                    var time = NewDashboardUtil.getTimeFromDateTime(dateTime);
+                    report[HOUR] = Number(time);
+                }else {
+                    report[dateKey] = NewDashboardUtil.getDateFromDateTime(dateTime);
+                }
+            })
+        }
 
         /**
          * update chart
@@ -40,15 +62,19 @@
                    historyReports: $scope.chartData.historyReports
                 };
                 if (DASHBOARD_TYPE_JSON['DISPLAY'] === $scope.dashboardType.name) {
+                    separateDateAndHour(data.currentReports);
+                    separateDateAndHour(data.historyReports);
                     // sort by date field
-                    data.currentReports = sort(getDateKey(), data.currentReports);
-                    data.historyReports = sort(getDateKey(), data.historyReports);
+                    var softField = getSortField();
+                    data.currentReports = sortAsc(softField, data.currentReports);
+                    data.historyReports = sortAsc(softField, data.historyReports);
+
                     $scope.chartConfig = _getChartConfig(data);
 
                 } else if (DASHBOARD_TYPE_JSON['VIDEO'] === $scope.dashboardType.name) {
                     // sort by date field
-                    data.currentReports = sort(getDateKey(), data.currentReports);
-                    data.historyReports = sort(getDateKey(), data.historyReports);
+                    data.currentReports = sortAsc(getDateKey(), data.currentReports);
+                    data.historyReports = sortAsc(getDateKey(), data.historyReports);
                     $scope.chartConfig = _getChartConfig(data);
 
                 } else if (DASHBOARD_TYPE_JSON['UNIFIED_REPORT'] === $scope.dashboardType.name) {
@@ -56,6 +82,18 @@
                     $scope.chartConfig = _getChartConfig(data);
                 }
             }, 0);
+        }
+
+        /**
+         * return HOUR const value for day over day, and return date or another dateField for other comparison type
+         * @returns {string}
+         */
+        function getSortField() {
+            var sortField = HOUR;
+            if(!isDayOverDayChart()){
+                sortField = getDateKey();
+            }
+            return sortField;
         }
 
         function getShowFields(dashboardType) {
@@ -97,25 +135,7 @@
                 return false;
             }
 
-            return moment(dateValue, inputDateFormat).format('YYYY-MM-DD');
-        }
-
-        function isInDateRange(date, selectedDate) {
-            // temp not support custom date range from chart panel, use date from overview date range
-            // TODO: remove all code related to date range from chart panel...
-            if (1 == 1) {
-                return true;
-            }
-
-            if (!selectedDate) return true;
-            var startDate = selectedDate.startDate;
-            var endDate = selectedDate.endDate;
-
-            if (startDate && endDate && date <= endDate && date >= startDate) return true;
-            if (!startDate && endDate && date <= endDate) return true;
-            if (startDate && !endDate && date >= startDate) return true;
-
-            return false;
+            return moment(dateValue, inputDateFormat).format(DEFAULT_DATE_FORMAT);
         }
 
         /**
@@ -125,36 +145,49 @@
             return $scope.compareTypeData.compareType === COMPARE_TYPE['day'];
         }
 
+        /**
+         * @param reports list of reports
+         * @param xAxis : null or 1
+         * @param showFields : fields of report need to be displayed
+         * @param seriesLabel : current or history
+         * @param dashType : style of lines
+         * @returns {{xAxisData: Array, series: Array}}
+         */
         function getChartConfigData(reports, xAxis, showFields, seriesLabel, dashType) {
             var chartConfigData = {
                 xAxisData: [],
                 series: []
             };
 
-            var dates = [];
+            var chartCategories = []; // data for x axis
             var showData = {};
             var dateKey = getDateKey();
             var dateFormat = getDateFormat();
+            var xAxisField = isDayOverDayChart() ? HOUR : dateKey;
 
             angular.forEach(reports, function (report) {
-                var dateValue = report[dateKey];
-                // normalize dateValue to standard format "Y-m-d" for comparison date range
-                dateValue = normalizeDatevalue(dateValue, dateFormat);
-
-                if (isInDateRange(dateValue, $scope.selectedDate)) {
-                    dates.push(dateValue); // dates.push($filter('date')(dateValue));
-                    angular.forEach(showFields, function (field) {
-                        if (!showData[field]) {
-                            showData[field] = [];
-                        }
-
-                        var digitOnly = NewDashboardUtil.removeNonDigit(report[field]);
-                        digitOnly = digitOnly ? digitOnly : 0;
-                        showData[field].push(Number(digitOnly));
-                    });
+                var category = '';
+                if(isDayOverDayChart()){
+                    category = report[xAxisField] + HOUR_EXTENSION;
+                }else {
+                    var date = report[xAxisField];
+                    // normalize dateValue to standard format "Y-m-d" for comparison date range
+                    category = normalizeDatevalue(date, dateFormat);
                 }
+
+                chartCategories.push(category);
+                angular.forEach(showFields, function (field) {
+                    if (!showData[field]) {
+                        showData[field] = [];
+                    }
+
+                    var digitOnly = NewDashboardUtil.removeNonDigit(report[field]);
+                    digitOnly = digitOnly ? digitOnly : 0;
+                    showData[field].push(Number(digitOnly));
+                });
             });
 
+            //build chart series
             var chartSeries = [];
             var index = 0;
             angular.forEach(showFields, function (field) {
@@ -172,7 +205,7 @@
                 index++;
                 chartSeries.push(oneSeries);
             });
-            chartConfigData.xAxisData = dates;
+            chartConfigData.xAxisData = chartCategories;
             chartConfigData.series = chartSeries;
             return chartConfigData;
         }
@@ -182,7 +215,6 @@
          * @returns {*}
          */
         function _getChartConfig(reportDetails) {
-            console.log(reportDetails);
             if (!reportDetails) {
                 return null;
             }
@@ -216,15 +248,15 @@
             }
 
             if (DASHBOARD_TYPE_JSON['DISPLAY'] === $scope.dashboardType.name) {
-                return field != 'fillRate'; // default hide for "fillRate"
+                return field !== 'fillRate'; // default hide for "fillRate"
             }
 
             if (DASHBOARD_TYPE_JSON['VIDEO'] === $scope.dashboardType.name) {
-                return field != 'requestFillRate'; // default hide for "requestFillRate"
+                return field !== 'requestFillRate'; // default hide for "requestFillRate"
             }
         }
 
-        function sort(columnName, unsortedData) {
+        function sortAsc(columnName, unsortedData) {
             var type = 'asc';
             var sortedData = angular.copy(unsortedData);
             if (sortedData)
@@ -253,7 +285,7 @@
                     comparison = -1;
                 }
                 return (
-                    (order == 'desc') ? (comparison * -1) : comparison
+                    (order === DESC) ? (comparison * -1) : comparison
                 );
             };
         }

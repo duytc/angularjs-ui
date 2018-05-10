@@ -6,7 +6,7 @@
         .controller('NewDashboard', NewDashboard)
     ;
 
-    function NewDashboard($scope, _, publisher, COMPARE_TYPE, DASHBOARD_TYPE, DateFormatter, Auth,
+    function NewDashboard($scope, _, publisher, COMPARE_TYPE, DASHBOARD_TYPE, DateFormatter, Auth, DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO, DEFAULT_DATE_FORMAT,
                           DisplayDashboardRestAngular, DISPLAY_REPORT_TYPES, CHART_FOLLOW, DISPLAY_SHOW_FIELDS,
                           UnifiedReportDashboardRestAngular, VideoReportRestAngular, VIDEO_SHOW_FIELDS,
                           UnifiedReportViewManager, DASHBOARD_TYPE_JSON, NewDashboardUtil, userSession, USER_MODULES) {
@@ -52,7 +52,7 @@
                 reports: [],
                 currentReports:[],
                 historyReports:[],
-                dateField: 'date', // default for display and video, not for ur
+                dateField: DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO, // default for display and video, not for ur
                 urData: {
                     fields: [],
                     fieldsLabel: {},
@@ -131,22 +131,22 @@
                     $scope.formData.chartData.currentReports = current[key] ? current[key].reports : [];
                     $scope.formData.chartData.historyReports = history[key] ? history[key].reports : [];
                     $scope.formData.chartData.dateField = {
-                        field: 'date',
-                        format: 'YYYY-MM-DD'
+                        field: DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO,
+                        format: DEFAULT_DATE_FORMAT
                     };
-                    // fake data for day over day
-                    if($scope.formData.compareTypeData.compareType === COMPARE_TYPE['day']){
-                        $scope.formData.chartData.currentReports = create24Reports($scope.formData.chartData.currentReports[0]);
-                        $scope.formData.chartData.historyReports = create24Reports($scope.formData.chartData.historyReports[0]);
-                    }
+                    // // fake data for day over day
+                    // if($scope.formData.compareTypeData.compareType === COMPARE_TYPE['day']){
+                    //     $scope.formData.chartData.currentReports = create24Reports($scope.formData.chartData.currentReports[0]);
+                    //     $scope.formData.chartData.historyReports = create24Reports($scope.formData.chartData.historyReports[0]);
+                    // }
                 }
             }
             else if (isVideoDashboard($scope.currentModel.dashboardType)) {
                 $scope.formData.chartData.currentReports = chartData.current.reports;
                 $scope.formData.chartData.historyReports = chartData.history.reports;
                 $scope.formData.chartData.dateField = {
-                    field: 'date',
-                    format: 'YYYY-MM-DD'
+                    field: DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO,
+                    format: DEFAULT_DATE_FORMAT
                 };
             }
             else if (isUnifiedReportDashboard($scope.currentModel.dashboardType)) {
@@ -301,7 +301,7 @@
             // check if has date filter
             var hasDateFilter = false;
             angular.forEach(filters, function (filter) {
-                if (!filter || !filter.type || (filter.type !== 'date' && filter.type !== 'dateTime')) {
+                if (!filter || !filter.type || (filter.type !== DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO && filter.type !== 'dateTime')) {
                     return;
                 }
 
@@ -321,11 +321,11 @@
             if (_currentDashboardType.id === 'DISPLAY') {
                 // set chart date field
                 $scope.formData.chartData.dateField = {
-                    field: 'date',
-                    format: 'YYYY-MM-DD'
+                    field: DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO,
+                    format: DEFAULT_DATE_FORMAT
                 };
 
-                // _getDisplayOverviewReport();
+                _getDisplayOverviewReport();
 
                 return;
             }
@@ -333,8 +333,8 @@
             if (_currentDashboardType.id === 'VIDEO') {
                 // set chart date field
                 $scope.formData.chartData.dateField = {
-                    field: 'date',
-                    format: 'YYYY-MM-DD'
+                    field: DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO,
+                    format: DEFAULT_DATE_FORMAT
                 };
 
                 _getVideoOverviewReport();

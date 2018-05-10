@@ -28,6 +28,8 @@
             isDisplayDashboard: isDisplayDashboard,
             isUnifiedDashboard: isUnifiedDashboard,
             getStringDate: getStringDate,
+            getTimeFromDateTime: getTimeFromDateTime,
+            getDateFromDateTime: getDateFromDateTime,
             removeNonDigit: removeNonDigit,
             isDifferentDate: isDifferentDate,
             getTodayDateRange: getTodayDateRange,
@@ -36,6 +38,38 @@
             getYearDateRange: getYearDateRange,
             getCompareLabel: getCompareLabel
         };
+
+        /**
+         *
+         * @param dateTime '2018-02-22 15'
+         * return 2018-02-22
+         */
+        function getDateFromDateTime(dateTime) {
+            if(!dateTime){
+                return '';
+            }
+            var dateAndHour = dateTime.split(' ');
+            if(dateAndHour || dateAndHour[0]){
+                return dateAndHour[0];
+            }
+            return '';
+        }
+        /**
+         *
+         * @param dateTime '2018-02-22 15'
+         * return 15
+         */
+        function getTimeFromDateTime(dateTime) {
+            if(!dateTime){
+                return '';
+            }
+            var dateAndHour = dateTime.split(' ');
+            if(dateAndHour || dateAndHour[1]){
+                return dateAndHour[1];
+            }
+            return '';
+        }
+
         function getCompareLabel(mode) {
             if (mode === 'day') {
                 return $translate.instant('NEW_DASHBOARD.DAY_LABEL');
