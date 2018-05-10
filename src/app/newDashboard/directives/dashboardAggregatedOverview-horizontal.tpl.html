@@ -43,7 +43,7 @@
 
             <div class="row">
                 <!--historyDateRange-->
-                <div class="form-group col col-sm-2 col-xs-12">
+                <div class="form-group col col-sm-2 col-xs-12 custom-date-range">
                     <label for="inputDateRangeCurrent">
                         {{ 'NEW_DASHBOARD.HISTORY_DATE_LABEL' | translate }}</label>
                     <div class="input-group">
@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <!--currentDateRange-->
-                <div class="form-group col col-sm-2 col-xs-12">
+                <div class="form-group col col-sm-2 col-xs-12 custom-date-range">
                     <label for="inputDateRangeCurrent">
                         {{ 'NEW_DASHBOARD.CURRENT_DATE_LABEL' | translate }}</label>
                     <div class="input-group">
@@ -75,7 +75,7 @@
                 <!--Get data-->
                 <div class="form-group col col-sm-1 col-xs-12">
                     <label style="visibility: hidden">.</label>
-                    <button type="button" class="btn btn-primary btn-sm form-control"
+                    <button type="button" class="btn btn-primary form-control"
                             ng-click="getCustomComparisonData()"
                             ng-if="compareTypeData.compareType === 'custom'"
                             ng-disabled="!isValidCustomDateRange()">{{'NEW_DASHBOARD.GET_REPORT' | translate}}

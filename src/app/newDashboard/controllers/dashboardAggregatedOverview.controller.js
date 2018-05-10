@@ -367,7 +367,25 @@
             // Empty data during the time waits for getting new data from api
             $scope.comparisionData = [];
             $scope.formData.comparisionData = [];
-            $scope.formData.comparisonTableData = [];
+            // Build fake data for comparison table so that table still appears
+            $scope.formData.comparisonTableData = buildFakeDataForComparisonTable();
+        }
+
+       function isYesterdayType(){
+            return $scope.compareTypeData.compareType === COMPARE_TYPE['yesterday'];
+       }
+
+        function buildFakeDataForComparisonTable() {
+            var fakeData = [];
+            var numOfFakeRow = isYesterdayType() ? 1 : 2;
+            for (var row = 0; row < numOfFakeRow; row++) {
+                var rowObject = {
+                    label: 'Loading...'
+                };
+                fakeData.push(rowObject);
+            }
+
+            return fakeData;
         }
 
         function onChangeMode(mode) {
