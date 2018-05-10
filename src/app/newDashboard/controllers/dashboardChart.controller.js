@@ -7,6 +7,9 @@
 
     function DashboardChart($scope, $filter, Auth, DASHBOARD_TYPE_JSON, CHART_FOLLOW, COMPARE_TYPE, LINE_CHART_CONFIG,
                             DISPLAY_SHOW_FIELDS, VIDEO_SHOW_FIELDS, DASHBOARD_COLOR, NewDashboardUtil) {
+        const CURRENT_LABEL = 'Current';
+        const HISTORY_LABEL = 'History';
+
         $scope.isAdmin = Auth.isAdmin();
 
         $scope.chartConfig = {};
@@ -41,11 +44,13 @@
                     data.currentReports = sort(getDateKey(), data.currentReports);
                     data.historyReports = sort(getDateKey(), data.historyReports);
                     $scope.chartConfig = _getChartConfig(data);
+
                 } else if (DASHBOARD_TYPE_JSON['VIDEO'] === $scope.dashboardType.name) {
                     // sort by date field
                     data.currentReports = sort(getDateKey(), data.currentReports);
                     data.historyReports = sort(getDateKey(), data.historyReports);
                     $scope.chartConfig = _getChartConfig(data);
+
                 } else if (DASHBOARD_TYPE_JSON['UNIFIED_REPORT'] === $scope.dashboardType.name) {
                     // no need sort, already sorted by date
                     $scope.chartConfig = _getChartConfig(data);
@@ -113,7 +118,7 @@
             return false;
         }
 
-        function getChartConfigData(reports, xAxis, showFields) {
+        function getChartConfigData(reports, xAxis, showFields, seriesLabel) {
             var chartConfigData = {
                 xAxisData: [],
                 series: []
@@ -146,7 +151,7 @@
             var index = 0;
             angular.forEach(showFields, function (field) {
                 var oneSeries = {
-                    name: getLabelForChart(field, $scope.dashboardType),
+                    name: seriesLabel + ' ' + getLabelForChart(field, $scope.dashboardType),
                     data: showData[field],
                     connectNulls: true,
                     color: DASHBOARD_COLOR[index],
@@ -185,14 +190,16 @@
             }
 
             var chartConfig =  LINE_CHART_CONFIG;
-            var currentChartConfig = getChartConfigData(currentReports, 1, showFields);
-            var historyChartConfig = getChartConfigData(historyReports, null, showFields);
 
-            chartConfig.xAxis[0].categories = currentChartConfig.xAxisData;
-            chartConfig.xAxis[1].categories = historyChartConfig.xAxisData;
+
+            var currentChartConfig = getChartConfigData(currentReports, 1, showFields, CURRENT_LABEL);
+            var historyChartConfig = getChartConfigData(historyReports, null, showFields, HISTORY_LABEL);
+
+            chartConfig.xAxis[0].categories = historyChartConfig.xAxisData;
+            chartConfig.xAxis[1].categories = currentChartConfig.xAxisData;
 
             chartConfig.series = currentChartConfig.series.concat(historyChartConfig.series);
-            console.log(chartConfig.series);
+            console.log(chartConfig);
             return chartConfig;
         }
 
