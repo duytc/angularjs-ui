@@ -41,21 +41,6 @@
 
         <form class="padding-10" role="form" novalidate ng-if="compareTypeData.compareType === 'custom'">
             <div class="row">
-                <!--currentDateRange-->
-                <div class="form-group col col-sm-2 col-xs-12">
-                    <label for="inputDateRangeCurrent">
-                        {{ 'NEW_DASHBOARD.CURRENT_DATE_LABEL' | translate }}</label>
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                        <input date-range-picker
-                               options="datePickerOpts"
-                               class="form-control date-picker"
-                               type="text"
-                               id="inputDateRangeCurrent"
-                               ng-model="formData.currentDateRange"
-                               ng-required="true">
-                    </div>
-                </div>
                 <!--historyDateRange-->
                 <div class="form-group col col-sm-2 col-xs-12">
                     <label for="inputDateRangeCurrent">
@@ -68,6 +53,21 @@
                                type="text"
                                id="inputDateRangeLast"
                                ng-model="formData.historyDateRange"
+                               ng-required="true">
+                    </div>
+                </div>
+                <!--currentDateRange-->
+                <div class="form-group col col-sm-2 col-xs-12">
+                    <label for="inputDateRangeCurrent">
+                        {{ 'NEW_DASHBOARD.CURRENT_DATE_LABEL' | translate }}</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input date-range-picker
+                               options="datePickerOpts"
+                               class="form-control date-picker"
+                               type="text"
+                               id="inputDateRangeCurrent"
+                               ng-model="formData.currentDateRange"
                                ng-required="true">
                     </div>
                 </div>
