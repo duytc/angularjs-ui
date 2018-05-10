@@ -13,7 +13,7 @@
                     type: 'line'
                 },
                 title: {
-                    text: 'Current and History Comparison Chart',
+                    text: 'Current and History Statistics Comparison Chart',
                     margin: 20
                 },
                 subtitle: {
