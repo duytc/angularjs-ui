@@ -679,6 +679,8 @@
                 "AUTO_REFRESH": "Auto Refresh",
                 "PASSBACK_MODE": "Passback Mode",
                 "HEADER_BID_PRICE": "Header Bid Price",
+                "INTEGRATIONS": "Optimization Integration",
+                "SELECT_INTEGRATION_PLACE_HOLDER": "Select an integration",
 
                 "ADD_NEW_SUCCESS": "The ad slot has been created",
                 "ADD_NEW_FAIL": "An error occurred. The ad slot could not be created",
