@@ -4,11 +4,12 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView, dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT) {
+    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView, dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT, sessionStorage) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
 
+        $scope.linkDownload = API_UNIFIED_END_POINT + '/v1/reportview/download';
         $scope.tableConfig = {
             itemsPerPage: $stateParams.limit || 10,
             maxPages: 10,
@@ -240,14 +241,28 @@
             var params = _toJsonReportView(reportView);
             delete params.page;
 
-            dataService.makeHttpPOSTRequest('', params, API_UNIFIED_END_POINT + '/v1/reportview/download')
-                .then(function (data) {
-                    return data ? window.open(data) : void 0;
-                   /* var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
+            var xhr = new XMLHttpRequest();
+            xhr.responseType = 'blob';
+            xhr.open("get", API_UNIFIED_END_POINT + '/v1/reportview/download');
+            xhr.setRequestHeader("Authorization", 'Bearer ' + sessionStorage.getCurrentToken());
+            xhr.send();
+            xhr.onload = function(){
+               xhr.getResponseHeader("Content-Disposition")
+
+               window.saveAs(xhr.response, "namdn.csv")
+            }
+
+            return;
+
+            dataService.makeHttpGetRequest('', null, API_UNIFIED_END_POINT + '/v1/reportview/download')
+                /*.then(function (data) {
+                    console.log(111, data);
+                    //return data ? window.open(data) : void 0;
+                    var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
                     var reportName = !!reportView.name ? reportView.name : 'report-detail';
 
-                    return saveAs(blob, [reportName + '.csv']);*/
-                });
+                    return saveAs(blob, [reportName + '.csv']);
+                })*/;
         }
         
         function searchReportView() {
