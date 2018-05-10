@@ -7,7 +7,7 @@
 
     function AutoOptimizeIntegrationForm($scope, $filter, $translate, AlertService, optimizationRule,
                                          autoOptimizeIntegration, ServerErrorProcessor, AutoOptimizeIntegrationManager,
-                                         AdSlotManager, sites, selectedSites, selectedAdSlots, historyStorage, HISTORY_TYPE_PATH,
+                                         AdSlotManager, VideoPublisherManager, sites, videoPublishers, selectedSites, selectedAdSlots, historyStorage, HISTORY_TYPE_PATH,
                                          DOMAINS_LIST_SEPARATOR, COUNTRY_LIST, Auth, PLATFORM_INTEGRATION, OPTIMIZATION_FREQUENCY) {
 
         $scope.platformIntegrations = angular.copy(PLATFORM_INTEGRATION);
@@ -56,6 +56,11 @@
             {key: 'adTagName', label: 'Ad Tag Name'}
         ];
 
+        $scope.FROM_IDENTIFIERS_VIDEO = [
+            {key: 'demandAdTagId', label: 'Demand Ad Tag ID'},
+            {key: 'demandAdTagName', label: 'Demand Ad Tag Name'}
+        ];
+
         $scope.OPTIMIZATION_ALERTS = [
             {key: 'autoOptimization', label: 'Auto Optimization'},
             {key: 'autoOptimizeAndNotifyMe', label: 'Auto optimize and Notify me'},
@@ -72,6 +77,9 @@
         $scope.siteList = $scope.isFixSelectedSite ? selectedSites : _getSitesForPublisher($scope.autoOptimizeIntegration.optimizationRule.publisher);
 
         $scope.countries = COUNTRY_LIST;
+
+        $scope.videoPublishersList = videoPublishers || [];
+        $scope.waterfallTagsList = getWaterfallTagsListByVideoPublishers() || [];
 
         var mostCommonlyCountry = [
             {name: 'Australia', code: 'AU', line: true},
@@ -95,6 +103,7 @@
         // all scope functions here
         $scope.groupEntities = groupEntities;
         $scope.backToListAuto = backToListAuto;
+        $scope.isPubvantageAdServer = isPubvantageAdServer;
 
         $scope.filterText = filterText;
         $scope.isFormValid = isFormValid;
@@ -102,6 +111,10 @@
         $scope.submit = submit;
 
         /* ==========LOCAL FUNCTIONS FOR SCOPE============ */
+        function isPubvantageAdServer() {
+            return !!($scope.autoOptimizeIntegration.platformIntegration.type == 'PUBVANTAGE_ADS_SERVER');
+        }
+
         function groupEntities(item) {
             if (item.line) {
                 return undefined; // no group
@@ -266,6 +279,20 @@
 
                     return adSlots.plain();
                 })
+        }
+
+        /*function getVideoForPublisher() {
+            return VideoPublisherManager.getList()
+            .then(function (videoPublishers) {
+                return videoPublishers.plain();
+            });
+        }*/
+
+        function getWaterfallTagsListByVideoPublishers() {
+            return VideoPublisherManager.getList({videoPublishersId: ($scope.autoOptimizeIntegration.videoPublishers || []).join(',')})
+            .then(function (videoPublishers) {
+                return videoPublishers.plain();
+            });
         }
 
         function _getIdentifierObjectFromValue(key) {

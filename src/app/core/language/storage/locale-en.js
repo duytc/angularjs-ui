@@ -1443,7 +1443,9 @@
                 "AD_SLOTS": "Ad Slots",
                 "OPTIMIZATION_FREQUENCY": "Optimization Frequency",
                 "IDENTIFIER_FIELDS_HELP_TEXT": "These fields are the different representations of the identifier",
-                "BACK_TO_LIST": "Back to Optimization Rules"
+                "BACK_TO_LIST": "Back to Optimization Rules",
+                "VIDEO_PUBLISHERS": "Video Plublisher",
+                "WATERFALL_TAG": "Waterfall Tag"
             }
         });
 })();
