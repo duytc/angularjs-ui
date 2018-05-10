@@ -118,11 +118,19 @@
             return false;
         }
 
+        /**
+         * Day-Over-Day chart uses hour for x axis
+         */
+        function isDayOverDayChart() {
+            return $scope.compareTypeData.compareType === COMPARE_TYPE['day'];
+        }
+
         function getChartConfigData(reports, xAxis, showFields, seriesLabel, dashType) {
             var chartConfigData = {
                 xAxisData: [],
                 series: []
             };
+
             var dates = [];
             var showData = {};
             var dateKey = getDateKey();
@@ -174,6 +182,7 @@
          * @returns {*}
          */
         function _getChartConfig(reportDetails) {
+            console.log(reportDetails);
             if (!reportDetails) {
                 return null;
             }

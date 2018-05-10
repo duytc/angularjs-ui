@@ -98,6 +98,19 @@
             return NewDashboardUtil.isDisplayDashboard(type);
         }
 
+        function create24Reports(report) {
+            if(!report){
+                return [];
+            }
+            var hourReports = [];
+            for (var hour = 0; hour < 24; hour++) {
+                var hourReport = angular.copy(report);
+                hourReport.date = hourReport.date + ' ' + hour;
+                hourReports.push(hourReport)
+            }
+            return hourReports;
+        }
+
         /**
          *
          * @param newComparisionData {current, history}
@@ -121,6 +134,11 @@
                         field: 'date',
                         format: 'YYYY-MM-DD'
                     };
+                    // fake data for day over day
+                    if($scope.formData.compareTypeData.compareType === COMPARE_TYPE['day']){
+                        $scope.formData.chartData.currentReports = create24Reports($scope.formData.chartData.currentReports[0]);
+                        $scope.formData.chartData.historyReports = create24Reports($scope.formData.chartData.historyReports[0]);
+                    }
                 }
             }
             else if (isVideoDashboard($scope.currentModel.dashboardType)) {
