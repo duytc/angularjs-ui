@@ -39,8 +39,8 @@
             dashboardTypes: [],
             masterReport: [],
             dateRange: {
-                startDate: $scope.datePickerOpts.ranges['Last 7 Days'][0],
-                endDate: $scope.datePickerOpts.ranges['Last 7 Days'][1]
+                startDate: moment().add(1, 'days'),
+                endDate: moment().add(1, 'days')
             },
             overviewData: {
                 data: [],

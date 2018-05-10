@@ -13,7 +13,8 @@
                 dashboardType: "=",
                 dateRange: "=",
                 reportView: '=',
-                comparisionData: '='
+                comparisionData: '=',
+                compareTypeData: '='
             },
             restrict: 'AE',
             templateUrl: 'newDashboard/directives/dashboardTopPerformance.tpl.html',

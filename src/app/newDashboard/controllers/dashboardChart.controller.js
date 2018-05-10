@@ -13,7 +13,7 @@
 
         $scope.isAdmin = Auth.isAdmin();
 
-        $scope.chartConfig = {};
+        $scope.chartConfig = angular.copy(LINE_CHART_CONFIG);
         $scope.chartData.dateRange = angular.copy($scope.overviewDateRange);
         $scope.selectedDate = NewDashboardUtil.getStringDate($scope.chartData.dateRange);
 
@@ -25,6 +25,21 @@
             updateChart();
         }, true);
 
+        $scope.$watch('compareTypeData.compareType', _onComparisionTypeDataChange);
+
+        function showChartLoading() {
+            $scope.chartConfig = {
+                options: {
+                    title: {
+                        text: 'Loading...'
+                    }
+                }
+            };
+        }
+
+        function _onComparisionTypeDataChange() {
+            showChartLoading();
+        }
         /**
          * each report has date field : example {date: '2018-12-22 23'}
          * Modify each report become {date: '2018-12-22', hour: 23}

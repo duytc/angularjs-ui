@@ -99,6 +99,8 @@
 
         $scope.$watch('comparisionData', _onComparisionDataChange);
 
+        $scope.$watch('compareTypeData.compareType', _onComparisionTypeDataChange);
+
         /* all scope functions ===================== */
         function isShowForDisplay() {
             return DASHBOARD_TYPE_JSON[$scope.dashboardType.id] === DASHBOARD_TYPE_JSON.DISPLAY;
@@ -189,6 +191,12 @@
             }
 
             _updateTopPerformersForUnifiedReport();
+        }
+
+        function _onComparisionTypeDataChange() {
+            $scope.topPerformersData.topAdNetworks = [];
+            $scope.topPerformersData.topPublishers = [];
+            $scope.topPerformersData.topSites = [];
         }
 
         function _onComparisionDataChange() {
