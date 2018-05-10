@@ -192,7 +192,7 @@
 
             var chartConfig =  LINE_CHART_CONFIG;
             var currentChartConfig = getChartConfigData(currentReports, 1, showFields, CURRENT_LABEL, CHART_DASH_TYPES.SOLID);
-            var historyChartConfig = getChartConfigData(historyReports, null, showFields, HISTORY_LABEL, CHART_DASH_TYPES.LONG_DASH);
+            var historyChartConfig = getChartConfigData(historyReports, null, showFields, HISTORY_LABEL, CHART_DASH_TYPES.SHORT_DASH);
 
             chartConfig.xAxis[0].categories = historyChartConfig.xAxisData;
             chartConfig.xAxis[1].categories = currentChartConfig.xAxisData;
