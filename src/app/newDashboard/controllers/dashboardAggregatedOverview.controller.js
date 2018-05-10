@@ -9,6 +9,9 @@
                                          $timeout, COMPARE_TYPE, videoReportService, ASC, reportRestangular, DESC,
                                          CHART_FOLLOW, ADMIN_DISPLAY_COMPARISION, PUBLISHER_DISPLAY_COMPARISION, DEFAULT_DATE_FORMAT,
                                          DISPLAY_SHOW_FIELDS, unifiedReportComparisionRestangular, NewDashboardUtil, $translate) {
+        const PLATFORM_STATISTICS = 'platformStatistics';
+        const ACCOUNT_STATISTICS = 'accountStatistics';
+
         $scope.isAdmin = Auth.isAdmin();
 
         $scope.resetOverviewData = resetOverviewData;
@@ -103,10 +106,10 @@
             var current = $scope.formData.comparisionData.current;
             var history = $scope.formData.comparisionData.history;
             if (!current) {
-                current = {key: 'current'};
+                current = {key: CURRENT_LABEL};
             }
             if (!history) {
-                history = {key: 'history'};
+                history = {key: HISTORY_LABEL};
             }
 
             current.dateRange = $scope.formData.currentDateRange;
@@ -505,7 +508,7 @@
                 return [];
             }
 
-            var key = $scope.isAdmin ? 'platformStatistics' : 'accountStatistics';
+            var key = $scope.isAdmin ? PLATFORM_STATISTICS : ACCOUNT_STATISTICS;
             return {
                 current: data.current[key],
                 history: data.history[key]
