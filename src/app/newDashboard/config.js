@@ -19,13 +19,20 @@
                     }
                 }
             },
-            xAxis: {
-                categories: [],
-                labels: {
-                    // autoRotation: [-10, -20, -30, -40, -50, -60, -70, -80, -90]
-                    rotation: -60
-                }
-            },
+            xAxis: [
+                {
+                    categories: [],
+                    labels: {
+                        rotation: -60
+                    }
+                },
+                {
+                    categories: [],
+                    labels: {
+                        rotation: -60
+                    },
+                    opposite: true // on top of chart
+                }],
             yAxis: {
                 title: {
                     text: null

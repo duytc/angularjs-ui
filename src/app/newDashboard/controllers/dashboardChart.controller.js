@@ -113,6 +113,56 @@
             return false;
         }
 
+        function getChartConfigData(reports, xAxis, showFields) {
+            var chartConfigData = {
+                xAxisData: [],
+                series: []
+            };
+            var dates = [];
+            var showData = {};
+            var dateKey = getDateKey();
+            var dateFormat = getDateFormat();
+
+            angular.forEach(reports, function (report) {
+                var dateValue = report[dateKey];
+                // normalize dateValue to standard format "Y-m-d" for comparison date range
+                dateValue = normalizeDatevalue(dateValue, dateFormat);
+
+                if (isInDateRange(dateValue, $scope.selectedDate)) {
+                    dates.push(dateValue); // dates.push($filter('date')(dateValue));
+                    angular.forEach(showFields, function (field) {
+                        if (!showData[field]) {
+                            showData[field] = [];
+                        }
+
+                        var digitOnly = NewDashboardUtil.removeNonDigit(report[field]);
+                        digitOnly = digitOnly ? digitOnly : 0;
+                        showData[field].push(Number(digitOnly));
+                    });
+                }
+            });
+
+            var chartSeries = [];
+            var index = 0;
+            angular.forEach(showFields, function (field) {
+                var oneSeries = {
+                    name: getLabelForChart(field, $scope.dashboardType),
+                    data: showData[field],
+                    connectNulls: true,
+                    color: DASHBOARD_COLOR[index],
+                    visible: _getVisibleForField(field)
+                };
+                if(xAxis){
+                    oneSeries.xAxis = xAxis;
+                }
+                index++;
+                chartSeries.push(oneSeries);
+            });
+            chartConfigData.xAxisData = dates;
+            chartConfigData.series = chartSeries;
+            return chartConfigData;
+        }
+
         /**
          * @param reportDetails list of reports to draw chart
          * @returns {*}
@@ -134,47 +184,15 @@
                 return null;
             }
 
-            var dates = [];
-            var showData = {};
-            var key = getDateKey();
-            var dateFormat = getDateFormat();
-
-            angular.forEach(currentReports, function (report) {
-                var dateValue = report[key];
-                // normalize dateValue to standard format "Y-m-d" for comparison date range
-                dateValue = normalizeDatevalue(dateValue, dateFormat);
-                if (isInDateRange(dateValue, $scope.selectedDate)) {
-                    dates.push(dateValue); // dates.push($filter('date')(dateValue));
-                    angular.forEach(showFields, function (field) {
-                        if (!showData[field]) {
-                            showData[field] = [];
-                        }
-
-                        var digitOnly = NewDashboardUtil.removeNonDigit(report[field]);
-                        digitOnly = digitOnly ? digitOnly : 0;
-                        showData[field].push(Number(digitOnly));
-                    });
-                }
-            });
-
-            var chartSeries = [];
-            var i = 0;
-            angular.forEach(showFields, function (field) {
-                var json = {
-                    name: getLabelForChart(field, $scope.dashboardType),
-                    data: showData[field],
-                    connectNulls: true,
-                    color: DASHBOARD_COLOR[i],
-                    visible: _getVisibleForField(field)
-                };
-                i++;
-                chartSeries.push(json);
-            });
-
             var chartConfig =  LINE_CHART_CONFIG;
-            chartConfig.xAxis.categories = dates;
-            chartConfig.series = chartSeries;
+            var currentChartConfig = getChartConfigData(currentReports, 1, showFields);
+            var historyChartConfig = getChartConfigData(historyReports, null, showFields);
 
+            chartConfig.xAxis[0].categories = currentChartConfig.xAxisData;
+            chartConfig.xAxis[1].categories = historyChartConfig.xAxisData;
+
+            chartConfig.series = currentChartConfig.series.concat(historyChartConfig.series);
+            console.log(chartConfig.series);
             return chartConfig;
         }
 
