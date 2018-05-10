@@ -2,6 +2,11 @@
     'use strict';
 
     angular.module('tagcade.newDashboard')
+        .constant('CHART_DASH_TYPES', {
+            'SOLID': 'Solid',
+            'SHORT_DASH': 'ShortDash',
+            'LONG_DASH': 'LongDash'
+        })
         .constant('LINE_CHART_CONFIG',{
             options: {
                 chart: {
@@ -23,13 +28,15 @@
                 {
                     categories: [],
                     labels: {
-                        rotation: -60
+                        // rotation: -60,
+                        autoRotation: [-10, -20, -30, -40, -50, -60, -70, -80, -90]
                     }
                 },
                 {
                     categories: [],
                     labels: {
-                        rotation: -60
+                        // rotation: -60,
+                        autoRotation: [-10, -20, -30, -40, -50, -60, -70, -80, -90]
                     },
                     opposite: true // on top of chart
                 }],

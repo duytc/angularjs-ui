@@ -6,7 +6,7 @@
     ;
 
     function DashboardChart($scope, $filter, Auth, DASHBOARD_TYPE_JSON, CHART_FOLLOW, COMPARE_TYPE, LINE_CHART_CONFIG,
-                            DISPLAY_SHOW_FIELDS, VIDEO_SHOW_FIELDS, DASHBOARD_COLOR, NewDashboardUtil) {
+                            DISPLAY_SHOW_FIELDS, VIDEO_SHOW_FIELDS, DASHBOARD_COLOR, NewDashboardUtil, CHART_DASH_TYPES) {
         const CURRENT_LABEL = 'Current';
         const HISTORY_LABEL = 'History';
 
@@ -118,7 +118,7 @@
             return false;
         }
 
-        function getChartConfigData(reports, xAxis, showFields, seriesLabel) {
+        function getChartConfigData(reports, xAxis, showFields, seriesLabel, dashType) {
             var chartConfigData = {
                 xAxisData: [],
                 series: []
@@ -155,7 +155,8 @@
                     data: showData[field],
                     connectNulls: true,
                     color: DASHBOARD_COLOR[index],
-                    visible: _getVisibleForField(field)
+                    visible: _getVisibleForField(field),
+                    dashStyle: dashType
                 };
                 if(xAxis){
                     oneSeries.xAxis = xAxis;
@@ -190,16 +191,13 @@
             }
 
             var chartConfig =  LINE_CHART_CONFIG;
-
-
-            var currentChartConfig = getChartConfigData(currentReports, 1, showFields, CURRENT_LABEL);
-            var historyChartConfig = getChartConfigData(historyReports, null, showFields, HISTORY_LABEL);
+            var currentChartConfig = getChartConfigData(currentReports, 1, showFields, CURRENT_LABEL, CHART_DASH_TYPES.SOLID);
+            var historyChartConfig = getChartConfigData(historyReports, null, showFields, HISTORY_LABEL, CHART_DASH_TYPES.LONG_DASH);
 
             chartConfig.xAxis[0].categories = historyChartConfig.xAxisData;
             chartConfig.xAxis[1].categories = currentChartConfig.xAxisData;
 
             chartConfig.series = currentChartConfig.series.concat(historyChartConfig.series);
-            console.log(chartConfig);
             return chartConfig;
         }
 
