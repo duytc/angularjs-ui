@@ -2,6 +2,8 @@
     'use strict';
 
     angular.module('tagcade.newDashboard')
+        .constant('PLATFORM_STATISTICS', 'platformStatistics')
+        .constant('ACCOUNT_STATISTICS', 'accountStatistics')
         .constant('DEFAULT_DATE_FORMAT', 'YYYY-MM-DD')
         .constant('DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO', 'date')
         .constant('HOUR_EXTENSION', ':00')

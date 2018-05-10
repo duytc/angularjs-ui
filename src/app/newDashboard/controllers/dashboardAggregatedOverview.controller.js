@@ -5,13 +5,10 @@
         .controller('DashboardAggregatedOverview', DashboardAggregatedOverview)
     ;
 
-    function DashboardAggregatedOverview($scope, Auth, DASHBOARD_TYPE_JSON, COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT,
-                                         $timeout, COMPARE_TYPE, videoReportService, ASC, reportRestangular, DESC,
+    function DashboardAggregatedOverview($scope, Auth, DASHBOARD_TYPE_JSON, COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT, PLATFORM_STATISTICS,
+                                         $timeout, COMPARE_TYPE, videoReportService, ASC, reportRestangular, DESC, ACCOUNT_STATISTICS,
                                          CHART_FOLLOW, ADMIN_DISPLAY_COMPARISION, PUBLISHER_DISPLAY_COMPARISION, DEFAULT_DATE_FORMAT,
                                          DISPLAY_SHOW_FIELDS, unifiedReportComparisionRestangular, NewDashboardUtil, $translate) {
-        const PLATFORM_STATISTICS = 'platformStatistics';
-        const ACCOUNT_STATISTICS = 'accountStatistics';
-
         $scope.isAdmin = Auth.isAdmin();
 
         $scope.resetOverviewData = resetOverviewData;

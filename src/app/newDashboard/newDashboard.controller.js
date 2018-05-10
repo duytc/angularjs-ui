@@ -6,9 +6,9 @@
         .controller('NewDashboard', NewDashboard)
     ;
 
-    function NewDashboard($scope, _, publisher, COMPARE_TYPE, DASHBOARD_TYPE, DateFormatter, Auth, DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO, DEFAULT_DATE_FORMAT,
-                          DisplayDashboardRestAngular, DISPLAY_REPORT_TYPES, CHART_FOLLOW, DISPLAY_SHOW_FIELDS,
-                          UnifiedReportDashboardRestAngular, VideoReportRestAngular, VIDEO_SHOW_FIELDS,
+    function NewDashboard($scope, _, publisher, COMPARE_TYPE, DASHBOARD_TYPE, DateFormatter, Auth, DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO,
+                          DEFAULT_DATE_FORMAT, DisplayDashboardRestAngular, DISPLAY_REPORT_TYPES, CHART_FOLLOW, DISPLAY_SHOW_FIELDS,
+                          UnifiedReportDashboardRestAngular, VideoReportRestAngular, VIDEO_SHOW_FIELDS, ACCOUNT_STATISTICS, PLATFORM_STATISTICS,
                           UnifiedReportViewManager, DASHBOARD_TYPE_JSON, NewDashboardUtil, userSession, USER_MODULES) {
 
         $scope.isAdmin = Auth.isAdmin();
@@ -124,7 +124,7 @@
             chartData = newComparisionData;
 
             if (isDisplayDashboard($scope.currentModel.dashboardType)) {
-                var key = $scope.isAdmin ? 'platformStatistics' : 'accountStatistics';
+                var key = $scope.isAdmin ? PLATFORM_STATISTICS : ACCOUNT_STATISTICS;
                 if (chartData) {
                     var current = chartData.current || {};
                     var history = chartData.history || {};
@@ -467,7 +467,7 @@
         }
 
         function _extractDisplayOverviewData(dataDisplay) {
-            var key = $scope.isAdmin ? 'platformStatistics' : 'accountStatistics';
+            var key = $scope.isAdmin ? PLATFORM_STATISTICS : ACCOUNT_STATISTICS;
             if (!dataDisplay || !dataDisplay[key]) {
                 resetData();
                 return;
