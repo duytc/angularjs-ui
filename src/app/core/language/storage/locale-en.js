@@ -1366,7 +1366,9 @@
                 "YEAR_LABEL":"Year",
                 "CURRENT":"Current",
                 "HISTORY":"History",
-                "LAST":"Last"
+                "LAST":"Last",
+                "CUSTOM_DATE_RANGE_HELP_TEXT":"The history date range need to be earlier than the current date range.",
+                "GET_REPORT":"Get Report"
             },
             "AUTO_OPTIMIZE_INTEGRATION_MODULE": {
                 "ACTIVE_AUTO_OPTIMIZE_INTEGRATION": "Active Optimization Integration",

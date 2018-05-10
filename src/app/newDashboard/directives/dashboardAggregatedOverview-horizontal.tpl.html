@@ -40,6 +40,7 @@
         <div class="clearfix" style="padding: 10px 10px"></div>
 
         <form class="padding-10" role="form" novalidate ng-if="compareTypeData.compareType === 'custom'">
+
             <div class="row">
                 <!--historyDateRange-->
                 <div class="form-group col col-sm-2 col-xs-12">
@@ -77,10 +78,13 @@
                     <button type="button" class="btn btn-primary btn-sm form-control"
                             ng-click="getCustomComparisonData()"
                             ng-if="compareTypeData.compareType === 'custom'"
-                            ng-disabled="!isValidCustomDateRange()">Get data
+                            ng-disabled="!isValidCustomDateRange()">{{'NEW_DASHBOARD.GET_REPORT' | translate}}
                     </button>
                 </div>
 
+            </div>
+            <div>
+                <span class="help-block">{{'NEW_DASHBOARD.CUSTOM_DATE_RANGE_HELP_TEXT' | translate}}</span>
             </div>
         </form>
 
@@ -107,6 +111,9 @@
             </table>
         </div>
 
+
+
+        <!--TODO Please follow Display dashboard for video and UR-->
 
         <!--Video Yesterday-->
         <table class="table no-border table-responsive" ng-if="hasVideoOverviewTable() && compareTypeData.compareType === 'yesterday'">
