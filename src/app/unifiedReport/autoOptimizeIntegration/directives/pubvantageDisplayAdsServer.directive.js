@@ -23,7 +23,8 @@
                 optimizationRule: "=",
                 isPubvantageAdServer: "=",
                 videoPublisherListFormData: "=",
-                waterfallTagsListFormData: "="
+                waterfallTagsListFormData: "=",
+                onVideoPublishersClick: "="
             },
             restrict: 'AE',
             templateUrl: 'unifiedReport/autoOptimizeIntegration/directives/pubvantageDisplayAdsServer.tpl.html',

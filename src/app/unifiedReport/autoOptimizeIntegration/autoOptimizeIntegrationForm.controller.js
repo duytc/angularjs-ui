@@ -7,8 +7,8 @@
 
     function AutoOptimizeIntegrationForm($scope, $filter, $translate, AlertService, optimizationRule,
                                          autoOptimizeIntegration, ServerErrorProcessor, AutoOptimizeIntegrationManager,
-                                         AdSlotManager, VideoPublisherManager, sites, videoPublishers, selectedSites, selectedAdSlots, historyStorage, HISTORY_TYPE_PATH,
-                                         DOMAINS_LIST_SEPARATOR, COUNTRY_LIST, Auth, PLATFORM_INTEGRATION, OPTIMIZATION_FREQUENCY) {
+                                         AdSlotManager, VideoPublisherManager, VideoWaterfallManager, OptimizeIntegrationManager, dataService, sites, videoPublishers, selectedSites, selectedAdSlots, historyStorage, HISTORY_TYPE_PATH,
+                                         DOMAINS_LIST_SEPARATOR, COUNTRY_LIST, Auth, PLATFORM_INTEGRATION, OPTIMIZATION_FREQUENCY, API_UNIFIED_END_POINT) {
 
         $scope.platformIntegrations = angular.copy(PLATFORM_INTEGRATION);
         $scope.optimizationFrequencies = angular.copy(OPTIMIZATION_FREQUENCY);
@@ -79,7 +79,7 @@
         $scope.countries = COUNTRY_LIST;
 
         $scope.videoPublishersList = videoPublishers || [];
-        $scope.waterfallTagsList = getWaterfallTagsListByVideoPublishers() || [];
+        
 
         var mostCommonlyCountry = [
             {name: 'Australia', code: 'AU', line: true},
@@ -104,6 +104,7 @@
         $scope.groupEntities = groupEntities;
         $scope.backToListAuto = backToListAuto;
         $scope.isPubvantageAdServer = isPubvantageAdServer;
+        $scope.onVideoPublishersClick = onVideoPublishersClick;
 
         $scope.filterText = filterText;
         $scope.isFormValid = isFormValid;
@@ -113,6 +114,10 @@
         /* ==========LOCAL FUNCTIONS FOR SCOPE============ */
         function isPubvantageAdServer() {
             return !!($scope.autoOptimizeIntegration.platformIntegration.type == 'PUBVANTAGE_ADS_SERVER');
+        }
+
+        function onVideoPublishersClick(data) {
+            return getWaterfallTagsListByVideoPublishers();
         }
 
         function groupEntities(item) {
@@ -280,18 +285,29 @@
                     return adSlots.plain();
                 })
         }
-
-        /*function getVideoForPublisher() {
-            return VideoPublisherManager.getList()
-            .then(function (videoPublishers) {
-                return videoPublishers.plain();
-            });
-        }*/
+       
 
         function getWaterfallTagsListByVideoPublishers() {
-            return VideoPublisherManager.getList({videoPublishersId: ($scope.autoOptimizeIntegration.videoPublishers || []).join(',')})
-            .then(function (videoPublishers) {
-                return videoPublishers.plain();
+            return VideoWaterfallManager.getList({
+                videoPublishersIds: (_.map($scope.autoOptimizeIntegration.videoPublishers, function(val, key){
+                    return _.isObject(val) && _.has(val, 'id') ? val.id : val;
+                }) || []).join(',')
+            })
+            .then(function (videosWaterfall) {
+                var videosWaterfall = videosWaterfall ? videosWaterfall.plain() : [];
+                dataService.makeHttpGetRequest('/v1/optimizationintegrations/waterfalltags/ids', null, API_UNIFIED_END_POINT)
+                .then(function (waterfalls) {
+                    $scope.waterfallTagsList = _.filter(videosWaterfall, function(wt){
+                        return wt ? wt.id !== _.first(_.values(waterfalls)) : true;
+                    })
+                });
+
+                /*OptimizeIntegrationManager.one('waterfalltags').one('ids').get()
+                .then(function(waterfalls){
+                    $scope.waterfallTagsList = _.filter(videosWaterfall, function(wt){
+                        return wt ? wt.id !== _.first(_.values(waterfalls)) : true;
+                    })
+                })*/
             });
         }
 
@@ -519,5 +535,7 @@
 
             return label;
         }
+
+        
     }
 })();
