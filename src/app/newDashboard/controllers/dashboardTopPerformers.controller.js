@@ -197,6 +197,7 @@
             $scope.topPerformersData.topAdNetworks = [];
             $scope.topPerformersData.topPublishers = [];
             $scope.topPerformersData.topSites = [];
+            $scope.showLoading = true;
         }
 
         function _onComparisionDataChange() {
