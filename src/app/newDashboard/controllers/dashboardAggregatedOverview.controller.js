@@ -30,6 +30,7 @@
 
         // ----------------------COMPARISION----------------------
         $scope.helpTextVisibilityStatus = true;
+        $scope.showLoading = false;
         $scope.comparisonConst = {
             CUSTOM: 'custom'
         };
@@ -331,10 +332,12 @@
             } else {
                 route = PUBLISHER_DISPLAY_COMPARISION + '/' + $scope.publisher.id;
             }
+            $scope.showLoading = true;
             reportRestangular.one(route).get(json).then(function (data) {
                 $scope.comparisionData = data; //???
                 $scope.formData.comparisionData = _extractComparisionData(data, $scope.dashboardType);
                 $scope.formData.comparisonTableData = getComparisonTableData();
+                $scope.showLoading = false;
                 notifyComparisonDataChanged();
 
                 if (isClickChangeMode) {
@@ -344,6 +347,8 @@
             }, function (error) {
                 $scope.comparisionData = [];
                 $scope.formData.comparisionData = [];
+                $scope.formData.comparisonTableData = []
+                $scope.showLoading = false;
             });
         }
 

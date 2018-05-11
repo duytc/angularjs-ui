@@ -109,7 +109,7 @@
 
         <!--fake 2 row table-->
         <div class="table-responsive">
-            <table class="table no-border" ng-if="!formData.comparisonTableData && !isYesterdayType()">
+            <table class="table no-border" ng-if="showLoading && !isYesterdayType()">
                 <thead> <tr> <td class="non-visible">Loading...</td> </tr> </thead> <tbody>
                 <tr> <td class="text-center">
                     <img src="../../../assets/images/ajax-loader.gif"
@@ -121,7 +121,7 @@
         </div>
         <!--fake 1 row table-->
         <div class="table-responsive">
-            <table class="table no-border" ng-if="!formData.comparisonTableData && isYesterdayType()">
+            <table class="table no-border" ng-if="showLoading && isYesterdayType()">
                 <thead> <tr> <td class="non-visible">Loading...</td> </tr> </thead>
                 <tbody> <tr>  <td class="text-center">
                     <!--<strong>Loading...</strong>-->
