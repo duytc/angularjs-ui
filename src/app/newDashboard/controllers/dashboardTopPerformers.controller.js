@@ -9,7 +9,7 @@
                                     DASHBOARD_TYPE_JSON, REPORT_SETTINGS, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL, COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT) {
         $scope.userSession = Auth.getSession();
         $scope.isAdmin = Auth.isAdmin();
-
+        $scope.showLoading = false;
         $scope.topPerformersData = {
             topPublishers: [],
             topSites: [],
@@ -237,11 +237,12 @@
                 endDate: !stringDate ? null : stringDate.endDate
             };
 
+            $scope.showLoading = true;
             if ($scope.isAdmin) {
                 dashboard.getPlatformDashboard(params, $scope.userSession)
-                    .then(
-                        function (data) {
+                    .then(function (data) {
                             $scope.topPerformersData = data;
+                            $scope.showLoading = false;
                         },
                         function (error) {
                             console.log('Get topPerformersDisplayReport got error', error);
@@ -251,23 +252,24 @@
                                 topSites: [],
                                 topAdNetworks: []
                             };
+                            $scope.showLoading = false;
                         }
                     );
             } else {
                 params = $.extend(params, {id: $scope.userSession.id});
                 dashboard.getPublisherDashboard(params, $scope.userSession)
-                    .then(
-                        function (data) {
+                    .then(function (data) {
                             $scope.topPerformersData = data;
+                            $scope.showLoading = false;
                         },
                         function (error) {
                             console.log('Get topPerformersDisplayReport got error', error);
-
                             $scope.topPerformersData = {
                                 topPublishers: [],
                                 topSites: [],
                                 topAdNetworks: []
                             };
+                            $scope.showLoading = false;
                         }
                     );
             }
