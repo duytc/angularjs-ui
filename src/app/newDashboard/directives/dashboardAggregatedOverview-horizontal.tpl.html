@@ -130,7 +130,11 @@
         <div class="table-responsive">
             <table class="table no-border" ng-if="!formData.comparisonTableData && isYesterdayType()">
                 <thead> <tr> <td class="non-visible">Loading...</td> </tr> </thead>
-                <tbody> <tr>  <td><strong>Loading...</strong></td> </tr> </tbody>
+                <tbody> <tr>  <td class="text-center">
+                    <!--<strong>Loading...</strong>-->
+                    <img src="../../../assets/images/ajax-loader.gif"
+                         height="25" width="25"/>
+                </td> </tr> </tbody>
             </table>
         </div>
 
