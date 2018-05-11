@@ -31,7 +31,7 @@
             $scope.chartConfig = {
                 options: {
                     title: {
-                        text: 'Loading...'
+                        text: 'Loading chart...'
                     }
                 }
             };
