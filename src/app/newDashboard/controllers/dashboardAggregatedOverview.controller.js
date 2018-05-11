@@ -376,6 +376,10 @@
        }
 
         function onChangeMode(mode) {
+            if($scope.compareTypeData.compareType === COMPARE_TYPE[mode]){
+                //return if mode not change
+                return;
+            }
             resetFormData();
 
             $scope.compareTypeData.compareType = COMPARE_TYPE[mode];
