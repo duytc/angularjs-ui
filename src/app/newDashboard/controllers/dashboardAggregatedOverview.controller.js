@@ -398,6 +398,7 @@
         }
 
         function getCustomComparisonData() {
+            resetFormData();
             var customDateRange = extractCustomDateRange();
             if (customDateRange) {
                 _getData(true, customDateRange);
