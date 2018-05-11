@@ -14,7 +14,8 @@
                 dateRange: "=",
                 reportView: '=',
                 comparisionData: '=',
-                compareTypeData: '='
+                compareTypeData: '=',
+                watchManager: '='
             },
             restrict: 'AE',
             templateUrl: 'newDashboard/directives/dashboardTopPerformance.tpl.html',

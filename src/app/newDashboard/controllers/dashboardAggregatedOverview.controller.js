@@ -29,6 +29,7 @@
 
 
         // ----------------------COMPARISION----------------------
+
         $scope.helpTextVisibilityStatus = true;
         $scope.showLoading = false;
         $scope.comparisonConst = {
@@ -399,6 +400,7 @@
 
         function getCustomComparisonData() {
             resetFormData();
+            $scope.watchManager.clickGetReport = !$scope.watchManager.clickGetReport;
             var customDateRange = extractCustomDateRange();
             if (customDateRange) {
                 _getData(true, customDateRange);

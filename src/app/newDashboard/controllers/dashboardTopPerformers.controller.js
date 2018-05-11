@@ -100,6 +100,8 @@
         $scope.$watch('comparisionData', _onComparisionDataChange);
 
         $scope.$watch('compareTypeData.compareType', _onComparisionTypeDataChange);
+        
+        $scope.$watch('watchManager.clickGetReport', _onClickGetReport);
 
         /* all scope functions ===================== */
         function isShowForDisplay() {
@@ -171,6 +173,11 @@
         }
 
         /* all local functions ===================== */
+        
+        function _onClickGetReport() {
+            resetTopPerformerData();
+            $scope.showLoading = true;
+        }
         function _onDashBoardTypeChange() {
             if (isShowForDisplay()) {
                 _updateTopPerformersForDisplay();
@@ -194,10 +201,14 @@
         }
 
         function _onComparisionTypeDataChange() {
+            resetTopPerformerData();
+            $scope.showLoading = true;
+        }
+
+        function resetTopPerformerData() {
             $scope.topPerformersData.topAdNetworks = [];
             $scope.topPerformersData.topPublishers = [];
             $scope.topPerformersData.topSites = [];
-            $scope.showLoading = true;
         }
 
         function _onComparisionDataChange() {

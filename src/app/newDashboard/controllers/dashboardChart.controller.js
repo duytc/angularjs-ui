@@ -26,6 +26,11 @@
         }, true);
 
         $scope.$watch('compareTypeData.compareType', _onComparisionTypeDataChange);
+        $scope.$watch('watchManager.clickGetReport', _onClickGetReport);
+
+        function _onClickGetReport() {
+            showChartLoading();
+        }
 
         function showChartLoading() {
             $scope.chartConfig = {

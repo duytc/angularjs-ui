@@ -17,6 +17,9 @@
             type: CHART_FOLLOW['COMPARISION']
         };
 
+        $scope.watchManager = {
+            clickGetReport: false
+        };
         $scope.datePickerOpts = {
             maxDate: moment().endOf('day'),
             ranges: {
