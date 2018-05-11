@@ -111,6 +111,10 @@
             return hourReports;
         }
 
+        function isDayOverDayChart() {
+            return $scope.formData.compareTypeData.compareType === COMPARE_TYPE['day'];
+        }
+
         /**
          *
          * @param newComparisionData {current, history}
@@ -126,19 +130,23 @@
             if (isDisplayDashboard($scope.currentModel.dashboardType)) {
                 var key = $scope.isAdmin ? PLATFORM_STATISTICS : ACCOUNT_STATISTICS;
                 if (chartData) {
-                    var current = chartData.current || {};
-                    var history = chartData.history || {};
-                    $scope.formData.chartData.currentReports = current[key] ? current[key].reports : [];
-                    $scope.formData.chartData.historyReports = history[key] ? history[key].reports : [];
+                    var current;
+                    var history;
+                    if (isDayOverDayChart()) {
+                        current = chartData.reportHourToday || [];
+                        history = chartData.reportHourHistory || [];
+                        $scope.formData.chartData.currentReports = current;
+                        $scope.formData.chartData.historyReports = history;
+                    } else {
+                        current = chartData.current || {};
+                        history = chartData.history || {};
+                        $scope.formData.chartData.currentReports = current[key] ? current[key].reports : [];
+                        $scope.formData.chartData.historyReports = history[key] ? history[key].reports : [];
+                    }
                     $scope.formData.chartData.dateField = {
                         field: DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO,
                         format: DEFAULT_DATE_FORMAT
                     };
-                    // // fake data for day over day
-                    // if($scope.formData.compareTypeData.compareType === COMPARE_TYPE['day']){
-                    //     $scope.formData.chartData.currentReports = create24Reports($scope.formData.chartData.currentReports[0]);
-                    //     $scope.formData.chartData.historyReports = create24Reports($scope.formData.chartData.historyReports[0]);
-                    // }
                 }
             }
             else if (isVideoDashboard($scope.currentModel.dashboardType)) {

@@ -41,22 +41,20 @@
             showChartLoading();
         }
         /**
-         * each report has date field : example {date: '2018-12-22 23'}
-         * Modify each report become {date: '2018-12-22', hour: 23}
+         * each day over day report has dateTime field : example {dateTime: '2018-12-22 23'}
+         * Add each report hour property {hour: 23}
          * @param reports
          */
         function separateDateAndHour(reports) {
-            if (!reports) {
+            if (!reports || !isDayOverDayChart()) {
                 return;
             }
-            var dateKey = getDateKey();
+            var dateKey = 'dateTime';
             angular.forEach(reports, function (report) {
                 var dateTime = report[dateKey];
                 if(isDayOverDayChart()){
                     var time = NewDashboardUtil.getTimeFromDateTime(dateTime);
                     report[HOUR] = Number(time);
-                }else {
-                    report[dateKey] = NewDashboardUtil.getDateFromDateTime(dateTime);
                 }
             })
         }
@@ -97,6 +95,10 @@
                     $scope.chartConfig = _getChartConfig(data);
                 }
             }, 0);
+        }
+
+        function isDayOverDayChart() {
+            return $scope.compareTypeData.compareType === COMPARE_TYPE['day'];
         }
 
         /**
@@ -151,13 +153,6 @@
             }
 
             return moment(dateValue, inputDateFormat).format(DEFAULT_DATE_FORMAT);
-        }
-
-        /**
-         * Day-Over-Day chart uses hour for x axis
-         */
-        function isDayOverDayChart() {
-            return $scope.compareTypeData.compareType === COMPARE_TYPE['day'];
         }
 
         /**
