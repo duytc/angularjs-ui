@@ -62,12 +62,12 @@
                 moment().subtract(1, 'days').format(DEFAULT_DATE_FORMAT)
             ],
             currentDateRange: {
-                startDate: $scope.datePickerOpts.ranges['Today'][0],
-                endDate: $scope.datePickerOpts.ranges['Today'][0]
+                startDate: moment().subtract(14, 'days'),
+                endDate: moment().subtract(1, 'days')
             },
             historyDateRange: {
-                startDate: $scope.datePickerOpts.ranges['Yesterday'][0],
-                endDate: $scope.datePickerOpts.ranges['Yesterday'][0]
+                startDate: moment().subtract(28, 'days'),
+                endDate: moment().subtract(15, 'days')
             }
         };
         $scope.onChangeMode = onChangeMode;
