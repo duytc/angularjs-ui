@@ -29,6 +29,7 @@
 
 
         // ----------------------COMPARISION----------------------
+        $scope.helpTextVisibilityStatus = true;
         $scope.comparisonConst = {
             CUSTOM: 'custom'
         };
