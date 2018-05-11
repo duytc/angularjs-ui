@@ -3,7 +3,7 @@
 
     angular.module('tagcade.newDashboard').directive('dashboardDetail', dashboardDetail);
 
-    function dashboardDetail($compile) {
+    function dashboardDetail($compile, COMPARE_TYPE) {
         return {
             scope: {
                 // bind properties
@@ -33,6 +33,9 @@
                      */
                     scope.onSelectFollow = function () {
                         // scope.onChangeChartFollow();
+                    };
+                    scope.hideTopPerformer = function () {
+                        return COMPARE_TYPE['day'] === scope.compareTypeData.compareType;
                     };
 
                     directive || (directive = $compile(content));

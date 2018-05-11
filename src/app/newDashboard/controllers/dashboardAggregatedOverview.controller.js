@@ -347,7 +347,7 @@
             }, function (error) {
                 $scope.comparisionData = [];
                 $scope.formData.comparisionData = [];
-                $scope.formData.comparisonTableData = []
+                $scope.formData.comparisonTableData = [];
                 $scope.showLoading = false;
             });
         }
