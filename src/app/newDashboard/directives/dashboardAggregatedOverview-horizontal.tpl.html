@@ -40,20 +40,6 @@
         <div class="clearfix" style="padding: 10px 10px"></div>
 
         <form class="padding-10" role="form" novalidate ng-if="compareTypeData.compareType === 'custom'">
-            <!--Help text-->
-            <div class="pb-10">
-                <span>{{'NEW_DASHBOARD.TIPS' | translate}}:</span>
-                <button class="btn btn-sm btn-link badge" ng-click="helpTextVisibilityStatus = !helpTextVisibilityStatus">
-                    <span ng-if="helpTextVisibilityStatus == true">Hide</span>
-                    <span ng-if="helpTextVisibilityStatus == false">Show</span>
-                </button>
-                <div collapse="!helpTextVisibilityStatus">
-                    <span class="help-block">{{'NEW_DASHBOARD.CUSTOM_DATE_RANGE_HELP_TEXT' | translate}}</span>
-                    <span class="help-block">{{'NEW_DASHBOARD.CUSTOM_DATE_RANGE_HELP_TEXT_VALID' | translate}}</span>
-                    <span class="help-block">{{'NEW_DASHBOARD.CUSTOM_DATE_RANGE_HELP_TEXT_INVALID' | translate}}</span>
-                </div>
-            </div>
-
             <div class="row">
                 <!--historyDateRange-->
                 <div class="form-group col col-sm-2 col-xs-12 custom-date-range">
@@ -245,6 +231,20 @@
             </tr>
         </table>
 
-    </div>
+
+        <!--Help text-->
+        <div class="pt-10" ng-if="compareTypeData.compareType === 'custom'">
+            <span>{{'NEW_DASHBOARD.TIPS' | translate}}:</span>
+            <button class="btn btn-sm btn-link badge" ng-click="helpTextVisibilityStatus = !helpTextVisibilityStatus">
+                <span ng-if="helpTextVisibilityStatus == true">Hide</span>
+                <span ng-if="helpTextVisibilityStatus == false">Show</span>
+            </button>
+            <div ng-hide="!helpTextVisibilityStatus" class="callout callout-info">
+                <p>{{'NEW_DASHBOARD.CUSTOM_DATE_RANGE_HELP_TEXT' | translate}}</p>
+                <p>{{'NEW_DASHBOARD.CUSTOM_DATE_RANGE_HELP_TEXT_VALID' | translate}}</p>
+                <p>{{'NEW_DASHBOARD.CUSTOM_DATE_RANGE_HELP_TEXT_INVALID' | translate}}</p>
+            </div>
+        </div>
+     </div>
 </div>
 
