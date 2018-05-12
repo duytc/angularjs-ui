@@ -105,6 +105,19 @@
                     </div>
                 </div>
 
+                <div class="form-group" ng-if="isAutoOptimizeActive()">
+                    <label for="inputAutoOptimize" class="col-sm-1 control-label">{{ 'VIDEO_AD_TAG_MODULE.AUTO_OPTIMIZE' | translate }}</label>
+                    <div class="col-sm-5">
+                        <div>
+                            <label class="ui-checkbox">
+                                <input name="autoOptimize" type="checkbox" ng-model="adTag.autoOptimize" server-error id="inputAutoOptimize">
+                                <span></span>
+                            </label>
+                        </div>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-5">
                         <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>

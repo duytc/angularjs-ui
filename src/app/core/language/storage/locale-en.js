@@ -533,7 +533,8 @@
                 "TITLE_CREATE_LINKED_DEMAND_AD_TAG": "Link Demand Ad Tag",
 
                 "HELP_BLOCK_SELECT_DEFAULT": "Select <strong>Add New</strong> to generate new position for this demand ad tag",
-                "WARNING_BUY_PRICE": "One of the waterfalls has a buy price that is higher than the sell price. Do you want to proceed?"
+                "WARNING_BUY_PRICE": "One of the waterfalls has a buy price that is higher than the sell price. Do you want to proceed?",
+                "AUTO_OPTIMIZE": "Auto Optimize"
             },
             "AD_SOURCE_MODULE": {
                 "PLATFORM": "Platform",

@@ -58,6 +58,12 @@
         $scope.addCompanion = addCompanion;
         $scope.toggleTargeting = toggleTargeting;
         $scope. hasTargeting = hasTargeting;
+        $scope.isAutoOptimizeActive = isAutoOptimizeActive;
+
+        function isAutoOptimizeActive() {
+            var publisher = $scope.selected ? $scope.selected.publisher : {};
+            return $scope.isNew || _.contains(_.values(publisher.enabledModules), 'MODULE_AUTO_OPTIMIZE')
+        }
 
         function hasTargeting(targeting) {
             if(!$scope.adTag.targeting.player_size) {
