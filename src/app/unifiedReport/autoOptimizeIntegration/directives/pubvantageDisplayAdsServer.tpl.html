@@ -34,7 +34,7 @@
 </div>
 
 <!--segment-->
-<div class="form-group">
+<div class="form-group" ng-show="isPubvantageAdServer()">
     <label class="col-sm-1quarter control-label">Segments Mapping</label>
     <div class="col-sm-5">
         <!--select segment field-->
@@ -113,7 +113,7 @@
     </div>
 </div>
 <!--select multiple supply-->
-<div class="form-group">
+<div class="form-group" ng-if="isPubvantageAdServer()">
     <label for="inputSites" class="col-sm-1quarter control-label">{{'AUTO_OPTIMIZE_INTEGRATION_MODULE.SUPPLY' | translate}}</label>
     <div class="col-sm-5">
         <isteven-multi-select id="inputSites"
@@ -131,7 +131,7 @@
 <br>
 
 <!--select multiple ad slots-->
-<div class="form-group">
+<div class="form-group" ng-if="isPubvantageAdServer()">
     <label for="inputAdSlots" class="col-sm-1quarter control-label">
         {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.AD_SLOTS' | translate}}</label>
 
@@ -144,6 +144,45 @@
                               button-label="name"
                               item-label="name"
                               is-disabled="isFixSelectedAdSlot"
+                              tick-property="ticked">
+        </isteven-multi-select>
+    </div>
+</div>
+
+<!--select multiple Video Publisher-->
+<div class="form-group" ng-if="!isPubvantageAdServer()">
+    <label for="inputAdSlots" class="col-sm-1quarter control-label">
+        {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.VIDEO_PUBLISHERS' | translate}}</label>
+
+    <div class="col-sm-5">
+        <isteven-multi-select id="inputVideoPublisher"
+                              output-properties="id"
+                              input-model="videoPublisherListFormData"
+                              output-model="autoOptimizeIntegration.videoPublishers"
+                              search-property="id name"
+                              button-label="name"
+                              item-label="name"
+                              is-disabled="isFixSelectedVideoPublishers"
+                              tick-property="ticked"
+                              on-item-click="onVideoPublishersClick(data)">
+        </isteven-multi-select>
+    </div>
+</div>
+
+<!--select multiple WaterFall Tag-->
+<div class="form-group" ng-if="!isPubvantageAdServer()">
+    <label for="inputAdSlots" class="col-sm-1quarter control-label">
+        {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.WATERFALL_TAG' | translate}}</label>
+
+    <div class="col-sm-5">
+        <isteven-multi-select id="inputWaterfallTags"
+                              output-properties="id"
+                              input-model="waterfallTagsListFormData"
+                              output-model="autoOptimizeIntegration.waterfallTags"
+                              search-property="id name"
+                              button-label="name"
+                              item-label="name"
+                              is-disabled="isFixSelectedWaterfallTags"
                               tick-property="ticked">
         </isteven-multi-select>
     </div>

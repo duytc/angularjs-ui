@@ -7,8 +7,8 @@
 
     function AutoOptimizeIntegrationForm($scope, $filter, $translate, AlertService, optimizationRule,
                                          autoOptimizeIntegration, ServerErrorProcessor, AutoOptimizeIntegrationManager,
-                                         AdSlotManager, sites, selectedSites, selectedAdSlots, historyStorage, HISTORY_TYPE_PATH,
-                                         DOMAINS_LIST_SEPARATOR, COUNTRY_LIST, Auth, PLATFORM_INTEGRATION, OPTIMIZATION_FREQUENCY) {
+                                         AdSlotManager, VideoPublisherManager, VideoWaterfallManager, OptimizeIntegrationManager, dataService, sites, videoPublishers, selectedSites, selectedAdSlots, historyStorage, HISTORY_TYPE_PATH,
+                                         DOMAINS_LIST_SEPARATOR, COUNTRY_LIST, Auth, PLATFORM_INTEGRATION, OPTIMIZATION_FREQUENCY, API_UNIFIED_END_POINT) {
 
         $scope.platformIntegrations = angular.copy(PLATFORM_INTEGRATION);
         $scope.optimizationFrequencies = angular.copy(OPTIMIZATION_FREQUENCY);
@@ -56,6 +56,11 @@
             {key: 'adTagName', label: 'Ad Tag Name'}
         ];
 
+        $scope.FROM_IDENTIFIERS_VIDEO = [
+            {key: 'demandAdTagId', label: 'Demand Ad Tag ID'},
+            {key: 'demandAdTagName', label: 'Demand Ad Tag Name'}
+        ];
+
         $scope.OPTIMIZATION_ALERTS = [
             {key: 'autoOptimization', label: 'Auto Optimization'},
             {key: 'autoOptimizeAndNotifyMe', label: 'Auto optimize and Notify me'},
@@ -72,6 +77,9 @@
         $scope.siteList = $scope.isFixSelectedSite ? selectedSites : _getSitesForPublisher($scope.autoOptimizeIntegration.optimizationRule.publisher);
 
         $scope.countries = COUNTRY_LIST;
+
+        $scope.videoPublishersList = videoPublishers || [];
+        
 
         var mostCommonlyCountry = [
             {name: 'Australia', code: 'AU', line: true},
@@ -95,6 +103,8 @@
         // all scope functions here
         $scope.groupEntities = groupEntities;
         $scope.backToListAuto = backToListAuto;
+        $scope.isPubvantageAdServer = isPubvantageAdServer;
+        $scope.onVideoPublishersClick = onVideoPublishersClick;
 
         $scope.filterText = filterText;
         $scope.isFormValid = isFormValid;
@@ -102,6 +112,14 @@
         $scope.submit = submit;
 
         /* ==========LOCAL FUNCTIONS FOR SCOPE============ */
+        function isPubvantageAdServer() {
+            return !!($scope.autoOptimizeIntegration.platformIntegration.type == 'PUBVANTAGE_ADS_SERVER');
+        }
+
+        function onVideoPublishersClick(data) {
+            return getWaterfallTagsListByVideoPublishers();
+        }
+
         function groupEntities(item) {
             if (item.line) {
                 return undefined; // no group
@@ -266,6 +284,31 @@
 
                     return adSlots.plain();
                 })
+        }
+       
+
+        function getWaterfallTagsListByVideoPublishers() {
+            return VideoWaterfallManager.getList({
+                videoPublishersIds: (_.map($scope.autoOptimizeIntegration.videoPublishers, function(val, key){
+                    return _.isObject(val) && _.has(val, 'id') ? val.id : val;
+                }) || []).join(',')
+            })
+            .then(function (videosWaterfall) {
+                var videosWaterfall = videosWaterfall ? videosWaterfall.plain() : [];
+                dataService.makeHttpGetRequest('/v1/optimizationintegrations/waterfalltags/ids', null, API_UNIFIED_END_POINT)
+                .then(function (waterfalls) {
+                    $scope.waterfallTagsList = _.filter(videosWaterfall, function(wt){
+                        return wt ? wt.id !== _.first(_.values(waterfalls)) : true;
+                    })
+                });
+
+                /*OptimizeIntegrationManager.one('waterfalltags').one('ids').get()
+                .then(function(waterfalls){
+                    $scope.waterfallTagsList = _.filter(videosWaterfall, function(wt){
+                        return wt ? wt.id !== _.first(_.values(waterfalls)) : true;
+                    })
+                })*/
+            });
         }
 
         function _getIdentifierObjectFromValue(key) {
@@ -492,5 +535,7 @@
 
             return label;
         }
+
+        
     }
 })();
