@@ -3,7 +3,14 @@
         <span current-page-title></span>
 
         <div class="button-bar">
-            <label class="ui-checkbox">
+            <!--label show optimized positions-->
+            <label class="ui-checkbox enable-optimization" ng-if="isAutoOptimize()"
+                   data-toggle="tooltip" title="{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.GENERAL_MESSAGE_HELP' | translate }}">
+                <input type="checkbox" ng-checked="enableShowOptimizedPositions" ng-click="showOptimizedPositions()" >
+                <span>{{ 'AD_TAG_MODULE.ENABLE_SHOW_OPTIMIZED_POSITIONS' | translate }}</span>
+            </label>
+
+            <label class="ui-checkbox" ng-if="!enableShowOptimizedPositions">
                 <input type="checkbox" ng-checked="enableDragDrop" ng-disabled="isSubPublisher()" ng-click="enableDragDropAdTag(enableDragDrop)">
                 <span>{{ 'AD_TAG_MODULE.ENABLE_DRAG_DROP' | translate }}</span>
             </label>
@@ -42,12 +49,12 @@
                 <li class="col-md-1">{{ 'AD_SOURCE_MODULE.STATUS' | translate }}</li>
             </ul>
 
-            <ul ui-sortable="sortableGroupOptions" ng-model="videoWaterfallTagItems">
-                <li class="group-ad-tag" ng-repeat="videoWaterfallTagItem in videoWaterfallTagItems" ng-class="{'moveable': !sortableGroupOptions['disabled']}">
+            <ul ui-sortable="sortableGroupOptions" ng-model="videoWaterfallTagItemsGroup">
+                <li class="group-ad-tag" ng-repeat="videoWaterfallTagItem in videoWaterfallTagItemsGroup" ng-class="{'moveable': !sortableGroupOptions['disabled']}">
 
                     <div class="position form-inline">
                         <strong>
-                        {{ 'VIDEO_AD_TAG_MODULE.POSITION' | translate }} : {{ $index + 1 }} -
+                        {{ 'VIDEO_AD_TAG_MODULE.POSITION' | translate }} : {{ videoWaterfallTagItem.length ? videoWaterfallTagItem[0].position : ($index + 1) }} -
                         {{ 'VIDEO_AD_TAG_MODULE.STRATEGY' | translate }}:
                         </strong>
 
@@ -61,62 +68,64 @@
                         </div>
                     </div>
 
-                    <ul class="itemAdTag" ui-sortable="sortableItemOption" ng-model="videoWaterfallTagItem.videoDemandAdTags">
-                        <li class="item" ng-repeat="videoDemandAdTag in videoWaterfallTagItem.videoDemandAdTags">
-                            <div class="col-md-1">{{ videoDemandAdTag.id }}</div>
-                            <div class="col-md-2">
-                                <div class="btn-group" dropdown on-toggle="actionDropdownToggled(open)">
-                                    <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li ng-if="!isSubPublisher() && videoDemandAdTag.active != 1"><a ng-click="toggleDemandAdTagStatus(videoDemandAdTag, 1)">{{ 'AD_SOURCE_MODULE.ACTIVATE_AD_SOURCE' | translate }}</a></li>
-                                        <li ng-if="!isSubPublisher() && videoDemandAdTag.active == 1"><a ng-click="toggleDemandAdTagStatus(videoDemandAdTag, 0)">{{ 'AD_SOURCE_MODULE.PAUSE_AD_SOURCE' | translate }}</a></li>
-                                        <li class="divider"></li>
-                                        <li><a ng-click="showVastTagVast()">{{ 'VIDEO_AD_TAG_MODULE.SHOW_VAST_TAG_REQUEST' | translate }}</a></li>
-                                        <li class="divider"></li>
-                                        <li><a ui-sref="^.^.^.reports.video.report(paramsReport(videoDemandAdTag))">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
-                                        <li class="divider"></li>
-                                        <li ng-if="!isSubPublisher()"><a ng-click="createDemandAdTag(videoWaterfallTagItems, videoWaterfallTagItem.position, videoDemandAdTag)">{{ 'AD_SOURCE_MODULE.EDIT_AD_SOURCE' | translate }}</a></li>
-                                        <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletionDemandAdTag(videoDemandAdTag, videoWaterfallTagItem.videoDemandAdTags, videoWaterfallTagItem.position)">{{ 'AD_SOURCE_MODULE.DELETE_AD_SOURCE' | translate }}</a></li>
+                    <div ng-repeat="vt in videoWaterfallTagItem">
+                        <ul class="itemAdTag" ui-sortable="sortableItemOption" ng-model="vt.videoDemandAdTags" ng-repeat="videoDemandAdTag in vt.videoDemandAdTags">
+                            <li class="item" >
+                                <div class="col-md-1">{{ videoDemandAdTag.id }}</div>
+                                <div class="col-md-2">
+                                    <div class="btn-group" dropdown on-toggle="actionDropdownToggled(open)">
+                                        <button type="button" class="btn " dropdown-toggle> {{ 'ACTIONS' | translate }} <span class="caret"></span> </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li ng-if="!isSubPublisher() && videoDemandAdTag.active != 1"><a ng-click="toggleDemandAdTagStatus(videoDemandAdTag, 1)">{{ 'AD_SOURCE_MODULE.ACTIVATE_AD_SOURCE' | translate }}</a></li>
+                                            <li ng-if="!isSubPublisher() && videoDemandAdTag.active == 1"><a ng-click="toggleDemandAdTagStatus(videoDemandAdTag, 0)">{{ 'AD_SOURCE_MODULE.PAUSE_AD_SOURCE' | translate }}</a></li>
+                                            <li class="divider"></li>
+                                            <li><a ng-click="showVastTagVast()">{{ 'VIDEO_AD_TAG_MODULE.SHOW_VAST_TAG_REQUEST' | translate }}</a></li>
+                                            <li class="divider"></li>
+                                            <li><a ui-sref="^.^.^.reports.video.report(paramsReport(videoDemandAdTag))">{{ 'VIEW_TODAY_REPORT' | translate }}</a></li>
+                                            <li class="divider"></li>
+                                            <li ng-if="!isSubPublisher()"><a ng-click="createDemandAdTag(videoWaterfallTagItems, videoWaterfallTagItem.position, videoDemandAdTag)">{{ 'AD_SOURCE_MODULE.EDIT_AD_SOURCE' | translate }}</a></li>
+                                            <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletionDemandAdTag(videoDemandAdTag, videoWaterfallTagItem.videoDemandAdTags, videoWaterfallTagItem.position)">{{ 'AD_SOURCE_MODULE.DELETE_AD_SOURCE' | translate }}</a></li>
 
-                                        <li ng-if="videoWaterfallTagItem.videoDemandAdTags.length > 1 && !isSubPublisher()" class="divider"></li>
-                                        <li ng-if="videoWaterfallTagItem.videoDemandAdTags.length > 1 && !isSubPublisher()"><a ng-click="splitFromGroup(videoWaterfallTagItem.videoDemandAdTags, videoDemandAdTag, videoWaterfallTagItems, videoWaterfallTagItem.position, $index)">{{ 'AD_TAG_MODULE.SPLIT_GROUP' | translate }}</a></li>
-                                    </ul>
+                                            <li ng-if="videoWaterfallTagItem.videoDemandAdTags.length > 1 && !isSubPublisher()" class="divider"></li>
+                                            <li ng-if="videoWaterfallTagItem.videoDemandAdTags.length > 1 && !isSubPublisher()"><a ng-click="splitFromGroup(videoWaterfallTagItem.videoDemandAdTags, videoDemandAdTag, videoWaterfallTagItems, videoWaterfallTagItem.position, $index)">{{ 'AD_TAG_MODULE.SPLIT_GROUP' | translate }}</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col-md-3" ng-dblclick="nameForm.$show()">
-                                <!--<div ng-show="!isSubPublisher()">-->
-                                    <!--<span class="fa fa-pencil" ng-hide="nameForm.$visible"></span>-->
-                                    <!--<div e-form="nameForm" buttons="no" oncancel="updateDemandAdTag($data, 'name', videoDemandAdTag)" onbeforesave="updateDemandAdTag($data, 'name', videoDemandAdTag)" editable-text="videoDemandAdTag.name">{{ videoDemandAdTag.name }}</div>-->
+                                <div class="col-md-3" ng-dblclick="nameForm.$show()">
+                                    <!--<div ng-show="!isSubPublisher()">-->
+                                        <!--<span class="fa fa-pencil" ng-hide="nameForm.$visible"></span>-->
+                                        <!--<div e-form="nameForm" buttons="no" oncancel="updateDemandAdTag($data, 'name', videoDemandAdTag)" onbeforesave="updateDemandAdTag($data, 'name', videoDemandAdTag)" editable-text="videoDemandAdTag.name">{{ videoDemandAdTag.name }}</div>-->
+                                    <!--</div>-->
+                                    <!--<div ng-show="isSubPublisher()">{{ videoDemandAdTag.name }}</div>-->
+                                    <div>{{ videoDemandAdTag.libraryVideoDemandAdTag.name }}</div>
+                                </div>
+
+                                <div class="col-md-2" ng-dblclick="priorityForm.$show()">
+                                    <div ng-show="!isSubPublisher()">
+                                        <span class="fa fa-pencil" ng-hide="priorityForm.$visible"></span>
+                                        <div e-form="priorityForm" buttons="no" oncancel="updateDemandAdTag($data, 'priority', videoDemandAdTag)" onbeforesave="updateDemandAdTag($data, 'priority', videoDemandAdTag)" editable-number="videoDemandAdTag.priority">{{ videoDemandAdTag.priority }}</div>
+                                    </div>
+                                </div>
+
+                                <!--<div class="col-md-2" ng-dblclick="timeoutForm.$show()">-->
+                                    <!--<div ng-show="!isSubPublisher()">-->
+                                        <!--<span class="fa fa-pencil" ng-hide="timeoutForm.$visible"></span>-->
+                                        <!--<div e-form="timeoutForm" buttons="no" oncancel="updateDemandAdTag($data, 'timeout', videoDemandAdTag)" onbeforesave="updateDemandAdTag($data, 'timeout', videoDemandAdTag)" editable-number="videoDemandAdTag.libraryVideoDemandAdTag.timeout">{{videoDemandAdTag.libraryVideoDemandAdTag.timeout}}</div>-->
+                                    <!--</div>-->
                                 <!--</div>-->
-                                <!--<div ng-show="isSubPublisher()">{{ videoDemandAdTag.name }}</div>-->
-                                <div>{{ videoDemandAdTag.libraryVideoDemandAdTag.name }}</div>
-                            </div>
 
-                            <div class="col-md-2" ng-dblclick="priorityForm.$show()">
-                                <div ng-show="!isSubPublisher()">
-                                    <span class="fa fa-pencil" ng-hide="priorityForm.$visible"></span>
-                                    <div e-form="priorityForm" buttons="no" oncancel="updateDemandAdTag($data, 'priority', videoDemandAdTag)" onbeforesave="updateDemandAdTag($data, 'priority', videoDemandAdTag)" editable-number="videoDemandAdTag.priority">{{ videoDemandAdTag.priority }}</div>
+                                <div class="col-md-2" ng-dblclick="rotationForm.$show()">
+                                    <div ng-show="!isSubPublisher()">
+                                        <span class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>
+                                        <div e-form="rotationForm" buttons="no" oncancel="updateDemandAdTag($data, 'rotationWeight', videoDemandAdTag)" onbeforesave="updateDemandAdTag($data, 'rotationWeight', videoDemandAdTag)" editable-number="videoDemandAdTag.rotationWeight">{{ videoDemandAdTag.rotationWeight }}</div>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <!--<div class="col-md-2" ng-dblclick="timeoutForm.$show()">-->
-                                <!--<div ng-show="!isSubPublisher()">-->
-                                    <!--<span class="fa fa-pencil" ng-hide="timeoutForm.$visible"></span>-->
-                                    <!--<div e-form="timeoutForm" buttons="no" oncancel="updateDemandAdTag($data, 'timeout', videoDemandAdTag)" onbeforesave="updateDemandAdTag($data, 'timeout', videoDemandAdTag)" editable-number="videoDemandAdTag.libraryVideoDemandAdTag.timeout">{{videoDemandAdTag.libraryVideoDemandAdTag.timeout}}</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-
-                            <div class="col-md-2" ng-dblclick="rotationForm.$show()">
-                                <div ng-show="!isSubPublisher()">
-                                    <span class="fa fa-pencil" ng-hide="rotationForm.$visible"></span>
-                                    <div e-form="rotationForm" buttons="no" oncancel="updateDemandAdTag($data, 'rotationWeight', videoDemandAdTag)" onbeforesave="updateDemandAdTag($data, 'rotationWeight', videoDemandAdTag)" editable-number="videoDemandAdTag.rotationWeight">{{ videoDemandAdTag.rotationWeight }}</div>
-                                </div>
-                            </div>
-                            <div class="col-md-1">{{ videoDemandAdTag.profit | currency }}</div>
-                            <div class="col-md-1"><span class="label" ng-class="videoDemandAdTag.active == 1 ? 'label-success' : (videoDemandAdTag.active == 0 ?'label-danger' : 'label-warning')">{{ videoDemandAdTag.active == 1 ? 'Active' : (videoDemandAdTag.active == 0 ? 'Paused' : 'Auto Paused') }}</span></span></div>
-                        </li>
-                    </ul>
+                                <div class="col-md-1">{{ videoDemandAdTag.profit | currency }}</div>
+                                <div class="col-md-1"><span class="label" ng-class="videoDemandAdTag.active == 1 ? 'label-success' : (videoDemandAdTag.active == 0 ?'label-danger' : 'label-warning')">{{ videoDemandAdTag.active == 1 ? 'Active' : (videoDemandAdTag.active == 0 ? 'Paused' : 'Auto Paused') }}</span></span></div>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
             </ul>
         </div>
