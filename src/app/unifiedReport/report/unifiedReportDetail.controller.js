@@ -237,11 +237,44 @@
             });
         }
 
+        function getAllEntries(dirEntry) {
+            dirEntry.createReader().readEntries(function(results) {
+                [].forEach.call(results, function(entry) {
+                    console.log(entry);
+                    window.open(entry.toURL());
+                })
+            });
+        }
+
+        function writeToFileSystem(data, callbackError) {
+            window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+            return window.requestFileSystem(TEMPORARY, 1024 * 1024, function(fs) {
+                      console.log('Opened ' + fs.name);
+                      
+                      fs.root.getFile('NewFile.txt', {create: true}, function(fileEntry) {
+                        fileEntry.createWriter(function(fileWriter) {
+                          fileWriter.onwritestart = function() {
+                            console.log('WRITE START');
+                          };
+                          
+                          fileWriter.onwriteend = function() {
+                            console.log('WRITE END');
+                          };
+
+                          var blob = new Blob([data], {type: 'text/plain'});
+                        
+                          fileWriter.write(blob);
+                          getAllEntries(fs.root);
+                        }, callbackError);
+                      }, callbackError);
+                    }, callbackError);
+        }
+
         function exportExcel() {
             var params = _toJsonReportView(reportView);
             delete params.page;
 
-            var xhr = new XMLHttpRequest();
+            /*var xhr = new XMLHttpRequest();
             xhr.responseType = 'blob';
             xhr.open("get", API_UNIFIED_END_POINT + '/v1/reportview/download');
             xhr.setRequestHeader("Authorization", 'Bearer ' + sessionStorage.getCurrentToken());
@@ -250,19 +283,21 @@
                xhr.getResponseHeader("Content-Disposition")
 
                window.saveAs(xhr.response, "namdn.csv")
-            }
+            }*/
 
-            return;
 
             dataService.makeHttpGetRequest('', null, API_UNIFIED_END_POINT + '/v1/reportview/download')
-                /*.then(function (data) {
+                .then(function (data) {
                     console.log(111, data);
+                    writeToFileSystem(data, function (e) {
+                      console.log('Error', e);
+                    });
                     //return data ? window.open(data) : void 0;
-                    var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
+                    /*var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
                     var reportName = !!reportView.name ? reportView.name : 'report-detail';
 
-                    return saveAs(blob, [reportName + '.csv']);
-                })*/;
+                    return saveAs(blob, [reportName + '.csv']);*/
+                });
         }
         
         function searchReportView() {
