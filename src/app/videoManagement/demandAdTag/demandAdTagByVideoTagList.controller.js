@@ -5,7 +5,7 @@
         .controller('VideoDemandAdTagList', VideoDemandAdTagList)
     ;
 
-    function VideoDemandAdTagList($scope, $filter, $q, _, $modal, $translate, videoWaterfallTagItems, videoWaterfallTag, VideoDemandAdTagManager, VideoAdTagItemManager, VideoAdTagManager, AlertService, dateUtil, historyStorage, HISTORY_TYPE_PATH, STRATEGY_OPTION, DIMENSIONS_OPTIONS_VIDEO_REPORT) {
+    function VideoDemandAdTagList($scope, $filter, $q, _, $modal, $translate, videoWaterfallTagItems, videoWaterfallTag, VideoDemandAdTagManager, VideoAdTagItemManager, VideoAdTagManager, dataService, AlertService, dateUtil, historyStorage, HISTORY_TYPE_PATH, STRATEGY_OPTION, DIMENSIONS_OPTIONS_VIDEO_REPORT, API_BASE_URL) {
         $scope.videoWaterfallTagItems = videoWaterfallTagItems;
         updatePositionForVideoAdTagItem();
 
@@ -48,6 +48,9 @@
             start: _start
         };
 
+        $scope.videoWaterfallTagItemsGroup = _sortGroup($scope.videoWaterfallTagItems) || [];
+        $scope.enableShowOptimizedPositions = false;
+
         $scope.actionDropdownToggled = actionDropdownToggled;
         $scope.enableDragDropAdTag = enableDragDropAdTag;
         $scope.backToListVideoTag = backToListVideoTag;
@@ -59,6 +62,81 @@
         $scope.splitFromGroup = splitFromGroup;
         $scope.paramsReport = paramsReport;
         $scope.showVastTagVast = showVastTagVast;
+        $scope.isAutoOptimize = isAutoOptimize;
+        $scope.showOptimizedPositions = showOptimizedPositions;
+
+        function isAutoOptimize() {
+            return true;
+            return videoWaterfallTag.autoOptimize && 
+                $scope.hasAutoOptimizeModule;
+        }
+
+        function showOptimizedPositions() {
+            $scope.enableDragDropAdTag(true);
+            $scope.enableShowOptimizedPositions = !$scope.enableShowOptimizedPositions;
+
+            if ($scope.enableShowOptimizedPositions) {
+                // empty ad tags list
+                $scope.videoWaterfallTagItems = [];
+
+                dataService.makeHttpGetRequest('/videowaterfalltagitems/adtag/' + videoWaterfallTag.id + '/optimizedPositions', null, API_BASE_URL)
+                .then(function (data) {
+                    console.log(111, data);
+                    $scope.videoWaterfallTagItems = data;
+                    $scope.videoWaterfallTagItemsGroup = _sortGroup($scope.videoWaterfallTagItems);
+                });
+            } else {
+                // restore original ad tags
+                $scope.videoWaterfallTagItems = videoWaterfallTagItems;
+
+                // update the shown list
+                $scope.videoWaterfallTagItemsGroup = _sortGroup($scope.videoWaterfallTagItems);
+            }
+        }
+
+        //sort groups overlap position
+        function _sortGroup(listAdTags) {
+            var videoWaterfallTagItemsGroup = [];
+
+            // current we do not support group for auto optimization
+            // TODO: if API support tags same points are in same group, we need change here...
+            if ($scope.enableShowOptimizedPositions) {
+                _.each(listAdTags, function (adTag) {
+                    if(!videoWaterfallTagItemsGroup[adTag.position]){
+                        videoWaterfallTagItemsGroup[adTag.position] = [];
+                    }
+                    videoWaterfallTagItemsGroup[adTag.position].push(adTag);
+                });
+
+                return videoWaterfallTagItemsGroup;
+            }
+
+            _.each(listAdTags, function (item) {
+                var index = 0;
+
+                if (videoWaterfallTagItemsGroup.length == 0) {
+                    videoWaterfallTagItemsGroup[index] = [];
+                }
+                else {
+                    var found = false;
+                    _.each(videoWaterfallTagItemsGroup, function (group, indexGroup) {
+                        if (group[0].position == item.position && !found) {
+                            found = true;
+                            index = indexGroup;
+                        }
+                    });
+
+                    if (found == false) {
+                        index = videoWaterfallTagItemsGroup.length;
+                        videoWaterfallTagItemsGroup[index] = [];
+                    }
+                }
+
+                videoWaterfallTagItemsGroup[index].push(item);
+            });
+
+            return videoWaterfallTagItemsGroup;
+        }
 
         function showVastTagVast() {
             $modal.open({
