@@ -5,7 +5,7 @@
         .controller('VideoAdTagForm', VideoAdTagForm)
     ;
 
-    function VideoAdTagForm($scope, $q, $stateParams, $translate, adTag, videoPublishers, publishers, AlertService, NumberConvertUtil, VideoAdTagManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, PLATFORM_OPTION, PLAYER_SIZE_OPTIONS) {
+    function VideoAdTagForm($scope, $q, $stateParams, $translate, adTag, videoPublishers, optimizeIntegrations, publishers, AlertService, NumberConvertUtil, VideoAdTagManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, PLATFORM_OPTION, PLAYER_SIZE_OPTIONS) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             platform: 'platform',
@@ -50,7 +50,8 @@
         if(!$scope.isNew) {
             $scope.adTag.buyPrice = NumberConvertUtil.convertPriceToString($scope.adTag.buyPrice);
         }
-
+        var enabledModules = !!$scope.selected.publisher ? $scope.selected.publisher.enabledModules : null;
+        $scope.optimizationIntegration = {};
         $scope.backToListAdTag = backToListAdTag;
         $scope.selectPublisher = selectPublisher;
         $scope.selectVideoPublisher = selectVideoPublisher;
@@ -59,7 +60,37 @@
         $scope.addCompanion = addCompanion;
         $scope.toggleTargeting = toggleTargeting;
         $scope.hasTargeting = hasTargeting;
+        $scope.onChangeIntegration = onChangeIntegration;
+        $scope.isAutoOptimizeModule = isAutoOptimizeModule;
         $scope.selectedVideoPublisher = adTag ? adTag.videoPublisher : {};
+        $scope.integrations = optimizeIntegrations;
+
+        function isAutoOptimizeModule() {
+            return isEnabledModule('MODULE_AUTO_OPTIMIZE');
+        }
+
+        function isEnabledModule(module) {
+            if (!$scope.isAdmin()) {
+                enabledModules = userSession.enabledModules
+            } else {
+                enabledModules = [module];
+            }
+
+            if ($scope.isNew) {
+                return enabledModules != null ? enabledModules.indexOf(module) > -1 : false;
+            }
+
+            return $scope.adSlot.publisher != null ? $scope.adSlot.publisher.enabledModules.indexOf(module) > -1 : false;
+        }
+
+        function onChangeIntegration(integration) {
+            if(_.isObject($scope.adTag))
+            {
+                $scope.optimizationIntegration = integration || {};
+                $scope.adTag.optimizationIntegration = integration.id;
+            }
+
+        }
 
         function filterPublishersByVideo(publishers) {
             return _.filter(publishers, function(publisher) {
