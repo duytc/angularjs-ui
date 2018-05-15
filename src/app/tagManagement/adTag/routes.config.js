@@ -33,6 +33,19 @@
                     adTags: /* @ngInject */ function(AdTagManager, $stateParams) {
                         $stateParams.page = !$stateParams.page ? 1 : $stateParams.page;
                         return AdTagManager.one().get($stateParams);
+                    },
+                    segments: /* @ngInject */ function() {
+                        /* always return all segments. TODO: only return segments related to ad slot */
+                        return [
+                            {
+                                key: "country",
+                                label: "Country"
+                            },
+                            {
+                                key: "domain",
+                                label: "Domain"
+                            }
+                        ];
                     }
                 },
                 ncyBreadcrumb: {

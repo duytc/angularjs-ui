@@ -169,6 +169,10 @@
                         return DisplayAdSlotLibrariesManager.one($stateParams.adSlotId).getList('adtags').then(function (adTags) {
                             return adTags.plain();
                         });
+                    },
+                    segments: /* @ngInject */ function() {
+                        /* always return all segments. TODO: only return segments related to ad slot */
+                        return [];
                     }
                 },
                 ncyBreadcrumb: {

@@ -5,14 +5,14 @@
         <span>{{ isNew ? ('AUTO_OPTIMIZE_INTEGRATION_MODULE.NEW_INTEGRATION' | translate) : ('AUTO_OPTIMIZE_INTEGRATION_MODULE.EDIT_INTEGRATION' | translate) }}</span>
         <!--back to list optimization integration-->
         <div class="button-bar">
-            <button ui-sref="^.list" class="btn btn-sm btn-primary" type="button">
+            <button ui-sref="^.^.autoOptimizeIntegration.list({optimizationRuleId: optimizationRule.id})" class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-arrow-left"></span>
                 {{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.BACK_TO_AUTO_OPTIMIZE_INTEGRATION_LIST' | translate }}
             </button>
         </div>
     </div>
 
-    <div class="btn-group btnGrouped" dropdown ng-if="!isNew">
+    <div class="btn-group btnGrouped" dropdown>
         <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify"
                                                                  aria-hidden="true"></span></button>
         <ul class="dropdown-menu pull-right" role="menu">

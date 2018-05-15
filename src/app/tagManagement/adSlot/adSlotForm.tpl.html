@@ -262,11 +262,35 @@
                     </div>
                 </div>
 
+                <!--enable auto optimization-->
                  <div class="form-group" ng-if="showForDisplayAdSlot() && isNormalAdSlotNotUseStandalone() && isAutoOptimizeModule()">
                     <label for="autoOptimize" class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.AUTO_OPTIMIZE' | translate }}</label>
                     <div class="col-sm-5">
-                        <label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="adSlot.autoOptimize" id="autoOptimize" ng-disabled="pickFromLibrary"><span></span></label>
+                        <label class="ui-checkbox"><input server-error name="active" type="checkbox"
+                                                          ng-model="adSlot.autoOptimize" id="autoOptimize" ng-click="onClickEnableOptimization()"
+                                                          ng-disabled="pickFromLibrary"><span></span></label>
                         <span class="help-block">{{ 'AD_SLOT_MODULE.HELP_BLOCK_AUTO_OPTIMIZE' | translate }}</span>
+                    </div>
+                </div>
+
+                <!--choose existed integration-->
+                <div class="form-group" ng-if="adSlot.autoOptimize === true && showForDisplayAdSlot() && isNormalAdSlotNotUseStandalone() && isAutoOptimizeModule()">
+                    <label for="integrations" class="col-sm-1quarter control-label">{{ 'AD_SLOT_MODULE.INTEGRATIONS' | translate }}</label>
+                    <div class="col-sm-5">
+                        <ui-select id="integrations" ng-model="optimizationIntegration"
+                                   ng-change="onChangeIntegration($select.selected)"
+                                   server-error reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_INTEGRATION_PLACE_HOLDER' | translate }}">
+                                {{ $select.selected.name }} ({{ $select.selected.optimizationRule.name }})
+                            </ui-select-match>
+                            <ui-select-choices repeat=" integration in integrations | filterIntegrationByPublisher:adSlot.publisher | filter:$select.search">
+                                {{ integration.name }} ({{integration.optimizationRule.name}})
+                            </ui-select-choices>
+                        </ui-select>
+
+                        <span class="help-block" ng-if="(integrations && integrations.length === 0) || !integrations">There is no optimization integration. Go to
+                            <a ui-sref="^.^.^.unifiedReport.autoOptimization.list">List optimization rules</a> and assign new integration for desired optimization rule.
+                        </span>
                     </div>
                 </div>
 

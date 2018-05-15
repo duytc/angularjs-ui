@@ -60,13 +60,15 @@
             $modal.open({
                 templateUrl: 'unifiedReport/report/createTemplate.tpl.html',
                 size: 'lg',
-                controller: function ($scope, $modalInstance, tags, UnifiedReportViewManager) {
+                controller: function ($scope, $modalInstance, tags, publishers, reportViewList, UnifiedReportViewManager) {
                     $scope.reportViewList = reportViewList;
+                    $scope.publishers = publishers;
                     $scope.tags = tags;
 
                     $scope.template = {
                         name: null,
                         reportView: null,
+                        publisher: null,
                         tags: []
                     };
 
@@ -115,9 +117,19 @@
                     }
                 },
                 resolve: {
-                    tags: function (UnifiedReportTagManager) {
-                        return UnifiedReportTagManager.getList().then(function (tags) {
+                    reportViewList: function (UnifiedReportViewManager) {
+                        return UnifiedReportViewManager.getList().then(function (reportViews) {
+                            return reportViews.plain();
+                        });
+                    },
+                    tags: function (UnifiedReportTagManager){
+                        return UnifiedReportTagManager.getList().then(function (tags){
                             return tags.plain();
+                        });
+                    },
+                    publishers: /* @ngInject */ function (adminUserManager){
+                        return adminUserManager.one('urEnabled').getList().then(function (publishers){
+                            return publishers.plain();
                         });
                     }
                 }

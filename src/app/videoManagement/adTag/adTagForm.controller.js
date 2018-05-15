@@ -15,7 +15,7 @@
         $scope.isNew = adTag === null;
         $scope.formProcessing = false;
         $scope.videoPublishers = videoPublishers;
-        $scope.publishers = publishers;
+        $scope.publishers = filterPublishersByVideo(publishers || []);
         $scope.platformOption = PLATFORM_OPTION;
 
         $scope.playerSizeOptions = PLAYER_SIZE_OPTIONS;
@@ -53,11 +53,20 @@
 
         $scope.backToListAdTag = backToListAdTag;
         $scope.selectPublisher = selectPublisher;
+        $scope.selectVideoPublisher = selectVideoPublisher;
         $scope.isFormValid = isFormValid;
         $scope.submit = submit;
         $scope.addCompanion = addCompanion;
         $scope.toggleTargeting = toggleTargeting;
         $scope. hasTargeting = hasTargeting;
+        $scope.selectedVideoPublisher = adTag ? adTag.videoPublisher : {};
+
+        function filterPublishersByVideo(publishers) {
+            return _.filter(publishers, function(publisher) {
+                return _.contains(_.values(publisher.enabledModules), 'MODULE_VIDEO')
+                //return _.findWhere(_.pluck(videoPublishers, 'publisher'), {id: publisher.id})
+            });
+        }
 
         function hasTargeting(targeting) {
             if(!$scope.adTag.targeting.player_size) {
@@ -89,7 +98,13 @@
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.videoAdTag, '^.list');
         }
 
-        function selectPublisher(videoPublisher) {
+        function selectPublisher() {
+            $scope.selectedVideoPublisher = {};
+            $scope.adTag.videoPublisher = null;
+        }
+
+        function selectVideoPublisher($item) {
+            $scope.selectedVideoPublisher = $item || {};
         }
 
         function isFormValid() {

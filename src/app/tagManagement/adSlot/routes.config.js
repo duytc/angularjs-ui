@@ -128,6 +128,12 @@
                         return DisplayWhiteListManager.getList().then(function (whiteList) {
                             return whiteList.plain();
                         });
+                    },
+                    optimizeIntegrations: function (AutoOptimizeIntegrationManager, $stateParams) {
+                        return AutoOptimizeIntegrationManager.one().get()
+                            .then(function (autoOptimizeIntegrations) {
+                                return autoOptimizeIntegrations.plain();
+                            });
                     }
                 },
                 customResolve: {
@@ -167,6 +173,12 @@
                         return DisplayWhiteListManager.getList().then(function (whiteList) {
                             return whiteList.plain();
                         });
+                    },
+                    optimizeIntegrations: function (AutoOptimizeIntegrationManager, $stateParams) {
+                        return AutoOptimizeIntegrationManager.one().get()
+                            .then(function (autoOptimizeIntegrations) {
+                                return autoOptimizeIntegrations.plain();
+                            });
                     }
                 },
                 ncyBreadcrumb: {
