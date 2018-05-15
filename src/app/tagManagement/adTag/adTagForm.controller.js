@@ -193,7 +193,7 @@
         }
 
         function searchAdNetworkItem(query, publisherId) {
-            if (query == sideParams.adNetwork.params.query) {
+            if (query == sideParams.adNetwork.params.query && query != null) {
                 return;
             }
 
@@ -320,6 +320,10 @@
             params.publisherId = publisher.id;
             adTagLibraryParams.publisherId = publisher.id;
             searchItem();
+
+            // changed select publisher -> refresh adNetWork and then get adNetwork for new pub
+            $scope.adTag.libraryAdTag.adNetwork = null;
+            searchAdNetworkItem(null, publisher.id);
         };
 
         /**
@@ -393,8 +397,18 @@
                 controller: 'AdNetworkQuicklyForm',
                 size: 'lg',
                 resolve: {
-                    publishers: function () {
-                        return publisherList;
+                    publishers: function(adminUserManager){
+                        if(!$scope.isAdmin()) {
+                            return null;
+                        }
+
+                        if(!!publisherList) {
+                            return publisherList;
+                        }
+
+                        return adminUserManager.getList({ filter: 'publisher' }).then(function (users) {
+                            return users.plain();
+                        });
                     },
                     blockList: function (DisplayBlackListManager) {
                         return DisplayBlackListManager.getList()
@@ -422,6 +436,16 @@
                         var publisherId = $scope.selected.publisher.id || $scope.selected.publisher;
                         if (adNetworkNew.publisher.id == publisherId || !$scope.isAdmin()) {
                             $scope.adTag.libraryAdTag.adNetwork = adNetworkNew;
+                        }
+
+                        // if auth is admin -> filter adNetWork based on publisher has been chosen
+                        if ($scope.isAdmin()) {
+                            $scope.adNetworkList = [];
+                            angular.forEach(adNetworks, function (adNetwork) {
+                                if (adNetwork.publisher.id == publisherId) {
+                                    $scope.adNetworkList.push(adNetwork);
+                                }
+                            });
                         }
                     });
             })
