@@ -1,28 +1,28 @@
 (function () {
     'use strict';
 
-    angular.module('tagcade.newDashboard').directive('dashboardDetail', dashboardDetail);
+    angular.module('tagcade.newDashboard')
+        .directive('dashboardUrDetail', dashboardUrDetail)
+    ;
 
-    function dashboardDetail($compile, COMPARE_TYPE) {
+    function dashboardUrDetail($compile) {
         return {
             scope: {
                 // bind properties
-                dashboardType: '=',
-                dateRange: '=',
-                overviewData: '=',
-                chartData: '=',
+                dashboardType: "=",
+                dateRange: "=",
+                overviewData: "=",
+                chartData: "=",
                 reportView: '=',
-                publisher: '=',
-                comparisionData: '=',
-                compareTypeData: '=',
-                chartFollow: '=',
-                notifyComparisonDataChange: '=',
-                watchManager: '=',
+                publisher: "=",
+                comparisionData: "=",
+                compareTypeData: "=",
+                chartFollow: "=",
                 // bind functions
-                onChangeChartFollow: '&'
+                onChangeChartFollow: "&"
             },
             restrict: 'AE',
-            templateUrl: 'newDashboard/directives/dashboardDetail.tpl.html',
+            templateUrl: 'newDashboard/directives/ur/view/dashboardUrDetail.tpl.html',
             compile: function (element, attrs) {
                 var content, directive;
                 content = element.contents().remove();
@@ -35,15 +35,12 @@
                     scope.onSelectFollow = function () {
                         // scope.onChangeChartFollow();
                     };
-                    scope.hideTopPerformer = function () {
-                        return COMPARE_TYPE['day'] === scope.compareTypeData.compareType;
-                    };
 
                     directive || (directive = $compile(content));
                     element.append(directive(scope, function ($compile) {
                         return $compile;
                     }));
-                };
+                }
             }
         };
     }

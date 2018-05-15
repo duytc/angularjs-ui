@@ -1,0 +1,41 @@
+<div>
+    <div class="row">
+        <div id="dashboard-overview-directive" class="col-md-6">
+            <dashboard-overview-directive
+                    dashboard-type="dashboardType"
+                    overview-data="overviewData"
+                    on-change-chart-follow="onSelectFollow()"
+                    publisher="publisher"
+                    chart-follow="chartFollow">
+            </dashboard-overview-directive>
+        </div>
+
+        <div id="dashboard-comparision" class="col-md-6">
+            <dashboard-comparision
+                    dashboard-type="dashboardType"
+                    report-view="reportView"
+                    chart-follow="chartFollow"
+                    on-change-chart-follow="onSelectFollow()"
+                    publisher="publisher"
+                    compare-type-data="compareTypeData"
+                    comparision-data="comparisionData">
+            </dashboard-comparision>
+        </div>
+    </div>
+
+    <div>
+        <dashboard-ur-chart chart-data="chartData"
+                            dashboard-type="dashboardType"
+                            compare-type-data="compareTypeData"
+                            chart-follow="chartFollow"
+                            publisher="publisher">
+        </dashboard-ur-chart>
+    </div>
+
+    <div>
+        <dashboard-ur-top-performance dashboard-type="dashboardType"
+                                      date-range="dateRange"
+                                      report-view="reportView">
+        </dashboard-ur-top-performance>
+    </div>
+</div>

@@ -2,14 +2,15 @@
     'use strict';
 
     angular.module('tagcade.newDashboard')
-        .controller('DashboardTopPerformers', DashboardTopPerformers)
+        .controller('DashboardUrTopPerformers', DashboardUrTopPerformers)
     ;
 
-    function DashboardTopPerformers($scope, _, dashboard, videoReportService, dataService, Auth, NewDashboardUtil,
-                                    DASHBOARD_TYPE_JSON, REPORT_SETTINGS, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL, COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT) {
+    function DashboardUrTopPerformers($scope, _, dashboard, videoReportService, dataService, Auth, NewDashboardUtil,
+                                      DASHBOARD_TYPE_JSON, REPORT_SETTINGS, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL,
+                                      COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT) {
         $scope.userSession = Auth.getSession();
         $scope.isAdmin = Auth.isAdmin();
-        $scope.showLoading = false;
+
         $scope.topPerformersData = {
             topPublishers: [],
             topSites: [],
@@ -97,12 +98,6 @@
         /* watch dateRange changed, then re-get data for display or video or unified report */
         $scope.$watch('dateRange', _onDateRangeChange);
 
-        $scope.$watch('comparisionData', _onComparisionDataChange);
-
-        $scope.$watch('compareTypeData.compareType', _onComparisionTypeDataChange);
-        
-        $scope.$watch('watchManager.clickGetReport', _onClickGetReport);
-
         /* all scope functions ===================== */
         function isShowForDisplay() {
             return DASHBOARD_TYPE_JSON[$scope.dashboardType.id] === DASHBOARD_TYPE_JSON.DISPLAY;
@@ -173,11 +168,6 @@
         }
 
         /* all local functions ===================== */
-        
-        function _onClickGetReport() {
-            resetTopPerformerData();
-            $scope.showLoading = true;
-        }
         function _onDashBoardTypeChange() {
             if (isShowForDisplay()) {
                 _updateTopPerformersForDisplay();
@@ -200,25 +190,6 @@
             _updateTopPerformersForUnifiedReport();
         }
 
-        function _onComparisionTypeDataChange() {
-            resetTopPerformerData();
-            $scope.showLoading = true;
-        }
-
-        function resetTopPerformerData() {
-            $scope.topPerformersData.topAdNetworks = [];
-            $scope.topPerformersData.topPublishers = [];
-            $scope.topPerformersData.topSites = [];
-        }
-
-        function _onComparisionDataChange() {
-            if(!$scope.comparisionData || $scope.comparisionData.length === 0) return;
-            var dateRange = {
-                startDate: $scope.comparisionData.startEndDateCurrent.startDate,
-                endDate: $scope.comparisionData.startEndDateCurrent.endDate
-            };
-            _updateTopPerformersForDisplay(dateRange);
-        }
         function _onDateRangeChange(newValue, oldValue, scope) {
             if (!NewDashboardUtil.isDifferentDate(newValue, oldValue)) {
                 return; // ignore if date range not change. Case: move cursor in date range picker value
@@ -237,24 +208,18 @@
             }
         }
 
-        function _updateTopPerformersForDisplay(dateRange) {
-            var stringDate= null;
-            if(dateRange){
-                stringDate = dateRange;
-            }else {
-                stringDate = NewDashboardUtil.getStringDate($scope.dateRange);
-            }
+        function _updateTopPerformersForDisplay() {
+            var stringDate = NewDashboardUtil.getStringDate($scope.dateRange);
             var params = {
-                startDate: !stringDate ? null : stringDate.startDate,
-                endDate: !stringDate ? null : stringDate.endDate
+                startDate: stringDate.startDate,
+                endDate: stringDate.endDate
             };
 
-            $scope.showLoading = true;
             if ($scope.isAdmin) {
                 dashboard.getPlatformDashboard(params, $scope.userSession)
-                    .then(function (data) {
+                    .then(
+                        function (data) {
                             $scope.topPerformersData = data;
-                            $scope.showLoading = false;
                         },
                         function (error) {
                             console.log('Get topPerformersDisplayReport got error', error);
@@ -264,24 +229,23 @@
                                 topSites: [],
                                 topAdNetworks: []
                             };
-                            $scope.showLoading = false;
                         }
                     );
             } else {
                 params = $.extend(params, {id: $scope.userSession.id});
                 dashboard.getPublisherDashboard(params, $scope.userSession)
-                    .then(function (data) {
+                    .then(
+                        function (data) {
                             $scope.topPerformersData = data;
-                            $scope.showLoading = false;
                         },
                         function (error) {
                             console.log('Get topPerformersDisplayReport got error', error);
+
                             $scope.topPerformersData = {
                                 topPublishers: [],
                                 topSites: [],
                                 topAdNetworks: []
                             };
-                            $scope.showLoading = false;
                         }
                     );
             }
@@ -402,7 +366,7 @@
             var hasColumnPositions = false;
 
             /* update columnPositions due to formats transform from report view */
-            if (!!$scope.reportView.formats.length) {
+            if (!!$scope.reportView.formats && !!$scope.reportView.formats.length) {
                 angular.forEach($scope.reportView.formats, function (format) {
                     if (!hasColumnPositions && format.type === 'columnPosition' && format.fields.length > 0) {
                         // append all transform fields to first post columnPositions

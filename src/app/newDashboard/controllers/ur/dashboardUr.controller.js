@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('tagcade.newDashboard')
-        .controller('DashboardUR', DashboardUR)
+        .controller('DashboardUr', DashboardUr)
     ;
 
-    function DashboardUR($scope, _, COMPARE_TYPE, DASHBOARD_TYPE, DateFormatter, Auth,
+    function DashboardUr($scope, _, COMPARE_TYPE, DASHBOARD_TYPE, DateFormatter, Auth,
                          DisplayDashboardRestAngular, DISPLAY_REPORT_TYPES, CHART_FOLLOW, DISPLAY_SHOW_FIELDS,
                          UnifiedReportDashboardRestAngular, VideoReportRestAngular, VIDEO_SHOW_FIELDS,
                          UnifiedReportViewManager, DASHBOARD_TYPE_JSON, NewDashboardUtil, USER_MODULES) {

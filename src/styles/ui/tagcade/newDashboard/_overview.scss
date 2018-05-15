@@ -13,3 +13,34 @@ mb-15 {
 .th-no-border {
   border: 0 !important;
 }
+.small-panel-padding{
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+.fixed-th-width{
+  width: 210px;
+}
+.btn-custom{
+  width: 30px;
+}
+.custom-date-range{
+  //padding-left: 10px;
+  //padding-right: 10px;
+  min-width: 260px;
+}
+.padding-10{
+  padding: 10px 10px
+ }
+.non-visible{
+  visibility: hidden;
+}
+.pt-10{
+  padding-top: 10px;
+}
+.help-text-font{
+  font-size: 12px;
+}
+.custom-callout{
+  margin: 10px 0 !important;
+  padding: 10px !important;
+}

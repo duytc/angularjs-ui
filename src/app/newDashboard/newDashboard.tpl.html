@@ -19,12 +19,15 @@
     </div>
 
     <div class="panel-body">
-        <dashboard-u-r ng-show="isUnifiedReportDashboard(currentModel.dashboardType)"
+        <dashboard-ur ng-show="isUnifiedReportDashboard(currentModel.dashboardType)"
                        dashboard-type="currentModel.dashboardType"
                        publisher="publisher">
+        </dashboard-ur>
 
-        </dashboard-u-r>
-        <!--<dashboard-display-and-video ng-show="isDisplayOrVideoDashboard(currentModel.dashboardType)"></dashboard-display-and-video>-->
+        <dashboard-display-and-video ng-show="isDisplayOrVideoDashboard(currentModel.dashboardType)"
+                                     dashboard-type="currentModel.dashboardType"
+                                     publisher="publisher">
+        </dashboard-display-and-video>
     </div>
 </section>
 

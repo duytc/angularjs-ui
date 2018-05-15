@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('tagcade.newDashboard')
-        .directive('dashboardUR', dashboardUR)
+        .directive('dashboardUr', dashboardUr)
     ;
 
-    function dashboardUR() {
+    function dashboardUr() {
         'use strict';
 
         return {
@@ -14,8 +14,8 @@
                 dashboardType: '='
             },
             restrict: 'AE',
-            templateUrl: 'newDashboard/directives/dashboardUR.tpl.html',
-            controller: 'DashboardUR'
+            templateUrl: 'newDashboard/directives/dashboardUr.tpl.html',
+            controller: 'DashboardUr'
         };
     }
 })();

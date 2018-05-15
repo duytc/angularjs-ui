@@ -10,7 +10,8 @@
 
         return {
             scope: {
-                publisher: '='
+                publisher: '=',
+                dashboardType: '='
             },
             restrict: 'AE',
             templateUrl: 'newDashboard/directives/dashboardDisplayAndVideo.tpl.html',

@@ -2,6 +2,61 @@
     'use strict';
 
     angular.module('tagcade.newDashboard')
+        .constant('PLATFORM_STATISTICS', 'platformStatistics')
+        .constant('ACCOUNT_STATISTICS', 'accountStatistics')
+        .constant('DEFAULT_DATE_FORMAT', 'YYYY-MM-DD')
+        .constant('DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO', 'date')
+        .constant('HOUR_EXTENSION', ':00')
+        .constant('CHART_DASH_TYPES', {
+            'SOLID': 'Solid',
+            'SHORT_DASH': 'ShortDash',
+            'LONG_DASH': 'LongDash'
+        })
+        .constant('LINE_CHART_CONFIG',{
+            options: {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: 'Current and History Statistics Comparison Chart',
+                    margin: 20
+                },
+                subtitle: {
+                    text: 'Solid lines is for Current statistics with date/time on top and dot lines is for History statistics with date/time on bottom',
+                    align: 'center'
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: false
+                        },
+                        enableMouseTracking: true
+                    }
+                }
+            },
+            xAxis: [
+                {
+                    categories: [],
+                    labels: {
+                        // rotation: -60,
+                        autoRotation: [-10, -20, -30, -40, -50, -60, -70, -80, -90]
+                    }
+                },
+                {
+                    categories: [],
+                    labels: {
+                        // rotation: -60,
+                        autoRotation: [-10, -20, -30, -40, -50, -60, -70, -80, -90]
+                    },
+                    opposite: true // on top of chart
+                }],
+            yAxis: {
+                title: {
+                    text: null
+                }
+            },
+            series: []
+        })
         .constant('CHART_FOLLOW', {
             'OVER_VIEW': 'OVER_VIEW',
             'COMPARISION': 'COMPARISION'
@@ -25,7 +80,9 @@
                 'day': 'day-over-day',
                 'week': 'week-over-week',
                 'month': 'month-over-month',
-                'year': 'year-over-year'
+                'year': 'year-over-year',
+                'custom': 'custom',
+                'yesterday': 'yesterday'
             }
         )
         .constant('DISPLAY_REPORT_TYPES', {
@@ -40,7 +97,8 @@
             'bids': 'Bids',
             'errors': 'Errors',
             'blocks': 'Blocked Requests',
-            'requestFillRate': 'Fill Rate'
+            'requestFillRate': 'Fill Rate',
+            'netRevenue': 'Revenue'
         })
         .constant('DISPLAY_SHOW_FIELDS', ['estRevenue', 'slotOpportunities', 'passbacks', 'impressions', 'fillRate'])
         .constant('VIDEO_SHOW_FIELDS', ['billedAmount', 'requests', 'impressions', 'bids', 'errors', 'blocks', 'requestFillRate'])

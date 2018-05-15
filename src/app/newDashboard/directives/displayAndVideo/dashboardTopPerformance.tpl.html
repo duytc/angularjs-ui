@@ -1,0 +1,211 @@
+<section class="panel panel-default">
+    <div class="panel-heading">{{'NEW_DASHBOARD.TOP_PERFORMERS'|translate}}</div>
+    <div class="panel-body">
+        <!--display report-->
+        <div ng-if="isShowForDisplay() && isAdmin">
+            <tabset class="nav-tab-margin">
+                <tab heading="{{ 'NEW_DASHBOARD.TOP_PUBLISHERS' | translate }}">
+                    <top-statistics-admin config='configTopPublishers' info="topPerformersData.topPublishers"></top-statistics-admin>
+                </tab>
+                <tab heading="{{ 'NEW_DASHBOARD.TOP_SITES' | translate }}">
+                    <top-statistics-admin config='configTopSites' info="topPerformersData.topSites"></top-statistics-admin>
+                </tab>
+            </tabset>
+        </div>
+
+        <div ng-if="isShowForDisplay() && !isAdmin">
+            <tabset class="nav-tab-margin">
+                <tab heading="{{ 'NEW_DASHBOARD.TOP_SITES' | translate }}">
+                    <top-site-publisher config='configTopSites' info="topPerformersData.topSites"></top-site-publisher>
+                </tab>
+                <tab heading="{{ 'NEW_DASHBOARD.TOP_AD_NETWORKS' | translate }}">
+                    <top-ad-network-publisher config='configTopAdNetworks' info="topPerformersData.topAdNetworks"></top-ad-network-publisher>
+                </tab>
+            </tabset>
+        </div>
+
+        <!--video report-->
+        <div ng-if="isShowForVideo()">
+            <tabset class="nav-tab-margin">
+                <tab heading="{{ 'NEW_DASHBOARD.TOP_VIDEO_REPORTS' | translate }}">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'date')">{{ columnNameMappingForVideoReport['date'] }}
+                                    <span class="glyphicon glyphicon-minus" ng-show="false"></span>
+                                </th>
+
+                                <th ng-show="isAdmin && hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'billedAmount')" ng-click="onClickSortForVideo('billedAmount')">{{ columnNameMappingForVideoReport['billedAmount'] }}
+                                    <span class="glyphicon glyphicon-minus" ng-show="!isShowSortIconForVideoReport('billedAmount')"></span>
+                                    <span class="glyphicon" ng-show="isShowSortIconForVideoReport('billedAmount')" ng-class="getSortIconClass()"></span>
+                                </th>
+
+                                <th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'requests')" ng-click="onClickSortForVideo('requests')">{{ columnNameMappingForVideoReport['requests'] }}
+                                    <span class="glyphicon glyphicon-minus" ng-show="!isShowSortIconForVideoReport('requests')"></span>
+                                    <span class="glyphicon" ng-show="isShowSortIconForVideoReport('requests')" ng-class="getSortIconClass()"></span>
+                                </th>
+
+                                <th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'impressions')" ng-click="onClickSortForVideo('impressions')">{{ columnNameMappingForVideoReport['impressions'] }}
+                                    <span class="glyphicon glyphicon-minus" ng-show="!isShowSortIconForVideoReport('impressions')"></span>
+                                    <span class="glyphicon" ng-show="isShowSortIconForVideoReport('impressions')" ng-class="getSortIconClass()"></span>
+                                </th>
+
+                                <th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'requestFillRate')" ng-click="onClickSortForVideo('requestFillRate')">{{ columnNameMappingForVideoReport['requestFillRate'] }}
+                                    <span class="glyphicon glyphicon-minus" ng-show="!isShowSortIconForVideoReport('requestFillRate')"></span>
+                                    <span class="glyphicon" ng-show="isShowSortIconForVideoReport('requestFillRate')" ng-class="getSortIconClass()"></span>
+                                </th>
+
+                                <th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'bids')" ng-click="onClickSortForVideo('bids')">{{ columnNameMappingForVideoReport['bids'] }}
+                                    <span class="glyphicon glyphicon-minus" ng-show="!isShowSortIconForVideoReport('bids')"></span>
+                                    <span class="glyphicon" ng-show="isShowSortIconForVideoReport('bids')" ng-class="getSortIconClass()"></span>
+                                </th>
+
+                                <th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'errors')" ng-click="onClickSortForVideo('errors')">{{ columnNameMappingForVideoReport['errors'] }}
+                                    <span class="glyphicon glyphicon-minus" ng-show="!isShowSortIconForVideoReport('errors')"></span>
+                                    <span class="glyphicon" ng-show="isShowSortIconForVideoReport('errors')" ng-class="getSortIconClass()"></span>
+                                </th>
+
+                                <th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'blocks')" ng-click="onClickSortForVideo('blocks')">{{ columnNameMappingForVideoReport['blocks'] }}
+                                    <span class="glyphicon glyphicon-minus" ng-show="!isShowSortIconForVideoReport('blocks')"></span>
+                                    <span class="glyphicon" ng-show="isShowSortIconForVideoReport('blocks')" ng-class="getSortIconClass()"></span>
+                                </th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr dir-paginate="report in topPerformersVideoData.reports | itemsPerPage:tableConfig.itemsPerPage">
+                                <td ng-show="hasKeyObjectForVideoReport(report, 'date')">
+                                    {{ report.date | date }}
+                                </td>
+
+                                <td ng-show="isAdmin && hasKeyObjectForVideoReport(report, 'billedAmount')">
+                                    {{ (report.billedAmount != null) ? (report.billedAmount | currency) : '-' }}
+                                </td>
+
+                                <td ng-show="hasKeyObjectForVideoReport(report, 'requests')">
+                                    {{ report.requests | number }}
+                                </td>
+
+                                <td ng-show="hasKeyObjectForVideoReport(report, 'impressions')">
+                                    {{ report.impressions | number }}
+                                </td>
+
+                                <td ng-show="hasKeyObjectForVideoReport(report, 'requestFillRate')">
+                                    {{ report.requestFillRate | percentage }}
+                                </td>
+
+                                <td ng-show="hasKeyObjectForVideoReport(report, 'bids')">
+                                    {{ report.bids | number }}
+                                </td>
+
+                                <td ng-show="hasKeyObjectForVideoReport(report, 'errors')">
+                                    {{ report.errors | number }}
+                                </td>
+
+                                <td ng-show="hasKeyObjectForVideoReport(report, 'blocks')">
+                                    {{ (report.blocks != null) ? (report.blocks | number) : '-' }}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!--<div class="table-responsive">-->
+                        <!--<table class="table" at-table at-paginated at-list="topPerformersVideoData.reports" at-config="configTopStatistics">-->
+                            <!--<thead>-->
+                            <!--<tr>-->
+                                <!--<th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'date')" at-attribute="date">{{ columnNameMappingForVideoReport['date'] }}</th>-->
+                                <!--<th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'estDemandRevenue')" at-attribute="estDemandRevenue">{{ columnNameMappingForVideoReport['estDemandRevenue'] }}</th>-->
+                                <!--<th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'requests')" at-attribute="requests">{{ columnNameMappingForVideoReport['requests'] }}</th>-->
+                                <!--<th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'impressions')" at-attribute="impressions">{{ columnNameMappingForVideoReport['impressions'] }}</th>-->
+                                <!--<th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'requestFillRate')" at-attribute="requestFillRate">{{ columnNameMappingForVideoReport['requestFillRate'] }}</th>-->
+                                <!--<th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'bids')" at-attribute="bids">{{ columnNameMappingForVideoReport['bids'] }}</th>-->
+                                <!--<th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'errors')" at-attribute="errors">{{ columnNameMappingForVideoReport['errors'] }}</th>-->
+                                <!--<th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'blocks')" at-attribute="blocks">{{ columnNameMappingForVideoReport['blocks'] }}</th>-->
+                            <!--</tr>-->
+                            <!--</thead>-->
+                            <!--<tbody>-->
+                            <!--<tr>-->
+                                <!--<td ng-show="hasKeyObjectForVideoReport(item, 'date')" at-title="{{ columnNameMappingForVideoReport['date'] }}" at-attribute="date">-->
+                                    <!--{{ item.date | date }}-->
+                                <!--</td>-->
+                                <!--<td ng-show="hasKeyObjectForVideoReport(item, 'estDemandRevenue')" at-title="{{ columnNameMappingForVideoReport['estDemandRevenue'] }}" at-sortable at-attribute="estDemandRevenue" ng-click="onClickSortForVideo('estDemandRevenue')">-->
+                                    <!--{{ (item.estDemandRevenue != null) ? (item.estDemandRevenue | currency) : '-' }}-->
+                                <!--</td>-->
+                                <!--<td ng-show="hasKeyObjectForVideoReport(item, 'requests')" at-title="{{ columnNameMappingForVideoReport['requests'] }}" at-sortable at-initial-sorting="desc" at-attribute="requests">-->
+                                    <!--{{ item.requests | number }}-->
+                                <!--</td>-->
+                                <!--<td ng-show="hasKeyObjectForVideoReport(item, 'impressions')" at-title="{{ columnNameMappingForVideoReport['impressions'] }}" at-sortable at-attribute="impressions">-->
+                                    <!--{{ item.impressions | number }}-->
+                                <!--</td>-->
+                                <!--<td ng-show="hasKeyObjectForVideoReport(item, 'requestFillRate')" at-title="{{ columnNameMappingForVideoReport['requestFillRate'] }}" at-sortable at-attribute="requestFillRate">-->
+                                    <!--{{ item.requestFillRate | percentage }}-->
+                                <!--</td>-->
+                                <!--<td ng-show="hasKeyObjectForVideoReport(item, 'bids')" at-title="{{ columnNameMappingForVideoReport['bids'] }}" at-sortable at-attribute="bids">-->
+                                    <!--{{ item.bids | number }}-->
+                                <!--</td>-->
+                                <!--<td ng-show="hasKeyObjectForVideoReport(item, 'errors')" at-title="{{ columnNameMappingForVideoReport['errors'] }}" at-sortable at-attribute="errors">-->
+                                    <!--{{ item.errors | number }}-->
+                                <!--</td>-->
+                                <!--<td ng-show="hasKeyObjectForVideoReport(item, 'blocks')" at-title="{{ columnNameMappingForVideoReport['blocks'] }}" at-sortable at-attribute="blocks">-->
+                                    <!--{{ (item.blocks != null) ? (item.blocks | number) : '-' }}-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--</tbody>-->
+                        <!--</table>-->
+                    <!--</div>-->
+
+                    <!--<at-pagination ng-if="showPagination()" class="table-footer" at-list="topPerformersVideoData.reports" at-config="configTopStatistics"></at-pagination>-->
+                </tab>
+            </tabset>
+        </div>
+
+        <!--unified report-->
+        <div ng-if="isShowForUnifiedReport()">
+            <div class="table-responsive table-report-view" style="overflow: auto;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th ng-class="{minWidth100: (columnTypesForUnifiedReport[column] == 'date' || columnTypesForUnifiedReport[column] == 'datetime')}" ng-repeat="column in columnPositions track by $index" ng-click="sortUnifiedReport(column)">{{ titleColumnsForUnifiedReport[column] }}
+                            <span class="glyphicon glyphicon-minus" ng-show="!isShowFieldForUnifiedReport(column)"></span>
+                            <span class="glyphicon" ng-show="isShowFieldForUnifiedReport(column)" ng-class="{'glyphicon-chevron-up':!reverseForUnifiedReport,'glyphicon-chevron-down':reverseForUnifiedReport}"></span>
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr dir-paginate="report in topPerformersUnifiedReportData.reports | itemsPerPage:tableConfig.itemsPerPage">
+                        <td ng-repeat="column in columnPositions track by $index">
+                            <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!--<div class="pagination">-->
+                <!--<pagination ng-if="showPaginationForUnifiedReport()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>-->
+
+                <!--<div class="itemsPerPage" ng-if="tableConfig.totalItems > 10">-->
+                    <!--<label for="inputItemPerPage">Items per page</label>-->
+                    <!--<div class="itemNumber">-->
+                        <!--<ui-select name="itemPerPage" id="inputItemPerPage" ng-model="tableConfig.itemsPerPage" on-select="selectItemPerPages($item)" reset-search-input="'false'">-->
+                            <!--<ui-select-match placeholder="10">{{ $select.selected.label }}</ui-select-match>-->
+                            <!--<ui-select-choices repeat="itemPerPage.key as itemPerPage in itemsPerPage">-->
+                                <!--{{ itemPerPage.label }}-->
+                            <!--</ui-select-choices>-->
+                        <!--</ui-select>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+
+        <div class="clearfix"></div>
+        <div class="text-center pt-10" ng-show="showLoading">
+            <img src="../../../../assets/images/ajax-loader.gif" height="25" width="25"/>
+        </div>
+
+        </div>
+    </div>
+</section>

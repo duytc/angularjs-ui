@@ -12,10 +12,13 @@
             scope: {
                 dashboardType: "=",
                 dateRange: "=",
-                reportView: '='
+                reportView: '=',
+                comparisionData: '=',
+                compareTypeData: '=',
+                watchManager: '='
             },
             restrict: 'AE',
-            templateUrl: 'newDashboard/directives/dashboardTopPerforment.tpl.html',
+            templateUrl: 'newDashboard/directives/dashboardTopPerformance.tpl.html',
             controller: 'DashboardTopPerformers'
         };
     }
