@@ -6,17 +6,20 @@
         .controller('NewDashboard', NewDashboard)
     ;
 
-    function NewDashboard($scope, _, publisher, COMPARE_TYPE, DASHBOARD_TYPE, DateFormatter, Auth,
-                          DisplayDashboardRestAngular, DISPLAY_REPORT_TYPES, CHART_FOLLOW, DISPLAY_SHOW_FIELDS,
-                          UnifiedReportDashboardRestAngular, VideoReportRestAngular, VIDEO_SHOW_FIELDS,
+    function NewDashboard($scope, _, publisher, COMPARE_TYPE, DASHBOARD_TYPE, DateFormatter, Auth, DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO,
+                          DEFAULT_DATE_FORMAT, DisplayDashboardRestAngular, DISPLAY_REPORT_TYPES, CHART_FOLLOW, DISPLAY_SHOW_FIELDS,
+                          UnifiedReportDashboardRestAngular, VideoReportRestAngular, VIDEO_SHOW_FIELDS, ACCOUNT_STATISTICS, PLATFORM_STATISTICS,
                           UnifiedReportViewManager, DASHBOARD_TYPE_JSON, NewDashboardUtil, userSession, USER_MODULES) {
 
         $scope.isAdmin = Auth.isAdmin();
         $scope.publisher = publisher == null ? null : publisher.plain();
         $scope.chartFollow = {
-            type: CHART_FOLLOW['OVER_VIEW']
+            type: CHART_FOLLOW['COMPARISION']
         };
 
+        $scope.watchManager = {
+            clickGetReport: false
+        };
         $scope.datePickerOpts = {
             maxDate: moment().endOf('day'),
             ranges: {
@@ -30,25 +33,29 @@
         };
 
         $scope.formData = {
+            notifyComparisonDataChange: false,
             compareTypeData: {
-                compareType: COMPARE_TYPE['day'],
-                label: NewDashboardUtil.getCompareLabel('day')
+                compareType: COMPARE_TYPE['yesterday'],
+                label: NewDashboardUtil.getCompareLabel('yesterday')
             },
             comparisionData: [],
-            unifiedReportingOptions: [],
+            dashboardTypes: [],
             masterReport: [],
             dateRange: {
-                startDate: $scope.datePickerOpts.ranges['Last 7 Days'][0],
-                endDate: $scope.datePickerOpts.ranges['Last 7 Days'][1]
+                startDate: moment().add(1, 'days'),
+                endDate: moment().add(1, 'days')
             },
             overviewData: {
                 data: [],
                 datePickerOpts: $scope.datePickerOpts
             },
             chartData: {
+                notifyDrawChart: false,
                 datePickerOpts: $scope.datePickerOpts,
                 reports: [],
-                dateField: 'date', // default for display and video, not for ur
+                currentReports:[],
+                historyReports:[],
+                dateField: DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO, // default for display and video, not for ur
                 urData: {
                     fields: [],
                     fieldsLabel: {},
@@ -76,6 +83,8 @@
         $scope.onChangeChartFollow = onChangeChartFollow;
 
         $scope.$watch('formData.dateRange', _onDateRangeChanged);
+        $scope.$watch('formData.compareTypeData.compareType', _onCompareTypeDataChanged);
+        $scope.$watch('formData.notifyComparisonDataChange', _onComparisionDataChanged);
 
         _initData();
 
@@ -92,25 +101,67 @@
             return NewDashboardUtil.isDisplayDashboard(type);
         }
 
-        function onChangeChartFollow() {
-            var data;
-
-            if ($scope.chartFollow.type === CHART_FOLLOW['OVER_VIEW']) {
-                data = $scope.formData.reportData;
-            } else {
-                if (!$scope.formData.comparisionData || !$scope.formData.comparisionData.current) return;
-                data = $scope.formData.comparisionData.current;
+        function create24Reports(report) {
+            if(!report){
+                return [];
             }
+            var hourReports = [];
+            for (var hour = 0; hour < 24; hour++) {
+                var hourReport = angular.copy(report);
+                hourReport.date = hourReport.date + ' ' + hour;
+                hourReports.push(hourReport)
+            }
+            return hourReports;
+        }
+
+        function isDayOverDayChart() {
+            return $scope.formData.compareTypeData.compareType === COMPARE_TYPE['day'];
+        }
+
+        /**
+         *
+         * @param newComparisionData {current, history}
+         */
+        function onChangeChartFollow(newComparisionData) {
+            var chartData;
+
+            if(!newComparisionData){
+                return;
+            }
+            chartData = newComparisionData;
 
             if (isDisplayDashboard($scope.currentModel.dashboardType)) {
-                var key = $scope.isAdmin ? 'platformStatistics' : 'accountStatistics';
-
-                if (data && data[key]) {
-                    $scope.formData.chartData.reports = data[key].reports;
+                var key = $scope.isAdmin ? PLATFORM_STATISTICS : ACCOUNT_STATISTICS;
+                if (chartData) {
+                    var current;
+                    var history;
+                    if (isDayOverDayChart()) {
+                        current = chartData.reportHourToday || [];
+                        history = chartData.reportHourHistory || [];
+                        $scope.formData.chartData.currentReports = current;
+                        $scope.formData.chartData.historyReports = history;
+                    } else {
+                        current = chartData.current || {};
+                        history = chartData.history || {};
+                        $scope.formData.chartData.currentReports = current[key] ? current[key].reports : [];
+                        $scope.formData.chartData.historyReports = history[key] ? history[key].reports : [];
+                    }
+                    $scope.formData.chartData.dateField = {
+                        field: DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO,
+                        format: DEFAULT_DATE_FORMAT
+                    };
                 }
-            } else if (isVideoDashboard($scope.currentModel.dashboardType)) {
-                $scope.formData.chartData.reports = data.reports;
-            } else if (isUnifiedReportDashboard($scope.currentModel.dashboardType)) {
+            }
+            else if (isVideoDashboard($scope.currentModel.dashboardType)) {
+                $scope.formData.chartData.currentReports = chartData.current.reports;
+                $scope.formData.chartData.historyReports = chartData.history.reports;
+                $scope.formData.chartData.dateField = {
+                    field: DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO,
+                    format: DEFAULT_DATE_FORMAT
+                };
+            }
+            else if (isUnifiedReportDashboard($scope.currentModel.dashboardType)) {
+                //TODO need to get current and history report
                 // set report fields
                 var total = data.total;
                 var fields = [];
@@ -121,12 +172,18 @@
                 // set report data.
                 // Notice: total contains all show fields for chart, return empty report detail if total empty!!!
                 // This avoid show empty chart
-                $scope.formData.chartData.reports = (data.reports && total && fields && fields.length > 0) ? data.reports : [];
+                $scope.formData.chartData.reports = (chartData.reports && total && fields && fields.length > 0) ? chartData.reports : [];
             }
+
+            askForDrawingChart();
 
             if (!$scope.$$phase) {
                 $scope.$apply();
             }
+        }
+
+        function askForDrawingChart() {
+            $scope.formData.chartData.notifyDrawChart = !$scope.formData.chartData.notifyDrawChart;
         }
 
         function onSelectReportViewForUnifiedReport(reportView) {
@@ -157,28 +214,28 @@
                 );
         }
 
-        function onSelectDashboardType(item) {
-            // check if no item selected. This is in case of loggin as publisher and has no module
-            if (!item) {
+        function onSelectDashboardType(dashboardType) {
+            // check if no dashboardType selected. This is in case of loggin as publisher and has no module
+            if (!dashboardType) {
                 return;
             }
 
             // avoid select dashboard type again
             // also avoid event when select date range. TODO: find out why select date range makes this event...
             // temp unused because this make no report fill again when change date range. TODO: why???
-            // if (!item.id || item.id === _currentDashboardType.id) {
+            // if (!dashboardType.id || dashboardType.id === _currentDashboardType.id) {
             //     return;
             // }
 
             // update current dashboard type
-            _currentDashboardType = item;
+            _currentDashboardType = dashboardType;
 
             // reset default chartFollow to overview
             $scope.chartFollow = {
                 type: CHART_FOLLOW['OVER_VIEW']
             };
 
-            _getOverviewReport();
+            // _getOverviewReport();
         }
 
         /* local functions ============================ */
@@ -189,6 +246,15 @@
 
             // get over view report again
             _getOverviewReport();
+        }
+
+        function _onCompareTypeDataChanged(newValue, oldValue, scope) {
+            // console.log('comparison type change');
+        }
+
+        function _onComparisionDataChanged(newValue, oldValue, scope) {
+            $scope.chartFollow.type = CHART_FOLLOW['COMPARISION'];
+            onChangeChartFollow($scope.formData.comparisionData);
         }
 
         function _getReportView() {
@@ -246,7 +312,7 @@
             // check if has date filter
             var hasDateFilter = false;
             angular.forEach(filters, function (filter) {
-                if (!filter || !filter.type || (filter.type !== 'date' && filter.type !== 'dateTime')) {
+                if (!filter || !filter.type || (filter.type !== DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO && filter.type !== 'dateTime')) {
                     return;
                 }
 
@@ -266,8 +332,8 @@
             if (_currentDashboardType.id === 'DISPLAY') {
                 // set chart date field
                 $scope.formData.chartData.dateField = {
-                    field: 'date',
-                    format: 'YYYY-MM-DD'
+                    field: DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO,
+                    format: DEFAULT_DATE_FORMAT
                 };
 
                 _getDisplayOverviewReport();
@@ -278,8 +344,8 @@
             if (_currentDashboardType.id === 'VIDEO') {
                 // set chart date field
                 $scope.formData.chartData.dateField = {
-                    field: 'date',
-                    format: 'YYYY-MM-DD'
+                    field: DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO,
+                    format: DEFAULT_DATE_FORMAT
                 };
 
                 _getVideoOverviewReport();
@@ -412,7 +478,7 @@
         }
 
         function _extractDisplayOverviewData(dataDisplay) {
-            var key = $scope.isAdmin ? 'platformStatistics' : 'accountStatistics';
+            var key = $scope.isAdmin ? PLATFORM_STATISTICS : ACCOUNT_STATISTICS;
             if (!dataDisplay || !dataDisplay[key]) {
                 resetData();
                 return;
@@ -442,7 +508,7 @@
 
         function _initData() {
             if ($scope.isAdmin) {
-                $scope.formData.unifiedReportingOptions = DASHBOARD_TYPE;
+                $scope.formData.dashboardTypes = DASHBOARD_TYPE;
             } else {
                 var dashboardTypeForPublisher = [];
 
@@ -458,12 +524,12 @@
                     dashboardTypeForPublisher.push({id: 'VIDEO', name: 'Pubvantage Video'});
                 }
 
-                $scope.formData.unifiedReportingOptions = dashboardTypeForPublisher;
+                $scope.formData.dashboardTypes = dashboardTypeForPublisher;
             }
 
             $scope.formData.overviewData.data = [];
             $scope.formData.topPerformersData = [];
-            $scope.currentModel.dashboardType = ($scope.formData.unifiedReportingOptions && $scope.formData.unifiedReportingOptions.length > 0) ? $scope.formData.unifiedReportingOptions[0] : [];
+            $scope.currentModel.dashboardType = ($scope.formData.dashboardTypes && $scope.formData.dashboardTypes.length > 0) ? $scope.formData.dashboardTypes[0] : [];
 
             /* load dashboard data for current dashboard type */
             onSelectDashboardType($scope.currentModel.dashboardType);

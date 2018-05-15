@@ -1,27 +1,25 @@
 (function () {
     'use strict';
 
-    angular.module('tagcade.newDashboard')
-        .directive('dashboardDetail', dashboardDetail)
-    ;
+    angular.module('tagcade.newDashboard').directive('dashboardDetail', dashboardDetail);
 
-    function dashboardDetail($compile) {
-        'use strict';
-
+    function dashboardDetail($compile, COMPARE_TYPE) {
         return {
             scope: {
                 // bind properties
-                dashboardType: "=",
-                dateRange: "=",
-                overviewData: "=",
-                chartData: "=",
+                dashboardType: '=',
+                dateRange: '=',
+                overviewData: '=',
+                chartData: '=',
                 reportView: '=',
-                publisher: "=",
-                comparisionData: "=",
-                compareTypeData: "=",
-                chartFollow: "=",
+                publisher: '=',
+                comparisionData: '=',
+                compareTypeData: '=',
+                chartFollow: '=',
+                notifyComparisonDataChange: '=',
+                watchManager: '=',
                 // bind functions
-                onChangeChartFollow: "&"
+                onChangeChartFollow: '&'
             },
             restrict: 'AE',
             templateUrl: 'newDashboard/directives/dashboardDetail.tpl.html',
@@ -37,12 +35,15 @@
                     scope.onSelectFollow = function () {
                         // scope.onChangeChartFollow();
                     };
+                    scope.hideTopPerformer = function () {
+                        return COMPARE_TYPE['day'] === scope.compareTypeData.compareType;
+                    };
 
                     directive || (directive = $compile(content));
                     element.append(directive(scope, function ($compile) {
                         return $compile;
                     }));
-                }
+                };
             }
         };
     }

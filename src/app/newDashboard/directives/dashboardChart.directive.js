@@ -15,7 +15,8 @@
                 dashboardType: '=',
                 publisher: "=",
                 chartFollow: "=",
-                compareTypeData: "="
+                compareTypeData: "=",
+                watchManager: "="
             },
             restrict: 'AE',
             templateUrl: 'newDashboard/directives/dashboardChart.tpl.html',
