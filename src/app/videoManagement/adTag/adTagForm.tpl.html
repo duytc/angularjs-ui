@@ -40,9 +40,9 @@
                 <div class="form-group">
                     <label for="inputVideoPublisher" class="col-sm-1 control-label">{{ 'VIDEO_PUBLISHER' | translate }}</label>
                     <div class="col-sm-5">
-                        <ui-select name="videoPublisher" id="inputVideoPublisher" ng-model="adTag.videoPublisher" ng-disabled="!selected.publisher && isAdmin()" ng-required="true" server-error>
-                            <ui-select-match placeholder="{{ 'VIDEO_PUBLISHER_MODULE.SELECT_A_VIDEO_PUBLISHER' | translate }}">{{ $select.selected.name }}</ui-select-match>
-                            <ui-select-choices repeat="videoPublisher.id as videoPublisher in videoPublishers | selectedPublisher:selected.publisher | filter:$select.search">
+                        <ui-select on-select="selectVideoPublisher($item, $model)" name="videoPublisher" id="inputVideoPublisher" ng-model="adTag.videoPublisher" ng-disabled="!selected.publisher && isAdmin()" ng-required="true" server-error>
+                            <ui-select-match placeholder="{{ 'VIDEO_PUBLISHER_MODULE.SELECT_A_VIDEO_PUBLISHER' | translate }}">{{ selectedVideoPublisher.name }}</ui-select-match>
+                            <ui-select-choices  repeat="videoPublisher.id as videoPublisher in videoPublishers | selectedPublisher:selected.publisher">
                                 {{ videoPublisher.name }}
                             </ui-select-choices>
                         </ui-select>
