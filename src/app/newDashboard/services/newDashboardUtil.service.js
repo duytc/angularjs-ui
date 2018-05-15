@@ -28,6 +28,8 @@
             isDisplayDashboard: isDisplayDashboard,
             isUnifiedDashboard: isUnifiedDashboard,
             getStringDate: getStringDate,
+            getTimeFromDateTime: getTimeFromDateTime,
+            getDateFromDateTime: getDateFromDateTime,
             removeNonDigit: removeNonDigit,
             isDifferentDate: isDifferentDate,
             getTodayDateRange: getTodayDateRange,
@@ -36,6 +38,38 @@
             getYearDateRange: getYearDateRange,
             getCompareLabel: getCompareLabel
         };
+
+        /**
+         *
+         * @param dateTime '2018-02-22 15'
+         * return 2018-02-22
+         */
+        function getDateFromDateTime(dateTime) {
+            if(!dateTime){
+                return '';
+            }
+            var dateAndHour = dateTime.split(' ');
+            if(dateAndHour || dateAndHour[0]){
+                return dateAndHour[0];
+            }
+            return '';
+        }
+        /**
+         *
+         * @param dateTime '2018-02-22 15'
+         * return 15
+         */
+        function getTimeFromDateTime(dateTime) {
+            if(!dateTime){
+                return '';
+            }
+            var dateAndHour = dateTime.split(' ');
+            if(dateAndHour || dateAndHour[1]){
+                return dateAndHour[1];
+            }
+            return '';
+        }
+
         function getCompareLabel(mode) {
             if (mode === 'day') {
                 return $translate.instant('NEW_DASHBOARD.DAY_LABEL');
@@ -45,9 +79,17 @@
             }
             if (mode === 'month') {
                 return $translate.instant('NEW_DASHBOARD.MONTH_LABEL');
-            } else {
+            }
+            if (mode === 'year') {
                 return $translate.instant('NEW_DASHBOARD.YEAR_LABEL');
             }
+            if (mode === 'custom') {
+                return '';
+            }
+            if(mode === 'yesterday'){
+                return $translate.instant('NEW_DASHBOARD.YESTERDAY');
+            }
+            return '';
         }
 
         function getTodayDateRange() {
@@ -86,10 +128,10 @@
         function getStringDate(dateRange) {
             var startDate = dateRange == null ? null : dateRange.startDate;
             var endDate = dateRange == null ? null : dateRange.endDate;
-            if (!startDate || !startDate._isValid) {
+            if (!startDate || (startDate._isValid && startDate._isValid === false)) {
                 return null;
             }
-            if (!endDate || !endDate._isValid) {
+            if (!endDate || (endDate._isValid && endDate._isValid === false)) {
                 return null;
             }
             var selectedStartDate = DateFormatter.getFormattedDate(startDate);

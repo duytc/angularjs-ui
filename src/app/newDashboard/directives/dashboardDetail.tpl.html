@@ -1,41 +1,58 @@
 <div>
-    <div class="row">
-        <div id="dashboard-overview-directive" class="col-md-6">
-            <dashboard-overview-directive
-                    dashboard-type="dashboardType"
-                    overview-data="overviewData"
-                    on-change-chart-follow="onSelectFollow()"
-                    publisher="publisher"
-                    chart-follow="chartFollow">
-            </dashboard-overview-directive>
-        </div>
+    <dashboard-aggregated-overview dashboard-type="dashboardType"
+                                   overview-data="overviewData"
+                                   on-change-chart-follow="onSelectFollow()"
+                                   publisher="publisher"
+                                   chart-follow="chartFollow"
+                                   report-view="reportView"
+                                   compare-type-data="compareTypeData"
+                                   comparision-data="comparisionData"
+                                   notify-comparison-data-change="notifyComparisonDataChange"
+                                   watch-manager="watchManager"
+                                   date-range="dateRange">
+    </dashboard-aggregated-overview>
 
-        <div id="dashboard-comparision" class="col-md-6">
-            <dashboard-comparision
-                    dashboard-type="dashboardType"
-                    report-view="reportView"
-                    chart-follow="chartFollow"
-                    on-change-chart-follow="onSelectFollow()"
-                    publisher="publisher"
-                    compare-type-data="compareTypeData"
-                    comparision-data="comparisionData">
-            </dashboard-comparision>
-        </div>
-    </div>
 
-    <div>
-        <dashboard-chart chart-data="chartData"
-                         dashboard-type="dashboardType"
-                         compare-type-data="compareTypeData"
-                         chart-follow="chartFollow"
-                         publisher="publisher">
-        </dashboard-chart>
-    </div>
+    <!--<div class="row">-->
+    <!--<div id="dashboard-overview-directive" class="col-md-6">-->
+    <!--<dashboard-overview-directive-->
+    <!--dashboard-type="dashboardType"-->
+    <!--overview-data="overviewData"-->
+    <!--on-change-chart-follow="onSelectFollow()"-->
+    <!--publisher="publisher"-->
+    <!--chart-follow="chartFollow">-->
+    <!--</dashboard-overview-directive>-->
+    <!--</div>-->
 
-    <div>
-        <dashboard-top-performance dashboard-type="dashboardType"
-                                   date-range="dateRange"
-                                   report-view="reportView">
-        </dashboard-top-performance>
-    </div>
+    <!--<div id="dashboard-comparision" class="col-md-6">-->
+    <!--<dashboard-comparision-->
+    <!--dashboard-type="dashboardType"-->
+    <!--report-view="reportView"-->
+    <!--chart-follow="chartFollow"-->
+    <!--on-change-chart-follow="onSelectFollow()"-->
+    <!--publisher="publisher"-->
+    <!--compare-type-data="compareTypeData"-->
+    <!--comparision-data="comparisionData">-->
+    <!--</dashboard-comparision>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <div class="clearfix"></div>
+    <dashboard-chart chart-data="chartData"
+                     dashboard-type="dashboardType"
+                     compare-type-data="compareTypeData"
+                     chart-follow="chartFollow"
+                     watch-manager="watchManager"
+                     publisher="publisher">
+    </dashboard-chart>
+
+    <dashboard-top-performance ng-hide="hideTopPerformer()"
+                               dashboard-type="dashboardType"
+                               date-range="dateRange"
+                               comparision-data="comparisionData"
+                               compare-type-data="compareTypeData"
+                               watch-manager="watchManager"
+                               report-view="reportView">
+    </dashboard-top-performance>
+
 </div>

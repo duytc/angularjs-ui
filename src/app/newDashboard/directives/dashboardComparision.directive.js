@@ -6,17 +6,15 @@
     ;
 
     function dashboardComparision() {
-        'use strict';
-
         return {
             scope: {
-                dashboardType: "=",
-                publisher: "=",
-                reportView: "=",
-                chartFollow: "=",
-                comparisionData: "=",
-                compareTypeData: "=",
-                onChangeChartFollow: "&"
+                dashboardType: '=',
+                publisher: '=',
+                reportView: '=',
+                chartFollow: '=',
+                comparisionData: '=',
+                compareTypeData: '=',
+                onChangeChartFollow: '&'
             },
             restrict: 'AE',
             templateUrl: 'newDashboard/directives/dashboardComparision.tpl.html',

@@ -1,24 +1,24 @@
-<div class="panel panel-default">
-    <div class="panel-body">
-        <form name="dateRangeSelection" class="form-inline" role="form" novalidate>
-            <div class="form-group">
-                <label for="inputDateRange">{{ 'NEW_DASHBOARD.DATE_LABEL' | translate }}</label>
-                <div>
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                        <input date-range-picker
-                               options="datePickerOpts"
-                               class="form-control date-picker date-picker-new-dashboard"
-                               type="text"
-                               id="inputDateRange"
-                               ng-model="formData.dateRange"
-                               ng-required="true">
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
+<!--<div class="panel panel-default">-->
+    <!--<div class="panel-body">-->
+        <!--<form name="dateRangeSelection" class="form-inline" role="form" novalidate>-->
+            <!--<div class="form-group">-->
+                <!--<label for="inputDateRange">{{ 'NEW_DASHBOARD.DATE_LABEL' | translate }}</label>-->
+                <!--<div>-->
+                    <!--<div class="input-group">-->
+                        <!--<span class="input-group-addon"><i class="fa fa-calendar"></i></span>-->
+                        <!--<input date-range-picker-->
+                               <!--options="datePickerOpts"-->
+                               <!--class="form-control date-picker date-picker-new-dashboard"-->
+                               <!--type="text"-->
+                               <!--id="inputDateRange"-->
+                               <!--ng-model="formData.dateRange"-->
+                               <!--ng-required="true">-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</form>-->
+    <!--</div>-->
+<!--</div>-->
 
 <section class="panel panel-default">
     <div class="panel-heading">
@@ -33,7 +33,7 @@
                 <ui-select-match placeholder="{{'NEW_DASHBOARD.SELECT_PLACE_HOLDER' | translate}}">
                     {{ $select.selected.name }}
                 </ui-select-match>
-                <ui-select-choices repeat="report in formData.unifiedReportingOptions">
+                <ui-select-choices repeat="report in formData.dashboardTypes">
                     {{ report.name }}
                 </ui-select-choices>
             </ui-select>
@@ -83,6 +83,8 @@
                               comparision-data="formData.comparisionData"
                               compare-type-data="formData.compareTypeData"
                               chart-follow="chartFollow"
+                              notify-comparison-data-change="formData.notifyComparisonDataChange"
+                              watch-manager="watchManager"
                               on-change-chart-follow="onChangeChartFollow()">
             </dashboard-detail>
         </div>
