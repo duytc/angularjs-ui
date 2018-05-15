@@ -365,7 +365,7 @@
             var hasColumnPositions = false;
 
             /* update columnPositions due to formats transform from report view */
-            if (!!$scope.reportView.formats.length) {
+            if (!!$scope.reportView.formats && !!$scope.reportView.formats.length) {
                 angular.forEach($scope.reportView.formats, function (format) {
                     if (!hasColumnPositions && format.type === 'columnPosition' && format.fields.length > 0) {
                         // append all transform fields to first post columnPositions
