@@ -7,7 +7,7 @@
 
     function AutoOptimizeIntegrationForm($scope, $filter, $translate, AlertService, optimizationRule,
                                          autoOptimizeIntegration, ServerErrorProcessor, AutoOptimizeIntegrationManager,
-                                         AdSlotManager, VideoPublisherManager, VideoWaterfallManager, OptimizeIntegrationManager, dataService, sites, videoPublishers, selectedSites, selectedAdSlots, historyStorage, HISTORY_TYPE_PATH,
+                                         AdSlotManager, VideoPublisherManager, VideoWaterfallManager, dataService, sites, videoPublishers, selectedSites, selectedAdSlots, historyStorage, HISTORY_TYPE_PATH,
                                          DOMAINS_LIST_SEPARATOR, COUNTRY_LIST, Auth, PLATFORM_INTEGRATION, OPTIMIZATION_FREQUENCY, API_UNIFIED_END_POINT) {
 
         $scope.platformIntegrations = angular.copy(PLATFORM_INTEGRATION);
@@ -79,7 +79,7 @@
         $scope.countries = COUNTRY_LIST;
 
         $scope.videoPublishersList = videoPublishers || [];
-        
+        $scope.waterfallTagsList = [];
 
         var mostCommonlyCountry = [
             {name: 'Australia', code: 'AU', line: true},
@@ -301,13 +301,6 @@
                         return wt ? wt.id !== _.first(_.values(waterfalls)) : true;
                     })
                 });
-
-                /*OptimizeIntegrationManager.one('waterfalltags').one('ids').get()
-                .then(function(waterfalls){
-                    $scope.waterfallTagsList = _.filter(videosWaterfall, function(wt){
-                        return wt ? wt.id !== _.first(_.values(waterfalls)) : true;
-                    })
-                })*/
             });
         }
 
