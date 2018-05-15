@@ -105,6 +105,40 @@
                     </div>
                 </div>
 
+                <div class="form-group" ng-if="isAutoOptimizeActive()">
+                    <label for="inputAutoOptimize" class="col-sm-1 control-label">{{ 'VIDEO_AD_TAG_MODULE.AUTO_OPTIMIZE' | translate }}</label>
+                    <div class="col-sm-5">
+                        <div>
+                            <label class="ui-checkbox">
+                                <input name="autoOptimize" type="checkbox" ng-model="adTag.autoOptimize" server-error id="inputAutoOptimize">
+                                <span></span>
+                            </label>
+                        </div>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
+                <!--choose existed integration-->
+                <div class="form-group" ng-if="isAutoOptimizeModule()">
+                    <label for="integrations" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.INTEGRATIONS' | translate }}</label>
+                    <div class="col-sm-5">
+                        <ui-select id="integrations" ng-model="adTag.optimizationIntegration"
+                                   ng-change="onChangeIntegration($select.selected)"
+                                   server-error reset-search-input="'false'">
+                            <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_INTEGRATION_PLACE_HOLDER' | translate }}">
+                               {{ optimizationIntegration.selected.name }} ({{ optimizationIntegration.optimizationRule.name }})
+                            </ui-select-match>
+                            <ui-select-choices repeat=" integration in integrations | filter:$select.search">
+                                {{ integration.name }} ({{integration.optimizationRule.name}})
+                            </ui-select-choices>
+                        </ui-select>
+
+                        <span class="help-block" ng-if="(integrations && integrations.length === 0) || !integrations">There is no optimization integration. Go to
+                            <a ui-sref="^.^.^.unifiedReport.autoOptimization.list">List optimization rules</a> and assign new integration for desired optimization rule.
+                        </span>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-5">
                         <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success">{{ 'SUBMIT' | translate }}</button>

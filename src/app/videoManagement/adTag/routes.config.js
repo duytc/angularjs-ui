@@ -83,6 +83,12 @@
                     },
                     videoPublishers: /* @ngInject */ function(VideoPublisherManager) {
                         return VideoPublisherManager.getList();
+                    },
+                    optimizeIntegrations: function (AutoOptimizeIntegrationManager) {
+                        return AutoOptimizeIntegrationManager.one().get()
+                            .then(function (autoOptimizeIntegrations) {
+                                return autoOptimizeIntegrations.plain();
+                            });
                     }
                 },
                 customResolve: {
@@ -115,6 +121,12 @@
                     },
                     publishers: function() {
                         return null;
+                    },
+                    optimizeIntegrations: function (AutoOptimizeIntegrationManager) {
+                        return AutoOptimizeIntegrationManager.one().get()
+                            .then(function (autoOptimizeIntegrations) {
+                                return autoOptimizeIntegrations.plain();
+                            });
                     }
                 },
                 ncyBreadcrumb: {
