@@ -152,7 +152,6 @@
                     format: DEFAULT_DATE_FORMAT
                 };
             }
-            console.log($scope.formData.chartData);
         }
 
         /**
@@ -160,7 +159,6 @@
          * @param newComparisionData {current, history}
          */
         function onChangeChartFollow(newComparisionData) {
-            console.log('onChangeChartFollow');
             var chartData;
 
             if (!newComparisionData) {
@@ -202,11 +200,6 @@
             $scope.chartFollow = {
                 type: CHART_FOLLOW['OVER_VIEW']
             };
-            // _notifyChangeDashboardType();
-        }
-
-        function _notifyChangeDashboardType() {
-            $scope.rootWatchManager.dashboardTypeChanged = !$scope.rootWatchManager.dashboardTypeChanged;
         }
 
         function _onCompareTypeDataChanged(newValue, oldValue, scope) {
@@ -222,17 +215,17 @@
             onSelectDashboardType($scope.dashboardType);
         }
 
-        function resetData() {
-            $scope.formData.overviewData.data = [];
-            $scope.formData.chartData.reports = [];
-        }
-
-        function _initData() {
-            $scope.formData.overviewData.data = [];
-            $scope.formData.topPerformersData = [];
-
-            /* load dashboard data for current dashboard type */
-            onSelectDashboardType($scope.dashboardType);
-        }
+        // function resetData() {
+        //     $scope.formData.overviewData.data = [];
+        //     $scope.formData.chartData.reports = [];
+        // }
+        //
+        // function _initData() {
+        //     $scope.formData.overviewData.data = [];
+        //     $scope.formData.topPerformersData = [];
+        //
+        //     /* load dashboard data for current dashboard type */
+        //     onSelectDashboardType($scope.dashboardType);
+        // }
     }
 })();

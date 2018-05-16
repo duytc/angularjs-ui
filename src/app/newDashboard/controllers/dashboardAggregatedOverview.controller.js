@@ -14,13 +14,11 @@
         $scope.isShowForUnifiedReport = isShowForUnifiedReport;
         $scope.isShowForDisplayReport = isShowForDisplayReport;
         $scope.isShowForVideoReport = isShowForVideoReport;
-        $scope.hasDisplayOverviewTable = hasDisplayOverviewTable;
+
         $scope.hasDisplayComparisonTable = hasDisplayComparisonTable;
-        $scope.hasVideoOverviewTable = hasVideoOverviewTable;
         $scope.hasVideoComparisonTable = hasVideoComparisonTable;
         $scope.dateRangeString = dateRangeString;
         $scope.columnNameMappingForVideoReport = COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT;
-        $scope.customOverviewData = _refactorOverviewData();
         // ----------------------COMPARISION----------------------
 
         $scope.helpTextVisibilityStatus = true;
@@ -125,20 +123,12 @@
             return currentOrLastText + ' ' + $scope.compareTypeData.label;
         }
 
-        function hasVideoOverviewTable() {
-            return isShowForVideoReport() && $scope.overviewData.data;
-        }
-
         function hasVideoComparisonTable() {
-            return isShowForVideoReport() && $scope.formData.comparisionData;
-        }
-
-        function hasDisplayOverviewTable() {
-            return isShowForDisplayReport() && $scope.overviewData.data;
+            return isShowForVideoReport() && $scope.formData.comparisonTableData && $scope.formData.comparisonTableData.length > 0;
         }
 
         function hasDisplayComparisonTable() {
-            return isShowForDisplayReport() && $scope.formData.comparisionData;
+            return isShowForDisplayReport() && $scope.formData.comparisonTableData && $scope.formData.comparisonTableData.length > 0;
         }
 
         function isValidCustomDateRange() {
@@ -147,7 +137,6 @@
                 return false;
             }
             return customDateRange.current.startDate > customDateRange.history.endDate;
-
         }
 
         function getStringDate(date) {
@@ -162,35 +151,11 @@
             return '';
         }
 
-        function _refactorOverviewData() {
-            var data = angular.copy($scope.overviewData.data);
-
-            if (!isShowForUnifiedReport()) {
-                return data;
-            }
-
-            // sort data for unified report
-            var orderBy = ASC; // sort field name by alphabet asc
-            var sortByForUnifiedReport = 'label';
-            data.sort(function (r1, r2) {
-                if (r1[sortByForUnifiedReport] == r2[sortByForUnifiedReport]) {
-                    return 0;
-                }
-
-                return (r1[sortByForUnifiedReport] < r2[sortByForUnifiedReport])
-                    ? (orderBy == DESC ? 1 : -1)
-                    : (orderBy == DESC ? -1 : 1);
-            });
-
-            return data;
-        }
-
         /* all scope functions ===================== */
         function isShowForUnifiedReport() {
             if (!$scope.dashboardType || !$scope.dashboardType.id) {
                 return false;
             }
-
             return DASHBOARD_TYPE_JSON[$scope.dashboardType.id] === DASHBOARD_TYPE_JSON.UNIFIED_REPORT;
         }
 
@@ -198,7 +163,6 @@
             if (!$scope.dashboardType || !$scope.dashboardType.id) {
                 return false;
             }
-
             return DASHBOARD_TYPE_JSON[$scope.dashboardType.id] === DASHBOARD_TYPE_JSON.DISPLAY;
         }
 
@@ -206,7 +170,6 @@
             if (!$scope.dashboardType || !$scope.dashboardType.id) {
                 return false;
             }
-
             return DASHBOARD_TYPE_JSON[$scope.dashboardType.id] === DASHBOARD_TYPE_JSON.VIDEO;
         }
 
@@ -219,7 +182,6 @@
             $timeout(function () {
                 $scope.onChangeChartFollow();
             }, 0);
-
         }
 
         function getRecentDay() {
@@ -255,7 +217,7 @@
                     _notifyDrawChart();
                 }
                 $scope.showLoading = false;
-            }, function (error) {
+            }, function () {
                 $scope.comparisionData = [];
                 $scope.formData.comparisionData = [];
                 $scope.showLoading = false;
