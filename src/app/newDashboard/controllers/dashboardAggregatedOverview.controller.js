@@ -11,7 +11,6 @@
                                          DISPLAY_SHOW_FIELDS, unifiedReportComparisionRestangular, NewDashboardUtil, $translate) {
         $scope.isAdmin = Auth.isAdmin();
 
-        $scope.resetOverviewData = resetOverviewData;
         $scope.isShowForUnifiedReport = isShowForUnifiedReport;
         $scope.isShowForDisplayReport = isShowForDisplayReport;
         $scope.isShowForVideoReport = isShowForVideoReport;
@@ -19,15 +18,9 @@
         $scope.hasDisplayComparisonTable = hasDisplayComparisonTable;
         $scope.hasVideoOverviewTable = hasVideoOverviewTable;
         $scope.hasVideoComparisonTable = hasVideoComparisonTable;
-
         $scope.dateRangeString = dateRangeString;
-
         $scope.columnNameMappingForVideoReport = COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT;
-
         $scope.customOverviewData = _refactorOverviewData();
-        $scope.customOverviewTableData = getCustomOverviewTableData();
-
-
         // ----------------------COMPARISION----------------------
 
         $scope.helpTextVisibilityStatus = true;
@@ -132,12 +125,6 @@
             return currentOrLastText + ' ' + $scope.compareTypeData.label;
         }
 
-        function getCustomOverviewTableData() {
-            var arr = [];
-            arr.push($scope.customOverviewData);
-            return arr;
-        }
-
         function hasVideoOverviewTable() {
             return isShowForVideoReport() && $scope.overviewData.data;
         }
@@ -152,14 +139,6 @@
 
         function hasDisplayComparisonTable() {
             return isShowForDisplayReport() && $scope.formData.comparisionData;
-        }
-
-        function resetOverviewData() {
-            $scope.overviewData.data = [];
-        }
-
-        function _onOverviewDataChange() {
-            $scope.customOverviewData = _refactorOverviewData();
         }
 
         function isValidCustomDateRange() {
@@ -261,19 +240,6 @@
                 _getDisplayComparision(param, isClickChangeMode);
             } else if ($scope.dashboardType.id === 'VIDEO') {
                 _getVideoComparision(param, isClickChangeMode);
-            } else {
-                if (!$scope.reportView) {
-                    $scope.comparisionData = [];
-                    $scope.formData.comparisionData = [];
-                    return;
-                }
-
-                var param2 = {
-                    masterReport: $scope.reportView.id,
-                    type: $scope.compareTypeData.compareType
-                };
-
-                _getUnifiedComparision(param2, isClickChangeMode);
             }
         }
 
@@ -290,21 +256,6 @@
                 $scope.comparisionData = [];
                 $scope.formData.comparisionData = [];
             });
-        }
-
-        function getExtraCustomDateRangeParameters(originalParam, param) {
-            if (param.extraData) {
-                originalParam.currentStartDate = param.extraData.current.startDate;
-                originalParam.currentEndDate = param.extraData.current.endDate;
-                originalParam.historyStartDate = param.extraData.history.startDate;
-                originalParam.historyEndDate = param.extraData.history.endDate;
-            }
-
-            return originalParam;
-        }
-
-        function notifyComparisonDataChanged() {
-            $scope.notifyComparisonDataChange = !$scope.notifyComparisonDataChange;
         }
 
         function _getDisplayComparision(param, isClickChangeMode) {
@@ -338,18 +289,22 @@
             });
         }
 
-        function _getUnifiedComparision(param, isClickChangeMode) {
-            unifiedReportComparisionRestangular.one('comparison').customPOST(param).then(function (data) {
-                $scope.comparisionData = data.plain();
-                $scope.formData.comparisionData = _extractComparisionData(data, $scope.dashboardType);
-                if (isClickChangeMode) {
-                    _notifyDrawChart();
-                }
-            }, function (error) {
-                $scope.comparisionData = [];
-                $scope.formData.comparisionData = [];
-            });
+        function getExtraCustomDateRangeParameters(originalParam, param) {
+            if (param.extraData) {
+                originalParam.currentStartDate = param.extraData.current.startDate;
+                originalParam.currentEndDate = param.extraData.current.endDate;
+                originalParam.historyStartDate = param.extraData.history.startDate;
+                originalParam.historyEndDate = param.extraData.history.endDate;
+            }
+
+            return originalParam;
         }
+
+        function notifyComparisonDataChanged() {
+            $scope.notifyComparisonDataChange = !$scope.notifyComparisonDataChange;
+        }
+
+
 
         function getLabel(mode) {
             return NewDashboardUtil.getCompareLabel(mode);
@@ -405,89 +360,11 @@
         }
 
         function _extractComparisionData(data, dashboardType) {
-            if (DASHBOARD_TYPE_JSON['UNIFIED_REPORT'] === dashboardType.name) {
-                return _extractUnifiedReportComparision(data);
-            } else if (DASHBOARD_TYPE_JSON['VIDEO'] === dashboardType.name) {
+            if (DASHBOARD_TYPE_JSON['VIDEO'] === dashboardType.name) {
                 return _extractVideoComparision(data);
             } else {
                 return _extractDisplayComparision(data);
             }
-        }
-
-        function _generateComparisonData(showFields, currentData, historyData, columns) {
-            var returnData = [];
-            for (var index = 0; index < showFields.length; index++) {
-                var label = '';
-
-                if (columns == null) {
-                    label = NewDashboardUtil.getShowLabel(showFields[index]);
-                } else {
-                    label = columns[showFields[index]];
-                }
-
-                var json = {
-                    label: label,
-                    current: {
-                        label: CURRENT_LABEL,
-                        value: currentData == null || showFields[index] == null ? null : currentData[showFields[index]]
-                    },
-                    history: {
-                        label: HISTORY_LABEL,
-                        value: historyData == null || showFields[index] == null ? null : historyData[showFields[index]]
-                    }
-                };
-
-                returnData.push(json);
-            }
-
-            if (NewDashboardUtil.isUnifiedDashboard($scope.dashboardType)) {
-                // sort returnData for unified report
-                var orderBy = ASC; // sort field name by alphabet asc
-                var sortByForUnifiedReport = 'label';
-
-                returnData.sort(function (r1, r2) {
-                    if (r1[sortByForUnifiedReport] == r2[sortByForUnifiedReport]) {
-                        return 0;
-                    }
-                    return (r1[sortByForUnifiedReport] < r2[sortByForUnifiedReport])
-                        ? (orderBy === DESC ? 1 : -1)
-                        : (orderBy === DESC ? -1 : 1);
-                });
-            }
-
-            return returnData;
-        }
-
-        function _extractUnifiedReportComparision(data) {
-            if (!data) {
-                return [];
-            }
-            var showFields = getUnifiedShowFields(data);
-            var currentData = data.current ? data.current.total : [];
-            var historyData = data.history ? data.history.total : [];
-            var columns = data.history ? data.history.columns : [];
-
-            return _generateComparisonData(showFields, currentData, historyData, columns);
-        }
-
-        function getUnifiedShowFields(data) {
-            if (!data) {
-                return [];
-            }
-            var keys = [];
-            if (data.current && data.current.total) {
-                keys = Object.keys(data.current.total);
-                if (keys && keys.length > 0) {
-                    return keys;
-                }
-            }
-            if (data.history && data.history.total) {
-                keys = Object.keys(data.history.total);
-                if (keys && keys.length > 0) {
-                    return keys;
-                }
-            }
-            return [];
         }
 
         function _extractVideoComparision(data) {

@@ -30,7 +30,6 @@
                     ng-click="onChangeMode('year')">{{'NEW_DASHBOARD.YEAR_TO_DATE' | translate}}
             </button>
             <button type="button" class="btn btn-default btn-action"
-                    ng-if="isShowForDisplayReport()"
                     ng-class="{active: compareTypeData.compareType === 'custom'}"
                     ng-click="onChangeMode('custom')">{{'NEW_DASHBOARD.CUSTOM_COMPARISON' | translate}}
             </button>
@@ -198,39 +197,6 @@
                 <td>{{ (formData.comparisionData.history.requestFillRate != null) ? (formData.comparisionData.history.requestFillRate | percentage) : '' }}</td>
             </tr>
         </table>
-
-
-        <!--Unified report yesterday-->
-        <table class="table no-border"
-               ng-if="isShowForUnifiedReport()
-                &&  overviewData.data
-                && overviewData.data.length > 0
-                &&  compareTypeData.compareType === 'yesterday'">
-            <th ng-repeat="row in customOverviewData"><span class="text-capitalize">{{row.label}}</span></th>
-            <tr><td ng-repeat="row in customOverviewData">{{row.value}}</td></tr>
-        </table>
-
-        <!--Unified report comparison-->
-        <table class="table no-border"
-               ng-if="isShowForUnifiedReport() &&
-                formData.comparisionData &&
-                formData.comparisionData.length > 0 &&
-                 compareTypeData.compareType !== 'yesterday'">
-            <th></th>
-            <th ng-repeat="row in formData.comparisionData"><span class="text-capitalize">{{row.label}}</span></th>
-
-            <tr>
-                <td ng-if="compareTypeData.compareType == 'day-over-day'"><strong>{{getRecentDay() }}</strong></td>
-                <td ng-if="compareTypeData.compareType != 'day-over-day'"><strong>Current{{compareTypeData.label}}</strong></td>
-                <td ng-repeat="row in formData.comparisionData">{{row.current.value}}</td>
-            </tr>
-            <tr>
-                <td ng-if="compareTypeData.compareType == 'day-over-day'"><strong>{{getPreviousDay() }}</strong></td>
-                <td ng-if="compareTypeData.compareType != 'day-over-day'"><strong>History{{compareTypeData.label}}</strong></td>
-                <td ng-repeat="row in formData.comparisionData">{{row.history.value}}</td>
-            </tr>
-        </table>
-
 
         <!--Help text-->
         <div class="pt-10" ng-if="compareTypeData.compareType === 'custom'">

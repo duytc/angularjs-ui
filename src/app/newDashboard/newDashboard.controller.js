@@ -73,7 +73,7 @@
             $scope.currentModel.dashboardType = ($scope.formData.dashboardTypes && $scope.formData.dashboardTypes.length > 0) ? $scope.formData.dashboardTypes[0] : [];
 
             /* load dashboard data for current dashboard type */
-            // onSelectDashboardType($scope.currentModel.dashboardType);
+            onSelectDashboardType($scope.currentModel.dashboardType);
         }
     }
 })();

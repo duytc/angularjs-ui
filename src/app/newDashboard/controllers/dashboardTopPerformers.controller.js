@@ -76,7 +76,6 @@
 
         $scope.isShowForDisplay = isShowForDisplay;
         $scope.isShowForVideo = isShowForVideo;
-        $scope.isShowForUnifiedReport = isShowForUnifiedReport;
         $scope.showPagination = showPagination;
         $scope.hasKeyObjectForVideoReport = hasKeyObjectForVideoReport;
         $scope.getSortIconClass = getSortIconClass;
@@ -84,13 +83,12 @@
         $scope.isShowSortIconForVideoReport = isShowSortIconForVideoReport;
 
         $scope.showPaginationForUnifiedReport = showPaginationForUnifiedReport;
-        $scope.sortUnifiedReport = sortUnifiedReport;
         $scope.isShowFieldForUnifiedReport = isShowFieldForUnifiedReport;
         $scope.isNullValue = isNullValue;
 
         /* watch dashboard type changed, then render for display or video or unified report */
         // $scope.$watch('dashboardType', _onDashBoardTypeChange);
-        $scope.$watch('rootWatchManager.dashboardTypeChanged', _onDashBoardTypeChange);
+        // $scope.$watch('rootWatchManager.dashboardTypeChanged', _onDashBoardTypeChange);
 
         /* watch dateRange changed, then re-get data for display or video or unified report */
         $scope.$watch('dateRange', _onDateRangeChange);
@@ -110,10 +108,6 @@
             return DASHBOARD_TYPE_JSON[$scope.dashboardType.id] === DASHBOARD_TYPE_JSON.VIDEO;
         }
 
-        function isShowForUnifiedReport() {
-            return DASHBOARD_TYPE_JSON[$scope.dashboardType.id] === DASHBOARD_TYPE_JSON.UNIFIED_REPORT;
-        }
-
         function showPagination() {
             return angular.isArray($scope.topPerformersVideoData.reports) && $scope.topPerformersVideoData.reports.length > $scope.configTopStatistics.itemsPerPage;
         }
@@ -129,8 +123,6 @@
         function onClickSortForVideo(field) {
             $scope.sortFieldForVideo = field;
             $scope.sortOrderForVideo = $scope.sortOrderForVideo === 'desc' ? 'asc' : 'desc';
-
-            console.log('sort by: ', field, $scope.sortOrderForVideo);
 
             /* sort data */
             _sortVideoReport();
@@ -154,14 +146,6 @@
             return Object.keys(object).indexOf(key) > -1 && $scope.videoMetrics.indexOf(key) > -1
         }
 
-        function sortUnifiedReport(column) {
-            $scope.sortByForUnifiedReport = column;
-            $scope.reverseForUnifiedReport = !$scope.reverseForUnifiedReport; // if true make it false and vice versa
-
-            /* sort data */
-            _sortUnifiedReports();
-        }
-
         function isShowFieldForUnifiedReport(sortColumn) {
             return ($scope.sortByForUnifiedReport === sortColumn)
         }
@@ -177,14 +161,15 @@
             $scope.showLoading = true;
         }
 
+        // TODO this function not called
         function _onDashBoardTypeChange() {
-            if (isShowForDisplay()) {
-                _updateTopPerformersForDisplay();
-            }
-
-            if (isShowForVideo()) {
-                _updateTopPerformersForVideo();
-            }
+            // if (isShowForDisplay()) {
+            //     _updateTopPerformersForDisplay();
+            // }
+            // if (isShowForVideo()) {
+            //     // TODO need default data range
+            //     _updateTopPerformersForVideo();
+            // }
         }
 
         function _onComparisionTypeDataChange() {
@@ -199,12 +184,24 @@
         }
 
         function _onComparisionDataChange() {
+            console.log($scope.dashboardType);
+
             if (!$scope.comparisionData || $scope.comparisionData.length === 0) return;
             var dateRange = {
                 startDate: $scope.comparisionData.startEndDateCurrent.startDate,
                 endDate: $scope.comparisionData.startEndDateCurrent.endDate
             };
-            _updateTopPerformersForDisplay(dateRange);
+            _updateToPerformanceData(dateRange);
+
+        }
+
+        function _updateToPerformanceData(dateRange) {
+            if (isShowForDisplay()) {
+                _updateTopPerformersForDisplay(dateRange);
+            }
+            if (isShowForVideo()) {
+                _updateTopPerformersForVideo(dateRange);
+            }
         }
 
         function _onDateRangeChange(newValue, oldValue, scope) {
@@ -241,8 +238,6 @@
                             $scope.showLoading = false;
                         },
                         function (error) {
-                            console.log('Get topPerformersDisplayReport got error', error);
-
                             $scope.topPerformersData = {
                                 topPublishers: [],
                                 topSites: [],
@@ -259,7 +254,6 @@
                             $scope.showLoading = false;
                         },
                         function (error) {
-                            console.log('Get topPerformersDisplayReport got error', error);
                             $scope.topPerformersData = {
                                 topPublishers: [],
                                 topSites: [],
@@ -271,12 +265,18 @@
             }
         }
 
-        function _updateTopPerformersForVideo() {
+        function _updateTopPerformersForVideo(dateRange) {
+            // TODO remove data range of display and video
             var stringDate = NewDashboardUtil.getStringDate($scope.dateRange);
             var params = {
                 startDate: stringDate.startDate,
                 endDate: stringDate.endDate
             };
+            // Get date range from comparison
+            if (dateRange) {
+                params.startDate = dateRange.startDate;
+                params.endDate = dateRange.endDate;
+            }
 
             $scope.queryParams.filters.startDate = params.startDate;
             $scope.queryParams.filters.endDate = params.endDate;
@@ -293,8 +293,6 @@
                     _sortVideoReport();
                 })
                 .catch(function (error) {
-                    console.log('Get topPerformersVideoReport got error', error);
-
                     $scope.topPerformersVideoData = {
                         reports: []
                     };
@@ -327,73 +325,6 @@
             }
 
             $scope.topPerformersVideoData = data;
-        }
-
-        function _sortUnifiedReports() {
-            var orderBy = (!!$scope.reverseForUnifiedReport ? DESC : ASC);
-            var columnType = $scope.columnTypesForUnifiedReport[$scope.sortByForUnifiedReport];
-            columnType = !columnType ? 'text' : columnType;
-
-            // for date field only
-            var dateFormat = false;
-            if (columnType === 'date') {
-                angular.forEach($scope.dateFieldFormatsForUnifiedReport, function (dateFieldFormat) {
-                    if (!dateFieldFormat || !dateFieldFormat.field || !dateFieldFormat.format || dateFieldFormat.field !== $scope.sortByForUnifiedReport) {
-                        return;
-                    }
-
-                    dateFormat = dateFieldFormat.format;
-                });
-            }
-
-            // sort
-            $scope.topPerformersUnifiedReportData.reports.sort(function (r1, r2) {
-                if (!r1[$scope.sortByForUnifiedReport] || !r2[$scope.sortByForUnifiedReport]) {
-                    return;
-                }
-
-                r1 = r1[$scope.sortByForUnifiedReport];
-                r2 = r2[$scope.sortByForUnifiedReport];
-
-                // sometime the value is string although the type is number, e.g "$ 2,236.34"
-                // so, we remove non digit from value for this case
-                if (columnType === 'number' || columnType === 'decimal') {
-                    if (angular.isString(r1)) {
-                        r1 = Number(NewDashboardUtil.removeNonDigit(r1));
-                    }
-
-                    if (angular.isString(r2)) {
-                        r2 = Number(NewDashboardUtil.removeNonDigit(r2));
-                    }
-                } else if (columnType === 'date') {
-                    if (dateFormat) {
-                        r1 = _normalizeDatevalue(r1, dateFormat);
-                        r2 = _normalizeDatevalue(r2, dateFormat);
-                    }
-
-                    // else: as string
-                } else {
-                    // string to lower to ignore case
-                    r1 = r1.toLowerCase();
-                    r2 = r2.toLowerCase();
-                }
-
-                if (r1 === r2) {
-                    return 0;
-                }
-
-                return (r1 < r2)
-                    ? (orderBy === 'desc' ? 1 : -1)
-                    : (orderBy === 'desc' ? -1 : 1);
-            });
-        }
-
-        function _normalizeDatevalue(dateValue, inputDateFormat) {
-            if (!dateValue || !inputDateFormat) {
-                return false;
-            }
-
-            return moment(dateValue, inputDateFormat).format(DEFAULT_DATE_FORMAT);
         }
     }
 })();
