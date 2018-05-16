@@ -108,11 +108,59 @@
             return $scope.formData.compareTypeData.compareType === COMPARE_TYPE['day'];
         }
 
+
+        function _updateDisplayReportForChart(chartData) {
+            var key = $scope.isAdmin ? PLATFORM_STATISTICS : ACCOUNT_STATISTICS;
+            if (chartData) {
+                var current;
+                var history;
+                if (isDayOverDayChart()) {
+                    current = chartData.reportHourToday || [];
+                    history = chartData.reportHourHistory || [];
+                    $scope.formData.chartData.currentReports = current;
+                    $scope.formData.chartData.historyReports = history;
+                } else {
+                    current = chartData.current || {};
+                    history = chartData.history || {};
+                    $scope.formData.chartData.currentReports = current[key] ? current[key].reports : [];
+                    $scope.formData.chartData.historyReports = history[key] ? history[key].reports : [];
+                }
+                $scope.formData.chartData.dateField = {
+                    field: DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO,
+                    format: DEFAULT_DATE_FORMAT
+                };
+            }
+        }
+
+        function _updateVideoReportForChart(chartData) {
+            if (chartData) {
+                var current;
+                var history;
+                if (isDayOverDayChart()) {
+                    current = chartData.reportHourToday || [];
+                    history = chartData.reportHourHistory || [];
+                    $scope.formData.chartData.currentReports = current;
+                    $scope.formData.chartData.historyReports = history;
+                } else {
+                    current = chartData.current || {};
+                    history = chartData.history || {};
+                    $scope.formData.chartData.currentReports = current ? current.reports : [];
+                    $scope.formData.chartData.historyReports = history ? history.reports : [];
+                }
+                $scope.formData.chartData.dateField = {
+                    field: DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO,
+                    format: DEFAULT_DATE_FORMAT
+                };
+            }
+            console.log($scope.formData.chartData);
+        }
+
         /**
          *
          * @param newComparisionData {current, history}
          */
         function onChangeChartFollow(newComparisionData) {
+            console.log('onChangeChartFollow');
             var chartData;
 
             if (!newComparisionData) {
@@ -121,35 +169,10 @@
             chartData = newComparisionData;
 
             if (isDisplayDashboard($scope.dashboardType)) {
-                var key = $scope.isAdmin ? PLATFORM_STATISTICS : ACCOUNT_STATISTICS;
-                if (chartData) {
-                    var current;
-                    var history;
-                    if (isDayOverDayChart()) {
-                        current = chartData.reportHourToday || [];
-                        history = chartData.reportHourHistory || [];
-                        $scope.formData.chartData.currentReports = current;
-                        $scope.formData.chartData.historyReports = history;
-                    } else {
-                        current = chartData.current || {};
-                        history = chartData.history || {};
-                        $scope.formData.chartData.currentReports = current[key] ? current[key].reports : [];
-                        $scope.formData.chartData.historyReports = history[key] ? history[key].reports : [];
-                    }
-                    $scope.formData.chartData.dateField = {
-                        field: DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO,
-                        format: DEFAULT_DATE_FORMAT
-                    };
-                }
+                _updateDisplayReportForChart(chartData);
             }
             else if (isVideoDashboard($scope.dashboardType)) {
-                //TODO onChangeChartFollow VIDEO
-                $scope.formData.chartData.currentReports = chartData.current.reports;
-                $scope.formData.chartData.historyReports = chartData.history.reports;
-                $scope.formData.chartData.dateField = {
-                    field: DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO,
-                    format: DEFAULT_DATE_FORMAT
-                };
+                _updateVideoReportForChart(chartData);
             }
 
             askForDrawingChart();

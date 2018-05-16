@@ -84,8 +84,8 @@
         </form>
 
         <!--Display-->
-        <div class="table-responsive">
-            <table class="table no-border" at-table at-list="formData.comparisonTableData" ng-if="hasDisplayComparisonTable()">
+        <div class="table-responsive" ng-if="hasDisplayComparisonTable()">
+            <table class="table no-border" at-table at-list="formData.comparisonTableData">
                 <thead>
                 <th ng-show="isAdmin" at-attribute="billedAmount">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</th>
                 </thead>
@@ -105,6 +105,31 @@
                 </tbody>
             </table>
         </div>
+
+
+        <!--VIDEO-->
+        <div class="table-responsive" ng-if="hasVideoComparisonTable()">
+            <table class="table no-border" at-table at-list="formData.comparisonTableData">
+                <thead>
+                <th ng-show="isAdmin" at-attribute="billedAmount">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><strong>{{item.label}}</strong></td>
+                    <td ng-show="isAdmin" at-attribute="billedAmount" at-title="{{ columnNameMappingForVideoReport['billedAmount'] }}">{{ (item.billedAmount != null) ? (item.billedAmount | currency) : '' }}</td>
+                    <td at-attribute="netRevenue" at-title="{{ columnNameMappingForVideoReport['netRevenue'] }}">{{ (item.netRevenue != null) ? (item.netRevenue | number) : '' }}</td>
+                    <td at-attribute="requests" at-title="{{ columnNameMappingForVideoReport['requests'] }}">{{ (item.requests != null) ? (item.requests | number) : '' }}</td>
+                    <td at-attribute="impressions" at-title="{{ columnNameMappingForVideoReport['impressions'] }}">{{ (item.impressions != null) ? (item.impressions | number) : '' }}</td>
+                    <td at-attribute="bids" at-title="{{ columnNameMappingForVideoReport['bids'] }}">{{ (item.bids != null) ? (item.bids | number) : '' }}</td>
+                    <td at-attribute="errors" at-title="{{ columnNameMappingForVideoReport['errors'] }}">{{ (item.errors != null) ? (item.errors | number) : '' }}</td>
+                    <td at-attribute="blocks" at-title="{{ columnNameMappingForVideoReport['blocks'] }}">{{ (item.blocks != null) ? (item.blocks | number) : '' }}</td>
+                    <td at-attribute="requestFillRate" at-title="{{ columnNameMappingForVideoReport['requestFillRate'] }}">{{ (item.requestFillRate != null) ? (item.requestFillRate | percentage) : '' }}</td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
 
         <!--fake 2 row table-->
         <div class="table-responsive">
@@ -149,30 +174,6 @@
             </table>
         </div>
 
-
-
-        <!--VIDEO-->
-        <div class="table-responsive">
-            <table class="table no-border" at-table at-list="formData.comparisonTableData" ng-if="hasVideoComparisonTable()">
-                <thead>
-                <th ng-show="isAdmin" at-attribute="billedAmount">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</th>
-                </thead>
-                <tbody>
-                <tr>
-                    <td><strong>{{item.label}}</strong></td>
-                    <td ng-show="isAdmin" at-attribute="billedAmount" at-title="{{ columnNameMappingForVideoReport['billedAmount'] }}">{{ (item.billedAmount != null) ? (item.billedAmount | currency) : '' }}</td>
-                    <td at-attribute="netRevenue" at-title="{{ columnNameMappingForVideoReport['netRevenue'] }}">{{ (item.netRevenue != null) ? (item.netRevenue | number) : '' }}</td>
-                    <td at-attribute="requests" at-title="{{ columnNameMappingForVideoReport['requests'] }}">{{ (item.requests != null) ? (item.requests | number) : '' }}</td>
-                    <td at-attribute="impressions" at-title="{{ columnNameMappingForVideoReport['impressions'] }}">{{ (item.impressions != null) ? (item.impressions | number) : '' }}</td>
-                    <td at-attribute="bids" at-title="{{ columnNameMappingForVideoReport['bids'] }}">{{ (item.bids != null) ? (item.bids | number) : '' }}</td>
-                    <td at-attribute="errors" at-title="{{ columnNameMappingForVideoReport['errors'] }}">{{ (item.errors != null) ? (item.errors | number) : '' }}</td>
-                    <td at-attribute="blocks" at-title="{{ columnNameMappingForVideoReport['blocks'] }}">{{ (item.blocks != null) ? (item.blocks | number) : '' }}</td>
-                    <td at-attribute="requestFillRate" at-title="{{ columnNameMappingForVideoReport['requestFillRate'] }}">{{ (item.requestFillRate != null) ? (item.requestFillRate | percentage) : '' }}</td>
-                </tr>
-
-                </tbody>
-            </table>
-        </div>
 
         <!--Help text-->
         <div class="pt-10" ng-if="compareTypeData.compareType === 'custom'">

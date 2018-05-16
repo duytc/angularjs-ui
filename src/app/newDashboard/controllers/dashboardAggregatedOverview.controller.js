@@ -245,16 +245,20 @@
 
         function _getVideoComparision(param, isClickChangeMode) {
             var apiParams = getExtraCustomDateRangeParameters({type: $scope.compareTypeData.compareType}, param);
+            $scope.showLoading = true;
             videoReportService.getComparision(apiParams).then(function (data) {
                 $scope.comparisionData = data;
                 $scope.formData.comparisionData = _extractComparisionData(data, $scope.dashboardType);
                 $scope.formData.comparisonTableData = getComparisonTableData();
+                notifyComparisonDataChanged();
                 if (isClickChangeMode) {
                     _notifyDrawChart();
                 }
+                $scope.showLoading = false;
             }, function (error) {
                 $scope.comparisionData = [];
                 $scope.formData.comparisionData = [];
+                $scope.showLoading = false;
             });
         }
 
