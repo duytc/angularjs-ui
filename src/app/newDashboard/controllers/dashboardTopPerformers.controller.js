@@ -161,17 +161,6 @@
             $scope.showLoading = true;
         }
 
-        // TODO this function not called
-        function _onDashBoardTypeChange() {
-            // if (isShowForDisplay()) {
-            //     _updateTopPerformersForDisplay();
-            // }
-            // if (isShowForVideo()) {
-            //     // TODO need default data range
-            //     _updateTopPerformersForVideo();
-            // }
-        }
-
         function _onComparisionTypeDataChange() {
             resetTopPerformerData();
             $scope.showLoading = true;
@@ -181,11 +170,10 @@
             $scope.topPerformersData.topAdNetworks = [];
             $scope.topPerformersData.topPublishers = [];
             $scope.topPerformersData.topSites = [];
+            $scope.topPerformersVideoData.reports = [];
         }
 
         function _onComparisionDataChange() {
-            console.log($scope.dashboardType);
-
             if (!$scope.comparisionData || $scope.comparisionData.length === 0) return;
             var dateRange = {
                 startDate: $scope.comparisionData.startEndDateCurrent.startDate,
@@ -219,18 +207,13 @@
         }
 
         function _updateTopPerformersForDisplay(dateRange) {
-            var stringDate = null;
-            if (dateRange) {
-                stringDate = dateRange;
-            } else {
-                stringDate = NewDashboardUtil.getStringDate($scope.dateRange);
-            }
             var params = {
-                startDate: !stringDate ? null : stringDate.startDate,
-                endDate: !stringDate ? null : stringDate.endDate
+                startDate: !dateRange ? null : dateRange.startDate,
+                endDate: !dateRange ? null : dateRange.endDate
             };
 
             $scope.showLoading = true;
+
             if ($scope.isAdmin) {
                 dashboard.getPlatformDashboard(params, $scope.userSession)
                     .then(function (data) {
@@ -266,13 +249,7 @@
         }
 
         function _updateTopPerformersForVideo(dateRange) {
-            // TODO remove data range of display and video
-            var stringDate = NewDashboardUtil.getStringDate($scope.dateRange);
-            var params = {
-                startDate: stringDate.startDate,
-                endDate: stringDate.endDate
-            };
-            // Get date range from comparison
+            var params = {};
             if (dateRange) {
                 params.startDate = dateRange.startDate;
                 params.endDate = dateRange.endDate;
@@ -291,11 +268,13 @@
 
                     /* sort data */
                     _sortVideoReport();
+                    $scope.showLoading = false;
                 })
                 .catch(function (error) {
                     $scope.topPerformersVideoData = {
                         reports: []
                     };
+                    $scope.showLoading = false;
                 })
             ;
         }

@@ -304,8 +304,6 @@
             $scope.notifyComparisonDataChange = !$scope.notifyComparisonDataChange;
         }
 
-
-
         function getLabel(mode) {
             return NewDashboardUtil.getCompareLabel(mode);
         }
