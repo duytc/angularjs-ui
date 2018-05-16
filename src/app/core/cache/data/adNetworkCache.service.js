@@ -8,6 +8,7 @@
     function AdNetworkCache($filter, CacheFactory, AdNetworkManager, _, Auth, sessionStorage) {
         var api = {
             getAllAdNetworks: getAllAdNetworks,
+            getAllAdNetworksDetail: getAllAdNetworksDetail,
             getAdNetworkById: getAdNetworkById,
             patchAdNetwork: patchAdNetwork,
             postAdNetwork: postAdNetwork,
@@ -41,6 +42,27 @@
             }
 
             return AdNetworkManager.getList()
+                .then(function(adNetworkList) {
+                    var previousToken =  angular.fromJson(sessionStorage.getPreviousToken());
+                    if(!angular.isObject(previousToken)) {
+                        adNetworkCache.put('adNetworkList', adNetworkList);
+                    }
+
+                    return adNetworkList;
+                });
+        }
+
+        function getAllAdNetworksDetail() {
+            var adNetworkList = adNetworkCache.get('adNetworkList');
+
+            if(!Auth.isAdmin() && !Auth.isSubPublisher() && !!adNetworkList) {
+                return $filter('selectedPublisher')(adNetworkList, Auth.getSession().id)
+            }
+
+            if(!!adNetworkList) {
+                return adNetworkList;
+            }
+            return AdNetworkManager.one('adnetworksdetail').get()
                 .then(function(adNetworkList) {
                     var previousToken =  angular.fromJson(sessionStorage.getPreviousToken());
                     if(!angular.isObject(previousToken)) {
