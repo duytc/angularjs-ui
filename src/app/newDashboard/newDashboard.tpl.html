@@ -11,7 +11,7 @@
                 <ui-select-match placeholder="{{'NEW_DASHBOARD.SELECT_PLACE_HOLDER' | translate}}">
                     {{ $select.selected.name }}
                 </ui-select-match>
-                <ui-select-choices repeat="report in formData.unifiedReportingOptions">
+                <ui-select-choices repeat="report in formData.dashboardTypes">
                     {{ report.name }}
                 </ui-select-choices>
             </ui-select>

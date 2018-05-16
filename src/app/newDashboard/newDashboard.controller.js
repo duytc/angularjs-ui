@@ -18,7 +18,7 @@
             dashboardType: null
         };
         $scope.formData = {
-            unifiedReportingOptions: []
+            dashboardTypes: []
         };
 
         _initData();
@@ -29,14 +29,6 @@
 
         function isUnifiedReportDashboard(type) {
             return NewDashboardUtil.isUnifiedDashboard(type);
-        }
-
-        function isVideoDashboard(type) {
-            return NewDashboardUtil.isVideoDashboard(type);
-        }
-
-        function isDisplayDashboard(type) {
-            return NewDashboardUtil.isDisplayDashboard(type);
         }
 
         function isDisplayOrVideoDashboard(type) {
@@ -52,7 +44,7 @@
 
         function _initData() {
             if ($scope.isAdmin) {
-                $scope.formData.unifiedReportingOptions = DASHBOARD_TYPE;
+                $scope.formData.dashboardTypes = DASHBOARD_TYPE;
             } else {
                 var dashboardTypeForPublisher = [];
 
@@ -68,10 +60,10 @@
                     dashboardTypeForPublisher.push({id: 'VIDEO', name: 'Pubvantage Video'});
                 }
 
-                $scope.formData.unifiedReportingOptions = dashboardTypeForPublisher;
+                $scope.formData.dashboardTypes = dashboardTypeForPublisher;
             }
 
-            $scope.currentModel.dashboardType = ($scope.formData.unifiedReportingOptions && $scope.formData.unifiedReportingOptions.length > 0) ? $scope.formData.unifiedReportingOptions[0] : [];
+            $scope.currentModel.dashboardType = ($scope.formData.dashboardTypes && $scope.formData.dashboardTypes.length > 0) ? $scope.formData.dashboardTypes[0] : [];
 
             /* load dashboard data for current dashboard type */
             // onSelectDashboardType($scope.currentModel.dashboardType);

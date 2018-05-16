@@ -21,7 +21,7 @@
                 watchManager: '='
             },
             restrict: 'AE',
-            templateUrl: 'newDashboard/directives/dashboardAggregatedOverview-horizontal.tpl.html',
+            templateUrl: 'newDashboard/directives/displayAndVideo/dashboardAggregatedOverview-horizontal.tpl.html',
             controller: 'DashboardAggregatedOverview'
         };
     }
