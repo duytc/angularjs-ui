@@ -248,7 +248,7 @@
             videoReportService.getComparision(apiParams).then(function (data) {
                 $scope.comparisionData = data;
                 $scope.formData.comparisionData = _extractComparisionData(data, $scope.dashboardType);
-
+                $scope.formData.comparisonTableData = getComparisonTableData();
                 if (isClickChangeMode) {
                     _notifyDrawChart();
                 }

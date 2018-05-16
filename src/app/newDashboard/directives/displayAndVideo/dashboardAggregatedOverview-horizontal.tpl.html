@@ -70,7 +70,7 @@
                                ng-required="true">
                     </div>
                 </div>
-                <!--Get data-->
+                <!--Get Report-->
                 <div class="form-group col col-sm-1 col-xs-12">
                     <label style="visibility: hidden">.</label>
                     <button type="button" class="btn btn-primary form-control"
@@ -85,7 +85,7 @@
 
         <!--Display-->
         <div class="table-responsive">
-            <table class="table no-border" at-table at-list="formData.comparisonTableData" ng-if="formData.comparisonTableData">
+            <table class="table no-border" at-table at-list="formData.comparisonTableData" ng-if="hasDisplayComparisonTable()">
                 <thead>
                 <th ng-show="isAdmin" at-attribute="billedAmount">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</th>
                 </thead>
@@ -109,94 +109,70 @@
         <!--fake 2 row table-->
         <div class="table-responsive">
             <table class="table no-border" ng-if="showLoading && !isYesterdayType()">
-                <thead> <tr> <td class="non-visible">Loading...</td> </tr> </thead> <tbody>
-                <tr> <td class="text-center">
-                    <img src="../../../../assets/images/ajax-loader.gif"
-                         height="25" width="25"/>
-                </td> </tr> <tr> <td>
-                    <strong class="non-visible">Loading...</strong>
-                </td> </tr> </tbody>
+                <thead>
+                <tr>
+                    <td class="non-visible">Loading...</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-center">
+                        <img src="../../../../assets/images/ajax-loader.gif"
+                             height="25" width="25"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong class="non-visible">Loading...</strong>
+                    </td>
+                </tr>
+                </tbody>
             </table>
         </div>
         <!--fake 1 row table-->
         <div class="table-responsive">
             <table class="table no-border" ng-if="showLoading && isYesterdayType()">
-                <thead> <tr> <td class="non-visible">Loading...</td> </tr> </thead>
-                <tbody> <tr>  <td class="text-center">
-                    <!--<strong>Loading...</strong>-->
-                    <img src="../../../../assets/images/ajax-loader.gif"
-                         height="25" width="25"/>
-                </td> </tr> </tbody>
+                <thead>
+                <tr>
+                    <td class="non-visible">Loading...</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-center">
+                        <!--<strong>Loading...</strong>-->
+                        <img src="../../../../assets/images/ajax-loader.gif"
+                             height="25" width="25"/>
+                    </td>
+                </tr>
+                </tbody>
             </table>
         </div>
 
 
-        <!--TODO Please follow Display dashboard for video and UR-->
 
-        <!--Video Yesterday-->
-        <table class="table no-border table-responsive" ng-if="hasVideoOverviewTable() && compareTypeData.compareType === 'yesterday'">
-            <th ng-if="isAdmin" class="text-capitalize">{{ columnNameMappingForVideoReport['billedAmount'] }}</th>
-            <th class="text-capitalize">{{ columnNameMappingForVideoReport['netRevenue'] }}</th>
-            <th class="text-capitalize">{{ columnNameMappingForVideoReport['requests'] }}</th>
-            <th class="text-capitalize">{{ columnNameMappingForVideoReport['impressions'] }}</th>
-            <th class="text-capitalize">{{ columnNameMappingForVideoReport['bids'] }}</th>
-            <th class="text-capitalize">{{ columnNameMappingForVideoReport['errors'] }}</th>
-            <th class="text-capitalize">{{ columnNameMappingForVideoReport['blocks'] }}</th>
-            <th class="text-capitalize">{{ columnNameMappingForVideoReport['requestFillRate'] }}</th>
+        <!--VIDEO-->
+        <div class="table-responsive">
+            <table class="table no-border" at-table at-list="formData.comparisonTableData" ng-if="hasVideoComparisonTable()">
+                <thead>
+                <th ng-show="isAdmin" at-attribute="billedAmount">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><strong>{{item.label}}</strong></td>
+                    <td ng-show="isAdmin" at-attribute="billedAmount" at-title="{{ columnNameMappingForVideoReport['billedAmount'] }}">{{ (item.billedAmount != null) ? (item.billedAmount | currency) : '' }}</td>
+                    <td at-attribute="netRevenue" at-title="{{ columnNameMappingForVideoReport['netRevenue'] }}">{{ (item.netRevenue != null) ? (item.netRevenue | number) : '' }}</td>
+                    <td at-attribute="requests" at-title="{{ columnNameMappingForVideoReport['requests'] }}">{{ (item.requests != null) ? (item.requests | number) : '' }}</td>
+                    <td at-attribute="impressions" at-title="{{ columnNameMappingForVideoReport['impressions'] }}">{{ (item.impressions != null) ? (item.impressions | number) : '' }}</td>
+                    <td at-attribute="bids" at-title="{{ columnNameMappingForVideoReport['bids'] }}">{{ (item.bids != null) ? (item.bids | number) : '' }}</td>
+                    <td at-attribute="errors" at-title="{{ columnNameMappingForVideoReport['errors'] }}">{{ (item.errors != null) ? (item.errors | number) : '' }}</td>
+                    <td at-attribute="blocks" at-title="{{ columnNameMappingForVideoReport['blocks'] }}">{{ (item.blocks != null) ? (item.blocks | number) : '' }}</td>
+                    <td at-attribute="requestFillRate" at-title="{{ columnNameMappingForVideoReport['requestFillRate'] }}">{{ (item.requestFillRate != null) ? (item.requestFillRate | percentage) : '' }}</td>
+                </tr>
 
-            <tr >
-                <td ng-if="isAdmin">{{(customOverviewData.billedAmount != null) ? (customOverviewData.billedAmount | currency) : '' }}</td>
-                <td>{{ (customOverviewData.netRevenue != null) ? (customOverviewData.netRevenue | currency) : '' }}</td>
-                <td>{{ (customOverviewData.requests != null) ? (customOverviewData.requests |number) : '' }}</td>
-                <td>{{ (customOverviewData.impressions != null) ? (customOverviewData.impressions | number) : '' }}</td>
-                <td>{{ (customOverviewData.bids != null) ? (customOverviewData.bids | number) : '' }}</td>
-                <td>{{ (customOverviewData.errors != null) ? (customOverviewData.errors | number) : '' }}</td>
-                <td>{{ (customOverviewData.blocks != null) ? (customOverviewData.blocks | number) : '' }}</td>
-                <td>{{ (customOverviewData.requestFillRate != null) ? (customOverviewData.requestFillRate | percentage) : '' }}</td>
-            </tr>
-        </table>
-
-        <!--Video Comparison-->
-        <table class="table no-border table-responsive" ng-if="compareTypeData.compareType !== 'yesterday' && hasVideoComparisonTable()">
-            <th></th>
-            <th ng-if="isAdmin" class="text-capitalize">{{ columnNameMappingForVideoReport['billedAmount'] }}</th>
-            <th class="text-capitalize">{{ columnNameMappingForVideoReport['netRevenue'] }}</th>
-            <th class="text-capitalize">{{ columnNameMappingForVideoReport['requests'] }}</th>
-            <th class="text-capitalize">{{ columnNameMappingForVideoReport['impressions'] }}</th>
-            <th class="text-capitalize">{{ columnNameMappingForVideoReport['bids'] }}</th>
-            <th class="text-capitalize">{{ columnNameMappingForVideoReport['errors'] }}</th>
-            <th class="text-capitalize">{{ columnNameMappingForVideoReport['blocks'] }}</th>
-            <th class="text-capitalize">{{ columnNameMappingForVideoReport['requestFillRate'] }}</th>
-
-            <!--current-->
-            <tr >
-                <td ng-if="compareTypeData.compareType == 'day-over-day'"><strong>{{getRecentDay()}}</strong></td>
-                <td ng-if="compareTypeData.compareType == 'custom'"><strong>{{dateRangeString(formData.currentDateRange)}}</strong></td>
-                <td ng-if="compareTypeData.compareType != 'day-over-day' && compareTypeData.compareType != 'custom'"class=""><strong>Current {{compareTypeData.label}}</strong></td>
-                <td>{{ (formData.comparisionData.current.billedAmount != null) ? (formData.comparisionData.current.billedAmount | currency) : '' }} </td>
-                <td>{{ (formData.comparisionData.current.netRevenue != null) ? (formData.comparisionData.current.netRevenue | number) : '' }} </td>
-                <td>{{ (formData.comparisionData.current.requests != null) ? (formData.comparisionData.current.requests | number) : '' }} </td>
-                <td>{{ (formData.comparisionData.current.impressions != null) ? (formData.comparisionData.current.impressions | number) : '' }} </td>
-                <td>{{ (formData.comparisionData.current.bids != null) ? (formData.comparisionData.current.bids | number) : '' }} </td>
-                <td>{{ (formData.comparisionData.current.errors != null) ? (formData.comparisionData.current.errors | number) : '' }} </td>
-                <td>{{ (formData.comparisionData.current.blocks != null) ? (formData.comparisionData.current.blocks | number) : '' }} </td>
-                <td>{{ (formData.comparisionData.current.requestFillRate != null) ? (formData.comparisionData.current.requestFillRate | percentage) : '' }} </td>
-            </tr>
-            <!--history-->
-            <tr>
-                <td ng-if="compareTypeData.compareType == 'day-over-day'"><strong>{{getPreviousDay()}}</strong></td>
-                <td ng-if="compareTypeData.compareType == 'custom'"><strong>{{dateRangeString(formData.historyDateRange)}}</strong></td>
-                <td ng-if="compareTypeData.compareType != 'day-over-day' && compareTypeData.compareType != 'custom'"class=""><strong>Last {{compareTypeData.label}}</strong></td>
-                <td ng-if="isAdmin">{{ (formData.comparisionData.history.billedAmount != null) ? (formData.comparisionData.history.billedAmount | currency) : '' }}</td>
-                <td>{{ (formData.comparisionData.history.netRevenue != null) ? (formData.comparisionData.history.netRevenue | number) : '' }}</td>
-                <td>{{ (formData.comparisionData.history.requests != null) ? (formData.comparisionData.history.requests | number) : '' }}</td>
-                <td>{{ (formData.comparisionData.history.impressions != null) ? (formData.comparisionData.history.impressions | number) : '' }}</td>
-                <td>{{ (formData.comparisionData.history.bids != null) ? (formData.comparisionData.history.bids | number) : '' }} </td>
-                <td>{{ (formData.comparisionData.history.errors != null) ? (formData.comparisionData.history.errors | number) : '' }}</td>
-                <td>{{ (formData.comparisionData.history.blocks != null) ? (formData.comparisionData.history.blocks | number) : '' }}</td>
-                <td>{{ (formData.comparisionData.history.requestFillRate != null) ? (formData.comparisionData.history.requestFillRate | percentage) : '' }}</td>
-            </tr>
-        </table>
+                </tbody>
+            </table>
+        </div>
 
         <!--Help text-->
         <div class="pt-10" ng-if="compareTypeData.compareType === 'custom'">
@@ -211,6 +187,6 @@
                 <p class="help-text-font">{{'NEW_DASHBOARD.CUSTOM_DATE_RANGE_HELP_TEXT_INVALID' | translate}}</p>
             </div>
         </div>
-     </div>
+    </div>
 </div>
 
