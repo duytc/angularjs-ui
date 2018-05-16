@@ -18,7 +18,8 @@
                 compareTypeData: '=',
                 dateRange: "=",
                 notifyComparisonDataChange: '=',
-                watchManager: '='
+                watchManager: '=',
+                rootWatchManager: '='
             },
             restrict: 'AE',
             templateUrl: 'newDashboard/directives/displayAndVideo/dashboardAggregatedOverview-horizontal.tpl.html',

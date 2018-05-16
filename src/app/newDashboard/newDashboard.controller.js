@@ -20,7 +20,9 @@
         $scope.formData = {
             dashboardTypes: []
         };
-
+        $scope.rootWatchManager = {
+            dashboardTypeChanged: false
+        };
         _initData();
 
         $scope.onSelectDashboardType = onSelectDashboardType;
@@ -35,11 +37,16 @@
             return NewDashboardUtil.isDisplayDashboard(type) || NewDashboardUtil.isVideoDashboard(type);
         }
 
+        function _notifyChangeDashboardType() {
+            $scope.rootWatchManager.dashboardTypeChanged = !$scope.rootWatchManager.dashboardTypeChanged;
+        }
+
         function onSelectDashboardType(item) {
             if (!item) {
                 return;
             }
             $scope.currentModel.dashboardType = item;
+            _notifyChangeDashboardType();
         }
 
         function _initData() {

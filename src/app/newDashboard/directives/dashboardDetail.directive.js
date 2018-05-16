@@ -18,6 +18,7 @@
                 chartFollow: '=',
                 notifyComparisonDataChange: '=',
                 watchManager: '=',
+                rootWatchManager: '=',
                 // bind functions
                 onChangeChartFollow: '&'
             },

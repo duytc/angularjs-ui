@@ -11,7 +11,8 @@
         return {
             scope: {
                 publisher: '=',
-                dashboardType: '='
+                dashboardType: '=',
+                rootWatchManager: '='
             },
             restrict: 'AE',
             templateUrl: 'newDashboard/directives/dashboardDisplayAndVideo.tpl.html',

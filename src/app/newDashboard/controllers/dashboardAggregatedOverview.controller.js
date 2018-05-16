@@ -78,28 +78,13 @@
         $scope.isValidCustomDateRange = isValidCustomDateRange;
         $scope.isYesterdayType = isYesterdayType;
 
-        // _getData(false);
+        $scope.$watch('rootWatchManager.dashboardTypeChanged', _onDashboardTypeChanged);
 
-        $scope.$watch('dashboardType', function () {
+        function _onDashboardTypeChanged() {
             resetFormData();
-            // reset to default
             $scope.compareTypeData.compareType = COMPARE_TYPE['yesterday'];
-
             _getData(false);
-        });
-
-        $scope.$watch('reportView', function () {
-            // reset to default
-            $scope.compareTypeData.compareType = COMPARE_TYPE['yesterday'];
-
-            _getData(false);
-        });
-        //-----------------------------------------------------------------
-
-        /* watch reportView changed, then render for unified report */
-
-        // $scope.$watch('overviewData.data', _onOverviewDataChange);
-
+        }
 
         function getComparisonTableData() {
             var tableData = [];
@@ -132,9 +117,9 @@
             var currentOrLastText = isCurrentNotHistory ? $translate.instant('NEW_DASHBOARD.CURRENT') : $translate.instant('NEW_DASHBOARD.LAST');
 
             if (comparisonType === COMPARE_TYPE['day']) {
-                if (isCurrentNotHistory){
+                if (isCurrentNotHistory) {
                     return getRecentDay();
-                }else {
+                } else {
                     return getPreviousDay();
                 }
             }
@@ -378,12 +363,12 @@
             $scope.formData.comparisonTableData = null;
         }
 
-       function isYesterdayType(){
+        function isYesterdayType() {
             return $scope.compareTypeData.compareType === COMPARE_TYPE['yesterday'];
-       }
+        }
 
         function onChangeMode(mode) {
-            if($scope.compareTypeData.compareType === COMPARE_TYPE[mode]){
+            if ($scope.compareTypeData.compareType === COMPARE_TYPE[mode]) {
                 //return if mode not change
                 return;
             }

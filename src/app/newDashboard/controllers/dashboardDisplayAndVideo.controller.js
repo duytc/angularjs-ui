@@ -14,7 +14,6 @@
         $scope.chartFollow = {
             type: CHART_FOLLOW['COMPARISION']
         };
-
         $scope.watchManager = {
             clickGetReport: false
         };
@@ -81,6 +80,7 @@
 
         $scope.$watch('formData.compareTypeData.compareType', _onCompareTypeDataChanged);
         $scope.$watch('formData.notifyComparisonDataChange', _onComparisionDataChanged);
+        $scope.$watch('rootWatchManager.dashboardTypeChanged', _onDashboardTypeChanged);
 
         _initData();
 
@@ -196,6 +196,10 @@
         function _onComparisionDataChanged(newValue, oldValue, scope) {
             $scope.chartFollow.type = CHART_FOLLOW['COMPARISION'];
             onChangeChartFollow($scope.formData.comparisionData);
+        }
+
+        function _onDashboardTypeChanged(newValue, oldValue, scope) {
+            onSelectDashboardType($scope.currentModel.dashboardType);
         }
 
         function resetData() {
