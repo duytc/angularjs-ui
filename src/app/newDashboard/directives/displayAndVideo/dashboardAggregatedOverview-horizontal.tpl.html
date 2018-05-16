@@ -9,27 +9,27 @@
 
         <!--buttons-->
         <div class="btn-group pull-left">
-            <button type="button" class="btn btn-default btn-action"
+            <button type="button" class="btn btn-default btn-action" ng-disabled = "showLoading"
                     ng-class="{active: compareTypeData.compareType === 'yesterday'}"
                     ng-click="onChangeMode('yesterday')">{{'NEW_DASHBOARD.YESTERDAY' | translate}}
             </button>
-            <button type="button" class="btn btn-default btn-action"
+            <button type="button" class="btn btn-default btn-action" ng-disabled = "showLoading"
                     ng-class="{active: compareTypeData.compareType === 'day-over-day'}"
                     ng-click="onChangeMode('day')">{{'NEW_DASHBOARD.DAY_OVER_DAY' | translate}}
             </button>
-            <button type="button" class="btn btn-default btn-action"
-                    ng-class="{active: compareTypeData.compareType === 'week-over-week'}"
+            <button type="button" class="btn btn-default btn-action" ng-disabled = "showLoading"
+                    ng-class="{active: compareTypeData.compareType === 'week-over-week'}"   
                     ng-click="onChangeMode('week')">{{'NEW_DASHBOARD.LAST_7_DAY' | translate}}
             </button>
-            <button type="button" class="btn btn-default btn-action"
+            <button type="button" class="btn btn-default btn-action" ng-disabled = "showLoading"
                     ng-class="{active: compareTypeData.compareType === 'month-over-month'}"
                     ng-click="onChangeMode('month')">{{'NEW_DASHBOARD.LAST_30_DAY' | translate}}
             </button>
-            <button type="button" class="btn btn-default btn-action"
+            <button type="button" class="btn btn-default btn-action" ng-disabled = "showLoading"
                     ng-class="{active: compareTypeData.compareType === 'year-over-year'}"
                     ng-click="onChangeMode('year')">{{'NEW_DASHBOARD.YEAR_TO_DATE' | translate}}
             </button>
-            <button type="button" class="btn btn-default btn-action"
+            <button type="button" class="btn btn-default btn-action" ng-disabled = "showLoading"
                     ng-class="{active: compareTypeData.compareType === 'custom'}"
                     ng-click="onChangeMode('custom')">{{'NEW_DASHBOARD.CUSTOM_COMPARISON' | translate}}
             </button>

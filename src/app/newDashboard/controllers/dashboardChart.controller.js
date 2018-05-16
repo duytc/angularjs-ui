@@ -74,7 +74,7 @@
             // display chart again to fix zoom error
             setTimeout(function () {
                 $scope.showChart = true;
-
+                var softField = null;
                 var data = {
                    currentReports: $scope.chartData.currentReports,
                    historyReports: $scope.chartData.historyReports
@@ -83,20 +83,20 @@
                     separateDateAndHour(data.currentReports);
                     separateDateAndHour(data.historyReports);
                     // sort by date field
-                    var softField = getSortField();
+                    softField = getSortField();
                     data.currentReports = sortAsc(softField, data.currentReports);
                     data.historyReports = sortAsc(softField, data.historyReports);
 
                     $scope.chartConfig = _getChartConfig(data);
 
                 } else if (DASHBOARD_TYPE_JSON['VIDEO'] === $scope.dashboardType.name) {
+                    separateDateAndHour(data.currentReports);
+                    separateDateAndHour(data.historyReports);
                     // sort by date field
-                    data.currentReports = sortAsc(getDateKey(), data.currentReports);
-                    data.historyReports = sortAsc(getDateKey(), data.historyReports);
-                    $scope.chartConfig = _getChartConfig(data);
+                    softField = getSortField();
+                    data.currentReports = sortAsc(softField, data.currentReports);
+                    data.historyReports = sortAsc(softField, data.historyReports);
 
-                } else if (DASHBOARD_TYPE_JSON['UNIFIED_REPORT'] === $scope.dashboardType.name) {
-                    // no need sort, already sorted by date
                     $scope.chartConfig = _getChartConfig(data);
                 }
             }, 0);
