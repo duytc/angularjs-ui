@@ -5,7 +5,7 @@
         .controller('DashboardTopPerformers', DashboardTopPerformers)
     ;
 
-    function DashboardTopPerformers($scope, _, dashboard, videoReportService, dataService, Auth, NewDashboardUtil,
+    function DashboardTopPerformers($scope, _, dashboard, videoReportService, dataService, Auth, NewDashboardUtil, DEFAULT_DATE_FORMAT, DESC, ASC,
                                     DASHBOARD_TYPE_JSON, REPORT_SETTINGS, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL, COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT) {
         $scope.userSession = Auth.getSession();
         $scope.isAdmin = Auth.isAdmin();
@@ -89,10 +89,8 @@
         $scope.isNullValue = isNullValue;
 
         /* watch dashboard type changed, then render for display or video or unified report */
-        $scope.$watch('dashboardType', _onDashBoardTypeChange);
-
-        /* watch reportView changed, then render for unified report */
-        $scope.$watch('reportView', _onReportViewChange);
+        // $scope.$watch('dashboardType', _onDashBoardTypeChange);
+        $scope.$watch('rootWatchManager.dashboardTypeChanged', _onDashBoardTypeChange);
 
         /* watch dateRange changed, then re-get data for display or video or unified report */
         $scope.$watch('dateRange', _onDateRangeChange);
@@ -100,7 +98,7 @@
         $scope.$watch('comparisionData', _onComparisionDataChange);
 
         $scope.$watch('compareTypeData.compareType', _onComparisionTypeDataChange);
-        
+
         $scope.$watch('watchManager.clickGetReport', _onClickGetReport);
 
         /* all scope functions ===================== */
@@ -148,7 +146,7 @@
             }
 
             if (['date'].indexOf(key) > -1) {
-                if (key == 'date') {
+                if (key === 'date') {
                     return Object.keys(object).indexOf(key) > -1;
                 }
             }
@@ -173,11 +171,12 @@
         }
 
         /* all local functions ===================== */
-        
+
         function _onClickGetReport() {
             resetTopPerformerData();
             $scope.showLoading = true;
         }
+
         function _onDashBoardTypeChange() {
             if (isShowForDisplay()) {
                 _updateTopPerformersForDisplay();
@@ -186,18 +185,6 @@
             if (isShowForVideo()) {
                 _updateTopPerformersForVideo();
             }
-
-            if (isShowForUnifiedReport()) {
-                _updateTopPerformersForUnifiedReport();
-            }
-        }
-
-        function _onReportViewChange() {
-            if (!isShowForUnifiedReport()) {
-                return;
-            }
-
-            _updateTopPerformersForUnifiedReport();
         }
 
         function _onComparisionTypeDataChange() {
@@ -212,13 +199,14 @@
         }
 
         function _onComparisionDataChange() {
-            if(!$scope.comparisionData || $scope.comparisionData.length === 0) return;
+            if (!$scope.comparisionData || $scope.comparisionData.length === 0) return;
             var dateRange = {
                 startDate: $scope.comparisionData.startEndDateCurrent.startDate,
                 endDate: $scope.comparisionData.startEndDateCurrent.endDate
             };
             _updateTopPerformersForDisplay(dateRange);
         }
+
         function _onDateRangeChange(newValue, oldValue, scope) {
             if (!NewDashboardUtil.isDifferentDate(newValue, oldValue)) {
                 return; // ignore if date range not change. Case: move cursor in date range picker value
@@ -231,17 +219,13 @@
             if (isShowForVideo()) {
                 _updateTopPerformersForVideo();
             }
-
-            if (isShowForUnifiedReport()) {
-                _updateTopPerformersForUnifiedReport();
-            }
         }
 
         function _updateTopPerformersForDisplay(dateRange) {
-            var stringDate= null;
-            if(dateRange){
+            var stringDate = null;
+            if (dateRange) {
                 stringDate = dateRange;
-            }else {
+            } else {
                 stringDate = NewDashboardUtil.getStringDate($scope.dateRange);
             }
             var params = {
@@ -330,8 +314,8 @@
                 }
 
                 return (r1[$scope.sortFieldForVideo] < r2[$scope.sortFieldForVideo])
-                    ? ($scope.sortOrderForVideo === 'desc' ? 1 : -1)
-                    : ($scope.sortOrderForVideo === 'desc' ? -1 : 1);
+                    ? ($scope.sortOrderForVideo === DESC ? 1 : -1)
+                    : ($scope.sortOrderForVideo === DESC ? -1 : 1);
             });
 
             // get top 10 records
@@ -345,159 +329,8 @@
             $scope.topPerformersVideoData = data;
         }
 
-        function _updateTopPerformersForUnifiedReport() {
-            if (!$scope.reportView || !$scope.reportView.id) {
-                return;
-            }
-
-            /* get topPerformersUnifiedReportData due to reportView */
-            var stringDate = NewDashboardUtil.getStringDate($scope.dateRange);
-            var params = {
-                masterReport: $scope.reportView.id,
-                startDate: stringDate.startDate,
-                endDate: stringDate.endDate
-            };
-
-            dataService.makeHttpPOSTRequest('', params, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL + '/topperformers')
-                .then(function (response) {
-                    $scope.topPerformersUnifiedReportData = response;
-
-                    /* update titleColumnsForUnifiedReport */
-                    $scope.titleColumnsForUnifiedReport = angular.extend({}, $scope.titleColumnsForUnifiedReport, $scope.topPerformersUnifiedReportData.columns);
-
-                    /* update column types */
-                    $scope.columnTypesForUnifiedReport = $scope.topPerformersUnifiedReportData.types;
-
-                    /* update date field formats */
-                    $scope.dateFieldFormatsForUnifiedReport = $scope.topPerformersUnifiedReportData.dateFieldFormats;
-
-                    /* update column position default or get from format of reportView */
-                    _updateColumnPositions();
-
-                    /* get default sort field */
-                    $scope.sortByForUnifiedReport = _getDefaultSortField();
-
-                    /* sort data */
-                    _sortUnifiedReports();
-                })
-                .catch(function (response) {
-                    return {
-                        status: response.status,
-                        message: response.data.message
-                    }
-                });
-        }
-
-        function _updateColumnPositions() {
-            if (!$scope.reportView) {
-                return;
-            }
-
-            var reports = $scope.topPerformersUnifiedReportData.reports;
-            if (!angular.isArray(reports) || reports.length < 1) {
-                return;
-            }
-
-            var columnPositions = [];
-            var hasColumnPositions = false;
-
-            /* update columnPositions due to formats transform from report view */
-            if (!!$scope.reportView.formats.length) {
-                angular.forEach($scope.reportView.formats, function (format) {
-                    if (!hasColumnPositions && format.type === 'columnPosition' && format.fields.length > 0) {
-                        // append all transform fields to first post columnPositions
-                        columnPositions = format.fields;
-
-                        hasColumnPositions = angular.isArray(columnPositions) && columnPositions.length > 0;
-                    }
-                });
-            }
-
-            // set columnPositions is all fields from first report data
-            var fieldTypes = $scope.topPerformersUnifiedReportData.types;
-
-            // get dimensions from data sets of reportViews, join fields, add fields, ...
-            var dimensions = $scope.reportView.dimensions;
-
-            // but need add dimension first, let dimension date first, sort alphabet
-            dimensions = _.uniq(dimensions);
-
-            dimensions = _.sortBy(dimensions);
-
-            angular.forEach(angular.copy(dimensions), function (dimension) {
-                if (fieldTypes[dimension] === 'date' || fieldTypes[dimension] === 'datetime') {
-                    dimensions.splice(dimensions.indexOf(dimension), 1);
-                    dimensions.unshift(dimension);
-                }
-            });
-
-            // get metrics from data sets of reportViews, join fields, add fields, ...
-            var metrics = _getFieldsFromShowInTotal($scope.reportView);
-            if (!angular.isArray(metrics) || metrics.length < 1) {
-                // do not show any things if not have metrics
-                $scope.columnPositions = [];
-                return;
-            }
-
-            // then add metric after, let metric date first, sort alphabet
-            metrics = _.sortBy(metrics);
-
-            angular.forEach(angular.copy(metrics), function (metric) {
-                if (fieldTypes[metric] === 'date' || fieldTypes[metric] === 'datetime') {
-                    metrics.splice(metrics.indexOf(metric), 1);
-                    metrics.unshift(metric);
-                }
-            });
-
-            // remove not selected fields in metrics from column positions
-            var newColumnPositions = [];
-            angular.forEach(columnPositions, function (field) {
-                if (!field || metrics.indexOf(field) < 0) {
-                    return;
-                }
-
-                newColumnPositions.push(field);
-            });
-
-            // merge
-            columnPositions = newColumnPositions.concat(dimensions, metrics);
-            columnPositions = _.uniq(columnPositions);
-
-            // remove fields not in reports
-            var reportFields = _.keys(reports[0]);
-            angular.forEach(columnPositions, function (field) {
-                if (reportFields.indexOf(field) < 0) {
-                    columnPositions.splice(metrics.indexOf(field), 1);
-                }
-            });
-
-            // approve
-            $scope.columnPositions = columnPositions;
-        }
-
-        function _getDefaultSortField() {
-            var metrics = _getFieldsFromShowInTotal($scope.reportView);
-            if (!angular.isArray(metrics) || metrics.length < 1) {
-                return null;
-            }
-
-            // sort alphabet
-            metrics = _.sortBy(metrics);
-
-            // get the first metric to sort
-            var types = $scope.topPerformersUnifiedReportData.types;
-            var sortField = null;
-            angular.forEach(metrics, function (field) {
-                if (!sortField && types[field] && (types[field] === 'number' || types[field] === 'decimal')) {
-                    sortField = field;
-                }
-            });
-
-            return sortField ? sortField : $scope.columnPositions[0];
-        }
-
         function _sortUnifiedReports() {
-            var orderBy = (!!$scope.reverseForUnifiedReport ? 'desc' : 'asc');
+            var orderBy = (!!$scope.reverseForUnifiedReport ? DESC : ASC);
             var columnType = $scope.columnTypesForUnifiedReport[$scope.sortByForUnifiedReport];
             columnType = !columnType ? 'text' : columnType;
 
@@ -560,48 +393,7 @@
                 return false;
             }
 
-            return moment(dateValue, inputDateFormat).format('YYYY-MM-DD');
-        }
-
-        function _getFieldsFromShowInTotal(reportView) {
-            if (!reportView || !reportView.showInTotal || !angular.isArray(reportView.showInTotal)) {
-                return [];
-            }
-
-            /* [
-             *     {
-             *         "type":"aggregate",
-             *         "fields":[
-             *             "pre add 1",
-             *             "requests_2",
-             *             "impressions_2",
-             *             "cpm_2"
-             *         ]
-             *     },
-             *     {
-             *         "type":"average",
-             *         "fields":[
-             *             "pre add calc 2",
-             *             "revenue_2"
-             *         ]
-             *     }
-             * ]
-             */
-
-            var fields = [];
-
-            angular.forEach(reportView.showInTotal, function (config) {
-                if (!config || !config.fields || !angular.isArray(config.fields)) {
-                    return;
-                }
-
-                fields = fields.concat(config.fields);
-            });
-
-            // unique
-            fields = _.uniq(fields);
-
-            return fields;
+            return moment(dateValue, inputDateFormat).format(DEFAULT_DATE_FORMAT);
         }
     }
 })();

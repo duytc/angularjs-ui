@@ -10,7 +10,8 @@
             scope: {
                 dashboardType: "=",
                 dateRange: "=",
-                reportView: '='
+                reportView: '=',
+                rootWatchManager: '='
             },
             restrict: 'AE',
             templateUrl: 'newDashboard/directives/ur/view/dashboardUrTopPerformance.tpl.html',

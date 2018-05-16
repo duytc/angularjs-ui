@@ -18,6 +18,7 @@
                 comparisionData: "=",
                 compareTypeData: "=",
                 chartFollow: "=",
+                rootWatchManager: '=',
                 // bind functions
                 onChangeChartFollow: "&"
             },

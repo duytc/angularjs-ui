@@ -74,9 +74,6 @@
         $scope.dateFieldFormatsForUnifiedReport = [];
 
         // end - for ur
-
-        $scope.isShowForDisplay = isShowForDisplay;
-        $scope.isShowForVideo = isShowForVideo;
         $scope.isShowForUnifiedReport = isShowForUnifiedReport;
         $scope.showPagination = showPagination;
         $scope.hasKeyObjectForVideoReport = hasKeyObjectForVideoReport;
@@ -90,7 +87,8 @@
         $scope.isNullValue = isNullValue;
 
         /* watch dashboard type changed, then render for display or video or unified report */
-        $scope.$watch('dashboardType', _onDashBoardTypeChange);
+        // $scope.$watch('dashboardType', _onDashBoardTypeChange);
+        $scope.$watch('rootWatchManager.dashboardTypeChanged', _onDashBoardTypeChange);
 
         /* watch reportView changed, then render for unified report */
         $scope.$watch('reportView', _onReportViewChange);
@@ -99,13 +97,6 @@
         $scope.$watch('dateRange', _onDateRangeChange);
 
         /* all scope functions ===================== */
-        function isShowForDisplay() {
-            return DASHBOARD_TYPE_JSON[$scope.dashboardType.id] === DASHBOARD_TYPE_JSON.DISPLAY;
-        }
-
-        function isShowForVideo() {
-            return DASHBOARD_TYPE_JSON[$scope.dashboardType.id] === DASHBOARD_TYPE_JSON.VIDEO;
-        }
 
         function isShowForUnifiedReport() {
             return DASHBOARD_TYPE_JSON[$scope.dashboardType.id] === DASHBOARD_TYPE_JSON.UNIFIED_REPORT;
@@ -143,7 +134,7 @@
             }
 
             if (['date'].indexOf(key) > -1) {
-                if (key == 'date') {
+                if (key === 'date') {
                     return Object.keys(object).indexOf(key) > -1;
                 }
             }
@@ -169,14 +160,6 @@
 
         /* all local functions ===================== */
         function _onDashBoardTypeChange() {
-            if (isShowForDisplay()) {
-                _updateTopPerformersForDisplay();
-            }
-
-            if (isShowForVideo()) {
-                _updateTopPerformersForVideo();
-            }
-
             if (isShowForUnifiedReport()) {
                 _updateTopPerformersForUnifiedReport();
             }
@@ -194,92 +177,9 @@
             if (!NewDashboardUtil.isDifferentDate(newValue, oldValue)) {
                 return; // ignore if date range not change. Case: move cursor in date range picker value
             }
-
-            if (isShowForDisplay()) {
-                _updateTopPerformersForDisplay();
-            }
-
-            if (isShowForVideo()) {
-                _updateTopPerformersForVideo();
-            }
-
             if (isShowForUnifiedReport()) {
                 _updateTopPerformersForUnifiedReport();
             }
-        }
-
-        function _updateTopPerformersForDisplay() {
-            var stringDate = NewDashboardUtil.getStringDate($scope.dateRange);
-            var params = {
-                startDate: stringDate.startDate,
-                endDate: stringDate.endDate
-            };
-
-            if ($scope.isAdmin) {
-                dashboard.getPlatformDashboard(params, $scope.userSession)
-                    .then(
-                        function (data) {
-                            $scope.topPerformersData = data;
-                        },
-                        function (error) {
-                            console.log('Get topPerformersDisplayReport got error', error);
-
-                            $scope.topPerformersData = {
-                                topPublishers: [],
-                                topSites: [],
-                                topAdNetworks: []
-                            };
-                        }
-                    );
-            } else {
-                params = $.extend(params, {id: $scope.userSession.id});
-                dashboard.getPublisherDashboard(params, $scope.userSession)
-                    .then(
-                        function (data) {
-                            $scope.topPerformersData = data;
-                        },
-                        function (error) {
-                            console.log('Get topPerformersDisplayReport got error', error);
-
-                            $scope.topPerformersData = {
-                                topPublishers: [],
-                                topSites: [],
-                                topAdNetworks: []
-                            };
-                        }
-                    );
-            }
-        }
-
-        function _updateTopPerformersForVideo() {
-            var stringDate = NewDashboardUtil.getStringDate($scope.dateRange);
-            var params = {
-                startDate: stringDate.startDate,
-                endDate: stringDate.endDate
-            };
-
-            $scope.queryParams.filters.startDate = params.startDate;
-            $scope.queryParams.filters.endDate = params.endDate;
-
-            params.metrics = angular.toJson($scope.queryParams.metrics);
-            params.filters = angular.toJson($scope.queryParams.filters);
-            params.breakdowns = angular.toJson($scope.queryParams.breakdowns);
-
-            videoReportService.getPulsePoint(params)
-                .then(function (data) {
-                    $scope.topPerformersVideoFullData = data;
-
-                    /* sort data */
-                    _sortVideoReport();
-                })
-                .catch(function (error) {
-                    console.log('Get topPerformersVideoReport got error', error);
-
-                    $scope.topPerformersVideoData = {
-                        reports: []
-                    };
-                })
-            ;
         }
 
         function _sortVideoReport() {
@@ -531,27 +431,6 @@
             if (!reportView || !reportView.showInTotal || !angular.isArray(reportView.showInTotal)) {
                 return [];
             }
-
-            /* [
-             *     {
-             *         "type":"aggregate",
-             *         "fields":[
-             *             "pre add 1",
-             *             "requests_2",
-             *             "impressions_2",
-             *             "cpm_2"
-             *         ]
-             *     },
-             *     {
-             *         "type":"average",
-             *         "fields":[
-             *             "pre add calc 2",
-             *             "revenue_2"
-             *         ]
-             *     }
-             * ]
-             */
-
             var fields = [];
 
             angular.forEach(reportView.showInTotal, function (config) {
