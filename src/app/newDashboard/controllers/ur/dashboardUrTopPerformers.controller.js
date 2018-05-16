@@ -118,8 +118,6 @@
             $scope.sortFieldForVideo = field;
             $scope.sortOrderForVideo = $scope.sortOrderForVideo === 'desc' ? 'asc' : 'desc';
 
-            console.log('sort by: ', field, $scope.sortOrderForVideo);
-
             /* sort data */
             _sortVideoReport();
         }

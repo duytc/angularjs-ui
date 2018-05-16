@@ -8,7 +8,7 @@
     function DashboardUr($scope, _, COMPARE_TYPE, DASHBOARD_TYPE, DateFormatter, Auth,
                          DisplayDashboardRestAngular, DISPLAY_REPORT_TYPES, CHART_FOLLOW, DISPLAY_SHOW_FIELDS,
                          UnifiedReportDashboardRestAngular, VideoReportRestAngular, VIDEO_SHOW_FIELDS,
-                         UnifiedReportViewManager, DASHBOARD_TYPE_JSON, NewDashboardUtil, USER_MODULES) {
+                         UnifiedReportViewManager, DASHBOARD_TYPE_JSON, NewDashboardUtil) {
 
 
         $scope.isAdmin = Auth.isAdmin();
@@ -114,6 +114,7 @@
         }
 
         function onSelectReportViewForUnifiedReport(reportView) {
+            console.log(reportView.plain());
             // reset default chartFollow
             $scope.chartFollow = {
                 type: CHART_FOLLOW['OVER_VIEW']
@@ -142,18 +143,15 @@
         }
 
         function onSelectDashboardType(item) {
-            // check if no item selected. This is in case of loggin as publisher and has no module
+            // check if no item selected. This is in case of login as publisher and has no module
             if (!item) {
                 return;
             }
-
             _currentDashboardType = item;
-
             // reset default chartFollow to overview
             $scope.chartFollow = {
                 type: CHART_FOLLOW['OVER_VIEW']
             };
-
             _getOverviewReport();
         }
 
@@ -239,11 +237,7 @@
 
         function _getOverviewReport() {
             resetData();
-            if (_currentDashboardType.id === 'UNIFIED_REPORT') {
-                // set chart date field
-                // later in getUnifiedReport() because depend on which report view is selected!
-                _getUnifiedReportOverviewReport();
-            }
+            _getUnifiedReportOverviewReport();
         }
 
         function _getUnifiedReportOverviewReport() {
@@ -255,10 +249,6 @@
                         // set default is first report view
                         if ($scope.formData.reportView && angular.isArray($scope.formData.reportView) && $scope.formData.reportView.length > 0) {
                             $scope.currentModel.reportView = $scope.formData.reportView[0];
-
-                            // set chart date field
-                            // get chart date field later once get chartData
-
                             onSelectReportViewForUnifiedReport($scope.currentModel.reportView);
                         }
                     });
@@ -304,9 +294,7 @@
 
 
         function _extractOverviewData(data) {
-            if (DASHBOARD_TYPE_JSON['UNIFIED_REPORT'] === $scope.currentModel.dashboardType.name) {
-                _extractUnifiedOverviewData(data);
-            }
+            _extractUnifiedOverviewData(data);
         }
 
         function _initData() {
