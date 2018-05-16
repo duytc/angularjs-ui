@@ -23,7 +23,7 @@
                 onChangeChartFollow: '&'
             },
             restrict: 'AE',
-            templateUrl: 'newDashboard/directives/dashboardDetail.tpl.html',
+            templateUrl: 'newDashboard/directives/displayAndVideo/dashboardDetail.tpl.html',
             compile: function (element, attrs) {
                 var content, directive;
                 content = element.contents().remove();

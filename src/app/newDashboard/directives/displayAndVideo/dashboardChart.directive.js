@@ -19,7 +19,7 @@
                 watchManager: "="
             },
             restrict: 'AE',
-            templateUrl: 'newDashboard/directives/dashboardChart.tpl.html',
+            templateUrl: 'newDashboard/directives/displayAndVideo/dashboardChart.tpl.html',
             controller: 'DashboardChart'
         };
     }
