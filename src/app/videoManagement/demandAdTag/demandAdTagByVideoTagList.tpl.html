@@ -86,8 +86,8 @@
                                         <li ng-if="!isSubPublisher()"><a ng-click="createDemandAdTag(videoWaterfallTagItems, videoWaterfallTagItem.position, videoDemandAdTag)">{{ 'AD_SOURCE_MODULE.EDIT_AD_SOURCE' | translate }}</a></li>
                                         <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletionDemandAdTag(videoDemandAdTag, videoWaterfallTagItem.videoDemandAdTags, videoWaterfallTagItem.position)">{{ 'AD_SOURCE_MODULE.DELETE_AD_SOURCE' | translate }}</a></li>
 
-                                        <li ng-if="videoWaterfallTagItem.videoDemandAdTags.length > 1 && !isSubPublisher()" class="divider"></li>
-                                        <li ng-if="videoWaterfallTagItem.videoDemandAdTags.length > 1 && !isSubPublisher()"><a ng-click="splitFromGroup(videoWaterfallTagItem.videoDemandAdTags, videoDemandAdTag, videoWaterfallTagItems, videoWaterfallTagItem.position, $index)">{{ 'AD_TAG_MODULE.SPLIT_GROUP' | translate }}</a></li>
+                                        <li ng-if="videoWaterfallTagItem.videoDemandAdTags.length > 1 && !isSubPublisher() && !enableShowOptimizedPositions" class="divider"></li>
+                                        <li ng-if="videoWaterfallTagItem.videoDemandAdTags.length > 1 && !isSubPublisher() && !enableShowOptimizedPositions"><a ng-click="splitFromGroup(videoWaterfallTagItem.videoDemandAdTags, videoDemandAdTag, videoWaterfallTagItems, videoWaterfallTagItem.position, $index)">{{ 'AD_TAG_MODULE.SPLIT_GROUP' | translate }}</a></li>
                                     </ul>
                                 </div>
                             </div>
