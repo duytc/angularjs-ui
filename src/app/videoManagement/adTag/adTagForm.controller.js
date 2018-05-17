@@ -84,11 +84,7 @@
         }
 
         function onChangeIntegration(integration) {
-            if(_.isObject($scope.adTag))
-            {
-                $scope.optimizationIntegration = integration || {};
-                $scope.adTag.optimizationIntegration = integration.id;
-            }
+            $scope.adTag.optimizationIntegration = integration.id;
         }
 
         function filterPublishersByVideo(publishers) {
