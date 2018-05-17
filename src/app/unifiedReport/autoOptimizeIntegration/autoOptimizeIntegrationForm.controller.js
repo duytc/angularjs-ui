@@ -298,8 +298,8 @@
             /* update column name mapping for all dimensions from optimization rule's report view */
             _setColumnName();
 
-            /* update selected sites and ad slots */
-            _updateSelectedSitesAndAdSlots();
+            /* update all assets of form*/
+            updateAllAssets();
 
         }
 
