@@ -51,7 +51,6 @@
             $scope.adTag.buyPrice = NumberConvertUtil.convertPriceToString($scope.adTag.buyPrice);
         }
         var enabledModules = !!$scope.selected.publisher ? $scope.selected.publisher.enabledModules : null;
-        $scope.optimizationIntegration = {};
         $scope.backToListAdTag = backToListAdTag;
         $scope.selectPublisher = selectPublisher;
         $scope.selectVideoPublisher = selectVideoPublisher;
@@ -64,9 +63,27 @@
         $scope.isAutoOptimizeModule = isAutoOptimizeModule;
         $scope.selectedVideoPublisher = adTag ? adTag.videoPublisher : {};
         $scope.integrations = optimizeIntegrations;
+        $scope.optimizationIntegration = initOptimizedIntegration(adTag);
 
         function isAutoOptimizeModule() {
             return isEnabledModule('MODULE_AUTO_OPTIMIZE');
+        }
+
+        function initOptimizedIntegration(adTag) {
+            var optimizationIntegration = adTag ? adTag.optimizationIntegration : null;
+            if(!optimizationIntegration){
+                return null;
+            }
+
+            var found = $scope.integrations.find(function (integration) {
+                return integration.id === optimizationIntegration;
+            });
+
+            if(found){
+                return found;
+            }
+
+            return null;
         }
 
         function isEnabledModule(module) {
