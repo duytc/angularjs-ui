@@ -50,6 +50,8 @@
 
         // temporarily add sites to model (because old term is "sites"), need remove before submitting
         $scope.autoOptimizeIntegration.sites = $scope.autoOptimizeIntegration.supplies;
+        $scope.autoOptimizeIntegration.videoPublishers = refactorListByIds($scope.autoOptimizeIntegration.videoPublishers || []) ;
+        $scope.autoOptimizeIntegration.waterfallTags = refactorListByIds($scope.autoOptimizeIntegration.waterfallTags || []);
 
         $scope.FROM_IDENTIFIERS = [
             {key: 'adTagId', label: 'Ad Tag ID'},
@@ -104,6 +106,7 @@
         $scope.groupEntities = groupEntities;
         $scope.backToListAuto = backToListAuto;
         $scope.isPubvantageAdServer = isPubvantageAdServer;
+        $scope.onChangePlatformIntergrationType = onChangePlatformIntergrationType;
         $scope.onVideoPublishersClick = onVideoPublishersClick;
 
         $scope.filterText = filterText;
@@ -114,6 +117,40 @@
         /* ==========LOCAL FUNCTIONS FOR SCOPE============ */
         function isPubvantageAdServer() {
             return !!($scope.autoOptimizeIntegration.platformIntegration.type == 'PUBVANTAGE_ADS_SERVER');
+        }
+
+        function onChangePlatformIntergrationType(item) {
+            if(item && item.type == 'PUBVANTAGE_ADS_SERVER') {
+                $scope.autoOptimizeIntegration.videoPublishers = [];
+                refreshIstEvenSelected($scope.videoPublishersList);
+            } else {
+                $scope.autoOptimizeIntegration.sites = [];
+                refreshIstEvenSelected($scope.siteList);
+            }
+        }
+
+        function refreshIstEvenSelected($selected) {
+            _.each($selected, function(item){
+                if(item && item.ticked) 
+                    item.ticked = !item.ticked;
+            })  
+        }
+
+        function fillTicked(items, source) {
+            _.each(source, function(s){
+                _.each(items, function(i){
+                    if((s.id || s) == i)
+                        s.ticked = true;
+                    else 
+                        s.ticked = false;
+                })
+            })
+        }
+
+        function refactorListByIds(items) {
+            return _.map(items, function(val, key){
+                    return _.isObject(val) && _.has(val, 'id') ? val.id : val;
+                }) || [];
         }
 
         function onVideoPublishersClick(data) {
@@ -144,8 +181,8 @@
 
         function isFormValid() {
             return $scope.autoOptimizeIntegrationForm.$valid
-                && $scope.autoOptimizeIntegration.sites != null
-                && $scope.autoOptimizeIntegration.sites.length > 0;
+                && (($scope.autoOptimizeIntegration.sites != null
+                && $scope.autoOptimizeIntegration.sites.length > 0) || !_.isEmpty($scope.autoOptimizeIntegration.videoPublishers));
         }
 
         function isAdmin() {
@@ -331,9 +368,19 @@
             });
         }
 
+        function updateAllAssets() {
+            _updateSelectedSitesAndAdSlots();
+            updateVideoPublishersAndWaterFalls();
+        }
+
+        function updateVideoPublishersAndWaterFalls() {
+            fillTicked($scope.autoOptimizeIntegration.videoPublishers, $scope.videoPublishersList);
+            fillTicked($scope.autoOptimizeIntegration.waterfallTags, $scope.waterfallTagsList);
+            getWaterfallTagsListByVideoPublishers();
+        }
+
         function _updateSelectedSitesAndAdSlots() {
             _fillStickForSupply();
-
             // update adSlotList and also fillStickForAdSlot
             _updateAdSlotListWhenSelectedSitesChange();
         }

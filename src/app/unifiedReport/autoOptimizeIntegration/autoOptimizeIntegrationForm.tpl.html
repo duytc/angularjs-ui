@@ -58,7 +58,7 @@
                         {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.PLATFORM_INTEGRATION' | translate}}
                     </label>
                     <div class="col-sm-5">
-                        <ui-select name="platformIntegration" id="platformIntegration"
+                        <ui-select name="platformIntegration" id="platformIntegration" on-select="onChangePlatformIntergrationType($item, $model)"
                                    ng-model="autoOptimizeIntegration.platformIntegration"
                                    ng-required="true"
                                    server-error>
