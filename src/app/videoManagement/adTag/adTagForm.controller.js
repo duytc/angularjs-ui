@@ -5,7 +5,7 @@
         .controller('VideoAdTagForm', VideoAdTagForm)
     ;
 
-    function VideoAdTagForm($scope, $q, $stateParams, $translate, adTag, videoPublishers, optimizeIntegrations, publishers, AlertService, NumberConvertUtil, VideoAdTagManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, PLATFORM_OPTION, PLAYER_SIZE_OPTIONS) {
+    function VideoAdTagForm($scope, $q, $stateParams, $translate, userSession, adTag, videoPublishers, optimizeIntegrations, publishers, AlertService, NumberConvertUtil, VideoAdTagManager, ServerErrorProcessor, historyStorage, HISTORY_TYPE_PATH, PLATFORM_OPTION, PLAYER_SIZE_OPTIONS) {
         $scope.fieldNameTranslations = {
             name: 'Name',
             platform: 'platform',
@@ -80,7 +80,7 @@
                 return enabledModules != null ? enabledModules.indexOf(module) > -1 : false;
             }
 
-            return $scope.adSlot.publisher != null ? $scope.adSlot.publisher.enabledModules.indexOf(module) > -1 : false;
+            return $scope.adTag.videoPublisher.publisher != null ? $scope.adTag.videoPublisher.publisher.enabledModules.indexOf(module) > -1 : false;
         }
 
         function onChangeIntegration(integration) {
@@ -89,12 +89,11 @@
                 $scope.optimizationIntegration = integration || {};
                 $scope.adTag.optimizationIntegration = integration.id;
             }
-
         }
 
         function filterPublishersByVideo(publishers) {
             return _.filter(publishers, function(publisher) {
-                return _.contains(_.values(publisher.enabledModules), 'MODULE_VIDEO')
+                return _.contains(_.values(publisher.enabledModules), 'MODULE_VIDEO');
                 //return _.findWhere(_.pluck(videoPublishers, 'publisher'), {id: publisher.id})
             });
         }
