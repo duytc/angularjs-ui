@@ -123,6 +123,12 @@
                                 return sites.plain()
                             })
                     },
+                    videoPublishers: function (VideoPublisherManager) {
+                        return VideoPublisherManager.getList()
+                            .then(function(videoPublishers) {
+                                return videoPublishers.plain();
+                            })
+                    },
                     selectedSites: function () {
                         return null;
                     },
