@@ -534,14 +534,14 @@
                 adSlotIds.push(adSlot.id)
             });
 
-            autoOptimizeIntegration.videoPublishers = refactorListByIds($scope.autoOptimizeIntegration.videoPublishers || []);
-            autoOptimizeIntegration.waterfallTags = refactorListByIds($scope.autoOptimizeIntegration.waterfallTags || []);
-
-
             autoOptimizeIntegration.adSlots = adSlotIds;
             // use supplies instead of sites for submitting
             autoOptimizeIntegration.supplies = siteIds;
             delete autoOptimizeIntegration.sites;
+
+            /* refactor selected videoPublishers, waterfallTags */
+            autoOptimizeIntegration.videoPublishers = refactorListByIds($scope.autoOptimizeIntegration.videoPublishers || []);
+            autoOptimizeIntegration.waterfallTags = refactorListByIds($scope.autoOptimizeIntegration.waterfallTags || []);
 
             // platform integration
             autoOptimizeIntegration.platformIntegration = autoOptimizeIntegration.platformIntegration.value;
