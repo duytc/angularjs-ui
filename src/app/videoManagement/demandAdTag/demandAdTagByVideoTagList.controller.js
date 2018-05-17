@@ -66,8 +66,7 @@
         $scope.showOptimizedPositions = showOptimizedPositions;
 
         function isAutoOptimize() {
-            return true;
-            return videoWaterfallTag.autoOptimize && 
+            return videoWaterfallTag.autoOptimize &&
                 $scope.hasAutoOptimizeModule;
         }
 
