@@ -122,13 +122,13 @@
                 <div class="form-group" ng-if="adTag.autoOptimize === true && isAutoOptimizeModule()">
                     <label for="integrations" class="col-sm-1 control-label">{{ 'AD_SLOT_MODULE.INTEGRATIONS' | translate }}</label>
                     <div class="col-sm-5">
-                        <ui-select id="integrations" ng-model="adTag.optimizationIntegration"
+                        <ui-select id="integrations" ng-model="optimizationIntegration"
                                    ng-change="onChangeIntegration($select.selected)"
                                    server-error reset-search-input="'false'">
                             <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_INTEGRATION_PLACE_HOLDER' | translate }}">
-                               {{ optimizationIntegration.selected.name }} ({{ optimizationIntegration.optimizationRule.name }})
+                                {{ $select.selected.name }} ({{ $select.selected.optimizationRule.name }})
                             </ui-select-match>
-                            <ui-select-choices repeat=" integration in integrations | filter:$select.search">
+                            <ui-select-choices repeat=" integration in integrations | filterIntegrationByPublisher:adTag.videoPublisher.publisher | filter:$select.search">
                                 {{ integration.name }} ({{integration.optimizationRule.name}})
                             </ui-select-choices>
                         </ui-select>
