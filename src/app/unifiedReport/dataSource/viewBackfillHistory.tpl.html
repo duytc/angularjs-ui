@@ -12,6 +12,10 @@
             <tbody>
             <tr>
                 <td at-title="#" at-implicit at-sortable at-attribute="id"></td>
+                <td at-title="Created by" at-attribute="autoCreate">
+                    <span ng-if="item.autoCreate == true">Auto</span>
+                    <span ng-if="item.autoCreate == false">Manual</span>
+                </td>
                 <td at-title="Start Date" at-implicit at-sortable at-attribute="backFillStartDate"></td>
                 <td at-title="End Date" at-implicit at-sortable at-attribute="backFillEndDate"></td>
                 <td at-title="Queued At" at-sortable at-initial-sorting="asc" at-attribute="queuedAt">
