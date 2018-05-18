@@ -134,9 +134,9 @@
 
         function refreshIstEvenSelected($selected) {
             _.each($selected, function(item){
-                if(item && item.ticked) 
+                if(item && item.ticked)
                     item.ticked = !item.ticked;
-            })  
+            })
         }
 
         function fillTicked(items, source) {
@@ -160,7 +160,7 @@
         }
 
         function onVideoPublishersClick(data) {
-            return getWaterfallTagsListByVideoPublishers(data);
+            return _updateWaterfallTagsListBySelectedVideoPublishers(data);
         }
 
         function groupEntities(item) {
@@ -298,15 +298,13 @@
                     key: $scope.autoOptimizeIntegration.optimizationAlerts,
                     label: _getOptimizationAlertsLabelFromObject($scope.autoOptimizeIntegration.optimizationAlerts)
                 };
-
             }
 
             /* update column name mapping for all dimensions from optimization rule's report view */
             _setColumnName();
 
             /* update all assets of form*/
-            updateAllAssets();
-
+            _updateAllAssets();
         }
 
         function _getSitesForPublisher(publisher) {
@@ -328,9 +326,8 @@
                     return adSlots.plain();
                 })
         }
-       
 
-        function getWaterfallTagsListByVideoPublishers(data, isOneLoadOnly) {
+        function _updateWaterfallTagsListBySelectedVideoPublishers(data, isOneLoadOnly) {
             if(data == 'reset')
                 $scope.autoOptimizeIntegration.videoPublishers = [];
             else if (data == 'all')
@@ -351,7 +348,7 @@
                     $scope.waterfallTagsList = _.filter(videosWaterfall, function(wt){
                         return wt && wt.id ? _.contains(_.values(waterfalls), wt.id) : true;
                     })
-                    
+
                     if(!$scope.isNew && isOneLoadOnly)
                         fillTicked(tempWaterFall, $scope.waterfallTagsList);
 
@@ -387,14 +384,15 @@
             });
         }
 
-        function updateAllAssets() {
+        function _updateAllAssets() {
             _updateSelectedSitesAndAdSlots();
-            updateVideoPublishersAndWaterFalls();
+            _updateSelectedVideoPublishersAndWaterFalls();
         }
 
-        function updateVideoPublishersAndWaterFalls() {
+        function _updateSelectedVideoPublishersAndWaterFalls() {
             fillTicked($scope.autoOptimizeIntegration.videoPublishers, $scope.videoPublishersList);
-            getWaterfallTagsListByVideoPublishers(null, true);
+            // update waterfallTagsList and also fillStickForWaterfallTags
+            _updateWaterfallTagsListBySelectedVideoPublishers(null, true);
         }
 
         function _updateSelectedSitesAndAdSlots() {
@@ -597,6 +595,6 @@
             return label;
         }
 
-        
+
     }
 })();
