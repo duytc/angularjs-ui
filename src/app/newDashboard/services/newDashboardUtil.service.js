@@ -11,6 +11,7 @@
             'adTagRequests': 'Requests',
             'estDemandRevenue': 'Revenue',
             'estRevenue': 'Revenue',
+            'netRevenue': 'Revenue',
             'requestFillRate': 'Fill Rate',
             'fillRate': 'Fill Rate',
             'bids': 'Bids',
