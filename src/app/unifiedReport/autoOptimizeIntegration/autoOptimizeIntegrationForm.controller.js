@@ -343,11 +343,15 @@
             })
             .then(function (videosWaterfall) {
                 var videosWaterfall = videosWaterfall ? videosWaterfall.plain() : [];
+                /*$scope.waterfallTagsList = videosWaterfall ? videosWaterfall.plain() : [];
+                if(!$scope.isNew && isOneLoadOnly)
+                    fillTicked(tempWaterFall, $scope.waterfallTagsList);*/
                 dataService.makeHttpGetRequest('/v1/optimizationintegrations/waterfalltags/ids', null, API_UNIFIED_END_POINT)
                 .then(function (waterfalls) {
                     $scope.waterfallTagsList = _.filter(videosWaterfall, function(wt){
-                        return wt ? wt.id !== _.first(_.values(waterfalls)) : true;
+                        return wt && wt.id ? _.contains(_.values(waterfalls), wt.id) : true;
                     })
+                    
                     if(!$scope.isNew && isOneLoadOnly)
                         fillTicked(tempWaterFall, $scope.waterfallTagsList);
 
