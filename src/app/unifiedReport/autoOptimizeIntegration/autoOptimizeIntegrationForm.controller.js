@@ -7,8 +7,8 @@
 
     function AutoOptimizeIntegrationForm($scope, $filter, $translate, AlertService, optimizationRule,
                                          autoOptimizeIntegration, ServerErrorProcessor, AutoOptimizeIntegrationManager,
-                                         AdSlotManager, VideoPublisherManager, VideoWaterfallManager, dataService, sites, videoPublishers, selectedSites, selectedAdSlots, historyStorage, HISTORY_TYPE_PATH,
-                                         DOMAINS_LIST_SEPARATOR, COUNTRY_LIST, Auth, PLATFORM_INTEGRATION, OPTIMIZATION_FREQUENCY, API_UNIFIED_END_POINT) {
+                                         AdSlotManager, VideoWaterfallManager, dataService, sites, videoPublishers, selectedSites, selectedAdSlots, historyStorage, HISTORY_TYPE_PATH,
+                                         COUNTRY_LIST, Auth, PLATFORM_INTEGRATION, OPTIMIZATION_FREQUENCY, API_UNIFIED_END_POINT) {
 
         $scope.platformIntegrations = angular.copy(PLATFORM_INTEGRATION);
         $scope.optimizationFrequencies = angular.copy(OPTIMIZATION_FREQUENCY);
@@ -52,8 +52,8 @@
 
         // temporarily add sites to model (because old term is "sites"), need remove before submitting
         $scope.autoOptimizeIntegration.sites = $scope.autoOptimizeIntegration.supplies;
-        $scope.autoOptimizeIntegration.videoPublishers = refactorListByIds($scope.autoOptimizeIntegration.videoPublishers || []) ;
-        $scope.autoOptimizeIntegration.waterfallTags = refactorListByIds($scope.autoOptimizeIntegration.waterfallTags || []);
+        $scope.autoOptimizeIntegration.videoPublishers = _mapObjectListToIds($scope.autoOptimizeIntegration.videoPublishers || []);
+        $scope.autoOptimizeIntegration.waterfallTags = _mapObjectListToIds($scope.autoOptimizeIntegration.waterfallTags || []);
         var tempWaterFall = angular.copy($scope.autoOptimizeIntegration.waterfallTags);
 
         $scope.FROM_IDENTIFIERS = [
@@ -123,7 +123,7 @@
         }
 
         function onChangePlatformIntergrationType(item) {
-            if(item && item.type == 'PUBVANTAGE_ADS_SERVER') {
+            if (item && item.type == 'PUBVANTAGE_ADS_SERVER') {
                 $scope.autoOptimizeIntegration.videoPublishers = [];
                 refreshIstEvenSelected($scope.videoPublishersList);
             } else {
@@ -133,17 +133,17 @@
         }
 
         function refreshIstEvenSelected($selected) {
-            _.each($selected, function(item){
-                if(item && item.ticked)
+            _.each($selected, function (item) {
+                if (item && item.ticked)
                     item.ticked = !item.ticked;
             })
         }
 
         function fillTicked(items, source) {
-            _.each(source, function(s){
-                if(!_.isEmpty(items))
+            _.each(source, function (s) {
+                if (!_.isEmpty(items))
                     for (var i = items.length - 1; i >= 0; i--) {
-                        if((s.id || s) == items[i]) {
+                        if ((s.id || s) == items[i]) {
                             s.ticked = true;
                             break;
                         }
@@ -153,8 +153,8 @@
             })
         }
 
-        function refactorListByIds(items) {
-            return _.map(angular.copy(items), function(val, key){
+        function _mapObjectListToIds(items) {
+            return _.map(angular.copy(items), function (val, key) {
                     return _.isObject(val) && _.has(val, 'id') ? val.id : val;
                 }) || [];
         }
@@ -225,7 +225,7 @@
 
                         return errorCheck;
                     })
-                ;
+            ;
         }
 
         /* ==========LOCAL FUNCTIONS============ */
@@ -328,32 +328,32 @@
         }
 
         function _updateWaterfallTagsListBySelectedVideoPublishers(data, isOneLoadOnly) {
-            if(data == 'reset')
+            if (data == 'reset')
                 $scope.autoOptimizeIntegration.videoPublishers = [];
             else if (data == 'all')
                 $scope.autoOptimizeIntegration.videoPublishers = _.pluck($scope.videoPublishersList, 'id');
 
             return VideoWaterfallManager.getList({
-                videoPublishersIds: (_.map($scope.autoOptimizeIntegration.videoPublishers, function(val, key){
+                videoPublishersIds: (_.map($scope.autoOptimizeIntegration.videoPublishers, function (val, key) {
                     return _.isObject(val) && _.has(val, 'id') ? val.id : val;
                 }) || []).join(',')
             })
-            .then(function (videosWaterfall) {
-                var videosWaterfall = videosWaterfall ? videosWaterfall.plain() : [];
-                /*$scope.waterfallTagsList = videosWaterfall ? videosWaterfall.plain() : [];
-                if(!$scope.isNew && isOneLoadOnly)
-                    fillTicked(tempWaterFall, $scope.waterfallTagsList);*/
-                dataService.makeHttpGetRequest('/v1/optimizationintegrations/waterfalltags/ids', null, API_UNIFIED_END_POINT)
-                .then(function (waterfalls) {
-                    $scope.waterfallTagsList = _.filter(videosWaterfall, function(wt){
-                        return wt && wt.id ? _.contains(_.values(waterfalls), wt.id) : true;
-                    })
+                .then(function (videosWaterfall) {
+                    var videosWaterfall = videosWaterfall ? videosWaterfall.plain() : [];
+                    /*$scope.waterfallTagsList = videosWaterfall ? videosWaterfall.plain() : [];
+                     if(!$scope.isNew && isOneLoadOnly)
+                     fillTicked(tempWaterFall, $scope.waterfallTagsList);*/
+                    dataService.makeHttpGetRequest('/v1/optimizationintegrations/waterfalltags/ids', null, API_UNIFIED_END_POINT)
+                        .then(function (waterfalls) {
+                            $scope.waterfallTagsList = _.filter(videosWaterfall, function (wt) {
+                                return wt && wt.id ? _.contains(_.values(waterfalls), wt.id) : true;
+                            })
 
-                    if(!$scope.isNew && isOneLoadOnly)
-                        fillTicked(tempWaterFall, $scope.waterfallTagsList);
+                            if (!$scope.isNew && isOneLoadOnly)
+                                fillTicked(tempWaterFall, $scope.waterfallTagsList);
 
+                        });
                 });
-            });
         }
 
         function _getIdentifierObjectFromValue(key) {
@@ -556,8 +556,8 @@
             delete autoOptimizeIntegration.sites;
 
             /* refactor selected videoPublishers, waterfallTags */
-            autoOptimizeIntegration.videoPublishers = refactorListByIds($scope.autoOptimizeIntegration.videoPublishers || []);
-            autoOptimizeIntegration.waterfallTags = refactorListByIds($scope.autoOptimizeIntegration.waterfallTags || []);
+            autoOptimizeIntegration.videoPublishers = _mapObjectListToIds($scope.autoOptimizeIntegration.videoPublishers || []);
+            autoOptimizeIntegration.waterfallTags = _mapObjectListToIds($scope.autoOptimizeIntegration.waterfallTags || []);
 
             // platform integration
             autoOptimizeIntegration.platformIntegration = autoOptimizeIntegration.platformIntegration.value;
@@ -566,7 +566,7 @@
             delete autoOptimizeIntegration.startRescoreAt;
             delete autoOptimizeIntegration.endRescoreAt;
             //If change optimization alert type => active status is 0
-            if(autoOptimizeIntegration.optimizationAlerts === 'notifyMeBeforeMakingChange'){
+            if (autoOptimizeIntegration.optimizationAlerts === 'notifyMeBeforeMakingChange') {
                 autoOptimizeIntegration.active = 0;
             } else {
                 autoOptimizeIntegration.active = 1;
