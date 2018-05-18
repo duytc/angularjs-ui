@@ -11,6 +11,7 @@
             'adTagRequests': 'Requests',
             'estDemandRevenue': 'Revenue',
             'estRevenue': 'Revenue',
+            'netRevenue': 'Revenue',
             'requestFillRate': 'Fill Rate',
             'fillRate': 'Fill Rate',
             'bids': 'Bids',
@@ -18,7 +19,10 @@
             'requests': 'Requests',
             'billedAmount': 'Billed Amount',
             'blocks': 'Blocked Requests',
-            'slotOpportunities': 'Slot Opps'
+            'slotOpportunities': 'Slot Ops',
+            'totalOpportunities': 'Network Ops',
+            'adOpportunities': 'Impression Ops',
+            'passbacks': 'Passbacks'
         };
 
         return {
