@@ -181,6 +181,11 @@
                                 enabled: false
                             },
                             enableMouseTracking: true
+                        },
+                        series: {
+                            marker: {
+                                enabled: false
+                            }
                         }
                     }
                 },
