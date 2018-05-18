@@ -34,7 +34,7 @@
                 },
                 resolve: {
                     adNetworks: /* @ngInject */ function(AdNetworkCache) {
-                        return AdNetworkCache.getAllAdNetworks();
+                        return AdNetworkCache.getAllAdNetworksDetail();
                     }
                 },
                 ncyBreadcrumb: {
