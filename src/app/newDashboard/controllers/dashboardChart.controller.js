@@ -5,8 +5,8 @@
         .controller('DashboardChart', DashboardChart)
     ;
 
-    function DashboardChart($scope, $filter, Auth, DASHBOARD_TYPE_JSON, CHART_FOLLOW, COMPARE_TYPE, LINE_CHART_CONFIG,DESC, HOUR_EXTENSION,
-                            DISPLAY_SHOW_FIELDS, VIDEO_SHOW_FIELDS, DASHBOARD_COLOR, NewDashboardUtil, CHART_DASH_TYPES, DEFAULT_DATE_FORMAT) {
+    function DashboardChart($scope, $filter, Auth, DASHBOARD_TYPE_JSON, COMPARE_TYPE, LINE_CHART_CONFIG,DESC,ASC, HOUR_EXTENSION,
+                            DISPLAY_SHOW_FIELDS, VIDEO_SHOW_FIELDS, VIDEO_SHOW_FIELDS_PUBLISHER,DISPLAY_SHOW_FIELDS_PUBLISHER, DASHBOARD_COLOR, NewDashboardUtil, CHART_DASH_TYPES, DEFAULT_DATE_FORMAT) {
         const CURRENT_LABEL = 'Current';
         const HISTORY_LABEL = 'History';
         const HOUR = 'hour';
@@ -119,21 +119,24 @@
         }
 
         function getShowFields(dashboardType) {
-            if (DASHBOARD_TYPE_JSON['DISPLAY'] === dashboardType.name)
-                return DISPLAY_SHOW_FIELDS;
-            if (DASHBOARD_TYPE_JSON['VIDEO'] === dashboardType.name)
-                return VIDEO_SHOW_FIELDS;
-            if (DASHBOARD_TYPE_JSON['UNIFIED_REPORT'] === dashboardType.name)
-                return $scope.chartData.urData.fields;
+            if (DASHBOARD_TYPE_JSON['DISPLAY'] === dashboardType.name){
+                if(Auth.isAdmin()){
+                    return DISPLAY_SHOW_FIELDS;
+                }
+                return DISPLAY_SHOW_FIELDS_PUBLISHER;
+            }
+
+            if (DASHBOARD_TYPE_JSON['VIDEO'] === dashboardType.name){
+                if (Auth.isAdmin()) {
+                    return VIDEO_SHOW_FIELDS;
+                }
+                return VIDEO_SHOW_FIELDS_PUBLISHER;
+            }
 
         }
 
         function getLabelForChart(field, dashboardType) {
-            if (DASHBOARD_TYPE_JSON['UNIFIED_REPORT'] === dashboardType.name) {
-                return $scope.chartData.urData.fieldsLabel[field];
-            } else {
-                return NewDashboardUtil.getShowLabel(field);
-            }
+            return NewDashboardUtil.getShowLabel(field);
         }
 
         function getDateKey() {
@@ -258,10 +261,6 @@
         }
 
         function _getVisibleForField(field) {
-            if (DASHBOARD_TYPE_JSON['UNIFIED_REPORT'] === $scope.dashboardType.name) {
-                return true;
-            }
-
             if (DASHBOARD_TYPE_JSON['DISPLAY'] === $scope.dashboardType.name) {
                 return field !== 'fillRate'; // default hide for "fillRate"
             }
@@ -272,7 +271,7 @@
         }
 
         function sortAsc(columnName, unsortedData) {
-            var type = 'asc';
+            var type = ASC;
             var sortedData = angular.copy(unsortedData);
             if (sortedData)
                 sortedData.sort(compareValues(columnName, type));

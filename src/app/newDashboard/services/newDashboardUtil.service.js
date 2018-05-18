@@ -18,7 +18,10 @@
             'requests': 'Requests',
             'billedAmount': 'Billed Amount',
             'blocks': 'Blocked Requests',
-            'slotOpportunities': 'Slot Opps'
+            'slotOpportunities': 'Slot Ops',
+            'totalOpportunities': 'Network Ops',
+            'adOpportunities': 'Impression Ops',
+            'passbacks': 'Passbacks'
         };
 
         return {
