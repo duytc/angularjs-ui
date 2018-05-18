@@ -149,7 +149,7 @@
                         }
                     }
                 else
-                    s.ticked = true;
+                    s.ticked = false;
             })
         }
 
@@ -390,7 +390,6 @@
 
         function updateVideoPublishersAndWaterFalls() {
             fillTicked($scope.autoOptimizeIntegration.videoPublishers, $scope.videoPublishersList);
-            
             getWaterfallTagsListByVideoPublishers(null, true);
         }
 
