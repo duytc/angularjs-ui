@@ -13,5 +13,6 @@ app = angular.module('tagcade', [
     'tagcade.videoLibrary',
     'tagcade.unifiedReport',
     'tagcade.newDashboard',
-    'tagcade.public'
+    'tagcade.public',
+    'tagcade.blocks.misc'//enable this module to filterIntegration for Publishers
 ]);

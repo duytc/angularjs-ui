@@ -128,7 +128,7 @@
                             <ui-select-match placeholder="{{ 'AD_SLOT_MODULE.SELECT_INTEGRATION_PLACE_HOLDER' | translate }}">
                                 {{ $select.selected.name }} ({{ $select.selected.optimizationRule.name }})
                             </ui-select-match>
-                            <ui-select-choices repeat=" integration in integrations | filterIntegrationByPublisher:adTag.videoPublisher.publisher | filter:$select.search">
+                            <ui-select-choices repeat=" integration in integrations | filterIntegrationByPublisher:(!isNew ? adTag.videoPublisher.publisher : selected.publisher) | filter:$select.search">
                                 {{ integration.name }} ({{integration.optimizationRule.name}})
                             </ui-select-choices>
                         </ui-select>
