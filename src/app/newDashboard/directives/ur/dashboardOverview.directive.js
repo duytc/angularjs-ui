@@ -17,7 +17,7 @@
                 chartFollow: "="
             },
             restrict: 'AE',
-            templateUrl: 'newDashboard/directives/dashboardOverview.tpl.html',
+            templateUrl: 'newDashboard/directives/ur/view/dashboardOverview.tpl.html',
             controller: 'DashboardOverview'
         };
     }

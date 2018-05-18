@@ -1,0 +1,193 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span>{{'NEW_DASHBOARD.OVERVIEW'|translate}}</span>
+    </div>
+    <div class="panel-body">
+        <div>
+            <alert class="alert alert-warning" ng-show="alertMessage.isShow">{{$scope.alertMessage.content}}</alert>
+        </div>
+
+        <!--buttons-->
+        <div class="btn-group pull-left">
+            <button type="button" class="btn btn-default btn-action" ng-disabled = "showLoading"
+                    ng-class="{active: compareTypeData.compareType === 'yesterday'}"
+                    ng-click="onChangeMode('yesterday')">{{'NEW_DASHBOARD.YESTERDAY' | translate}}
+            </button>
+            <button type="button" class="btn btn-default btn-action" ng-disabled = "showLoading"
+                    ng-class="{active: compareTypeData.compareType === 'day-over-day'}"
+                    ng-click="onChangeMode('day')">{{'NEW_DASHBOARD.DAY_OVER_DAY' | translate}}
+            </button>
+            <button type="button" class="btn btn-default btn-action" ng-disabled = "showLoading"
+                    ng-class="{active: compareTypeData.compareType === 'week-over-week'}"   
+                    ng-click="onChangeMode('week')">{{'NEW_DASHBOARD.LAST_7_DAY' | translate}}
+            </button>
+            <button type="button" class="btn btn-default btn-action" ng-disabled = "showLoading"
+                    ng-class="{active: compareTypeData.compareType === 'month-over-month'}"
+                    ng-click="onChangeMode('month')">{{'NEW_DASHBOARD.LAST_30_DAY' | translate}}
+            </button>
+            <button type="button" class="btn btn-default btn-action" ng-disabled = "showLoading"
+                    ng-class="{active: compareTypeData.compareType === 'year-over-year'}"
+                    ng-click="onChangeMode('year')">{{'NEW_DASHBOARD.YEAR_TO_DATE' | translate}}
+            </button>
+            <button type="button" class="btn btn-default btn-action" ng-disabled = "showLoading"
+                    ng-class="{active: compareTypeData.compareType === 'custom'}"
+                    ng-click="onChangeMode('custom')">{{'NEW_DASHBOARD.CUSTOM_COMPARISON' | translate}}
+            </button>
+
+        </div>
+
+        <div class="clearfix" style="padding: 10px 10px"></div>
+
+        <form class="padding-10" role="form" novalidate ng-if="compareTypeData.compareType === 'custom'">
+            <div class="row">
+                <!--historyDateRange-->
+                <div class="form-group col col-sm-2 col-xs-12 custom-date-range">
+                    <label for="inputDateRangeCurrent">
+                        {{ 'NEW_DASHBOARD.HISTORY_DATE_LABEL' | translate }}</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input date-range-picker
+                               options="datePickerOpts"
+                               class="form-control date-picker"
+                               type="text"
+                               id="inputDateRangeLast"
+                               ng-model="formData.historyDateRange"
+                               ng-required="true">
+                    </div>
+                </div>
+                <!--currentDateRange-->
+                <div class="form-group col col-sm-2 col-xs-12 custom-date-range">
+                    <label for="inputDateRangeCurrent">
+                        {{ 'NEW_DASHBOARD.CURRENT_DATE_LABEL' | translate }}</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input date-range-picker
+                               options="datePickerOpts"
+                               class="form-control date-picker"
+                               type="text"
+                               id="inputDateRangeCurrent"
+                               ng-model="formData.currentDateRange"
+                               ng-required="true">
+                    </div>
+                </div>
+                <!--Get Report-->
+                <div class="form-group col col-sm-1 col-xs-12">
+                    <label style="visibility: hidden">.</label>
+                    <button type="button" class="btn btn-primary form-control"
+                            ng-click="getCustomComparisonData()"
+                            ng-if="compareTypeData.compareType === 'custom'"
+                            ng-disabled="!isValidCustomDateRange()">{{'NEW_DASHBOARD.GET_REPORT' | translate}}
+                    </button>
+                </div>
+
+            </div>
+            <span class="help-block">{{'NEW_DASHBOARD.CUSTOM_DATE_RANGE_HELP_TEXT' | translate}}</span>
+        </form>
+
+        <!--Display-->
+        <div class="table-responsive" ng-if="hasDisplayComparisonTable()">
+            <table class="table no-border" at-table at-list="formData.comparisonTableData">
+                <thead>
+                <th ng-show="isAdmin" at-attribute="billedAmount">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</th>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td><strong>{{item.label}}</strong></td>
+                    <td ng-show="isAdmin" at-attribute="billedAmount" at-title="{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}">{{ item.billedAmount | currency}}</td>
+                    <td at-attribute="estRevenue" at-title="{{ 'DASHBOARD_MODULE.REVENUE' | translate }}">{{ item.estRevenue | currency }}</td>
+                    <td at-attribute="slotOpportunities" at-title="{{ 'DASHBOARD_MODULE.SLOT_OPPORTUNITIES' | translate }}">{{ item.slotOpportunities | number }}</td>
+                    <td at-attribute="totalOpportunities" at-title="{{ 'DASHBOARD_MODULE.NETWORK_OPPORTUNITIES' | translate }}">{{ item.totalOpportunities | number }}</td>
+                    <td at-attribute="adOpportunities" at-title="{{ 'DASHBOARD_MODULE.IMPRESSIONS_OPPORTUNITY' | translate }}">{{ item.adOpportunities | number }}</td>
+                    <td at-attribute="passbacks" at-title="{{ 'DASHBOARD_MODULE.PASSBACKS' | translate }}">{{ item.passbacks | number }}</td>
+                    <td at-attribute="fillRate" at-title="{{ 'DASHBOARD_MODULE.FILL_RATE' | translate }}">{{ item.fillRate | percentage }}</td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <!--VIDEO-->
+        <div class="table-responsive" ng-if="hasVideoComparisonTable()">
+            <table class="table no-border" at-table at-list="formData.comparisonTableData">
+                <thead>
+                <th ng-show="isAdmin" at-attribute="billedAmount">{{ 'DASHBOARD_MODULE.BILLED_AMOUNT' | translate }}</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><strong>{{item.label}}</strong></td>
+                    <td ng-show="isAdmin" at-attribute="billedAmount" at-title="{{ columnNameMappingForVideoReport['billedAmount'] }}">{{ (item.billedAmount != null) ? (item.billedAmount | currency) : '' }}</td>
+                    <td at-attribute="netRevenue" at-title="{{ columnNameMappingForVideoReport['netRevenue'] }}">{{ (item.netRevenue != null) ? (item.netRevenue | number) : '' }}</td>
+                    <td at-attribute="requests" at-title="{{ columnNameMappingForVideoReport['requests'] }}">{{ (item.requests != null) ? (item.requests | number) : '' }}</td>
+                    <td at-attribute="impressions" at-title="{{ columnNameMappingForVideoReport['impressions'] }}">{{ (item.impressions != null) ? (item.impressions | number) : '' }}</td>
+                    <td at-attribute="bids" at-title="{{ columnNameMappingForVideoReport['bids'] }}">{{ (item.bids != null) ? (item.bids | number) : '' }}</td>
+                    <td at-attribute="errors" at-title="{{ columnNameMappingForVideoReport['errors'] }}">{{ (item.errors != null) ? (item.errors | number) : '' }}</td>
+                    <td at-attribute="blocks" at-title="{{ columnNameMappingForVideoReport['blocks'] }}">{{ (item.blocks != null) ? (item.blocks | number) : '' }}</td>
+                    <td at-attribute="requestFillRate" at-title="{{ columnNameMappingForVideoReport['requestFillRate'] }}">{{ (item.requestFillRate != null) ? (item.requestFillRate | percentage) : '' }}</td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+
+        <!--fake 2 row table-->
+        <div class="table-responsive">
+            <table class="table no-border" ng-if="showLoading && !isYesterdayType()">
+                <thead>
+                <tr>
+                    <td class="non-visible">Loading...</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-center">
+                        <img src="../../../../assets/images/ajax-loader.gif"
+                             height="25" width="25"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong class="non-visible">Loading...</strong>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--fake 1 row table-->
+        <div class="table-responsive">
+            <table class="table no-border" ng-if="showLoading && isYesterdayType()">
+                <thead>
+                <tr>
+                    <td class="non-visible">Loading...</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-center">
+                        <!--<strong>Loading...</strong>-->
+                        <img src="../../../../assets/images/ajax-loader.gif"
+                             height="25" width="25"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <!--Help text-->
+        <!--<div class="pt-10" ng-if="compareTypeData.compareType === 'custom'">-->
+            <!--<span>{{'NEW_DASHBOARD.TIPS' | translate}}:</span>-->
+            <!--<button class="btn btn-sm btn-link badge" ng-click="helpTextVisibilityStatus = !helpTextVisibilityStatus">-->
+                <!--<span ng-if="helpTextVisibilityStatus == true">Hide</span>-->
+                <!--<span ng-if="helpTextVisibilityStatus == false">Show</span>-->
+            <!--</button>-->
+            <!--<div ng-hide="!helpTextVisibilityStatus" class="callout callout-info custom-callout">-->
+                <!--<p class="help-text-font">{{'NEW_DASHBOARD.CUSTOM_DATE_RANGE_HELP_TEXT' | translate}}</p>-->
+                <!--&lt;!&ndash;<p class="help-text-font">{{'NEW_DASHBOARD.CUSTOM_DATE_RANGE_HELP_TEXT_VALID' | translate}}</p>&ndash;&gt;-->
+                <!--&lt;!&ndash;<p class="help-text-font">{{'NEW_DASHBOARD.CUSTOM_DATE_RANGE_HELP_TEXT_INVALID' | translate}}</p>&ndash;&gt;-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+</div>
+

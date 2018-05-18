@@ -1371,7 +1371,7 @@
                 "CURRENT":"Current",
                 "HISTORY":"History",
                 "LAST":"Last",
-                "CUSTOM_DATE_RANGE_HELP_TEXT":"The history date range need to be earlier than the current date range. For example:",
+                "CUSTOM_DATE_RANGE_HELP_TEXT":"The end date of History Date Range must be earlier than the start date of Current Date Range",
                 "CUSTOM_DATE_RANGE_HELP_TEXT_INVALID":"2018-05-05 to 2018-05-10 for current and 2018-05-01 to 2018-05-05 for history is invalid because they have same 5th day.",
                 "CUSTOM_DATE_RANGE_HELP_TEXT_VALID":"2018-05-05 to 2018-05-10 for current and 2018-05-01 to 2018-05-04 for history is valid.",
                 "TIPS":"Tips",
