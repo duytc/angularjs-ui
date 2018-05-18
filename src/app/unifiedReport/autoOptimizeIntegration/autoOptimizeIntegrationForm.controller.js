@@ -149,7 +149,7 @@
                         }
                     }
                 else
-                    s.ticked = true;
+                    s.ticked = false;
             })
         }
 
