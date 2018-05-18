@@ -35,6 +35,8 @@
                 active: 1,
                 supplies: [], // old key is "sites"
                 adSlots: [],
+                videoPublishers: [],
+                waterfallTags: [],
                 optimizationAlerts: '',
                 platformIntegration: null,
                 optimizationFrequency: null
@@ -52,6 +54,7 @@
         $scope.autoOptimizeIntegration.sites = $scope.autoOptimizeIntegration.supplies;
         $scope.autoOptimizeIntegration.videoPublishers = refactorListByIds($scope.autoOptimizeIntegration.videoPublishers || []) ;
         $scope.autoOptimizeIntegration.waterfallTags = refactorListByIds($scope.autoOptimizeIntegration.waterfallTags || []);
+        var tempWaterFall = angular.copy($scope.autoOptimizeIntegration.waterfallTags);
 
         $scope.FROM_IDENTIFIERS = [
             {key: 'adTagId', label: 'Ad Tag ID'},
@@ -138,23 +141,26 @@
 
         function fillTicked(items, source) {
             _.each(source, function(s){
-                _.each(items, function(i){
-                    if((s.id || s) == i)
-                        s.ticked = true;
-                    else 
-                        s.ticked = false;
-                })
+                if(!_.isEmpty(items))
+                    for (var i = items.length - 1; i >= 0; i--) {
+                        if((s.id || s) == items[i]) {
+                            s.ticked = true;
+                            break;
+                        }
+                    }
+                else
+                    s.ticked = true;
             })
         }
 
         function refactorListByIds(items) {
-            return _.map(items, function(val, key){
+            return _.map(angular.copy(items), function(val, key){
                     return _.isObject(val) && _.has(val, 'id') ? val.id : val;
                 }) || [];
         }
 
         function onVideoPublishersClick(data) {
-            return getWaterfallTagsListByVideoPublishers();
+            return getWaterfallTagsListByVideoPublishers(data);
         }
 
         function groupEntities(item) {
@@ -324,7 +330,12 @@
         }
        
 
-        function getWaterfallTagsListByVideoPublishers() {
+        function getWaterfallTagsListByVideoPublishers(data, isOneLoadOnly) {
+            if(data == 'reset')
+                $scope.autoOptimizeIntegration.videoPublishers = [];
+            else if (data == 'all')
+                $scope.autoOptimizeIntegration.videoPublishers = _.pluck($scope.videoPublishersList, 'id');
+
             return VideoWaterfallManager.getList({
                 videoPublishersIds: (_.map($scope.autoOptimizeIntegration.videoPublishers, function(val, key){
                     return _.isObject(val) && _.has(val, 'id') ? val.id : val;
@@ -337,13 +348,16 @@
                     $scope.waterfallTagsList = _.filter(videosWaterfall, function(wt){
                         return wt ? wt.id !== _.first(_.values(waterfalls)) : true;
                     })
+                    if(!$scope.isNew && isOneLoadOnly)
+                        fillTicked(tempWaterFall, $scope.waterfallTagsList);
+
                 });
             });
         }
 
         function _getIdentifierObjectFromValue(key) {
             var label = '';
-            angular.forEach($scope.FROM_IDENTIFIERS, function (item) {
+            angular.forEach(isPubvantageAdServer() ? $scope.FROM_IDENTIFIERS : $scope.FROM_IDENTIFIERS_VIDEO, function (item) {
                 if (item.key == key) {
                     label = item.label;
                 }
@@ -376,8 +390,8 @@
 
         function updateVideoPublishersAndWaterFalls() {
             fillTicked($scope.autoOptimizeIntegration.videoPublishers, $scope.videoPublishersList);
-            fillTicked($scope.autoOptimizeIntegration.waterfallTags, $scope.waterfallTagsList);
-            getWaterfallTagsListByVideoPublishers();
+            
+            getWaterfallTagsListByVideoPublishers(null, true);
         }
 
         function _updateSelectedSitesAndAdSlots() {
