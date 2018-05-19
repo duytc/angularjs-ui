@@ -227,7 +227,7 @@
                 return true;
             }
 
-            if(module == USER_MODULES.autoOptimize && (!hasModuleEnabled(USER_MODULES.unified) || !hasModuleEnabled(USER_MODULES.displayAds))) {
+            if(module == USER_MODULES.autoOptimize && (!hasModuleEnabled(USER_MODULES.unified) || (!hasModuleEnabled(USER_MODULES.displayAds) && !hasModuleEnabled(USER_MODULES.videoAds)))) {
                 return true
             }
 
