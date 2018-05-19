@@ -1,40 +1,46 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <span current-page-title></span>
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col col-md-2 col-sm-12 col-xs-10" style="margin-top: 5px">
+                    <span current-page-title></span>
+                </div>
+                <div id="adTagOptions-sm" class="col col-md-10 col-sm-12" style="padding-top: 5px; text-transform: none">
+                    <div style="display: inline-block" class="pull-right">
+                        <!--label show optimized positions-->
+                        <label class="ui-checkbox enable-optimization" ng-if="!isAutoOptimize()"
+                               data-toggle="tooltip" title="{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.GENERAL_MESSAGE_HELP' | translate }}">
+                            <input type="checkbox" ng-checked="enableShowOptimizedPositions" ng-click="showOptimizedPositions()" >
+                            <span>{{ 'AD_TAG_MODULE.ENABLE_SHOW_OPTIMIZED_POSITIONS' | translate }}</span>
+                        </label>
 
-        <div class="button-bar">
-            <!--label show optimized positions-->
-            <label class="ui-checkbox enable-optimization" ng-if="isAutoOptimize()"
-                   data-toggle="tooltip" title="{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.GENERAL_MESSAGE_HELP' | translate }}">
-                <input type="checkbox" ng-checked="enableShowOptimizedPositions" ng-click="showOptimizedPositions()" >
-                <span>{{ 'AD_TAG_MODULE.ENABLE_SHOW_OPTIMIZED_POSITIONS' | translate }}</span>
-            </label>
+                        <label class="ui-checkbox" ng-if="!enableShowOptimizedPositions">
+                            <input type="checkbox" ng-checked="enableDragDrop" ng-disabled="isSubPublisher()" ng-click="enableDragDropAdTag(enableDragDrop)">
+                            <span>{{ 'AD_TAG_MODULE.ENABLE_DRAG_DROP' | translate }}</span>
+                        </label>
 
-            <label class="ui-checkbox" ng-if="!enableShowOptimizedPositions">
-                <input type="checkbox" ng-checked="enableDragDrop" ng-disabled="isSubPublisher()" ng-click="enableDragDropAdTag(enableDragDrop)">
-                <span>{{ 'AD_TAG_MODULE.ENABLE_DRAG_DROP' | translate }}</span>
-            </label>
+                        <button ng-click="createDemandAdTag(videoWaterfallTagItems)" class="btn btn-primary btn-sm add-new-ad-source" type="button">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            {{ 'AD_SOURCE_MODULE.NEW_AD_SOURCE' | translate }}
+                        </button>
 
-            <button ng-click="createDemandAdTag(videoWaterfallTagItems)" class="btn btn-primary btn-sm add-new-ad-source" type="button">
-                <span class="glyphicon glyphicon-plus"></span>
-                {{ 'AD_SOURCE_MODULE.NEW_AD_SOURCE' | translate }}
-            </button>
+                        <button ng-click="backToListVideoTag()" class="btn btn-sm btn-primary" type="button">
+                            <span class="glyphicon glyphicon-arrow-left"></span>
+                            {{ 'VIDEO_AD_TAG_MODULE.BACK_TO_AD_TAG_LIST' | translate }}
+                        </button>
+                    </div>
+                </div>
 
-            <button ng-click="backToListVideoTag()" class="btn btn-sm btn-primary" type="button">
-                <span class="glyphicon glyphicon-arrow-left"></span>
-                {{ 'VIDEO_AD_TAG_MODULE.BACK_TO_AD_TAG_LIST' | translate }}
-            </button>
+                <div class="btn-group btnGrouped col col-xs-2" dropdown>
+                    <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+                    <ul class="dropdown-menu pull-right" role="menu">
+                        <li ng-if="isAutoOptimize()"><a ng-click="showOptimizedPositions()"><span class="fa" ng-class="enableShowOptimizedPositions ? 'fa-check-square' : 'fa-square'"></span> {{ 'AD_TAG_MODULE.ENABLE_SHOW_OPTIMIZED_POSITIONS' | translate }}</a></li>
+                        <li><a ng-click="enableDragDropAdTag(enableDragDrop)"><span class="fa" ng-class="enableDragDrop ? 'fa-check-square' : 'fa-square'"></span> {{ 'AD_TAG_MODULE.ENABLE_DRAG_DROP' | translate }}</a></li>
+                        <li><a ng-click="backToListVideoTag()">{{ 'AD_SLOT_MODULE.BACK_TO_AD_SLOT_LIST' | translate }}</a></li>
+                    </ul>
+                </div>
+             </div>
         </div>
-
-        <div class="btn-group btnGrouped" dropdown>
-            <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
-            <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ng-click="showOptimizedPositions()"><span class="fa" ng-class="enableShowOptimizedPositions ? 'fa-check-square' : 'fa-square'"></span> {{ 'AD_TAG_MODULE.ENABLE_SHOW_OPTIMIZED_POSITIONS' | translate }}</a></li>
-                <li><a ng-click="enableDragDropAdTag(enableDragDrop)"><span class="fa" ng-class="enableDragDrop ? 'fa-check-square' : 'fa-square'"></span> {{ 'AD_TAG_MODULE.ENABLE_DRAG_DROP' | translate }}</a></li>
-                <li><a ng-click="backToListVideoTag()">{{ 'AD_SLOT_MODULE.BACK_TO_AD_SLOT_LIST' | translate }}</a></li>
-            </ul>
-        </div>
-
     </div>
 
     <div class="panel-body sortableAdTags ad-source-video-tag" ng-if="hasDemandAdTags()">
@@ -130,3 +136,10 @@
         </div>
     </div>
 </div>
+<style>
+    @media only screen and (max-width: 600px) {
+        #adTagOptions-sm {
+            display: none;
+        }
+    }
+</style>
