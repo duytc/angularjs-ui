@@ -111,101 +111,14 @@
                         </table>
                     </div>
 
-                    <!--<div class="table-responsive">-->
-                        <!--<table class="table" at-table at-paginated at-list="topPerformersVideoData.reports" at-config="configTopStatistics">-->
-                            <!--<thead>-->
-                            <!--<tr>-->
-                                <!--<th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'date')" at-attribute="date">{{ columnNameMappingForVideoReport['date'] }}</th>-->
-                                <!--<th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'estDemandRevenue')" at-attribute="estDemandRevenue">{{ columnNameMappingForVideoReport['estDemandRevenue'] }}</th>-->
-                                <!--<th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'requests')" at-attribute="requests">{{ columnNameMappingForVideoReport['requests'] }}</th>-->
-                                <!--<th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'impressions')" at-attribute="impressions">{{ columnNameMappingForVideoReport['impressions'] }}</th>-->
-                                <!--<th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'requestFillRate')" at-attribute="requestFillRate">{{ columnNameMappingForVideoReport['requestFillRate'] }}</th>-->
-                                <!--<th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'bids')" at-attribute="bids">{{ columnNameMappingForVideoReport['bids'] }}</th>-->
-                                <!--<th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'errors')" at-attribute="errors">{{ columnNameMappingForVideoReport['errors'] }}</th>-->
-                                <!--<th ng-show="hasKeyObjectForVideoReport(topPerformersVideoData.reports[0], 'blocks')" at-attribute="blocks">{{ columnNameMappingForVideoReport['blocks'] }}</th>-->
-                            <!--</tr>-->
-                            <!--</thead>-->
-                            <!--<tbody>-->
-                            <!--<tr>-->
-                                <!--<td ng-show="hasKeyObjectForVideoReport(item, 'date')" at-title="{{ columnNameMappingForVideoReport['date'] }}" at-attribute="date">-->
-                                    <!--{{ item.date | date }}-->
-                                <!--</td>-->
-                                <!--<td ng-show="hasKeyObjectForVideoReport(item, 'estDemandRevenue')" at-title="{{ columnNameMappingForVideoReport['estDemandRevenue'] }}" at-sortable at-attribute="estDemandRevenue" ng-click="onClickSortForVideo('estDemandRevenue')">-->
-                                    <!--{{ (item.estDemandRevenue != null) ? (item.estDemandRevenue | currency) : '-' }}-->
-                                <!--</td>-->
-                                <!--<td ng-show="hasKeyObjectForVideoReport(item, 'requests')" at-title="{{ columnNameMappingForVideoReport['requests'] }}" at-sortable at-initial-sorting="desc" at-attribute="requests">-->
-                                    <!--{{ item.requests | number }}-->
-                                <!--</td>-->
-                                <!--<td ng-show="hasKeyObjectForVideoReport(item, 'impressions')" at-title="{{ columnNameMappingForVideoReport['impressions'] }}" at-sortable at-attribute="impressions">-->
-                                    <!--{{ item.impressions | number }}-->
-                                <!--</td>-->
-                                <!--<td ng-show="hasKeyObjectForVideoReport(item, 'requestFillRate')" at-title="{{ columnNameMappingForVideoReport['requestFillRate'] }}" at-sortable at-attribute="requestFillRate">-->
-                                    <!--{{ item.requestFillRate | percentage }}-->
-                                <!--</td>-->
-                                <!--<td ng-show="hasKeyObjectForVideoReport(item, 'bids')" at-title="{{ columnNameMappingForVideoReport['bids'] }}" at-sortable at-attribute="bids">-->
-                                    <!--{{ item.bids | number }}-->
-                                <!--</td>-->
-                                <!--<td ng-show="hasKeyObjectForVideoReport(item, 'errors')" at-title="{{ columnNameMappingForVideoReport['errors'] }}" at-sortable at-attribute="errors">-->
-                                    <!--{{ item.errors | number }}-->
-                                <!--</td>-->
-                                <!--<td ng-show="hasKeyObjectForVideoReport(item, 'blocks')" at-title="{{ columnNameMappingForVideoReport['blocks'] }}" at-sortable at-attribute="blocks">-->
-                                    <!--{{ (item.blocks != null) ? (item.blocks | number) : '-' }}-->
-                                <!--</td>-->
-                            <!--</tr>-->
-                            <!--</tbody>-->
-                        <!--</table>-->
-                    <!--</div>-->
-
-                    <!--<at-pagination ng-if="showPagination()" class="table-footer" at-list="topPerformersVideoData.reports" at-config="configTopStatistics"></at-pagination>-->
                 </tab>
             </tabset>
         </div>
 
-        <!--unified report-->
-        <div ng-if="isShowForUnifiedReport()">
-            <div class="table-responsive table-report-view" style="overflow: auto;">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th ng-class="{minWidth100: (columnTypesForUnifiedReport[column] == 'date' || columnTypesForUnifiedReport[column] == 'datetime')}" ng-repeat="column in columnPositions track by $index" ng-click="sortUnifiedReport(column)">{{ titleColumnsForUnifiedReport[column] }}
-                            <span class="glyphicon glyphicon-minus" ng-show="!isShowFieldForUnifiedReport(column)"></span>
-                            <span class="glyphicon" ng-show="isShowFieldForUnifiedReport(column)" ng-class="{'glyphicon-chevron-up':!reverseForUnifiedReport,'glyphicon-chevron-down':reverseForUnifiedReport}"></span>
-                        </th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    <tr dir-paginate="report in topPerformersUnifiedReportData.reports | itemsPerPage:tableConfig.itemsPerPage">
-                        <td ng-repeat="column in columnPositions track by $index">
-                            <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!--<div class="pagination">-->
-                <!--<pagination ng-if="showPaginationForUnifiedReport()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>-->
-
-                <!--<div class="itemsPerPage" ng-if="tableConfig.totalItems > 10">-->
-                    <!--<label for="inputItemPerPage">Items per page</label>-->
-                    <!--<div class="itemNumber">-->
-                        <!--<ui-select name="itemPerPage" id="inputItemPerPage" ng-model="tableConfig.itemsPerPage" on-select="selectItemPerPages($item)" reset-search-input="'false'">-->
-                            <!--<ui-select-match placeholder="10">{{ $select.selected.label }}</ui-select-match>-->
-                            <!--<ui-select-choices repeat="itemPerPage.key as itemPerPage in itemsPerPage">-->
-                                <!--{{ itemPerPage.label }}-->
-                            <!--</ui-select-choices>-->
-                        <!--</ui-select>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        </div>
 
         <div class="clearfix"></div>
         <div class="text-center pt-10" ng-show="showLoading">
-            <img src="../../../assets/images/ajax-loader.gif" height="25" width="25"/>
-        </div>
-
+            <img src="../../../../assets/images/ajax-loader.gif" height="25" width="25"/>
         </div>
     </div>
 </section>

@@ -17,7 +17,7 @@
                 onChangeChartFollow: '&'
             },
             restrict: 'AE',
-            templateUrl: 'newDashboard/directives/dashboardComparision.tpl.html',
+            templateUrl: 'newDashboard/directives/ur/view/dashboardComparision.tpl.html',
             controller: 'DashboardComparision'
         };
     }
