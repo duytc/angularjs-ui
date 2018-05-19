@@ -80,8 +80,7 @@
 
                 dataService.makeHttpGetRequest('/videowaterfalltagitems/adtag/' + videoWaterfallTag.id + '/optimizedPositions', null, API_BASE_URL)
                 .then(function (data) {
-                    console.log(111, data);
-                    $scope.videoWaterfallTagItems = data;
+                    $scope.videoWaterfallTagItems = data || [];
                     $scope.videoWaterfallTagItemsGroup = _sortGroup($scope.videoWaterfallTagItems);
                 });
             } else {
