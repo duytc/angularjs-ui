@@ -18,7 +18,7 @@
                 watchManager: '='
             },
             restrict: 'AE',
-            templateUrl: 'newDashboard/directives/dashboardTopPerformance.tpl.html',
+            templateUrl: 'newDashboard/directives/displayAndVideo/dashboardTopPerformance.tpl.html',
             controller: 'DashboardTopPerformers'
         };
     }

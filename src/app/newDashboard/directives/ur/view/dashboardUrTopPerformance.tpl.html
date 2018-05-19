@@ -1,0 +1,35 @@
+<section class="panel panel-default">
+    <div class="panel-heading">{{'NEW_DASHBOARD.TOP_PERFORMERS'|translate}}</div>
+    <div class="panel-body">
+        <!--unified report-->
+        <div ng-if="isShowForUnifiedReport()">
+            <div class="table-responsive table-report-view" style="overflow: auto;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th ng-class="{minWidth100: (columnTypesForUnifiedReport[column] == 'date' || columnTypesForUnifiedReport[column] == 'datetime')}"
+                            ng-repeat="column in columnPositions track by $index"
+                            ng-click="sortUnifiedReport(column)">{{
+                            titleColumnsForUnifiedReport[column] }}
+                            <span class="glyphicon glyphicon-minus"
+                                  ng-show="!isShowFieldForUnifiedReport(column)">
+                            </span>
+                            <span class="glyphicon" ng-show="isShowFieldForUnifiedReport(column)"
+                                  ng-class="{'glyphicon-chevron-up':!reverseForUnifiedReport,'glyphicon-chevron-down':reverseForUnifiedReport}">
+                            </span>
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr dir-paginate="report in topPerformersUnifiedReportData.reports | itemsPerPage:tableConfig.itemsPerPage">
+                        <td ng-repeat="column in columnPositions track by $index">
+                            <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

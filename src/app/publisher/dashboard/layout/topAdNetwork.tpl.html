@@ -1,4 +1,4 @@
-<table class="table" at-table at-paginated at-list="dataTopStatistics" at-config="configTopStatistics">
+<table class="table" ng-if="dataTopStatistics" at-table at-paginated at-list="dataTopStatistics" at-config="configTopStatistics">
     <thead></thead>
     <tbody>
     <tr>
@@ -26,4 +26,4 @@
 </table>
 
 <!--pagination-->
-<at-pagination ng-if="configTopStatistics.itemsPerPage < dataTopStatistics.length" at-list="dataTopStatistics" at-config="configTopStatistics"></at-pagination>
+<at-pagination ng-if="dataTopStatistics && configTopStatistics.itemsPerPage < dataTopStatistics.length" at-list="dataTopStatistics" at-config="configTopStatistics"></at-pagination>

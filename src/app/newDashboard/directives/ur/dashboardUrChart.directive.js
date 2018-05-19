@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('tagcade.newDashboard')
-        .directive('dashboardChart', dashboardChart)
+        .directive('dashboardUrChart', dashboardUrChart)
     ;
 
-    function dashboardChart() {
+    function dashboardUrChart() {
         'use strict';
 
         return {
@@ -15,12 +15,11 @@
                 dashboardType: '=',
                 publisher: "=",
                 chartFollow: "=",
-                compareTypeData: "=",
-                watchManager: "="
+                compareTypeData: "="
             },
             restrict: 'AE',
-            templateUrl: 'newDashboard/directives/dashboardChart.tpl.html',
-            controller: 'DashboardChart'
+            templateUrl: 'newDashboard/directives/ur/view/dashboardUrChart.tpl.html',
+            controller: 'DashboardUrChart'
         };
     }
 })();
