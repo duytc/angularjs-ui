@@ -8,7 +8,7 @@
                 <div id="adTagOptions-sm" class="col col-md-10 col-sm-12" style="padding-top: 5px; text-transform: none">
                     <div style="display: inline-block" class="pull-right">
                         <!--label show optimized positions-->
-                        <label class="ui-checkbox enable-optimization" ng-if="!isAutoOptimize()"
+                        <label class="ui-checkbox enable-optimization" ng-if="isAutoOptimize()"
                                data-toggle="tooltip" title="{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.GENERAL_MESSAGE_HELP' | translate }}">
                             <input type="checkbox" ng-checked="enableShowOptimizedPositions" ng-click="showOptimizedPositions()" >
                             <span>{{ 'AD_TAG_MODULE.ENABLE_SHOW_OPTIMIZED_POSITIONS' | translate }}</span>
@@ -66,7 +66,7 @@
                         </strong>
 
                         <div class="strategy form-group">
-                            <ui-select id="inputPassbackMode" ng-model="videoWaterfallTagItem.strategy" on-select="selectStrategy($item, videoWaterfallTagItem)" ng-required="true" server-error reset-search-input="'false'">
+                            <ui-select ng-disabled="enableShowOptimizedPositions" id="inputPassbackMode" ng-model="videoWaterfallTagItem.strategy" on-select="selectStrategy($item, videoWaterfallTagItem)" ng-required="true" server-error reset-search-input="'false'">
                                 <ui-select-match placeholder="Select a Strategy">{{ $select.selected.label }}</ui-select-match>
                                 <ui-select-choices group-by="groupEntities" repeat="option.key as option in strategyOption | filter:$select.search">
                                     {{ option.label }}
