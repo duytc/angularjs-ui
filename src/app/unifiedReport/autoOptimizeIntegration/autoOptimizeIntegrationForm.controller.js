@@ -130,6 +130,8 @@
                 $scope.autoOptimizeIntegration.sites = [];
                 refreshIstEvenSelected($scope.siteList);
             }
+
+            $scope.autoOptimizeIntegration.identifierMapping = null;
         }
 
         function refreshIstEvenSelected($selected) {
