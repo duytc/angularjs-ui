@@ -61,12 +61,17 @@
         $scope.hasTargeting = hasTargeting;
         $scope.onChangeIntegration = onChangeIntegration;
         $scope.isAutoOptimizeModule = isAutoOptimizeModule;
+        $scope.onClickAutoOptimized = onClickAutoOptimized;
         $scope.selectedVideoPublisher = adTag ? adTag.videoPublisher : {};
         $scope.integrations = optimizeIntegrations;
         $scope.optimizationIntegration = initOptimizedIntegration(adTag);
 
         function isAutoOptimizeModule() {
             return isEnabledModule('MODULE_AUTO_OPTIMIZE');
+        }
+
+        function onClickAutoOptimized () {
+            $scope.optimizationIntegration = null;
         }
 
         function initOptimizedIntegration(adTag) {
