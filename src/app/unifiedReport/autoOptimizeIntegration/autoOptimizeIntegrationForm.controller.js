@@ -338,24 +338,25 @@
             return VideoWaterfallManager.getList({
                 videoPublishersIds: (_.map($scope.autoOptimizeIntegration.videoPublishers, function (val, key) {
                     return _.isObject(val) && _.has(val, 'id') ? val.id : val;
-                }) || []).join(',')
+                }) || []).join(','),
+                autoOptimize: true
             })
-                .then(function (videosWaterfall) {
-                    var videosWaterfall = videosWaterfall ? videosWaterfall.plain() : [];
-                    /*$scope.waterfallTagsList = videosWaterfall ? videosWaterfall.plain() : [];
-                     if(!$scope.isNew && isOneLoadOnly)
-                     fillTicked(tempWaterFall, $scope.waterfallTagsList);*/
-                    dataService.makeHttpGetRequest('/v1/optimizationintegrations/waterfalltags/ids', null, API_UNIFIED_END_POINT)
-                        .then(function (waterfalls) {
-                            $scope.waterfallTagsList = _.filter(videosWaterfall, function (wt) {
-                                return wt && wt.id ? !_.contains(_.values(waterfalls), wt.id) : true;
-                            })
-
-                            if (!$scope.isNew && isOneLoadOnly)
-                                fillTicked(tempWaterFall, $scope.waterfallTagsList);
-
+            .then(function (videosWaterfall) {
+                videosWaterfall = videosWaterfall ? videosWaterfall.plain() : [];
+                /*$scope.waterfallTagsList = videosWaterfall ? videosWaterfall.plain() : [];
+                 if(!$scope.isNew && isOneLoadOnly)
+                 fillTicked(tempWaterFall, $scope.waterfallTagsList);*/
+                AutoOptimizeIntegrationManager.one('waterfalltags').one('ids').get({id: $scope.autoOptimizeIntegration.id})
+                    .then(function (waterfalls) {
+                        $scope.waterfallTagsList = _.filter(videosWaterfall, function (wt) {
+                            return wt && wt.id ? !_.contains(_.values(waterfalls), wt.id) : true;
                         });
-                });
+
+                        if (!$scope.isNew && isOneLoadOnly) {
+                            fillTicked(tempWaterFall, $scope.waterfallTagsList);
+                        }
+                    });
+            });
         }
 
         function _getIdentifierObjectFromValue(key) {
