@@ -84,6 +84,13 @@
                             .then(function (optimizeRule){
                                 return optimizeRule;
                             });
+                    },
+                    videoPublishers: function (VideoPublisherManager, optimizationRule, Auth) {
+                        var publisher = !Auth.isAdmin() ? null : optimizationRule && optimizationRule.publisher;
+                        return VideoPublisherManager.getList({'publisherId': publisher && publisher.id ? publisher.id : null})
+                            .then(function(videoPublishers) {
+                                return videoPublishers.plain();
+                            })
                     }
                 },
                 customResolve: {
@@ -123,12 +130,6 @@
                                 return sites.plain()
                             })
                     },
-                    videoPublishers: function (VideoPublisherManager) {
-                        return VideoPublisherManager.getList()
-                            .then(function(videoPublishers) {
-                                return videoPublishers.plain();
-                            })
-                    },
                     selectedSites: function () {
                         return null;
                     },
@@ -137,6 +138,13 @@
                     },
                     optimizationRule: /* @ngInject */ function(autoOptimizeIntegration) {
                         return autoOptimizeIntegration.optimizationRule;
+                    },
+                    videoPublishers: function (VideoPublisherManager, optimizationRule, Auth) {
+                        var publisher = !Auth.isAdmin() ? null : optimizationRule && optimizationRule.publisher;
+                        return VideoPublisherManager.getList({'publisherId': publisher && publisher.id ? publisher.id : null})
+                            .then(function(videoPublishers) {
+                                return videoPublishers.plain();
+                            })
                     }
                 },
                 ncyBreadcrumb: {
