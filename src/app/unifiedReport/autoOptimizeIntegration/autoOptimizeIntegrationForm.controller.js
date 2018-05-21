@@ -348,7 +348,7 @@
                     dataService.makeHttpGetRequest('/v1/optimizationintegrations/waterfalltags/ids', null, API_UNIFIED_END_POINT)
                         .then(function (waterfalls) {
                             $scope.waterfallTagsList = _.filter(videosWaterfall, function (wt) {
-                                return wt && wt.id ? _.contains(_.values(waterfalls), wt.id) : true;
+                                return wt && wt.id ? !_.contains(_.values(waterfalls), wt.id) : true;
                             })
 
                             if (!$scope.isNew && isOneLoadOnly)
