@@ -298,6 +298,17 @@
                 })
                 .then(function () {
                     videoDemandAdTag.active = newTagStatus;
+
+                    // update status in initial ad tag list
+                    _.each(videoWaterfallTagItems, function (videoWaterfallTagItem) {
+                        _.each(videoWaterfallTagItem.videoDemandAdTags, function (t) {
+                            if (t.id !== videoDemandAdTag.id) {
+                                return;
+                            }
+
+                            t.active = videoDemandAdTag.active;
+                        });
+                    });
                 })
             ;
         }
