@@ -11,7 +11,8 @@
             {value: '24 hours', label: 'Every 24 hours'}
 
         ]).constant('PLATFORM_INTEGRATION', [
-        {value: 'pubvantage', label: 'Pubvantage Display Ad Server', type: 'PUBVANTAGE_ADS_SERVER'}
+        {value: 'pubvantage', label: 'Pubvantage Display Ad Server', type: 'PUBVANTAGE_ADS_SERVER', module: 'MODULE_DISPLAY'},
+        {value: 'pubvantage-video', label: 'Pubvantage Video Ad Server', type: 'PUBVANTAGE_VIDEO_ADS_SERVER', module: 'MODULE_VIDEO'}
     ])
     ;
 })();
