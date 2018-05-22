@@ -304,6 +304,8 @@
                     rotationWeight: null,
                     targetingOverride: false
                 };
+
+                $scope.selectedData.libraryDemandAdTagValue = null;
             }
 
             // reset targetingOverride to false
