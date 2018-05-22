@@ -156,6 +156,16 @@
                 if($scope.publisher.enabledModules.indexOf(USER_MODULES.inBanner) > -1) {
                     $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.inBanner), 1);
                 }
+
+                if($scope.publisher.enabledModules.indexOf(USER_MODULES.autoOptimize) > -1) {
+                    $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.autoOptimize), 1);
+                }
+            }
+
+            if(role == USER_MODULES.videoAds && $scope.publisher.enabledModules.indexOf(USER_MODULES.videoAds) == -1) {
+                if($scope.publisher.enabledModules.indexOf(USER_MODULES.autoOptimize) > -1) {
+                    $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.autoOptimize), 1);
+                }
             }
         }
 
