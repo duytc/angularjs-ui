@@ -234,7 +234,7 @@
         /* ==========LOCAL FUNCTIONS============ */
         function _filterPlatformIntegrationByModule(platformIntegrations) {
             return  _.filter(platformIntegrations, function(platformIntegration) {
-                return _.contains((autoOptimizeIntegration || optimizationRule).publisher.enabledModules, platformIntegration.module)
+                return _.contains($scope.autoOptimizeIntegration.optimizationRule.publisher.enabledModules, platformIntegration.module)
             });
         }
 
