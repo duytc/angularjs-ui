@@ -71,6 +71,9 @@
         }
 
         function showOptimizedPositions() {
+            // clear all previous alerts
+            AlertService.clearAll();
+
             $scope.enableDragDropAdTag(true);
             $scope.enableShowOptimizedPositions = !$scope.enableShowOptimizedPositions;
 
@@ -285,6 +288,9 @@
         }
 
         function toggleDemandAdTagStatus(videoDemandAdTag, active) {
+            // clear all previous alerts
+            AlertService.clearAll();
+
             var newTagStatus = active;
 
             VideoDemandAdTagManager.one(videoDemandAdTag.id).patch({'active': newTagStatus})
