@@ -301,6 +301,7 @@
                     },
                     priority: null,
                     active: true,
+                    activeClone: true,
                     rotationWeight: null,
                     targetingOverride: false
                 };
