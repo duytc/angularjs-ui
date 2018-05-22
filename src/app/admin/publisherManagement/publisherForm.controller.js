@@ -113,8 +113,8 @@
          * @param role
          */
         function toggleModuleRole(role) {
-            if(role == USER_MODULES.source) { // Note: These code support for API. Replace Video Source Module by video and analytic module
-                if($scope.publisher.enabledModules.indexOf(USER_MODULES.video) == -1 || $scope.publisher.enabledModules.indexOf(USER_MODULES.analytics) == -1) {
+            if (role == USER_MODULES.source) { // Note: These code support for API. Replace Video Source Module by video and analytic module
+                if ($scope.publisher.enabledModules.indexOf(USER_MODULES.video) == -1 || $scope.publisher.enabledModules.indexOf(USER_MODULES.analytics) == -1) {
                     $scope.publisher.enabledModules.push(USER_MODULES.video);
                     $scope.publisher.enabledModules.push(USER_MODULES.analytics);
                 } else {
@@ -132,16 +132,16 @@
             }
 
             // remove module do not display module
-            if(role == USER_MODULES.displayAds && $scope.publisher.enabledModules.indexOf(USER_MODULES.displayAds) == -1) {
-                if($scope.publisher.enabledModules.indexOf(USER_MODULES.video) > -1) {
+            if (role == USER_MODULES.displayAds && $scope.publisher.enabledModules.indexOf(USER_MODULES.displayAds) == -1) {
+                if ($scope.publisher.enabledModules.indexOf(USER_MODULES.video) > -1) {
                     $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.video), 1);
                 }
 
-                if($scope.publisher.enabledModules.indexOf(USER_MODULES.analytics) > -1) {
+                if ($scope.publisher.enabledModules.indexOf(USER_MODULES.analytics) > -1) {
                     $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.analytics), 1);
                 }
 
-                if($scope.publisher.enabledModules.indexOf(USER_MODULES.headerBidding) > -1) {
+                if ($scope.publisher.enabledModules.indexOf(USER_MODULES.headerBidding) > -1) {
                     $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.headerBidding), 1);
                 }
 
@@ -149,21 +149,27 @@
                 //     $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.source), 1);
                 // }
 
-                if($scope.publisher.enabledModules.indexOf(USER_MODULES.subPublisher) > -1) {
+                if ($scope.publisher.enabledModules.indexOf(USER_MODULES.subPublisher) > -1) {
                     $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.subPublisher), 1);
                 }
 
-                if($scope.publisher.enabledModules.indexOf(USER_MODULES.inBanner) > -1) {
+                if ($scope.publisher.enabledModules.indexOf(USER_MODULES.inBanner) > -1) {
                     $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.inBanner), 1);
                 }
 
-                if($scope.publisher.enabledModules.indexOf(USER_MODULES.autoOptimize) > -1) {
+                if ($scope.publisher.enabledModules.indexOf(USER_MODULES.autoOptimize) > -1) {
                     $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.autoOptimize), 1);
                 }
             }
 
-            if(role == USER_MODULES.videoAds && $scope.publisher.enabledModules.indexOf(USER_MODULES.videoAds) == -1) {
-                if($scope.publisher.enabledModules.indexOf(USER_MODULES.autoOptimize) > -1) {
+            if (role == USER_MODULES.videoAds && $scope.publisher.enabledModules.indexOf(USER_MODULES.videoAds) == -1) {
+                if ($scope.publisher.enabledModules.indexOf(USER_MODULES.autoOptimize) > -1) {
+                    $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.autoOptimize), 1);
+                }
+            }
+
+            if (role == USER_MODULES.unifiedReport && $scope.publisher.enabledModules.indexOf(USER_MODULES.unifiedReport) == -1) {
+                if ($scope.publisher.enabledModules.indexOf(USER_MODULES.autoOptimize) > -1) {
                     $scope.publisher.enabledModules.splice($scope.publisher.enabledModules.indexOf(USER_MODULES.autoOptimize), 1);
                 }
             }
