@@ -10,9 +10,6 @@
                                          AdSlotManager, VideoWaterfallManager, dataService, sites, videoPublishers, selectedSites, selectedAdSlots, historyStorage, HISTORY_TYPE_PATH,
                                          COUNTRY_LIST, Auth, PLATFORM_INTEGRATION, OPTIMIZATION_FREQUENCY, API_UNIFIED_END_POINT) {
 
-        $scope.platformIntegrations = angular.copy(PLATFORM_INTEGRATION);
-        $scope.optimizationFrequencies = angular.copy(OPTIMIZATION_FREQUENCY);
-
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
@@ -41,6 +38,10 @@
                 platformIntegration: null,
                 optimizationFrequency: null
             };
+
+        $scope.platformIntegrations = _filterPlatformIntegrationByModule(angular.copy(PLATFORM_INTEGRATION));
+        $scope.optimizationFrequencies = angular.copy(OPTIMIZATION_FREQUENCY);
+
 
         if ($scope.isNew && $scope.isFixSelectedSite) {
             _initSelectedSites();
@@ -231,6 +232,12 @@
         }
 
         /* ==========LOCAL FUNCTIONS============ */
+        function _filterPlatformIntegrationByModule(platformIntegrations) {
+            return  _.filter(platformIntegrations, function(platformIntegration) {
+                return _.contains((autoOptimizeIntegration || optimizationRule).publisher.enabledModules, platformIntegration.module)
+            });
+        }
+
         function _initSelectedSites() {
             var siteIds = [];
             angular.forEach(selectedSites, function (selectedSite) {
