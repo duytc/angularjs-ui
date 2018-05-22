@@ -299,18 +299,31 @@
                 .then(function () {
                     videoDemandAdTag.active = newTagStatus;
 
-                    // update status in initial ad tag list
-                    _.each(videoWaterfallTagItems, function (videoWaterfallTagItem) {
-                        _.each(videoWaterfallTagItem.videoDemandAdTags, function (t) {
-                            if (t.id !== videoDemandAdTag.id) {
-                                return;
-                            }
-
-                            t.active = videoDemandAdTag.active;
-                        });
-                    });
+                    refreshVideoWaterFallListItems(videoDemandAdTag);
                 })
             ;
+        }
+
+        function refreshVideoWaterFallListItems(newState) {
+            if(!newState)
+                return;
+
+            // update status in initial ad tag list
+            _.each(videoWaterfallTagItems, function (videoWaterfallTagItem) {
+                _.each(videoWaterfallTagItem.videoDemandAdTags, function (t, index) {
+                    if (t.id !== newState.id)
+                        return;
+
+                    if(t.active !== newState.active)
+                        t.active = newState.active;
+
+                    if(newState.isDeleted) {
+                        videoWaterfallTagItem.videoDemandAdTags.splice(index, 1);
+                        delete newState.isDeleted;
+                    }
+
+                });
+            });
         }
 
         function splitFromGroup(videoDemandAdTags, videoDemandAdTag, videoWaterfallTagItems, positionVideoAdTagItem, indexVideoDemandAdTag) {
@@ -357,6 +370,9 @@
 
                             $scope.videoWaterfallTagItems.splice(indexVideoAdTagItem, 1);
                             updatePositionForVideoAdTagItem();
+
+                            videoDemandAdTag.isDeleted = true;
+                            refreshVideoWaterFallListItems(videoDemandAdTag);
                         }
 
                         AlertService.replaceAlerts({
