@@ -15,9 +15,9 @@
     <!--Position-->
     <div ng-if="position">
         <!--<strong class="text-capitalize">Position:</strong>-->
-        <div ng-repeat="(adSlot, value) in position">
+        <div ng-repeat="(resourceKey, value) in position">
             <div class="panel panel-default">
-                <div class="panel-heading small-panel-heading"> Ad Slot {{adSlot}}</div>
+                <div class="panel-heading small-panel-heading"> {{getResourceName()}} {{resourceKey}}</div>
                 <div class="panel-body small-padding-panel-body">
                     <div class="container-fluid">
                         <div class="row">
