@@ -315,8 +315,8 @@
                 return;
 
             // update status in initial ad tag list
-            _.each(videoWaterfallTagItems, function (videoWaterfallTagItem) {
-                _.each(videoWaterfallTagItem.videoDemandAdTags, function (t, index) {
+            _.each(videoWaterfallTagItems, function (videoWaterfallTagItem, indexItemParent) {
+                _.each((videoWaterfallTagItem ? videoWaterfallTagItem.videoDemandAdTags : []), function (t, index) {
                     if (t.id !== newState.id)
                         return;
 
@@ -324,7 +324,13 @@
                         t.active = newState.active;
 
                     if(newState.isDeleted) {
-                        videoWaterfallTagItem.videoDemandAdTags.splice(index, 1);
+                        if(_.size(videoWaterfallTagItem.videoDemandAdTags) > 1) {
+                            videoWaterfallTagItem.videoDemandAdTags.splice(index, 1);
+                        } else {
+                            videoWaterfallTagItem.videoDemandAdTags.splice(index, 1);
+                            videoWaterfallTagItems.splice(indexItemParent, 1);
+                        }
+
                         delete newState.isDeleted;
                     }
 
