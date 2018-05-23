@@ -412,7 +412,7 @@
                                                     <textarea ng-disabled="disabled" ng-required="true" spellcheck="false" class="addScrollToTextArea form-control" rows="5" mentio mentio-select="getPeopleText(item)" ng-change="addSpaceBeforeAndAfterOperator(field)" type="text" mentio-macros="macros" mentio-trigger-char="'['" mentio-typed-text="typedTerm"
                                                               class="form-control"
                                                               mentio-items="fieldsCalculatedField | filter:label:typedTerm"
-                                                              ng-model="c.expression" placeholder="Expression">
+                                                              ng-model="field.expression" placeholder="Expression">
                                                     </textarea>
 
                                                     <span class="help-block">Use character <strong>[</strong> to show list of available variables. Each variable should be inside square bracket.</span>
