@@ -359,6 +359,10 @@
             }
         };
 
+        //watch the first time load dataFields to detect correct dateRange
+        $scope.$watch($scope.current.dateField, function (newVal, oldVal) {
+            $scope.onSelectDateFields($scope.current.dateField);
+        })
         /*
          * support 12 hours and 24 hours in dateRanges if dataType dateField is datetime
          */
