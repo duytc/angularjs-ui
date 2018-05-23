@@ -31,6 +31,11 @@
                             enabled: false
                         },
                         enableMouseTracking: true
+                    },
+                    series: {
+                        marker: {
+                            enabled: false
+                        }
                     }
                 }
             },
@@ -38,15 +43,15 @@
                 {
                     categories: [],
                     labels: {
-                        // rotation: -60,
-                        autoRotation: [-10, -20, -30, -40, -50, -60, -70, -80, -90]
+                        rotation: -60,
+                        // autoRotation: [-10, -20, -30, -40, -50, -60, -70, -80, -90]
                     }
                 },
                 {
                     categories: [],
                     labels: {
-                        // rotation: -60,
-                        autoRotation: [-10, -20, -30, -40, -50, -60, -70, -80, -90]
+                        rotation: 60,
+                        // autoRotation: [-10, -20, -30, -40, -50, -60, -70, -80, -90]
                     },
                     opposite: true // on top of chart
                 }],
@@ -67,14 +72,14 @@
         .constant('PUBLISHER_DISPLAY_COMPARISION', 'accounts/comparison')
         .constant('DASHBOARD_TYPE', [
             {id: 'DISPLAY', name: 'Pubvantage Display'},
-            // {id: 'UNIFIED_REPORT', name: 'Unified Report'},
-            // {id: 'VIDEO', name: 'Pubvantage Video'}
+            {id: 'UNIFIED_REPORT', name: 'Unified Report'},
+            {id: 'VIDEO', name: 'Pubvantage Video'}
 
         ])
         .constant('DASHBOARD_TYPE_JSON', {
             'DISPLAY': 'Pubvantage Display',
-            // 'UNIFIED_REPORT': 'Unified Report',
-            // 'VIDEO': 'Pubvantage Video'
+            'UNIFIED_REPORT': 'Unified Report',
+            'VIDEO': 'Pubvantage Video'
         })
         .constant('COMPARE_TYPE', {
                 'day': 'day-over-day',
@@ -100,8 +105,10 @@
             'requestFillRate': 'Fill Rate',
             'netRevenue': 'Revenue'
         })
-        .constant('DISPLAY_SHOW_FIELDS', ['estRevenue', 'slotOpportunities', 'passbacks', 'impressions', 'fillRate'])
-        .constant('VIDEO_SHOW_FIELDS', ['billedAmount', 'requests', 'impressions', 'bids', 'errors', 'blocks', 'requestFillRate'])
+        .constant('DISPLAY_SHOW_FIELDS', ['billedAmount', 'estRevenue', 'slotOpportunities','totalOpportunities', 'passbacks', 'adOpportunities', 'fillRate'])
+        .constant('DISPLAY_SHOW_FIELDS_PUBLISHER', ['estRevenue', 'slotOpportunities','totalOpportunities', 'passbacks', 'adOpportunities', 'fillRate'])
+        .constant('VIDEO_SHOW_FIELDS', ['billedAmount','netRevenue', 'requests', 'impressions', 'bids', 'errors', 'blocks', 'requestFillRate'])
+        .constant('VIDEO_SHOW_FIELDS_PUBLISHER', ['netRevenue', 'requests', 'impressions', 'bids', 'errors', 'blocks', 'requestFillRate'])
         .constant('DASHBOARD_COLOR', {
             0: '#1f77b4',
             1: '#ff7f0e',
