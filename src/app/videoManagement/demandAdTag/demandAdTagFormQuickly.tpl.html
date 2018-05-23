@@ -115,7 +115,7 @@
                         'AD_SOURCE_LIBRARY_MODULE.LIBRARY_DEMAND_AD_TAG' | translate }}</label>
 
                     <div class="col-sm-10">
-                        <ui-select name="libraryAdTag" ng-model="libraryDemandAdTag" id="inputDemandAdTagLibrary"
+                        <ui-select name="libraryAdTag" ng-model="selectedData.libraryDemandAdTagValue" id="inputDemandAdTagLibrary"
                                    server-error ng-disabled="!selectedData.publisher && isAdmin()"
                                    on-select="selectDemandAdTagLibrary($item)" reset-search-input="'false'">
                             <ui-select-match
@@ -124,7 +124,7 @@
                                 : '' }}
                             </ui-select-match>
                             <ui-select-choices
-                                    repeat="libraryDemandAdTag.id as libraryDemandAdTag in demandAdTagLibraryList | filter:$select.search | filter:filterByPublisher:libraryDemandAdTag">
+                                    repeat="libraryDemandAdTag.id as libraryDemandAdTag in demandAdTagLibraryList | filter:$select.search | filter:filterByPublisher:selectedData.libraryDemandAdTagValue">
                                 {{ libraryDemandAdTag.name }} {{ libraryDemandAdTag.id ? '(ID: ' + libraryDemandAdTag.id
                                 + ')' : '' }}
                             </ui-select-choices>
