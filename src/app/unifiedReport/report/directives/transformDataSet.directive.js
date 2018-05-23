@@ -290,7 +290,7 @@
                         if(!!type.key && !!calculatedField){
                             calculatedField.expression = null
                         }
-                        console.log(scope.fieldsCalculatedField);
+
                     }
 
                     function unValidName(name) {
