@@ -29,7 +29,6 @@
                 var content, directive;
                 content = element.contents().remove();
                 return function (scope, element, attrs) {
-                    console.log(scope.reportBuilder);
                     scope.allFiledFormatTypes = REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES;
                     scope.allFiledFormatTypeKeys = REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS;
                     scope.timezones = CONNECT_TIMEZONES;
