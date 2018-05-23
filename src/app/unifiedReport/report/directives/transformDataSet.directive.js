@@ -153,6 +153,7 @@
                     scope.addCompareValue = addCompareValue;
                     scope.ManageValues = ManageValues;
                     scope.setPattern = setPattern;
+                    scope.expressionContainExchangeRate = expressionContainExchangeRate;
 
                     function setPattern(type) {
                         if(type == 'number') {
@@ -237,6 +238,19 @@
                         scope.reorderDefaultValueAllowed = enable;
                     }
 
+                    function expressionContainExchangeRate(field) {
+                        if(field.expression && field.expression.length > 0){
+                            var expressionContainExchangeRate = false;
+                            for (var i = 0; i < EXCHANGE_RATES.length; i++) {
+                                if (field.expression.indexOf(EXCHANGE_RATES[i].key) >=0 ) {
+                                    expressionContainExchangeRate = true;
+                                    break;
+                                }
+                            }
+                            return expressionContainExchangeRate;
+                        }
+                        return false;
+                    }
                     function selectTypeCalculatedField(type, calculatedField) {
                         scope.fieldsCalculatedField = [];
 

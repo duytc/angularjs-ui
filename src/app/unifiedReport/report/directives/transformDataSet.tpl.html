@@ -419,6 +419,22 @@
                                                     <div class="callout-success expressions-transform" ng-bind-html="formatExpressionToHighlight(field)"></div>
                                                 </div>
                                             </div>
+
+                                            <div class="form-group select-connect-data-source">
+                                                <label class="col-sm-2 control-label">Exchange Rate Date Field</label>
+                                                <div class="col-sm-10">
+                                                    <ui-select ng-if="expressionContainExchangeRate(field)"
+                                                               ng-model="field.exchangeRateDateField"
+                                                               ng-required="true"
+                                                               server-error>
+                                                        <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.SELECT_EXCHANGE_DATE_FIELD' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                                                        <ui-select-choices repeat="dateField in dateFields | filter: { label: $select.search }">
+                                                            {{ dateField.label}}
+                                                        </ui-select-choices>
+                                                    </ui-select>
+
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
