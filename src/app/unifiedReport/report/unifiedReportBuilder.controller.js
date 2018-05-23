@@ -361,7 +361,11 @@
             }
 
             if (save) {
-                var reportViewSave = (((!$scope.isNew && !$scope.subView) || angular.isObject($scope.reportBuilder.masterReportView)) ||  $scope.reportBuilder.masterReportView != $scope.reportBuilder.id) && !!reportBuilder.id ? UnifiedReportViewManager.one(reportBuilder.id).patch(reportBuilder) : UnifiedReportViewManager.post(reportBuilder);
+                console.log($scope.reportBuilder.masterReportView);
+                console.log(reportBuilder);
+                var reportViewSave = (((!$scope.isNew && !$scope.subView) || angular.isObject($scope.reportBuilder.masterReportView))
+                    ||  $scope.reportBuilder.masterReportView != $scope.reportBuilder.id)
+                && !!reportBuilder.id ? UnifiedReportViewManager.one(reportBuilder.id).patch(reportBuilder) : UnifiedReportViewManager.post(reportBuilder);
 
                 reportViewSave.then(function (data) {
                     if ($scope.isNew || !params.id || $scope.subView) {
@@ -432,6 +436,8 @@
             $scope.fieldsHaveDateType = [];
             $scope.fieldsHaveNumberType = [];
             $scope.fieldNumberByMetrics = [];
+
+            $scope.exchangeRateDateFields = [];
 
             var totalDimensions = [];
 
@@ -898,6 +904,10 @@
 
                 if (transform.type == 'addCalculatedField' || transform.type == 'postAggregation') {
                     angular.forEach(transform.fields, function (field) {
+                        if(field.exchangeRateDateField){
+                            field.exchangeRateDateField = field.exchangeRateDateField.key;
+                        }
+
                         angular.forEach($scope.totalDimensionsMetrics, function replace(dm) {
                             if (!field.expression || !angular.isString(field.expression)) {
                                 return;
