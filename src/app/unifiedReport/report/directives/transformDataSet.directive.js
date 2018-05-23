@@ -5,7 +5,7 @@
         .directive('transformDataSet', transformDataSet)
     ;
 
-    function transformDataSet($compile, $modal, _, AddCalculatedField, CONNECT_TIMEZONES, COMPARISON_TYPES_ADD_FIELD_VALUE, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS, DATE_FORMAT_TYPES, METRICS_SET) {
+    function transformDataSet($compile, $modal, _, AddCalculatedField, CONNECT_TIMEZONES, COMPARISON_TYPES_ADD_FIELD_VALUE, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS, DATE_FORMAT_TYPES, METRICS_SET, EXCHANGE_RATES) {
         'use strict';
 
         return {
@@ -282,9 +282,15 @@
                             }
                         });
 
+                        // Add exchange rate
+                        angular.forEach(EXCHANGE_RATES, function (exchangeRate) {
+                            scope.fieldsCalculatedField.push(exchangeRate);
+                        });
+
                         if(!!type.key && !!calculatedField){
                             calculatedField.expression = null
                         }
+                        console.log(scope.fieldsCalculatedField);
                     }
 
                     function unValidName(name) {
