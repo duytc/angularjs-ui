@@ -89,6 +89,7 @@
             dateFields: [],
             dateFieldsFromMetadata: [],
             emailAnchorTexts: [],
+            sheets: [],
             dateFormats: [{isCustomFormatDate: false, isPartialMatch: false, format: null}],
             pattern: {
                 pattern: null,
@@ -235,6 +236,7 @@
         $scope.formatParamKey = formatParamKey;
         $scope.viewValue = viewValue;
         $scope.addValueDateFields = addValueDateFields;
+        $scope.addSheets = addSheets;
         $scope.removeAddValue = removeAddValue;
         $scope.selectCustomFormatDate = selectCustomFormatDate;
         $scope.addFromFormat = addFromFormat;
@@ -275,6 +277,10 @@
         }
 
         function addValueDateFields(query) {
+            return query
+        }
+
+        function addSheets(query) {
             return query
         }
 
