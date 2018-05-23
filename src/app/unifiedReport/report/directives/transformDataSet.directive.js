@@ -28,6 +28,7 @@
                 var content, directive;
                 content = element.contents().remove();
                 return function (scope, element, attrs) {
+                    console.log(scope.reportBuilder);
                     scope.allFiledFormatTypes = REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES;
                     scope.allFiledFormatTypeKeys = REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS;
                     scope.timezones = CONNECT_TIMEZONES;
@@ -297,9 +298,11 @@
                         });
 
                         // Add exchange rate
-                        angular.forEach(EXCHANGE_RATES, function (exchangeRate) {
-                            scope.fieldsCalculatedField.push(exchangeRate);
-                        });
+                        if (scope.fieldsCalculatedField && scope.fieldsCalculatedField.length > 0) {
+                            angular.forEach(EXCHANGE_RATES, function (exchangeRate) {
+                                scope.fieldsCalculatedField.push(exchangeRate);
+                            });
+                        }
 
                         if(!!type.key && !!calculatedField){
                             calculatedField.expression = null
