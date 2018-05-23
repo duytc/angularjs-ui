@@ -156,6 +156,32 @@
                     scope.setPattern = setPattern;
                     scope.expressionContainExchangeRate = expressionContainExchangeRate;
 
+                    _extractExchangeRateDateTransforms(scope.fieldsHaveDateType, scope.transforms);
+
+                    function _extractExchangeRateDateTransforms(options, transforms) {
+                        if(!transforms){
+                            return;
+                        }
+                        angular.forEach(transforms, function (transform) {
+                            if(transform && transform.type === 'addCalculatedField'){
+                                _extractExchangeRateDate(options, transform.fields);
+                            }
+                        })
+                    }
+                    function _extractExchangeRateDate(options, fields) {
+                        if (!fields || !options) {
+                            return;
+                        }
+                        angular.forEach(fields, function (field) {
+                            var found = options.find(function (option) {
+                                return option.key === field.exchangeRateDateField;
+                            });
+                            if(found){
+                                field.exchangeRateDateField = found;
+                            }
+                        })
+                    }
+
                     function setPattern(type) {
                         if(type == 'number') {
                             return '^[0-9]*$'
