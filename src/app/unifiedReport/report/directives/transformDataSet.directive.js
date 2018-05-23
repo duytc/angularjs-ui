@@ -20,7 +20,8 @@
                 reportBuilder: '=',
                 numberFields: '=',
                 transformPosition: '@',
-                disabled: '='
+                disabled: '=',
+                fieldsHaveDateType:'='
             },
             restrict: 'AE',
             templateUrl: 'unifiedReport/report/directives/transformDataSet.tpl.html',
