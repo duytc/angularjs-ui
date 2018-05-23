@@ -285,14 +285,29 @@
                window.saveAs(xhr.response, "namdn.csv")
             }*/
 
+            var modalEmail = $modal.open({
+                templateUrl: 'unifiedReport/template/confirmFillUserEmail.tpl.html',
+                controller: function ($scope) {
+                    $scope.userEmail = '';
+                    $scope.sendEmail = function() {
+                        modalEmail.dismiss('cancel');
+                        dataService.makeHttpPOSTRequest('/v1/reportview/download?XDEBUG_SESSION_START=1', { userEmail: $scope.userEmail }, API_UNIFIED_END_POINT)
+                            .then(function (data) {
+                            })
+                    }
+                }
+            });
+            return;
 
-            dataService.makeHttpGetRequest('', null, API_UNIFIED_END_POINT + '/v1/reportview/download')
+            dataService.makeHttpPOSTRequest('', null, API_UNIFIED_END_POINT + '/v1/reportview/download?XDEBUG_SESSION_START=1')
                 .then(function (data) {
-                    console.log(111, data);
-                    writeToFileSystem(data, function (e) {
+                    data = {isSendEmail: true};
+                    if(_.isObject(data) && _.has(data, 'isSendEmail')) {
+                        $modal.confirm('Enter your mail and we will send to an email have report file', function(){console.log(123)});
+                    }
+                    /*writeToFileSystem(data, function (e) {
                       console.log('Error', e);
-                    });
-                    //return data ? window.open(data) : void 0;
+                    });*/
                     /*var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
                     var reportName = !!reportView.name ? reportView.name : 'report-detail';
 

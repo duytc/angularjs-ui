@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <h4 class="modal-title">Please fill your email to get report file, we will send link download file to this mail as soon as available.</h4>
+</div>
+<div class="modal-body" id="modal-body">
+    <div class="panel-body">
+        <div class="row">
+            <form name="userEmail" class="col-lg-12 form-validation form-horizontal" role="form" novalidate>
+                <div class="form-group">
+                    <label for="userEmail" class="col-sm-2 control-label">Your Email</label>
+                    <div class="col-sm-10 col-lg-10">
+                        <input server-error name="userEmail" ng-model="userEmail" ng-maxlength="100" ng-required="true" type="text" class="form-control" id="userEmail">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<div class="modal-dialog-footer">
+    <button class="btn btn-primary" ng-click="$dismiss()">{{ 'NO_CANCEL' | translate }}</button>
+    <button class="btn btn-danger" ng-click="sendEmail()">{{ 'YES_DELETE' | translate }}</button>
+</div>
