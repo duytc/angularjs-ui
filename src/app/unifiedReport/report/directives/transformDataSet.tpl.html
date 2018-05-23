@@ -412,24 +412,26 @@
                                                     <textarea ng-disabled="disabled" ng-required="true" spellcheck="false" class="addScrollToTextArea form-control" rows="5" mentio mentio-select="getPeopleText(item)" ng-change="addSpaceBeforeAndAfterOperator(field)" type="text" mentio-macros="macros" mentio-trigger-char="'['" mentio-typed-text="typedTerm"
                                                               class="form-control"
                                                               mentio-items="fieldsCalculatedField | filter:label:typedTerm"
-                                                              ng-model="field.expression" placeholder="Expression">
+                                                              ng-model="c.expression" placeholder="Expression">
                                                     </textarea>
 
                                                     <span class="help-block">Use character <strong>[</strong> to show list of available variables. Each variable should be inside square bracket.</span>
                                                     <div class="callout-success expressions-transform" ng-bind-html="formatExpressionToHighlight(field)"></div>
                                                 </div>
                                             </div>
-
-                                            <div class="form-group select-connect-data-source">
+                                            <!--Exchange Rate Date Field-->
+                                            <div class="form-group select-connect-data-source" ng-if="expressionContainExchangeRate(field)">
                                                 <label class="col-sm-2 control-label">Exchange Rate Date Field</label>
                                                 <div class="col-sm-10">
-                                                    <ui-select ng-if="expressionContainExchangeRate(field)"
+                                                    <ui-select
                                                                ng-model="field.exchangeRateDateField"
-                                                               ng-required="false"
-                                                               server-error>
-                                                        <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.SELECT_EXCHANGE_DATE_FIELD' | translate }}">{{ $select.selected.label }}</ui-select-match>
-                                                        <ui-select-choices repeat="dateField in dateFields | filter: { label: $select.search }">
-                                                            {{ dateField.label}}
+                                                               ng-required="true"
+                                                               server-error reset-search-input="'false'">
+                                                        <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.SELECT_EXCHANGE_DATE_FIELD' | translate }}">
+                                                            {{ $select.selected.label }}
+                                                        </ui-select-match>
+                                                        <ui-select-choices repeat="dateField in fieldsHaveDateType | filter:$select.search">
+                                                            {{ dateField.label }}
                                                         </ui-select-choices>
                                                     </ui-select>
 
