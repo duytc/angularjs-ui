@@ -335,13 +335,13 @@
             else if (data == 'all')
                 $scope.autoOptimizeIntegration.videoPublishers = _.pluck($scope.videoPublishersList, 'id');
 
-            return VideoWaterfallManager.getList({
+            return VideoAdTagManager.getList({
                 videoPublishersIds: (_.map($scope.autoOptimizeIntegration.videoPublishers, function (val, key) {
                     return _.isObject(val) && _.has(val, 'id') ? val.id : val;
                 }) || []).join(',')
             })
                 .then(function (videosWaterfall) {
-                    var videosWaterfall = videosWaterfall ? videosWaterfall.plain() : [];
+                    videosWaterfall = videosWaterfall ? videosWaterfall.plain() : [];
                     /*$scope.waterfallTagsList = videosWaterfall ? videosWaterfall.plain() : [];
                      if(!$scope.isNew && isOneLoadOnly)
                      fillTicked(tempWaterFall, $scope.waterfallTagsList);*/
