@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView, dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT, sessionStorage) {
+    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView, dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT, sessionStorage, userSession) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -270,48 +270,43 @@
                     }, callbackError);
         }
 
-        function exportExcel() {
-            var params = _toJsonReportView(reportView);
-            delete params.page;
 
-            /*var xhr = new XMLHttpRequest();
-            xhr.responseType = 'blob';
-            xhr.open("get", API_UNIFIED_END_POINT + '/v1/reportview/download');
-            xhr.setRequestHeader("Authorization", 'Bearer ' + sessionStorage.getCurrentToken());
-            xhr.send();
-            xhr.onload = function(){
-               xhr.getResponseHeader("Content-Disposition")
 
-               window.saveAs(xhr.response, "namdn.csv")
-            }*/
-
+        function openEmailPopup(res, params) {
             var modalEmail = $modal.open({
                 templateUrl: 'unifiedReport/template/confirmFillUserEmail.tpl.html',
                 controller: function ($scope) {
-                    $scope.userEmail = '';
+                    $scope.content = _.isObject(res) ? res['message'] : null;
+                    $scope.email = userSession &&  userSession.email ? userSession.email : '';
+                    $scope.validateEmail = function () {
+                        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        return  re.test(String($scope.email).toLowerCase());
+                    }
+
                     $scope.sendEmail = function() {
                         modalEmail.dismiss('cancel');
-                        dataService.makeHttpPOSTRequest('/v1/reportview/download?XDEBUG_SESSION_START=1', { userEmail: $scope.userEmail }, API_UNIFIED_END_POINT)
+                        dataService.makeHttpPOSTRequest('/v1/reportview/download', angular.extend(params, { userEmail: $scope.email }), API_UNIFIED_END_POINT)
                             .then(function (data) {
                             })
                     }
                 }
             });
-            return;
+        }
 
-            dataService.makeHttpPOSTRequest('', null, API_UNIFIED_END_POINT + '/v1/reportview/download?XDEBUG_SESSION_START=1')
+        function exportExcel() {
+            var params = _toJsonReportView(reportView);
+            delete params.page;
+
+            dataService.makeHttpPOSTRequest('', params, API_UNIFIED_END_POINT + '/v1/reportview/download')
                 .then(function (data) {
-                    data = {isSendEmail: true};
-                    if(_.isObject(data) && _.has(data, 'isSendEmail')) {
-                        $modal.confirm('Enter your mail and we will send to an email have report file', function(){console.log(123)});
+                    if(_.isObject(data) && data['code']) {
+                        return openEmailPopup(data, params);
                     }
-                    /*writeToFileSystem(data, function (e) {
-                      console.log('Error', e);
-                    });*/
-                    /*var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
+
+                    var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
                     var reportName = !!reportView.name ? reportView.name : 'report-detail';
 
-                    return saveAs(blob, [reportName + '.csv']);*/
+                    return saveAs(blob, [reportName + '.csv']);
                 });
         }
         

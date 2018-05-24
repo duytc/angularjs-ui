@@ -1,5 +1,11 @@
+<style>
+    .alert-email-error {
+        position: relative;
+        top: 5px;
+    }
+</style>
 <div class="modal-header">
-    <h4 class="modal-title">Please fill your email to get report file, we will send link download file to this mail as soon as available.</h4>
+    <h4 class="modal-title">{{content ? content : 'Please fill your email to get report file, we will send link download file to this mail as soon as available'}}.</h4>
 </div>
 <div class="modal-body" id="modal-body">
     <div class="panel-body">
@@ -8,15 +14,15 @@
                 <div class="form-group">
                     <label for="userEmail" class="col-sm-2 control-label">Your Email</label>
                     <div class="col-sm-10 col-lg-10">
-                        <input server-error name="userEmail" ng-model="userEmail" ng-maxlength="100" ng-required="true" type="text" class="form-control" id="userEmail">
+                        <input server-error name="userEmail" ng-model="email" ng-maxlength="100" ng-required="true" type="text" class="form-control" id="userEmail">
+                        <div uib-alert class="alert-email-error alert alert-danger" ng-show="!validateEmail()">Invalid Email</div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-
 </div>
 <div class="modal-dialog-footer">
     <button class="btn btn-primary" ng-click="$dismiss()">{{ 'NO_CANCEL' | translate }}</button>
-    <button class="btn btn-danger" ng-click="sendEmail()">{{ 'YES_DELETE' | translate }}</button>
+    <button class="btn btn-danger" ng-disabled="!validateEmail()" ng-click="sendEmail()">Yes, Send to me as soon as available.</button>
 </div>
