@@ -7,7 +7,7 @@
 
     function AutoOptimizeIntegrationForm($scope, $filter, $translate, AlertService, optimizationRule,
                                          autoOptimizeIntegration, ServerErrorProcessor, AutoOptimizeIntegrationManager,
-                                         AdSlotManager, VideoPublisherManager, VideoWaterfallManager, dataService, sites, videoPublishers, selectedSites, selectedAdSlots, historyStorage, HISTORY_TYPE_PATH,
+                                         AdSlotManager, VideoPublisherManager, VideoAdTagManager, dataService, sites, videoPublishers, selectedSites, selectedAdSlots, historyStorage, HISTORY_TYPE_PATH,
                                          DOMAINS_LIST_SEPARATOR, COUNTRY_LIST, Auth, PLATFORM_INTEGRATION, OPTIMIZATION_FREQUENCY, API_UNIFIED_END_POINT) {
 
         $scope.platformIntegrations = angular.copy(PLATFORM_INTEGRATION);
@@ -287,7 +287,7 @@
         }
 
         function getWaterfallTagsListByVideoPublishers() {
-            return VideoWaterfallManager.getList({
+            return VideoAdTagManager.getList({
                 videoPublishersIds: (_.map($scope.autoOptimizeIntegration.videoPublishers, function(val, key){
                     return _.isObject(val) && _.has(val, 'id') ? val.id : val;
                 }) || []).join(',')
