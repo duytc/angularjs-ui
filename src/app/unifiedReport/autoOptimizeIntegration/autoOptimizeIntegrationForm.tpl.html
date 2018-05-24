@@ -58,7 +58,7 @@
                         {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.PLATFORM_INTEGRATION' | translate}}
                     </label>
                     <div class="col-sm-5">
-                        <ui-select name="platformIntegration" id="platformIntegration"
+                        <ui-select name="platformIntegration" id="platformIntegration" on-select="onChangePlatformIntergrationType($item, $model)"
                                    ng-model="autoOptimizeIntegration.platformIntegration"
                                    ng-required="true"
                                    server-error>
@@ -71,10 +71,12 @@
                 </div>
 
                 <!--Pubvantage Display ads server. Will be change to directive later-->
-                <div ng-if="autoOptimizeIntegration.platformIntegration.type == 'PUBVANTAGE_ADS_SERVER'">
-                    <pubvantage-display-ads-server identifier-mappings="FROM_IDENTIFIERS"
+                <div ng-if="autoOptimizeIntegration.platformIntegration.type == 'PUBVANTAGE_ADS_SERVER' || autoOptimizeIntegration.platformIntegration.type == 'PUBVANTAGE_VIDEO_ADS_SERVER'">
+                    <pubvantage-display-ads-server identifier-mappings="isPubvantageAdServer() ? FROM_IDENTIFIERS : FROM_IDENTIFIERS_VIDEO"
                                                    column-name="columnName"
                                                    site-list="siteList"
+                                                   video-publisher-list-form-data="videoPublishersList"
+                                                   waterfall-tags-list-form-data="waterfallTagsList"
                                                    is-fix-selected-site="isFixSelectedSite"
                                                    ad-slot-list-form-data="adSlotList"
                                                    is-fix-selected-ad-slot="isFixSelectedAdSlot"
@@ -82,7 +84,9 @@
                                                    supported-segments="supportedSegments"
                                                    segment-fields="segmentFields"
                                                    countries="countries"
-                                                   optimization-rule="optimizationRule">
+                                                   optimization-rule="optimizationRule"
+                                                   is-pubvantage-ad-server="isPubvantageAdServer"
+                                                   on-video-publishers-click="onVideoPublishersClick">
                     </pubvantage-display-ads-server>
 
                 </div>

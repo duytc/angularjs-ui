@@ -20,7 +20,11 @@
                 autoOptimizeIntegration: "=",
                 segmentFields: "=",
                 countries: "=",
-                optimizationRule: "="
+                optimizationRule: "=",
+                isPubvantageAdServer: "=",
+                videoPublisherListFormData: "=",
+                waterfallTagsListFormData: "=",
+                onVideoPublishersClick: "="
             },
             restrict: 'AE',
             templateUrl: 'unifiedReport/autoOptimizeIntegration/directives/pubvantageDisplayAdsServer.tpl.html',
