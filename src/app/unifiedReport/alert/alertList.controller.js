@@ -620,14 +620,35 @@
             $modal.open({
                 templateUrl: 'unifiedReport/alert/viewDetail.tpl.html',
                 controller: function ($scope, alert) {
+                    var RESOURCE_NAME = {
+                        'pubvantage': 'Ad Slot',
+                        'pubvantage-video': 'Video Waterfall Tag'
+                    };
+
                     $scope.message = convertMessage(alert, true);
                     $scope.alertDetail = alert.detail;
                     $scope.position = alert.detail.Positions;
                     $scope.getWidth = getWidth;
+                    $scope.getResourceName = getResourceName;
 
                     function getWidth(pos) {
                         if (!pos || pos.length === 0) return 12;
                         return pos.length > 1 ? 6 : 12;
+                    }
+
+                    /**
+                     * return "Ad Slot" or "Video Waterfall Tag" or other due to platform integration
+                     */
+                    function getResourceName() {
+                        var optimizationIntegration = alert.optimizationIntegration;
+                        if (!optimizationIntegration
+                            || !optimizationIntegration.platformIntegration
+                            || !RESOURCE_NAME[optimizationIntegration.platformIntegration]
+                        ) {
+                            return 'UNKNOWN';
+                        }
+
+                        return RESOURCE_NAME[optimizationIntegration.platformIntegration];
                     }
                 },
                 resolve: {

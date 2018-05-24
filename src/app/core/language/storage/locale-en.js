@@ -193,9 +193,11 @@
                 "ESTIMATED_REVENUE": "Estimated Revenue",
                 "BILLED_AMOUNT": "Billed Amount",
                 "SLOT_OPPORTUNITIES": "Slot Ops",
+                "REVENUE": "Revenue",
                 "NETWORK_OPPORTUNITIES": "Network Ops",
                 "AD_OPPORTUNITIES": "Impression Ops", // Old: "Ad Ops",
                 "IMPRESSIONS": "Impressions",
+                "IMPRESSIONS_OPPORTUNITY": "Impressions Ops",
                 "PASSBACKS": "Passbacks",
                 "FILL_RATE": "Fill Rate"
             },
@@ -533,7 +535,8 @@
                 "TITLE_CREATE_LINKED_DEMAND_AD_TAG": "Link Demand Ad Tag",
 
                 "HELP_BLOCK_SELECT_DEFAULT": "Select <strong>Add New</strong> to generate new position for this demand ad tag",
-                "WARNING_BUY_PRICE": "One of the waterfalls has a buy price that is higher than the sell price. Do you want to proceed?"
+                "WARNING_BUY_PRICE": "One of the waterfalls has a buy price that is higher than the sell price. Do you want to proceed?",
+                "AUTO_OPTIMIZE": "Auto Optimize"
             },
             "AD_SOURCE_MODULE": {
                 "PLATFORM": "Platform",
@@ -1444,7 +1447,9 @@
                 "AD_SLOTS": "Ad Slots",
                 "OPTIMIZATION_FREQUENCY": "Optimization Frequency",
                 "IDENTIFIER_FIELDS_HELP_TEXT": "These fields are the different representations of the identifier",
-                "BACK_TO_LIST": "Back to Optimization Rules"
+                "BACK_TO_LIST": "Back to Optimization Rules",
+                "VIDEO_PUBLISHERS": "Video Plublisher",
+                "WATERFALL_TAG": "Waterfall Tag"
             }
         });
 })();

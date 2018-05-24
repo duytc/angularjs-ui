@@ -132,7 +132,24 @@
                     optimizeIntegrations: function (AutoOptimizeIntegrationManager, $stateParams) {
                         return AutoOptimizeIntegrationManager.one().get()
                             .then(function (autoOptimizeIntegrations) {
-                                return autoOptimizeIntegrations.plain();
+                                autoOptimizeIntegrations = autoOptimizeIntegrations.plain();
+                                if (!angular.isArray(autoOptimizeIntegrations)) {
+                                    return [];
+                                }
+
+                                var autoOptimizeIntegrationsForPubvantagePlatform = [];
+                                angular.forEach(autoOptimizeIntegrations, function (autoOptimizeIntegration) {
+                                    if (!autoOptimizeIntegration
+                                        || !autoOptimizeIntegration.platformIntegration
+                                        || autoOptimizeIntegration.platformIntegration !== 'pubvantage'
+                                    ) {
+                                        return;
+                                    }
+
+                                    autoOptimizeIntegrationsForPubvantagePlatform.push(autoOptimizeIntegration);
+                                });
+
+                                return autoOptimizeIntegrationsForPubvantagePlatform;
                             });
                     }
                 },
@@ -177,7 +194,24 @@
                     optimizeIntegrations: function (AutoOptimizeIntegrationManager, $stateParams) {
                         return AutoOptimizeIntegrationManager.one().get()
                             .then(function (autoOptimizeIntegrations) {
-                                return autoOptimizeIntegrations.plain();
+                                autoOptimizeIntegrations = autoOptimizeIntegrations.plain();
+                                if (!angular.isArray(autoOptimizeIntegrations)) {
+                                    return [];
+                                }
+
+                                var autoOptimizeIntegrationsForPubvantagePlatform = [];
+                                angular.forEach(autoOptimizeIntegrations, function (autoOptimizeIntegration) {
+                                    if (!autoOptimizeIntegration
+                                        || !autoOptimizeIntegration.platformIntegration
+                                        || autoOptimizeIntegration.platformIntegration !== 'pubvantage'
+                                    ) {
+                                        return;
+                                    }
+
+                                    autoOptimizeIntegrationsForPubvantagePlatform.push(autoOptimizeIntegration);
+                                });
+
+                                return autoOptimizeIntegrationsForPubvantagePlatform;
                             });
                     }
                 },
