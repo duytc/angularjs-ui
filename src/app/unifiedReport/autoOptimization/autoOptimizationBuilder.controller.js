@@ -361,8 +361,14 @@
 
         //watch the first time load dataFields to detect correct dateRange
         $scope.$watch($scope.current.dateField, function (newVal, oldVal) {
-            $scope.onSelectDateFields($scope.current.dateField);
-        })
+            if(!_.isNull($scope.current.dateField))
+                $scope.onSelectDateFields($scope.current.dateField);
+
+            $scope.current.dateRange = _.find($scope.formData.dateRanges, function (dateRange) {
+                return _.isObject(auto) ? dateRange.value == auto.plain().dateRange : false;
+            });
+        });
+
         /*
          * support 12 hours and 24 hours in dateRanges if dataType dateField is datetime
          */

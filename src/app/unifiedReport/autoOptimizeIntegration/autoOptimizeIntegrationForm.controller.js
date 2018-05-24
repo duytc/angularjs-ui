@@ -350,9 +350,7 @@
             })
             .then(function (videosWaterfall) {
                 videosWaterfall = videosWaterfall ? videosWaterfall.plain() : [];
-                /*$scope.waterfallTagsList = videosWaterfall ? videosWaterfall.plain() : [];
-                 if(!$scope.isNew && isOneLoadOnly)
-                 fillTicked(tempWaterFall, $scope.waterfallTagsList);*/
+
                 AutoOptimizeIntegrationManager.one('waterfalltags').one('ids').get({id: $scope.autoOptimizeIntegration.id})
                     .then(function (waterfalls) {
                         $scope.waterfallTagsList = _.filter(videosWaterfall, function (wt) {
@@ -604,5 +602,7 @@
 
             return label;
         }
+
+
     }
 })();
