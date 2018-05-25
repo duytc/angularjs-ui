@@ -773,17 +773,18 @@
         function _getDateFieldsFromDataSet() {
             var dateFields = [];
             angular.forEach($scope.reportBuilder.reportViewDataSets, function (dataSet) {
-                var dateField = {
-                    key: null,
-                    label: null,
-                    root: null,
-                    type: null
-                };
+
                 var originalDataSet = _getDataSetById(dataSet.dataSet);
 
                 if (originalDataSet && originalDataSet.dimensions) {
                     var keys = Object.keys(originalDataSet.dimensions);
                     angular.forEach(keys, function (dimension) {
+                        var dateField = {
+                            key: null,
+                            label: null,
+                            root: null,
+                            type: null
+                        };
                         var type = originalDataSet.dimensions[dimension];
                         if (type === 'date') {
                             dateField.type = 'date';
