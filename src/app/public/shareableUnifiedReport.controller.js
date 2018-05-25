@@ -220,7 +220,7 @@
                 controller: function ($scope) {
                     $scope.isLimitedEmail = false;
                     $scope.content = _.isObject(res) ? res['message'] : null;
-                    $scope.email = _.isObject(reportView) && reportView.emailSendAlert ? reportView.emailSendAlert : [];
+                    $scope.email = [];
 
                     $scope.isInValidEmail = function () {
                         var regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -244,7 +244,8 @@
 
                     $scope.sendEmail = function() {
                         modalEmail.dismiss('cancel');
-                        dataService.makeHttpGetRequest('/v1/reportviews/:reportView/sharedReports', angular.extend(params, { userEmail: $scope.email }), API_UNIFIED_PUBLIC_END_POINT)
+                        params.reportView = reportView;
+                        dataService.makeHttpGetRequest('/v1/reportviews/:reportView/sharedReports', angular.extend(params, { userEmail: JSON.stringify($scope.email) }), API_UNIFIED_PUBLIC_END_POINT)
                             .then(function (data) {
                                 AlertService.replaceAlerts({
                                     type: 'warning',
@@ -280,12 +281,6 @@
             params.token = $stateParams.token;
             params.reportView = $stateParams.reportView;
 
-            // angular.forEach(angular.copy($scope.search), function (value, key) {
-            //     if(!params.userDefineDimensions[key] && !params.userDefineMetrics[key]) {
-            //         delete $scope.search[key]
-            //     }
-            // });
-
             params.searches = $scope.search;
             params.isExport = true;
 
@@ -293,7 +288,7 @@
                 .then(function (reportData) {
                     if(_.isObject(reportData) && reportData['code']) {
                         delete params.isExport;
-                        return openEmailPopup(reportData, params, params.reportView);
+                        return openEmailPopup(reportData, params, $stateParams.reportView);
                     }
 
                    // exportExcelService.exportExcel(reportData.reports, $scope.columnReportDetailForExportExcel, $scope.titleReportDetailForExportExcel, getExportExcelFileName());
