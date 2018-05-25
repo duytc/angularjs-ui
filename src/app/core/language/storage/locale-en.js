@@ -1168,6 +1168,7 @@
                 "BACK_TO_PUBLISHER_LIST": "Back To Publisher List",
                 "DATA_SOURCE_FORMAT": "Data Source Format",
                 "LEAVE_EMPTY_FOR_ALL": "Leave it blank to select all sheets",
+                "SHEETS_LABEL": "Sheets for excel",
                 "INTEGRATION": "Integration",
                 "ADD_3RD_PARTY_INTEGRATIONS": "Add 3rd Party Integration",
                 "USERNAME": 'Username',
