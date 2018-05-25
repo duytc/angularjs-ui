@@ -430,7 +430,7 @@
                                                         <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.SELECT_EXCHANGE_DATE_FIELD' | translate }}">
                                                             {{ $select.selected.label }}
                                                         </ui-select-match>
-                                                        <ui-select-choices repeat="dateField in fieldsHaveDateType | filter:$select.search">
+                                                        <ui-select-choices repeat="dateField in fieldsHaveDateType track by $index | filter:$select.search">
                                                             {{ dateField.label }}
                                                         </ui-select-choices>
                                                     </ui-select>
