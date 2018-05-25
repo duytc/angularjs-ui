@@ -56,6 +56,12 @@
                     scope.fieldNames = scope.selectedFields;
 
                     scope.$watch(function () {
+                        return scope.fieldsHaveDateType;
+                    }, function (newVal) {
+                        _extractExchangeRateDateTransforms(newVal, scope.transforms);
+                    });
+
+                    scope.$watch(function () {
                         return scope.selectedFields;
                     }, function () {
                         scope.fieldNames = scope.selectedFields;
@@ -156,7 +162,7 @@
                     scope.setPattern = setPattern;
                     scope.expressionContainExchangeRate = expressionContainExchangeRate;
 
-                    _extractExchangeRateDateTransforms(scope.fieldsHaveDateType, scope.transforms);
+                    // _extractExchangeRateDateTransforms(scope.fieldsHaveDateType, scope.transforms);
 
                     function _extractExchangeRateDateTransforms(options, transforms) {
                         if(!transforms){
@@ -166,7 +172,8 @@
                             if(transform && transform.type === 'addCalculatedField'){
                                 _extractExchangeRateDate(options, transform.fields);
                             }
-                        })
+                        });
+
                     }
                     function _extractExchangeRateDate(options, fields) {
                         if (!fields || !options) {
@@ -174,12 +181,18 @@
                         }
                         angular.forEach(fields, function (field) {
                             var found = options.find(function (option) {
-                                return option.key === field.exchangeRateDateField;
+                                var value = field.exchangeRateDateField;
+                                if(field.exchangeRateDateField && field.exchangeRateDateField.key){
+                                    value = field.exchangeRateDateField.key;
+                                }
+                                return option.key === value;
                             });
                             if(found){
                                 field.exchangeRateDateField = found;
+                            }else {
+                                field.exchangeRateDateField = null;
                             }
-                        })
+                        });
                     }
 
                     function setPattern(type) {
