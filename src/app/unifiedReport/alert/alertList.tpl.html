@@ -82,7 +82,7 @@
         <span current-page-title></span>
         <!--back to list optimization integration-->
         <div class="button-bar" ng-if="showBackToIntegration()">
-            <button ui-sref="^.^.autoOptimizeIntegration.list({optimizationRuleId: alertSourceOptimization.optimizationRule.id})"
+            <button ui-sref="^.^.autoOptimizeIntegration.edit({id: alertSourceOptimization.id})"
                     class="btn btn-sm btn-primary" type="button">
                 <span class="glyphicon glyphicon-arrow-left"></span>
                 {{ 'UNIFIED_REPORT_ALERT_MODULE.BACK_TO_INTEGRATION' | translate }}
@@ -92,7 +92,7 @@
             <button type="button" class="btn " dropdown-toggle>
                 <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ng-click="backToListAuto()">
+                <li><a ui-sref="^.^.autoOptimizeIntegration.edit({id: alertSourceOptimization.id})">
                     {{'UNIFIED_REPORT_ALERT_MODULE.BACK_TO_INTEGRATION' | translate }}</a></li>
             </ul>
         </div>
