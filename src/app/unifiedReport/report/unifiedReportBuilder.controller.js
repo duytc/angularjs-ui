@@ -804,8 +804,10 @@
             angular.forEach($scope.reportBuilder.reportViewDataSets, function (dataSet) {
 
                 var originalDataSet = _getDataSetById(dataSet.dataSet);
-                _addFieldsFromDataset(dateFields, originalDataSet, originalDataSet.dimensions, 'dimensions');
-                _addFieldsFromDataset(dateFields, originalDataSet, originalDataSet.metrics, 'metrics');
+                if(originalDataSet){
+                    _addFieldsFromDataset(dateFields, originalDataSet, originalDataSet.dimensions, 'dimensions');
+                    _addFieldsFromDataset(dateFields, originalDataSet, originalDataSet.metrics, 'metrics');
+                }
             });
 
             return dateFields;
