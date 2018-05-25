@@ -244,7 +244,7 @@
 
                     $scope.sendEmail = function() {
                         modalEmail.dismiss('cancel');
-                        dataService.makeHttpGetRequest('/v1/reportviews/:reportView/downloadSharedReports', angular.extend(params, { userEmail: $scope.email }), API_UNIFIED_PUBLIC_END_POINT)
+                        dataService.makeHttpGetRequest('/v1/reportviews/:reportView/sharedReports', angular.extend(params, { userEmail: $scope.email }), API_UNIFIED_PUBLIC_END_POINT)
                             .then(function (data) {
                                 AlertService.replaceAlerts({
                                     type: 'warning',
@@ -287,10 +287,12 @@
             // });
 
             params.searches = $scope.search;
+            params.isExport = true;
 
-            dataService.makeHttpGetRequest('/v1/reportviews/:reportView/downloadSharedReports', params, API_UNIFIED_PUBLIC_END_POINT)
+            dataService.makeHttpGetRequest('/v1/reportviews/:reportView/sharedReports', params, API_UNIFIED_PUBLIC_END_POINT)
                 .then(function (reportData) {
                     if(_.isObject(reportData) && reportData['code']) {
+                        delete params.isExport;
                         return openEmailPopup(reportData, params, params.reportView);
                     }
 
