@@ -535,7 +535,8 @@
                 "TITLE_CREATE_LINKED_DEMAND_AD_TAG": "Link Demand Ad Tag",
 
                 "HELP_BLOCK_SELECT_DEFAULT": "Select <strong>Add New</strong> to generate new position for this demand ad tag",
-                "WARNING_BUY_PRICE": "One of the waterfalls has a buy price that is higher than the sell price. Do you want to proceed?"
+                "WARNING_BUY_PRICE": "One of the waterfalls has a buy price that is higher than the sell price. Do you want to proceed?",
+                "AUTO_OPTIMIZE": "Auto Optimize"
             },
             "AD_SOURCE_MODULE": {
                 "PLATFORM": "Platform",
@@ -1166,6 +1167,7 @@
                 "LAST_ACTIVITY": "Last Activity",
                 "BACK_TO_PUBLISHER_LIST": "Back To Publisher List",
                 "DATA_SOURCE_FORMAT": "Data Source Format",
+                "LEAVE_EMPTY_FOR_ALL": "Leave it blank to select all sheets",
                 "INTEGRATION": "Integration",
                 "ADD_3RD_PARTY_INTEGRATIONS": "Add 3rd Party Integration",
                 "USERNAME": 'Username',
@@ -1461,7 +1463,9 @@
                 "AD_SLOTS": "Ad Slots",
                 "OPTIMIZATION_FREQUENCY": "Optimization Frequency",
                 "IDENTIFIER_FIELDS_HELP_TEXT": "These fields are the different representations of the identifier",
-                "BACK_TO_LIST": "Back to Optimization Rules"
+                "BACK_TO_LIST": "Back to Optimization Rules",
+                "VIDEO_PUBLISHERS": "Video Plublisher",
+                "WATERFALL_TAG": "Waterfall Tag"
             }
         });
 })();

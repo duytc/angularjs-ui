@@ -22,7 +22,8 @@
             unified: 'MODULE_UNIFIED_REPORT',
             subPublisher: 'MODULE_SUB_PUBLISHER',
             headerBidding: 'MODULE_HEADER_BIDDING',
-            autoOptimize: 'MODULE_AUTO_OPTIMIZE'
+            autoOptimize: 'MODULE_AUTO_OPTIMIZE',
+            unifiedReport: 'MODULE_UNIFIED_REPORT'
         })
 
         .constant('AUTH_EVENTS', {
