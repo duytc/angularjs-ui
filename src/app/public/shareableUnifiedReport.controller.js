@@ -291,11 +291,11 @@
                         return openEmailPopup(reportData, params, $stateParams.reportView);
                     }
 
-                   // exportExcelService.exportExcel(reportData.reports, $scope.columnReportDetailForExportExcel, $scope.titleReportDetailForExportExcel, getExportExcelFileName());
-                    var blob = new Blob([reportData], {type: "text/plain;charset=utf-8"});
+                    exportExcelService.exportExcel(reportData.reports, $scope.columnReportDetailForExportExcel, $scope.titleReportDetailForExportExcel, getExportExcelFileName());
+                    /*var blob = new Blob([reportData], {type: "text/plain;charset=utf-8"});
                     var reportName = 'report-detail';
 
-                    return saveAs(blob, [reportName + '.csv']);
+                    return saveAs(blob, [reportName + '.csv']);*/
                 })
         }
 
