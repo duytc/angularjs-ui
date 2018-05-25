@@ -1235,7 +1235,7 @@
                 "ACTION_STATUS_APPLIED": "Applied",
                 "ACTION_STATUS_REJECTED": "Rejected",
                 "ACTION_STATUS_NO_ACTION": "Not being processed",
-                "BACK_TO_INTEGRATION": "Back to integration"
+                "BACK_TO_INTEGRATION": "Back to Integration"
             },
             "UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE": {
                 "DATA_SOURCES": "Data Sources",
