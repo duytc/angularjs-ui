@@ -9,7 +9,6 @@
         $scope.site = site;
         $scope.itemsPerPageList = ITEMS_PER_PAGE;
         $scope.adSlots = adSlots.records;
-        console.log($scope.adSlots);
         $scope.adSlotTypes = TYPE_AD_SLOT;
 
         $scope.smartAdSlots = [];

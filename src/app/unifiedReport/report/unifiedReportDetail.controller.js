@@ -233,15 +233,6 @@
             });
         }
 
-        function getAllEntries(dirEntry) {
-            dirEntry.createReader().readEntries(function(results) {
-                [].forEach.call(results, function(entry) {
-                    console.log(entry);
-                    window.open(entry.toURL());
-                })
-            });
-        }
-
         function openEmailPopup(res, params) {
             var modalEmail = $modal.open({
                 templateUrl: 'unifiedReport/template/confirmFillUserEmail.tpl.html',

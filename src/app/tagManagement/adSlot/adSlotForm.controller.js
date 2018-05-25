@@ -1,12 +1,18 @@
 (function () {
     'use strict';
 
-    AdSlotForm.$inject = ["$scope", "$translate", "blackList", "whiteList", "$stateParams", "$filter", "_", "adSlot", "NumberConvertUtil", "publisherList", "SiteManager", "ChannelManager", "DynamicAdSlotManager", "adminUserManager", "TYPE_AD_SLOT", "AlertService", "adSlotService", "ServerErrorProcessor", "libraryAdSlotService", "AdSlotLibrariesManager", "userSession", "historyStorage", "HISTORY_TYPE_PATH", "VARIABLE_FOR_AD_TAG"];
+    AdSlotForm.$inject = ["$scope", "$translate", "blackList", "whiteList", "$stateParams", "$filter", "_", "adSlot",
+        "NumberConvertUtil", "publisherList", "SiteManager", "ChannelManager", "DynamicAdSlotManager", "adminUserManager",
+        "TYPE_AD_SLOT", "AlertService", "adSlotService", "ServerErrorProcessor", "libraryAdSlotService", "AdSlotLibrariesManager",
+        "userSession", "historyStorage", "HISTORY_TYPE_PATH", "VARIABLE_FOR_AD_TAG", "optimizeIntegrations"];
     angular.module('tagcade.tagManagement.adSlot')
         .controller('AdSlotForm', AdSlotForm)
     ;
 
-    function AdSlotForm($scope, $translate, blackList, whiteList, $stateParams, $filter, _, adSlot, NumberConvertUtil, publisherList, SiteManager, ChannelManager, DynamicAdSlotManager, adminUserManager, TYPE_AD_SLOT, AlertService, adSlotService, ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, userSession, historyStorage, HISTORY_TYPE_PATH, VARIABLE_FOR_AD_TAG) {
+    function AdSlotForm($scope, $translate, blackList, whiteList, $stateParams, $filter, _, adSlot, NumberConvertUtil, publisherList,
+                        SiteManager, ChannelManager, DynamicAdSlotManager, adminUserManager, TYPE_AD_SLOT, AlertService, adSlotService,
+                        ServerErrorProcessor, libraryAdSlotService, AdSlotLibrariesManager, userSession, historyStorage,
+                        HISTORY_TYPE_PATH, VARIABLE_FOR_AD_TAG, optimizeIntegrations) {
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
@@ -81,7 +87,9 @@
                 maximumRefreshTimes: null
             };
 
-        console.log($scope.adSlot);
+        $scope.integrations = optimizeIntegrations;
+
+        $scope.optimizationIntegration = initOptimizedIntegration(adSlot);
 
         $scope.adSlot.hbBidPrice = $scope.isNew ? null : adSlot.hbBidPrice;
         $scope.adSlot.hbBidPriceClone = $scope.isNew ? null : _convertHeaderBiddingPriceToString(adSlot.hbBidPrice);
@@ -175,6 +183,29 @@
         $scope.filterAdSlotForSite = filterAdSlotForSite;
         $scope.changeHeaderBidPrice = changeHeaderBidPrice;
         $scope.isAutoOptimizeModule = isAutoOptimizeModule;
+        $scope.onChangeIntegration = onChangeIntegration;
+        $scope.onClickEnableOptimization = onClickEnableOptimization;
+
+        function onClickEnableOptimization() {
+            $scope.optimizationIntegration = null;
+        }
+        function initOptimizedIntegration(adslot) {
+            var optimizationIntegration = adslot ? adSlot.optimizationIntegration : null;
+            if(!optimizationIntegration){
+                return null;
+            }
+            var found = $scope.integrations.find(function (integration) {
+                return integration.id === optimizationIntegration;
+            });
+            if(found){
+                return found;
+            }
+            return null;
+        }
+
+        function onChangeIntegration(integration) {
+            $scope.optimizationIntegration = integration.id;
+        }
 
         function isAutoOptimizeModule() {
             return isEnabledModule('MODULE_AUTO_OPTIMIZE');
@@ -277,6 +308,10 @@
         }
 
         function selectPublisher(publisher, publisherId) {
+            //reset
+            $scope.optimizationIntegration = null;
+            $scope.adSlot.autoOptimize = false;
+
             $scope.adSlot.site = null;
             $scope.selected.adSlotLibrary = null;
 
@@ -436,7 +471,7 @@
             }
 
             // validate dynamic ad slot
-            if (!!$scope.adSlot.defaultLibraryAdSlot && (!$scope.adSlot.libraryExpressions || $scope.adSlot.libraryExpressions.length < 1)) {
+            if ((!!$scope.adSlot.defaultLibraryAdSlot || !!$scope.selected.defaultAdSlot) && (!$scope.adSlot.libraryExpressions || $scope.adSlot.libraryExpressions.length < 1)) {
                 return $scope.adSlotLibraryForm.$valid;
             }
 
@@ -973,7 +1008,8 @@
                 refreshEvery: adSlot.refreshEvery,
                 maximumRefreshTimes: adSlot.maximumRefreshTimes,
                 autoRefresh: adSlot.autoRefresh,
-                autoOptimize: adSlot.autoOptimize
+                autoOptimize: adSlot.autoOptimize,
+                optimizationIntegration: $scope.optimizationIntegration
             };
 
             adSlot.site = $scope.isNew ? $scope.selected.sites[0].id : $scope.selected.site.id;
@@ -985,6 +1021,7 @@
                 delete adSlot.hbBidPrice;
                 delete adSlot.autoRefresh;
                 delete adSlot.autoOptimize;
+                delete adSlot.optimizationIntegration
             }
 
             if ($scope.selected.type == $scope.typesList.dynamic) {
@@ -998,6 +1035,7 @@
                 delete adSlot.autoOptimize;
                 delete adSlot.maximumRefreshTimes;
                 delete adSlot.refreshEvery;
+                delete adSlot.optimizationIntegration;
 
                 _refactorExpressions(adSlot.libraryAdSlot.libraryExpressions);
 
@@ -1048,6 +1086,7 @@
             if (!adSlot.libraryAdSlot.visible) {
                 delete adSlot.libraryAdSlot.id;
             }
+
 
             return adSlot;
         }

@@ -8,8 +8,9 @@
                 <div id="adTagOptions-sm" class="col col-md-10 col-sm-12" style="padding-top: 5px; text-transform: none">
                     <div style="display: inline-block" class="pull-right">
                         <!--label show optimized positions-->
-                        <label class="ui-checkbox" ng-if="isAutoOptimize()" style="margin: 0 20px 0 20px;">
-                            <input type="checkbox" ng-checked="enableShowOptimizedPositions" ng-click="showOptimizedPositions()">
+                        <label class="ui-checkbox enable-optimization" ng-if="isAutoOptimize()"
+                               data-toggle="tooltip" title="{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.GENERAL_MESSAGE_HELP' | translate }}">
+                            <input type="checkbox" ng-checked="enableShowOptimizedPositions" ng-click="showOptimizedPositions()" >
                             <span>{{ 'AD_TAG_MODULE.ENABLE_SHOW_OPTIMIZED_POSITIONS' | translate }}</span>
                         </label>
 
@@ -88,12 +89,13 @@
                     <ul class="dropdown-menu pull-right" role="menu" style="min-width: 220px">
                         <!--label show optimized positions-->
                         <li ng-if="isAutoOptimize()">
-                            <input type="checkbox" ng-checked="enableShowOptimizedPositions" ng-click="showOptimizedPositions()" style=" margin: 7px 0 0 20px;">
+                            <input type="checkbox" ng-checked="enableShowOptimizedPositions" ng-click="showOptimizedPositions()" class="list-item-mobile">
                             <span>{{ 'AD_TAG_MODULE.ENABLE_SHOW_OPTIMIZED_POSITIONS' | translate }}</span>
+                            <span class="help-block list-item-mobile"> {{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.GENERAL_MESSAGE_HELP' | translate }} </span>
                         </li>
 
                         <!--show segment selection-->
-                        <li ng-if="isAutoOptimize() && enableShowOptimizedPositions" class="form-group" style="min-width: 180px; margin: 7px 0 0 20px">
+                        <li ng-if="isAutoOptimize() && enableShowOptimizedPositions" class="form-group segment-options list-item-mobile">
                             <isteven-multi-select input-model="segments" output-model="selected.segments" button-label="label" item-label="label" tick-property="ticked"></isteven-multi-select>
                         </li>
 

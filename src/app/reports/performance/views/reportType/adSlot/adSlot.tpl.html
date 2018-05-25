@@ -4,14 +4,16 @@
     <div class="panel panel-default daily-reports">
         <div class="panel-heading">{{ 'REPORT.DAILY_AD_SLOT_BREAKDOWN' | translate }}
             <div ng-if="!isAdmin" class="button-bar hidden-xs">
-                <export-excel data="reports" fields="['date', 'name', 'slotOpportunities', 'refreshedSlotOpportunities', 'totalOpportunities', 'adOpportunities', 'passbacks', 'inBannerImpressions', 'opportunityFillRate', 'fillRate',  'estRevenue', 'supplyCost', 'estProfit']"
-                              header="['Date', 'Ad Slot', 'Slot Ops', 'Refreshed Slot Ops', 'Network Ops', 'Impression Ops', 'Passbacks', 'In Banner Impressions', 'Op Fill Rate', 'Fill Rate', 'estRevenue', 'supplyCost', 'estProfit' ]"
+                <export-excel data="reports"
+                              fields="['date', 'name', 'slotOpportunities', 'refreshedSlotOpportunities', 'totalOpportunities', 'adOpportunities', 'passbacks', 'inBannerImpressions', 'opportunityFillRate', 'fillRate',  'estRevenue', 'supplyCost', 'estProfit']"
+                              header="['Date', 'Ad Slot', 'Slot Ops', 'Refreshed Slot Ops', 'Network Ops', 'Impression Ops', 'Passbacks', 'In Banner Impressions', 'Op Fill Rate', 'Fill Rate', 'Est Revenue', 'Supply Cost', 'Est Profit' ]"
                               file-name="getExportExcelFileName">
                 </export-excel>
             </div>
 
             <div ng-if="isAdmin" class="button-bar hidden-xs">
-                <export-excel data="reports" fields="['date', 'name', 'slotOpportunities', 'refreshedSlotOpportunities', 'totalOpportunities', 'adOpportunities', 'passbacks', 'inBannerImpressions', 'opportunityFillRate', 'fillRate']"
+                <export-excel data="reports"
+                              fields="['date', 'name', 'slotOpportunities', 'refreshedSlotOpportunities', 'totalOpportunities', 'adOpportunities', 'passbacks', 'inBannerImpressions', 'opportunityFillRate', 'fillRate']"
                               header="['Date', 'Ad Slot', 'Slot Ops', 'Refreshed Slot Ops', 'Network Ops', 'Impression Ops', 'Passbacks', 'In Banner Impressions', 'Op Fill Rate', 'Fill Rate']"
                               file-name="getExportExcelFileName">
                 </export-excel>
@@ -21,13 +23,19 @@
                 <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                 <ul ng-if="!isAdmin" class="dropdown-menu pull-right" role="menu">
                     <li><a>
-                        <export-excel css-class="''" data="reports" fields="['date', 'name', 'slotOpportunities', 'refreshedSlotOpportunities', 'totalOpportunities', 'adOpportunities', 'passbacks', 'inBannerImpressions', 'opportunityFillRate', 'fillRate',  'estRevenue', 'supplyCost', 'estProfit']" header="['Date', 'Ad Slot', 'Slot Ops', 'Refreshed Slot Ops', 'Network Ops', 'Impression Ops', 'Passbacks', 'In Banner Impressions', 'Op Fill Rate', 'Fill Rate', 'Est. Revenue', 'Supply Cost', 'Est. Profit']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel css-class="''" data="reports"
+                                      fields="['date', 'name', 'slotOpportunities', 'refreshedSlotOpportunities', 'totalOpportunities', 'adOpportunities', 'passbacks', 'inBannerImpressions', 'opportunityFillRate', 'fillRate',  'estRevenue', 'supplyCost', 'estProfit']"
+                                      header="['Date', 'Ad Slot', 'Slot Ops', 'Refreshed Slot Ops', 'Network Ops', 'Impression Ops', 'Passbacks', 'In Banner Impressions', 'Op Fill Rate', 'Fill Rate', 'Est. Revenue', 'Supply Cost', 'Est. Profit']"
+                                      file-name="getExportExcelFileName"></export-excel>
                     </a></li>
                 </ul>
 
                 <ul ng-if="isAdmin" class="dropdown-menu pull-right" role="menu">
                     <li> <a>
-                        <export-excel css-class="''" data="reports" fields="['date', 'name', 'slotOpportunities', 'refreshedSlotOpportunities', 'totalOpportunities', 'adOpportunities', 'passbacks', 'inBannerImpressions', 'opportunityFillRate', 'fillRate']" header="['Date', 'Ad Slot', 'Slot Ops', 'Refreshed Slot Ops', 'Network Ops', 'Impression Ops', 'Passbacks', 'In Banner Impressions', 'Op Fill Rate', 'Fill Rate']" file-name="getExportExcelFileName"></export-excel>
+                        <export-excel css-class="''" data="reports"
+                                      fields="['date', 'name', 'slotOpportunities', 'refreshedSlotOpportunities', 'totalOpportunities', 'adOpportunities', 'passbacks', 'inBannerImpressions', 'opportunityFillRate', 'fillRate']"
+                                      header="['Date', 'Ad Slot', 'Slot Ops', 'Refreshed Slot Ops', 'Network Ops', 'Impression Ops', 'Passbacks', 'In Banner Impressions', 'Op Fill Rate', 'Fill Rate']"
+                                      file-name="getExportExcelFileName"></export-excel>
                     </a> </li>
                 </ul>
 

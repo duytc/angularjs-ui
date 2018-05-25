@@ -47,7 +47,7 @@
                     </td>
                     <td at-implicit at-sortable at-attribute="name" at-title="{{ 'NAME' | translate }}"></td>
                     <td ng-show="isAdmin()" at-implicit at-attribute="publisher.company" at-title="{{ 'PUBLISHER' | translate }}"></td>
-                    <td at-implicit at-attribute="product" at-title="{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.LIST_PRODUCT' | translate }}"></td>
+                    <!--<td at-implicit at-attribute="product" at-title="{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.LIST_PRODUCT' | translate }}"></td>-->
                     <td at-title="{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.LIST_STATUS' | translate }}">
                         <span class="label label-success" ng-if="item.finishLoading == true">Completed</span>
                         <span class="label label-danger" ng-if="item.finishLoading == false">Updating</span>

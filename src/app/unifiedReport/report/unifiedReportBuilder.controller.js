@@ -608,12 +608,14 @@
             $scope.summaryFieldTotal = [];
             var oldSummaryFieldTotalObject = angular.copy($scope.summaryFieldTotalObject);
             $scope.summaryFieldTotalObject = [];
-            console.log(oldSummaryFieldTotalObject);
+            //console.log(oldSummaryFieldTotalObject);
             angular.forEach(_getAllFieldInTransForm().concat($scope.selectedFields), function (dm) {
                 // Some fields are configured before. Reload it.
-                var found = oldSummaryFieldTotalObject.find(function (old) {
-                    return old.key === dm.key;
-                });
+                if (oldSummaryFieldTotalObject) {
+                    var found = oldSummaryFieldTotalObject.find(function (old) {
+                        return old.key === dm.key;
+                    });
+                }
                 if (found) $scope.summaryFieldTotal.push(dm);
                 // Some new fields that are not configured
                 else {

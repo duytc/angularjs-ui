@@ -173,7 +173,7 @@
         }
 
         function searchAdNetworkItem(query, publisherId) {
-            if(query == sideParams.adNetwork.params.query) {
+            if(query == sideParams.adNetwork.params.query && query != null) {
                 return;
             }
 
@@ -474,6 +474,9 @@
             };
 
             adTagLibraryParams.publisherId = publisher.id;
+
+            // changed select publisher -> refresh adNetWork and then get adNetwork for new pub
+            searchAdNetworkItem(null, publisher.id);
         }
 
         function backToAdTagLibraryList() {
@@ -577,6 +580,16 @@
                         var publisherId = $scope.selected.publisher.id || $scope.selected.publisher;
                         if(adNetworkNew.publisher.id == publisherId || !$scope.isAdmin()) {
                             $scope.adTag.libraryAdTag.adNetwork = adNetworkNew;
+                        }
+
+                        // if auth is admin -> filter adNetWork based on publisher has been chosen
+                        if ($scope.isAdmin()) {
+                            $scope.adNetworkList = [];
+                            angular.forEach(adNetworks, function (adNetwork) {
+                                if (adNetwork.publisher.id == publisherId) {
+                                    $scope.adNetworkList.push(adNetwork);
+                                }
+                            });
                         }
                     });
             })

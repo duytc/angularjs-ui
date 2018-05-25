@@ -64,6 +64,18 @@
                         </ui-select>
                     </div>
                 </div>
+                <!--SHEETS-->
+                <div class="form-group" ng-show="dataSource.format === 'excel'">
+                    <label class="col-sm-1 control-label">Sheets</label>
+
+                    <div class="col-sm-5">
+                        <oi-select ng-model="dataSource.sheets"
+                                   multiple oi-select-options="{newItem: true, newItemFn: 'addSheets($query)'}"
+                                   placeholder="Sheets">
+                        </oi-select>
+                        <span class="help-block">{{'UNIFIED_REPORT_DATA_SOURCE_MODULE.LEAVE_EMPTY_FOR_ALL' | translate}}</span>
+                    </div>
+                </div>
 
                 <div class="form-group" ng-if="dataSource.dataSourceIntegrations.length > 0 && dataSource.useIntegration" data-ng-repeat="integration in dataSource.dataSourceIntegrations track by $index">
                     <div class="col-sm-offset-1 col-sm-5">
