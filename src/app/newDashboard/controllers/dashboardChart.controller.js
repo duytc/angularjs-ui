@@ -8,7 +8,7 @@
     function DashboardChart($scope, $filter, Auth, DASHBOARD_TYPE_JSON, COMPARE_TYPE, LINE_CHART_CONFIG,DESC,ASC, HOUR_EXTENSION,
                             DISPLAY_SHOW_FIELDS, VIDEO_SHOW_FIELDS, VIDEO_SHOW_FIELDS_PUBLISHER,DISPLAY_SHOW_FIELDS_PUBLISHER, DASHBOARD_COLOR, NewDashboardUtil, CHART_DASH_TYPES, DEFAULT_DATE_FORMAT) {
         const CURRENT_LABEL = 'Current';
-        const HISTORY_LABEL = 'History';
+        const HISTORY_LABEL = 'Historical';
         const HOUR = 'hour';
 
         $scope.isAdmin = Auth.isAdmin();
@@ -167,7 +167,7 @@
          * @param reports list of reports
          * @param xAxis : null or 1
          * @param showFields : fields of report need to be displayed
-         * @param seriesLabel : current or history
+         * @param seriesLabel : current or historical
          * @param dashType : style of lines
          * @returns {{xAxisData: Array, series: Array}}
          */
