@@ -361,8 +361,6 @@
             }
 
             if (save) {
-                console.log($scope.reportBuilder.masterReportView);
-                console.log(reportBuilder);
                 var reportViewSave = (((!$scope.isNew && !$scope.subView) || angular.isObject($scope.reportBuilder.masterReportView))
                     ||  $scope.reportBuilder.masterReportView != $scope.reportBuilder.id)
                 && !!reportBuilder.id ? UnifiedReportViewManager.one(reportBuilder.id).patch(reportBuilder) : UnifiedReportViewManager.post(reportBuilder);
@@ -504,6 +502,9 @@
                 _removeFieldNotSelectInJoinBy();
             }
 
+            $scope.exchangeRateDateFields = _getDateFieldsFromDataSet();
+            _updateFieldByJoin($scope.exchangeRateDateFields);
+            console.log($scope.exchangeRateDateFields);
             updateFieldWhenSelectJoinBy();
             updateSelectedAndAddedFieldsInTransform();
             _fieldsHaveDateType();
@@ -513,6 +514,35 @@
             _removeFieldNotSelectInFormat();
         }
 
+        function _updateFieldByJoin(dimensionObjects) {
+            if(!!$scope.reportBuilder.joinBy && $scope.reportBuilder.joinBy.length > 0) {
+                angular.forEach($scope.reportBuilder.joinBy, function (itemJoinBy) {
+                    angular.forEach(itemJoinBy.joinFields, function (field) {
+                        var index = _.findIndex(dimensionObjects, function (item) {
+                            return item.key === field.field + '_' + field.dataSet
+                        });
+
+                        var indexOutputField = _.findIndex(dimensionObjects, function (item) {
+                            return item.key === itemJoinBy.outputField
+                        });
+
+                        if(index > -1 && indexOutputField === -1) {
+                            dimensionObjects.push({
+                                root: itemJoinBy.outputField,
+                                key: itemJoinBy.outputField,
+                                label: itemJoinBy.outputField,
+                                type: dimensionObjects[index].type
+                            });
+
+                            dimensionObjects.splice(index, 1);
+                        }
+                        if(index > -1 && indexOutputField > -1) {
+                            dimensionObjects.splice(index, 1);
+                        }
+                    })
+                })
+            }
+        }
         function updateFieldWhenSelectJoinBy() {
             if(!!$scope.reportBuilder.joinBy && $scope.reportBuilder.joinBy.length > 0) {
                 angular.forEach($scope.reportBuilder.joinBy, function (itemJoinBy) {
@@ -712,6 +742,48 @@
             });
         }
 
+        function _getDataSetById(dataSetId) {
+            return $scope.dataSets.find(function (dataSet) {
+                return dataSet.id == dataSetId;
+            })
+        }
+
+        function _getDateFieldsFromDataSet() {
+            var dateFields = [];
+            angular.forEach($scope.reportBuilder.reportViewDataSets, function (dataSet) {
+                var dateField = {
+                    key: null,
+                    label: null,
+                    root: null,
+                    type: null
+                };
+                var originalDataSet = _getDataSetById(dataSet.dataSet);
+
+                if (originalDataSet && originalDataSet.dimensions) {
+                    var keys = Object.keys(originalDataSet.dimensions);
+                    angular.forEach(keys, function (dimension) {
+                        var type = originalDataSet.dimensions[dimension];
+                        if (type === 'date') {
+                            dateField.type = 'date';
+                            dateField.key = dimension + '_' + originalDataSet.id;
+                            dateField.label = dimension + '(' + originalDataSet.name + ')';
+                            dateField.root = dimension;
+
+                            dateFields.push(dateField);
+                        } else if (type === 'datetime') {
+                            dateField.type = 'datetime';
+                            dateField.key = dimension + '_' + originalDataSet.id;
+                            dateField.label = dimension + '(' + originalDataSet.name + ')';
+                            dateField.root = dimension;
+
+                            dateFields.push(dateField);
+                        }
+                    })
+                }
+            });
+
+            return dateFields;
+        }
         function _fieldsHaveNumberType() {
             var fields = _getAllFieldInTransForm().concat($scope.selectedFields);
 
@@ -1382,7 +1454,7 @@
                             dataSet.filters.push(filter);
                         }
                     });
-                    
+
                     var dataSetItem = _.find($scope.dataSets, function (item) {
                         return dataSet.dataSet == item.id || dataSet.dataSet.id == item.id
                     });
