@@ -650,7 +650,6 @@
             $scope.summaryFieldTotal = [];
             var oldSummaryFieldTotalObject = angular.copy($scope.summaryFieldTotalObject);
             $scope.summaryFieldTotalObject = [];
-            //console.log(oldSummaryFieldTotalObject);
             angular.forEach(_getAllFieldInTransForm().concat($scope.selectedFields), function (dm) {
                 // Some fields are configured before. Reload it.
                 if (oldSummaryFieldTotalObject) {
@@ -770,39 +769,43 @@
             })
         }
 
+        function _addFieldsFromDataset(finalFields, originalDataSet, dimensionsOrMetrics, dimensionOrMetricType) {
+            if (originalDataSet && dimensionsOrMetrics) {
+                var keys = Object.keys(dimensionsOrMetrics);
+                angular.forEach(keys, function (field) {
+                    var dateField = {
+                        key: null,
+                        label: null,
+                        root: null,
+                        type: null
+                    };
+                    var type = originalDataSet[dimensionOrMetricType][field];
+                    if (type === 'date') {
+                        dateField.type = 'date';
+                        dateField.key = field + '_' + originalDataSet.id;
+                        dateField.label = field + '(' + originalDataSet.name + ')';
+                        dateField.root = field;
+
+                        finalFields.push(dateField);
+                    } else if (type === 'datetime') {
+                        dateField.type = 'datetime';
+                        dateField.key = field + '_' + originalDataSet.id;
+                        dateField.label = field + '(' + originalDataSet.name + ')';
+                        dateField.root = field;
+
+                        finalFields.push(dateField);
+                    }
+                })
+            }
+        }
+
         function _getDateFieldsFromDataSet() {
             var dateFields = [];
             angular.forEach($scope.reportBuilder.reportViewDataSets, function (dataSet) {
 
                 var originalDataSet = _getDataSetById(dataSet.dataSet);
-
-                if (originalDataSet && originalDataSet.dimensions) {
-                    var keys = Object.keys(originalDataSet.dimensions);
-                    angular.forEach(keys, function (dimension) {
-                        var dateField = {
-                            key: null,
-                            label: null,
-                            root: null,
-                            type: null
-                        };
-                        var type = originalDataSet.dimensions[dimension];
-                        if (type === 'date') {
-                            dateField.type = 'date';
-                            dateField.key = dimension + '_' + originalDataSet.id;
-                            dateField.label = dimension + '(' + originalDataSet.name + ')';
-                            dateField.root = dimension;
-
-                            dateFields.push(dateField);
-                        } else if (type === 'datetime') {
-                            dateField.type = 'datetime';
-                            dateField.key = dimension + '_' + originalDataSet.id;
-                            dateField.label = dimension + '(' + originalDataSet.name + ')';
-                            dateField.root = dimension;
-
-                            dateFields.push(dateField);
-                        }
-                    })
-                }
+                _addFieldsFromDataset(dateFields, originalDataSet, originalDataSet.dimensions, 'dimensions');
+                _addFieldsFromDataset(dateFields, originalDataSet, originalDataSet.metrics, 'metrics');
             });
 
             return dateFields;

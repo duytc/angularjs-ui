@@ -185,7 +185,7 @@
                                 if(field.exchangeRateDateField && field.exchangeRateDateField.key){
                                     value = field.exchangeRateDateField.key;
                                 }
-                                return option.key === value;
+                                return option && option.key === value;
                             });
                             if(found){
                                 field.exchangeRateDateField = found;
