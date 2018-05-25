@@ -13,6 +13,7 @@
             });
         }
         /* [ hashKey: fieldName, ... ] */
+        $scope.exchangeRateDateFields = [];
         $scope.transformsHashes = [];
 
         $scope.dataSets = dataSets;
@@ -502,9 +503,10 @@
                 _removeFieldNotSelectInJoinBy();
             }
 
+            //EXCHANGE DATE
             $scope.exchangeRateDateFields = _getDateFieldsFromDataSet();
             _updateFieldByJoin($scope.exchangeRateDateFields);
-            console.log($scope.exchangeRateDateFields);
+            //END EXCHANGE DATE
             updateFieldWhenSelectJoinBy();
             updateSelectedAndAddedFieldsInTransform();
             _fieldsHaveDateType();
@@ -512,6 +514,10 @@
             _fieldNumberByMetrics();
             _removeFieldNotSelectInTransform();
             _removeFieldNotSelectInFormat();
+
+            //EXCHANGE DATE
+            $scope.exchangeRateDateFields = _concatWithFieldsHaveDateType($scope.exchangeRateDateFields, $scope.fieldsHaveDateType);
+            //END EXCHANGE DATE
         }
 
         function _updateFieldByJoin(dimensionObjects) {
@@ -725,6 +731,22 @@
                     }
                 });
             }
+        }
+
+        function _concatWithFieldsHaveDateType(exchangeRateDateFields, fieldsHaveDateType) {
+            var integrationFields = angular.copy(exchangeRateDateFields);
+            var extraFields = angular.copy(fieldsHaveDateType);
+
+            angular.forEach(extraFields, function (extraFieldObject) {
+                var foundIndex = _.findIndex(integrationFields, function (item) {
+                    return item.key === extraFieldObject.key
+                });
+                if(foundIndex < 0 ){
+                    integrationFields.push(extraFields[foundIndex]);
+                }
+            });
+
+            return integrationFields;
         }
 
         function _fieldsHaveDateType() {
