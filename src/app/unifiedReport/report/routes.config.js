@@ -205,9 +205,11 @@
                                         reportViewDataSet.dataSet = angular.isObject(reportViewDataSet.dataSet) ? reportViewDataSet.dataSet.id : reportViewDataSet.dataSet
                                     });
 
+                                    reportView.emailSendAlert = reportView.emailSendAlert || [];
                                     reportView.publisher = reportView.publisher.id || reportView.publisher;
                                     reportView.filters = reportView.filters || angular.fromJson($stateParams.filters);
                                     reportView.subView = reportView.subView || $stateParams.subView == 'true';
+
 
                                     return reportView
                                 })

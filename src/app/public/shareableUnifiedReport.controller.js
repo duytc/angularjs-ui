@@ -4,7 +4,7 @@
     angular.module('tagcade.public')
         .controller('shareableUnifiedReport', shareableUnifiedReport);
 
-    function shareableUnifiedReport($scope, $stateParams, $translate, exportExcelService, reports, unifiedReportFormatReport, DateFormatter, AlertService, AtSortableService, dataService, API_UNIFIED_PUBLIC_END_POINT, historyStorage, HISTORY_TYPE_PATH) {
+    function shareableUnifiedReport($scope, $stateParams, $translate, $modal, exportExcelService, reports, unifiedReportFormatReport, DateFormatter, AlertService, AtSortableService, dataService, API_UNIFIED_PUBLIC_END_POINT, historyStorage, HISTORY_TYPE_PATH) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -214,6 +214,48 @@
             return false;
         }
 
+        function openEmailPopup(res, params, reportView) {
+            var modalEmail = $modal.open({
+                templateUrl: 'unifiedReport/template/confirmFillUserEmail.tpl.html',
+                controller: function ($scope) {
+                    $scope.isLimitedEmail = false;
+                    $scope.content = _.isObject(res) ? res['message'] : null;
+                    $scope.email = _.isObject(reportView) && reportView.emailSendAlert ? reportView.emailSendAlert : [];
+
+                    $scope.isInValidEmail = function () {
+                        var regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        return _.isEmpty($scope.email) || _.isEmpty(_.filter($scope.email, function (e) {
+                                return !regexEmail.test(String(e).toLowerCase());
+                            }));
+                    }
+
+                    $scope.isEmailEmpty = function () {
+                        return _.isEmpty($scope.email);
+                    }
+
+                    $scope.addEmail = function(email)
+                    {
+                        var size = _.size($scope.email);
+                        $scope.isLimitedEmail = _.isUndefined(email) ? (--size > 9) : size > 9;
+
+                        if(size <= 9)
+                            return email;
+                    }
+
+                    $scope.sendEmail = function() {
+                        modalEmail.dismiss('cancel');
+                        dataService.makeHttpGetRequest('/v1/reportviews/:reportView/downloadSharedReports', angular.extend(params, { userEmail: $scope.email }), API_UNIFIED_PUBLIC_END_POINT)
+                            .then(function (data) {
+                                AlertService.replaceAlerts({
+                                    type: 'warning',
+                                    message: 'We are processing for this report file and send to you ASAP via your mails !'
+                                });
+                            });
+                    }
+                }
+            });
+        }
+
         function exportExcel() {
             var params = {};
             var newDimensions = [];
@@ -248,6 +290,10 @@
 
             dataService.makeHttpGetRequest('/v1/reportviews/:reportView/downloadSharedReports', params, API_UNIFIED_PUBLIC_END_POINT)
                 .then(function (reportData) {
+                    if(_.isObject(reportData) && reportData['code']) {
+                        return openEmailPopup(reportData, params, params.reportView);
+                    }
+
                    // exportExcelService.exportExcel(reportData.reports, $scope.columnReportDetailForExportExcel, $scope.titleReportDetailForExportExcel, getExportExcelFileName());
                     var blob = new Blob([reportData], {type: "text/plain;charset=utf-8"});
                     var reportName = 'report-detail';

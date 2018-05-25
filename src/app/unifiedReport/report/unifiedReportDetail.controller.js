@@ -153,10 +153,6 @@
         $scope.enableSelectDaterange = enableSelectDaterange;
         $scope.setClassName = setClassName;
 
-
-
-        console.log($scope.dimensions);
-
         function setClassName() {
             var totalItem = Object.keys($scope.reportGroup.total).length;
 
@@ -246,47 +242,42 @@
             });
         }
 
-        function writeToFileSystem(data, callbackError) {
-            window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
-            return window.requestFileSystem(TEMPORARY, 1024 * 1024, function(fs) {
-                      console.log('Opened ' + fs.name);
-                      
-                      fs.root.getFile('NewFile.txt', {create: true}, function(fileEntry) {
-                        fileEntry.createWriter(function(fileWriter) {
-                          fileWriter.onwritestart = function() {
-                            console.log('WRITE START');
-                          };
-                          
-                          fileWriter.onwriteend = function() {
-                            console.log('WRITE END');
-                          };
-
-                          var blob = new Blob([data], {type: 'text/plain'});
-                        
-                          fileWriter.write(blob);
-                          getAllEntries(fs.root);
-                        }, callbackError);
-                      }, callbackError);
-                    }, callbackError);
-        }
-
-
-
         function openEmailPopup(res, params) {
             var modalEmail = $modal.open({
                 templateUrl: 'unifiedReport/template/confirmFillUserEmail.tpl.html',
                 controller: function ($scope) {
+                    $scope.isLimitedEmail = false;
                     $scope.content = _.isObject(res) ? res['message'] : null;
-                    $scope.email = userSession &&  userSession.email ? userSession.email : '';
-                    $scope.validateEmail = function () {
-                        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                        return  re.test(String($scope.email).toLowerCase());
+                    $scope.email = reportView.emailSendAlert ? reportView.emailSendAlert : (userSession.email ? [userSession.email] : []);
+
+                    $scope.isInValidEmail = function () {
+                        var regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        return _.isEmpty($scope.email) || _.isEmpty(_.filter($scope.email, function (e) {
+                            return !regexEmail.test(String(e).toLowerCase());
+                        }));
+                    }
+
+                    $scope.isEmailEmpty = function () {
+                        return _.isEmpty($scope.email);
+                    }
+
+                    $scope.addEmail = function(email)
+                    {
+                        var size = _.size($scope.email);
+                        $scope.isLimitedEmail = _.isUndefined(email) ? (--size > 9) : size > 9;
+
+                        if(size <= 9)
+                            return email;
                     }
 
                     $scope.sendEmail = function() {
                         modalEmail.dismiss('cancel');
                         dataService.makeHttpPOSTRequest('/v1/reportview/download', angular.extend(params, { userEmail: $scope.email }), API_UNIFIED_END_POINT)
                             .then(function (data) {
+                                AlertService.replaceAlerts({
+                                    type: 'warning',
+                                    message: 'We are processing for this report file and send to you ASAP via your mails !'
+                                });
                             })
                     }
                 }
