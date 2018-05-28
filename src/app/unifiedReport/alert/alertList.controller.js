@@ -115,6 +115,7 @@
         $scope.selectAlertSource = selectAlertSource;
         $scope.onSelectOptimization = onSelectOptimization;
         $scope.changePage = changePage;
+        $scope.showBackToIntegration = showBackToIntegration;
 
         $scope.clickType = clickType;
 
@@ -123,6 +124,11 @@
         $scope.itemsPerPageList = ITEMS_PER_PAGE;
 
         $scope.changeItemsPerPage = changeItemsPerPage;
+
+        function showBackToIntegration() {
+            console.log($scope.alertSource);
+            return $scope.alertSource.key === OPTIMIZATION_KEY && $scope.alertSourceOptimization.id != null;
+        }
 
         function extractDataSourceParameter(dataSourceId) {
             if (dataSourceId == null || $scope.alertSource.key === OPTIMIZATION_KEY) return null;
