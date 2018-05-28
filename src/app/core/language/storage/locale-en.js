@@ -1168,6 +1168,7 @@
                 "BACK_TO_PUBLISHER_LIST": "Back To Publisher List",
                 "DATA_SOURCE_FORMAT": "Data Source Format",
                 "LEAVE_EMPTY_FOR_ALL": "Leave it blank to select all sheets",
+                "SHEETS_LABEL": "Sheets for excel",
                 "INTEGRATION": "Integration",
                 "ADD_3RD_PARTY_INTEGRATIONS": "Add 3rd Party Integration",
                 "USERNAME": 'Username',
@@ -1234,7 +1235,8 @@
                 "ACTION_STATUS": "Action Status",
                 "ACTION_STATUS_APPLIED": "Applied",
                 "ACTION_STATUS_REJECTED": "Rejected",
-                "ACTION_STATUS_NO_ACTION": "Not being processed"
+                "ACTION_STATUS_NO_ACTION": "Not being processed",
+                "BACK_TO_INTEGRATION": "Back to Integration"
             },
             "UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE": {
                 "DATA_SOURCES": "Data Sources",
