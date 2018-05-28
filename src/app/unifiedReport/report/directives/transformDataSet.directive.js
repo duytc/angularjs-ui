@@ -339,7 +339,13 @@
                         // Add exchange rate
                         if (scope.fieldsCalculatedField && scope.fieldsCalculatedField.length > 0) {
                             angular.forEach(EXCHANGE_RATES, function (exchangeRate) {
-                                scope.fieldsCalculatedField.push(exchangeRate);
+                                var existedIndex = _.findIndex(scope.fieldsCalculatedField, function (item) {
+                                    return item.key === exchangeRate.key;
+                                });
+
+                                if(existedIndex <0){
+                                    scope.fieldsCalculatedField.push(exchangeRate);
+                                }
                             });
                         }
 
