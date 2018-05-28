@@ -5,6 +5,8 @@
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
     function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView, dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT, sessionStorage, userSession) {
+        const maxEmailAllowed = 10;
+
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -254,11 +256,10 @@
 
                     $scope.addEmail = function(email)
                     {
-                        var size = _.size($scope.email);
-                        $scope.isLimitedEmail = _.isUndefined(email) ? (--size > 9) : size > 9;
+                        var size = !_.contains(_.values($scope.email), email) ? (_.size($scope.email) + 1) : (_.size($scope.email) - 1);
+                        $scope.isLimitedEmail = size > maxEmailAllowed;
 
-                        if(size <= 9)
-                            return email;
+                        return email;
                     }
 
                     $scope.sendEmail = function() {
