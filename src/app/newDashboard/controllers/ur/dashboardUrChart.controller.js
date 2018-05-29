@@ -154,6 +154,8 @@
 
             var chartSeries = [];
             var i = 0;
+            var isShowDot = false;
+
             angular.forEach(showFields, function (field) {
                 var json = {
                     name: getLabelForChart(field, $scope.dashboardType),
@@ -165,9 +167,12 @@
 
                 i++;
                 chartSeries.push(json);
+                if (showData[field] && showData[field].length === 1) {
+                    isShowDot = true;
+                }
             });
 
-            return {
+            var chartConfig = {
                 options: {
                     chart: {
                         type: 'line'
@@ -204,6 +209,12 @@
                 series: chartSeries
             };
 
+            if (isShowDot) {
+                _enableMarker(chartConfig);
+            }
+
+            return chartConfig;
+
             function _getVisibleForField(field) {
                 if (DASHBOARD_TYPE_JSON['UNIFIED_REPORT'] === $scope.dashboardType.name) {
                     return true;
@@ -218,7 +229,9 @@
                 }
             }
         }
-
+        function _enableMarker(chartOption) {
+            chartOption.options.plotOptions.series.marker.enabled = true;
+        }
         function sort(columnName, unsortedData) {
             var type = 'asc';
             var sortedData = angular.copy(unsortedData);

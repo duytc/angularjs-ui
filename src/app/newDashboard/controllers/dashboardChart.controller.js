@@ -174,7 +174,8 @@
         function getChartConfigData(reports, xAxis, showFields, seriesLabel, dashType) {
             var chartConfigData = {
                 xAxisData: [],
-                series: []
+                series: [],
+                isShowDot: false
             };
 
             var chartCategories = []; // data for x axis
@@ -222,10 +223,18 @@
                 }
                 index++;
                 chartSeries.push(oneSeries);
+
+                if(showData[field] && showData[field].length === 1){
+                    chartConfigData.isShowDot = true;
+                }
             });
             chartConfigData.xAxisData = chartCategories;
             chartConfigData.series = chartSeries;
             return chartConfigData;
+        }
+
+        function _enableMarker(chartOption) {
+            chartOption.options.plotOptions.series.marker.enabled = true;
         }
 
         /**
@@ -249,7 +258,7 @@
                 return null;
             }
 
-            var chartConfig =  LINE_CHART_CONFIG;
+            var chartConfig = angular.copy(LINE_CHART_CONFIG);
             var currentChartConfig = getChartConfigData(currentReports, 1, showFields, CURRENT_LABEL, CHART_DASH_TYPES.SOLID);
             var historyChartConfig = getChartConfigData(historyReports, null, showFields, HISTORY_LABEL, CHART_DASH_TYPES.SHORT_DASH);
 
@@ -257,6 +266,9 @@
             chartConfig.xAxis[1].categories = currentChartConfig.xAxisData;
 
             chartConfig.series = currentChartConfig.series.concat(historyChartConfig.series);
+            if (currentChartConfig.isShowDot) {
+                _enableMarker(chartConfig);
+            }
             return chartConfig;
         }
 
