@@ -111,9 +111,9 @@
         };
 
         function saveShareableLink() {
-            if(_.isEmpty($scope.shareable.token)) {
+            /*if(_.isEmpty($scope.shareable.token)) {
                 return $scope.getShareableLink();
-            }
+            }*/
 
             var params = {
                 token: $scope.shareable.token,

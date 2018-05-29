@@ -257,8 +257,8 @@
                         return reportViewClone
                     },
                     shareable: function () {
-                        //return null
-                        var shareable = [];
+                        return null
+                        /*var shareable = [];
                         _.each(_.clone(reportView).transforms, function (transform) {
                                 if(transform.type === 'addCalculatedField') {
                                     shareable = shareable.concat(_.pluck(_.filter(transform.fields, function (field) {
@@ -267,7 +267,7 @@
                                 }
                         })
 
-                        return {fields: {fields: shareable}};
+                        return {fields: {fields: shareable}};*/
                     }
                 },
                 controller: 'GetShareableLink'
