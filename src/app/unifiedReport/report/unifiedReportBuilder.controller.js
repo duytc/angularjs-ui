@@ -13,6 +13,7 @@
             });
         }
         /* [ hashKey: fieldName, ... ] */
+        $scope.exchangeRateDateFields = [];
         $scope.transformsHashes = [];
 
         $scope.dataSets = dataSets;
@@ -361,7 +362,9 @@
             }
 
             if (save) {
-                var reportViewSave = (((!$scope.isNew && !$scope.subView) || angular.isObject($scope.reportBuilder.masterReportView)) ||  $scope.reportBuilder.masterReportView != $scope.reportBuilder.id) && !!reportBuilder.id ? UnifiedReportViewManager.one(reportBuilder.id).patch(reportBuilder) : UnifiedReportViewManager.post(reportBuilder);
+                var reportViewSave = (((!$scope.isNew && !$scope.subView) || angular.isObject($scope.reportBuilder.masterReportView))
+                    ||  $scope.reportBuilder.masterReportView != $scope.reportBuilder.id)
+                && !!reportBuilder.id ? UnifiedReportViewManager.one(reportBuilder.id).patch(reportBuilder) : UnifiedReportViewManager.post(reportBuilder);
 
                 reportViewSave.then(function (data) {
                     if ($scope.isNew || !params.id || $scope.subView) {
@@ -433,6 +436,8 @@
             $scope.fieldsHaveNumberType = [];
             $scope.fieldNumberByMetrics = [];
 
+            $scope.exchangeRateDateFields = [];
+
             var totalDimensions = [];
 
             angular.forEach($scope.reportBuilder.reportViewDataSets, function (item) {
@@ -498,6 +503,10 @@
                 _removeFieldNotSelectInJoinBy();
             }
 
+            //EXCHANGE DATE
+            $scope.exchangeRateDateFields = _getDateFieldsFromDataSet();
+            _updateFieldByJoin($scope.exchangeRateDateFields);
+            //END EXCHANGE DATE
             updateFieldWhenSelectJoinBy();
             updateSelectedAndAddedFieldsInTransform();
             _fieldsHaveDateType();
@@ -505,8 +514,41 @@
             _fieldNumberByMetrics();
             _removeFieldNotSelectInTransform();
             _removeFieldNotSelectInFormat();
+
+            //EXCHANGE DATE
+            $scope.exchangeRateDateFields = _concatWithFieldsHaveDateType($scope.exchangeRateDateFields, $scope.fieldsHaveDateType);
+            //END EXCHANGE DATE
         }
 
+        function _updateFieldByJoin(dimensionObjects) {
+            if(!!$scope.reportBuilder.joinBy && $scope.reportBuilder.joinBy.length > 0) {
+                angular.forEach($scope.reportBuilder.joinBy, function (itemJoinBy) {
+                    angular.forEach(itemJoinBy.joinFields, function (field) {
+                        var index = _.findIndex(dimensionObjects, function (item) {
+                            return item.key === field.field + '_' + field.dataSet
+                        });
+
+                        var indexOutputField = _.findIndex(dimensionObjects, function (item) {
+                            return item.key === itemJoinBy.outputField
+                        });
+
+                        if(index > -1 && indexOutputField === -1) {
+                            dimensionObjects.push({
+                                root: itemJoinBy.outputField,
+                                key: itemJoinBy.outputField,
+                                label: itemJoinBy.outputField,
+                                type: dimensionObjects[index].type
+                            });
+
+                            dimensionObjects.splice(index, 1);
+                        }
+                        if(index > -1 && indexOutputField > -1) {
+                            dimensionObjects.splice(index, 1);
+                        }
+                    })
+                })
+            }
+        }
         function updateFieldWhenSelectJoinBy() {
             if(!!$scope.reportBuilder.joinBy && $scope.reportBuilder.joinBy.length > 0) {
                 angular.forEach($scope.reportBuilder.joinBy, function (itemJoinBy) {
@@ -608,7 +650,6 @@
             $scope.summaryFieldTotal = [];
             var oldSummaryFieldTotalObject = angular.copy($scope.summaryFieldTotalObject);
             $scope.summaryFieldTotalObject = [];
-            //console.log(oldSummaryFieldTotalObject);
             angular.forEach(_getAllFieldInTransForm().concat($scope.selectedFields), function (dm) {
                 // Some fields are configured before. Reload it.
                 if (oldSummaryFieldTotalObject) {
@@ -691,6 +732,22 @@
             }
         }
 
+        function _concatWithFieldsHaveDateType(exchangeRateDateFields, fieldsHaveDateType) {
+            var integrationFields = angular.copy(exchangeRateDateFields);
+            var extraFields = angular.copy(fieldsHaveDateType);
+
+            angular.forEach(extraFields, function (extraFieldObject) {
+                var foundIndex = _.findIndex(integrationFields, function (item) {
+                    return item.key === extraFieldObject.key
+                });
+                if(foundIndex < 0 ){
+                    integrationFields.push(extraFields[foundIndex]);
+                }
+            });
+
+            return integrationFields;
+        }
+
         function _fieldsHaveDateType() {
             var fields = _getAllFieldInTransForm().concat($scope.selectedFields);
             angular.forEach(fields, function (metric) {
@@ -706,6 +763,55 @@
             });
         }
 
+        function _getDataSetById(dataSetId) {
+            return $scope.dataSets.find(function (dataSet) {
+                return dataSet.id == dataSetId;
+            })
+        }
+
+        function _addFieldsFromDataset(finalFields, originalDataSet, dimensionsOrMetrics, dimensionOrMetricType) {
+            if (originalDataSet && dimensionsOrMetrics) {
+                var keys = Object.keys(dimensionsOrMetrics);
+                angular.forEach(keys, function (field) {
+                    var dateField = {
+                        key: null,
+                        label: null,
+                        root: null,
+                        type: null
+                    };
+                    var type = originalDataSet[dimensionOrMetricType][field];
+                    if (type === 'date') {
+                        dateField.type = 'date';
+                        dateField.key = field + '_' + originalDataSet.id;
+                        dateField.label = field + '(' + originalDataSet.name + ')';
+                        dateField.root = field;
+
+                        finalFields.push(dateField);
+                    } else if (type === 'datetime') {
+                        dateField.type = 'datetime';
+                        dateField.key = field + '_' + originalDataSet.id;
+                        dateField.label = field + '(' + originalDataSet.name + ')';
+                        dateField.root = field;
+
+                        finalFields.push(dateField);
+                    }
+                })
+            }
+        }
+
+        function _getDateFieldsFromDataSet() {
+            var dateFields = [];
+            angular.forEach($scope.reportBuilder.reportViewDataSets, function (dataSet) {
+
+                var originalDataSet = _getDataSetById(dataSet.dataSet);
+                if(originalDataSet){
+                    _addFieldsFromDataset(dateFields, originalDataSet, originalDataSet.dimensions, 'dimensions');
+                    _addFieldsFromDataset(dateFields, originalDataSet, originalDataSet.metrics, 'metrics');
+                }
+            });
+
+            return dateFields;
+        }
         function _fieldsHaveNumberType() {
             var fields = _getAllFieldInTransForm().concat($scope.selectedFields);
 
@@ -898,6 +1004,10 @@
 
                 if (transform.type == 'addCalculatedField' || transform.type == 'postAggregation') {
                     angular.forEach(transform.fields, function (field) {
+                        if(field.exchangeRateDateField){
+                            field.exchangeRateDateField = field.exchangeRateDateField.key;
+                        }
+
                         angular.forEach($scope.totalDimensionsMetrics, function replace(dm) {
                             if (!field.expression || !angular.isString(field.expression)) {
                                 return;
@@ -1372,7 +1482,7 @@
                             dataSet.filters.push(filter);
                         }
                     });
-                    
+
                     var dataSetItem = _.find($scope.dataSets, function (item) {
                         return dataSet.dataSet == item.id || dataSet.dataSet.id == item.id
                     });

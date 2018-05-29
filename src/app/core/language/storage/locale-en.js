@@ -1168,6 +1168,7 @@
                 "BACK_TO_PUBLISHER_LIST": "Back To Publisher List",
                 "DATA_SOURCE_FORMAT": "Data Source Format",
                 "LEAVE_EMPTY_FOR_ALL": "Leave it blank to select all sheets",
+                "SHEETS_LABEL": "Sheets for excel",
                 "INTEGRATION": "Integration",
                 "ADD_3RD_PARTY_INTEGRATIONS": "Add 3rd Party Integration",
                 "USERNAME": 'Username',
@@ -1234,7 +1235,8 @@
                 "ACTION_STATUS": "Action Status",
                 "ACTION_STATUS_APPLIED": "Applied",
                 "ACTION_STATUS_REJECTED": "Rejected",
-                "ACTION_STATUS_NO_ACTION": "Not being processed"
+                "ACTION_STATUS_NO_ACTION": "Not being processed",
+                "BACK_TO_INTEGRATION": "Back to Integration"
             },
             "UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE": {
                 "DATA_SOURCES": "Data Sources",
@@ -1304,7 +1306,8 @@
                 "DIMENSION_NAME_INSTRUCTION_BLOCK": "Dimension name must begin with a letter. It may contain text, numbers or spaces",
                 "REMOVE_ALL_DATE_SUCCESS": "All data has been removed from the data set",
                 "REMOVE_ALL_DATE_FAIL": "Could not removed all data",
-                "METRIC_NAME_INSTRUCTION_BLOCK": "Metric name must begin with a letter. It may contain text, numbers or spaces"
+                "METRIC_NAME_INSTRUCTION_BLOCK": "Metric name must begin with a letter. It may contain text, numbers or spaces",
+                "SELECT_EXCHANGE_DATE_FIELD": "Select a date field"
             },
             "UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE": {
                 "FIELDS": "Fields",

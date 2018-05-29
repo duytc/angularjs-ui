@@ -7,8 +7,9 @@
 
     function AutoOptimizeIntegrationForm($scope, $filter, $translate, AlertService, optimizationRule,
                                          autoOptimizeIntegration, ServerErrorProcessor, AutoOptimizeIntegrationManager,
-                                         AdSlotManager, VideoPublisherManager, VideoAdTagManager, dataService, sites, videoPublishers, selectedSites, selectedAdSlots, historyStorage, HISTORY_TYPE_PATH,
-                                         DOMAINS_LIST_SEPARATOR, COUNTRY_LIST, Auth, PLATFORM_INTEGRATION, OPTIMIZATION_FREQUENCY, API_UNIFIED_END_POINT) {
+                                         AdSlotManager, VideoPublisherManager, VideoAdTagManager, dataService, sites, videoPublishers,
+                                         selectedSites, selectedAdSlots, historyStorage, HISTORY_TYPE_PATH,
+                                         DOMAINS_LIST_SEPARATOR, COUNTRY_LIST, Auth, PLATFORM_INTEGRATION, OPTIMIZATION_FREQUENCY) {
 
         $scope.fieldNameTranslations = {
             name: 'Name'
@@ -174,6 +175,8 @@
             return ''; // separate group with no name
         }
 
+
+
         function backToListAuto() {
             return historyStorage.getLocationPath(HISTORY_TYPE_PATH.autoOptimizeIntegration, '^.^.autoOptimizeIntegration.list', {optimizationRuleId: $scope.optimizationRule.id});
         }
@@ -233,6 +236,8 @@
 
         /* ==========LOCAL FUNCTIONS============ */
         function _filterPlatformIntegrationByModule(platformIntegrations) {
+            console.log($scope.autoOptimizeIntegration.optimizationRule.publisher.enabledModules);
+            console.log(platformIntegrations);
             return  _.filter(platformIntegrations, function(platformIntegration) {
                 return _.contains($scope.autoOptimizeIntegration.optimizationRule.publisher.enabledModules, platformIntegration.module)
             });
@@ -275,7 +280,7 @@
 
         function _updatePlatformIntegration() {
             if ($scope.isNew) {
-                $scope.autoOptimizeIntegration.platformIntegration = $scope.platformIntegrations[0]; // Pubvantage ads server
+                $scope.autoOptimizeIntegration.platformIntegration = null;//(https://trello.com/c/szkLJ3Qp/2497-two-small-ui-changes-for-video-opt)
             } else {
                 var apiPlatform = $scope.autoOptimizeIntegration.platformIntegration;
                 $scope.autoOptimizeIntegration.platformIntegration = $scope.platformIntegrations.find(function (platform) {
@@ -307,6 +312,7 @@
                     key: $scope.autoOptimizeIntegration.optimizationAlerts,
                     label: _getOptimizationAlertsLabelFromObject($scope.autoOptimizeIntegration.optimizationAlerts)
                 };
+
             }
 
             /* update column name mapping for all dimensions from optimization rule's report view */
@@ -405,6 +411,7 @@
 
         function _updateSelectedSitesAndAdSlots() {
             _fillStickForSupply();
+
             // update adSlotList and also fillStickForAdSlot
             _updateAdSlotListWhenSelectedSitesChange();
         }
@@ -602,7 +609,5 @@
 
             return label;
         }
-
-
     }
 })();
