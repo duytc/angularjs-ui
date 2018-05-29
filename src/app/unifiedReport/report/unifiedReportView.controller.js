@@ -257,7 +257,17 @@
                         return reportViewClone
                     },
                     shareable: function () {
-                        return null
+                        //return null
+                        var shareable = [];
+                        _.each(_.clone(reportView).transforms, function (transform) {
+                                if(transform.type === 'addCalculatedField') {
+                                    shareable = shareable.concat(_.pluck(_.filter(transform.fields, function (field) {
+                                        return field.autoAddShareableReport === true;
+                                    }), 'field'));
+                                }
+                        })
+
+                        return {fields: {fields: shareable}};
                     }
                 },
                 controller: 'GetShareableLink'
