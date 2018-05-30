@@ -5,7 +5,7 @@
         .directive('transformDataSet', transformDataSet)
     ;
 
-    function transformDataSet($compile, $modal, _, AddCalculatedField, CONNECT_TIMEZONES, COMPARISON_TYPES_ADD_FIELD_VALUE, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS, DATE_FORMAT_TYPES, METRICS_SET) {
+    function transformDataSet($compile, $modal, _, AddCalculatedField, CONNECT_TIMEZONES, COMPARISON_TYPES_ADD_FIELD_VALUE, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS, DATE_FORMAT_TYPES, METRICS_SET, EXCHANGE_RATES) {
         'use strict';
 
         return {
@@ -20,7 +20,8 @@
                 reportBuilder: '=',
                 numberFields: '=',
                 transformPosition: '@',
-                disabled: '='
+                disabled: '=',
+                fieldsHaveDateType:'='
             },
             restrict: 'AE',
             templateUrl: 'unifiedReport/report/directives/transformDataSet.tpl.html',
@@ -53,6 +54,12 @@
 
                     scope.fieldsCalculatedField = [];
                     scope.fieldNames = scope.selectedFields;
+
+                    scope.$watch(function () {
+                        return scope.fieldsHaveDateType;
+                    }, function (newVal) {
+                        _extractExchangeRateDateTransforms(newVal, scope.transforms);
+                    });
 
                     scope.$watch(function () {
                         return scope.selectedFields;
@@ -153,6 +160,40 @@
                     scope.addCompareValue = addCompareValue;
                     scope.ManageValues = ManageValues;
                     scope.setPattern = setPattern;
+                    scope.expressionContainExchangeRate = expressionContainExchangeRate;
+
+                    // _extractExchangeRateDateTransforms(scope.fieldsHaveDateType, scope.transforms);
+
+                    function _extractExchangeRateDateTransforms(options, transforms) {
+                        if(!transforms){
+                            return;
+                        }
+                        angular.forEach(transforms, function (transform) {
+                            if(transform && transform.type === 'addCalculatedField'){
+                                _extractExchangeRateDate(options, transform.fields);
+                            }
+                        });
+
+                    }
+                    function _extractExchangeRateDate(options, fields) {
+                        if (!fields || !options) {
+                            return;
+                        }
+                        angular.forEach(fields, function (field) {
+                            var found = options.find(function (option) {
+                                var value = field.exchangeRateDateField;
+                                if(field.exchangeRateDateField && field.exchangeRateDateField.key){
+                                    value = field.exchangeRateDateField.key;
+                                }
+                                return option && option.key === value;
+                            });
+                            if(found){
+                                field.exchangeRateDateField = found;
+                            }else {
+                                field.exchangeRateDateField = null;
+                            }
+                        });
+                    }
 
                     function setPattern(type) {
                         if(type == 'number') {
@@ -237,6 +278,19 @@
                         scope.reorderDefaultValueAllowed = enable;
                     }
 
+                    function expressionContainExchangeRate(field) {
+                        if(field.expression && field.expression.length > 0){
+                            var expressionContainExchangeRate = false;
+                            for (var i = 0; i < EXCHANGE_RATES.length; i++) {
+                                if (field.expression.indexOf(EXCHANGE_RATES[i].key) >=0 ) {
+                                    expressionContainExchangeRate = true;
+                                    break;
+                                }
+                            }
+                            return expressionContainExchangeRate;
+                        }
+                        return false;
+                    }
                     function selectTypeCalculatedField(type, calculatedField) {
                         scope.fieldsCalculatedField = [];
 
@@ -282,9 +336,23 @@
                             }
                         });
 
+                        // Add exchange rate
+                        if (scope.fieldsCalculatedField && scope.fieldsCalculatedField.length > 0) {
+                            angular.forEach(EXCHANGE_RATES, function (exchangeRate) {
+                                var existedIndex = _.findIndex(scope.fieldsCalculatedField, function (item) {
+                                    return item.key === exchangeRate.key;
+                                });
+
+                                if(existedIndex <0){
+                                    scope.fieldsCalculatedField.push(exchangeRate);
+                                }
+                            });
+                        }
+
                         if(!!type.key && !!calculatedField){
                             calculatedField.expression = null
                         }
+
                     }
 
                     function unValidName(name) {

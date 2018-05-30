@@ -4,11 +4,14 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView, dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT) {
+    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView, dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT, sessionStorage, userSession) {
+        const maxEmailAllowed = 10;
+
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
 
+        $scope.linkDownload = API_UNIFIED_END_POINT + '/v1/reportview/download';
         $scope.tableConfig = {
             itemsPerPage: $stateParams.limit || 10,
             maxPages: 10,
@@ -151,7 +154,6 @@
         $scope.showReportDetail = showReportDetail;
         $scope.enableSelectDaterange = enableSelectDaterange;
         $scope.setClassName = setClassName;
-        //console.log($scope.dimensions);
 
         function setClassName() {
             var totalItem = Object.keys($scope.reportGroup.total).length;
@@ -233,12 +235,57 @@
             });
         }
 
+        function openEmailPopup(res, params) {
+            var modalEmail = $modal.open({
+                templateUrl: 'unifiedReport/template/confirmFillUserEmail.tpl.html',
+                controller: function ($scope) {
+                    $scope.isLimitedEmail = false;
+                    $scope.content = _.isObject(res) ? res['message'] : null;
+                    $scope.email = reportView.emailSendAlert ? reportView.emailSendAlert : (userSession.email ? [userSession.email] : []);
+
+                    $scope.isInValidEmail = function () {
+                        var regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        return _.isEmpty($scope.email) || _.isEmpty(_.filter($scope.email, function (e) {
+                            return !regexEmail.test(String(e).toLowerCase());
+                        }));
+                    }
+
+                    $scope.isEmailEmpty = function () {
+                        return _.isEmpty($scope.email);
+                    }
+
+                    $scope.addEmail = function(email)
+                    {
+                        var size = !_.contains(_.values($scope.email), email) ? (_.size($scope.email) + 1) : (_.size($scope.email) - 1);
+                        $scope.isLimitedEmail = size > maxEmailAllowed;
+
+                        return email;
+                    }
+
+                    $scope.sendEmail = function() {
+                        modalEmail.dismiss('cancel');
+                        dataService.makeHttpPOSTRequest('/v1/reportview/download', angular.extend(params, { userEmail: $scope.email }), API_UNIFIED_END_POINT)
+                            .then(function (data) {
+                                AlertService.replaceAlerts({
+                                    type: 'warning',
+                                    message: 'We are processing for this report file and send to you ASAP via your mails !'
+                                });
+                            })
+                    }
+                }
+            });
+        }
+
         function exportExcel() {
             var params = _toJsonReportView(reportView);
             delete params.page;
 
             dataService.makeHttpPOSTRequest('', params, API_UNIFIED_END_POINT + '/v1/reportview/download')
                 .then(function (data) {
+                    if(_.isObject(data) && data['code']) {
+                        return openEmailPopup(data, params);
+                    }
+
                     var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
                     var reportName = !!reportView.name ? reportView.name : 'report-detail';
 

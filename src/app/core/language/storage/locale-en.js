@@ -1306,7 +1306,8 @@
                 "DIMENSION_NAME_INSTRUCTION_BLOCK": "Dimension name must begin with a letter. It may contain text, numbers or spaces",
                 "REMOVE_ALL_DATE_SUCCESS": "All data has been removed from the data set",
                 "REMOVE_ALL_DATE_FAIL": "Could not removed all data",
-                "METRIC_NAME_INSTRUCTION_BLOCK": "Metric name must begin with a letter. It may contain text, numbers or spaces"
+                "METRIC_NAME_INSTRUCTION_BLOCK": "Metric name must begin with a letter. It may contain text, numbers or spaces",
+                "SELECT_EXCHANGE_DATE_FIELD": "Select a date field"
             },
             "UNIFIED_REPORT_CONNECTED_DATA_SOURCE_MODULE": {
                 "FIELDS": "Fields",

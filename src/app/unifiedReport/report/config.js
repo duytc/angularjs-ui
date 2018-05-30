@@ -16,6 +16,10 @@
             // replaceText: 'replaceText',
             // postAggregation: 'postAggregation'
         })
+        .constant('EXCHANGE_RATES', [
+            { key: 'EXCHANGE_RATE(USD,EUR)', label: 'EXCHANGE_RATE(USD,EUR)', root: 'EXCHANGE_RATE(USD,EUR)', type: 'decimal' },
+            { key: 'EXCHANGE_RATE(EUR,USD)', label: 'EXCHANGE_RATE(EUR,USD)', root: 'EXCHANGE_RATE(EUR,USD)', type: 'decimal' }
+        ])
         .provider('REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES', {
             $get: function (REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS) {
                 return [

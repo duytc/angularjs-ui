@@ -107,7 +107,8 @@ module.exports = {
             'vendor/ment.io/dist/mentio.min.js',
             'vendor/moment-timezone/builds/moment-timezone-with-data-2010-2020.js',
             'vendor/angular-bootstrap-slider/slider.js',
-            'vendor/seiyria-bootstrap-slider/dist/bootstrap-slider.js'
+            'vendor/seiyria-bootstrap-slider/dist/bootstrap-slider.js',
+            'vendor/idb.filesystem.js/dist/idb.filesystem.min.js'
         ],
         css: [
             'src/styles/customvendor/**/*.css'

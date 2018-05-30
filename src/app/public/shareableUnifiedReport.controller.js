@@ -4,7 +4,7 @@
     angular.module('tagcade.public')
         .controller('shareableUnifiedReport', shareableUnifiedReport);
 
-    function shareableUnifiedReport($scope, $stateParams, $translate, exportExcelService, reports, unifiedReportFormatReport, DateFormatter, AlertService, AtSortableService, dataService, API_UNIFIED_PUBLIC_END_POINT, historyStorage, HISTORY_TYPE_PATH) {
+    function shareableUnifiedReport($scope, $stateParams, $translate, $modal, exportExcelService, reports, unifiedReportFormatReport, DateFormatter, AlertService, AtSortableService, dataService, API_UNIFIED_PUBLIC_END_POINT, historyStorage, HISTORY_TYPE_PATH) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -214,6 +214,49 @@
             return false;
         }
 
+        function openEmailPopup(res, params, reportView) {
+            var modalEmail = $modal.open({
+                templateUrl: 'unifiedReport/template/confirmFillUserEmail.tpl.html',
+                controller: function ($scope) {
+                    $scope.isLimitedEmail = false;
+                    $scope.content = _.isObject(res) ? res['message'] : null;
+                    $scope.email = [];
+
+                    $scope.isInValidEmail = function () {
+                        var regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        return _.isEmpty($scope.email) || _.isEmpty(_.filter($scope.email, function (e) {
+                                return !regexEmail.test(String(e).toLowerCase());
+                            }));
+                    }
+
+                    $scope.isEmailEmpty = function () {
+                        return _.isEmpty($scope.email);
+                    }
+
+                    $scope.addEmail = function(email)
+                    {
+                        var size = _.size($scope.email);
+                        $scope.isLimitedEmail = _.isUndefined(email) ? (--size > 9) : size > 9;
+
+                        if(size <= 9)
+                            return email;
+                    }
+
+                    $scope.sendEmail = function() {
+                        modalEmail.dismiss('cancel');
+                        params.reportView = reportView;
+                        dataService.makeHttpGetRequest('/v1/reportviews/:reportView/sharedReports', angular.extend(params, { userEmail: JSON.stringify($scope.email) }), API_UNIFIED_PUBLIC_END_POINT)
+                            .then(function (data) {
+                                AlertService.replaceAlerts({
+                                    type: 'warning',
+                                    message: 'We are processing for this report file and send to you ASAP via your mails !'
+                                });
+                            });
+                    }
+                }
+            });
+        }
+
         function exportExcel() {
             var params = {};
             var newDimensions = [];
@@ -238,17 +281,21 @@
             params.token = $stateParams.token;
             params.reportView = $stateParams.reportView;
 
-            // angular.forEach(angular.copy($scope.search), function (value, key) {
-            //     if(!params.userDefineDimensions[key] && !params.userDefineMetrics[key]) {
-            //         delete $scope.search[key]
-            //     }
-            // });
-
             params.searches = $scope.search;
+            params.isExport = true;
 
             dataService.makeHttpGetRequest('/v1/reportviews/:reportView/sharedReports', params, API_UNIFIED_PUBLIC_END_POINT)
                 .then(function (reportData) {
+                    if(_.isObject(reportData) && reportData['code']) {
+                        delete params.isExport;
+                        return openEmailPopup(reportData, params, $stateParams.reportView);
+                    }
+
                     exportExcelService.exportExcel(reportData.reports, $scope.columnReportDetailForExportExcel, $scope.titleReportDetailForExportExcel, getExportExcelFileName());
+                    /*var blob = new Blob([reportData], {type: "text/plain;charset=utf-8"});
+                    var reportName = 'report-detail';
+
+                    return saveAs(blob, [reportName + '.csv']);*/
                 })
         }
 
