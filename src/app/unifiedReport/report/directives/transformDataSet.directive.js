@@ -162,8 +162,6 @@
                     scope.setPattern = setPattern;
                     scope.expressionContainExchangeRate = expressionContainExchangeRate;
 
-                    // _extractExchangeRateDateTransforms(scope.fieldsHaveDateType, scope.transforms);
-
                     function _extractExchangeRateDateTransforms(options, transforms) {
                         if(!transforms){
                             return;

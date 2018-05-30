@@ -423,7 +423,7 @@
                                             <div class="form-group select-connect-data-source" ng-if="expressionContainExchangeRate(field)">
                                                 <label class="col-sm-2 control-label">Exchange Rate Date Field</label>
                                                 <div class="col-sm-10">
-                                                    <ui-select
+                                                    <ui-select ng-disabled="disabled"
                                                                ng-model="field.exchangeRateDateField"
                                                                ng-required="true"
                                                                server-error reset-search-input="'false'">

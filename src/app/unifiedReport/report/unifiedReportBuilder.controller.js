@@ -741,7 +741,7 @@
                     return item.key === extraFieldObject.key
                 });
                 if(foundIndex < 0 ){
-                    integrationFields.push(extraFields[foundIndex]);
+                    integrationFields.push(angular.copy(extraFieldObject));
                 }
             });
 
@@ -803,7 +803,9 @@
             var dateFields = [];
             angular.forEach($scope.reportBuilder.reportViewDataSets, function (dataSet) {
 
-                var originalDataSet = _getDataSetById(dataSet.dataSet);
+                var dataSetId = dataSet.dataSet.id ? dataSet.dataSet.id : dataSet.dataSet;
+
+                var originalDataSet = _getDataSetById(dataSetId);
                 if(originalDataSet){
                     _addFieldsFromDataset(dateFields, originalDataSet, originalDataSet.dimensions, 'dimensions');
                     _addFieldsFromDataset(dateFields, originalDataSet, originalDataSet.metrics, 'metrics');
