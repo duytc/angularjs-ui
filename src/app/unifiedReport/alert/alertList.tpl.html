@@ -11,7 +11,7 @@
                 </ui-select>
             </div>
 
-            <!--Sources selection : optimization or data source-->
+            <!--Sources selection : optimization integration or data source-->
             <div class="publisher form-group" ng-if="selectedData.publisherId || !isAdmin">
                 <label>{{ 'UNIFIED_REPORT_ALERT_MODULE.LABEL_ALERT_SOURCE' | translate }}</label>
                 <ui-select name="publisher" ng-model="alertSource" ng-required="true"
@@ -26,7 +26,7 @@
                 </ui-select>
             </div>
 
-            <!--optimization selection-->
+            <!--optimization integration selection-->
             <div class="publisher form-group" ng-if="(selectedData.publisherId || !isAdmin) && alertSource.key === 'optimization'">
                 <label>{{ 'UNIFIED_REPORT_ALERT_MODULE.LABEL_ALERT_SOURCE_OPTIMIZATION' | translate }}</label>
                 <ui-select name="publisher" ng-model="alertSourceOptimization" on-select="onSelectOptimization($item)"
@@ -80,9 +80,23 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <span current-page-title></span>
+        <!--back to list optimization integration-->
+        <div class="button-bar" ng-if="showBackToIntegration()">
+            <button ui-sref="^.^.autoOptimizeIntegration.list({optimizationRuleId: alertSourceOptimization.optimizationRule.id})"
+                    class="btn btn-sm btn-primary" type="button">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                {{ 'UNIFIED_REPORT_ALERT_MODULE.BACK_TO_INTEGRATION' | translate }}
+            </button>
+        </div>
+        <div class="btn-group btnGrouped" dropdown ng-if="showBackToIntegration()">
+            <button type="button" class="btn " dropdown-toggle>
+                <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a ui-sref="^.^.autoOptimizeIntegration.list({optimizationRuleId: alertSourceOptimization.optimizationRule.id})">
+                    {{'UNIFIED_REPORT_ALERT_MODULE.BACK_TO_INTEGRATION' | translate }}</a></li>
+            </ul>
+        </div>
     </div>
-
-    <!--<search-box show-query="true" sb-list="alerts" search-fields="['id','title','message']"></search-box>-->
 
     <div class="panel-body">
         <div class="table-responsive mail-container">
