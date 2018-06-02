@@ -46,6 +46,7 @@
                                         {{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.VIEW_ALERT' | translate }}
                                     </a>
                                 </li>
+                                <li ng-if="!isSubPublisher()"><a ng-click="optimizeNow(item)">{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_NOW' | translate }}</a></li>
                                 <li ng-if="!isSubPublisher()"><a ui-sref="^.edit({ id: item.id })">{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.EDIT_INTEGRATION' | translate }}</a></li>
                                 <li ng-if="!isSubPublisher()"><a ng-click="confirmDeletion(item, $index)">{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.DELETE_INTEGRATION' | translate }}</a></li>
                             </ul>

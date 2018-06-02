@@ -29,7 +29,25 @@
         $scope.toggleStatus = toggleStatus;
         $scope.backToOptimizedRuleList = backToOptimizedRuleList;
         $scope.confirmDeletion = confirmDeletion;
+        $scope.optimizeNow = optimizeNow;
 
+        function optimizeNow(integration) {
+            AutoOptimizeIntegrationManager.one(integration.id).one('optimizenow').post()
+                .then(function () {
+                        AlertService.replaceAlerts({
+                            type: 'error',
+                            message: $translate.instant('AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_NOW_MESSAGE')
+                        });
+                    },
+                    function (err) {
+                        AlertService.replaceAlerts({
+                            type: 'error',
+                            message: err.data.message
+                        });
+                    })
+
+        }
+        
         function toggleStatus(auto) {
             var newStatus = !auto.active;
 
