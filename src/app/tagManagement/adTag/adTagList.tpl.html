@@ -158,10 +158,10 @@
                 <li class="col-md-1">{{ 'AD_TAG_MODULE.STATUS' | translate }}</li>
             </ul>
             <ul ui-sortable="sortableGroupOptions" ng-model="adTagsGroup">
-                <li class="group-ad-tag" ng-repeat="adTags in adTagsGroup" ng-class="{'moveable': !sortableGroupOptions['disabled']}">
+                <li class="group-ad-tag" ng-repeat="adTags in adTagsGroup track by $index" ng-class="{'moveable': !sortableGroupOptions['disabled']}">
                     <div class="position" ng-if="adTags.length"><strong>Position : {{ adTags[0].position }}</strong></div>
                     <ul class="itemAdTag" ui-sortable="sortableItemOption" ng-model="adTags">
-                        <li class="item" ng-repeat="adTag in adTags">
+                        <li class="item" ng-repeat="adTag in adTags track by $index">
                             <div class="col-md-1">{{ adTag.id }}</div>
                             <div class="col-md-2">
                                 <div class="btn-group" dropdown on-toggle="actionDropdownToggled(open)">
