@@ -5,8 +5,32 @@
         .controller('DashboardTopPerformers', DashboardTopPerformers)
     ;
 
-    function DashboardTopPerformers($scope, _, dashboard, videoReportService, dataService, Auth, NewDashboardUtil, DEFAULT_DATE_FORMAT, DESC, ASC,
+    function DashboardTopPerformers($scope, _, dashboard, videoReportService, dataService, Auth, NewDashboardUtil, DEFAULT_DATE_FORMAT, DESC, ASC, DateFormatter,
                                     DASHBOARD_TYPE_JSON, REPORT_SETTINGS, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL, COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT) {
+
+        var comparisonDateRangeCurrent = {
+            'yesterday': {
+                startDate: DateFormatter.getFormattedDate(moment().subtract(1, 'days')),
+                endDate : DateFormatter.getFormattedDate(moment().subtract(1, 'days'))
+            },
+            'day-over-day': {
+                startDate: DateFormatter.getFormattedDate(moment().startOf('day')),
+                endDate : DateFormatter.getFormattedDate(moment().endOf('day'))
+            },
+            'week-over-week': {
+                startDate: DateFormatter.getFormattedDate(moment().subtract(7, 'days')),
+                endDate : DateFormatter.getFormattedDate(moment().subtract(1, 'days'))
+            },
+            'month-over-month': {
+                startDate: DateFormatter.getFormattedDate(moment().subtract(30, 'days')),
+                endDate : DateFormatter.getFormattedDate(moment().subtract(1, 'days'))
+            },
+            'year-over-year': {
+                startDate: DateFormatter.getFormattedDate(moment().startOf('year')),
+                endDate : DateFormatter.getFormattedDate(moment().startOf('day'))
+            }
+        };
+
         $scope.userSession = Auth.getSession();
         $scope.isAdmin = Auth.isAdmin();
         $scope.showLoading = false;
@@ -93,7 +117,7 @@
         /* watch dateRange changed, then re-get data for display or video or unified report */
         $scope.$watch('dateRange', _onDateRangeChange);
 
-        $scope.$watch('comparisionData', _onComparisionDataChange);
+        // $scope.$watch('comparisionData', _onComparisionDataChange);
 
         $scope.$watch('compareTypeData.compareType', _onComparisionTypeDataChange);
 
@@ -161,9 +185,13 @@
             $scope.showLoading = true;
         }
 
-        function _onComparisionTypeDataChange() {
+        function _onComparisionTypeDataChange(newComparisonType) {
             resetTopPerformerData();
-            $scope.showLoading = true;
+
+            if(newComparisonType === 'day-over-day') return;
+
+            var dateRange = comparisonDateRangeCurrent[newComparisonType];
+            _updateToPerformanceData(dateRange);
         }
 
         function resetTopPerformerData() {
