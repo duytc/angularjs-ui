@@ -324,10 +324,11 @@
                         t.active = newState.active;
 
                     if(newState.isDeleted) {
-                        if(_.size(videoWaterfallTagItem.videoDemandAdTags) > 1) {
+                        if(_.size(videoWaterfallTagItem.videoDemandAdTags) > 0) {
                             videoWaterfallTagItem.videoDemandAdTags.splice(index, 1);
-                        } else {
-                            videoWaterfallTagItem.videoDemandAdTags.splice(index, 1);
+                        }
+
+                        if(_.size(videoWaterfallTagItems) > 0) {
                             videoWaterfallTagItems.splice(indexItemParent, 1);
                         }
 
@@ -382,10 +383,10 @@
 
                             $scope.videoWaterfallTagItems.splice(indexVideoAdTagItem, 1);
                             updatePositionForVideoAdTagItem();
-
-                            videoDemandAdTag.isDeleted = true;
-                            refreshVideoWaterFallListItems(videoDemandAdTag);
                         }
+
+                        videoDemandAdTag.isDeleted = true;
+                        refreshVideoWaterFallListItems(videoDemandAdTag);
 
                         AlertService.replaceAlerts({
                             type: 'success',
