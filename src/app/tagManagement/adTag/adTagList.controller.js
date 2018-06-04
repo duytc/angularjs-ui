@@ -361,16 +361,11 @@
         //sort groups overlap position
         function _sortGroup(listAdTags) {
             var adTagsGroup = [];
-
+            console.log(listAdTags);
             // current we do not support group for auto optimization
             // TODO: if API support tags same points are in same group, we need change here...
             if ($scope.enableShowOptimizedPositions) {
-                angular.forEach(listAdTags, function (adTag) {
-                    if(!adTagsGroup[adTag.position]){
-                        adTagsGroup[adTag.position] = [];
-                    }
-                    adTagsGroup[adTag.position].push(adTag);
-                });
+                adTagsGroup = angular.copy(listAdTags);
 
                 return adTagsGroup;
             }
@@ -399,6 +394,7 @@
                 adTagsGroup[index].push(item);
             });
 
+            console.log(adTagsGroup);
             return adTagsGroup;
         }
 
