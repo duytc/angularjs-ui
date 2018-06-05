@@ -32,7 +32,7 @@
         $scope.optimizeNow = optimizeNow;
 
         function optimizeNow(integration) {
-            AutoOptimizeIntegrationManager.one(integration.id).one('optimizenow').post()
+            AutoOptimizeIntegrationManager.one(integration.id).one('optimizenow').get()
                 .then(function () {
                         AlertService.replaceAlerts({
                             type: 'error',
