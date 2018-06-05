@@ -36,7 +36,7 @@
                 .then(function () {
                         if (integration.optimizationAlerts === "notifyMeBeforeMakingChange") {
                             AlertService.replaceAlerts({
-                                type: 'error',
+                                type: 'success',
                                 message: $translate.instant('AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_NOW_MESSAGE')
                             });
                         }else {
