@@ -30,6 +30,7 @@
             isShow: false,
             content: ''
         };
+
         $scope.datePickerOpts = {
             maxDate: moment().endOf('day'),
             ranges: {

@@ -212,7 +212,7 @@
             angular.forEach(showFields, function (field) {
                 var oneSeries = {
                     name: seriesLabel + ' ' + getLabelForChart(field, $scope.dashboardType),
-                    data: showData[field],
+                    data: showData[field] ? showData[field] : [],
                     connectNulls: true,
                     color: DASHBOARD_COLOR[index],
                     visible: _getVisibleForField(field),
