@@ -1392,6 +1392,7 @@
                 "NEED_CONFIRMED": "Need to confirm",
                 "EDIT_INTEGRATION": "Edit Optimization Integration",
                 "OPTIMIZE_NOW": "Optimize now",
+                "OPTIMIZATION_UPDATED": "The optimization has been updated",
                 "VIEW_ALERT": "View Alert",
                 "DELETE_INTEGRATION": "Delete Optimization Integration",
                 "NEW_INTEGRATION": "Assign New Optimization Integration",

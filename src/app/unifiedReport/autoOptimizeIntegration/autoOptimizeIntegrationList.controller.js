@@ -34,10 +34,18 @@
         function optimizeNow(integration) {
             AutoOptimizeIntegrationManager.one(integration.id).one('optimizenow').get()
                 .then(function () {
-                        AlertService.replaceAlerts({
-                            type: 'error',
-                            message: $translate.instant('AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_NOW_MESSAGE')
-                        });
+                        if (integration.optimizationAlerts === "notifyMeBeforeMakingChange") {
+                            AlertService.replaceAlerts({
+                                type: 'error',
+                                message: $translate.instant('AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_NOW_MESSAGE')
+                            });
+                        }else {
+                            AlertService.replaceAlerts({
+                                type: 'error',
+                                message: $translate.instant('AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZATION_UPDATED')
+                            });
+                        }
+
                     },
                     function (err) {
                         AlertService.replaceAlerts({
