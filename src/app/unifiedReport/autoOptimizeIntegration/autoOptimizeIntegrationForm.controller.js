@@ -234,8 +234,6 @@
 
         /* ==========LOCAL FUNCTIONS============ */
         function _filterPlatformIntegrationByModule(platformIntegrations) {
-            console.log($scope.autoOptimizeIntegration.optimizationRule.publisher.enabledModules);
-            console.log(platformIntegrations);
             return  _.filter(platformIntegrations, function(platformIntegration) {
                 return _.contains($scope.autoOptimizeIntegration.optimizationRule.publisher.enabledModules, platformIntegration.module)
             });

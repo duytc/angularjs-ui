@@ -1391,6 +1391,8 @@
                 "DE_CONFIRMED_ITEM": "Refuted",
                 "NEED_CONFIRMED": "Need to confirm",
                 "EDIT_INTEGRATION": "Edit Optimization Integration",
+                "OPTIMIZE_NOW": "Optimize now",
+                "OPTIMIZATION_UPDATED": "The optimization has been updated",
                 "VIEW_ALERT": "View Alert",
                 "DELETE_INTEGRATION": "Delete Optimization Integration",
                 "NEW_INTEGRATION": "Assign New Optimization Integration",
@@ -1467,7 +1469,8 @@
                 "IDENTIFIER_FIELDS_HELP_TEXT": "These fields are the different representations of the identifier",
                 "BACK_TO_LIST": "Back to Optimization Rules",
                 "VIDEO_PUBLISHERS": "Video Plublisher",
-                "WATERFALL_TAG": "Waterfall Tag"
+                "WATERFALL_TAG": "Waterfall Tag",
+                "OPTIMIZE_NOW_MESSAGE":"Please confirm update cache after calculating score process has been finished."
             }
         });
 })();
