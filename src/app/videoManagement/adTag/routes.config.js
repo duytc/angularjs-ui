@@ -83,29 +83,6 @@
                     },
                     videoPublishers: /* @ngInject */ function(VideoPublisherManager) {
                         return VideoPublisherManager.getList();
-                    },
-                    optimizeIntegrations: function (AutoOptimizeIntegrationManager) {
-                        return AutoOptimizeIntegrationManager.one().get()
-                            .then(function (autoOptimizeIntegrations) {
-                                autoOptimizeIntegrations = autoOptimizeIntegrations.plain();
-                                if (!angular.isArray(autoOptimizeIntegrations)) {
-                                    return [];
-                                }
-
-                                var autoOptimizeIntegrationsForPubvantagePlatform = [];
-                                angular.forEach(autoOptimizeIntegrations, function (autoOptimizeIntegration) {
-                                    if (!autoOptimizeIntegration
-                                        || !autoOptimizeIntegration.platformIntegration
-                                        || autoOptimizeIntegration.platformIntegration !== 'pubvantage-video'
-                                    ) {
-                                        return;
-                                    }
-
-                                    autoOptimizeIntegrationsForPubvantagePlatform.push(autoOptimizeIntegration);
-                                });
-
-                                return autoOptimizeIntegrationsForPubvantagePlatform;
-                            });
                     }
                 },
                 customResolve: {
@@ -114,6 +91,59 @@
                             return adminUserManager.getList({ filter: 'publisher' }).then(function (users) {
                                 return users.plain();
                             });
+                        },
+                        optimizeIntegrations: function (AutoOptimizeIntegrationManager) {
+                            return AutoOptimizeIntegrationManager.one().get()
+                                .then(function (autoOptimizeIntegrations) {
+                                    autoOptimizeIntegrations = autoOptimizeIntegrations.plain();
+                                    if (!angular.isArray(autoOptimizeIntegrations)) {
+                                        return [];
+                                    }
+
+                                    var autoOptimizeIntegrationsForPubvantagePlatform = [];
+                                    angular.forEach(autoOptimizeIntegrations, function (autoOptimizeIntegration) {
+                                        if (!autoOptimizeIntegration
+                                            || !autoOptimizeIntegration.platformIntegration
+                                            || autoOptimizeIntegration.platformIntegration !== 'pubvantage-video'
+                                        ) {
+                                            return;
+                                        }
+
+                                        autoOptimizeIntegrationsForPubvantagePlatform.push(autoOptimizeIntegration);
+                                    });
+
+                                    return autoOptimizeIntegrationsForPubvantagePlatform;
+                                });
+                        }
+                    },
+                    publisher: {
+                        optimizeIntegrations: function (AutoOptimizeIntegrationManager, $stateParams, userSession, USER_MODULES) {
+                            // if not admin, make sure have right access to unified report api
+                            if (userSession.enabledModules.indexOf(USER_MODULES.unifiedReport) < 0) {
+                                return [];
+                            }
+
+                            return AutoOptimizeIntegrationManager.one().get()
+                                .then(function (autoOptimizeIntegrations) {
+                                    autoOptimizeIntegrations = autoOptimizeIntegrations.plain();
+                                    if (!angular.isArray(autoOptimizeIntegrations)) {
+                                        return [];
+                                    }
+
+                                    var autoOptimizeIntegrationsForPubvantagePlatform = [];
+                                    angular.forEach(autoOptimizeIntegrations, function (autoOptimizeIntegration) {
+                                        if (!autoOptimizeIntegration
+                                            || !autoOptimizeIntegration.platformIntegration
+                                            || autoOptimizeIntegration.platformIntegration !== 'pubvantage-video'
+                                        ) {
+                                            return;
+                                        }
+
+                                        autoOptimizeIntegrationsForPubvantagePlatform.push(autoOptimizeIntegration);
+                                    });
+
+                                    return autoOptimizeIntegrationsForPubvantagePlatform;
+                                });
                         }
                     }
                 },
@@ -138,29 +168,63 @@
                     },
                     publishers: function() {
                         return null;
-                    },
-                    optimizeIntegrations: function (AutoOptimizeIntegrationManager) {
-                        return AutoOptimizeIntegrationManager.one().get()
-                            .then(function (autoOptimizeIntegrations) {
-                                autoOptimizeIntegrations = autoOptimizeIntegrations.plain();
-                                if (!angular.isArray(autoOptimizeIntegrations)) {
-                                    return [];
-                                }
-
-                                var autoOptimizeIntegrationsForPubvantagePlatform = [];
-                                angular.forEach(autoOptimizeIntegrations, function (autoOptimizeIntegration) {
-                                    if (!autoOptimizeIntegration
-                                        || !autoOptimizeIntegration.platformIntegration
-                                        || autoOptimizeIntegration.platformIntegration !== 'pubvantage-video'
-                                    ) {
-                                        return;
+                    }
+                },
+                customResolve: {
+                    admin: {
+                        optimizeIntegrations: function (AutoOptimizeIntegrationManager) {
+                            return AutoOptimizeIntegrationManager.one().get()
+                                .then(function (autoOptimizeIntegrations) {
+                                    autoOptimizeIntegrations = autoOptimizeIntegrations.plain();
+                                    if (!angular.isArray(autoOptimizeIntegrations)) {
+                                        return [];
                                     }
 
-                                    autoOptimizeIntegrationsForPubvantagePlatform.push(autoOptimizeIntegration);
-                                });
+                                    var autoOptimizeIntegrationsForPubvantagePlatform = [];
+                                    angular.forEach(autoOptimizeIntegrations, function (autoOptimizeIntegration) {
+                                        if (!autoOptimizeIntegration
+                                            || !autoOptimizeIntegration.platformIntegration
+                                            || autoOptimizeIntegration.platformIntegration !== 'pubvantage-video'
+                                        ) {
+                                            return;
+                                        }
 
-                                return autoOptimizeIntegrationsForPubvantagePlatform;
-                            });
+                                        autoOptimizeIntegrationsForPubvantagePlatform.push(autoOptimizeIntegration);
+                                    });
+
+                                    return autoOptimizeIntegrationsForPubvantagePlatform;
+                                });
+                        }
+                    },
+                    publisher: {
+                        optimizeIntegrations: function (AutoOptimizeIntegrationManager, $stateParams, userSession, USER_MODULES) {
+                            // if not admin, make sure have right access to unified report api
+                            if (userSession.enabledModules.indexOf(USER_MODULES.unifiedReport) < 0) {
+                                return [];
+                            }
+
+                            return AutoOptimizeIntegrationManager.one().get()
+                                .then(function (autoOptimizeIntegrations) {
+                                    autoOptimizeIntegrations = autoOptimizeIntegrations.plain();
+                                    if (!angular.isArray(autoOptimizeIntegrations)) {
+                                        return [];
+                                    }
+
+                                    var autoOptimizeIntegrationsForPubvantagePlatform = [];
+                                    angular.forEach(autoOptimizeIntegrations, function (autoOptimizeIntegration) {
+                                        if (!autoOptimizeIntegration
+                                            || !autoOptimizeIntegration.platformIntegration
+                                            || autoOptimizeIntegration.platformIntegration !== 'pubvantage-video'
+                                        ) {
+                                            return;
+                                        }
+
+                                        autoOptimizeIntegrationsForPubvantagePlatform.push(autoOptimizeIntegration);
+                                    });
+
+                                    return autoOptimizeIntegrationsForPubvantagePlatform;
+                                });
+                        }
                     }
                 },
                 ncyBreadcrumb: {
