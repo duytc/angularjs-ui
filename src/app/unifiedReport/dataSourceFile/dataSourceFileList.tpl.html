@@ -86,6 +86,7 @@
                                 <li ng-class="dataSource.enable == false ? 'disabled' : ''"><a ng-click="replayData(item)">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.REPLAY_DATA' | translate }}</a></li>
                                 <li class="divider" ng-if="item.receivedVia == 'email'"></li>
                                 <li><a ng-click="viewDetails(item)">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.VIEW_DETAILS' | translate }}</a></li>
+                                <li><a ng-click="forceDetectDateRage(item)">{{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.FORCE_DATE_RANGE_DETECTION' | translate }}</a></li>
                                 <li class="divider"></li>
                                 <li><a ng-click="confirmDeletion(item)"> {{ 'UNIFIED_REPORT_DATA_SOURCE_ENTRY_MODULE.DELETE' | translate }}</a></li>
                             </ul>

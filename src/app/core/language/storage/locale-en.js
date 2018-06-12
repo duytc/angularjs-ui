@@ -1250,6 +1250,7 @@
                 "DOWNLOAD_DATA": "Download Data",
                 "REPLAY_DATA": "Reload Data",
                 "VIEW_DETAILS": "View Metadata",
+                "FORCE_DATE_RANGE_DETECTION": "Force Detect Date Range",
                 "RECEIVED_DATE": "Date Received",
                 "FILENAME": "File Name",
                 "RESOURCE_NAME": "Resource Name",

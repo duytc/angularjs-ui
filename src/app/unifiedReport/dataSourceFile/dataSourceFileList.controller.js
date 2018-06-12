@@ -81,6 +81,7 @@
         $scope.backToListDataSource = backToListDataSource;
         $scope.replayData = replayData;
         $scope.viewDetails = viewDetails;
+        $scope.forceDetectDateRage = forceDetectDateRage;
         $scope.setItemForPager = setItemForPager;
         $scope.noneSelect = noneSelect;
         $scope.selectAllInPages = selectAllInPages;
@@ -273,6 +274,29 @@
                     }
                 }
             });
+        }
+
+        function forceDetectDateRage(dataSourceFile) {
+            UnifiedReportDataSourceFileManager.one(dataSourceFile.id).one('forcedaterangedetection').post()
+                .then(function () {
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The file ' + dataSourceFile.fileName + ' was forced detecting date range'
+                    });
+                })
+                .catch(function (response) {
+                    if (!!response.data.message) {
+                        AlertService.replaceAlerts({
+                            type: 'error',
+                            message: response.data.message
+                        });
+                    }
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The file ' + dataSourceFile.fileName + ' could not be forced detecting date range'
+                    });
+                })
         }
 
         function replayData(dataSourceFile) {
