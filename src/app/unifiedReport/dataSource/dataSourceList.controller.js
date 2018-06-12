@@ -45,6 +45,7 @@
         $scope.showPagination = showPagination;
         $scope.deleteDataSource = deleteDataSource;
         $scope.getAPIKey = getAPIKey;
+        $scope.forceDetectDateRage = forceDetectDateRage;
         $scope.getUnifiedReportEmail = getUnifiedReportEmail;
         $scope.viewBackfillHistory = viewBackfillHistory;
         $scope.changeBackfill = changeBackfill;
@@ -230,6 +231,29 @@
                     }
                 }
             });
+        }
+
+        function forceDetectDateRage($dataSource) {
+            UnifiedReportDataSourceManager.one($dataSource.id).one('forcedaterangedetection').post()
+                .then(function () {
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The file ' + $dataSource.name + ' was forced detecting date range'
+                    });
+                })
+                .catch(function (response) {
+                    if (!!response.data.message) {
+                        AlertService.replaceAlerts({
+                            type: 'error',
+                            message: response.data.message
+                        });
+                    }
+
+                    AlertService.replaceAlerts({
+                        type: 'success',
+                        message: 'The file ' + $dataSource.name + ' could not be forced detecting date range'
+                    });
+                })
         }
 
         function getUnifiedReportEmail(dataSource){

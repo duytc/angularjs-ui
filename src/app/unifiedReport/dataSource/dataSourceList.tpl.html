@@ -60,6 +60,8 @@
                                 <li class="divider"></li>
                                 <li><a ui-sref="^.edit({ id: item.id })">{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.EDIT' | translate }}</a></li>
                                 <li class="divider" ng-if="!item.dataSourceIntegrations.length"></li>
+                                <li ng-click="forceDetectDateRage(item)"><a>{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.FORCE_DATE_RANGE_DETECTION' | translate }}</a></li>
+                                <li class="divider" ng-if="!item.dataSourceIntegrations.length"></li>
                                 <li ng-if="!item.dataSourceIntegrations.length"><a ng-click="confirmClick('Are you sure want to delete this data source?') && deleteDataSource(item.id)" confirm-click> {{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.DELETE' | translate }}</a></li>
                             </ul>
                         </div>

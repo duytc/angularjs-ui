@@ -1190,6 +1190,7 @@
                 "VIEW_BACKFILL_HISTORY": "View Backfill History",
                 "SCHEDULE_BACKFILL": "Schedule Backfill",
                 "EDIT": "Edit",
+                "FORCE_DATE_RANGE_DETECTION": "Force Detect Date Range",
                 "KEY": "Key",
                 "DELETE": "Delete",
                 "CONFIRM_DELETE_DATA_SOURCE": "Are you sure that you want to delete this data source?",
