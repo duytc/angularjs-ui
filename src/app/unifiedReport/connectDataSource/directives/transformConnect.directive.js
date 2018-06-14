@@ -17,6 +17,7 @@
                 totalDimensionsMetrics: '=',
                 dimensionsMetrics: '=',
                 dataSourceFields: '=listDataSourceFields',
+                dataSourceFieldsOriginal: '=listDataSourceFields',
                 reorderTransformsAllowed: '=',
                 temporaryFields: '='
             },
@@ -111,6 +112,8 @@
                         _updateTotalField();
                         _removeFieldInTransform();
                     }, true);
+
+                    scope.$on('dataSourceFields-changed', _listenDataSourceFieldsChanged);
 
                     scope.sortableOptions = {
                         disabled: false,
@@ -217,7 +220,11 @@
                     scope.filterMapFieldLeft = filterMapFieldLeft;
                     scope.filterAggregationForGroupSubSet = filterAggregationForGroupSubSet;
                     scope.filterAggregationFields = filterAggregationFields;
-                    
+
+                    function _listenDataSourceFieldsChanged(event, data) {
+                        scope.dataSourceFields = connectedDataSourceService.inputFormatDataSourceField(data);
+                    }
+
                     function filterAggregationFields(transform) {
                         return function (field) {
                             for(var i in transform.fields) {
@@ -475,7 +482,7 @@
 
                         return query;
                     }
-                    
+
                     function addDefaultValue(field) {
                         field.defaultValues = angular.isArray(field.defaultValues) ? field.defaultValues : [];
 
@@ -1540,7 +1547,7 @@
 
                         return fields;
                     }
-                    
+
                     function _getAllFieldInAugmentationLeftSide() {
                         var fields = [];
 

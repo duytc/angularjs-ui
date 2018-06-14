@@ -120,17 +120,21 @@
                         if($scope.dataSourceFields.indexOf(key) == -1) {
                             delete $scope.connectDataSource.mapFields[key]
                         }
-                    })
+                    });
+
+                    $scope.$broadcast('dataSourceFields-changed', $scope.dataSourceFields);
                 }
             }
 
+            //TODO Don't know why need to reset expression
+/*
             angular.forEach($scope.connectDataSource.transforms, function (transform) {
                 if(transform.type == 'addCalculatedField' || transform.type == 'addConcatenatedField') {
                     angular.forEach(transform.fields, function (field) {
                         field.expression = null
                     });
                 }
-            })
+            })*/
         };
 
         updateConnectedDataSourceForm();
