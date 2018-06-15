@@ -6,7 +6,7 @@
     ;
 
     function DashboardChart($scope, $filter, Auth, DASHBOARD_TYPE_JSON, COMPARE_TYPE, LINE_CHART_CONFIG,DESC,ASC, HOUR_EXTENSION,
-                            DISPLAY_SHOW_FIELDS, VIDEO_SHOW_FIELDS, VIDEO_SHOW_FIELDS_PUBLISHER,DISPLAY_SHOW_FIELDS_PUBLISHER, DASHBOARD_COLOR, NewDashboardUtil, CHART_DASH_TYPES, DEFAULT_DATE_FORMAT) {
+                            DISPLAY_SHOW_FIELDS, VIDEO_SHOW_FIELDS, VIDEO_SHOW_FIELDS_PUBLISHER,DISPLAY_SHOW_FIELDS_PUBLISHER, DASHBOARD_COLOR, NewDashboardUtil, CHART_DASH_TYPES, DEFAULT_DATE_OUTPUT_FORMAT) {
         const CURRENT_LABEL = 'Current';
         const HISTORY_LABEL = 'Historical';
         const HOUR = 'hour';
@@ -160,7 +160,7 @@
                 return false;
             }
 
-            return moment(dateValue, inputDateFormat).format(DEFAULT_DATE_FORMAT);
+            return moment(dateValue, inputDateFormat).format(DEFAULT_DATE_OUTPUT_FORMAT);
         }
 
         /**
