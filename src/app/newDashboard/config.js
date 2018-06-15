@@ -19,11 +19,11 @@
                     type: 'line'
                 },
                 title: {
-                    text: 'Current and Historical Statistics Comparison Chart',
+                    text: null,
                     margin: 20
                 },
                 subtitle: {
-                    text: 'Solid lines is for Current statistics with date/time on top and dot lines is for Historical statistics with date/time on bottom',
+                    text: null,
                     align: 'center'
                 },
                 plotOptions: {
