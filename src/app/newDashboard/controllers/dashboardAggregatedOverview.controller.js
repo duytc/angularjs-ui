@@ -105,7 +105,6 @@
         }
 
         function getLabelByComparisonType(comparisonType, isCurrentNotHistory, dateRange) {
-            var currentOrHistoryText = isCurrentNotHistory ? $translate.instant('NEW_DASHBOARD.CURRENT') : $translate.instant('NEW_DASHBOARD.HISTORY');
             var currentOrLastText = isCurrentNotHistory ? $translate.instant('NEW_DASHBOARD.CURRENT') : $translate.instant('NEW_DASHBOARD.LAST');
 
             if (comparisonType === COMPARE_TYPE['day']) {
@@ -115,12 +114,15 @@
                     return getPreviousDay();
                 }
             }
+
             if (comparisonType === COMPARE_TYPE['custom']) {
-                return currentOrHistoryText + ' (' + dateRangeString(dateRange) + ')';
+                return dateRange.startDate.format(DEFAULT_DATE_OUTPUT_FORMAT) + ' - ' + dateRange.endDate.format(DEFAULT_DATE_OUTPUT_FORMAT);
             }
+
             if (comparisonType === COMPARE_TYPE['yesterday']) {
                 return $translate.instant('NEW_DASHBOARD.YESTERDAY');
             }
+
             return currentOrLastText + ' ' + $scope.compareTypeData.label;
         }
 
@@ -281,6 +283,12 @@
             $scope.formData.comparisionData = [];
             // Build fake data for comparison table so that table still appears
             $scope.formData.comparisonTableData = null;
+
+            // comparisonCustomDateRange
+            $scope.comparisonCustomDateRange = {
+                currentDateRange: $scope.formData.currentDateRange,
+                historyDateRange: $scope.formData.historyDateRange
+            };
         }
 
         function isYesterdayType() {

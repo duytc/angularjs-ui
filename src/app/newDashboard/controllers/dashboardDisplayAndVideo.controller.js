@@ -59,6 +59,10 @@
                     types: {}
                 }
             },
+            comparisonCustomDateRange: {
+                currentDateRange: null,
+                historyDateRange: null
+            },
             reportData: null,
             reportView: [],
             publisher: $scope.publisher

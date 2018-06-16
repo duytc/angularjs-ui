@@ -9,6 +9,7 @@
                 // bind properties
                 dashboardType: '=',
                 dateRange: '=',
+                comparisonCustomDateRange: '=',
                 overviewData: '=',
                 chartData: '=',
                 reportView: '=',

@@ -164,9 +164,12 @@
             }
 
             if ($scope.compareTypeData.compareType === COMPARE_TYPE['custom']) {
+                var current = $scope.comparisonCustomDateRange.currentDateRange.startDate.format(DEFAULT_DATE_OUTPUT_FORMAT) + ' - ' + $scope.comparisonCustomDateRange.currentDateRange.endDate.format(DEFAULT_DATE_OUTPUT_FORMAT);
+                var history = $scope.comparisonCustomDateRange.historyDateRange.startDate.format(DEFAULT_DATE_OUTPUT_FORMAT) + ' - ' + $scope.comparisonCustomDateRange.historyDateRange.endDate.format(DEFAULT_DATE_OUTPUT_FORMAT);
+
                 return (reportLabel === 'current')
-                    ? NewDashboardUtil.getShowLabel(field) + '(' + 'Current' + ')'
-                    : NewDashboardUtil.getShowLabel(field) + '(' + 'Historical' + ')';
+                    ? NewDashboardUtil.getShowLabel(field) + '(' + current + ')'
+                    : NewDashboardUtil.getShowLabel(field) + '(' + history + ')';
             }
         }
 
