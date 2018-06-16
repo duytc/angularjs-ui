@@ -188,9 +188,15 @@
         function _onComparisionTypeDataChange(newComparisonType) {
             resetTopPerformerData();
 
-            if(newComparisonType === 'day-over-day') return;
+            if (newComparisonType === 'day-over-day') return;
 
-            var dateRange = comparisonDateRangeCurrent[newComparisonType];
+            var dateRange = (newComparisonType === 'custom')
+                ? {
+                    startDate: DateFormatter.getFormattedDate($scope.comparisonCustomDateRange.currentDateRange.startDate),
+                    endDate : DateFormatter.getFormattedDate($scope.comparisonCustomDateRange.currentDateRange.endDate)
+                }
+                : comparisonDateRangeCurrent[newComparisonType];
+
             _updateToPerformanceData(dateRange);
         }
 
