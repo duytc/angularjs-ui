@@ -283,12 +283,6 @@
             $scope.formData.comparisionData = [];
             // Build fake data for comparison table so that table still appears
             $scope.formData.comparisonTableData = null;
-
-            // comparisonCustomDateRange
-            $scope.comparisonCustomDateRange = {
-                currentDateRange: $scope.formData.currentDateRange,
-                historyDateRange: $scope.formData.historyDateRange
-            };
         }
 
         function isYesterdayType() {
@@ -300,6 +294,7 @@
                 //return if mode not change
                 return;
             }
+
             resetFormData();
 
             $scope.compareTypeData.compareType = COMPARE_TYPE[mode];
@@ -313,6 +308,13 @@
 
         function getCustomComparisonData() {
             resetFormData();
+
+            // update comparisonCustomDateRange
+            $scope.comparisonCustomDateRange = {
+                currentDateRange: $scope.formData.currentDateRange,
+                historyDateRange: $scope.formData.historyDateRange
+            };
+
             $scope.watchManager.clickGetReport = !$scope.watchManager.clickGetReport;
             var customDateRange = extractCustomDateRange();
             if (customDateRange) {

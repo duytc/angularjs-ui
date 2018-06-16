@@ -117,6 +117,8 @@
         /* watch dateRange changed, then re-get data for display or video or unified report */
         $scope.$watch('dateRange', _onDateRangeChange);
 
+        $scope.$watch('comparisonCustomDateRange', _onComparisonCustomDateRange);
+
         // $scope.$watch('comparisionData', _onComparisionDataChange);
 
         $scope.$watch('compareTypeData.compareType', _onComparisionTypeDataChange);
@@ -237,6 +239,31 @@
 
             if (isShowForVideo()) {
                 _updateTopPerformersForVideo();
+            }
+        }
+
+        function _onComparisonCustomDateRange(newValue, oldValue, scope) {
+            if (newValue && newValue.currentDateRange && newValue.currentDateRange.startDate && newValue.currentDateRange.endDate
+                && oldValue && oldValue.currentDateRange && oldValue.currentDateRange.startDate && oldValue.currentDateRange.endDate
+                && !NewDashboardUtil.isDifferentDate(newValue.currentDateRange.startDate, oldValue.currentDateRange.endDate)) {
+                return; // ignore if date range not change. Case: move cursor in date range picker value
+            }
+
+            if ($scope.compareTypeData.compareType !== 'custom') {
+                return;
+            }
+
+            var dateRange = {
+                    startDate: DateFormatter.getFormattedDate($scope.comparisonCustomDateRange.currentDateRange.startDate),
+                    endDate : DateFormatter.getFormattedDate($scope.comparisonCustomDateRange.currentDateRange.endDate)
+                };
+
+            if (isShowForDisplay()) {
+                _updateTopPerformersForDisplay(dateRange);
+            }
+
+            if (isShowForVideo()) {
+                _updateTopPerformersForVideo(dateRange);
             }
         }
 
