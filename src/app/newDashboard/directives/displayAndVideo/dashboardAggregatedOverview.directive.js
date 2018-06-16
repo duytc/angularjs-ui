@@ -19,6 +19,7 @@
                 dateRange: "=",
                 notifyComparisonDataChange: '=',
                 watchManager: '=',
+                comparisonCustomDateRange: '=',
                 rootWatchManager: '='
             },
             restrict: 'AE',

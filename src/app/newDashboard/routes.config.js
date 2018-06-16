@@ -26,7 +26,7 @@
                 },
                 customResolve: {},
                 ncyBreadcrumb: {
-                    label: 'New Dashboard'
+                    label: 'Dashboard'
                 }
             })
         ;

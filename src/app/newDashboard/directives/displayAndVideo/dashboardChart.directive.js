@@ -16,6 +16,7 @@
                 publisher: "=",
                 chartFollow: "=",
                 compareTypeData: "=",
+                comparisonCustomDateRange: '=',
                 watchManager: "="
             },
             restrict: 'AE',
