@@ -5,7 +5,7 @@
         .controller('AdTagList', AdTagList)
     ;
 
-    function AdTagList($scope, _, $stateParams, $translate, $q, $state, $modal, adTags, adSlot, segments, AdTagManager, AdSlotAdTagLibrariesManager, AdTagLibrariesManager, DisplayAdSlotManager, AutoOptimizeIntegrationManager, AlertService, historyStorage, userSession, USER_MODULES, HISTORY_TYPE_PATH, AD_TYPES, TYPE_AD_SLOT, COUNTRY_LIST) {
+    function AdTagList($scope, _, $stateParams, $translate, $q, $state, $modal, adTags, adSlot, segments, AdTagManager, AdSlotAdTagLibrariesManager, AdTagLibrariesManager, DisplayAdSlotManager, AutoOptimizeIntegrationManager, AlertService, historyStorage, userSession, USER_MODULES, HISTORY_TYPE_PATH, AD_TYPES, TYPE_AD_SLOT, COUNTRY_LIST, $timeout) {
         $scope.adTags = adTags;
         $scope.adSlot = adSlot;
 
@@ -105,6 +105,8 @@
         $scope.getMoreSegmentDomains = getMoreSegmentDomains;
         $scope.searchSegmentDomain = searchSegmentDomain;
 
+        $scope.optimizeNow = optimizeNow;
+
         $scope.sortableGroupOptions = {
             disabled: true,
             forcePlaceholderSize: true,
@@ -121,6 +123,37 @@
             stop: _stop,
             start: _start
         };
+
+        function optimizeNow() {
+            AutoOptimizeIntegrationManager.one(adSlot.optimizationIntegration).get()
+                .then(function (integration) {
+                    AutoOptimizeIntegrationManager.one(integration.id).one('optimizenow').get()
+                        .then(function () {
+                                if (integration.optimizationAlerts === "notifyMeBeforeMakingChange") {
+                                    AlertService.replaceAlerts({
+                                        type: 'success',
+                                        message: $translate.instant('AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_NOW_MESSAGE')
+                                    });
+                                } else {
+                                    AlertService.replaceAlerts({
+                                        type: 'success',
+                                        message: $translate.instant('AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZATION_UPDATED')
+                                    });
+                                    if ($scope.enableShowOptimizedPositions) {
+                                        $timeout(function () {
+                                            _getOptimizedTags();
+                                        }, 2000);
+                                    }
+                                }
+                            },
+                            function (err) {
+                                AlertService.replaceAlerts({
+                                    type: 'error',
+                                    message: err.data.message
+                                });
+                            })
+                });
+        }
 
         $scope.unLinkAdTag = function (adTag) {
             var Manager = AdTagManager.one(adTag.id).one('unlink').patch();

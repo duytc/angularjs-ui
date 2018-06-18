@@ -7,6 +7,8 @@
                 </div>
                 <div id="adTagOptions-sm" class="col col-md-10 col-sm-12" style="padding-top: 5px; text-transform: none">
                     <div style="display: inline-block" class="pull-right">
+                        <!--optimize now-->
+                        <button class="btn btn-primary pd-h-5" ng-if="isAutoOptimize() && adSlot.optimizationIntegration" ng-click="optimizeNow()">{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_NOW' | translate }}</button>
                         <!--label show optimized positions-->
                         <label class="ui-checkbox enable-optimization" ng-if="isAutoOptimize()"
                                data-toggle="tooltip" title="{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.GENERAL_MESSAGE_HELP' | translate }}">
@@ -87,6 +89,10 @@
                         <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
                     </button>
                     <ul class="dropdown-menu pull-right" role="menu" style="min-width: 220px">
+                        <!--optimize now-->
+                        <li>
+                            <a class="" ng-if="isAutoOptimize()" ng-click="optimizeNow() && adSlot.optimizationIntegration">{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_NOW' | translate }}</a>
+                        </li>
                         <!--label show optimized positions-->
                         <li ng-if="isAutoOptimize()">
                             <input type="checkbox" ng-checked="enableShowOptimizedPositions" ng-click="showOptimizedPositions()" class="list-item-mobile">
