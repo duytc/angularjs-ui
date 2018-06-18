@@ -134,7 +134,7 @@
                                         type: 'success',
                                         message: $translate.instant('AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_NOW_MESSAGE')
                                     });
-                                }else {
+                                } else {
                                     AlertService.replaceAlerts({
                                         type: 'success',
                                         message: $translate.instant('AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZATION_UPDATED')

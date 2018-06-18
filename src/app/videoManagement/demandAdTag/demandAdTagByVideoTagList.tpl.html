@@ -7,6 +7,11 @@
                 </div>
                 <div id="adTagOptions-sm" class="col col-md-10 col-sm-12" style="padding-top: 5px; text-transform: none">
                     <div style="display: inline-block" class="pull-right">
+                        <!--optimize now-->
+                        <button class="btn btn-primary pd-h-5"
+                                ng-if="isAutoOptimize() && videoWaterfallTag.optimizationIntegration"
+                                ng-click="optimizeNow()">
+                            {{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_NOW' | translate }}</button>
                         <!--label show optimized positions-->
                         <label class="ui-checkbox enable-optimization" ng-if="isAutoOptimize()"
                                data-toggle="tooltip" title="{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.GENERAL_MESSAGE_HELP' | translate }}">
@@ -34,6 +39,11 @@
                 <div class="btn-group btnGrouped col col-xs-2" dropdown>
                     <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                     <ul class="dropdown-menu pull-right" role="menu">
+                        <!--optimize now-->
+                        <li>
+                            <a class="" ng-if="isAutoOptimize()" ng-click="optimizeNow() && videoWaterfallTag.optimizationIntegration">
+                                {{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_NOW' | translate }}</a>
+                        </li>
                         <li ng-if="isAutoOptimize()"><a ng-click="showOptimizedPositions()"><span class="fa" ng-class="enableShowOptimizedPositions ? 'fa-check-square' : 'fa-square'"></span> {{ 'AD_TAG_MODULE.ENABLE_SHOW_OPTIMIZED_POSITIONS' | translate }}</a></li>
                         <li><a ng-click="enableDragDropAdTag(enableDragDrop)"><span class="fa" ng-class="enableDragDrop ? 'fa-check-square' : 'fa-square'"></span> {{ 'AD_TAG_MODULE.ENABLE_DRAG_DROP' | translate }}</a></li>
                         <li><a ng-click="backToListVideoTag()">{{ 'AD_SLOT_MODULE.BACK_TO_AD_SLOT_LIST' | translate }}</a></li>

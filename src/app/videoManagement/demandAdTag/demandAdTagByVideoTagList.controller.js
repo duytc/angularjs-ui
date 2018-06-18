@@ -5,7 +5,7 @@
         .controller('VideoDemandAdTagList', VideoDemandAdTagList)
     ;
 
-    function VideoDemandAdTagList($scope, $filter, $q, _, $modal, $translate, videoWaterfallTagItems, videoWaterfallTag, VideoDemandAdTagManager, VideoAdTagItemManager, VideoAdTagManager, dataService, AlertService, dateUtil, historyStorage, HISTORY_TYPE_PATH, STRATEGY_OPTION, DIMENSIONS_OPTIONS_VIDEO_REPORT, API_BASE_URL) {
+    function VideoDemandAdTagList($scope, $filter, $q, _, $modal, $translate, videoWaterfallTagItems, videoWaterfallTag, VideoDemandAdTagManager, VideoAdTagItemManager, VideoAdTagManager, dataService, AlertService, dateUtil, historyStorage, HISTORY_TYPE_PATH, STRATEGY_OPTION, DIMENSIONS_OPTIONS_VIDEO_REPORT, API_BASE_URL, $timeout) {
         $scope.videoWaterfallTagItems = videoWaterfallTagItems;
         updatePositionForVideoAdTagItem();
 
@@ -64,6 +64,39 @@
         $scope.showVastTagVast = showVastTagVast;
         $scope.isAutoOptimize = isAutoOptimize;
         $scope.showOptimizedPositions = showOptimizedPositions;
+        $scope.optimizeNow = optimizeNow;
+
+
+        function optimizeNow(videoWaterfallTag) {
+            AutoOptimizeIntegrationManager.one(videoWaterfallTag.optimizationIntegration).get()
+                .then(function (integration) {
+                    AutoOptimizeIntegrationManager.one(integration.id).one('optimizenow').get()
+                        .then(function () {
+                                if (integration.optimizationAlerts === "notifyMeBeforeMakingChange") {
+                                    AlertService.replaceAlerts({
+                                        type: 'success',
+                                        message: $translate.instant('AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_NOW_MESSAGE')
+                                    });
+                                } else {
+                                    AlertService.replaceAlerts({
+                                        type: 'success',
+                                        message: $translate.instant('AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZATION_UPDATED')
+                                    });
+                                    if ($scope.enableShowOptimizedPositions) {
+                                        $timeout(function () {
+                                            _getOptimizedTags();
+                                        }, 2000);
+                                    }
+                                }
+                            },
+                            function (err) {
+                                AlertService.replaceAlerts({
+                                    type: 'error',
+                                    message: err.data.message
+                                });
+                            })
+                });
+        }
 
         function isAutoOptimize() {
             return videoWaterfallTag.autoOptimize &&
