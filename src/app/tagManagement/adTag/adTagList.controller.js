@@ -139,6 +139,7 @@
                                         type: 'success',
                                         message: $translate.instant('AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZATION_UPDATED')
                                     });
+                                    _getOptimizedTags();
                                 }
                             },
                             function (err) {
