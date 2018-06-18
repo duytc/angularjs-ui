@@ -5,7 +5,8 @@
         .controller('VideoDemandAdTagList', VideoDemandAdTagList)
     ;
 
-    function VideoDemandAdTagList($scope, $filter, $q, _, $modal, $translate, videoWaterfallTagItems, videoWaterfallTag, VideoDemandAdTagManager, VideoAdTagItemManager, VideoAdTagManager, dataService, AlertService, dateUtil, historyStorage, HISTORY_TYPE_PATH, STRATEGY_OPTION, DIMENSIONS_OPTIONS_VIDEO_REPORT, API_BASE_URL, $timeout) {
+    function VideoDemandAdTagList($scope, $filter, $q, _, $modal, $translate, videoWaterfallTagItems, videoWaterfallTag, VideoDemandAdTagManager, VideoAdTagItemManager, VideoAdTagManager, dataService, AlertService, dateUtil, historyStorage, HISTORY_TYPE_PATH, STRATEGY_OPTION, DIMENSIONS_OPTIONS_VIDEO_REPORT, API_BASE_URL, $timeout, AutoOptimizeIntegrationManager) {
+        $scope.videoWaterfallTag = videoWaterfallTag;
         $scope.videoWaterfallTagItems = videoWaterfallTagItems;
         updatePositionForVideoAdTagItem();
 
