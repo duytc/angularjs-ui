@@ -139,7 +139,9 @@
                                         type: 'success',
                                         message: $translate.instant('AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZATION_UPDATED')
                                     });
-                                    _getOptimizedTags();
+                                    if($scope.enableShowOptimizedPositions){
+                                        _getOptimizedTags();
+                                    }
                                 }
                             },
                             function (err) {
