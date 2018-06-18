@@ -68,7 +68,7 @@
         $scope.optimizeNow = optimizeNow;
 
 
-        function optimizeNow(videoWaterfallTag) {
+        function optimizeNow() {
             AutoOptimizeIntegrationManager.one(videoWaterfallTag.optimizationIntegration).get()
                 .then(function (integration) {
                     AutoOptimizeIntegrationManager.one(integration.id).one('optimizenow').get()
