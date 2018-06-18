@@ -15,6 +15,7 @@
                 reportView: '=',
                 comparisionData: '=',
                 compareTypeData: '=',
+                comparisonCustomDateRange: '=',
                 watchManager: '='
             },
             restrict: 'AE',

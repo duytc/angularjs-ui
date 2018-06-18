@@ -10,7 +10,8 @@
                                    notify-comparison-data-change="notifyComparisonDataChange"
                                    watch-manager="watchManager"
                                    root-watch-manager="rootWatchManager"
-                                   date-range="dateRange">
+                                   date-range="dateRange"
+                                   comparison-custom-date-range="comparisonCustomDateRange">
     </dashboard-aggregated-overview>
 
     <div class="clearfix"></div>
@@ -19,7 +20,8 @@
                      compare-type-data="compareTypeData"
                      chart-follow="chartFollow"
                      watch-manager="watchManager"
-                     publisher="publisher">
+                     publisher="publisher"
+                     comparison-custom-date-range="comparisonCustomDateRange">
     </dashboard-chart>
 
     <dashboard-top-performance ng-hide="hideTopPerformer()"
@@ -28,7 +30,8 @@
                                comparision-data="comparisionData"
                                compare-type-data="compareTypeData"
                                watch-manager="watchManager"
-                               report-view="reportView">
+                               report-view="reportView"
+                               comparison-custom-date-range="comparisonCustomDateRange">
     </dashboard-top-performance>
 
 </div>

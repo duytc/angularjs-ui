@@ -6,9 +6,7 @@
     ;
 
     function DashboardChart($scope, $filter, Auth, DASHBOARD_TYPE_JSON, COMPARE_TYPE, LINE_CHART_CONFIG,DESC,ASC, HOUR_EXTENSION,
-                            DISPLAY_SHOW_FIELDS, VIDEO_SHOW_FIELDS, VIDEO_SHOW_FIELDS_PUBLISHER,DISPLAY_SHOW_FIELDS_PUBLISHER, DASHBOARD_COLOR, NewDashboardUtil, CHART_DASH_TYPES, DEFAULT_DATE_FORMAT) {
-        const CURRENT_LABEL = 'Current';
-        const HISTORY_LABEL = 'Historical';
+                            DISPLAY_SHOW_FIELDS, VIDEO_SHOW_FIELDS, VIDEO_SHOW_FIELDS_PUBLISHER,DISPLAY_SHOW_FIELDS_PUBLISHER, DASHBOARD_COLOR, NewDashboardUtil, CHART_DASH_TYPES, DEFAULT_DATE_OUTPUT_FORMAT) {
         const HOUR = 'hour';
 
         $scope.isAdmin = Auth.isAdmin();
@@ -18,6 +16,11 @@
         $scope.selectedDate = NewDashboardUtil.getStringDate($scope.chartData.dateRange);
 
         $scope.showChart = false;
+
+        $scope.dayValuesForDayOverDay = [
+            moment().format(DEFAULT_DATE_OUTPUT_FORMAT),
+            moment().subtract(1, 'days').format(DEFAULT_DATE_OUTPUT_FORMAT)
+        ];
 
         updateChart();
 
@@ -135,8 +138,47 @@
 
         }
 
-        function getLabelForChart(field, dashboardType) {
-            return NewDashboardUtil.getShowLabel(field);
+        function getLabelForChart(field, reportLabel) {
+            if ($scope.compareTypeData.compareType === COMPARE_TYPE['day']) {
+                return (reportLabel === 'current')
+                    ? NewDashboardUtil.getShowLabel(field) + '(' + getRecentDay() + ')'
+                    : NewDashboardUtil.getShowLabel(field) + '(' + getPreviousDay() + ')';
+            }
+
+            if ($scope.compareTypeData.compareType === COMPARE_TYPE['week']) {
+                return (reportLabel === 'current')
+                    ? NewDashboardUtil.getShowLabel(field) + '(' + 'Current Week' + ')'
+                    : NewDashboardUtil.getShowLabel(field) + '(' + 'Last Week' + ')';
+            }
+
+            if ($scope.compareTypeData.compareType === COMPARE_TYPE['month']) {
+                return (reportLabel === 'current')
+                    ? NewDashboardUtil.getShowLabel(field) + '(' + 'Current Month' + ')'
+                    : NewDashboardUtil.getShowLabel(field) + '(' + 'Last Month' + ')';
+            }
+
+            if ($scope.compareTypeData.compareType === COMPARE_TYPE['year']) {
+                return (reportLabel === 'current')
+                    ? NewDashboardUtil.getShowLabel(field) + '(' + 'Current Year' + ')'
+                    : NewDashboardUtil.getShowLabel(field) + '(' + 'Last Year' + ')';
+            }
+
+            if ($scope.compareTypeData.compareType === COMPARE_TYPE['custom']) {
+                var current = $scope.comparisonCustomDateRange.currentDateRange.startDate.format(DEFAULT_DATE_OUTPUT_FORMAT) + ' - ' + $scope.comparisonCustomDateRange.currentDateRange.endDate.format(DEFAULT_DATE_OUTPUT_FORMAT);
+                var history = $scope.comparisonCustomDateRange.historyDateRange.startDate.format(DEFAULT_DATE_OUTPUT_FORMAT) + ' - ' + $scope.comparisonCustomDateRange.historyDateRange.endDate.format(DEFAULT_DATE_OUTPUT_FORMAT);
+
+                return (reportLabel === 'current')
+                    ? NewDashboardUtil.getShowLabel(field) + '(' + current + ')'
+                    : NewDashboardUtil.getShowLabel(field) + '(' + history + ')';
+            }
+        }
+
+        function getRecentDay() {
+            return $scope.dayValuesForDayOverDay[0];
+        }
+
+        function getPreviousDay() {
+            return $scope.dayValuesForDayOverDay[1];
         }
 
         function getDateKey() {
@@ -160,18 +202,18 @@
                 return false;
             }
 
-            return moment(dateValue, inputDateFormat).format(DEFAULT_DATE_FORMAT);
+            return moment(dateValue, inputDateFormat).format(DEFAULT_DATE_OUTPUT_FORMAT);
         }
 
         /**
          * @param reports list of reports
          * @param xAxis : null or 1
          * @param showFields : fields of report need to be displayed
-         * @param seriesLabel : current or historical
+         * @param reportLabel : current or historical
          * @param dashType : style of lines
          * @returns {{xAxisData: Array, series: Array}}
          */
-        function getChartConfigData(reports, xAxis, showFields, seriesLabel, dashType) {
+        function getChartConfigData(reports, xAxis, showFields, reportLabel, dashType) {
             var chartConfigData = {
                 xAxisData: [],
                 series: [],
@@ -211,7 +253,7 @@
             var index = 0;
             angular.forEach(showFields, function (field) {
                 var oneSeries = {
-                    name: seriesLabel + ' ' + getLabelForChart(field, $scope.dashboardType),
+                    name: getLabelForChart(field, reportLabel),
                     data: showData[field] ? showData[field] : [],
                     connectNulls: true,
                     color: DASHBOARD_COLOR[index],
@@ -259,8 +301,8 @@
             }
 
             var chartConfig = angular.copy(LINE_CHART_CONFIG);
-            var currentChartConfig = getChartConfigData(currentReports, 1, showFields, CURRENT_LABEL, CHART_DASH_TYPES.SOLID);
-            var historyChartConfig = getChartConfigData(historyReports, null, showFields, HISTORY_LABEL, CHART_DASH_TYPES.SHORT_DASH);
+            var currentChartConfig = getChartConfigData(currentReports, 1, showFields, 'current', CHART_DASH_TYPES.SOLID);
+            var historyChartConfig = getChartConfigData(historyReports, null, showFields, 'historical', CHART_DASH_TYPES.SHORT_DASH);
 
             chartConfig.xAxis[0].categories = historyChartConfig.xAxisData;
             chartConfig.xAxis[1].categories = currentChartConfig.xAxisData;

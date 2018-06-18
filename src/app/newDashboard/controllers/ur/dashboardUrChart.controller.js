@@ -6,7 +6,7 @@
     ;
 
     function DashboardUrChart($scope, $filter, Auth, DASHBOARD_TYPE_JSON, CHART_FOLLOW, COMPARE_TYPE,
-                            DISPLAY_SHOW_FIELDS, VIDEO_SHOW_FIELDS, DASHBOARD_COLOR, NewDashboardUtil) {
+                            DISPLAY_SHOW_FIELDS, VIDEO_SHOW_FIELDS, DASHBOARD_COLOR, DEFAULT_DATE_OUTPUT_FORMAT, NewDashboardUtil) {
         $scope.isAdmin = Auth.isAdmin();
 
         $scope.chartConfig = {};
@@ -90,7 +90,7 @@
                 return false;
             }
 
-            return moment(dateValue, inputDateFormat).format('YYYY-MM-DD');
+            return moment(dateValue, inputDateFormat).format(DEFAULT_DATE_OUTPUT_FORMAT);
         }
 
         function isInDateRange(date, selectedDate) {

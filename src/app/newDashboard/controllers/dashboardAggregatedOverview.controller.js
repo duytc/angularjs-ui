@@ -7,7 +7,7 @@
 
     function DashboardAggregatedOverview($scope, Auth, DASHBOARD_TYPE_JSON, COLUMNS_NAME_MAPPING_FOR_VIDEO_REPORT, PLATFORM_STATISTICS,
                                          $timeout, COMPARE_TYPE, videoReportService, ASC, reportRestangular, DESC, ACCOUNT_STATISTICS,
-                                         CHART_FOLLOW, ADMIN_DISPLAY_COMPARISION, PUBLISHER_DISPLAY_COMPARISION, DEFAULT_DATE_FORMAT,
+                                         CHART_FOLLOW, ADMIN_DISPLAY_COMPARISION, PUBLISHER_DISPLAY_COMPARISION, DEFAULT_DATE_FORMAT, DEFAULT_DATE_OUTPUT_FORMAT,
                                          DISPLAY_SHOW_FIELDS, unifiedReportComparisionRestangular, NewDashboardUtil, $translate) {
         $scope.isAdmin = Auth.isAdmin();
 
@@ -51,8 +51,8 @@
             comparisonTableData: [],
             comparisionData: $scope.compareTypeData,
             dayValuesForDayOverDay: [
-                moment().format(DEFAULT_DATE_FORMAT),
-                moment().subtract(1, 'days').format(DEFAULT_DATE_FORMAT)
+                moment().format(DEFAULT_DATE_OUTPUT_FORMAT),
+                moment().subtract(1, 'days').format(DEFAULT_DATE_OUTPUT_FORMAT)
             ],
             currentDateRange: {
                 startDate: moment().subtract(14, 'days'),
@@ -105,7 +105,6 @@
         }
 
         function getLabelByComparisonType(comparisonType, isCurrentNotHistory, dateRange) {
-            var currentOrHistoryText = isCurrentNotHistory ? $translate.instant('NEW_DASHBOARD.CURRENT') : $translate.instant('NEW_DASHBOARD.HISTORY');
             var currentOrLastText = isCurrentNotHistory ? $translate.instant('NEW_DASHBOARD.CURRENT') : $translate.instant('NEW_DASHBOARD.LAST');
 
             if (comparisonType === COMPARE_TYPE['day']) {
@@ -115,12 +114,15 @@
                     return getPreviousDay();
                 }
             }
+
             if (comparisonType === COMPARE_TYPE['custom']) {
-                return currentOrHistoryText + ' (' + dateRangeString(dateRange) + ')';
+                return dateRange.startDate.format(DEFAULT_DATE_OUTPUT_FORMAT) + ' - ' + dateRange.endDate.format(DEFAULT_DATE_OUTPUT_FORMAT);
             }
+
             if (comparisonType === COMPARE_TYPE['yesterday']) {
                 return $translate.instant('NEW_DASHBOARD.YESTERDAY');
             }
+
             return currentOrLastText + ' ' + $scope.compareTypeData.label;
         }
 
@@ -292,6 +294,7 @@
                 //return if mode not change
                 return;
             }
+
             resetFormData();
 
             $scope.compareTypeData.compareType = COMPARE_TYPE[mode];
@@ -305,6 +308,13 @@
 
         function getCustomComparisonData() {
             resetFormData();
+
+            // update comparisonCustomDateRange
+            $scope.comparisonCustomDateRange = {
+                currentDateRange: $scope.formData.currentDateRange,
+                historyDateRange: $scope.formData.historyDateRange
+            };
+
             $scope.watchManager.clickGetReport = !$scope.watchManager.clickGetReport;
             var customDateRange = extractCustomDateRange();
             if (customDateRange) {

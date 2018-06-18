@@ -5,6 +5,7 @@
         .constant('PLATFORM_STATISTICS', 'platformStatistics')
         .constant('ACCOUNT_STATISTICS', 'accountStatistics')
         .constant('DEFAULT_DATE_FORMAT', 'YYYY-MM-DD')
+        .constant('DEFAULT_DATE_OUTPUT_FORMAT', 'MMM DD, YYYY')
         .constant('DEFAULT_DATE_FIELD_DISPLAY_AND_VIDEO', 'date')
         .constant('HOUR_EXTENSION', ':00')
         .constant('CHART_DASH_TYPES', {
@@ -18,11 +19,11 @@
                     type: 'line'
                 },
                 title: {
-                    text: 'Current and Historical Statistics Comparison Chart',
+                    text: null,
                     margin: 20
                 },
                 subtitle: {
-                    text: 'Solid lines is for Current statistics with date/time on top and dot lines is for Historical statistics with date/time on bottom',
+                    text: null,
                     align: 'center'
                 },
                 plotOptions: {
