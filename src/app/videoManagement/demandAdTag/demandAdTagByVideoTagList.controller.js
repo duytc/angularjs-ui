@@ -98,7 +98,15 @@
                             })
                 });
         }
+        function _getOptimizedTags() {
+            $scope.videoWaterfallTagItems = [];
 
+            dataService.makeHttpGetRequest('/videowaterfalltagitems/adtag/' + videoWaterfallTag.id + '/optimizedPositions', null, API_BASE_URL)
+                .then(function (data) {
+                    $scope.videoWaterfallTagItems = data || [];
+                    $scope.videoWaterfallTagItemsGroup = _sortGroup($scope.videoWaterfallTagItems);
+                });
+        }
         function isAutoOptimize() {
             return videoWaterfallTag.autoOptimize &&
                 $scope.hasAutoOptimizeModule;
