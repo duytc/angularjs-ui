@@ -14,6 +14,9 @@
             'LONG_DASH': 'LongDash'
         })
         .constant('LINE_CHART_CONFIG',{
+            credits: {
+                enabled: false
+            },
             options: {
                 chart: {
                     type: 'line'
