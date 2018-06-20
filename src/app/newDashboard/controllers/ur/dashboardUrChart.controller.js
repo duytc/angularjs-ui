@@ -173,6 +173,9 @@
             });
 
             var chartConfig = {
+                credits: {
+                    enabled: false
+                },
                 options: {
                     chart: {
                         type: 'line'
