@@ -204,13 +204,7 @@
             $scope.selectedData.dataSource = null;
             $scope.alertSource = $scope.ALERT_SOURCES[0];
             $scope.alertSourceOptimization = $scope.optimizeIntegrationList[0];
-            $scope.selectedData.type = {
-                info: true,
-                warning: true,
-                error: true,
-                actionRequired: true,
-                reminder: true
-            };
+            selectAllAlertsType();
         }
 
         function selectAlertSource(source) {
