@@ -67,7 +67,8 @@
                 info: true,
                 warning: true,
                 error: true,
-                actionRequired: true
+                actionRequired: true,
+                reminder: true
             },
             labelType: 'All Type'
         };
@@ -76,7 +77,8 @@
             {key: 'info', label: 'Info'},
             {key: 'warning', label: 'Warning'},
             {key: 'error', label: 'Error'},
-            {key: 'actionRequired', label: 'Action required'}
+            {key: 'actionRequired', label: 'Action required'},
+            {key: 'reminder', label: 'Reminder'}
         ];
 
         $scope.formProcessing = false;
@@ -234,7 +236,8 @@
                 info: true,
                 warning: true,
                 error: true,
-                actionRequired: !isSelectDataSource
+                actionRequired: !isSelectDataSource,
+                reminder: !isSelectDataSource
             };
 
             $scope.selectedData.labelType = 'All Type';
@@ -265,6 +268,11 @@
             var actionRequiredIndex = types.indexOf('actionRequired');
             if (actionRequiredIndex >= 0 && $scope.alertSource.key === 'datasource') {
                 types.splice(actionRequiredIndex);
+            }
+            // Remove reminder if alert source is datasource
+            var reminderIndex = types.indexOf('reminder');
+            if (reminderIndex >= 0 && $scope.alertSource.key === 'datasource') {
+                types.splice(reminderIndex);
             }
             return types;
         }
