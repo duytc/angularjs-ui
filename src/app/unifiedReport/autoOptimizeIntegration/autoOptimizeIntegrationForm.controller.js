@@ -38,7 +38,7 @@
                 optimizationAlerts: '',
                 platformIntegration: null,
                 optimizationFrequency: null,
-                remind: null
+                reminder: null
             };
 
         $scope.platformIntegrations = _filterPlatformIntegrationByModule(angular.copy(PLATFORM_INTEGRATION));
@@ -124,7 +124,7 @@
 
         /* ==========LOCAL FUNCTIONS FOR SCOPE============ */
         function onSelectFrequency(item) {
-            $scope.autoOptimizeIntegration.remind = null;
+            $scope.autoOptimizeIntegration.reminder = null;
         }
 
         function showEmailReminder() {
@@ -586,8 +586,8 @@
             } else {
                 autoOptimizeIntegration.active = 1;
             }
-            if(autoOptimizeIntegration.remind === false || autoOptimizeIntegration.remind == null){
-                delete autoOptimizeIntegration.remind;
+            if(autoOptimizeIntegration.reminder === false || autoOptimizeIntegration.reminder == null){
+                delete autoOptimizeIntegration.reminder;
             }
             /* return */
             return autoOptimizeIntegration;
