@@ -202,6 +202,7 @@
                         <span class="label" ng-if="item.type == 'error'" ng-class="'label-danger'">{{ item.type }}</span>
                         <span class="label" ng-if="item.type == 'warning'" ng-class="'label-warning'">{{ item.type }}</span>
                         <span class="label" ng-if="item.type == 'actionRequired'" ng-class="'label-success'">action required</span>
+                        <span class="label" ng-if="item.type == 'reminder'" ng-class="'label-info'">{{item.type}}</span>
                     </td>
                     <!--Action Status-->
                     <td at-title="{{'UNIFIED_REPORT_ALERT_MODULE.ACTION_STATUS' | translate }}">
