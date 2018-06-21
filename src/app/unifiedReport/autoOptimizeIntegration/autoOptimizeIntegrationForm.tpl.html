@@ -88,24 +88,7 @@
                                                    is-pubvantage-ad-server="isPubvantageAdServer"
                                                    on-video-publishers-click="onVideoPublishersClick">
                     </pubvantage-display-ads-server>
-
                 </div>
-
-                <!--CONFIRMATION-->
-                <!--<div class="form-group">
-                    <label for="inputActive" class="col-sm-1quarter control-label">{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.CONFIRMATION'
-                        | translate }}</label>
-                    <div class="col-sm-5">
-                        <div>
-                            <label class="ui-checkbox">
-                                <input name="active" type="checkbox" ng-model="autoOptimizeIntegration.active"
-                                       server-error id="inputActive">
-                                <span></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
--->
 
                 <!--optimization frequency-->
                 <div class="form-group">
@@ -116,19 +99,27 @@
                         <ui-select name="publisher"
                                    ng-model="autoOptimizeIntegration.optimizationFrequency"
                                    ng-required="true"
-                                   server-error>
+                                   server-error
+                                   on-select="onSelectFrequency($item)">
                             <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
                             <ui-select-choices repeat="frequency in optimizationFrequencies | filter:$select.search">
                                 {{ frequency.label }}
                             </ui-select-choices>
                         </ui-select>
+                        <!--Remind-->
+                        <label class="ui-checkbox" ng-if="showEmailReminder()">
+                            <input type="checkbox"
+                                   ng-model="autoOptimizeIntegration.remind">
+                            <span>{{'AUTO_OPTIMIZE_INTEGRATION_MODULE.EMAIL_REMIND' | translate}}</span>
+                        </label>
                     </div>
                 </div>
 
 
                 <!--Optimization Alerts-->
                 <div class="form-group">
-                    <label for="optimizationAlerts" class="col-sm-1quarter control-label">Optimization Alerts</label>
+                    <label for="optimizationAlerts" class="col-sm-1quarter control-label">
+                        {{'AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_ALERT' | translate}}</label>
                     <div class="col-sm-5">
                         <ui-select name="optimizationAlerts" id="optimizationAlerts"
                                    ng-model="autoOptimizeIntegration.optimizationAlerts"
