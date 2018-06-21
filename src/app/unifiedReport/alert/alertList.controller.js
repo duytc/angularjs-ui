@@ -128,8 +128,9 @@
         $scope.changeItemsPerPage = changeItemsPerPage;
 
         function showBackToIntegration() {
-            console.log($scope.alertSource);
-            return $scope.alertSource.key === OPTIMIZATION_KEY && $scope.alertSourceOptimization.id != null;
+            return $scope.alertSource.key === OPTIMIZATION_KEY &&
+                   $scope.alertSourceOptimization &&
+                   $scope.alertSourceOptimization.id != null;
         }
 
         function extractDataSourceParameter(dataSourceId) {

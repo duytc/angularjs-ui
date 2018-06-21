@@ -12,7 +12,7 @@
                 if (!angular.isObject(item)) {
                     return;
                 }
-                if (!(alertSource.key === 'datasource' && item.key === 'actionRequired')) {
+                if (!(alertSource.key === 'datasource' && (item.key === 'actionRequired' || item.key === 'reminder'))) {
                     filtered.push(item);
                 }
             });
