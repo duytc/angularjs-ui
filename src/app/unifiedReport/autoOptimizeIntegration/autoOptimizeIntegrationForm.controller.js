@@ -121,8 +121,13 @@
         $scope.submit = submit;
         $scope.showEmailReminder = showEmailReminder;
         $scope.onSelectFrequency = onSelectFrequency;
+        $scope.onSelectOptimizeAlert = onSelectOptimizeAlert;
 
         /* ==========LOCAL FUNCTIONS FOR SCOPE============ */
+        function onSelectOptimizeAlert(item) {
+            $scope.autoOptimizeIntegration.reminder = null;
+        }
+
         function onSelectFrequency(item) {
             $scope.autoOptimizeIntegration.reminder = null;
         }

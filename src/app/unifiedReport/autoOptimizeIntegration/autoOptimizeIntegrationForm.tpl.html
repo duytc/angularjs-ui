@@ -107,7 +107,8 @@
                             </ui-select-choices>
                         </ui-select>
                         <!--reminder-->
-                        <label class="ui-checkbox" ng-if="showEmailReminder()">
+                        <label class="ui-checkbox"
+                               ng-if="showEmailReminder() && autoOptimizeIntegration.optimizationAlerts.key === 'notifyMeBeforeMakingChange'">
                             <input type="checkbox"
                                    ng-model="autoOptimizeIntegration.reminder">
                             <span>{{'AUTO_OPTIMIZE_INTEGRATION_MODULE.EMAIL_REMIND' | translate}}</span>
@@ -124,7 +125,8 @@
                         <ui-select name="optimizationAlerts" id="optimizationAlerts"
                                    ng-model="autoOptimizeIntegration.optimizationAlerts"
                                    ng-required="true"
-                                   server-error>
+                                   server-error
+                                   on-select="onSelectOptimizeAlert($item)">
                             <ui-select-match placeholder="Optimization Alerts">
                                 {{ $select.selected.label }}
                             </ui-select-match>
