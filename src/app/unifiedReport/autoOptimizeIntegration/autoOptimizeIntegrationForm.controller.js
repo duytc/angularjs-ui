@@ -37,7 +37,8 @@
                 waterfallTags: [],
                 optimizationAlerts: '',
                 platformIntegration: null,
-                optimizationFrequency: null
+                optimizationFrequency: null,
+                reminder: null
             };
 
         $scope.platformIntegrations = _filterPlatformIntegrationByModule(angular.copy(PLATFORM_INTEGRATION));
@@ -118,8 +119,24 @@
         $scope.isFormValid = isFormValid;
         $scope.isAdmin = isAdmin;
         $scope.submit = submit;
+        $scope.showEmailReminder = showEmailReminder;
+        $scope.onSelectFrequency = onSelectFrequency;
+        $scope.onSelectOptimizeAlert = onSelectOptimizeAlert;
 
         /* ==========LOCAL FUNCTIONS FOR SCOPE============ */
+        function onSelectOptimizeAlert(item) {
+            $scope.autoOptimizeIntegration.reminder = null;
+        }
+
+        function onSelectFrequency(item) {
+            $scope.autoOptimizeIntegration.reminder = null;
+        }
+
+        function showEmailReminder() {
+            var frequency = $scope.autoOptimizeIntegration.optimizationFrequency;
+            return !!(frequency && (frequency.value === '12 hours' || frequency.value === '24 hours'));
+        }
+
         function isPubvantageAdServer() {
             return !!($scope.autoOptimizeIntegration.platformIntegration.type == 'PUBVANTAGE_ADS_SERVER');
         }
@@ -400,21 +417,15 @@
 
         function _updateSelectedVideoPublishersAndWaterFalls() {
             fillTicked($scope.autoOptimizeIntegration.videoPublishers, $scope.videoPublishersList);
-            // update waterfallTagsList and also fillStickForWaterfallTags
             _updateWaterfallTagsListBySelectedVideoPublishers(null, true);
         }
 
         function _updateSelectedSitesAndAdSlots() {
             _fillStickForSupply();
-            // update adSlotList and also fillStickForAdSlot
             _updateAdSlotListWhenSelectedSitesChange();
         }
 
         function _fillStickForSupply() {
-            // angular.forEach($scope.siteList, function (site) {
-            //     site['ticked'] = $scope.autoOptimizeIntegration.sites.indexOf(site.id) > -1
-            // });
-
             var selectedSites = $scope.autoOptimizeIntegration.sites;
 
             angular.forEach($scope.siteList, function (site) {
@@ -580,6 +591,9 @@
             } else {
                 autoOptimizeIntegration.active = 1;
             }
+            if(autoOptimizeIntegration.reminder === false || autoOptimizeIntegration.reminder == null){
+                delete autoOptimizeIntegration.reminder;
+            }
             /* return */
             return autoOptimizeIntegration;
         }
@@ -603,7 +617,5 @@
 
             return label;
         }
-
-
     }
 })();

@@ -1472,7 +1472,9 @@
                 "BACK_TO_LIST": "Back to Optimization Rules",
                 "VIDEO_PUBLISHERS": "Video Plublisher",
                 "WATERFALL_TAG": "Waterfall Tag",
-                "OPTIMIZE_NOW_MESSAGE":"Please confirm update cache after calculating score process has been finished."
+                "OPTIMIZE_NOW_MESSAGE":"Please confirm update cache after calculating score process has been finished.",
+                "EMAIL_REMIND":"Receive reminder email",
+                "OPTIMIZE_ALERT":"Optimization Alerts"
             }
         });
 })();
