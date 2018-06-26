@@ -1,12 +1,12 @@
 <div class="panel panel-default">
     <div class="panel-heading">
             <div class="row">
-                <div class="inlineBlock adtag-position-title">
+                <div class="tagcade-inlineBlock adtag-position-title">
                     <span current-page-title></span>
                 </div>
 
                 <div id="adTagOptions-sm">
-                    <div class="pull-right inlineBlock">
+                    <div class="pull-right tagcade-inlineBlock">
                         <!--optimize now-->
                         <button class="btn btn-sm btn-primary header-item" ng-if="isAutoOptimize() && adSlot.optimizationIntegration" ng-click="optimizeNow()">{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_NOW' | translate }}</button>
                         <!--label show optimized positions-->
@@ -16,7 +16,7 @@
                             <span>{{ 'AD_TAG_MODULE.ENABLE_SHOW_OPTIMIZED_POSITIONS' | translate }}</span>
                         </label>
 
-                        <div class="inlineBlock header-item">
+                        <div class="tagcade-inlineBlock header-item">
                             <!--show segment selection-->
                             <label ng-if="isAutoOptimize() && enableShowOptimizedPositions" class="form-group">
                                 <isteven-multi-select input-model="segments" output-model="selected.segments" button-label="label" item-label="label" tick-property="ticked"></isteven-multi-select>
@@ -64,7 +64,7 @@
                             <span>{{ 'AD_TAG_MODULE.ENABLE_DRAG_DROP' | translate }}</span>
                         </label>
 
-                        <div class="inlineBlock header-item">
+                        <div class="tagcade-inlineBlock header-item">
                             <!--button new ad tag for stand alone-->
                             <button ng-if="!!adSlot.libType && !isSubPublisher()" ui-sref="^.newForAdSlot({ adSlotId: adSlot.id })" class="btn btn-sm btn-primary" type="button">
                                 <span class="glyphicon glyphicon-plus"></span>

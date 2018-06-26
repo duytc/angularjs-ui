@@ -1,18 +1,18 @@
 <div class="panel panel-default">
     <div class="panel-heading">
             <div class="row">
-                <div class="inlineBlock video-position-title">
+                <div class="tagcade-inlineBlock video-position-title">
                     <span current-page-title></span>
                 </div>
 
                 <div id="videoWall-sm">
-                    <div class="pull-right inlineBlock">
+                    <div class="pull-right tagcade-inlineBlock">
                         <!--optimize now-->
                         <button class="btn btn-primary btn-sm header-item"
                                 ng-if="isAutoOptimize() && videoWaterfallTag.optimizationIntegration"
                                 ng-click="optimizeNow()">
                             {{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_NOW' | translate }}</button>
-                        <div class="header-item inlineBlock">
+                        <div class="header-item tagcade-inlineBlock">
                         <!--label show optimized positions-->
                         <label class="ui-checkbox enable-optimization" ng-if="isAutoOptimize()"
                                data-toggle="tooltip" title="{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.GENERAL_MESSAGE_HELP' | translate }}">
@@ -26,7 +26,7 @@
                         </label>
                         </div>
 
-                        <div class="header-item inlineBlock">
+                        <div class="header-item tagcade-inlineBlock">
                         <button ng-click="createDemandAdTag(videoWaterfallTagItems)" class="btn btn-primary btn-sm add-new-ad-source" type="button">
                             <span class="glyphicon glyphicon-plus"></span>
                             {{ 'AD_SOURCE_MODULE.NEW_AD_SOURCE' | translate }}
