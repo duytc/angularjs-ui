@@ -1,29 +1,32 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col col-md-2 col-sm-12 col-xs-10" style="margin-top: 5px">
+            <div class="row">
+                <div class="inlineBlock video-position-title">
                     <span current-page-title></span>
                 </div>
-                <div id="adTagOptions-sm" class="col col-md-10 col-sm-12" style="padding-top: 5px; text-transform: none">
-                    <div style="display: inline-block" class="pull-right">
+
+                <div id="videoWall-sm">
+                    <div class="pull-right inlineBlock">
                         <!--optimize now-->
-                        <button class="btn btn-primary pd-h-5"
+                        <button class="btn btn-primary btn-sm header-item"
                                 ng-if="isAutoOptimize() && videoWaterfallTag.optimizationIntegration"
                                 ng-click="optimizeNow()">
                             {{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.OPTIMIZE_NOW' | translate }}</button>
+                        <div class="header-item inlineBlock">
                         <!--label show optimized positions-->
                         <label class="ui-checkbox enable-optimization" ng-if="isAutoOptimize()"
                                data-toggle="tooltip" title="{{ 'AUTO_OPTIMIZE_INTEGRATION_MODULE.GENERAL_MESSAGE_HELP' | translate }}">
-                            <input type="checkbox" ng-checked="enableShowOptimizedPositions" ng-click="showOptimizedPositions()" >
+                            <input type="checkbox" ng-checked="enableShowOptimizedPositions" ng-click="showOptimizedPositions()">
                             <span>{{ 'AD_TAG_MODULE.ENABLE_SHOW_OPTIMIZED_POSITIONS' | translate }}</span>
                         </label>
 
-                        <label class="ui-checkbox" ng-if="!enableShowOptimizedPositions">
+                        <label class="ui-checkbox">
                             <input type="checkbox" ng-checked="enableDragDrop" ng-disabled="isSubPublisher()" ng-click="enableDragDropAdTag(enableDragDrop)">
                             <span>{{ 'AD_TAG_MODULE.ENABLE_DRAG_DROP' | translate }}</span>
                         </label>
+                        </div>
 
+                        <div class="header-item inlineBlock">
                         <button ng-click="createDemandAdTag(videoWaterfallTagItems)" class="btn btn-primary btn-sm add-new-ad-source" type="button">
                             <span class="glyphicon glyphicon-plus"></span>
                             {{ 'AD_SOURCE_MODULE.NEW_AD_SOURCE' | translate }}
@@ -33,10 +36,12 @@
                             <span class="glyphicon glyphicon-arrow-left"></span>
                             {{ 'VIDEO_AD_TAG_MODULE.BACK_TO_AD_TAG_LIST' | translate }}
                         </button>
+                        </div>
+
                     </div>
                 </div>
 
-                <div class="btn-group btnGrouped col col-xs-2" dropdown>
+                <div class="btn-group btnGrouped pull-right video-menu" dropdown>
                     <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
                     <ul class="dropdown-menu pull-right" role="menu">
                         <!--optimize now-->
@@ -50,7 +55,7 @@
                     </ul>
                 </div>
              </div>
-        </div>
+
     </div>
 
     <div class="panel-body sortableAdTags ad-source-video-tag" ng-if="hasDemandAdTags()">

@@ -240,30 +240,50 @@
             videoWaterfallTagItemsClone = angular.copy($scope.videoWaterfallTagItems);
         }
 
-        function _stop() {
-            var videoWaterfallTagJson = _formatVideoAdTagJson($scope.videoWaterfallTagItems);
-            findWaterfallTagItems();
-
-            VideoAdTagManager.one( videoWaterfallTag.id).one('positions').post(null, videoWaterfallTagJson)
+        function _handleOptimizeDragDrop(videoWaterfallTagJson) {
+            VideoAdTagManager.one( videoWaterfallTag.id).one('optimize').one('positions').post(null, videoWaterfallTagJson)
                 .then(function(videoWaterfallTagItemsResponse) {
-                    $scope.videoWaterfallTagItems = $filter('orderBy')(videoWaterfallTagItemsResponse, 'position');
-                    videoWaterfallTagItems = angular.copy($scope.videoWaterfallTagItems);
-                    updatePositionForVideoAdTagItem();
                     actionDropdownToggled(false);
-
                     AlertService.replaceAlerts({
                         type: 'success',
                         message: $translate.instant('VIDEO_AD_TAG_MODULE.UPDATE_SUCCESS')
                     });
                 })
                 .catch(function() {
-                    $scope.videoWaterfallTagItems = !!videoWaterfallTagItemsClone ? videoWaterfallTagItemsClone : $scope.videoWaterfallTagItems;
-
                     AlertService.replaceAlerts({
                         type: 'error',
                         message: $translate.instant('VIDEO_AD_TAG_MODULE.UPDATE_FAIL')
                     });
                 });
+        }
+        function _stop() {
+            var videoWaterfallTagJson = _formatVideoAdTagJson($scope.videoWaterfallTagItems);
+            findWaterfallTagItems();
+
+            if($scope.enableShowOptimizedPositions){
+                _handleOptimizeDragDrop(videoWaterfallTagJson);
+            }else {
+                VideoAdTagManager.one( videoWaterfallTag.id).one('positions').post(null, videoWaterfallTagJson)
+                    .then(function(videoWaterfallTagItemsResponse) {
+                        $scope.videoWaterfallTagItems = $filter('orderBy')(videoWaterfallTagItemsResponse, 'position');
+                        videoWaterfallTagItems = angular.copy($scope.videoWaterfallTagItems);
+                        updatePositionForVideoAdTagItem();
+                        actionDropdownToggled(false);
+
+                        AlertService.replaceAlerts({
+                            type: 'success',
+                            message: $translate.instant('VIDEO_AD_TAG_MODULE.UPDATE_SUCCESS')
+                        });
+                    })
+                    .catch(function() {
+                        $scope.videoWaterfallTagItems = !!videoWaterfallTagItemsClone ? videoWaterfallTagItemsClone : $scope.videoWaterfallTagItems;
+
+                        AlertService.replaceAlerts({
+                            type: 'error',
+                            message: $translate.instant('VIDEO_AD_TAG_MODULE.UPDATE_FAIL')
+                        });
+                    });
+            }
         }
 
         function enableDragDropAdTag(enable) {
