@@ -358,16 +358,13 @@
             return true;
         }
 
-        // handle event drag & drop
-        function _stop() {
-            var groupIds = getIdsWithRespectToGroup($scope.adTagsGroup);
-            var originalGroupIds = getIdsWithRespectToGroup(originalGroups);
-
-            if (groupIdentical(groupIds, originalGroupIds)) {
-                return;
-            }
-
-            adSlot.all('adtags').customPOST({ ids: groupIds }, 'positions')
+        function _handleOptimizeDragDrop(groupIds) {
+            var params = {
+                country: $scope.selected.country === 'All Countries' ? 'global': $scope.selected.country,
+                domain: $scope.selected.domain ==='All Domains' ? 'global' : $scope.selected.domain,
+                ids: groupIds
+            };
+            adSlot.all('optimize').customPOST(params, 'positions')
                 .catch(function () {
                     AlertService.replaceAlerts({
                         type: 'error',
@@ -378,17 +375,45 @@
                 })
                 .then(function (data) {
                     actionDropdownToggled(false);
-
-                    $scope.adTags = data.plain();
-                    adTags = $scope.adTags;
-                    $scope.adTagsGroup = _sortGroup(adTags);
-
                     AlertService.replaceAlerts({
                         type: 'success',
                         message: $translate.instant('AD_TAG_MODULE.REORDERED_AD_TAG_SUCCESS')
                     });
-                })
-            ;
+                });
+        }
+        // handle event drag & drop
+        function _stop() {
+            var groupIds = getIdsWithRespectToGroup($scope.adTagsGroup);
+            var originalGroupIds = getIdsWithRespectToGroup(originalGroups);
+
+            if (groupIdentical(groupIds, originalGroupIds)) {
+                return;
+            }
+            if($scope.enableShowOptimizedPositions){
+                _handleOptimizeDragDrop(groupIds);
+            }else {
+                adSlot.all('adtags').customPOST({ ids: groupIds }, 'positions')
+                    .catch(function () {
+                        AlertService.replaceAlerts({
+                            type: 'error',
+                            message: $translate.instant('AD_TAG_MODULE.REORDERED_AD_TAG_FAIL')
+                        });
+
+                        return $q.reject($translate.instant('AD_TAG_MODULE.REORDERED_AD_TAG_FAIL'));
+                    })
+                    .then(function (data) {
+                        actionDropdownToggled(false);
+
+                        $scope.adTags = data.plain();
+                        adTags = $scope.adTags;
+                        $scope.adTagsGroup = _sortGroup(adTags);
+
+                        AlertService.replaceAlerts({
+                            type: 'success',
+                            message: $translate.instant('AD_TAG_MODULE.REORDERED_AD_TAG_SUCCESS')
+                        });
+                    });
+            }
         }
 
         //sort groups overlap position
