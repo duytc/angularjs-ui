@@ -156,7 +156,7 @@
         }
 
         function isFormValid() {
-            if($scope.adTag.isServerToServer && $scope.adTag.isVastOnly) {
+            if($scope.adTag.runOn === 'Server-Side VAST Only') {
                 return $scope.videoAdTagForm.$valid;
             }
 
