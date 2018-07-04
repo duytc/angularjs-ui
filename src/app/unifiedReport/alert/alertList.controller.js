@@ -8,6 +8,7 @@
     function AlertList($scope, _, $filter, Auth, $stateParams, $translate, $modal, UISelectMethod, alerts, publishers, dataSources,
                        UnifiedReportAlertManager, UnifiedReportDataSourceManager, AlertService, AtSortableService,
                        ITEMS_PER_PAGE, EVENT_ACTION_SORTABLE, optimizeIntegrationList, UnifiedAlertRestAngular, ALERT_SOURCES) {
+        const ALERT_CODE_DATA_AUGMENTED_DATA_SET_CHANGED = 1001;
         const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_UPLOAD = 1100;
         const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_EMAIL = 1101;
         const ALERT_CODE_NEW_DATA_IS_RECEIVED_FROM_API = 1102;
@@ -734,9 +735,8 @@
                     return 'Received an e-mail for Data Source "' + detail.dataSourceName + 'with no attached report files". Please configure email anchor text in Data Source to download report files. Anchor texts is text of links found in email body.';
 
                 case ALERT_CODE_OPTIMIZATION_CONFIG_REFRESH_CACHE_PENDING:
-                    return detail.message;
-
                 case ALERT_CODE_OPTIMIZATION_CONFIG_REFRESH_CACHE_SUCCESS:
+                case ALERT_CODE_DATA_AUGMENTED_DATA_SET_CHANGED:
                     return detail.message;
 
                 default:
