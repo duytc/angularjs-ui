@@ -40,6 +40,24 @@
                     </ui-select-choices>
                 </ui-select>
             </div>
+
+            <!--data set-->
+            <div class="publisher form-group"
+                 ng-if="(selectedData.publisherId || !isAdmin) && alertSource.key === 'dataset'">
+                <label>{{ 'DATA_SET' | translate }}</label>
+                <ui-select name="publisher" ng-model="selectedData.dataSet" ng-required="true"
+                           on-select="selectDataSet()" reset-search-input="'false'">
+                    <ui-select-match
+                            placeholder="{{ 'UNIFIED_REPORT_DATA_SOURCE_MODULE.SELECT_A_DATA_SET' | translate }}">{{
+                        $select.selected.name + ($select.selected.id ? ' (ID: '+ $select.selected.id +')' : '') }}
+                    </ui-select-match>
+                    <ui-select-choices group-by="groupEntities"
+                                       repeat="dataSet.id as dataSet in dataSets | filterByPublisher:selectedData.publisherId | filter: $select.search">
+                        {{ dataSet.name + (dataSet.id ? ' (ID: '+ dataSet.id +')' : '') }}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
             <!--data source-->
             <div class="publisher form-group"
                  ng-if="(selectedData.publisherId || !isAdmin) && alertSource.key === 'datasource'">
