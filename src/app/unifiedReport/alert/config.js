@@ -5,6 +5,7 @@
         .constant('ALERT_SOURCES', [
             {key: 'all', value: 'All Sources'},
             {key: 'datasource', value: 'Data source'},
+            {key: 'dataset', value: 'Data set'},
             {key: 'optimization', value: 'Optimize Integration'}
         ])
         .provider('API_UNIFIED_ALERT_BASE_URL', {

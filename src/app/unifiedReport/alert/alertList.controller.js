@@ -5,7 +5,7 @@
         .controller('AlertList', AlertList)
     ;
 
-    function AlertList($scope, _, $filter, Auth, $stateParams, $translate, $modal, UISelectMethod, alerts, publishers, dataSources,
+    function AlertList($scope, _, $filter, Auth, $stateParams, $translate, $modal, UISelectMethod, alerts, publishers, dataSources, dataSets,
                        UnifiedReportAlertManager, UnifiedReportDataSourceManager, AlertService, AtSortableService,
                        ITEMS_PER_PAGE, EVENT_ACTION_SORTABLE, optimizeIntegrationList, UnifiedAlertRestAngular, ALERT_SOURCES) {
         const ALERT_CODE_DATA_AUGMENTED_DATA_SET_CHANGED = 1001;
@@ -37,6 +37,7 @@
         const ALL_OPTIMIZATIONS = 'All Optimizations';
         const OPTIMIZATION_KEY = 'optimization';
         const DATA_SOURCE_KEY = 'datasource';
+        const DATA_SET_KEY = 'dataset';
 
         var params = $stateParams;
         var getAlertsForPagination;
@@ -57,12 +58,14 @@
         $scope.ALERT_SOURCES = ALERT_SOURCES;
         $scope.alertSource = extractAlertSourceParameter($stateParams.source);
         $scope.dataSources = UISelectMethod.addAllOption(dataSources, 'All Data Sources');
+        $scope.dataSets = UISelectMethod.addAllOption(dataSets, 'All Data sets');
         $scope.publishers = !!publishers ? UISelectMethod.addAllOption(publishers, 'All Publisher') : [];
         $scope.optimizeIntegrationList = UISelectMethod.addAllOption(optimizeIntegrationList, ALL_OPTIMIZATIONS);
         $scope.alertSourceOptimization = extractOptimizeIntegrationParameter($stateParams.id);
 
         $scope.selectedData = {
             dataSource: extractDataSourceParameter($stateParams.id),
+            dataSet: extractDataSetParameter($stateParams.id),
             publisherId: $stateParams.publisher ? Number($stateParams.publisher) : null,
             type: {
                 info: true,
@@ -113,6 +116,7 @@
         $scope.getAlerts = getAlerts;
         $scope.selectPublisher = selectPublisher;
         $scope.selectDataSource = selectDataSource;
+        $scope.selectDataSet = selectDataSet;
         $scope.selectAlertSource = selectAlertSource;
         $scope.onSelectOptimization = onSelectOptimization;
         $scope.changePage = changePage;
@@ -136,6 +140,16 @@
             dataSourceId = Number(dataSourceId);
             var found = $scope.dataSources.find(function (dataSource) {
                 return dataSource.id === dataSourceId;
+            });
+            if (found) return found;
+            return null;
+        }
+
+        function extractDataSetParameter(dataSetId) {
+            if (dataSetId == null || $scope.alertSource.key === OPTIMIZATION_KEY) return null;
+            dataSetId = Number(dataSetId);
+            var found = $scope.dataSets.find(function (dataSet) {
+                return dataSet.id === dataSetId;
             });
             if (found) return found;
             return null;
@@ -227,15 +241,22 @@
             selectAllAlertsType();
         }
 
+        function selectDataSet() {
+            selectAllAlertsType();
+        }
+
         function selectAllAlertsType() {
             var isSelectDataSource = false;
+            var isSelectDataSet = false;
             if ($scope.alertSource.key === DATA_SOURCE_KEY)
                 isSelectDataSource = true;
+            if ($scope.alertSource.key === DATA_SET_KEY)
+                isSelectDataSet = true;
             $scope.selectedData.type = {
                 info: true,
                 warning: true,
                 error: true,
-                actionRequired: !isSelectDataSource
+                actionRequired: !isSelectDataSource || !isSelectDataSet
             };
 
             $scope.selectedData.labelType = 'All Type';
@@ -251,7 +272,15 @@
                 }
             } else if (alertSource.key === OPTIMIZATION_KEY) {
                 return $scope.alertSourceOptimization ? $scope.alertSourceOptimization.id : null;
+            } else if (alertSource.key === DATA_SET_KEY) {
+                var dataSet = $scope.selectedData ? $scope.selectedData.dataSet : null;
+                if (!isNaN(dataSet)) {
+                    return dataSet;
+                } else {
+                    return dataSet ? dataSet.id : null;
+                }
             }
+
             return null;
         }
 
