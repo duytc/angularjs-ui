@@ -568,7 +568,9 @@
                          var _videoWaterfallTagItem = _videoDemandAdTags.find(function (item) {
                              return item.id == _id;//don't change == to ===
                          });
-                        demandAdTag.videoWaterfallTagItem = _videoWaterfallTagItem.id;
+                         if(_videoWaterfallTagItem){
+                             demandAdTag.videoWaterfallTagItem = _videoWaterfallTagItem.videoWaterfallTagItem.id;
+                         }
                     }
                 }
             }
