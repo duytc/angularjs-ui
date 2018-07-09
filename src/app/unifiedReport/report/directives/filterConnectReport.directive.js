@@ -144,11 +144,13 @@
                             }
 
                             if (scope.dimensionsMetrics[field] == 'number' || scope.dimensionsMetrics[field] == 'decimal') {
-                                filter.type = 'number'
+                                filter.type = 'number';
+                                filter.userProvided = false;
                             }
 
                             if (scope.dimensionsMetrics[field] == 'text' || scope.dimensionsMetrics[field] == 'largeText') {
-                                filter.type = 'text'
+                                filter.type = 'text';
+                                filter.userProvided = false;
                             }
                         }, 0);
                     }
