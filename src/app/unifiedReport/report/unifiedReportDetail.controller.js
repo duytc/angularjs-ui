@@ -855,8 +855,6 @@
 
             $scope.fieldsShow = $scope.fieldsShow || {dimensions: [], metrics: []};
 
-            console.log($scope.fieldsShow);
-
             // Fix bug: some metrics ticked wrong by default. https://trello.com/c/rmXhwtVO/2637-ur-usability-fixes-small
             var correctFields = _.keys($scope.reports[0]);
             var reportViewDatasets = $scope.reportView.reportViewDataSets;
