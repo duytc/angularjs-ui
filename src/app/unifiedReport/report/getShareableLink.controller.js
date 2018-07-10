@@ -6,7 +6,8 @@
         .controller('GetShareableLink', GetShareableLink)
     ;
 
-    function GetShareableLink($scope, AlertService, fieldsReportView, reportView, shareable, UnifiedReportViewManager, DateFormatter, getDateReportView, ITEMS_PER_PAGE) {
+    function GetShareableLink($scope, $rootScope, AlertService, fieldsReportView, reportView, shareable, UnifiedReportViewManager, DateFormatter, getDateReportView, ITEMS_PER_PAGE) {
+        
         $scope.shareable = angular.copy(shareable);
         $scope.reportView = reportView;
 
@@ -192,6 +193,10 @@
                     AlertService.addAlert({
                         type: 'success',
                         message: 'The shareable link has been updated'
+                    });
+                    $rootScope.$broadcast('SHARE_LINK_UPDATED', {
+                        token: shareable.token,
+                        customFilters: $scope.selected.customFilters
                     });
                 });
         }
