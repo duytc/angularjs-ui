@@ -26,6 +26,27 @@
             </div>
         </div>
 
+        <!--CUSTOM FILTER CONFIG-->
+        <div class="multi-select-class form-group col-sm-12">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="form-inline-item-padding">Allow value outside of dimension/metric</label>
+                        <div class="form-control fix-wrong-form-control">
+                            <isteven-multi-select max-labels="3"
+                                                  helper-elements="all filter reset"
+                                                  input-model="customFilters"
+                                                  output-model="fieldsShow.customFilters"
+                                                  button-label="label"
+                                                  item-label="label"
+                                                  tick-property="ticked"
+                                                  group-property="msGroup">
+                            </isteven-multi-select>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+
         <p><strong> Select fields to share in report </strong></p>
         <div class="form-group col-sm-12">
             <label class="ui-checkbox"><input name="all" ng-disabled="reportView.largeReport" type="checkbox" ng-model="selected.selectAll" ng-click="selectAll()"><span>Select All</span></label>

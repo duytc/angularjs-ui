@@ -7,6 +7,8 @@
     ;
 
     function GetShareableLink($scope, AlertService, fieldsReportView, reportView, shareable, UnifiedReportViewManager, DateFormatter, getDateReportView, ITEMS_PER_PAGE) {
+        console.log(reportView);
+        console.log(reportView.reportViewDataSets);
         $scope.shareable = angular.copy(shareable);
         $scope.reportView = reportView;
 
@@ -49,6 +51,7 @@
         if($scope.isNew) {
             selectAll();
         }
+        $scope.customFilters = _buildCustomFilters();
 
         $scope.selectAll = selectAll;
         $scope.changeDate = changeDate;
@@ -58,6 +61,33 @@
         $scope.isDynamic = isDynamic;
         $scope.saveShareableLink = saveShareableLink;
         $scope.disabledDimension = disabledDimension;
+
+        function _buildCustomFilters() {
+            var customFilters = [];
+            _.forEach($scope.reportView.reportViewDataSets, function (dataset) {
+                var option = {
+                    label: '<strong> Dataset ' + dataset.dataSet.name + '</strong>',
+                    name: dataset.dataSet.name,
+                    value: null,
+                    msGroup: true
+                };
+                customFilters.push(option);
+
+                _.forEach(dataset.filters, function (filter) {
+                    var option = {
+                        label: filter.field,
+                        ticked: false,
+                        name: filter.field,
+                        value: filter
+                    };
+                    customFilters.push(option);
+                });
+
+                customFilters.push({msGroup: false});
+            });
+            console.log(customFilters);
+            return customFilters;
+        }
 
         function disabledDimension(field) {
             return $scope.reportView.largeReport && _.values($scope.reportView.dimensions).indexOf(field.key) > -1
