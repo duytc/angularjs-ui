@@ -14,8 +14,6 @@
         app.css({position: 'inherit'});
 
         $scope.reportView = reports.reportView;
-        console.log($scope.reportView);
-        console.log($scope.reportView.reportViewDataSets);
 
         if(!!$scope.reportView && $scope.reportView.subView && angular.isObject($scope.reportView.masterReportView)) {
             var masterReportView = angular.copy($scope.reportView.masterReportView);
@@ -163,19 +161,18 @@
             _.forEach(datasets, function (dataset) {
                 _.forEach(dataset.filters, function (filter) {
                     filter.originalCompareValue = angular.copy(filter.compareValue);
-                    if(_checkIsChildOf(filter, allowedOutsideFilters)){
+                    if(_checkIsChildOf(filter, dataset, allowedOutsideFilters)){
                         filter.allowOutsideValue = true;
                     }
                 })
             });
-
-            console.log(datasets);
+            
             return datasets;
         }
         
-        function _checkIsChildOf(filter, allowedOutsideFilters) {
+        function _checkIsChildOf(filter, dataset, allowedOutsideFilters) {
             var found = allowedOutsideFilters.find(function (filterItem) {
-                return filterItem.name === filter.name && filterItem.dataSetId === filter.dataSetId;
+                return filterItem.name === filter.field && filterItem.dataSetId === dataset.dataSet.id;
             });
             return !!found;
         }
