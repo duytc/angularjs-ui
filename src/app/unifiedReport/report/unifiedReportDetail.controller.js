@@ -855,11 +855,13 @@
 
             $scope.fieldsShow = $scope.fieldsShow || {dimensions: [], metrics: []};
 
+            console.log($scope.fieldsShow);
+
             // Fix bug: some metrics ticked wrong by default. https://trello.com/c/rmXhwtVO/2637-ur-usability-fixes-small
             var correctFields = _.keys($scope.reports[0]);
-            var wrongMetricOptions = $scope.metrics;
             var reportViewDatasets = $scope.reportView.reportViewDataSets;
-            _unTickWrongMetrics(correctFields, wrongMetricOptions, reportViewDatasets)
+            _unTickWrongMetrics(correctFields, $scope.metrics, reportViewDatasets, 'metrics');
+            _unTickWrongMetrics(correctFields, $scope.dimensions, reportViewDatasets, 'dimensions');
         }
 
         /**
@@ -879,23 +881,23 @@
          * Fix bug: some metrics ticked wrong by default
          * https://trello.com/c/rmXhwtVO/2637-ur-usability-fixes-small
          */
-        function _unTickWrongMetrics(correctFields, wrongMetricOptions, reportViewDatasets) {
-            angular.forEach(wrongMetricOptions, function (metricOption) {
-                var metricNameContainDatasetId = metricOption.name; //request_1
-                var separatedMetricAndDataset = getDatasetIdFromMetricName(metricNameContainDatasetId);
-                var currentDatasetId = separatedMetricAndDataset.datasetId;
+        function _unTickWrongMetrics(correctFields, wrongOptions, reportViewDatasets, type) {
+            angular.forEach(wrongOptions, function (fieldOption) {
+                var fieldNameContainDatasetId = fieldOption.name; //request_1
+                var separatedFieldNameAndDataset = getDatasetIdFromMetricName(fieldNameContainDatasetId);
+                var currentDatasetId = separatedFieldNameAndDataset.datasetId;
                 var currentDatasetObject = reportViewDatasets.find(function (dataset) {
                     return dataset.dataSet == currentDatasetId; //don't change == to ===
                 });
                 if (currentDatasetObject) {
-                    var currentMetricName = separatedMetricAndDataset.metricName;
-                    var metrics = currentDatasetObject.metrics;
-                    if (metrics) {
-                        var found = metrics.find(function (metric) {
-                            return metric == currentMetricName; //don't change == to ===
+                    var currentFieldName = separatedFieldNameAndDataset.metricName;
+                    var fields = currentDatasetObject[type];
+                    if (fields) {
+                        var found = fields.find(function (field) {
+                            return field == currentFieldName; //don't change == to ===
                         });
                         if (!found) {
-                            metricOption.ticked = false;
+                            fieldOption.ticked = false;
                         }
                     }
                 }
