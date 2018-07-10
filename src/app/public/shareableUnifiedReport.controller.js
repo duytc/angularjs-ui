@@ -221,8 +221,21 @@
             params.userDefineDimensions = angular.toJson(newDimensions);
             params.userDefineMetrics = angular.toJson(newMetrics);
             $scope.availableOptions.currentPage = 1;
-
+            //custom filters
+            params.customFilter = _buildCustomFilterParams();
             _getReportDetail(params);
+        }
+
+        function _buildCustomFilterParams() {
+            var params = [];
+            _.forEach($scope.reportView.reportViewDataSets, function (dataset) {
+                var json = {
+                    dataSet: dataset.dataSet.id,
+                    filters : dataset.filters
+                };
+                params.push(json);
+            });
+            return params;
         }
 
         function hasFilterDate() {
