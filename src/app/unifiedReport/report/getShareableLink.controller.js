@@ -7,8 +7,6 @@
     ;
 
     function GetShareableLink($scope, AlertService, fieldsReportView, reportView, shareable, UnifiedReportViewManager, DateFormatter, getDateReportView, ITEMS_PER_PAGE) {
-        console.log(reportView);
-        console.log(reportView.reportViewDataSets);
         $scope.shareable = angular.copy(shareable);
         $scope.reportView = reportView;
 
@@ -17,14 +15,16 @@
         $scope.shareableLink = !!$scope.shareable ? $scope.shareable.link : null;
 
         $scope.fieldsToShare = !!$scope.shareable && !!$scope.shareable.fields ? $scope.shareable.fields.fields : [];
-
+        $scope.customFilters = _buildCustomFilters();
+        
         $scope.selected = {
             allowDatesOutside: !!$scope.shareable && !!$scope.shareable.fields && !!$scope.shareable.fields.allowDatesOutside,
             selectAll: $scope.isNew ? true : $scope.fieldsToShare.length == $scope.fieldsReportView.length,
             date: isDynamic() ? getDynamicDate() : {
                 startDate: !!$scope.shareable && !!$scope.shareable.fields && !!$scope.shareable.fields.dateRange ? $scope.shareable.fields.dateRange.startDate : getDateReportView.getMinStartDateInFilterReportView(reportView),
                 endDate : !!$scope.shareable && !!$scope.shareable.fields && !!$scope.shareable.fields.dateRange ? $scope.shareable.fields.dateRange.endDate : getDateReportView.getMaxEndDateInFilterReportView(reportView)
-            }
+            },
+            customFilters: _extractCustomFilters()
         };
 
         $scope.datePickerOpts = {
@@ -51,9 +51,6 @@
         if($scope.isNew) {
             selectAll();
         }
-        console.log($scope.fieldsToShare);
-        $scope.outputCustomFilters = [];
-        $scope.customFilters = _buildCustomFilters();
 
         $scope.selectAll = selectAll;
         $scope.changeDate = changeDate;
@@ -63,7 +60,26 @@
         $scope.isDynamic = isDynamic;
         $scope.saveShareableLink = saveShareableLink;
         $scope.disabledDimension = disabledDimension;
+        $scope.getTextToCopy = getTextToCopy;
+        $scope.toggleField = toggleField;
+        $scope.getShareableLink = getShareableLink;
+        $scope.highlightText = highlightText;
 
+        function _extractCustomFilters() {
+           var filtersFromApi =  shareable.fields.filters;
+           var selectedFilters = [];
+           _.forEach($scope.customFilters, function (filterOption) {
+               _.forEach(filtersFromApi, function (filterFromApi) {
+                   if(filterFromApi.name === filterOption.name && filterFromApi.dataSetId ===filterOption.dataSetId){
+                       filterOption.ticked = true;
+                       selectedFilters.push(filterOption);
+                   }
+               })
+           });
+
+           return selectedFilters;
+
+        }
         function _buildCustomFilters() {
             var customFilters = [];
             _.forEach($scope.reportView.reportViewDataSets, function (dataset) {
@@ -88,7 +104,6 @@
 
                 customFilters.push({msGroup: false});
             });
-            console.log(customFilters);
             return customFilters;
         }
 
@@ -96,11 +111,11 @@
             return $scope.reportView.largeReport && _.values($scope.reportView.dimensions).indexOf(field.key) > -1
         }
 
-        $scope.getTextToCopy = function (string) {
+        function getTextToCopy(string) {
             return string.replace(/\n/g, '\r\n');
-        };
+        }
 
-        $scope.toggleField = function (field) {
+        function toggleField(field) {
             if($scope.isNew) {
                 $scope.shareableLink = null;
             }
@@ -123,7 +138,7 @@
             return _.findIndex($scope.fieldsToShare, function (item) {return item == filed.key}) > -1;
         };
 
-        $scope.getShareableLink = function () {
+        function getShareableLink() {
             var params = {
                 allowDatesOutside: $scope.selected.allowDatesOutside,
                 fields: $scope.fieldsToShare,
@@ -137,21 +152,16 @@
                 .then(function (shareableLink) {
                     $scope.shareableLink = shareableLink
                 });
-        };
+        }
 
-        $scope.highlightText = function (shareableLink) {
+        function highlightText(shareableLink) {
             return shareableLink;
-        };
+        }
 
         function _buildFilterParams() {
-            var params = [];
-            _.forEach($scope.outputCustomFilters, function (option) {
-                var filter = angular.copy(option.value);
-                filter.dataSetId = option.dataSetId;
-                params.push(filter);
-            });
-            return params;
+            return $scope.selected.customFilters;
         }
+
         function saveShareableLink() {
             /*if(_.isEmpty($scope.shareable.token)) {
                 return $scope.getShareableLink();
