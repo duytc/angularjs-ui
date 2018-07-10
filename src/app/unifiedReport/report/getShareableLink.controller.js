@@ -67,6 +67,8 @@
         $scope.highlightText = highlightText;
 
         function _extractCustomFilters() {
+            if($scope.isNew) return;
+
            var filtersFromApi =  shareable.fields.filters;
            var selectedFilters = [];
            _.forEach($scope.customFilters, function (filterOption) {

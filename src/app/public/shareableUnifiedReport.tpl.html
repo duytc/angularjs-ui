@@ -40,7 +40,7 @@
                                ng-class="{'glyphicon-chevron-down': openStatus, 'glyphicon-chevron-right': !openStatus}"></i>
                         </div>
                     </accordion-heading>
-                    <div ng-repeat="dataset in reportView.reportViewDataSets">
+                    <div ng-repeat="dataset in customFilterContainer">
                         <h4>Dataset {{dataset.dataSet.name}}</h4>
                         <div class="panel panel-default">
                             <div class="panel-body">
@@ -62,12 +62,23 @@
                                             </ui-select>
                                             <!--COMPARISON VALUES-->
                                             <div class="form-control fix-wrong-form-control" ng-if="customFilter.comparison !='isNotEmpty' && customFilter.comparison !='isEmpty'">
-                                                <oi-select ng-model="customFilter.compareValue"
+                                                <oi-select ng-if="customFilter.allowOutsideValue"
+                                                           ng-model="customFilter.compareValue"
                                                            multiple ng-required="true"
                                                            oi-select-options="{newItem: true, newItemFn: 'addCompareValueText($query)'}"
                                                            placeholder="{{ 'REPORT_BUILDER_MODULE.ENTER_ONE_OR_MULTIPLE_VALUE' | translate }}">
                                                 </oi-select>
+                                                <oi-select ng-if="!customFilter.allowOutsideValue"
+                                                           ng-model="customFilter.compareValue"
+                                                           oi-options="item for item in customFilter.originalCompareValue"
+                                                           multiple ng-required="true"
+                                                           multiple-placeholder="search"
+                                                           list-placeholder="Empty"
+                                                           placeholder="{{ 'REPORT_BUILDER_MODULE.ENTER_ONE_OR_MULTIPLE_VALUE' | translate }}">
+                                                </oi-select>
                                             </div>
+
+
 
 
                                             <span class="help-block"

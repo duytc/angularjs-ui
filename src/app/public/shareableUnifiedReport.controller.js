@@ -134,6 +134,10 @@
 
         _update();
 
+        //custom filter
+        $scope.customFilterContainer = _extractCustomFilters();
+        
+
         $scope.getExportExcelFileName = getExportExcelFileName;
         $scope.isEmptyObject = isEmptyObject;
         $scope.isShow = isShow;
@@ -152,6 +156,30 @@
         $scope.getComparisonTypes = getComparisonTypes;
         $scope.addCompareValueText = addCompareValueText;
 
+        function _extractCustomFilters() {
+            //enable outside value
+            var allowedOutsideFilters = $scope.reportView.sharedKeysConfig[$stateParams.token].filters;
+            var datasets = angular.copy($scope.reportView.reportViewDataSets);
+            _.forEach(datasets, function (dataset) {
+                _.forEach(dataset.filters, function (filter) {
+                    filter.originalCompareValue = angular.copy(filter.compareValue);
+                    if(_checkIsChildOf(filter, allowedOutsideFilters)){
+                        filter.allowOutsideValue = true;
+                    }
+                })
+            });
+
+            console.log(datasets);
+            return datasets;
+        }
+        
+        function _checkIsChildOf(filter, allowedOutsideFilters) {
+            var found = allowedOutsideFilters.find(function (filterItem) {
+                return filterItem.name === filter.name && filterItem.dataSetId === filter.dataSetId;
+            });
+            return !!found;
+        }
+        
         function getComparisonTypes(customFilter, field, dataset) {
             if (customFilter.type === 'text') {
                 return COMPARISON_TYPES_FILTER_CONNECT_TEXT;
