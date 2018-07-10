@@ -166,11 +166,12 @@
                     }
                 })
             });
-            
+
             return datasets;
         }
         
         function _checkIsChildOf(filter, dataset, allowedOutsideFilters) {
+            if(!allowedOutsideFilters) return false;
             var found = allowedOutsideFilters.find(function (filterItem) {
                 return filterItem.name === filter.field && filterItem.dataSetId === dataset.dataSet.id;
             });

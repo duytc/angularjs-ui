@@ -150,7 +150,8 @@
                 dateRange: isDynamic() ? getDynamicDate() : {
                     startDate: DateFormatter.getFormattedDate($scope.selected.date.startDate),
                     endDate: DateFormatter.getFormattedDate($scope.selected.date.endDate)
-                }
+                },
+                filters: _buildFilterParams()
             };
 
             UnifiedReportViewManager.one(reportView.id).post('shareablelink', params)
