@@ -47,12 +47,12 @@
                 <accordion-group class="notUpperCase" is-open="false">
                     <accordion-heading>
                         <div ng-init="openStatus = false" ng-click="openStatus=!openStatus">
-                            Custom Filter <i class="pull-right glyphicon"
+                            {{'REPORT_VIEW.CUSTOM_FILTER' | translate}} <i class="pull-right glyphicon"
                                              ng-class="{'glyphicon-chevron-down': openStatus, 'glyphicon-chevron-right': !openStatus}"></i>
                         </div>
                     </accordion-heading>
                     <div ng-repeat="dataset in reportView.reportViewDataSets">
-                        <h4>Dataset {{dataset.dataSet}}</h4>
+                        <h4>Dataset {{dataset.dataSetName}}</h4>
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <div ng-repeat="customFilter in dataset.filters track by $index">
@@ -96,7 +96,7 @@
                 </accordion-group>
             </accordion>
 
-            <button type="submit" class="btn btn-primary" ng-disabled="!enableSelectDaterange() || !reportSelectorForm.$valid">Run Report</button>
+            <button type="submit" class="btn btn-primary no-margin-top" ng-disabled="!enableSelectDaterange() || !reportSelectorForm.$valid">Run Report</button>
         </form>
     </div>
 </div>

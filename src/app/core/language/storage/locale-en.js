@@ -1475,6 +1475,9 @@
                 "OPTIMIZE_NOW_MESSAGE":"Please confirm update cache after calculating score process has been finished.",
                 "EMAIL_REMIND":"Receive reminder email",
                 "OPTIMIZE_ALERT":"Optimization Alerts"
+            },
+            "REPORT_VIEW":{
+                "CUSTOM_FILTER":"Custom filter"
             }
         });
 })();
