@@ -68,7 +68,7 @@
                                                 </ui-select-choices>
                                             </ui-select>
                                             <!--COMPARISON VALUES-->
-                                            <div class="form-control fix-wrong-form-control">
+                                            <div class="form-control fix-wrong-form-control" ng-if="customFilter.comparison !='isNotEmpty' && customFilter.comparison !='isEmpty'">
                                                 <oi-select ng-model="customFilter.compareValue"
                                                            multiple ng-required="true"
                                                            oi-select-options="{newItem: true, newItemFn: 'addCompareValueText($query)'}"
@@ -92,7 +92,7 @@
                 </accordion-group>
             </accordion>
 
-            <button type="submit" class="btn btn-primary" ng-disabled="!enableSelectDaterange()">Run Report</button>
+            <button type="submit" class="btn btn-primary" ng-disabled="!enableSelectDaterange() || !reportSelectorForm.$valid">Run Report</button>
         </form>
     </div>
 </div>
