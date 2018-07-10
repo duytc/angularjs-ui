@@ -95,14 +95,16 @@
                 customFilters.push(option);
 
                 _.forEach(dataset.filters, function (filter) {
-                    var option = {
-                        label: filter.field,
-                        ticked: false,
-                        name: filter.field,
-                        value: filter,
-                        dataSetId: dataset.dataSet.id
-                    };
-                    customFilters.push(option);
+                    if(filter.type !== 'date'){
+                        var option = {
+                            label: filter.field,
+                            ticked: false,
+                            name: filter.field,
+                            value: filter,
+                            dataSetId: dataset.dataSet.id
+                        };
+                        customFilters.push(option);
+                    }
                 });
 
                 customFilters.push({msGroup: false});
