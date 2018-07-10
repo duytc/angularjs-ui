@@ -12,7 +12,7 @@
         const maxEmailAllowed = 10;
         //Custom filter
         $scope.customFilters = [];
-        console.log(reportView);
+        console.log(reportView.plain());
         console.log(reportView.reportViewDataSets);
         $scope.getComparisonTypes = getComparisonTypes;
         $scope.addCompareValueText = addCompareValueText;
