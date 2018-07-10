@@ -4,12 +4,18 @@
     angular.module('tagcade.public')
         .controller('shareableUnifiedReport', shareableUnifiedReport);
 
-    function shareableUnifiedReport($scope, $stateParams, $translate, $modal, exportExcelService, reports, unifiedReportFormatReport, DateFormatter, AlertService, AtSortableService, dataService, API_UNIFIED_PUBLIC_END_POINT, historyStorage, HISTORY_TYPE_PATH) {
+    function shareableUnifiedReport($scope, $stateParams, $translate, $modal, exportExcelService,
+                                    reports, unifiedReportFormatReport, DateFormatter, AlertService,
+                                    AtSortableService, dataService, API_UNIFIED_PUBLIC_END_POINT,
+                                    historyStorage, HISTORY_TYPE_PATH,COMPARISON_TYPES_FILTER_CONNECT_TEXT,
+                                    COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_NUMBER) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
 
         $scope.reportView = reports.reportView;
+        console.log($scope.reportView);
+        console.log($scope.reportView.reportViewDataSets);
 
         if(!!$scope.reportView && $scope.reportView.subView && angular.isObject($scope.reportView.masterReportView)) {
             var masterReportView = angular.copy($scope.reportView.masterReportView);
@@ -142,7 +148,36 @@
         $scope.generateReport = generateReport;
         $scope.showPagination = showPagination;
         $scope.setClassName = setClassName;
+        //Custom filter
+        $scope.getComparisonTypes = getComparisonTypes;
+        $scope.addCompareValueText = addCompareValueText;
 
+        function getComparisonTypes(customFilter, field, dataset) {
+            if (customFilter.type === 'text') {
+                return COMPARISON_TYPES_FILTER_CONNECT_TEXT;
+            }
+            if (customFilter.type === 'number') {
+                if (_getFieldType(field, dataset) === 'decimal') {
+                    return COMPARISON_TYPES_FILTER_CONNECT_DECIMAL;
+                }
+                return COMPARISON_TYPES_FILTER_CONNECT_NUMBER;
+            }
+            return []
+        }
+
+        function _getFieldType(field, dataset) {
+            if ($scope.reportView && $scope.reportView.fieldTypes) {
+                return $scope.reportView.fieldTypes[field + '_' + dataset.dataSet];
+            }
+            return null;
+        }
+
+        function addCompareValueText(query) {
+            if (/['`$]/.test(query)) {
+                return;
+            }
+            return query;
+        }
         function setClassName() {
             var totalItem = Object.keys($scope.total).length;
 
