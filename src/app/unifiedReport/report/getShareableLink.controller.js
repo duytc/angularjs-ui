@@ -51,6 +51,8 @@
         if($scope.isNew) {
             selectAll();
         }
+        console.log($scope.fieldsToShare);
+        $scope.outputCustomFilters = [];
         $scope.customFilters = _buildCustomFilters();
 
         $scope.selectAll = selectAll;
@@ -78,7 +80,8 @@
                         label: filter.field,
                         ticked: false,
                         name: filter.field,
-                        value: filter
+                        value: filter,
+                        dataSetId: dataset.dataSet.id
                     };
                     customFilters.push(option);
                 });
@@ -140,6 +143,15 @@
             return shareableLink;
         };
 
+        function _buildFilterParams() {
+            var params = [];
+            _.forEach($scope.outputCustomFilters, function (option) {
+                var filter = angular.copy(option.value);
+                filter.dataSetId = option.dataSetId;
+                params.push(filter);
+            });
+            return params;
+        }
         function saveShareableLink() {
             /*if(_.isEmpty($scope.shareable.token)) {
                 return $scope.getShareableLink();
@@ -153,7 +165,8 @@
                     dateRange: isDynamic() ? getDynamicDate() : {
                         startDate: DateFormatter.getFormattedDate($scope.selected.date.startDate),
                         endDate: DateFormatter.getFormattedDate($scope.selected.date.endDate)
-                    }
+                    },
+                    filters: _buildFilterParams()
                 }
             };
 
