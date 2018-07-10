@@ -4,8 +4,40 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView, dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT, sessionStorage, userSession) {
+    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView,
+                                 dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView,
+                                 AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT,
+                                 sessionStorage, userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,
+                                 COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_NUMBER) {
         const maxEmailAllowed = 10;
+        //Custom filter
+        $scope.customFilters = [];
+        console.log(reportView);
+        console.log(reportView.reportViewDataSets);
+        $scope.getComparisonTypes = getComparisonTypes;
+
+        function getComparisonTypes(customFilter, field, dataset) {
+            if (customFilter.type === 'text') {
+                return COMPARISON_TYPES_FILTER_CONNECT_TEXT;
+            }
+            if(customFilter.type === 'number') {
+                if (_getFieldType(field, dataset) === 'decimal') {
+                    return COMPARISON_TYPES_FILTER_CONNECT_DECIMAL;
+                }
+                return COMPARISON_TYPES_FILTER_CONNECT_NUMBER;
+            }
+            return []
+        }
+        
+        function _getFieldType(field, dataset) {
+            if(reportView && reportView.fieldTypes){
+                return reportView.fieldTypes[field + '_' + dataset.dataSet];
+            }
+            return null;
+        }
+
+
+
 
         // reset css for id app
         var app = angular.element('#app');
