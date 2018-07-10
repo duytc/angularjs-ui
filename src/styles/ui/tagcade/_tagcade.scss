@@ -466,3 +466,12 @@ legend {
 .tc-inline-block{
   display: inline-block;
 }
+
+.fix-wrong-form-control{
+  border: 0 !important;
+  padding: 0 !important;
+}
+.form-inline-item-padding{
+  padding-left: 5px;
+  padding-right: 5px;
+}

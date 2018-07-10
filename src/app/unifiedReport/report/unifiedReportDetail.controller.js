@@ -15,6 +15,7 @@
         console.log(reportView);
         console.log(reportView.reportViewDataSets);
         $scope.getComparisonTypes = getComparisonTypes;
+        $scope.addCompareValueText = addCompareValueText;
 
         function getComparisonTypes(customFilter, field, dataset) {
             if (customFilter.type === 'text') {
@@ -35,7 +36,13 @@
             }
             return null;
         }
+        function addCompareValueText(query) {
+            if (/['`$]/.test(query)) {
+                return;
+            }
 
+            return query;
+        }
 
 
 
