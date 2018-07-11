@@ -634,7 +634,7 @@
                         }
                     }
                 });
-
+                //forEach Datasets, update $scope.dimensions
                 angular.forEach(data, function (item) {
                     if(true) {
                         angular.forEach(item.dimensions, function (type, dimension) {
@@ -858,8 +858,8 @@
             // Fix bug: some metrics ticked wrong by default. https://trello.com/c/rmXhwtVO/2637-ur-usability-fixes-small
             var correctFields = _.keys($scope.reports[0]);
             var reportViewDatasets = $scope.reportView.reportViewDataSets;
-            _unTickWrongMetrics(correctFields, $scope.metrics, reportViewDatasets, 'metrics');
-            _unTickWrongMetrics(correctFields, $scope.dimensions, reportViewDatasets, 'dimensions');
+            _unTickWrongMetrics(correctFields, $scope.metrics, reportViewDatasets, 'metrics', $scope.titleColumnsForSelect);
+            _unTickWrongMetrics(correctFields, $scope.dimensions, reportViewDatasets, 'dimensions', $scope.titleColumnsForSelect);
         }
 
         /**
@@ -879,7 +879,7 @@
          * Fix bug: some metrics ticked wrong by default
          * https://trello.com/c/rmXhwtVO/2637-ur-usability-fixes-small
          */
-        function _unTickWrongMetrics(correctFields, wrongOptions, reportViewDatasets, type) {
+        function _unTickWrongMetrics(correctFields, wrongOptions, reportViewDatasets, type, titleColumnsForUiSelect) {
             angular.forEach(wrongOptions, function (fieldOption) {
                 var fieldNameContainDatasetId = fieldOption.name; //request_1
                 var separatedFieldNameAndDataset = getDatasetIdFromMetricName(fieldNameContainDatasetId);
@@ -896,6 +896,7 @@
                         });
                         if (!found) {
                             fieldOption.ticked = false;
+                            fieldOption.label = titleColumnsForUiSelect[fieldNameContainDatasetId];
                         }
                     }
                 }
