@@ -44,7 +44,7 @@
 
         function isDatasetHasUserProvidedFilterExceptDate(dataset) {
             var isDatasetHasUserProvidedFilterExceptDate = false;
-            var hasFilter = dataset.filters && dataset.filters.length;
+            var hasFilter = dataset.filters && dataset.filters.length > 0;
 
             if (hasFilter) {
                 _.forEach(dataset.filters, function (filter) {

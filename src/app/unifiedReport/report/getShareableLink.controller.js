@@ -67,6 +67,9 @@
         $scope.highlightText = highlightText;
         $scope.isShowCustomFilter = isShowCustomFilter;
         
+        function _updateAllowOutsiteCustomFilters() {
+            
+        }
         function isShowCustomFilter() {
             return reportViewUtil.hasCustomFilters($scope.reportView.reportViewDataSets);
         }
