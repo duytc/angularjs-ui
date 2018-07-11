@@ -43,18 +43,18 @@
         }
 
         function isDatasetHasUserProvidedFilterExceptDate(dataset) {
-            var isDatasetHasUserProvidedFilterExceptDate = false;
+            var result = false;
             var hasFilter = dataset.filters && dataset.filters.length > 0;
 
             if (hasFilter) {
                 _.forEach(dataset.filters, function (filter) {
                     if (filter.userProvided && filter.type !== 'date') {
-                        isDatasetHasUserProvidedFilterExceptDate = true;
+                        result = true;
                         return;
                     }
                 })
             }
-            return isDatasetHasUserProvidedFilterExceptDate;
+            return result;
         }
 
     }

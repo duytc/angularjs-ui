@@ -166,8 +166,8 @@
             reportViewUtil._buildCustomFilters($scope.reportView.filters, $scope.reportView.reportViewDataSets);
         }
 
-        function isDatasetHasUserProvidedFilterExceptDate() {
-            return reportViewUtil.isDatasetHasUserProvidedFilterExceptDate;
+        function isDatasetHasUserProvidedFilterExceptDate(dataset) {
+            return reportViewUtil.isDatasetHasUserProvidedFilterExceptDate(dataset);
         }
 
         function _extractCustomFilters() {

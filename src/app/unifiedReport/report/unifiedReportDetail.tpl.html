@@ -54,7 +54,7 @@
                         </div>
                     </accordion-heading>
                     <div ng-repeat="dataset in reportView.reportViewDataSets">
-                        <div ng-if="isDatasetHasUserProvidedFilterExceptDate(dataset)">
+                        <div ng-if="isShowDatasetHasUserProvidedFilterExceptDate(dataset)">
                             <h4>Dataset {{dataset.dataSetName}}</h4>
                             <div class="panel panel-default">
                                 <div class="panel-body">

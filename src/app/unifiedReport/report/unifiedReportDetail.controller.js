@@ -162,7 +162,7 @@
         $scope.getComparisonTypes = getComparisonTypes;
         $scope.addCompareValueText = addCompareValueText;
         $scope.isShowCustomFilter = isShowCustomFilter;
-        $scope.isDatasetHasUserProvidedFilterExceptDate = isDatasetHasUserProvidedFilterExceptDate;
+        $scope.isShowDatasetHasUserProvidedFilterExceptDate = isShowDatasetHasUserProvidedFilterExceptDate;
         _buildCustomFilters();
         /**
          * Filters is in reportView.reportViewDatasets, but to subReportView, filter is in reportView.filters
@@ -173,8 +173,9 @@
             reportViewUtil._buildCustomFilters($scope.reportView.filters, $scope.reportView.reportViewDataSets);
         }
         
-        function isDatasetHasUserProvidedFilterExceptDate() {
-         return reportViewUtil.isDatasetHasUserProvidedFilterExceptDate;
+        function isShowDatasetHasUserProvidedFilterExceptDate(dataset) {
+            var xxx =  reportViewUtil.isDatasetHasUserProvidedFilterExceptDate(dataset);
+         return xxx;
         }
 
         function isShowCustomFilter() {
