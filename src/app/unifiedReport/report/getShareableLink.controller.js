@@ -6,7 +6,7 @@
         .controller('GetShareableLink', GetShareableLink)
     ;
 
-    function GetShareableLink($scope, $rootScope, AlertService, fieldsReportView, reportView, shareable, UnifiedReportViewManager, DateFormatter, getDateReportView, ITEMS_PER_PAGE) {
+    function GetShareableLink($scope, $rootScope, AlertService, fieldsReportView, reportView, shareable, UnifiedReportViewManager, DateFormatter, getDateReportView, ITEMS_PER_PAGE, reportViewUtil) {
 
         $scope.shareable = angular.copy(shareable);
         $scope.reportView = reportView;
@@ -65,6 +65,11 @@
         $scope.toggleField = toggleField;
         $scope.getShareableLink = getShareableLink;
         $scope.highlightText = highlightText;
+        $scope.isShowCustomFilter = isShowCustomFilter;
+        
+        function isShowCustomFilter() {
+            return reportViewUtil.hasCustomFilters($scope.reportView.reportViewDataSets);
+        }
 
         function _extractCustomFilters() {
             if($scope.isNew) return;

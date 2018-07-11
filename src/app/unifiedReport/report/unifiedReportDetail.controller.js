@@ -7,7 +7,7 @@
     function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView,
                                  dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView,
                                  AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT,
-                                 sessionStorage, userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,
+                                 sessionStorage, userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,reportViewUtil,
                                  COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_NUMBER) {
         const maxEmailAllowed = 10;
 
@@ -184,29 +184,7 @@
         }
 
         function isShowCustomFilter() {
-            var isShowCustomFilter = false;
-            _.forEach($scope.reportView.reportViewDataSets, function (dataset) {
-                if(isDatasetHasUserProvidedFilterExceptDate(dataset)){
-                    isShowCustomFilter = true;
-                    return;
-                }
-            });
-            return isShowCustomFilter;
-        }
-
-        function isDatasetHasUserProvidedFilterExceptDate(dataset) {
-           var isDatasetHasUserProvidedFilterExceptDate = false;
-            var hasFilter =  dataset.filters && dataset.filters.length;
-
-            if(hasFilter){
-                _.forEach(dataset.filters, function (filter) {
-                    if(filter.userProvided && filter.type !== 'date'){
-                        isDatasetHasUserProvidedFilterExceptDate = true;
-                        return;
-                    }
-                })
-            }
-            return isDatasetHasUserProvidedFilterExceptDate;
+            return reportViewUtil.hasCustomFilters($scope.reportView.reportViewDataSets);
         }
 
         function getComparisonTypes(customFilter, field, dataset) {
