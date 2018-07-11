@@ -161,7 +161,19 @@
         //Custom filter
         $scope.getComparisonTypes = getComparisonTypes;
         $scope.addCompareValueText = addCompareValueText;
+        $scope.isShowCustomFilter = isShowCustomFilter;
 
+        function isShowCustomFilter() {
+            var isShowCustomFilter = false;
+            _.forEach($scope.reportView.reportViewDataSets, function (dataset) {
+                if(dataset.filters && dataset.filters.length > 0){
+                    isShowCustomFilter = true;
+                    return;
+                }
+            });
+            console.log(isShowCustomFilter);
+            return isShowCustomFilter;
+        }
         function getComparisonTypes(customFilter, field, dataset) {
             if (customFilter.type === 'text') {
                 return COMPARISON_TYPES_FILTER_CONNECT_TEXT;
