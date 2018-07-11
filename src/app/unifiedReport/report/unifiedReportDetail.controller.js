@@ -166,14 +166,29 @@
         function isShowCustomFilter() {
             var isShowCustomFilter = false;
             _.forEach($scope.reportView.reportViewDataSets, function (dataset) {
-                if(dataset.filters && dataset.filters.length > 0){
+                if(isDatasetHasUserProvidedFilterExceptDate(dataset)){
                     isShowCustomFilter = true;
                     return;
                 }
             });
-            console.log(isShowCustomFilter);
             return isShowCustomFilter;
         }
+        
+        function isDatasetHasUserProvidedFilterExceptDate(dataset) {
+           var isDatasetHasUserProvidedFilterExceptDate = false;
+            var hasFilter =  dataset.filters && dataset.filters.length;
+
+            if(hasFilter){
+                _.forEach(dataset.filters, function (filter) {
+                    if(filter.userProvided && filter.type !== 'date'){
+                        isDatasetHasUserProvidedFilterExceptDate = true;
+                        return;
+                    }
+                })
+            }
+            return isDatasetHasUserProvidedFilterExceptDate;
+        }
+
         function getComparisonTypes(customFilter, field, dataset) {
             if (customFilter.type === 'text') {
                 return COMPARISON_TYPES_FILTER_CONNECT_TEXT;
