@@ -12,6 +12,7 @@
                 filters: '=',
                 mapFields: '=',
                 dimensionsMetrics: '=',
+                dimensions: '=',
                 disabled: "="
             },
             restrict: 'AE',
@@ -68,6 +69,14 @@
                     scope.addCompareValue = addCompareValue;
                     scope.addCompareValueText = addCompareValueText;
                     scope.selectDateType = selectDateType;
+                    scope.isDimension = isDimension;
+
+                    function isDimension(field) {
+                        var index = _.findIndex(scope.dimensions, function (dimension) {
+                            return dimension === field;
+                        });
+                        return index > -1;
+                    }
 
                     function selectDateType(dateType, filter) {
                         if(dateType.value == 'customRange' || dateType.value == 'userProvided') {

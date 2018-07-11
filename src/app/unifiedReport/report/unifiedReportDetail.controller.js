@@ -173,7 +173,7 @@
             });
             return isShowCustomFilter;
         }
-        
+
         function isDatasetHasUserProvidedFilterExceptDate(dataset) {
            var isDatasetHasUserProvidedFilterExceptDate = false;
             var hasFilter =  dataset.filters && dataset.filters.length;
