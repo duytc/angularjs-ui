@@ -58,7 +58,7 @@
                             <h4>Dataset {{dataset.dataSetName}}</h4>
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                    <div ng-repeat="customFilter in dataset.filters track by $index">
+                                    <div ng-repeat="customFilter in dataset.filters track by $index" class="filter-container">
                                         <div class="form-inline" ng-if="customFilter.type !== 'date'">
                                             <div class="form-group">
                                                 <!--FIELD NAME-->
@@ -83,11 +83,10 @@
                                                     </oi-select>
                                                 </div>
 
-
                                                 <span class="help-block"
                                                       ng-if="!!customFilter.comparison && customFilter.comparison !='in' && customFilter.comparison !='not in'">
-                                        {{ 'REPORT_BUILDER_MODULE.HELP_TEXT_FOR_ENTER_VALUES' | translate }}
-                                    </span>
+                                                    {{ 'REPORT_BUILDER_MODULE.HELP_TEXT_FOR_ENTER_VALUES' | translate }}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>

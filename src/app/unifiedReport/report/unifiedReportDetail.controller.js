@@ -162,6 +162,26 @@
         $scope.getComparisonTypes = getComparisonTypes;
         $scope.addCompareValueText = addCompareValueText;
         $scope.isShowCustomFilter = isShowCustomFilter;
+        _buildCustomFilters();
+        /**
+         * Filters is in reportView.reportViewDatasets, but to subReportView, filter is in reportView.filters
+         * Need push reportView.filters into reportView.reportViewDatasets to submit to api
+         * @private
+         */
+        function _buildCustomFilters() {
+            var subReportViewFilters = $scope.reportView.filters;
+            _.forEach(subReportViewFilters, function (subReportViewFilter) {
+                if(!subReportViewFilter.userProvided || subReportViewFilter.type === 'date'){
+                    return;
+                }
+                var dataset = $scope.reportView.reportViewDataSets.find(function (reportViewDataSet) {
+                    return reportViewDataSet.dataSet.id == subReportViewFilter.dataSet;
+                });
+                if(dataset){
+                    dataset.filters.push(subReportViewFilter);
+                }
+            });
+        }
 
         function isShowCustomFilter() {
             var isShowCustomFilter = false;
