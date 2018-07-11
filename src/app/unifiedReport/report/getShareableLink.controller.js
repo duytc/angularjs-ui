@@ -16,7 +16,7 @@
         $scope.shareableLink = !!$scope.shareable ? $scope.shareable.link : null;
 
         $scope.fieldsToShare = !!$scope.shareable && !!$scope.shareable.fields ? $scope.shareable.fields.fields : [];
-        $scope.customFilters = _buildCustomFilters();
+
         
         $scope.selected = {
             allowDatesOutside: !!$scope.shareable && !!$scope.shareable.fields && !!$scope.shareable.fields.allowDatesOutside,
@@ -24,9 +24,10 @@
             date: isDynamic() ? getDynamicDate() : {
                 startDate: !!$scope.shareable && !!$scope.shareable.fields && !!$scope.shareable.fields.dateRange ? $scope.shareable.fields.dateRange.startDate : getDateReportView.getMinStartDateInFilterReportView(reportView),
                 endDate : !!$scope.shareable && !!$scope.shareable.fields && !!$scope.shareable.fields.dateRange ? $scope.shareable.fields.dateRange.endDate : getDateReportView.getMaxEndDateInFilterReportView(reportView)
-            },
-            customFilters: _extractCustomFilters()
+            }
         };
+        $scope.customFilters = _buildCustomFilters();
+        $scope.selected.customFilters = _extractCustomFilters(!$scope.isNew ? shareable.fields.filters : null);
 
         $scope.datePickerOpts = {
             maxDate:  moment().endOf('day'),
@@ -68,52 +69,20 @@
         $scope.isShowCustomFilter = isShowCustomFilter;
 
         function _updateAllowOutSiteCustomFilters() {
-            // var clonedSelectedCustomFilters = $scope.selected.customFilters;
-            // if (!clonedSelectedCustomFilters) return;
-            // //update selected filters
-            // for (var i = 0; i < clonedSelectedCustomFilters.length; i++) {
-            //     var customFilter = clonedSelectedCustomFilters[i];
-            //     // customFilter is in fieldsToShare
-            //     var found = false;
-            //     for (var j = 0; j < $scope.fieldsToShare.length; j++) {
-            //         var shareField = $scope.fieldsToShare[j];
-            //         if (shareField === customFilter.name + '_' + customFilter.dataSetId) {
-            //             found = true;
-            //             break;
-            //         }
-            //     }
-            //     if (!found) {
-            //         $scope.selected.customFilters.splice(i, 1);
-            //     }
-            // }
-
-            // _.forEach($scope.customFilters, function (filter) {
-            //     if (filter.msGroup == null) {
-            //         var filterFullName = filter.name + '_' + filter.dataSetId;
-            //         var idx = _.findIndex($scope.fieldsToShare, function (shareField) {
-            //             return shareField === filterFullName;
-            //         });
-            //         if (idx === -1) {
-            //             filter.ticked = false;
-            //         }
-            //     }
-            //
-            // });
-            // console.log($scope.selected.customFilters);
-            // console.log($scope.customFilters);
+            $scope.customFilters = _buildCustomFilters();
+            $scope.selected.customFilters = _extractCustomFilters($scope.selected.customFilters);
         }
         function isShowCustomFilter() {
             return reportViewUtil.hasCustomFilters($scope.reportView.reportViewDataSets);
         }
 
-        function _extractCustomFilters() {
-            if($scope.isNew) return;
+        function _extractCustomFilters(currentFilters) {
+            if(!currentFilters) return;
 
-           var filtersFromApi =  shareable.fields.filters;
            var selectedFilters = [];
            _.forEach($scope.customFilters, function (filterOption) {
-               _.forEach(filtersFromApi, function (filterFromApi) {
-                   if(filterFromApi.name === filterOption.name && filterFromApi.dataSetId ===filterOption.dataSetId){
+               _.forEach(currentFilters, function (_currentFilter) {
+                   if(_currentFilter.name === filterOption.name && _currentFilter.dataSetId === filterOption.dataSetId){
                        filterOption.ticked = true;
                        selectedFilters.push(filterOption);
                    }
@@ -135,6 +104,9 @@
                 customFilters.push(option);
 
                 _.forEach(dataset.filters, function (filter) {
+                    var fullFilterName = filter.field + '_' + dataset.dataSet.id;
+                    if(_skip(fullFilterName, $scope.fieldsReportView, $scope.fieldsToShare)) return;
+
                     if(filter.type !== 'date' && filter.userProvided){
                         var option = {
                             label: filter.field,
@@ -152,6 +124,22 @@
             return customFilters;
         }
 
+        function _skip(fullFilterName, allOptions, selectedOptions) {
+            if($scope.selected.selectAll){
+                if(!allOptions) return true;
+                var idx = _.findIndex(allOptions,function (option) {
+                    return option.key === fullFilterName;
+                });
+                if(idx === -1){
+                    return true;
+                }
+            }else {
+                if(!selectedOptions) return true;
+                return selectedOptions.indexOf(fullFilterName) === -1;
+            }
+
+
+        }
         function disabledDimension(field) {
             return $scope.reportView.largeReport && _.values($scope.reportView.dimensions).indexOf(field.key) > -1
         }
