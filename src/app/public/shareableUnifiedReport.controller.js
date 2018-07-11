@@ -169,7 +169,7 @@
         function isDatasetHasUserProvidedFilterExceptDate() {
             return reportViewUtil.isDatasetHasUserProvidedFilterExceptDate;
         }
-        
+
         function _extractCustomFilters() {
             //enable outside value
             if(!$scope.reportView.sharedKeysConfig[$stateParams.token]) return;

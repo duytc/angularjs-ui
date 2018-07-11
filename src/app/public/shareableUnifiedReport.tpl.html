@@ -51,7 +51,7 @@
                                                 <!--FIELD NAME-->
                                                 <label class="form-inline-item-padding">{{customFilter.field}}</label>
                                                 <!--COMPARE TYPE-->
-                                                <ui-select ng-model="customFilter.comparison"
+                                                <ui-select ng-model="customFilter.comparison" ng-disabled="true"
                                                            ng-required="true" server-error
                                                            reset-search-input="'false'"
                                                            on-select='selectedComparison(customFilter)'
