@@ -7,8 +7,29 @@
 
     function reportViewUtil() {
         return {
-            hasCustomFilters: hasCustomFilters
+            hasCustomFilters: hasCustomFilters,
+            _buildCustomFilters: _buildCustomFilters,
+            isDatasetHasUserProvidedFilterExceptDate: isDatasetHasUserProvidedFilterExceptDate,
         };
+
+        /**
+         * Filters is in reportView.reportViewDatasets, but to subReportView, filter is in reportView.filters
+         * Need push reportView.filters into reportView.reportViewDatasets to submit to api
+         * @private
+         */
+        function _buildCustomFilters(subReportViewFilters,reportViewDataSets) {
+            _.forEach(subReportViewFilters, function (subReportViewFilter) {
+                if(!subReportViewFilter.userProvided || subReportViewFilter.type === 'date'){
+                    return;
+                }
+                var dataset = reportViewDataSets.find(function (reportViewDataSet) {
+                    return reportViewDataSet.dataSet.id == subReportViewFilter.dataSet;
+                });
+                if(dataset){
+                    dataset.filters.push(subReportViewFilter);
+                }
+            });
+        }
 
         function hasCustomFilters(reportViewDatasets) {
             var isShowCustomFilter = false;

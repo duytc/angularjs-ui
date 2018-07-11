@@ -54,12 +54,12 @@
                         </div>
                     </accordion-heading>
                     <div ng-repeat="dataset in reportView.reportViewDataSets">
-                        <div ng-if="dataset.filters && dataset.filters.length > 0">
+                        <div ng-if="isDatasetHasUserProvidedFilterExceptDate(dataset)">
                             <h4>Dataset {{dataset.dataSetName}}</h4>
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <div ng-repeat="customFilter in dataset.filters track by $index" class="filter-container">
-                                        <div class="form-inline" ng-if="customFilter.type !== 'date'">
+                                        <div class="form-inline" ng-if="customFilter.type !== 'date' && customFilter.userProvided">
                                             <div class="form-group">
                                                 <!--FIELD NAME-->
                                                 <label class="form-inline-item-padding">{{customFilter.field}}</label>

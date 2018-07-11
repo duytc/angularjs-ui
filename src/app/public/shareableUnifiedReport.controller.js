@@ -4,11 +4,13 @@
     angular.module('tagcade.public')
         .controller('shareableUnifiedReport', shareableUnifiedReport);
 
-    function shareableUnifiedReport($scope, $stateParams, $translate, $modal, exportExcelService,
+    function shareableUnifiedReport($scope, $stateParams, $translate, $modal, exportExcelService,reportViewUtil,
                                     reports, unifiedReportFormatReport, DateFormatter, AlertService,
                                     AtSortableService, dataService, API_UNIFIED_PUBLIC_END_POINT,
                                     historyStorage, HISTORY_TYPE_PATH,COMPARISON_TYPES_FILTER_CONNECT_TEXT,
                                     COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_NUMBER) {
+
+        console.log(reports);
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -153,9 +155,20 @@
         //Custom filter
         $scope.getComparisonTypes = getComparisonTypes;
         $scope.addCompareValueText = addCompareValueText;
+        _buildCustomFilters();
+        /**
+         * Filters is in reportView.reportViewDatasets, but to subReportView, filter is in reportView.filters
+         * Need push reportView.filters into reportView.reportViewDatasets to submit to api
+         * @private
+         */
+        function _buildCustomFilters() {
+            reportViewUtil._buildCustomFilters($scope.reportView.filters, $scope.reportView.reportViewDataSets);
+        }
 
         function _extractCustomFilters() {
             //enable outside value
+            if(!$scope.reportView.sharedKeysConfig[$stateParams.token]) return;
+
             var allowedOutsideFilters = $scope.reportView.sharedKeysConfig[$stateParams.token].filters;
             var datasets = angular.copy($scope.reportView.reportViewDataSets);
             _.forEach(datasets, function (dataset) {
