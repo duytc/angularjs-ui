@@ -66,9 +66,41 @@
         $scope.getShareableLink = getShareableLink;
         $scope.highlightText = highlightText;
         $scope.isShowCustomFilter = isShowCustomFilter;
-        
-        function _updateAllowOutsiteCustomFilters() {
-            
+
+        function _updateAllowOutSiteCustomFilters() {
+            // var clonedSelectedCustomFilters = $scope.selected.customFilters;
+            // if (!clonedSelectedCustomFilters) return;
+            // //update selected filters
+            // for (var i = 0; i < clonedSelectedCustomFilters.length; i++) {
+            //     var customFilter = clonedSelectedCustomFilters[i];
+            //     // customFilter is in fieldsToShare
+            //     var found = false;
+            //     for (var j = 0; j < $scope.fieldsToShare.length; j++) {
+            //         var shareField = $scope.fieldsToShare[j];
+            //         if (shareField === customFilter.name + '_' + customFilter.dataSetId) {
+            //             found = true;
+            //             break;
+            //         }
+            //     }
+            //     if (!found) {
+            //         $scope.selected.customFilters.splice(i, 1);
+            //     }
+            // }
+
+            // _.forEach($scope.customFilters, function (filter) {
+            //     if (filter.msGroup == null) {
+            //         var filterFullName = filter.name + '_' + filter.dataSetId;
+            //         var idx = _.findIndex($scope.fieldsToShare, function (shareField) {
+            //             return shareField === filterFullName;
+            //         });
+            //         if (idx === -1) {
+            //             filter.ticked = false;
+            //         }
+            //     }
+            //
+            // });
+            // console.log($scope.selected.customFilters);
+            // console.log($scope.customFilters);
         }
         function isShowCustomFilter() {
             return reportViewUtil.hasCustomFilters($scope.reportView.reportViewDataSets);
@@ -103,7 +135,7 @@
                 customFilters.push(option);
 
                 _.forEach(dataset.filters, function (filter) {
-                    if(filter.type !== 'date'){
+                    if(filter.type !== 'date' && filter.userProvided){
                         var option = {
                             label: filter.field,
                             ticked: false,
@@ -145,6 +177,7 @@
             if($scope.fieldsToShare.length == $scope.fieldsReportView.length) {
                 $scope.selected.selectAll = true
             }
+            _updateAllowOutSiteCustomFilters();
         };
 
         $scope.hasField = function(filed) {
@@ -260,6 +293,7 @@
                     }
                 })
             }
+            _updateAllowOutSiteCustomFilters();
         }
 
         function enableSelectDaterange() {
