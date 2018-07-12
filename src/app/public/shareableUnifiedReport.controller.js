@@ -269,7 +269,11 @@
 
         function _buildCustomFilterParams() {
             var params = [];
-            _.forEach($scope.customFilterContainer, function (dataset) {
+            var datasets = _.clone($scope.customFilterContainer);
+            _.forEach(datasets, function (dataset) {
+                _.forEach(dataset.filters, function (filter) {
+                    delete filter.originalCompareValue;
+                });
                 var json = {
                     dataSet: dataset.dataSet.id,
                     filters : dataset.filters
