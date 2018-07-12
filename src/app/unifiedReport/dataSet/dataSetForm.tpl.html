@@ -143,6 +143,15 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="autoReload" class="col-sm-1 control-label">Auto Reload Data Set</label>
+                    <div class="col-sm-5">
+                        <label class="ui-checkbox"><input server-error name="autoReload" type="checkbox" ng-model="dataSet.autoReload" id="autoReload"><span></span></label>
+
+                        <span class="help-block">If 'Auto Reload' checkbox is checked, this data set will be reload if its map data set's data has any changed. </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-5">
                         <button ng-disabled="!isFormValid()" ng-disabled="formProcessing" type="submit" class="btn btn-success mce-i-indent">{{ 'SUBMIT' | translate }}</button>
                         <div ng-show="!isFormValid()" class="callout callout-info">

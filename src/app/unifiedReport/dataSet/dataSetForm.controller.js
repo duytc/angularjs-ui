@@ -20,6 +20,7 @@
 
         $scope.dataSet = dataSet || {
             allowOverwriteExistingData: true,
+            autoReload: false,
             dimensions: [{type: null, name: null}],
             metrics: [],
             mapBuilderEnabled: false,
