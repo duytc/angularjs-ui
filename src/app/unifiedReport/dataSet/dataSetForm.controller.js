@@ -20,6 +20,7 @@
 
         $scope.dataSet = dataSet || {
             allowOverwriteExistingData: true,
+            autoReload: false,
             dimensions: [{type: null, name: null}],
             metrics: [],
             mapBuilderEnabled: false,
@@ -111,6 +112,7 @@
         function checkMapBuilder(mapBuilderEnabled) {
             if(mapBuilderEnabled) {
                 $scope.dataSet.allowOverwriteExistingData = true;
+                $scope.dataSet.autoReload = $scope.isNew ? false : $scope.dataSet.autoReload;
             }
         }
 
