@@ -43,7 +43,9 @@
         $scope.metrics = [];
 
         _updateColumnPositions();
-        _fixWrongtickedDeminsionAndMetric();
+        _fixWrongTickedDimensionAndMetric();
+        _updateLabelForOptions($scope.metrics);
+        _updateLabelForOptions($scope.dimensions);
 
         if(!!reportView && reportView.subView && angular.isObject(reportView.masterReportView)) {
             var masterReportView = angular.copy(reportView.masterReportView);
@@ -156,8 +158,16 @@
         $scope.enableSelectDaterange = enableSelectDaterange;
         $scope.setClassName = setClassName;
 
+        function _updateLabelForOptions(options) {
+            var fullLabels = reportGroup.columns;
+            _.forEach(options, function (option) {
+                if(fullLabels[option.name]){
+                    option.label = fullLabels[option.name];
+                }
+            })
+        }
 
-        function _fixWrongtickedDeminsionAndMetric() {
+        function _fixWrongTickedDimensionAndMetric() {
             // Fix bug: some metrics ticked wrong by default. https://trello.com/c/rmXhwtVO/2637-ur-usability-fixes-small
             //This solution is not good. Just to fix above bug. If there is some change, this solution may not work
             /**
@@ -595,7 +605,6 @@
                 });
 
                 var data = allDimensionsMetrics.dataSets;
-
                 angular.forEach(data, function (item) {
                     totalDimensions = totalDimensions.concat(_.keys(item.dimensions));
                     totalMetrics = totalMetrics.concat(_.keys(item.metrics))
@@ -654,6 +663,7 @@
                     }
                 });
                 //forEach Datasets, update $scope.dimensions
+
                 angular.forEach(data, function (item) {
                     if(true) {
                         angular.forEach(item.dimensions, function (type, dimension) {
