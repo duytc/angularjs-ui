@@ -1478,6 +1478,9 @@
             },
             "REPORT_VIEW":{
                 "CUSTOM_FILTER":"Custom filter"
+            },
+            "SHARE_REPORT_VIEW":{
+                "ALL_VALUE": "ALl value"
             }
         });
 })();
