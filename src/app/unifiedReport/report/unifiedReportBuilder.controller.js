@@ -1046,6 +1046,7 @@
 
             angular.forEach(reportBuilder.reportViewDataSets, function (reportViewDataSet) {
                 reportViewDataSet.dataSet = angular.isObject(reportViewDataSet.dataSet) ? reportViewDataSet.dataSet.id : reportViewDataSet.dataSet
+                delete reportViewDataSet.dataSetName;
             });
 
             // reset show In Total based on type (aggregate and average)
