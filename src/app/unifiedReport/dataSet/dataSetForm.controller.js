@@ -112,6 +112,7 @@
         function checkMapBuilder(mapBuilderEnabled) {
             if(mapBuilderEnabled) {
                 $scope.dataSet.allowOverwriteExistingData = true;
+                $scope.dataSet.autoReload = $scope.isNew ? false : $scope.dataSet.autoReload;
             }
         }
 
