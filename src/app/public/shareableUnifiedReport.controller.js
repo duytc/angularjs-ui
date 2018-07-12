@@ -9,8 +9,6 @@
                                     AtSortableService, dataService, API_UNIFIED_PUBLIC_END_POINT,
                                     historyStorage, HISTORY_TYPE_PATH,COMPARISON_TYPES_FILTER_CONNECT_TEXT,
                                     COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_NUMBER) {
-
-        console.log(reports);
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -135,6 +133,7 @@
         _update();
 
         //custom filter
+        _buildCustomFilters();
         $scope.customFilterContainer = _extractCustomFilters();
         
 
@@ -156,7 +155,7 @@
         $scope.getComparisonTypes = getComparisonTypes;
         $scope.addCompareValueText = addCompareValueText;
         $scope.isDatasetHasUserProvidedFilterExceptDate = isDatasetHasUserProvidedFilterExceptDate;
-        _buildCustomFilters();
+
         /**
          * Filters is in reportView.reportViewDatasets, but to subReportView, filter is in reportView.filters
          * Need push reportView.filters into reportView.reportViewDatasets to submit to api
@@ -270,7 +269,7 @@
 
         function _buildCustomFilterParams() {
             var params = [];
-            _.forEach($scope.reportView.reportViewDataSets, function (dataset) {
+            _.forEach($scope.customFilterContainer, function (dataset) {
                 var json = {
                     dataSet: dataset.dataSet.id,
                     filters : dataset.filters
