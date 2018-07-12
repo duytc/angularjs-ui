@@ -1480,7 +1480,7 @@
                 "CUSTOM_FILTER":"Custom filter"
             },
             "SHARE_REPORT_VIEW":{
-                "ALL_VALUE": "ALl value"
+                "ALL_VALUE": "All value"
             }
         });
 })();
