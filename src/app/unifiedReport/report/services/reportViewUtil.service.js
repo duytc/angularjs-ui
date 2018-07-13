@@ -59,7 +59,6 @@
         }
 
         function isShowHelpBlock(customFilter) {
-            console.log(customFilter);
             return customFilter.comparison === 'contains' ||
                 customFilter.comparison === 'not contains' ||
                 customFilter.comparison === 'start with' ||

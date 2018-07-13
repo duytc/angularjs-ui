@@ -802,7 +802,7 @@
         function _getDateFieldsFromDataSet() {
             var dateFields = [];
             angular.forEach($scope.reportBuilder.reportViewDataSets, function (dataSet) {
-
+                if(!dataSet.dataSet) return;
                 var dataSetId = dataSet.dataSet.id ? dataSet.dataSet.id : dataSet.dataSet;
 
                 var originalDataSet = _getDataSetById(dataSetId);
