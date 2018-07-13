@@ -98,6 +98,7 @@
 
         }
         function _buildCustomFilters() {
+            var countFilterData = [];
             var customFilters = [];
             _.forEach($scope.reportView.reportViewDataSets, function (dataset) {
                 var option = {
@@ -108,6 +109,7 @@
                 };
                 customFilters.push(option);
 
+                var count = {};
                 _.forEach(dataset.filters, function (filter) {
                     var fullFilterName = filter.field + '_' + dataset.dataSet.id;
                     if(_skip(fullFilterName, $scope.fieldsReportView, $scope.fieldsToShare, dataset.dataSet.id)) return;
@@ -121,12 +123,41 @@
                             dataSetId: dataset.dataSet.id
                         };
                         customFilters.push(option);
+                        // count
+                        if(!count[filter.field]) {
+                            count[filter.field] = 1;
+                        }else {
+                            count[filter.field] += 1;
+                        }
                     }
                 });
+                countFilterData[dataset.dataSet.id]= count;
 
                 customFilters.push({msGroup: false});
             });
+
+            // Base on count, update label for filter
+            _.forEach(customFilters, function (customFilterOption) {
+               if(customFilterOption.msGroup !== true && customFilterOption.msGroup !== false){
+                   if(countFilterData[customFilterOption.dataSetId][customFilterOption.name] > 1){
+                       customFilterOption.label = _buildFullLabelForFilter(customFilterOption.value);
+                   }
+               }
+            });
+
             return customFilters;
+        }
+
+        function _buildFullLabelForFilter(filter) {
+            if(!filter) return null;
+
+            var result = filter.field + '( ' + filter.comparison;
+            if(filter.compareValue){
+                result = result + ' [ ' + filter.compareValue.join(' | ') + ' ]';
+            }
+            result = result + ' )';
+
+           return result;
         }
 
         function _skip(fullFilterName, allOptions, selectedOptions, dataSetId) {
