@@ -155,7 +155,11 @@
         $scope.getComparisonTypes = getComparisonTypes;
         $scope.addCompareValueText = addCompareValueText;
         $scope.isDatasetHasUserProvidedFilterExceptDate = isDatasetHasUserProvidedFilterExceptDate;
+        $scope.isShowHelpBlock = isShowHelpBlock;
 
+        function isShowHelpBlock(customFilter) {
+            return reportViewUtil.isShowHelpBlock(customFilter)
+        }
         /**
          * Filters is in reportView.reportViewDatasets, but to subReportView, filter is in reportView.filters
          * Need push reportView.filters into reportView.reportViewDatasets to submit to api

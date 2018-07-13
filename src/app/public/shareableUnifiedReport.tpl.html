@@ -83,9 +83,6 @@
                                                     </oi-select>
                                                 </div>
 
-                                                <span class="help-block" ng-if="customFilter.comparison =='in' || customFilter.comparison =='not in'">
-                                                    {{ 'REPORT_BUILDER_MODULE.HELP_TEXT_FOR_ENTER_VALUES' | translate }}
-                                                </span>
                                                 <!--CHECK ALL-->
                                                 <div class="tc-inline-block form-inline-item-margin">
                                                     <label class="ui-checkbox isAll">
@@ -96,6 +93,10 @@
                                                     </label>
                                                 </div>
 
+                                                <!--HELP BLOCK-->
+                                                <span class="help-block" ng-if="isShowHelpBlock(customFilter)">
+                                                    {{ 'REPORT_BUILDER_MODULE.HELP_TEXT_FOR_ENTER_VALUES' | translate }}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>

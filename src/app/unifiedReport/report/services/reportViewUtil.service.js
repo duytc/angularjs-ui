@@ -18,15 +18,15 @@
          * Need push reportView.filters into reportView.reportViewDatasets to submit to api
          * @private
          */
-        function _buildCustomFilters(subReportViewFilters,reportViewDataSets) {
+        function _buildCustomFilters(subReportViewFilters, reportViewDataSets) {
             _.forEach(subReportViewFilters, function (subReportViewFilter) {
-                if(!subReportViewFilter.userProvided || subReportViewFilter.type === 'date'){
+                if (!subReportViewFilter.userProvided || subReportViewFilter.type === 'date') {
                     return;
                 }
                 var dataset = reportViewDataSets.find(function (reportViewDataSet) {
                     return reportViewDataSet.dataSet == subReportViewFilter.dataSet;
                 });
-                if(dataset){
+                if (dataset) {
                     dataset.filters.push(subReportViewFilter);
                 }
             });
@@ -59,10 +59,11 @@
         }
 
         function isShowHelpBlock(customFilter) {
-            return customFilter.comparison === 'contains' ||
-                customFilter.comparison === 'not contains' ||
-                customFilter.comparison === 'start with' ||
-                customFilter.comparison === 'end with';
+            return customFilter &&
+                (customFilter.comparison === 'contains' ||
+                    customFilter.comparison === 'not contains' ||
+                    customFilter.comparison === 'start with' ||
+                    customFilter.comparison === 'end with');
         }
 
     }
