@@ -144,8 +144,8 @@
                 return false;
             }else {
                 if(!selectedOptions) return true;
-                return selectedOptions.indexOf(fullFilterName) === -1 ||
-                    selectedOptions.indexOf(reportViewUtil.getJoinOutputName(fullFilterName, dataSetId, $scope.reportView.joinBy)) === -1;
+                return !(selectedOptions.indexOf(fullFilterName) > -1 ||
+                    selectedOptions.indexOf(reportViewUtil.getJoinOutputName(fullFilterName, dataSetId, $scope.reportView.joinBy)) > -1);
             }
         }
         function disabledDimension(field) {
@@ -174,7 +174,7 @@
                 $scope.selected.selectAll = true
             }
             _updateAllowOutSiteCustomFilters();
-        };
+        }
 
         $scope.hasField = function(filed) {
             return _.findIndex($scope.fieldsToShare, function (item) {return item == filed.key}) > -1;
