@@ -46,7 +46,7 @@
                 _.forEach(joinItem.joinFields, function (joinObject) {
                     if (joinObject.field + '_' + joinObject.dataSet === fieldWithDatasetIdNeedCheck &&
                         dataSetIdNeedCheck == joinObject.dataSet) {
-                        outputField = joinData.outputField;
+                        outputField = joinItem.outputField;
                         return;
                     }
                 })
