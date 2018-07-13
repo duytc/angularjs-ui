@@ -24,7 +24,7 @@
                     return;
                 }
                 var dataset = reportViewDataSets.find(function (reportViewDataSet) {
-                    return reportViewDataSet.dataSet.id == subReportViewFilter.dataSet;
+                    return reportViewDataSet.dataSet == subReportViewFilter.dataSet;
                 });
                 if(dataset){
                     dataset.filters.push(subReportViewFilter);
