@@ -12,7 +12,7 @@
             isDatasetHasUserProvidedFilterExceptDate: isDatasetHasUserProvidedFilterExceptDate,
             isShowHelpBlock: isShowHelpBlock,
             isAFieldInJoinBy: isAFieldInJoinBy,
-            getJoinOutputName: getJoinOutputName,
+            getJoinOutputName: getJoinOutputName
         };
 
         /**
@@ -84,7 +84,8 @@
             _.forEach(joinData, function (joinItem) {
                 if (!joinItem.joinFields || found) return;
                 _.forEach(joinItem.joinFields, function (joinObject) {
-                    if (joinObject.field + '_' + joinObject.dataSet === fieldWithDatasetIdNeedCheck && dataSetIdNeedCheck == joinObject.dataSet) {
+                    if (joinObject.field + '_' + joinObject.dataSet === fieldWithDatasetIdNeedCheck &&
+                        dataSetIdNeedCheck == joinObject.dataSet) {
                         found = true;
                         return;
                     }
@@ -94,7 +95,7 @@
         }
 
         /**
-         * Filters is in reportView.reportViewDatasets, but to subReportView, filter is in reportView.filters
+         * Filters are in reportView.reportViewDatasets, but to subReportView's filters are in reportView.filters
          * Need push reportView.filters into reportView.reportViewDatasets to submit to api
          * @private
          */

@@ -130,9 +130,6 @@
         }
 
         function _skip(fullFilterName, allOptions, selectedOptions, dataSetId) {
-            console.log(fullFilterName);
-            console.log(allOptions);
-            console.log(selectedOptions);
             if($scope.selected.selectAll){
                 if(!allOptions) return true;
                 var idx = _.findIndex(allOptions,function (option) {
