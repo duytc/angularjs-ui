@@ -10,6 +10,7 @@
 
         $scope.shareable = angular.copy(shareable);
         $scope.reportView = reportView;
+        console.log(reportView);
 
         $scope.fieldsReportView = fieldsReportView;
         $scope.isNew = $scope.shareable == null;
@@ -26,6 +27,10 @@
                 endDate : !!$scope.shareable && !!$scope.shareable.fields && !!$scope.shareable.fields.dateRange ? $scope.shareable.fields.dateRange.endDate : getDateReportView.getMaxEndDateInFilterReportView(reportView)
             }
         };
+        /**
+         * this is form data for selecting allowed outside value of customized filters
+         * @type {Array}
+         */
         $scope.customFilters = _buildCustomFilters();
         $scope.selected.customFilters = _extractCustomFilters(!$scope.isNew ? shareable.fields.filters : null);
 
@@ -72,6 +77,7 @@
             $scope.customFilters = _buildCustomFilters();
             $scope.selected.customFilters = _extractCustomFilters($scope.selected.customFilters);
         }
+
         function isShowCustomFilter() {
             return reportViewUtil.hasCustomFilters($scope.reportView.reportViewDataSets);
         }
@@ -105,7 +111,7 @@
 
                 _.forEach(dataset.filters, function (filter) {
                     var fullFilterName = filter.field + '_' + dataset.dataSet.id;
-                    if(_skip(fullFilterName, $scope.fieldsReportView, $scope.fieldsToShare)) return;
+                    if(_skip(fullFilterName, $scope.fieldsReportView, $scope.fieldsToShare, dataset.dataSet.id)) return;
 
                     if(filter.type !== 'date' && filter.userProvided){
                         var option = {
@@ -124,21 +130,21 @@
             return customFilters;
         }
 
-        function _skip(fullFilterName, allOptions, selectedOptions) {
+        function _skip(fullFilterName, allOptions, selectedOptions, dataSetId) {
             if($scope.selected.selectAll){
                 if(!allOptions) return true;
                 var idx = _.findIndex(allOptions,function (option) {
                     return option.key === fullFilterName;
                 });
                 if(idx === -1){
-                    return true;
+                   return reportViewUtil.isAFieldInJoinBy(fullFilterName, dataSetId, $scope.reportView.joinBy);
                 }
+                return false;
             }else {
                 if(!selectedOptions) return true;
-                return selectedOptions.indexOf(fullFilterName) === -1;
+                return selectedOptions.indexOf(fullFilterName) === -1 ||
+                    selectedOptions.indexOf(reportViewUtil.getJoinOutputName(fullFilterName, dataSetId, $scope.reportView.joinBy)) === -1;
             }
-
-
         }
         function disabledDimension(field) {
             return $scope.reportView.largeReport && _.values($scope.reportView.dimensions).indexOf(field.key) > -1

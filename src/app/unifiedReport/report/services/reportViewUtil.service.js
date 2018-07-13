@@ -10,8 +10,48 @@
             hasCustomFilters: hasCustomFilters,
             _buildCustomFilters: _buildCustomFilters,
             isDatasetHasUserProvidedFilterExceptDate: isDatasetHasUserProvidedFilterExceptDate,
-            isShowHelpBlock: isShowHelpBlock
+            isShowHelpBlock: isShowHelpBlock,
+            isAFieldInJoinBy: isAFieldInJoinBy,
+            getJoinOutputName: getJoinOutputName,
         };
+
+        /**
+         *
+         * @param fieldWithDatasetIdNeedCheck Ex: tag_name_1
+         * @param dataSetIdNeedCheck Ex: 1
+         * @param joinData
+         * @returns {*}
+         */
+        function getJoinOutputName(fieldWithDatasetIdNeedCheck, dataSetIdNeedCheck, joinData) {
+            if (!joinData || joinData.isVisible) return false;
+            var outputField = null;
+            _.forEach(joinData, function (joinItem) {
+                if (!joinItem.joinFields || outputField) return;
+                _.forEach(joinItem.joinFields, function (joinObject) {
+                    if (joinObject.field === fieldWithDatasetIdNeedCheck && dataSetIdNeedCheck == joinObject.dataSet) {
+                        outputField = joinData.outputField;
+                        return;
+                    }
+                })
+            });
+
+            return outputField;
+        }
+
+        function isAFieldInJoinBy(fieldWithDatasetIdNeedCheck, dataSetIdNeedCheck, joinData) {
+            if (!joinData || joinData.isVisible) return false;
+            var found = false;
+            _.forEach(joinData, function (joinItem) {
+                if (!joinItem.joinFields || found) return;
+                _.forEach(joinItem.joinFields, function (joinObject) {
+                    if (joinObject.field === fieldWithDatasetIdNeedCheck && dataSetIdNeedCheck == joinObject.dataSet) {
+                        found = true;
+                        return;
+                    }
+                })
+            });
+            return found;
+        }
 
         /**
          * Filters is in reportView.reportViewDatasets, but to subReportView, filter is in reportView.filters
