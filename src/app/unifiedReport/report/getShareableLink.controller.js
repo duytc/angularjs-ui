@@ -152,9 +152,9 @@
             if(!filter) return null;
 
             var result = filter.field + '( ' + filter.comparison;
-            if(filter.compareValue){
-                result = result + ' [ ' + filter.compareValue.join(' | ') + ' ]';
-            }
+            // if(filter.compareValue){
+            //     result = result + ' [ ' + filter.compareValue.join(' | ') + ' ]';
+            // }
             result = result + ' )';
 
            return result;
