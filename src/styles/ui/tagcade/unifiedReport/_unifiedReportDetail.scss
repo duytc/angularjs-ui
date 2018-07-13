@@ -54,4 +54,8 @@
 
 .filter-container{
   margin-bottom: 5px;
+  .filter-field{
+    text-transform: none !important;
+    font-size: 1em !important;
+  }
 }

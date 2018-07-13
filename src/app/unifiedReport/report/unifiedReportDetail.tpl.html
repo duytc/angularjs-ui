@@ -62,7 +62,7 @@
                                         <div class="form-inline" ng-if="customFilter.type !== 'date' && customFilter.userProvided">
                                             <div class="form-group">
                                                 <!--FIELD NAME-->
-                                                <label class="form-inline-item-padding">{{customFilter.field}}</label>
+                                                <label class="form-inline-item-padding filter-field">{{customFilter.field}}</label>
                                                 <!--COMPARE TYPE-->
                                                 <ui-select ng-model="customFilter.comparison"
                                                            ng-required="true" server-error
@@ -82,7 +82,7 @@
                                                                placeholder="{{ 'REPORT_BUILDER_MODULE.ENTER_ONE_OR_MULTIPLE_VALUE' | translate }}">
                                                     </oi-select>
                                                 </div>
-                                                <span class="help-block" ng-if="customFilter.comparison =='in' || customFilter.comparison =='not in'">
+                                                <span class="help-block" ng-if="isShowHelpBlock(customFilter)">
                                                     {{ 'REPORT_BUILDER_MODULE.HELP_TEXT_FOR_ENTER_VALUES' | translate }}
                                                 </span>
                                             </div>
