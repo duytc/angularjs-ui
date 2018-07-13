@@ -381,6 +381,7 @@
 
             params.searches = $scope.search;
             params.isExport = true;
+            params.customFilter = JSON.stringify(_buildCustomFilterParams());
 
             dataService.makeHttpGetRequest('/v1/reportviews/:reportView/sharedReports', params, API_UNIFIED_PUBLIC_END_POINT)
                 .then(function (reportData) {
