@@ -302,7 +302,7 @@
 
             var reportBuilder = _refactorJson($scope.reportBuilder);
             delete reportBuilder.publisher;
-
+            _removeDataSetNameFromParam(reportBuilder);
             var reportViewSave = UnifiedReportViewManager.one(reportBuilder.id).patch(reportBuilder);
             reportViewSave
                 .then(function () {
