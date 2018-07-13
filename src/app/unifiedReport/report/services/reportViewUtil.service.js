@@ -19,8 +19,24 @@
          *
          * @param fieldWithDatasetIdNeedCheck Ex: tag_name_1
          * @param dataSetIdNeedCheck Ex: 1
-         * @param joinData
-         * @returns {*}
+         * @param joinData Ex: "joinData": [
+         {
+           "joinFields": [
+             {
+               "dataSet": 1,
+               "field": "tag_name"
+             },
+             {
+               "dataSet": 2,
+               "field": "tag_name"
+             }
+           ],
+           "outputField": "tag_name_join",
+           "isVisible": true
+         },
+         {...}
+         ]
+         * @returns {*} Ex: tag_name_join
          */
         function getJoinOutputName(fieldWithDatasetIdNeedCheck, dataSetIdNeedCheck, joinData) {
             if (!joinData || joinData.isVisible) return false;
@@ -28,7 +44,8 @@
             _.forEach(joinData, function (joinItem) {
                 if (!joinItem.joinFields || outputField) return;
                 _.forEach(joinItem.joinFields, function (joinObject) {
-                    if (joinObject.field === fieldWithDatasetIdNeedCheck && dataSetIdNeedCheck == joinObject.dataSet) {
+                    if (joinObject.field + '_' + joinObject.dataSet === fieldWithDatasetIdNeedCheck &&
+                        dataSetIdNeedCheck == joinObject.dataSet) {
                         outputField = joinData.outputField;
                         return;
                     }
@@ -38,13 +55,36 @@
             return outputField;
         }
 
+        /**
+         *
+         * @param fieldWithDatasetIdNeedCheck Ex: tag_name_1
+         * @param dataSetIdNeedCheck Ex: 1
+         * @param joinData Ex: "joinData": [
+         {
+           "joinFields": [
+             {
+               "dataSet": 1,
+               "field": "tag_name"
+             },
+             {
+               "dataSet": 2,
+               "field": "tag_name"
+             }
+           ],
+           "outputField": "tag_name_join",
+           "isVisible": true
+         },
+         {...}
+         ]
+         * @returns {boolean} Ex: true
+         */
         function isAFieldInJoinBy(fieldWithDatasetIdNeedCheck, dataSetIdNeedCheck, joinData) {
             if (!joinData || joinData.isVisible) return false;
             var found = false;
             _.forEach(joinData, function (joinItem) {
                 if (!joinItem.joinFields || found) return;
                 _.forEach(joinItem.joinFields, function (joinObject) {
-                    if (joinObject.field === fieldWithDatasetIdNeedCheck && dataSetIdNeedCheck == joinObject.dataSet) {
+                    if (joinObject.field + '_' + joinObject.dataSet === fieldWithDatasetIdNeedCheck && dataSetIdNeedCheck == joinObject.dataSet) {
                         found = true;
                         return;
                     }

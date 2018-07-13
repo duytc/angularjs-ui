@@ -10,7 +10,6 @@
 
         $scope.shareable = angular.copy(shareable);
         $scope.reportView = reportView;
-        console.log(reportView);
 
         $scope.fieldsReportView = fieldsReportView;
         $scope.isNew = $scope.shareable == null;
@@ -131,13 +130,16 @@
         }
 
         function _skip(fullFilterName, allOptions, selectedOptions, dataSetId) {
+            console.log(fullFilterName);
+            console.log(allOptions);
+            console.log(selectedOptions);
             if($scope.selected.selectAll){
                 if(!allOptions) return true;
                 var idx = _.findIndex(allOptions,function (option) {
                     return option.key === fullFilterName;
                 });
                 if(idx === -1){
-                   return reportViewUtil.isAFieldInJoinBy(fullFilterName, dataSetId, $scope.reportView.joinBy);
+                   return !reportViewUtil.isAFieldInJoinBy(fullFilterName, dataSetId, $scope.reportView.joinBy);
                 }
                 return false;
             }else {
