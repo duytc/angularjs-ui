@@ -273,7 +273,7 @@
 
         function _buildCustomFilterParams() {
             var params = [];
-            var datasets = _.clone($scope.customFilterContainer);
+            var datasets = angular.copy($scope.customFilterContainer);
             _.forEach(datasets, function (dataset) {
                 _.forEach(dataset.filters, function (filter) {
                     delete filter.originalCompareValue;
