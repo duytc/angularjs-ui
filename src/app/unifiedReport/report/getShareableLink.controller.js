@@ -6,7 +6,8 @@
         .controller('GetShareableLink', GetShareableLink)
     ;
 
-    function GetShareableLink($scope, AlertService, fieldsReportView, reportView, shareable, UnifiedReportViewManager, DateFormatter, getDateReportView, ITEMS_PER_PAGE) {
+    function GetShareableLink($scope, $rootScope, AlertService, fieldsReportView, reportView, shareable, UnifiedReportViewManager, DateFormatter, getDateReportView, ITEMS_PER_PAGE, reportViewUtil) {
+
         $scope.shareable = angular.copy(shareable);
         $scope.reportView = reportView;
 
@@ -24,6 +25,12 @@
                 endDate : !!$scope.shareable && !!$scope.shareable.fields && !!$scope.shareable.fields.dateRange ? $scope.shareable.fields.dateRange.endDate : getDateReportView.getMaxEndDateInFilterReportView(reportView)
             }
         };
+        /**
+         * this is form data for selecting allowed outside value of customized filters
+         * @type {Array}
+         */
+        $scope.customFilters = _buildCustomFilters();
+        $scope.selected.customFilters = _extractCustomFilters(!$scope.isNew ? shareable.fields.filters : null);
 
         $scope.datePickerOpts = {
             maxDate:  moment().endOf('day'),
@@ -58,16 +65,125 @@
         $scope.isDynamic = isDynamic;
         $scope.saveShareableLink = saveShareableLink;
         $scope.disabledDimension = disabledDimension;
+        $scope.getTextToCopy = getTextToCopy;
+        $scope.toggleField = toggleField;
+        $scope.getShareableLink = getShareableLink;
+        $scope.highlightText = highlightText;
+        $scope.isShowCustomFilter = isShowCustomFilter;
 
+        function _updateAllowOutSiteCustomFilters() {
+            $scope.customFilters = _buildCustomFilters();
+            $scope.selected.customFilters = _extractCustomFilters($scope.selected.customFilters);
+        }
+
+        function isShowCustomFilter() {
+            return reportViewUtil.hasCustomFilters($scope.reportView.reportViewDataSets);
+        }
+
+        function _extractCustomFilters(currentFilters) {
+            if(!currentFilters) return;
+
+           var selectedFilters = [];
+           _.forEach($scope.customFilters, function (filterOption) {
+               _.forEach(currentFilters, function (_currentFilter) {
+                   if(_currentFilter.name === filterOption.name && _currentFilter.dataSetId === filterOption.dataSetId){
+                       filterOption.ticked = true;
+                       selectedFilters.push(filterOption);
+                   }
+               })
+           });
+
+           return selectedFilters;
+
+        }
+        function _buildCustomFilters() {
+            var countFilterData = [];
+            var customFilters = [];
+            _.forEach($scope.reportView.reportViewDataSets, function (dataset) {
+                var option = {
+                    label: '<strong> Dataset ' + dataset.dataSet.name + '</strong>',
+                    name: dataset.dataSet.name,
+                    value: null,
+                    msGroup: true
+                };
+                customFilters.push(option);
+
+                var count = {};
+                _.forEach(dataset.filters, function (filter) {
+                    var fullFilterName = filter.field + '_' + dataset.dataSet.id;
+                    if(_skip(fullFilterName, $scope.fieldsReportView, $scope.fieldsToShare, dataset.dataSet.id)) return;
+
+                    if(filter.type !== 'date' && filter.userProvided){
+                        var option = {
+                            label: filter.field,
+                            ticked: false,
+                            name: filter.field,
+                            value: filter,
+                            dataSetId: dataset.dataSet.id
+                        };
+                        customFilters.push(option);
+                        // count
+                        if(!count[filter.field]) {
+                            count[filter.field] = 1;
+                        }else {
+                            count[filter.field] += 1;
+                        }
+                    }
+                });
+                countFilterData[dataset.dataSet.id]= count;
+
+                customFilters.push({msGroup: false});
+            });
+
+            // Base on count, update label for filter
+            _.forEach(customFilters, function (customFilterOption) {
+               if(customFilterOption.msGroup !== true && customFilterOption.msGroup !== false){
+                   if(countFilterData[customFilterOption.dataSetId][customFilterOption.name] > 1){
+                       customFilterOption.label = _buildFullLabelForFilter(customFilterOption.value);
+                   }
+               }
+            });
+
+            return customFilters;
+        }
+
+        function _buildFullLabelForFilter(filter) {
+            if(!filter) return null;
+
+            var result = filter.field + '( ' + filter.comparison;
+            // if(filter.compareValue){
+            //     result = result + ' [ ' + filter.compareValue.join(' | ') + ' ]';
+            // }
+            result = result + ' )';
+
+           return result;
+        }
+
+        function _skip(fullFilterName, allOptions, selectedOptions, dataSetId) {
+            if($scope.selected.selectAll){
+                if(!allOptions) return true;
+                var idx = _.findIndex(allOptions,function (option) {
+                    return option.key === fullFilterName;
+                });
+                if(idx === -1){
+                   return !reportViewUtil.isAFieldInJoinBy(fullFilterName, dataSetId, $scope.reportView.joinBy);
+                }
+                return false;
+            }else {
+                if(!selectedOptions) return true;
+                return !(selectedOptions.indexOf(fullFilterName) > -1 ||
+                    selectedOptions.indexOf(reportViewUtil.getJoinOutputName(fullFilterName, dataSetId, $scope.reportView.joinBy)) > -1);
+            }
+        }
         function disabledDimension(field) {
             return $scope.reportView.largeReport && _.values($scope.reportView.dimensions).indexOf(field.key) > -1
         }
 
-        $scope.getTextToCopy = function (string) {
+        function getTextToCopy(string) {
             return string.replace(/\n/g, '\r\n');
-        };
+        }
 
-        $scope.toggleField = function (field) {
+        function toggleField(field) {
             if($scope.isNew) {
                 $scope.shareableLink = null;
             }
@@ -84,31 +200,37 @@
             if($scope.fieldsToShare.length == $scope.fieldsReportView.length) {
                 $scope.selected.selectAll = true
             }
-        };
+            _updateAllowOutSiteCustomFilters();
+        }
 
         $scope.hasField = function(filed) {
             return _.findIndex($scope.fieldsToShare, function (item) {return item == filed.key}) > -1;
         };
 
-        $scope.getShareableLink = function () {
+        function getShareableLink() {
             var params = {
                 allowDatesOutside: $scope.selected.allowDatesOutside,
                 fields: $scope.fieldsToShare,
                 dateRange: isDynamic() ? getDynamicDate() : {
                     startDate: DateFormatter.getFormattedDate($scope.selected.date.startDate),
                     endDate: DateFormatter.getFormattedDate($scope.selected.date.endDate)
-                }
+                },
+                filters: _buildFilterParams()
             };
 
             UnifiedReportViewManager.one(reportView.id).post('shareablelink', params)
                 .then(function (shareableLink) {
                     $scope.shareableLink = shareableLink
                 });
-        };
+        }
 
-        $scope.highlightText = function (shareableLink) {
+        function highlightText(shareableLink) {
             return shareableLink;
-        };
+        }
+
+        function _buildFilterParams() {
+            return $scope.selected.customFilters;
+        }
 
         function saveShareableLink() {
             /*if(_.isEmpty($scope.shareable.token)) {
@@ -123,7 +245,8 @@
                     dateRange: isDynamic() ? getDynamicDate() : {
                         startDate: DateFormatter.getFormattedDate($scope.selected.date.startDate),
                         endDate: DateFormatter.getFormattedDate($scope.selected.date.endDate)
-                    }
+                    },
+                    filters: _buildFilterParams()
                 }
             };
 
@@ -139,6 +262,10 @@
                     AlertService.addAlert({
                         type: 'success',
                         message: 'The shareable link has been updated'
+                    });
+                    $rootScope.$broadcast('SHARE_LINK_UPDATED', {
+                        token: shareable.token,
+                        customFilters: $scope.selected.customFilters
                     });
                 });
         }
@@ -189,6 +316,7 @@
                     }
                 })
             }
+            _updateAllowOutSiteCustomFilters();
         }
 
         function enableSelectDaterange() {

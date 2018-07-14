@@ -302,7 +302,7 @@
 
             var reportBuilder = _refactorJson($scope.reportBuilder);
             delete reportBuilder.publisher;
-
+            _removeDataSetNameFromParam(reportBuilder);
             var reportViewSave = UnifiedReportViewManager.one(reportBuilder.id).patch(reportBuilder);
             reportViewSave
                 .then(function () {
@@ -362,6 +362,7 @@
             }
 
             if (save) {
+                _removeDataSetNameFromParam(reportBuilder);
                 var reportViewSave = (((!$scope.isNew && !$scope.subView) || angular.isObject($scope.reportBuilder.masterReportView))
                     ||  $scope.reportBuilder.masterReportView != $scope.reportBuilder.id)
                 && !!reportBuilder.id ? UnifiedReportViewManager.one(reportBuilder.id).patch(reportBuilder) : UnifiedReportViewManager.post(reportBuilder);
@@ -911,6 +912,17 @@
             return fieldsTransForm;
         }
 
+        function _getNameByDatasetId(id) {
+            if (!$scope.dataSets) return null;
+            var found =  $scope.dataSets.find(function (dataset) {
+                return dataset.id == id;
+            });
+            if(found){
+                return found.name;
+            }
+            return null;
+        }
+
         function _refactorJson(reportBuilder) {
             reportBuilder = angular.copy(reportBuilder);
             reportBuilder.fieldTypes = angular.extend(angular.copy($scope.dimensionsMetrics), $scope.fieldInTransforms);
@@ -1049,6 +1061,7 @@
 
             angular.forEach(reportBuilder.reportViewDataSets, function (reportViewDataSet) {
                 reportViewDataSet.dataSet = angular.isObject(reportViewDataSet.dataSet) ? reportViewDataSet.dataSet.id : reportViewDataSet.dataSet
+                reportViewDataSet.dataSetName = _getNameByDatasetId(reportViewDataSet.dataSet);
             });
 
             // reset show In Total based on type (aggregate and average)
@@ -1099,6 +1112,11 @@
             return reportBuilder;
         }
 
+        function _removeDataSetNameFromParam(reportBuilder) {
+            angular.forEach(reportBuilder.reportViewDataSets, function (reportViewDataSet) {
+                delete reportViewDataSet.dataSetName;
+            });
+        }
         function _resetForm() {
             $scope.reportBuilder.reportViewDataSets = [
                 {

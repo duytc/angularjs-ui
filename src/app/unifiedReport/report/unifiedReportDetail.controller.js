@@ -4,7 +4,11 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView, dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT, sessionStorage, userSession) {
+    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView,
+                                 dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView,
+                                 AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT,
+                                 sessionStorage, userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,reportViewUtil,
+                                 COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_NUMBER) {
         const maxEmailAllowed = 10;
 
         // reset css for id app
@@ -46,21 +50,6 @@
         _fixWrongTickedDimensionAndMetric();
         _updateLabelForOptions($scope.metrics);
         _updateLabelForOptions($scope.dimensions);
-
-        // Fix bug: some metrics ticked wrong by default. https://trello.com/c/rmXhwtVO/2637-ur-usability-fixes-small
-        //This solution is not good. Just to fix above bug. If there is some change, this solution may not work
-        /**
-         * Solution: First time enter into report view builder, table show correct columns (correctFields = _.keys($scope.reports[0])).
-         * For example: Report view has Dataset_1 and Dataset_2, user select request of Dataset_1, but not select request of Dataset_2.
-         * Problem: on metrics'd ui-select box, request of Dataset_2 ticked default, and name of Dataset_1 is missing, but report table doesn't show request of Dataset_1.
-         * Report table is correct => need un-ticked and show Dataset_1's name metrics's on ui-select.
-         * Dimension need to be fixed, too.
-         *
-         */
-        var correctFields = _.keys($scope.reports[0]);
-        var reportViewDatasets = $scope.reportView.reportViewDataSets;
-        _unTickWrongMetrics(correctFields, $scope.metrics, reportViewDatasets, 'metrics', $scope.titleColumnsForSelect);
-        _unTickWrongMetrics(correctFields, $scope.dimensions, reportViewDatasets, 'dimensions', $scope.titleColumnsForSelect);
 
         if(!!reportView && reportView.subView && angular.isObject(reportView.masterReportView)) {
             var masterReportView = angular.copy(reportView.masterReportView);
@@ -172,6 +161,34 @@
         $scope.showReportDetail = showReportDetail;
         $scope.enableSelectDaterange = enableSelectDaterange;
         $scope.setClassName = setClassName;
+        //Custom filter
+        $scope.getComparisonTypes = getComparisonTypes;
+        $scope.addCompareValueText = addCompareValueText;
+        $scope.isShowCustomFilter = isShowCustomFilter;
+        $scope.isShowDatasetHasUserProvidedFilterExceptDate = isShowDatasetHasUserProvidedFilterExceptDate;
+        $scope.isShowHelpBlock = isShowHelpBlock;
+
+        _buildCustomFilters();
+        /**
+         * Filters is in reportView.reportViewDatasets, but to subReportView, filter is in reportView.filters
+         * Need push reportView.filters into reportView.reportViewDatasets to submit to api
+         * @private
+         */
+        function _buildCustomFilters() {
+            reportViewUtil._buildCustomFilters($scope.reportView.filters, $scope.reportView.reportViewDataSets);
+        }
+
+        function isShowDatasetHasUserProvidedFilterExceptDate(dataset) {
+            return reportViewUtil.isDatasetHasUserProvidedFilterExceptDate(dataset);
+        }
+
+        function isShowHelpBlock(customFilter) {
+            return reportViewUtil.isShowHelpBlock(customFilter)
+        }
+
+        function isShowCustomFilter() {
+            return reportViewUtil.hasCustomFilters($scope.reportView.reportViewDataSets);
+        }
 
         function _updateLabelForOptions(options) {
             var fullLabels = reportGroup.columns;
@@ -198,6 +215,33 @@
             _unTickWrongMetrics(correctFields, $scope.metrics, reportViewDatasets, 'metrics', $scope.titleColumnsForSelect);
             _unTickWrongMetrics(correctFields, $scope.dimensions, reportViewDatasets, 'dimensions', $scope.titleColumnsForSelect);
 
+        }
+
+        function getComparisonTypes(customFilter, field, dataset) {
+            if (customFilter.type === 'text') {
+                return COMPARISON_TYPES_FILTER_CONNECT_TEXT;
+            }
+            if (customFilter.type === 'number') {
+                if (_getFieldType(field, dataset) === 'decimal') {
+                    return COMPARISON_TYPES_FILTER_CONNECT_DECIMAL;
+                }
+                return COMPARISON_TYPES_FILTER_CONNECT_NUMBER;
+            }
+            return []
+        }
+
+        function _getFieldType(field, dataset) {
+            if (reportView && reportView.fieldTypes) {
+                return reportView.fieldTypes[field + '_' + dataset.dataSet];
+            }
+            return null;
+        }
+
+        function addCompareValueText(query) {
+            if (/['`$]/.test(query)) {
+                return;
+            }
+            return query;
         }
         function setClassName() {
             var totalItem = Object.keys($scope.reportGroup.total).length;

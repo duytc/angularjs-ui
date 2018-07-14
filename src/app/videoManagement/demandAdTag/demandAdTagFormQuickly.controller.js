@@ -4,7 +4,7 @@
     angular.module('tagcade.videoManagement.demandAdTag')
         .controller('DemandAdTagFormQuickly', DemandAdTagFormQuickly);
 
-    function DemandAdTagFormQuickly($scope, _, $state, $q, $modal, $translate, AlertService, NumberConvertUtil, ReplaceMacros, $modalInstance, Auth, publisher, position, whiteList, blackList, videoWaterfallTag, videoWaterfallTagItems, videoDemandAdTag, LibraryDemandAdTagManager, demandPartners, publishers, VideoDemandAdTagManager, ServerErrorProcessor, STRATEGY_OPTION, PLATFORM_OPTION, PLAYER_SIZE_OPTIONS, REQUIRED_MACROS_OPTIONS, COUNTRY_LIST) {
+    function DemandAdTagFormQuickly($scope, _, $state, $q, $modal, $translate, AlertService, NumberConvertUtil, ReplaceMacros, $modalInstance, Auth, publisher, position, whiteList, blackList, videoWaterfallTag, videoWaterfallTagItems, videoDemandAdTag, LibraryDemandAdTagManager, demandPartners, publishers, VideoDemandAdTagManager, ServerErrorProcessor, STRATEGY_OPTION, PLATFORM_OPTION, PLAYER_SIZE_OPTIONS, REQUIRED_MACROS_OPTIONS, COUNTRY_LIST, isShowOptimizedPosition) {
         $scope.fieldNameTranslations = {
             name: 'Name'
         };
@@ -561,6 +561,17 @@
                     });
 
                     demandAdTag.videoWaterfallTagItem = angular.isObject(videoWaterfallTagItem) ? videoWaterfallTagItem.id : demandAdTag.videoWaterfallTagItem;
+                    //Fix bug: https://trello.com/c/Db6Msft9/2636-bug-error500-when-edit-demand-ad-tag-with-show-optimization-position-was-checked-develop-branch
+                    if(isShowOptimizedPosition){
+                         var _videoDemandAdTags = videoWaterfallTagItem.videoDemandAdTags;
+                         var _id = videoDemandAdTag.id;
+                         var _videoWaterfallTagItem = _videoDemandAdTags.find(function (item) {
+                             return item.id == _id;//don't change == to ===
+                         });
+                         if(_videoWaterfallTagItem){
+                             demandAdTag.videoWaterfallTagItem = _videoWaterfallTagItem.videoWaterfallTagItem.id;
+                         }
+                    }
                 }
             }
 
