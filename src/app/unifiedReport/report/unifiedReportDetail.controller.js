@@ -4,7 +4,11 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView, dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView, AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT, sessionStorage, userSession) {
+    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView,
+                                 dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView,
+                                 AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT,
+                                 sessionStorage, userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,reportViewUtil,
+                                 COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_NUMBER) {
         const maxEmailAllowed = 10;
 
         // reset css for id app
@@ -154,7 +158,61 @@
         $scope.showReportDetail = showReportDetail;
         $scope.enableSelectDaterange = enableSelectDaterange;
         $scope.setClassName = setClassName;
+        //Custom filter
+        $scope.getComparisonTypes = getComparisonTypes;
+        $scope.addCompareValueText = addCompareValueText;
+        $scope.isShowCustomFilter = isShowCustomFilter;
+        $scope.isShowDatasetHasUserProvidedFilterExceptDate = isShowDatasetHasUserProvidedFilterExceptDate;
+        $scope.isShowHelpBlock = isShowHelpBlock;
 
+        _buildCustomFilters();
+        /**
+         * Filters is in reportView.reportViewDatasets, but to subReportView, filter is in reportView.filters
+         * Need push reportView.filters into reportView.reportViewDatasets to submit to api
+         * @private
+         */
+        function _buildCustomFilters() {
+            reportViewUtil._buildCustomFilters($scope.reportView.filters, $scope.reportView.reportViewDataSets);
+        }
+        
+        function isShowDatasetHasUserProvidedFilterExceptDate(dataset) {
+            return reportViewUtil.isDatasetHasUserProvidedFilterExceptDate(dataset);
+        }
+
+        function isShowHelpBlock(customFilter) {
+            return reportViewUtil.isShowHelpBlock(customFilter)
+        }
+
+        function isShowCustomFilter() {
+            return reportViewUtil.hasCustomFilters($scope.reportView.reportViewDataSets);
+        }
+
+        function getComparisonTypes(customFilter, field, dataset) {
+            if (customFilter.type === 'text') {
+                return COMPARISON_TYPES_FILTER_CONNECT_TEXT;
+            }
+            if (customFilter.type === 'number') {
+                if (_getFieldType(field, dataset) === 'decimal') {
+                    return COMPARISON_TYPES_FILTER_CONNECT_DECIMAL;
+                }
+                return COMPARISON_TYPES_FILTER_CONNECT_NUMBER;
+            }
+            return []
+        }
+
+        function _getFieldType(field, dataset) {
+            if (reportView && reportView.fieldTypes) {
+                return reportView.fieldTypes[field + '_' + dataset.dataSet];
+            }
+            return null;
+        }
+
+        function addCompareValueText(query) {
+            if (/['`$]/.test(query)) {
+                return;
+            }
+            return query;
+        }
         function setClassName() {
             var totalItem = Object.keys($scope.reportGroup.total).length;
 
@@ -854,6 +912,52 @@
             }
 
             $scope.fieldsShow = $scope.fieldsShow || {dimensions: [], metrics: []};
+
+            // Fix bug: some metrics ticked wrong by default. https://trello.com/c/rmXhwtVO/2637-ur-usability-fixes-small
+            var correctFields = _.keys($scope.reports[0]);
+            var wrongMetricOptions = $scope.metrics;
+            var reportViewDatasets = $scope.reportView.reportViewDataSets;
+            _unTickWrongMetrics(correctFields, wrongMetricOptions, reportViewDatasets)
+        }
+
+        /**
+         *
+         * @param metricName example: requests_1
+         * @returns {'metricName': 'requests', 'datasetId': '1'}
+         */
+        function getDatasetIdFromMetricName(metricName) {
+            if(!metricName) return null;
+            var _index = metricName.lastIndexOf("_");
+            return {
+                metricName: metricName.substring(0, _index),
+                datasetId: metricName.substring(_index + 1, metricName.length)
+            }
+        }
+        /**
+         * Fix bug: some metrics ticked wrong by default
+         * https://trello.com/c/rmXhwtVO/2637-ur-usability-fixes-small
+         */
+        function _unTickWrongMetrics(correctFields, wrongMetricOptions, reportViewDatasets) {
+            angular.forEach(wrongMetricOptions, function (metricOption) {
+                var metricNameContainDatasetId = metricOption.name; //request_1
+                var separatedMetricAndDataset = getDatasetIdFromMetricName(metricNameContainDatasetId);
+                var currentDatasetId = separatedMetricAndDataset.datasetId;
+                var currentDatasetObject = reportViewDatasets.find(function (dataset) {
+                    return dataset.dataSet == currentDatasetId; //don't change == to ===
+                });
+                if (currentDatasetObject) {
+                    var currentMetricName = separatedMetricAndDataset.metricName;
+                    var metrics = currentDatasetObject.metrics;
+                    if (metrics) {
+                        var found = metrics.find(function (metric) {
+                            return metric == currentMetricName; //don't change == to ===
+                        });
+                        if (!found) {
+                            metricOption.ticked = false;
+                        }
+                    }
+                }
+            });
         }
 
         function isTicket(col) {
