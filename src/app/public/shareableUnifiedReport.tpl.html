@@ -63,7 +63,7 @@
                                                 </ui-select>
                                                 <!--COMPARISON VALUES-->
                                                 <div class="form-control fix-wrong-form-control form-inline-item-margin" ng-if="customFilter.comparison !='isNotEmpty' && customFilter.comparison !='isEmpty'">
-                                                    <oi-select ng-if="customFilter.allowOutsideValue"
+                                                    <oi-select ng-if="!customFilter.isAll && customFilter.allowOutsideValue"
                                                                ng-disabled="customFilter.isAll"
                                                                ng-model="customFilter.compareValue"
                                                                multiple ng-required="true"
@@ -71,7 +71,7 @@
                                                                placeholder="{{ 'REPORT_BUILDER_MODULE.ENTER_ONE_OR_MULTIPLE_VALUE' | translate }}"
                                                                >
                                                     </oi-select>
-                                                    <oi-select ng-if="!customFilter.allowOutsideValue"
+                                                    <oi-select ng-if="!customFilter.isAll && !customFilter.allowOutsideValue"
                                                                ng-model="customFilter.compareValue"
                                                                ng-disabled="customFilter.isAll"
                                                                oi-options="item for item in customFilter.originalCompareValue"
@@ -80,6 +80,15 @@
                                                                list-placeholder="Empty"
                                                                placeholder="{{ 'REPORT_BUILDER_MODULE.ENTER_ONE_OR_MULTIPLE_VALUE' | translate }}"
                                                                >
+                                                    </oi-select>
+                                                    <!--AVOID FORM VALIDATION WHEN IS_ALL CHECKED-->
+                                                    <oi-select ng-if="customFilter.isAll"
+                                                               ng-disabled="true"
+                                                               ng-model="customFilter.compareValue"
+                                                               multiple ng-required="false"
+                                                               oi-select-options="{newItem: true, newItemFn: 'addCompareValueText($query)'}"
+                                                               placeholder="{{ 'REPORT_BUILDER_MODULE.ENTER_ONE_OR_MULTIPLE_VALUE' | translate }}"
+                                                    >
                                                     </oi-select>
                                                 </div>
 
