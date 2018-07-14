@@ -172,7 +172,7 @@
                         "fields": [field.key],
                         "aliasName": [{
                             "originalName": field.key,
-                            "aliasName": field.key.concat('.').concat($item.key).concat(' (').concat(dataSetName).concat(')')
+                            "aliasName": _buildAliasName(field, $item.key, dataSetName)
                         }]
                     };
                     $scope.reportBuilder.showInTotal[indexOfThisType].aliasName.push(newObject);
@@ -203,7 +203,7 @@
                     "fields": [field.key],
                     "aliasName": [{
                         "originalName": field.key,
-                        "aliasName": field.key.concat('.').concat($item.key).concat(' (').concat(dataSetName).concat(')')
+                        "aliasName": _buildAliasName(field, $item.key, dataSetName)
                     }]
                 };
                 $scope.reportBuilder.showInTotal.push(newObject);
@@ -275,13 +275,14 @@
 
             // Push new metric to ShowInTotal of Report Builder
             if (deletedFromShowInTotal == false) {
+                var aliasName = _buildAliasName(field, 'aggregate', dataSetName);
                 if (!showInTotal || showInTotal.length === 0) {
                     var aggregate = {
                         "type": "aggregate",
                         "fields": [field.key],
                         "aliasName": [{
                             "originalName": field.key,
-                            "aliasName": field.key.concat('.').concat('aggregate').concat(' (').concat(dataSetName).concat(')')
+                            "aliasName": aliasName
                         }]
                     };
                     $scope.reportBuilder.showInTotal.push(aggregate);
@@ -289,18 +290,32 @@
                     $scope.reportBuilder.showInTotal[0].fields.push(field.key);
                     $scope.reportBuilder.showInTotal[0].aliasName.push({
                         "originalName": field.key,
-                        "aliasName": field.key.concat('.').concat('aggregate').concat(' (').concat(dataSetName).concat(')')
+                        "aliasName": aliasName
                     });
                 }
             }
         }
 
+        function _buildAliasName(field, suffix, dataSetName) {
+            var aliasName = '';
+            if (!!dataSetName) {
+                aliasName = field.key.concat('.').concat(suffix).concat(' (').concat(dataSetName).concat(')');
+            } else {
+                aliasName = field.key.concat('.').concat(suffix);
+            }
+
+            return aliasName;
+        }
 
         function _getDataSetName(containsDataSetNameString) {
             var regExp = /\(([^)]+)\)/;
             var matches = regExp.exec(containsDataSetNameString);
 
-            return matches[1];
+            if (!!matches && !!matches[1]) {
+                return matches[1];
+            }
+
+            return '';
         }
 
         /**
@@ -793,7 +808,8 @@
                                     typeOption = $scope.aggregateAndAverage.availableOptions[1]
                                 }
                                 var aliasNames = showInTotalObject.aliasName;
-                                var aliasNameOfThisField = field.key.concat('.').concat(showInTotalObject.type).concat(' (').concat(dataSetName).concat(')');
+                                var aliasNameOfThisField = _buildAliasName(field, showInTotalObject.type, dataSetName);
+                                    field.key.concat('.').concat(showInTotalObject.type).concat(' (').concat(dataSetName).concat(')');
                                 angular.forEach(aliasNames, function (aliasName) {
                                     if (aliasName.originalName == field.key) {
                                         aliasNameOfThisField = aliasName.aliasName;
@@ -817,7 +833,7 @@
                         var availableOption = {
                             label: field.label,
                             key: field.key,
-                            alias: field.key.concat('.').concat("aggregate").concat(' (').concat(dataSetName).concat(')'),
+                            alias: _buildAliasName(field,'aggregate', dataSetName),
                             checked: false,
                             type: $scope.aggregateAndAverage.availableOptions[0]
                         };
