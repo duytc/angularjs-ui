@@ -3,151 +3,192 @@
     <div class="panel-heading">
         <span current-page-title></span>
     </div>
-<fieldset ng-disabled="!editable">
-    <div class="panel-body">
-        <div class="row">
-            <form name="unifiedBuilderForm" class="col-lg-12 form-validation form-horizontal" role="form" novalidate>
-                <div class="form-group" ng-if="isNew && isAdmin()">
-                    <label for="inputPublisher" class="col-sm-1quarter control-label">{{ 'PUBLISHER' | translate }}</label>
-                    <div class="col-sm-5">
-                        <ui-select name="publisher" id="inputPublisher" ng-model="reportBuilder.publisher" ng-required="true" server-error on-select="selectPublisher($item)">
-                            <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">{{ $select.selected.company }}</ui-select-match>
-                            <ui-select-choices repeat="publisher.id as publisher in publishers | filter:$select.search">
-                                {{ publisher.company }}
-                            </ui-select-choices>
-                        </ui-select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-sm-1quarter control-label">Name</label>
-                    <div class="col-sm-5">
-                        <input server-error name="name" ng-model="reportBuilder.name" ng-required="false" type="text" class="form-control" id="inputName" placeholder="{{ 'NAME' | translate }}">
-                    </div>
-                </div>
-
-                <div class="form-group" ng-if="(isAdmin() && !!reportBuilder.publisher) || !isAdmin()">
-                    <label class="col-sm-1quarter control-label">Data Set</label>
-                    <div class="col-sm-10">
-                        <div class="expressions-group">
-                            <builder-data-set report-builder="reportBuilder" disabled="subView" list-data-sets="dataSets"></builder-data-set>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group" ng-if="reportBuilder.reportViewDataSets.length > 1">
-                    <label class="col-sm-1quarter control-label">Join By</label>
-                    <div class="col-sm-10">
-                        <report-view-many-join disabled="subView" dimensions-metrics="dimensionsMetrics" report-builder="reportBuilder" list-data-sets="dataSets"></report-view-many-join>
-                    </div>
-                </div>
-
-                <div class="form-group" ng-if="(isAdmin() && !!reportBuilder.publisher) || !isAdmin()">
-                    <label class="col-sm-1quarter control-label">Pre-Group Transformations</label>
-                    <div class="col-sm-10">
-                        <div class="expressions-group">
-                            <transform-data-set disabled="subView" report-builder="reportBuilder" transforms="reportBuilder.transforms" transform-position="prePostTransforms" selected-fields="selectedAndAddedFieldsInTransform" selected-fields-date-set="selectedFields" total-dimensions-metrics="totalDimensionsMetrics" dimensions-metrics="dimensionsMetrics" dimensions-list="listDimensions" number-fields="fieldsHaveNumberType" reorder-transforms-allowed="reportBuilder.userReorderTransformsAllowed" fields-have-date-type="exchangeRateDateFields"></transform-data-set>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group" ng-if="(isAdmin() && !!reportBuilder.publisher) || !isAdmin()">
-                    <label class="col-sm-1quarter control-label">Group Transformation</label>
-                    <div class="col-sm-10">
-                        <div class="expressions-group">
-                            <transform-data-set disabled="subView" report-builder="reportBuilder" transforms="reportBuilder.transforms" transform-position="groupTransform" selected-fields="selectedAndAddedFieldsInTransform" selected-fields-date-set="selectedFields" total-dimensions-metrics="totalDimensionsMetrics" dimensions-metrics="dimensionsMetrics" dimensions-list="listDimensions" number-fields="fieldsHaveNumberType" reorder-transforms-allowed="reportBuilder.userReorderTransformsAllowed"></transform-data-set>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group" ng-if="(isAdmin() && !!reportBuilder.publisher) || !isAdmin()">
-                    <label class="col-sm-1quarter control-label">Post-Group Transformations</label>
-                    <div class="col-sm-10">
-                        <div class="expressions-group">
-                            <transform-data-set disabled="subView" report-builder="reportBuilder" transforms="reportBuilder.transforms" transform-position="postGroupTransforms" selected-fields="selectedAndAddedFieldsInTransform" selected-fields-date-set="selectedFields" total-dimensions-metrics="totalDimensionsMetrics" dimensions-metrics="dimensionsMetrics" dimensions-list="listDimensions" number-fields="fieldsHaveNumberType" reorder-transforms-allowed="reportBuilder.userReorderTransformsAllowed" fields-have-date-type="exchangeRateDateFields"></transform-data-set>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group" ng-if="summaryFieldTotalObject.length > 0">
-                    <label class="col-sm-1quarter control-label">Show Total</label>
-                    <div class="col-sm-10">
-                        <div ng-repeat="field in summaryFieldTotalObject" class="col-sm-4">
-                            <div class="col-sm-6">
-                                <label class="ui-checkbox">
-                                    <input name="" type="checkbox" ng-disabled="subView"
-                                           ng-click="toggleFieldForTotal(field)" ng-model="field.checked">
-                                    <span>{{ field.label }}</span>
-                                </label>
-                            </div>
-                            <div class="col-sm-3">
-                            <ui-select name="unifiedReport"
-                                       id="unifiedReport"
-                                       ng-model="field.type"
-                                       ng-disabled="!field.checked || subView"
-                                       reset-search-input="'false'">
-                                    <ui-select-match placeholder="Select...">
-                                        {{ $select.selected.value }}
-                                    </ui-select-match>
-                                    <ui-select-choices repeat="item in aggregateAndAverage.availableOptions">
-                                        {{ item.value }}
-                                    </ui-select-choices>
+    <fieldset ng-disabled="!editable">
+        <div class="panel-body">
+            <div class="row">
+                <form name="unifiedBuilderForm" class="col-lg-12 form-validation form-horizontal" role="form"
+                      novalidate>
+                    <div class="form-group" ng-if="isNew && isAdmin()">
+                        <label for="inputPublisher" class="col-sm-1quarter control-label">{{ 'PUBLISHER' | translate
+                            }}</label>
+                        <div class="col-sm-5">
+                            <ui-select name="publisher" id="inputPublisher" ng-model="reportBuilder.publisher"
+                                       ng-required="true" server-error on-select="selectPublisher($item)">
+                                <ui-select-match placeholder="{{ 'PUBLISHER_MODULE.SELECT_A_PUBLISHER' | translate }}">
+                                    {{ $select.selected.company }}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="publisher.id as publisher in publishers | filter:$select.search">
+                                    {{ publisher.company }}
+                                </ui-select-choices>
                             </ui-select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-1quarter control-label">Name</label>
+                        <div class="col-sm-5">
+                            <input server-error name="name" ng-model="reportBuilder.name" ng-required="false"
+                                   type="text" class="form-control" id="inputName"
+                                   placeholder="{{ 'NAME' | translate }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-if="(isAdmin() && !!reportBuilder.publisher) || !isAdmin()">
+                        <label class="col-sm-1quarter control-label">Data Set</label>
+                        <div class="col-sm-10">
+                            <div class="expressions-group">
+                                <builder-data-set report-builder="reportBuilder" disabled="subView"
+                                                  list-data-sets="dataSets"></builder-data-set>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-if="reportBuilder.reportViewDataSets.length > 1">
+                        <label class="col-sm-1quarter control-label">Join By</label>
+                        <div class="col-sm-10">
+                            <report-view-many-join disabled="subView" dimensions-metrics="dimensionsMetrics"
+                                                   report-builder="reportBuilder"
+                                                   list-data-sets="dataSets"></report-view-many-join>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-if="(isAdmin() && !!reportBuilder.publisher) || !isAdmin()">
+                        <label class="col-sm-1quarter control-label">Pre-Group Transformations</label>
+                        <div class="col-sm-10">
+                            <div class="expressions-group">
+                                <transform-data-set disabled="subView" report-builder="reportBuilder"
+                                                    transforms="reportBuilder.transforms"
+                                                    transform-position="prePostTransforms"
+                                                    selected-fields="selectedAndAddedFieldsInTransform"
+                                                    selected-fields-date-set="selectedFields"
+                                                    total-dimensions-metrics="totalDimensionsMetrics"
+                                                    dimensions-metrics="dimensionsMetrics"
+                                                    dimensions-list="listDimensions"
+                                                    number-fields="fieldsHaveNumberType"
+                                                    reorder-transforms-allowed="reportBuilder.userReorderTransformsAllowed"
+                                                    fields-have-date-type="exchangeRateDateFields"></transform-data-set>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-if="(isAdmin() && !!reportBuilder.publisher) || !isAdmin()">
+                        <label class="col-sm-1quarter control-label">Group Transformation</label>
+                        <div class="col-sm-10">
+                            <div class="expressions-group">
+                                <transform-data-set disabled="subView" report-builder="reportBuilder"
+                                                    transforms="reportBuilder.transforms"
+                                                    transform-position="groupTransform"
+                                                    selected-fields="selectedAndAddedFieldsInTransform"
+                                                    selected-fields-date-set="selectedFields"
+                                                    total-dimensions-metrics="totalDimensionsMetrics"
+                                                    dimensions-metrics="dimensionsMetrics"
+                                                    dimensions-list="listDimensions"
+                                                    number-fields="fieldsHaveNumberType"
+                                                    reorder-transforms-allowed="reportBuilder.userReorderTransformsAllowed"></transform-data-set>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-if="(isAdmin() && !!reportBuilder.publisher) || !isAdmin()">
+                        <label class="col-sm-1quarter control-label">Post-Group Transformations</label>
+                        <div class="col-sm-10">
+                            <div class="expressions-group">
+                                <transform-data-set disabled="subView" report-builder="reportBuilder"
+                                                    transforms="reportBuilder.transforms"
+                                                    transform-position="postGroupTransforms"
+                                                    selected-fields="selectedAndAddedFieldsInTransform"
+                                                    selected-fields-date-set="selectedFields"
+                                                    total-dimensions-metrics="totalDimensionsMetrics"
+                                                    dimensions-metrics="dimensionsMetrics"
+                                                    dimensions-list="listDimensions"
+                                                    number-fields="fieldsHaveNumberType"
+                                                    reorder-transforms-allowed="reportBuilder.userReorderTransformsAllowed"
+                                                    fields-have-date-type="exchangeRateDateFields"></transform-data-set>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Process show total fields-->
+                    <div class="form-group" ng-if="summaryFieldTotalObject.length > 0">
+                        <label class="col-sm-1quarter control-label">Show Total</label>
+                        <div class="col-sm-10">
+                            <div ng-repeat="field in summaryFieldTotalObject" class="col-sm-10">
+                                <div class="col-md-3">
+                                    <label class="ui-checkbox">
+                                        <input name="" type="checkbox" ng-disabled="subView"
+                                               ng-click="toggleFieldForTotal(field)" ng-model="field.checked">
+                                        <span>{{ field.label }}</span>
+                                    </label>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <ui-select name="unifiedReport"
+                                               id="unifiedReport"
+                                               ng-model="field.type"
+                                               on-select="onSelectShowTotal($item, field)"
+                                               ng-disabled="!field.checked || subView"
+                                               reset-search-input="'false'">
+                                        <ui-select-match placeholder="Select...">
+                                            {{ $select.selected.value }}
+                                        </ui-select-match>
+                                        <ui-select-choices repeat="item in aggregateAndAverage.availableOptions">
+                                            {{ item.value }}
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="col-sm-4 control-label" for="referenceName">Reference Name</label>
+                                    <input class="col-sm-8" id="referenceName" server-error ng-model="field.alias" ng-disabled="!field.checked || subView"  ng-required="false"
+                                           type="text" placeholder="{{ 'NAME' | translate }}">
+                                </div>
 
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group" ng-if="(isAdmin() && !!reportBuilder.publisher) || !isAdmin()">
-                    <label class="col-sm-1quarter control-label">Format Output</label>
-                    <div class="col-sm-10">
-                        <div class="expressions-group">
-                            <report-builder-format disabled="subView" formats="reportBuilder.formats" date-fields="fieldsHaveDateType" number-fields="fieldsHaveNumberType" selected-fields ="selectedAndAddedFieldsInTransform" ></report-builder-format>
+                    <!--Process format output-->
+
+                    <div class="form-group" ng-if="(isAdmin() && !!reportBuilder.publisher) || !isAdmin()">
+                        <label class="col-sm-1quarter control-label">Format Output</label>
+                        <div class="col-sm-10">
+                            <div class="expressions-group">
+                                <report-builder-format disabled="subView" formats="reportBuilder.formats"
+                                                       date-fields="fieldsHaveDateType"
+                                                       number-fields="fieldsHaveNumberType"
+                                                       selected-fields="selectedAndAddedFieldsInTransform"></report-builder-format>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label class="col-sm-1quarter control-label">Show Data Set Name</label>
-                    <div class="col-sm-5">
-                        <label class="ui-checkbox"><input ng-disabled="subView" server-error name="active" type="checkbox" ng-model="reportBuilder.isShowDataSetName" id="isShowDataSetName"><span></span></label>
-                    </div>
-                </div>
-
-                <!--<div class="form-group">-->
-                    <!--<label class="col-sm-1quarter control-label">Available To Run</label>-->
-                    <!--<div class="col-sm-5">-->
-                        <!--<label class="ui-checkbox"><input ng-disabled="subView" server-error name="active" type="checkbox" ng-model="reportBuilder.availableToRun" id="availableToRun"><span></span></label>-->
-                    <!--</div>-->
-                <!--</div>-->
-
-                <!--<div class="form-group">-->
-                    <!--<label class="col-sm-1quarter control-label">Available To Change</label>-->
-                    <!--<div class="col-sm-5">-->
-                        <!--<label class="ui-checkbox"><input ng-disabled="subView" server-error name="active" type="checkbox" ng-model="reportBuilder.availableToChange" id="availableToChange"><span></span></label>-->
-                    <!--</div>-->
-                <!--</div>-->
-
-                <!--<div class="form-group">-->
-                    <!--<label for="enableCustomDimensionMetric" class="col-sm-1quarter control-label">User Provided Dimensions/Metrics</label>-->
-                    <!--<div class="col-sm-5">-->
-                        <!--<label class="ui-checkbox"><input server-error name="active" type="checkbox" ng-model="reportBuilder.enableCustomDimensionMetric" id="enableCustomDimensionMetric"><span></span></label>-->
-                    <!--</div>-->
-                <!--</div>-->
-
-                <div class="form-group">
-                    <div class="col-sm-offset-1quarter col-sm-5">
-                        <button ng-if="!reportBuilder.id" ng-disabled="!isFormRunValid()" type="submit" class="btn btn-success mce-i-indent" ng-click="getReports()">Run Report</button>
-                        <button ng-if="reportBuilder.id" ng-disabled="!isFormSaveValid()" type="submit" class="btn btn-success mce-i-indent" ng-click="saveReport()">Save Report</button>
-                        <button ng-disabled="!isFormSaveValid()" type="submit" class="btn btn-success mce-i-indent" ng-click="getReports(true)">Run and Save Report</button>
-                        <div ng-show="!isFormValid()" class="callout callout-info">
-                            <p>{{ 'VALID_FORM' | translate }}</p>
+                    <div class="form-group">
+                        <label class="col-sm-1quarter control-label">Show Data Set Name</label>
+                        <div class="col-sm-5">
+                            <label class="ui-checkbox"><input ng-disabled="subView" server-error name="active"
+                                                              type="checkbox" ng-model="reportBuilder.isShowDataSetName"
+                                                              id="isShowDataSetName"><span></span></label>
                         </div>
                     </div>
-                </div>
-            </form>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1quarter col-sm-5">
+                            <button ng-if="!reportBuilder.id" ng-disabled="!isFormRunValid()" type="submit"
+                                    class="btn btn-success mce-i-indent" ng-click="getReports()">Run Report
+                            </button>
+                            <button ng-if="reportBuilder.id" ng-disabled="!isFormSaveValid()" type="submit"
+                                    class="btn btn-success mce-i-indent" ng-click="saveReport()">Save Report
+                            </button>
+                            <button ng-disabled="!isFormSaveValid()" type="submit" class="btn btn-success mce-i-indent"
+                                    ng-click="getReports(true)">Run and Save Report
+                            </button>
+                            <div ng-show="!isFormValid()" class="callout callout-info">
+                                <p>{{ 'VALID_FORM' | translate }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-</fieldset>
+    </fieldset>
 </section>
