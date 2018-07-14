@@ -336,6 +336,9 @@
                     },
                     whiteList: function(WhiteListManager) {
                         return WhiteListManager.getList()
+                    },
+                    isShowOptimizedPosition: function () {
+                        return $scope.enableShowOptimizedPositions;
                     }
                 },
                 controller: 'DemandAdTagFormQuickly'
