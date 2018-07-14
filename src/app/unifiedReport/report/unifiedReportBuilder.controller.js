@@ -62,6 +62,7 @@
             joinBy: [],
             weightedCalculations: [],
             transforms: [],
+            calculatedMetrics: [],
             formats: [],
             showInTotal: [],
             isShowDataSetName: false,

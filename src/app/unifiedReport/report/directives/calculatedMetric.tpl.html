@@ -1,0 +1,93 @@
+<button class="btn btn-success" type="button" ng-click="addCalculatedMetric()" ng-disabled="disabled">
+    <span class="glyphicon glyphicon-plus"></span>
+    Add Calculated Metric
+</button>
+
+<div ui-sortable="sortableOptions" ng-model="calculatedMetrics" style="margin-top: 10px">
+    <div class="moveable" ng-repeat=" calculatedMetric in calculatedMetrics">
+
+        <accordion close-others="true">
+            <accordion-group class="notUpperCase" is-open="transform.openStatus">
+
+                <accordion-heading>
+                    <div>
+                        {{getCalculatedMetricName(calculatedMetric.name)}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': transform.openStatus, 'glyphicon-chevron-right': !transform.openStatus}"></i>
+                    </div>
+                </accordion-heading>
+
+                <div class="form-group select-connect-data-source">
+                    <button ng-disabled="disabled" type="button" class="btn btn-danger btn-close-ur" ng-click="removeCalculatedMetric($index, transform)">
+                        <span class="glyphicon glyphicon-minus "></span>
+                    </button>
+                </div>
+
+                <div class="row">
+                    <!--Field Name-->
+                    <div class="form-group select-connect-data-source">
+                        <label class="col-sm-2 control-label">Field Name</label>
+                        <div class="col-sm-10">
+                            <input server-error ng-required="true" type="text" class="form-control" ng-model="calculatedMetric.name" placeholder="Field Name">
+                        </div>
+                    </div>
+
+                    <!--Type-->
+                    <div class="form-group select-connect-data-source">
+                        <label class="col-sm-2 control-label">Type</label>
+                        <div class="col-sm-10">
+                            <ui-select ng-disabled="disabled" ng-model="calculatedMetric.type" ng-required="true" server-error reset-search-input="'false'">
+                                <ui-select-match placeholder="Select type">{{ $select.selected.label }}</ui-select-match>
+                                <ui-select-choices repeat="type.key as type in calculatedMetricType | filter:$select.search">
+                                    {{ type.label }}
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+
+                    <!--Default Value-->
+                    <div class="form-group select-connect-data-source">
+                        <label class="col-sm-2 control-label">Default Value</label>
+                        <div class="col-sm-10">
+                            <input server-error ng-required="true" type="number" class="form-control" ng-model="calculatedMetric.defaultValue"
+                                   placeholder="Default Value">
+                        </div>
+                    </div>
+
+                    <!--Expression or User Defined-->
+
+                    <div class="form-group select-connect-data-source">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-10">
+                            <div class="col-sm-6">
+                                Use Expression
+                                <input type="radio" ng-model="calculatedMetric.expressionType">   <span class="checkMark"></span>
+
+                            </div>
+
+                            <div class="col-sm-6">
+                                User Defined
+                                <input type="radio" ng-model="calculatedMetric.expressionType">  <span class="checkMark"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Expression-->
+                    <div class="form-group select-connect-data-source">
+                        <label class="col-sm-2 control-label">Expression</label>
+                        <div class="col-sm-10">
+                            <textarea ng-disabled="disabled" ng-required="true" spellcheck="false" class="addScrollToTextArea form-control" rows="5" mentio mentio-select="getPeopleText(item)" ng-change="addSpaceBeforeAndAfterOperator(field)" type="text" mentio-macros="macros" mentio-trigger-char="'['" mentio-typed-text="typedTerm"
+                                      class="form-control"
+                                      mentio-items="fieldsCalculatedField | filter:label:typedTerm"
+                                      ng-model="field.expression" placeholder="Expression">
+                            </textarea>
+
+                            <span class="help-block">Use character <strong>[</strong> to show list of available variables. Each variable should be inside square bracket.</span>
+                            <div class="callout-success expressions-transform" ng-bind-html="formatExpressionToHighlight(field)"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </accordion-group>
+        </accordion>
+    </div>
+</div>
