@@ -4,7 +4,11 @@
     angular.module('tagcade.public')
         .controller('shareableUnifiedReport', shareableUnifiedReport);
 
-    function shareableUnifiedReport($scope, $stateParams, $translate, $modal, exportExcelService, reports, unifiedReportFormatReport, DateFormatter, AlertService, AtSortableService, dataService, API_UNIFIED_PUBLIC_END_POINT, historyStorage, HISTORY_TYPE_PATH) {
+    function shareableUnifiedReport($scope, $stateParams, $translate, $modal, exportExcelService,reportViewUtil,
+                                    reports, unifiedReportFormatReport, DateFormatter, AlertService,
+                                    AtSortableService, dataService, API_UNIFIED_PUBLIC_END_POINT,
+                                    historyStorage, HISTORY_TYPE_PATH,COMPARISON_TYPES_FILTER_CONNECT_TEXT,
+                                    COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_NUMBER) {
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -128,6 +132,11 @@
 
         _update();
 
+        //custom filter
+        _buildCustomFilters();
+        $scope.customFilterContainer = _extractCustomFilters();
+        
+
         $scope.getExportExcelFileName = getExportExcelFileName;
         $scope.isEmptyObject = isEmptyObject;
         $scope.isShow = isShow;
@@ -142,7 +151,80 @@
         $scope.generateReport = generateReport;
         $scope.showPagination = showPagination;
         $scope.setClassName = setClassName;
+        //Custom filter
+        $scope.getComparisonTypes = getComparisonTypes;
+        $scope.addCompareValueText = addCompareValueText;
+        $scope.isDatasetHasUserProvidedFilterExceptDate = isDatasetHasUserProvidedFilterExceptDate;
+        $scope.isShowHelpBlock = isShowHelpBlock;
 
+        function isShowHelpBlock(customFilter) {
+            return reportViewUtil.isShowHelpBlock(customFilter)
+        }
+        /**
+         * Filters is in reportView.reportViewDatasets, but to subReportView, filter is in reportView.filters
+         * Need push reportView.filters into reportView.reportViewDatasets to submit to api
+         * @private
+         */
+        function _buildCustomFilters() {
+            reportViewUtil._buildCustomFilters($scope.reportView.filters, $scope.reportView.reportViewDataSets);
+        }
+
+        function isDatasetHasUserProvidedFilterExceptDate(dataset) {
+            return reportViewUtil.isDatasetHasUserProvidedFilterExceptDate(dataset);
+        }
+
+        function _extractCustomFilters() {
+            //enable outside value
+            if(!$scope.reportView.sharedKeysConfig[$stateParams.token]) return;
+
+            var allowedOutsideFilters = $scope.reportView.sharedKeysConfig[$stateParams.token].filters;
+            var datasets = angular.copy($scope.reportView.reportViewDataSets);
+            _.forEach(datasets, function (dataset) {
+                _.forEach(dataset.filters, function (filter) {
+                    filter.originalCompareValue = angular.copy(filter.compareValue);
+                    if(_checkIsChildOf(filter, dataset, allowedOutsideFilters)){
+                        filter.allowOutsideValue = true;
+                    }
+                })
+            });
+
+            return datasets;
+        }
+        
+        function _checkIsChildOf(filter, dataset, allowedOutsideFilters) {
+            if(!allowedOutsideFilters) return false;
+            var found = allowedOutsideFilters.find(function (filterItem) {
+                return filterItem.name === filter.field && filterItem.dataSetId === dataset.dataSet.id;
+            });
+            return !!found;
+        }
+        
+        function getComparisonTypes(customFilter, field, dataset) {
+            if (customFilter.type === 'text') {
+                return COMPARISON_TYPES_FILTER_CONNECT_TEXT;
+            }
+            if (customFilter.type === 'number') {
+                if (_getFieldType(field, dataset) === 'decimal') {
+                    return COMPARISON_TYPES_FILTER_CONNECT_DECIMAL;
+                }
+                return COMPARISON_TYPES_FILTER_CONNECT_NUMBER;
+            }
+            return []
+        }
+
+        function _getFieldType(field, dataset) {
+            if ($scope.reportView && $scope.reportView.fieldTypes) {
+                return $scope.reportView.fieldTypes[field + '_' + dataset.dataSet];
+            }
+            return null;
+        }
+
+        function addCompareValueText(query) {
+            if (/['`$]/.test(query)) {
+                return;
+            }
+            return query;
+        }
         function setClassName() {
             var totalItem = Object.keys($scope.total).length;
 
@@ -186,8 +268,24 @@
             params.userDefineDimensions = angular.toJson(newDimensions);
             params.userDefineMetrics = angular.toJson(newMetrics);
             $scope.availableOptions.currentPage = 1;
-
             _getReportDetail(params);
+        }
+
+        function _buildCustomFilterParams() {
+            var params = [];
+            var datasets = angular.copy($scope.customFilterContainer);
+            _.forEach(datasets, function (dataset) {
+                _.forEach(dataset.filters, function (filter) {
+                    delete filter.originalCompareValue;
+                });
+                var json = {
+                    dataSet: dataset.dataSet.id,
+                    filters : dataset.filters
+                };
+                params.push(json);
+            });
+
+            return params;
         }
 
         function hasFilterDate() {
@@ -283,6 +381,7 @@
 
             params.searches = $scope.search;
             params.isExport = true;
+            params.customFilter = JSON.stringify(_buildCustomFilterParams());
 
             dataService.makeHttpGetRequest('/v1/reportviews/:reportView/sharedReports', params, API_UNIFIED_PUBLIC_END_POINT)
                 .then(function (reportData) {
@@ -519,6 +618,8 @@
 
             getReportDetail = setTimeout(function() {
                 params = angular.extend(params, $stateParams, {searches: angular.toJson($scope.search), limit: $scope.tableConfig.itemsPerPage, page: $scope.availableOptions.currentPage, orderBy: (!!$scope.reverse ? 'desc': 'asc'), sortField: $scope.sortBy}, paramsCustom);
+                //custom filters
+                params.customFilter = JSON.stringify(_buildCustomFilterParams());
                 return dataService.makeHttpGetRequest('/v1/reportviews/:reportView/sharedReports', params, API_UNIFIED_PUBLIC_END_POINT)
                     .then(function(reports) {
                         AtSortableService.insertParamForUrl(params);

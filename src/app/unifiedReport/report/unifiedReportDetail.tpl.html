@@ -5,35 +5,99 @@
 <div id="form-date-range-selector" class="panel panel-default" ng-if="hasFilterDate() || reportView.enableCustomDimensionMetric">
     <div class="panel-body">
         <form name="reportSelectorForm" class="form-inline" role="form" ng-submit="generateReport(selected.date)" novalidate>
-            <div class="form-group" ng-if="hasFilterDate()">
-                <label for="inputDateRange">{{ 'DASHBOARD_MODULE.DATE_RANGE' | translate }}</label>
-                <div>
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                        <input date-range-picker ng-disabled="!enableSelectDaterange() || reportView.largeReport" options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="selected.date" ng-required="true">
-                    </div>
-                </div>
-            </div>
-
-            <div class="multi-select-class form-group" ng-if="reportView.enableCustomDimensionMetric">
-                <div class="form-inline">
-                    <div class="form-group">
-                        <label for="Dimensions" class="control-label">Dimensions</label>
-                        <div>
-                            <isteven-multi-select id="Dimensions" max-labels="3" is-disabled="reportView.largeReport" disable-property="disabled" helper-elements="all filter reset" input-model="dimensions" output-model="fieldsShow.dimensions" button-label="label" item-label="label" tick-property="ticked"></isteven-multi-select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="metrics" class="control-label">Metrics</label>
-                        <div>
-                            <isteven-multi-select id="metrics" input-model="metrics" max-labels="3" output-model="fieldsShow.metrics" button-label="label" item-label="label" tick-property="ticked"></isteven-multi-select>
+            <div class="dimension-metrics-filter">
+                <div class="form-group" ng-if="hasFilterDate()">
+                    <label for="inputDateRange">{{ 'DASHBOARD_MODULE.DATE_RANGE' | translate }}</label>
+                    <div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <input date-range-picker ng-disabled="!enableSelectDaterange() || reportView.largeReport" options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="selected.date" ng-required="true">
                         </div>
                     </div>
                 </div>
+
+                <div class="multi-select-class form-group" ng-if="reportView.enableCustomDimensionMetric">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label for="Dimensions" class="control-label">Dimensions</label>
+                            <div>
+                                <isteven-multi-select id="Dimensions" max-labels="3" is-disabled="reportView.largeReport" disable-property="disabled" helper-elements="all filter reset" input-model="dimensions" output-model="fieldsShow.dimensions" button-label="label" item-label="label" tick-property="ticked"></isteven-multi-select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="metrics" class="control-label">Metrics</label>
+                            <div>
+                                <isteven-multi-select id="metrics"
+                                                      input-model="metrics"
+                                                      max-labels="3"
+                                                      output-model="fieldsShow.metrics"
+                                                      button-label="label"
+                                                      item-label="label"
+                                                      tick-property="ticked">
+                                </isteven-multi-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" ng-if="!isShowCustomFilter()"
+                        ng-disabled="!enableSelectDaterange()">Run Report</button>
             </div>
 
-            <button type="submit" class="btn btn-primary" ng-disabled="!enableSelectDaterange()">Run Report</button>
+            <!--CUSTOM FILTER-->
+            <accordion close-others="true" ng-if="isShowCustomFilter()">
+                <accordion-group class="notUpperCase" is-open="false">
+                    <accordion-heading>
+                        <div ng-init="openStatus = false" ng-click="openStatus=!openStatus">
+                            {{'REPORT_VIEW.CUSTOM_FILTER' | translate}} <i class="pull-right glyphicon"
+                                             ng-class="{'glyphicon-chevron-down': openStatus, 'glyphicon-chevron-right': !openStatus}"></i>
+                        </div>
+                    </accordion-heading>
+                    <div ng-repeat="dataset in reportView.reportViewDataSets">
+                        <div ng-if="isShowDatasetHasUserProvidedFilterExceptDate(dataset)">
+                            <h4>Dataset {{dataset.dataSetName}}</h4>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div ng-repeat="customFilter in dataset.filters track by $index" class="filter-container">
+                                        <div class="form-inline" ng-if="customFilter.type !== 'date' && customFilter.userProvided">
+                                            <div class="form-group">
+                                                <!--FIELD NAME-->
+                                                <label class="form-inline-item-padding filter-field">{{customFilter.field}}</label>
+                                                <!--COMPARE TYPE-->
+                                                <ui-select ng-model="customFilter.comparison"
+                                                           ng-required="true" server-error
+                                                           reset-search-input="'false'"
+                                                           on-select='selectedComparison(customFilter)'
+                                                           class="form-control fix-wrong-form-control">
+                                                    <ui-select-match placeholder="Select a comparison">{{ $select.selected.label }}</ui-select-match>
+                                                    <ui-select-choices repeat="type.key as type in getComparisonTypes(customFilter, field, dataset) | filter:$select.search">
+                                                        {{ type.label }}
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <!--COMPARISON VALUES-->
+                                                <div class="form-control fix-wrong-form-control" ng-if="customFilter.comparison !='isNotEmpty' && customFilter.comparison !='isEmpty'">
+                                                    <oi-select ng-model="customFilter.compareValue"
+                                                               multiple ng-required="true"
+                                                               oi-select-options="{newItem: true, newItemFn: 'addCompareValueText($query)'}"
+                                                               placeholder="{{ 'REPORT_BUILDER_MODULE.ENTER_ONE_OR_MULTIPLE_VALUE' | translate }}">
+                                                    </oi-select>
+                                                </div>
+                                                <span class="help-block" ng-if="isShowHelpBlock(customFilter)">
+                                                    {{ 'REPORT_BUILDER_MODULE.HELP_TEXT_FOR_ENTER_VALUES' | translate }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </accordion-group>
+            </accordion>
+
+            <button type="submit" class="btn btn-primary no-margin-top" ng-if="isShowCustomFilter()"
+                    ng-disabled="!enableSelectDaterange() || !reportSelectorForm.$valid">Run Report</button>
         </form>
     </div>
 </div>
