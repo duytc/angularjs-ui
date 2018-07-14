@@ -202,7 +202,8 @@
                                     }
 
                                     angular.forEach(reportView.reportViewDataSets, function (reportViewDataSet) {
-                                        reportViewDataSet.dataSet = angular.isObject(reportViewDataSet.dataSet) ? reportViewDataSet.dataSet.id : reportViewDataSet.dataSet
+                                        reportViewDataSet.dataSetName = angular.isObject(reportViewDataSet.dataSet) ? reportViewDataSet.dataSet.name : reportViewDataSet.dataSet;
+                                        reportViewDataSet.dataSet = angular.isObject(reportViewDataSet.dataSet) ? reportViewDataSet.dataSet.id : reportViewDataSet.dataSet;
                                     });
 
                                     reportView.emailSendAlert = reportView.emailSendAlert || [];
@@ -210,8 +211,7 @@
                                     reportView.filters = reportView.filters || angular.fromJson($stateParams.filters);
                                     reportView.subView = reportView.subView || $stateParams.subView == 'true';
 
-
-                                    return reportView
+                                    return reportView;
                                 })
                         }
 
