@@ -69,6 +69,8 @@
         $scope.titleReportDetailForExportExcel = [];
 
         _updateColumnPositions();
+        reportViewUtil.updateLabelForOptions($scope.metrics, $scope.titleColumns);
+        reportViewUtil.updateLabelForOptions($scope.dimensions, $scope.titleColumns);
 
         if (!!$scope.reportView.formats.length && !!reports && reports.length > 0) {
             angular.forEach($scope.reportView.formats, function (format) {

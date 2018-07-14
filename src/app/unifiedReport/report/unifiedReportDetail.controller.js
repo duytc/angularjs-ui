@@ -48,8 +48,8 @@
 
         _updateColumnPositions();
         _fixWrongTickedDimensionAndMetric();
-        _updateLabelForOptions($scope.metrics);
-        _updateLabelForOptions($scope.dimensions);
+        reportViewUtil.updateLabelForOptions($scope.metrics, reportGroup);
+        reportViewUtil.updateLabelForOptions($scope.dimensions, reportGroup);
 
         if(!!reportView && reportView.subView && angular.isObject(reportView.masterReportView)) {
             var masterReportView = angular.copy(reportView.masterReportView);
@@ -188,15 +188,6 @@
 
         function isShowCustomFilter() {
             return reportViewUtil.hasCustomFilters($scope.reportView.reportViewDataSets);
-        }
-
-        function _updateLabelForOptions(options) {
-            var fullLabels = reportGroup.columns;
-            _.forEach(options, function (option) {
-                if(fullLabels[option.name]){
-                    option.label = fullLabels[option.name];
-                }
-            })
         }
 
         function _fixWrongTickedDimensionAndMetric() {
