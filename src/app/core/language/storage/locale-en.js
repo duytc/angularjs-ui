@@ -1478,7 +1478,7 @@
             },
             "REPORT_VIEW":{
                 "CUSTOM_FILTER":"Custom filter",
-                "ALLOW_OUTSIDE":"Allow value outside of dimension/metric"
+                "ALLOW_OUTSIDE":"Allow value outside of dimensions"
             },
             "SHARE_REPORT_VIEW":{
                 "ALL_VALUE": "All value"
