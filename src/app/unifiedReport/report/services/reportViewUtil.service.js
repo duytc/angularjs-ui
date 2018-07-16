@@ -118,8 +118,15 @@
                 if (!subReportViewFilter.userProvided || subReportViewFilter.type === 'date') {
                     return;
                 }
+
                 var dataset = reportViewDataSets.find(function (reportViewDataSet) {
-                    return reportViewDataSet.dataSet == subReportViewFilter.dataSet;
+                    var datasetId = null;
+                    if(angular.isObject(reportViewDataSet.dataSet)){
+                        datasetId = reportViewDataSet.dataSet.id;
+                    }else {
+                        datasetId = reportViewDataSet.dataSet;
+                    }
+                    return datasetId == subReportViewFilter.dataSet;
                 });
                 if (dataset) {
                     dataset.filters.push(subReportViewFilter);

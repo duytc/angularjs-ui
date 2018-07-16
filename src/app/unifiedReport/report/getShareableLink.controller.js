@@ -25,6 +25,9 @@
                 endDate : !!$scope.shareable && !!$scope.shareable.fields && !!$scope.shareable.fields.dateRange ? $scope.shareable.fields.dateRange.endDate : getDateReportView.getMaxEndDateInFilterReportView(reportView)
             }
         };
+
+        _buildSubViewCustomFilters();
+
         /**
          * this is form data for selecting allowed outside value of customized filters
          * @type {Array}
@@ -71,6 +74,18 @@
         $scope.highlightText = highlightText;
         $scope.isShowCustomFilter = isShowCustomFilter;
 
+
+        /**
+         * Filters is in reportView.reportViewDatasets, but to subReportView, filter is in reportView.filters
+         * Need push reportView.filters into reportView.reportViewDatasets to submit to api
+         * @private
+         */
+        function _buildSubViewCustomFilters() {
+            console.log($scope.reportView.filters);
+            console.log( $scope.reportView.reportViewDataSets);
+            reportViewUtil._buildCustomFilters($scope.reportView.filters, $scope.reportView.reportViewDataSets);
+        }
+
         function _updateAllowOutSiteCustomFilters() {
             $scope.customFilters = _buildCustomFilters();
             $scope.selected.customFilters = _extractCustomFilters($scope.selected.customFilters);
@@ -96,6 +111,7 @@
            return selectedFilters;
 
         }
+
         function _buildCustomFilters() {
             var countFilterData = [];
             var customFilters = [];
@@ -175,6 +191,7 @@
                     selectedOptions.indexOf(reportViewUtil.getJoinOutputName(fullFilterName, dataSetId, $scope.reportView.joinBy)) > -1);
             }
         }
+
         function disabledDimension(field) {
             return $scope.reportView.largeReport && _.values($scope.reportView.dimensions).indexOf(field.key) > -1
         }
