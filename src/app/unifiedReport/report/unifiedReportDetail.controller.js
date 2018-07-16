@@ -473,7 +473,11 @@
                         delete $scope.reportView.publisher;
                     }
 
-                    var save = !$scope.isNew ? UnifiedReportViewManager.one($scope.reportView.id).patch($scope.reportView) : UnifiedReportViewManager.post($scope.reportView);
+                    // refactor reportView data
+                    var reportView = angular.copy($scope.reportView);
+                    reportView = _removeDataSetNameFromParam(reportView);
+
+                    var save = !$scope.isNew ? UnifiedReportViewManager.one(reportView.id).patch(reportView) : UnifiedReportViewManager.post(reportView);
 
                     save.then(function (data) {
                         if ($scope.isNew) {
@@ -525,6 +529,18 @@
                 // if it is not a pause, proceed without a modal
                 dfd.resolve();
             }
+
+            function _removeDataSetNameFromParam(reportView) {
+                if (!reportView || !angular.isArray(reportView.reportViewDataSets)) {
+                    return reportView;
+                }
+
+                angular.forEach(reportView.reportViewDataSets, function (reportViewDataSet) {
+                    delete reportViewDataSet.dataSetName;
+                });
+
+                return reportView;
+            }
         }
 
         function showPagination() {
@@ -544,6 +560,7 @@
                 delete item.allFields;
                 delete item.dimensionsMetrics;
                 delete item.selectAllDimensionsMetrics;
+                delete item.dataSetName;
             });
 
             params.masterReportView = angular.isObject(params.masterReportView) ? params.masterReportView.id : params.masterReportView;
