@@ -26,7 +26,9 @@
                     <div class="form-group select-connect-data-source">
                         <label class="col-sm-2 control-label">Field Name</label>
                         <div class="col-sm-10">
-                            <input server-error ng-required="true" type="text" class="form-control" ng-model="calculatedMetric.name" placeholder="Field Name">
+                            <input server-error ng-required="true" type="text" class="form-control"
+                                   ng-model="calculatedMetric.name"
+                                   ng-blur="addThisFieldToSelectedList(calculatedMetric)" placeholder="Field Name">
                         </div>
                     </div>
 
