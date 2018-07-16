@@ -17,7 +17,6 @@
 
         $scope.fieldsToShare = !!$scope.shareable && !!$scope.shareable.fields ? $scope.shareable.fields.fields : [];
 
-        
         $scope.selected = {
             allowDatesOutside: !!$scope.shareable && !!$scope.shareable.fields && !!$scope.shareable.fields.allowDatesOutside,
             selectAll: $scope.isNew ? true : $scope.fieldsToShare.length == $scope.fieldsReportView.length,

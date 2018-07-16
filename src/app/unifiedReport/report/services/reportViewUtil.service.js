@@ -12,9 +12,23 @@
             isDatasetHasUserProvidedFilterExceptDate: isDatasetHasUserProvidedFilterExceptDate,
             isShowHelpBlock: isShowHelpBlock,
             isAFieldInJoinBy: isAFieldInJoinBy,
-            getJoinOutputName: getJoinOutputName
+            getJoinOutputName: getJoinOutputName,
+            updateLabelForOptions: updateLabelForOptions
         };
 
+        /**
+         *
+         * @param options options that lack of dataset name in label
+         * @param allLabels full set of label contain dataset name
+         */
+        function updateLabelForOptions(options, allLabels) {
+            var fullLabels = allLabels.columns;
+            _.forEach(options, function (option) {
+                if(fullLabels[option.name]){
+                    option.label = fullLabels[option.name];
+                }
+            })
+        }
         /**
          *
          * @param fieldWithDatasetIdNeedCheck Ex: tag_name_1

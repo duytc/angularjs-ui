@@ -56,6 +56,11 @@
                             return dataSources.plain();
                         });
                     },
+                    dataSets: /* @ngInject */ function(UnifiedReportDataSetManager) {
+                        return UnifiedReportDataSetManager.getList().then(function (dataSets) {
+                            return dataSets.plain();
+                        });
+                    },
                     optimizeIntegrationList: function (AutoOptimizeIntegrationManager) {
 
                         return AutoOptimizeIntegrationManager.one().get().then(function (optimizeRules) {
