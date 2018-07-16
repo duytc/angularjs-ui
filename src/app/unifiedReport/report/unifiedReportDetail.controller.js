@@ -48,8 +48,8 @@
 
         _updateColumnPositions();
         _fixWrongTickedDimensionAndMetric();
-        reportViewUtil.updateLabelForOptions($scope.metrics, reportGroup);
-        reportViewUtil.updateLabelForOptions($scope.dimensions, reportGroup);
+        reportViewUtil.updateLabelForOptions($scope.metrics, allDimensionsMetrics);
+        reportViewUtil.updateLabelForOptions($scope.dimensions, allDimensionsMetrics);
 
         if(!!reportView && reportView.subView && angular.isObject(reportView.masterReportView)) {
             var masterReportView = angular.copy(reportView.masterReportView);
