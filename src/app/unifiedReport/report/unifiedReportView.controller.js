@@ -299,8 +299,7 @@
 
                             reportViewClone = angular.extend(reportViewClone, masterReportView);
                         }
-
-                        return reportViewClone
+                        return reportViewClone;
                     },
                     shareable: function () {
                         return null

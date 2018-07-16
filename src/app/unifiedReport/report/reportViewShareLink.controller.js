@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('ReportViewShareList', ReportViewShareList);
 
-    function ReportViewShareList($scope, $modal, listShare, dataSetsFromReportView, reportView, AlertService, UnifiedReportViewManager, unifiedReportBuilder, historyStorage, HISTORY_TYPE_PATH, ITEMS_PER_PAGE) {
+    function ReportViewShareList($scope, $modal,$stateParams, listShare, dataSetsFromReportView, reportView, AlertService, UnifiedReportViewManager, unifiedReportBuilder, historyStorage, HISTORY_TYPE_PATH, ITEMS_PER_PAGE) {
         $scope.listShare = listShare;
         $scope.dataSetsFromReportView = dataSetsFromReportView;
         $scope.itemsPerPageList = ITEMS_PER_PAGE;
@@ -24,7 +24,16 @@
         $scope.getShareableLink = getShareableLink;
         $scope.editShareableLink = editShareableLink;
         $scope.showDateRange = showDateRange;
-        
+
+        $scope.$on('SHARE_LINK_UPDATED', _onShareLinkFromModalUpdated);
+
+        function _onShareLinkFromModalUpdated(event, customFiltersWrapper) {
+            _.forEach($scope.listShare, function (shareItem) {
+                if(shareItem.token === customFiltersWrapper.token){
+                    shareItem.fields.filters = customFiltersWrapper.customFilters;
+                }
+            })
+        }
         function showDateRange(item) {
             if(angular.isString(item.fields.dateRange)) {
                 return item.fields.dateRange
