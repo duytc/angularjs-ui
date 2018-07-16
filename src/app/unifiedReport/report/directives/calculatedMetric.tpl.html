@@ -7,7 +7,7 @@
     <div class="moveable" ng-repeat=" calculatedMetric in calculatedMetrics">
 
         <accordion close-others="true">
-            <accordion-group class="notUpperCase" is-open="transform.openStatus">
+            <accordion-group class="notUpperCase" is-open="calculatedMetric.openStatus">
 
                 <accordion-heading>
                     <div>
@@ -53,35 +53,29 @@
                     </div>
 
                     <!--Expression or User Defined-->
-
                     <div class="form-group select-connect-data-source">
-                        <label class="col-sm-2 control-label"></label>
+                        <label class="col-sm-2 control-label">Calculation Type</label>
                         <div class="col-sm-10">
-                            <div class="col-sm-6">
-                                Use Expression
-                                <input type="radio" ng-model="calculatedMetric.expressionType">   <span class="checkMark"></span>
-
-                            </div>
-
-                            <div class="col-sm-6">
-                                User Defined
-                                <input type="radio" ng-model="calculatedMetric.expressionType">  <span class="checkMark"></span>
-                            </div>
+                            <label class="ui-radio"><input ng-model="calculatedMetric.calculationType" type="radio" ng-value="calculatedMetricExressionType.useExpression"><span>Use Expression</span></label>
+                            <label class="ui-radio"><input ng-model="calculatedMetric.calculationType" type="radio" ng-value="calculatedMetricExressionType.userDefined"><span>User Defined</span></label>
                         </div>
                     </div>
 
                     <!--Expression-->
-                    <div class="form-group select-connect-data-source">
+                    <div ng-if="isExpressionType(calculatedMetric)" class="form-group select-connect-data-source">
                         <label class="col-sm-2 control-label">Expression</label>
                         <div class="col-sm-10">
-                            <textarea ng-disabled="disabled" ng-required="true" spellcheck="false" class="addScrollToTextArea form-control" rows="5" mentio mentio-select="getPeopleText(item)" ng-change="addSpaceBeforeAndAfterOperator(field)" type="text" mentio-macros="macros" mentio-trigger-char="'['" mentio-typed-text="typedTerm"
+                            <textarea ng-disabled="disabled" ng-required="true" spellcheck="false"
+                                      class="addScrollToTextArea form-control" rows="5" mentio mentio-select="getPeopleText(item)"
+                                      ng-change="addSpaceBeforeAndAfterOperator(calculatedMetric)" type="text"
+                                      mentio-macros="macros" mentio-trigger-char="'['" mentio-typed-text="typedTerm"
                                       class="form-control"
                                       mentio-items="fieldsCalculatedField | filter:label:typedTerm"
-                                      ng-model="field.expression" placeholder="Expression">
+                                      ng-model="calculatedMetric.expression" placeholder="Expression">
                             </textarea>
 
-                            <span class="help-block">Use character <strong>[</strong> to show list of available variables. Each variable should be inside square bracket.</span>
-                            <div class="callout-success expressions-transform" ng-bind-html="formatExpressionToHighlight(field)"></div>
+                            <span class="help-block">Build-in macros begin with <strong>$</strong> character. Use character <strong>[</strong> to show list of available variables and macros. Each variable or macro should be inside square bracket.</span>
+                            <div class="callout-success expressions-transform" ng-bind-html="formatExpressionToHighlight(calculatedMetric)"></div>
                         </div>
                     </div>
 
