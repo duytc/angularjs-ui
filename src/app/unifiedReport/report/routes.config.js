@@ -141,7 +141,8 @@
                                         userReorderTransformsAllowed: !!$stateParams.userReorderTransformsAllowed ? ($stateParams.userReorderTransformsAllowed == 'true') : reportView.userReorderTransformsAllowed,
                                         publisher: reportView.publisher.id || reportView.publisher,
                                         enableCustomDimensionMetric: !!$stateParams.enableCustomDimensionMetric ? ($stateParams.enableCustomDimensionMetric == 'true') : reportView.enableCustomDimensionMetric,
-                                        subView: !!$stateParams.subView ? ($stateParams.subView == 'true') : reportView.subView
+                                        subView: !!$stateParams.subView ? ($stateParams.subView == 'true') : reportView.subView,
+                                        calculatedMetrics: !!$stateParams.calculatedMetrics ? angular.fromJson($stateParams.calculatedMetrics) : reportView.calculatedMetrics
                                     }
                                 })
                         }
