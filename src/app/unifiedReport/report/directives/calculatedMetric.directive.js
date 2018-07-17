@@ -103,9 +103,9 @@
                     scope.fieldIsDatetime = fieldIsDatetime;
                     scope.selectTypeCalculatedField = selectTypeCalculatedField;
                     scope.addThisFieldToSelectedList = addThisFieldToSelectedList;
+                    scope.unValidName = unValidName;
 
                     function selectTypeCalculatedField(type, calculatedField) {
-                        console.log('Trigger selectTypeCalculatedField 1');
                         scope.fieldsCalculatedField = [];
                         if (!type) {
                             return
@@ -113,14 +113,11 @@
 
                         //Get fields in dimension and metric of data set
                         if (type == 'number' || type == 'decimal' || type.key == 'number' || type.key == 'decimal') {
-                            console.log('Trigger selectTypeCalculatedField 2');
                             angular.forEach(scope.totalDimensionsMetrics, function (field) {
                                 if (field.type == 'number' || field.type == 'decimal') {
                                     scope.fieldsCalculatedField.push(field)
                                 }
                             });
-
-                            console.log('Trigger scope.fieldsCalculatedField', scope.fieldsCalculatedField);
 
                         } else {
                             scope.fieldsCalculatedField = scope.totalDimensionsMetrics;
@@ -167,7 +164,7 @@
                             scope.fieldsCalculatedField.push(calculatedField);
                         });
 
-                       return scope.fieldsCalculatedField;
+                        return scope.fieldsCalculatedField;
                     }
 
                     function addThisFieldToSelectedList(calculatedField) {
@@ -304,6 +301,17 @@
                         // note item.label is sent when the typedText wasn't found
                         return '[' + item.label + ']';
                     };
+
+                    function unValidName(name) {
+                        var fields = [];
+                        angular.forEach(scope.calculatedMetrics, function (oneCalculatedMetric) {
+                            fields.push(oneCalculatedMetric.name);
+                        });
+
+                        return _.filter(fields, function (field) {
+                            return name == field && name != null;
+                        }).length > 1;
+                    }
 
                     function getTypesFieldNumber() {
                         var typesField = [];
