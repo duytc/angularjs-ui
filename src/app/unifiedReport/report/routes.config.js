@@ -228,6 +228,7 @@
                             formats: angular.fromJson($stateParams.formats),
                             filters: angular.fromJson($stateParams.filters),
                             joinBy: angular.fromJson($stateParams.joinBy) || null,
+                            requireJoin: $stateParams.requireJoin,
                             name: $stateParams.name,
                             publisher: $stateParams.publisher,
                             isShowDataSetName: $stateParams.isShowDataSetName == 'true',

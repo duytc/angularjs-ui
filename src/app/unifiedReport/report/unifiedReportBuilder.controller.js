@@ -343,6 +343,7 @@
                 weightedCalculations: angular.toJson(reportBuilder.weightedCalculations),
                 formats: angular.toJson(reportBuilder.formats),
                 joinBy: angular.toJson(reportBuilder.joinBy),
+                requireJoin: reportBuilder.requireJoin,
                 name: reportBuilder.name,
                 id: reportBuilder.id,
                 masterReportView: reportBuilder.masterReportView,
