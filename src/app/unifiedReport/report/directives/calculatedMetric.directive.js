@@ -105,6 +105,7 @@
                     scope.addThisFieldToSelectedList = addThisFieldToSelectedList;
 
                     function selectTypeCalculatedField(type, calculatedField) {
+                        console.log('Trigger selectTypeCalculatedField 1');
                         scope.fieldsCalculatedField = [];
                         if (!type) {
                             return
@@ -112,11 +113,15 @@
 
                         //Get fields in dimension and metric of data set
                         if (type == 'number' || type == 'decimal' || type.key == 'number' || type.key == 'decimal') {
+                            console.log('Trigger selectTypeCalculatedField 2');
                             angular.forEach(scope.totalDimensionsMetrics, function (field) {
                                 if (field.type == 'number' || field.type == 'decimal') {
                                     scope.fieldsCalculatedField.push(field)
                                 }
                             });
+
+                            console.log('Trigger scope.fieldsCalculatedField', scope.fieldsCalculatedField);
+
                         } else {
                             scope.fieldsCalculatedField = scope.totalDimensionsMetrics;
                         }
@@ -153,9 +158,7 @@
 
                         // change field name to macro name
                         var fieldsCalculatedFieldCopy = angular.copy(scope.fieldsCalculatedField);
-                        console.log('Come here 3');
                         scope.fieldsCalculatedField = [];
-                        console.log('fieldsCalculatedFieldCopy', fieldsCalculatedFieldCopy);
                         angular.forEach(fieldsCalculatedFieldCopy, function (calculatedField) {
                             if (calculatedField.label.indexOf('$') == -1) {
                                 calculatedField.label = '$'.concat(calculatedField.key);
@@ -163,6 +166,8 @@
 
                             scope.fieldsCalculatedField.push(calculatedField);
                         });
+
+                       return scope.fieldsCalculatedField;
                     }
 
                     function addThisFieldToSelectedList(calculatedField) {
@@ -194,7 +199,6 @@
                         });
 
                         //add macros $yesterday, $today, $startDate, $endDate
-                        console.log('build in data items macros', scope.buildInDateTimeMacros);
                         angular.forEach(scope.buildInDateTimeMacros, function (macro) {
                             var element = _.find(scope.fieldsCalculatedField, function (calculatedField) {
                                 return (macro.label == calculatedField.label);
@@ -277,14 +281,7 @@
                         }
 
                         field = angular.copy(field);
-
-                        if (!!field.fieldName) {
-                            var fieldTemp = _.find(scope.totalDimensionsMetrics, {key: field.fieldName});
-
-                            field.field = !!fieldTemp ? fieldTemp.label : fieldTemp;
-                        }
-
-                        var expression = (!!field.field ? ('<strong>' + field.field + '</strong>' + ' = ') : '') + (angular.copy(field.expression) || '');
+                        var expression = (!!field.name ? ('<strong>' + field.name + '</strong>' + ' = ') : '') + (angular.copy(field.expression) || '');
 
                         if (!expression) {
                             return null;
