@@ -82,7 +82,7 @@
                 }
             })
             .state('unifiedReport.report.editBuilder', {
-                url: '/edit?id&filters&subView&masterReportView&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&publisher&formats&userReorderTransformsAllowed&preCalculateTable&largeReport&availableToRun&availableToChange&isShowDataSetName&enableCustomDimensionMetric',
+                url: '/edit?id&filters&subView&masterReportView&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&requireJoin&name&publisher&formats&userReorderTransformsAllowed&preCalculateTable&largeReport&availableToRun&availableToChange&isShowDataSetName&enableCustomDimensionMetric',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -156,7 +156,7 @@
                             formats: angular.fromJson($stateParams.formats),
                             weightedCalculations: angular.fromJson($stateParams.weightedCalculations),
                             joinBy: angular.fromJson($stateParams.joinBy) || null,
-                            requireJoin: $stateParams.requireJoin,
+                            requireJoin: $stateParams.requireJoin == 'true',
                             name: $stateParams.name,
                             publisher: $stateParams.publisher,
                             isShowDataSetName: $stateParams.isShowDataSetName == 'true',
@@ -177,7 +177,7 @@
                 }
             })
             .state('unifiedReport.report.detail', {
-                url: '/detail?id&masterReportView&subView&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&publisher&formats&fieldTypes&startDate&endDate&preCalculateTable&largeReport&availableToRun&availableToChange&isShowDataSetName&page&limit&searchs&enableCustomDimensionMetric',
+                url: '/detail?id&masterReportView&subView&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&requireJoin&name&publisher&formats&fieldTypes&startDate&endDate&preCalculateTable&largeReport&availableToRun&availableToChange&isShowDataSetName&page&limit&searchs&enableCustomDimensionMetric',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -228,7 +228,7 @@
                             formats: angular.fromJson($stateParams.formats),
                             filters: angular.fromJson($stateParams.filters),
                             joinBy: angular.fromJson($stateParams.joinBy) || null,
-                            requireJoin: $stateParams.requireJoin,
+                            requireJoin: $stateParams.requireJoin == 'true',
                             name: $stateParams.name,
                             publisher: $stateParams.publisher,
                             isShowDataSetName: $stateParams.isShowDataSetName == 'true',

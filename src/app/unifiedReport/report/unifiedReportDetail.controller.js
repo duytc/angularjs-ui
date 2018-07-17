@@ -70,6 +70,7 @@
             formats: angular.toJson(reportView.formats),
             weightedCalculations: angular.toJson(reportView.weightedCalculations),
             joinBy: angular.toJson(reportView.joinBy),
+            requireJoin: reportView.requireJoin,
             metricCalculations: angular.toJson(reportView.metricCalculations),
             name: reportView.name,
             masterReportView: angular.isObject(reportView.masterReportView) ? reportView.masterReportView.id : reportView.masterReportView,
