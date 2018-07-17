@@ -107,6 +107,10 @@
                         scope.reportBuilder.reportViewDataSets.splice(index, 1);
 
                         scope.reportBuilder.formats = [];
+
+                        if(!scope.reportBuilder.id) {
+                            scope.reportBuilder.requireJoin = true;
+                        }
                     }
                     
                     function addDataSet() {

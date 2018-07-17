@@ -60,6 +60,7 @@
                 }
             ],
             joinBy: [],
+            requireJoin: true,
             weightedCalculations: [],
             transforms: [],
             formats: [],
