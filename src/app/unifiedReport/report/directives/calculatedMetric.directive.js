@@ -60,12 +60,6 @@
                     }, true);
 
                     scope.$watch(function () {
-                        return scope.reportBuilder.calculatedMetrics;
-                    }, function () {
-                        pushOrPopCalculatedMetricsInSelectedList();
-                    }, true);
-
-                    scope.$watch(function () {
                         return scope.selectedFieldsDateSet;
                     }, function () {
                         totalDimensionsMetricsForDefaultValues = angular.copy(scope.selectedFieldsDateSet);
