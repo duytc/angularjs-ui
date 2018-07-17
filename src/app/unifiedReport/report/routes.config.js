@@ -130,7 +130,7 @@
                                         weightedCalculations: !!$stateParams.weightedCalculations ? angular.fromJson($stateParams.weightedCalculations) : reportView.weightedCalculations,
                                         filters: !!$stateParams.filters ? angular.fromJson($stateParams.filters) : reportView.filters,
                                         joinBy: !!$stateParams.joinBy ? angular.fromJson($stateParams.joinBy) : reportView.joinBy,
-                                        requireJoin: !!$stateParams.requireJoin ? $stateParams.requireJoin : reportView.requireJoin,
+                                        requireJoin: !!$stateParams.requireJoin ? ($stateParams.requireJoin == 'true') : reportView.requireJoin,
                                         name: !!$stateParams.name ? $stateParams.name : reportView.name,
                                         id: reportView.id,
                                         masterReportView: !!$stateParams.masterReportView ? angular.fromJson($stateParams.masterReportView) : reportView.masterReportView,
