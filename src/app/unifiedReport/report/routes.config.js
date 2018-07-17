@@ -82,7 +82,7 @@
                 }
             })
             .state('unifiedReport.report.editBuilder', {
-                url: '/edit?id&filters&subView&masterReportView&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&publisher&formats&userReorderTransformsAllowed&preCalculateTable&largeReport&availableToRun&availableToChange&isShowDataSetName&enableCustomDimensionMetric',
+                url: '/edit?id&filters&subView&masterReportView&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&requireJoin&name&publisher&formats&userReorderTransformsAllowed&preCalculateTable&largeReport&availableToRun&availableToChange&isShowDataSetName&enableCustomDimensionMetric',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -130,6 +130,7 @@
                                         weightedCalculations: !!$stateParams.weightedCalculations ? angular.fromJson($stateParams.weightedCalculations) : reportView.weightedCalculations,
                                         filters: !!$stateParams.filters ? angular.fromJson($stateParams.filters) : reportView.filters,
                                         joinBy: !!$stateParams.joinBy ? angular.fromJson($stateParams.joinBy) : reportView.joinBy,
+                                        requireJoin: !!$stateParams.requireJoin ? ($stateParams.requireJoin == 'true') : reportView.requireJoin,
                                         name: !!$stateParams.name ? $stateParams.name : reportView.name,
                                         id: reportView.id,
                                         masterReportView: !!$stateParams.masterReportView ? angular.fromJson($stateParams.masterReportView) : reportView.masterReportView,
@@ -155,6 +156,7 @@
                             formats: angular.fromJson($stateParams.formats),
                             weightedCalculations: angular.fromJson($stateParams.weightedCalculations),
                             joinBy: angular.fromJson($stateParams.joinBy) || null,
+                            requireJoin: $stateParams.requireJoin == 'true',
                             name: $stateParams.name,
                             publisher: $stateParams.publisher,
                             isShowDataSetName: $stateParams.isShowDataSetName == 'true',
@@ -175,7 +177,7 @@
                 }
             })
             .state('unifiedReport.report.detail', {
-                url: '/detail?id&masterReportView&subView&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&publisher&formats&fieldTypes&startDate&endDate&preCalculateTable&largeReport&availableToRun&availableToChange&isShowDataSetName&page&limit&searchs&enableCustomDimensionMetric',
+                url: '/detail?id&masterReportView&subView&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&requireJoin&name&publisher&formats&fieldTypes&startDate&endDate&preCalculateTable&largeReport&availableToRun&availableToChange&isShowDataSetName&page&limit&searchs&enableCustomDimensionMetric',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -226,6 +228,7 @@
                             formats: angular.fromJson($stateParams.formats),
                             filters: angular.fromJson($stateParams.filters),
                             joinBy: angular.fromJson($stateParams.joinBy) || null,
+                            requireJoin: $stateParams.requireJoin == 'true',
                             name: $stateParams.name,
                             publisher: $stateParams.publisher,
                             isShowDataSetName: $stateParams.isShowDataSetName == 'true',
