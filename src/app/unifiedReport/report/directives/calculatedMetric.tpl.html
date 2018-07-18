@@ -34,6 +34,16 @@
                         </div>
                     </div>
 
+                    <!--Display Name-->
+                    <div  class="form-group select-connect-data-source">
+                        <label  class="col-sm-2 control-label">Display Name</label>
+                        <div class="col-sm-10">
+                            <input ng-disabled="disabled" server-error ng-required="true"
+                                   ng-pattern="patternForAddField" type="text" class="form-control"
+                                   ng-model="calculatedMetric.displayName" placeholder="Display Name">
+                        </div>
+                    </div>
+
                     <!--Type-->
                     <div class="form-group select-connect-data-source">
                         <label class="col-sm-2 control-label">Type</label>
@@ -70,10 +80,9 @@
                         <label class="col-sm-2 control-label">Expression</label>
                         <div class="col-sm-10">
                             <textarea ng-disabled="disabled" ng-required="true" spellcheck="false"
-                                      class="addScrollToTextArea form-control" rows="5" mentio mentio-select="getPeopleText(item)"
+                                      class="form-control" rows="5" mentio mentio-select="getPeopleText(item)"
                                       ng-change="addSpaceBeforeAndAfterOperator(calculatedMetric)" type="text"
                                       mentio-macros="macros" mentio-trigger-char="'['" mentio-typed-text="typedTerm"
-                                      class="form-control"
                                       mentio-items="fieldsCalculatedField | filter:label:typedTerm"
                                       ng-model="calculatedMetric.expression" placeholder="Expression">
                             </textarea>

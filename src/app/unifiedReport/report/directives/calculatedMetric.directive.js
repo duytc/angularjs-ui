@@ -367,6 +367,7 @@
                     function addCalculatedMetric() {
                         scope.calculatedMetrics.push({
                             name: '',
+                            displayName: '',
                             type: "decimal",
                             defaultValue: 0,
                             calculationType: scope.calculatedMetricExressionType.useExpression,
