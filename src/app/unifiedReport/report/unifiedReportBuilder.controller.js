@@ -76,7 +76,7 @@
             subView: false
         };
 
-        $scope.isNewReportBuilder = !!!$scope.reportBuilder.publisher;
+        $scope.isNewReportBuilder = !reportView;
 
         $scope.aggregateAndAverage = {
             availableOptions: [
