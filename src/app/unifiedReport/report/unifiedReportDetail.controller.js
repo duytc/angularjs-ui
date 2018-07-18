@@ -7,7 +7,7 @@
     function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView,
                                  dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView,
                                  AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT,
-                                 sessionStorage, userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,reportViewUtil,
+                                 sessionStorage, userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,reportViewUtil, METRICS_SET,
                                  COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_NUMBER) {
         const maxEmailAllowed = 10;
 
@@ -37,6 +37,50 @@
         $scope.reportGroup = reportGroup;
         $scope.hasResult = !angular.isNumber(reportGroup.status);
 
+        $scope.reportView.calculatedMetrics = {
+          'left_budget': 1.55,
+          'right_budget': 2.55,
+            'right_budget5': 2.55,
+            'right_budget5q': 2.55,
+            'right_budget5w': 2.55,
+            'right_budget5t': 2.55,
+            'right_budget5ert': 2.55,
+            'right_budgetdfg': 2.55,
+            'right_budgetasd': 2.55,
+            'right_budgetss': 2.55,
+            'right_budgeta': 2.55,
+            'right_budget6': 2.55,
+
+        };
+
+        $scope.reportView.userDefinedVariables = [
+            {
+                'field': 'LeftBudget',
+                'defaultValue': 12,
+                'type': 'number'
+            },{
+                'field': 'RightBudget',
+                'defaultValue': 55,
+                'type': 'number'
+            },{
+                'field': 'RightBudget',
+                'defaultValue': 55,
+                'type': 'number'
+            },{
+                'field': 'RightBudget',
+                'defaultValue': 55,
+                'type': 'number'
+            },{
+                'field': 'RightBudget',
+                'defaultValue': 55,
+                'type': 'number'
+            },{
+                'field': 'RightBudget',
+                'defaultValue': 55,
+                'type': 'number'
+            }
+        ];
+
         $scope.reports = reportGroup.reports || [];
         $scope.types = reportGroup.types;
         $scope.isNew = !$scope.reportView.id;
@@ -45,6 +89,10 @@
 
         $scope.dimensions = [];
         $scope.metrics = [];
+
+        //calculated metrics
+        $scope.typesField = METRICS_SET;
+        $scope.patternForAddField =  /^[a-zA-Z_][a-zA-Z0-9_$\s]*$/;
 
         _updateColumnPositions();
 
@@ -124,6 +172,8 @@
             }
         };
 
+        $scope.fieldsCalculatedMetric = [];
+
         _updateMissingDate($scope.selected.date);
 
         $scope.datePickerOpts = {
@@ -165,6 +215,11 @@
         $scope.isShowDatasetHasUserProvidedFilterExceptDate = isShowDatasetHasUserProvidedFilterExceptDate;
         $scope.isShowHelpBlock = isShowHelpBlock;
 
+        //Calculated Metrics
+        $scope.getCalculatedMetrics = getCalculatedMetrics;
+        $scope.getColumnCompatible = getColumnCompatible;
+        $scope.getDisplayNameMetric = getDisplayNameMetric;
+
         _buildCustomFilters();
         /**
          * Filters is in reportView.reportViewDatasets, but to subReportView, filter is in reportView.filters
@@ -185,6 +240,30 @@
 
         function isShowCustomFilter() {
             return reportViewUtil.hasCustomFilters($scope.reportView.reportViewDataSets);
+        }
+
+        function getColumnCompatible(items) {
+            var size = _.size(items);
+            return size < 2 ? 12 : (size < 3 ? 6 : 4);
+        }
+
+        function getCalculatedMetrics(field) {
+            //TODO : need change api to re-calculated metrics value
+            UnifiedReportViewManager.one('reCalculatedMetrics').get(field).then(function(fieldCalculated){
+                _updateMetricValue(fieldCalculated);
+            })
+        }
+
+        function getDisplayNameMetric(key) {
+            return (_.findWhere($scope.reportView.calculatedMetrics, {field: key}) || {displayName: key}).displayName;
+        }
+
+        function _updateMetricValue(fieldCalculated) {
+            for( var key in $scope.reportView.calculatedMetrics) {
+                if(key == fieldCalculated.field) {
+                    $scope.reportView.calculatedMetrics[key] = fieldCalculated.defaultValue;
+                }
+            }
         }
 
         function getComparisonTypes(customFilter, field, dataset) {
