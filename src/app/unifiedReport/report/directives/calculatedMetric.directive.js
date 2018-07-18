@@ -11,6 +11,7 @@
         return {
             scope: {
                 calculatedMetrics: '=',
+                isNewReportBuilder: '=',
                 selectedFields: '=',
                 totalDimensionsMetrics: '=',
                 dimensionsMetrics: '=',
@@ -104,6 +105,8 @@
                     scope.selectTypeCalculatedField = selectTypeCalculatedField;
                     scope.addThisFieldToSelectedList = addThisFieldToSelectedList;
                     scope.unValidName = unValidName;
+
+                    console.log('isNewReportBuilder', scope.isNewReportBuilder);
 
                     function selectTypeCalculatedField(type, calculatedField) {
                         scope.fieldsCalculatedField = [];

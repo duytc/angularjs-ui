@@ -76,6 +76,8 @@
             subView: false
         };
 
+        $scope.isNewReportBuilder = !!!$scope.reportBuilder.publisher;
+
         $scope.aggregateAndAverage = {
             availableOptions: [
                 {key: 'aggregate', value: "Sum"},
