@@ -447,7 +447,8 @@
                 largeReport: reportBuilder.largeReport,
                 availableToRun: reportBuilder.availableToRun,
                 availableToChange: reportBuilder.availableToChange,
-                enableCustomDimensionMetric: reportBuilder.enableCustomDimensionMetric
+                enableCustomDimensionMetric: reportBuilder.enableCustomDimensionMetric,
+                calculatedMetrics: angular.toJson(reportBuilder.calculatedMetrics)
             };
 
             if ($scope.isAdmin()) {

@@ -82,7 +82,7 @@
                 }
             })
             .state('unifiedReport.report.editBuilder', {
-                url: '/edit?id&filters&subView&masterReportView&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&publisher&formats&userReorderTransformsAllowed&preCalculateTable&largeReport&availableToRun&availableToChange&isShowDataSetName&enableCustomDimensionMetric',
+                url: '/edit?id&filters&subView&masterReportView&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&publisher&formats&userReorderTransformsAllowed&preCalculateTable&largeReport&availableToRun&availableToChange&isShowDataSetName&enableCustomDimensionMetric&calculatedMetrics',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -164,8 +164,10 @@
                             availableToRun: $stateParams.availableToRun == 'true',
                             availableToChange: $stateParams.availableToChange == 'true',
                             enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true',
-                            subView: $stateParams.subView == 'true'
-                        };
+                            subView: $stateParams.subView == 'true',
+                            calculatedMetrics: angular.fromJson($stateParams.calculatedMetrics)
+                    }
+                        ;
                     },
                     publishers: function () {
                         return null
@@ -176,7 +178,7 @@
                 }
             })
             .state('unifiedReport.report.detail', {
-                url: '/detail?id&masterReportView&subView&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&publisher&formats&fieldTypes&startDate&endDate&preCalculateTable&largeReport&availableToRun&availableToChange&isShowDataSetName&page&limit&searchs&enableCustomDimensionMetric',
+                url: '/detail?id&masterReportView&subView&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&publisher&formats&fieldTypes&startDate&endDate&preCalculateTable&largeReport&availableToRun&availableToChange&isShowDataSetName&page&limit&searchs&enableCustomDimensionMetric&calculatedMetrics',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -235,7 +237,8 @@
                             availableToRun: $stateParams.availableToRun == 'true',
                             availableToChange: $stateParams.availableToChange == 'true',
                             enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true',
-                            subView: $stateParams.subView == 'true'
+                            subView: $stateParams.subView == 'true',
+                            calculatedMetrics: angular.fromJson($stateParams.calculatedMetrics)
                         };
                     },
                     reportGroup: /* @ngInject */ function (unifiedReportBuilder, reportView, $stateParams) {
