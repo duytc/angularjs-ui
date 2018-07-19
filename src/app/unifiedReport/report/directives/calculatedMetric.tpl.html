@@ -87,6 +87,7 @@
                                       spellcheck="false"
                                       class=" addScrollToTextArea form-control custom-mentio"
                                       rows="5"
+                                      id="expressionTextarea"
                                       ng-change="addSpaceBeforeAndAfterOperator(calculatedMetric)"
                                       type="text"
 
@@ -107,22 +108,20 @@
 
                             <script>
                                 $(function () {
-                                    $(".custom-mentio").keydown(function (e) {
-                                        console.log(e);
-
+                                    $("#expressionTextarea").keydown(function (e) {
                                         var $target = $(e.target);
                                         var x = $target.offset().left;
                                         var y = $target.offset().top;
-                                        console.log(x);
-                                        console.log(y);
+                                        var caretHeight = "20px";
+                                        var pos = $('#expressionTextarea').textareaHelper('caretPos');
 
                                         window.setTimeout(function (args) {
                                             $("mentio-menu").css({
-                                                "top": y + "px"
+                                                "top": (y + pos.top + caretHeight) + "px",
+                                                "left": (x + pos.left) + "px"
                                             });
                                         }, 0);
-                                    })
-
+                                    });
                                 });
                             </script>
                         </div>
