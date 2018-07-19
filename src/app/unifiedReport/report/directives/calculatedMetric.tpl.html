@@ -11,7 +11,8 @@
 
                 <accordion-heading>
                     <div>
-                        {{getCalculatedMetricName(calculatedMetric.name)}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': transform.openStatus, 'glyphicon-chevron-right': !transform.openStatus}"></i>
+                        {{getCalculatedMetricName(calculatedMetric.name)}} <i class="pull-right glyphicon"
+                                                                              ng-class="{'glyphicon-chevron-down': transform.openStatus, 'glyphicon-chevron-right': !transform.openStatus}"></i>
                     </div>
                 </accordion-heading>
 
@@ -23,8 +24,8 @@
 
                 <div class="row">
                     <!--Field Name-->
-                    <div  class="form-group select-connect-data-source">
-                        <label  class="col-sm-2 control-label">Field Name</label>
+                    <div class="form-group select-connect-data-source">
+                        <label class="col-sm-2 control-label">Field Name</label>
                         <div class="col-sm-10">
                             <input ng-disabled="disabled" server-error ng-required="true"
                                    ng-pattern="patternForAddField" type="text" class="form-control"
@@ -35,8 +36,8 @@
                     </div>
 
                     <!--Display Name-->
-                    <div  class="form-group select-connect-data-source">
-                        <label  class="col-sm-2 control-label">Display Name</label>
+                    <div class="form-group select-connect-data-source">
+                        <label class="col-sm-2 control-label">Display Name</label>
                         <div class="col-sm-10">
                             <input ng-disabled="disabled" server-error ng-required="true"
                                    ng-pattern="patternForAddField" type="text" class="form-control"
@@ -70,7 +71,7 @@
                     <div class="form-group select-connect-data-source">
                         <label class="col-sm-2 control-label">Calculation Type</label>
                         <div class="col-sm-10">
-                            <label  class="ui-radio"><input ng-disabled="disabled" ng-model="calculatedMetric.calculationType" type="radio" ng-value="calculatedMetricExressionType.useExpression"><span>Use Expression</span></label>
+                            <label class="ui-radio"><input ng-disabled="disabled" ng-model="calculatedMetric.calculationType" type="radio" ng-value="calculatedMetricExressionType.useExpression"><span>Use Expression</span></label>
                             <label class="ui-radio"><input ng-disabled="disabled" ng-model="calculatedMetric.calculationType" type="radio" ng-value="calculatedMetricExressionType.userDefined"><span>User Defined</span></label>
                         </div>
                     </div>
@@ -79,13 +80,12 @@
                     <div ng-if="isExpressionType(calculatedMetric)" class="form-group select-connect-data-source">
                         <label class="col-sm-2 control-label">Expression</label>
                         <div class="col-sm-10">
-                          model:  {{calculatedMetric.expression}}
-                            <br/>
-                          list: {{fieldsCalculatedField}}
+                            <input type="text" class="custom-mentio">
+                            <i class="fa fa-eye" id="eye"></i>
                             <textarea ng-disabled="disabled"
                                       ng-required="true"
                                       spellcheck="false"
-                                      class=" addScrollToTextArea form-control"
+                                      class=" addScrollToTextArea form-control custom-mentio"
                                       rows="5"
                                       ng-change="addSpaceBeforeAndAfterOperator(calculatedMetric)"
                                       type="text"
@@ -103,6 +103,29 @@
 
                             <span class="help-block">Build-in macros begin with <strong>$</strong> character. Use character <strong>[</strong> to show list of available variables and macros. Each variable or macro should be inside square bracket.</span>
                             <div class="callout-success expressions-transform" ng-bind-html="formatExpressionToHighlight(calculatedMetric)"></div>
+
+
+                            <script>
+                                $(function () {
+                                    console.log('hehe');
+                                    $(".custom-mentio").keydown(function (e) {
+                                        console.log(e);
+
+                                        var $target = $(e.target);
+                                        var x = $target.offset().left;
+                                        var y = $target.offset().top;
+                                        console.log(x);
+                                        console.log(y);
+
+                                        $("#eye").css({
+                                            'position': 'absolute',
+                                            'top': y,
+                                            'left': x,
+                                            'z-index': 10000
+                                        })
+                                    })
+                                });
+                            </script>
                         </div>
                     </div>
 
@@ -112,3 +135,5 @@
         </accordion>
     </div>
 </div>
+
+
