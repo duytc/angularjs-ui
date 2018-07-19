@@ -107,7 +107,6 @@
 
                             <script>
                                 $(function () {
-                                    console.log('hehe');
                                     $(".custom-mentio").keydown(function (e) {
                                         console.log(e);
 
@@ -116,13 +115,6 @@
                                         var y = $target.offset().top;
                                         console.log(x);
                                         console.log(y);
-
-                                        $("#eye").css({
-                                            'position': 'absolute',
-                                            'top': y,
-                                            'left': x,
-                                            'z-index': 10000
-                                        })
 
                                         window.setTimeout(function (args) {
                                             $("mentio-menu").css({
@@ -133,9 +125,8 @@
                                                 "z-index": "10000"
                                             });
                                         }, 0);
-
-
                                     })
+
                                 });
                             </script>
                         </div>
