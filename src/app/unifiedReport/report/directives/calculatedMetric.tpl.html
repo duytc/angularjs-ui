@@ -104,7 +104,7 @@
                             <span class="help-block">Build-in macros begin with <strong>$</strong> character. Use character <strong>[</strong> to show list of available variables and macros. Each variable or macro should be inside square bracket.</span>
                             <div class="callout-success expressions-transform" ng-bind-html="formatExpressionToHighlight(calculatedMetric)"></div>
 
-
+                            <!--Fix bug 6th: https://trello.com/c/Lxvf1gaL/2664-ur-uisupport-calculated-metrics-and-type-of-metrics-user-defined-expression-for-multiple-browsers-->
                             <script>
                                 $(function () {
                                     $(".expressionTextarea").keydown(function (e) {

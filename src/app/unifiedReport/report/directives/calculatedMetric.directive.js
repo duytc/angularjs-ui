@@ -365,6 +365,7 @@
                     }
 
                     function addCalculatedMetric() {
+                        // Need id property to fix bug 6th: https://trello.com/c/Lxvf1gaL/2664-ur-uisupport-calculated-metrics-and-type-of-metrics-user-defined-expression-for-multiple-browsers
                         var length = !scope.calculatedMetrics ? 0 : scope.calculatedMetrics.length;
                         scope.calculatedMetrics.push({
                             name: '',
