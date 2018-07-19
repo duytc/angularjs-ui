@@ -79,12 +79,26 @@
                     <div ng-if="isExpressionType(calculatedMetric)" class="form-group select-connect-data-source">
                         <label class="col-sm-2 control-label">Expression</label>
                         <div class="col-sm-10">
-                            <textarea ng-disabled="disabled" ng-required="true" spellcheck="false"
-                                      class="form-control" rows="5" mentio mentio-select="getPeopleText(item)"
-                                      ng-change="addSpaceBeforeAndAfterOperator(calculatedMetric)" type="text"
-                                      mentio-macros="macros" mentio-trigger-char="'['" mentio-typed-text="typedTerm"
+                          model:  {{calculatedMetric.expression}}
+                            <br/>
+                          list: {{fieldsCalculatedField}}
+                            <textarea ng-disabled="disabled"
+                                      ng-required="true"
+                                      spellcheck="false"
+                                      class=" addScrollToTextArea form-control"
+                                      rows="5"
+                                      ng-change="addSpaceBeforeAndAfterOperator(calculatedMetric)"
+                                      type="text"
+
+                                      mentio
+                                      mentio-select="getPeopleText(item)"
+                                      mentio-macros="macros"
+                                      mentio-trigger-char="'['"
+                                      mentio-typed-text="typedTerm"
                                       mentio-items="fieldsCalculatedField | filter:label:typedTerm"
-                                      ng-model="calculatedMetric.expression" placeholder="Expression">
+
+                                      ng-model="calculatedMetric.expression"
+                                      placeholder="Expression">
                             </textarea>
 
                             <span class="help-block">Build-in macros begin with <strong>$</strong> character. Use character <strong>[</strong> to show list of available variables and macros. Each variable or macro should be inside square bracket.</span>
