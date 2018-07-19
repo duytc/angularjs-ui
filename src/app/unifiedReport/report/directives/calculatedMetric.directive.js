@@ -365,6 +365,7 @@
                     }
 
                     function addCalculatedMetric() {
+                        var length = !scope.calculatedMetrics ? 0 : scope.calculatedMetrics.length;
                         scope.calculatedMetrics.push({
                             name: '',
                             displayName: '',
@@ -372,7 +373,8 @@
                             defaultValue: 0,
                             calculationType: scope.calculatedMetricExressionType.useExpression,
                             expression: '',
-                            openStatus: true
+                            openStatus: true,
+                            id: length
                         });
                     }
 

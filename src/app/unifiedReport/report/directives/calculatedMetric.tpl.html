@@ -84,9 +84,9 @@
                             <textarea ng-disabled="disabled"
                                       ng-required="true"
                                       spellcheck="false"
-                                      class=" addScrollToTextArea form-control"
+                                      class=" addScrollToTextArea form-control expressionTextarea"
                                       rows="5"
-                                      id="expressionTextarea"
+                                      id="{{ 'expressionTextarea' + calculatedMetric.id}}"
                                       ng-change="addSpaceBeforeAndAfterOperator(calculatedMetric)"
                                       type="text"
 
@@ -107,13 +107,14 @@
 
                             <script>
                                 $(function () {
-                                    $("#expressionTextarea").keydown(function (e) {
+                                    $(".expressionTextarea").keydown(function (e) {
                                         var $target = $(e.target);
                                         var x = $target.offset().left;
                                         var y = $target.offset().top;
                                         var caretHeight = 20;
-                                        var pos = $('#expressionTextarea').textareaHelper('caretPos');
 
+                                        var textAreaId = $target.attr('id');
+                                        var pos = $('#' + textAreaId).textareaHelper('caretPos');
                                         window.setTimeout(function (args) {
                                             $("mentio-menu").css({
                                                 "top": (y + pos.top + caretHeight) + "px",
