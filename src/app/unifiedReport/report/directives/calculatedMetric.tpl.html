@@ -79,29 +79,39 @@
                     <div ng-if="isExpressionType(calculatedMetric)" class="form-group select-connect-data-source">
                         <label class="col-sm-2 control-label">Expression</label>
                         <div class="col-sm-10">
-                            <!--The selected list displays outside of text area when editing, so we separate to 2 textarea as below -->
-                            <textarea ng-if="!isNewReportBuilder" ng-disabled="disabled" ng-required="true" spellcheck="false"
-                                      class="form-control" rows="5"
-                                      mentio
-                                      mentio-template-url="unifiedReport/report/directives/mentio-calculation-metric-menu.tpl.html"
-                                      mentio-select="getPeopleText(item)"
-                                      ng-change="addSpaceBeforeAndAfterOperator(calculatedMetric)" type="text"
-                                      mentio-macros="macros" mentio-trigger-char="'['" mentio-typed-text="typedTerm"
-                                      mentio-items="fieldsCalculatedField | filter:label:typedTerm"
-                                      ng-model="calculatedMetric.expression" placeholder="Expression">
+                             <textarea    ng-disabled="disabled" ng-required="true" spellcheck="false"
+                                          ng-change="addSpaceBeforeAndAfterOperator(calculatedMetric)"
+                                          mentio
+                                          mentio-typed-term="typedTerm"
+                                          mentio-macros="macros"
+                                          mentio-require-leading-space="false"
+                                          mentio-select-not-found="true"
+                                          class="editor form-control"
+                                          rows="5"
+                                          mentio-id="'htmlContent'"
+                                          id="htmlContent"
+                                          ng-model="calculatedMetric.expression">
                             </textarea>
 
-                            <textarea ng-if="isNewReportBuilder" ng-disabled="disabled" ng-required="true" spellcheck="false"
-                                      class="form-control" rows="5"
-                                      mentio
-                                      mentio-select="getPeopleText(item)"
-                                      ng-change="addSpaceBeforeAndAfterOperator(calculatedMetric)" type="text"
-                                      mentio-macros="macros" mentio-trigger-char="'['" mentio-typed-text="typedTerm"
-                                      mentio-items="fieldsCalculatedField | filter:label:typedTerm"
-                                      ng-model="calculatedMetric.expression" placeholder="Expression">
-                            </textarea>
+                            <mentio-menu
+                                    mentio-for="'htmlContent'"
+                                    mentio-trigger-char="'$'"
+                                    mentio-items="buildInMacros | filter:label:typedTerm"
+                                    mentio-search="searchMacros(term)"
+                                    mentio-select="getMacros(item)" >
 
-                            <span class="help-block">Build-in macros begin with <strong>$</strong> character. Use character <strong>[</strong> to show list of available variables and macros. Each variable or macro should be inside square bracket.</span>
+                            </mentio-menu>
+
+                            <mentio-menu
+                                    mentio-for="'htmlContent'"
+                                    mentio-trigger-char="'['"
+                                    mentio-items="fieldsCalculatedField | filter:label:typedTerm"
+                                    mentio-search="searchField(term)"
+                                    mentio-select="getSelectedFile(item)">
+
+                            </mentio-menu>
+
+                            <span class="help-block">Use character <strong>[</strong> to show list of available variables and character (<strong>$</strong>) to show build-in macros. Each variable should be inside square bracket.</span>
                             <div class="callout-success expressions-transform" ng-bind-html="formatExpressionToHighlight(calculatedMetric)"></div>
                         </div>
                     </div>

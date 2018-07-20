@@ -76,8 +76,6 @@
             subView: false
         };
 
-        $scope.isNewReportBuilder = !reportView;
-
         $scope.aggregateAndAverage = {
             availableOptions: [
                 {key: 'aggregate', value: "Sum"},
@@ -311,13 +309,13 @@
         }
 
         function _getDataSetName(containsDataSetNameString) {
-            var regExp = /\(([^)]+)\)/;
-            var matches = regExp.exec(containsDataSetNameString);
+            /*var regExp = /\(([^)]+)\)/;
+                var matches = regExp.exec(containsDataSetNameString);
 
-            if (!!matches && !!matches[1]) {
-                return matches[1];
-            }
-
+                if (!!matches && !!matches[1]) {
+                    return matches[1];
+                }
+           */
             return '';
         }
 
@@ -1159,8 +1157,11 @@
                             }
                         })
                     })
-
                 }
+            });
+
+            angular.forEach(reportBuilder.calculatedMetrics, function (calculatedMetric) {
+                calculatedMetric.openStatus =  false;
             });
 
             angular.forEach(reportBuilder.joinBy, function (join) {

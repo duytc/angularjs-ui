@@ -140,7 +140,7 @@
 
                                 <div class="col-md-6">
                                     <label class="col-sm-4 control-label" for="referenceName">Reference Name</label>
-                                    <input class="col-sm-8" id="referenceName" server-error ng-model="field.alias" ng-disabled="!field.checked || subView"  ng-required="false"
+                                    <input readonly class="col-sm-8" id="referenceName" server-error ng-model="field.alias" ng-disabled="!field.checked || subView"  ng-required="false"
                                            type="text" placeholder="{{ 'NAME' | translate }}">
                                 </div>
 
@@ -154,9 +154,7 @@
                         <div class="col-sm-10">
                             <div class="expressions-group">
                                 <calculated-metric disabled="subView" report-builder="reportBuilder"
-                                                   is-new-report-builder ="isNewReportBuilder"
                                                     calculated-metrics="reportBuilder.calculatedMetrics"
-                                                    transform-position="postGroupTransforms"
                                                     selected-fields="selectedAndAddedFieldsInTransform"
                                                     selected-fields-date-set="selectedFields"
                                                     total-dimensions-metrics="totalDimensionsMetrics"

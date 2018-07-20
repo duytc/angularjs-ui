@@ -11,7 +11,6 @@
         return {
             scope: {
                 calculatedMetrics: '=',
-                isNewReportBuilder: '=',
                 selectedFields: '=',
                 totalDimensionsMetrics: '=',
                 dimensionsMetrics: '=',
@@ -45,6 +44,7 @@
                     ];
 
                     scope.fieldsCalculatedField = [];
+                    scope.buildInMacros = [];
                     scope.fieldNames = scope.selectedFields;
 
                     scope.$watch(function () {
@@ -106,8 +106,6 @@
                     scope.addThisFieldToSelectedList = addThisFieldToSelectedList;
                     scope.unValidName = unValidName;
 
-                    console.log('isNewReportBuilder', scope.isNewReportBuilder);
-
                     function selectTypeCalculatedField(type, calculatedField) {
                         scope.fieldsCalculatedField = [];
                         if (!type) {
@@ -146,7 +144,7 @@
                                 angular.forEach(transform.fields, function (field) {
                                     if (!!field.field && _.findIndex(scope.fieldsCalculatedField, {key: field.field}) == -1) {
                                         scope.fieldsCalculatedField.push({
-                                            key: '$'.concat(field.field),
+                                            key: field.key,
                                             label: field.field,
                                             root: field.field,
                                             type: field.type
@@ -154,17 +152,6 @@
                                     }
                                 })
                             }
-                        });
-
-                        // change field name to macro name
-                        var fieldsCalculatedFieldCopy = angular.copy(scope.fieldsCalculatedField);
-                        scope.fieldsCalculatedField = [];
-                        angular.forEach(fieldsCalculatedFieldCopy, function (calculatedField) {
-                            if (calculatedField.label.indexOf('$') == -1) {
-                                calculatedField.label = '$'.concat(calculatedField.key);
-                            }
-
-                            scope.fieldsCalculatedField.push(calculatedField);
                         });
 
                         return scope.fieldsCalculatedField;
@@ -197,22 +184,6 @@
                                 scope.fieldsCalculatedField.push(oneObject);
                             }
                         });
-
-                        //add macros $yesterday, $today, $startDate, $endDate
-                        angular.forEach(scope.buildInDateTimeMacros, function (macro) {
-                            var element = _.find(scope.fieldsCalculatedField, function (calculatedField) {
-                                return (macro.label == calculatedField.label);
-                            });
-
-                            if (_.isUndefined(element)) {
-                                scope.fieldsCalculatedField.push({
-                                    key: macro.key,
-                                    label: macro.label,
-                                    root: macro.key,
-                                    type: 'date'
-                                });
-                            }
-                        })
                     }
 
                     function _getFieldsInShowInTotal() {
@@ -300,9 +271,53 @@
                         return field;
                     }
 
-                    scope.getPeopleText = function (item) {
+                    scope.getSelectedFile = function (item) {
                         // note item.label is sent when the typedText wasn't found
                         return '[' + item.label + ']';
+                    };
+
+                    scope.getMacros = function (item) {
+                        // note item.label is sent when the typedText wasn't found
+                        return '$' + item.label;
+                    };
+
+                    scope.searchField = function (term) {
+                        var fieldList = [];
+                        angular.forEach(scope.fieldsCalculatedField, function (item) {
+                            if (item.label.toUpperCase().indexOf(term.toUpperCase()) >= 0) {
+                                fieldList.push(item);
+                            }
+                        });
+                        scope.fieldsCalculatedField = fieldList;
+                    };
+
+
+                    scope.searchMacros = function (term) {
+                        var fieldList = [];
+
+                        scope.buildInMacros = angular.copy(scope.fieldsCalculatedField);
+                        angular.forEach(scope.buildInDateTimeMacros, function (buildInMacro) {
+                            var element = _.find(scope.buildInMacros, function (macro) {
+                                return (buildInMacro.label == macro.label);
+                            });
+
+                            if (_.isUndefined(element)) {
+                                scope.buildInMacros.push({
+                                    key: buildInMacro.key,
+                                    label: buildInMacro.label,
+                                    root: buildInMacro.key,
+                                    type: 'date'
+                                });
+                            }
+                        });
+
+                        angular.forEach(scope.buildInMacros, function (item) {
+                            if (item.label.toUpperCase().indexOf(term.toUpperCase()) >= 0) {
+                                fieldList.push(item);
+                            }
+                        });
+
+                        scope.buildInMacros = fieldList;
                     };
 
                     function unValidName(name) {

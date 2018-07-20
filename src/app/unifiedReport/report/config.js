@@ -70,19 +70,11 @@
         .constant('BUILD_IN_DATE_TIME_MACROS', [
             {
                 key: "yesterday",
-                label: "$yesterday"
+                label: "yesterday"
             },
             {
                 key: "today",
-                label: "$today"
-            },
-            {
-                key: "startDate",
-                label: "$startDate"
-            },
-            {
-                key: "endDate",
-                label: "$endDate"
+                label: "today"
             }
         ])
 })();
