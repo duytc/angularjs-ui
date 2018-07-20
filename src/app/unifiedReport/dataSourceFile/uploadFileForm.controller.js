@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('tagcade.unifiedReport.dataSourceFile')
@@ -19,6 +19,8 @@
             {key: 'filename', label: 'Email Filename '},
             {key: 'dateTime', label: 'Email Received Date '}
         ];
+
+        $scope.parent = {uploadDate: ''};
 
         var baseUploadURL = UnifiedReportDataSourceManager.one().getRestangularUrl() + '/%dataSourceId%/uploads';
 
@@ -41,12 +43,12 @@
 
         function filterMetadataKeys(paramKey, itemMetadata) {
             return function (param) {
-                if(param.key == paramKey) {
+                if (param.key == paramKey) {
                     return true
                 }
 
-                for(var index in itemMetadata) {
-                    if(itemMetadata[index].key == param.key) {
+                for (var index in itemMetadata) {
+                    if (itemMetadata[index].key == param.key) {
                         return false
                     }
                 }
@@ -61,7 +63,7 @@
             item.metadata.push({key: null, value: null});
         }
 
-        function removeParams(item, index){
+        function removeParams(item, index) {
             item.metadata.splice(index, 1);
         }
 
@@ -75,7 +77,7 @@
 
         uploader.filters.push({
             name: 'customFilter',
-            fn: function(item /*{File|FileLikeObject}*/ , options) {
+            fn: function (item /*{File|FileLikeObject}*/, options) {
                 var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
                 var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';
 
@@ -83,7 +85,7 @@
             }
         });
 
-        uploader.onErrorItem = function(fileItem, response, status, headers) {
+        uploader.onErrorItem = function (fileItem, response, status, headers) {
             if (status == 413) {
                 AlertService.addFlash({
                     type: 'error',
@@ -97,7 +99,7 @@
             }
         };
 
-        uploader.onSuccessItem = function(fileItem, response, status, headers) {
+        uploader.onSuccessItem = function (fileItem, response, status, headers) {
             angular.forEach(response, function (re) {
                 AlertService.addFlash({
                     type: re.status ? 'success' : 'error',
@@ -112,11 +114,12 @@
 
                 var metadata = {};
                 angular.forEach(elem.metadata, function (item) {
-                    if(item.key == 'date' || item.key == 'dateTime') {
-                        item.value = !!item.value ? DateFormatter.getFormattedDate(item.value.endDate) : item.value;
+                    if (item.key == 'date' || item.key == 'dateTime') {
+                        //item.value = !!item.value ? DateFormatter.getFormattedDate(item.value.date) : item.value;
+                        item.value = $scope.parent.uploadDate
                     }
 
-                    if(!!item.value) {
+                    if (!!item.value) {
                         metadata[item.key] = item.value;
                     }
                 });
@@ -127,13 +130,13 @@
             uploader.uploadAll();
         };
 
-        uploader.onCompleteAll = function() {
+        uploader.onCompleteAll = function () {
             var dataSource = _.find(dataSources, {id: $scope.dataSourceEntry.dataSource});
 
-            if(!!dataSource && dataSource.dateRangeDetectionEnabled) {
+            if (!!dataSource && dataSource.dateRangeDetectionEnabled) {
                 AlertService.addFlash({
                     type: 'warning',
-                    message:'The detected dates may not be updated immediately. Please refresh to get updated'
+                    message: 'The detected dates may not be updated immediately. Please refresh to get updated'
                 });
             }
 
