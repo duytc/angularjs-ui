@@ -219,7 +219,7 @@
         }
 
         function isAllowUserDefinedMetrics(field) {
-            return field.calculationMetrics && field.calculationMetrics == CALCULATED_METRIC_USER_DEFINED;
+            return field.calculationType && field.calculationType == CALCULATED_METRIC_USER_DEFINED;
         }
 
         function getComparisonTypes(customFilter, field, dataset) {
