@@ -10,6 +10,7 @@
                                  sessionStorage, userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,reportViewUtil, METRICS_SET,
                                  COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_NUMBER) {
         const maxEmailAllowed = 10;
+        const CALCULATED_METRIC_USER_DEFINED = 1;
 
         // reset css for id app
         var app = angular.element('#app');
@@ -37,50 +38,6 @@
         $scope.reportGroup = reportGroup;
         $scope.hasResult = !angular.isNumber(reportGroup.status);
 
-        $scope.reportView.calculatedMetrics = {
-          'left_budget': 1.55,
-          'right_budget': 2.55,
-            'right_budget5': 2.55,
-            'right_budget5q': 2.55,
-            'right_budget5w': 2.55,
-            'right_budget5t': 2.55,
-            'right_budget5ert': 2.55,
-            'right_budgetdfg': 2.55,
-            'right_budgetasd': 2.55,
-            'right_budgetss': 2.55,
-            'right_budgeta': 2.55,
-            'right_budget6': 2.55,
-
-        };
-
-        $scope.reportView.userDefinedVariables = [
-            {
-                'field': 'LeftBudget',
-                'defaultValue': 12,
-                'type': 'number'
-            },{
-                'field': 'RightBudget',
-                'defaultValue': 55,
-                'type': 'number'
-            },{
-                'field': 'RightBudget',
-                'defaultValue': 55,
-                'type': 'number'
-            },{
-                'field': 'RightBudget',
-                'defaultValue': 55,
-                'type': 'number'
-            },{
-                'field': 'RightBudget',
-                'defaultValue': 55,
-                'type': 'number'
-            },{
-                'field': 'RightBudget',
-                'defaultValue': 55,
-                'type': 'number'
-            }
-        ];
-
         $scope.reports = reportGroup.reports || [];
         $scope.types = reportGroup.types;
         $scope.isNew = !$scope.reportView.id;
@@ -93,6 +50,8 @@
         //calculated metrics
         $scope.typesField = METRICS_SET;
         $scope.patternForAddField =  /^[a-zA-Z_][a-zA-Z0-9_$\s]*$/;
+
+        $scope.isCalculatedMetricsComplete = true;
 
         _updateColumnPositions();
 
@@ -219,6 +178,7 @@
         $scope.getCalculatedMetrics = getCalculatedMetrics;
         $scope.getColumnCompatible = getColumnCompatible;
         $scope.getDisplayNameMetric = getDisplayNameMetric;
+        $scope.isAllowUserDefinedMetrics = isAllowUserDefinedMetrics;
 
         _buildCustomFilters();
         /**
@@ -248,22 +208,18 @@
         }
 
         function getCalculatedMetrics(field) {
-            //TODO : need change api to re-calculated metrics value
-            UnifiedReportViewManager.one('reCalculatedMetrics').get(field).then(function(fieldCalculated){
-                _updateMetricValue(fieldCalculated);
-            })
+            if(!field)
+                return;
+            $scope.isCalculatedMetricsComplete = false;
+            return generateReport($scope.selected.date, $scope.reportView);
         }
 
         function getDisplayNameMetric(key) {
             return (_.findWhere($scope.reportView.calculatedMetrics, {field: key}) || {displayName: key}).displayName;
         }
 
-        function _updateMetricValue(fieldCalculated) {
-            for( var key in $scope.reportView.calculatedMetrics) {
-                if(key == fieldCalculated.field) {
-                    $scope.reportView.calculatedMetrics[key] = fieldCalculated.defaultValue;
-                }
-            }
+        function isAllowUserDefinedMetrics(field) {
+            return field.calculationMetrics && field.calculationMetrics == CALCULATED_METRIC_USER_DEFINED;
         }
 
         function getComparisonTypes(customFilter, field, dataset) {
@@ -457,6 +413,7 @@
                         $scope.reports = reportGroup.reports || [];
                         $scope.tableConfig.totalItems = Number(reportGroup.totalReport);
                         $scope.availableOptions.currentPage = Number(params.page);
+                        $scope.isCalculatedMetricsComplete = true;
 
                         _updateColumnPositions();
 
@@ -495,10 +452,10 @@
             return false;
         }
 
-        function generateReport(date) {
+        function generateReport(date, customReportView) {
             $scope.availableOptions.currentPage = 1;
 
-            var params = _toJsonReportView(reportView);
+            var params = _toJsonReportView(customReportView ? customReportView : reportView);
 
             params.startDate = DateFormatter.getFormattedDate(date.startDate);
             params.endDate = DateFormatter.getFormattedDate(date.endDate);

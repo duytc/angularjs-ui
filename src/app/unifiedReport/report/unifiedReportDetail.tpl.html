@@ -97,7 +97,7 @@
             </accordion>
         </form>
         <form name="calculatedMetrics" class="form-horizontal" role="form" novalidate>
-            <accordion close-others="true" ng-show="reportView.userDefinedVariables">
+            <accordion close-others="true" ng-show="reportView.calculatedMetrics">
                 <accordion-group class="notUpperCase" is-open="false">
                     <accordion-heading>
                         <div ng-init="openStatus = false" ng-click="openStatus=!openStatus">
@@ -107,13 +107,13 @@
                     </accordion-heading>
 
                     <div class="row">
-                        <div class="col-md-{{getColumnCompatible(reportView.userDefinedVariables)}}" ng-repeat="field in reportView.userDefinedVariables track by $index">
+                        <div class="col-md-{{getColumnCompatible(reportView.calculatedMetrics)}}" ng-if="isAllowUserDefinedMetrics(field)" ng-repeat="field in reportView.calculatedMetrics track by $index">
                             <div class="expressions-group">
                                 <div class="form-group select-connect-data-source">
                                     <label class="col-sm-4 control-label">{{ field.displayName || field.field }} Value</label>
                                     <div class="col-sm-8">
-                                        <input server-error type="{{field.type}}" min="0" max="9999999999" class="form-control"
-                                               ng-change="getCalculatedMetrics(field)" ng-model="field.defaultValue" placeholder="">
+                                        <input server-error ng-disabled="!isCalculatedMetricsComplete" type="{{field.type}}" min="0" max="9999999999" class="form-control"
+                                               ng-blur="getCalculatedMetrics(field)" ng-model="field.defaultValue" placeholder="">
                                     </div>
                                 </div>
                             </div>
@@ -130,10 +130,10 @@
                         </div>
                     </accordion-heading>
                     <div class="row">
-                        <div class="col-md-{{getColumnCompatible(reportView.calculatedMetrics)}}" ng-repeat="(key, value) in reportView.calculatedMetrics track by $index">
+                        <div class="col-md-{{getColumnCompatible(reportGroup.calculatedMetricsResult)}}" ng-repeat="(key, value) in reportGroup.calculatedMetricsResult track by $index">
                             <section class="panel panel-box info-box">
                                 <div class="panel-item bg-reverse">
-                                    <p class="size-h1 no-margin ng-binding">{{value}}</p>
+                                    <p class="size-h1 no-margin ng-binding">{{value || 0}}</p>
                                     <p class="text-muted no-margin ng-binding">{{getDisplayNameMetric(key)}}</p>
                                 </div>
                             </section>
