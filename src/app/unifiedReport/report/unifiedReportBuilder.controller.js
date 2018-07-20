@@ -812,7 +812,6 @@
                                 }
                                 var aliasNames = showInTotalObject.aliasName;
                                 var aliasNameOfThisField = _buildAliasName(field, showInTotalObject.type, dataSetName);
-                                    field.key.concat('.').concat(showInTotalObject.type).concat(' (').concat(dataSetName).concat(')');
                                 angular.forEach(aliasNames, function (aliasName) {
                                     if (aliasName.originalName == field.key) {
                                         aliasNameOfThisField = aliasName.aliasName;
