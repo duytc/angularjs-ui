@@ -257,16 +257,17 @@
                         if (!expression) {
                             return null;
                         }
-
                         expression = expression.replace(/\s/g, '');
+
                         expression = expression.replace(/[\=]/g, ' = <div class="color-danger">');
                         expression = expression.replace(/[\+]/g, '</div> &nbsp + &nbsp <div class="color-danger">');
                         expression = expression.replace(/[\*]/g, '</div> &nbsp * &nbsp <div class="color-danger">');
                         expression = expression.replace(/\]\-\[/g, ']</div> &nbsp - &nbsp <div class="color-danger">[');
-                        expression = expression.replace(/\)\-\[/g, ')</div> &nbsp - &nbsp <div class="color-danger">[');
-
-
-                        console.log('Expression..', expression);
+                        expression = expression.replace(/\-\$/g, '</div> &nbsp - &nbsp <div class="color-danger">$');
+                        expression = expression.replace(/\-\(/g, '</div> &nbsp - &nbsp <div class="color-danger">(');
+                        expression = expression.replace(/\]\/\[/g, ']</div> &nbsp \/ &nbsp <div class="color-danger">[');
+                        expression = expression.replace(/\/\$/g, '</div> &nbsp \/ &nbsp <div class="color-danger">$');
+                        expression = expression.replace(/\/\(/g, '</div> &nbsp \/ &nbsp <div class="color-danger">(');
 
                         return expression;
                     }
