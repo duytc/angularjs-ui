@@ -258,10 +258,15 @@
                             return null;
                         }
 
-                        expression = expression.replace(/\s/g, '&nbsp;');
+                        expression = expression.replace(/\s/g, '');
+                        expression = expression.replace(/[\=]/g, ' = <div class="color-danger">');
+                        expression = expression.replace(/[\+]/g, '</div> &nbsp + &nbsp <div class="color-danger">');
+                        expression = expression.replace(/[\*]/g, '</div> &nbsp * &nbsp <div class="color-danger">');
+                        expression = expression.replace(/\]\-\[/g, ']</div> &nbsp - &nbsp <div class="color-danger">[');
+                        expression = expression.replace(/\)\-\[/g, ')</div> &nbsp - &nbsp <div class="color-danger">[');
 
-                        expression = expression.replace(/[[\\]/g, '<div class="color-danger">[');
-                        expression = expression.replace(/[\]]/g, ']</div>');
+
+                        console.log('Expression..', expression);
 
                         return expression;
                     }
