@@ -1161,6 +1161,20 @@
 
             angular.forEach(reportBuilder.calculatedMetrics, function (calculatedMetric) {
                 calculatedMetric.openStatus =  false;
+
+                angular.forEach($scope.totalDimensionsMetrics, function replace(dm) {
+                    if (!calculatedMetric.expression || !angular.isString(calculatedMetric.expression)) {
+                        return;
+                    }
+
+                    if (dm.label == dm.key) {
+                        return
+                    }
+
+                    var regExp = new RegExp(dm.label.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "g");
+                    calculatedMetric.expression = calculatedMetric.expression.replace(regExp, dm.key);
+                });
+
             });
 
             angular.forEach(reportBuilder.joinBy, function (join) {
@@ -1567,7 +1581,7 @@
             }
         }
 
-        // replace expression for transform addCalculatedField
+        // replace expression for transform addCalculatedField: remove id data set name and replace by data set
         setTimeout(function () {
             if (!$scope.isNew) {
                 angular.forEach($scope.reportBuilder.transforms, function (transform) {
@@ -1586,8 +1600,19 @@
                                 field.expression = field.expression.replace(regExp, dm.label);
                             });
                         })
-
                     }
+                });
+
+                // Change expression of calculated metric: remove id data set name and replace by data set
+                angular.forEach($scope.reportBuilder.calculatedMetrics, function (calculatedMetric) {
+                    angular.forEach($scope.totalDimensionsMetrics, function replace(dm) {
+                        if (!calculatedMetric.expression || !angular.isString(calculatedMetric.expression)) {
+                            return;
+                        }
+
+                        var regExp = new RegExp(dm.key.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "g");
+                        calculatedMetric.expression = calculatedMetric.expression.replace(regExp, dm.label);
+                    });
                 });
             }
         }, 0);
