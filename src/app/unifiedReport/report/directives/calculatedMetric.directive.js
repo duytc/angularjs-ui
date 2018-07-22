@@ -294,9 +294,8 @@
                                 fieldList.push(item);
                             }
                         });
-                        scope.fieldsCalculatedField = fieldList;
+                        scope.fieldsCalculatedFieldCopy = fieldList;
                     };
-
 
                     scope.searchMacros = function (term) {
                         var fieldList = [];
