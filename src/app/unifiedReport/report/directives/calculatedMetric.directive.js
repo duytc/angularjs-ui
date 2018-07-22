@@ -265,7 +265,7 @@
                         expression = expression.replace(/\]\-\[/g, ']</div> &nbsp - &nbsp <div class="color-danger">[');
                         expression = expression.replace(/\-\$/g, '</div> &nbsp - &nbsp <div class="color-danger">$');
                         expression = expression.replace(/\-\(/g, '</div> &nbsp - &nbsp <div class="color-danger">(');
-                        expression = expression.replace(/\]\/\[/g, ']</div> &nbsp \/ &nbsp <div class="color-danger">[');
+                        expression = expression.replace(/\/\[/g, '</div> &nbsp \/ &nbsp <div class="color-danger">[');
                         expression = expression.replace(/\/\$/g, '</div> &nbsp \/ &nbsp <div class="color-danger">$');
                         expression = expression.replace(/\/\(/g, '</div> &nbsp \/ &nbsp <div class="color-danger">(');
 
