@@ -28,7 +28,7 @@
                     },
                     function (alerts) {
                         $scope.alerts = alerts;
-                        $scope.hasAlerts = _.has($rootScope, 'hasAlerts') ? !!$rootScope.hasAlerts : alerts.length > 0;
+                        $scope.hasAlerts = alerts.length > 0;
                     },
                     true
                 );
