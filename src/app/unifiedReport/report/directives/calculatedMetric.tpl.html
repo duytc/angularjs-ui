@@ -23,8 +23,8 @@
 
                 <div class="row">
                     <!--Field Name-->
-                    <div  class="form-group select-connect-data-source">
-                        <label  class="col-sm-2 control-label">Field Name</label>
+                    <div class="form-group select-connect-data-source">
+                        <label class="col-sm-2 control-label">Field Name</label>
                         <div class="col-sm-10">
                             <input ng-disabled="disabled" server-error ng-required="true"
                                    ng-pattern="patternForAddField" type="text" class="form-control"
@@ -35,8 +35,8 @@
                     </div>
 
                     <!--Display Name-->
-                    <div  class="form-group select-connect-data-source">
-                        <label  class="col-sm-2 control-label">Display Name</label>
+                    <div class="form-group select-connect-data-source">
+                        <label class="col-sm-2 control-label">Display Name</label>
                         <div class="col-sm-10">
                             <input ng-disabled="disabled" server-error ng-required="true"
                                    ng-pattern="patternForAddField" type="text" class="form-control"
@@ -70,7 +70,7 @@
                     <div class="form-group select-connect-data-source">
                         <label class="col-sm-2 control-label">Calculation Type</label>
                         <div class="col-sm-10">
-                            <label  class="ui-radio"><input ng-disabled="disabled" ng-model="calculatedMetric.calculationType" type="radio" ng-value="calculatedMetricExressionType.useExpression"><span>Use Expression</span></label>
+                            <label class="ui-radio"><input ng-disabled="disabled" ng-model="calculatedMetric.calculationType" type="radio" ng-value="calculatedMetricExressionType.useExpression"><span>Use Expression</span></label>
                             <label class="ui-radio"><input ng-disabled="disabled" ng-model="calculatedMetric.calculationType" type="radio" ng-value="calculatedMetricExressionType.userDefined"><span>User Defined</span></label>
                         </div>
                     </div>
@@ -84,6 +84,7 @@
                                           mentio
                                           mentio-typed-term="typedTerm"
                                           mentio-macros="macros"
+                                          id="{{ 'expressionTextarea' + calculatedMetric.id}}"
                                           mentio-require-leading-space="false"
                                           mentio-select-not-found="true"
                                           class="editor form-control"
@@ -112,6 +113,27 @@
 
                             <span class="help-block">Use character <strong>[</strong> to show list of available variables and character (<strong>$</strong>) to show build-in macros. Each variable should be inside square bracket.</span>
                             <div class="callout-success expressions-transform" ng-bind-html="formatExpressionToHighlight(calculatedMetric)"></div>
+
+                            <!--Fix bug 6th: https://trello.com/c/Lxvf1gaL/2664-ur-uisupport-calculated-metrics-and-type-of-metrics-user-defined-expression-for-multiple-browsers-->
+                            <script>
+                                $(function () {
+                                    $(".expressionTextarea").keydown(function (e) {
+                                        var $target = $(e.target);
+                                        var x = $target.offset().left;
+                                        var y = $target.offset().top;
+                                        var caretHeight = 20;
+
+                                        var textAreaId = $target.attr('id');
+                                        var pos = $('#' + textAreaId).textareaHelper('caretPos');
+                                        window.setTimeout(function (args) {
+                                            $("mentio-menu").css({
+                                                "top": (y + pos.top + caretHeight) + "px",
+                                                "left": (x + pos.left) + "px"
+                                            });
+                                        }, 0);
+                                    });
+                                });
+                            </script>
                         </div>
                     </div>
 
@@ -121,3 +143,5 @@
         </accordion>
     </div>
 </div>
+
+
