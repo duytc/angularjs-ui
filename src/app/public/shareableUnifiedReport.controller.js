@@ -137,7 +137,7 @@
         }
 
         function showReportDetail() {
-            return !angular.isArray($scope.titleColumns) && _.keys($scope.titleColumns).length > 0 && ($scope.reports.length > 0 || _.keys($scope.search).length > 0);
+            return $scope.reports && $scope.reports.length > 0;
         }
 
         /**
