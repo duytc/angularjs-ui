@@ -142,7 +142,7 @@
         </div>
     </div>
 
-    <div class="panel-body">
+    <div class="panel-body" ng-if="showReportDetail()">
         <div class="table-responsive" style="overflow-y: auto">
             <table class="table">
                 <thead>
@@ -186,6 +186,10 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="panel-body alert-custom" ng-if="!hasAlerts">
+        <label>There are no reports for that selection</label>
     </div>
 </section>
 

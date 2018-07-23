@@ -4,7 +4,7 @@
     angular.module('tagcade.public')
         .controller('shareableUnifiedReport', shareableUnifiedReport);
 
-    function shareableUnifiedReport($scope, $stateParams, $translate, $modal, exportExcelService,reportViewUtil,
+    function shareableUnifiedReport($rootScope, $scope, $stateParams, $translate, $modal, exportExcelService,reportViewUtil,
                                     reports, unifiedReportFormatReport, DateFormatter, AlertService,
                                     AtSortableService, dataService, API_UNIFIED_PUBLIC_END_POINT,
                                     historyStorage, HISTORY_TYPE_PATH,COMPARISON_TYPES_FILTER_CONNECT_TEXT,
@@ -158,9 +158,16 @@
         $scope.addCompareValueText = addCompareValueText;
         $scope.isDatasetHasUserProvidedFilterExceptDate = isDatasetHasUserProvidedFilterExceptDate;
         $scope.isShowHelpBlock = isShowHelpBlock;
+        $scope.showReportDetail = showReportDetail;
 
         function isShowHelpBlock(customFilter) {
             return reportViewUtil.isShowHelpBlock(customFilter)
+        }
+
+        function showReportDetail() {
+            $rootScope.hasAlerts = !angular.isArray($scope.titleColumns) && _.keys($scope.titleColumns).length > 0 && ($scope.reports.length > 0 || _.keys($scope.search).length > 0);
+
+            return $rootScope.hasAlerts;
         }
 
         /**
