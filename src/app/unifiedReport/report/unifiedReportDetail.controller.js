@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($rootScope, $scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView,
+    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView,
                                  dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView,
                                  AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT,
                                  sessionStorage, userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,reportViewUtil,
@@ -84,32 +84,6 @@
             publisher: angular.isObject(reportView.publisher) ? reportView.publisher.id : reportView.publisher,
             enableCustomDimensionMetric: reportView.enableCustomDimensionMetric
         };
-
-        if(!$scope.hasResult) {
-            if(reportGroup.status == 400) {
-                AlertService.replaceAlerts({
-                    type: 'error',
-                    message: reportGroup.message
-                });
-            } else if (reportGroup.status == 500){
-                AlertService.replaceAlerts({
-                    type: 'error',
-                    message:  reportGroup.message || $translate.instant('REPORT.REPORT_FAIL')
-                });
-            } else {
-                AlertService.replaceAlerts({
-                    type: 'warning',
-                    message: $translate.instant('REPORT.REPORTS_EMPTY')
-                });
-            }
-        } else {
-            if ($scope.reports.length == 0) {
-                AlertService.replaceAlerts({
-                    type: 'warning',
-                    message: $translate.instant('REPORT.REPORTS_EMPTY')
-                });
-            }
-        }
 
         $scope.itemsPerPage = [
             {label: '10', key: '10'},
@@ -289,9 +263,7 @@
         }
 
         function showReportDetail() {
-            $rootScope.hasAlerts = !angular.isArray($scope.titleColumns) && _.keys($scope.titleColumns).length > 0 && ($scope.reports.length > 0 || _.keys($scope.search).length > 0);
-
-            return $rootScope.hasAlerts;
+            return !angular.isArray($scope.titleColumns) && _.keys($scope.titleColumns).length > 0 && ($scope.reports.length > 0 || _.keys($scope.search).length > 0);
         }
 
         function showDetailsMissingDates() {
