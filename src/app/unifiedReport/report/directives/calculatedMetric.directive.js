@@ -396,7 +396,7 @@
                             type: "decimal",
                             defaultValue: 0,
                             calculationType: scope.calculatedMetricExressionType.useExpression,
-                            expression: '',
+                            expression: null,
                             openStatus: true,
                             id: length
                         });
