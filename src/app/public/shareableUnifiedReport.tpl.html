@@ -3,33 +3,36 @@
         <form name="reportSelectorForm" class="form-inline" role="form" ng-submit="generateReport(selected.date)" novalidate>
             <div class="dimension-metrics-filter">
                 <div class="form-group" ng-if="hasFilterDate()">
-                <label for="inputDateRange">{{ 'DASHBOARD_MODULE.DATE_RANGE' | translate }}</label>
-                <div>
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                        <input date-range-picker ng-disabled="reportView.largeReport" options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="selected.date" ng-required="true">
+                    <label for="inputDateRange">{{ 'DASHBOARD_MODULE.DATE_RANGE' | translate }}</label>
+                    <div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <input date-range-picker ng-disabled="reportView.largeReport" options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="selected.date" ng-required="true">
+                        </div>
                     </div>
                 </div>
-            </div>
 
                 <div class="multi-select-class form-group">
-                <div class="form-inline">
-                    <div class="form-group">
-                        <label for="Dimensions" class="control-label">Dimensions</label>
-                        <div>
-                            <isteven-multi-select id="Dimensions" max-labels="3" is-disabled="reportView.largeReport" disable-property="disabled" helper-elements="all filter reset" input-model="dimensions" output-model="fieldsShow.dimensions" button-label="label" item-label="label" tick-property="ticked"></isteven-multi-select>
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label for="Dimensions" class="control-label">Dimensions</label>
+                            <div>
+                                <isteven-multi-select id="Dimensions" max-labels="3" is-disabled="reportView.largeReport" disable-property="disabled" helper-elements="all filter reset" input-model="dimensions" output-model="fieldsShow.dimensions" button-label="label" item-label="label" tick-property="ticked"></isteven-multi-select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="metrics" class="control-label">Metrics</label>
-                        <div>
-                            <isteven-multi-select id="metrics" input-model="metrics" max-labels="3" output-model="fieldsShow.metrics" button-label="label" item-label="label" tick-property="ticked"></isteven-multi-select>
+                        <div class="form-group">
+                            <label for="metrics" class="control-label">Metrics</label>
+                            <div>
+                                <isteven-multi-select id="metrics" input-model="metrics" max-labels="3" output-model="fieldsShow.metrics" button-label="label" item-label="label" tick-property="ticked"></isteven-multi-select>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <button type="submit" class="btn btn-primary" ng-disabled="!reportSelectorForm.$valid">Run Report</button>
             </div>
-            </div>
+
             <!--CUSTOM FILTER-->
             <accordion close-others="true">
                 <accordion-group class="notUpperCase" is-open="false">
@@ -116,8 +119,6 @@
 
                 </accordion-group>
             </accordion>
-
-            <button type="submit" class="btn btn-primary no-margin-top" ng-disabled="!reportSelectorForm.$valid">Run Report</button>
         </form>
     </div>
 </div>
@@ -141,7 +142,7 @@
         </div>
     </div>
 
-    <div class="panel-body">
+    <div class="panel-body" ng-if="showReportDetail()">
         <div class="table-responsive" style="overflow-y: auto">
             <table class="table">
                 <thead>
@@ -185,6 +186,10 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="panel-body alert-custom" ng-if="!showReportDetail()">
+        <label>There are no reports for that selection</label>
     </div>
 </section>
 

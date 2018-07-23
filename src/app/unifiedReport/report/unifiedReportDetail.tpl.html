@@ -40,7 +40,8 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary" ng-if="!isShowCustomFilter()"
+
+                <button type="submit" class="btn btn-primary"
                         ng-disabled="!enableSelectDaterange()">Run Report</button>
             </div>
 
@@ -95,9 +96,6 @@
 
                 </accordion-group>
             </accordion>
-
-            <button type="submit" class="btn btn-primary no-margin-top" ng-if="isShowCustomFilter()"
-                    ng-disabled="!enableSelectDaterange() || !reportSelectorForm.$valid">Run Report</button>
         </form>
     </div>
 </div>
@@ -168,6 +166,10 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="panel-body alert-custom" ng-if="!showReportDetail()">
+        <label>There are no reports for that selection</label>
     </div>
 </section>
 
