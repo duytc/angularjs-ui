@@ -4,7 +4,7 @@
     angular.module('tagcade.unifiedReport.report')
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
-    function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView,
+    function UnifiedReportDetail($rootScope, $scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView,
                                  dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView,
                                  AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT,
                                  sessionStorage, userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,reportViewUtil,
@@ -289,7 +289,9 @@
         }
 
         function showReportDetail() {
-            return !angular.isArray($scope.titleColumns) && _.keys($scope.titleColumns).length > 0 && ($scope.reports.length > 0 || _.keys($scope.search).length > 0)
+            $rootScope.hasAlerts = !angular.isArray($scope.titleColumns) && _.keys($scope.titleColumns).length > 0 && ($scope.reports.length > 0 || _.keys($scope.search).length > 0);
+
+            return $rootScope.hasAlerts;
         }
 
         function showDetailsMissingDates() {
