@@ -1,0 +1,178 @@
+<form name="newValueForm" role="form" ng-submit="submit()" novalidate>
+    <div class="modal-header">
+        <h4 class="modal-title">{{ isNew ? 'New Value' : ('Edit Value - ' + value.name) }}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-12 form-validation form-horizontal">
+                <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">Name</label>
+                    <div class="col-sm-10">
+                        <input server-error name="name" ng-model="value.name" ng-required="true" type="text" class="form-control" id="inputName" placeholder="Name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Default Value</label>
+                    <div class="col-sm-10">
+                        <input server-error name="value" ng-model="value.defaultValue" ng-required="true"  pattern="{{ setPattern(transform.type) }}" type="text" class="form-control" placeholder="Default Value">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Shared Conditions</label>
+                    <div class="col-sm-10">
+                        <div class="expressions-group">
+                            <button class="btn btn-success" type="button" ng-click="addCondition(value.sharedConditions)">
+                                <span class="glyphicon glyphicon-plus"></span>
+                                Add Condition
+                            </button>
+
+                            <div class="expressions-group" ng-repeat="condition in value.sharedConditions">
+                                <div class="form-group select-connect-data-source">
+                                    <button type="button" ng-disabled="value.sharedConditions.length == 1" class="btn btn-danger btn-close-ur" ng-click="removeAddValue(value.sharedConditions, $index)">
+                                        <span class="glyphicon glyphicon-minus "></span>
+                                    </button>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group select-connect-data-source">
+                                        <label class="col-sm-2 control-label">Field</label>
+                                        <div class="col-sm-10">
+                                            <ui-select name="defaultValueField" ng-model="condition.field" ng-required="true" on-select='selectedField(condition)' server-error reset-search-input="'false'">
+                                                <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                <ui-select-choices repeat="field.key as field in fields | filter:$select.search">
+                                                    {{ field.label }}
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group select-connect-data-source">
+                                        <label class="col-sm-2 control-label">Operator</label>
+                                        <div class="col-sm-10">
+                                            <ui-select name="rightSide" ng-model="condition.comparator" ng-required="true" on-select='selectedComparison(condition)' server-error reset-search-input="'false'">
+                                                <ui-select-match placeholder="Select a comparison">{{ $select.selected.label }}</ui-select-match>
+                                                <ui-select-choices repeat="separator.key as separator in conditionComparators | filter:filterConditionComparators(condition) | filter:$select.search">
+                                                    {{ separator.label }}
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group select-data-type" ng-if="condition.comparator != 'is invalid'">
+                                        <label class="col-sm-2 control-label">Expression Value</label>
+                                        <div class="col-sm-10">
+                                            <div ng-if="condition.comparator == 'between'">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                    <input ng-disabled="disabled" date-range-picker options="datePickerOpts" class="form-control date-picker" type="text" id="inputDateRange" ng-model="condition.value" ng-required="true">
+                                                </div>
+                                            </div>
+
+                                            <div ng-if="condition.comparator != 'in' && condition.comparator != 'not in' && condition.comparator != 'between' && condition.comparator != 'contain' && condition.comparator != 'not contain'">
+                                                <input ng-disabled="disabled" server-error name="value" ng-model="condition.value" ng-required="true"  pattern="{{ setPattern(dimensionsMetrics[condition.field]) }}" type="text" class="form-control" placeholder="Expression Value">
+                                            </div>
+
+                                            <div ng-if="condition.comparator == 'in' || condition.comparator == 'not in' || condition.comparator == 'contain' || condition.comparator == 'not contain'">
+                                                <oi-select ng-disabled="disabled" ng-model="condition.value" multiple ng-required="true" oi-select-options="{newItem: true, newItemFn: 'addCompareValue($query)'}" placeholder="{{ 'REPORT_BUILDER_MODULE.ENTER_ONE_OR_MULTIPLE_VALUE' | translate }}"></oi-select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Conditions</label>
+                    <div class="col-sm-10">
+                        <button class="btn btn-success" type="button" ng-click="addConditionExpression(value.conditions)">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            Add Condition
+                        </button>
+
+                        <div class="expressions-group" ng-repeat="condition in value.conditions">
+                            <button class="btn btn-success" type="button" ng-click="addCondition(condition.expressions)">
+                                <span class="glyphicon glyphicon-plus"></span>
+                                Add Expression
+                            </button>
+
+                            <button type="button" class="btn btn-danger btn-close-ur" ng-click="removeAddValue(value.conditions, $index)">
+                                <span class="glyphicon glyphicon-minus "></span>
+                            </button>
+
+                            <div class="expressions-group select-connect-data-source" ng-repeat="expression in condition.expressions">
+                                <div class="form-group select-connect-data-source">
+                                    <button ng-disabled="condition.expressions.length == 1" type="button" class="btn btn-danger btn-close-ur" ng-click="removeAddValue(condition.expressions, $index)">
+                                        <span class="glyphicon glyphicon-minus "></span>
+                                    </button>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group select-connect-data-source">
+                                        <label class="col-sm-2 control-label">Field</label>
+                                        <div class="col-sm-10">
+                                            <ui-select name="defaultValueField" ng-model="expression.field" on-select='selectedField(expression)' ng-required="true" server-error reset-search-input="'false'">
+                                                <ui-select-match placeholder="Select a field">{{ $select.selected.label }}</ui-select-match>
+                                                <ui-select-choices repeat="field.key as field in fields | filter:$select.search">
+                                                    {{ field.label }}
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group select-connect-data-source">
+                                        <label class="col-sm-2 control-label">Operator</label>
+                                        <div class="col-sm-10">
+                                            <ui-select name="rightSide" ng-model="expression.comparator" ng-required="true" on-select='selectedComparison(expression)' server-error reset-search-input="'false'">
+                                                <ui-select-match placeholder="Select a comparison">{{ $select.selected.label }}</ui-select-match>
+                                                <ui-select-choices repeat="separator.key as separator in conditionComparators | filter:filterConditionComparators(expression) | filter:$select.search">
+                                                    {{ separator.label }}
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group select-data-type" ng-if="expression.comparator != 'is invalid'">
+                                        <label class="col-sm-2 control-label">Expression Value</label>
+                                        <div class="col-sm-10">
+                                            <div ng-if="expression.comparator == 'between'">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                    <input ng-disabled="disabled" date-range-picker options="datePickerOptsFoot" class="form-control date-picker" type="text" id="inputDateRange2" ng-model="expression.value" ng-required="true">
+                                                </div>
+                                            </div>
+
+                                            <div ng-if="expression.comparator != 'in' && expression.comparator != 'not in' && expression.comparator != 'between' && expression.comparator != 'contain' && expression.comparator != 'not contain'">
+                                                <input ng-disabled="disabled" server-error name="value" ng-model="expression.value" ng-required="true" pattern="{{ setPattern(dimensionsMetrics[expression.field]) }}" type="text" class="form-control" placeholder="Expression Value">
+                                            </div>
+
+                                            <div ng-if="expression.comparator == 'in' || expression.comparator == 'not in' || expression.comparator == 'contain' || expression.comparator == 'not contain'">
+                                                <oi-select ng-disabled="disabled" ng-model="expression.value" multiple ng-required="true" oi-select-options="{newItem: true, newItemFn: 'addCompareValue($query)'}" placeholder="{{ 'REPORT_BUILDER_MODULE.ENTER_ONE_OR_MULTIPLE_VALUE' | translate }}"></oi-select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="background-color: #F9F9F9">
+                                <label for="inputName" class="col-sm-2 control-label">Value</label>
+                                <div class="col-sm-10" style="padding: 0">
+                                    <input server-error name="inputNameCondition" ng-model="condition.value" ng-required="true" ng-required="true"  pattern="{{ setPattern(transform.type) }}" class="form-control" id="inputNameCondition" placeholder="Value">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-dialog-footer">
+        <button class="btn btn-primary" ng-click="$dismiss()" type="button">{{ 'CANCEL' | translate }}</button>
+        <button class="btn btn-success" ng-disabled="!isFormValid()" type="submit">{{ 'SUBMIT' | translate }}</button>
+    </div>
+</form>

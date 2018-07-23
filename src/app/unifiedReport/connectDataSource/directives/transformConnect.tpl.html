@@ -411,6 +411,76 @@
                         </div>
                     </div>
 
+                    <div ng-if="transform.type == allFiledFormatTypeKeys.addConditionValue">
+                        <div class="form-group select-connect-data-source">
+                            <label class="col-sm-2 control-label">Conditional Value</label>
+                            <div class="col-sm-10">
+                                <div class="expressions-group">
+                                    <button class="btn btn-success" type="button" ng-disabled="disabled" ng-click="addConditionValue(transform.fields)">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                        Add Conditional Value
+                                    </button>
+
+                                    <div class="expressions-group" ng-repeat="field in transform.fields">
+                                        <div class="form-group select-connect-data-source">
+                                            <button type="button" ng-disabled="disabled" class="btn btn-danger btn-close-ur" ng-click="removeAddValue(transform.fields, $index)">
+                                                <span class="glyphicon glyphicon-minus "></span>
+                                            </button>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group select-connect-data-source">
+                                                <label class="col-sm-2 control-label">Field Name</label>
+                                                <div class="col-sm-10">
+                                                    <input ng-disabled="disabled" server-error ng-required="true" type="text" class="form-control" ng-model="field.field" placeholder="Field Name">
+                                                    <ui-select ng-disabled="disabled" ng-model="field.field" ng-required="true" server-error reset-search-input="'false'">
+                                                        <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.TYPE' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                                                        <ui-select-choices repeat="type.key as type in mappedFields | filter: { label: $select.search }">
+                                                            {{ type.label}}
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
+                                            </div>
+
+                                            <!--<div class="form-group select-connect-data-source">
+                                                <label class="col-sm-2 control-label">Type</label>
+                                                <div class="col-sm-10">
+                                                    <ui-select ng-disabled="disabled" ng-model="field.type" ng-required="true" server-error on-select="selectTypeAddConditionValue(field)" ng-init="selectTypeCalculatedField(field.type)" reset-search-input="'false'">
+                                                        <ui-select-match placeholder="{{ 'UNIFIED_REPORT_DATA_SET_MODULE.TYPE' | translate }}">{{ $select.selected.label }}</ui-select-match>
+                                                        <ui-select-choices repeat="type.key as type in getTypesFieldForAddConditionValue() | filter: { label: $select.search }">
+                                                            {{ type.label}}
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
+                                            </div>-->
+
+                                            <div class="form-group select-connect-data-source">
+                                                <label class="col-sm-2 control-label">Default Value</label>
+
+                                                <div class="col-sm-10" ng-if="field.type == 'number' || field.type == 'decimal'">
+                                                    <input ng-disabled="disabled" server-error ng-required="true" type="number" class="form-control" ng-model="field.defaultValue" placeholder="Value">
+                                                </div>
+
+                                                <div class="col-sm-10" ng-if="field.type != 'number' && field.type != 'decimal'">
+                                                    <input ng-disabled="disabled" server-error ng-required="true" type="text" class="form-control" ng-model="field.defaultValue" placeholder="Value">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group select-connect-data-source">
+                                                <label class="col-sm-2 control-label">Values</label>
+                                                <div class="col-sm-10">
+                                                    <button class="btn btn-success" type="button" ng-click="ManageValues(field)">Manage Values</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
                     <div ng-if="transform.type == allFiledFormatTypeKeys.comparisonPercent">
                         <div class="form-group select-connect-data-source">
                             <label class="col-sm-2 control-label">Comparison Percent</label>

@@ -5,11 +5,12 @@
         .directive('transformConnect', transformConnect)
     ;
 
-    function transformConnect($compile, $timeout, AddCalculatedField, _, connectedDataSourceService, CONNECT_TIMEZONES, CONVERT_CASE_TYPES, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES){
+    function transformConnect($compile, $modal, $timeout, AddCalculatedField, _, connectedDataSourceService, CONNECT_TIMEZONES, CONVERT_CASE_TYPES, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_VIEW_INTERNAL_FIELD_VARIABLE, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD, POSITIONS_FOR_REPLACE_TEXT, CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY, DATE_FORMAT_TYPES, METRICS_SET){
         'use strict';
 
         return {
             scope: {
+                dataSet: '=',
                 transforms: '=',
                 listDataSets: '=',
                 itemDataSet: '=',
@@ -38,6 +39,7 @@
 
                     scope.allFiledFormatTypes = CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD;
                     scope.allFiledFormatTypeKeys = CONNECT_DATA_SOURCE_TYPE_FORMAT_ALL_FIELD_KEY;
+                    scope.typesField = METRICS_SET;
                     scope.dateFormatTypes = DATE_FORMAT_TYPES;
                     scope.ConvertCaseTypes = CONVERT_CASE_TYPES;
                     scope.fieldForExpression = [];
@@ -139,6 +141,8 @@
                         scope.sortableDefaultValueOptions['disabled'] = true;
                     }
 
+                    scope.patternForAddField =  /^[a-zA-Z_][a-zA-Z0-9_$\s]*$/;
+
                     scope._getTotalFieldDataSetInAugmentation = _getTotalFieldDataSetInAugmentation;
                     scope.removeTransform = removeTransform;
                     scope.addTransform = addTransform;
@@ -146,6 +150,7 @@
                     scope.addConvertCase = addConvertCase;
                     scope.addNormalizeText = addNormalizeText;
                     scope.addCalculatedField = addCalculatedField;
+                    scope.addConditionValue = addConditionValue;
                     scope.addReplaceText = addReplaceText;
                     scope.addFieldFromDate = addFieldFromDate;
                     scope.addMapFields = addMapFields;
@@ -220,6 +225,13 @@
                     scope.filterMapFieldLeft = filterMapFieldLeft;
                     scope.filterAggregationForGroupSubSet = filterAggregationForGroupSubSet;
                     scope.filterAggregationFields = filterAggregationFields;
+
+                    /*Add condition value*/
+                    scope.selectTypeCalculatedField = selectTypeCalculatedField;
+                    scope.selectTypeAddConditionValue = selectTypeAddConditionValue;
+                    scope.unValidName = unValidName;
+                    scope.getTypesFieldForAddConditionValue = getTypesFieldForAddConditionValue;
+                    scope.ManageValues = ManageValues;
 
                     function _listenDataSourceFieldsChanged(event, data) {
                         scope.dataSourceFields = connectedDataSourceService.inputFormatDataSourceField(data);
@@ -1408,6 +1420,15 @@
                         });
                     }
 
+                    function addConditionValue(fields){
+                        fields.push({
+                            values: [],
+                            field: null,
+                            defaultValue: null,
+                            type: null
+                        });
+                    }
+
                     function addReplaceText(fields){
                         fields.push({
                             field: null,
@@ -1850,6 +1871,148 @@
                                 }
                             });
                         }, 0, true)
+                    }
+
+                    /*Add condition value*/
+
+                    function selectTypeCalculatedField(type, calculatedField) {
+                        scope.fieldsCalculatedField = [];
+
+                        if(!type) {
+                            return
+                        }
+
+                        if (type == 'number' || type == 'decimal' || type.key == 'number' || type.key == 'decimal') {
+                            angular.forEach(scope.totalDimensionsMetrics, function (field) {
+                                if (field.type == 'number' || field.type == 'decimal') {
+                                    scope.fieldsCalculatedField.push(field)
+                                }
+                            });
+                        } else {
+                            scope.fieldsCalculatedField = scope.totalDimensionsMetrics;
+                        }
+
+                        angular.forEach(scope.transforms, function (transform) {
+                            if(transform.type == scope.allFiledFormatTypeKeys.addField || transform.type == scope.allFiledFormatTypeKeys.addConditionValue) {
+                                angular.forEach(transform.fields, function (field) {
+                                    if((field.type == 'number' || field.type == 'decimal') && _.findIndex(scope.fieldsCalculatedField, {key: field.field}) == -1) {
+                                        scope.fieldsCalculatedField.push({
+                                            key: field.field,
+                                            label: field.field,
+                                            root: field.field,
+                                            type: field.type
+                                        });
+                                    }
+                                });
+                            }
+
+                            if (transform.type == scope.allFiledFormatTypeKeys.addCalculatedField) {
+                                angular.forEach(transform.fields, function (field) {
+                                    if(!!field.field && _.findIndex(scope.fieldsCalculatedField, {key: field.field}) == -1) {
+                                        scope.fieldsCalculatedField.push({
+                                            key: field.field,
+                                            label: field.field,
+                                            root: field.field,
+                                            type: field.type
+                                        });
+                                    }
+                                })
+                            }
+                        });
+
+                        // Add exchange rate
+                        if (scope.fieldsCalculatedField && scope.fieldsCalculatedField.length > 0) {
+                            angular.forEach(EXCHANGE_RATES, function (exchangeRate) {
+                                var existedIndex = _.findIndex(scope.fieldsCalculatedField, function (item) {
+                                    return item.key === exchangeRate.key;
+                                });
+
+                                if(existedIndex <0){
+                                    scope.fieldsCalculatedField.push(exchangeRate);
+                                }
+                            });
+                        }
+
+                        if(!!type.key && !!calculatedField){
+                            calculatedField.expression = null
+                        }
+
+                    }
+
+                    function unValidName(name) {
+                        var fields = [];
+
+                        angular.forEach(_getAllFieldInTransForm(), function (field) {
+                            fields.push(field.key);
+                        });
+
+                        return _.filter(fields, function(field){ return name == field && name != null; }).length > 1;
+                    }
+
+                    function selectTypeAddConditionValue(field) {
+                        field.defaultValue = null;
+                    }
+
+                    function getTypesFieldForAddConditionValue() {
+                        var typesField = [];
+
+                        angular.forEach(scope.typesField, function (type) {
+                            if (type.key == 'decimal' || type.key == 'number' || type.key ==  'text' || type.key == 'date') {
+                                typesField.push(type)
+                            }
+                        });
+
+                        return typesField;
+                    }
+
+                    function ManageValues(field) {
+                        $modal.open({
+                            templateUrl: 'unifiedReport/connectDataSource/modal/listValues.tpl.html',
+                            size: 'lg',
+                            resolve: {
+                                listValues: function (ConnectAddConditionalTransformValues) {
+                                    return ConnectAddConditionalTransformValues.getList({ids: angular.toJson(field.values || [])})
+                                        .then(function (listValues) {
+                                            return listValues.plain()
+                                        });
+                                },
+                                transform: function () {
+                                    return field
+                                },
+                                fields: function () {
+                                    return scope.selectedFieldsDateSet
+                                },
+                                dataSet: function () {
+                                    return scope.dataSet
+                                },
+                                dimensionsMetrics: function () {
+                                    return scope.dimensionsMetrics
+                                }
+                            },
+                            controller: 'listValuesController'
+                        });
+                    }
+
+                    function _getAllFieldInTransForm(transformPosition) {
+                        var fieldsTransForm = [];
+                        angular.forEach(scope.transforms, function (transform) {
+                            if (transform.type == 'addField' || transform.type == 'addCalculatedField' || transform.type == 'addConditionValue' || transform.type == 'comparisonPercent') {
+                                if(!transformPosition || (!!transformPosition && transformPosition == transform.transformPosition)) {
+                                    angular.forEach(transform.fields, function (field) {
+                                        if (!!field.field) {
+                                            fieldsTransForm.push({
+                                                label: field.field,
+                                                key: field.field,
+                                                root: field.field,
+                                                type: field.type,
+                                                transformType: transform.type
+                                            });
+                                        }
+                                    })
+                                }
+                            }
+                        });
+                        return fieldsTransForm;
                     }
 
                     directive || (directive = $compile(content));
