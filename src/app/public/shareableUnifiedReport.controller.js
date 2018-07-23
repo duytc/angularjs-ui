@@ -4,7 +4,7 @@
     angular.module('tagcade.public')
         .controller('shareableUnifiedReport', shareableUnifiedReport);
 
-    function shareableUnifiedReport($rootScope, $scope, $stateParams, $translate, $modal, exportExcelService,reportViewUtil,
+    function shareableUnifiedReport($scope, $stateParams, $translate, $modal, exportExcelService,reportViewUtil,
                                     reports, unifiedReportFormatReport, DateFormatter, AlertService,
                                     AtSortableService, dataService, API_UNIFIED_PUBLIC_END_POINT,
                                     historyStorage, HISTORY_TYPE_PATH,COMPARISON_TYPES_FILTER_CONNECT_TEXT,
@@ -33,34 +33,6 @@
         $scope.search = {};
         $scope.dimensions = [];
         $scope.metrics = [];
-
-        if(!$scope.hasResult) {
-            if(reports.status == 400) {
-                AlertService.replaceAlerts({
-                    type: 'error',
-                    message: reports.message
-                });
-            } else if (reports.status == 500){
-                AlertService.replaceAlerts({
-                    type: 'error',
-                    message: reports.message ||  $translate.instant('REPORT.REPORT_FAIL')
-                });
-            } else {
-                AlertService.replaceAlerts({
-                    type: 'warning',
-                    message: $translate.instant('REPORT.REPORTS_EMPTY')
-                });
-            }
-
-            return
-        } else {
-            if ($scope.reports.length == 0) {
-                AlertService.replaceAlerts({
-                    type: 'warning',
-                    message: $translate.instant('REPORT.REPORTS_EMPTY')
-                });
-            }
-        }
 
         $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);
 
@@ -165,9 +137,7 @@
         }
 
         function showReportDetail() {
-            $rootScope.hasAlerts = !angular.isArray($scope.titleColumns) && _.keys($scope.titleColumns).length > 0 && ($scope.reports.length > 0 || _.keys($scope.search).length > 0);
-
-            return $rootScope.hasAlerts;
+            return !angular.isArray($scope.titleColumns) && _.keys($scope.titleColumns).length > 0 && ($scope.reports.length > 0 || _.keys($scope.search).length > 0);
         }
 
         /**
