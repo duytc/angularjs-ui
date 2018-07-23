@@ -353,7 +353,7 @@
                     function unValidName(name) {
                         var fields = [];
                         angular.forEach(scope.calculatedMetrics, function (oneCalculatedMetric) {
-                            fields.push(oneCalculatedMetric.name);
+                            fields.push(oneCalculatedMetric.field);
                         });
 
                         return _.filter(fields, function (field) {
