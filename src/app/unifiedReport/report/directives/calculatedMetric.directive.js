@@ -290,7 +290,7 @@
                     scope.searchField = function (term) {
                         var fieldList = [];
                         angular.forEach(scope.fieldsCalculatedField, function (item) {
-                            if (!!item && item.label.toUpperCase().indexOf(term.toUpperCase()) >= 0) {
+                            if (!!item && !!item.label && item.label.toUpperCase().indexOf(term.toUpperCase()) >= 0) {
                                 fieldList.push(item);
                             }
                         });
