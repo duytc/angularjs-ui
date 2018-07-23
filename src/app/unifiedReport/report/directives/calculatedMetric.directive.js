@@ -317,7 +317,7 @@
                         });
 
                         angular.forEach(scope.buildInMacros, function (item) {
-                            if (item.label.toUpperCase().indexOf(term.toUpperCase()) >= 0) {
+                            if ( !!item && !!item.label && (typeof item.label == 'string') && item.label.toUpperCase().indexOf(term.toUpperCase()) >= 0) {
                                 fieldList.push(item);
                             }
                         });
