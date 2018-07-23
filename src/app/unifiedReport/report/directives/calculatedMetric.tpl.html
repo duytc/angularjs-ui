@@ -28,8 +28,8 @@
                         <div class="col-sm-10">
                             <input ng-disabled="disabled" server-error ng-required="true"
                                    ng-pattern="patternForAddField" type="text" class="form-control"
-                                   ng-model="calculatedMetric.name"
-                                   ng-class="{'ng-invalid ng-dirty': unValidName(calculatedMetric.name)}"
+                                   ng-model="calculatedMetric.field"
+                                   ng-class="{'ng-invalid ng-dirty': unValidName(calculatedMetric.field)}"
                                    ng-blur="addThisFieldToSelectedList(calculatedMetric)" placeholder="Field Name">
                         </div>
                     </div>
