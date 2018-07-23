@@ -14,8 +14,7 @@
     var oldString = null;
 
     function addSpaceBeforeAndAfterOperator(expression) {
-
-        if (!!oldString && !!expression) {
+        if (!!oldString && !!expression && !!expression.expression) {
             if (oldString.length > expression.expression.length) {
                 oldString =  expression.expression;
                 return expression;
