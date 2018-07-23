@@ -34,34 +34,6 @@
         $scope.dimensions = [];
         $scope.metrics = [];
 
-        if(!$scope.hasResult) {
-            if(reports.status == 400) {
-                AlertService.replaceAlerts({
-                    type: 'error',
-                    message: reports.message
-                });
-            } else if (reports.status == 500){
-                AlertService.replaceAlerts({
-                    type: 'error',
-                    message: reports.message ||  $translate.instant('REPORT.REPORT_FAIL')
-                });
-            } else {
-                AlertService.replaceAlerts({
-                    type: 'warning',
-                    message: $translate.instant('REPORT.REPORTS_EMPTY')
-                });
-            }
-
-            return
-        } else {
-            if ($scope.reports.length == 0) {
-                AlertService.replaceAlerts({
-                    type: 'warning',
-                    message: $translate.instant('REPORT.REPORTS_EMPTY')
-                });
-            }
-        }
-
         $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);
 
         $scope.titleColumns = reports.columns;
@@ -158,9 +130,14 @@
         $scope.addCompareValueText = addCompareValueText;
         $scope.isDatasetHasUserProvidedFilterExceptDate = isDatasetHasUserProvidedFilterExceptDate;
         $scope.isShowHelpBlock = isShowHelpBlock;
+        $scope.showReportDetail = showReportDetail;
 
         function isShowHelpBlock(customFilter) {
             return reportViewUtil.isShowHelpBlock(customFilter)
+        }
+
+        function showReportDetail() {
+            return $scope.reports && $scope.reports.length > 0;
         }
 
         /**

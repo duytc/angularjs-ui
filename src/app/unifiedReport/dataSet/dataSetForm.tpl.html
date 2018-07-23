@@ -138,7 +138,7 @@
                     <div class="col-sm-5">
                         <label class="ui-checkbox"><input ng-disabled="dataSet.mapBuilderEnabled" server-error name="active" type="checkbox" ng-model="dataSet.allowOverwriteExistingData" id="allowOverwriteExistingData"><span></span></label>
 
-                        <span class="help-block">If 'Overwrite existing data' checkbox is checked, all duplicated data of this data set will be removed</span>
+                        <span class="help-block">Duplicate data will be handled automatically</span>
                     </div>
                 </div>
 
@@ -147,7 +147,7 @@
                     <div class="col-sm-5">
                         <label class="ui-checkbox"><input server-error name="autoReload" type="checkbox" ng-model="dataSet.autoReload" id="autoReload"><span></span></label>
 
-                        <span class="help-block">If 'Auto Reload' checkbox is checked, this data set will be reload if its map data set's data has any changed. </span>
+                        <span class="help-block">Automatically reload if any map data is changed</span>
                     </div>
                 </div>
 
