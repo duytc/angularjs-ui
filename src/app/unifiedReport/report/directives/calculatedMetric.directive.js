@@ -289,29 +289,7 @@
 
                     scope.searchField = function (term) {
                         var fieldList = [];
-                        // var dates = [];
-                        // angular.forEach(scope.fieldsCalculatedField, function (item) {
-                        //     //Note: add a date field to field list. For example, __metric5_year (data-set-1). we add one field is metric5 (data-set-1) to selected list.
-                        //     var newDate = null;
-                        //     if (!!item && !!item.label && (typeof item.label == 'string') && item.label.indexOf('_year') >= 0) {
-                        //         newDate = angular.copy(item);
-                        //         console.log('New Date', newDate);
-                        //         newDate.label = newDate.label.replace('__', '');
-                        //         newDate.label = newDate.label.replace('_year', '');
-                        //         dates.push(newDate);
-                        //     };
-                        // });
-                        //
-                        // angular.forEach(dates, function (date) {
-                        //     var hasExist = _.find(scope.fieldsCalculatedField, function (element) {
-                        //         element.key ==  date.key;
-                        //     });
-                        //
-                        //     if (_.isUndefined(hasExist)) {
-                        //         scope.fieldsCalculatedField.push(date);
-                        //     }
-                        // });
-
+                        _pushDateFieldToList();
                         angular.forEach(scope.fieldsCalculatedField, function (item) {
                             if (!!item && !!item.label && (typeof item.label == 'string') && item.label.toUpperCase().indexOf(term.toUpperCase()) >= 0) {
                                 fieldList.push(item);
@@ -322,7 +300,7 @@
 
                     scope.searchMacros = function (term) {
                         var fieldList = [];
-
+                        _pushDateFieldToList();
                         scope.buildInMacros = angular.copy(scope.fieldsCalculatedField);
                         angular.forEach(scope.buildInDateTimeMacros, function (buildInMacro) {
                             var element = _.find(scope.buildInMacros, function (macro) {
@@ -347,6 +325,30 @@
 
                         scope.buildInMacros = fieldList;
                     };
+
+                    function _pushDateFieldToList() {
+                        var dates = [];
+                        angular.forEach(scope.fieldsCalculatedField, function (item) {
+                            //Note: add a date field to field list. For example, __metric5_year (data-set-1). we add one field is metric5 (data-set-1) to selected list.
+                            var newDate = null;
+                            if (!!item && !!item.label && (typeof item.label == 'string') && item.label.indexOf('_year') >= 0) {
+                                newDate = angular.copy(item);
+                                newDate.label = newDate.label.replace('__', '');
+                                newDate.label = newDate.label.replace('_year', '');
+                                dates.push(newDate);
+                            };
+                        });
+
+                        angular.forEach(dates, function (date) {
+                            var hasExist = _.find(scope.fieldsCalculatedField, function (element) {
+                                return (element.label ==  date.label);
+                            });
+
+                            if (_.isUndefined(hasExist)) {
+                                scope.fieldsCalculatedField.push(date);
+                            }
+                        });
+                    }
 
                     function unValidName(name) {
                         var fields = [];
