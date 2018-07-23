@@ -1,0 +1,147 @@
+<button class="btn btn-success" type="button" ng-click="addCalculatedMetric()" ng-disabled="disabled">
+    <span class="glyphicon glyphicon-plus"></span>
+    Add Calculated Metric
+</button>
+
+<div ui-sortable="sortableOptions" ng-model="calculatedMetrics" style="margin-top: 10px">
+    <div class="moveable" ng-repeat=" calculatedMetric in calculatedMetrics">
+
+        <accordion close-others="true">
+            <accordion-group class="notUpperCase" is-open="calculatedMetric.openStatus">
+
+                <accordion-heading>
+                    <div>
+                        {{getCalculatedMetricName(calculatedMetric.field)}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': transform.openStatus, 'glyphicon-chevron-right': !transform.openStatus}"></i>
+                    </div>
+                </accordion-heading>
+
+                <div class="form-group select-connect-data-source">
+                    <button ng-disabled="disabled" type="button" class="btn btn-danger btn-close-ur" ng-click="removeCalculatedMetric($index, transform)">
+                        <span class="glyphicon glyphicon-minus "></span>
+                    </button>
+                </div>
+
+                <div class="row">
+                    <!--Field Name-->
+                    <div class="form-group select-connect-data-source">
+                        <label class="col-sm-2 control-label">Field Name</label>
+                        <div class="col-sm-10">
+                            <input ng-disabled="disabled" server-error ng-required="true"
+                                   ng-pattern="patternForAddField" type="text" class="form-control"
+                                   ng-model="calculatedMetric.field"
+                                   ng-class="{'ng-invalid ng-dirty': unValidName(calculatedMetric.field)}"
+                                   ng-blur="addThisFieldToSelectedList(calculatedMetric)" placeholder="Field Name">
+                        </div>
+                    </div>
+
+                    <!--Display Name-->
+                    <div class="form-group select-connect-data-source">
+                        <label class="col-sm-2 control-label">Display Name</label>
+                        <div class="col-sm-10">
+                            <input ng-disabled="disabled" server-error ng-required="true"
+                                   ng-pattern="patternForAddField" type="text" class="form-control"
+                                   ng-model="calculatedMetric.displayName" placeholder="Display Name">
+                        </div>
+                    </div>
+
+                    <!--Type-->
+                    <div class="form-group select-connect-data-source">
+                        <label class="col-sm-2 control-label">Type</label>
+                        <div class="col-sm-10">
+                            <ui-select ng-disabled="disabled" ng-model="calculatedMetric.type" ng-required="true" server-error reset-search-input="'false'">
+                                <ui-select-match placeholder="Select type">{{ $select.selected.label }}</ui-select-match>
+                                <ui-select-choices repeat="type.key as type in calculatedMetricType | filter:$select.search">
+                                    {{ type.label }}
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+
+                    <!--Default Value-->
+                    <div class="form-group select-connect-data-source">
+                        <label class="col-sm-2 control-label">Default Value</label>
+                        <div class="col-sm-10">
+                            <input ng-disabled="disabled" server-error ng-required="true" type="number" class="form-control" ng-model="calculatedMetric.defaultValue"
+                                   placeholder="Default Value">
+                        </div>
+                    </div>
+
+                    <!--Expression or User Defined-->
+                    <div class="form-group select-connect-data-source">
+                        <label class="col-sm-2 control-label">Calculation Type</label>
+                        <div class="col-sm-10">
+                            <label class="ui-radio"><input ng-disabled="disabled" ng-model="calculatedMetric.calculationType" type="radio" ng-value="calculatedMetricExressionType.useExpression"><span>Use Expression</span></label>
+                            <label class="ui-radio"><input ng-disabled="disabled" ng-model="calculatedMetric.calculationType" type="radio" ng-value="calculatedMetricExressionType.userDefined"><span>User Defined</span></label>
+                        </div>
+                    </div>
+
+                    <!--Expression-->
+                    <div ng-if="isExpressionType(calculatedMetric)" class="form-group select-connect-data-source">
+                        <label class="col-sm-2 control-label">Expression</label>
+                        <div class="col-sm-10">
+                             <textarea    ng-disabled="disabled" ng-required="true" spellcheck="false"
+                                          ng-change="addSpaceBeforeAndAfterOperator(calculatedMetric)"
+                                          class=" addScrollToTextArea form-control expressionTextarea"
+                                          mentio
+                                          mentio-typed-term="typedTerm"
+                                          mentio-macros="macros"
+                                          id="{{ 'expressionTextarea' + calculatedMetric.id}}"
+                                          mentio-require-leading-space="false"
+                                          mentio-select-not-found="true"
+                                          class="editor form-control"
+                                          rows="5"
+                                          mentio-id="'calculationExpression'"
+                                          ng-model="calculatedMetric.expression">
+                            </textarea>
+
+                            <mentio-menu
+                                    mentio-for="'calculationExpression'"
+                                    mentio-trigger-char="'$'"
+                                    mentio-items="buildInMacros | filter:label:typedTerm"
+                                    mentio-search="searchMacros(term)"
+                                    mentio-select="getMacros(item)" >
+                            </mentio-menu>
+
+                            <mentio-menu
+                                    mentio-for="'calculationExpression'"
+                                    mentio-trigger-char="'['"
+                                    mentio-items="fieldsCalculatedFieldCopy | filter:label:typedTerm"
+                                    mentio-search="searchField(term)"
+                                    mentio-select="getSelectedFile(item)">
+
+                            </mentio-menu>
+
+                            <span class="help-block">Use character <strong>[</strong> to show list of available variables and character (<strong>$</strong>) to show build-in macros. Each variable should be inside square bracket.</span>
+                            <div class="callout-success expressions-transform" ng-bind-html="formatExpressionToHighlight(calculatedMetric)"></div>
+
+                            <!--Fix bug 6th: https://trello.com/c/Lxvf1gaL/2664-ur-uisupport-calculated-metrics-and-type-of-metrics-user-defined-expression-for-multiple-browsers-->
+                            <script>
+                                $(function () {
+                                    $(".expressionTextarea").keydown(function (e) {
+                                        var $target = $(e.target);
+                                        var x = $target.offset().left;
+                                        var y = $target.offset().top;
+                                        var caretHeight = 20;
+
+                                        var textAreaId = $target.attr('id');
+                                        var pos = $('#' + textAreaId).textareaHelper('caretPos');
+                                        window.setTimeout(function (args) {
+                                            $("mentio-menu").css({
+                                                "top": (y + pos.top + caretHeight) + "px",
+                                                "left": (x + pos.left) + "px"
+                                            });
+                                        }, 0);
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </div>
+
+                </div>
+
+            </accordion-group>
+        </accordion>
+    </div>
+</div>
+
+

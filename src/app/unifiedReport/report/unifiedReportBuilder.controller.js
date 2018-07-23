@@ -65,6 +65,7 @@
             transforms: [],
             formats: [],
             showInTotal: [],
+            calculatedMetrics: [],
             isShowDataSetName: false,
             largeReport: false,
             preCalculateTable: null,
@@ -309,13 +310,13 @@
         }
 
         function _getDataSetName(containsDataSetNameString) {
-            var regExp = /\(([^)]+)\)/;
-            var matches = regExp.exec(containsDataSetNameString);
+            /*var regExp = /\(([^)]+)\)/;
+                var matches = regExp.exec(containsDataSetNameString);
 
-            if (!!matches && !!matches[1]) {
-                return matches[1];
-            }
-
+                if (!!matches && !!matches[1]) {
+                    return matches[1];
+                }
+           */
             return '';
         }
 
@@ -448,7 +449,8 @@
                 largeReport: reportBuilder.largeReport,
                 availableToRun: reportBuilder.availableToRun,
                 availableToChange: reportBuilder.availableToChange,
-                enableCustomDimensionMetric: reportBuilder.enableCustomDimensionMetric
+                enableCustomDimensionMetric: reportBuilder.enableCustomDimensionMetric,
+                calculatedMetrics: angular.toJson(reportBuilder.calculatedMetrics)
             };
 
             if ($scope.isAdmin()) {
@@ -766,7 +768,6 @@
                             if (!!join && !join.isVisible) {
                                 return
                             }
-
                             $scope.summaryFieldTotal.push(dm);
                         }
                     }
@@ -813,7 +814,6 @@
                                 }
                                 var aliasNames = showInTotalObject.aliasName;
                                 var aliasNameOfThisField = _buildAliasName(field, showInTotalObject.type, dataSetName);
-                                    field.key.concat('.').concat(showInTotalObject.type).concat(' (').concat(dataSetName).concat(')');
                                 angular.forEach(aliasNames, function (aliasName) {
                                     if (aliasName.originalName == field.key) {
                                         aliasNameOfThisField = aliasName.aliasName;
@@ -1158,8 +1158,25 @@
                             }
                         })
                     })
-
                 }
+            });
+
+            angular.forEach(reportBuilder.calculatedMetrics, function (calculatedMetric) {
+                calculatedMetric.openStatus =  false;
+
+                angular.forEach($scope.totalDimensionsMetrics, function replace(dm) {
+                    if (!calculatedMetric.expression || !angular.isString(calculatedMetric.expression)) {
+                        return;
+                    }
+
+                    if (dm.label == dm.key) {
+                        return
+                    }
+
+                    var regExp = new RegExp(dm.label.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "g");
+                    calculatedMetric.expression = calculatedMetric.expression.replace(regExp, dm.key);
+                });
+
             });
 
             angular.forEach(reportBuilder.joinBy, function (join) {
@@ -1646,7 +1663,7 @@
             }
         }
 
-        // replace expression for transform addCalculatedField
+        // replace expression for transform addCalculatedField: remove id data set name and replace by data set
         setTimeout(function () {
             if (!$scope.isNew) {
                 angular.forEach($scope.reportBuilder.transforms, function (transform) {
@@ -1665,8 +1682,19 @@
                                 field.expression = field.expression.replace(regExp, dm.label);
                             });
                         })
-
                     }
+                });
+
+                // Change expression of calculated metric: remove id data set name and replace by data set
+                angular.forEach($scope.reportBuilder.calculatedMetrics, function (calculatedMetric) {
+                    angular.forEach($scope.totalDimensionsMetrics, function replace(dm) {
+                        if (!calculatedMetric.expression || !angular.isString(calculatedMetric.expression)) {
+                            return;
+                        }
+
+                        var regExp = new RegExp(dm.key.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "g");
+                        calculatedMetric.expression = calculatedMetric.expression.replace(regExp, dm.label);
+                    });
                 });
             }
         }, 0);

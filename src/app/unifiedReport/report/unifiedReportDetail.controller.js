@@ -82,7 +82,8 @@
             availableToRun:  reportView.availableToRun,
             availableToChange: reportView.availableToChange,
             publisher: angular.isObject(reportView.publisher) ? reportView.publisher.id : reportView.publisher,
-            enableCustomDimensionMetric: reportView.enableCustomDimensionMetric
+            enableCustomDimensionMetric: reportView.enableCustomDimensionMetric,
+            calculatedMetrics: angular.toJson(reportView.calculatedMetrics)
         };
 
         if(!$scope.hasResult) {
