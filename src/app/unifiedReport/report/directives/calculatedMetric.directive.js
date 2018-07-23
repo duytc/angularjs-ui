@@ -252,7 +252,7 @@
                         }
 
                         field = angular.copy(field);
-                        var expression = (!!field.name ? ('<strong>' + field.name + '</strong>' + ' = ') : '') + (angular.copy(field.expression) || '');
+                        var expression = (!!field.field ? ('<strong>' + field.field + '</strong>' + ' = ') : '') + (angular.copy(field.expression) || '');
 
                         if (!expression) {
                             return null;
