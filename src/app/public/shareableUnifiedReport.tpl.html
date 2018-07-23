@@ -127,7 +127,7 @@
     <div class="panel-heading">
         <span current-page-title></span>
         <div class="button-bar">
-            <button style="margin-right: 3px"  class="btn btn-sm btn-primary" ng-click="refreshData()" type="button">Refresh</button>
+            <button style="margin-right: 3px"  class="btn btn-sm btn-primary" ng-click="refreshData()" type="button">Reset</button>
             <button style="margin-right: 3px"  class="btn btn-sm btn-primary" ng-click="exportExcel()" type="button">Export Excel</button>
             <!--<export-excel ng-if="reports.length > 0" not-filter="true" data="reports" style="margin-right: 3px" fields="columnReportDetailForExportExcel" header="titleReportDetailForExportExcel" file-name="getExportExcelFileName()"></export-excel>-->
         </div>
@@ -135,7 +135,7 @@
         <div class="btn-group btnGrouped" dropdown>
             <button type="button" class="btn " dropdown-toggle><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a ng-click="refreshData()">Refresh</a></li>
+                <li><a ng-click="refreshData()">Reset</a></li>
                 <li><a ng-click="exportExcel()">Export Excel</a></li>
                 <!--<li ng-if="reports.length > 0"><a><export-excel not-filter="true" css-class="''" data="reports" fields="columnReportDetailForExportExcel" header="titleReportDetailForExportExcel" file-name="getExportExcelFileName()"></export-excel></a></li>-->
             </ul>
@@ -169,7 +169,6 @@
                 </tbody>
             </table>
         </div>
-
 
         <div class="pagination">
             <pagination ng-if="showPagination()" class="pagination" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="tableConfig.itemsPerPage" total-items="tableConfig.totalItems" ng-model="availableOptions.currentPage" max-size="tableConfig.maxPages" ng-change="changePage(availableOptions.currentPage)"></pagination>
