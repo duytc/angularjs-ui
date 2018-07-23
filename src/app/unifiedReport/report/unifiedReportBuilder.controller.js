@@ -1392,7 +1392,6 @@
             angular.forEach(allFields, function (type, key) {
                 $scope.dimensionsMetrics[key + '_' + dataSet.id] = type;
             });
-
         }
 
         function _removeFieldNotSelectInTransform() {
