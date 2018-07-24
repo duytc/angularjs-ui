@@ -1477,7 +1477,9 @@
                 "OPTIMIZE_ALERT":"Optimization Alerts"
             },
             "REPORT_VIEW":{
-                "CUSTOM_FILTER":"Custom filter"
+                "CUSTOM_FILTER":"Custom filter",
+                "CALCULATED_METRICS":"Calculated Metrics",
+                "USER_DEFINED_VARIABLES": "User defined variables",
             },
             "SHARE_REPORT_VIEW":{
                 "ALL_VALUE": "All value"

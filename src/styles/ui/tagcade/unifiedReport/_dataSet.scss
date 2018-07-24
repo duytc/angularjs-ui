@@ -9,3 +9,14 @@
     }
   }
 }
+
+form[name="calculatedMetrics"] {
+  .panel-group  {
+    .panel {
+      margin-bottom: 20px;
+      .bg-reverse {
+        background-color: #fafafa;
+      }
+    }
+  }
+}

@@ -7,9 +7,10 @@
     function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView,
                                  dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView,
                                  AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT,
-                                 sessionStorage, userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,reportViewUtil,
+                                 sessionStorage, userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,reportViewUtil, METRICS_SET,
                                  COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_NUMBER) {
         const maxEmailAllowed = 10;
+        const CALCULATED_METRIC_USER_DEFINED = 1;
 
         // reset css for id app
         var app = angular.element('#app');
@@ -45,6 +46,12 @@
 
         $scope.dimensions = [];
         $scope.metrics = [];
+
+        //calculated metrics
+        $scope.typesField = METRICS_SET;
+        $scope.patternForAddField =  /^[a-zA-Z_][a-zA-Z0-9_$\s]*$/;
+
+        $scope.isCalculatedMetricsComplete = true;
 
         _updateColumnPositions();
         _fixWrongTickedDimensionAndMetric();
@@ -129,6 +136,8 @@
             }
         };
 
+        $scope.fieldsCalculatedMetric = [];
+
         _updateMissingDate($scope.selected.date);
 
         $scope.datePickerOpts = {
@@ -170,6 +179,12 @@
         $scope.isShowDatasetHasUserProvidedFilterExceptDate = isShowDatasetHasUserProvidedFilterExceptDate;
         $scope.isShowHelpBlock = isShowHelpBlock;
 
+        //Calculated Metrics
+        $scope.getCalculatedMetrics = getCalculatedMetrics;
+        $scope.getColumnCompatible = getColumnCompatible;
+        $scope.getDisplayNameMetric = getDisplayNameMetric;
+        $scope.isAllowUserDefinedMetrics = isAllowUserDefinedMetrics;
+
         _buildCustomFilters();
         /**
          * Filters is in reportView.reportViewDatasets, but to subReportView, filter is in reportView.filters
@@ -190,6 +205,26 @@
 
         function isShowCustomFilter() {
             return reportViewUtil.hasCustomFilters($scope.reportView.reportViewDataSets);
+        }
+
+        function getColumnCompatible(items) {
+            var size = _.size(items);
+            return size < 2 ? 12 : (size < 3 ? 6 : 4);
+        }
+
+        function getCalculatedMetrics(field) {
+            if(!field)
+                return;
+            $scope.isCalculatedMetricsComplete = false;
+            return generateReport($scope.selected.date, $scope.reportView);
+        }
+
+        function getDisplayNameMetric(key) {
+            return (_.findWhere($scope.reportView.calculatedMetrics, {field: key}) || {displayName: key}).displayName;
+        }
+
+        function isAllowUserDefinedMetrics(field) {
+            return field.calculationType && field.calculationType == CALCULATED_METRIC_USER_DEFINED;
         }
 
         function _fixWrongTickedDimensionAndMetric() {
@@ -401,6 +436,7 @@
                         $scope.reports = reportGroup.reports || [];
                         $scope.tableConfig.totalItems = Number(reportGroup.totalReport);
                         $scope.availableOptions.currentPage = Number(params.page);
+                        $scope.isCalculatedMetricsComplete = true;
 
                         _updateColumnPositions();
 
@@ -439,10 +475,10 @@
             return false;
         }
 
-        function generateReport(date) {
+        function generateReport(date, customReportView) {
             $scope.availableOptions.currentPage = 1;
 
-            var params = _toJsonReportView(reportView);
+            var params = _toJsonReportView(customReportView ? customReportView : reportView);
 
             params.startDate = DateFormatter.getFormattedDate(date.startDate);
             params.endDate = DateFormatter.getFormattedDate(date.endDate);
