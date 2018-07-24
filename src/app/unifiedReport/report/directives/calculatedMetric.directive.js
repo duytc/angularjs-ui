@@ -157,9 +157,9 @@
                         angular.forEach(scope.calculatedMetrics, function (calculatedMetric) {
                             if (!!calculatedMetric.field && _.findIndex(scope.fieldsCalculatedField, {key: calculatedMetric.field}) == -1) {
                                 scope.fieldsCalculatedField.push({
-                                    key: field.field,
-                                    label: field.field,
-                                    root: field.field,
+                                    key: calculatedMetric.field,
+                                    label: calculatedMetric.field,
+                                    root: calculatedMetric.field,
                                     type: field.type
                                 });
                             }
