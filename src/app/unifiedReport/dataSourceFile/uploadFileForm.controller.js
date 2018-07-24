@@ -59,8 +59,8 @@
 
         function addMetadata(item) {
             item.metadata = item.metadata || [];
-
             item.metadata.push({key: null, value: null});
+            $scope.parent[item.$$hashKey] =  {uploadDate:''};
         }
 
         function removeParams(item, index) {
@@ -116,7 +116,7 @@
                 angular.forEach(elem.metadata, function (item) {
                     if (item.key == 'date' || item.key == 'dateTime') {
                         //item.value = !!item.value ? DateFormatter.getFormattedDate(item.value.date) : item.value;
-                        item.value = $scope.parent.uploadDate
+                        item.value = $scope.parent[item.$$hashKey].uploadDate
                     }
 
                     if (!!item.value) {
