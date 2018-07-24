@@ -50,7 +50,7 @@
         //calculated metrics
         $scope.typesField = METRICS_SET;
         $scope.patternForAddField =  /^[a-zA-Z_][a-zA-Z0-9_$\s]*$/;
-
+        $scope.calculatedMetricsResult = sortCalculatedResultByName(reportGroup.calculatedMetricsResult || {});
         $scope.isCalculatedMetricsComplete = true;
 
         _updateColumnPositions();
@@ -221,6 +221,22 @@
 
         function getDisplayNameMetric(key) {
             return (_.findWhere($scope.reportView.calculatedMetrics, {field: key}) || {displayName: key}).displayName;
+        }
+
+        function sortCalculatedResultByName(results) {
+            if(_.isEmpty(results))
+                return results;
+
+            var calculatedResults = [];
+            for(var key in results) {
+                calculatedResults.push({
+                    key: key,
+                    displayName: getDisplayNameMetric(key),
+                    value: results[key]
+                })
+            }
+
+            return calculatedResults;
         }
 
         function isAllowUserDefinedMetrics(field) {
@@ -437,6 +453,7 @@
                         $scope.tableConfig.totalItems = Number(reportGroup.totalReport);
                         $scope.availableOptions.currentPage = Number(params.page);
                         $scope.isCalculatedMetricsComplete = true;
+                        $scope.calculatedMetricsResult = sortCalculatedResultByName(reportGroup.calculatedMetricsResult || {});
 
                         _updateColumnPositions();
 
