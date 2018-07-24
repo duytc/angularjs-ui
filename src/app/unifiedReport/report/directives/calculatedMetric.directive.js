@@ -159,7 +159,7 @@
 
                     function addThisFieldToSelectedList(calculatedField) {
                         var element = _.find(scope.fieldsCalculatedField, function (oneField) {
-                            return (oneField.label == calculatedField.name);
+                            return (oneField.label == calculatedField.field);
                         });
 
                         if (_.isUndefined(element)) {
