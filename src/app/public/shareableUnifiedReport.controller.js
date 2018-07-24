@@ -13,7 +13,7 @@
         var app = angular.element('#app');
         app.css({position: 'inherit'});
 
-        $scope.reportView = reports.reportView;
+        $scope.reportView = angular.copy(reports.reportView);
 
         if(!!$scope.reportView && $scope.reportView.subView && angular.isObject($scope.reportView.masterReportView)) {
             var masterReportView = angular.copy($scope.reportView.masterReportView);
@@ -69,6 +69,8 @@
         $scope.titleReportDetailForExportExcel = [];
 
         _updateColumnPositions();
+        reportViewUtil.updateLabelForOptions($scope.metrics, $scope.titleColumns);
+        reportViewUtil.updateLabelForOptions($scope.dimensions, $scope.titleColumns);
 
         if (!!$scope.reportView.formats.length && !!reports && reports.length > 0) {
             angular.forEach($scope.reportView.formats, function (format) {
@@ -160,13 +162,14 @@
         function isShowHelpBlock(customFilter) {
             return reportViewUtil.isShowHelpBlock(customFilter)
         }
+
         /**
          * Filters is in reportView.reportViewDatasets, but to subReportView, filter is in reportView.filters
          * Need push reportView.filters into reportView.reportViewDatasets to submit to api
          * @private
          */
         function _buildCustomFilters() {
-            reportViewUtil._buildCustomFilters($scope.reportView.filters, $scope.reportView.reportViewDataSets);
+            reportViewUtil._buildCustomFilters(reports.reportView.filters, $scope.reportView.reportViewDataSets);
         }
 
         function isDatasetHasUserProvidedFilterExceptDate(dataset) {
@@ -175,9 +178,9 @@
 
         function _extractCustomFilters() {
             //enable outside value
-            if(!$scope.reportView.sharedKeysConfig[$stateParams.token]) return;
+            if(!reports.reportView.sharedKeysConfig[$stateParams.token]) return;
 
-            var allowedOutsideFilters = $scope.reportView.sharedKeysConfig[$stateParams.token].filters;
+            var allowedOutsideFilters = reports.reportView.sharedKeysConfig[$stateParams.token].filters;
             var datasets = angular.copy($scope.reportView.reportViewDataSets);
             _.forEach(datasets, function (dataset) {
                 _.forEach(dataset.filters, function (filter) {
@@ -194,8 +197,11 @@
         function _checkIsChildOf(filter, dataset, allowedOutsideFilters) {
             if(!allowedOutsideFilters) return false;
             var found = allowedOutsideFilters.find(function (filterItem) {
-                return filterItem.name === filter.field && filterItem.dataSetId === dataset.dataSet.id;
+                return filterItem.name === filter.field &&
+                    filterItem.dataSetId === dataset.dataSet.id &&
+                    filterItem.value.comparison === filter.comparison;
             });
+
             return !!found;
         }
         

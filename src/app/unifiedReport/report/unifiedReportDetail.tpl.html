@@ -152,7 +152,7 @@
         <strong> {{ reportView.name || 'Report Detail' }} </strong>
 
         <div class="button-bar">
-            <button class="btn btn-sm btn-primary" ng-click="refreshData()" type="button">Refresh</button>
+            <button class="btn btn-sm btn-primary" ng-click="refreshData()" type="button">Reset</button>
             <button class="btn btn-sm btn-primary" ng-click="exportExcel()" type="button">Export Excel</button>
             <!--<export-excel ng-if="reports.length > 0 && hasResult" not-filter="true" data="reports" style="margin-right: 3px" fields="columnReportDetailForExportExcel" header="titleReportDetailForExportExcel" file-name="getExportExcelFileName()"></export-excel>-->
             <button ui-sref="^.editBuilder(reportViewForEdit)" ng-disabled="formProcessing" class="btn btn-sm btn-primary" type="button">Edit Report View</button>

@@ -60,10 +60,12 @@
                 }
             ],
             joinBy: [],
+            requireJoin: true,
             weightedCalculations: [],
             transforms: [],
             formats: [],
             showInTotal: [],
+            calculatedMetrics: [],
             isShowDataSetName: false,
             largeReport: false,
             preCalculateTable: null,
@@ -308,13 +310,13 @@
         }
 
         function _getDataSetName(containsDataSetNameString) {
-            var regExp = /\(([^)]+)\)/;
-            var matches = regExp.exec(containsDataSetNameString);
+            /*var regExp = /\(([^)]+)\)/;
+                var matches = regExp.exec(containsDataSetNameString);
 
-            if (!!matches && !!matches[1]) {
-                return matches[1];
-            }
-
+                if (!!matches && !!matches[1]) {
+                    return matches[1];
+                }
+           */
             return '';
         }
 
@@ -436,6 +438,7 @@
                 weightedCalculations: angular.toJson(reportBuilder.weightedCalculations),
                 formats: angular.toJson(reportBuilder.formats),
                 joinBy: angular.toJson(reportBuilder.joinBy),
+                requireJoin: reportBuilder.requireJoin,
                 name: reportBuilder.name,
                 id: reportBuilder.id,
                 masterReportView: reportBuilder.masterReportView,
@@ -446,7 +449,8 @@
                 largeReport: reportBuilder.largeReport,
                 availableToRun: reportBuilder.availableToRun,
                 availableToChange: reportBuilder.availableToChange,
-                enableCustomDimensionMetric: reportBuilder.enableCustomDimensionMetric
+                enableCustomDimensionMetric: reportBuilder.enableCustomDimensionMetric,
+                calculatedMetrics: angular.toJson(reportBuilder.calculatedMetrics)
             };
 
             if ($scope.isAdmin()) {
@@ -810,7 +814,6 @@
                                 }
                                 var aliasNames = showInTotalObject.aliasName;
                                 var aliasNameOfThisField = _buildAliasName(field, showInTotalObject.type, dataSetName);
-                                    field.key.concat('.').concat(showInTotalObject.type).concat(' (').concat(dataSetName).concat(')');
                                 angular.forEach(aliasNames, function (aliasName) {
                                     if (aliasName.originalName == field.key) {
                                         aliasNameOfThisField = aliasName.aliasName;
@@ -1155,8 +1158,25 @@
                             }
                         })
                     })
-
                 }
+            });
+
+            angular.forEach(reportBuilder.calculatedMetrics, function (calculatedMetric) {
+                calculatedMetric.openStatus =  false;
+
+                angular.forEach($scope.totalDimensionsMetrics, function replace(dm) {
+                    if (!calculatedMetric.expression || !angular.isString(calculatedMetric.expression)) {
+                        return;
+                    }
+
+                    if (dm.label == dm.key) {
+                        return
+                    }
+
+                    var regExp = new RegExp(dm.label.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "g");
+                    calculatedMetric.expression = calculatedMetric.expression.replace(regExp, dm.key);
+                });
+
             });
 
             angular.forEach(reportBuilder.joinBy, function (join) {
@@ -1372,7 +1392,6 @@
             angular.forEach(allFields, function (type, key) {
                 $scope.dimensionsMetrics[key + '_' + dataSet.id] = type;
             });
-
         }
 
         function _removeFieldNotSelectInTransform() {
@@ -1483,6 +1502,86 @@
             });
         }
 
+        // function _setTempDimensions(item, reportView) {
+        //     if(!item || !item.dimensions) {
+        //         return
+        //     }
+        //
+        //     reportView.tempDimensions = [];
+        //     angular.forEach(item.dimensions, function (dimension) {
+        //         var key = null;
+        //         var id = null;
+        //
+        //         if(dimension.lastIndexOf('_') > -1) {
+        //             key = dimension.slice(0, dimension.lastIndexOf('_'));
+        //             id = dimension.slice(dimension.lastIndexOf('_') + 1, dimension.length);
+        //         } else {
+        //             key = dimension;
+        //         }
+        //
+        //         var dataSet = _.find($scope.dataSets, function (dataSet) {
+        //             return !!dataSet.dimensions[key] && dataSet.id == id;
+        //         });
+        //
+        //         if (!!dataSet) {
+        //             reportView.tempDimensions.push({
+        //                 key: dimension,
+        //                 label: key + ' (' + dataSet.name + ')',
+        //                 type: dataSet.dimensions[key],
+        //                 root: key,
+        //                 dataSet: dataSet
+        //             })
+        //         } else {
+        //             reportView.tempDimensions.push({
+        //                 key: dimension,
+        //                 root: key,
+        //                 label: dimension,
+        //                 type: item.fieldTypes[dimension]
+        //             })
+        //         }
+        //     });
+        // }
+        //
+        // function _setTempMetrics(item, reportView) {
+        //     if(!item || !item.metrics) {
+        //         return
+        //     }
+        //
+        //     reportView.tempMetrics = [];
+        //     angular.forEach(item.metrics, function (metric) {
+        //         var key = null;
+        //         var id = null;
+        //
+        //         if(metric.lastIndexOf('_') > -1) {
+        //             key = metric.slice(0, metric.lastIndexOf('_'));
+        //             id = metric.slice(metric.lastIndexOf('_') + 1, metric.length);
+        //         } else {
+        //             key = metric;
+        //         }
+        //
+        //         var dataSet = _.find($scope.dataSets, function (dataSet) {
+        //             return !!dataSet.metrics[key] && dataSet.id == id;
+        //         });
+        //
+        //         if (!!dataSet) {
+        //             reportView.tempMetrics.push({
+        //                 key: metric,
+        //                 label: key + ' (' + dataSet.name + ')',
+        //                 type: dataSet.metrics[key],
+        //                 root: key,
+        //                 dataSet: dataSet
+        //             })
+        //         } else {
+        //             reportView.tempMetrics.push({
+        //                 key: metric,
+        //                 root: key,
+        //                 label: metric,
+        //                 type: item.fieldTypes[metric]
+        //             })
+        //         }
+        //     });
+        // }
+
         function _removeFieldNotSelectInFormat() {
             angular.forEach($scope.reportBuilder.formats, function (format) {
                 var fields = [];
@@ -1563,7 +1662,7 @@
             }
         }
 
-        // replace expression for transform addCalculatedField
+        // replace expression for transform addCalculatedField: remove id data set name and replace by data set
         setTimeout(function () {
             if (!$scope.isNew) {
                 angular.forEach($scope.reportBuilder.transforms, function (transform) {
@@ -1582,8 +1681,19 @@
                                 field.expression = field.expression.replace(regExp, dm.label);
                             });
                         })
-
                     }
+                });
+
+                // Change expression of calculated metric: remove id data set name and replace by data set
+                angular.forEach($scope.reportBuilder.calculatedMetrics, function (calculatedMetric) {
+                    angular.forEach($scope.totalDimensionsMetrics, function replace(dm) {
+                        if (!calculatedMetric.expression || !angular.isString(calculatedMetric.expression)) {
+                            return;
+                        }
+
+                        var regExp = new RegExp(dm.key.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "g");
+                        calculatedMetric.expression = calculatedMetric.expression.replace(regExp, dm.label);
+                    });
                 });
             }
         }, 0);

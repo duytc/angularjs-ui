@@ -54,6 +54,9 @@
         $scope.isCalculatedMetricsComplete = true;
 
         _updateColumnPositions();
+        _fixWrongTickedDimensionAndMetric();
+        reportViewUtil.updateLabelForOptions($scope.metrics, allDimensionsMetrics);
+        reportViewUtil.updateLabelForOptions($scope.dimensions, allDimensionsMetrics);
 
         if(!!reportView && reportView.subView && angular.isObject(reportView.masterReportView)) {
             var masterReportView = angular.copy(reportView.masterReportView);
@@ -74,6 +77,7 @@
             formats: angular.toJson(reportView.formats),
             weightedCalculations: angular.toJson(reportView.weightedCalculations),
             joinBy: angular.toJson(reportView.joinBy),
+            requireJoin: reportView.requireJoin,
             metricCalculations: angular.toJson(reportView.metricCalculations),
             name: reportView.name,
             masterReportView: angular.isObject(reportView.masterReportView) ? reportView.masterReportView.id : reportView.masterReportView,
@@ -85,7 +89,8 @@
             availableToRun:  reportView.availableToRun,
             availableToChange: reportView.availableToChange,
             publisher: angular.isObject(reportView.publisher) ? reportView.publisher.id : reportView.publisher,
-            enableCustomDimensionMetric: reportView.enableCustomDimensionMetric
+            enableCustomDimensionMetric: reportView.enableCustomDimensionMetric,
+            calculatedMetrics: angular.toJson(reportView.calculatedMetrics)
         };
 
         if(!$scope.hasResult) {
@@ -189,7 +194,7 @@
         function _buildCustomFilters() {
             reportViewUtil._buildCustomFilters($scope.reportView.filters, $scope.reportView.reportViewDataSets);
         }
-        
+
         function isShowDatasetHasUserProvidedFilterExceptDate(dataset) {
             return reportViewUtil.isDatasetHasUserProvidedFilterExceptDate(dataset);
         }
@@ -220,6 +225,24 @@
 
         function isAllowUserDefinedMetrics(field) {
             return field.calculationType && field.calculationType == CALCULATED_METRIC_USER_DEFINED;
+        }
+
+        function _fixWrongTickedDimensionAndMetric() {
+            // Fix bug: some metrics ticked wrong by default. https://trello.com/c/rmXhwtVO/2637-ur-usability-fixes-small
+            //This solution is not good. Just to fix above bug. If there is some change, this solution may not work
+            /**
+             * Solution: First time enter into report view builder, table show correct columns (correctFields = _.keys($scope.reports[0])).
+             * For example: Report view has Dataset_1 and Dataset_2, user select request of Dataset_1, but not select request of Dataset_2.
+             * Problem: on metrics'd ui-select box, request of Dataset_2 ticked default, and name of Dataset_1 is missing, but report table doesn't show request of Dataset_1.
+             * Report table is correct => need un-ticked and show Dataset_1's name metrics's on ui-select.
+             * Dimension need to be fixed, too.
+             *
+             */
+            var correctFields = _.keys($scope.reports[0]);
+            var reportViewDatasets = $scope.reportView.reportViewDataSets;
+            _unTickWrongMetrics(correctFields, $scope.metrics, reportViewDatasets, 'metrics', $scope.titleColumnsForSelect);
+            _unTickWrongMetrics(correctFields, $scope.dimensions, reportViewDatasets, 'dimensions', $scope.titleColumnsForSelect);
+
         }
 
         function getComparisonTypes(customFilter, field, dataset) {
@@ -509,7 +532,11 @@
                         delete $scope.reportView.publisher;
                     }
 
-                    var save = !$scope.isNew ? UnifiedReportViewManager.one($scope.reportView.id).patch($scope.reportView) : UnifiedReportViewManager.post($scope.reportView);
+                    // refactor reportView data
+                    var reportView = angular.copy($scope.reportView);
+                    reportView = _removeDataSetNameFromParam(reportView);
+
+                    var save = !$scope.isNew ? UnifiedReportViewManager.one(reportView.id).patch(reportView) : UnifiedReportViewManager.post(reportView);
 
                     save.then(function (data) {
                         if ($scope.isNew) {
@@ -561,6 +588,18 @@
                 // if it is not a pause, proceed without a modal
                 dfd.resolve();
             }
+
+            function _removeDataSetNameFromParam(reportView) {
+                if (!reportView || !angular.isArray(reportView.reportViewDataSets)) {
+                    return reportView;
+                }
+
+                angular.forEach(reportView.reportViewDataSets, function (reportViewDataSet) {
+                    delete reportViewDataSet.dataSetName;
+                });
+
+                return reportView;
+            }
         }
 
         function showPagination() {
@@ -580,6 +619,7 @@
                 delete item.allFields;
                 delete item.dimensionsMetrics;
                 delete item.selectAllDimensionsMetrics;
+                delete item.dataSetName;
             });
 
             params.masterReportView = angular.isObject(params.masterReportView) ? params.masterReportView.id : params.masterReportView;
@@ -670,7 +710,6 @@
                 });
 
                 var data = allDimensionsMetrics.dataSets;
-
                 angular.forEach(data, function (item) {
                     totalDimensions = totalDimensions.concat(_.keys(item.dimensions));
                     totalMetrics = totalMetrics.concat(_.keys(item.metrics))
@@ -728,6 +767,7 @@
                         }
                     }
                 });
+                //forEach Datasets, update $scope.dimensions
 
                 angular.forEach(data, function (item) {
                     if(true) {
@@ -948,12 +988,6 @@
             }
 
             $scope.fieldsShow = $scope.fieldsShow || {dimensions: [], metrics: []};
-
-            // Fix bug: some metrics ticked wrong by default. https://trello.com/c/rmXhwtVO/2637-ur-usability-fixes-small
-            var correctFields = _.keys($scope.reports[0]);
-            var wrongMetricOptions = $scope.metrics;
-            var reportViewDatasets = $scope.reportView.reportViewDataSets;
-            _unTickWrongMetrics(correctFields, wrongMetricOptions, reportViewDatasets)
         }
 
         /**
@@ -973,23 +1007,24 @@
          * Fix bug: some metrics ticked wrong by default
          * https://trello.com/c/rmXhwtVO/2637-ur-usability-fixes-small
          */
-        function _unTickWrongMetrics(correctFields, wrongMetricOptions, reportViewDatasets) {
-            angular.forEach(wrongMetricOptions, function (metricOption) {
-                var metricNameContainDatasetId = metricOption.name; //request_1
-                var separatedMetricAndDataset = getDatasetIdFromMetricName(metricNameContainDatasetId);
-                var currentDatasetId = separatedMetricAndDataset.datasetId;
+        function _unTickWrongMetrics(correctFields, wrongOptions, reportViewDatasets, type, titleColumnsForUiSelect) {
+            angular.forEach(wrongOptions, function (fieldOption) {
+                var fieldNameContainDatasetId = fieldOption.name; //request_1
+                var separatedFieldNameAndDataset = getDatasetIdFromMetricName(fieldNameContainDatasetId);
+                var currentDatasetId = separatedFieldNameAndDataset.datasetId;
                 var currentDatasetObject = reportViewDatasets.find(function (dataset) {
                     return dataset.dataSet == currentDatasetId; //don't change == to ===
                 });
                 if (currentDatasetObject) {
-                    var currentMetricName = separatedMetricAndDataset.metricName;
-                    var metrics = currentDatasetObject.metrics;
-                    if (metrics) {
-                        var found = metrics.find(function (metric) {
-                            return metric == currentMetricName; //don't change == to ===
+                    var currentFieldName = separatedFieldNameAndDataset.metricName;
+                    var fields = currentDatasetObject[type];
+                    if (fields) {
+                        var found = fields.find(function (field) {
+                            return field == currentFieldName; //don't change == to ===
                         });
                         if (!found) {
-                            metricOption.ticked = false;
+                            fieldOption.ticked = false;
+                            fieldOption.label = titleColumnsForUiSelect[fieldNameContainDatasetId];
                         }
                     }
                 }

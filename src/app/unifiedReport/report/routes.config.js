@@ -82,7 +82,7 @@
                 }
             })
             .state('unifiedReport.report.editBuilder', {
-                url: '/edit?id&filters&subView&masterReportView&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&name&publisher&formats&userReorderTransformsAllowed&preCalculateTable&largeReport&availableToRun&availableToChange&isShowDataSetName&enableCustomDimensionMetric',
+                url: '/edit?id&filters&subView&masterReportView&reportViewDataSets&transforms&weightedCalculations&showInTotal&joinBy&requireJoin&name&publisher&formats&userReorderTransformsAllowed&preCalculateTable&largeReport&availableToRun&availableToChange&isShowDataSetName&enableCustomDimensionMetric&calculatedMetrics',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -130,6 +130,7 @@
                                         weightedCalculations: !!$stateParams.weightedCalculations ? angular.fromJson($stateParams.weightedCalculations) : reportView.weightedCalculations,
                                         filters: !!$stateParams.filters ? angular.fromJson($stateParams.filters) : reportView.filters,
                                         joinBy: !!$stateParams.joinBy ? angular.fromJson($stateParams.joinBy) : reportView.joinBy,
+                                        requireJoin: !!$stateParams.requireJoin ? ($stateParams.requireJoin == 'true') : reportView.requireJoin,
                                         name: !!$stateParams.name ? $stateParams.name : reportView.name,
                                         id: reportView.id,
                                         masterReportView: !!$stateParams.masterReportView ? angular.fromJson($stateParams.masterReportView) : reportView.masterReportView,
@@ -141,7 +142,8 @@
                                         userReorderTransformsAllowed: !!$stateParams.userReorderTransformsAllowed ? ($stateParams.userReorderTransformsAllowed == 'true') : reportView.userReorderTransformsAllowed,
                                         publisher: reportView.publisher.id || reportView.publisher,
                                         enableCustomDimensionMetric: !!$stateParams.enableCustomDimensionMetric ? ($stateParams.enableCustomDimensionMetric == 'true') : reportView.enableCustomDimensionMetric,
-                                        subView: !!$stateParams.subView ? ($stateParams.subView == 'true') : reportView.subView
+                                        subView: !!$stateParams.subView ? ($stateParams.subView == 'true') : reportView.subView,
+                                        calculatedMetrics: !!$stateParams.calculatedMetrics ? angular.fromJson($stateParams.calculatedMetrics) : reportView.calculatedMetrics
                                     }
                                 })
                         }
@@ -155,6 +157,7 @@
                             formats: angular.fromJson($stateParams.formats),
                             weightedCalculations: angular.fromJson($stateParams.weightedCalculations),
                             joinBy: angular.fromJson($stateParams.joinBy) || null,
+                            requireJoin: $stateParams.requireJoin == 'true',
                             name: $stateParams.name,
                             publisher: $stateParams.publisher,
                             isShowDataSetName: $stateParams.isShowDataSetName == 'true',
@@ -163,8 +166,10 @@
                             availableToRun: $stateParams.availableToRun == 'true',
                             availableToChange: $stateParams.availableToChange == 'true',
                             enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true',
-                            subView: $stateParams.subView == 'true'
-                        };
+                            subView: $stateParams.subView == 'true',
+                            calculatedMetrics: angular.fromJson($stateParams.calculatedMetrics)
+                    }
+                        ;
                     },
                     publishers: function () {
                         return null
@@ -175,7 +180,7 @@
                 }
             })
             .state('unifiedReport.report.detail', {
-                url: '/detail?id&masterReportView&subView&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&name&publisher&formats&fieldTypes&startDate&endDate&preCalculateTable&largeReport&availableToRun&availableToChange&isShowDataSetName&page&limit&searchs&enableCustomDimensionMetric',
+                url: '/detail?id&masterReportView&subView&reportViewDataSets&filters&transforms&weightedCalculations&showInTotal&joinBy&requireJoin&name&publisher&formats&fieldTypes&startDate&endDate&preCalculateTable&largeReport&availableToRun&availableToChange&isShowDataSetName&page&limit&searchs&enableCustomDimensionMetric&calculatedMetrics',
                 params: {
                     uniqueRequestCacheBuster: null
                 },
@@ -226,6 +231,7 @@
                             formats: angular.fromJson($stateParams.formats),
                             filters: angular.fromJson($stateParams.filters),
                             joinBy: angular.fromJson($stateParams.joinBy) || null,
+                            requireJoin: $stateParams.requireJoin == 'true',
                             name: $stateParams.name,
                             publisher: $stateParams.publisher,
                             isShowDataSetName: $stateParams.isShowDataSetName == 'true',
@@ -234,7 +240,8 @@
                             availableToRun: $stateParams.availableToRun == 'true',
                             availableToChange: $stateParams.availableToChange == 'true',
                             enableCustomDimensionMetric: $stateParams.enableCustomDimensionMetric == 'true',
-                            subView: $stateParams.subView == 'true'
+                            subView: $stateParams.subView == 'true',
+                            calculatedMetrics: angular.fromJson($stateParams.calculatedMetrics)
                         };
                     },
                     reportGroup: /* @ngInject */ function (unifiedReportBuilder, reportView, $stateParams) {
