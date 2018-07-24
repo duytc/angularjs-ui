@@ -170,6 +170,8 @@
                                 type: calculatedField.type
                             });
                         }
+
+                        calculatedField.displayName =  calculatedField.field;
                     }
 
                     function manageShowTotalFieldInCalculatedFieldList() {
