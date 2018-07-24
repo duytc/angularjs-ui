@@ -99,7 +99,6 @@
         </form>
     </div>
 </div>
-
 <section class="panel panel-default">
     <div class="panel-heading">
         <strong> {{ reportView.name || 'Report Detail' }} </strong>
@@ -133,15 +132,29 @@
                         <span class="glyphicon" ng-show="isShow(column)" ng-class="{'glyphicon-chevron-up':!reverse,'glyphicon-chevron-down':reverse}"></span>
                     </th>
                 </tr>
+                <tr>
+                    <td ng-repeat="column in columnPositions track by $index">
+                        <input style="height: 34px;" ng-if="!isUseDropdown(column)" type="text" ng-model="search[column]" ng-change="searchReportView()">
+                        <ui-select multiple ng-if="isUseDropdown(column)"
+                                   ng-model="search[column]"
+                                   on-select="selectAdNetwork($item)"
+                                   server-error reset-search-input="'false'">
+                            <ui-select-match placeholder="">
+                                {{ $item.label }}
+                            </ui-select-match>
+                            <ui-select-choices infinite-scroll="addMoreDimensionItems(column)"
+                                               infinite-scroll-distance="1"
+                                               refresh-delay="500"
+                                               refresh="searchDimensionValue($select.search)"
+                                               repeat="dimensionValue.key as dimensionValue in dropdownListValues[column]">
+                                {{ dimensionValue.label }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </td>
+                </tr>
                 </thead>
 
                 <tbody>
-                <tr>
-                    <td ng-repeat="column in columnPositions track by $index">
-                        <input type="text" ng-model="search[column]" ng-change="searchReportView()">
-                    </td>
-                </tr>
-
                 <tr dir-paginate="report in reports | itemsPerPage:tableConfig.itemsPerPage">
                     <td ng-repeat="column in columnPositions track by $index">
                         <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>

@@ -131,5 +131,12 @@
            </div>
        </div>
 
+       <div class="form-group" ng-if="isDimension(filter.field)">
+           <label for="useDropdown" class="col-sm-2 control-label">Use Dropdown</label>
+           <div class="col-sm-10">
+               <label class="ui-checkbox"><input ng-disabled="disabled && filter.filterOld" server-error name="useDropdown" type="checkbox" ng-model="filter.useDropdown" id="useDropdown"><span></span></label>
+           </div>
+       </div>
+
    </div>
 </div>

@@ -345,6 +345,23 @@
                         params.showDataSetName = reportView.isShowDataSetName;
 
                         return UnifiedReportViewManager.one('datasets').get(params);
+                    },
+                    dropdownListValues: function (UnifiedReportViewManager) {
+                        var paramsDropdown = {
+                            search: '',
+                            page: 1,
+                            limit: 10
+                        };
+
+                        UnifiedReportViewManager.one('distinctdimensionvalues').get(paramsDropdown)
+                            .then(function (values) {
+                                console.log(values);
+                        });
+
+                        return {
+                            'country_18': ['VN', 'United States', 'Canada', 'VN1', 'United States1', 'Canada1', 'VN2', 'United States2', 'Canada2'],
+                            'domain_18': ['site1.com', 'site2.com']
+                        }
                     }
                 },
                 ncyBreadcrumb: {

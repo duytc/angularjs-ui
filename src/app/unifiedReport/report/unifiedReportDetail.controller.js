@@ -5,11 +5,14 @@
         .controller('UnifiedReportDetail', UnifiedReportDetail);
 
     function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView,
-                                 dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView,
+                                 dataSources, reportGroup, dataService, dropdownListValues, unifiedReportBuilder, getDateReportView,
                                  AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT,
-                                 sessionStorage, userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,reportViewUtil,
+                                 userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,reportViewUtil,
                                  COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_NUMBER) {
         const maxEmailAllowed = 10;
+        const LIMIT_GET_DROPDOWN_LIST = 10;
+
+        $scope.dropdownListValues = prepareDropdownFilter(dropdownListValues, true);
 
         // reset css for id app
         var app = angular.element('#app');
@@ -142,6 +145,11 @@
         $scope.isShowCustomFilter = isShowCustomFilter;
         $scope.isShowDatasetHasUserProvidedFilterExceptDate = isShowDatasetHasUserProvidedFilterExceptDate;
         $scope.isShowHelpBlock = isShowHelpBlock;
+
+        //Dropdown filter
+        $scope.isUseDropdown = isUseDropdown;
+        $scope.addMoreDimensionItems = addMoreDimensionItems;
+        $scope.searchDimensionValue = searchDimensionValue;
 
         _buildCustomFilters();
         /**
@@ -984,6 +992,73 @@
             }
 
             return false
+        }
+
+        //DROPDOWN FILTER
+        function isUseDropdown(column) {
+            var isUserDropDown = false;
+            var dataSets = _.clone(reportView.reportViewDataSets);
+
+            for (var i = 0; i < dataSets.length; i++) {
+                if(_.isArray(dataSets[i].filters))
+                    for (var j = 0; j < dataSets[i].filters.length; j++) {
+                        var colName = dataSets[i].filters[j].field +'_'+ dataSets[i].dataSet;
+
+                        if(colName == column && !!dataSets[i].filters[j].useDropdown) {
+                            isUserDropDown = true;
+                            break;
+                        }
+                    }
+
+                if(!!isUserDropDown)
+                    break;
+            }
+
+            return isUserDropDown;
+        }
+
+        function addMoreDimensionItems(column) {
+            console.log(11111);return;
+            var page = Math.ceil((($scope.dropdownListValues[column].length -1) / LIMIT_GET_DROPDOWN_LIST) + 1);
+
+            return searchDimensionValue(false, page + 1);
+        }
+
+        function prepareDropdownFilter(list, searchQuery) {
+            var dropdownList = _.clone(list);
+            for(var key in list) {
+                if(!!searchQuery) {
+                    dropdownList[key] = [];
+                    dropdownList[key].push({
+                        key: 'All',
+                        label: 'All'
+                    });
+                }
+
+                _.each(list[key], function (item) {
+                    dropdownList[key].push({
+                        key: item,
+                        label: item
+                    });
+                })
+            }
+
+            return dropdownList;
+        }
+
+        function searchDimensionValue(searchQuery, page) {
+            var params = {
+                search: searchQuery,
+                page: page || 1,
+                limit: LIMIT_GET_DROPDOWN_LIST
+            };
+
+            return UnifiedReportViewManager.one('distinctdimensionvalues').get(params)
+                .then(function (values) {
+                    if(!_.isEmpty(values)) {
+                        $scope.dropdownListValues = prepareDropdownFilter(values, searchQuery);
+                    }
+            });
         }
 
         $scope.$watch(function () {
