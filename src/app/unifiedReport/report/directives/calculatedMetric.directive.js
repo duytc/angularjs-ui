@@ -164,9 +164,9 @@
 
                         if (_.isUndefined(element)) {
                             scope.fieldsCalculatedField.push({
-                                key: calculatedField.name,
-                                label: calculatedField.name,
-                                root: calculatedField.name,
+                                key: calculatedField.field,
+                                label: calculatedField.field,
+                                root: calculatedField.field,
                                 type: calculatedField.type
                             });
                         }
