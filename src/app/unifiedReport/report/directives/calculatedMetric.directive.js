@@ -154,6 +154,16 @@
                             }
                         });
 
+                        angular.forEach(scope.calculatedMetrics, function (calculatedMetric) {
+                            if (!!calculatedMetric.field && _.findIndex(scope.fieldsCalculatedField, {key: calculatedMetric.field}) == -1) {
+                                scope.fieldsCalculatedField.push({
+                                    key: field.field,
+                                    label: field.field,
+                                    root: field.field,
+                                    type: field.type
+                                });
+                            }
+                        });
                         return scope.fieldsCalculatedField;
                     }
 
