@@ -433,6 +433,10 @@
                         return (calculatedMetric.calculationType == scope.calculatedMetricExressionType.useExpression);
                     }
 
+                    scope.getMentioId = function(calcMetric) {
+                        return 'mentioId' + calcMetric.id;
+                    };
+
                     directive || (directive = $compile(content));
                     element.append(directive(scope, function ($compile) {
                         return $compile;

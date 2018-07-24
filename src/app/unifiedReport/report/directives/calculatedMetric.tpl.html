@@ -90,12 +90,12 @@
                                           mentio-select-not-found="true"
                                           class="editor form-control"
                                           rows="5"
-                                          mentio-id="'calculationExpression'"
+                                          mentio-id= "getMentioId(calculatedMetric)"
                                           ng-model="calculatedMetric.expression">
                             </textarea>
 
                             <mentio-menu
-                                    mentio-for="'calculationExpression'"
+                                    mentio-for= "getMentioId(calculatedMetric)"
                                     mentio-trigger-char="'$'"
                                     mentio-items="buildInMacros | filter:label:typedTerm"
                                     mentio-search="searchMacros(term)"
@@ -103,7 +103,7 @@
                             </mentio-menu>
 
                             <mentio-menu
-                                    mentio-for="'calculationExpression'"
+                                    mentio-for= "getMentioId(calculatedMetric)"
                                     mentio-trigger-char="'['"
                                     mentio-items="fieldsCalculatedFieldCopy | filter:label:typedTerm"
                                     mentio-search="searchField(term)"
