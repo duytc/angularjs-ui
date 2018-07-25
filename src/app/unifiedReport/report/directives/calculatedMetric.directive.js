@@ -154,7 +154,6 @@
                             }
                         });
 
-                        console.log('scope.calculatedMetrics', scope.calculatedMetrics);
                         angular.forEach(scope.calculatedMetrics, function (calculatedMetric) {
                             if (!!calculatedMetric.field && _.findIndex(scope.fieldsCalculatedField, {key: calculatedMetric.field}) == -1) {
                                 scope.fieldsCalculatedField.push({
