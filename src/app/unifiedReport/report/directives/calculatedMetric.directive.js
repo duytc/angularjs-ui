@@ -92,7 +92,9 @@
 
                     scope.removeCalculatedMetric = removeCalculatedMetric;
                     scope.addCalculatedMetric = addCalculatedMetric;
+                    scope.selectCalculatedMetricExpressionType = selectCalculatedMetricExpressionType;
                     scope.isExpressionType = isExpressionType;
+                    scope.isUserDefinedType = isUserDefinedType;
                     scope.getFieldNames = getFieldNames;
                     scope.getTypesFieldNumber = getTypesFieldNumber;
                     scope.addSpaceBeforeAndAfterOperator = addSpaceBeforeAndAfterOperator;
@@ -435,12 +437,24 @@
                             calculationType: scope.calculatedMetricExressionType.useExpression,
                             expression: null,
                             openStatus: true,
+                            isVisible: true,
                             id: length
                         });
                     }
 
+                    function selectCalculatedMetricExpressionType(index, calculatedMetricExpressionType) {
+                        if (_.has(scope.calculatedMetrics, index) && calculatedMetricExpressionType == scope.calculatedMetricExressionType.userDefined) {
+                            // reset default value
+                            scope.calculatedMetrics[index].isVisible = true;
+                        }
+                    }
+
                     function isExpressionType(calculatedMetric) {
                         return (calculatedMetric.calculationType == scope.calculatedMetricExressionType.useExpression);
+                    }
+
+                    function isUserDefinedType(calculatedMetric) {
+                        return (calculatedMetric.calculationType == scope.calculatedMetricExressionType.userDefined);
                     }
 
                     scope.getMentioId = function(calcMetric) {
