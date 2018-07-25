@@ -97,7 +97,7 @@
             </accordion>
         </form>
         <form name="calculatedMetrics" class="form-horizontal" role="form" novalidate>
-            <accordion close-others="true" ng-show="reportView.calculatedMetrics">
+            <accordion close-others="true" ng-show="isShowCalculatedMetric()">
                 <accordion-group class="notUpperCase" is-open="false">
                     <accordion-heading>
                         <div ng-init="openStatus = false" ng-click="openStatus=!openStatus">
@@ -107,7 +107,7 @@
                     </accordion-heading>
 
                     <div class="row">
-                        <div class="col-md-{{getColumnCompatible(reportView.calculatedMetrics)}}" ng-if="isAllowUserDefinedMetrics(field)" ng-repeat="field in reportView.calculatedMetrics track by $index">
+                        <div class="{{ getColumnCompatible(reportView.calculatedMetrics) }}" ng-if="isAllowUserDefinedMetrics(field)" ng-repeat="field in reportView.calculatedMetrics track by $index">
                             <div class="expressions-group">
                                 <div class="form-group select-connect-data-source">
                                     <label class="col-sm-4 control-label">{{ field.displayName || field.field }} Value</label>
@@ -121,7 +121,7 @@
                     </div>
                 </accordion-group>
             </accordion>
-            <accordion close-others="true" ng-show="reportView.calculatedMetrics">
+            <accordion close-others="true" ng-show="isShowCalculatedMetricResults()">
                 <accordion-group class="notUpperCase" is-open="false">
                     <accordion-heading>
                         <div ng-init="openStatus = false" ng-click="openStatus=!openStatus">

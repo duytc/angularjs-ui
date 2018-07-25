@@ -184,6 +184,9 @@
         $scope.getColumnCompatible = getColumnCompatible;
         $scope.getDisplayNameMetric = getDisplayNameMetric;
         $scope.isAllowUserDefinedMetrics = isAllowUserDefinedMetrics;
+        $scope.isShowCalculatedMetric = isShowCalculatedMetric;
+        $scope.isShowCalculatedMetricResults = isShowCalculatedMetricResults;
+
 
         _buildCustomFilters();
         /**
@@ -208,8 +211,7 @@
         }
 
         function getColumnCompatible(items) {
-            var size = _.size(items);
-            return size < 2 ? 12 : (size < 3 ? 6 : 4);
+            return setClassName(items);
         }
 
         function getCalculatedMetrics(field) {
@@ -217,6 +219,14 @@
                 return;
             $scope.isCalculatedMetricsComplete = false;
             return generateReport($scope.selected.date, $scope.reportView);
+        }
+
+        function isShowCalculatedMetricResults() {
+            return !_.isEmpty($scope.reportView.calculatedMetricsResult);
+        }
+
+        function isShowCalculatedMetric() {
+            return !_.isEmpty($scope.reportView.calculatedMetrics);
         }
 
         function getDisplayNameMetric(key) {
@@ -287,8 +297,13 @@
             }
             return query;
         }
-        function setClassName() {
-            var totalItem = Object.keys($scope.reportGroup.total).length;
+        function setClassName(data) {
+
+            if(data) {
+                var totalItem = _.isObject(data) ? Object.keys($scope.reportGroup.total).length : (_.isArray(data) ? _.size(data) : 0);
+            } else {
+                var totalItem = Object.keys($scope.reportGroup.total).length;
+            }
 
             if(totalItem == 1) {
                 return 'col-md-12'
