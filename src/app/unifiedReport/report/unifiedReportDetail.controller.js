@@ -6,7 +6,7 @@
 
     function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView,
                                  dataSources, reportGroup, dataService, dropdownListValues, unifiedReportBuilder, getDateReportView,
-                                 AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT,
+                                 AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL,
                                  userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,reportViewUtil,
                                  COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_NUMBER) {
         const maxEmailAllowed = 10;
@@ -1052,12 +1052,20 @@
                 limit: LIMIT_GET_DROPDOWN_LIST
             };
 
-            return UnifiedReportViewManager.one('distinctdimensionvalues').get(params)
-                .then(function (values) {
-                    if(!_.isEmpty(values)) {
-                        $scope.dropdownListValues = prepareDropdownFilter(values, searchQuery);
+            return dataService.makeHttpPOSTRequest('', params, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL + '/distinctdimensionvalues')
+                .then(
+                    function (values) {
+                        if(!_.isEmpty(values)) {
+                            $scope.dropdownListValues = prepareDropdownFilter(values, searchQuery);
+                        }
+                    },
+                    function (error) {
+                        AlertService.replaceAlerts({
+                            type: 'error',
+                            message: error.data.message
+                        });
                     }
-            });
+            );
         }
 
         $scope.$watch(function () {

@@ -346,14 +346,20 @@
 
                         return UnifiedReportViewManager.one('datasets').get(params);
                     },
-                    dropdownListValues: function (UnifiedReportViewManager) {
+                    dropdownListValues: function (UnifiedReportViewManager, dataService, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL) {
                         var params = {
                             search: '',
                             page: 1,
                             limit: 10
                         };
 
-                        return UnifiedReportViewManager.one('distinctdimensionvalues').get(params);
+                        return dataService.makeHttpPOSTRequest('', params, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL + '/distinctdimensionvalues')
+                            .catch(function(response) {
+                                return {
+                                    status: response.status,
+                                    message: response.data.message
+                                }
+                            });
                     }
                 },
                 ncyBreadcrumb: {

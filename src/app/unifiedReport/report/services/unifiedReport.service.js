@@ -10,6 +10,7 @@
             getPlatformReport: getPlatformReport,
             parseFieldNameByDataSet: parseFieldNameByDataSet,
             getDataSetsFromReportView: getDataSetsFromReportView,
+            getDistinct: getDataSetsFromReportView,
 
             summaryFieldsReportView: summaryFieldsReportView
         };
