@@ -222,11 +222,15 @@
         }
 
         function isShowCalculatedMetricResults() {
-            return !_.isEmpty($scope.reportView.calculatedMetricsResult);
+            return !_.isEmpty($scope.calculatedMetricsResult);
         }
 
         function isShowCalculatedMetric() {
-            return !_.isEmpty($scope.reportView.calculatedMetrics);
+            return !_.isEmpty($scope.reportView.calculatedMetrics) && !isNotContainsUserDefined();
+        }
+
+        function isNotContainsUserDefined() {
+            return _.isEmpty(_.findWhere($scope.reportView.calculatedMetrics, {calculationType: CALCULATED_METRIC_USER_DEFINED}));
         }
 
         function getDisplayNameMetric(key) {
