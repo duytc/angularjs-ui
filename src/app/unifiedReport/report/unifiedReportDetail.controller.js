@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('tagcade.unifiedReport.report')
-        .controller('UnifiedReportDetail', UnifiedReportDetail);
+        .controller('UnifiedReportDetail', UnifiedReportDetail)
 
     function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView,
                                  dataSources, reportGroup, dataService, dropdownListValues, unifiedReportBuilder, getDateReportView,
@@ -1002,7 +1002,7 @@
             for (var i = 0; i < dataSets.length; i++) {
                 if(_.isArray(dataSets[i].filters))
                     for (var j = 0; j < dataSets[i].filters.length; j++) {
-                        var colName = dataSets[i].filters[j].field +'_'+ dataSets[i].dataSet;
+                        var colName = dataSets[i].filters[j].field +'_'+ (_.isObject(dataSets[i].dataSet) ? dataSets[i].dataSet.id : dataSets[i].dataSet);
 
                         if(colName == column && !!dataSets[i].filters[j].useDropdown) {
                             isUserDropDown = true;
@@ -1018,10 +1018,9 @@
         }
 
         function addMoreDimensionItems(column) {
-            console.log(11111);return;
             var page = Math.ceil((($scope.dropdownListValues[column].length -1) / LIMIT_GET_DROPDOWN_LIST) + 1);
 
-            return searchDimensionValue(false, page + 1);
+            return searchDimensionValue(false, page);
         }
 
         function prepareDropdownFilter(list, searchQuery) {

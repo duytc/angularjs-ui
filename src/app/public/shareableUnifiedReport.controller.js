@@ -5,10 +5,13 @@
         .controller('shareableUnifiedReport', shareableUnifiedReport);
 
     function shareableUnifiedReport($scope, $stateParams, $translate, $modal, exportExcelService,reportViewUtil,
-                                    reports, unifiedReportFormatReport, DateFormatter, AlertService,
+                                    reports, dropdownListValues, unifiedReportFormatReport, UnifiedReportViewManager, DateFormatter, AlertService,
                                     AtSortableService, dataService, API_UNIFIED_PUBLIC_END_POINT,
                                     historyStorage, HISTORY_TYPE_PATH,COMPARISON_TYPES_FILTER_CONNECT_TEXT,
                                     COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_NUMBER) {
+        const LIMIT_GET_DROPDOWN_LIST = 10;
+        $scope.dropdownListValues = prepareDropdownFilter(dropdownListValues, true);
+
         // reset css for id app
         var app = angular.element('#app');
         app.css({position: 'inherit'});
@@ -131,6 +134,11 @@
         $scope.isDatasetHasUserProvidedFilterExceptDate = isDatasetHasUserProvidedFilterExceptDate;
         $scope.isShowHelpBlock = isShowHelpBlock;
         $scope.showReportDetail = showReportDetail;
+
+        //Dropdown filter
+        $scope.isUseDropdown = isUseDropdown;
+        $scope.addMoreDimensionItems = addMoreDimensionItems;
+        $scope.searchDimensionValue = searchDimensionValue;
 
         function isShowHelpBlock(customFilter) {
             return reportViewUtil.isShowHelpBlock(customFilter)
@@ -709,6 +717,72 @@
             }
 
             return false
+        }
+
+        //DROPDOWN FILTER
+        function isUseDropdown(column) {
+            var isUserDropDown = false;
+            var dataSets = _.clone($scope.reportView.reportViewDataSets);
+
+            for (var i = 0; i < dataSets.length; i++) {
+                if(_.isArray(dataSets[i].filters))
+                    for (var j = 0; j < dataSets[i].filters.length; j++) {
+                        var colName = dataSets[i].filters[j].field +'_'+ (_.isObject(dataSets[i].dataSet) ? dataSets[i].dataSet.id : dataSets[i].dataSet);
+
+                        if(colName == column && !!dataSets[i].filters[j].useDropdown) {
+                            isUserDropDown = true;
+                            break;
+                        }
+                    }
+
+                if(!!isUserDropDown)
+                    break;
+            }
+
+            return isUserDropDown;
+        }
+
+        function addMoreDimensionItems(column) {
+            var page = Math.ceil((($scope.dropdownListValues[column].length -1) / LIMIT_GET_DROPDOWN_LIST) + 1);
+
+            return searchDimensionValue(false, page);
+        }
+
+        function prepareDropdownFilter(list, searchQuery) {
+            var dropdownList = _.clone(list);
+            for(var key in list) {
+                if(!!searchQuery) {
+                    dropdownList[key] = [];
+                    dropdownList[key].push({
+                        key: 'All',
+                        label: 'All'
+                    });
+                }
+
+                _.each(list[key], function (item) {
+                    dropdownList[key].push({
+                        key: item,
+                        label: item
+                    });
+                })
+            }
+
+            return dropdownList;
+        }
+
+        function searchDimensionValue(searchQuery, page) {
+            var params = {
+                search: searchQuery,
+                page: page || 1,
+                limit: LIMIT_GET_DROPDOWN_LIST
+            };
+
+            return UnifiedReportViewManager.one('distinctdimensionvalues').get(params)
+                .then(function (values) {
+                    if(!_.isEmpty(values)) {
+                        $scope.dropdownListValues = prepareDropdownFilter(values, searchQuery);
+                    }
+                });
         }
 
         $scope.$watch(function () {

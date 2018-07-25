@@ -157,7 +157,22 @@
                 <tbody>
                     <tr>
                         <td ng-repeat="column in columnPositions track by $index">
-                            <input type="text" ng-model="search[column]" ng-change="searchReportView()">
+                            <input style="height: 34px;" ng-if="!isUseDropdown(column)" type="text" ng-model="search[column]" ng-change="searchReportView()">
+                            <ui-select multiple ng-if="isUseDropdown(column)"
+                                       ng-init="search[column] = ['All']"
+                                       ng-model="search[column]"
+                                       on-select="searchReportView()"
+                                       server-error reset-search-input="'false'">
+                                <ui-select-match placeholder="">
+                                    {{ $item.label || $select.label}}
+                                </ui-select-match>
+                                <ui-select-choices scroll="addMoreDimensionItems(column)"
+                                                   refresh-delay="500" id="reload-{{column}}"
+                                                   refresh="searchDimensionValue($select.search)"
+                                                   repeat="dimensionValue.key as dimensionValue in dropdownListValues[column]">
+                                    {{ dimensionValue.label }}
+                                </ui-select-choices>
+                            </ui-select>
                         </td>
                     </tr>
 

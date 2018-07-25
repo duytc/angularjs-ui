@@ -29,6 +29,7 @@
         'tagcade.blocks.placementRules',
         'tagcade.blocks.confirmClick',
         'tagcade.blocks.pagination',
+        'tagcade.blocks.scroll',
 
         'tagcade.core.bootstrap',
         'tagcade.core.auth',
