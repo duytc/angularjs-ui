@@ -51,7 +51,7 @@
                         return scope.selectedFields;
                     }, function () {
                         scope.fieldNames = scope.selectedFields;
-                        selectTypeCalculatedField('number');
+                        selectTypeCalculatedField('all');
                     }, true);
 
                     scope.$watch(function () {
@@ -167,6 +167,20 @@
                             }
                         });
                         return scope.fieldsCalculatedField;
+                    }
+
+                    function removeJoinFields(dates) {
+                        var joinBys = scope.reportBuilder.joinBy || [];
+
+                        _.each(joinBys, function (joinBy) {
+                            _.each((joinBy.joinFields || []), function (joinField) {
+                                dates.splice(_.findIndex(dates, function(date) {
+                                    return date.root == joinField.field;
+                                }), 1);
+                            })
+                        })
+
+                        return dates;
                     }
 
                     function addThisFieldToSelectedList(calculatedField) {
@@ -352,6 +366,9 @@
                                 dates.push(newDate);
                             };
                         });
+
+                        //remove joinFields dates before show
+                        dates = removeJoinFields(dates);
 
                         angular.forEach(dates, function (date) {
                             var hasExist = _.find(scope.fieldsCalculatedField, function (element) {
