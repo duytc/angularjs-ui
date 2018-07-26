@@ -205,7 +205,7 @@
                         var aliasShowTotalName = _getFieldsInShowInTotal();
                         angular.forEach(aliasShowTotalName, function (oneObject) {
                             var elementIndex = _.findIndex(scope.fieldsCalculatedField, function (calculatedField) {
-                                return (calculatedField.key == oneObject.key);
+                                return (calculatedField.rootKey == oneObject.rootKey);
                             });
 
                             if(elementIndex !== -1)
@@ -227,7 +227,8 @@
                                     var originalName = !_.isArray(oneObject.aliasName) ? oneObject.originalName : _.first(oneObject.aliasName).originalName;
 
                                     return {
-                                        key: originalName,
+                                        rootKey: originalName,
+                                        key: aliasName,
                                         label: aliasName,
                                         root: aliasName,
                                         type: 'decimal'
@@ -290,9 +291,12 @@
                         if (!expression) {
                             return null;
                         }
-                        expression = expression.replace(/\s/g, '');
 
-                        expression = expression.replace(/[\=]/g, ' = <div class="color-danger">');
+                        expression = expression.replace(/\s/g, '&nbsp;');
+                        expression = expression.replace(/[[\\]/g, '<div class="color-danger">[');
+                        expression = expression.replace(/[\]]/g, ']</div>');
+
+                        /*expression = expression.replace(/[\=]/g, ' = <div class="color-danger">');
                         expression = expression.replace(/[\+]/g, '</div> &nbsp + &nbsp <div class="color-danger">');
                         expression = expression.replace(/[\*]/g, '</div> &nbsp * &nbsp <div class="color-danger">');
                         expression = expression.replace(/\-\[/g, '</div> &nbsp - &nbsp <div class="color-danger">[');
@@ -300,7 +304,7 @@
                         expression = expression.replace(/\-\(/g, '</div> &nbsp - &nbsp <div class="color-danger">(');
                         expression = expression.replace(/\/\[/g, '</div> &nbsp \/ &nbsp <div class="color-danger">[');
                         expression = expression.replace(/\/\$/g, '</div> &nbsp \/ &nbsp <div class="color-danger">$');
-                        expression = expression.replace(/\/\(/g, '</div> &nbsp \/ &nbsp <div class="color-danger">(');
+                        expression = expression.replace(/\/\(/g, '</div> &nbsp \/ &nbsp <div class="color-danger">(');*/
 
                         return expression;
                     }

@@ -4,7 +4,7 @@
 
 <div id="form-date-range-selector" class="panel panel-default" ng-if="hasFilterDate() || reportView.enableCustomDimensionMetric">
     <div class="panel-body">
-        <form name="reportSelectorForm" class="form-inline" role="form" ng-submit="generateReport(selected.date)" novalidate>
+        <form name="reportSelectorForm" class="form-inline" role="form" novalidate>
             <div class="dimension-metrics-filter">
                 <div class="form-group" ng-if="hasFilterDate()">
                     <label for="inputDateRange">{{ 'DASHBOARD_MODULE.DATE_RANGE' | translate }}</label>
@@ -142,7 +142,7 @@
                 </accordion-group>
             </accordion>
         </form>
-        <button type="submit" class="btn btn-primary no-margin-top" ng-if="isShowCustomFilter()"
+        <button type="submit" class="btn btn-primary no-margin-top" ng-if="isShowCustomFilter()" ng-click="generateReport(selected.date)"
                 ng-disabled="!enableSelectDaterange() || !reportSelectorForm.$valid">Run Report</button>
     </div>
 </div>
