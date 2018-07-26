@@ -130,7 +130,7 @@
                         </div>
                     </accordion-heading>
                     <div class="row">
-                        <div class="col-md-{{getColumnCompatible(calculatedMetricsResult)}}" ng-repeat="result in calculatedMetricsResult | orderBy:'displayName'">
+                        <div class="{{getColumnCompatible(calculatedMetricsResult)}}" ng-repeat="result in calculatedMetricsResult | orderBy:'displayName'">
                             <section class="panel panel-box info-box">
                                 <div class="panel-item bg-reverse">
                                     <p class="size-h1 no-margin ng-binding">{{result.value || 0}}</p>

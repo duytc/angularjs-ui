@@ -204,13 +204,14 @@
                         //Add field in show in total
                         var aliasShowTotalName = _getFieldsInShowInTotal();
                         angular.forEach(aliasShowTotalName, function (oneObject) {
-                            var element = _.find(scope.fieldsCalculatedField, function (calculatedField) {
-                                return (calculatedField.label == oneObject.label);
+                            var elementIndex = _.findIndex(scope.fieldsCalculatedField, function (calculatedField) {
+                                return (calculatedField.key == oneObject.key);
                             });
 
-                            if (_.isUndefined(element)) {
-                                scope.fieldsCalculatedField.push(oneObject);
-                            }
+                            if(elementIndex !== -1)
+                                scope.fieldsCalculatedField.splice(elementIndex, 1);
+
+                            scope.fieldsCalculatedField.push(oneObject);
                         });
                     }
 
@@ -219,19 +220,23 @@
                         var showInTotalFields = [];
 
                         angular.forEach(showInTotal, function (oneObject) {
-                            var aliasNames = oneObject.aliasName;
-                            var fields = _.map(aliasNames, function (oneObject) {
-                                return {
-                                    key: oneObject.aliasName,
-                                    label: oneObject.aliasName,
-                                    root: oneObject.aliasName,
-                                    type: 'decimal'
-                                };
-                            });
+                                var aliasNames = oneObject.aliasName;
+                                var fields = _.map(aliasNames, function (oneObject) {
+                                    oneObject = !_.isArray(oneObject) ? oneObject : _.first(oneObject);
+                                    var aliasName = !_.isArray(oneObject.aliasName) ? oneObject.aliasName : _.first(oneObject.aliasName).aliasName;
+                                    var originalName = !_.isArray(oneObject.aliasName) ? oneObject.originalName : _.first(oneObject.aliasName).originalName;
 
-                            angular.forEach(fields, function (field) {
-                                showInTotalFields.push(field);
-                            });
+                                    return {
+                                        key: originalName,
+                                        label: aliasName,
+                                        root: aliasName,
+                                        type: 'decimal'
+                                    };
+                                });
+
+                                angular.forEach(fields, function (field) {
+                                    showInTotalFields.push(field);
+                                });
                         });
 
                         return showInTotalFields;

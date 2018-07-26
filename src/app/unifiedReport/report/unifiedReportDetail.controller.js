@@ -302,9 +302,8 @@
             return query;
         }
         function setClassName(data) {
-
             if(data) {
-                var totalItem = _.isObject(data) ? Object.keys($scope.reportGroup.total).length : (_.isArray(data) ? _.size(data) : 0);
+                var totalItem = !_.isArray(data) ? Object.keys(data).length : _.size(data);
             } else {
                 var totalItem = Object.keys($scope.reportGroup.total).length;
             }
