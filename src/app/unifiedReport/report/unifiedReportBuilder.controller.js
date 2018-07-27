@@ -219,7 +219,7 @@
 
         function updateSelectedAndAddedFieldsInTransform() {
             $scope.selectedAndAddedFieldsInTransform = [];
-            var fields = _getAllFieldInTransForm().concat($scope.selectedFields);
+            var fields = _getAllFieldInTransForm().concat($scope.selectedFields).concat(_getAllFieldsInCalculatedMetrics());
             angular.forEach(fields, function (metric) {
                 var index = _.findIndex($scope.selectedAndAddedFieldsInTransform, function (field) {
                     return field.key == metric.key
@@ -750,7 +750,7 @@
             $scope.summaryFieldTotal = [];
             var oldSummaryFieldTotalObject = angular.copy($scope.summaryFieldTotalObject);
             $scope.summaryFieldTotalObject = [];
-            angular.forEach(_getAllFieldInTransForm().concat($scope.selectedFields), function (dm) {
+            angular.forEach(_getAllFieldInTransForm().concat($scope.selectedFields).concat(_getAllFieldsInCalculatedMetrics()), function (dm) {
                 // Some fields are configured before. Reload it.
                 if (oldSummaryFieldTotalObject) {
                     var found = oldSummaryFieldTotalObject.find(function (old) {
