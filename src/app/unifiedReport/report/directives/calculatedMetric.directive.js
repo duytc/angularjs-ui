@@ -354,6 +354,8 @@
                             }
                         });
 
+                        _pushFilterDataRangeToMacros();
+
                         angular.forEach(scope.buildInMacros, function (item) {
                             if (!!item && !!item.label && (typeof item.label == 'string') && item.label.toUpperCase().indexOf(term.toUpperCase()) >= 0) {
                                 fieldList.push(item);
@@ -362,6 +364,27 @@
 
                         scope.buildInMacros = fieldList;
                     };
+
+                    function _pushFilterDataRangeToMacros() {
+                        var isDateRangeFilter = false;
+                        _.each(scope.reportBuilder.reportViewDataSets, function (dataSet) {
+                            isDateRangeFilter = !isDateRangeFilter ? !_.isEmpty(_.find(dataSet.filters, function (filter) {
+                                var isDateRange = (filter.type == 'date' || filter.type == 'datetime') && !!filter.userProvided;
+                                return isDateRange;
+                            })) : isDateRangeFilter;
+                        });
+
+                        if(!!isDateRangeFilter) {
+                            _.each(['startDate', 'endDate'], function(item) {
+                                scope.buildInMacros.push({
+                                    key: item,
+                                    label: item,
+                                    root: item,
+                                    type: 'date'
+                                });
+                            });
+                        }
+                    }
 
                     function _pushDateFieldToList() {
                         var dates = [];
