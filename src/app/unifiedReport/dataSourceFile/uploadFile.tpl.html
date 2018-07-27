@@ -77,7 +77,18 @@
                                             <div class="form-group" ng-if="param.key == 'dateTime' || param.key == 'date'">
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                    <input date-range-picker ng-required="true" options="datePickerOpts" class="form-control date-picker" type="text" id="inputStartDate" ng-model="param.value">
+                                                    <input  ng-required="true" class="form-control date-picker" type="text" name="inputStartDate" ng-model="parent[param.$$hashKey].uploadDate">
+                                                    <script>
+                                                        $(function(){
+                                                            $('input[name="inputStartDate"]').daterangepicker({
+                                                                singleDatePicker: true,
+                                                                showDropdowns: true,
+                                                                minYear: 1901,
+                                                                maxYear: parseInt(moment().format('YYYY'),10)
+                                                            }, function(start, end, label) {
+                                                            });
+                                                        });
+                                                    </script>
                                                 </div>
                                             </div>
 

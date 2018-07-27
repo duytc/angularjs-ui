@@ -398,6 +398,7 @@
 
             var reportBuilder = _refactorJson($scope.reportBuilder);
             delete reportBuilder.publisher;
+            delete reportBuilder.sharedKeysConfig;
             _removeDataSetNameFromParam(reportBuilder);
             var reportViewSave = UnifiedReportViewManager.one(reportBuilder.id).patch(reportBuilder);
             reportViewSave
@@ -460,6 +461,7 @@
             }
 
             if (save) {
+                delete reportBuilder.sharedKeysConfig;
                 _removeDataSetNameFromParam(reportBuilder);
                 var reportViewSave = (((!$scope.isNew && !$scope.subView) || angular.isObject($scope.reportBuilder.masterReportView))
                     || $scope.reportBuilder.masterReportView != $scope.reportBuilder.id)
