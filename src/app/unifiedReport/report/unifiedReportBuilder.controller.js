@@ -750,7 +750,7 @@
             $scope.summaryFieldTotal = [];
             var oldSummaryFieldTotalObject = angular.copy($scope.summaryFieldTotalObject);
             $scope.summaryFieldTotalObject = [];
-            angular.forEach(_getAllFieldInTransForm().concat($scope.selectedFields).concat(_getAllFieldsInCalculatedMetrics()), function (dm) {
+            angular.forEach(_getAllFieldInTransForm().concat($scope.selectedFields), function (dm) {
                 // Some fields are configured before. Reload it.
                 if (oldSummaryFieldTotalObject) {
                     var found = oldSummaryFieldTotalObject.find(function (old) {
@@ -974,7 +974,7 @@
             _.each($scope.reportBuilder.calculatedMetrics, function (calMetric) {
                 if(!!calMetric.isVisible) {
                     calculatedMetrics.push({
-                        label: calMetric.displayName || calMetric.field,
+                        label: calMetric.field,
                         key: calMetric.field,
                         root: calMetric.field,
                         type: calMetric.type
