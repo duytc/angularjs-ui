@@ -5,7 +5,7 @@
         .directive('calculatedMetric', calculatedMetric)
     ;
 
-    function calculatedMetric($compile, $modal, _, AddCalculatedField, CONNECT_TIMEZONES, COMPARISON_TYPES_ADD_FIELD_VALUE, COMPARISON_TYPES_CALCULATED_DEFAULT_VALUE, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS, DATE_FORMAT_TYPES, METRICS_SET, EXCHANGE_RATES, CALCULATED_METRIC_TYPE, BUILD_IN_DATE_TIME_MACROS) {
+    function calculatedMetric($compile, $modal, _, AddCalculatedMetricUtil, REPORT_BUILDER_TRANSFORMS_ALL_FIELD_TYPES, POSITIONS_FOR_REPLACE_TEXT, REPORT_BUILDER_ALL_FIELD_TRANSFORMS_KEYS, DATE_FORMAT_TYPES, METRICS_SET, CALCULATED_METRIC_TYPE, BUILD_IN_DATE_TIME_MACROS) {
         'use strict';
 
         return {
@@ -309,8 +309,16 @@
                         return expression;
                     }
 
+                    var lastTime = Date.now();
                     function addSpaceBeforeAndAfterOperator(field) {
-                        field = AddCalculatedField.addSpaceBeforeAndAfterOperator(field);
+                        var now = Date.now();
+                        if (now - lastTime < 1000) {
+                            lastTime = now;
+                            return;
+                        }
+
+                        lastTime = now;
+                        field = AddCalculatedMetricUtil.addSpaceBeforeAndAfterOperator(field);
                         return field;
                     }
 
