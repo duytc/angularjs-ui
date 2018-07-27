@@ -262,10 +262,7 @@
              *
              */
             var correctFields = _.keys($scope.reports[0]);
-            var reportViewDatasets = $scope.reportView.reportViewDataSets;
-            _unTickWrongMetrics(correctFields, $scope.metrics, reportViewDatasets, 'metrics', $scope.titleColumnsForSelect);
-            _unTickWrongMetrics(correctFields, $scope.dimensions, reportViewDatasets, 'dimensions', $scope.titleColumnsForSelect);
-
+            _unTickWrongMetrics(correctFields);
         }
 
         function getComparisonTypes(customFilter, field, dataset) {
@@ -1035,28 +1032,20 @@
          * Fix bug: some metrics ticked wrong by default
          * https://trello.com/c/rmXhwtVO/2637-ur-usability-fixes-small
          */
-        function _unTickWrongMetrics(correctFields, wrongOptions, reportViewDatasets, type, titleColumnsForUiSelect) {
-            angular.forEach(wrongOptions, function (fieldOption) {
-                var fieldNameContainDatasetId = fieldOption.name; //request_1
-                var separatedFieldNameAndDataset = getDatasetIdFromMetricName(fieldNameContainDatasetId);
-                var currentDataSetId = separatedFieldNameAndDataset.datasetId;
-                var currentDataSetObject = reportViewDatasets.find(function (dataSet) {
-                    return dataSet.dataSet == currentDataSetId; //don't change == to ===
-                });
+        function _unTickWrongMetrics(correctFields) {
+            _.each($scope.dimensions, function (dimension) {
+                var fieldName = dimension.name;
 
-                if (currentDataSetObject) {
-                    var currentFieldName = separatedFieldNameAndDataset.metricName;
-                    var fields = currentDataSetObject[type];
-                    if (fields) {
-                        var found = fields.find(function (field) {
-                            return field == currentFieldName; //don't change == to ===
-                        });
+                if(!_.contains(correctFields, fieldName)) {
+                    dimension.ticked = false;
+                }
+            });
 
-                        if (!found && titleColumnsForUiSelect && titleColumnsForUiSelect[fieldNameContainDatasetId]) {
-                            fieldOption.ticked = false;
-                            fieldOption.label = titleColumnsForUiSelect[fieldNameContainDatasetId];
-                        }
-                    }
+            _.each($scope.metrics, function (metric) {
+                var fieldName = metric.name;
+
+                if(!_.contains(correctFields, fieldName)) {
+                    metric.ticked = false;
                 }
             });
         }
