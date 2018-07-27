@@ -175,6 +175,7 @@
         //Calculated Metrics
         $scope.getCalculatedMetrics = getCalculatedMetrics;
         $scope.getColumnCompatible = getColumnCompatible;
+        $scope.filterCalculatedMetricsDefined = filterCalculatedMetricsDefined;
         $scope.getDisplayNameMetric = getDisplayNameMetric;
         $scope.isAllowUserDefinedMetrics = isAllowUserDefinedMetrics;
         $scope.isShowCalculatedMetric = isShowCalculatedMetric;
@@ -205,6 +206,12 @@
 
         function getColumnCompatible(items) {
             return setClassName(items);
+        }
+
+        function filterCalculatedMetricsDefined(items) {
+            return _.filter(items, function (item) {
+                return isAllowUserDefinedMetrics(item);
+            })
         }
 
         function getCalculatedMetrics(field) {

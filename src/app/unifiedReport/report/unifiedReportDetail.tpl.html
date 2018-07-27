@@ -109,7 +109,7 @@
                     </accordion-heading>
 
                     <div class="row">
-                        <div class="{{ getColumnCompatible(reportView.calculatedMetrics) }}" ng-if="isAllowUserDefinedMetrics(field)" ng-repeat="field in reportView.calculatedMetrics track by $index">
+                        <div class="{{ getColumnCompatible(filterCalculatedMetricsDefined(reportView.calculatedMetrics)) }}" ng-if="isAllowUserDefinedMetrics(field)" ng-repeat="field in reportView.calculatedMetrics track by $index">
                             <div class="expressions-group">
                                 <div class="form-group select-connect-data-source">
                                     <label class="col-sm-4 control-label">{{ field.displayName || field.field }} Value</label>
