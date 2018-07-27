@@ -1046,18 +1046,20 @@
             angular.forEach(wrongOptions, function (fieldOption) {
                 var fieldNameContainDatasetId = fieldOption.name; //request_1
                 var separatedFieldNameAndDataset = getDatasetIdFromMetricName(fieldNameContainDatasetId);
-                var currentDatasetId = separatedFieldNameAndDataset.datasetId;
-                var currentDatasetObject = reportViewDatasets.find(function (dataset) {
-                    return dataset.dataSet == currentDatasetId; //don't change == to ===
+                var currentDataSetId = separatedFieldNameAndDataset.datasetId;
+                var currentDataSetObject = reportViewDatasets.find(function (dataSet) {
+                    return dataSet.dataSet == currentDataSetId; //don't change == to ===
                 });
-                if (currentDatasetObject) {
+
+                if (currentDataSetObject) {
                     var currentFieldName = separatedFieldNameAndDataset.metricName;
-                    var fields = currentDatasetObject[type];
+                    var fields = currentDataSetObject[type];
                     if (fields) {
                         var found = fields.find(function (field) {
                             return field == currentFieldName; //don't change == to ===
                         });
-                        if (!found) {
+
+                        if (!found && titleColumnsForUiSelect && titleColumnsForUiSelect[fieldNameContainDatasetId]) {
                             fieldOption.ticked = false;
                             fieldOption.label = titleColumnsForUiSelect[fieldNameContainDatasetId];
                         }
