@@ -93,6 +93,25 @@
             calculatedMetrics: angular.toJson(reportView.calculatedMetrics)
         };
 
+        if(!$scope.hasResult) {
+            if (reportGroup.status == 400) {
+                AlertService.replaceAlerts({
+                    type: 'error',
+                    message: reportGroup.message
+                });
+            } else if (reportGroup.status == 500) {
+                AlertService.replaceAlerts({
+                    type: 'error',
+                    message: reportGroup.message || $translate.instant('REPORT.REPORT_FAIL')
+                });
+            } else {
+                AlertService.replaceAlerts({
+                    type: 'warning',
+                    message: $translate.instant('REPORT.REPORTS_EMPTY')
+                });
+            }
+        }
+
         $scope.itemsPerPage = [
             {label: '10', key: '10'},
             {label: '20', key: '20'},
