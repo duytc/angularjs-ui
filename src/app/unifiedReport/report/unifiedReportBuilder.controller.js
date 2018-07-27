@@ -932,7 +932,7 @@
         }
 
         function _fieldsHaveNumberType() {
-            var fields = _getAllFieldInTransForm().concat($scope.selectedFields);
+            var fields = _getAllFieldInTransForm().concat($scope.selectedFields).concat(_getAllFieldsInCalculatedMetrics());
 
             angular.forEach(fields, function (metric) {
                 if (!!metric && (metric.type == 'number' || metric.type == 'decimal')) {
@@ -965,6 +965,24 @@
                     }
                 }
             });
+        }
+
+        /*get All Fields in Calculated Metrics for Formats builder*/
+        function _getAllFieldsInCalculatedMetrics() {
+            var calculatedMetrics = [];
+
+            _.each($scope.reportBuilder.calculatedMetrics, function (calMetric) {
+                if(!!calMetric.isVisible) {
+                    calculatedMetrics.push({
+                        label: calMetric.displayName || calMetric.field,
+                        key: calMetric.field,
+                        root: calMetric.field,
+                        type: calMetric.type
+                    });
+                }
+            })
+
+            return calculatedMetrics;
         }
 
 
