@@ -63,4 +63,18 @@
             {key: 'greater or equal', label: 'Greater Than or Equals', types: ['number', 'decimal']},
             {key: 'between', label: 'Between', types: ['date']}
         ])
+        .constant('CALCULATED_METRIC_TYPE', {
+            useExpression: 0,
+            userDefined: 1
+        })
+        .constant('BUILD_IN_DATE_TIME_MACROS', [
+            {
+                key: "yesterday",
+                label: "yesterday"
+            },
+            {
+                key: "today",
+                label: "today"
+            }
+        ])
 })();

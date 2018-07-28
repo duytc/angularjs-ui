@@ -34,6 +34,27 @@
         $scope.dimensions = [];
         $scope.metrics = [];
 
+        if(!$scope.hasResult) {
+            if (reports.status == 400) {
+                AlertService.replaceAlerts({
+                    type: 'error',
+                    message: reports.message
+                });
+            } else if (reports.status == 500) {
+                AlertService.replaceAlerts({
+                    type: 'error',
+                    message: reports.message || $translate.instant('REPORT.REPORT_FAIL')
+                });
+            } else {
+                AlertService.replaceAlerts({
+                    type: 'warning',
+                    message: $translate.instant('REPORT.REPORTS_EMPTY')
+                });
+            }
+
+            return
+        }
+
         $scope.tempReports = unifiedReportFormatReport.formatReports($scope.reports, $scope.reportView);
 
         $scope.titleColumns = reports.columns;
