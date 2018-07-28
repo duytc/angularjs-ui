@@ -43,7 +43,7 @@
                         {key: 'decimal', label: 'Decimal'}
                     ];
 
-                    scope.fieldsCalculatedField = [];
+                    scope.fieldsCalculatedMetricField = [];
                     scope.buildInMacros = [];
                     scope.fieldNames = scope.selectedFields;
 
@@ -51,7 +51,7 @@
                         return scope.selectedFields;
                     }, function () {
                         scope.fieldNames = scope.selectedFields;
-                        selectTypeCalculatedField('all');
+                        //selectTypeCalculatedMetricField('all');
                     }, true);
 
                     scope.$watch(function () {
@@ -104,12 +104,12 @@
                     scope.enableDragDropQueryBuilder = enableDragDropQueryBuilder;
                     scope.getCalculatedMetricName = getCalculatedMetricName;
                     scope.fieldIsDatetime = fieldIsDatetime;
-                    scope.selectTypeCalculatedField = selectTypeCalculatedField;
+                    scope.selectTypeCalculatedMetricField = selectTypeCalculatedMetricField;
                     scope.addThisFieldToSelectedList = addThisFieldToSelectedList;
                     scope.unValidName = unValidName;
 
-                    function selectTypeCalculatedField(type, calculatedField) {
-                        scope.fieldsCalculatedField = [];
+                    function selectTypeCalculatedMetricField(type) {
+                        scope.fieldsCalculatedMetricField = [];
                         if (!type) {
                             return
                         }
@@ -118,20 +118,20 @@
                         if (type == 'number' || type == 'decimal' || type.key == 'number' || type.key == 'decimal') {
                             angular.forEach(scope.totalDimensionsMetrics, function (field) {
                                 if (field.type == 'number' || field.type == 'decimal') {
-                                    scope.fieldsCalculatedField.push(field)
+                                    scope.fieldsCalculatedMetricField.push(field)
                                 }
                             });
 
                         } else {
-                            scope.fieldsCalculatedField = scope.totalDimensionsMetrics;
+                            scope.fieldsCalculatedMetricField = scope.totalDimensionsMetrics;
                         }
 
                         //Get fields in add field transform
                         angular.forEach(scope.transforms, function (transform) {
                             if (transform.type == scope.allFiledFormatTypeKeys.addField || transform.type == scope.allFiledFormatTypeKeys.addConditionValue) {
                                 angular.forEach(transform.fields, function (field) {
-                                    if ((field.type == 'number' || field.type == 'decimal') && _.findIndex(scope.fieldsCalculatedField, {key: field.field}) == -1) {
-                                        scope.fieldsCalculatedField.push({
+                                    if ((field.type == 'number' || field.type == 'decimal') && _.findIndex(scope.fieldsCalculatedMetricField, {key: field.field}) == -1) {
+                                        scope.fieldsCalculatedMetricField.push({
                                             key: field.field,
                                             label: field.field,
                                             root: field.field,
@@ -144,8 +144,8 @@
                             //Get fields in previous calculated field
                             if (transform.type == scope.allFiledFormatTypeKeys.addCalculatedField) {
                                 angular.forEach(transform.fields, function (field) {
-                                    if (!!field.field && _.findIndex(scope.fieldsCalculatedField, {key: field.field}) == -1) {
-                                        scope.fieldsCalculatedField.push({
+                                    if (!!field.field && _.findIndex(scope.fieldsCalculatedMetricField, {key: field.field}) == -1) {
+                                        scope.fieldsCalculatedMetricField.push({
                                             key: field.key,
                                             label: field.field,
                                             root: field.field,
@@ -157,8 +157,8 @@
                         });
 
                         angular.forEach(scope.calculatedMetrics, function (calculatedMetric) {
-                            if (!!calculatedMetric.field && _.findIndex(scope.fieldsCalculatedField, {key: calculatedMetric.field}) == -1) {
-                                scope.fieldsCalculatedField.push({
+                            if (!!calculatedMetric.field && _.findIndex(scope.fieldsCalculatedMetricField, {key: calculatedMetric.field}) == -1) {
+                                scope.fieldsCalculatedMetricField.push({
                                     key: calculatedMetric.field,
                                     label: calculatedMetric.field,
                                     root: calculatedMetric.field,
@@ -166,7 +166,7 @@
                                 });
                             }
                         });
-                        return scope.fieldsCalculatedField;
+                        return scope.fieldsCalculatedMetricField;
                     }
 
                     function removeJoinFields(dates) {
@@ -184,12 +184,12 @@
                     }
 
                     function addThisFieldToSelectedList(calculatedField) {
-                        var element = _.find(scope.fieldsCalculatedField, function (oneField) {
+                        var element = _.find(scope.fieldsCalculatedMetricField, function (oneField) {
                             return (oneField.label == calculatedField.field);
                         });
 
                         if (_.isUndefined(element)) {
-                            scope.fieldsCalculatedField.push({
+                            scope.fieldsCalculatedMetricField.push({
                                 key: calculatedField.field,
                                 label: calculatedField.field,
                                 root: calculatedField.field,
@@ -204,14 +204,14 @@
                         //Add field in show in total
                         var aliasShowTotalName = _getFieldsInShowInTotal();
                         angular.forEach(aliasShowTotalName, function (oneObject) {
-                            var elementIndex = _.findIndex(scope.fieldsCalculatedField, function (calculatedField) {
+                            var elementIndex = _.findIndex(scope.fieldsCalculatedMetricField, function (calculatedField) {
                                 return (calculatedField.rootKey == oneObject.rootKey);
                             });
 
                             if(elementIndex !== -1)
-                                scope.fieldsCalculatedField.splice(elementIndex, 1);
+                                scope.fieldsCalculatedMetricField.splice(elementIndex, 1);
 
-                            scope.fieldsCalculatedField.push(oneObject);
+                            scope.fieldsCalculatedMetricField.push(oneObject);
                         });
                     }
 
@@ -335,18 +335,18 @@
                     scope.searchField = function (term) {
                         var fieldList = [];
                         _pushDateFieldToList();
-                        angular.forEach(scope.fieldsCalculatedField, function (item) {
+                        angular.forEach(scope.fieldsCalculatedMetricField, function (item) {
                             if (!!item && !!item.label && (typeof item.label == 'string') && item.label.toUpperCase().indexOf(term.toUpperCase()) >= 0) {
                                 fieldList.push(item);
                             }
                         });
-                        scope.fieldsCalculatedFieldCopy = fieldList;
+                        scope.fieldsCalculatedMetricFieldCopy = fieldList;
                     };
 
                     scope.searchMacros = function (term) {
                         var fieldList = [];
                         _pushDateFieldToList();
-                        scope.buildInMacros = angular.copy(scope.fieldsCalculatedField);
+                        scope.buildInMacros = angular.copy(scope.fieldsCalculatedMetricField);
                         angular.forEach(scope.buildInDateTimeMacros, function (buildInMacro) {
                             var element = _.find(scope.buildInMacros, function (macro) {
                                 return (buildInMacro.label == macro.label);
@@ -396,7 +396,7 @@
 
                     function _pushDateFieldToList() {
                         var dates = [];
-                        angular.forEach(scope.fieldsCalculatedField, function (item) {
+                        angular.forEach(scope.fieldsCalculatedMetricField, function (item) {
                             //Note: add a date field to field list. For example, __metric5_year (data-set-1). we add one field is metric5 (data-set-1) to selected list.
                             var newDate = null;
                             if (!!item && !!item.label && (typeof item.label == 'string') && item.label.indexOf('_year') >= 0) {
@@ -411,12 +411,12 @@
                         dates = removeJoinFields(dates);
 
                         angular.forEach(dates, function (date) {
-                            var hasExist = _.find(scope.fieldsCalculatedField, function (element) {
+                            var hasExist = _.find(scope.fieldsCalculatedMetricField, function (element) {
                                 return (element.label ==  date.label);
                             });
 
                             if (_.isUndefined(hasExist)) {
-                                scope.fieldsCalculatedField.push(date);
+                                scope.fieldsCalculatedMetricField.push(date);
                             }
                         });
                     }
