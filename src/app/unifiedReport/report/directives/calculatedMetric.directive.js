@@ -485,7 +485,6 @@
 
                     function addCalculatedMetric() {
                         // Need id property to fix bug 6th: https://trello.com/c/Lxvf1gaL/2664-ur-uisupport-calculated-metrics-and-type-of-metrics-user-defined-expression-for-multiple-browsers
-                        var length = !scope.calculatedMetrics ? 0 : scope.calculatedMetrics.length;
                         scope.calculatedMetrics.push({
                             field: '',
                             displayName: '',
@@ -495,7 +494,7 @@
                             expression: null,
                             openStatus: true,
                             isVisible: true,
-                            id: length
+                            id: Math.round(Math.random() * 1.0e+10)
                         });
                     }
 
@@ -515,7 +514,7 @@
                     }
 
                     scope.getMentioId = function(calcMetric) {
-                        return 'mentioId' + calcMetric.id;
+                        return 'mentioId-' + calcMetric.id;
                     };
 
                     directive || (directive = $compile(content));
