@@ -7,9 +7,10 @@
     function UnifiedReportDetail($scope, $q, $modal, historyStorage, $stateParams, _, allDimensionsMetrics, reportView,
                                  dataSources, $translate, reportGroup, dataService, unifiedReportBuilder, getDateReportView,
                                  AlertService, UnifiedReportViewManager, DateFormatter, HISTORY_TYPE_PATH, API_UNIFIED_END_POINT,
-                                 sessionStorage, userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,reportViewUtil,
+                                 sessionStorage, userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,reportViewUtil, METRICS_SET,
                                  COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_NUMBER) {
         const maxEmailAllowed = 10;
+        const CALCULATED_METRIC_USER_DEFINED = 1;
 
         // reset css for id app
         var app = angular.element('#app');
@@ -45,6 +46,12 @@
 
         $scope.dimensions = [];
         $scope.metrics = [];
+
+        //calculated metrics
+        $scope.typesField = METRICS_SET;
+        $scope.patternForAddField =  /^[a-zA-Z_][a-zA-Z0-9_$\s]*$/;
+        $scope.calculatedMetricsResult = sortCalculatedResultByName(reportGroup.calculatedMetricsResult || {});
+        $scope.isCalculatedMetricsComplete = true;
 
         _updateColumnPositions();
         _fixWrongTickedDimensionAndMetric();
@@ -82,8 +89,28 @@
             availableToRun:  reportView.availableToRun,
             availableToChange: reportView.availableToChange,
             publisher: angular.isObject(reportView.publisher) ? reportView.publisher.id : reportView.publisher,
-            enableCustomDimensionMetric: reportView.enableCustomDimensionMetric
+            enableCustomDimensionMetric: reportView.enableCustomDimensionMetric,
+            calculatedMetrics: angular.toJson(reportView.calculatedMetrics)
         };
+
+        if(!$scope.hasResult) {
+            if (reportGroup.status == 400) {
+                AlertService.replaceAlerts({
+                    type: 'error',
+                    message: reportGroup.message
+                });
+            } else if (reportGroup.status == 500) {
+                AlertService.replaceAlerts({
+                    type: 'error',
+                    message: reportGroup.message || $translate.instant('REPORT.REPORT_FAIL')
+                });
+            } else {
+                AlertService.replaceAlerts({
+                    type: 'warning',
+                    message: $translate.instant('REPORT.REPORTS_EMPTY')
+                });
+            }
+        }
 
         $scope.itemsPerPage = [
             {label: '10', key: '10'},
@@ -101,6 +128,8 @@
                 endDate : $stateParams.endDate || getDateReportView.getMaxEndDateInFilterReportView(reportView)
             }
         };
+
+        $scope.fieldsCalculatedMetric = [];
 
         _updateMissingDate($scope.selected.date);
 
@@ -143,6 +172,16 @@
         $scope.isShowDatasetHasUserProvidedFilterExceptDate = isShowDatasetHasUserProvidedFilterExceptDate;
         $scope.isShowHelpBlock = isShowHelpBlock;
 
+        //Calculated Metrics
+        $scope.getCalculatedMetrics = getCalculatedMetrics;
+        $scope.getColumnCompatible = getColumnCompatible;
+        $scope.filterCalculatedMetricsDefined = filterCalculatedMetricsDefined;
+        $scope.getDisplayNameMetric = getDisplayNameMetric;
+        $scope.isAllowUserDefinedMetrics = isAllowUserDefinedMetrics;
+        $scope.isShowCalculatedMetric = isShowCalculatedMetric;
+        $scope.isShowCalculatedMetricResults = isShowCalculatedMetricResults;
+
+
         _buildCustomFilters();
         /**
          * Filters is in reportView.reportViewDatasets, but to subReportView, filter is in reportView.filters
@@ -165,6 +204,59 @@
             return reportViewUtil.hasCustomFilters($scope.reportView.reportViewDataSets);
         }
 
+        function getColumnCompatible(items) {
+            return setClassName(items);
+        }
+
+        function filterCalculatedMetricsDefined(items) {
+            return _.filter(items, function (item) {
+                return isAllowUserDefinedMetrics(item);
+            })
+        }
+
+        function getCalculatedMetrics(field) {
+            if(!field)
+                return;
+            $scope.isCalculatedMetricsComplete = false;
+            return generateReport($scope.selected.date, $scope.reportView);
+        }
+
+        function isShowCalculatedMetricResults() {
+            return !_.isEmpty($scope.calculatedMetricsResult);
+        }
+
+        function isShowCalculatedMetric() {
+            return !_.isEmpty($scope.reportView.calculatedMetrics) && !isNotContainsUserDefined();
+        }
+
+        function isNotContainsUserDefined() {
+            return _.isEmpty(_.findWhere($scope.reportView.calculatedMetrics, {calculationType: CALCULATED_METRIC_USER_DEFINED}));
+        }
+
+        function getDisplayNameMetric(key) {
+            return (_.findWhere($scope.reportView.calculatedMetrics, {field: key}) || {displayName: key}).displayName;
+        }
+
+        function sortCalculatedResultByName(results) {
+            if(_.isEmpty(results))
+                return results;
+
+            var calculatedResults = [];
+            for(var key in results) {
+                calculatedResults.push({
+                    key: key,
+                    displayName: getDisplayNameMetric(key),
+                    value: results[key]
+                })
+            }
+
+            return calculatedResults;
+        }
+
+        function isAllowUserDefinedMetrics(field) {
+            return field.calculationType && field.calculationType == CALCULATED_METRIC_USER_DEFINED;
+        }
+
         function _fixWrongTickedDimensionAndMetric() {
             // Fix bug: some metrics ticked wrong by default. https://trello.com/c/rmXhwtVO/2637-ur-usability-fixes-small
             //This solution is not good. Just to fix above bug. If there is some change, this solution may not work
@@ -177,10 +269,7 @@
              *
              */
             var correctFields = _.keys($scope.reports[0]);
-            var reportViewDatasets = $scope.reportView.reportViewDataSets;
-            _unTickWrongMetrics(correctFields, $scope.metrics, reportViewDatasets, 'metrics', $scope.titleColumnsForSelect);
-            _unTickWrongMetrics(correctFields, $scope.dimensions, reportViewDatasets, 'dimensions', $scope.titleColumnsForSelect);
-
+            _unTickWrongMetrics(correctFields);
         }
 
         function getComparisonTypes(customFilter, field, dataset) {
@@ -209,8 +298,13 @@
             }
             return query;
         }
-        function setClassName() {
-            var totalItem = Object.keys($scope.reportGroup.total).length;
+
+        function setClassName(data) {
+            if(data) {
+                var totalItem = !_.isArray(data) ? Object.keys(data).length : _.size(data);
+            } else {
+                var totalItem = Object.keys($scope.reportGroup.total).length;
+            }
 
             if(totalItem == 1) {
                 return 'col-md-12'
@@ -374,6 +468,8 @@
                         $scope.reports = reportGroup.reports || [];
                         $scope.tableConfig.totalItems = Number(reportGroup.totalReport);
                         $scope.availableOptions.currentPage = Number(params.page);
+                        $scope.isCalculatedMetricsComplete = true;
+                        $scope.calculatedMetricsResult = sortCalculatedResultByName(reportGroup.calculatedMetricsResult || {});
 
                         _updateColumnPositions();
 
@@ -412,10 +508,10 @@
             return false;
         }
 
-        function generateReport(date) {
+        function generateReport(date, customReportView) {
             $scope.availableOptions.currentPage = 1;
 
-            var params = _toJsonReportView(reportView);
+            var params = _toJsonReportView(customReportView ? customReportView : reportView);
 
             params.startDate = DateFormatter.getFormattedDate(date.startDate);
             params.endDate = DateFormatter.getFormattedDate(date.endDate);
@@ -944,26 +1040,20 @@
          * Fix bug: some metrics ticked wrong by default
          * https://trello.com/c/rmXhwtVO/2637-ur-usability-fixes-small
          */
-        function _unTickWrongMetrics(correctFields, wrongOptions, reportViewDatasets, type, titleColumnsForUiSelect) {
-            angular.forEach(wrongOptions, function (fieldOption) {
-                var fieldNameContainDatasetId = fieldOption.name; //request_1
-                var separatedFieldNameAndDataset = getDatasetIdFromMetricName(fieldNameContainDatasetId);
-                var currentDatasetId = separatedFieldNameAndDataset.datasetId;
-                var currentDatasetObject = reportViewDatasets.find(function (dataset) {
-                    return dataset.dataSet == currentDatasetId; //don't change == to ===
-                });
-                if (currentDatasetObject) {
-                    var currentFieldName = separatedFieldNameAndDataset.metricName;
-                    var fields = currentDatasetObject[type];
-                    if (fields) {
-                        var found = fields.find(function (field) {
-                            return field == currentFieldName; //don't change == to ===
-                        });
-                        if (!found) {
-                            fieldOption.ticked = false;
-                            fieldOption.label = titleColumnsForUiSelect[fieldNameContainDatasetId];
-                        }
-                    }
+        function _unTickWrongMetrics(correctFields) {
+            _.each($scope.dimensions, function (dimension) {
+                var fieldName = dimension.name;
+
+                if(!_.contains(correctFields, fieldName)) {
+                    dimension.ticked = false;
+                }
+            });
+
+            _.each($scope.metrics, function (metric) {
+                var fieldName = metric.name;
+
+                if(!_.contains(correctFields, fieldName)) {
+                    metric.ticked = false;
                 }
             });
         }

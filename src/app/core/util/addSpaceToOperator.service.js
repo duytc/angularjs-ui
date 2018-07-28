@@ -14,9 +14,15 @@
     var oldString = null;
 
     function addSpaceBeforeAndAfterOperator(expression) {
+        if (!!oldString && !!expression && !!expression.expression) {
+            if (oldString.length > expression.expression.length) {
+                oldString =  expression.expression;
+                return expression;
+            }
+        }
+
         var newCharacters = getDifference(oldString, expression.expression),
             subString, positions;
-
         switch (newCharacters) {
             case  ' *':
             case '*':
