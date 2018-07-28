@@ -13,6 +13,10 @@
     var oldString = null;
 
     function addSpaceBeforeAndAfterOperator(expression) {
+        if (_.isEmpty(expression)) {
+            return;
+        }
+
         if (!!oldString && !!expression && !!expression.expression) {
             // do not auto format on deletion
             if (oldString.length > expression.expression.length) {
