@@ -13,7 +13,7 @@
     var oldString = null;
 
     function addSpaceBeforeAndAfterOperator(expression) {
-        if (_.isEmpty(expression)) {
+        if (_.isEmpty(expression) || _.isEmpty(expression.expression)) {
             return;
         }
 
