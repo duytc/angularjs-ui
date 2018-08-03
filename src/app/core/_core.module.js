@@ -30,6 +30,7 @@
         'tagcade.blocks.confirmClick',
         'tagcade.blocks.pagination',
         'tagcade.blocks.scroll',
+        'tagcade.blocks.pubvantageMultiSelect',
 
         'tagcade.core.bootstrap',
         'tagcade.core.auth',

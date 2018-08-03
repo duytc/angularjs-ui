@@ -10,9 +10,10 @@
                                  userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,reportViewUtil,
                                  COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_NUMBER) {
         const maxEmailAllowed = 10;
-        const LIMIT_GET_DROPDOWN_LIST = 10;
+        const LIMIT_GET_DROPDOWN_LIST = 2;
 
-        $scope.dropdownListValues = prepareDropdownFilter(dropdownListValues, true);
+        $scope.dropdownListValues = [];
+         prepareDropdownFilter(dropdownListValues, false);
 
         // reset css for id app
         var app = angular.element('#app');
@@ -149,7 +150,7 @@
         //Dropdown filter
         $scope.isUseDropdown = isUseDropdown;
         $scope.addMoreDimensionItems = addMoreDimensionItems;
-        $scope.searchDimensionValue = searchDimensionValue;
+        $scope.fSearchChange = fSearchChange;
 
         _buildCustomFilters();
         /**
@@ -598,6 +599,12 @@
                 if(!value || value == '') {
                     delete $scope.search[key]
                 }
+
+                if($scope.isUseDropdown(key) && !_.isEmpty($scope.search[key])) {
+                    $scope.search[key] = _.map($scope.search[key], function (item){
+                        return item.key || item.label;
+                    })
+                }
             });
 
             params = angular.extend(params, {
@@ -1020,43 +1027,47 @@
         function addMoreDimensionItems(column) {
             var page = Math.ceil((($scope.dropdownListValues[column].length -1) / LIMIT_GET_DROPDOWN_LIST) + 1);
 
-            return searchDimensionValue(false, page);
+            return searchDimensionValue('', column, page + 1, false);
         }
 
-        function prepareDropdownFilter(list, searchQuery) {
-            var dropdownList = _.clone(list);
+        function prepareDropdownFilter(list, isSearch) {
+            list = list.records ? list.records : list;
+
             for(var key in list) {
-                if(!!searchQuery) {
-                    dropdownList[key] = [];
-                    dropdownList[key].push({
-                        key: 'All',
-                        label: 'All'
-                    });
-                }
+                if(!_.has($scope.dropdownListValues, key) || !!isSearch)
+                    $scope.dropdownListValues[key] = [];
 
                 _.each(list[key], function (item) {
-                    dropdownList[key].push({
-                        key: item,
-                        label: item
-                    });
+                    if(!_.isNull(item) && !_.isEmpty(item) && _.isEmpty(_.findWhere($scope.dropdownListValues[key], {key: item})))
+                        $scope.dropdownListValues[key].push({
+                            key: item,
+                            label: item
+                        });
                 })
             }
-
-            return dropdownList;
         }
 
-        function searchDimensionValue(searchQuery, page) {
+        function fSearchChange ( data ) {
+            searchDimensionValue(data.keyword, data.column, 1, true);
+        }
+
+        function searchDimensionValue(searchQuery, dimension, page, isSearch) {
             var params = {
-                search: searchQuery,
-                page: page || 1,
-                limit: LIMIT_GET_DROPDOWN_LIST
+                distinctSearches: {
+                    dimensions: dimension,
+                    searches: searchQuery,
+                    limit: LIMIT_GET_DROPDOWN_LIST,
+                    page: page ? page : 1
+                }
             };
+
+            params = _.extend(params, $scope.reportView);
 
             return dataService.makeHttpPOSTRequest('', params, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL + '/distinctdimensionvalues')
                 .then(
                     function (values) {
                         if(!_.isEmpty(values)) {
-                            $scope.dropdownListValues = prepareDropdownFilter(values, searchQuery);
+                            prepareDropdownFilter(values, isSearch);
                         }
                     },
                     function (error) {

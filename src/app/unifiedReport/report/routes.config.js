@@ -321,6 +321,8 @@
                             });
                         }
 
+                        reportView.params = params;
+
                         return unifiedReportBuilder.getPlatformReport(params);
                     },
                     dataSources: function (reportView, UnifiedReportViewManager) {
@@ -346,12 +348,14 @@
 
                         return UnifiedReportViewManager.one('datasets').get(params);
                     },
-                    dropdownListValues: function (UnifiedReportViewManager, dataService, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL) {
+                    dropdownListValues: function (UnifiedReportViewManager, dataService, reportView, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL) {
                         var params = {
-                            search: '',
-                            page: 1,
-                            limit: 10
+                            distinctSearches: null
                         };
+
+                        params = angular.extend(params, reportView.params);
+
+                        delete reportView.params;
 
                         return dataService.makeHttpPOSTRequest('', params, API_PERFORMANCE_UNIFIED_REPORTS_BASE_URL + '/distinctdimensionvalues')
                             .catch(function(response) {

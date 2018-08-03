@@ -7,9 +7,11 @@
 
     function scroll() {
         return function(scope, elm, attr) {
-            var raw = elm[0];
+            //for ist-multiselect
+            var elmContainer = elm.find('.checkBoxContainer') ? elm.find('.checkBoxContainer') : elm;
 
-            elm.bind('scroll', function() {
+            var raw = elmContainer ? elmContainer[0] : elm[0];
+            elmContainer.bind('scroll', function() {
                 if (raw.scrollTop + raw.offsetHeight >= raw.scrollHeight) {
                     scope.$apply(attr.scroll);
                 }

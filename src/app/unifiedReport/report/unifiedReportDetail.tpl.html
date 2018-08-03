@@ -121,9 +121,9 @@
         </div>
     </div>
 
-    <div class="panel-body" ng-if="showReportDetail()">
+    <div class="panel-body">
         <div class="table-responsive table-report-view">
-            <table class="table">
+            <table class="table reportTable">
                 <thead>
                 <tr>
                     <th ng-class="{minWidth100: (types[column] == 'date' || types[column] == 'datetime')}" ng-repeat="column in columnPositions track by $index" ng-click="sort(column)">{{ titleColumns[column] }}
@@ -133,8 +133,8 @@
                 </tr>
                 <tr>
                     <td ng-repeat="column in columnPositions track by $index">
-                        <input style="height: 34px;" ng-if="!isUseDropdown(column)" type="text" ng-model="search[column]" ng-change="searchReportView()">
-                        <ui-select multiple ng-if="isUseDropdown(column)"
+                        <input ng-if="!isUseDropdown(column)" type="text" ng-model="search[column]" ng-change="searchReportView()">
+                        <!--<ui-select multiple ng-if="isUseDropdown(column)"
                                    ng-init="search[column] = ['All']"
                                    ng-model="search[column]"
                                    on-select="searchReportView()"
@@ -144,16 +144,29 @@
                             </ui-select-match>
                             <ui-select-choices scroll="addMoreDimensionItems(column)"
                                                refresh-delay="500" id="reload-{{column}}"
-                                               refresh="searchDimensionValue($select.search)"
                                                repeat="dimensionValue.key as dimensionValue in dropdownListValues[column]">
                                 {{ dimensionValue.label }}
                             </ui-select-choices>
-                        </ui-select>
+                        </ui-select>-->
+
+                        <pubvantage-multi-select id="reload-{{column}}"
+                                              ng-if="isUseDropdown(column)"
+                                              input-model="dropdownListValues[column]"
+                                              max-labels="1"
+                                              output-model="search[column]"
+                                              button-label="label"
+                                              item-label="label"
+                                              scroll="addMoreDimensionItems(column)"
+                                              on-search-change="fSearchChange(data, column)"
+                                              search-column="column"
+                                              do-search="searchReportView()"
+                                              tick-property="ticked">
+                        </pubvantage-multi-select>
                     </td>
                 </tr>
                 </thead>
 
-                <tbody>
+                <tbody ng-if="showReportDetail()">
                 <tr dir-paginate="report in reports | itemsPerPage:tableConfig.itemsPerPage">
                     <td ng-repeat="column in columnPositions track by $index">
                         <span ng-if="!isNullValue(report, column)"> {{ report[column]}} </span>
