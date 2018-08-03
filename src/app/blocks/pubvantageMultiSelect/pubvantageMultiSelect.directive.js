@@ -479,8 +479,8 @@
                                     }
                                 });
                                 var index = $scope.outputModel.push( tempObj );
-                                //delete $scope.outputModel[ index - 1 ][ $scope.indexProperty ];
-                                //delete $scope.outputModel[ index - 1 ][ $scope.spacingProperty ];
+                                delete $scope.outputModel[ index - 1 ][ $scope.indexProperty ];
+                                delete $scope.outputModel[ index - 1 ][ $scope.spacingProperty ];
                             }
                         });
                     }
@@ -493,8 +493,8 @@
                             ) {
                                 var temp = angular.copy( value );
                                 var index = $scope.outputModel.push( temp );
-                                //delete $scope.outputModel[ index - 1 ][ $scope.indexProperty ];
-                                //delete $scope.outputModel[ index - 1 ][ $scope.spacingProperty ];
+                                delete $scope.outputModel[ index - 1 ][ $scope.indexProperty ];
+                                delete $scope.outputModel[ index - 1 ][ $scope.spacingProperty ];
                             }
                         });
                     }

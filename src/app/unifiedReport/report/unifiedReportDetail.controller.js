@@ -10,7 +10,7 @@
                                  userSession, COMPARISON_TYPES_FILTER_CONNECT_TEXT,reportViewUtil,
                                  COMPARISON_TYPES_FILTER_CONNECT_DECIMAL, COMPARISON_TYPES_FILTER_CONNECT_NUMBER) {
         const maxEmailAllowed = 10;
-        const LIMIT_GET_DROPDOWN_LIST = 2;
+        const LIMIT_GET_DROPDOWN_LIST = 10;
 
         $scope.dropdownListValues = [];
          prepareDropdownFilter(dropdownListValues, false);
@@ -599,16 +599,20 @@
                 if(!value || value == '') {
                     delete $scope.search[key]
                 }
+            });
 
-                if($scope.isUseDropdown(key) && !_.isEmpty($scope.search[key])) {
-                    $scope.search[key] = _.map($scope.search[key], function (item){
+            var paramsSearch = angular.copy($scope.search);
+
+            angular.forEach(paramsSearch, function (value, key) {
+                if($scope.isUseDropdown(key)) {
+                    paramsSearch[key] = _.map(paramsSearch[key], function (item){
                         return item.key || item.label;
                     })
                 }
             });
 
             params = angular.extend(params, {
-                searches: $scope.search,
+                searches: paramsSearch,
                 limit: !!itemPerPage ? itemPerPage.key : $scope.tableConfig.itemsPerPage,
                 page: $scope.availableOptions.currentPage,
                 orderBy: (!!$scope.reverse ? 'desc': 'asc'),
@@ -1102,5 +1106,21 @@
         $scope.$on('$locationChangeSuccess', function() {
             historyStorage.setParamsHistoryCurrent(HISTORY_TYPE_PATH.unifiedReportDetail)
         });
+
+        $scope.test = {};
+        $scope.testData = {
+            haha: [
+                {key: 1, label: 'nam'},
+                {key: 2, label: 'nam2'}
+            ],
+            hehe: [
+                {key: 5, label: 'nam3'},
+                {key: 6, label: 'nam4'}
+            ]
+        }
+
+        $scope.doTest = function () {
+            console.log($scope);
+        }
     }
 })();

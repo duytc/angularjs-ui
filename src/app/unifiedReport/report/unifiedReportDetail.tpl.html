@@ -1,6 +1,18 @@
 <div class="alert alert-warning" ng-click="showDetailsMissingDates()" ng-if="missingDate.length > 0">
     We have detected missing dates in your data. Click on this message for details
 </div>
+<div ng-repeat="column in ['haha', 'hehe']">
+    <pubvantage-multi-select id="reload1-{{column}}"
+                             input-model="testData[column]"
+                             max-labels="1"
+                             output-model="test[column]"
+                             button-label="label"
+                             item-label="label"
+                             search-column="column"
+                             do-search="doTest()"
+                             tick-property="ticked">
+    </pubvantage-multi-select>
+</div>
 <div id="form-date-range-selector" class="panel panel-default" ng-if="hasFilterDate() || reportView.enableCustomDimensionMetric">
     <div class="panel-body">
         <form name="reportSelectorForm" class="form-inline" role="form" ng-submit="generateReport(selected.date)" novalidate>
